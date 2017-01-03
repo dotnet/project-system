@@ -146,7 +146,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var projectPath = @"c:\mySolution\myproject\project.csproj";
             var testProjectPath = @"..\testProjectsubfolder\testproject.csproj";
 
-            var mockUnconfiguredProject = IUnconfiguredProjectFactory.Create(filePath: projectPath);
+            var mockUnconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectPath);
 
             var provider = new TestableProjectDependenciesSubTreeProvider(unconfiguredProject: mockUnconfiguredProject,
                                                                           projectContextProvider: null);

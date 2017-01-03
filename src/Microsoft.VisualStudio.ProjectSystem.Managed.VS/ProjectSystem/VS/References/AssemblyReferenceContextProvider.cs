@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
     [ExportIVsReferenceManagerUserAsync(VSConstants.AssemblyReferenceProvider_string, ReferencePriority.Assembly)]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
     [Order(OverrideCPSProvider)]
-    public class AssemblyReferencesProviderContext : BaseReferenceContextProvider
+    internal class AssemblyReferencesProviderContext : BaseReferenceContextProvider
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AssemblyReferencesProviderContext"/> class.
@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         /// <returns>Value indicating whether this provider should be activated.</returns>
         public override bool IsApplicable()
         {
-            return this.ConfiguredProject.Capabilities.AppliesTo(ProjectCapability.ReferenceManagerAssemblies);
+            return ConfiguredProject.Capabilities.AppliesTo(ProjectCapability.ReferenceManagerAssemblies);
         }
     }
 }

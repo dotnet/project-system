@@ -34,7 +34,7 @@ Press Ignore to ignore the external changes. Your changes may be lost if you clo
 Scegliere Salva con nome per salvare le modifiche e caricare il progetto aggiornato dal disco.
 Scegliere Rimuovi per eliminare le modifiche non salvate e caricare il progetto aggiornato dal disco.
 Scegliere Sovrascrivi per sovrascrivere le modifiche esterne con le proprie.
-Fare clic su Ignora per ignorare le modifiche esterne. Le modifiche potrebbero andare perse se si chiude e riapre il progetto.
+Scegliere Ignora per ignorare le modifiche esterne. Le modifiche potrebbero andare perse se si chiude e riapre il progetto.
     </target>
         <note />
       </trans-unit>
@@ -170,7 +170,7 @@ Fare clic su Ignora per ignorare le modifiche esterne. Le modifiche potrebbero a
       </trans-unit>
       <trans-unit id="DontKnowHowToRunProfile">
         <source>The project doesn't know how to run the profile {0}.</source>
-        <target state="translated">Il progetto non dispone di informazioni sufficienti per eseguire il profilo {0}.</target>
+        <target state="translated">Il progetto non contiene informazioni sufficienti per eseguire il profilo {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorInProfilesFile">
@@ -219,7 +219,7 @@ Per eseguire il debug del progetto, aggiungere a questa soluzione un progetto es
       </trans-unit>
       <trans-unit id="NoMigratedCSProjFound">
         <source>Expected to find migrated cpsroj in {0}, but did not find any.</source>
-        <target state="translated">In {0} era previsto il file cpsroj di cui è stata eseguita la migrazione, ma non è stato trovato nessuno.</target>
+        <target state="translated">In {0} era previsto il file cpsroj di cui è stata eseguita la migrazione, ma non ne è stato trovato nessuno.</target>
         <note />
       </trans-unit>
       <trans-unit id="XprojMigrationFailed">
@@ -239,8 +239,8 @@ Per eseguire il debug del progetto, aggiungere a questa soluzione un progetto es
       </trans-unit>
       <trans-unit id="EditProjectFileCommand">
         <source>Edit {0}</source>
-        <target state="needs-review-translation">Modifica {0}</target>
-        <note></note>
+        <target state="translated">Modifica {0}</target>
+        <note />
       </trans-unit>
       <trans-unit id="NoRunCommandSpecifiedInProject">
         <source>Unable to run your project. The "RunCommand" property is not defined.</source>
@@ -254,13 +254,13 @@ Per eseguire il debug del progetto, aggiungere a questa soluzione un progetto es
       </trans-unit>
       <trans-unit id="PackCommand">
         <source>&amp;Pack</source>
-        <target state="new">&amp;Pack</target>
-        <note></note>
+        <target state="translated">Crea &amp;pacchetto</target>
+        <note />
       </trans-unit>
       <trans-unit id="PackSelectedProjectCommand">
         <source>&amp;Pack {0}</source>
-        <target state="new">&amp;Pack {0}</target>
-        <note></note>
+        <target state="translated">Crea &amp;pacchetto di {0}</target>
+        <note />
       </trans-unit>
     </body>
   </file>

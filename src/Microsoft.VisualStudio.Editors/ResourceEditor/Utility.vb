@@ -5,7 +5,6 @@ Option Strict On
 Option Compare Binary
 
 Imports Microsoft.VisualStudio.Editors.Common
-Imports Microsoft.VisualStudio.Editors.Common.Utils
 Imports System.ComponentModel
 Imports System.Drawing
 Imports System.IO
@@ -175,7 +174,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
 
             'Main loop - replace each invalid character with an underscore
-            Dim FileNameBuilder As New System.Text.StringBuilder(SuggestedFileName)
+            Dim FileNameBuilder As New StringBuilder(SuggestedFileName)
             Do
                 'Search for invalid characters
                 Dim CurrentFileName As String = FileNameBuilder.ToString
@@ -506,9 +505,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             If LengthInBytes > BytesInKilobyte Then
                 Dim FormattedKB As String = (LengthInBytes / BytesInKilobyte).ToString("0.0")
-                Return String.Format(SR.GetString(SR.RSE_FileSizeFormatKB, FormattedKB))
+                Return String.Format(My.Resources.Designer.GetString(My.Resources.Designer.RSE_FileSizeFormatKB, FormattedKB))
             Else
-                Return String.Format(SR.GetString(SR.RSE_FileSizeFormatBytes_1Arg, LengthInBytes))
+                Return String.Format(My.Resources.Designer.GetString(My.Resources.Designer.RSE_FileSizeFormatBytes_1Arg, LengthInBytes))
             End If
         End Function
 
@@ -576,7 +575,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Try
                 Dim Converter As TypeConverter = TypeDescriptor.GetConverter(GetType(Font))
                 Return DirectCast(Converter.ConvertFromInvariantString(FontAsString), Font)
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, $"Unable to create requested font {FontAsString}", NameOf(Utility))
+            Catch ex As Exception When ReportWithoutCrash(ex, $"Unable to create requested font {FontAsString}", NameOf(Utility))
             End Try
 
             Return Nothing

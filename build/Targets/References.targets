@@ -113,6 +113,9 @@
         <Reference Include="EnvDTE80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
           <HintPath>$(DevEnvDir)\PublicAssemblies\EnvDTE80.dll</HintPath>
         </Reference>
+        <Reference Include="EnvDTE90, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+          <HintPath>$(DevEnvDir)\PublicAssemblies\EnvDTE90.dll</HintPath>
+        </Reference>
         <Reference Include="Microsoft.VisualStudio.ComponentModelHost">
           <HintPath>$(DevEnvDir)\PublicAssemblies\Microsoft.VisualStudio.ComponentModelHost.dll</HintPath>
         </Reference>

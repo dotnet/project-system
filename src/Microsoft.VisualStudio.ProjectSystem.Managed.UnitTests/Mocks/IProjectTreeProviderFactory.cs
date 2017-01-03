@@ -10,6 +10,29 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal class IProjectTreeProviderFactory
     {
+        public static IProjectTreeProvider ImplementGetAddNewItemDirectory(Func<IProjectTree, string> action)
+        {
+            Func<IProjectTree, string> getPath = tree => tree.FilePath;
+
+            var mock = new Mock<IProjectTreeProvider>();
+            mock.Setup(p => p.GetPath(It.IsAny<IProjectTree>()))
+                .Returns(getPath);
+
+            mock.Setup(p => p.GetAddNewItemDirectory(It.IsAny<IProjectTree>()))
+                .Returns(action);
+
+            return mock.Object;
+        }
+
+        public static IProjectTreeProvider ImplementGetPath(Func<IProjectTree, string> action)
+        {
+            var mock = new Mock<IProjectTreeProvider>();
+            mock.Setup(p => p.GetPath(It.IsAny<IProjectTree>()))
+                .Returns(action);
+
+            return mock.Object;
+        }
+
         public static IProjectTreeProvider ImplementFindByPath(Func<IProjectTree, string, IProjectTree> action)
         {
             var mock = new Mock<IProjectTreeProvider>();

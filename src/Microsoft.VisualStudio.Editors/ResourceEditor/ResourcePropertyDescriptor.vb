@@ -82,7 +82,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <value>The Resource type.</value>
         ''' <remarks></remarks>
-        Public Overrides ReadOnly Property ComponentType() As System.Type
+        Public Overrides ReadOnly Property ComponentType() As Type
             Get
                 Return GetType(Resource)
             End Get
@@ -106,7 +106,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <value>A Type that represents the type of the property.</value>
         ''' <remarks></remarks>
-        Public Overrides ReadOnly Property PropertyType() As System.Type
+        Public Overrides ReadOnly Property PropertyType() As Type
             Get
                 Return _propertyType
             End Get
@@ -129,7 +129,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Overrides Function GetValue(Component As Object) As Object
             Debug.Assert(Component IsNot Nothing, "component is Nothing!!!")
             Debug.Assert(TypeOf Component Is Resource, "component is not a Resource!!!")
-            Return DirectCast(Component, Resource).GetPropertyValue(Me.Name)
+            Return DirectCast(Component, Resource).GetPropertyValue(Name)
         End Function
 
 
@@ -156,7 +156,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                     If Not _isReadOnly Then
                         Dim NotifyComponentChange As Boolean = True
-                        If MyBase.Name = PROPERTY_NAME Then
+                        If Name = PROPERTY_NAME Then
                             'We must special-case the "Name" property.  In this case, we want the Undo engine
                             '  to pick up on the ComponentRename event only.  If we fire a component change
                             '  event here, too, it tends to complicate matters (there's confusion on Redo
@@ -180,7 +180,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             ChangeService.OnComponentChanging(Component, Me)
                         End If
 
-                        Resource.SetPropertyValueWithoutUndo(Me.Name, Value)
+                        Resource.SetPropertyValueWithoutUndo(Name, Value)
 
                         ' Notify the change service that the change was successful.
                         If ChangeService IsNot Nothing AndAlso NotifyComponentChange Then
@@ -228,7 +228,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Debug.Assert(TypeOf Component Is Resource, "ResourcePropertyDescriptor.ResetValue: Component is not a Resource")
                 If TypeOf Component Is Resource Then
                     Dim Resource As Resource = DirectCast(Component, Resource)
-                    Resource.ResetPropertyValue(Me.Name)
+                    Resource.ResetPropertyValue(Name)
                 End If
             End If
         End Sub

@@ -11,10 +11,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     [ExcludeFromCodeCoverage]
     public partial class GetProfileNameDialog : DialogWindow
     {
-        private Predicate<string> _validator { get; set; }
+        private readonly Predicate<string> _validator;
+        private readonly SVsServiceProvider _serviceProvider;
+        private readonly IProjectThreadingService _threadingService;
+
         public string ProfileName { get; set; }
-        private SVsServiceProvider _serviceProvider { get; set; }
-        private IProjectThreadingService _threadingService { get; set; }
 
         public GetProfileNameDialog(SVsServiceProvider sp, IProjectThreadingService threadingService, string suggestedName, Predicate<string> validator)
             : base()// Pass help topic to base if there is one

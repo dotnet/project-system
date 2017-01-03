@@ -2,7 +2,6 @@
 
 Imports EnvDTE
 Imports Microsoft.VisualStudio.Shell.Interop
-Imports System.Threading
 
 
 Namespace Microsoft.VisualStudio.Editors.AppDesCommon
@@ -40,7 +39,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 Return ProjectItems.Item(Name)
             Catch ex As ArgumentException
                 'This is the expected exception if the key could not be found.
-            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "Unexpected exception searching for an item in ProjectItems", NameOf(DTEUtils))
+            Catch ex As Exception When ReportWithoutCrash(ex, "Unexpected exception searching for an item in ProjectItems", NameOf(DTEUtils))
                 'Any other error - shouldn't be the case, but it might depend on the project implementation
             End Try
 
@@ -55,10 +54,10 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="ProjectItem"></param>
         ''' <returns></returns>
         ''' <remarks>If the item contains of multiple files, the first one is returned</remarks>
-        Public Shared Function FileNameFromProjectItem(ProjectItem As EnvDTE.ProjectItem) As String
+        Public Shared Function FileNameFromProjectItem(ProjectItem As ProjectItem) As String
             If ProjectItem Is Nothing Then
-                System.Diagnostics.Debug.Fail("Can't get file name for NULL project item!")
-                Throw New System.ArgumentNullException()
+                Debug.Fail("Can't get file name for NULL project item!")
+                Throw New ArgumentNullException()
             End If
 
             If ProjectItem.FileCount <= 0 Then
@@ -135,14 +134,14 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="Project">The DTE project</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Function GetActiveDTEConfiguration(Project As Project) As EnvDTE.Configuration
+        Public Shared Function GetActiveDTEConfiguration(Project As Project) As Configuration
             Try
                 Return Project.ConfigurationManager.ActiveConfiguration
             Catch ex As ArgumentException
                 'If there are no configurations defined in the project, this call can fail.  In that case, just return
                 '  the first config (there should be a single Debug configuration automatically defined and available).
                 Return Project.ConfigurationManager.Item(1) '1-indexed
-            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "Unexpected exception trying to get the active configuration", NameOf(DTEUtils))
+            Catch ex As Exception When ReportWithoutCrash(ex, "Unexpected exception trying to get the active configuration", NameOf(DTEUtils))
                 Return Project.ConfigurationManager.Item(1) '1-indexed
             End Try
         End Function

@@ -28,18 +28,18 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
         Protected Overrides Sub OnClosing(e As System.ComponentModel.CancelEventArgs)
             If Me.DialogResult = DialogResult.OK Then
                 Try
-                    Me.UseWaitCursor = True
+                    UseWaitCursor = True
                     _url = _urlComboBox.Text
                     _xml = XElement.Load(_url)
                 Catch ex As Exception
                     If FilterException(ex) Then
-                        ShowWarning(String.Format(SR.XmlToSchema_ErrorLoadingXml, ex.Message))
+                        ShowWarning(String.Format(My.Resources.Designer.XmlToSchema_ErrorLoadingXml, ex.Message))
                         e.Cancel = True
                     Else
                         Throw
                     End If
                 Finally
-                    Me.UseWaitCursor = False
+                    UseWaitCursor = False
                 End Try
             End If
             MyBase.OnClosing(e)

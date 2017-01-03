@@ -14,7 +14,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Try
                 _appConfigDocument = ServicesPropPageAppConfigHelper.AppConfigXmlDocument(PropertyPageSite, ProjectHierarchy, False)
             Catch innerException As XmlException
-                Dim ex As New XmlException(SR.GetString(SR.PPG_Services_InvalidAppConfigXml))
+                Dim ex As New XmlException(My.Resources.Designer.PPG_Services_InvalidAppConfigXml)
                 DesignerFramework.DesignerMessageBox.Show(CType(ServiceProvider, IServiceProvider), "", ex, DesignerFramework.DesignUtil.GetDefaultCaption(Site))
                 Enabled = False
                 Return
@@ -23,11 +23,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Enabled = True
 
             SavePasswordHashLocallyCheckbox.Checked = ServicesPropPageAppConfigHelper.GetSavePasswordHashLocally(_appConfigDocument, ProjectHierarchy)
-            Dim honorCookieExpiryValue As Nullable(Of Boolean) = ServicesPropPageAppConfigHelper.GetEffectiveHonorCookieExpiry(_appConfigDocument, ProjectHierarchy)
+            Dim honorCookieExpiryValue As Boolean? = ServicesPropPageAppConfigHelper.GetEffectiveHonorCookieExpiry(_appConfigDocument, ProjectHierarchy)
             If honorCookieExpiryValue.HasValue Then
                 HonorServerCookieExpirationCheckbox.Checked = CBool(honorCookieExpiryValue)
             Else
-                HonorServerCookieExpirationCheckbox.CheckState = System.Windows.Forms.CheckState.Indeterminate
+                HonorServerCookieExpirationCheckbox.CheckState = Windows.Forms.CheckState.Indeterminate
             End If
 
             AddTimeUnitsToComboBox()
@@ -39,7 +39,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Public Overrides Sub Apply()
             ServicesPropPageAppConfigHelper.TryWriteXml(_appConfigDocument, CType(ServiceProvider, IServiceProvider), ProjectHierarchy)
-            Me.IsDirty = False
+            IsDirty = False
         End Sub
 
         Protected Overrides Function GetF1HelpKeyword() As String
@@ -55,10 +55,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Sub AddTimeUnitsToComboBox()
             If TimeUnitComboBox.Items.Count = 0 Then
-                TimeUnitComboBox.Items.Add(SR.GetString(SR.PPG_Services_Seconds))
-                TimeUnitComboBox.Items.Add(SR.GetString(SR.PPG_Services_Minutes))
-                TimeUnitComboBox.Items.Add(SR.GetString(SR.PPG_Services_Hours))
-                TimeUnitComboBox.Items.Add(SR.GetString(SR.PPG_Services_Days))
+                TimeUnitComboBox.Items.Add(My.Resources.Designer.PPG_Services_Seconds)
+                TimeUnitComboBox.Items.Add(My.Resources.Designer.PPG_Services_Minutes)
+                TimeUnitComboBox.Items.Add(My.Resources.Designer.PPG_Services_Hours)
+                TimeUnitComboBox.Items.Add(My.Resources.Designer.PPG_Services_Days)
             End If
         End Sub
 
@@ -99,13 +99,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Select Case unit
                 Case TimeUnit.Seconds
-                    TimeUnitComboBox.Text = SR.GetString(SR.PPG_Services_Seconds)
+                    TimeUnitComboBox.Text = My.Resources.Designer.PPG_Services_Seconds
                 Case TimeUnit.Minutes
-                    TimeUnitComboBox.Text = SR.GetString(SR.PPG_Services_Minutes)
+                    TimeUnitComboBox.Text = My.Resources.Designer.PPG_Services_Minutes
                 Case TimeUnit.Hours
-                    TimeUnitComboBox.Text = SR.GetString(SR.PPG_Services_Hours)
+                    TimeUnitComboBox.Text = My.Resources.Designer.PPG_Services_Hours
                 Case TimeUnit.Days
-                    TimeUnitComboBox.Text = SR.GetString(SR.PPG_Services_Days)
+                    TimeUnitComboBox.Text = My.Resources.Designer.PPG_Services_Days
             End Select
 
             TimeQuantity.Value = cacheTimeout
@@ -117,22 +117,22 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If Not connectionStringSpecified Then
                 'There were connection strings, but they're not all the same connection string
                 UseCustomConnectionStringCheckBox.Enabled = False
-                UseCustomConnectionStringCheckBox.CheckState = System.Windows.Forms.CheckState.Indeterminate
+                UseCustomConnectionStringCheckBox.CheckState = Windows.Forms.CheckState.Indeterminate
             ElseIf connectionString Is Nothing Then
                 'The default value
                 UseCustomConnectionStringCheckBox.Enabled = True
-                UseCustomConnectionStringCheckBox.CheckState = System.Windows.Forms.CheckState.Unchecked
-                CustomConnectionString.Text = SR.GetString(SR.PPG_Services_connectionStringValueDefaultDisplayValue)
+                UseCustomConnectionStringCheckBox.CheckState = Windows.Forms.CheckState.Unchecked
+                CustomConnectionString.Text = My.Resources.Designer.PPG_Services_connectionStringValueDefaultDisplayValue
                 CustomConnectionString.Enabled = False
             Else
                 'Using a non-default connection string for all providers
                 UseCustomConnectionStringCheckBox.Enabled = True
-                UseCustomConnectionStringCheckBox.CheckState = System.Windows.Forms.CheckState.Checked
+                UseCustomConnectionStringCheckBox.CheckState = Windows.Forms.CheckState.Checked
                 CustomConnectionString.Text = connectionString
                 CustomConnectionString.Enabled = True
             End If
             UpdateCustomConnectionStringControlBasedOnCheckState()
-            Dim preferredHeight As Integer = CustomConnectionString.GetPreferredSize(New System.Drawing.Size(CustomConnectionString.Width, 0)).Height
+            Dim preferredHeight As Integer = CustomConnectionString.GetPreferredSize(New Drawing.Size(CustomConnectionString.Width, 0)).Height
             If CustomConnectionString.Height < preferredHeight Then CustomConnectionString.Height = preferredHeight
             SetDirtyFlag()
         End Sub
@@ -145,20 +145,20 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         <SuppressMessage("Microsoft.Globalization", "CA1303:DoNotPassLiteralsAsLocalizedParameters")>
         Private Sub UpdateCustomConnectionStringControlBasedOnCheckState()
             Select Case UseCustomConnectionStringCheckBox.CheckState
-                Case System.Windows.Forms.CheckState.Indeterminate
+                Case Windows.Forms.CheckState.Indeterminate
                     'The connection strings don't match
-                    CustomConnectionString.Text = SR.GetString(SR.PPG_Services_ConnectionStringsDontMatch)
-                Case System.Windows.Forms.CheckState.Checked
+                    CustomConnectionString.Text = My.Resources.Designer.PPG_Services_ConnectionStringsDontMatch
+                Case Windows.Forms.CheckState.Checked
                     'We're using a custom connection string
                     'Either the text has already been set (in which case we're good), or it's the display default message, in which case we should
                     'change it to the default value.
-                    If CustomConnectionString.Text = SR.GetString(SR.PPG_Services_connectionStringValueDefaultDisplayValue) Then
+                    If CustomConnectionString.Text = My.Resources.Designer.PPG_Services_connectionStringValueDefaultDisplayValue Then
                         CustomConnectionString.Text = ServicesPropPageAppConfigHelper.connectionStringValueDefault
                     End If
                     ServicesPropPageAppConfigHelper.SetConnectionStringText(_appConfigDocument, CustomConnectionString.Text, ProjectHierarchy)
-                Case System.Windows.Forms.CheckState.Unchecked
+                Case Windows.Forms.CheckState.Unchecked
                     'We're using the default
-                    CustomConnectionString.Text = SR.GetString(SR.PPG_Services_connectionStringValueDefaultDisplayValue)
+                    CustomConnectionString.Text = My.Resources.Designer.PPG_Services_connectionStringValueDefaultDisplayValue
                     ServicesPropPageAppConfigHelper.SetConnectionStringText(_appConfigDocument, Nothing, ProjectHierarchy)
             End Select
 
@@ -215,7 +215,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Sub SetDirtyFlag()
-            Me.IsDirty = _appConfigDocument IsNot Nothing AndAlso _appConfigDocument.OuterXml <> _savedXml
+            IsDirty = _appConfigDocument IsNot Nothing AndAlso _appConfigDocument.OuterXml <> _savedXml
         End Sub
     End Class
 End Namespace

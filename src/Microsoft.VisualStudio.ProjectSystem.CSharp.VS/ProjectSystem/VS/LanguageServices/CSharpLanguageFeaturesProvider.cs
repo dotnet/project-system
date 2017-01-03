@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         ///     Makes a proper language identifier from the specified name.
         /// </summary>
         /// <param name="name">
-        ///     A <see cref="String"/> containing the name.
+        ///     A <see cref="string"/> containing the name.
         /// </param>
         /// <returns>
         ///     A proper identifier which meets the C# language specification.
@@ -68,12 +68,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             return identifier;
         }
 
-        
+
         /// <summary>
         ///     Makes a proper namespace from the specified name.
         /// </summary>
         /// <param name="name">
-        ///     A <see cref="String"/> containing the name.
+        ///     A <see cref="string"/> containing the name.
         /// </param>
         /// <returns>
         ///     A proper namespace which meets the C# language specification.
@@ -98,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         ///     Concatenates the specified namespace names.
         /// </summary>
         /// <param name="namespaceNames">
-        ///     A <see cref="String"/> array containing the namespace names to be concatented.
+        ///     A <see cref="string"/> array containing the namespace names to be concatented.
         /// </param>
         /// <returns>
         ///     A concatenated namespace name.

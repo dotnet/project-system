@@ -7,7 +7,7 @@ Imports System.Runtime.InteropServices
 '  attributes are automatically generated in another AssemblyInfo.vb file
 '  at build time.
 
-<Assembly: CLSCompliantAttribute(False)>
+<Assembly: CLSCompliant(False)>
 <Assembly: ComVisible(True)>
 
 <Assembly: InternalsVisibleTo("Microsoft.VisualStudio.Editors.UnitTestFramework, PublicKey=" & _

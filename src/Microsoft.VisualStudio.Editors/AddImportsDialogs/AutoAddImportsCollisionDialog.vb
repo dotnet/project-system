@@ -5,8 +5,8 @@ Imports System.Windows.Forms
 
 Namespace Microsoft.VisualStudio.Editors.AddImports
     Friend Class AutoAddImportsCollisionDialog
-        Private _importMnemonic As Nullable(Of Char) = Nothing
-        Private _doNotImportMnemonic As Nullable(Of Char) = Nothing
+        Private _importMnemonic As Char? = Nothing
+        Private _doNotImportMnemonic As Char? = Nothing
         Private _lastFocus As Control
         Private _helpCallBack As IVBAddImportsDialogHelpCallback
 
@@ -15,7 +15,7 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
             _lastFocus = Me
             _helpCallBack = callBack
             InitializeComponent()
-            Me.SuspendLayout()
+            SuspendLayout()
             Try
                 SetNavigationInfo(m_okButton, m_cancelButton, m_rbQualifyCurrentLine)
                 SetNavigationInfo(m_cancelButton, m_rbImportsAnyways, m_okButton)
@@ -36,10 +36,10 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
                 m_lblQualifyCurrentLine.AutoSize = True
 
                 m_layoutPanel.AutoSize = True
-                Me.AutoSize = True
-                Me.ActiveControl = m_okButton
+                AutoSize = True
+                ActiveControl = m_okButton
             Finally
-                Me.ResumeLayout()
+                ResumeLayout()
             End Try
         End Sub
 
@@ -67,7 +67,7 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
 
 
         Private Sub ButtonClick(sender As Object, e As EventArgs) Handles m_cancelButton.Click, m_okButton.Click
-            Me.Close()
+            Close()
         End Sub
 
         Private Sub ClickHelpButton(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles Me.HelpButtonClicked
@@ -75,7 +75,7 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
             OnHelpRequested(New HelpEventArgs(Point.Empty))
         End Sub
 
-        Private Sub RequestHelp(sender As Object, hlpevent As System.Windows.Forms.HelpEventArgs) Handles Me.HelpRequested
+        Private Sub RequestHelp(sender As Object, hlpevent As HelpEventArgs) Handles Me.HelpRequested
             If (_helpCallBack IsNot Nothing) Then
                 _helpCallBack.InvokeHelp()
             End If

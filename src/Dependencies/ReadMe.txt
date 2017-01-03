@@ -5,3 +5,7 @@ all packages dependencies from their dependencies) to unify it across the tree.
 
 No projects outside of this tree should be directly referencing versions of 
 these dependencies manually.
+
+When updating the Nuget package version, be sure to update the version of the
+package in the Nuspecs, which packages the MS.VS.Editors, MS.VS.AppDesigner and
+MS.VS.PS.Managed nugets. 

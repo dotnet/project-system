@@ -122,13 +122,13 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
 
             If Not TypeOf Value Is Resource Then
-                Throw Common.CreateArgumentException("Value")
+                Throw CreateArgumentException("Value")
             End If
             Dim Resource As Resource = DirectCast(Value, Resource)
 
             Dim RFStore As ResourceSerializationStore = TryCast(Store, ResourceSerializationStore)
             If RFStore Is Nothing Then
-                Throw Common.CreateArgumentException("Store")
+                Throw CreateArgumentException("Store")
             End If
 
             RFStore.AddResource(Resource)
@@ -167,12 +167,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Dim OwningResource As Resource = TryCast(OwningObject, Resource)
             If OwningObject Is Nothing Then
-                Throw Common.CreateArgumentException("OwningObject")
+                Throw CreateArgumentException("OwningObject")
             End If
 
             Dim RFStore As ResourceSerializationStore = TryCast(Store, ResourceSerializationStore)
             If RFStore Is Nothing Then
-                Throw Common.CreateArgumentException("Store")
+                Throw CreateArgumentException("Store")
             End If
 
             RFStore.AddMember(OwningResource, Member)
@@ -216,7 +216,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Dim RFStore As ResourceSerializationStore = TryCast(Store, ResourceSerializationStore)
             If RFStore Is Nothing Then
-                Throw Common.CreateArgumentException("Store")
+                Throw CreateArgumentException("Store")
             End If
 
             Return RFStore.Deserialize()
@@ -243,7 +243,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Dim RFStore As ResourceSerializationStore = TryCast(Store, ResourceSerializationStore)
             If RFStore Is Nothing Then
-                Throw Common.CreateArgumentException("Store")
+                Throw CreateArgumentException("Store")
             End If
 
             Return RFStore.Deserialize(Container)
@@ -276,7 +276,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Dim RFStore As ResourceSerializationStore = TryCast(Store, ResourceSerializationStore)
             If RFStore Is Nothing Then
-                Throw Common.CreateArgumentException("Store")
+                Throw CreateArgumentException("Store")
             End If
 
             RFStore.DeserializeTo(Container)

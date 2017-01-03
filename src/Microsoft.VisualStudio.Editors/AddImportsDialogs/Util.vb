@@ -4,8 +4,8 @@ Imports System.Windows.Forms
 
 Namespace Microsoft.VisualStudio.Editors.AddImports
     Friend Module Util
-        Public Function ProcessMnemonicString(input As String) As Nullable(Of Char)
-            Dim mnemonicChar As Nullable(Of Char) = Nothing
+        Public Function ProcessMnemonicString(input As String) As Char?
+            Dim mnemonicChar As Char? = Nothing
             Dim i As Integer = 0
 
             While i < input.Length

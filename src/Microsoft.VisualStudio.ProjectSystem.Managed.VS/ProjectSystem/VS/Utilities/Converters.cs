@@ -215,7 +215,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     }
 
     // Just like it says. Converts !Bool to true.
-    public class NotBoolConverter : IValueConverter
+    internal class NotBoolConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter,
             System.Globalization.CultureInfo culture)
@@ -259,7 +259,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         }
     }
 
-    public class MathConverter : IValueConverter
+    internal class MathConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -273,7 +273,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     }
 
 
-    public class TextBlockFormatToHyperlinkConverter : IMultiValueConverter
+    internal class TextBlockFormatToHyperlinkConverter : IMultiValueConverter
     {
                
         public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)

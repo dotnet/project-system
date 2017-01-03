@@ -72,6 +72,7 @@
     <Compile Include="Mocks\ITextDocumentFactoryServiceFactory.cs" />
     <Compile Include="Mocks\IVsEditorAdaptersFactoryServiceFactory.cs" />
     <Compile Include="Mocks\IVsPersistDocDataFactory.cs" />
+    <Compile Include="Mocks\IVsProjectSpecialFilesFactory.cs" />
     <Compile Include="Mocks\IVsSettingsManagerFactory.cs" />
     <Compile Include="Mocks\IVsSettingsStoreTester.cs" />
     <Compile Include="Mocks\IVsUIShell7Factory.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="ProjectSystem\VS\Editor\MsBuildModelWatcherTests.cs" />
     <Compile Include="ProjectSystem\VS\NuGet\ProjectRestoreInfoBuilderTests.cs" />
     <Compile Include="ProjectSystem\VS\OptionsSettingsTests.cs" />
+    <Compile Include="ProjectSystem\VS\Properties\OutputTypeExValueProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\PropertyPages\BuildMacroInfoTests.cs" />
     <Compile Include="ProjectSystem\VS\PropertyPages\DebugPageViewModelTests.cs" />
     <Compile Include="ProjectSystem\VS\PropertyPages\PropertyPageControlTests.cs" />
@@ -133,6 +135,7 @@
     <Compile Include="ProjectSystem\VS\ProjectLockFileWatcherTests.cs" />
     <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerPageMetadataTests.cs" />
     <Compile Include="ProjectSystem\VS\Rename\SimpleRenamerTests.cs" />
+    <Compile Include="ProjectSystem\VS\SpecialFileProviders\VsProjectSpecialFilesManagerTests.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\DependenciesGraphProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\DependenciesSubTreeProviderBaseTests.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\ProjectDependenciesSubTreeProviderTests.cs" />

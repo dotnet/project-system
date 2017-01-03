@@ -239,8 +239,8 @@ Aby debugować ten projekt, dodaj projekt wykonywalny do tego rozwiązania, któ
       </trans-unit>
       <trans-unit id="EditProjectFileCommand">
         <source>Edit {0}</source>
-        <target state="needs-review-translation">Edytuj element {0}</target>
-        <note></note>
+        <target state="translated">Edytuj element {0}</target>
+        <note />
       </trans-unit>
       <trans-unit id="NoRunCommandSpecifiedInProject">
         <source>Unable to run your project. The "RunCommand" property is not defined.</source>
@@ -254,13 +254,13 @@ Aby debugować ten projekt, dodaj projekt wykonywalny do tego rozwiązania, któ
       </trans-unit>
       <trans-unit id="PackCommand">
         <source>&amp;Pack</source>
-        <target state="new">&amp;Pack</target>
-        <note></note>
+        <target state="translated">&amp;Spakuj</target>
+        <note />
       </trans-unit>
       <trans-unit id="PackSelectedProjectCommand">
         <source>&amp;Pack {0}</source>
-        <target state="new">&amp;Pack {0}</target>
-        <note></note>
+        <target state="translated">&amp;Spakuj element {0}</target>
+        <note />
       </trans-unit>
     </body>
   </file>

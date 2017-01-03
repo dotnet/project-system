@@ -33,7 +33,7 @@ Root (flags: {ProjectRoot})
 
             var nodes = ImmutableHashSet.Create(tree);
 
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create(filePath: @"C:\Temp\Root\Root.proj");
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\Temp\Root\Root.proj");
 
             var command = CreateInstance(unconfiguredProject: unconfiguredProject);
 
@@ -213,7 +213,7 @@ Root (flags: {ProjectRoot})
         {
             fileSystem.SetTempFile(tempPath);
             var configuredProject = ConfiguredProjectFactory.Create();
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create(filePath: projectFile, configuredProject: configuredProject);
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile, configuredProject: configuredProject);
             var shellUtilities = new TestShellUtilitiesHelper((sp, path) =>
             {
                 Assert.Equal(tempProjectFile, path);
@@ -258,7 +258,7 @@ Root (flags: {ProjectRoot})
             )
         {
             UnitTestHelper.IsRunningUnitTests = true;
-            var uProj = unconfiguredProject ?? IUnconfiguredProjectFactory.Create();
+            var uProj = unconfiguredProject ?? UnconfiguredProjectFactory.Create();
             var msbuild = msbuildAccessor ?? IMsBuildAccessorFactory.Create();
             var fs = fileSystem ?? new IFileSystemMock();
             var tds = textDocumentService ?? ITextDocumentFactoryServiceFactory.Create();

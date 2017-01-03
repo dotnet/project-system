@@ -27,8 +27,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
         Public Sub New()
             MyBase.New()
 
-            Me.AccessibleRole = AccessibleRole.SplitButton
-            Me._pushButtonWidth = DpiHelper.LogicalToDeviceUnitsX(_pushButtonWidth)
+            AccessibleRole = AccessibleRole.SplitButton
+            _pushButtonWidth = DpiHelper.LogicalToDeviceUnitsX(_pushButtonWidth)
         End Sub
 
         Protected Overrides Sub OnPaint(pevent As PaintEventArgs)
@@ -96,13 +96,13 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 FormatFlags = FormatFlags Or TextFormatFlags.HidePrefix
             End If
 
-            If Not String.IsNullOrEmpty(Me.Text) Then
+            If Not String.IsNullOrEmpty(Text) Then
                 Dim foreColor = SystemColors.ControlText
-                If Not Me.Enabled Then
+                If Not Enabled Then
                     foreColor = SystemColors.GrayText
                 End If
 
-                TextRenderer.DrawText(g, Me.Text, Me.Font, bounds, foreColor, FormatFlags)
+                TextRenderer.DrawText(g, Text, Font, bounds, foreColor, FormatFlags)
             End If
 
             If Focused Then
@@ -152,7 +152,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
         Protected Overrides Sub OnMouseLeave(e As EventArgs)
             If Not State.Equals(PushButtonState.Disabled) AndAlso Not State.Equals(PushButtonState.Pressed) Then
-                If Me.Focused Then
+                If Focused Then
                     State = PushButtonState.Default
                 Else
                     State = PushButtonState.Normal
@@ -162,7 +162,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
         Public Overrides Function GetPreferredSize(proposedSize As Size) As Size
             Dim preferredSize = MyBase.GetPreferredSize(proposedSize)
-            If Not String.IsNullOrEmpty(Me.Text) AndAlso ((TextRenderer.MeasureText(Me.Text, Me.Font).Width + _pushButtonWidth) > preferredSize.Width) Then
+            If Not String.IsNullOrEmpty(Text) AndAlso ((TextRenderer.MeasureText(Text, Font).Width + _pushButtonWidth) > preferredSize.Width) Then
                 Return preferredSize + New Size(_pushButtonWidth, 0)
             End If
 
@@ -183,24 +183,24 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Return
             End If
 
-            If Me.ContextMenuStrip Is Nothing OrElse Not Me.ContextMenuStrip.Visible Then
+            If ContextMenuStrip Is Nothing OrElse Not ContextMenuStrip.Visible Then
                 SetButtonDrawState()
-                If Me.Bounds.Contains(Me.Parent.PointToClient(Cursor.Position)) And Not (_dropDownRectangle.Contains(mevent.Location) AndAlso Me.ContextMenuStrip IsNot Nothing) Then
-                    MyBase.OnClick(New EventArgs())
+                If Bounds.Contains(Parent.PointToClient(Cursor.Position)) And Not (_dropDownRectangle.Contains(mevent.Location) AndAlso ContextMenuStrip IsNot Nothing) Then
+                    OnClick(New EventArgs())
                 End If
             End If
         End Sub
 
         Private Sub ShowContextMenuOrContextMenuStrip()
             State = PushButtonState.Pressed
-            If Me.ContextMenuStrip IsNot Nothing Then
-                AddHandler Me.ContextMenuStrip.Closed, AddressOf Me.ContextMenuStrip_Closed
-                Me.ContextMenuStrip.Show(Me, 0, Me.Height)
+            If ContextMenuStrip IsNot Nothing Then
+                AddHandler ContextMenuStrip.Closed, AddressOf ContextMenuStrip_Closed
+                ContextMenuStrip.Show(Me, 0, Height)
             Else
                 Dim e As New ShowCustomContextMenuEventArgs
                 Try
                     RaiseEvent ShowCustomContextMenu(e)
-                Catch ex As Exception When Utils.ReportWithoutCrash(ex, NameOf(ShowContextMenuOrContextMenuStrip), NameOf(SplitButton))
+                Catch ex As Exception When ReportWithoutCrash(ex, NameOf(ShowContextMenuOrContextMenuStrip), NameOf(SplitButton))
                 End Try
 
                 If e.Handled Then
@@ -213,17 +213,17 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
         Private Sub ContextMenuStrip_Closed(sender As Object, e As ToolStripDropDownClosedEventArgs)
             Dim cms = CType(sender, ContextMenuStrip)
-            RemoveHandler cms.Closed, AddressOf Me.ContextMenuStrip_Closed
+            RemoveHandler cms.Closed, AddressOf ContextMenuStrip_Closed
 
             SetButtonDrawState()
         End Sub
 
         Private Sub SetButtonDrawState()
-            If Not Me.Enabled Then
+            If Not Enabled Then
                 State = PushButtonState.Disabled
-            ElseIf Me.Bounds.Contains(Me.Parent.PointToClient(Cursor.Position)) Then
+            ElseIf Bounds.Contains(Parent.PointToClient(Cursor.Position)) Then
                 State = PushButtonState.Hot
-            ElseIf Me.Focused Then
+            ElseIf Focused Then
                 State = PushButtonState.Default
             Else
                 State = PushButtonState.Normal

@@ -12,7 +12,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
     ''' </summary>
     ''' <remarks></remarks>
     Friend Class DesignerTypeDiscoveryService
-        Implements System.ComponentModel.Design.ITypeDiscoveryService
+        Implements ComponentModel.Design.ITypeDiscoveryService
 
         Private _serviceProvider As IServiceProvider
         Private _hierarchy As IVsHierarchy
@@ -34,7 +34,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
 #Region "ITypeDiscoveryService implementation"
 
-        Private Function GetTypes(baseType As System.Type, excludeGlobalTypes As Boolean) As System.Collections.ICollection Implements System.ComponentModel.Design.ITypeDiscoveryService.GetTypes
+        Private Function GetTypes(baseType As Type, excludeGlobalTypes As Boolean) As ICollection Implements ComponentModel.Design.ITypeDiscoveryService.GetTypes
             Return GetReferencedTypes(baseType, excludeGlobalTypes)
         End Function
 
@@ -45,7 +45,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Overridable Function GetReferencedTypes() As ICollection(Of System.Type)
+        Public Overridable Function GetReferencedTypes() As ICollection(Of Type)
             Return GetReferencedTypes(GetType(Object), False)
         End Function
 
@@ -56,18 +56,18 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="shouldExcludeGlobalTypes">Exclude types in the GAC?</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Overridable Function GetReferencedTypes(baseType As System.Type, shouldExcludeGlobalTypes As Boolean) As List(Of System.Type)
-            Dim dynamicTypeService As Microsoft.VisualStudio.Shell.Design.DynamicTypeService = _
-                DirectCast(_serviceProvider.GetService(GetType(Microsoft.VisualStudio.Shell.Design.DynamicTypeService)), Microsoft.VisualStudio.Shell.Design.DynamicTypeService)
+        Public Overridable Function GetReferencedTypes(baseType As Type, shouldExcludeGlobalTypes As Boolean) As List(Of Type)
+            Dim dynamicTypeService As Shell.Design.DynamicTypeService = _
+                DirectCast(_serviceProvider.GetService(GetType(Shell.Design.DynamicTypeService)), Shell.Design.DynamicTypeService)
 
-            Dim trs As System.ComponentModel.Design.ITypeResolutionService = Nothing
-            Dim tds As System.ComponentModel.Design.ITypeDiscoveryService = Nothing
+            Dim trs As ComponentModel.Design.ITypeResolutionService = Nothing
+            Dim tds As ComponentModel.Design.ITypeDiscoveryService = Nothing
 
             If dynamicTypeService IsNot Nothing Then
-                tds = dynamicTypeService.GetTypeDiscoveryService(Me._hierarchy, VSITEMID.ROOT)
-                trs = dynamicTypeService.GetTypeResolutionService(Me._hierarchy, VSITEMID.ROOT)
+                tds = dynamicTypeService.GetTypeDiscoveryService(_hierarchy, VSITEMID.ROOT)
+                trs = dynamicTypeService.GetTypeResolutionService(_hierarchy, VSITEMID.ROOT)
             End If
-            Dim result As New List(Of System.Type)
+            Dim result As New List(Of Type)
 
             If tds IsNot Nothing AndAlso trs IsNot Nothing Then
                 Dim excludedAssemblies As New Dictionary(Of System.Reflection.Assembly, Object)
@@ -82,7 +82,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     End If
                 Next
 
-                For Each t As System.Type In tds.GetTypes(baseType, shouldExcludeGlobalTypes)
+                For Each t As Type In tds.GetTypes(baseType, shouldExcludeGlobalTypes)
                     If Not excludedAssemblies.ContainsKey(t.Assembly) Then
                         result.Add(t)
                     End If
@@ -101,7 +101,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <remarks></remarks>
         Protected Overridable Function GetProjectOutputs(provider As IServiceProvider, hierarchy As IVsHierarchy) As String()
             Try
-                Dim buildManager As Microsoft.VisualStudio.Shell.Interop.IVsSolutionBuildManager = TryCast(provider.GetService(GetType(IVsSolutionBuildManager)), IVsSolutionBuildManager)
+                Dim buildManager As IVsSolutionBuildManager = TryCast(provider.GetService(GetType(IVsSolutionBuildManager)), IVsSolutionBuildManager)
                 If buildManager Is Nothing Then Return New String() {}
 
                 Dim activeConfig(0) As IVsProjectCfg
@@ -113,7 +113,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
                 If activeConfig2 IsNot Nothing Then
                     Dim outputgroup As IVsOutputGroup = Nothing
-                    activeConfig2.OpenOutputGroup(Microsoft.VisualStudio.Shell.Interop.BuildOutputGroup.Built, outputgroup)
+                    activeConfig2.OpenOutputGroup(BuildOutputGroup.Built, outputgroup)
                     Dim outputgroup2 As IVsOutputGroup2 = TryCast(outputgroup, IVsOutputGroup2)
                     If outputgroup2 IsNot Nothing Then
                         Dim output As IVsOutput2 = Nothing
@@ -142,25 +142,25 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="projectOutput"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Overridable Function AssemblyFromProjectOutput(typeResolutionService As System.ComponentModel.Design.ITypeResolutionService, projectOutput As String) As System.Reflection.Assembly
+        Protected Overridable Function AssemblyFromProjectOutput(typeResolutionService As ComponentModel.Design.ITypeResolutionService, projectOutput As String) As System.Reflection.Assembly
             If typeResolutionService Is Nothing Then Throw New ArgumentNullException("typeResolutionService")
 
             If typeResolutionService IsNot Nothing Then
                 Try
-                    If System.IO.File.Exists(projectOutput) Then
+                    If IO.File.Exists(projectOutput) Then
                         Dim an As System.Reflection.AssemblyName = System.Reflection.AssemblyName.GetAssemblyName(projectOutput)
                         Dim a As System.Reflection.Assembly = typeResolutionService.GetAssembly(an)
                         Return a
                     End If
-                Catch ex As System.IO.FileNotFoundException
+                Catch ex As IO.FileNotFoundException
                     ' The assembly doesn't exist - it may not have been built yet
-                Catch ex As System.IO.IOException
+                Catch ex As IO.IOException
                     ' Unknown error when trying to load the file...
-                Catch ex As System.Security.SecurityException
+                Catch ex As Security.SecurityException
                     ' We didn't have permissions to load the file...
                 End Try
             Else
-                System.Diagnostics.Debug.Fail("Huh!?")
+                Debug.Fail("Huh!?")
             End If
             Return Nothing
         End Function
@@ -172,7 +172,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' we need to append the fragment to the end of the path.
         ''' </devdoc>
         Protected Shared Function GetLocalPath(fileName As String) As String
-            System.Diagnostics.Debug.Assert(fileName IsNot Nothing AndAlso fileName.Length > 0, "Cannot get local path, fileName is not valid")
+            Debug.Assert(fileName IsNot Nothing AndAlso fileName.Length > 0, "Cannot get local path, fileName is not valid")
 
             Dim uri As New Uri(fileName)
             Return uri.LocalPath & uri.Fragment

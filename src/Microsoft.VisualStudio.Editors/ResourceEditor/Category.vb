@@ -77,7 +77,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             _categoryDisplay = CategoryDisplay
             _showTypeColumnInStringTable = False
             _menuCommand = MenuCommand
-            Me._addCommand = addCommand
+            _addCommand = addCommand
 
             If AssociatedResourceTypeEditors IsNot Nothing Then
                 _associatedResourceTypeEditors = AssociatedResourceTypeEditors

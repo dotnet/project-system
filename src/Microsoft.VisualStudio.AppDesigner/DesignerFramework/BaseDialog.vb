@@ -59,7 +59,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                 Throw New ArgumentNullException("ServiceProvider")
             End If
 
-            Me._serviceProvider = ServiceProvider
+            _serviceProvider = ServiceProvider
 
             ' Initialize default dialog settings
             KeyPreview = True
@@ -69,7 +69,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             'Icon = null;
             StartPosition = FormStartPosition.CenterParent
             'FormBorderStyle = FormBorderStyle.FixedSingle;
-            AddHandler Me.HelpRequested, AddressOf Me.OnHelpRequested
+            AddHandler HelpRequested, AddressOf OnHelpRequested
         End Sub 'New
 
         ';Methods
@@ -83,14 +83,14 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         '**************************************************************************
         Public Shadows Function ShowDialog() As DialogResult
             If Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog Then
-                Me.Icon = Nothing
+                Icon = Nothing
             End If
-            If Me._UIService Is Nothing Then
-                Me._UIService = CType(GetService(GetType(IUIService)), IUIService)
+            If _UIService Is Nothing Then
+                _UIService = CType(GetService(GetType(IUIService)), IUIService)
             End If
 
-            If Not (Me._UIService Is Nothing) Then
-                Return Me._UIService.ShowDialog(Me)
+            If Not (_UIService Is Nothing) Then
+                Return _UIService.ShowDialog(Me)
             Else
                 Return MyBase.ShowDialog()
             End If

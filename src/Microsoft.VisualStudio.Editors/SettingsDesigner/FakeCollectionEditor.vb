@@ -11,7 +11,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' </summary>
     ''' <remarks></remarks>
     Friend Class StringArrayEditorForStringCollections
-        Inherits System.Drawing.Design.UITypeEditor
+        Inherits UITypeEditor
 
         Private _parent As UITypeEditor
 
@@ -20,7 +20,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <remarks></remarks>
         Public Sub New()
-            _parent = DirectCast(System.ComponentModel.TypeDescriptor.GetEditor(GetType(String()), GetType(UITypeEditor)), UITypeEditor)
+            _parent = DirectCast(ComponentModel.TypeDescriptor.GetEditor(GetType(String()), GetType(UITypeEditor)), UITypeEditor)
         End Sub
 
         ''' <summary>
@@ -32,17 +32,17 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Overrides Function EditValue(context As System.ComponentModel.ITypeDescriptorContext, provider As System.IServiceProvider, value As Object) As Object
+        Public Overrides Function EditValue(context As ComponentModel.ITypeDescriptorContext, provider As IServiceProvider, value As Object) As Object
             Dim result As Object = _parent.EditValue(context, provider, ConvertToUITypeEditorSource(value))
             Return ConvertToOriginal(result)
         End Function
 
 #Region "Forwarding UITypeEditor methods to our parent UITypeEditor"
-        Public Overrides Function GetEditStyle(context As System.ComponentModel.ITypeDescriptorContext) As System.Drawing.Design.UITypeEditorEditStyle
+        Public Overrides Function GetEditStyle(context As ComponentModel.ITypeDescriptorContext) As UITypeEditorEditStyle
             Return _parent.GetEditStyle(context)
         End Function
 
-        Public Overrides Sub PaintValue(e As System.Drawing.Design.PaintValueEventArgs)
+        Public Overrides Sub PaintValue(e As PaintValueEventArgs)
             _parent.PaintValue(e)
         End Sub
 
@@ -52,7 +52,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Get
         End Property
 
-        Public Overrides Function GetPaintValueSupported(context As System.ComponentModel.ITypeDescriptorContext) As Boolean
+        Public Overrides Function GetPaintValueSupported(context As ComponentModel.ITypeDescriptorContext) As Boolean
             Return _parent.GetPaintValueSupported(context)
         End Function
 #End Region

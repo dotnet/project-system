@@ -3,7 +3,7 @@
 Option Strict On
 Option Explicit On
 Imports System.Xml
-Imports Microsoft.VisualStudio.Editors.MyExtensibility.EnvDTE90Interop
+Imports EnvDTE90
 Imports Microsoft.VisualStudio.Editors.MyExtensibility.MyExtensibilityUtil
 
 Namespace Microsoft.VisualStudio.Editors.MyExtensibility
@@ -38,7 +38,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
             Try
                 Dim xmlDocument As New XmlDocument()
-                Using reader As System.Xml.XmlReader = System.Xml.XmlReader.Create(New System.IO.StringReader(template.CustomData))
+                Using reader As XmlReader = XmlReader.Create(New IO.StringReader(template.CustomData))
                     xmlDocument.Load(reader)
                 End Using
 
@@ -136,7 +136,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             Dim extensionTemplate As MyExtensionTemplate = TryCast(obj, MyExtensionTemplate)
 
             If extensionTemplate IsNot Nothing Then
-                Return StringEquals(Me.FilePath, extensionTemplate.FilePath)
+                Return StringEquals(FilePath, extensionTemplate.FilePath)
             End If
 
             Return MyBase.Equals(obj)

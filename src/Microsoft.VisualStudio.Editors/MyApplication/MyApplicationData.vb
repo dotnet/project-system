@@ -10,7 +10,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             EnableVisualStyles = True
 
             'Default authentication mode to "Windows"
-            AuthenticationMode = Global.Microsoft.VisualBasic.ApplicationServices.AuthenticationMode.Windows
+            AuthenticationMode = ApplicationServices.AuthenticationMode.Windows
 
             _saveMySettingsOnExit = True
         End Sub

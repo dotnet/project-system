@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
         public string File { get; set; }
         public string Message { get; set; }
 
-        public override System.Boolean Equals(System.Object obj)
+        public override bool Equals(object obj)
         {
             if (obj == null)
             {
@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
             return Level == other.Level && Project.Equals(other.Project) && File.Equals(other.File) && Message.Equals(other.Message);
         }
 
-        public override System.Int32 GetHashCode()
+        public override int GetHashCode()
         {
             return Level.GetHashCode() * 31 + Project.GetHashCode() * 3 + File.GetHashCode() * 7 + Message.GetHashCode() * 5;
         }

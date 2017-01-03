@@ -12,14 +12,14 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
     '     Interface that defines the contract for the XmlIntellisense service.
     '     Must be kept in sync with its unmanaged version in vbidl.idl
     '--------------------------------------------------------------------------
-    <GuidAttribute("94B71D3D-628F-4036-BF89-7FE1508E78AE")> _
+    <Guid("94B71D3D-628F-4036-BF89-7FE1508E78AE")> _
     <InterfaceType(ComInterfaceType.InterfaceIsIUnknown)> _
     <ComImport()> _
     Friend Interface IXmlIntellisenseService
 
         <MethodImpl(MethodImplOptions.InternalCall)> _
         Function CreateSchemas( _
-            <InAttribute()> ProjectGuid As Guid _
+            <[In]()> ProjectGuid As Guid _
             ) _
             As IXmlIntellisenseSchemas
 
@@ -31,7 +31,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
     '     manager.
     '     Must be kept in sync with its unmanaged version in vbidl.idl
     '--------------------------------------------------------------------------
-    <GuidAttribute("1E9E02D2-0532-4BD2-8114-A24262CC9770")> _
+    <Guid("1E9E02D2-0532-4BD2-8114-A24262CC9770")> _
     <InterfaceType(ComInterfaceType.InterfaceIsIUnknown)> _
     <ComImport()> _
     Friend Interface IXmlIntellisenseSchemas
@@ -51,8 +51,8 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
 
         <MethodImpl(MethodImplOptions.InternalCall)> _
         Sub ShowInXmlSchemaExplorer( _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> NamespaceName As String, _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> LocalName As String, _
+            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String, _
+            <[In](), MarshalAs(UnmanagedType.BStr)> LocalName As String, _
             <MarshalAs(UnmanagedType.Bool)> ByRef ElementFound As Boolean, _
             <MarshalAs(UnmanagedType.Bool)> ByRef NamespaceFound As Boolean)
 
@@ -64,7 +64,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
     '     declarations used as the basis of intellisense member dropdowns.
     '     Must be kept in sync with its unmanaged version in vbidl.idl
     '--------------------------------------------------------------------------
-    <GuidAttribute("E90363FC-4246-4df8-869E-7BA42D29F526")> _
+    <Guid("E90363FC-4246-4df8-869E-7BA42D29F526")> _
     <InterfaceType(ComInterfaceType.InterfaceIsIUnknown)> _
     <ComImport()> _
     Friend Interface IXmlIntellisenseMemberList
@@ -83,35 +83,35 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
 
         <MethodImpl(MethodImplOptions.InternalCall)> _
         Function ElementsByNamespace( _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> NamespaceName As String _
+            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String _
             ) As IXmlIntellisenseMemberList
 
         <MethodImpl(MethodImplOptions.InternalCall)> _
         Function ElementsByName( _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> NamespaceName As String, _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> LocalName As String _
+            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String, _
+            <[In](), MarshalAs(UnmanagedType.BStr)> LocalName As String _
             ) As IXmlIntellisenseMemberList
 
         <MethodImpl(MethodImplOptions.InternalCall)> _
         Function AttributesByNamespace( _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> NamespaceName As String _
+            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String _
             ) As IXmlIntellisenseMemberList
 
         <MethodImpl(MethodImplOptions.InternalCall)> _
         Function AttributesByName( _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> NamespaceName As String, _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> LocalName As String _
+            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String, _
+            <[In](), MarshalAs(UnmanagedType.BStr)> LocalName As String _
             ) As IXmlIntellisenseMemberList
 
         <MethodImpl(MethodImplOptions.InternalCall)> _
         Function DescendantsByNamespace( _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> NamespaceName As String _
+            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String _
             ) As IXmlIntellisenseMemberList
 
         <MethodImpl(MethodImplOptions.InternalCall)> _
         Function DescendantsByName( _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> NamespaceName As String, _
-            <InAttribute(), MarshalAs(UnmanagedType.BStr)> LocalName As String _
+            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String, _
+            <[In](), MarshalAs(UnmanagedType.BStr)> LocalName As String _
             ) As IXmlIntellisenseMemberList
 
         <MethodImpl(MethodImplOptions.InternalCall)> _
@@ -126,7 +126,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
     '     This is a list enumerator interface that is very to use from native
     '     code.  The enumerator begins just before the first item in the list.
     '--------------------------------------------------------------------------
-    <GuidAttribute("C5E8D87C-674B-4966-9245-AA32914B05F7")> _
+    <Guid("C5E8D87C-674B-4966-9245-AA32914B05F7")> _
     <InterfaceType(ComInterfaceType.InterfaceIsIUnknown)> _
     <ComImport()> _
     Friend Interface IXmlIntellisenseMemberEnumerator
@@ -141,7 +141,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
     '     Represents an Xml schema element or attribute declaration, which
     '     is what is displayed in intellisense dropdowns.
     '--------------------------------------------------------------------------
-    <GuidAttribute("AB892676-9227-4c8e-AD84-DE887646D416")> _
+    <Guid("AB892676-9227-4c8e-AD84-DE887646D416")> _
     <InterfaceType(ComInterfaceType.InterfaceIsIUnknown)> _
     <ComImport()> _
     Friend Interface IXmlIntellisenseMember

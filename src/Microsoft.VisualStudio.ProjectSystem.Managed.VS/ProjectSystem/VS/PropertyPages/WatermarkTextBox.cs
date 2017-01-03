@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     /// Additionally, it adds:
     /// HasInputtedText
     /// </summary>
-    public class WatermarkTextBox : TextBox
+    internal class WatermarkTextBox : TextBox
     {
         const string c_WatermarkPropertyName = "Watermark";
         const string c_HasInputtedTextPropertyName = "HasInputtedText";
@@ -39,15 +39,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         public VerticalAlignment WatermarkVerticalAlignment
         {
-            get { return (VerticalAlignment)this.GetValue(WatermarkVerticalAlignmentProperty); }
-            set { this.SetValue(WatermarkVerticalAlignmentProperty, value); }
+            get { return (VerticalAlignment)GetValue(WatermarkVerticalAlignmentProperty); }
+            set { SetValue(WatermarkVerticalAlignmentProperty, value); }
         }
 
         public static readonly DependencyProperty WatermarkProperty = DependencyProperty.Register(
             c_WatermarkPropertyName,
             typeof(string),
             typeof(WatermarkTextBox),
-            new PropertyMetadata(String.Empty));
+            new PropertyMetadata(string.Empty));
 
         /// <summary>
         /// The text to be displayed in the watermark area when there is no text/has no focus
@@ -55,8 +55,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         [Localizability(LocalizationCategory.Label, Modifiability = Modifiability.Modifiable, Readability = Readability.Readable)]
         public string Watermark
         {
-            get { return this.GetValue(WatermarkProperty) as string; }
-            set { this.SetValue(WatermarkProperty, value); }
+            get { return GetValue(WatermarkProperty) as string; }
+            set { SetValue(WatermarkProperty, value); }
         }
 
         static readonly DependencyPropertyKey HasInputtedTextPropertyKey = DependencyProperty.RegisterReadOnly(
@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         public bool HasInputtedText
         {
-            get { return (bool)this.GetValue(HasInputtedTextProperty); }
+            get { return (bool)GetValue(HasInputtedTextProperty); }
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 return;
             }
 
-            bool hasInputtedText = !String.IsNullOrEmpty(source.Text.Trim());
+            bool hasInputtedText = !string.IsNullOrEmpty(source.Text.Trim());
             if (hasInputtedText != source.HasInputtedText)
             {
                 source.SetValue(HasInputtedTextPropertyKey, hasInputtedText);

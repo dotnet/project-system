@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
         [Fact]
         public void GetImageKey_SingleImageProviderReturningNull_ReturnsNull()
         {
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create(capabilities: new[] { "CSharp" });
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(capabilities: new[] { "CSharp" });
             var provider = IProjectImageProviderFactory.ImplementGetProjectImage((key) => null);
             var aggregator = CreateInstance(unconfiguredProject);
 
@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
         {
             ProjectImageMoniker moniker = new ProjectImageMoniker(Guid.NewGuid(), 0);
 
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create(capabilities: new[] { "CSharp" });
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(capabilities: new[] { "CSharp" });
             var provider = IProjectImageProviderFactory.ImplementGetProjectImage((key) => moniker);
             var aggregator = CreateInstance(unconfiguredProject);
 
@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
             ProjectImageMoniker moniker1 = new ProjectImageMoniker(Guid.NewGuid(), 0);
             ProjectImageMoniker moniker2 = new ProjectImageMoniker(Guid.NewGuid(), 0);
 
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create(capabilities: new[] { "CSharp" });
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(capabilities: new[] { "CSharp" });
             var provider1 = IProjectImageProviderFactory.ImplementGetProjectImage((key) => moniker1);
             var provider2 = IProjectImageProviderFactory.ImplementGetProjectImage((key) => moniker2);
             var aggregator = CreateInstance(unconfiguredProject);
@@ -102,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
         {
             ProjectImageMoniker moniker = new ProjectImageMoniker(Guid.NewGuid(), 0);
 
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create(capabilities: new[] { "CSharp" });
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(capabilities: new[] { "CSharp" });
             var provider1 = IProjectImageProviderFactory.ImplementGetProjectImage((key) => null);
             var provider2 = IProjectImageProviderFactory.ImplementGetProjectImage((key) => moniker);
             var aggregator = CreateInstance(unconfiguredProject);
@@ -117,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
 
         private ProjectImageProviderAggregator CreateInstance(UnconfiguredProject unconfiguredProject = null)
         {
-            unconfiguredProject = unconfiguredProject ?? IUnconfiguredProjectFactory.Create();
+            unconfiguredProject = unconfiguredProject ?? UnconfiguredProjectFactory.Create();
 
             return new ProjectImageProviderAggregator(unconfiguredProject);
         }

@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities.DataFlowExtensions
     /// these are static methods. Hence we are covering the static methods with wrapper which makes the behavior non-static
     /// which will then let us mock
     /// </summary>
-    public class DataFlowExtensionMethodCaller
+    internal class DataFlowExtensionMethodCaller
     {
         private IDataFlowExtensionWrapper _wrapper;
 

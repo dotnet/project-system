@@ -35,8 +35,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [Fact]
         public void CreateFolderAsync_WhenTreeNotPublished_ThrowsInvalidOperation()
         {
-            var physicalProjectTree = IPhysicalProjectTreeFactory.ImplementCurrentTree(() => null);
-            var storage = CreateInstance(physicalProjectTree);
+            var treeService = IProjectTreeServiceFactory.ImplementCurrentTree(() => null);
+            var storage = CreateInstance(treeService: treeService);
 
             Assert.Throws<InvalidOperationException>(() => {
 
@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public async Task CreateFolderAsync_CreatesFolderOnDisk()
         {
             string result = null;
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create(filePath: @"C:\Root.csproj");
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\Root.csproj");
             var fileSystem = IFileSystemFactory.ImplementCreateDirectory((path) => { result = path; });
 
             var storage = CreateInstance(fileSystem: fileSystem, unconfiguredProject: unconfiguredProject);
@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public async Task CreateFolderAsync_IncludesFolderInProject()
         {
             string result = null;
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create(filePath: @"C:\Root.csproj");
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\Root.csproj");
             var folderManager = IFolderManagerFactory.IncludeFolderInProjectAsync((path, recursive) => { result = path; return Task.CompletedTask; });
 
             var storage = CreateInstance(folderManager: folderManager, unconfiguredProject: unconfiguredProject);
@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public async Task CreateFolderAsync_IncludesFolderInProjectNonRecusively()
         {
             bool? result = null;
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create(filePath: @"C:\Root.csproj");
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\Root.csproj");
             var folderManager = IFolderManagerFactory.IncludeFolderInProjectAsync((path, recursive) => { result = recursive; return Task.CompletedTask; });
 
             var storage = CreateInstance(folderManager: folderManager, unconfiguredProject: unconfiguredProject);
@@ -104,31 +104,31 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [InlineData(@"C:\Projects\Project.csproj",  @"D:\Folder With Spaces\Folder", @"D:\Folder With Spaces\Folder")]
         public async Task CreateFolderAsync_ValueAsPath_IsCalculatedRelativeToProjectDirectory(string projectPath, string input, string expected)
         {
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create(filePath: projectPath);
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectPath);
             string result = null;
             var treeProvider = IProjectTreeProviderFactory.ImplementFindByPath((root, path) => { result = path; return null; });
             var currentTree = ProjectTreeParser.Parse(projectPath);
-            var service = IProjectTreeServiceFactory.Create();
-            var physicalProjectTree = IPhysicalProjectTreeFactory.Create(treeProvider, currentTree, service);
-
-            var storage = CreateInstance(physicalProjectTree: physicalProjectTree, unconfiguredProject: unconfiguredProject);
+            
+            var storage = CreateInstance(treeProvider:treeProvider, unconfiguredProject: unconfiguredProject);
 
             await storage.CreateFolderAsync(input);
 
             Assert.Equal(expected, result);
         }
 
-        private PhysicalProjectTreeStorage CreateInstance(IPhysicalProjectTree physicalProjectTree = null, IFileSystem fileSystem = null, IFolderManager folderManager = null, UnconfiguredProject unconfiguredProject = null)
+        private PhysicalProjectTreeStorage CreateInstance(IProjectTreeService treeService = null, IProjectTreeProvider treeProvider = null, IFileSystem fileSystem = null, IFolderManager folderManager = null, UnconfiguredProject unconfiguredProject = null)
         {
-            physicalProjectTree = physicalProjectTree ?? IPhysicalProjectTreeFactory.Create();
+            treeService = treeService ?? IProjectTreeServiceFactory.Create(ProjectTreeParser.Parse("Root"));
+            treeProvider = treeProvider ?? IProjectTreeProviderFactory.Create();
             fileSystem = fileSystem ?? IFileSystemFactory.Create();
             folderManager = folderManager ?? IFolderManagerFactory.Create();
-            unconfiguredProject = unconfiguredProject ?? IUnconfiguredProjectFactory.Create();
+            unconfiguredProject = unconfiguredProject ?? UnconfiguredProjectFactory.Create();
 
-            return new PhysicalProjectTreeStorage(new Lazy<IPhysicalProjectTree>(() => physicalProjectTree),
-                                             new Lazy<IFileSystem>(() => fileSystem),
-                                             new Lazy<IFolderManager>(() => folderManager),
-                                             unconfiguredProject);
+            return new PhysicalProjectTreeStorage(new Lazy<IProjectTreeService>(() => treeService),
+                                                  new Lazy<IProjectTreeProvider>(() => treeProvider),
+                                                  new Lazy<IFileSystem>(() => fileSystem),
+                                                  ActiveConfiguredProjectFactory.ImplementValue(() => folderManager),
+                                                  unconfiguredProject);
         }
     }
 }

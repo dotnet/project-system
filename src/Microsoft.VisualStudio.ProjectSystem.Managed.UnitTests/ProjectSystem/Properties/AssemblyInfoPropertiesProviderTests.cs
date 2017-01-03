@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis;
-using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.Properties.Package;
 using Microsoft.VisualStudio.Workspaces;
 using Xunit;
@@ -19,15 +18,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             Workspace workspace = null,
             IProjectThreadingService threadingService = null,
             IProjectProperties defaultProperties = null,
-            ProjectProperties commonProps = null,
             IProjectInstancePropertiesProvider instanceProvider = null,
             Func<ProjectId> getActiveProjectId = null)
             : this(workspace ?? WorkspaceFactory.Create(""),
-                  unconfiguredProject: unconfiguredProject ?? IUnconfiguredProjectFactory.Create(),
+                  unconfiguredProject: unconfiguredProject ?? UnconfiguredProjectFactory.Create(),
                   interceptingProvider: interceptingProvider,
                   threadingService: threadingService,
                   defaultProperties: defaultProperties,
-                  commonProps: commonProps,
                   instanceProvider: instanceProvider,
                   getActiveProjectId: getActiveProjectId)
         {
@@ -39,7 +36,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata> interceptingProvider = null,
             IProjectThreadingService threadingService = null,
             IProjectProperties defaultProperties = null,
-            ProjectProperties commonProps = null,
             IProjectInstancePropertiesProvider instanceProvider = null,
             Func<ProjectId> getActiveProjectId = null)
             : base(delegatedProvider: IProjectPropertiesProviderFactory.Create(defaultProperties ?? IProjectPropertiesFactory.MockWithProperty("").Object),
@@ -50,7 +46,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                         IInterceptingPropertyValueProviderMetadataFactory.Create("")) } :
                     new[] { interceptingProvider },
                   unconfiguredProject: unconfiguredProject,
-                  projectProperties: commonProps ?? ProjectPropertiesFactory.CreateEmpty(),
                   getActiveProjectId: getActiveProjectId ?? (() => workspace.CurrentSolution.ProjectIds.SingleOrDefault()),
                   workspace: workspace,
                   threadingService: threadingService ?? IProjectThreadingServiceFactory.Create())
@@ -73,19 +68,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var language = code.Contains("[") ? LanguageNames.CSharp : LanguageNames.VisualBasic;
             workspace = WorkspaceFactory.Create(code, language);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create(filePath: projectFilePath);
-
-            IProjectProperties defaultProperties = null;
-            if (additionalProps != null)
-            {
-                var delegatePropertiesMock = IProjectPropertiesFactory.MockWithPropertiesAndValues(additionalProps);
-                defaultProperties = delegatePropertiesMock.Object;
-            }
-
-            var commonProps = ProjectPropertiesFactory.Create(unconfiguredProject,
-                new PropertyPageData { Category = ConfigurationGeneral.SchemaName, PropertyName = ConfigurationGeneral.SaveAssemblyInfoInSourceProperty, Value = true });
-            return new TestProjectFileOrAssemblyInfoPropertiesProvider(unconfiguredProject, workspace: workspace, defaultProperties: defaultProperties,
-                commonProps: commonProps, interceptingProvider: interceptingProvider);
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFilePath);
+            var defaultProperties = CreateProjectProperties(additionalProps, saveInProjectFile: false);
+            return new TestProjectFileOrAssemblyInfoPropertiesProvider(unconfiguredProject, workspace: workspace, defaultProperties: defaultProperties, interceptingProvider: interceptingProvider);
         }
 
         private TestProjectFileOrAssemblyInfoPropertiesProvider CreateProviderForProjectFileValidation(
@@ -96,26 +81,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata> interceptingProvider = null,
             Dictionary<string, string> additionalProps = null)
         {
-            workspace = WorkspaceFactory.Create(code);
+            var language = code.Contains("[") ? LanguageNames.CSharp : LanguageNames.VisualBasic;
+            workspace = WorkspaceFactory.Create(code, language);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
-            var unconfiguredProject = IUnconfiguredProjectFactory.Create(filePath: projectFilePath);
-
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFilePath);
             additionalProps = additionalProps ?? new Dictionary<string, string>();
             additionalProps[propertyName] = propertyValueInProjectFile;
-            var delegatePropertiesMock = IProjectPropertiesFactory.MockWithPropertiesAndValues(additionalProps);
-            var defaultProperties = delegatePropertiesMock.Object;
+            var defaultProperties = CreateProjectProperties(additionalProps, saveInProjectFile: true);
+            return new TestProjectFileOrAssemblyInfoPropertiesProvider(unconfiguredProject, workspace: workspace, defaultProperties: defaultProperties, interceptingProvider: interceptingProvider);
+        }
 
-            var commonProps = ProjectPropertiesFactory.Create(unconfiguredProject,
-                new PropertyPageData { Category = ConfigurationGeneral.SchemaName, PropertyName = ConfigurationGeneral.SaveAssemblyInfoInSourceProperty, Value = false });
+        private IProjectProperties CreateProjectProperties(Dictionary<string, string> additionalProps, bool saveInProjectFile)
+        {
+            additionalProps = additionalProps ?? new Dictionary<string, string>();
 
-            return new TestProjectFileOrAssemblyInfoPropertiesProvider(unconfiguredProject, workspace: workspace, defaultProperties: defaultProperties,
-                commonProps: commonProps, interceptingProvider: interceptingProvider);
+            // Configure whether AssemblyInfo properties are generated in project file or not.
+            var saveInProjectFileStr = saveInProjectFile.ToString();
+            foreach (var kvp in AssemblyInfoProperties.s_assemblyPropertyInfoMap)
+            {
+                var generatePropertyInProjectFileName = kvp.Value.GeneratePropertyInProjectFileName;
+                additionalProps[generatePropertyInProjectFileName] = saveInProjectFileStr;
+            }
+
+            additionalProps["GenerateAssemblyInfo"] = saveInProjectFileStr;
+
+            return IProjectPropertiesFactory.MockWithPropertiesAndValues(additionalProps).Object;
         }
 
         [Fact]
         public void DefaultProjectPath()
         {
-            var provider = new TestProjectFileOrAssemblyInfoPropertiesProvider(IUnconfiguredProjectFactory.Create(filePath: "D:\\TestFile"));
+            var provider = new TestProjectFileOrAssemblyInfoPropertiesProvider(UnconfiguredProjectFactory.Create(filePath: "D:\\TestFile"));
             Assert.Equal("D:\\TestFile", provider.DefaultProjectPath);
         }
 
@@ -129,13 +125,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         [Theory]
         [InlineData(@"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription"")]", "Description", "MyDescription")]
-        [InlineData(@"[assembly: System.Reflection.AssemblyCompanyAttribute(""MyCompany"")]", "AssemblyCompany", "MyCompany")]
+        [InlineData(@"[assembly: System.Reflection.AssemblyCompanyAttribute(""MyCompany"")]", "Company", "MyCompany")]
         [InlineData(@"[assembly: System.Reflection.AssemblyProductAttribute(""MyProduct"")]", "Product", "MyProduct")]
         [InlineData(@"[assembly: System.Reflection.AssemblyVersionAttribute(""MyVersion"")]", "AssemblyVersion", "MyVersion")]
         [InlineData(@"[assembly: System.Resources.NeutralResourcesLanguageAttribute(""en-us"")]", "NeutralLanguage", "en-us")]
         // Negative cases
         [InlineData(@"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription"")]", "SomeProperty", null)]
-        [InlineData(@"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription"")]", "AssemblyCompany", null)]
+        [InlineData(@"[assembly: System.Reflection.AssemblyDescriptionAttribute(""MyDescription"")]", "Company", null)]
         [InlineData(@"[assembly: System.Runtime.InteropServices.AssemblyDescriptionAttribute(true)]", "Description", null)]
         [InlineData(@"[assembly: System.Runtime.AssemblyDescriptionAttribute(""MyDescription"")]", "Description", null)]
         public async void SourceFileProperties_GetEvalutedPropertyAsync(string code, string propertyName, string expectedValue)
@@ -272,17 +268,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [InlineData(@"[assembly: System.Reflection.AssemblyInformationalVersionAttribute(""2.0.0"")]", "FileVersion", "2.0.0.0", typeof(FileVersionValueProvider))]
         [InlineData(@"[assembly: System.Reflection.AssemblyInformationalVersionAttribute(""2.0.1-beta1"")]", "FileVersion", "2.0.1.0", typeof(FileVersionValueProvider))]
         // PackageVersion
-        [InlineData(@"", "PackageVersion", "1.0.0", typeof(PackageVersionValueProvider))]
-        [InlineData(@"[assembly: System.Reflection.AssemblyInformationalVersionAttribute(""1.1.1"")]", "PackageVersion", "1.1.1", typeof(PackageVersionValueProvider))]
-        [InlineData(@"[assembly: System.Reflection.AssemblyFileVersionAttribute("""")]", "PackageVersion", "1.0.0", typeof(PackageVersionValueProvider))]
-        [InlineData(@"[assembly: System.Reflection.AssemblyInformationalVersionAttribute(""random"")]", "PackageVersion", "random", typeof(PackageVersionValueProvider))]
-        [InlineData(@"[assembly: System.Reflection.AssemblyInformationalVersionAttribute(""2.0.0"")]", "PackageVersion", "2.0.0", typeof(PackageVersionValueProvider))]
-        [InlineData(@"[assembly: System.Reflection.AssemblyInformationalVersionAttribute(""2.0.1-beta1"")]", "PackageVersion", "2.0.1-beta1", typeof(PackageVersionValueProvider))]
+        [InlineData(@"", "Version", null, null)]
+        [InlineData(@"[assembly: System.Reflection.AssemblyInformationalVersionAttribute(""1.1.1"")]", "Version", "1.1.1", null)]
+        [InlineData(@"[assembly: System.Reflection.AssemblyInformationalVersionAttribute("""")]", "Version", "", null)]
+        [InlineData(@"[assembly: System.Reflection.AssemblyInformationalVersionAttribute(""random"")]", "Version", "random", null)]
+        [InlineData(@"[assembly: System.Reflection.AssemblyInformationalVersionAttribute(""2.0.0"")]", "Version", "2.0.0", null)]
+        [InlineData(@"[assembly: System.Reflection.AssemblyInformationalVersionAttribute(""2.0.1-beta1"")]", "Version", "2.0.1-beta1", null)]
         internal async void SourceFileProperties_DefaultValues_GetEvalutedPropertyAsync(string code, string propertyName, string expectedValue, Type interceptingProviderType)
         {
-            var interceptingProvider = new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>(
-                valueFactory: () => (IInterceptingPropertyValueProvider)Activator.CreateInstance(interceptingProviderType),
-                metadata: IInterceptingPropertyValueProviderMetadataFactory.Create(propertyName));
+            var interceptingProvider = interceptingProviderType != null ?
+                new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>(
+                    valueFactory: () => (IInterceptingPropertyValueProvider)Activator.CreateInstance(interceptingProviderType),
+                    metadata: IInterceptingPropertyValueProviderMetadataFactory.Create(propertyName)) :
+                null;
             var provider = CreateProviderForSourceFileValidation(code, propertyName, out Workspace workspace, interceptingProvider);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
 
@@ -294,26 +292,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         [Theory]
         // PackageId
-        [InlineData("MyApp", "PackageId", null, "MyApp", typeof(PackageIdValueProvider))]
-        [InlineData("MyApp", "PackageId", "", "MyApp", typeof(PackageIdValueProvider))]
-        [InlineData("MyApp", "PackageId", "ExistingValue", "ExistingValue", typeof(PackageIdValueProvider))]
+        [InlineData("MyApp", "PackageId", null, null)]
+        [InlineData("MyApp", "PackageId", "", "")]
+        [InlineData("MyApp", "PackageId", "ExistingValue", "ExistingValue")]
         // Authors
-        [InlineData("MyApp", "Authors", null, "MyApp", typeof(AuthorsValueProvider))]
-        [InlineData("MyApp", "Authors", "", "MyApp", typeof(AuthorsValueProvider))]
-        [InlineData("MyApp", "Authors", "ExistingValue", "ExistingValue", typeof(AuthorsValueProvider))]
+        [InlineData("MyApp", "Authors", null, null)]
+        [InlineData("MyApp", "Authors", "", "")]
+        [InlineData("MyApp", "Authors", "ExistingValue", "ExistingValue")]
         // Product
-        [InlineData("MyApp", "Product", null, "MyApp", typeof(ProductValueProvider))]
-        [InlineData("MyApp", "Product", "", "MyApp", typeof(ProductValueProvider))]
-        [InlineData("MyApp", "Product", "ExistingValue", "ExistingValue", typeof(ProductValueProvider))]
-        internal async void ProjectFileProperties_DefaultValues_GetEvalutedPropertyAsync(string assemblyName, string propertyName, string existingPropertyValue, string expectedValue, Type interceptingProviderType)
+        [InlineData("MyApp", "Product", null, null)]
+        [InlineData("MyApp", "Product", "", "")]
+        [InlineData("MyApp", "Product", "ExistingValue", "ExistingValue")]
+        internal async void ProjectFileProperties_DefaultValues_GetEvalutedPropertyAsync(string assemblyName, string propertyName, string existingPropertyValue, string expectedValue)
         {
-            var interceptingProvider = new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>(
-                valueFactory: () => (IInterceptingPropertyValueProvider)Activator.CreateInstance(interceptingProviderType),
-                metadata: IInterceptingPropertyValueProviderMetadataFactory.Create(propertyName));
             var additionalProps = new Dictionary<string, string>() { { "AssemblyName", assemblyName } };
 
             string code = "";
-            var provider = CreateProviderForProjectFileValidation(code, propertyName, existingPropertyValue, out Workspace workspace, interceptingProvider, additionalProps);
+            var provider = CreateProviderForProjectFileValidation(code, propertyName, existingPropertyValue, out Workspace workspace, additionalProps: additionalProps);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
 
             var properties = provider.GetProperties(projectFilePath, null, null);
@@ -338,22 +333,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [InlineData("FileVersion", "1.1.1", "1.0.0.0", "1.0.0.0", typeof(FileVersionValueProvider))]
         [InlineData("FileVersion", "1.0.0.0", "1.0.0", "1.0.0", typeof(FileVersionValueProvider))]
         // PackageVersion
-        [InlineData("PackageVersion", null, "1.0.0", "1.0.0", typeof(PackageVersionValueProvider))]
-        [InlineData("PackageVersion", null, "1.0.0-beta1", "1.0.0-beta1", typeof(PackageVersionValueProvider))]
-        [InlineData("PackageVersion", "", "1.0.0.0", "1.0.0.0", typeof(PackageVersionValueProvider))]
-        [InlineData("PackageVersion", "", "1.0.0-beta1", "1.0.0-beta1", typeof(PackageVersionValueProvider))]
-        [InlineData("PackageVersion", null, "", "1.0.0", typeof(PackageVersionValueProvider))]
-        [InlineData("PackageVersion", "1.0.0", "1.0.0", "1.0.0", typeof(PackageVersionValueProvider))]
-        [InlineData("PackageVersion", "1.0.0-beta1", "1.0.0", "1.0.0", typeof(PackageVersionValueProvider))]
-        [InlineData("PackageVersion", "1.0.0-beta1", "1.0.0-beta2", "1.0.0-beta2", typeof(PackageVersionValueProvider))]
-        [InlineData("PackageVersion", "1.0.0", "1.0.0-beta1", "1.0.0-beta1", typeof(PackageVersionValueProvider))]
-        [InlineData("PackageVersion", "1.1.1", "1.0.0.0", "1.0.0.0", typeof(PackageVersionValueProvider))]
-        [InlineData("PackageVersion", "1.0.0", "1.0.0.0", "1.0.0.0", typeof(PackageVersionValueProvider))]
+        [InlineData("Version", null, "1.0.0", "1.0.0", null)]
+        [InlineData("Version", null, "1.0.0-beta1", "1.0.0-beta1", null)]
+        [InlineData("Version", "", "1.0.0.0", "1.0.0.0", null)]
+        [InlineData("Version", "", "1.0.0-beta1", "1.0.0-beta1", null)]
+        [InlineData("Version", "1.0.0", "1.0.0", "1.0.0", null)]
+        [InlineData("Version", "1.0.0-beta1", "1.0.0", "1.0.0", null)]
+        [InlineData("Version", "1.0.0-beta1", "1.0.0-beta2", "1.0.0-beta2", null)]
+        [InlineData("Version", "1.0.0", "1.0.0-beta1", "1.0.0-beta1", null)]
+        [InlineData("Version", "1.1.1", "1.0.0.0", "1.0.0.0", null)]
+        [InlineData("Version", "1.0.0", "1.0.0.0", "1.0.0.0", null)]
         internal async void ProjectFileProperties_WithInterception_SetEvalutedPropertyAsync(string propertyName, string existingPropertyValue, string propertyValueToSet, string expectedValue, Type interceptingProviderType)
         {
-            var interceptingProvider = new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>(
-                valueFactory: () => (IInterceptingPropertyValueProvider)Activator.CreateInstance(interceptingProviderType),
-                metadata: IInterceptingPropertyValueProviderMetadataFactory.Create(propertyName));
+            var interceptingProvider = interceptingProviderType != null ?
+                new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>(
+                    valueFactory: () => (IInterceptingPropertyValueProvider)Activator.CreateInstance(interceptingProviderType),
+                    metadata: IInterceptingPropertyValueProviderMetadataFactory.Create(propertyName)) :
+                null;
             
             string code = "";
             var provider = CreateProviderForProjectFileValidation(code, propertyName, existingPropertyValue, out Workspace workspace, interceptingProvider);

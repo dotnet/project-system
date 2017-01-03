@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
     /// </summary>
     internal abstract class AbstractSpecialFileProvider : ISpecialFileProvider
     {
-        private readonly IProjectTreeService _projectTreeService;
+        private readonly IPhysicalProjectTree _projectTree;
         private readonly IProjectItemProvider _sourceItemsProvider;
         private readonly IFileSystem _fileSystem;
 
@@ -27,16 +27,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         /// </summary>
         private readonly Lazy<ICreateFileFromTemplateService> _templateFileCreationService;
 
-        public AbstractSpecialFileProvider([Import(ExportContractNames.ProjectTreeProviders.PhysicalProjectTreeService)] IProjectTreeService projectTreeService,
+        public AbstractSpecialFileProvider(IPhysicalProjectTree projectTree,
                                            [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
                                            [Import(AllowDefault = true)] Lazy<ICreateFileFromTemplateService> templateFileCreationService,
                                            IFileSystem fileSystem)
         {
-            Requires.NotNull(projectTreeService, nameof(projectTreeService));
+            Requires.NotNull(projectTree, nameof(projectTree));
             Requires.NotNull(sourceItemsProvider, nameof(sourceItemsProvider));
             Requires.NotNull(fileSystem, nameof(fileSystem));
 
-            _projectTreeService = projectTreeService;
+            _projectTree = projectTree;
             _sourceItemsProvider = sourceItemsProvider;
             _templateFileCreationService = templateFileCreationService;
             _fileSystem = fileSystem;
@@ -100,8 +100,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             }
 
             // We haven't found the file but return the default file path as that's the contract.
-            IProjectTree rootNode = _projectTreeService.CurrentTree.Tree;
-            string rootFilePath = _projectTreeService.CurrentTree.TreeProvider.GetPath(rootNode);
+            IProjectTree rootNode = _projectTree.CurrentTree;
+            string rootFilePath = _projectTree.TreeProvider.GetPath(rootNode);
             string fullPath = Path.Combine(Path.GetDirectoryName(rootFilePath), Name);
             return fullPath;
         }
@@ -113,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         /// </summary>
         private IProjectTree FindFile(string specialFileName)
         {
-            IProjectTree rootNode = _projectTreeService.CurrentTree.Tree;
+            IProjectTree rootNode = _projectTree.CurrentTree;
             IProjectTree specialFileNode;
 
             // First, we look in the AppDesigner folder.
@@ -166,7 +166,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
                 {
                     // Since the file already exists on disk, just include it in the project.
                     await _sourceItemsProvider.AddAsync(specialFileNode.FilePath).ConfigureAwait(false);
-                    await _projectTreeService.PublishLatestTreeAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
+                    await _projectTree.TreeService.PublishLatestTreeAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
                 }
                 else
                 {
@@ -181,8 +181,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
                 {
                     // Just remove the entry from the project so that we get to a clean state and then we can 
                     // create the file as usual.
-                    await _projectTreeService.CurrentTree.TreeProvider.RemoveAsync(ImmutableHashSet.Create(specialFileNode)).ConfigureAwait(false);
-                    await _projectTreeService.PublishLatestTreeAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
+                    await _projectTree.TreeProvider.RemoveAsync(ImmutableHashSet.Create(specialFileNode)).ConfigureAwait(false);
+                    await _projectTree.TreeService.PublishLatestTreeAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
                 }
 
                 return false;
@@ -196,7 +196,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         /// </summary>
         private async Task<string> CreateFileAsync(SpecialFiles fileId, string specialFileName)
         {
-            IProjectTree rootNode = _projectTreeService.CurrentTree.Tree;
+            IProjectTree rootNode = _projectTree.CurrentTree;
             IProjectTree appDesignerFolder = GetAppDesignerFolder();
             if (appDesignerFolder == null && CreatedByDefaultUnderAppDesignerFolder)
             {
@@ -205,17 +205,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 
             var parentNode = CreatedByDefaultUnderAppDesignerFolder ? appDesignerFolder : rootNode;
 
-            bool fileCreated = false;
-
-            var parentPath = _projectTreeService.CurrentTree.TreeProvider.GetPath(parentNode);
-            var specialFilePath = Path.Combine(
-                parentNode.IsFolder ? parentPath : Path.GetDirectoryName(parentPath),
-                specialFileName);
+            var parentPath = _projectTree.TreeProvider.GetRootedAddNewItemDirectory(rootNode);
+            var specialFilePath = Path.Combine(parentPath, specialFileName);
 
             // If we can create the file from the template do it, otherwise just create an empty file.
             if (_templateFileCreationService != null)
             {
-                fileCreated = await _templateFileCreationService.Value.CreateFileAsync(TemplateName, parentPath, specialFileName).ConfigureAwait(false);
+                await _templateFileCreationService.Value.CreateFileAsync(TemplateName, parentPath, specialFileName).ConfigureAwait(false);
             }
             else
             {
@@ -224,8 +220,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
                 IProjectItem item = await _sourceItemsProvider.AddAsync(specialFilePath).ConfigureAwait(false);
                 if (item != null)
                 {
-                    fileCreated = true;
-                    await _projectTreeService.PublishLatestTreeAsync(waitForFileSystemUpdates: true).ConfigureAwait(false);
+                    await _projectTree.TreeService.PublishLatestTreeAsync(waitForFileSystemUpdates: true).ConfigureAwait(false);
                 }
             }
 
@@ -234,7 +229,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 
         private IProjectTree GetAppDesignerFolder()
         {
-            IProjectTree rootNode = _projectTreeService.CurrentTree.Tree;
+            IProjectTree rootNode = _projectTree.CurrentTree;
 
             return rootNode.Children.FirstOrDefault(child => child.IsFolder && child.Flags.HasFlag(ProjectTreeFlags.Common.AppDesignerFolder));
         }

@@ -52,7 +52,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="ResourceContentFile">The resource file that contains the resource</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Overrides ReadOnly Property CanChangePersistenceProperty(ResourceContentFile As ResourceTypeEditor.IResourceContentFile) As Boolean
+        Friend Overrides ReadOnly Property CanChangePersistenceProperty(ResourceContentFile As IResourceContentFile) As Boolean
             Get
                 Return False
             End Get

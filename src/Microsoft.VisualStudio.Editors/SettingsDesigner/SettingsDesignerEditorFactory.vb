@@ -34,7 +34,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        Protected Overrides ReadOnly Property CommandUIGuid() As System.Guid
+        Protected Overrides ReadOnly Property CommandUIGuid() As Guid
             Get
                 Return Constants.MenuConstants.GUID_SETTINGSDESIGNER_CommandUI
             End Get
@@ -45,9 +45,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        Protected Overrides ReadOnly Property EditorGuid() As System.Guid
+        Protected Overrides ReadOnly Property EditorGuid() As Guid
             Get
-                Return New System.Guid(EditorGuidString)
+                Return New Guid(EditorGuidString)
             End Get
         End Property
 
@@ -66,7 +66,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="CmdUIGuid"></param>
         ''' <param name="Canceled"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub CreateEditorInstance(VsCreateEditorFlags As UInteger, FileName As String, PhysicalView As String, Hierarchy As Shell.Interop.IVsHierarchy, ItemId As UInteger, ExistingDocData As Object, ByRef DocView As Object, ByRef DocData As Object, ByRef Caption As String, ByRef CmdUIGuid As System.Guid, ByRef Canceled As Boolean)
+        Protected Overrides Sub CreateEditorInstance(VsCreateEditorFlags As UInteger, FileName As String, PhysicalView As String, Hierarchy As Shell.Interop.IVsHierarchy, ItemId As UInteger, ExistingDocData As Object, ByRef DocView As Object, ByRef DocData As Object, ByRef Caption As String, ByRef CmdUIGuid As Guid, ByRef Canceled As Boolean)
             Static prjKindVenus As String = "{E24C65DC-7377-472b-9ABA-BC803B73C61A}"
             Dim proj As EnvDTE.Project = Common.DTEUtils.EnvDTEProject(Hierarchy)
             If proj IsNot Nothing AndAlso proj.Kind = prjKindVenus Then
@@ -135,7 +135,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' {...LOGVIEWID_Debugging...} = s ''
         ''' {...LOGVIEWID_Designer...} = s 'Form'
         ''' </summary>
-        Protected Overrides Function MapLogicalView(ByRef LogicalView As System.Guid, ByRef PhysicalViewOut As String) As Integer
+        Protected Overrides Function MapLogicalView(ByRef LogicalView As Guid, ByRef PhysicalViewOut As String) As Integer
 
             'The default view must have the value of Nothing.
             PhysicalViewOut = Nothing
@@ -155,7 +155,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Else
                 ' anything else should return E_NOTIMPL
                 '
-                Return Microsoft.VisualStudio.Editors.Interop.NativeMethods.E_NOTIMPL
+                Return NativeMethods.E_NOTIMPL
             End If
         End Function
 

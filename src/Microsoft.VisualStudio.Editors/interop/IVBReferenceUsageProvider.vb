@@ -14,8 +14,8 @@ Namespace Microsoft.VisualStudio.Editors.Interop
     End Enum
 
 
-    <ComImport(), System.Runtime.InteropServices.Guid("12636E2C-D42A-4db3-8795-6F9A6ABD120D"), _
-    InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown), _
+    <ComImport(), Guid("12636E2C-D42A-4db3-8795-6F9A6ABD120D"), _
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown), _
     CLSCompliant(False)> _
     Friend Interface IVBReferenceUsageProvider
         Function GetUnusedReferences(Hierarchy As IVsHierarchy, ByRef ReferencePaths As String) As ReferenceUsageResult

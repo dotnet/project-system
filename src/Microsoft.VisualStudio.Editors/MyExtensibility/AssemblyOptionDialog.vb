@@ -23,7 +23,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             Me.InitializeComponent()
         End Sub
 #Else
-        Inherits Microsoft.VisualStudio.Editors.DesignerFramework.BaseDialog
+        Inherits DesignerFramework.BaseDialog
 
         ''' ;GetAssemblyOptionDialog
         ''' <summary>
@@ -72,16 +72,16 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         Private Sub New(serviceProvider As IServiceProvider, _
                 objects As IList)
             MyBase.New(serviceProvider)
-            Me.InitializeComponent()
+            InitializeComponent()
 
-            Me.F1Keyword = HelpIDs.Dlg_AddMyNamespaceExtensions
+            F1Keyword = HelpIDs.Dlg_AddMyNamespaceExtensions
 
             Debug.Assert(objects IsNot Nothing, "Nothing to display!")
             For Each listObject As Object In objects
                 Dim namedObject As INamedDescribedObject = TryCast(listObject, INamedDescribedObject)
                 Debug.Assert(namedObject IsNot Nothing, "Invalid object in list!")
                 If namedObject IsNot Nothing Then
-                    Me.listBoxItems.Items.Add(namedObject.DisplayName)
+                    listBoxItems.Items.Add(namedObject.DisplayName)
                 End If
             Next
         End Sub
@@ -93,106 +93,106 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 sender As Object, e As CancelEventArgs) _
                 Handles MyBase.HelpButtonClicked
             e.Cancel = True
-            Me.ShowHelp()
+            ShowHelp()
         End Sub
 #End If
 
         Public ReadOnly Property OptionChecked() As Boolean
             Get
-                Return Me.checkBoxOption.Checked
+                Return checkBoxOption.Checked
             End Get
         End Property
 
         Private Sub buttonYes_Click(sender As Object, e As EventArgs) Handles buttonYes.Click
-            Me.Close()
-            Me.DialogResult = System.Windows.Forms.DialogResult.Yes
+            Close()
+            DialogResult = Windows.Forms.DialogResult.Yes
         End Sub
 
 #Region "Windows Form Designer generated code"
-        Friend WithEvents labelQuestion As System.Windows.Forms.Label
-        Friend WithEvents tableLayoutOverarching As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents listBoxItems As System.Windows.Forms.ListBox
-        Friend WithEvents tableLayoutYesNoButtons As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents buttonYes As System.Windows.Forms.Button
+        Friend WithEvents labelQuestion As Windows.Forms.Label
+        Friend WithEvents tableLayoutOverarching As Windows.Forms.TableLayoutPanel
+        Friend WithEvents listBoxItems As Windows.Forms.ListBox
+        Friend WithEvents tableLayoutYesNoButtons As Windows.Forms.TableLayoutPanel
+        Friend WithEvents buttonYes As Windows.Forms.Button
         Friend WithEvents checkBoxOption As DesignerFramework.WrapCheckBox
-        Friend WithEvents buttonNo As System.Windows.Forms.Button
-        Private _components As System.ComponentModel.IContainer
+        Friend WithEvents buttonNo As Windows.Forms.Button
+        Private _components As IContainer
 
         Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(AssemblyOptionDialog))
-            Me.tableLayoutOverarching = New System.Windows.Forms.TableLayoutPanel
-            Me.labelQuestion = New System.Windows.Forms.Label
-            Me.listBoxItems = New System.Windows.Forms.ListBox
-            Me.tableLayoutYesNoButtons = New System.Windows.Forms.TableLayoutPanel
-            Me.buttonYes = New System.Windows.Forms.Button
-            Me.buttonNo = New System.Windows.Forms.Button
-            Me.checkBoxOption = New DesignerFramework.WrapCheckBox
-            Me.tableLayoutOverarching.SuspendLayout()
-            Me.tableLayoutYesNoButtons.SuspendLayout()
-            Me.SuspendLayout()
+            Dim resources As ComponentResourceManager = New ComponentResourceManager(GetType(AssemblyOptionDialog))
+            tableLayoutOverarching = New Windows.Forms.TableLayoutPanel
+            labelQuestion = New Windows.Forms.Label
+            listBoxItems = New Windows.Forms.ListBox
+            tableLayoutYesNoButtons = New Windows.Forms.TableLayoutPanel
+            buttonYes = New Windows.Forms.Button
+            buttonNo = New Windows.Forms.Button
+            checkBoxOption = New DesignerFramework.WrapCheckBox
+            tableLayoutOverarching.SuspendLayout()
+            tableLayoutYesNoButtons.SuspendLayout()
+            SuspendLayout()
             '
             'tableLayoutOverarching
             '
-            resources.ApplyResources(Me.tableLayoutOverarching, "tableLayoutOverarching")
-            Me.tableLayoutOverarching.Controls.Add(Me.labelQuestion, 0, 0)
-            Me.tableLayoutOverarching.Controls.Add(Me.checkBoxOption, 0, 2)
-            Me.tableLayoutOverarching.Controls.Add(Me.tableLayoutYesNoButtons, 0, 3)
-            Me.tableLayoutOverarching.Controls.Add(Me.listBoxItems, 0, 1)
-            Me.tableLayoutOverarching.Name = "tableLayoutOverarching"
+            resources.ApplyResources(tableLayoutOverarching, "tableLayoutOverarching")
+            tableLayoutOverarching.Controls.Add(labelQuestion, 0, 0)
+            tableLayoutOverarching.Controls.Add(checkBoxOption, 0, 2)
+            tableLayoutOverarching.Controls.Add(tableLayoutYesNoButtons, 0, 3)
+            tableLayoutOverarching.Controls.Add(listBoxItems, 0, 1)
+            tableLayoutOverarching.Name = "tableLayoutOverarching"
             '
             'labelQuestion
             '
-            resources.ApplyResources(Me.labelQuestion, "labelQuestion")
-            Me.labelQuestion.Name = "labelQuestion"
+            resources.ApplyResources(labelQuestion, "labelQuestion")
+            labelQuestion.Name = "labelQuestion"
             '
             'listBoxItems
             '
-            resources.ApplyResources(Me.listBoxItems, "listBoxItems")
-            Me.listBoxItems.FormattingEnabled = True
-            Me.listBoxItems.Name = "listBoxItems"
+            resources.ApplyResources(listBoxItems, "listBoxItems")
+            listBoxItems.FormattingEnabled = True
+            listBoxItems.Name = "listBoxItems"
             '
             'tableLayoutYesNoButtons
             '
-            resources.ApplyResources(Me.tableLayoutYesNoButtons, "tableLayoutYesNoButtons")
-            Me.tableLayoutYesNoButtons.Controls.Add(Me.buttonYes, 0, 0)
-            Me.tableLayoutYesNoButtons.Controls.Add(Me.buttonNo, 1, 0)
-            Me.tableLayoutYesNoButtons.Name = "tableLayoutYesNoButtons"
+            resources.ApplyResources(tableLayoutYesNoButtons, "tableLayoutYesNoButtons")
+            tableLayoutYesNoButtons.Controls.Add(buttonYes, 0, 0)
+            tableLayoutYesNoButtons.Controls.Add(buttonNo, 1, 0)
+            tableLayoutYesNoButtons.Name = "tableLayoutYesNoButtons"
             '
             'buttonYes
             '
-            resources.ApplyResources(Me.buttonYes, "buttonYes")
-            Me.buttonYes.Name = "buttonYes"
-            Me.buttonYes.UseVisualStyleBackColor = True
+            resources.ApplyResources(buttonYes, "buttonYes")
+            buttonYes.Name = "buttonYes"
+            buttonYes.UseVisualStyleBackColor = True
             '
             'buttonNo
             '
-            Me.buttonNo.DialogResult = System.Windows.Forms.DialogResult.Cancel
-            resources.ApplyResources(Me.buttonNo, "buttonNo")
-            Me.buttonNo.Name = "buttonNo"
-            Me.buttonNo.UseVisualStyleBackColor = True
+            buttonNo.DialogResult = Windows.Forms.DialogResult.Cancel
+            resources.ApplyResources(buttonNo, "buttonNo")
+            buttonNo.Name = "buttonNo"
+            buttonNo.UseVisualStyleBackColor = True
             '
             'checkBoxOption
             '
-            resources.ApplyResources(Me.checkBoxOption, "checkBoxOption")
-            Me.checkBoxOption.Name = "checkBoxOption"
-            Me.checkBoxOption.UseVisualStyleBackColor = True
+            resources.ApplyResources(checkBoxOption, "checkBoxOption")
+            checkBoxOption.Name = "checkBoxOption"
+            checkBoxOption.UseVisualStyleBackColor = True
             '
             'AssemblyOptionDialog
             '
-            Me.AcceptButton = Me.buttonYes
-            Me.CancelButton = Me.buttonNo
+            AcceptButton = buttonYes
+            CancelButton = buttonNo
             resources.ApplyResources(Me, "$this")
-            Me.Controls.Add(Me.tableLayoutOverarching)
-            Me.HelpButton = True
-            Me.MaximizeBox = False
-            Me.MinimizeBox = False
-            Me.Name = "AssemblyOptionDialog"
-            Me.ShowIcon = False
-            Me.ShowInTaskbar = False
-            Me.tableLayoutOverarching.ResumeLayout(False)
-            Me.tableLayoutOverarching.PerformLayout()
-            Me.tableLayoutYesNoButtons.ResumeLayout(False)
-            Me.ResumeLayout(False)
+            Controls.Add(tableLayoutOverarching)
+            HelpButton = True
+            MaximizeBox = False
+            MinimizeBox = False
+            Name = "AssemblyOptionDialog"
+            ShowIcon = False
+            ShowInTaskbar = False
+            tableLayoutOverarching.ResumeLayout(False)
+            tableLayoutOverarching.PerformLayout()
+            tableLayoutYesNoButtons.ResumeLayout(False)
+            ResumeLayout(False)
 
         End Sub
 #End Region

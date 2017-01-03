@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Moq;
-using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -14,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         public static ProjectProperties CreateEmpty()
         {
-            return Create(IUnconfiguredProjectFactory.Create());
+            return Create(UnconfiguredProjectFactory.Create());
         }
 
         public static ProjectProperties Create(UnconfiguredProject unconfiguredProject, params PropertyPageData[] data)

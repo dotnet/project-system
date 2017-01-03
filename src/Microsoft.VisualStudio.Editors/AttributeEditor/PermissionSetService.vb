@@ -7,12 +7,9 @@ Imports System.Security.Permissions
 Imports System.Xml
 Imports System.IO
 Imports Microsoft.Build.Tasks.Deployment.ManifestUtilities
-Imports Microsoft.VisualStudio.Editors.Common.Utils
 Imports Microsoft.VisualStudio.Shell.Design.Serialization
 
 Imports NativeMethods = Microsoft.VisualStudio.Editors.Interop.NativeMethods
-
-Imports Microsoft.VisualStudio.Editors.SR
 
 Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
 
@@ -21,7 +18,7 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
     '   Builder Service Class. Implements SVbPermissionSetService 
     '   exposed via the IVbPermissionSetService interface.
     '--------------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    <CLSCompliant(False)>
     Friend NotInheritable Class PermissionSetService
         Implements Interop.IVbPermissionSetService
 
@@ -44,7 +41,7 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
             ' Add the child nodes
             For Each node As XmlNode In element.ChildNodes
                 If node.NodeType = XmlNodeType.Element Then
-                    securityElement.AddChild(CreateSecurityElementFromXmlElement(CType(node, XMLElement)))
+                    securityElement.AddChild(CreateSecurityElementFromXmlElement(CType(node, XmlElement)))
                 End If
             Next
 
@@ -55,7 +52,7 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
 
             ' Load the XML
             Dim document As New XmlDocument
-            Using xmlReader As System.Xml.XmlReader = System.Xml.XmlReader.Create(New System.IO.StringReader(strPermissionSet))
+            Using xmlReader As XmlReader = XmlReader.Create(New StringReader(strPermissionSet))
                 document.Load(xmlReader)
             End Using
 
@@ -119,7 +116,7 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
                     projectPermissionSet,
                     identityList)
 
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ComputeZonePermissionSet), NameOf(PermissionSetService))
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(ComputeZonePermissionSet), NameOf(PermissionSetService))
             End Try
 
             Return Nothing
@@ -146,7 +143,7 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
 
                 End If
 
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(IsAvailableInProject), NameOf(PermissionSetService))
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(IsAvailableInProject), NameOf(PermissionSetService))
             End Try
 
             Return NativeMethods.S_OK
@@ -173,7 +170,7 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
                             strTip &= vbCrLf
                         Else
 
-                            strTip &= SR.GetString(PermissionSet_Requires) & vbCrLf
+                            strTip &= My.Resources.Designer.PermissionSet_Requires & vbCrLf
 
                             hasTip = True
                             isFirstPermission = False
@@ -190,7 +187,7 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
 
                 End If
 
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(IsAvailableInProject), NameOf(PermissionSetService))
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(IsAvailableInProject), NameOf(PermissionSetService))
             End Try
 
             If hasTip Then

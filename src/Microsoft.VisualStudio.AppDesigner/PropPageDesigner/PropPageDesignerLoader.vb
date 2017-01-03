@@ -13,7 +13,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
     ''' <remarks></remarks>
     Public NotInheritable Class PropPageDesignerLoader
         Inherits BasicDesignerLoader
-        Implements System.IDisposable
+        Implements IDisposable
 
         Private _punkDocData As Object
 
@@ -31,8 +31,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             'Add our ComponentSerializationService so that the basic desiger will give us automatic Undo/Redo
             Dim SerializationService As New PropertyPageSerializationService(LoaderHost)
             LoaderHost.AddService(GetType(ComponentSerializationService), SerializationService)
-            LoaderHost.AddService(GetType(Microsoft.VisualStudio.Shell.Design.WindowPaneProviderService), _
-                New Microsoft.VisualStudio.Editors.PropPageDesigner.DeferrableWindowPaneProviderService(LoaderHost))
+            LoaderHost.AddService(GetType(Shell.Design.WindowPaneProviderService), _
+                New DeferrableWindowPaneProviderService(LoaderHost))
             Debug.Assert(GetService(GetType(ComponentSerializationService)) IsNot Nothing, _
                 "We just made the ComponentSerializationService service available.  Why isn't it there?")
         End Sub
@@ -69,7 +69,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="serializationManager"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub PerformFlush(serializationManager As System.ComponentModel.Design.Serialization.IDesignerSerializationManager)
+        Protected Overrides Sub PerformFlush(serializationManager As IDesignerSerializationManager)
             Debug.Assert(Modified, "PerformFlush shouldn't get called if the designer's not dirty")
 
             If LoaderHost.RootComponent IsNot Nothing Then
@@ -89,7 +89,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' will automatically be added to the ErrorList by VSDesignerLoader.  If there
         ''' are more specific local exceptions, they can be added to ErrorList manually.
         '''</remarks>
-        Protected Overrides Sub PerformLoad(serializationManager As System.ComponentModel.Design.Serialization.IDesignerSerializationManager)
+        Protected Overrides Sub PerformLoad(serializationManager As IDesignerSerializationManager)
 
             '... BasicDesignerLoader requires that we call SetBaseComponentClassName() during load.
             SetBaseComponentClassName(GetType(PropPageDesignerRootComponent).AssemblyQualifiedName)
@@ -128,7 +128,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <remarks>MyBase.Dispose called since base does not implement IDisposable</remarks>
         <SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")>
-        Public Overloads Overrides Sub Dispose() Implements System.IDisposable.Dispose
+        Public Overloads Overrides Sub Dispose() Implements IDisposable.Dispose
             Dispose(True)
             MyBase.Dispose() 'Necessary because the base does not implement IDisposable
             GC.SuppressFinalize(Me)

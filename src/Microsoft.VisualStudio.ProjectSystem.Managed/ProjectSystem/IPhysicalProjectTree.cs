@@ -8,6 +8,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal interface IPhysicalProjectTree
     {
         /// <summary>
+        ///     Gets the service that provides file and folder operations that operate on the physical <see cref="IProjectTree"/>.
+        /// </summary>
+        IPhysicalProjectTreeStorage TreeStorage
+        {
+            get;
+        }
+
+        /// <summary>
         ///     Gets the most recently published tree, or <see langword="null"/> if it has not yet be published.
         /// </summary>
         IProjectTree CurrentTree

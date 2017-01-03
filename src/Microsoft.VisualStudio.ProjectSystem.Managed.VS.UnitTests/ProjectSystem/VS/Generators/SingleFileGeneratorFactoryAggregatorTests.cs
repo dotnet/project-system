@@ -27,13 +27,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 
             var aggregator = new SingleFileGeneratorFactoryAggregator(serviceProvider, integrationService);
 
-            int actualDesignTime;
-            int actualSharedDesignTime;
-            int actualCompileFlag;
-            Guid actualGuid;
-
             Assert.Equal(VSConstants.S_OK,
-                aggregator.GetGeneratorInformation("ResXCodeFileGenerator", out actualDesignTime, out actualSharedDesignTime, out actualCompileFlag, out actualGuid));
+                aggregator.GetGeneratorInformation("ResXCodeFileGenerator", out int actualDesignTime, out int actualSharedDesignTime, out int actualCompileFlag, out Guid actualGuid));
 
             Assert.Equal(designTimeSource == 1 ? 1 : 0, actualDesignTime);
             Assert.Equal(sharedDesignTimeSource == 1 ? 1 : 0, actualSharedDesignTime);
@@ -51,13 +46,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 
             var aggregator = new SingleFileGeneratorFactoryAggregator(serviceProvider, integrationService);
 
-            int actualDesignTime;
-            int actualSharedDesignTime;
-            int actualCompileFlag;
-            Guid actualGuid;
-
             Assert.Equal(VSConstants.S_OK,
-                aggregator.GetGeneratorInformation("ResXCodeFileGenerator", out actualDesignTime, out actualSharedDesignTime, out actualCompileFlag, out actualGuid));
+                aggregator.GetGeneratorInformation("ResXCodeFileGenerator", out int actualDesignTime, out int actualSharedDesignTime, out int actualCompileFlag, out Guid actualGuid));
 
             Assert.Equal(0, actualDesignTime);
             Assert.Equal(0, actualSharedDesignTime);
@@ -75,13 +65,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 
             var aggregator = new SingleFileGeneratorFactoryAggregator(serviceProvider, integrationService);
 
-            int actualDesignTime;
-            int actualSharedDesignTime;
-            int actualCompileFlag;
-            Guid actualGuid;
-
             Assert.Equal(VSConstants.E_FAIL,
-                aggregator.GetGeneratorInformation("ResXCodeFileGenerator", out actualDesignTime, out actualSharedDesignTime, out actualCompileFlag, out actualGuid));
+                aggregator.GetGeneratorInformation("ResXCodeFileGenerator", out int actualDesignTime, out int actualSharedDesignTime, out int actualCompileFlag, out Guid actualGuid));
         }
 
         [Fact]
@@ -94,13 +79,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 
             var aggregator = new SingleFileGeneratorFactoryAggregator(serviceProvider, integrationService);
 
-            int actualDesignTime;
-            int actualSharedDesignTime;
-            int actualCompileFlag;
-            Guid actualGuid;
-
             Assert.Equal(VSConstants.E_FAIL,
-                aggregator.GetGeneratorInformation("ResXCodeFileGenerator", out actualDesignTime, out actualSharedDesignTime, out actualCompileFlag, out actualGuid));
+                aggregator.GetGeneratorInformation("ResXCodeFileGenerator", out int actualDesignTime, out int actualSharedDesignTime, out int actualCompileFlag, out Guid actualGuid));
         }
 
         [Fact]
@@ -114,13 +94,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 
             var aggregator = new SingleFileGeneratorFactoryAggregator(serviceProvider, integrationService);
 
-            int actualDesignTime;
-            int actualSharedDesignTime;
-            int actualCompileFlag;
-            Guid actualGuid;
-
             Assert.Equal(VSConstants.E_FAIL,
-                aggregator.GetGeneratorInformation("ResXCodeFileGenerator", out actualDesignTime, out actualSharedDesignTime, out actualCompileFlag, out actualGuid));
+                aggregator.GetGeneratorInformation("ResXCodeFileGenerator", out int actualDesignTime, out int actualSharedDesignTime, out int actualCompileFlag, out Guid actualGuid));
         }
 
         [Fact]
@@ -134,13 +109,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 
             var aggregator = new SingleFileGeneratorFactoryAggregator(serviceProvider, integrationService);
 
-            int actualDesignTime;
-            int actualSharedDesignTime;
-            int actualCompileFlag;
-            Guid actualGuid;
-
             Assert.Equal(VSConstants.E_FAIL,
-                aggregator.GetGeneratorInformation("ResXCodeFileGenerator", out actualDesignTime, out actualSharedDesignTime, out actualCompileFlag, out actualGuid));
+                aggregator.GetGeneratorInformation("ResXCodeFileGenerator", out int actualDesignTime, out int actualSharedDesignTime, out int actualCompileFlag, out Guid actualGuid));
         }
 
         private IVsSettingsManager CreateManager(bool useProperties = false, int designTimeSource = 0, int sharedDesignTimeSource = 0, int compileFlag = 0)

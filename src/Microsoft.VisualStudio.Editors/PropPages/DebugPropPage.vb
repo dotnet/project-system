@@ -4,7 +4,6 @@ Imports System.ComponentModel
 Imports System.Windows.Forms
 Imports System.IO
 Imports VSLangProj80
-Imports Microsoft.VisualStudio.PlatformUI
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
@@ -32,7 +31,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Inherits TextBox
 
             Public Sub New()
-                MyBase.Multiline = True
+                Multiline = True
             End Sub
 
             Protected Overrides Function IsInputChar(charCode As Char) As Boolean
@@ -60,37 +59,37 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Dim datalist As List(Of PropertyControlData) = New List(Of PropertyControlData)
                     Dim data As PropertyControlData
 
-                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartURL, "StartURL", Me.StartURL, ControlDataFlags.PersistedInProjectUserFile)
-                    data.DisplayPropertyName = SR.GetString(SR.PPG_Property_StartURL)
+                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartURL, "StartURL", StartURL, ControlDataFlags.PersistedInProjectUserFile)
+                    data.DisplayPropertyName = My.Resources.Designer.PPG_Property_StartURL
                     datalist.Add(data)
 
-                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartArguments, "StartArguments", Me.StartArguments, ControlDataFlags.PersistedInProjectUserFile, New Control() {Me.CommandLineArgsLabel})
+                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartArguments, "StartArguments", StartArguments, ControlDataFlags.PersistedInProjectUserFile, New Control() {CommandLineArgsLabel})
                     datalist.Add(data)
 
-                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartWorkingDirectory, "StartWorkingDirectory", Me.StartWorkingDirectory, ControlDataFlags.PersistedInProjectUserFile, New Control() {Me.StartWorkingDirectoryBrowse, Me.WorkingDirLabel})
-                    data.DisplayPropertyName = SR.GetString(SR.PPG_Property_StartWorkingDirectory)
+                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartWorkingDirectory, "StartWorkingDirectory", StartWorkingDirectory, ControlDataFlags.PersistedInProjectUserFile, New Control() {StartWorkingDirectoryBrowse, WorkingDirLabel})
+                    data.DisplayPropertyName = My.Resources.Designer.PPG_Property_StartWorkingDirectory
                     datalist.Add(data)
 
-                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartProgram, "StartProgram", Me.StartProgram, ControlDataFlags.PersistedInProjectUserFile)
-                    data.DisplayPropertyName = SR.GetString(SR.PPG_Property_StartProgram)
+                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartProgram, "StartProgram", StartProgram, ControlDataFlags.PersistedInProjectUserFile)
+                    data.DisplayPropertyName = My.Resources.Designer.PPG_Property_StartProgram
                     datalist.Add(data)
 
                     data = New PropertyControlData(VsProjPropId.VBPROJPROPID_StartAction, "StartAction", Nothing,
-                                AddressOf Me.StartActionSet, AddressOf Me.StartActionGet, ControlDataFlags.PersistedInProjectUserFile,
+                                AddressOf StartActionSet, AddressOf StartActionGet, ControlDataFlags.PersistedInProjectUserFile,
                                 New Control() {startActionTableLayoutPanel, rbStartProject, rbStartProgram, rbStartURL, StartProgram, StartURL, StartProgramBrowse})
                     datalist.Add(data)
 
-                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_EnableSQLServerDebugging, "EnableSQLServerDebugging", Me.EnableSQLServerDebugging, ControlDataFlags.PersistedInProjectUserFile)
+                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_EnableSQLServerDebugging, "EnableSQLServerDebugging", EnableSQLServerDebugging, ControlDataFlags.PersistedInProjectUserFile)
                     datalist.Add(data)
 
-                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_EnableUnmanagedDebugging, "EnableUnmanagedDebugging", Me.EnableUnmanagedDebugging, ControlDataFlags.PersistedInProjectUserFile)
+                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_EnableUnmanagedDebugging, "EnableUnmanagedDebugging", EnableUnmanagedDebugging, ControlDataFlags.PersistedInProjectUserFile)
                     datalist.Add(data)
 
-                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_RemoteDebugMachine, "RemoteDebugMachine", Me.RemoteDebugMachine, ControlDataFlags.PersistedInProjectUserFile)
-                    data.DisplayPropertyName = SR.GetString(SR.PPG_Property_RemoteDebugMachine)
+                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_RemoteDebugMachine, "RemoteDebugMachine", RemoteDebugMachine, ControlDataFlags.PersistedInProjectUserFile)
+                    data.DisplayPropertyName = My.Resources.Designer.PPG_Property_RemoteDebugMachine
                     datalist.Add(data)
 
-                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_RemoteDebugEnabled, "RemoteDebugEnabled", Me.RemoteDebugEnabled, ControlDataFlags.PersistedInProjectUserFile)
+                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_RemoteDebugEnabled, "RemoteDebugEnabled", RemoteDebugEnabled, ControlDataFlags.PersistedInProjectUserFile)
                     datalist.Add(data)
 
                     m_ControlData = datalist.ToArray()
@@ -115,8 +114,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Property
 
         Private Function StartActionSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
-            Dim originalInsideInit As Boolean = MyBase.m_fInsideInit
-            MyBase.m_fInsideInit = True
+            Dim originalInsideInit As Boolean = m_fInsideInit
+            m_fInsideInit = True
             Try
                 Dim action As VSLangProj.prjStartAction
                 If PropertyControlData.IsSpecialValue(value) Then 'Indeterminate or IsMissing
@@ -125,12 +124,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     action = CType(value, VSLangProj.prjStartAction)
                 End If
 
-                Me.rbStartProject.Checked = (action = VSLangProj.prjStartAction.prjStartActionProject)
-                Me.rbStartProgram.Checked = (action = VSLangProj.prjStartAction.prjStartActionProgram)
-                Me.rbStartURL.Checked = (action = VSLangProj.prjStartAction.prjStartActionURL)
-                Me.StartURL.Enabled = (action = VSLangProj.prjStartAction.prjStartActionURL)
+                rbStartProject.Checked = (action = VSLangProj.prjStartAction.prjStartActionProject)
+                rbStartProgram.Checked = (action = VSLangProj.prjStartAction.prjStartActionProgram)
+                rbStartURL.Checked = (action = VSLangProj.prjStartAction.prjStartActionURL)
+                StartURL.Enabled = (action = VSLangProj.prjStartAction.prjStartActionURL)
             Finally
-                MyBase.m_fInsideInit = originalInsideInit
+                m_fInsideInit = originalInsideInit
             End Try
             Return True
         End Function
@@ -138,11 +137,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Function StartActionGetValue() As VSLangProj.prjStartAction
             Dim action As VSLangProj.prjStartAction
 
-            If Me.rbStartProject.Checked Then
+            If rbStartProject.Checked Then
                 action = VSLangProj.prjStartAction.prjStartActionProject
-            ElseIf Me.rbStartProgram.Checked Then
+            ElseIf rbStartProgram.Checked Then
                 action = VSLangProj.prjStartAction.prjStartActionProgram
-            ElseIf Me.rbStartURL.Checked Then
+            ElseIf rbStartURL.Checked Then
                 action = VSLangProj.prjStartAction.prjStartActionURL
             Else
                 action = VSLangProj.prjStartAction.prjStartActionNone
@@ -227,14 +226,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             '  the property page to *not* shrink past that point, otherwise we won't get
             '  a horizontal scrollbar.
             'So we fix the width at the width that the page naturally wants to be.
-            Me.Size = Me.GetPreferredSize(System.Drawing.Size.Empty)
+            Size = GetPreferredSize(Drawing.Size.Empty)
         End Sub
 
         Private Sub rbStartAction_CheckedChanged(sender As Object, e As EventArgs) Handles rbStartProgram.CheckedChanged, rbStartProject.CheckedChanged, rbStartURL.CheckedChanged
             Dim action As VSLangProj.prjStartAction = StartActionGetValue()
-            Me.StartProgram.Enabled = (action = VSLangProj.prjStartAction.prjStartActionProgram)
-            Me.StartProgramBrowse.Enabled = Me.StartProgram.Enabled
-            Me.StartURL.Enabled = (action = VSLangProj.prjStartAction.prjStartActionURL)
+            StartProgram.Enabled = (action = VSLangProj.prjStartAction.prjStartActionProgram)
+            StartProgramBrowse.Enabled = StartProgram.Enabled
+            StartURL.Enabled = (action = VSLangProj.prjStartAction.prjStartActionURL)
 
             If Not m_fInsideInit Then
                 Dim button As RadioButton = CType(sender, RadioButton)
@@ -245,11 +244,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     SetDirty(VsProjPropId.VBPROJPROPID_StartAction, False)
                 End If
 
-                If Me.StartProgram.Enabled Then
-                    Me.StartProgram.Focus()
+                If StartProgram.Enabled Then
+                    StartProgram.Focus()
                     DelayValidate(StartProgram)     ' we need validate StartProgram to make sure it is not empty
-                ElseIf Me.StartURL.Enabled Then
-                    Me.StartURL.Focus()
+                ElseIf StartURL.Enabled Then
+                    StartURL.Focus()
                     DelayValidate(StartURL)
                 End If
             End If
@@ -262,17 +261,17 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             SkipValidating(StartWorkingDirectory)   ' skip this because we will pop up dialog to edit it...
             ProcessDelayValidationQueue(False)
 
-            sInitialDirectory = Trim(Me.StartWorkingDirectory.Text)
+            sInitialDirectory = Trim(StartWorkingDirectory.Text)
             If sInitialDirectory = "" Then
                 Try
                     sInitialDirectory = Path.Combine(GetProjectPath(), GetSelectedConfigOutputPath())
-                Catch ex As IO.IOException
+                Catch ex As IOException
                     'Ignore
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception getting project output path for selected config", NameOf(DebugPropPage))
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, "Exception getting project output path for selected config", NameOf(DebugPropPage))
                 End Try
             End If
 
-            If GetDirectoryViaBrowse(sInitialDirectory, SR.GetString(SR.PPG_SelectWorkingDirectoryTitle), DirName) Then
+            If GetDirectoryViaBrowse(sInitialDirectory, My.Resources.Designer.PPG_SelectWorkingDirectoryTitle, DirName) Then
                 StartProgramBrowse.Focus()
                 StartWorkingDirectory.Text = DirName
                 SetDirty(StartWorkingDirectory, True)
@@ -302,7 +301,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             SkipValidating(StartProgram)
             ProcessDelayValidationQueue(False)
 
-            If GetFileViaBrowse("", FileName, Common.CreateDialogFilter(SR.GetString(SR.PPG_ExeFilesFilter), ".exe")) Then
+            If GetFileViaBrowse("", FileName, Common.CreateDialogFilter(My.Resources.Designer.PPG_ExeFilesFilter, ".exe")) Then
                 StartProgramBrowse.Focus()
                 StartProgram.Text = FileName
                 SetDirty(StartProgram, True)
@@ -327,15 +326,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         'DO NOT Validate file existance if we are remote debugging, as they are local to the remote machine
                         If Not RemoteDebugEnabled.Checked Then
                             If Not File.Exists(StartProgram.Text) Then
-                                message = SR.GetString(SR.PropPage_ProgramNotExist)
+                                message = My.Resources.Designer.PropPage_ProgramNotExist
                                 Return ValidationResult.Warning
                             End If
                         End If
                         If Trim(StartProgram.Text).Length = 0 Then
-                            message = SR.GetString(SR.PropPage_NeedExternalProgram)
+                            message = My.Resources.Designer.PropPage_NeedExternalProgram
                             Return ValidationResult.Warning
                         ElseIf Not Path.GetExtension(StartProgram.Text).Equals(".exe", StringComparison.OrdinalIgnoreCase) Then
-                            message = SR.GetString(SR.PropPage_NotAnExeError)
+                            message = My.Resources.Designer.PropPage_NotAnExeError
                             Return ValidationResult.Warning
                         End If
                     End If
@@ -343,7 +342,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     If rbStartURL.Checked Then
                         Dim newURL As String = Trim(StartURL.Text)
                         If newURL.Length = 0 Then
-                            message = SR.GetString(SR.PropPage_NeedURL)
+                            message = My.Resources.Designer.PropPage_NeedURL
                             Return ValidationResult.Warning
                         Else
                             If newURL.IndexOf(":"c) < 0 Then
@@ -352,21 +351,21 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             Try
                                 Dim t As Uri = New Uri(newURL)
                             Catch ex As UriFormatException
-                                message = SR.GetString(SR.PropPage_InvalidURL)
+                                message = My.Resources.Designer.PropPage_InvalidURL
                                 Return ValidationResult.Warning
                             End Try
                         End If
                     End If
                 Case VsProjPropId.VBPROJPROPID_RemoteDebugMachine
                     If RemoteDebugEnabled.Checked AndAlso Len(Trim(RemoteDebugMachine.Text)) = 0 Then
-                        message = SR.GetString(SR.PropPage_RemoteMachineBlankError)
+                        message = My.Resources.Designer.PropPage_RemoteMachineBlankError
                         Return ValidationResult.Warning
                     End If
                 Case VsProjPropId.VBPROJPROPID_StartWorkingDirectory
                     'DO NOT Validate working directory if we are remote debugging, as they are local to the remote machine
                     If Not RemoteDebugEnabled.Checked AndAlso Trim(StartWorkingDirectory.Text).Length <> 0 AndAlso Not Directory.Exists(StartWorkingDirectory.Text) Then
                         ' Warn the user when working dir is invalid
-                        message = SR.GetString(SR.PropPage_WorkingDirError)
+                        message = My.Resources.Designer.PropPage_WorkingDirError
                         Return ValidationResult.Warning
                     End If
             End Select
@@ -380,7 +379,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <returns>The output path, relative to the project's folder.</returns>
         Private Function GetSelectedConfigOutputPath() As String
             'If there are multiple selected configs, we'll just use the first one
-            Dim Properties As PropertyDescriptorCollection = System.ComponentModel.TypeDescriptor.GetProperties(m_Objects(0))
+            Dim Properties As PropertyDescriptorCollection = TypeDescriptor.GetProperties(m_Objects(0))
             Dim OutputPathDescriptor As PropertyDescriptor = Properties("OutputPath")
             Return CStr(OutputPathDescriptor.GetValue(m_ExtendedObjects(0)))
         End Function
@@ -392,14 +391,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'Set StartArguments text to be approximately four lines high
             '  (it won't necessarily be exact due to GDI/GDI+ differences)
             Const ApproximateDesiredHeightInLines As Integer = 4
-            Using g As Drawing.Graphics = Me.CreateGraphics()
+            Using g As Drawing.Graphics = CreateGraphics()
                 Const ApproximateBorderHeight As Integer = 2 + 1 '+1 for a little extra buffer
                 StartArguments.Height = 2 * ApproximateBorderHeight _
                     + CInt(Math.Ceiling(g.MeasureString(" " & New String(CChar(vbLf), ApproximateDesiredHeightInLines - 1) & " ", StartArguments.Font, Integer.MaxValue).Height))
             End Using
         End Sub
 
-        Protected Overrides Sub OnLayout(levent As System.Windows.Forms.LayoutEventArgs)
+        Protected Overrides Sub OnLayout(levent As LayoutEventArgs)
             SetStartArgumentsHeight()
             MyBase.OnLayout(levent)
         End Sub

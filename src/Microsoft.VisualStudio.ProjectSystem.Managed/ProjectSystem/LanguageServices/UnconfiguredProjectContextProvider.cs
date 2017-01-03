@@ -249,7 +249,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                 var activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
 
                 var innerProjectContextsBuilder = ImmutableDictionary.CreateBuilder<string, IWorkspaceProjectContext>();
-                string activeTargetFramework = String.Empty;
+                string activeTargetFramework = string.Empty;
                 IConfiguredProjectHostObject activeIntellisenseProjectHostObject = null;
 
                 foreach (var kvp in configuredProjectsMap)

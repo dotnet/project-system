@@ -37,7 +37,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks>Throws an exception if out of bounds.</remarks>
         Default Public ReadOnly Property Item(Index As Integer) As Category
             Get
-                Return DirectCast(MyBase.InnerList(Index), Category)
+                Return DirectCast(InnerList(Index), Category)
             End Get
         End Property
 
@@ -71,7 +71,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Public Sub Add(Category As Category)
             'Add to the inner list (indexable by integer index)
-            MyBase.InnerList.Add(Category)
+            InnerList.Add(Category)
 
             'Add to the hash table (for indexing by programmatic name)
             _innerHashByName.Add(Category.ProgrammaticName, Category)

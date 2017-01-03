@@ -14,22 +14,22 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Select Case _value
                 Case CUInt(prjOutputTypeEx.prjOutputTypeEx_WinExe)
-                    _displayName = SR.GetString(SR.PPG_WindowsApp)
+                    _displayName = My.Resources.Designer.PPG_WindowsApp
 
                 Case CUInt(prjOutputTypeEx.prjOutputTypeEx_Exe)
-                    _displayName = SR.GetString(SR.PPG_CommandLineApp)
+                    _displayName = My.Resources.Designer.PPG_CommandLineApp
 
                 Case CUInt(prjOutputTypeEx.prjOutputTypeEx_Library)
-                    _displayName = SR.GetString(SR.PPG_WindowsClassLib)
+                    _displayName = My.Resources.Designer.PPG_WindowsClassLib
 
                 Case CUInt(prjOutputTypeEx.prjOutputTypeEx_WinMDObj)
-                    _displayName = SR.GetString(SR.PPG_WinMDObj)
+                    _displayName = My.Resources.Designer.PPG_WinMDObj
 
                 Case CUInt(prjOutputTypeEx.prjOutputTypeEx_AppContainerExe)
-                    _displayName = SR.GetString(SR.PPG_AppContainerExe)
+                    _displayName = My.Resources.Designer.PPG_AppContainerExe
 
                 Case Else
-                    _displayName = SR.GetString(SR.PPG_UnknownOutputType, _value)
+                    _displayName = My.Resources.Designer.GetString(My.Resources.Designer.PPG_UnknownOutputType, _value)
 
             End Select
         End Sub

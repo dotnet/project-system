@@ -2711,13 +2711,13 @@ Do you want to update the value in the .settings file?</source>
       </trans-unit>
       <trans-unit id="PPG_PackageTitle">
         <source>Package</source>
-        <target state="new">Package</target>
-        <note></note>
+        <target state="translated">Пакет</target>
+        <note />
       </trans-unit>
       <trans-unit id="PPG_Property_PackageVersion">
         <source>Package Version</source>
-        <target state="new">Package Version</target>
-        <note></note>
+        <target state="translated">Версия пакета</target>
+        <note />
       </trans-unit>
     </body>
   </file>

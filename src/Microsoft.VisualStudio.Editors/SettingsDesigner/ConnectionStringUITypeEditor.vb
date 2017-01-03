@@ -24,7 +24,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="context">The context parameter is ignored...</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Overrides Function GetEditStyle(context As System.ComponentModel.ITypeDescriptorContext) As System.Drawing.Design.UITypeEditorEditStyle
+        Public Overrides Function GetEditStyle(context As ComponentModel.ITypeDescriptorContext) As UITypeEditorEditStyle
             Return UITypeEditorEditStyle.Modal
         End Function
 
@@ -42,7 +42,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="oValue"></param>
         ''' <returns></returns>
         ''' <remarks>Does not use the IWindowsFormsEditorService service to show it's dialog...</remarks>
-        Public Overrides Function EditValue(context As System.ComponentModel.ITypeDescriptorContext, ServiceProvider As System.IServiceProvider, oValue As Object) As Object
+        Public Overrides Function EditValue(context As ComponentModel.ITypeDescriptorContext, ServiceProvider As IServiceProvider, oValue As Object) As Object
             Dim dataConnectionDialogFactory As IVsDataConnectionDialogFactory = DirectCast(ServiceProvider.GetService(GetType(IVsDataConnectionDialogFactory)), IVsDataConnectionDialogFactory)
 
             If dataConnectionDialogFactory Is Nothing Then
@@ -74,8 +74,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ' should be a no-op, so we should be safe if we just try to get hold of the required services
             ' and give it a try...
             Dim dteProj As EnvDTE.Project = Nothing
-            Dim connectionStringConverter As Microsoft.VSDesigner.Data.Local.IConnectionStringConverterService = _
-                DirectCast(ServiceProvider.GetService(GetType(Microsoft.VSDesigner.Data.Local.IConnectionStringConverterService)), Microsoft.VSDesigner.Data.Local.IConnectionStringConverterService)
+            Dim connectionStringConverter As IConnectionStringConverterService = _
+                DirectCast(ServiceProvider.GetService(GetType(IConnectionStringConverterService)), IConnectionStringConverterService)
             If connectionStringConverter IsNot Nothing Then
                 ' The SettingsDesignerLoader should have added the project item as a service in case someone needs to 
                 ' get hold of it....
@@ -183,7 +183,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Try
                 Dim DataConnectionProperties As IVsDataConnectionProperties = GetConnectionStringProperties(ProviderManager, DataProvider, ConnectionString)
                 Return ContainsSensitiveData(DataConnectionProperties)
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ContainsSensitiveData), NameOf(ConnectionStringUITypeEditor))
+            Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(ContainsSensitiveData), NameOf(ConnectionStringUITypeEditor))
             End Try
             ' The secure & safe assumption is that it does contain sensitive data
             Return True
@@ -237,12 +237,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Dim RawConnectionString As String = DataProtection.DecryptString(Dialog.EncryptedConnectionString)
             If ContainsSensitiveData(ServiceProvider, Dialog.SelectedProvider, RawConnectionString) Then
-                If Not PromptIfContainsSensitiveData OrElse _
-                       DesignerFramework.DesignerMessageBox.Show(ServiceProvider, _
-                                                             SR.GetString(SR.SD_IncludeSensitiveInfoInConnectionStringWarning), _
-                                                             DesignerFramework.DesignUtil.GetDefaultCaption(ServiceProvider), _
-                                                             Windows.Forms.MessageBoxButtons.YesNo, _
-                                                             Windows.Forms.MessageBoxIcon.Warning, _
+                If Not PromptIfContainsSensitiveData OrElse
+                       DesignerFramework.DesignerMessageBox.Show(ServiceProvider,
+                                                             My.Resources.Designer.SD_IncludeSensitiveInfoInConnectionStringWarning,
+                                                             DesignerFramework.DesignUtil.GetDefaultCaption(ServiceProvider),
+                                                             Windows.Forms.MessageBoxButtons.YesNo,
+                                                             Windows.Forms.MessageBoxIcon.Warning,
                                                              Windows.Forms.MessageBoxDefaultButton.Button2) = Windows.Forms.DialogResult.Yes _
                 Then
                     Return RawConnectionString
@@ -333,11 +333,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Private _targetProject As EnvDTE.Project
 
             Public Sub New(project As EnvDTE.Project)
-                Me._targetProject = project
+                _targetProject = project
             End Sub
 
             Public Function IsCombinationSupported(source As Guid, provider As Guid) As Boolean
-                Return Microsoft.VSDesigner.Data.DataProviderProjectControl.IsProjectSupported(provider, Me._targetProject)
+                Return VSDesigner.Data.DataProviderProjectControl.IsProjectSupported(provider, _targetProject)
             End Function
         End Class
 

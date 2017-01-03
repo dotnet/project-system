@@ -7,7 +7,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal static class IUnconfiguredProjectFactory
+    internal static class UnconfiguredProjectFactory
     {
         public static UnconfiguredProject Create(object hostObject = null, IEnumerable<string> capabilities = null, string filePath = null,
             IProjectConfigurationsService projectConfigurationsService = null, ConfiguredProject configuredProject = null)

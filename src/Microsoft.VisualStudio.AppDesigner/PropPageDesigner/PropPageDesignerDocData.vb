@@ -76,7 +76,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     localRegistry = DirectCast(_baseProvider.GetService(GetType(ILocalRegistry)), ILocalRegistry)
                 End If
                 If localRegistry Is Nothing Then
-                    Throw New COMException(SR.GetString(SR.DFX_NoLocalRegistry), NativeMethods.E_FAIL)
+                    Throw New COMException(My.Resources.Designer.DFX_NoLocalRegistry, NativeMethods.E_FAIL)
                 End If
 
                 'CONSIDER: Need to check with FX team about removing assert in MS.VS.Shell.Design.DesignerWindowPane.RegisterView
@@ -90,9 +90,9 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                         _vsTextBuffer = CType(Marshal.GetObjectForIUnknown(objPtr), IVsTextStream)
                         Marshal.Release(objPtr)
 
-                        Dim ows As Microsoft.VisualStudio.OLE.Interop.IObjectWithSite = TryCast(_vsTextBuffer, Microsoft.VisualStudio.OLE.Interop.IObjectWithSite)
+                        Dim ows As OLE.Interop.IObjectWithSite = TryCast(_vsTextBuffer, OLE.Interop.IObjectWithSite)
                         If (ows IsNot Nothing) Then
-                            Dim sp As Microsoft.VisualStudio.OLE.Interop.IServiceProvider = TryCast(_baseProvider.GetService(GetType(Microsoft.VisualStudio.OLE.Interop.IServiceProvider)), Microsoft.VisualStudio.OLE.Interop.IServiceProvider)
+                            Dim sp As OLE.Interop.IServiceProvider = TryCast(_baseProvider.GetService(GetType(OLE.Interop.IServiceProvider)), OLE.Interop.IServiceProvider)
                             Debug.Assert(sp IsNot Nothing, "Expected to get a native service provider from our managed service provider")
 
                             If (sp IsNot Nothing) Then
@@ -101,7 +101,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                         End If
                     End If
                 Catch ex As Exception
-                    Throw New COMException(SR.GetString(SR.DFX_UnableCreateTextBuffer), NativeMethods.E_FAIL)
+                    Throw New COMException(My.Resources.Designer.DFX_UnableCreateTextBuffer, NativeMethods.E_FAIL)
                 End Try
                 Return _vsTextBuffer
             End Get
@@ -114,7 +114,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="riidKey"></param>
         ''' <param name="pvtData"></param>
         ''' <remarks></remarks>
-        Public Function GetData(ByRef riidKey As System.Guid, ByRef pvtData As Object) As Integer Implements TextManager.Interop.IVsUserData.GetData
+        Public Function GetData(ByRef riidKey As Guid, ByRef pvtData As Object) As Integer Implements IVsUserData.GetData
             If riidKey.Equals(GetType(IVsUserData).GUID) Then
                 'IID_IVsUserData (GUID_VsBufferMoniker) is the guid used for retrieving MkDocument (filename)
                 Return NativeMethods.S_OK
@@ -133,7 +133,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="riidKey"></param>
         ''' <param name="vtData"></param>
         ''' <remarks></remarks>
-        Public Function SetData(ByRef riidKey As System.Guid, vtData As Object) As Integer Implements TextManager.Interop.IVsUserData.SetData
+        Public Function SetData(ByRef riidKey As Guid, vtData As Object) As Integer Implements IVsUserData.SetData
             If _vsTextBuffer IsNot Nothing Then
                 Return CType(_vsTextBuffer, IVsUserData).SetData(riidKey, vtData)
             Else
@@ -149,56 +149,56 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         'Whether this is a bug or not has yet to be determined
         'It may having something to do with it being defined in an interop assembly.
 
-        Public Function Close() As Integer Implements Shell.Interop.IVsPersistDocData.Close
-            Return Me.Close2()
+        Public Function Close() As Integer Implements IVsPersistDocData.Close
+            Return Close2()
         End Function
 
-        Public Function GetGuidEditorType(ByRef pClassID As System.Guid) As Integer Implements Shell.Interop.IVsPersistDocData.GetGuidEditorType
-            Return Me.GetGuidEditorType2(pClassID)
+        Public Function GetGuidEditorType(ByRef pClassID As Guid) As Integer Implements IVsPersistDocData.GetGuidEditorType
+            Return GetGuidEditorType2(pClassID)
         End Function
 
-        Public Function IsDocDataDirty(ByRef pfDirty As Integer) As Integer Implements Shell.Interop.IVsPersistDocData.IsDocDataDirty
-            Return Me.IsDocDataDirty2(pfDirty)
+        Public Function IsDocDataDirty(ByRef pfDirty As Integer) As Integer Implements IVsPersistDocData.IsDocDataDirty
+            Return IsDocDataDirty2(pfDirty)
         End Function
 
-        Public Function IsDocDataReloadable(ByRef pfReloadable As Integer) As Integer Implements Shell.Interop.IVsPersistDocData.IsDocDataReloadable
-            Return Me.IsDocDataReloadable2(pfReloadable)
+        Public Function IsDocDataReloadable(ByRef pfReloadable As Integer) As Integer Implements IVsPersistDocData.IsDocDataReloadable
+            Return IsDocDataReloadable2(pfReloadable)
         End Function
 
-        Public Function LoadDocData(pszMkDocument As String) As Integer Implements Shell.Interop.IVsPersistDocData.LoadDocData
-            Return Me.LoadDocData2(pszMkDocument)
+        Public Function LoadDocData(pszMkDocument As String) As Integer Implements IVsPersistDocData.LoadDocData
+            Return LoadDocData2(pszMkDocument)
         End Function
 
-        Public Function OnRegisterDocData(docCookie As UInteger, pHierNew As Shell.Interop.IVsHierarchy, itemidNew As UInteger) As Integer Implements Shell.Interop.IVsPersistDocData.OnRegisterDocData
-            Return Me.OnRegisterDocData2(docCookie, pHierNew, itemidNew)
+        Public Function OnRegisterDocData(docCookie As UInteger, pHierNew As IVsHierarchy, itemidNew As UInteger) As Integer Implements IVsPersistDocData.OnRegisterDocData
+            Return OnRegisterDocData2(docCookie, pHierNew, itemidNew)
         End Function
 
-        Public Function ReloadDocData(grfFlags As UInteger) As Integer Implements Shell.Interop.IVsPersistDocData.ReloadDocData
-            Return Me.ReloadDocData2(grfFlags)
+        Public Function ReloadDocData(grfFlags As UInteger) As Integer Implements IVsPersistDocData.ReloadDocData
+            Return ReloadDocData2(grfFlags)
         End Function
 
-        Public Function RenameDocData(grfAttribs As UInteger, pHierNew As Shell.Interop.IVsHierarchy, itemidNew As UInteger, pszMkDocumentNew As String) As Integer Implements Shell.Interop.IVsPersistDocData.RenameDocData
-            Return Me.RenameDocData2(grfAttribs, pHierNew, itemidNew, pszMkDocumentNew)
+        Public Function RenameDocData(grfAttribs As UInteger, pHierNew As IVsHierarchy, itemidNew As UInteger, pszMkDocumentNew As String) As Integer Implements IVsPersistDocData.RenameDocData
+            Return RenameDocData2(grfAttribs, pHierNew, itemidNew, pszMkDocumentNew)
         End Function
 
-        Public Function SaveDocData(dwSave As Shell.Interop.VSSAVEFLAGS, ByRef pbstrMkDocumentNew As String, ByRef pfSaveCanceled As Integer) As Integer Implements Shell.Interop.IVsPersistDocData.SaveDocData
-            Return Me.SaveDocData2(dwSave, pbstrMkDocumentNew, pfSaveCanceled)
+        Public Function SaveDocData(dwSave As VSSAVEFLAGS, ByRef pbstrMkDocumentNew As String, ByRef pfSaveCanceled As Integer) As Integer Implements IVsPersistDocData.SaveDocData
+            Return SaveDocData2(dwSave, pbstrMkDocumentNew, pfSaveCanceled)
         End Function
 
-        Public Function SetUntitledDocPath(pszDocDataPath As String) As Integer Implements Shell.Interop.IVsPersistDocData.SetUntitledDocPath
-            Return Me.SetUntitledDocPath2(pszDocDataPath)
+        Public Function SetUntitledDocPath(pszDocDataPath As String) As Integer Implements IVsPersistDocData.SetUntitledDocPath
+            Return SetUntitledDocPath2(pszDocDataPath)
         End Function
 #End Region
-        Public Function Close2() As Integer Implements Shell.Interop.IVsPersistDocData2.Close
+        Public Function Close2() As Integer Implements IVsPersistDocData2.Close
             'Nothing to do here, no real file to close
             Return NativeMethods.S_OK
         End Function
 
-        Public Function GetGuidEditorType2(ByRef pClassID As System.Guid) As Integer Implements Shell.Interop.IVsPersistDocData2.GetGuidEditorType
+        Public Function GetGuidEditorType2(ByRef pClassID As Guid) As Integer Implements IVsPersistDocData2.GetGuidEditorType
             pClassID = PropPageDesignerEditorFactory.EditorGuid
         End Function
 
-        Public Function IsDocDataDirty2(ByRef pfDirty As Integer) As Integer Implements Shell.Interop.IVsPersistDocData2.IsDocDataDirty
+        Public Function IsDocDataDirty2(ByRef pfDirty As Integer) As Integer Implements IVsPersistDocData2.IsDocDataDirty
             If _isDirty Then
                 pfDirty = 1
             Else
@@ -206,7 +206,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             End If
         End Function
 
-        Public Function IsDocDataReadOnly(ByRef pfReadOnly As Integer) As Integer Implements Shell.Interop.IVsPersistDocData2.IsDocDataReadOnly
+        Public Function IsDocDataReadOnly(ByRef pfReadOnly As Integer) As Integer Implements IVsPersistDocData2.IsDocDataReadOnly
             If _isReadOnly Then
                 pfReadOnly = 1
             Else
@@ -214,37 +214,37 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             End If
         End Function
 
-        Public Function IsDocDataReloadable2(ByRef pfReloadable As Integer) As Integer Implements Shell.Interop.IVsPersistDocData2.IsDocDataReloadable
+        Public Function IsDocDataReloadable2(ByRef pfReloadable As Integer) As Integer Implements IVsPersistDocData2.IsDocDataReloadable
             pfReloadable = 0
         End Function
 
-        Public Function LoadDocData2(pszMkDocument As String) As Integer Implements Shell.Interop.IVsPersistDocData2.LoadDocData
+        Public Function LoadDocData2(pszMkDocument As String) As Integer Implements IVsPersistDocData2.LoadDocData
             'Nothing to do here, no real file to load
             _mkDocument = pszMkDocument
             RaiseEvent OnLoadCompleted(0) 'FALSE == 0
         End Function
 
-        Public Function OnRegisterDocData2(docCookie As UInteger, pHierNew As Shell.Interop.IVsHierarchy, itemidNew As UInteger) As Integer Implements Shell.Interop.IVsPersistDocData2.OnRegisterDocData
+        Public Function OnRegisterDocData2(docCookie As UInteger, pHierNew As IVsHierarchy, itemidNew As UInteger) As Integer Implements IVsPersistDocData2.OnRegisterDocData
             _docCookie = docCookie
             _vsHierarchy = pHierNew
             _itemId = itemidNew
         End Function
 
-        Public Function ReloadDocData2(grfFlags As UInteger) As Integer Implements Shell.Interop.IVsPersistDocData2.ReloadDocData
+        Public Function ReloadDocData2(grfFlags As UInteger) As Integer Implements IVsPersistDocData2.ReloadDocData
             'Should we reload anything?
             RaiseEvent OnLoadCompleted(1) 'TRUE == 1
         End Function
 
-        Public Function RenameDocData2(grfAttribs As UInteger, pHierNew As Shell.Interop.IVsHierarchy, itemidNew As UInteger, pszMkDocumentNew As String) As Integer Implements Shell.Interop.IVsPersistDocData2.RenameDocData
+        Public Function RenameDocData2(grfAttribs As UInteger, pHierNew As IVsHierarchy, itemidNew As UInteger, pszMkDocumentNew As String) As Integer Implements IVsPersistDocData2.RenameDocData
             Return VSConstants.E_NOTIMPL
         End Function
 
-        Public Function SaveDocData2(dwSave As Shell.Interop.VSSAVEFLAGS, ByRef pbstrMkDocumentNew As String, ByRef pfSaveCanceled As Integer) As Integer Implements Shell.Interop.IVsPersistDocData2.SaveDocData
+        Public Function SaveDocData2(dwSave As VSSAVEFLAGS, ByRef pbstrMkDocumentNew As String, ByRef pfSaveCanceled As Integer) As Integer Implements IVsPersistDocData2.SaveDocData
             pfSaveCanceled = 0
             'Nothing to do since we have no true file backing
         End Function
 
-        Public Function SetDocDataDirty(fDirty As Integer) As Integer Implements Shell.Interop.IVsPersistDocData2.SetDocDataDirty
+        Public Function SetDocDataDirty(fDirty As Integer) As Integer Implements IVsPersistDocData2.SetDocDataDirty
             If fDirty <> 0 Then
                 _isDirty = True
             Else
@@ -252,7 +252,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             End If
         End Function
 
-        Public Function SetDocDataReadOnly(fReadOnly As Integer) As Integer Implements Shell.Interop.IVsPersistDocData2.SetDocDataReadOnly
+        Public Function SetDocDataReadOnly(fReadOnly As Integer) As Integer Implements IVsPersistDocData2.SetDocDataReadOnly
             If fReadOnly <> 0 Then
                 _isReadOnly = True
             Else
@@ -261,7 +261,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             Return VSConstants.S_OK
         End Function
 
-        Public Function SetUntitledDocPath2(pszDocDataPath As String) As Integer Implements Shell.Interop.IVsPersistDocData2.SetUntitledDocPath
+        Public Function SetUntitledDocPath2(pszDocDataPath As String) As Integer Implements IVsPersistDocData2.SetUntitledDocPath
             Return VSConstants.E_NOTIMPL
         End Function
 #End Region
@@ -272,7 +272,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="ppTextBuffer"></param>
         ''' <remarks></remarks>
-        Public Function GetTextBuffer(ByRef ppTextBuffer As TextManager.Interop.IVsTextLines) As Integer Implements Shell.Interop.IVsTextBufferProvider.GetTextBuffer
+        Public Function GetTextBuffer(ByRef ppTextBuffer As IVsTextLines) As Integer Implements IVsTextBufferProvider.GetTextBuffer
             If TypeOf VsTextStream Is IVsTextLines Then
                 ppTextBuffer = CType(VsTextStream, IVsTextLines)
             Else
@@ -285,7 +285,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="fLock"></param>
         ''' <remarks></remarks>
-        Public Function LockTextBuffer(fLock As Integer) As Integer Implements Shell.Interop.IVsTextBufferProvider.LockTextBuffer
+        Public Function LockTextBuffer(fLock As Integer) As Integer Implements IVsTextBufferProvider.LockTextBuffer
             If fLock = 0 Then
                 Return VsTextStream.UnlockBuffer()
             Else
@@ -298,7 +298,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' </summary>
         ''' <param name="pTextBuffer"></param>
         ''' <remarks></remarks>
-        Public Function SetTextBuffer(pTextBuffer As TextManager.Interop.IVsTextLines) As Integer Implements Shell.Interop.IVsTextBufferProvider.SetTextBuffer
+        Public Function SetTextBuffer(pTextBuffer As IVsTextLines) As Integer Implements IVsTextBufferProvider.SetTextBuffer
             Debug.Fail("SetTextBuffer not supported in Application Designer!")
         End Function
 #End Region
@@ -310,7 +310,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="riid"></param>
         ''' <param name="ppvSite"></param>
         ''' <remarks></remarks>
-        Public Sub GetSite(ByRef riid As System.Guid, ByRef ppvSite As System.IntPtr) Implements OLE.Interop.IObjectWithSite.GetSite
+        Public Sub GetSite(ByRef riid As Guid, ByRef ppvSite As IntPtr) Implements OLE.Interop.IObjectWithSite.GetSite
             Dim punk As IntPtr = Marshal.GetIUnknownForObject(_siteProvider)
             Dim hr As Integer
             hr = Marshal.QueryInterface(punk, riid, ppvSite)
@@ -339,7 +339,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Disposes of any the doc data
         ''' </summary>
         ''' <remarks></remarks>
-        Public Overloads Sub Dispose() Implements System.IDisposable.Dispose
+        Public Overloads Sub Dispose() Implements IDisposable.Dispose
             Dispose(True)
         End Sub
 

@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices;
 using Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
@@ -27,11 +26,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             [Import(ContractNames.ProjectPropertyProviders.ProjectFile)] IProjectInstancePropertiesProvider instanceProvider,
             [ImportMany(ContractNames.ProjectPropertyProviders.ProjectFile)]IEnumerable<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> interceptingValueProviders,
             UnconfiguredProject unconfiguredProject,
-            ProjectProperties projectProperties,
             ILanguageServiceHost languageServiceHost,
             VisualStudioWorkspace workspace,
             IProjectThreadingService threadingService)
-            : base(delegatedProvider, instanceProvider, interceptingValueProviders, unconfiguredProject, projectProperties,
+            : base(delegatedProvider, instanceProvider, interceptingValueProviders, unconfiguredProject,
                   getActiveProjectId: () => ((AbstractProject)languageServiceHost.ActiveProjectContext)?.Id,
                   workspace: workspace,
                   threadingService: threadingService)
