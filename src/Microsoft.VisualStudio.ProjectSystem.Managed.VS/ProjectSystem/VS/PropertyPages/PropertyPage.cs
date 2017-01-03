@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         private T WaitForAsync<T>(Func<Task<T>> asyncFunc)
         {
-            return _threadHandling.ExecuteSynchronously<T>(asyncFunc);
+            return _threadHandling.ExecuteSynchronously(asyncFunc);
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         ///--------------------------------------------------------------------------------------------
         public int Apply()
         {
-            return WaitForAsync<int>(OnApply);
+            return WaitForAsync(OnApply);
         }
 
         ///--------------------------------------------------------------------------------------------
@@ -193,12 +193,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         ///  Called when the page is moved or sized
         /// </summary>
         ///--------------------------------------------------------------------------------------------
-        public new void Move(Microsoft.VisualStudio.OLE.Interop.RECT[] pRect)
+        public new void Move(RECT[] pRect)
         {
             if (pRect == null || pRect.Length <= 0)
                 throw new ArgumentNullException("pRect");
 
-            Microsoft.VisualStudio.OLE.Interop.RECT r = pRect[0];
+            RECT r = pRect[0];
 
             Location = new Point(r.left, r.top);
             Size = new Size(r.right - r.left, r.bottom - r.top);
@@ -263,7 +263,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             if (pMsg == null)
                 return VSConstants.E_POINTER;
 
-            System.Windows.Forms.Message m = Message.Create(pMsg[0].hwnd, (int)pMsg[0].message, pMsg[0].wParam, pMsg[0].lParam);
+            Message m = Message.Create(pMsg[0].hwnd, (int)pMsg[0].message, pMsg[0].wParam, pMsg[0].lParam);
             bool used = false;
 
             // Preprocessing should be passed to the control whose handle the message refers to.
@@ -323,7 +323,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         internal static T GetExport<T>(IVsHierarchy hier)
         {
-            System.IServiceProvider sp = new Microsoft.VisualStudio.Shell.ServiceProvider((OLE.Interop.IServiceProvider)hier.GetDTEProject().DTE);
+            System.IServiceProvider sp = new Shell.ServiceProvider((OLE.Interop.IServiceProvider)hier.GetDTEProject().DTE);
             IComponentModel compMode = sp.GetService<IComponentModel, SComponentModel>();
             return compMode.DefaultExportProvider.GetExport<T>().Value;
         }

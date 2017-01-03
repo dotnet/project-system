@@ -19,7 +19,7 @@ using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
-    using DependencyNodeInfo = System.Tuple<IDependencyNode, IProjectDependenciesSubTreeProvider>;
+    using DependencyNodeInfo = Tuple<IDependencyNode, IProjectDependenciesSubTreeProvider>;
 
     /// <summary>
     /// Provides actual dependencies nodes under Dependencies\[DependencyType]\[TopLevel]\[....] sub nodes. 

@@ -818,12 +818,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                      (SelectedDebugProfile.CommandName == ProfileCommandNames.IISExpress))
             {
 
-                _launchTypes = LaunchType.GetExecutableOnlyLaunchTypes().ToList<LaunchType>();
+                _launchTypes = LaunchType.GetExecutableOnlyLaunchTypes().ToList();
 
             }
             else
             {
-                _launchTypes = LaunchType.GetBuiltInLaunchTypes().ToList<LaunchType>();
+                _launchTypes = LaunchType.GetBuiltInLaunchTypes().ToList();
             }
 
             OnPropertyChanged(nameof(LaunchTypes));

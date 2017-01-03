@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Threading;
 
 // Let inspection tools detect that CPS uses a SourceSwitch for tracing messages.
-[assembly: System.Diagnostics.Switch("RoslynProjectSystem", typeof(System.Diagnostics.SourceSwitch))]
+[assembly: Switch("RoslynProjectSystem", typeof(SourceSwitch))]
 
 namespace Microsoft.VisualStudio.ProjectSystem.Utilities
 {
