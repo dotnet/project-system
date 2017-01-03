@@ -113,12 +113,12 @@
         <target state="translated">プラットフォーム ターゲット</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Prefer32Bit|DisplayName">
+      <trans-unit id="BoolProperty|Prefer32Bit|DisplayName">
         <source>Prefer 32Bit</source>
         <target state="translated">32 ビット優先</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|AllowUnsafeBlocks|DisplayName">
+      <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
         <source>Allow unsafe code</source>
         <target state="translated">アンセーフ コードの許可</target>
         <note />
@@ -273,12 +273,12 @@
         <target state="translated">アセンブリ バージョン</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|SignAssembly|DisplayName">
+      <trans-unit id="BoolProperty|SignAssembly|DisplayName">
         <source>Sign the assembly</source>
         <target state="translated">アセンブリに署名する</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|DelaySign|DisplayName">
+      <trans-unit id="BoolProperty|DelaySign|DisplayName">
         <source>Delay sign only</source>
         <target state="translated">遅延署名のみ</target>
         <note />
@@ -303,7 +303,7 @@
         <target state="translated">パッケージ ID</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|PackageVersion|DisplayName">
+      <trans-unit id="StringProperty|Version|DisplayName">
         <source>Package Version</source>
         <target state="translated">パッケージ バージョン</target>
         <note />
@@ -353,7 +353,7 @@
         <target state="translated">リポジトリの種類</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|AssemblyCompany|DisplayName">
+      <trans-unit id="StringProperty|Company|DisplayName">
         <source>Assembly Company</source>
         <target state="translated">アセンブリ企業</target>
         <note />

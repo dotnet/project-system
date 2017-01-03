@@ -113,12 +113,12 @@
         <target state="translated">Destino de la plataforma</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Prefer32Bit|DisplayName">
+      <trans-unit id="BoolProperty|Prefer32Bit|DisplayName">
         <source>Prefer 32Bit</source>
         <target state="translated">Preferencia de 32 bits</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|AllowUnsafeBlocks|DisplayName">
+      <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
         <source>Allow unsafe code</source>
         <target state="translated">Permitir código no seguro</target>
         <note />
@@ -273,12 +273,12 @@
         <target state="translated">Versión del ensamblado</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|SignAssembly|DisplayName">
+      <trans-unit id="BoolProperty|SignAssembly|DisplayName">
         <source>Sign the assembly</source>
         <target state="translated">Firmar el ensamblado</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|DelaySign|DisplayName">
+      <trans-unit id="BoolProperty|DelaySign|DisplayName">
         <source>Delay sign only</source>
         <target state="translated">Retrasar firma solo</target>
         <note />
@@ -303,7 +303,7 @@
         <target state="translated">Id. de paquete</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|PackageVersion|DisplayName">
+      <trans-unit id="StringProperty|Version|DisplayName">
         <source>Package Version</source>
         <target state="translated">Versión de paquete</target>
         <note />
@@ -353,7 +353,7 @@
         <target state="translated">Tipo de repositorio</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|AssemblyCompany|DisplayName">
+      <trans-unit id="StringProperty|Company|DisplayName">
         <source>Assembly Company</source>
         <target state="translated">Compañía de ensamblado</target>
         <note />

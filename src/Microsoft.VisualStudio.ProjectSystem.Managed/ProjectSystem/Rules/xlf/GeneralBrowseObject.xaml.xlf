@@ -91,11 +91,11 @@
         <source>Platform Target</source>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Prefer32Bit|DisplayName">
+      <trans-unit id="BoolProperty|Prefer32Bit|DisplayName">
         <source>Prefer 32Bit</source>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|AllowUnsafeBlocks|DisplayName">
+      <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
         <source>Allow unsafe code</source>
         <note />
       </trans-unit>
@@ -219,11 +219,11 @@
         <source>Assembly Version</source>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|SignAssembly|DisplayName">
+      <trans-unit id="BoolProperty|SignAssembly|DisplayName">
         <source>Sign the assembly</source>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|DelaySign|DisplayName">
+      <trans-unit id="BoolProperty|DelaySign|DisplayName">
         <source>Delay sign only</source>
         <note />
       </trans-unit>
@@ -243,7 +243,7 @@
         <source>Package Id</source>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|PackageVersion|DisplayName">
+      <trans-unit id="StringProperty|Version|DisplayName">
         <source>Package Version</source>
         <note />
       </trans-unit>
@@ -283,7 +283,7 @@
         <source>Repository Type</source>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|AssemblyCompany|DisplayName">
+      <trans-unit id="StringProperty|Company|DisplayName">
         <source>Assembly Company</source>
         <note />
       </trans-unit>
