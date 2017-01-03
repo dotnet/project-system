@@ -263,6 +263,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComponentModel\AbstractControlTypeDescriptionProvider.vb" />
+    <Compile Include="ProjectCapability.vb" />
     <Compile Include="PropPages\AdvancedServicesDialog.Designer.vb">
       <DependentUpon>AdvancedServicesDialog.vb</DependentUpon>
     </Compile>

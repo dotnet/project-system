@@ -678,8 +678,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'Populate the target framework combobox
             PopulateTargetFrameworkComboBox(Me.TargetFramework)
 
-            ' Hide the AssemblyInformation button if project supports "Pack" capability, and hence has a Package property page with assembly info properties.
-            If Me.ProjectHierarchy.IsCapabilityMatch("Pack") Then
+            ' Hide the AssemblyInformation button if project supports Pack capability, and hence has a Package property page with assembly info properties.
+            If Me.ProjectHierarchy.IsCapabilityMatch(Pack) Then
                 Me.AssemblyInfoButton.Visible = False
             End If
         End Sub
