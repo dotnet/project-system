@@ -50,6 +50,9 @@
     </StringProperty.Metadata>
   </StringProperty>
   <StringProperty Name="Link" Visible="false">
+    <StringProperty.DataSource>
+      <DataSource PersistenceStyle="Attribute" />
+    </StringProperty.DataSource>
     <StringProperty.Metadata>
       <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />
     </StringProperty.Metadata>
