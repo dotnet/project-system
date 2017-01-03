@@ -1084,8 +1084,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 var result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
-                DependencyMetadata dependency = null;
-                if (!CurrentSnapshot.DependenciesWorld.TryGetValue(itemSpec, out dependency))
+                if (!CurrentSnapshot.DependenciesWorld.TryGetValue(itemSpec, out DependencyMetadata dependency))
                 {
                     return result;
                 }

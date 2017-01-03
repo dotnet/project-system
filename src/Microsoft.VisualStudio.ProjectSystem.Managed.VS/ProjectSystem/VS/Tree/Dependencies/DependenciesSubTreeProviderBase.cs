@@ -364,11 +364,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 {
                     string unresolvedItemSpec = resolvedReferenceRuleChanges.Before
                                                     .Items[removedItemSpec][OriginalItemSpecPropertyName];
-                    IProjectRuleSnapshot unresolvedReferenceSnapshot = null;
                     string unresolvedItemType = GetUnresolvedReferenceItemType(unresolvedItemSpec,
-                                                                            updatedUnresolvedSnapshots,
-                                                                            catalogs,
-                                                                            out unresolvedReferenceSnapshot);
+                                                        updatedUnresolvedSnapshots,
+                                                        catalogs,
+                                                        out IProjectRuleSnapshot unresolvedReferenceSnapshot);
                     var node = rootTreeNodes.FindNode(removedItemSpec, unresolvedItemType);
                     if (node != null)
                     {
@@ -398,11 +397,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     }
 
                     var originalItemSpec = properties[OriginalItemSpecPropertyName];
-                    IProjectRuleSnapshot unresolvedReferenceSnapshot = null;
                     var itemType = GetUnresolvedReferenceItemType(originalItemSpec,
-                                                                  updatedUnresolvedSnapshots,
-                                                                  catalogs,
-                                                                  out unresolvedReferenceSnapshot);
+                                              updatedUnresolvedSnapshots,
+                                              catalogs,
+                                              out IProjectRuleSnapshot unresolvedReferenceSnapshot);
                     if (string.IsNullOrEmpty(itemType))
                     {
                         // Note: design time build resolves not only our unresolved assemblies, but also

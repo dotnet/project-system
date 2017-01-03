@@ -47,8 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             public Task<IEnumValue> TryCreateEnumValueAsync(string userSuppliedValue)
             {
                 string lowercasedValue = userSuppliedValue.ToLowerInvariant();
-                IEnumValue value;
-                if (_listedOutputTypeValues.TryGetValue(lowercasedValue, out value))
+                if (_listedOutputTypeValues.TryGetValue(lowercasedValue, out IEnumValue value))
                 {
                     return Task.FromResult(value);
                 }
