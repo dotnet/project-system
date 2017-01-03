@@ -33,6 +33,7 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Input\CommandGroup.cs" />
     <Compile Include="Input\UIHierarchyWindowCommandId.cs" />
+    <Compile Include="Input\VisualStudioStandard2kCommandId.cs" />
     <Compile Include="Input\VisualStudioStandard97CommandId.cs" />
     <Compile Include="Packaging\DplOptOutRegistrationAttribute.cs" />
     <Compile Include="ProjectSystem\VS\EditAndContinue\EditAndContinueProvider.cs" />
