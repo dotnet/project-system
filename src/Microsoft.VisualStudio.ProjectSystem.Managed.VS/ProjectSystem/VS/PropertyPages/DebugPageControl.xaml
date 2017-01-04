@@ -50,13 +50,6 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Label
                 Grid.Row="0"
@@ -76,12 +69,13 @@
                 VerticalContentAlignment="Center"
                 MinHeight="23"
                 Margin="5,6,2,7"
-                ItemsSource="{Binding Path=DebugProfiles}"
+                ItemsSource="{Binding Path=LaunchProfiles, Mode=OneWay}"
                 SelectedValue="{Binding Path=SelectedDebugProfile}">
                 <ComboBox.IsEnabled>
                     <MultiBinding Converter="{StaticResource MultiValueBoolToBoolAnd}">
                         <Binding Path="HasProfiles" Mode="OneWay"/>
                         <Binding Path="EnvironmentVariablesValid" Mode="OneWay"/>
+                        <Binding Path="DoesNotHaveErrors" Mode="OneWay"/>
                     </MultiBinding>
                 </ComboBox.IsEnabled>
             </ComboBox>
@@ -136,7 +130,6 @@
                 SelectedValue="{Binding Path=SelectedLaunchType, Mode=TwoWay}"
                 DisplayMemberPath="Name"
                 IsReadOnly="True"
-                IsEnabled="{Binding Path=IsCustomType}"
                 IsEditable="False">
             </ComboBox>
             <Label 
@@ -146,7 +139,7 @@
                 Content="E_xecutable:"
                 IsTabStop="False" 
                 VerticalAlignment="Center"
-                Visibility="{Binding Path=IsExecutable, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
+                Visibility="{Binding Path=SupportsExecutable, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
                 Target="{Binding ElementName=executableText}"/>
             <local:WatermarkTextBox
                 Grid.Row="2"
@@ -159,7 +152,7 @@
                 VerticalContentAlignment="Center"
                 VerticalAlignment="Center"
                 Text="{Binding Path=ExecutablePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Visibility="{Binding Path=IsExecutable, Mode=OneWay, Converter={StaticResource visibilityConverter}}"/>
+                Visibility="{Binding Path=SupportsExecutable, Mode=OneWay, Converter={StaticResource visibilityConverter}}"/>
             <Button
                 Grid.Row="2"
                 Grid.Column="2"
@@ -173,7 +166,7 @@
                 VerticalAlignment="Center"
                 Content="Browse..."
                 IsEnabled="{Binding Path=IsProfileSelected, Mode=OneWay}"
-                Visibility="{Binding Path=IsExecutable, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
+                Visibility="{Binding Path=SupportsExecutable, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
                 Command="{Binding Path=BrowseExecutableCommand}"/>
             <Label 
                 Grid.Row="4"
@@ -182,7 +175,7 @@
                 Content="_Application arguments:"
                 IsTabStop="False" 
                 VerticalAlignment="Top"
-                Visibility="{Binding Path=IsIISOrIISExpress, Mode=OneWay, Converter={StaticResource invertableVisibiltyConverter}, ConverterParameter=Inverted}"
+                Visibility="{Binding Path=SupportsArguments, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
                 Target="{Binding ElementName=txtArguments}"/>
             <local:WatermarkTextBox 
                 Grid.Row="4"
@@ -197,15 +190,14 @@
                 VerticalAlignment="Center"
                 Text="{Binding Path=CommandLineArguments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 IsEnabled="{Binding Path=IsProfileSelected, Mode=OneWay}"
-                Visibility="{Binding Path=IsIISOrIISExpress, Mode=OneWay, Converter={StaticResource invertableVisibiltyConverter}, ConverterParameter=Inverted}">
-            </local:WatermarkTextBox>
+                Visibility="{Binding Path=SupportsArguments, Mode=OneWay, Converter={StaticResource visibilityConverter}}" />
             <Label 
                 Grid.Row="5"
                 x:Uid="workingDirectoryLabel"
                 Margin="4,4,3,5"
                 Content="W_orking directory:"
                 VerticalAlignment="Center"
-                Visibility="{Binding Path=IsIISOrIISExpress, Mode=OneWay, Converter={StaticResource invertableVisibiltyConverter}, ConverterParameter=Inverted}"
+                Visibility="{Binding Path=SupportsWorkingDirectory, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
                 Target="{Binding ElementName=txtWorkingDirectory}"/>
             <local:WatermarkTextBox  
                 Grid.Row="5"
@@ -218,7 +210,7 @@
                 MinHeight="23"
                 Margin="5,8,2,7"
                 IsEnabled="{Binding Path=IsProfileSelected, Mode=OneWay}"
-                Visibility="{Binding Path=IsIISOrIISExpress, Mode=OneWay, Converter={StaticResource invertableVisibiltyConverter}, ConverterParameter=Inverted}"
+                Visibility="{Binding Path=SupportsWorkingDirectory, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
                 MinWidth="200"/>
             <Button
                 Grid.Row="5"
@@ -233,7 +225,7 @@
                 VerticalAlignment="Center"
                 Content="Browse..."
                 IsEnabled="{Binding Path=IsProfileSelected, Mode=OneWay}"
-                Visibility="{Binding Path=IsIISOrIISExpress, Mode=OneWay, Converter={StaticResource invertableVisibiltyConverter}, ConverterParameter=Inverted}"
+                Visibility="{Binding Path=SupportsWorkingDirectory, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
                 Command="{Binding Path=BrowseDirectoryCommand}"/>
             <CheckBox 
                 Grid.Row="6"
@@ -244,6 +236,7 @@
                 Margin="9,7,3,7"
                 VerticalAlignment="Center"
                 IsEnabled="{Binding Path=IsProfileSelected, Mode=OneWay}"
+                Visibility="{Binding Path=SupportsLaunchUrl, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
                 VerticalContentAlignment="Center"
                 Content="Launch _URL:"/>
             <local:WatermarkTextBox 
@@ -255,6 +248,7 @@
                 VerticalAlignment="Center"
                 VerticalContentAlignment="Center"
                 Text="{Binding Path=LaunchPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Visibility="{Binding Path=SupportsLaunchUrl, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
                 MinWidth="200"
                 MinHeight="23">
                 <local:WatermarkTextBox.IsEnabled>
@@ -265,15 +259,16 @@
                 </local:WatermarkTextBox.IsEnabled>
             </local:WatermarkTextBox>
             <Label 
-                Grid.Row="8"
+                Grid.Row="7"
                 x:Uid="envVarsLabel"
                 Margin="4,4,3,0"
                 IsTabStop="False"
                 VerticalAlignment="Top"
+                Visibility="{Binding Path=SupportsEnvironmentVariables, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
                 Content="Environment variables:"/>
             <DataGrid
                 x:Name="dataGridEnvironmentVariables"
-                Grid.Row="8"
+                Grid.Row="7"
                 Grid.Column="1"
                 Background="White"
                 Margin="5,4,2,4"
@@ -281,6 +276,7 @@
                 MinHeight="150"
                 MaxHeight="150"
                 IsEnabled="{Binding Path=IsProfileSelected, Mode=OneWay}"
+                Visibility="{Binding Path=SupportsEnvironmentVariables, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
                 ItemsSource="{Binding EnvironmentVariables, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 VerticalGridLinesBrush="{DynamicResource VsBrush.GridLine}" HorizontalGridLinesBrush="{DynamicResource VsBrush.GridLine}" 
                 SelectedIndex="{Binding EnvironmentVariablesRowSelectedIndex, Mode=TwoWay}"
@@ -351,7 +347,8 @@
 
                 </DataGrid.Columns>
             </DataGrid>
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="6,20,0,0" Grid.Row="8" Grid.Column="2">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="6,20,0,0" Grid.Row="7" Grid.Column="2" 
+                        Visibility="{Binding Path=SupportsEnvironmentVariables, Mode=OneWay, Converter={StaticResource visibilityConverter}}">
                 <Button 
                     x:Uid="AddEnvironmentVariableButton" 
                     Name="AddEnvironmentVariableButton" 
@@ -381,6 +378,8 @@
                     Remo_ve
                 </Button>
             </StackPanel>
+            <!-- Where the custom control is placed for the active provider -->
+            <ContentPresenter Grid.Row="8" Grid.Column="0"  Grid.ColumnSpan="3" Content="{Binding ActiveProviderUserControl, Mode=OneWay}" />
         </Grid>
     </Grid>
 </local:PropertyPageControl>

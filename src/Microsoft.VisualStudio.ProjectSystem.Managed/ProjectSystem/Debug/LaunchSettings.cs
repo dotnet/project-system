@@ -1,8 +1,10 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
@@ -35,6 +37,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             
             GlobalSettings = settingsData.OtherSettings == null? ImmutableDictionary<string, object>.Empty : settingsData.OtherSettings.ToImmutableDictionary();
             _activeProfileName = activeProfile;
+        }
+
+        public LaunchSettings(IWritableLaunchSettings settings)
+        {
+            Profiles = ImmutableList<ILaunchProfile>.Empty;
+            foreach(var profile in settings.Profiles)
+            {
+                Profiles = Profiles.Add(new LaunchProfile(profile));
+            }
+            
+            // For global settings we want to make new copies of each entry so that the snapshot remains immutable. If the object implements 
+            // ICloneable that is used, otherwise, it is serialized back to json, and a new object rehydrated from that
+            GlobalSettings = ImmutableDictionary<string, object>.Empty;
+            foreach(var kvp in settings.GlobalSettings)
+            {
+                if(kvp.Value is ICloneable)
+                {
+                    GlobalSettings = GlobalSettings.Add(kvp.Key, ((ICloneable)kvp.Value).Clone());
+                }
+                else
+                {
+                    string jsonString = JsonConvert.SerializeObject(kvp.Value, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore});
+                    object clonedObject = JsonConvert.DeserializeObject(jsonString, kvp.Value.GetType());
+                    GlobalSettings = GlobalSettings.Add(kvp.Key, clonedObject);
+                }
+            }
+
+            _activeProfileName = settings.ActiveProfile?.Name;
         }
 
         public LaunchSettings()
@@ -76,25 +106,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
          }
     }
+
     internal static class LaunchSettingsExtension
     {
-        public static bool ProfilesAreDifferent(this ILaunchSettings launchSettings, IList<ILaunchProfile> profilesToCompare)
+        public static IWritableLaunchSettings ToWritableLaunchSettings(this ILaunchSettings curSettings)
         {
-            bool detectedChanges = launchSettings.Profiles == null || launchSettings.Profiles.Count != profilesToCompare.Count;
-            if (!detectedChanges)
-            {
-                // Now compare each item
-                foreach (var profile in profilesToCompare)
-                {
-                    var existingProfile = launchSettings.Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, profile.Name));
-                    if (existingProfile == null || !LaunchProfile.ProfilesAreEqual(profile, existingProfile, true))
-                    {
-                        detectedChanges = true;
-                        break;
-                    }
-                }
-            }
-            return detectedChanges;
+            return new WritableLaunchSettings(curSettings);
         }
     }
 }

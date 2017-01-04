@@ -84,9 +84,11 @@
     <Compile Include="ProjectSystem\VS\PropertyPages\DebugPageViewModel.cs" />
     <Compile Include="ProjectSystem\VS\PropertyPages\DebugPropertyPage.cs" />
     <Compile Include="ProjectSystem\VS\PropertyPages\EnvironmentGridTemplateColumn.cs" />
+    <Compile Include="ProjectSystem\VS\PropertyPages\ProjectLaunchSettingsUIProvider.cs" />
     <Compile Include="ProjectSystem\VS\PropertyPages\GetProfileNameDialog.xaml.cs">
       <DependentUpon>GetProfileNameDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ProjectSystem\VS\PropertyPages\ExecutableLaunchSettingsUIProvider.cs" />
     <Compile Include="ProjectSystem\VS\PropertyPages\IPageMetadata.cs" />
     <Compile Include="ProjectSystem\VS\PropertyPages\PropertyPage.cs">
       <SubType>UserControl</SubType>
@@ -235,8 +237,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ProjectSystem\VS\PropertyPages\PropertyPageResources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>PropertyPageResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="VSResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
