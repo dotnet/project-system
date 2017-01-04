@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="SdkReference" DisplayName="SDK 引用" PageTemplate="generic" Description="SDK 引用属性" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" ItemType="SDKReference" HasConfigurationCondition="False" />
+  </Rule.DataSource>
+  <StringProperty Name="SDKRootFolder" DisplayName="SDK 根" />
+  <StringProperty Name="AppXLocation" DisplayName="应用包位置" />
+  <StringProperty Name="FrameworkIdentity" DisplayName="FrameworkIdentity" />
+  <BoolProperty Name="CopyPayload" DisplayName="复制负载" />
+  <StringProperty Name="CopyPayloadToSubDirectory" DisplayName="将负载复制到子目录" />
+  <BoolProperty Name="ExpandContent" DisplayName="扩展内容" />
+  <BoolProperty Name="ExpandReferenceAssemblies" DisplayName="扩展引用程序集" />
+  <BoolProperty Name="CopyLocalExpandedReferenceAssemblies" DisplayName="复制本地扩展的引用程序集" />
+</Rule>

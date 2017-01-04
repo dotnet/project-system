@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="AssemblyReference" DisplayName="組件參考" PageTemplate="generic" Description="組件參考屬性" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" />
+  </Rule.DataSource>
+  <StringListProperty Name="Aliases" DisplayName="別名" Description="這個參考的逗號分隔別名清單。" Separator="," />
+  <BoolProperty Name="CopyLocal" DisplayName="複製到本機" Description="表示是否將參考複製到輸出目錄。">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" PersistedName="Private" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <BoolProperty Name="EmbedInteropTypes" DisplayName="內嵌 Interop 類型" Description="指出此組件中所定義的類型是否將內嵌在目標組件中。" />
+  <BoolProperty Name="SpecificVersion" DisplayName="特定版本" Description="指出這個組件是否可以解析 (不考慮組件解析的多目標規則)。">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="AssemblyReference" ItemType="Reference" HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <StringProperty Name="RequiredTargetFramework" DisplayName="需要的目標 Framework" Visible="False" />
+  <StringProperty Name="HintPath" Visible="false" />
+  <StringProperty Name="SDKName" Visible="false" />
+  <BoolProperty Name="IsWinMDFile" Visible="false" />
+  <StringProperty Name="ImageRuntime" DisplayName="執行階段版本" Description="此組件的目標 CLR 執行階段版本。" Visible="False" ReadOnly="True" />
+</Rule>

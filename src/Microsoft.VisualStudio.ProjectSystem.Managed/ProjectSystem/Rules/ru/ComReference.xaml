@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="ComReference" DisplayName="Ссылка COM" PageTemplate="generic" Description="Свойства ссылки COM" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" ItemType="COMReference" HasConfigurationCondition="False" />
+  </Rule.DataSource>
+  <StringProperty Name="Guid" DisplayName="CLSID" Description="Идентификатор GUID COM-сервера." />
+  <StringProperty Name="Lcid" DisplayName="Языковой стандарт" Description="Код языка COM-сервера." />
+  <IntProperty Name="VersionMajor" />
+  <IntProperty Name="VersionMinor" />
+  <BoolProperty Name="Isolated" />
+  <StringProperty Name="WrapperTool" />
+</Rule>

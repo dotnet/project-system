@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright, Microsoft Corporation, All rights reserved.-->
+<Rule Name="VisualBasic" DisplayName="Свойства файла" PageTemplate="generic" Description="Свойства файла" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="false" />
+  </Rule.DataSource>
+  <Rule.Categories>
+    <Category Name="Advanced" DisplayName="Дополнительно" />
+    <Category Name="Misc" DisplayName="Прочее" />
+  </Rule.Categories>
+  <DynamicEnumProperty Name="{}{ItemType}" DisplayName="Действие при сборке" Category="Advanced" Description="Как файл связан с процессами сборки и развертывания." EnumProvider="ItemTypes" />
+  <EnumProperty Name="CopyToOutputDirectory" DisplayName="Копировать в выходной каталог" Category="Advanced" Description="Указывает, что файл исходного кода будет скопирован в выходной каталог.">
+    <EnumValue Name="Never" DisplayName="Не копировать" />
+    <EnumValue Name="Always" DisplayName="Всегда копировать" />
+    <EnumValue Name="PreserveNewest" DisplayName="Копировать более позднюю версию" />
+  </EnumProperty>
+  <StringProperty Name="Identity" Visible="false" ReadOnly="true" Category="Misc" Description="Элемент, заданный в атрибуте Include.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="Identity" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FullPath" DisplayName="Полный путь" ReadOnly="true" Category="Misc" Description="Расположение файла.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FullPath" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FileNameAndExtension" DisplayName="Имя файла" ReadOnly="true" Category="Misc" Description="Имя файла или папки.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FileNameAndExtension" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <BoolProperty Name="Visible" Visible="false" />
+  <StringProperty Name="DependentUpon" Visible="false">
+    <StringProperty.Metadata>
+      <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />
+    </StringProperty.Metadata>
+  </StringProperty>
+  <StringProperty Name="Link" Visible="false">
+    <StringProperty.DataSource>
+      <DataSource PersistenceStyle="Attribute" />
+    </StringProperty.DataSource>
+    <StringProperty.Metadata>
+      <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />
+    </StringProperty.Metadata>
+  </StringProperty>
+  <StringProperty Name="SubType" Visible="false" />
+  <StringProperty Name="LastGenOutput" Visible="false" Description="Имя последнего файла, созданного в результате SFG." />
+  <BoolProperty Name="DesignTime" Visible="false" Description="Значение, указывающее, действительно ли данный файл имеет конструктор." />
+  <BoolProperty Name="AutoGen" Visible="false" Description="Значение, указывающее, является ли этот файл созданным." />
+</Rule>

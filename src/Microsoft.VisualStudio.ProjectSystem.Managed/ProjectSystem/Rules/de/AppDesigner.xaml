@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="AppDesigner" DisplayName="AppDesigner" PageTemplate="generic" Description="Allgemein" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" Label="Configuration" />
+  </Rule.DataSource>
+  <StringProperty Name="FolderName" Visible="false" Default="Properties">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" Label="Configuration" HasConfigurationCondition="false" PersistedName="AppDesignerFolder" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <BoolProperty Name="ContentsVisibleOnlyInShowAllFiles" Visible="false" Default="false" ReadOnly="true">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" Label="Configuration" HasConfigurationCondition="false" PersistedName="AppDesignerFolderContentsVisibleOnlyInShowAllFiles" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+</Rule>

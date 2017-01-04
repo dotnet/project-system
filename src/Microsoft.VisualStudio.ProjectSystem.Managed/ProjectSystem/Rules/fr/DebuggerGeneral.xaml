@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
+<Rule Name="DebuggerGeneralProperties" DisplayName="Propriétés générales du débogueur" Description="Options générales du débogueur" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="UserFile" />
+  </Rule.DataSource>
+  <StringProperty Name="SymbolsPath" DisplayName="Chemin de recherche des symboles" Description="Chemin de recherche utilisé par le débogueur pour trouver les symboles."></StringProperty>
+  <StringProperty Name="DebuggerFlavor" Visible="false" Description="Règle de débogage sélectionnée en tant que débogueur actif."></StringProperty>
+  <EnumProperty Name="ImageClrType" Visible="false" Description="Propriété 'hidden' passée aux débogueurs pour leur indiquer s'il s'agit d'un projet managé.">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="UserFile" HasConfigurationCondition="false" PersistedName="_TargetImageClrType" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="Native" DisplayName="Image native" Description="L'image exécutable utilisée pour le débogage est une application entièrement native." />
+    <EnumValue Name="Mixed" DisplayName="Image mixte" Description="L'image exécutable utilisée pour le débogage est une combinaison de code natif et managé." />
+    <EnumValue Name="Managed" DisplayName="Image managée" Description="L'image exécutable utilisée pour le débogage est une application entièrement managée." />
+  </EnumProperty>
+</Rule>

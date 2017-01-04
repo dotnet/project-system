@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="ResolvedCOMReference" DisplayName="Rozpoznane odwołanie COM" PageTemplate="generic" Description="Rozpoznane odwołanie" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ResolvedReference" ItemType="COMReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="ResolveComReferencesDesignTime" />
+  </Rule.DataSource>
+  <StringProperty Name="Guid" DisplayName="CLSID" Description="Identyfikator GUID serwera COM." Visible="False" />
+  <IntProperty Name="VersionMajor" Visible="False" />
+  <IntProperty Name="VersionMinor" Visible="False" />
+  <StringProperty Name="WrapperTool" Visible="False" />
+  <StringListProperty Name="Aliases" DisplayName="Aliasy" Description="Rozdzielona przecinkami lista aliasów do tego odwołania." Separator=",">
+    <StringListProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="COMReference" HasConfigurationCondition="False" />
+    </StringListProperty.DataSource>
+  </StringListProperty>
+  <BoolProperty Name="CopyLocal" DisplayName="Kopia lokalna" Description="Wskazuje, czy odwołanie będzie kopiowane do katalogu wyjściowego.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="COMReference" HasConfigurationCondition="False" PersistedName="Private" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <StringProperty Name="Culture" ReadOnly="True" Visible="False" DisplayName="Kultura" Description="Wartość pola kultury z metadanych zestawu." />
+  <StringProperty Name="Description" ReadOnly="True" Visible="False" DisplayName="Opis" Description="Wartość pola Tytuł z metadanych zestawu." />
+  <BoolProperty Name="EmbedInteropTypes" DisplayName="Osadź typy międzyoperacyjne" Description="Wskazuje, czy typy zdefiniowane w tym zestawie będą osadzone w zestawie docelowym.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="COMReference" HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <EnumProperty Name="FileType" ReadOnly="True" Visible="False" DisplayName="Typ pliku" Description="Typ pliku odwołania.">
+    <EnumValue Name="Assembly" DisplayName="Zestaw .NET" />
+    <EnumValue Name="ActiveX" DisplayName="Biblioteka typów COM" />
+    <EnumValue Name="Native Assembly" DisplayName="Zestaw natywny" />
+  </EnumProperty>
+  <StringProperty Name="Identity" ReadOnly="True" DisplayName="Tożsamość" Description="Tożsamość zabezpieczeń zestawu, do którego się odwoływano (zobacz System.Reflection.Assembly.Evidence lub System.Security.Policy.Evidence).">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="{}{Identity}" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Ścieżka" Description="Lokalizacja pliku, którego dotyczy odwołanie.">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="Identity" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="RuntimeVersion" ReadOnly="True" Visible="False" DisplayName="Wersja wykonawcza" Description="Wersja środowiska uruchomieniowego .NET, za pomocą którego został skompilowany ten zestaw."></StringProperty>
+  <BoolProperty Name="SpecificVersion" DisplayName="Określona wersja" Visible="False" Description="Wskazuje, czy ten zestaw może zostać rozpoznany bez uwzględnienia reguł wielowersyjności kodu dla rozpoznawania zestawu." />
+  <BoolProperty Name="StrongName" ReadOnly="True" Visible="False" DisplayName="Silna nazwa" Description="Wartość true wskazuje, że odwołanie zostało podpisane parą kluczy."></BoolProperty>
+  <StringProperty Name="Version" ReadOnly="True" DisplayName="Wersja" Description="Wersja odwołania."></StringProperty>
+  <StringProperty Name="RequiredTargetFramework" DisplayName="Wymagana platforma docelowa" Visible="False" />
+  <StringProperty Name="HintPath" Visible="false" />
+  <StringProperty Name="SDKIdentity" Visible="false" />
+  <!-- This is the metadata we store on the reference item when we add it. -->
+  <BoolProperty Name="IsWinMDFile" Visible="false" Description="Wskazuje, czy system projektu upewnił się że jest to WinMD (w przeciwieństwie do zestawu)" />
+  <!-- These are metadata added to the resolved item by MSBuild that we don't show to the user but use internally. -->
+  <BoolProperty Name="WinMDFile" Visible="false" ReadOnly="True" Description="Wskazuje, czy system kompilacji upewnił się że jest to WinMD (w przeciwieństwie do zestawu)" />
+  <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="Sprawdzona nazwa elementu oryginalnego elementu odwołania, którego rozpoznanie spowodowało rozpoznanie tego elementu odwołania." />
+  <StringProperty Name="FusionName" Visible="False" ReadOnly="True" />
+  <StringProperty Name="Name" Visible="false" ReadOnly="True" />
+</Rule>

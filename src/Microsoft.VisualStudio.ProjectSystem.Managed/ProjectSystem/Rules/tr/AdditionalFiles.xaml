@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
+<Rule Name="AdditionalFiles" DisplayName="Ek Dosya" PageTemplate="generic" Description="Ek dosya öğeleri" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="AdditionalFiles" />
+  </Rule.DataSource>
+  <Rule.Categories>
+    <Category Name="Advanced" DisplayName="Gelişmiş" />
+    <Category Name="Misc" DisplayName="Çeşitli" />
+  </Rule.Categories>
+  <DynamicEnumProperty Name="{}{ItemType}" DisplayName="Derleme Eylemi" Category="Advanced" Description="Dosyanın oluşturma ve dağıtım işlemleriyle olan ilişkisi." EnumProvider="ItemTypes" />
+  <EnumProperty Name="CopyToOutputDirectory" DisplayName="Çıkış Dizinine Kopyala" Category="Advanced" Description="Kaynak dosyasının çıkış dizinine kopyalanacağını belirtir.">
+    <EnumValue Name="Never" DisplayName="Kopyalama" />
+    <EnumValue Name="Always" DisplayName="Her zaman kopyala" />
+    <EnumValue Name="PreserveNewest" DisplayName="Daha yeniyse kopyala" />
+  </EnumProperty>
+  <StringProperty Name="Generator" Category="Advanced" DisplayName="Özel Araç" Description="Bir dosyayı tasarım zamanında dönüştüren ve dönüştürme çıkışını başka bir dosyaya yerleştiren aracı belirtir. Örneğin, bir veri kümesi (.xsd) dosyası, varsayılan bir özel araçla gelir." />
+  <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="Özel Araç İsim Uzayı" Description="Özel aracın çıkışının yerleştirileceği isim uzayı." />
+  <StringProperty Name="Identity" Visible="false" ReadOnly="true" Category="Misc" Description="Include özniteliğinde belirtilen öğe.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="Identity" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FullPath" DisplayName="Tam Yol" ReadOnly="true" Category="Misc" Description="Dosyanın konumu.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="FullPath" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FileNameAndExtension" DisplayName="Dosya Adı" ReadOnly="true" Category="Misc" Description="Dosya veya klasörün adı.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="FileNameAndExtension" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="URL" ReadOnly="true" Visible="false">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="FullPath" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <BoolProperty Name="Visible" Visible="false" />
+  <StringProperty Name="DependentUpon" Visible="false" />
+  <StringProperty Name="Link" Visible="false">
+    <StringProperty.DataSource>
+      <DataSource PersistenceStyle="Attribute" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Extension" Visible="False" ReadOnly="true">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="Extension" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="LastGenOutput" Visible="false" Description="SFG sonucu oluşturulan son dosyanın adı." />
+  <BoolProperty Name="DesignTime" Visible="false" Description="Bu dosyada bir tasarımcı olup olmadığını gösteren bir değer." />
+  <BoolProperty Name="AutoGen" Visible="false" Description="Bunun oluşturulmuş bir dosya olup olmadığını gösteren değer." />
+  <StringProperty Name="CustomTool" Visible="false" Description="Generator özelliğine erişmek için DTE Özelliği.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="AdditionalFiles" PersistedName="Generator" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+</Rule>

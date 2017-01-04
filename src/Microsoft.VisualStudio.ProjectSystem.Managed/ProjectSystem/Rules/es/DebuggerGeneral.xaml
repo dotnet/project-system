@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
+<Rule Name="DebuggerGeneralProperties" DisplayName="Propiedades generales del depurador" Description="Opciones generales del depurador" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="UserFile" />
+  </Rule.DataSource>
+  <StringProperty Name="SymbolsPath" DisplayName="Ruta de acceso de búsqueda de símbolos" Description="Ruta de acceso de búsqueda que usa el depurador para encontrar símbolos."></StringProperty>
+  <StringProperty Name="DebuggerFlavor" Visible="false" Description="Regla de depuración seleccionada como depurador activo."></StringProperty>
+  <EnumProperty Name="ImageClrType" Visible="false" Description="Propiedad 'hidden' que se pasa a los depuradores para indicarles si se trata de un proyecto administrado.">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="UserFile" HasConfigurationCondition="false" PersistedName="_TargetImageClrType" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="Native" DisplayName="Imagen nativa" Description="La imagen ejecutable que se va a depurar es una aplicación totalmente nativa." />
+    <EnumValue Name="Mixed" DisplayName="Imagen mixta" Description="La imagen ejecutable que se va a depurar es una mezcla de código nativo y administrado." />
+    <EnumValue Name="Managed" DisplayName="Imagen administrada" Description="La imagen ejecutable que se va a depurar es una aplicación totalmente administrada." />
+  </EnumProperty>
+</Rule>

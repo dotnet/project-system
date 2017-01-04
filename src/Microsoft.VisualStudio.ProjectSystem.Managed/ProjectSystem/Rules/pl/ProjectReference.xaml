@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="ProjectReference" DisplayName="Odwołanie do projektu" PageTemplate="generic" Description="Właściwości odwołania do projektu" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" />
+  </Rule.DataSource>
+  <BoolProperty Name="ReferenceOutputAssembly" DisplayName="Odwołanie do zestawu wyjściowego" Description="Wartość wskazująca, czy kompilator powinien uwzględniać odwołanie do głównego zestawu wyjściowego projektu docelowego." />
+  <BoolProperty Name="CopyLocalSatelliteAssemblies" DisplayName="Kopiuj lokalne zestawy satelickie" Description="Wskazuje, czy zestawy satelickie docelowego odwołania powinny być kopiowane do katalogu wyjściowego tego projektu." />
+  <BoolProperty Name="LinkLibraryDependencies" Visible="False" />
+  <BoolProperty Name="UseLibraryDependencyInputs" Visible="False" />
+  <StringProperty Name="Project" Visible="False" Description="identyfikator Guid rozwiązania śledzi docelowe odwołanie pojedynczego projektu za pomocą" />
+  <StringProperty Name="ReferencedProjectIdentifier" Visible="False" Description="Stary (VS2010 beta) sposób zapisywania identyfikatora Guid rozwiązania śledzącego odwołanie pojedynczego projektu za pomocą" />
+  <BoolProperty Name="CopyLocal" DisplayName="Kopia lokalna" Description="Wskazuje, czy odwołanie będzie kopiowane do katalogu wyjściowego.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" PersistedName="Private" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="IncludeAssets" Description="Zasoby do zawarcia z tego odwołania" />
+  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="ExcludeAssets" Description="Zasoby do wykluczenia z tego odwołania" />
+  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="PrivateAssets" Description="Prywatne zasoby w tym odwołaniu" />
+</Rule>

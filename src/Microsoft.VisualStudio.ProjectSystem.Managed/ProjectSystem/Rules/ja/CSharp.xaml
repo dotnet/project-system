@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="CSharp" DisplayName="C#" PageTemplate="tool" Description="C# ソース ファイル" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="false" />
+  </Rule.DataSource>
+  <Rule.Categories>
+    <Category Name="Advanced" DisplayName="詳細設定" />
+    <Category Name="Misc" DisplayName="その他" />
+  </Rule.Categories>
+  <DynamicEnumProperty Name="{}{ItemType}" DisplayName="ビルド アクション" Category="Advanced" Description="ビルドおよび配置のプロセスにファイルがどのように関連しているかを示します。" EnumProvider="ItemTypes" />
+  <EnumProperty Name="CopyToOutputDirectory" DisplayName="出力ディレクトリにコピー" Category="Advanced" Description="ソース ファイルを出力ディレクトリにコピーするよう指定します。">
+    <EnumValue Name="Never" DisplayName="コピーしない" />
+    <EnumValue Name="Always" DisplayName="常にコピーする" />
+    <EnumValue Name="PreserveNewest" DisplayName="新しい場合はコピーする" />
+  </EnumProperty>
+  <StringProperty Name="Generator" Category="Advanced" DisplayName="カスタム ツール" Description="設計時にファイルを変換し、その変換結果を別のファイルに出力するツールを指定します。たとえば、データセット (.xsd) ファイルには既定のカスタム ツールが用意されています。" />
+  <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="カスタム ツールの名前空間" Description="カスタム ツールの出力を配置する名前空間です。" />
+  <BoolProperty Name="ExcludedFromBuild" DisplayName="ビルドから除外">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="true" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <BoolProperty Name="Visible" Visible="false" />
+  <StringProperty Name="DependentUpon" Visible="false">
+    <StringProperty.Metadata>
+      <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />
+    </StringProperty.Metadata>
+  </StringProperty>
+  <StringProperty Name="Link" Visible="false">
+    <StringProperty.DataSource>
+      <DataSource PersistenceStyle="Attribute" />
+    </StringProperty.DataSource>
+    <StringProperty.Metadata>
+      <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />
+    </StringProperty.Metadata>
+  </StringProperty>
+  <StringProperty Name="SubType" Visible="false" />
+  <StringProperty Name="LastGenOutput" Visible="false" Description="SFG の結果として最後に生成されたファイルのファイル名です。" />
+  <BoolProperty Name="DesignTime" Visible="false" Description="このファイルにデザイナーがあるかどうかを示す値です。" />
+  <BoolProperty Name="AutoGen" Visible="false" Description="生成されたファイルであるかどうかを示す値です。" />
+</Rule>

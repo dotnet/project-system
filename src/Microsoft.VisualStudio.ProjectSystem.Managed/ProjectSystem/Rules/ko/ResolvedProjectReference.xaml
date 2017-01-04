@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="ResolvedProjectReference" DisplayName="확인된 프로젝트 참조" PageTemplate="generic" Description="확인된 참조" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ResolvedReference" ItemType="ProjectReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="ResolveProjectReferencesDesignTime" />
+  </Rule.DataSource>
+  <StringListProperty Name="Aliases" DisplayName="별칭" Description="이 참조에 대한 쉼표로 구분된 별칭 목록입니다." Separator=",">
+    <StringListProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" />
+    </StringListProperty.DataSource>
+  </StringListProperty>
+  <BoolProperty Name="CopyLocal" DisplayName="로컬 복사" Description="참조를 출력 디렉터리로 복사할지 여부를 나타냅니다.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" PersistedName="Private" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <StringProperty Name="Culture" ReadOnly="True" DisplayName="문화권" Description="어셈블리 메타데이터의 Culture 필드 값입니다."></StringProperty>
+  <StringProperty Name="Description" ReadOnly="True" DisplayName="설명" Description="어셈블리 메타데이터의 Title 필드 값입니다."></StringProperty>
+  <BoolProperty Name="EmbedInteropTypes" DisplayName="Interop 형식 포함" Description="이 어셈블리에 정의된 형식이 대상 어셈블리에 포함되는지 여부를 나타냅니다.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <EnumProperty Name="FileType" ReadOnly="True" Visible="False" DisplayName="파일 형식" Description="참조의 파일 형식입니다.">
+    <EnumValue Name="Assembly" DisplayName=".NET 어셈블리" />
+    <EnumValue Name="ActiveX" DisplayName="COM 형식 라이브러리" />
+    <EnumValue Name="Native Assembly" DisplayName="네이티브 어셈블리" />
+  </EnumProperty>
+  <StringProperty Name="Identity" ReadOnly="True" DisplayName="ID" Description="참조된 어셈블리의 보안 ID입니다(System.Reflection.Assembly.Evidence 또는 System.Security.Policy.Evidence 참조).">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="{}{Identity}" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="경로" Description="참조되는 파일의 위치입니다.">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="Identity" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="RuntimeVersion" ReadOnly="True" Visible="False" DisplayName="런타임 버전" Description="이 어셈블리의 컴파일 대상인 .NET 런타임의 버전입니다."></StringProperty>
+  <BoolProperty Name="SpecificVersion" DisplayName="특정 버전" Visible="False" Description="어셈블리 확인을 위한 멀티 타기팅 규칙에 관계없이 이 어셈블리를 확인할 수 있는지 여부를 나타냅니다." />
+  <BoolProperty Name="StrongName" ReadOnly="True" Visible="False" DisplayName="강력한 이름" Description="True이면 참조가 키 쌍으로 서명되었음을 나타냅니다."></BoolProperty>
+  <StringProperty Name="Version" ReadOnly="True" DisplayName="버전" Description="참조의 버전입니다."></StringProperty>
+  <StringProperty Name="RequiredTargetFramework" DisplayName="필요한 대상 프레임워크" Visible="False" />
+  <StringProperty Name="HintPath" Visible="false" />
+  <StringProperty Name="SDKIdentity" Visible="false" />
+  <!-- This is the metadata we store on the reference item when we add it. -->
+  <BoolProperty Name="IsWinMDFile" Visible="false" Description="프로젝트 시스템에서 이것이 WinMD인 것(어셈블리가 아님)을 확인했는지 여부를 나타냅니다." />
+  <StringProperty Name="Project" Visible="False" Description="솔루션이 개별 프로젝트 참조 대상을 추적할 때 사용하는 GUID" />
+  <!-- These are metadata added to the resolved item by MSBuild that we don't show to the user but use internally. -->
+  <BoolProperty Name="WinMDFile" Visible="false" ReadOnly="True" Description="빌드 시스템에서 이것이 WinMD인 것(어셈블리가 아님)을 확인했는지 여부를 나타냅니다." />
+  <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="확인 결과 이 확인된 참조 항목으로 드러난 원래 참조 항목의 평가 항목 이름입니다." />
+  <StringProperty Name="FusionName" Visible="False" ReadOnly="True" />
+  <StringProperty Name="Name" Visible="false" ReadOnly="True" />
+</Rule>

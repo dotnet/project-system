@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="ResolvedAssemblyReference" DisplayName="Referencia de ensamblado resuelta" PageTemplate="generic" Description="Referencia resuelta" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ResolvedReference" ItemType="Reference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="ResolveAssemblyReferencesDesignTime" />
+  </Rule.DataSource>
+  <StringListProperty Name="Aliases" DisplayName="Alias" Description="Lista de alias delimitada con comas para esta referencia." Separator=",">
+    <StringListProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" />
+    </StringListProperty.DataSource>
+  </StringListProperty>
+  <BoolProperty Name="CopyLocal" DisplayName="Copia local" Description="Indica si la referencia se copiará en el directorio de salida.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" PersistedName="Private" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <StringProperty Name="Culture" ReadOnly="True" Visible="False" DisplayName="Referencia cultural" Description="Valor del campo Referencia cultural de los metadatos de ensamblado." />
+  <StringProperty Name="Description" ReadOnly="True" Visible="False" DisplayName="Descripción" Description="Valor del campo Título de los metadatos de ensamblado." />
+  <BoolProperty Name="EmbedInteropTypes" DisplayName="Incrustar tipos de interoperabilidad" Description="Indica si los tipos definidos en este ensamblado se incrustarán en el ensamblado de destino.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <EnumProperty Name="FileType" ReadOnly="True" Visible="False" DisplayName="Tipo de archivo" Description="Tipo de archivo de la referencia.">
+    <EnumValue Name="Assembly" DisplayName="Ensamblado .NET" />
+    <EnumValue Name="ActiveX" DisplayName="Biblioteca de tipos COM" />
+    <EnumValue Name="Native Assembly" DisplayName="Ensamblado nativo" />
+  </EnumProperty>
+  <StringProperty Name="Identity" ReadOnly="True" DisplayName="Identidad" Description="Identidad de seguridad del ensamblado al que se hace referencia (vea System.Reflection.Assembly.Evidence o System.Security.Policy.Evidence).">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="{}{Identity}" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Ruta de acceso" Description="Ubicación del archivo al que se hace referencia.">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="Identity" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="RuntimeVersion" ReadOnly="True" Visible="False" DisplayName="Versión de runtime" Description="Versión del runtime de .NET con la que se compiló este ensamblado."></StringProperty>
+  <BoolProperty Name="SpecificVersion" DisplayName="Versión específica" Description="Indica si este ensamblado se puede resolver independientemente de las reglas de compatibilidad con múltiples versiones (multi-targeting) para la resolución de ensamblados.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="AssemblyReference" ItemType="Reference" HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <BoolProperty Name="StrongName" ReadOnly="True" Visible="False" DisplayName="Nombre seguro" Description="True indica que la referencia se ha firmado con un par de claves."></BoolProperty>
+  <StringProperty Name="Version" ReadOnly="True" DisplayName="Versión" Description="Versión de referencia."></StringProperty>
+  <StringProperty Name="RequiredTargetFramework" DisplayName="Plataforma de destino requerida" Visible="False" />
+  <StringProperty Name="HintPath" Visible="false" />
+  <StringProperty Name="SDKIdentity" Visible="false" />
+  <!-- This is the metadata we store on the reference item when we add it. -->
+  <BoolProperty Name="IsWinMDFile" Visible="false" Description="Indica si el sistema del proyecto garantiza que se trata de un WinMD (en contraposición a un ensamblado)" />
+  <!-- These are metadata added to the resolved item by MSBuild that we don't show to the user but use internally. -->
+  <BoolProperty Name="WinMDFile" Visible="false" ReadOnly="True" Description="Indica si el sistema de compilación garantiza que se trata de un WinMD (en contraposición a un ensamblado)" />
+  <StringProperty Name="Name" Visible="false" ReadOnly="True" />
+  <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="Nombre del elemento evaluado del elemento de referencia original cuya resolución produjo este elemento de referencia resuelto." />
+  <StringProperty Name="ReferenceFromSDK" Visible="False" ReadOnly="True" Description="SDK del que procede esta referencia cuando se usa el destino de SDK expandido." />
+  <StringProperty Name="FusionName" Visible="False" ReadOnly="True" Description="Nombre de fusión completo del ensamblado resuelto." />
+  <StringProperty Name="ResolvedFrom" Visible="False" ReadOnly="True" Description="{}Repositorio que contiene la referencia que se usó para resolver este elemento. (&quot;{GAC}&quot; si estaba en la GAC)." />
+  <StringProperty Name="FrameworkFile" Visible="False" ReadOnly="True" Description="Indica si este es un archivo de plataforma, es decir, si se encuentra en el directorio de la plataforma de destino o en la lista de redistribución." />
+</Rule>

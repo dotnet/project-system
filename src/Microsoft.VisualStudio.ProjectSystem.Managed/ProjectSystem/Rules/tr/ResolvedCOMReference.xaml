@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="ResolvedCOMReference" DisplayName="Çözümlenen COM Başvurusu" PageTemplate="generic" Description="Çözümlenen başvuru" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ResolvedReference" ItemType="COMReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="ResolveComReferencesDesignTime" />
+  </Rule.DataSource>
+  <StringProperty Name="Guid" DisplayName="CLSID" Description="COM sunucusunun GUID'i." Visible="False" />
+  <IntProperty Name="VersionMajor" Visible="False" />
+  <IntProperty Name="VersionMinor" Visible="False" />
+  <StringProperty Name="WrapperTool" Visible="False" />
+  <StringListProperty Name="Aliases" DisplayName="Diğer Adlar" Description="Bu başvurunun diğer adlarına yönelik virgülle ayrılmış bir liste." Separator=",">
+    <StringListProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="COMReference" HasConfigurationCondition="False" />
+    </StringListProperty.DataSource>
+  </StringListProperty>
+  <BoolProperty Name="CopyLocal" DisplayName="Yereli Kopyala" Description="Başvurunun çıkış dizinine kopyalanıp kopyalanmayacağını gösterir.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="COMReference" HasConfigurationCondition="False" PersistedName="Private" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <StringProperty Name="Culture" ReadOnly="True" Visible="False" DisplayName="Kültür" Description="Derleme meta verilerindeki kültür alanının değeri." />
+  <StringProperty Name="Description" ReadOnly="True" Visible="False" DisplayName="Açıklama" Description="Bütünleştirilmiş kod meta verisinin Title (Başlık) alanının değeri." />
+  <BoolProperty Name="EmbedInteropTypes" DisplayName="Birlikte Çalışma Türlerini Ekle" Description="Bu bütünleştirilmiş kodda tanımlanan türlerin hedef bütünleştirilmiş koda katıştırılıp katıştırılmayacağını belirtir.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="COMReference" HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <EnumProperty Name="FileType" ReadOnly="True" Visible="False" DisplayName="Dosya Türü" Description="Başvurunun dosya türü.">
+    <EnumValue Name="Assembly" DisplayName=".NET derlemesi" />
+    <EnumValue Name="ActiveX" DisplayName="COM türü kitaplık" />
+    <EnumValue Name="Native Assembly" DisplayName="Yerel Bütünleştirilmiş Kod" />
+  </EnumProperty>
+  <StringProperty Name="Identity" ReadOnly="True" DisplayName="Kimlik" Description="Başvurulan bütünleştirilmiş kodun güvenlik kimliği (bkz. System.Reflection.Assembly.Evidence veya System.Security.Policy.Evidence).">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="{}{Identity}" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Yol" Description="Başvurulan dosyanın konumu.">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="Identity" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="RuntimeVersion" ReadOnly="True" Visible="False" DisplayName="Çalışma Zamanı Sürümü" Description="Bu bütünleştirilmiş kodun üzerinde derlendiği .NET çalışma zamanı modülünün sürümü."></StringProperty>
+  <BoolProperty Name="SpecificVersion" DisplayName="Belirli Bir Sürüm" Visible="False" Description="Bu bütünleştirilmiş kodun, bütünleştirilmiş kod çözümlemesine yönelik çoklu sürüm desteği kurallarına bağlı kalmadan çözümlenip çözümlenemeyeceğini belirtir." />
+  <BoolProperty Name="StrongName" ReadOnly="True" Visible="False" DisplayName="Tanımlayıcı Ad" Description="True, başvurunun bir anahtar çiftiyle imzalanmış olduğunu belirtir."></BoolProperty>
+  <StringProperty Name="Version" ReadOnly="True" DisplayName="Sürüm" Description="Başvurunun sürümü."></StringProperty>
+  <StringProperty Name="RequiredTargetFramework" DisplayName="Gerekli Hedef Çerçeve" Visible="False" />
+  <StringProperty Name="HintPath" Visible="false" />
+  <StringProperty Name="SDKIdentity" Visible="false" />
+  <!-- This is the metadata we store on the reference item when we add it. -->
+  <BoolProperty Name="IsWinMDFile" Visible="false" Description="Proje sisteminin bunun bir WinMD olduğunu (bir derlemeye karşılık) doğrulayıp doğrulamadığını gösterir" />
+  <!-- These are metadata added to the resolved item by MSBuild that we don't show to the user but use internally. -->
+  <BoolProperty Name="WinMDFile" Visible="false" ReadOnly="True" Description="Oluşturma sisteminin (bir derlemeden farklı olarak), bunun bir WinMD olduğunu doğrulayıp doğrulamadığını gösterir" />
+  <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="Çözümlemesi, bu çözümlenen başvuru öğesiyle sonuçlanmış olan orijinal başvuru öğesinin değerlendirilen öğe adı." />
+  <StringProperty Name="FusionName" Visible="False" ReadOnly="True" />
+  <StringProperty Name="Name" Visible="false" ReadOnly="True" />
+</Rule>

@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="ResolvedProjectReference" DisplayName="已解析的專案參考" PageTemplate="generic" Description="已解析的參考" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ResolvedReference" ItemType="ProjectReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="ResolveProjectReferencesDesignTime" />
+  </Rule.DataSource>
+  <StringListProperty Name="Aliases" DisplayName="別名" Description="這個參考的逗號分隔別名清單。" Separator=",">
+    <StringListProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" />
+    </StringListProperty.DataSource>
+  </StringListProperty>
+  <BoolProperty Name="CopyLocal" DisplayName="複製到本機" Description="表示是否將參考複製到輸出目錄。">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" PersistedName="Private" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <StringProperty Name="Culture" ReadOnly="True" DisplayName="文化特性" Description="來自組件中繼資料 [文化特性] 欄位的值。"></StringProperty>
+  <StringProperty Name="Description" ReadOnly="True" DisplayName="說明" Description="來自組件中繼資料的 [標題] 欄位的值。"></StringProperty>
+  <BoolProperty Name="EmbedInteropTypes" DisplayName="內嵌 Interop 類型" Description="指出此組件中所定義的類型是否將內嵌在目標組件中。">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <EnumProperty Name="FileType" ReadOnly="True" Visible="False" DisplayName="檔案類型" Description="參考的檔案類型。">
+    <EnumValue Name="Assembly" DisplayName=".NET 組件" />
+    <EnumValue Name="ActiveX" DisplayName="COM 類型程式庫" />
+    <EnumValue Name="Native Assembly" DisplayName="原生組譯碼" />
+  </EnumProperty>
+  <StringProperty Name="Identity" ReadOnly="True" DisplayName="識別" Description="參考組件的安全性識別 (請參閱 System.Reflection.Assembly.Evidence 或 System.Security.Policy.Evidence)。">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="{}{Identity}" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="路徑" Description="正被參考之檔案的位置。">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="Identity" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="RuntimeVersion" ReadOnly="True" Visible="False" DisplayName="執行階段版本" Description="編譯此組件時所使用的 .NET 執行階段版本。"></StringProperty>
+  <BoolProperty Name="SpecificVersion" DisplayName="特定版本" Visible="False" Description="指出這個組件是否可以解析 (不考慮組件解析的多目標規則)。" />
+  <BoolProperty Name="StrongName" ReadOnly="True" Visible="False" DisplayName="強式名稱" Description="True 表示已經使用金鑰組簽署此參考。"></BoolProperty>
+  <StringProperty Name="Version" ReadOnly="True" DisplayName="版本" Description="參考的版本。"></StringProperty>
+  <StringProperty Name="RequiredTargetFramework" DisplayName="需要的目標 Framework" Visible="False" />
+  <StringProperty Name="HintPath" Visible="false" />
+  <StringProperty Name="SDKIdentity" Visible="false" />
+  <!-- This is the metadata we store on the reference item when we add it. -->
+  <BoolProperty Name="IsWinMDFile" Visible="false" Description="表示專案系統是否確認這是 WinMD (而非組件)" />
+  <StringProperty Name="Project" Visible="False" Description="方案藉以追蹤個別專案參考目標的 GUID" />
+  <!-- These are metadata added to the resolved item by MSBuild that we don't show to the user but use internally. -->
+  <BoolProperty Name="WinMDFile" Visible="false" ReadOnly="True" Description="表示建置系統是否確認這是 WinMD (而非組件)" />
+  <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="因解析而產生這個已解析參考項目的原始參考項目的評估項目名稱。" />
+  <StringProperty Name="FusionName" Visible="False" ReadOnly="True" />
+  <StringProperty Name="Name" Visible="false" ReadOnly="True" />
+</Rule>
