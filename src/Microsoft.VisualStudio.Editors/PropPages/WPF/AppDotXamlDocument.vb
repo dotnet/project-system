@@ -67,7 +67,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 End If
 
                 Me.LineIndex = lineIndex
-                Me.CharIndex = charOnLineIndex
+                CharIndex = charOnLineIndex
             End Sub
 
 
@@ -82,7 +82,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             End Sub
 
             Public Function Shift(charIndexToAdd As Integer) As Location
-                Return New Location(Me.LineIndex, Me.CharIndex + charIndexToAdd)
+                Return New Location(LineIndex, CharIndex + charIndexToAdd)
             End Function
 
         End Class
@@ -147,7 +147,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                         End If
                         _isDisposed = True
                     End If
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(Dispose), NameOf(AppDotXamlDocument))
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(Dispose), NameOf(AppDotXamlDocument))
                     Throw
                 End Try
             End Sub
@@ -241,14 +241,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             ''' <param name="value"></param>
             ''' <remarks></remarks>
             Public Overridable Sub SetProperty(replaceTextInstance As IReplaceText, value As String)
-                If Me.UnescapedValue.Equals(value, StringComparison.Ordinal) Then
+                If UnescapedValue.Equals(value, StringComparison.Ordinal) Then
                     'The property value is not changing.  Leave things alone.
                     Return
                 End If
 
                 'Replace just the string in the buffer with the new value.
-                Dim replaceStart As Location = Me.DefinitionStart
-                Dim replaceEnd As Location = Me.DefinitionEndPlusOne
+                Dim replaceStart As Location = DefinitionStart
+                Dim replaceEnd As Location = DefinitionEndPlusOne
                 Dim newText As String = EscapeXmlString(value)
                 If _definitionIncludesQuotes Then
                     newText = """" & newText & """"
@@ -329,15 +329,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             End Property
 
             Public Overrides Sub SetProperty(replaceTextInstance As IReplaceText, value As String)
-                If Me.UnescapedValue.Equals(value, StringComparison.Ordinal) Then
+                If UnescapedValue.Equals(value, StringComparison.Ordinal) Then
                     'The property value is not changing.  Leave things alone.
                     Return
                 End If
 
                 'Replace the empty tag in the buffer with a start/end element tag
                 '  and the new value
-                Dim replaceStart As Location = Me.DefinitionStart
-                Dim replaceEnd As Location = Me.DefinitionEndPlusOne
+                Dim replaceStart As Location = DefinitionStart
+                Dim replaceEnd As Location = DefinitionEndPlusOne
                 Dim newText As String = _
                     "<" & _fullyQualifiedPropertyName & ">" _
                     & EscapeXmlString(value) _
@@ -378,7 +378,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
         ' IDisposable
         Protected Overridable Sub Dispose(disposing As Boolean)
-            If Not Me._isDisposed Then
+            If Not _isDisposed Then
                 If disposing Then
                     Debug.Assert(_debugBufferLockCount = 0, "Missing buffer unlock")
                 End If
@@ -386,7 +386,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 _vsTextLines = Nothing
                 _isDisposed = True
             End If
-            Me._isDisposed = True
+            _isDisposed = True
         End Sub
 
         Public Sub Dispose() Implements IDisposable.Dispose
@@ -473,7 +473,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Dim sb As New StringBuilder()
             Dim settings As New XmlWriterSettings
             settings.ConformanceLevel = ConformanceLevel.Fragment
-            Dim xmlWriter As XmlWriter = XmlTextWriter.Create(sb, settings)
+            Dim xmlWriter As XmlWriter = XmlWriter.Create(sb, settings)
             xmlWriter.WriteString(value)
             xmlWriter.Close()
             Dim escapedString As String = sb.ToString()
@@ -500,7 +500,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Dim stringReader As New StringReader(xml)
             Dim settings As New XmlReaderSettings
             settings.ConformanceLevel = ConformanceLevel.Fragment
-            Dim xmlReader As XmlReader = XmlTextReader.Create(stringReader, settings)
+            Dim xmlReader As XmlReader = XmlReader.Create(stringReader, settings)
             xmlReader.ReadToFollowing("a")
 
             Dim content As String = xmlReader.ReadElementContentAsString()
@@ -522,7 +522,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 Return
             End If
 
-            Throw New XamlReadWriteException(SR.GetString(SR.PPG_WPFApp_Xaml_CouldntFindRootElement, s_ELEMENT_APPLICATION))
+            Throw New XamlReadWriteException(My.Resources.Designer.GetString(My.Resources.Designer.PPG_WPFApp_Xaml_CouldntFindRootElement, s_ELEMENT_APPLICATION))
         End Sub
 
 #Region "CreateXmlTextReader"
@@ -925,7 +925,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 Dim newPropertyValue As String = "(error)"
                 Try
                     newPropertyValue = GetApplicationPropertyValue(propertyName)
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Got an exception trying to verify the new property value in SetApplicationPropertyValue", NameOf(AppDotXamlDocument))
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, "Got an exception trying to verify the new property value in SetApplicationPropertyValue", NameOf(AppDotXamlDocument))
                 End Try
 
                 If (Not value.Equals(newPropertyValue, StringComparison.Ordinal)) Then
@@ -1060,7 +1060,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <remarks></remarks>
         Private Sub ThrowUnexpectedFormatException(location As Location)
             Throw New XamlReadWriteException( _
-                SR.GetString(SR.PPG_WPFApp_Xaml_UnexpectedFormat_2Args, _
+                My.Resources.Designer.GetString(My.Resources.Designer.PPG_WPFApp_Xaml_UnexpectedFormat_2Args, _
                     CStr(location.LineIndex + 1), CStr(location.CharIndex + 1)))
         End Sub
 

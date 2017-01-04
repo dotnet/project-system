@@ -138,11 +138,6 @@
         <target state="translated">Reprezentuje język utrwalony w elementach i szablonach projektu.</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|SaveAssemblyInfoInSource|DisplayName">
-        <source>Save assembly info attribute values in source</source>
-        <target state="translated">Zapisz wartości atrybutu z informacjami o zestawie w źródle</target>
-        <note />
-      </trans-unit>
     </body>
   </file>
 </xliff>

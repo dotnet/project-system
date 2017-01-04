@@ -51,10 +51,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     ""Id"": {
         ""ProviderType"": ""ProviderUnderTest"",
-        ""ItemSpec"": ""MyDependencyNodeItemSpec1"",
-        ""UniqueToken"":""c:\\myproject\\project.csproj""
+        ""ItemSpec"": ""MyDependencyNodeItemSpec1""
     }
 }");
+            myDependencyNode1.Id.ContextProject = "c:\\myproject\\project.csproj";
 
             myTopNode1.Children.Add(myDependencyNode1);
             myRootNode.Children.Add(myTopNode1);
@@ -155,7 +155,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var resultNode = provider.TestCreateDependencyNode(testProjectPath, "myItemType");
 
             Assert.Equal(resultNode.Id.ItemSpec, testProjectPath);
-            Assert.Equal(resultNode.Id.UniqueToken, 
+            Assert.Equal(resultNode.Id.ContextProject, 
                          Path.GetFullPath(Path.Combine(Path.GetDirectoryName(projectPath), testProjectPath)));
         }
 

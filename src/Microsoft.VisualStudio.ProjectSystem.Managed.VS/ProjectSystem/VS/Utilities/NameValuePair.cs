@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
         public bool NotifyPropertyChanged<T>(ref T refProperty, T value, [CallerMemberName] string propertyName = null)
         {
-            if (!Object.Equals(refProperty, value))
+            if (!Equals(refProperty, value))
             {
                 refProperty = value;
                 NotifyPropertyChanged(propertyName);

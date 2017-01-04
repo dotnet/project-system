@@ -14,14 +14,14 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' <remarks></remarks>
     <Serializable()> _
     Friend Class DesignTimeSettingInstance
-        Inherits System.ComponentModel.Component
+        Inherits Component
         Implements ICustomTypeDescriptor, System.Runtime.Serialization.ISerializable
 
         ''' <summary>
         ''' Application or user scoped setting?
         ''' </summary>
         ''' <remarks></remarks>
-        <System.ComponentModel.TypeConverter(GetType(ScopeConverter))> _
+        <TypeConverter(GetType(ScopeConverter))> _
         Friend Enum SettingScope
             ' Don't use zero in the enum since that hides CType(NULL, SettingScope) 
             ' issues...
@@ -96,47 +96,47 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Sub
 
 #Region "ICustomTypeDescriptor implementation. For a detailed description, see the MSDN docs"
-        Private Function GetAttributes() As System.ComponentModel.AttributeCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetAttributes
-            Return New AttributeCollection(New System.ComponentModel.Design.HelpKeywordAttribute("ApplicationSetting"))
+        Private Function GetAttributes() As AttributeCollection Implements ICustomTypeDescriptor.GetAttributes
+            Return New AttributeCollection(New Design.HelpKeywordAttribute("ApplicationSetting"))
         End Function
 
-        Private Function GetClassName() As String Implements System.ComponentModel.ICustomTypeDescriptor.GetClassName
-            Return Me.GetType().FullName
+        Private Function GetClassName() As String Implements ICustomTypeDescriptor.GetClassName
+            Return [GetType]().FullName
         End Function
 
-        Private Function GetComponentName() As String Implements System.ComponentModel.ICustomTypeDescriptor.GetComponentName
-            Return Me.Name
+        Private Function GetComponentName() As String Implements ICustomTypeDescriptor.GetComponentName
+            Return Name
         End Function
 
-        Private Function GetConverter() As System.ComponentModel.TypeConverter Implements System.ComponentModel.ICustomTypeDescriptor.GetConverter
+        Private Function GetConverter() As TypeConverter Implements ICustomTypeDescriptor.GetConverter
             Return Nothing
         End Function
 
-        Private Function GetDefaultEvent() As System.ComponentModel.EventDescriptor Implements System.ComponentModel.ICustomTypeDescriptor.GetDefaultEvent
+        Private Function GetDefaultEvent() As EventDescriptor Implements ICustomTypeDescriptor.GetDefaultEvent
             Return Nothing
         End Function
 
-        Private Function GetDefaultProperty() As System.ComponentModel.PropertyDescriptor Implements System.ComponentModel.ICustomTypeDescriptor.GetDefaultProperty
+        Private Function GetDefaultProperty() As PropertyDescriptor Implements ICustomTypeDescriptor.GetDefaultProperty
             Return _namePropertyDescriptor
         End Function
 
-        Private Function GetEditor(editorBaseType As System.Type) As Object Implements System.ComponentModel.ICustomTypeDescriptor.GetEditor
+        Private Function GetEditor(editorBaseType As Type) As Object Implements ICustomTypeDescriptor.GetEditor
             Return Nothing
         End Function
 
-        Private Function GetEvents() As System.ComponentModel.EventDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetEvents
+        Private Function GetEvents() As EventDescriptorCollection Implements ICustomTypeDescriptor.GetEvents
             Return New EventDescriptorCollection(New EventDescriptor() {})
         End Function
 
-        Private Function GetEvents(attributes() As System.Attribute) As System.ComponentModel.EventDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetEvents
+        Private Function GetEvents(attributes() As Attribute) As EventDescriptorCollection Implements ICustomTypeDescriptor.GetEvents
             Return GetEvents()
         End Function
 
-        Private Function GetProperties() As System.ComponentModel.PropertyDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetProperties
+        Private Function GetProperties() As PropertyDescriptorCollection Implements ICustomTypeDescriptor.GetProperties
             Return GetProperties(Nothing)
         End Function
 
-        Private Function GetProperties(attributes() As System.Attribute) As System.ComponentModel.PropertyDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetProperties
+        Private Function GetProperties(attributes() As Attribute) As PropertyDescriptorCollection Implements ICustomTypeDescriptor.GetProperties
             Return New PropertyDescriptorCollection(New PropertyDescriptor() { _
                                                             _namePropertyDescriptor, _
                                                             _roamingPropertyDescriptor, _
@@ -148,7 +148,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                                                             _serializedValuePropertyDescriptor})
         End Function
 
-        Private Function GetPropertyOwner(pd As System.ComponentModel.PropertyDescriptor) As Object Implements System.ComponentModel.ICustomTypeDescriptor.GetPropertyOwner
+        Private Function GetPropertyOwner(pd As PropertyDescriptor) As Object Implements ICustomTypeDescriptor.GetPropertyOwner
             If pd Is Nothing Then
                 ' No property descriptor => should return the current instance...
                 Return Me
@@ -178,7 +178,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Private _owner As DesignTimeSettingInstance
 
             Public Sub New(owner As DesignTimeSettingInstance, name As String)
-                MyBase.New(name, New System.Attribute() {})
+                MyBase.New(name, New Attribute() {})
                 _owner = owner
             End Sub
 
@@ -188,7 +188,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End Get
             End Property
 
-            Public Overrides ReadOnly Property ComponentType() As System.Type
+            Public Overrides ReadOnly Property ComponentType() As Type
                 Get
                     Return GetType(DesignTimeSettingInstance)
                 End Get
@@ -210,7 +210,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Return GetValue(DirectCast(component, DesignTimeSettingInstance))
             End Function
 
-            Protected Overrides Sub FillAttributes(attributeList As System.Collections.IList)
+            Protected Overrides Sub FillAttributes(attributeList As IList)
                 MyBase.FillAttributes(attributeList)
                 If DescriptionAttributeText <> "" Then
                     attributeList.Add(New DescriptionAttribute(DescriptionAttributeText))
@@ -258,21 +258,21 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' <remarks></remarks>
             Public NotOverridable Overrides Sub SetValue(component As Object, value As Object)
                 Dim instance As DesignTimeSettingInstance = DirectCast(component, DesignTimeSettingInstance)
-                Dim ccsvc As System.ComponentModel.Design.IComponentChangeService = Nothing
-                Dim host As System.ComponentModel.Design.IDesignerHost = Nothing
+                Dim ccsvc As Design.IComponentChangeService = Nothing
+                Dim host As Design.IDesignerHost = Nothing
                 If instance IsNot Nothing AndAlso instance.Site IsNot Nothing Then
-                    ccsvc = DirectCast(instance.Site.GetService(GetType(System.ComponentModel.Design.IComponentChangeService)), _
-                                        System.ComponentModel.Design.IComponentChangeService)
-                    host = DirectCast(instance.Site.GetService(GetType(System.ComponentModel.Design.IDesignerHost)), _
-                                        System.ComponentModel.Design.IDesignerHost)
+                    ccsvc = DirectCast(instance.Site.GetService(GetType(Design.IComponentChangeService)), _
+                                        Design.IComponentChangeService)
+                    host = DirectCast(instance.Site.GetService(GetType(Design.IDesignerHost)), _
+                                        Design.IDesignerHost)
                 End If
 
 
-                Dim undoTran As System.ComponentModel.Design.DesignerTransaction = Nothing
+                Dim undoTran As Design.DesignerTransaction = Nothing
                 Try
                     Dim oldValue As Object = GetValue(component)
 
-                    If Object.Equals(oldValue, value) Then
+                    If Equals(oldValue, value) Then
                         ' We don't want to create an undounit if the values are equal...
                         Return
                     End If
@@ -341,7 +341,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End Get
             End Property
 
-            Public Overrides ReadOnly Property PropertyType() As System.Type
+            Public Overrides ReadOnly Property PropertyType() As Type
                 Get
                     Return GetType(Boolean)
                 End Get
@@ -353,13 +353,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Protected Overrides ReadOnly Property UndoDescription() As String
                 Get
-                    Return SR.GetString(SR.SD_UndoTran_GenerateDefaultValueInCode)
+                    Return My.Resources.Designer.SD_UndoTran_GenerateDefaultValueInCode
                 End Get
             End Property
 
             Protected Overrides ReadOnly Property DescriptionAttributeText() As String
                 Get
-                    Return SR.GetString(SR.SD_DESCR_GenerateDefaultValueInCode)
+                    Return My.Resources.Designer.SD_DESCR_GenerateDefaultValueInCode
                 End Get
             End Property
         End Class
@@ -381,11 +381,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Public Overrides ReadOnly Property IsReadOnly() As Boolean
                 Get
-                    Return DesignTimeSettingInstance.IsNameReadOnly(owner)
+                    Return IsNameReadOnly(Owner)
                 End Get
             End Property
 
-            Public Overrides ReadOnly Property PropertyType() As System.Type
+            Public Overrides ReadOnly Property PropertyType() As Type
                 Get
                     Return GetType(String)
                 End Get
@@ -397,13 +397,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Protected Overrides ReadOnly Property UndoDescription() As String
                 Get
-                    Return SR.GetString(SR.SD_UndoTran_NameChanged)
+                    Return My.Resources.Designer.SD_UndoTran_NameChanged
                 End Get
             End Property
 
             Protected Overrides ReadOnly Property DescriptionAttributeText() As String
                 Get
-                    Return SR.GetString(SR.SD_DESCR_Name)
+                    Return My.Resources.Designer.SD_DESCR_Name
                 End Get
             End Property
         End Class
@@ -421,11 +421,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Public Overrides ReadOnly Property IsReadOnly() As Boolean
                 Get
-                    Return IsRoamingReadOnly(owner)
+                    Return IsRoamingReadOnly(Owner)
                 End Get
             End Property
 
-            Public Overrides ReadOnly Property PropertyType() As System.Type
+            Public Overrides ReadOnly Property PropertyType() As Type
                 Get
                     Return GetType(Boolean)
                 End Get
@@ -437,13 +437,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Protected Overrides ReadOnly Property UndoDescription() As String
                 Get
-                    Return SR.GetString(SR.SD_UndoTran_RoamingChanged)
+                    Return My.Resources.Designer.SD_UndoTran_RoamingChanged
                 End Get
             End Property
 
             Protected Overrides ReadOnly Property DescriptionAttributeText() As String
                 Get
-                    Return SR.GetString(SR.SD_DESCR_Roaming)
+                    Return My.Resources.Designer.SD_DESCR_Roaming
                 End Get
             End Property
         End Class
@@ -465,7 +465,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End Get
             End Property
 
-            Public Overrides ReadOnly Property PropertyType() As System.Type
+            Public Overrides ReadOnly Property PropertyType() As Type
                 Get
                     Return GetType(String)
                 End Get
@@ -477,13 +477,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Protected Overrides ReadOnly Property UndoDescription() As String
                 Get
-                    Return SR.GetString(SR.SD_UndoTran_DescriptionChanged)
+                    Return My.Resources.Designer.SD_UndoTran_DescriptionChanged
                 End Get
             End Property
 
             Protected Overrides ReadOnly Property DescriptionAttributeText() As String
                 Get
-                    Return SR.GetString(SR.SD_DESCR_Description)
+                    Return My.Resources.Designer.SD_DESCR_Description
                 End Get
             End Property
         End Class
@@ -505,7 +505,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End Get
             End Property
 
-            Public Overrides ReadOnly Property PropertyType() As System.Type
+            Public Overrides ReadOnly Property PropertyType() As Type
                 Get
                     Return GetType(String)
                 End Get
@@ -517,13 +517,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Protected Overrides ReadOnly Property UndoDescription() As String
                 Get
-                    Return SR.GetString(SR.SD_UndoTran_ProviderChanged)
+                    Return My.Resources.Designer.SD_UndoTran_ProviderChanged
                 End Get
             End Property
 
             Protected Overrides ReadOnly Property DescriptionAttributeText() As String
                 Get
-                    Return SR.GetString(SR.SD_DESCR_Provider)
+                    Return My.Resources.Designer.SD_DESCR_Provider
                 End Get
             End Property
         End Class
@@ -542,33 +542,33 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Public Overrides ReadOnly Property IsReadOnly() As Boolean
                 Get
                     ' Connection string typed settings are application scoped only...
-                    Return DesignTimeSettingInstance.IsScopeReadOnly(Owner, DesignTimeSettingInstance.ProjectSupportsUserScopedSettings(Owner))
+                    Return IsScopeReadOnly(Owner, ProjectSupportsUserScopedSettings(Owner))
                 End Get
             End Property
 
-            Public Overrides ReadOnly Property PropertyType() As System.Type
+            Public Overrides ReadOnly Property PropertyType() As Type
                 Get
-                    Return GetType(DesignTimeSettingInstance.SettingScope)
+                    Return GetType(SettingScope)
                 End Get
             End Property
 
-            Protected Overrides Sub FillAttributes(attributeList As System.Collections.IList)
+            Protected Overrides Sub FillAttributes(attributeList As IList)
                 MyBase.FillAttributes(attributeList)
                 attributeList.Add(New TypeConverterAttribute(GetType(ScopeConverter)))
             End Sub
             Protected Overrides Sub SetValue(component As DesignTimeSettingInstance, value As Object)
-                component.SetScope(CType(value, DesignTimeSettingInstance.SettingScope))
+                component.SetScope(CType(value, SettingScope))
             End Sub
 
             Protected Overrides ReadOnly Property UndoDescription() As String
                 Get
-                    Return SR.GetString(SR.SD_UndoTran_ScopeChanged)
+                    Return My.Resources.Designer.SD_UndoTran_ScopeChanged
                 End Get
             End Property
 
             Protected Overrides ReadOnly Property DescriptionAttributeText() As String
                 Get
-                    Return SR.GetString(SR.SD_DESCR_Scope)
+                    Return My.Resources.Designer.SD_DESCR_Scope
                 End Get
             End Property
 
@@ -598,7 +598,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End Get
             End Property
 
-            Public Overrides ReadOnly Property PropertyType() As System.Type
+            Public Overrides ReadOnly Property PropertyType() As Type
                 Get
                     Return GetType(System.String)
                 End Get
@@ -610,13 +610,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Protected Overrides ReadOnly Property UndoDescription() As String
                 Get
-                    Return SR.GetString(SR.SD_UndoTran_TypeChanged)
+                    Return My.Resources.Designer.SD_UndoTran_TypeChanged
                 End Get
             End Property
 
             Protected Overrides ReadOnly Property DescriptionAttributeText() As String
                 Get
-                    Return SR.GetString(SR.SD_DESCR_SerializedSettingType)
+                    Return My.Resources.Designer.SD_DESCR_SerializedSettingType
                 End Get
             End Property
         End Class
@@ -638,7 +638,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End Get
             End Property
 
-            Public Overrides ReadOnly Property PropertyType() As System.Type
+            Public Overrides ReadOnly Property PropertyType() As Type
                 Get
                     Return GetType(String)
                 End Get
@@ -650,18 +650,18 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Protected Overrides ReadOnly Property UndoDescription() As String
                 Get
-                    Return SR.GetString(SR.SD_UndoTran_SerializedValueChanged)
+                    Return My.Resources.Designer.SD_UndoTran_SerializedValueChanged
                 End Get
             End Property
 
-            Protected Overrides Sub FillAttributes(attributeList As System.Collections.IList)
+            Protected Overrides Sub FillAttributes(attributeList As IList)
                 MyBase.FillAttributes(attributeList)
                 attributeList.Add(New BrowsableAttribute(False))
             End Sub
 
             Protected Overrides ReadOnly Property DescriptionAttributeText() As String
                 Get
-                    Return SR.GetString(SR.SD_DESCR_Value)
+                    Return My.Resources.Designer.SD_DESCR_Value
                 End Get
             End Property
         End Class
@@ -675,13 +675,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <remarks></remarks>
         Friend Class ScopeConverter
-            Inherits System.ComponentModel.EnumConverter
+            Inherits EnumConverter
 
             Public Sub New()
-                MyBase.New(GetType(DesignTimeSettingInstance.SettingScope))
+                MyBase.New(GetType(SettingScope))
             End Sub
 
-            Public Overrides Function CanConvertFrom(context As System.ComponentModel.ITypeDescriptorContext, type As System.Type) As Boolean
+            Public Overrides Function CanConvertFrom(context As ITypeDescriptorContext, type As Type) As Boolean
                 If GetType(String).Equals(type) Then
                     Return True
                 Else
@@ -689,7 +689,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End If
             End Function
 
-            Public Overrides Function CanConvertTo(context As System.ComponentModel.ITypeDescriptorContext, type As System.Type) As Boolean
+            Public Overrides Function CanConvertTo(context As ITypeDescriptorContext, type As Type) As Boolean
                 If GetType(String).Equals(type) Then
                     Return True
                 Else
@@ -697,25 +697,25 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End If
             End Function
 
-            Public Overrides Function ConvertFrom(context As System.ComponentModel.ITypeDescriptorContext, culture As System.Globalization.CultureInfo, value As Object) As Object
+            Public Overrides Function ConvertFrom(context As ITypeDescriptorContext, culture As Globalization.CultureInfo, value As Object) As Object
                 If TypeOf value Is String Then
-                    If String.Equals(DirectCast(value, String), SR.GetString(SR.SD_ComboBoxItem_ApplicationScope), StringComparison.Ordinal) Then
-                        Return DesignTimeSettingInstance.SettingScope.Application
+                    If String.Equals(DirectCast(value, String), My.Resources.Designer.SD_ComboBoxItem_ApplicationScope, StringComparison.Ordinal) Then
+                        Return SettingScope.Application
                     End If
-                    If String.Equals(DirectCast(value, String), SR.GetString(SR.SD_ComboBoxItem_UserScope), StringComparison.Ordinal) Then
-                        Return DesignTimeSettingInstance.SettingScope.User
+                    If String.Equals(DirectCast(value, String), My.Resources.Designer.SD_ComboBoxItem_UserScope, StringComparison.Ordinal) Then
+                        Return SettingScope.User
                     End If
                 End If
                 Return MyBase.ConvertFrom(context, culture, value)
             End Function
 
-            Public Overrides Function ConvertTo(context As System.ComponentModel.ITypeDescriptorContext, culture As System.Globalization.CultureInfo, value As Object, destinationType As System.Type) As Object
+            Public Overrides Function ConvertTo(context As ITypeDescriptorContext, culture As Globalization.CultureInfo, value As Object, destinationType As Type) As Object
                 If GetType(String).Equals(destinationType) Then
                     Dim instance As DesignTimeSettingInstance = Nothing
                     If context IsNot Nothing Then
                         instance = TryCast(context.Instance, DesignTimeSettingInstance)
                     End If
-                    Return ScopeConverter.ConvertToLocalizedString(instance, CType(value, DesignTimeSettingInstance.SettingScope))
+                    Return ConvertToLocalizedString(instance, CType(value, SettingScope))
                 End If
                 Return MyBase.ConvertTo(context, culture, value, destinationType)
             End Function
@@ -728,19 +728,19 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' than for other providers) we also pass in an DesignTimeSettingInstance
             ''' </summary>
             ''' <remarks>Returns the localized version for the scope</remarks>
-            Public Shared Function ConvertToLocalizedString(instance As DesignTimeSettingInstance, scope As DesignTimeSettingInstance.SettingScope) As String
+            Public Shared Function ConvertToLocalizedString(instance As DesignTimeSettingInstance, scope As SettingScope) As String
                 Select Case scope
                     Case SettingScope.Application
                         If IsWebProvider(instance) Then
                             Static WebApplicationScopeString As String = Nothing
                             If WebApplicationScopeString Is Nothing Then
-                                WebApplicationScopeString = SR.GetString(SR.SD_ComboBoxItem_WebApplicationScope)
+                                WebApplicationScopeString = My.Resources.Designer.SD_ComboBoxItem_WebApplicationScope
                             End If
                             Return WebApplicationScopeString
                         Else
                             Static ApplicationScopeString As String = Nothing
                             If ApplicationScopeString Is Nothing Then
-                                ApplicationScopeString = SR.GetString(SR.SD_ComboBoxItem_ApplicationScope)
+                                ApplicationScopeString = My.Resources.Designer.SD_ComboBoxItem_ApplicationScope
                             End If
                             Return ApplicationScopeString
                         End If
@@ -748,13 +748,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         If IsWebProvider(instance) Then
                             Static WebUserScopeString As String = Nothing
                             If WebUserScopeString Is Nothing Then
-                                WebUserScopeString = SR.GetString(SR.SD_ComboBoxItem_WebUserScope)
+                                WebUserScopeString = My.Resources.Designer.SD_ComboBoxItem_WebUserScope
                             End If
                             Return WebUserScopeString
                         Else
                             Static UserScopeString As String = Nothing
                             If UserScopeString Is Nothing Then
-                                UserScopeString = SR.GetString(SR.SD_ComboBoxItem_UserScope)
+                                UserScopeString = My.Resources.Designer.SD_ComboBoxItem_UserScope
                             End If
                             Return UserScopeString
                         End If
@@ -791,23 +791,23 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
         Public Sub SetName(value As String)
             If value = "" Then
-                Throw New ArgumentException(SR.GetString(SR.SD_ERR_NameEmpty))
+                Throw New ArgumentException(My.Resources.Designer.SD_ERR_NameEmpty)
             End If
             If Not DesignTimeSettings.EqualIdentifiers(Name, value) AndAlso Site IsNot Nothing Then
 
                 For Each probeComponent As IComponent In Site.Container.Components
                     Dim instance As DesignTimeSettingInstance = TryCast(probeComponent, DesignTimeSettingInstance)
                     If instance IsNot Nothing AndAlso DesignTimeSettings.EqualIdentifiers(instance.Name, value) Then
-                        Throw New ArgumentException(SR.GetString(SR.SD_ERR_DuplicateName_1Arg, value))
+                        Throw New ArgumentException(My.Resources.Designer.GetString(My.Resources.Designer.SD_ERR_DuplicateName_1Arg, value))
                     End If
                 Next
 
-                Dim nameCreationService As System.ComponentModel.Design.Serialization.INameCreationService = TryCast( _
-                    Site.GetService(GetType(System.ComponentModel.Design.Serialization.INameCreationService)), _
-                    System.ComponentModel.Design.Serialization.INameCreationService)
+                Dim nameCreationService As Design.Serialization.INameCreationService = TryCast(
+                    Site.GetService(GetType(Design.Serialization.INameCreationService)),
+                    Design.Serialization.INameCreationService)
 
                 If nameCreationService IsNot Nothing AndAlso Not nameCreationService.IsValidName(value) Then
-                    Throw New System.ArgumentException(SR.GetString(SR.SD_ERR_InvalidIdentifier_1Arg, value))
+                    Throw New ArgumentException(My.Resources.Designer.GetString(My.Resources.Designer.SD_ERR_InvalidIdentifier_1Arg, value))
                 End If
             End If
             _name = value
@@ -874,7 +874,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <remarks></remarks>
         Public ReadOnly Property SerializedValueProperty() As PropertyDescriptor
             Get
-                Return Me._serializedValuePropertyDescriptor
+                Return _serializedValuePropertyDescriptor
             End Get
         End Property
 
@@ -1132,7 +1132,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Sub
 
 
-        <System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Demand, SerializationFormatter:=True)> _
+        <Security.Permissions.SecurityPermission(Security.Permissions.SecurityAction.Demand, SerializationFormatter:=True)> _
         Private Sub GetObjectData(Info As System.Runtime.Serialization.SerializationInfo, Context As System.Runtime.Serialization.StreamingContext) Implements System.Runtime.Serialization.ISerializable.GetObjectData
             Info.AddValue(s_SERIALIZATION_DESCRIPTION, _description)
             Info.AddValue(s_SERIALIZATION_GENERATE_DEFAULT_VALUE_IN_CODE, _generateDefaultValueInCode)

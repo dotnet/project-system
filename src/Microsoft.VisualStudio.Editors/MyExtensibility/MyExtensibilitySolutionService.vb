@@ -87,7 +87,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' </summary>
         ''' <remarks>VB Compiler will call this method through VBReferenceChangedService.</remarks>
         Public Sub ReferenceAdded(projectHierarchy As IVsHierarchy, assemblyInfo As String)
-            Me.HandleReferenceChange(projectHierarchy, assemblyInfo, AddRemoveAction.Add)
+            HandleReferenceChange(projectHierarchy, assemblyInfo, AddRemoveAction.Add)
         End Sub
 
         ''' ;ReferenceRemoved
@@ -96,7 +96,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' </summary>
         ''' <remarks>VB Compiler will call this method through VBReferenceChangedService.</remarks>
         Public Sub ReferenceRemoved(projectHierarchy As IVsHierarchy, assemblyInfo As String)
-            Me.HandleReferenceChange(projectHierarchy, assemblyInfo, AddRemoveAction.Remove)
+            HandleReferenceChange(projectHierarchy, assemblyInfo, AddRemoveAction.Remove)
         End Sub
 
         ''' ;GetProjectService
@@ -136,20 +136,20 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                             End If
                         End Try
                     End If ' If vsMonitorSelection IsNot Nothing
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(GetProjectService), NameOf(MyExtensibilitySettings))
+                Catch ex As Exception When ReportWithoutCrash(ex, NameOf(GetProjectService), NameOf(MyExtensibilitySettings))
                     ' Ignore exceptions.
                 End Try
             End If
 
             ' Get the EnvDTE.Project from the project hierarchy.
-            Dim project As EnvDTE.Project = Nothing
+            Dim project As Project = Nothing
             If projectHierarchy IsNot Nothing Then
                 Dim projectObject As Object = Nothing
                 Dim hr As Integer = projectHierarchy.GetProperty( _
                     VSITEMID.ROOT, CInt(__VSHPROPID.VSHPROPID_ExtObject), projectObject)
 
                 If VSErrorHandler.Succeeded(hr) AndAlso projectObject IsNot Nothing Then
-                    project = TryCast(projectObject, EnvDTE.Project)
+                    project = TryCast(projectObject, Project)
                 End If
             End If
 
@@ -157,7 +157,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             If project IsNot Nothing Then
                 If Not _projectServices.ContainsKey(project) Then
                     _projectServices.Add(project, _
-                        MyExtensibilityProjectService.CreateNew(_VBPackage, project, projectHierarchy, Me.ExtensibilitySettings))
+                        MyExtensibilityProjectService.CreateNew(_VBPackage, project, projectHierarchy, ExtensibilitySettings))
                 End If
                 Return _projectServices(project)
             End If
@@ -183,7 +183,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         Private Sub New(vbPackage As VBPackage)
             Debug.Assert(vbPackage IsNot Nothing, "vbPackage Is Nothing")
             _VBPackage = vbPackage
-            Me.AddEnvDTEEvents()
+            AddEnvDTEEvents()
         End Sub
 
         ''' ;ExtensibilitySettings
@@ -227,7 +227,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
             Switches.TraceMyExtensibility(TraceLevel.Verbose, String.Format("MyExtensibilitySolutionService.HandleReferenceChange: Entry. assemblyInfo='{0}'.", assemblyInfo))
 
-            Dim projectService As MyExtensibilityProjectService = Me.GetProjectService(projectHierarchy)
+            Dim projectService As MyExtensibilityProjectService = GetProjectService(projectHierarchy)
             If projectService IsNot Nothing Then
                 Switches.TraceMyExtensibility(TraceLevel.Verbose, "MyExtensibilitySolutionService.HandleReferenceChange: ProjectService exists, notifying.")
                 If action = AddRemoveAction.Add Then
@@ -254,17 +254,17 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                     _solutionEvents = events.SolutionEvents
                     If _solutionEvents IsNot Nothing Then
                         AddHandler _solutionEvents.AfterClosing, _
-                            New EnvDTE._dispSolutionEvents_AfterClosingEventHandler( _
-                            AddressOf Me.SolutionEvents_AfterClosing)
+                            New _dispSolutionEvents_AfterClosingEventHandler( _
+                            AddressOf SolutionEvents_AfterClosing)
                         AddHandler _solutionEvents.ProjectRemoved, _
-                            New EnvDTE._dispSolutionEvents_ProjectRemovedEventHandler( _
-                            AddressOf Me.SolutionEvents_ProjectRemoved)
+                            New _dispSolutionEvents_ProjectRemovedEventHandler( _
+                            AddressOf SolutionEvents_ProjectRemoved)
                     End If
                     _DTEEvents = events.DTEEvents
                     If _DTEEvents IsNot Nothing Then
                         AddHandler _DTEEvents.OnBeginShutdown, _
-                            New EnvDTE._dispDTEEvents_OnBeginShutdownEventHandler( _
-                            AddressOf Me.DTEEvents_OnBeginShutDown)
+                            New _dispDTEEvents_OnBeginShutdownEventHandler( _
+                            AddressOf DTEEvents_OnBeginShutDown)
                     End If
                 End If
             End If
@@ -277,17 +277,17 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         Private Sub RemoveEnvDTEEvents()
             If _solutionEvents IsNot Nothing Then
                 RemoveHandler _solutionEvents.AfterClosing, _
-                    New EnvDTE._dispSolutionEvents_AfterClosingEventHandler( _
-                    AddressOf Me.SolutionEvents_AfterClosing)
+                    New _dispSolutionEvents_AfterClosingEventHandler( _
+                    AddressOf SolutionEvents_AfterClosing)
                 RemoveHandler _solutionEvents.ProjectRemoved, _
-                    New EnvDTE._dispSolutionEvents_ProjectRemovedEventHandler( _
-                    AddressOf Me.SolutionEvents_ProjectRemoved)
+                    New _dispSolutionEvents_ProjectRemovedEventHandler( _
+                    AddressOf SolutionEvents_ProjectRemoved)
                 _solutionEvents = Nothing
             End If
             If _DTEEvents IsNot Nothing Then
                 RemoveHandler _DTEEvents.OnBeginShutdown, _
-                    New EnvDTE._dispDTEEvents_OnBeginShutdownEventHandler( _
-                    AddressOf Me.DTEEvents_OnBeginShutDown)
+                    New _dispDTEEvents_OnBeginShutdownEventHandler( _
+                    AddressOf DTEEvents_OnBeginShutDown)
                 _DTEEvents = Nothing
             End If
         End Sub
@@ -337,9 +337,9 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <remarks></remarks>
         Private Sub DTEEvents_OnBeginShutDown()
             Switches.TraceMyExtensibility(TraceLevel.Verbose, "MyExtensibilitySolutionService.DTEEvents_OnBeginShutDown: Entry. Call AfterClosing.")
-            Me.SolutionEvents_AfterClosing() ' Dispose all project services.
+            SolutionEvents_AfterClosing() ' Dispose all project services.
             Switches.TraceMyExtensibility(TraceLevel.Verbose, "MyExtensibilitySolutionService.DTEEvents_OnBeginShutDown: RemoveEnvDTEEvents.")
-            Me.RemoveEnvDTEEvents()
+            RemoveEnvDTEEvents()
             Switches.TraceMyExtensibility(TraceLevel.Verbose, "MyExtensibilitySolutionService.DTEEvents_OnBeginShutDown: Exit.")
         End Sub
 #End Region
@@ -350,9 +350,9 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ' My Extensibility settings of the current VS. Lazy init.
         Private _extensibilitySettings As MyExtensibilitySettings
         ' Handle solution closing and project removal events.
-        Private _solutionEvents As EnvDTE.SolutionEvents
+        Private _solutionEvents As SolutionEvents
         ' Handle DTE closing events
-        Private _DTEEvents As EnvDTE.DTEEvents
+        Private _DTEEvents As DTEEvents
         ' lazy-init instance of TrackProjectDocumentsEventsHelper
         Private _trackProjectDocumentsEvents As TrackProjectDocumentsEventsHelper
 

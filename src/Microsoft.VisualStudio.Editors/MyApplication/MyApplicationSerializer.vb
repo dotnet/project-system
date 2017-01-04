@@ -21,7 +21,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Public Shared Function Deserialize(Reader As TextReader) As MyApplicationData
             Dim serializer As XmlSerializer = New MyApplicationDataSerializer()
             'XmlSerializer(GetType(MyApplicationData))
-            Dim xmlReader As System.Xml.XmlReader = System.Xml.XmlReader.Create(Reader)
+            Dim xmlReader As Xml.XmlReader = Xml.XmlReader.Create(Reader)
             Return DirectCast(serializer.Deserialize(xmlReader), MyApplicationData)
         End Function
 

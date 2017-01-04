@@ -41,9 +41,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Reader.HasFieldsEnclosedInQuotes = True
 
                 Select Case EncodingType
-                    Case CsvEncoder.EncodingType.Csv
+                    Case EncodingType.Csv
                         Reader.Delimiters = New String() {","}
-                    Case CsvEncoder.EncodingType.TabDelimited
+                    Case EncodingType.TabDelimited
                         Reader.Delimiters = New String() {vbTab}
                     Case Else
                         Debug.Fail("Unrecognized encodingtype")
@@ -74,7 +74,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="EncodingType"></param>
         ''' <remarks></remarks>
         Public Shared Function DecodeResources(Text As String, View As ResourceEditorView, EncodingType As EncodingType) As Resource()
-            Dim ResourceList As New Generic.List(Of Resource)
+            Dim ResourceList As New List(Of Resource)
 
             If Text Is Nothing Then
                 Text = ""
@@ -86,9 +86,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Reader.TrimWhiteSpace = False
 
                 Select Case EncodingType
-                    Case CsvEncoder.EncodingType.Csv
+                    Case EncodingType.Csv
                         Reader.Delimiters = New String() {","}
-                    Case CsvEncoder.EncodingType.TabDelimited
+                    Case EncodingType.TabDelimited
                         Reader.Delimiters = New String() {vbTab}
                     Case Else
                         Debug.Fail("Unrecognized encodingtype")
@@ -174,7 +174,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
 
             'Alphabetize the resources
-            Dim SortedResources As New Generic.SortedList(Of String, Resource)
+            Dim SortedResources As New SortedList(Of String, Resource)
             For Each resource As Resource In Resources
                 SortedResources.Add(resource.Name, resource)
             Next
@@ -183,16 +183,16 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim Delimiter As Char
 
             Select Case EncodingType
-                Case CsvEncoder.EncodingType.Csv
+                Case EncodingType.Csv
                     Delimiter = ","c
-                Case CsvEncoder.EncodingType.TabDelimited
+                Case EncodingType.TabDelimited
                     Delimiter = CChar(vbTab)
                 Case Else
                     Debug.Fail("Unrecognized encoding type")
                     Delimiter = ","c
             End Select
 
-            For Each Pair As Generic.KeyValuePair(Of String, Resource) In SortedResources
+            For Each Pair As KeyValuePair(Of String, Resource) In SortedResources
                 Dim Resource As Resource = Pair.Value
 
                 If Resource.IsConvertibleFromToString() Then
@@ -224,14 +224,14 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
 
             Select Case EncodingType
-                Case CsvEncoder.EncodingType.Csv
+                Case EncodingType.Csv
                     'Escape quotes
                     Field = Field.Replace("""", """""")
 
                     'Place the entire string in quotes
                     Field = """" & Field & """"
 
-                Case CsvEncoder.EncodingType.TabDelimited
+                Case EncodingType.TabDelimited
                     'If the field contains tabs, enclose the entire field in quotes
                     ' Tab, Return, NewLine...
                     If Field.IndexOfAny(New Char() {Chr(9), Chr(10), Chr(13)}) > 0 Then

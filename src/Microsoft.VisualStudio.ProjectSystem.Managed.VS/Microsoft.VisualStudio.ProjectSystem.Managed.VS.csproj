@@ -33,6 +33,7 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Input\CommandGroup.cs" />
     <Compile Include="Input\UIHierarchyWindowCommandId.cs" />
+    <Compile Include="Input\VisualStudioStandard2kCommandId.cs" />
     <Compile Include="Input\VisualStudioStandard97CommandId.cs" />
     <Compile Include="Packaging\DplOptOutRegistrationAttribute.cs" />
     <Compile Include="ProjectSystem\VS\EditAndContinue\EditAndContinueProvider.cs" />
@@ -42,6 +43,7 @@
     <Compile Include="ProjectSystem\VS\Input\Commands\GenerateNuGetPackageTopLevelBuildMenuCommand.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\GenerateNuGetPackageProjectContextMenuCommand.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\AbstractGenerateNuGetPackageCommand.cs" />
+    <Compile Include="ProjectSystem\VS\Properties\InterceptedProjectProperties\OutputTypeExValueProvider.cs" />
     <Compile Include="ProjectSystem\VS\PropertyPages\BuildMacroInfo.cs" />
     <Compile Include="ProjectSystem\VS\Generators\SingleFileGeneratorFactoryAggregator.cs" />
     <Compile Include="ProjectSystem\VS\NuGet\ProjectProperties.cs" />

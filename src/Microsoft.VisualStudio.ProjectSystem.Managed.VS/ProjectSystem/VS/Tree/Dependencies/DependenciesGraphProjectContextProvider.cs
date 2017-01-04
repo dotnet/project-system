@@ -81,8 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 throw new ArgumentException(nameof(projectFilePath));
             }
 
-            IDependenciesGraphProjectContext context = null;
-            if (ProjectContexts.TryGetValue(projectFilePath, out context))
+            if (ProjectContexts.TryGetValue(projectFilePath, out IDependenciesGraphProjectContext context))
             {
                 return context;
             }

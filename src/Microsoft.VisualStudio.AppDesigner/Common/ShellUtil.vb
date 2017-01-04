@@ -1,7 +1,6 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports EnvDTE
-Imports VB = Microsoft.VisualBasic
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports System.Drawing
 Imports System.Windows.Forms
@@ -49,7 +48,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 End If
             End If
 
-            Debug.Fail("Unable to get color from the shell, using a predetermined default color instead." & VB.vbCrLf & "Color Index = " & VsSysColorIndex & ", Default Color = &h" & VB.Hex(DefaultColor.ToArgb))
+            Debug.Fail("Unable to get color from the shell, using a predetermined default color instead." & vbCrLf & "Color Index = " & VsSysColorIndex & ", Default Color = &h" & Hex(DefaultColor.ToArgb))
             Return DefaultColor
         End Function
 
@@ -68,7 +67,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 End If
             End If
 
-            Debug.Fail("Unable to get color from the shell, using a predetermined default color instead." & VB.vbCrLf & "Color Category = " & themeCategory.ToString() & ", Color Name = " & themeColorName & ", Color Type = " & colorType & ", Default Color = &h" & VB.Hex(defaultColor.ToArgb))
+            Debug.Fail("Unable to get color from the shell, using a predetermined default color instead." & vbCrLf & "Color Category = " & themeCategory.ToString() & ", Color Name = " & themeColorName & ", Color Type = " & colorType & ", Default Color = &h" & Hex(defaultColor.ToArgb))
             Return defaultColor
         End Function
 
@@ -150,7 +149,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                         Return CanHideConfigurationsForProject(ProjectHierarchy) AndAlso Not ToolsOptionsShowAdvancedBuildConfigurations(Project.DTE)
                     End If
                 End If
-            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "Exception determining if we're in simplified configuration mode - default to advanced configs mode", NameOf(ShellUtil))
+            Catch ex As Exception When ReportWithoutCrash(ex, "Exception determining if we're in simplified configuration mode - default to advanced configs mode", NameOf(ShellUtil))
             End Try
 
             Return False 'Default to advanced configs
@@ -202,7 +201,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             Dim ShowAdvancedBuildIntValue As Integer = -1
 
             Dim ShowValue As Boolean
-            Dim ProjAndSolutionProperties As EnvDTE.Properties
+            Dim ProjAndSolutionProperties As Properties
             Const EnvironmentCategory As String = "Environment"
             Const ProjectsAndSolution As String = "ProjectsandSolution"
 
@@ -214,7 +213,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                     Debug.Fail("Couldn't get ProjAndSolutionProperties property from DTE.Properties")
                     ShowValue = True 'If can't get to the property, assume advanced mode
                 End If
-            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, "Couldn't get ShowAdvancedBuildConfigurations property from tools.options", NameOf(ShellUtil))
+            Catch ex As Exception When ReportWithoutCrash(ex, "Couldn't get ShowAdvancedBuildConfigurations property from tools.options", NameOf(ShellUtil))
                 Return True 'default to showing advanced
             End Try
 
@@ -238,7 +237,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             Dim Obj As Object = Nothing
             hr = ProjectHierarchy.GetProperty(VSITEMID.ROOT, __VSHPROPID.VSHPROPID_ExtObject, Obj)
             If VSErrorHandler.Succeeded(hr) Then
-                Return TryCast(Obj, EnvDTE.Project)
+                Return TryCast(Obj, Project)
             End If
 
             Return Nothing
@@ -319,16 +318,16 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             End If
 
             Try
-                Dim project As EnvDTE.Project = DTEProjectFromHierarchy(hierarchy)
+                Dim project As Project = DTEProjectFromHierarchy(hierarchy)
 
                 If project Is Nothing Then
                     Return False
                 End If
 
-                If String.Equals(project.Kind, VsWebSite.PrjKind.prjKindVenusProject, System.StringComparison.OrdinalIgnoreCase) Then
+                If String.Equals(project.Kind, VsWebSite.PrjKind.prjKindVenusProject, StringComparison.OrdinalIgnoreCase) Then
                     Return True
                 End If
-            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(IsVenusProject), NameOf(ShellUtil))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(IsVenusProject), NameOf(ShellUtil))
                 ' We failed. Assume that this isn't a web project...
             End Try
             Return False
@@ -352,7 +351,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 ' VS SilverLight Projects are traditional vb/c# apps, but 'flavored' to add functionality
                 ' for ASP.Net.  This flavoring is marked by adding a guid to the AggregateProjectType guids
                 ' Get the project type guid list
-                Dim guidList As New System.Collections.Generic.List(Of Guid)
+                Dim guidList As New List(Of Guid)
 
                 Dim SLPGuid As New Guid(SilverLightProjectGuid)
 
@@ -370,7 +369,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                                 If SLPGuid.Equals(flavorGuid) Then
                                     Return True
                                 End If
-                            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, $"We received a broken guid string from IVsAggregatableProject: '{guidStrings}'", NameOf(ShellUtil))
+                            Catch ex As Exception When ReportWithoutCrash(ex, $"We received a broken guid string from IVsAggregatableProject: '{guidStrings}'", NameOf(ShellUtil))
                             End Try
                         End If
                     Next
@@ -382,7 +381,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                         Return True
                     End If
                 End If
-            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(IsSilverLightProject), NameOf(ShellUtil))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(IsSilverLightProject), NameOf(ShellUtil))
                 ' We failed. Assume that this isn't a web project...
             End Try
             Return False
@@ -409,7 +408,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 ' VS WAP Projects are traditional vb/c# apps, but 'flavored' to add functionality
                 ' for ASP.Net.  This flavoring is marked by adding a guid to the AggregateProjectType guids
                 ' Get the project type guid list
-                Dim guidList As New System.Collections.Generic.List(Of Guid)
+                Dim guidList As New List(Of Guid)
 
                 Dim WAPGuid As New Guid(WebAppProjectGuid)
 
@@ -427,7 +426,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                                 If WAPGuid.Equals(flavorGuid) Then
                                     Return True
                                 End If
-                            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, $"We received a broken guid string from IVsAggregatableProject: '{guidStrings}'", NameOf(ShellUtil))
+                            Catch ex As Exception When ReportWithoutCrash(ex, $"We received a broken guid string from IVsAggregatableProject: '{guidStrings}'", NameOf(ShellUtil))
                             End Try
                         End If
                     Next
@@ -435,11 +434,11 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                     '  Should not happen, but if they decide to make this project type non-flavored.
                     Dim typeGuid As Guid = Nothing
                     VSErrorHandler.ThrowOnFailure(hierarchy.GetGuidProperty(VSITEMID.ROOT, __VSHPROPID.VSHPROPID_TypeGuid, typeGuid))
-                    If Guid.Equals(WAPGuid, typeGuid) Then
+                    If Equals(WAPGuid, typeGuid) Then
                         Return True
                     End If
                 End If
-            Catch ex As Exception When AppDesCommon.ReportWithoutCrash(ex, NameOf(IsWebProject), NameOf(ShellUtil))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(IsWebProject), NameOf(ShellUtil))
                 ' We failed. Assume that this isn't a web project...
             End Try
             Return False
@@ -515,11 +514,11 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' The list of items that are to be checked out
         ''' </returns>
         ''' <remarks></remarks>
-        Public Shared Function FileNameAndGeneratedFileName(projectitem As EnvDTE.ProjectItem, _
+        Public Shared Function FileNameAndGeneratedFileName(projectitem As ProjectItem, _
                                                             Optional suffix As String = ".Designer", _
                                                             Optional requireExactlyOneChild As Boolean = True, _
                                                             Optional exclude As Predicate(Of String) = Nothing) _
-                               As Collections.Generic.List(Of String)
+                               As List(Of String)
 
             Dim result As New List(Of String)
 
@@ -538,8 +537,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 
                             ' Make sure that the filename matches what we expect.
                             If String.Equals( _
-                                System.IO.Path.GetFileNameWithoutExtension(childItemName), _
-                                System.IO.Path.GetFileNameWithoutExtension(DTEUtils.FileNameFromProjectItem(projectitem)) & suffix, _
+                                IO.Path.GetFileNameWithoutExtension(childItemName), _
+                                IO.Path.GetFileNameWithoutExtension(DTEUtils.FileNameFromProjectItem(projectitem)) & suffix, _
                                 StringComparison.OrdinalIgnoreCase) _
                             Then
                                 ' If we've got a filter predicate, we remove anything that we've been
@@ -623,7 +622,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             ''' <param name="lParam"></param>
             ''' <returns></returns>
             ''' <remarks></remarks>
-            Private Function IVsBroadcastMessageEvents_OnBroadcastMessage(msg As UInteger, wParam As System.IntPtr, lParam As System.IntPtr) As Integer Implements Shell.Interop.IVsBroadcastMessageEvents.OnBroadcastMessage
+            Private Function IVsBroadcastMessageEvents_OnBroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr) As Integer Implements IVsBroadcastMessageEvents.OnBroadcastMessage
                 OnBroadcastMessage(msg, wParam, lParam)
                 Return AppDesInterop.NativeMethods.S_OK
             End Function
@@ -635,7 +634,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             ''' <param name="wParam"></param>
             ''' <param name="lParam"></param>
             ''' <remarks></remarks>
-            Protected Overridable Sub OnBroadcastMessage(msg As UInteger, wParam As System.IntPtr, lParam As System.IntPtr)
+            Protected Overridable Sub OnBroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr)
                 RaiseEvent BroadcastMessage(msg, wParam, lParam)
             End Sub
 
@@ -645,12 +644,12 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 
             ' IDisposable
             Private Overloads Sub Dispose(disposing As Boolean)
-                If Not Me._disposed Then
+                If Not _disposed Then
                     If disposing Then
                         DisconnectBroadcastMessages()
                     End If
                 End If
-                Me._disposed = True
+                _disposed = True
             End Sub
 
 
@@ -681,7 +680,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             Inherits BroadcastMessageEventsHelper
 
             ' Control that we are going to set the font on (if any)
-            Private _control As System.Windows.Forms.Control
+            Private _control As Control
 
             Private _serviceProvider As IServiceProvider
 
@@ -692,7 +691,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             ''' <param name="ctrl"></param>
             ''' <param name="SetFontInitially">If true, set the font of the provided control when this FontChangeMonitor is created</param>
             ''' <remarks></remarks>
-            Public Sub New(sp As IServiceProvider, ctrl As System.Windows.Forms.Control, SetFontInitially As Boolean)
+            Public Sub New(sp As IServiceProvider, ctrl As Control, SetFontInitially As Boolean)
                 MyBase.new(sp)
 
                 Debug.Assert(sp IsNot Nothing, "Why did we get a NULL service provider!?")
@@ -713,7 +712,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             ''' <param name="wParam"></param>
             ''' <param name="lParam"></param>
             ''' <remarks></remarks>
-            Protected Overrides Sub OnBroadcastMessage(msg As UInteger, wParam As System.IntPtr, lParam As System.IntPtr)
+            Protected Overrides Sub OnBroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr)
                 MyBase.OnBroadcastMessage(msg, wParam, lParam)
 
                 If _control IsNot Nothing Then
@@ -735,7 +734,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             Public Shared ReadOnly Property GetDialogFont(ServiceProvider As IServiceProvider) As Font
                 Get
                     If ServiceProvider IsNot Nothing Then
-                        Dim uiSvc As System.Windows.Forms.Design.IUIService = CType(ServiceProvider.GetService(GetType(System.Windows.Forms.Design.IUIService)), System.Windows.Forms.Design.IUIService)
+                        Dim uiSvc As IUIService = CType(ServiceProvider.GetService(GetType(IUIService)), IUIService)
                         If uiSvc IsNot Nothing Then
                             Return CType(uiSvc.Styles("DialogFont"), Font)
                         End If
@@ -743,7 +742,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 
                     Debug.Fail("Couldn't get a IUIService... cheating instead :)")
 
-                    Return System.Windows.Forms.Form.DefaultFont
+                    Return Control.DefaultFont
                 End Get
             End Property
         End Class
@@ -773,7 +772,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             Dim pbGeneratesDesignTimeSource As Integer
             Dim pbGeneratesSharedDesignTimeSource As Integer
             Dim pbUseTempPEFlag As Integer
-            Dim pguidGenerator As System.Guid
+            Dim pguidGenerator As Guid
 
             Dim hr As Integer = sfgFactory.GetGeneratorInformation(customToolName, pbGeneratesDesignTimeSource, pbGeneratesSharedDesignTimeSource, pbUseTempPEFlag, pguidGenerator)
 
@@ -785,7 +784,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         End Function
 
         Public Shared Function GetServiceProvider(dte As DTE) As IServiceProvider
-            Return New Microsoft.VisualStudio.Shell.ServiceProvider(DirectCast(dte, Microsoft.VisualStudio.OLE.Interop.IServiceProvider))
+            Return New Shell.ServiceProvider(DirectCast(dte, OLE.Interop.IServiceProvider))
         End Function
 
     End Class

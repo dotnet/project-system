@@ -44,7 +44,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
 
             // If fileToWatch is null then we expect to not register any filewatcher.
             var times = fileToWatch == null ? Times.Never() : Times.Once();
-            Mock.Get<IVsFileChangeEx>(fileChangeService).Verify(s => s.AdviseFileChange(fileToWatch ?? It.IsAny<string>(), It.IsAny<uint>(), watcher, out adviseCookie), times);
+            Mock.Get(fileChangeService).Verify(s => s.AdviseFileChange(fileToWatch ?? It.IsAny<string>(), It.IsAny<uint>(), watcher, out adviseCookie), times);
         }
 
         [Theory]
@@ -106,7 +106,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
             watcher.ProjectTree_ChangedAsync(IProjectVersionedValueFactory<IProjectTreeSnapshot>.Create(IProjectTreeSnapshotFactory.Create(secondTree)));
 
             // If fileToWatch is null then we expect to not register any filewatcher.
-            Mock<IVsFileChangeEx> fileChangeServiceMock = Mock.Get<IVsFileChangeEx>(fileChangeService);
+            Mock<IVsFileChangeEx> fileChangeServiceMock = Mock.Get(fileChangeService);
             fileChangeServiceMock.Verify(s => s.AdviseFileChange(It.IsAny<string>(), It.IsAny<uint>(), watcher, out adviseCookie), 
                                          Times.Exactly(numRegisterCalls));
             fileChangeServiceMock.Verify(s => s.UnadviseFileChange(adviseCookie), Times.Exactly(numUnregisterCalls));

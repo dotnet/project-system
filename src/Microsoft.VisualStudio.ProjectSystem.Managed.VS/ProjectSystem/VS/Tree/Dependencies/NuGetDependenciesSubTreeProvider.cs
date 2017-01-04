@@ -168,14 +168,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             lock (_snapshotLock)
             {
-                IDependencyNode node = null;
-                if (CurrentSnapshot.NodesCache.TryGetValue(id, out node))
+                if (CurrentSnapshot.NodesCache.TryGetValue(id, out IDependencyNode node))
                 {
                     return node;
                 }
 
-                DependencyMetadata dependencyMetadata = null;
-                if (!CurrentSnapshot.DependenciesWorld.TryGetValue(id.ItemSpec, out dependencyMetadata))
+                if (!CurrentSnapshot.DependenciesWorld.TryGetValue(id.ItemSpec, out DependencyMetadata dependencyMetadata))
                 {
                     return null;
                 }
@@ -187,8 +185,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 var frameworkAssemblies = new List<DependencyMetadata>();
                 foreach (var childItemSpec in dependencyMetadata.DependenciesItemSpecs)
                 {
-                    DependencyMetadata childDependencyMetadata = null;
-                    if (!CurrentSnapshot.DependenciesWorld.TryGetValue(childItemSpec, out childDependencyMetadata))
+                    if (!CurrentSnapshot.DependenciesWorld.TryGetValue(childItemSpec, out DependencyMetadata childDependencyMetadata))
                     {
                         continue;
                     }
@@ -356,8 +353,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private bool DoesNodeMatchByNameOrItemSpec(IDependencyNode node, string itemSpecToCheck)
         {
             bool? result = false;
-            DependencyMetadata metadata = null;
-            if (CurrentSnapshot.DependenciesWorld.TryGetValue(node.Id.ItemSpec, out metadata))
+            if (CurrentSnapshot.DependenciesWorld.TryGetValue(node.Id.ItemSpec, out DependencyMetadata metadata))
             {
                 result = metadata?.Name?.Equals(itemSpecToCheck, StringComparison.OrdinalIgnoreCase);
             }
@@ -389,8 +385,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                 foreach (string removedItemSpec in change.Difference.RemovedItems)
                 {
-                    DependencyMetadata metadata = null;
-                    if (TopLevelDependencies.TryGetValue(removedItemSpec, out metadata))
+                    if (TopLevelDependencies.TryGetValue(removedItemSpec, out DependencyMetadata metadata))
                     {
                         TopLevelDependencies.Remove(removedItemSpec);
                         dependenciesChange.RemovedNodes.Add(metadata);
@@ -405,8 +400,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         continue;
                     }
 
-                    DependencyMetadata metadata = null;
-                    if (TopLevelDependencies.TryGetValue(changedItemSpec, out metadata))
+                    if (TopLevelDependencies.TryGetValue(changedItemSpec, out DependencyMetadata metadata))
                     {
                         metadata = CreateUnresolvedMetadata(changedItemSpec, properties);
                         TopLevelDependencies[changedItemSpec] = metadata;
@@ -423,8 +417,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         continue;
                     }
 
-                    DependencyMetadata metadata = null;
-                    if (!TopLevelDependencies.TryGetValue(addedItemSpec, out metadata))
+                    if (!TopLevelDependencies.TryGetValue(addedItemSpec, out DependencyMetadata metadata))
                     {
                         metadata = CreateUnresolvedMetadata(addedItemSpec, properties);
                         TopLevelDependencies.Add(addedItemSpec, metadata);
@@ -525,8 +518,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             lock (_snapshotLock)
             {
-                DependencyMetadata rootDependency = null;
-                if (!CurrentSnapshot.DependenciesWorld.TryGetValue(node.Id.ItemSpec, out rootDependency))
+                if (!CurrentSnapshot.DependenciesWorld.TryGetValue(node.Id.ItemSpec, out DependencyMetadata rootDependency))
                 {
                     return Task.FromResult<IEnumerable<IDependencyNode>>(null);
                 }
@@ -557,8 +549,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var matchingNodes = new List<IDependencyNode>();
             foreach(var childDependency in rootDependency.DependenciesItemSpecs)
             {
-                DependencyMetadata childDependencyMetadata = null;
-                if (!CurrentSnapshot.DependenciesWorld.TryGetValue(childDependency, out childDependencyMetadata))
+                if (!CurrentSnapshot.DependenciesWorld.TryGetValue(childDependency, out DependencyMetadata childDependencyMetadata))
                 {
                     continue;
                 }
@@ -666,9 +657,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                 Path = properties.ContainsKey(MetadataKeys.Path) ? properties[MetadataKeys.Path] : string.Empty;
 
-                bool resolved = true;
-                bool.TryParse(properties.ContainsKey(MetadataKeys.Resolved) 
-                                ? properties[MetadataKeys.Resolved] : "true", out resolved);
+                bool.TryParse(properties.ContainsKey(MetadataKeys.Resolved)
+                ? properties[MetadataKeys.Resolved] : "true", out bool resolved);
                 Resolved = resolved;
 
                 var dependenciesHashSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -758,9 +748,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
 
             public DependencyMetadata RemoveDependency(string itemSpec)
-            {                
-                DependencyMetadata removedMetadata = null;
-                if (!DependenciesWorld.TryGetValue(itemSpec, out removedMetadata))
+            {
+                if (!DependenciesWorld.TryGetValue(itemSpec, out DependencyMetadata removedMetadata))
                 {
                     return null;
                 }
@@ -779,16 +768,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             public DependencyMetadata UpdateDependency(string itemSpec, IImmutableDictionary<string,string> properties)
             {
-                DependencyMetadata dependencyMetadata = null;
-                if (!DependenciesWorld.TryGetValue(itemSpec, out dependencyMetadata))
+                if (!DependenciesWorld.TryGetValue(itemSpec, out DependencyMetadata dependencyMetadata))
                 {
                     return null;
                 }
 
                 if (!itemSpec.Contains("/"))
                 {
-                    TargetMetadata targetMetadata = null;
-                    if (Targets.TryGetValue(itemSpec, out targetMetadata))
+                    if (Targets.TryGetValue(itemSpec, out TargetMetadata targetMetadata))
                     {
                         targetMetadata.SetProperties(properties);
                     }
@@ -844,16 +831,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 HashSet<string> topLevelDependenciesItemSpecs = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 foreach(var target in Targets)
                 {
-                    DependencyMetadata targetMetadata = null;
-                    if (!DependenciesWorld.TryGetValue(target.Key, out targetMetadata))
+                    if (!DependenciesWorld.TryGetValue(target.Key, out DependencyMetadata targetMetadata))
                     {
                         continue;
                     }
 
                     foreach (var dependencyItemSpec in targetMetadata.DependenciesItemSpecs)
                     {
-                        DependencyMetadata dependencyMetadata = null;
-                        if (!DependenciesWorld.TryGetValue(dependencyItemSpec, out dependencyMetadata))
+                        if (!DependenciesWorld.TryGetValue(dependencyItemSpec, out DependencyMetadata dependencyMetadata))
                         {
                             continue;
                         }

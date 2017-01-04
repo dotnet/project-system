@@ -5,8 +5,8 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Editor;
+using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.IO;
-using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.ProjectSystem.VS.Editor;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
@@ -20,7 +20,7 @@ using Task = System.Threading.Tasks.Task;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
     // TODO: Refactor out the state machine into a separate ViewModel. https://github.com/dotnet/roslyn-project-system/issues/836
-    [ProjectCommand(ManagedProjectSystemPackage.ManagedProjectSystemCommandSet, ManagedProjectSystemPackage.EditProjectFileCmdId)]
+    [ProjectCommand(CommandGroup.VisualStudioStandard2k, VisualStudioStandard2kCommandId.EditProjectFile)]
     [AppliesTo(ProjectCapability.OpenProjectFile)]
     internal class EditProjectFileCommand : AbstractSingleNodeProjectCommand
     {

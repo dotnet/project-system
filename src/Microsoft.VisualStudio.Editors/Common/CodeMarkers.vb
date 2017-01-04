@@ -19,7 +19,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         Implements ICodeMarkers
 
         Private Sub CodeMarker(nTimerID As Integer) Implements ICodeMarkers.CodeMarker
-            Microsoft.Internal.Performance.CodeMarkers.Instance.CodeMarker(nTimerID)
+            Internal.Performance.CodeMarkers.Instance.CodeMarker(nTimerID)
         End Sub
     End Class
 

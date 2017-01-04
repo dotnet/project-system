@@ -21,7 +21,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Get
                 If Not _replaced Then
                     _replaced = True
-                    DescriptionValue = SR.ResourceManager.GetString(MyBase.DescriptionValue)
+                    DescriptionValue = My.Resources.Designer.ResourceManager.GetString(DescriptionValue)
                 End If
                 Return DescriptionValue
             End Get

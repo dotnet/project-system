@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             var mock = new Mock<IOptionsSettings>();
 
-            mock.Setup(h => h.GetPropertiesValue<T>(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<T>()))
+            mock.Setup(h => h.GetPropertiesValue(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<T>()))
                 .Returns(optionsSettingsValue);
 
             return mock.Object;

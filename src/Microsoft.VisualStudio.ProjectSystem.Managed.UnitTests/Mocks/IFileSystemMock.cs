@@ -80,14 +80,14 @@ namespace Microsoft.VisualStudio.IO
             });
         }
 
-        public IEnumerable<string> EnumerateDirectories(string path, string searchPattern, System.IO.SearchOption searchOption)
+        public IEnumerable<string> EnumerateDirectories(string path, string searchPattern, SearchOption searchOption)
         {
             return EnumerateDirectories(path);
         }
 
         // SearchOption is ignored and always considered fully recursive.
         // Now supports search patterns
-        public IEnumerable<string> EnumerateFiles(string path, string searchPattern, System.IO.SearchOption searchOption)
+        public IEnumerable<string> EnumerateFiles(string path, string searchPattern, SearchOption searchOption)
         {
             var files = _files.Keys.Where(filePath => filePath.StartsWith(path));
 
@@ -136,7 +136,7 @@ namespace Microsoft.VisualStudio.IO
         {
             if (!FileExists(path))
             {
-                throw new System.IO.FileNotFoundException();
+                throw new FileNotFoundException();
             }
             _files.Remove(path);
         }
@@ -153,7 +153,7 @@ namespace Microsoft.VisualStudio.IO
         {
             if (!FileExists(path))
             {
-                throw new System.IO.FileNotFoundException();
+                throw new FileNotFoundException();
             }
             return _files[path].FileContents;
         }

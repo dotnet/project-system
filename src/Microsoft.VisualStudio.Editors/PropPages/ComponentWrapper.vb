@@ -30,51 +30,51 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Set
         End Property
 
-        Public Function GetAttributes() As System.ComponentModel.AttributeCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetAttributes
+        Public Function GetAttributes() As AttributeCollection Implements ICustomTypeDescriptor.GetAttributes
             Return TypeDescriptor.GetAttributes(_currentObject)
         End Function
 
-        Public Function GetClassName() As String Implements System.ComponentModel.ICustomTypeDescriptor.GetClassName
+        Public Function GetClassName() As String Implements ICustomTypeDescriptor.GetClassName
             Return TypeDescriptor.GetClassName(_currentObject)
         End Function
 
-        Public Function GetComponentName() As String Implements System.ComponentModel.ICustomTypeDescriptor.GetComponentName
+        Public Function GetComponentName() As String Implements ICustomTypeDescriptor.GetComponentName
             Return TypeDescriptor.GetComponentName(_currentObject)
         End Function
 
-        Public Function GetConverter() As System.ComponentModel.TypeConverter Implements System.ComponentModel.ICustomTypeDescriptor.GetConverter
+        Public Function GetConverter() As TypeConverter Implements ICustomTypeDescriptor.GetConverter
             Return TypeDescriptor.GetConverter(_currentObject)
         End Function
 
-        Public Function GetDefaultEvent() As System.ComponentModel.EventDescriptor Implements System.ComponentModel.ICustomTypeDescriptor.GetDefaultEvent
+        Public Function GetDefaultEvent() As EventDescriptor Implements ICustomTypeDescriptor.GetDefaultEvent
             Return TypeDescriptor.GetDefaultEvent(_currentObject)
         End Function
 
-        Public Function GetDefaultProperty() As System.ComponentModel.PropertyDescriptor Implements System.ComponentModel.ICustomTypeDescriptor.GetDefaultProperty
+        Public Function GetDefaultProperty() As PropertyDescriptor Implements ICustomTypeDescriptor.GetDefaultProperty
             Return TypeDescriptor.GetDefaultProperty(_currentObject)
         End Function
 
-        Public Function GetEditor(editorBaseType As System.Type) As Object Implements System.ComponentModel.ICustomTypeDescriptor.GetEditor
+        Public Function GetEditor(editorBaseType As Type) As Object Implements ICustomTypeDescriptor.GetEditor
             Return TypeDescriptor.GetEditor(_currentObject, editorBaseType)
         End Function
 
-        Public Function GetEvents() As System.ComponentModel.EventDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetEvents
+        Public Function GetEvents() As EventDescriptorCollection Implements ICustomTypeDescriptor.GetEvents
             Return TypeDescriptor.GetEvents(_currentObject)
         End Function
 
-        Public Function GetEvents1(attributes() As System.Attribute) As System.ComponentModel.EventDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetEvents
+        Public Function GetEvents1(attributes() As Attribute) As EventDescriptorCollection Implements ICustomTypeDescriptor.GetEvents
             Return TypeDescriptor.GetEvents(_currentObject, attributes)
         End Function
 
-        Public Function GetProperties() As System.ComponentModel.PropertyDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetProperties
+        Public Function GetProperties() As PropertyDescriptorCollection Implements ICustomTypeDescriptor.GetProperties
             Return TypeDescriptor.GetProperties(_currentObject)
         End Function
 
-        Public Function GetProperties1(attributes() As System.Attribute) As System.ComponentModel.PropertyDescriptorCollection Implements System.ComponentModel.ICustomTypeDescriptor.GetProperties
+        Public Function GetProperties1(attributes() As Attribute) As PropertyDescriptorCollection Implements ICustomTypeDescriptor.GetProperties
             Return TypeDescriptor.GetProperties(_currentObject, attributes)
         End Function
 
-        Public Function GetPropertyOwner(pd As System.ComponentModel.PropertyDescriptor) As Object Implements System.ComponentModel.ICustomTypeDescriptor.GetPropertyOwner
+        Public Function GetPropertyOwner(pd As PropertyDescriptor) As Object Implements ICustomTypeDescriptor.GetPropertyOwner
             Return _currentObject
         End Function
     End Class

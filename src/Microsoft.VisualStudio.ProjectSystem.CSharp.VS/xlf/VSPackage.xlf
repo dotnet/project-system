@@ -37,7 +37,7 @@
       </trans-unit>
       <trans-unit id="9">
         <source>Class Library (.NET Core)</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
 
         public static IProjectImageProvider ImplementGetProjectImage(string key, ProjectImageMoniker moniker)
         {
-            return IProjectImageProviderFactory.ImplementGetProjectImage((string k) => {
+            return ImplementGetProjectImage((string k) => {
 
                 if (k == key)
                 {

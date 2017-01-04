@@ -9,19 +9,19 @@ Namespace Microsoft.Runtime.Hosting
         ' Methods
         <SecurityCritical()> _
         Public Shared Function StrongNameErrorInfo() As Integer
-            Return StrongNameHelpers.t_ts_LastStrongNameHR
+            Return t_ts_LastStrongNameHR
         End Function
 
         <SecurityCritical()> _
         Public Shared Sub StrongNameFreeBuffer(pbMemory As IntPtr)
-            StrongNameHelpers.StrongNameUsingIntPtr.StrongNameFreeBuffer(pbMemory)
+            StrongNameUsingIntPtr.StrongNameFreeBuffer(pbMemory)
         End Sub
 
         <SecurityCritical()> _
         Public Shared Function StrongNameGetPublicKey(pwzKeyContainer As String, pbKeyBlob As IntPtr, cbKeyBlob As Integer, <Out()> ByRef ppbPublicKeyBlob As IntPtr, <Out()> ByRef pcbPublicKeyBlob As Integer) As Boolean
-            Dim hr As Integer = StrongNameHelpers.StrongNameUsingIntPtr.StrongNameGetPublicKey(pwzKeyContainer, pbKeyBlob, cbKeyBlob, ppbPublicKeyBlob, pcbPublicKeyBlob)
+            Dim hr As Integer = StrongNameUsingIntPtr.StrongNameGetPublicKey(pwzKeyContainer, pbKeyBlob, cbKeyBlob, ppbPublicKeyBlob, pcbPublicKeyBlob)
             If (hr < 0) Then
-                StrongNameHelpers.t_ts_LastStrongNameHR = hr
+                t_ts_LastStrongNameHR = hr
                 ppbPublicKeyBlob = IntPtr.Zero
                 pcbPublicKeyBlob = 0
                 Return False
@@ -31,9 +31,9 @@ Namespace Microsoft.Runtime.Hosting
 
         <SecurityCritical()> _
         Public Shared Function StrongNameGetPublicKey(pwzKeyContainer As String, bKeyBlob As Byte(), cbKeyBlob As Integer, <Out()> ByRef ppbPublicKeyBlob As IntPtr, <Out()> ByRef pcbPublicKeyBlob As Integer) As Boolean
-            Dim hr As Integer = StrongNameHelpers.StrongName.StrongNameGetPublicKey(pwzKeyContainer, bKeyBlob, cbKeyBlob, ppbPublicKeyBlob, pcbPublicKeyBlob)
+            Dim hr As Integer = StrongName.StrongNameGetPublicKey(pwzKeyContainer, bKeyBlob, cbKeyBlob, ppbPublicKeyBlob, pcbPublicKeyBlob)
             If (hr < 0) Then
-                StrongNameHelpers.t_ts_LastStrongNameHR = hr
+                t_ts_LastStrongNameHR = hr
                 ppbPublicKeyBlob = IntPtr.Zero
                 pcbPublicKeyBlob = 0
                 Return False
@@ -43,9 +43,9 @@ Namespace Microsoft.Runtime.Hosting
 
         <SecurityCritical()> _
         Public Shared Function StrongNameKeyDelete(pwzKeyContainer As String) As Boolean
-            Dim hr As Integer = StrongNameHelpers.StrongName.StrongNameKeyDelete(pwzKeyContainer)
+            Dim hr As Integer = StrongName.StrongNameKeyDelete(pwzKeyContainer)
             If (hr < 0) Then
-                StrongNameHelpers.t_ts_LastStrongNameHR = hr
+                t_ts_LastStrongNameHR = hr
                 Return False
             End If
             Return True
@@ -53,9 +53,9 @@ Namespace Microsoft.Runtime.Hosting
 
         <SecurityCritical()> _
         Public Shared Function StrongNameKeyGen(pwzKeyContainer As String, dwFlags As Integer, <Out()> ByRef ppbKeyBlob As IntPtr, <Out()> ByRef pcbKeyBlob As Integer) As Boolean
-            Dim hr As Integer = StrongNameHelpers.StrongName.StrongNameKeyGen(pwzKeyContainer, dwFlags, ppbKeyBlob, pcbKeyBlob)
+            Dim hr As Integer = StrongName.StrongNameKeyGen(pwzKeyContainer, dwFlags, ppbKeyBlob, pcbKeyBlob)
             If (hr < 0) Then
-                StrongNameHelpers.t_ts_LastStrongNameHR = hr
+                t_ts_LastStrongNameHR = hr
                 ppbKeyBlob = IntPtr.Zero
                 pcbKeyBlob = 0
                 Return False
@@ -65,9 +65,9 @@ Namespace Microsoft.Runtime.Hosting
 
         <SecurityCritical()> _
         Public Shared Function StrongNameKeyInstall(pwzKeyContainer As String, pbKeyBlob As IntPtr, cbKeyBlob As Integer) As Boolean
-            Dim hr As Integer = StrongNameHelpers.StrongNameUsingIntPtr.StrongNameKeyInstall(pwzKeyContainer, pbKeyBlob, cbKeyBlob)
+            Dim hr As Integer = StrongNameUsingIntPtr.StrongNameKeyInstall(pwzKeyContainer, pbKeyBlob, cbKeyBlob)
             If (hr < 0) Then
-                StrongNameHelpers.t_ts_LastStrongNameHR = hr
+                t_ts_LastStrongNameHR = hr
                 Return False
             End If
             Return True
@@ -75,9 +75,9 @@ Namespace Microsoft.Runtime.Hosting
 
         <SecurityCritical()> _
         Public Shared Function StrongNameKeyInstall(pwzKeyContainer As String, bKeyBlob As Byte(), cbKeyBlob As Integer) As Boolean
-            Dim hr As Integer = StrongNameHelpers.StrongName.StrongNameKeyInstall(pwzKeyContainer, bKeyBlob, cbKeyBlob)
+            Dim hr As Integer = StrongName.StrongNameKeyInstall(pwzKeyContainer, bKeyBlob, cbKeyBlob)
             If (hr < 0) Then
-                StrongNameHelpers.t_ts_LastStrongNameHR = hr
+                t_ts_LastStrongNameHR = hr
                 Return False
             End If
             Return True
@@ -87,21 +87,21 @@ Namespace Microsoft.Runtime.Hosting
         Public Shared Function StrongNameSignatureGeneration(pwzFilePath As String, pwzKeyContainer As String, pbKeyBlob As IntPtr, cbKeyBlob As Integer) As Boolean
             Dim ppbSignatureBlob As IntPtr = IntPtr.Zero
             Dim cbSignatureBlob As Integer = 0
-            Return StrongNameHelpers.StrongNameSignatureGeneration(pwzFilePath, pwzKeyContainer, pbKeyBlob, cbKeyBlob, (ppbSignatureBlob), cbSignatureBlob)
+            Return StrongNameSignatureGeneration(pwzFilePath, pwzKeyContainer, pbKeyBlob, cbKeyBlob, (ppbSignatureBlob), cbSignatureBlob)
         End Function
 
         <SecurityCritical()> _
         Public Shared Function StrongNameSignatureGeneration(pwzFilePath As String, pwzKeyContainer As String, bKeyBlob As Byte(), cbKeyBlob As Integer) As Boolean
             Dim ppbSignatureBlob As IntPtr = IntPtr.Zero
             Dim cbSignatureBlob As Integer = 0
-            Return StrongNameHelpers.StrongNameSignatureGeneration(pwzFilePath, pwzKeyContainer, bKeyBlob, cbKeyBlob, (ppbSignatureBlob), cbSignatureBlob)
+            Return StrongNameSignatureGeneration(pwzFilePath, pwzKeyContainer, bKeyBlob, cbKeyBlob, (ppbSignatureBlob), cbSignatureBlob)
         End Function
 
         <SecurityCritical()> _
         Public Shared Function StrongNameSignatureGeneration(pwzFilePath As String, pwzKeyContainer As String, pbKeyBlob As IntPtr, cbKeyBlob As Integer, ByRef ppbSignatureBlob As IntPtr, <Out()> ByRef pcbSignatureBlob As Integer) As Boolean
-            Dim hr As Integer = StrongNameHelpers.StrongNameUsingIntPtr.StrongNameSignatureGeneration(pwzFilePath, pwzKeyContainer, pbKeyBlob, cbKeyBlob, ppbSignatureBlob, pcbSignatureBlob)
+            Dim hr As Integer = StrongNameUsingIntPtr.StrongNameSignatureGeneration(pwzFilePath, pwzKeyContainer, pbKeyBlob, cbKeyBlob, ppbSignatureBlob, pcbSignatureBlob)
             If (hr < 0) Then
-                StrongNameHelpers.t_ts_LastStrongNameHR = hr
+                t_ts_LastStrongNameHR = hr
                 pcbSignatureBlob = 0
                 Return False
             End If
@@ -110,9 +110,9 @@ Namespace Microsoft.Runtime.Hosting
 
         <SecurityCritical()> _
         Public Shared Function StrongNameSignatureGeneration(pwzFilePath As String, pwzKeyContainer As String, bKeyBlob As Byte(), cbKeyBlob As Integer, ByRef ppbSignatureBlob As IntPtr, <Out()> ByRef pcbSignatureBlob As Integer) As Boolean
-            Dim hr As Integer = StrongNameHelpers.StrongName.StrongNameSignatureGeneration(pwzFilePath, pwzKeyContainer, bKeyBlob, cbKeyBlob, ppbSignatureBlob, pcbSignatureBlob)
+            Dim hr As Integer = StrongName.StrongNameSignatureGeneration(pwzFilePath, pwzKeyContainer, bKeyBlob, cbKeyBlob, ppbSignatureBlob, pcbSignatureBlob)
             If (hr < 0) Then
-                StrongNameHelpers.t_ts_LastStrongNameHR = hr
+                t_ts_LastStrongNameHR = hr
                 pcbSignatureBlob = 0
                 Return False
             End If
@@ -121,9 +121,9 @@ Namespace Microsoft.Runtime.Hosting
 
         <SecurityCritical()> _
         Public Shared Function StrongNameSignatureSize(pbPublicKeyBlob As IntPtr, cbPublicKeyBlob As Integer, <Out()> ByRef pcbSize As Integer) As Boolean
-            Dim hr As Integer = StrongNameHelpers.StrongNameUsingIntPtr.StrongNameSignatureSize(pbPublicKeyBlob, cbPublicKeyBlob, pcbSize)
+            Dim hr As Integer = StrongNameUsingIntPtr.StrongNameSignatureSize(pbPublicKeyBlob, cbPublicKeyBlob, pcbSize)
             If (hr < 0) Then
-                StrongNameHelpers.t_ts_LastStrongNameHR = hr
+                t_ts_LastStrongNameHR = hr
                 pcbSize = 0
                 Return False
             End If
@@ -132,9 +132,9 @@ Namespace Microsoft.Runtime.Hosting
 
         <SecurityCritical()> _
         Public Shared Function StrongNameSignatureSize(bPublicKeyBlob As Byte(), cbPublicKeyBlob As Integer, <Out()> ByRef pcbSize As Integer) As Boolean
-            Dim hr As Integer = StrongNameHelpers.StrongName.StrongNameSignatureSize(bPublicKeyBlob, cbPublicKeyBlob, pcbSize)
+            Dim hr As Integer = StrongName.StrongNameSignatureSize(bPublicKeyBlob, cbPublicKeyBlob, pcbSize)
             If (hr < 0) Then
-                StrongNameHelpers.t_ts_LastStrongNameHR = hr
+                t_ts_LastStrongNameHR = hr
                 pcbSize = 0
                 Return False
             End If
@@ -143,9 +143,9 @@ Namespace Microsoft.Runtime.Hosting
 
         <SecurityCritical()> _
         Public Shared Function StrongNameSignatureVerification(pwzFilePath As String, dwInFlags As Integer, <Out()> ByRef pdwOutFlags As Integer) As Boolean
-            Dim hr As Integer = StrongNameHelpers.StrongName.StrongNameSignatureVerification(pwzFilePath, dwInFlags, pdwOutFlags)
+            Dim hr As Integer = StrongName.StrongNameSignatureVerification(pwzFilePath, dwInFlags, pdwOutFlags)
             If (hr < 0) Then
-                StrongNameHelpers.t_ts_LastStrongNameHR = hr
+                t_ts_LastStrongNameHR = hr
                 pdwOutFlags = 0
                 Return False
             End If
@@ -154,9 +154,9 @@ Namespace Microsoft.Runtime.Hosting
 
         <SecurityCritical()> _
         Public Shared Function StrongNameSignatureVerificationEx(pwzFilePath As String, fForceVerification As Boolean, <Out()> ByRef pfWasVerified As Boolean) As Boolean
-            Dim hr As Integer = StrongNameHelpers.StrongName.StrongNameSignatureVerificationEx(pwzFilePath, fForceVerification, pfWasVerified)
+            Dim hr As Integer = StrongName.StrongNameSignatureVerificationEx(pwzFilePath, fForceVerification, pfWasVerified)
             If (hr < 0) Then
-                StrongNameHelpers.t_ts_LastStrongNameHR = hr
+                t_ts_LastStrongNameHR = hr
                 pfWasVerified = False
                 Return False
             End If
@@ -165,9 +165,9 @@ Namespace Microsoft.Runtime.Hosting
 
         <SecurityCritical()> _
         Public Shared Function StrongNameTokenFromPublicKey(bPublicKeyBlob As Byte(), cbPublicKeyBlob As Integer, <Out()> ByRef ppbStrongNameToken As IntPtr, <Out()> ByRef pcbStrongNameToken As Integer) As Boolean
-            Dim hr As Integer = StrongNameHelpers.StrongName.StrongNameTokenFromPublicKey(bPublicKeyBlob, cbPublicKeyBlob, ppbStrongNameToken, pcbStrongNameToken)
+            Dim hr As Integer = StrongName.StrongNameTokenFromPublicKey(bPublicKeyBlob, cbPublicKeyBlob, ppbStrongNameToken, pcbStrongNameToken)
             If (hr < 0) Then
-                StrongNameHelpers.t_ts_LastStrongNameHR = hr
+                t_ts_LastStrongNameHR = hr
                 ppbStrongNameToken = IntPtr.Zero
                 pcbStrongNameToken = 0
                 Return False
@@ -177,9 +177,9 @@ Namespace Microsoft.Runtime.Hosting
 
         <SecurityCritical()> _
         Public Shared Function StrongNameTokenFromPublicKey(pbPublicKeyBlob As IntPtr, cbPublicKeyBlob As Integer, <Out()> ByRef ppbStrongNameToken As IntPtr, <Out()> ByRef pcbStrongNameToken As Integer) As Boolean
-            Dim hr As Integer = StrongNameHelpers.StrongNameUsingIntPtr.StrongNameTokenFromPublicKey(pbPublicKeyBlob, cbPublicKeyBlob, ppbStrongNameToken, pcbStrongNameToken)
+            Dim hr As Integer = StrongNameUsingIntPtr.StrongNameTokenFromPublicKey(pbPublicKeyBlob, cbPublicKeyBlob, ppbStrongNameToken, pcbStrongNameToken)
             If (hr < 0) Then
-                StrongNameHelpers.t_ts_LastStrongNameHR = hr
+                t_ts_LastStrongNameHR = hr
                 ppbStrongNameToken = IntPtr.Zero
                 pcbStrongNameToken = 0
                 Return False
@@ -191,16 +191,16 @@ Namespace Microsoft.Runtime.Hosting
         ' Properties
         Private Shared ReadOnly Property StrongName As IClrStrongName
             Get
-                If (StrongNameHelpers.s_StrongName Is Nothing) Then
-                    StrongNameHelpers.s_StrongName = DirectCast(RuntimeEnvironment.GetRuntimeInterfaceAsObject(New Guid("B79B0ACD-F5CD-409b-B5A5-A16244610B92"), New Guid("9FD93CCF-3280-4391-B3A9-96E1CDE77C8D")), IClrStrongName)
+                If (s_StrongName Is Nothing) Then
+                    s_StrongName = DirectCast(RuntimeEnvironment.GetRuntimeInterfaceAsObject(New Guid("B79B0ACD-F5CD-409b-B5A5-A16244610B92"), New Guid("9FD93CCF-3280-4391-B3A9-96E1CDE77C8D")), IClrStrongName)
                 End If
-                Return StrongNameHelpers.s_StrongName
+                Return s_StrongName
             End Get
         End Property
 
         Private Shared ReadOnly Property StrongNameUsingIntPtr As IClrStrongNameUsingIntPtr
             Get
-                Return DirectCast(StrongNameHelpers.StrongName, IClrStrongNameUsingIntPtr)
+                Return DirectCast(StrongName, IClrStrongNameUsingIntPtr)
             End Get
         End Property
 

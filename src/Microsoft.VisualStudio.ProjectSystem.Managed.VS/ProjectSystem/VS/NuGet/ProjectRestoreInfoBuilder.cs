@@ -2,7 +2,6 @@
 
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using NuGet.SolutionRestoreManager;
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
