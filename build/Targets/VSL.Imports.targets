@@ -120,10 +120,10 @@
     </When>
   </Choose>
 
-  <!-- 
+  <!--
     Workaround https://github.com/Microsoft/msbuild/issues/1490 (lack of support for public-signing satellites) by 
     delay-signing satellite assemblies when main assembly is public-signed.
--->
+   -->
   <Target Name="PrepareToDelaySignSatelliteAssemblies" BeforeTargets="GenerateSatelliteAssemblies">
     <PropertyGroup>
       <_DelaySignMainAssembly>$(DelaySign)</_DelaySignMainAssembly>
@@ -135,8 +135,6 @@
       <DelaySign>$(_DelaySignMainAssembly)</DelaySign>
     </PropertyGroup>
   </Target>
-  
-   
 
 <!-- Enable IOperation feature for IOperation based analyzers. --> 
   <Choose> 
