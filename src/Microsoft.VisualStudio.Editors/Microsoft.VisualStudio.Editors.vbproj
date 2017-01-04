@@ -23,6 +23,7 @@
     <VBRuntime>Default</VBRuntime>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <TargetFrameworkProfile />
+    <TargetFramework>net46</TargetFramework>
     <ProjectSystemLayer>VisualStudioDesigner</ProjectSystemLayer>
     <StrongNameCertificate>Microsoft</StrongNameCertificate>
   </PropertyGroup>
@@ -723,7 +724,6 @@
     <None Include="Docs\Project Designer Architecture.vsd" />
     <None Include="Docs\ProjectDesigner Control Flow.doc" />
     <None Include="MyExtensibility\MyExtensibilityClassDiagram.cd" />
-    <None Include="project.json" />
     <None Include="Resources\Native\ResX.ico" />
     <None Include="Resources\Native\Settings.ico" />
     <None Include="Microsoft.VisualStudio.Editors.pkgdef">

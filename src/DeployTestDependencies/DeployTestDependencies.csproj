@@ -9,6 +9,7 @@
   <PropertyGroup>
     <ProjectGuid>{37BA82E6-9ABD-4ACA-AA26-2DFD39A359A5}</ProjectGuid>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFramework>net46</TargetFramework>
     <OutDir>$(OutDir)Tests\</OutDir>
     <ProjectSystemLayer>VisualStudioDesigner</ProjectSystemLayer>
     <Nonshipping>true</Nonshipping>
@@ -57,7 +58,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="project.json" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.1.0" />
+    <PackageReference Include="xunit.runner.console" Version="2.1.0" />
+    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.0.0" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Readme.txt" />
