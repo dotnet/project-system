@@ -218,13 +218,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             {
                 _fileSystem.RemoveFile(Path.Combine(projectLocation, $"{projectName}.xproj.user"));
             }
-            catch (IOException) { }
+            catch (FileNotFoundException) { }
             _fileSystem.RemoveFile(Path.Combine(projectLocation, "project.json"));
             try
             {
                 _fileSystem.RemoveFile(Path.Combine(projectLocation, "project.lock.json"));
             }
-            catch (IOException) { }
+            catch (FileNotFoundException) { }
         }
 
         public int UpgradeProject_CheckOnly(string xprojLocation,
