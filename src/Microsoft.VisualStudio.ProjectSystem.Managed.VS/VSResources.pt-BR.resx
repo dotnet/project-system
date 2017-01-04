@@ -270,4 +270,10 @@ Para depurar esse projeto, adicione um projeto executável a essa solução que 
   <data name="PackSelectedProjectCommand" xml:space="preserve">
     <value>&amp;Pacote {0}</value>
   </data>
+  <data name="XprojMigrationFailedCannotReadReport" xml:space="preserve">
+    <value>Could not read post-migration report at '{0}'.</value>
+  </data>
+  <data name="XprojMigrationGeneralFailure" xml:space="preserve">
+    <value>Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</value>
+  </data>
 </root>

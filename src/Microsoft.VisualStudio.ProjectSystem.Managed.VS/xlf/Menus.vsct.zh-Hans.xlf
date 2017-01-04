@@ -8,21 +8,6 @@
         <target state="translated">Web 调试器</target>
         <note />
       </trans-unit>
-      <trans-unit id="cmdidEditProjFile|ButtonText">
-        <source>Edit Project File</source>
-        <target state="translated">编辑项目文件</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="cmdidEditProjFile|ToolTipText">
-        <source>Edit Project File</source>
-        <target state="translated">编辑项目文件</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="cmdidEditProjFile|CommandName">
-        <source>EditProjectFile</source>
-        <target state="translated">EditProjectFile</target>
-        <note />
-      </trans-unit>
       <trans-unit id="cmdidGenerateNuGetPackageProjectContextMenu|ButtonText">
         <source>&amp;Pack</source>
         <target state="translated">打包(&amp;P)</target>

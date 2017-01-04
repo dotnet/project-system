@@ -8,21 +8,6 @@
         <target state="translated">Web Hata Ayıklayıcısı</target>
         <note />
       </trans-unit>
-      <trans-unit id="cmdidEditProjFile|ButtonText">
-        <source>Edit Project File</source>
-        <target state="translated">Proje Dosyasını Düzenle</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="cmdidEditProjFile|ToolTipText">
-        <source>Edit Project File</source>
-        <target state="translated">Proje Dosyasını Düzenle</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="cmdidEditProjFile|CommandName">
-        <source>EditProjectFile</source>
-        <target state="translated">EditProjectFile</target>
-        <note />
-      </trans-unit>
       <trans-unit id="cmdidGenerateNuGetPackageProjectContextMenu|ButtonText">
         <source>&amp;Pack</source>
         <target state="translated">&amp;Paketle</target>
