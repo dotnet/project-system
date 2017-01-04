@@ -1,0 +1,1713 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CMN_AllFilesFilter" xml:space="preserve">
+    <value>Todos os Arquivos</value>
+  </data>
+  <data name="PPG_PropertyPageControlName" xml:space="preserve">
+    <value>Página de Propriedades</value>
+  </data>
+  <data name="PPG_ReferencesTitle" xml:space="preserve">
+    <value>Referências</value>
+  </data>
+  <data name="PPG_VersionTitle" xml:space="preserve">
+    <value>Versão</value>
+  </data>
+  <data name="PPG_SigningTitle" xml:space="preserve">
+    <value>Assinatura</value>
+  </data>
+  <data name="PPG_ApplicationTitle" xml:space="preserve">
+    <value>Aplicativo</value>
+  </data>
+  <data name="PPG_CompileTitle" xml:space="preserve">
+    <value>Compilar</value>
+  </data>
+  <data name="PPG_DebugTitle" xml:space="preserve">
+    <value>Depurar</value>
+  </data>
+  <data name="PPG_DeployTitle" xml:space="preserve">
+    <value>Implantar</value>
+  </data>
+  <data name="PPG_VdtGeneralTitle" xml:space="preserve">
+    <value>Banco de Dados</value>
+  </data>
+  <data name="PPG_Security" xml:space="preserve">
+    <value>Segurança</value>
+  </data>
+  <data name="PPG_BuildTitle" xml:space="preserve">
+    <value>Build</value>
+  </data>
+  <data name="PPG_BuildEventsTitle" xml:space="preserve">
+    <value>Eventos de Build</value>
+  </data>
+  <data name="PPG_ReferencePathsTitle" xml:space="preserve">
+    <value>Caminhos de Referência</value>
+  </data>
+  <data name="PPG_PreBuildCommandLineTitle" xml:space="preserve">
+    <value>Linha de Comando de Eventos Pré-build</value>
+  </data>
+  <data name="PPG_PostBuildCommandLineTitle" xml:space="preserve">
+    <value>Linha de Comando de Eventos Pós-build</value>
+  </data>
+  <data name="PPG_OutputPathNotSecure" xml:space="preserve">
+    <value>O caminho de saída não é confiável.
+O aplicativo pode lançar exceções de segurança quando ele tenta executar ações que exigem confiança total.
+Clique em OK para ignorar e continuar. Clique em CANCELAR para escolher um caminho de saída diferente.</value>
+  </data>
+  <data name="PPG_BrowseText" xml:space="preserve">
+    <value>&lt;Procurar...&gt;</value>
+  </data>
+  <data name="PPG_StartupObjectNone" xml:space="preserve">
+    <value>(Nenhum)</value>
+  </data>
+  <data name="PPG_KeyFileNewText" xml:space="preserve">
+    <value>&lt;Novo...&gt;</value>
+  </data>
+  <data name="PPG_KeyFileBrowseText" xml:space="preserve">
+    <value>&lt;Procurar...&gt;</value>
+  </data>
+  <data name="PPG_ComboBoxSelect_None" xml:space="preserve">
+    <value>(Nenhum)</value>
+  </data>
+  <data name="PPG_ActiveConfigOrPlatformFormatString_1Arg" xml:space="preserve">
+    <value>Ativo ({0})</value>
+  </data>
+  <data name="PPG_AllConfigurations" xml:space="preserve">
+    <value>Todas as Configurações</value>
+  </data>
+  <data name="PPG_AllPlatforms" xml:space="preserve">
+    <value>Todas as Plataformas</value>
+  </data>
+  <data name="PPG_NotApplicable" xml:space="preserve">
+    <value>N/A</value>
+  </data>
+  <data name="PPG_ConfigNotFound_2Args" xml:space="preserve">
+    <value>Não foi possível encontrar a configuração '{0}' para a plataforma '{1}'.</value>
+  </data>
+  <data name="PPG_NeutralLanguage_None" xml:space="preserve">
+    <value>(Nenhum)</value>
+  </data>
+  <data name="PPG_SelectFileTitle" xml:space="preserve">
+    <value>Selecionar Arquivo</value>
+  </data>
+  <data name="PPG_AddExistingFilesTitle" xml:space="preserve">
+    <value>Adicionar arquivo existente ao projeto</value>
+  </data>
+  <data name="PPG_AddIconFilesFilter" xml:space="preserve">
+    <value>Arquivos de Ícone</value>
+  </data>
+  <data name="PPG_ExeFilesFilter" xml:space="preserve">
+    <value>Arquivos Executáveis</value>
+  </data>
+  <data name="PPG_SelectWorkingDirectoryTitle" xml:space="preserve">
+    <value>Selecionar Diretório de Trabalho</value>
+  </data>
+  <data name="PPG_SelectOutputPathTitle" xml:space="preserve">
+    <value>Selecionar Caminho de Saída</value>
+  </data>
+  <data name="PPG_SelectReferencePath" xml:space="preserve">
+    <value>Selecionar Caminho de Referência</value>
+  </data>
+  <data name="PPG_AddWin32ResourceFilter" xml:space="preserve">
+    <value>Arquivos de Recursos do Win32</value>
+  </data>
+  <data name="PPG_AddWin32ResourceTitle" xml:space="preserve">
+    <value>Adicionar arquivo de recurso Win32 ao projeto</value>
+  </data>
+  <data name="PPG_InvalidFolderPath" xml:space="preserve">
+    <value>O caminho da pasta não existe.
+Selecione um caminho da pasta válido.</value>
+  </data>
+  <data name="PPG_AdvancedCompilerSettings_Title" xml:space="preserve">
+    <value>Configurações Avançadas do Compilador</value>
+  </data>
+  <data name="PPG_AdvancedBuildSettings_Title" xml:space="preserve">
+    <value>Configurações Avançadas de Build</value>
+  </data>
+  <data name="PPG_CompilerWarnings_Title" xml:space="preserve">
+    <value>Avisos do Compilador</value>
+  </data>
+  <data name="PPG_ReferencePaths_Title" xml:space="preserve">
+    <value>Caminhos de Referência</value>
+  </data>
+  <data name="PPG_CompatibleSettings_Title" xml:space="preserve">
+    <value>Configurações Compatíveis</value>
+  </data>
+  <data name="PPG_AssemblyInfo_Title" xml:space="preserve">
+    <value>Informações do Assembly</value>
+  </data>
+  <data name="PPG_AssemblyInfo_InvalidVersion" xml:space="preserve">
+    <value>Formato de versão inválido, esperava-se "[Major]", "[Major].[Minor]", "[Major].[Minor].[Build]" ou "[Major].[Minor].[Build].[Revision]"</value>
+  </data>
+  <data name="PPG_AssemblyInfo_BadWildcard" xml:space="preserve">
+    <value>Não é permitido o uso de um curinga (" *") neste campo.</value>
+  </data>
+  <data name="PPG_AssemblyInfo_VersionOutOfRange_2Args" xml:space="preserve">
+    <value>Cada parte do número de versão de '{0}' deve ser um inteiro entre 0 e {1}.</value>
+  </data>
+  <data name="PPG_Application_DefaultIconText" xml:space="preserve">
+    <value>(Ícone Padrão)</value>
+  </data>
+  <data name="PPG_Application_InvalidSubMainStartup" xml:space="preserve">
+    <value>O objeto de inicialização deve ser um formulário quando a opção 'Habilitar estrutura de aplicativo' estiver selecionada.</value>
+  </data>
+  <data name="PPG_Application_StartupObjectNotSet" xml:space="preserve">
+    <value>(Não definido)</value>
+  </data>
+  <data name="PPG_Application_CantAddIcon" xml:space="preserve">
+    <value>O ícone não pôde ser adicionado ao projeto.</value>
+  </data>
+  <data name="PPG_Application_BadIcon" xml:space="preserve">
+    <value>Arquivo de ícone inválido.</value>
+  </data>
+  <data name="PPG_Application_BadIcon_1Arg" xml:space="preserve">
+    <value>{0} não é um arquivo de ícone válido.</value>
+  </data>
+  <data name="PPG_Application_BadGuid" xml:space="preserve">
+    <value>O GUID deve ter o formato dddddddd-dddd-dddd-dddd-dddddddddddd.</value>
+  </data>
+  <data name="PPG_Application_MyAppCommentLine1" xml:space="preserve">
+    <value>OBSERVAÇÃO: Esse arquivo é gerado automaticamente; não o modifique diretamente.  Para fazer alterações,</value>
+  </data>
+  <data name="PPG_Application_MyAppCommentLine2" xml:space="preserve">
+    <value> ou se você encontrar erros de compilação neste arquivo, vá para o Designer de Projeto</value>
+  </data>
+  <data name="PPG_Application_MyAppCommentLine3" xml:space="preserve">
+    <value> (vá para Propriedades do Projeto ou clique duas vezes no nó Meu Projeto em</value>
+  </data>
+  <data name="PPG_Application_MyAppCommentLine4" xml:space="preserve">
+    <value> Gerenciador de Soluções) e faça as alterações na guia Aplicativo.</value>
+  </data>
+  <data name="PPG_Application_InvalidIdentifierStartupForm_1Arg" xml:space="preserve">
+    <value>'{0}' não é um identificador válido. Selecione um formulário de Inicialização diferente.</value>
+  </data>
+  <data name="PPG_Application_InvalidIdentifierSplashScreenForm_1Arg" xml:space="preserve">
+    <value>'{0}' não é um identificador válido. Selecione um formulário de Tela Inicial diferente.</value>
+  </data>
+  <data name="PPG_Application_SplashSameAsStart" xml:space="preserve">
+    <value>O formulário de tela inicial não pode ser o formulário de inicialização.</value>
+  </data>
+  <data name="PPG_Application_StartupFormLabelText" xml:space="preserve">
+    <value>F&amp;ormulário de Inicialização:</value>
+  </data>
+  <data name="PPG_Application_AppEventsCommentLine1" xml:space="preserve">
+    <value>Os seguintes eventos estão disponíveis para MyApplication:</value>
+  </data>
+  <data name="PPG_Application_AppEventsCommentLine3" xml:space="preserve">
+    <value>Inicialização: Ocorre quando o aplicativo é iniciado, antes da criação do formulário de inicialização.</value>
+  </data>
+  <data name="PPG_Application_AppEventsCommentLine4" xml:space="preserve">
+    <value>Desligamento: Ocorre após todos os formulários de aplicativo serem fechados.  Esse evento não ocorrerá se o aplicativo for encerrado de forma anormal.</value>
+  </data>
+  <data name="PPG_Application_AppEventsCommentLine5" xml:space="preserve">
+    <value>UnhandledException: Ocorre se o aplicativo encontra uma exceção sem tratamento.</value>
+  </data>
+  <data name="PPG_Application_AppEventsCommentLine6" xml:space="preserve">
+    <value>StartupNextInstance: Ocorre durante a inicialização de um aplicativo de instância única quando o aplicativo já está ativo. </value>
+  </data>
+  <data name="PPG_Application_AppEventsCommentLine7" xml:space="preserve">
+    <value>NetworkAvailabilityChanged: Ocorre quando a conexão de rede é conectada ou desconectada.</value>
+  </data>
+  <data name="PPG_AdvancedBuildSettings_InvalidBaseAddress" xml:space="preserve">
+    <value>O endereço base deve ser um número hexadecimal com 8 ou menos dígitos, por exemplo, 0x11000000.</value>
+  </data>
+  <data name="PPG_Compile_Notification_None" xml:space="preserve">
+    <value>Nenhum</value>
+  </data>
+  <data name="PPG_Compile_Notification_Warning" xml:space="preserve">
+    <value>Aviso</value>
+  </data>
+  <data name="PPG_Compile_Notification_Error" xml:space="preserve">
+    <value>Erro</value>
+  </data>
+  <data name="PPG_Compile_OptionStrict_Custom" xml:space="preserve">
+    <value>(personalizado)</value>
+  </data>
+  <data name="PPG_Compile_42016" xml:space="preserve">
+    <value>Conversão implícita</value>
+  </data>
+  <data name="PPG_Compile_42017_42018_42019" xml:space="preserve">
+    <value>Associação tardia; a chamada poderia falhar em tempo de execução</value>
+  </data>
+  <data name="PPG_Compile_42020" xml:space="preserve">
+    <value>Tipo implícito, objeto presumido</value>
+  </data>
+  <data name="PPG_Compile_42104" xml:space="preserve">
+    <value>Uso da variável antes da atribuição</value>
+  </data>
+  <data name="PPG_Compile_42105_42106_42107" xml:space="preserve">
+    <value>Função que retorna tipo de referência sem valor de retorno</value>
+  </data>
+  <data name="PPG_Compile_42353_42354_42355" xml:space="preserve">
+    <value>Função que retorna tipo de valor intrínseco sem valor de retorno</value>
+  </data>
+  <data name="PPG_Compile_42024" xml:space="preserve">
+    <value>Variável local não utilizada</value>
+  </data>
+  <data name="PPG_Compile_42025" xml:space="preserve">
+    <value>A variável de instância acessa o membro compartilhado</value>
+  </data>
+  <data name="PPG_Compile_42004" xml:space="preserve">
+    <value>Operador recursivo ou acesso de propriedade</value>
+  </data>
+  <data name="PPG_Compile_42029" xml:space="preserve">
+    <value>Duplicar ou sobrepor blocos de captura</value>
+  </data>
+  <data name="PPG_Compile_ResetIndeterminateWarningLevels" xml:space="preserve">
+    <value>As configurações de aviso para um ou mais conflitos de configurações.
+A alteração dessa configuração redefinirá as definições em todas as configurações.</value>
+  </data>
+  <data name="PPG_MyApplication_StartupMode_FormCloses" xml:space="preserve">
+    <value>Quando o formulário de inicialização fechar</value>
+  </data>
+  <data name="PPG_MyApplication_StartupMode_AppExits" xml:space="preserve">
+    <value>Quando o último formulário fechar</value>
+  </data>
+  <data name="PPG_MyApplication_AuthenMode_Windows" xml:space="preserve">
+    <value>Windows</value>
+  </data>
+  <data name="PPG_MyApplication_AuthenMode_ApplicationDefined" xml:space="preserve">
+    <value>Definido pelo aplicativo</value>
+  </data>
+  <data name="PPG_SecurityPage_Cancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="PPG_SecurityPage_Calculate" xml:space="preserve">
+    <value>&amp;Calcular Permissões</value>
+  </data>
+  <data name="PPG_MgdStatus_Stopped" xml:space="preserve">
+    <value>Parado...</value>
+  </data>
+  <data name="PPG_MgdStatus_Starting" xml:space="preserve">
+    <value>Iniciando...</value>
+  </data>
+  <data name="PPG_MgdStatus_Building" xml:space="preserve">
+    <value>Compilando...</value>
+  </data>
+  <data name="PPG_MgdStatus_Analyzing" xml:space="preserve">
+    <value>Analisando...</value>
+  </data>
+  <data name="PPG_MgdStatus_AnalyzeFailed" xml:space="preserve">
+    <value>Falha na Análise</value>
+  </data>
+  <data name="PPG_MgdStatus_Aborting" xml:space="preserve">
+    <value>Anulando...</value>
+  </data>
+  <data name="PPG_MgdStatus_Cancelling" xml:space="preserve">
+    <value>Cancelando...</value>
+  </data>
+  <data name="PPG_SecurityPage_InternetZone" xml:space="preserve">
+    <value>Internet</value>
+  </data>
+  <data name="PPG_SecurityPage_LocalIntranetZone" xml:space="preserve">
+    <value>Intranet Local</value>
+  </data>
+  <data name="PPG_SecurityPage_CustomZone" xml:space="preserve">
+    <value>(Personalizado)</value>
+  </data>
+  <data name="PPG_SecurityPage_ZoneDefault" xml:space="preserve">
+    <value>(Zona Padrão)</value>
+  </data>
+  <data name="PPG_SecurityPage_Included" xml:space="preserve">
+    <value>Incluir</value>
+  </data>
+  <data name="PPG_SecurityPage_Excluded" xml:space="preserve">
+    <value>Excluir</value>
+  </data>
+  <data name="PPG_SecurityPage_FullTrustToolTip" xml:space="preserve">
+    <value>O aplicativo exigirá permissões de nível elevado para que possa ser executado na zona selecionada. Clique no link de ajuda acima para obter mais informações.</value>
+  </data>
+  <data name="PPG_SecurityPage_BadPermissionToolTip" xml:space="preserve">
+    <value>Não foi possível carregar essa permissão. Pressione a tecla Excluir para removê-la do projeto.</value>
+  </data>
+  <data name="PPG_SecurityPage_HeaderIncluded" xml:space="preserve">
+    <value>Incluído</value>
+  </data>
+  <data name="PPG_SecurityPage_HeaderPermission" xml:space="preserve">
+    <value>Permissão</value>
+  </data>
+  <data name="PPG_SecurityPage_HeaderSetting" xml:space="preserve">
+    <value>Configuração</value>
+  </data>
+  <data name="PPG_SecurityPage_HelpLabelText" xml:space="preserve">
+    <value>Especifique as permissões de segurança de acesso do código exigidas pelo seu aplicativo ClickOnce para que ele possa ser executado. Saiba mais sobre a segurança de acesso do código...</value>
+  </data>
+  <data name="PPG_SecurityPage_HelpLabelLink" xml:space="preserve">
+    <value>Saiba mais sobre a segurança de acesso do código...</value>
+  </data>
+  <data name="PPG_SecurityPage_BadDropDownValue" xml:space="preserve">
+    <value>Valor inválido</value>
+  </data>
+  <data name="PPG_SecurityPage_SecurityPermissionCannotBeExcluded" xml:space="preserve">
+    <value>A SecurityPermission deverá estar incluída em seu aplicativo com o sinalizador Execute definido ou o aplicativo não será executado. Marque esta permissão como "Padrão de Zona" ou "Incluir".</value>
+  </data>
+  <data name="PPG_SecurityPage_ExecuteCannotBeExcluded" xml:space="preserve">
+    <value>A SecurityPermission deverá estar incluída em seu aplicativo com o sinalizador Execute definido ou o aplicativo não será executado. O sinalizador Execute foi adicionado à SecurityPermission no manifesto.</value>
+  </data>
+  <data name="PPG_SecurityPage_SwitchToFullTrustDialog" xml:space="preserve">
+    <value>Este aplicativo requer confiança total para ser executado corretamente. Gostaria de defini-lo como um aplicativo de confiança total?</value>
+  </data>
+  <data name="PPG_SecurityPage_SwitchToFullTrustDialogTitle" xml:space="preserve">
+    <value>Confiança Total Obrigatória</value>
+  </data>
+  <data name="PPG_SecurityPage_CouldNotSaveManifest" xml:space="preserve">
+    <value>Ocorreu um erro e não foi possível salvar o arquivo app.manifest.
+Erro:</value>
+  </data>
+  <data name="PPG_SecurityPage_CouldNotLoadManifest" xml:space="preserve">
+    <value>Ocorreu um erro e não foi possível carregar o arquivo app.manifest. Remova todas as alterações feitas no arquivo e recarregue a página de propriedades de Segurança.</value>
+  </data>
+  <data name="PPG_SecurityPage_CheckAccessibilityName" xml:space="preserve">
+    <value>Incluído</value>
+  </data>
+  <data name="PPG_SecurityPage_BlankAccessibilityName" xml:space="preserve">
+    <value>Não Incluído</value>
+  </data>
+  <data name="PPG_SecurityPage_BangAccessibilityName" xml:space="preserve">
+    <value>Incluído com aviso</value>
+  </data>
+  <data name="PPG_SecurityPage_PermCalcFailed" xml:space="preserve">
+    <value>Falha ao calcular as permissões.</value>
+  </data>
+  <data name="PPG_SecurityPage_PermCalcFailedCaption" xml:space="preserve">
+    <value>Erro</value>
+  </data>
+  <data name="PPG_SecurityAdvancedPage_Title" xml:space="preserve">
+    <value>Configurações de Segurança Avançadas</value>
+  </data>
+  <data name="PPG_MgdStatus_BuildFailed" xml:space="preserve">
+    <value>Falha no build.  Clique em CANCELAR e corrija a falha de build antes de analisar novamente.</value>
+  </data>
+  <data name="PPG_MgdStatus_BuildComplete" xml:space="preserve">
+    <value>Build concluído...</value>
+  </data>
+  <data name="PPG_MgdStatus_BuildUnableToStart" xml:space="preserve">
+    <value>Não é possível iniciar a compilação.</value>
+  </data>
+  <data name="PPG_MgdStatus_BuildFailedToStart" xml:space="preserve">
+    <value>Erro grave.  O build deve começar para analisar permissões.  Ele não começou.</value>
+  </data>
+  <data name="PPG_CustomPermissionSet" xml:space="preserve">
+    <value>(Personalizado)</value>
+  </data>
+  <data name="PPG_NonePermissionSet" xml:space="preserve">
+    <value>(Nenhum)</value>
+  </data>
+  <data name="PPG_Signing_KeyFileBrowse_Title" xml:space="preserve">
+    <value>Selecionando arquivo de chave existente</value>
+  </data>
+  <data name="PPG_Signing_KeyFileBrowse_Filter" xml:space="preserve">
+    <value>Arquivos de Chave</value>
+  </data>
+  <data name="PPG_Signing_KeyFileNew_Title" xml:space="preserve">
+    <value>Criar arquivo de chave</value>
+  </data>
+  <data name="PPG_Signing_OldPassWrong" xml:space="preserve">
+    <value>A senha antiga é inválida.</value>
+  </data>
+  <data name="PPG_Signing_OldPassEmpty" xml:space="preserve">
+    <value>Insira a senha antiga.</value>
+  </data>
+  <data name="PPG_Signing_NewPassEmpty" xml:space="preserve">
+    <value>Insira uma nova senha.</value>
+  </data>
+  <data name="PPG_Signing_NewPassMismatch" xml:space="preserve">
+    <value>As novas senhas não coincidem. Insira a senha novamente.</value>
+  </data>
+  <data name="PPG_Signing_NewPassTooShort" xml:space="preserve">
+    <value>A nova senha deve ter pelo menos seis caracteres. Insira a senha novamente.</value>
+  </data>
+  <data name="PPG_Signing_BrowseCertTitle" xml:space="preserve">
+    <value>Selecionar um certificado</value>
+  </data>
+  <data name="PPG_Signing_BrowseCertStorePrompt" xml:space="preserve">
+    <value>Selecione um certificado para assinar seus manifestos ClickOnce</value>
+  </data>
+  <data name="PPG_Signing_BrowseCertFileFilter" xml:space="preserve">
+    <value>Arquivos de Certificado</value>
+  </data>
+  <data name="PPG_Signing_IssuedTo" xml:space="preserve">
+    <value>Emitido Para</value>
+  </data>
+  <data name="PPG_Signing_IssuedBy" xml:space="preserve">
+    <value>Emitido Por</value>
+  </data>
+  <data name="PPG_Signing_Purpose" xml:space="preserve">
+    <value>Finalidade</value>
+  </data>
+  <data name="PPG_Signing_ExpirationDate" xml:space="preserve">
+    <value>Data de Vencimento</value>
+  </data>
+  <data name="PPG_Signing_InvalidPassword" xml:space="preserve">
+    <value>A senha é inválida.</value>
+  </data>
+  <data name="PPG_Signing_InvalidPasswordTitle" xml:space="preserve">
+    <value>Senha inválida</value>
+  </data>
+  <data name="PPG_Signing_NoPrivateKey" xml:space="preserve">
+    <value>O arquivo selecionado não contém uma chave privada. Você deve selecionar um certificado que contém uma chave privada.</value>
+  </data>
+  <data name="PPG_Signing_NoPrivateKeyTitle" xml:space="preserve">
+    <value>Chave inválida</value>
+  </data>
+  <data name="PPG_Signing_CertCreationError" xml:space="preserve">
+    <value>Erro de Criação de Certificado</value>
+  </data>
+  <data name="PPG_Signing_AllPurposes" xml:space="preserve">
+    <value>&lt;Tudo&gt;</value>
+  </data>
+  <data name="PPG_Signing_PasswordMismatch" xml:space="preserve">
+    <value>As senhas não coincidem.</value>
+  </data>
+  <data name="PPG_Signing_NoPassword" xml:space="preserve">
+    <value>Insira uma senha.</value>
+  </data>
+  <data name="PPG_Signing_NoConfirm" xml:space="preserve">
+    <value>Confirme a senha.</value>
+  </data>
+  <data name="PPG_Signing_NoData" xml:space="preserve">
+    <value>(nenhum)</value>
+  </data>
+  <data name="PPG_Signing_OpenExistingKeyPasswordTitle" xml:space="preserve">
+    <value>Digite a senha para abrir o arquivo</value>
+  </data>
+  <data name="PPG_Signing_OpenExistingKeyPasswordPrompt" xml:space="preserve">
+    <value>Insira a senha &amp;para abrir o arquivo {0}</value>
+  </data>
+  <data name="PPG_Signing_CreateNewKeyPasswordPrompt" xml:space="preserve">
+    <value>Insira a senha &amp;para o novo arquivo {0}</value>
+  </data>
+  <data name="PPG_Signing_ProjectAlreadyContainsFile" xml:space="preserve">
+    <value>O projeto já contém um arquivo com este nome. Escolha outro arquivo de certificado ou renomeie o arquivo em seu projeto.</value>
+  </data>
+  <data name="PPG_Signing_CouldNotImportFile" xml:space="preserve">
+    <value>Não foi possível importar o arquivo '{0}': {1}</value>
+  </data>
+  <data name="PPG_Signing_KeyFileNameSuffix" xml:space="preserve">
+    <value>_TemporaryKey.pfx</value>
+  </data>
+  <data name="PPG_Signing_CertificateNotCodeSigning" xml:space="preserve">
+    <value>O certificado selecionado não é válido para assinatura de código. Escolha outro arquivo de certificado.</value>
+  </data>
+  <data name="PPG_UndoTransaction" xml:space="preserve">
+    <value>Alterar propriedade: {0}</value>
+  </data>
+  <data name="PPG_WindowsApp" xml:space="preserve">
+    <value>Aplicativo do Windows</value>
+  </data>
+  <data name="PPG_WindowsService" xml:space="preserve">
+    <value>Serviço Windows</value>
+  </data>
+  <data name="PPG_WindowsClassLib" xml:space="preserve">
+    <value>Biblioteca de Classes</value>
+  </data>
+  <data name="PPG_CommandLineApp" xml:space="preserve">
+    <value>Aplicativo do Console</value>
+  </data>
+  <data name="PPG_WebControlLib" xml:space="preserve">
+    <value>Biblioteca de Controles da Web</value>
+  </data>
+  <data name="PPG_Reference_CanNotRemoveReference" xml:space="preserve">
+    <value>Não é possível remover '{0}'. {1}
+</value>
+  </data>
+  <data name="PPG_Reference_RemoveImportsFailUnexpected" xml:space="preserve">
+    <value>Falha na adição ou na remoção de '{0}' como uma importação de projeto devido a um erro inesperado do sistema de projeto.  O erro retornado foi: '{1}'.</value>
+  </data>
+  <data name="PPG_Reference_AddWebReference" xml:space="preserve">
+    <value>Falha ao adicionar referência Web. {0}
+</value>
+  </data>
+  <data name="PPG_Reference_FailedToUpdateWebReference" xml:space="preserve">
+    <value>Falha ao atualizar '{0}' de referência Web.
+{1}</value>
+  </data>
+  <data name="PPG_WebReferenceTypeName" xml:space="preserve">
+    <value>Propriedades de Referência Web</value>
+  </data>
+  <data name="PPG_UrlBehavior_Static" xml:space="preserve">
+    <value>Estático</value>
+  </data>
+  <data name="PPG_UrlBehavior_Dynamic" xml:space="preserve">
+    <value>Dinâmico</value>
+  </data>
+  <data name="PPG_WebReferenceNameDescription" xml:space="preserve">
+    <value>Nome da referência Web</value>
+  </data>
+  <data name="PPG_UrlBehaviorName" xml:space="preserve">
+    <value>Comportamento da URL</value>
+  </data>
+  <data name="PPG_UrlBehaviorDescription" xml:space="preserve">
+    <value>Comportamento da URL da referência Web</value>
+  </data>
+  <data name="PPG_WebReferenceUrlName" xml:space="preserve">
+    <value>URL da Referência Web</value>
+  </data>
+  <data name="PPG_WebReferenceUrlDescription" xml:space="preserve">
+    <value>URL da Referência Web</value>
+  </data>
+  <data name="PPG_ReferenceDetail_Title" xml:space="preserve">
+    <value>Propriedades de Referência</value>
+  </data>
+  <data name="PropPage_RemoteMachineBlankError" xml:space="preserve">
+    <value>O nome do computador remoto não pode ficar em branco.  Especifique o nome do computador a ser depurado remotamente.</value>
+  </data>
+  <data name="PropPage_ProgramNotExist" xml:space="preserve">
+    <value>O programa externo não foi encontrado. Insira um arquivo executável válido.</value>
+  </data>
+  <data name="PropPage_NeedExternalProgram" xml:space="preserve">
+    <value>A propriedade do programa externo não pode ficar vazia. Insira um arquivo executável válido.</value>
+  </data>
+  <data name="PropPage_NotAnExeError" xml:space="preserve">
+    <value>Só é possível depurar um arquivo EXE. Insira um arquivo executável válido.</value>
+  </data>
+  <data name="PropPage_NeedURL" xml:space="preserve">
+    <value>A propriedade URL não pode ficar vazia. Insira uma URL válida.</value>
+  </data>
+  <data name="PropPage_InvalidURL" xml:space="preserve">
+    <value>A URL é inválida. Insira uma URL válida como "http://www.microsoft.com/"</value>
+  </data>
+  <data name="PropPage_WorkingDirError" xml:space="preserve">
+    <value>O diretório de trabalho inserido não existe. Insira um diretório de trabalho válido.</value>
+  </data>
+  <data name="PropPage_ReferenceNotFound" xml:space="preserve">
+    <value>&lt;O sistema não encontrou a referência especificada&gt;</value>
+  </data>
+  <data name="PropPage_ImportedNamespacesTitle" xml:space="preserve">
+    <value>Namespaces Importados</value>
+  </data>
+  <data name="PropPage_ComputingReferencedNamespacesMessage" xml:space="preserve">
+    <value>Computando namespaces referenciados…</value>
+  </data>
+  <data name="PropPage_UnusedReferenceTitle" xml:space="preserve">
+    <value>Referências Não Utilizadas</value>
+  </data>
+  <data name="PropPage_UnusedReferenceRemoveButton" xml:space="preserve">
+    <value>&amp;Remover</value>
+  </data>
+  <data name="PropPage_UnusedReferenceNoUnusedReferences" xml:space="preserve">
+    <value>Nenhuma referência não utilizada</value>
+  </data>
+  <data name="PropPage_UnusedReferenceCompileFail" xml:space="preserve">
+    <value>Falha na compilação do projeto. Não é possível determinar as referências não utilizadas.</value>
+  </data>
+  <data name="PropPage_UnusedReferenceCompileWaiting" xml:space="preserve">
+    <value>Coletando lista de referências não utilizadas...</value>
+  </data>
+  <data name="PropPage_UnusedReferenceError" xml:space="preserve">
+    <value>Erro ao obter as referências não utilizadas.</value>
+  </data>
+  <data name="PPG_InvalidHexString" xml:space="preserve">
+    <value>O endereço base deve ser um número hexadecimal com 8 ou menos dígitos, por exemplo, &amp;H11000000.</value>
+  </data>
+  <data name="PropPage_NeedResFile" xml:space="preserve">
+    <value>"Os arquivos de recurso devem ter a extensão .res. Insira um nome de arquivo de recurso válido."</value>
+  </data>
+  <data name="PropPage_ResourceFileNotExist" xml:space="preserve">
+    <value>"O arquivo de recurso inserido não existe."</value>
+  </data>
+  <data name="APPDES_Title" xml:space="preserve">
+    <value>Designer de Projeto</value>
+  </data>
+  <data name="APPDES_SettingsTabTitle" xml:space="preserve">
+    <value>Configurações</value>
+  </data>
+  <data name="APPDES_ResourceTabTitle" xml:space="preserve">
+    <value>Recursos</value>
+  </data>
+  <data name="APPDES_ErrorLoading_Msg" xml:space="preserve">
+    <value>Erro ao tentar carregar a janela de propriedades do projeto.  Feche a janela e tente novamente.
+{0}</value>
+  </data>
+  <data name="APPDES_ErrorLoadingPropPage" xml:space="preserve">
+    <value>Erro ao tentar carregar a página.</value>
+  </data>
+  <data name="APPDES_DesignerLoader_NotDeferred" xml:space="preserve">
+    <value>Não é possível mostrar o designer, pois o documento para ele não foi carregado.</value>
+  </data>
+  <data name="APPDES_ClickHereCreateResx" xml:space="preserve">
+    <value>Este projeto não contém um arquivo de recursos padrão.  Clique aqui para criar um.</value>
+  </data>
+  <data name="APPDES_ClickHereCreateSettings" xml:space="preserve">
+    <value>Este projeto não contém um arquivo de configurações padrão.  Clique aqui para criar um.</value>
+  </data>
+  <data name="APPDES_FileNotFound_1Arg" xml:space="preserve">
+    <value>Não foi possível encontrar o arquivo '{0}'.</value>
+  </data>
+  <data name="APPDES_EditorAlreadyOpen_1Arg" xml:space="preserve">
+    <value>O arquivo '{0}' já está aberto em um editor.  Feche o arquivo e tente novamente.</value>
+  </data>
+  <data name="APPDES_OverflowButton_AccessibilityName" xml:space="preserve">
+    <value>Todas as Páginas de Designer de Projeto</value>
+  </data>
+  <data name="APPDES_OverflowButton_Tooltip" xml:space="preserve">
+    <value>Mais Configurações</value>
+  </data>
+  <data name="APPDES_SpecialFileNotSupported" xml:space="preserve">
+    <value>Não há suporte para o tipo de arquivo solicitado em projetos deste tipo.</value>
+  </data>
+  <data name="PPG_Property_AssemblyName" xml:space="preserve">
+    <value>Nome do Assembly</value>
+  </data>
+  <data name="PPG_Property_RootNamespace" xml:space="preserve">
+    <value>Namespace Raiz</value>
+  </data>
+  <data name="PPG_Property_StartupObject" xml:space="preserve">
+    <value>Objeto de Inicialização</value>
+  </data>
+  <data name="PPG_Property_ApplicationIcon" xml:space="preserve">
+    <value>Ícone do Aplicativo</value>
+  </data>
+  <data name="PPG_Property_AssemblyVersion" xml:space="preserve">
+    <value>Versão do Assembly</value>
+  </data>
+  <data name="PPG_Property_AssemblyFileVersion" xml:space="preserve">
+    <value>Versão do Arquivo do Assembly</value>
+  </data>
+  <data name="PPG_Property_AssemblyGuid" xml:space="preserve">
+    <value>GUID do Assembly</value>
+  </data>
+  <data name="PPG_Property_CustomSubMain" xml:space="preserve">
+    <value>Habilitar a estrutura do aplicativo</value>
+  </data>
+  <data name="PPG_Property_StartProgram" xml:space="preserve">
+    <value>Caminho do Programa Externo</value>
+  </data>
+  <data name="PPG_Property_StartURL" xml:space="preserve">
+    <value>Iniciar Navegador com URL</value>
+  </data>
+  <data name="PPG_Property_StartWorkingDirectory" xml:space="preserve">
+    <value>Diretório de Trabalho</value>
+  </data>
+  <data name="PPG_Property_RemoteDebugMachine" xml:space="preserve">
+    <value>Nome do Computador Remoto</value>
+  </data>
+  <data name="APPDES_HostingPanelName" xml:space="preserve">
+    <value>Contêiner da Página de Designer de Projeto</value>
+  </data>
+  <data name="APPDES_TabButtonDefaultAction" xml:space="preserve">
+    <value>Mudar a Página de Designer de Projeto</value>
+  </data>
+  <data name="APPDES_TabListDescription" xml:space="preserve">
+    <value>Para alternar entre as páginas ativas do designer de projeto (use Ctrl+PageUp e Ctrl+PageDown)</value>
+  </data>
+  <data name="APPDES_PageName" xml:space="preserve">
+    <value>Página {0}:</value>
+  </data>
+  <data name="DFX_DesignerReadOnlyCaption" xml:space="preserve">
+    <value>{0} [Somente Leitura]</value>
+  </data>
+  <data name="DFX_DesignerLoaderIVsTextStreamNotFound" xml:space="preserve">
+    <value>O editor não pôde obter o IVsTextStream para o arquivo {0}.</value>
+  </data>
+  <data name="DFX_DesignerLoaderIVsTextStreamNotFoundNoFile" xml:space="preserve">
+    <value>O editor não pôde obter o IVsTextStream.</value>
+  </data>
+  <data name="DFX_EditorNoDesignerService" xml:space="preserve">
+    <value>Nenhum DesignerService para o arquivo '{0}'.</value>
+  </data>
+  <data name="DFX_InvalidPhysicalViewName" xml:space="preserve">
+    <value>Nome de exibição físico inválido.</value>
+  </data>
+  <data name="DFX_UnableCreateTextBuffer" xml:space="preserve">
+    <value>Não é possível criar o buffer de texto.</value>
+  </data>
+  <data name="DFX_NoLocalRegistry" xml:space="preserve">
+    <value>Nenhum serviço LocalRegistry.</value>
+  </data>
+  <data name="DFX_ReplaceTextStreamFailed" xml:space="preserve">
+    <value>Falha ao substituir o fluxo de texto: {0}</value>
+  </data>
+  <data name="DFX_BufferReadOnly" xml:space="preserve">
+    <value>O buffer é somente leitura.</value>
+  </data>
+  <data name="DFX_IncompatibleBuffer" xml:space="preserve">
+    <value>O arquivo já está aberto em um editor incompatível.</value>
+  </data>
+  <data name="DFX_NotSupported" xml:space="preserve">
+    <value>Formato sem suporte.</value>
+  </data>
+  <data name="DFX_WindowPane_UnknownError" xml:space="preserve">
+    <value>Erro Desconhecido.</value>
+  </data>
+  <data name="DFX_CreateEditorInstanceFailed_Ex" xml:space="preserve">
+    <value>Não é possível criar o designer. {0}</value>
+  </data>
+  <data name="DFX_UnableToCheckout" xml:space="preserve">
+    <value>Não é possível fazer o check-out do arquivo atual.  O arquivo pode ser somente leitura ou estar bloqueado ou talvez você precise fazer check-out do arquivo manualmente.</value>
+  </data>
+  <data name="DFX_Error_Default_Caption" xml:space="preserve">
+    <value>Microsoft Visual Studio</value>
+  </data>
+  <data name="OptionPage_Editor_InvalidTabSize" xml:space="preserve">
+    <value>Digite um inteiro entre 1 e 60.</value>
+  </data>
+  <data name="OptionPage_Editor_InvalidIndentSize" xml:space="preserve">
+    <value>Digite um inteiro entre 1 e 60.</value>
+  </data>
+  <data name="OptionPage_Environment_StartUpShowEmptyEnvironment" xml:space="preserve">
+    <value>Mostrar ambiente vazio</value>
+  </data>
+  <data name="OptionPage_Environment_StartUpLoadLastLoadedSolution" xml:space="preserve">
+    <value>Carregar última solução carregada</value>
+  </data>
+  <data name="OptionPage_Environment_StartUpShowNewProjectDialogBox" xml:space="preserve">
+    <value>Mostrar caixa de diálogo Novo Projeto</value>
+  </data>
+  <data name="OptionPage_Environment_StartUpShowOpenProjectDialogBox" xml:space="preserve">
+    <value>Mostrar caixa de diálogo Abrir Projeto</value>
+  </data>
+  <data name="OptionPage_Environment_ShowHelpOptionRequiresRestartOfIde" xml:space="preserve">
+    <value>As alterações nas opções da Ajuda só terão efeito quando o ambiente for reiniciado.</value>
+  </data>
+  <data name="OptionPage_Project_IllegalDefaultProjectDirectory" xml:space="preserve">
+    <value>O local especificado está em um disco inválido ou somente leitura, ou contém um nome de dispositivo reservado para o sistema.</value>
+  </data>
+  <data name="PermissionSet_Requires" xml:space="preserve">
+    <value>Requer:</value>
+  </data>
+  <data name="RSE_ResourceNameColumn" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="RSE_TypeColumn" xml:space="preserve">
+    <value>Tipo</value>
+  </data>
+  <data name="RSE_ResourceColumn" xml:space="preserve">
+    <value>Valor</value>
+  </data>
+  <data name="RSE_CommentColumn" xml:space="preserve">
+    <value>Comentário</value>
+  </data>
+  <data name="SingleFileGenerator_FailedToGenerateFile_1Arg" xml:space="preserve">
+    <value>Falha ao gerar o arquivo: {0}</value>
+  </data>
+  <data name="RSE_Err_CantEditEmbeddedResource" xml:space="preserve">
+    <value>Não há suporte para a edição direta de recursos inseridos. Deseja converter o item em um recurso vinculado para editá-lo?</value>
+  </data>
+  <data name="RSE_Err_RenameNotSupported" xml:space="preserve">
+    <value>O objeto atual é gerado automaticamente e só dá suporte à renomeação por meio do Editor de Recursos Gerenciados.</value>
+  </data>
+  <data name="RSE_Err_CantFindResourceFile_1Arg" xml:space="preserve">
+    <value>Não foi possível encontrar o arquivo '{0}'.  Ele pode ter sido movido ou excluído.</value>
+  </data>
+  <data name="RSE_Err_LoadingResource_1Arg" xml:space="preserve">
+    <value>Não é possível carregar o recurso a partir do arquivo '{0}'.</value>
+  </data>
+  <data name="RSE_Err_NameBlank" xml:space="preserve">
+    <value>O nome de recurso não pode ficar vazio.</value>
+  </data>
+  <data name="RSE_Err_DuplicateName_1Arg" xml:space="preserve">
+    <value>Já existe outro recurso com o nome '{0}'.</value>
+  </data>
+  <data name="RSE_Err_UnexpectedResourceType" xml:space="preserve">
+    <value>O recurso não era do tipo esperado.</value>
+  </data>
+  <data name="RSE_Err_CantCreateNewResource_2Args" xml:space="preserve">
+    <value>Não foi possível criar o novo arquivo de recurso '{0}'. {1}</value>
+  </data>
+  <data name="RSE_Err_CantPlay_1Arg" xml:space="preserve">
+    <value>Não é possível executar o recurso de áudio. {0}</value>
+  </data>
+  <data name="RSE_Err_CantSaveResource_1Arg" xml:space="preserve">
+    <value>O recurso '{0}' não pode ser salvo em um arquivo.</value>
+  </data>
+  <data name="RSE_Err_UserCancel" xml:space="preserve">
+    <value>A operação foi cancelada pelo usuário.</value>
+  </data>
+  <data name="RSE_Err_BadData" xml:space="preserve">
+    <value>O valor do recurso contém dados inválidos ou tem um formato incorreto.</value>
+  </data>
+  <data name="RSE_Err_BadIdentifier_2Arg" xml:space="preserve">
+    <value>O nome do recurso '{0}' não pode ser usado como um identificador válido, pois ele contém um ou mais caracteres inválidos: '{1}'.  Remova ou substitua esses caracteres e tente novamente.</value>
+  </data>
+  <data name="RSE_Err_MaxFilesLimitation" xml:space="preserve">
+    <value>Há arquivos demais especificados.  Selecione menos arquivos e tente novamente.</value>
+  </data>
+  <data name="RSE_Err_InternalException" xml:space="preserve">
+    <value>Erro inesperado.</value>
+  </data>
+  <data name="RSE_Err_Unexpected_NoResource_1Arg" xml:space="preserve">
+    <value>Não é possível carregar o recurso localizado internamente '{0}'.</value>
+  </data>
+  <data name="RSE_Err_CantConvertFromString_2Args" xml:space="preserve">
+    <value>Não foi possível converter o valor em um recurso do tipo {0}.
+
+{1}</value>
+  </data>
+  <data name="RSE_Err_CantUseEmptyValue" xml:space="preserve">
+    <value>O valor não pode ficar vazio em um recurso do tipo {0}.</value>
+  </data>
+  <data name="RSE_Err_CantBeEmpty" xml:space="preserve">
+    <value>Não foi possível remover um ou mais valores de recurso selecionados.</value>
+  </data>
+  <data name="RSE_Err_CantEditInDebugMode" xml:space="preserve">
+    <value>O arquivo de recurso não pode ser modificado neste momento.</value>
+  </data>
+  <data name="RSE_Err_UpdateADependentFile" xml:space="preserve">
+    <value>Você está tentando editar um arquivo de recurso que faz parte de outro item de projeto (como um formulário ou controle).  A edição desse item pode corromper o item de projeto e será preciso recuperá-lo manualmente.  Além disso, as alterações feitas nesse arquivo de recurso podem ser perdidas se forem feitas alterações futuras no item de projeto.
+
+Deseja realmente editar esse arquivo?</value>
+  </data>
+  <data name="RSE_Err_CantAddUnsupportedResource_1Arg" xml:space="preserve">
+    <value>O recurso '{0}' não pode ser adicionado.</value>
+  </data>
+  <data name="RSE_Err_CantAddFileToDeviceProject_1Arg" xml:space="preserve">
+    <value>O dispositivo não dá suporte a arquivos '{0}'.</value>
+  </data>
+  <data name="RSE_Err_TypeIsNotSupported_1Arg" xml:space="preserve">
+    <value>O item de recurso usa o tipo '{0}', que não tem suporte neste projeto.</value>
+  </data>
+  <data name="RSE_Err_CantSaveResouce_1Arg" xml:space="preserve">
+    <value>Os itens de recurso {0} não podem ser salvos corretamente.  Os itens serão descartados.</value>
+  </data>
+  <data name="RSE_Err_Name" xml:space="preserve">
+    <value>'{0}'</value>
+  </data>
+  <data name="RSE_Err_NameList" xml:space="preserve">
+    <value>{0}, '{1}'</value>
+  </data>
+  <data name="RSE_NothingValue" xml:space="preserve">
+    <value>(Nada/nulo)</value>
+  </data>
+  <data name="RSE_UnknownType" xml:space="preserve">
+    <value>(Tipo desconhecido)</value>
+  </data>
+  <data name="RSE_NonEditableValue" xml:space="preserve">
+    <value>(O valor não pode ser exibido)</value>
+  </data>
+  <data name="RSE_DetailsCol_Name" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="RSE_DetailsCol_Filename" xml:space="preserve">
+    <value>Nome do arquivo</value>
+  </data>
+  <data name="RSE_DetailsCol_ImageType" xml:space="preserve">
+    <value>Tipo</value>
+  </data>
+  <data name="RSE_DetailsCol_Size" xml:space="preserve">
+    <value>Tamanho</value>
+  </data>
+  <data name="RSE_DetailsCol_Comment" xml:space="preserve">
+    <value>Comentário</value>
+  </data>
+  <data name="RSE_DetailsCol_Encoding" xml:space="preserve">
+    <value>Codificação de Texto</value>
+  </data>
+  <data name="RSE_GraphicSizeFormat" xml:space="preserve">
+    <value>{0} x {1}</value>
+  </data>
+  <data name="RSE_FileSizeFormatKB" xml:space="preserve">
+    <value>{0} KB</value>
+  </data>
+  <data name="RSE_FileSizeFormatBytes_1Arg" xml:space="preserve">
+    <value>{0} byte(s)</value>
+  </data>
+  <data name="RSE_Cat_Strings" xml:space="preserve">
+    <value>Cadeias de Caracteres</value>
+  </data>
+  <data name="RSE_Cat_Images" xml:space="preserve">
+    <value>Imagens</value>
+  </data>
+  <data name="RSE_Cat_Icons" xml:space="preserve">
+    <value>Ícones</value>
+  </data>
+  <data name="RSE_Cat_Audio" xml:space="preserve">
+    <value>Áudio</value>
+  </data>
+  <data name="RSE_Cat_Files" xml:space="preserve">
+    <value>Arquivos</value>
+  </data>
+  <data name="RSE_Cat_Other" xml:space="preserve">
+    <value>Outro</value>
+  </data>
+  <data name="RSE_Btn_Add" xml:space="preserve">
+    <value>&amp;Adicionar</value>
+  </data>
+  <data name="RSE_Btn_Remove" xml:space="preserve">
+    <value>&amp;Remover</value>
+  </data>
+  <data name="RSE_Btn_Views" xml:space="preserve">
+    <value>&amp;Exibições</value>
+  </data>
+  <data name="RSE_Btn_Add_ExistingFile" xml:space="preserve">
+    <value>&amp;Arquivo Existente...</value>
+  </data>
+  <data name="RSE_Btn_Add_String" xml:space="preserve">
+    <value>Nova Cadeia de Caractere&amp;s</value>
+  </data>
+  <data name="RSE_Btn_Add_Image" xml:space="preserve">
+    <value>Nova &amp;Imagem</value>
+  </data>
+  <data name="RSE_Btn_Add_Image_PNG" xml:space="preserve">
+    <value>Imagem &amp;PNG...</value>
+  </data>
+  <data name="RSE_Btn_Add_Image_BMP" xml:space="preserve">
+    <value>Imagem &amp;BMP...</value>
+  </data>
+  <data name="RSE_Btn_Add_Image_GIF" xml:space="preserve">
+    <value>Imagem &amp;GIF...</value>
+  </data>
+  <data name="RSE_Btn_Add_Image_JPEG" xml:space="preserve">
+    <value>Imagem &amp;JPEG...</value>
+  </data>
+  <data name="RSE_Btn_Add_Image_TIFF" xml:space="preserve">
+    <value>Imagem &amp;TIFF...</value>
+  </data>
+  <data name="RSE_Btn_Add_Icon" xml:space="preserve">
+    <value>Novo Í&amp;cone...</value>
+  </data>
+  <data name="RSE_Btn_Add_TextFile" xml:space="preserve">
+    <value>Novo Arquivo de &amp;Texto...</value>
+  </data>
+  <data name="RSE_Type_BMP" xml:space="preserve">
+    <value>Bitmap do Windows</value>
+  </data>
+  <data name="RSE_Type_EXIF" xml:space="preserve">
+    <value>Imagem EXIF</value>
+  </data>
+  <data name="RSE_Type_GIF" xml:space="preserve">
+    <value>Graphics Interchange Format</value>
+  </data>
+  <data name="RSE_Type_JPEG" xml:space="preserve">
+    <value>Formato de Intercâmbio de Arquivo JPEG</value>
+  </data>
+  <data name="RSE_Type_MEMBMP" xml:space="preserve">
+    <value>Bitmap do Windows</value>
+  </data>
+  <data name="RSE_Type_PNG" xml:space="preserve">
+    <value>formato PNG</value>
+  </data>
+  <data name="RSE_Type_TIFF" xml:space="preserve">
+    <value>Formato TIFF</value>
+  </data>
+  <data name="RSE_Type_Icon" xml:space="preserve">
+    <value>Ícone</value>
+  </data>
+  <data name="RSE_Type_TextFile" xml:space="preserve">
+    <value>Arquivo de Texto</value>
+  </data>
+  <data name="RSE_Type_BinaryFile" xml:space="preserve">
+    <value>Arquivo Binário</value>
+  </data>
+  <data name="RSE_Type_Wave" xml:space="preserve">
+    <value>Som Wave</value>
+  </data>
+  <data name="RES_PersistenceMode_Linked" xml:space="preserve">
+    <value>Vinculado no tempo de compilação</value>
+  </data>
+  <data name="RES_PersistenceMode_Embeded" xml:space="preserve">
+    <value>Inserido no .resx</value>
+  </data>
+  <data name="RSE_Filter_Bitmap" xml:space="preserve">
+    <value>Bitmaps</value>
+  </data>
+  <data name="RSE_Filter_Icon" xml:space="preserve">
+    <value>Ícones</value>
+  </data>
+  <data name="RSE_Filter_Audio" xml:space="preserve">
+    <value>Áudio</value>
+  </data>
+  <data name="RSE_Filter_Text" xml:space="preserve">
+    <value>Arquivos de Texto</value>
+  </data>
+  <data name="RSE_Filter_All" xml:space="preserve">
+    <value>Todos os Arquivos</value>
+  </data>
+  <data name="RSE_FilterSave_BMP" xml:space="preserve">
+    <value>Bitmap do Windows</value>
+  </data>
+  <data name="RSE_FilterSave_PNG" xml:space="preserve">
+    <value>formato PNG</value>
+  </data>
+  <data name="RSE_FilterSave_GIF" xml:space="preserve">
+    <value>Graphics Interchange Format</value>
+  </data>
+  <data name="RSE_FilterSave_JPEG" xml:space="preserve">
+    <value>Formato de Intercâmbio de Arquivo JPEG</value>
+  </data>
+  <data name="RSE_FilterSave_TIFF" xml:space="preserve">
+    <value>Formato TIFF</value>
+  </data>
+  <data name="RSE_FilterSave_Icon" xml:space="preserve">
+    <value>Ícone</value>
+  </data>
+  <data name="RSE_Btn_Views_List" xml:space="preserve">
+    <value>&amp;Lista</value>
+  </data>
+  <data name="RSE_Btn_Views_Details" xml:space="preserve">
+    <value>&amp;Detalhes</value>
+  </data>
+  <data name="RSE_Btn_Views_Thumbnail" xml:space="preserve">
+    <value>&amp;Miniatura</value>
+  </data>
+  <data name="RSE_ResourceEditor" xml:space="preserve">
+    <value>Editor de Recursos Gerenciados</value>
+  </data>
+  <data name="RSE_DlgTitle_AddExisting" xml:space="preserve">
+    <value>Adicionar arquivo existente aos recursos</value>
+  </data>
+  <data name="RSE_DlgTitle_Import_1Arg" xml:space="preserve">
+    <value>Importar arquivo no recurso '{0}'</value>
+  </data>
+  <data name="RSE_DlgTitle_Export_1Arg" xml:space="preserve">
+    <value>Exportar o recurso '{0}' para arquivo</value>
+  </data>
+  <data name="RSE_DlgTitle_AddNew" xml:space="preserve">
+    <value>Especifique onde o novo arquivo será salvo</value>
+  </data>
+  <data name="RSE_Dlg_ReplaceExistingFile" xml:space="preserve">
+    <value>O arquivo '{0}' já existe.  Deseja substituí-lo?</value>
+  </data>
+  <data name="RSE_Dlg_ReplaceExistingFiles" xml:space="preserve">
+    <value>Os arquivos a seguir já existem.  Deseja substituí-los?</value>
+  </data>
+  <data name="RSE_Dlg_ExportMultiple" xml:space="preserve">
+    <value>Selecione uma pasta para a qual exportar os recursos.</value>
+  </data>
+  <data name="RSE_Dlg_ContinueAnyway" xml:space="preserve">
+    <value>Deseja continuar assim mesmo?</value>
+  </data>
+  <data name="RSE_Dlg_SetCustomTool" xml:space="preserve">
+    <value>Deseja habilitar a geração de recurso fortemente tipado para este arquivo?</value>
+  </data>
+  <data name="RSE_Task_BadLink_2Args" xml:space="preserve">
+    <value>Não foi possível carregar o recurso '{0}', pois o arquivo ao qual ele está vinculado não foi encontrado: {1}.</value>
+  </data>
+  <data name="RSE_Task_CantInstantiate_2Args" xml:space="preserve">
+    <value>O recurso '{0}' não pôde ser instanciado. {1}</value>
+  </data>
+  <data name="RSE_Task_NonrecommendedName_1Arg" xml:space="preserve">
+    <value>O recurso '{0}' tem um nome que não é recomendado e que pode causar erros de compilação no código.  Escolha outro nome.</value>
+  </data>
+  <data name="RSE_Task_CantChangeCustomToolOrNamespace" xml:space="preserve">
+    <value>Não é possível definir as propriedades Ferramenta Personalizada ou Namespace de Ferramenta Personalizada deste arquivo para alterar as opções de geração de recursos fortemente tipados.  Se o check-in do arquivo de projeto tiver sido feito, tente fazer check-out.</value>
+  </data>
+  <data name="RSE_Task_WarningCustomToolNotSet" xml:space="preserve">
+    <value>Clique duas vezes aqui para habilitar recursos fortemente tipados para este arquivo.</value>
+  </data>
+  <data name="RSE_Task_InvalidName_1Arg" xml:space="preserve">
+    <value>O nome de recurso '{0}' não é um identificador válido.</value>
+  </data>
+  <data name="RSE_EncodingDisplayName" xml:space="preserve">
+    <value>{0} – Página do Código {1}</value>
+  </data>
+  <data name="RSE_DefaultEncoding" xml:space="preserve">
+    <value>(Padrão)</value>
+  </data>
+  <data name="RSE_Undo_ChangeName" xml:space="preserve">
+    <value>Alterar nome de recurso</value>
+  </data>
+  <data name="RSE_Undo_AddResources_1Arg" xml:space="preserve">
+    <value>Adicionar {0} novo(s) recurso(s)</value>
+  </data>
+  <data name="RSE_Undo_RemoveResources_1Arg" xml:space="preserve">
+    <value>Remover {0} recurso(s)</value>
+  </data>
+  <data name="RSE_Undo_DeleteResourceCell" xml:space="preserve">
+    <value>Excluir valores em {0} célula(s)</value>
+  </data>
+  <data name="RSE_CategiesLabel" xml:space="preserve">
+    <value>&amp;Categorias:</value>
+  </data>
+  <data name="RSE_PropDesc_Name" xml:space="preserve">
+    <value>Nome usado para identificar o recurso no código.</value>
+  </data>
+  <data name="RSE_PropDesc_Comment" xml:space="preserve">
+    <value>Informações adicionais sobre o recurso.  Esta propriedade é útil apenas no tempo de design.</value>
+  </data>
+  <data name="RSE_PropDesc_Encoding" xml:space="preserve">
+    <value>Codificação de caracteres do arquivo.</value>
+  </data>
+  <data name="RSE_PropDesc_Filename" xml:space="preserve">
+    <value>O caminho para o recurso vinculado.</value>
+  </data>
+  <data name="RSE_PropDesc_FileType" xml:space="preserve">
+    <value>Especifica se o arquivo de recurso é texto ou binário.</value>
+  </data>
+  <data name="RSE_PropDesc_Persistence" xml:space="preserve">
+    <value>Especifica se o recurso é inserido ou vinculado.  Os recursos inseridos são salvos no arquivo de recurso.  Os recursos vinculados residem em um local externo no disco.</value>
+  </data>
+  <data name="RSE_PropDesc_Type" xml:space="preserve">
+    <value>O recurso será gerado como este tipo na classe de recursos fortemente tipados.  Por exemplo, o recurso pode ser gerado como um objeto Bitmap ou String.</value>
+  </data>
+  <data name="RSE_PropDesc_Value" xml:space="preserve">
+    <value>O valor do recurso.</value>
+  </data>
+  <data name="RFS_CantCreateResourcesFolder_Folder_ExMsg" xml:space="preserve">
+    <value>Não é possível adicionar a pasta '{0}' a este projeto.
+
+{1}</value>
+  </data>
+  <data name="RFS_CantAddFileToProject_File_ExMsg" xml:space="preserve">
+    <value>Não foi possível adicionar '{0}' ao projeto.
+
+{1}</value>
+  </data>
+  <data name="RFS_CantAddFileToProject_File" xml:space="preserve">
+    <value>Não foi possível adicionar '{0}' ao projeto.</value>
+  </data>
+  <data name="RFS_QueryReplaceFile_File" xml:space="preserve">
+    <value>Já existe um arquivo com o nome '{0}'.  Deseja substituí-lo?</value>
+  </data>
+  <data name="RFS_QueryReplaceFileTitle_Editor" xml:space="preserve">
+    <value>{0} – O Arquivo de Destino Existe</value>
+  </data>
+  <data name="RFS_QueryRemoveLink_Folder_Link" xml:space="preserve">
+    <value>Já existe um arquivo vinculado com o nome "{0}" na pasta do projeto "{1}".  Deseja removê-lo?</value>
+  </data>
+  <data name="RFS_QueryRemoveLinkTitle_Editor" xml:space="preserve">
+    <value>{0} – O Arquivo de Destino Existe</value>
+  </data>
+  <data name="RFS_FindNotFound_File" xml:space="preserve">
+    <value>Não foi possível encontrar o arquivo '{0}'.  Ele pode ter sido movido ou excluído.</value>
+  </data>
+  <data name="SD_ComboBoxItem_ConnectionStringType" xml:space="preserve">
+    <value>Cadeia de conexão</value>
+  </data>
+  <data name="SD_ComboBoxItem_WebReferenceType" xml:space="preserve">
+    <value>URL do Serviço Web</value>
+  </data>
+  <data name="SD_ComboBoxItem_BrowseType" xml:space="preserve">
+    <value>Procurar...</value>
+  </data>
+  <data name="SD_ComboBoxItem_ApplicationScope" xml:space="preserve">
+    <value>Aplicativo</value>
+  </data>
+  <data name="SD_ComboBoxItem_WebApplicationScope" xml:space="preserve">
+    <value>Aplicativo (Web)</value>
+  </data>
+  <data name="SD_ComboBoxItem_UserScope" xml:space="preserve">
+    <value>Usuário</value>
+  </data>
+  <data name="SD_ComboBoxItem_WebUserScope" xml:space="preserve">
+    <value>Usuário (Web)</value>
+  </data>
+  <data name="SD_GridViewNameColumnHeaderText" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="SD_GridViewTypeColumnHeaderText" xml:space="preserve">
+    <value>Tipo</value>
+  </data>
+  <data name="SD_GridViewScopeColumnHeaderText" xml:space="preserve">
+    <value>Escopo</value>
+  </data>
+  <data name="SD_GridViewValueColumnHeaderText" xml:space="preserve">
+    <value>Valor</value>
+  </data>
+  <data name="SD_UnknownType" xml:space="preserve">
+    <value>O tipo '{0}' não está definido.</value>
+  </data>
+  <data name="SD_UndoTran_NameChanged" xml:space="preserve">
+    <value>Nome alterado</value>
+  </data>
+  <data name="SD_UndoTran_TypeChanged" xml:space="preserve">
+    <value>Tipo alterado</value>
+  </data>
+  <data name="SD_UndoTran_ScopeChanged" xml:space="preserve">
+    <value>Escopo alterado</value>
+  </data>
+  <data name="SD_UndoTran_RoamingChanged" xml:space="preserve">
+    <value>Roaming alterado</value>
+  </data>
+  <data name="SD_UndoTran_DescriptionChanged" xml:space="preserve">
+    <value>Descrição alterada</value>
+  </data>
+  <data name="SD_UndoTran_ProviderChanged" xml:space="preserve">
+    <value>Provedor alterado</value>
+  </data>
+  <data name="SD_UndoTran_SerializedValueChanged" xml:space="preserve">
+    <value>Valor alterado</value>
+  </data>
+  <data name="SD_UndoTran_GenerateDefaultValueInCode" xml:space="preserve">
+    <value>Gerar valor padrão no código alterado</value>
+  </data>
+  <data name="SD_UndoTran_RemoveMultipleSettings_1Arg" xml:space="preserve">
+    <value>Remover {0} configurações</value>
+  </data>
+  <data name="SD_Err_CantLoadSettingsFile" xml:space="preserve">
+    <value>Não é possível carregar o arquivo de configurações.  Talvez ele esteja corrompido, contenha XML inválido ou contenha identificadores duplicados.</value>
+  </data>
+  <data name="SD_NewValuesAdded" xml:space="preserve">
+    <value>Foram adicionados automaticamente novos valores do arquivo app.config</value>
+  </data>
+  <data name="SD_ReplaceValueWithAppConfigValueTitle" xml:space="preserve">
+    <value>O valor da configuração '{0}' foi alterado no arquivo app.config.</value>
+  </data>
+  <data name="SD_ReplaceValueWithAppConfigValue" xml:space="preserve">
+    <value>O valor atual no arquivo .settings é '{0}'
+O novo valor no arquivo app.config é '{1}'
+
+Deseja atualizar o valor no arquivo .settings?</value>
+  </data>
+  <data name="SD_FailedToLoadAppConfigValues" xml:space="preserve">
+    <value>Erro ao ler o arquivo app.config. O arquivo pode estar corrompido ou conter XML inválido.</value>
+  </data>
+  <data name="SD_FailedToSaveAppConfigValues" xml:space="preserve">
+    <value>Erro ao salvar valores no arquivo app.config. O arquivo pode estar corrompido ou conter XML inválido.</value>
+  </data>
+  <data name="SD_ERR_DuplicateName_1Arg" xml:space="preserve">
+    <value>Já existe outra configuração com o nome '{0}'.</value>
+  </data>
+  <data name="SD_ERR_InvalidIdentifier_1Arg" xml:space="preserve">
+    <value>'{0}' não é um identificador válido.</value>
+  </data>
+  <data name="SD_ERR_InvalidTypeName_1Arg" xml:space="preserve">
+    <value>'{0}' não é um nome de tipo válido.</value>
+  </data>
+  <data name="SD_ERR_NameEmpty" xml:space="preserve">
+    <value>O nome da configuração não pode ficar vazio.</value>
+  </data>
+  <data name="SD_ERR_InvalidValue_2Arg" xml:space="preserve">
+    <value>'{0}' não pode ser convertido em uma instância do tipo '{1}'.</value>
+  </data>
+  <data name="SD_ERR_GenericTypesNotSupported_1Arg" xml:space="preserve">
+    <value>Não há suporte para tipos genéricos.</value>
+  </data>
+  <data name="SD_ERR_AbstractTypesNotSupported_1Arg" xml:space="preserve">
+    <value>Não há suporte para tipos abstratos.</value>
+  </data>
+  <data name="SD_ERR_RenameNotSupported" xml:space="preserve">
+    <value>O objeto atual é gerado automaticamente e só dá suporte à renomeação por meio do Designer de Configurações.</value>
+  </data>
+  <data name="SD_ERR_RenameNotSupportedForWcfGeneratedCode" xml:space="preserve">
+    <value>O objeto atual é gerado automaticamente pelo Gerador de Cliente Wcf e não pode ser renomeado.</value>
+  </data>
+  <data name="SD_ERR_ModifyParamsNotSupported" xml:space="preserve">
+    <value>O objeto atual é gerado automaticamente e não dá suporte à modificação de parâmetros.</value>
+  </data>
+  <data name="SD_ERR_CantEditInDebugMode" xml:space="preserve">
+    <value>O arquivo de configurações não pode ser modificado neste momento.</value>
+  </data>
+  <data name="SD_MNU_AddSettingText" xml:space="preserve">
+    <value>&amp;Adicionar Configuração</value>
+  </data>
+  <data name="SD_MNU_RemoveSettingText" xml:space="preserve">
+    <value>R&amp;emover Configuração</value>
+  </data>
+  <data name="SD_FullDescriptionText" xml:space="preserve">
+    <value>As configurações de aplicativo permitem que você armazene e recupere dinamicamente configurações de propriedades e outras informações para seu aplicativo. Por exemplo, o aplicativo pode salvar as preferências de cor do usuário e recuperá-las da próxima vez que for executado.</value>
+  </data>
+  <data name="SD_LinkPartOfDescriptionText" xml:space="preserve">
+    <value>Saiba mais sobre configurações de aplicativo...</value>
+  </data>
+  <data name="SD_IncludeSensitiveInfoInConnectionStringWarning" xml:space="preserve">
+    <value>Esta cadeia de conexão aparenta conter dados confidenciais (por exemplo, uma senha), que são necessários para se conectar ao banco de dados. No entanto, armazenar dados confidenciais na cadeia de conexão pode ser um risco à segurança. Deseja incluir dados confidenciais na cadeia de conexão?</value>
+  </data>
+  <data name="SD_SelectATypeTreeView_AccessibleName" xml:space="preserve">
+    <value>Selecionar um Tipo</value>
+  </data>
+  <data name="SD_CODEGENCMT_COMMON1" xml:space="preserve">
+    <value>Esta classe permite que você trate eventos específicos na classe de configurações:</value>
+  </data>
+  <data name="SD_CODEGENCMT_COMMON2" xml:space="preserve">
+    <value> O evento SettingChanging é gerado antes da alteração de um valor de configuração.</value>
+  </data>
+  <data name="SD_CODEGENCMT_COMMON3" xml:space="preserve">
+    <value> O evento PropertyChanged é gerado depois da alteração de um valor de configuração.</value>
+  </data>
+  <data name="SD_CODEGENCMT_COMMON4" xml:space="preserve">
+    <value> O evento SettingsLoaded é gerado depois do carregamento dos valores de configuração.</value>
+  </data>
+  <data name="SD_CODEGENCMT_COMMON5" xml:space="preserve">
+    <value> O evento SettingsSaving é gerado antes de salvar os valores de configuração.</value>
+  </data>
+  <data name="SD_CODEGENCMT_HOWTO_ATTACHEVTS" xml:space="preserve">
+    <value>Para adicionar manipuladores de eventos para salvar e alterar configurações, remova os comentários das linhas abaixo:</value>
+  </data>
+  <data name="SD_CODEGENCMT_HANDLE_CHANGING" xml:space="preserve">
+    <value>Adicione código para manipular o evento SettingChangingEvent aqui.</value>
+  </data>
+  <data name="SD_CODEGENCMT_HANDLE_SAVING" xml:space="preserve">
+    <value>Adicione código para manipular o evento SettingsSaving aqui.</value>
+  </data>
+  <data name="SD_CODEGEN_FAILEDOPENCREATEEXTENDINGFILE" xml:space="preserve">
+    <value>Falha ao criar ou abrir arquivo.</value>
+  </data>
+  <data name="SD_DESCR_Description" xml:space="preserve">
+    <value>A descrição da configuração.</value>
+  </data>
+  <data name="SD_DESCR_GenerateDefaultValueInCode" xml:space="preserve">
+    <value>Especifica se o valor de configuração padrão deve ser gerado na classe de configurações fortemente tipadas.</value>
+  </data>
+  <data name="SD_DESCR_Group" xml:space="preserve">
+    <value>Especifica o grupo ao qual este arquivo de Configurações pertence.</value>
+  </data>
+  <data name="SD_DESCR_GroupDescription" xml:space="preserve">
+    <value>Descrição do grupo ao qual este arquivo de Configurações pertence.</value>
+  </data>
+  <data name="SD_DESCR_Roaming" xml:space="preserve">
+    <value>Indica se a configuração deverá usar o sistema de roaming quando os perfis de roaming do Windows forem habilitados.</value>
+  </data>
+  <data name="SD_DESCR_Name" xml:space="preserve">
+    <value>Nome usado para identificar a configuração.</value>
+  </data>
+  <data name="SD_DESCR_Provider" xml:space="preserve">
+    <value>O provedor (System.Configuration.Provider.ProviderBase) usado para gerenciar a configuração.</value>
+  </data>
+  <data name="SD_DESCR_Scope" xml:space="preserve">
+    <value>Especifica se a configuração é por aplicativo (somente leitura) ou por usuário (leitura-gravação).</value>
+  </data>
+  <data name="SD_DESCR_SerializedSettingType" xml:space="preserve">
+    <value>A configuração será gerada como este tipo na classe de configurações fortemente tipadas. Por exemplo, a configuração pode ser gerada como um objeto de cadeia de caracteres ou inteiro.</value>
+  </data>
+  <data name="SD_DESCR_Value" xml:space="preserve">
+    <value>O valor atual para a configuração.</value>
+  </data>
+  <data name="SD_SyncFiles_1Arg" xml:space="preserve">
+    <value>Os arquivos a seguir serão excluídos:
+
+{0}</value>
+  </data>
+  <data name="SD_SyncFilesNoFilesFound_1Arg" xml:space="preserve">
+    <value>Nenhum arquivo user.config foi encontrado nos locais a seguir:
+
+{0}</value>
+  </data>
+  <data name="SD_SyncFilesOneOrMoreFailed" xml:space="preserve">
+    <value>Um ou mais arquivos user.config não foram removidos.</value>
+  </data>
+  <data name="SD_SFG_AutoSaveRegionText" xml:space="preserve">
+    <value>Funcionalidade de salvamento automático do My.Settings</value>
+  </data>
+  <data name="General_MissingService" xml:space="preserve">
+    <value>Não é possível localizar o serviço '{0}'.  Verifique se o aplicativo está instalado corretamente.</value>
+  </data>
+  <data name="PPG_Application_RootNamespaceJSharp" xml:space="preserve">
+    <value>Pac&amp;ote padrão:</value>
+  </data>
+  <data name="RSE_AccessModifier_Custom" xml:space="preserve">
+    <value>(Personalizado)</value>
+  </data>
+  <data name="RSE_NoCodeGeneration" xml:space="preserve">
+    <value>Nenhuma geração de código</value>
+  </data>
+  <data name="PPG_WindowsApp_WPF" xml:space="preserve">
+    <value>Aplicativo WPF</value>
+  </data>
+  <data name="PPG_WPFApp_InvalidShutdownMode" xml:space="preserve">
+    <value>(Valor inválido: "{0}")</value>
+  </data>
+  <data name="PPG_WPFApp_ShutdownMode_OnExplicitShutdown" xml:space="preserve">
+    <value>No desligamento explícito</value>
+  </data>
+  <data name="PPG_WPFApp_ShutdownMode_OnLastWindowClose" xml:space="preserve">
+    <value>No fechamento da última janela</value>
+  </data>
+  <data name="PPG_WPFApp_ShutdownMode_OnMainWindowClose" xml:space="preserve">
+    <value>No fechamento da janela principal</value>
+  </data>
+  <data name="PPG_WPFApp_Xaml_CouldntFindRootElement" xml:space="preserve">
+    <value>Não foi possível encontrar o elemento de raiz esperado "{0}" no arquivo de definição de aplicativo.</value>
+  </data>
+  <data name="PPG_WPFApp_Xaml_UnexpectedFormat_2Args" xml:space="preserve">
+    <value>O arquivo .xaml estava em um formato inesperado, próximo à linha {0}, coluna {1}.</value>
+  </data>
+  <data name="PPG_Application_StartupObjectLabelText" xml:space="preserve">
+    <value>&amp;Objeto de inicialização:</value>
+  </data>
+  <data name="PPG_Application_StartupUriLabelText" xml:space="preserve">
+    <value>&amp;URI de Inicialização:</value>
+  </data>
+  <data name="PPG_WPFApp_AppXamlOpenInUnsupportedEditor" xml:space="preserve">
+    <value>O arquivo de definição de aplicativo já está aberto em um editor incompatível.  Feche o outro editor e recarregue a página de propriedades do projeto.</value>
+  </data>
+  <data name="PPG_WPFApp_CantOpenOrCreateAppXaml_1Arg" xml:space="preserve">
+    <value>Erro ao tentar abrir ou criar um arquivo de definição de aplicativo para este projeto. {0}</value>
+  </data>
+  <data name="PPG_WPFApp_ErrorControlMessage_1Arg" xml:space="preserve">
+    <value>Ocorreu um erro ao tentar carregar o arquivo de definição de aplicativo para esse projeto.  Não foi possível analisar o arquivo {0}.  Edite o arquivo no editor XAML para corrigir o erro.</value>
+  </data>
+  <data name="PPG_WPFApp_CantReadPropertyValue" xml:space="preserve">
+    <value>(Erro)</value>
+  </data>
+  <data name="PPG_Unexpected" xml:space="preserve">
+    <value>Ocorreu um erro não especificado.</value>
+  </data>
+  <data name="PPG_WPFApp_CantFindAppXaml" xml:space="preserve">
+    <value>Este projeto não contém um arquivo de definição de aplicativo.</value>
+  </data>
+  <data name="PPG_WPFApp_CouldntCreateApplicationEventsFile_1Arg" xml:space="preserve">
+    <value>Erro ao tentar criar um arquivo de eventos de aplicativo. {0}</value>
+  </data>
+  <data name="General_InvalidArgument_1Arg" xml:space="preserve">
+    <value>Argumento inválido '{0}'</value>
+  </data>
+  <data name="PPG_CommandLineApp_WPF" xml:space="preserve">
+    <value>Aplicativo de Console WPF</value>
+  </data>
+  <data name="PPG_WindowsClassLib_WPF" xml:space="preserve">
+    <value>Biblioteca de Classes WPF</value>
+  </data>
+  <data name="PPG_Application_DefaultManifestText" xml:space="preserve">
+    <value>Inserir manifesto com configurações padrão</value>
+  </data>
+  <data name="PPG_Application_NoManifestText" xml:space="preserve">
+    <value>Criar aplicativo sem um manifesto</value>
+  </data>
+  <data name="PPG_Application_BadManifest" xml:space="preserve">
+    <value>Arquivo de manifesto inválido.</value>
+  </data>
+  <data name="PPG_Services" xml:space="preserve">
+    <value>Serviços</value>
+  </data>
+  <data name="PPG_Services_HelpLabelText" xml:space="preserve">
+    <value>Serviços de aplicativo cliente habilitam seus aplicativos baseados em Windows a usarem o logon (autenticação), as funções e os serviços de perfil (configurações) do ASP.NET. Para habilitar os serviços do aplicativo cliente, é necessário definir a Estrutura de Destino do aplicativo para a versão completa do .NET Framework 3.5 ou superior.  </value>
+  </data>
+  <data name="PPG_Services_HelpLabelLink" xml:space="preserve">
+    <value>Saiba mais sobre os serviços do aplicativo cliente...</value>
+  </data>
+  <data name="PPG_ServicesAdvancedPage_Title" xml:space="preserve">
+    <value>Configurações Avançadas para Serviços</value>
+  </data>
+  <data name="PPG_Services_ConfirmRemoveServices" xml:space="preserve">
+    <value>Desabilitar os serviços do aplicativo limpará os serviços padrão de Autenticação, Funções e Configurações.  Clique em OK para desabilitar os serviços de aplicativo.</value>
+  </data>
+  <data name="PPG_Services_ConfirmRemoveServices_Caption" xml:space="preserve">
+    <value>Desabilitar Serviços de Aplicativo</value>
+  </data>
+  <data name="PPG_Services_Seconds" xml:space="preserve">
+    <value>segundos</value>
+  </data>
+  <data name="PPG_Services_Minutes" xml:space="preserve">
+    <value>minutos</value>
+  </data>
+  <data name="PPG_Services_Hours" xml:space="preserve">
+    <value>horas</value>
+  </data>
+  <data name="PPG_Services_Days" xml:space="preserve">
+    <value>dias</value>
+  </data>
+  <data name="PPG_Services_VersionWarning" xml:space="preserve">
+    <value>Para habilitar os serviços de aplicativo cliente, é necessário definir a Estrutura de Destino do aplicativo para o .NET Framework 3.5 ou superior. No C#, você pode fazer isso na página de propriedades do Aplicativo. No Visual Basic, isso pode ser feito na página de propriedades de Compilação clicando em Opções de Compilação Avançadas.</value>
+  </data>
+  <data name="PPG_Services_InvalidAppConfigXml" xml:space="preserve">
+    <value>Ocorreu um erro ao ler o arquivo de configuração de Aplicativo.  O arquivo pode estar corrompido ou conter XML inválido.</value>
+  </data>
+  <data name="PPG_Services_InvalidUrl" xml:space="preserve">
+    <value>A URL é inválida. Insira uma URL válida como http://microsoft.com/services</value>
+  </data>
+  <data name="PPG_Services_InvalidUrls" xml:space="preserve">
+    <value>Uma URL de serviço no arquivo de configuração do aplicativo não está de acordo com o formato esperado.</value>
+  </data>
+  <data name="PPG_Services_ConnectionStringsDontMatch" xml:space="preserve">
+    <value>Os provedores de Autenticação, Funções e Configurações da Web foram configurados usando o arquivo de configuração Aplicativo, portanto, eles não compartilham uma cadeia de conexão comum.</value>
+  </data>
+  <data name="PPG_Services_connectionStringValueDefaultDisplayValue" xml:space="preserve">
+    <value>Especifique uma cadeia de conexão para um banco de dados do SQL Server ou use a cadeia de conexão especial "Data Source = |SQL/CE|", que faz com que o SQL Server Compact gere arquivos de banco de dados local para armazenamento offline.</value>
+  </data>
+  <data name="SD_ERR_UnreferencedTypeNameList_1Arg" xml:space="preserve">
+    <value>Os seguintes nomes de tipo não foram entendidos: '{0}'.  Certifique-se de que você tem referências para esses tipos.</value>
+  </data>
+  <data name="SD_ERR_DuplicateNameList_1Arg" xml:space="preserve">
+    <value>Já existem configurações com os seguinte nomes: {0}.</value>
+  </data>
+  <data name="SD_ERR_CantAuthenticate" xml:space="preserve">
+    <value>A combinação nome de usuário/senha não pode ser autenticada.</value>
+  </data>
+  <data name="PPG_WindowsFormsApp" xml:space="preserve">
+    <value>Aplicativo do Windows Forms</value>
+  </data>
+  <data name="PPG_ServiceReferenceNamespaceDescription" xml:space="preserve">
+    <value>Namespace da referência de serviço.</value>
+  </data>
+  <data name="PPG_ServiceReferenceTypeName" xml:space="preserve">
+    <value>Propriedades de Referência de Serviço</value>
+  </data>
+  <data name="PPG_ServiceReferenceUrlDescription" xml:space="preserve">
+    <value>URL do Local de Metadados</value>
+  </data>
+  <data name="PPG_ServiceReferenceUrlName" xml:space="preserve">
+    <value>Local de Metadados</value>
+  </data>
+  <data name="PPG_ServiceReferenceProperty_MultipleUrlNotSupported" xml:space="preserve">
+    <value>Não há suporte para uma referência de serviço com várias URLs de origem.</value>
+  </data>
+  <data name="PPG_ServiceReferenceProperty_SetReferenceUrlEmpty" xml:space="preserve">
+    <value>Não é possível alterar a URL de referência para vazia. A URL de referência deve ser uma URL válida.</value>
+  </data>
+  <data name="DFX_OneOrMoreFilesReloaded" xml:space="preserve">
+    <value>Um ou mais arquivos foram recarregados durante o check-out. Tente realizar sua operação novamente.</value>
+  </data>
+  <data name="PPG_ProjectReloadedSomePropertiesMayNotHaveBeenSet" xml:space="preserve">
+    <value>O projeto foi recarregado e algumas alterações nesta página podem ter sido perdidas.</value>
+  </data>
+  <data name="PPG_SecurityPage_XBAPOutOfTrustZoneToolTip" xml:space="preserve">
+    <value>O aplicativo não poderá ser executado na zona selecionada por causa desta permissão elevada solicitada. Clique no link de ajuda acima para obter mais informações.</value>
+  </data>
+  <data name="XmlToSchema_InvalidXMLFormat" xml:space="preserve">
+    <value>Formato XML Inválido: {0}</value>
+  </data>
+  <data name="XmlToSchema_XMLSchemaInferenceWizard" xml:space="preserve">
+    <value>Assistente de Inferência de Esquema XML</value>
+  </data>
+  <data name="XmlToSchema_Error" xml:space="preserve">
+    <value>Erro: {0}</value>
+  </data>
+  <data name="XmlToSchema_ErrorInXmlInference" xml:space="preserve">
+    <value>Erro durante a inferência do esquema XML: {0}</value>
+  </data>
+  <data name="XmlToSchema_ErrorLoadingXml" xml:space="preserve">
+    <value>Erro ao carregar XML: {0}</value>
+  </data>
+  <data name="XmlToSchema_InvalidEmptyItemName" xml:space="preserve">
+    <value>Nome de item de projeto vazio inválido.</value>
+  </data>
+  <data name="XmlToSchema_InvalidProjectPath" xml:space="preserve">
+    <value>Caminho de projeto inválido: {0}</value>
+  </data>
+  <data name="XmlToSchema_NoProjectSelected" xml:space="preserve">
+    <value>Nenhum projeto selecionado.</value>
+  </data>
+  <data name="ResolveKeySource_InvalidKeyName" xml:space="preserve">
+    <value>Nome de arquivo de chave inválido "{0}".</value>
+  </data>
+  <data name="Unable_To_Get_Checksum" xml:space="preserve">
+    <value>Não é possível obter a soma de verificação MD5 do arquivo de chave "{0}". {1}.</value>
+  </data>
+  <data name="ErrorImportingKey" xml:space="preserve">
+    <value>Erro ao importar chave</value>
+  </data>
+  <data name="CSRDlg_MultipleURL" xml:space="preserve">
+    <value>Vários endereços (editáveis no arquivo .svcmap)</value>
+  </data>
+  <data name="PPG_WinMDObj" xml:space="preserve">
+    <value>Componente do Tempo de Execução do Windows</value>
+  </data>
+  <data name="PPG_AppContainerExe" xml:space="preserve">
+    <value>Aplicativo da Windows Store</value>
+  </data>
+  <data name="PPG_UnknownOutputType" xml:space="preserve">
+    <value>Tipo de saída desconhecido: {0}</value>
+  </data>
+  <data name="SD_DefaultSettingName" xml:space="preserve">
+    <value>Configuração</value>
+  </data>
+  <data name="PropPage_ComputingCurrentImportsMessage" xml:space="preserve">
+    <value>Computando as importações atuais...</value>
+  </data>
+  <data name="PropPage_CurrentImportsTitle" xml:space="preserve">
+    <value>Importações Atuais</value>
+  </data>
+  <data name="PPG_PackageTitle" xml:space="preserve">
+    <value>Pacote</value>
+  </data>
+  <data name="PPG_Property_PackageVersion" xml:space="preserve">
+    <value>Versão do Pacote</value>
+  </data>
+</root>

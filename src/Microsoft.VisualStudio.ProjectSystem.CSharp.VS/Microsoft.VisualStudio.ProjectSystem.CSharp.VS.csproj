@@ -64,6 +64,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="VSPackage.resx" />
+    <EmbeddedResource Include="VSPackage.*.resx">
+      <DependentUpon>VSPackage.resx</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
 </Project>

@@ -1,0 +1,273 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ClassTemplateName" xml:space="preserve">
+    <value>Sınıf</value>
+  </data>
+  <data name="ProjectModificationsPrompt" xml:space="preserve">
+    <value>'{0}' projesi ortamın dışında değiştirildi.
+
+Güncelleştirilmiş projeyi diskten yüklemek için, Yeniden Yükle’ye basın.
+Harici değişiklikleri yoksaymak için, Yoksay’a basın. Değişiklikler, projeyi bir sonraki açışınızda kullanılacaktır.
+    </value>
+  </data>
+  <data name="ConflictingModificationsPrompt" xml:space="preserve">
+    <value>'{0}' projesi ortamın dışında değiştirildi ve projede kaydedilmemiş değişiklikler var.
+
+Kaydedilmemiş değişiklikleri kaydetmek ve güncelleştirilmiş projeyi diskten yüklemek için, Farklı Kaydet’e basın.
+Kaydedilmemiş değişiklikleri atmak ve güncelleştirilmiş projeyi diskten yüklemek için, At’a basın.
+Değişikliklerinizi harici değişikliklerin üzerine yazmak için, Üzerine Yaz’a basın.
+Harici değişiklikleri yoksaymak için, Yoksay’a basın. Projeyi kapatıp yeniden açarsanız değişiklikleriniz kaybolabilir.
+    </value>
+  </data>
+  <data name="ConflictingProjectModificationTitle" xml:space="preserve">
+    <value>Çakışan Proje Değişikliği Algılandı</value>
+  </data>
+  <data name="Discard" xml:space="preserve">
+    <value>_At</value>
+  </data>
+  <data name="Ignore" xml:space="preserve">
+    <value>_Yoksay</value>
+  </data>
+  <data name="IgnoreAll" xml:space="preserve">
+    <value>Tümünü Y_oksay</value>
+  </data>
+  <data name="Overwrite" xml:space="preserve">
+    <value>_Üzerine Yaz</value>
+  </data>
+  <data name="ProjectModificationDlgTitle" xml:space="preserve">
+    <value>Proje Değişikliği Algılandı</value>
+  </data>
+  <data name="Reload" xml:space="preserve">
+    <value>_Yeniden Yükle</value>
+  </data>
+  <data name="ReloadAll" xml:space="preserve">
+    <value>Tümünü Y_eniden Yükle</value>
+  </data>
+  <data name="RenameSymbolFailed" xml:space="preserve">
+    <value>'{0}' kod öğesi yeniden adlandırılamadı.</value>
+  </data>
+  <data name="RenameSymbolPrompt" xml:space="preserve">
+    <value>Bir dosyayı yeniden adlandırıyorsunuz. Bu dosyadaki '{0}' kod öğesine yapılan tüm başvurularda yeniden adlandırma işlemi gerçekleştirmek ister misiniz?</value>
+  </data>
+  <data name="SaveAs" xml:space="preserve">
+    <value>_Farklı Kaydet</value>
+  </data>
+  <data name="FailedToWatchProject" xml:space="preserve">
+    <value>'{0}' proje dosyası izlenmeye çalışılırken beklenmeyen bir hata oluştu</value>
+  </data>
+  <data name="FrameworkAssembliesNodeName" xml:space="preserve">
+    <value>Çerçeve Bütünleştirilmiş Kodları</value>
+  </data>
+  <data name="ComNodeName" xml:space="preserve">
+    <value>COM</value>
+  </data>
+  <data name="SdkNodeName" xml:space="preserve">
+    <value>SDK</value>
+  </data>
+  <data name="AssembliesNodeName" xml:space="preserve">
+    <value>Bütünleştirilmiş Kodlar</value>
+  </data>
+  <data name="DependenciesLoadingPostfix" xml:space="preserve">
+    <value> (Yükleniyor...)</value>
+  </data>
+  <data name="DependenciesNodeErrorsSuffix" xml:space="preserve">
+    <value>(Hatalar - bkz. Hata Listesi)</value>
+  </data>
+  <data name="DependenciesNodeName" xml:space="preserve">
+    <value>Bağımlılıklar</value>
+  </data>
+  <data name="GraphNodeCategoryDependency" xml:space="preserve">
+    <value>Bağımlılık.</value>
+  </data>
+  <data name="NoItemTypeForRule" xml:space="preserve">
+    <value>{0} kuralı için öğe türü bulunması bekleniyordu. Kural dosyası eksik veya hatalı biçimlendirilmiş.</value>
+  </data>
+  <data name="NuGetPackagesNodeName" xml:space="preserve">
+    <value>NuGet</value>
+  </data>
+  <data name="ProjectsNodeName" xml:space="preserve">
+    <value>Projeler</value>
+  </data>
+  <data name="AnalyzersNodeName" xml:space="preserve">
+    <value>Çözümleyiciler</value>
+  </data>
+  <data name="DotNetCoreProjectsNotSupported" xml:space="preserve">
+    <value>.NET Core projeleri Visual Studio’nun bu sürümünde desteklenmez. Sonraki güncelleştirmelerde destek sunulacaktır.</value>
+  </data>
+  <data name="ActiveLaunchProfileNotFound" xml:space="preserve">
+    <value>Bu proje için yapılandırılmış etkin bir başlatma profili yok.</value>
+  </data>
+  <data name="DontKnowHowToRunProfile" xml:space="preserve">
+    <value>Proje, {0} profilinin nasıl çalıştırılacağını bilmiyor.</value>
+  </data>
+  <data name="ErrorInProfilesFile" xml:space="preserve">
+    <value>'{0}' projesini çalıştırabilmeniz için, başlatma ayarları dosyasındaki bir hatanın düzeltilmesi gerekiyor. Ayrıntılar için lütfen hata listesine bakın.</value>
+  </data>
+  <data name="ErrorInProfilesFile2" xml:space="preserve">
+    <value>'{0}' projesini çalıştırabilmeniz için, başlatma ayarları dosyasındaki bir hatanın düzeltilmesi gerekiyor. {1}. Ayrıntılar için lütfen hata listesine bakın.</value>
+  </data>
+  <data name="ProjectNotRunnableDirectly" xml:space="preserve">
+    <value>Çıkış Türü Sınıf Kitaplığı olan bir proje doğrudan başlatılamaz.
+
+Bu projede hata ayıklamak için bu çözüme, kitaplık projesine başvuran bir yürütülebilir proje ekleyin. Yürütülebilir projeyi başlangıç projesi olarak ayarlayın.</value>
+  </data>
+  <data name="NoUrlSpecified" xml:space="preserve">
+    <value>'{0}' hata ayıklama profili bir web tarayıcısının başlatılmasını istedi, ancak bir URL belirtilmedi.</value>
+  </data>
+  <data name="InvalidAbsoluteUrlSpecified" xml:space="preserve">
+    <value>'{0}' hata ayıklama profili bir web tarayıcısının başlatılmasını istedi, ancak belirtilen URL geçerli bir mutlak URL değil. {1}</value>
+  </data>
+  <data name="NoDebugExecutableSpecified" xml:space="preserve">
+    <value>'{0}' hata ayıklama profilinde, hataları ayıklanacak yürütülebilir dosyanın yolu yok.</value>
+  </data>
+  <data name="DebugExecutableNotFound" xml:space="preserve">
+    <value>'{1}' hata ayıklama profilinde belirtilen '{0}' hata ayıklama yürütülebilir dosyası yok.</value>
+  </data>
+  <data name="WorkingDirecotryInvalid" xml:space="preserve">
+    <value>'{1}' hata ayıklama profilinde belirtilen '{0}' çalışma dizini yok.</value>
+  </data>
+  <data name="NoMigratedCSProjFound" xml:space="preserve">
+    <value>{0} içinde cpsroj bulunması bekleniyordu, ancak bulunamadı.</value>
+  </data>
+  <data name="XprojMigrationFailed" xml:space="preserve">
+    <value>{0} XProj projesi geçirilemedi. 'dotnet migrate --skip-backup -s -p "{1}" -x "{2}"', {3} hata koduyla çıkış yaptı.</value>
+  </data>
+  <data name="MigrationBackupFile" xml:space="preserve">
+    <value>{0}, {1} konumuna yedekleniyor.</value>
+  </data>
+  <data name="XprojMigrationFailedProjectJsonFileNotFound" xml:space="preserve">
+    <value>{0} XProj projesi geçirilemedi. {1} konumunda project.json bulunamadı.</value>
+  </data>
+  <data name="EditProjectFileCommand" xml:space="preserve">
+    <value>{0} öğesini düzenle</value>
+  </data>
+  <data name="NoRunCommandSpecifiedInProject" xml:space="preserve">
+    <value>Projeniz çalıştırılamıyor. "RunCommand" özelliği tanımlanmadı.</value>
+  </data>
+  <data name="MultiTFEditNotSupported" xml:space="preserve">
+    <value>Birden fazla hedef çerçevenin düzenlenmesi desteklenmiyor.</value>
+  </data>
+  <data name="PackCommand" xml:space="preserve">
+    <value>&amp;Paketle</value>
+  </data>
+  <data name="PackSelectedProjectCommand" xml:space="preserve">
+    <value>{0} öğesini &amp;paketle</value>
+  </data>
+</root>
