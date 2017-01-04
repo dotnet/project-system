@@ -19,7 +19,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         private const string RootLocation = @"C:\Temp";
         private const string ProjectName = "XprojMigrationTests";
         private static readonly string XprojLocation = Path.Combine(RootLocation, $"{ProjectName}.xproj");
+        private static readonly string XprojUserLocation = Path.Combine(RootLocation, $"{ProjectName}.xproj.user");
         private static readonly string ProjectJsonLocation = Path.Combine(RootLocation, "project.json");
+        private static readonly string ProjectLockJsonLocation = Path.Combine(RootLocation, "project.lock.json");
         private static readonly string BackupLocation = Path.Combine(RootLocation, "Backup");
         private static readonly string CsprojLocation = Path.Combine(RootLocation, $"{ProjectName}.csproj");
         private static readonly string LogFileLocation = Path.Combine(RootLocation, "asdf.1234");
@@ -72,6 +74,47 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             Assert.True(backedUpFiles.Contains(xprojBackedUp));
             Assert.True(backedUpFiles.Contains(projectJsonBackedUp));
         }
+
+        [Fact]
+        public void MigrateXprojProjectFactory_WithXprojUser_BackupsCorrectly()
+        {
+            var procRunner = ProcessRunnerFactory.CreateRunner();
+            var fileSystem = CreateFileSystem(withXprojUser: true, withProjectLock: true);
+            var migrator = new MigrateXprojProjectFactory(procRunner, fileSystem);
+
+            var loggedMessages = new List<LogMessage>();
+            var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
+
+            Assert.True(migrator.BackupProject(BackupLocation, XprojLocation, "XprojMigrationTests", logger));
+
+            // We expect 2 informational messages about what files were backed up.
+            Assert.Equal(3, loggedMessages.Count);
+            loggedMessages.ForEach(message =>
+            {
+                Assert.Equal((uint)__VSUL_ERRORLEVEL.VSUL_INFORMATIONAL, message.Level);
+                Assert.Equal("XprojMigrationTests", message.Project);
+            });
+
+            // The first message should be about the old xproj, the second about the project.json
+            var xprojBackedUp = Path.Combine(BackupLocation, "XprojMigrationTests.xproj");
+            var xprojUserBackedUp = Path.Combine(BackupLocation, "XprojMigrationTests.xproj.user");
+            var projectJsonBackedUp = Path.Combine(BackupLocation, "project.json");
+
+            Assert.Equal(XprojLocation, loggedMessages[0].File);
+            Assert.Equal(ProjectJsonLocation, loggedMessages[1].File);
+            Assert.Equal(XprojUserLocation, loggedMessages[2].File);
+            Assert.Equal($"Backing up {XprojLocation} to {xprojBackedUp}.", loggedMessages[0].Message);
+            Assert.Equal($"Backing up {ProjectJsonLocation} to {projectJsonBackedUp}.", loggedMessages[1].Message);
+            Assert.Equal($"Backing up {XprojUserLocation} to {xprojUserBackedUp}.", loggedMessages[2].Message);
+
+            // Finally, assert that there actually are backup files in the backup directory
+            var backedUpFiles = fileSystem.EnumerateFiles(BackupLocation, "*", SearchOption.TopDirectoryOnly);
+            Assert.Equal(3, backedUpFiles.Count());
+            Assert.True(backedUpFiles.Contains(xprojBackedUp));
+            Assert.True(backedUpFiles.Contains(projectJsonBackedUp));
+            Assert.True(backedUpFiles.Contains(xprojUserBackedUp));
+        }
+
 
         [Fact]
         public void MigrateXprojProjectFactory_NonExistantProjectJson_DoesNotBackUp()
@@ -303,9 +346,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         }
 
         [Fact]
+        public void MigrateXprojProjectFactory_Cleanup_RemovesAllFiles()
+        {
+            var fileSystem = CreateFileSystem(withEntries: true, withXprojUser: true, withProjectLock: true);
+
+            var migrator = new MigrateXprojProjectFactory(ProcessRunnerFactory.CreateRunner(), fileSystem);
+
+            migrator.CleanupXproj(RootLocation, ProjectName);
+            Assert.False(fileSystem.FileExists(XprojLocation));
+            Assert.False(fileSystem.FileExists(ProjectJsonLocation));
+            Assert.False(fileSystem.FileExists(XprojUserLocation));
+            Assert.False(fileSystem.FileExists(ProjectLockJsonLocation));
+        }
+
+        [Fact]
+        public void MigrateXprojProjectFactory_NoXprojUserOrProjectLock_CausesNoIssues()
+        {
+            var fileSystem = CreateFileSystem(withEntries: true, withXprojUser: false, withProjectLock: false);
+
+            var migrator = new MigrateXprojProjectFactory(ProcessRunnerFactory.CreateRunner(), fileSystem);
+
+            migrator.CleanupXproj(RootLocation, ProjectName);
+            Assert.False(fileSystem.FileExists(XprojLocation));
+            Assert.False(fileSystem.FileExists(ProjectJsonLocation));
+        }
+
+        [Fact]
         public void MigrateXprojProjectFactory_E2E_Works()
         {
-            var fileSystem = CreateFileSystem();
+            var fileSystem = CreateFileSystem(withEntries: true, withXprojUser: true, withProjectLock: true);
             var processRunner = ProcessRunnerFactory.ImplementRunner(pInfo =>
             {
                 ProcessVerifier(pInfo);
@@ -321,6 +390,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             Assert.True(fileSystem.FileExists(CsprojLocation));
             Assert.True(fileSystem.FileExists(Path.Combine(BackupLocation, $"{ProjectName}.xproj")));
             Assert.True(fileSystem.FileExists(Path.Combine(BackupLocation, "project.json")));
+            Assert.True(fileSystem.FileExists(Path.Combine(BackupLocation, $"{ProjectName}.xproj.user")));
+            Assert.False(fileSystem.FileExists(XprojLocation));
+            Assert.False(fileSystem.FileExists(ProjectJsonLocation));
+            Assert.False(fileSystem.FileExists(XprojUserLocation));
+            Assert.False(fileSystem.FileExists(ProjectLockJsonLocation));
             Assert.Equal(CsprojLocation, outCsproj);
             Assert.Equal((int)__VSPPROJECTUPGRADEVIAFACTORYREPAIRFLAGS.VSPUVF_PROJECT_ONEWAYUPGRADE, upgradeRequired);
             Assert.Equal(Guid.Parse(CSharpProjectSystemPackage.ProjectTypeGuid), newProjectFactory);
@@ -334,7 +408,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             Assert.Equal("true", info.EnvironmentVariables["DOTNET_SKIP_FIRST_TIME_EXPERIENCE"]);
         }
 
-        private IFileSystem CreateFileSystem(bool withEntries = true, MigrationReport report = null)
+        private IFileSystem CreateFileSystem(bool withEntries = true, MigrationReport report = null, bool withXprojUser = false, bool withProjectLock = false)
         {
             var fileSystem = new IFileSystemMock();
             if (withEntries)
@@ -343,6 +417,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
                 fileSystem.CreateDirectory(BackupLocation);
                 fileSystem.Create(XprojLocation);
                 fileSystem.Create(ProjectJsonLocation);
+                if (withXprojUser)
+                {
+                    fileSystem.Create(XprojUserLocation);
+                }
+
+                if (withProjectLock)
+                {
+                    fileSystem.Create(ProjectLockJsonLocation);
+                }
             }
 
             fileSystem.SetTempFile(LogFileLocation);

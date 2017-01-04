@@ -3,7 +3,6 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.VisualStudio.IO;
@@ -65,6 +64,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
                 success = false;
             }
 
+            if (success)
+            {
+                CleanupXproj(directory, projectName);
+            }
+
             return success ? VSConstants.S_OK : VSConstants.VS_E_PROJECTMIGRATIONFAILED;
         }
 
@@ -72,11 +76,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         {
             var directory = Path.GetDirectoryName(xprojLocation);
 
-            // Back up the xproj and project.json to the backup location.
+            // Back up the xproj and project.json to the backup location. If it exists, also back up the .xproj.user file.
             var xprojName = Path.GetFileName(xprojLocation);
             var backupXprojPath = Path.Combine(backupLocation, xprojName);
             var projectJsonPath = Path.Combine(directory, "project.json");
             var backupProjectJsonPath = Path.Combine(backupLocation, "project.json");
+            var xprojUserPath = $"{xprojLocation}.user";
+            var backupXprojUserPath = Path.Combine(backupLocation, $"{xprojName}.user");
 
             // We don't need to check the xproj path. That's being given to us by VS and was specified in the solution.
             if (!_fileSystem.FileExists(projectJsonPath))
@@ -93,6 +99,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
             _fileSystem.CopyFile(xprojLocation, backupXprojPath, true);
             _fileSystem.CopyFile(projectJsonPath, backupProjectJsonPath, true);
+
+            if (_fileSystem.FileExists(xprojUserPath))
+            {
+                pLogger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_INFORMATIONAL, projectName, xprojUserPath,
+                    string.Format(VSResources.MigrationBackupFile, xprojUserPath, backupXprojUserPath));
+                _fileSystem.CopyFile(xprojUserPath, backupXprojUserPath, true);
+            }
 
             return true;
         }
@@ -195,6 +208,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
             _fileSystem.RemoveFile(logFile);
             return (report.OutputMSBuildProject, report.Succeeded);
+        }
+
+        internal void CleanupXproj(string projectLocation, string projectName)
+        {
+            // Clean up the .xproj, the project.json, the project.lock.json, and the xproj.user
+            _fileSystem.RemoveFile(Path.Combine(projectLocation, $"{projectName}.xproj"));
+            try
+            {
+                _fileSystem.RemoveFile(Path.Combine(projectLocation, $"{projectName}.xproj.user"));
+            }
+            catch (IOException) { }
+            _fileSystem.RemoveFile(Path.Combine(projectLocation, "project.json"));
+            try
+            {
+                _fileSystem.RemoveFile(Path.Combine(projectLocation, "project.lock.json"));
+            }
+            catch (IOException) { }
         }
 
         public int UpgradeProject_CheckOnly(string xprojLocation,
