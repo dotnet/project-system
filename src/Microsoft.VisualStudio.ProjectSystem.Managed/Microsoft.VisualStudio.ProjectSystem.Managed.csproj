@@ -37,6 +37,8 @@
     <Compile Include="ProjectSystem\Build\BuildProperty.cs" />
     <Compile Include="CommonConstants.cs" />
     <Compile Include="ProjectSystem\Build\CommandLineDesignTimeBuildPropertiesProvider.cs" />
+    <Compile Include="ProjectSystem\Build\GeneratePackageOnBuildDesignTimeBuildPropertyProvider.cs" />
+    <Compile Include="ProjectSystem\Build\GeneratePackageOnBuildPropertyProvider.cs" />
     <Compile Include="ProjectSystem\Build\TargetFrameworkGlobalBuildPropertyProvider.cs" />
     <Compile Include="ProjectSystem\ContractNames.cs" />
     <Compile Include="GlobalSuppressions.cs" />
