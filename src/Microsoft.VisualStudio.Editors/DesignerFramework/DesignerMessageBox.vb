@@ -75,7 +75,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 ex = ex.InnerException
             End If
 
-            If Common.Utils.IsCheckoutCanceledException(ex) Then
+            If Common.IsCheckoutCanceledException(ex) Then
                 'The user knows he just canceled the checkout.  We don't have to tell him.  (Yes, other editors and the
                 '  Fx framework itself does it this way, too.)
                 Return
@@ -156,7 +156,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     Return ShowInternal(CType(ServiceProvider.GetService(GetType(IUIService)), IUIService),
                         CType(ServiceProvider.GetService(GetType(IVsUIShell)), IVsUIShell),
                         Message, Caption, Buttons, Icon, DefaultButton, HelpLink)
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(ShowHelper), NameOf(DesignerMessageBox))
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(ShowHelper), NameOf(DesignerMessageBox))
                 End Try
             Else
                 Debug.Fail("ServiceProvider is Nothing! Message box won't have parent!")
@@ -192,7 +192,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Icon As MessageBoxIcon, DefaultButton As MessageBoxDefaultButton, HelpLink As String) _
         As DialogResult
             If VsUIShell IsNot Nothing Then
-                Dim Guid As Guid = System.Guid.Empty
+                Dim Guid As Guid = Guid.Empty
 
                 Dim OLEButtons As OLEMSGBUTTON = CType(Buttons, OLEMSGBUTTON)
                 Dim OLEDefaultButton As OLEMSGDEFBUTTON = OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST

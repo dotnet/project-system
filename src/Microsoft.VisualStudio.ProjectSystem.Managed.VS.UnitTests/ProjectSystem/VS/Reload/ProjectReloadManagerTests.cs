@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             reloadableProjectMock.Setup(x => x.ProjectFile).Returns(@"c:\temp\project1.csproj");
 
             await rlm.RegisterProjectAsync(reloadableProjectMock.Object);
-            Assert.Equal<int>(1, rlm.RegisteredProjects.Count);
+            Assert.Equal(1, rlm.RegisteredProjects.Count);
             Assert.Same(reloadableProjectMock.Object, rlm.RegisteredProjects.First().Key);
             reloadableProjectMock.VerifyAll();
         }
@@ -71,10 +71,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             reloadableProjectMock.Setup(x => x.ProjectFile).Returns(@"c:\temp\project1.csproj");
 
             await rlm.RegisterProjectAsync(reloadableProjectMock.Object);
-            Assert.Equal<int>(1, rlm.RegisteredProjects.Count);
+            Assert.Equal(1, rlm.RegisteredProjects.Count);
 
             await rlm.UnregisterProjectAsync(reloadableProjectMock.Object);
-            Assert.Equal<int>(0, rlm.RegisteredProjects.Count);
+            Assert.Equal(0, rlm.RegisteredProjects.Count);
             reloadableProjectMock.VerifyAll();
         }
 
@@ -96,7 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             reloadableProjectMock.Setup(x => x.ReloadProjectAsync()).Returns(Task.FromResult(ProjectReloadResult.ReloadCompleted));
 
             await rlm.RegisterProjectAsync(reloadableProjectMock.Object);
-            Assert.Equal<int>(1, rlm.RegisteredProjects.Count);
+            Assert.Equal(1, rlm.RegisteredProjects.Count);
             // Shorten the normal delay so unit tests run faster
             ((TaskDelayScheduler)rlm.ReloadDelayScheduler).TaskDelayTime = TimeSpan.FromMilliseconds(20);
 
@@ -120,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             reloadableProjectMock.Setup(x => x.ProjectFile).Returns(projectFile);
 
             await rlm.RegisterProjectAsync(reloadableProjectMock.Object);
-            Assert.Equal<int>(1, rlm.RegisteredProjects.Count);
+            Assert.Equal(1, rlm.RegisteredProjects.Count);
 
             rlm.FilesChanged(1, new string[1] {projectFile + ".csproj"},  new uint[1] { (uint)_VSFILECHANGEFLAGS.VSFILECHG_Size });
             Assert.True(rlm.ReloadDelayScheduler.LatestScheduledTask == null);
@@ -144,7 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             reloadableProjectMock.Setup(x => x.ProjectFile).Returns(projectFile);
 
             await rlm.RegisterProjectAsync(reloadableProjectMock.Object);
-            Assert.Equal<int>(1, rlm.RegisteredProjects.Count);
+            Assert.Equal(1, rlm.RegisteredProjects.Count);
             // Shorten the normal delay so unit tests run faster
             ((TaskDelayScheduler)rlm.ReloadDelayScheduler).TaskDelayTime = TimeSpan.FromMilliseconds(20);
 

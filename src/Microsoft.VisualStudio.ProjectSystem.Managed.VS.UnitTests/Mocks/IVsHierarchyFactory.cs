@@ -50,14 +50,14 @@ namespace Microsoft.VisualStudio.Shell.Interop
         public static void ImplementGetGuid(this IVsHierarchy hierarchy, VsHierarchyPropID propId, int hr)
         {
             Guid result;
-            var mock = Mock.Get<IVsHierarchy>(hierarchy);
+            var mock = Mock.Get(hierarchy);
             mock.Setup(h => h.GetGuidProperty(It.IsAny<uint>(), It.Is<int>(p => p == (int)propId), out result))
                 .Returns(hr);
         }
 
         public static void ImplementGetGuid(this IVsHierarchy hierarchy, VsHierarchyPropID propId, Guid result)
         {
-            var mock = Mock.Get<IVsHierarchy>(hierarchy);
+            var mock = Mock.Get(hierarchy);
             mock.Setup(h => h.GetGuidProperty(It.IsAny<uint>(), It.Is<int>(p => p == (int)propId), out result))
                 .Returns(0);
         }
@@ -65,14 +65,14 @@ namespace Microsoft.VisualStudio.Shell.Interop
         public static void ImplementGetProperty(this IVsHierarchy hierarchy, VsHierarchyPropID propId, int hr)
         {
             object result;
-            var mock = Mock.Get<IVsHierarchy>(hierarchy);
+            var mock = Mock.Get(hierarchy);
             mock.Setup(h => h.GetProperty(It.IsAny<uint>(), It.Is<int>(p => p == (int)propId), out result))
                 .Returns(hr);
         }
 
         public static void ImplementGetProperty(this IVsHierarchy hierarchy, VsHierarchyPropID propId, object result)
         {
-            var mock = Mock.Get<IVsHierarchy>(hierarchy);
+            var mock = Mock.Get(hierarchy);
             mock.Setup(h => h.GetProperty(It.IsAny<uint>(), It.Is<int>(p => p == (int)propId), out result))
                 .Returns(0);
         }

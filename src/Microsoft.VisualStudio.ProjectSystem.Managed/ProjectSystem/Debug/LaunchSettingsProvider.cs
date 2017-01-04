@@ -290,7 +290,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // display the error when run
                 if (CurrentSnapshot == null)
                 {
-                    var errorProfile = new LaunchProfile() { Name = Resources.NoActionProfileName, CommandName = LaunchSettingsProvider.ErrorProfileCommandName };
+                    var errorProfile = new LaunchProfile() { Name = Resources.NoActionProfileName, CommandName = ErrorProfileCommandName };
                     errorProfile.OtherSettings = ImmutableDictionary<string, object>.Empty.Add("ErrorString", ex.Message);
                     var snapshot = new LaunchSettings(new List<ILaunchProfile>() { errorProfile }, null, errorProfile.Name);
                     FinishUpdate(snapshot);
@@ -791,7 +791,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public async Task<ILaunchSettings> GetSnapshotThrowIfErrors()
         {
             var currentSettings = await WaitForFirstSnapshot(WaitForFirstSnapshotDelay).ConfigureAwait(false);
-            if (currentSettings == null || (currentSettings.Profiles.Count == 1 && string.Equals(currentSettings.Profiles[0].CommandName, LaunchSettingsProvider.ErrorProfileCommandName, StringComparison.Ordinal)))
+            if (currentSettings == null || (currentSettings.Profiles.Count == 1 && string.Equals(currentSettings.Profiles[0].CommandName, ErrorProfileCommandName, StringComparison.Ordinal)))
             {
                 throw new Exception(string.Format(Resources.JsonErrorNeedToBeCorrected, LaunchSettingsFile));
             }

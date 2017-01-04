@@ -113,12 +113,12 @@
         <target state="translated">플랫폼 대상</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Prefer32Bit|DisplayName">
+      <trans-unit id="BoolProperty|Prefer32Bit|DisplayName">
         <source>Prefer 32Bit</source>
         <target state="translated">32비트 기본 사용</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|AllowUnsafeBlocks|DisplayName">
+      <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
         <source>Allow unsafe code</source>
         <target state="translated">안전하지 않은 코드 허용</target>
         <note />
@@ -273,12 +273,12 @@
         <target state="translated">어셈블리 버전</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|SignAssembly|DisplayName">
+      <trans-unit id="BoolProperty|SignAssembly|DisplayName">
         <source>Sign the assembly</source>
         <target state="translated">어셈블리에 서명</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|DelaySign|DisplayName">
+      <trans-unit id="BoolProperty|DelaySign|DisplayName">
         <source>Delay sign only</source>
         <target state="translated">서명만 연기</target>
         <note />
@@ -290,83 +290,83 @@
       </trans-unit>
       <trans-unit id="StringProperty|TreatSpecificWarningsAsErrors|Description">
         <source>Treat specific warnings as errors</source>
-        <target state="new">Treat specific warnings as errors</target>
-        <note></note>
+        <target state="translated">특정 경고를 오류로 처리</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GeneratePackageOnBuild|DisplayName">
         <source>Generate Package On Build</source>
-        <target state="new">Generate Package On Build</target>
-        <note></note>
+        <target state="translated">빌드 시 패키지 생성</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageId|DisplayName">
         <source>Package Id</source>
-        <target state="new">Package Id</target>
-        <note></note>
+        <target state="translated">패키지 ID</target>
+        <note />
       </trans-unit>
-      <trans-unit id="StringProperty|PackageVersion|DisplayName">
+      <trans-unit id="StringProperty|Version|DisplayName">
         <source>Package Version</source>
-        <target state="new">Package Version</target>
-        <note></note>
+        <target state="translated">패키지 버전</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Authors|DisplayName">
         <source>Authors</source>
-        <target state="new">Authors</target>
-        <note></note>
+        <target state="translated">작성자</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|PackageRequireLicenseAcceptance|DisplayName">
         <source>Package Require License Acceptance</source>
-        <target state="new">Package Require License Acceptance</target>
-        <note></note>
+        <target state="translated">패키지에 라이선스 승인 필요</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageLicenseUrl|DisplayName">
         <source>Package License Url</source>
-        <target state="new">Package License Url</target>
-        <note></note>
+        <target state="translated">패키지 라이선스 URL</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageProjectUrl|DisplayName">
         <source>Package Project Url</source>
-        <target state="new">Package Project Url</target>
-        <note></note>
+        <target state="translated">패키지 프로젝트 URL</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageIconUrl|DisplayName">
         <source>Package Icon Url</source>
-        <target state="new">Package Icon Url</target>
-        <note></note>
+        <target state="translated">패키지 아이콘 URL</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageTags|DisplayName">
         <source>Package Tags</source>
-        <target state="new">Package Tags</target>
-        <note></note>
+        <target state="translated">패키지 태그</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageReleaseNotes|DisplayName">
         <source>Release Notes</source>
-        <target state="new">Release Notes</target>
-        <note></note>
+        <target state="translated">릴리스 정보</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|RepositoryUrl|DisplayName">
         <source>Repository Url</source>
-        <target state="new">Repository Url</target>
-        <note></note>
+        <target state="translated">리포지토리 URL</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|RepositoryType|DisplayName">
         <source>Repository Type</source>
-        <target state="new">Repository Type</target>
-        <note></note>
+        <target state="translated">리포지토리 유형</target>
+        <note />
       </trans-unit>
-      <trans-unit id="StringProperty|AssemblyCompany|DisplayName">
+      <trans-unit id="StringProperty|Company|DisplayName">
         <source>Assembly Company</source>
-        <target state="new">Assembly Company</target>
-        <note></note>
+        <target state="translated">어셈블리 회사</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FileVersion|DisplayName">
         <source>Assembly File Version</source>
-        <target state="new">Assembly File Version</target>
-        <note></note>
+        <target state="translated">어셈블리 파일 버전</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|NeutralLanguage|DisplayName">
         <source>Neutral Resources Language</source>
-        <target state="new">Neutral Resources Language</target>
-        <note></note>
+        <target state="translated">중립 리소스 언어</target>
+        <note />
       </trans-unit>
     </body>
   </file>

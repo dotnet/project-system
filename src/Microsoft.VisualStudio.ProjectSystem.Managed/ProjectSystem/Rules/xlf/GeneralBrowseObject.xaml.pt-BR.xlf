@@ -113,12 +113,12 @@
         <target state="translated">Plataforma de Destino</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Prefer32Bit|DisplayName">
+      <trans-unit id="BoolProperty|Prefer32Bit|DisplayName">
         <source>Prefer 32Bit</source>
         <target state="translated">Preferir 32 bits</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|AllowUnsafeBlocks|DisplayName">
+      <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
         <source>Allow unsafe code</source>
         <target state="translated">Permitir código não seguro</target>
         <note />
@@ -273,12 +273,12 @@
         <target state="translated">Versão do Assembly</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|SignAssembly|DisplayName">
+      <trans-unit id="BoolProperty|SignAssembly|DisplayName">
         <source>Sign the assembly</source>
         <target state="translated">Assinar o assembly</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|DelaySign|DisplayName">
+      <trans-unit id="BoolProperty|DelaySign|DisplayName">
         <source>Delay sign only</source>
         <target state="translated">Apenas adiar a assinatura</target>
         <note />
@@ -290,83 +290,83 @@
       </trans-unit>
       <trans-unit id="StringProperty|TreatSpecificWarningsAsErrors|Description">
         <source>Treat specific warnings as errors</source>
-        <target state="new">Treat specific warnings as errors</target>
-        <note></note>
+        <target state="translated">Tratar avisos específicos como erros</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GeneratePackageOnBuild|DisplayName">
         <source>Generate Package On Build</source>
-        <target state="new">Generate Package On Build</target>
-        <note></note>
+        <target state="translated">Gerar Pacote Durante o Build</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageId|DisplayName">
         <source>Package Id</source>
-        <target state="new">Package Id</target>
-        <note></note>
+        <target state="translated">ID do Pacote</target>
+        <note />
       </trans-unit>
-      <trans-unit id="StringProperty|PackageVersion|DisplayName">
+      <trans-unit id="StringProperty|Version|DisplayName">
         <source>Package Version</source>
-        <target state="new">Package Version</target>
-        <note></note>
+        <target state="translated">Versão do Pacote</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Authors|DisplayName">
         <source>Authors</source>
-        <target state="new">Authors</target>
-        <note></note>
+        <target state="translated">Autores</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|PackageRequireLicenseAcceptance|DisplayName">
         <source>Package Require License Acceptance</source>
-        <target state="new">Package Require License Acceptance</target>
-        <note></note>
+        <target state="translated">O Pacote Exige a Aceitação da Licença</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageLicenseUrl|DisplayName">
         <source>Package License Url</source>
-        <target state="new">Package License Url</target>
-        <note></note>
+        <target state="translated">URL da Licença do Pacote</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageProjectUrl|DisplayName">
         <source>Package Project Url</source>
-        <target state="new">Package Project Url</target>
-        <note></note>
+        <target state="translated">URL do Projeto do Pacote</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageIconUrl|DisplayName">
         <source>Package Icon Url</source>
-        <target state="new">Package Icon Url</target>
-        <note></note>
+        <target state="translated">URL do Ícone do Pacote</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageTags|DisplayName">
         <source>Package Tags</source>
-        <target state="new">Package Tags</target>
-        <note></note>
+        <target state="translated">Marcas do Pacote</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageReleaseNotes|DisplayName">
         <source>Release Notes</source>
-        <target state="new">Release Notes</target>
-        <note></note>
+        <target state="translated">Notas de Versão</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|RepositoryUrl|DisplayName">
         <source>Repository Url</source>
-        <target state="new">Repository Url</target>
-        <note></note>
+        <target state="translated">URL do Repositório</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|RepositoryType|DisplayName">
         <source>Repository Type</source>
-        <target state="new">Repository Type</target>
-        <note></note>
+        <target state="translated">Tipo de Repositório</target>
+        <note />
       </trans-unit>
-      <trans-unit id="StringProperty|AssemblyCompany|DisplayName">
+      <trans-unit id="StringProperty|Company|DisplayName">
         <source>Assembly Company</source>
-        <target state="new">Assembly Company</target>
-        <note></note>
+        <target state="translated">Empresa do Assembly</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FileVersion|DisplayName">
         <source>Assembly File Version</source>
-        <target state="new">Assembly File Version</target>
-        <note></note>
+        <target state="translated">Versão do Arquivo do Assembly</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|NeutralLanguage|DisplayName">
         <source>Neutral Resources Language</source>
-        <target state="new">Neutral Resources Language</target>
-        <note></note>
+        <target state="translated">Idioma de Recursos Neutros</target>
+        <note />
       </trans-unit>
     </body>
   </file>

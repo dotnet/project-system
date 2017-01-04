@@ -10,7 +10,7 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
 
         Public Sub New([namespace] As String, identifier As String, minimallyQualifiedName As String, helpCAllback As IVBAddImportsDialogHelpCallback, isp As IServiceProvider)
             MyBase.New(isp)
-            Me.SuspendLayout()
+            SuspendLayout()
             Try
                 _helpCallBack = helpCAllback
                 InitializeComponent()
@@ -18,14 +18,14 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
                 txtMain_.AutoSize = True
 
                 pnlLayout_.AutoSize = True
-                Me.AutoSize = True
+                AutoSize = True
             Finally
-                Me.ResumeLayout()
+                ResumeLayout()
             End Try
         End Sub
 
         Private Sub ButtonClick(sender As Object, e As EventArgs) Handles btnOk_.Click, btnCancel_.Click
-            Me.Close()
+            Close()
         End Sub
 
         Private Function GetTextBoxWidth() As Integer
@@ -45,7 +45,7 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
             OnHelpRequested(New HelpEventArgs(Point.Empty))
         End Sub
 
-        Private Sub RequestHelp(sender As Object, hlpevent As System.Windows.Forms.HelpEventArgs) Handles Me.HelpRequested
+        Private Sub RequestHelp(sender As Object, hlpevent As HelpEventArgs) Handles Me.HelpRequested
             If (_helpCallBack IsNot Nothing) Then
                 _helpCallBack.InvokeHelp()
             End If

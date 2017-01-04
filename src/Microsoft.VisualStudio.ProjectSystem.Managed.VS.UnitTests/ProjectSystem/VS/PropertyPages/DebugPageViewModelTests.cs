@@ -1,5 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
-using System;
+
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj");
             var viewModel = new Mock<DebugPageViewModel>(false, unconfiguredProject);
 
-            mockSourceBlock.Setup<IDisposable>(m => m.LinkTo(It.IsAny<ITargetBlock<ILaunchSettings>>(), It.IsAny<DataflowLinkOptions>())).Callback
+            mockSourceBlock.Setup(m => m.LinkTo(It.IsAny<ITargetBlock<ILaunchSettings>>(), It.IsAny<DataflowLinkOptions>())).Callback
                 (
                     (ITargetBlock<ILaunchSettings> targetBlock, DataflowLinkOptions options) =>
                     {
@@ -68,10 +68,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj");
             var viewModel = new DebugPageViewModel(false, unconfiguredProject);
 
-            Assert.IsType<VS.Utilities.DelegateCommand>(viewModel.BrowseDirectoryCommand);
-            Assert.IsType<VS.Utilities.DelegateCommand>(viewModel.BrowseExecutableCommand);
-            Assert.IsType<VS.Utilities.DelegateCommand>(viewModel.NewProfileCommand);
-            Assert.IsType<VS.Utilities.DelegateCommand>(viewModel.DeleteProfileCommand);
+            Assert.IsType<Utilities.DelegateCommand>(viewModel.BrowseDirectoryCommand);
+            Assert.IsType<Utilities.DelegateCommand>(viewModel.BrowseExecutableCommand);
+            Assert.IsType<Utilities.DelegateCommand>(viewModel.NewProfileCommand);
+            Assert.IsType<Utilities.DelegateCommand>(viewModel.DeleteProfileCommand);
         }
         
         [Fact]

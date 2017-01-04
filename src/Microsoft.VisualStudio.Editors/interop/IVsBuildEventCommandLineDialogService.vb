@@ -4,16 +4,16 @@ Imports System.Runtime.InteropServices
 
 Namespace Microsoft.VisualStudio.Editors.Interop
 
-    <ComImport(), System.Runtime.InteropServices.Guid("A0EBEE86-72AD-4a29-8C0E-D745F843BE1D"), _
-    InterfaceTypeAttribute(ComInterfaceType.InterfaceIsDual), _
+    <ComImport(), Guid("A0EBEE86-72AD-4a29-8C0E-D745F843BE1D"), _
+    InterfaceType(ComInterfaceType.InterfaceIsDual), _
     CLSCompliant(False)> _
     Friend Interface IVsBuildEventCommandLineDialogService
         <PreserveSig()> _
-        Function EditCommandLine(<InAttribute(), MarshalAs(UnmanagedType.BStr)> WindowText As String, _
-        <InAttribute(), MarshalAs(UnmanagedType.BStr)> HelpID As String, _
-        <InAttribute(), MarshalAs(UnmanagedType.BStr)> OriginalCommandLine As String, _
-        <InAttribute()> MacroProvider As IVsBuildEventMacroProvider, _
-        <OutAttribute(), MarshalAs(UnmanagedType.BStr)> ByRef Result As String) As Integer
+        Function EditCommandLine(<[In](), MarshalAs(UnmanagedType.BStr)> WindowText As String, _
+        <[In](), MarshalAs(UnmanagedType.BStr)> HelpID As String, _
+        <[In](), MarshalAs(UnmanagedType.BStr)> OriginalCommandLine As String, _
+        <[In]()> MacroProvider As IVsBuildEventMacroProvider, _
+        <Out(), MarshalAs(UnmanagedType.BStr)> ByRef Result As String) As Integer
     End Interface
 
 End Namespace

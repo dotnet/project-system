@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.ProjectSystem.Input;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
     [ProjectCommand(ManagedProjectSystemPackage.ManagedProjectSystemCommandSet, ManagedProjectSystemPackage.GenerateNuGetPackageTopLevelBuildCmdId)]
-    //[AppliesTo(ProjectCapability.GenerateNuGetPackage)]
+    //[AppliesTo(ProjectCapability.Pack)]
     internal class GenerateNuGetPackageTopLevelBuildMenuCommand : AbstractGenerateNuGetPackageCommand
     {
         [ImportingConstructor]

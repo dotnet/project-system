@@ -5,7 +5,7 @@ Imports System.Windows.Forms
 Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
     Friend MustInherit Class BaseDesignerView
-        Inherits System.Windows.Forms.UserControl
+        Inherits UserControl
 
         'True if the designer's view was forcibly closed (by SCC) during an apply.  In this case, we want to
         '  delay disposing our controls, and exit the apply and events as soon as possible to avoid possible
@@ -73,7 +73,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     End If
                     Debug.Assert(IsHandleCreated AndAlso Not Handle.Equals(IntPtr.Zero), "We should have a handle still.  Without it, BeginInvoke will fail.")
                     BeginInvoke(New MethodInvoker(AddressOf DelayedMyBaseDispose))
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Failed to queue a delayed Dispose for the designer view", NameOf(BaseDesignerView))
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, "Failed to queue a delayed Dispose for the designer view", NameOf(BaseDesignerView))
                     ' At this point, all we can do is to avoid crashing the shell. 
                 End Try
             End If

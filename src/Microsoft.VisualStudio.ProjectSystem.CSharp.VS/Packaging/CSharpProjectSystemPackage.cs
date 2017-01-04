@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.Packaging
     [GeneratorExtensionRegistration(SingleFileGenerators.TextTemplatingFileGeneratorExtension,
         SingleFileGenerators.TextTemplatingFileGenerator, ProjectTypeGuidFormatted)]
     [ClassRegistration(DebugPropertyClassId, DebugPropertyClassInfo)]
-    [DplOptOutRegistration(CSharpProjectSystemPackage.ProjectTypeGuid, true)]
+    [DplOptOutRegistration(ProjectTypeGuid, true)]
     internal class CSharpProjectSystemPackage : AsyncPackage
     {
         public const string ProjectTypeGuid = "9A19103F-16F7-4668-BE54-9A1E7A4F7556";

@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.Packaging;
+using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.ProjectSystem.VS.Editor;
 using Moq;
 using Xunit;
@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     [ProjectSystemTrait]
     public class EditProjectFileCommandTests
     {
-        private const long CommandId = ManagedProjectSystemPackage.EditProjectFileCmdId;
+        private const long CommandId = VisualStudioStandard2kCommandId.EditProjectFile;
         private const string Extension = "proj";
         private static readonly Guid XmlEditorFactoryGuid = new Guid("{fa3cd31e-987b-443a-9b81-186104e8dac1}");
 

@@ -69,25 +69,25 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' file
         ''' </summary>
         ''' <remarks></remarks>
-        Friend Shared Function EnvDTEProject(VsHierarchy As IVsHierarchy) As EnvDTE.Project
+        Friend Shared Function EnvDTEProject(VsHierarchy As IVsHierarchy) As Project
             Dim ProjectObj As Object = Nothing
             VSErrorHandler.ThrowOnFailure(VsHierarchy.GetProperty(VSITEMID.ROOT, __VSHPROPID.VSHPROPID_ExtObject, ProjectObj))
-            Return CType(ProjectObj, EnvDTE.Project)
+            Return CType(ProjectObj, Project)
         End Function
 
         ''' <summary>
         ''' Get the current EnvDTE.Project instance for the project associated with the ProjectUniqueName
         ''' </summary>
         ''' <remarks></remarks>
-        Friend Shared Function EnvDTEProjectFromProjectUniqueName(ProjectUniqueName As String) As EnvDTE.Project
+        Friend Shared Function EnvDTEProjectFromProjectUniqueName(ProjectUniqueName As String) As Project
 
-            Dim SolutionService As IVsSolution = TryCast(VBPackage.GetGlobalService(GetType(IVsSolution)), IVsSolution)
+            Dim SolutionService As IVsSolution = TryCast(Shell.Package.GetGlobalService(GetType(IVsSolution)), IVsSolution)
 
             If SolutionService IsNot Nothing Then
                 Dim Hierarchy As IVsHierarchy = Nothing
 
                 If VSErrorHandler.Succeeded(SolutionService.GetProjectOfUniqueName(ProjectUniqueName, Hierarchy)) Then
-                    Return DTEUtils.EnvDTEProject(Hierarchy)
+                    Return EnvDTEProject(Hierarchy)
                 End If
             End If
 
@@ -120,7 +120,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         Public Shared Function FindAllFilesWithExtension(ProjectItems As ProjectItems, Extension As String, SearchChildren As Boolean) As List(Of ProjectItem)
             Dim ResXFiles As New List(Of ProjectItem)
             For Each Item As ProjectItem In ProjectItems
-                If IO.Path.GetExtension(Item.FileNames(1)).Equals(Extension, StringComparison.OrdinalIgnoreCase) Then
+                If Path.GetExtension(Item.FileNames(1)).Equals(Extension, StringComparison.OrdinalIgnoreCase) Then
                     ResXFiles.Add(Item)
                 End If
 
@@ -139,10 +139,10 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="ProjectItem"></param>
         ''' <returns></returns>
         ''' <remarks>If the item contains of multiple files, the first one is returned</remarks>
-        Public Shared Function FileNameFromProjectItem(ProjectItem As EnvDTE.ProjectItem) As String
+        Public Shared Function FileNameFromProjectItem(ProjectItem As ProjectItem) As String
             If ProjectItem Is Nothing Then
-                System.Diagnostics.Debug.Fail("Can't get file name for NULL project item!")
-                Throw New System.ArgumentNullException()
+                Debug.Fail("Can't get file name for NULL project item!")
+                Throw New ArgumentNullException()
             End If
 
             If ProjectItem.FileCount <= 0 Then
@@ -219,14 +219,14 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="Project">The DTE project</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Shared Function GetActiveDTEConfiguration(Project As Project) As EnvDTE.Configuration
+        Public Shared Function GetActiveDTEConfiguration(Project As Project) As Configuration
             Try
                 Return Project.ConfigurationManager.ActiveConfiguration
             Catch ex As ArgumentException
                 'If there are no configurations defined in the project, this call can fail.  In that case, just return
                 '  the first config (there should be a single Debug configuration automatically defined and available).
                 Return Project.ConfigurationManager.Item(1) '1-indexed
-            Catch ex As Exception When Utils.ReportWithoutCrash(ex, "Unexpected exception trying to get the active configuration", NameOf(DTEUtils))
+            Catch ex As Exception When ReportWithoutCrash(ex, "Unexpected exception trying to get the active configuration", NameOf(DTEUtils))
                 Return Project.ConfigurationManager.Item(1) '1-indexed
             End Try
         End Function
@@ -317,7 +317,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <summary>
         ''' From a hierarchy and projectitem, return the item id
         ''' </summary>
-        Public Shared Function ItemIdOfProjectItem(Hierarchy As IVsHierarchy, ProjectItem As EnvDTE.ProjectItem) As UInteger
+        Public Shared Function ItemIdOfProjectItem(Hierarchy As IVsHierarchy, ProjectItem As ProjectItem) As UInteger
             Dim FoundItemId As UInteger
             VSErrorHandler.ThrowOnFailure(Hierarchy.ParseCanonicalName(ProjectItem.FileNames(1), FoundItemId))
             Return FoundItemId
@@ -325,7 +325,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
         Public Shared Sub ApplyTreeViewThemeStyles(handle As IntPtr)
 
-            Dim ShellUIService As IVsUIShell5 = TryCast(VBPackage.GetGlobalService(GetType(SVsUIShell)), IVsUIShell5)
+            Dim ShellUIService As IVsUIShell5 = TryCast(Shell.Package.GetGlobalService(GetType(SVsUIShell)), IVsUIShell5)
 
             If ShellUIService IsNot Nothing Then
                 ShellUIService.ThemeWindow(handle)

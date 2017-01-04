@@ -4,13 +4,13 @@ using System;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.Packaging;
+using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.ProjectSystem.VS.Editor;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
-    [ProjectCommand(ManagedProjectSystemPackage.ManagedProjectSystemCommandSet, ManagedProjectSystemPackage.EditProjectFileCmdId)]
+    [ProjectCommand(CommandGroup.VisualStudioStandard2k, VisualStudioStandard2kCommandId.EditProjectFile)]
     [AppliesTo(ProjectCapability.OpenProjectFile)]
     internal class EditProjectFileCommand : AbstractSingleNodeProjectCommand
     {

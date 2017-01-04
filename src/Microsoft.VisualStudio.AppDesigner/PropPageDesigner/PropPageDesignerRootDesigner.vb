@@ -14,7 +14,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
     ''' </summary>
     ''' <remarks></remarks>
     Public NotInheritable Class PropPageDesignerRootDesigner
-        Inherits Microsoft.VisualStudio.Editors.AppDesDesignerFramework.BaseRootDesigner
+        Inherits AppDesDesignerFramework.BaseRootDesigner
         Implements IRootDesigner
 
         'The view associated with this root designer.

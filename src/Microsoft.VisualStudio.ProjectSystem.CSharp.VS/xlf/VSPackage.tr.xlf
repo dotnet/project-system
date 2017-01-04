@@ -45,8 +45,8 @@
       </trans-unit>
       <trans-unit id="9">
         <source>Class Library (.NET Core)</source>
-        <target state="new">Class Library (.NET Core)</target>
-        <note></note>
+        <target state="translated">Sınıf Kitaplığı (.NET Core)</target>
+        <note />
       </trans-unit>
     </body>
   </file>

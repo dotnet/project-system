@@ -81,13 +81,13 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ' using the code editor.
         '<System.Diagnostics.DebuggerNonUserCode()> 
         Private Sub InitializeComponent()
-            Me.SuspendLayout()
-            Me._components = New System.ComponentModel.Container
+            SuspendLayout()
+            _components = New System.ComponentModel.Container
 
             'No scrollbars
-            Me.AutoScroll = False
+            AutoScroll = False
 
-            Me.ResumeLayout()
+            ResumeLayout()
         End Sub
 
 #End Region
@@ -103,16 +103,16 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             _hostingPanel.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Bottom Or AnchorStyles.Right
             _hostingPanel.AutoScroll = True
             _hostingPanel.Text = "HostingPanel" 'For debugging
-            _hostingPanel.AccessibleName = SR.GetString(SR.APPDES_HostingPanelName)
+            _hostingPanel.AccessibleName = My.Resources.Designer.APPDES_HostingPanelName
 
             'Add any initialization after the InitializeComponent() call
             '
-            Me.Name = "DesignerTabControl"
-            Me.Padding = New System.Windows.Forms.Padding(0)
-            Me.Size = New System.Drawing.Size(144, 754)
-            Me.TabIndex = 0
-            Me.DoubleBuffered = True
-            Me.Controls.Add(_hostingPanel)
+            Name = "DesignerTabControl"
+            Padding = New Padding(0)
+            Size = New Size(144, 754)
+            TabIndex = 0
+            DoubleBuffered = True
+            Controls.Add(_hostingPanel)
 
             SetUpOverflowButton()
         End Sub 'InitTabInfo
@@ -128,15 +128,15 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             With OverflowButton
                 .Name = "OverflowButton"
                 .Text = ""
-                .AccessibleName = SR.GetString(SR.APPDES_OverflowButton_AccessibilityName)
+                .AccessibleName = My.Resources.Designer.APPDES_OverflowButton_AccessibilityName
                 .FlatAppearance.BorderColor = _defaultOverflowBorderColor
                 .FlatAppearance.MouseOverBackColor = _defaultOverflowHoverColor
                 .Size = New Size(18, 18)
                 .Visible = False 'Don't show it until we need it
-                _overflowTooltip.SetToolTip(OverflowButton, SR.GetString(SR.APPDES_OverflowButton_Tooltip))
+                _overflowTooltip.SetToolTip(OverflowButton, My.Resources.Designer.APPDES_OverflowButton_Tooltip)
 
             End With
-            MyBase.Controls.Add(OverflowButton)
+            Controls.Add(OverflowButton)
         End Sub
 
 
@@ -179,8 +179,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 End If
             End If
 
-            OverflowButton.FlatAppearance.BorderColor = AppDesCommon.ShellUtil.GetColor(vsUiShell2, Shell.Interop.__VSSYSCOLOREX.VSCOLOR_COMMANDBAR_BORDER, _defaultOverflowBorderColor)
-            OverflowButton.FlatAppearance.MouseOverBackColor = AppDesCommon.ShellUtil.GetColor(vsUiShell2, Shell.Interop.__VSSYSCOLOREX.VSCOLOR_COMMANDBAR_HOVER, _defaultOverflowHoverColor)
+            OverflowButton.FlatAppearance.BorderColor = Common.ShellUtil.GetColor(vsUiShell2, __VSSYSCOLOREX.VSCOLOR_COMMANDBAR_BORDER, _defaultOverflowBorderColor)
+            OverflowButton.FlatAppearance.MouseOverBackColor = Common.ShellUtil.GetColor(vsUiShell2, __VSSYSCOLOREX.VSCOLOR_COMMANDBAR_HOVER, _defaultOverflowHoverColor)
 
             If _broadcastMessageEventsHelper IsNot Nothing Then
                 _broadcastMessageEventsHelper.Dispose()
@@ -476,7 +476,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub OverflowButton_Click(sender As Object, e As System.EventArgs) Handles OverflowButton.Click
+        Private Sub OverflowButton_Click(sender As Object, e As EventArgs) Handles OverflowButton.Click
             'Set up to use VS colors
             If _serviceProvider IsNot Nothing Then
                 Dim uiSvc As IUIService = DirectCast(_serviceProvider.GetService(GetType(IUIService)), IUIService)
@@ -487,7 +487,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         _overflowMenu.Renderer = Renderer
                     End If
 
-                    Dim NewFont As Font = DirectCast(uiSvc.Styles("DialogFont"), Drawing.Font)
+                    Dim NewFont As Font = DirectCast(uiSvc.Styles("DialogFont"), Font)
                     If NewFont IsNot Nothing Then
                         _overflowMenu.Font = NewFont
                     End If
@@ -540,7 +540,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub OverflowMenuItemClick(sender As Object, e As System.EventArgs)
+        Private Sub OverflowMenuItemClick(sender As Object, e As EventArgs)
             Dim MenuItem As ToolStripMenuItem = DirectCast(sender, ToolStripMenuItem)
             Dim Button As ProjectDesignerTabButton = DirectCast(MenuItem.Tag, ProjectDesignerTabButton)
             Debug.Assert(Button IsNot Nothing)
@@ -563,7 +563,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="wparam"></param>
         ''' <param name="lparam"></param>
         ''' <remarks></remarks>
-        Private Sub m_BroadcastMessageEventsHelper_BroadcastMessage(msg As UInteger, wParam As System.IntPtr, lParam As System.IntPtr) Handles _broadcastMessageEventsHelper.BroadcastMessage
+        Private Sub m_BroadcastMessageEventsHelper_BroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr) Handles _broadcastMessageEventsHelper.BroadcastMessage
             Select Case msg
                 Case AppDesInterop.win.WM_PALETTECHANGED, AppDesInterop.win.WM_SYSCOLORCHANGE, AppDesInterop.win.WM_THEMECHANGED
                     _renderer.CreateGDIObjects(True)
@@ -590,17 +590,17 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 '  Setting TabStop=False itsn't enough.
                 SetStyle(ControlStyles.Selectable, False)
 
-                MyBase.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-                MyBase.FlatAppearance.BorderSize = 0 'No border until the mouse is over it
-                MyBase.TabStop = True
-                MyBase.BackColor = Color.Transparent 'Need to let gradients show through the image when not hovered over
+                FlatStyle = FlatStyle.Flat
+                FlatAppearance.BorderSize = 0 'No border until the mouse is over it
+                TabStop = True
+                BackColor = Color.Transparent 'Need to let gradients show through the image when not hovered over
             End Sub
 
             Public Sub New(ImageResourceId As String, TransparentColor As Color)
                 Me.New()
 
                 'Get the image and make it transparent
-                Dim Image As Image = AppDesCommon.GetManifestBitmapTransparent(ImageResourceId, TransparentColor, GetType(Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl).Assembly)
+                Dim Image As Image = Common.GetManifestBitmapTransparent(ImageResourceId, TransparentColor, GetType(ProjectDesignerTabControl).Assembly)
                 MyBase.Image = Image
             End Sub
 
@@ -609,7 +609,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             ''' </summary>
             ''' <param name="e"></param>
             ''' <remarks></remarks>
-            Protected Overrides Sub OnMouseEnter(e As System.EventArgs)
+            Protected Overrides Sub OnMouseEnter(e As EventArgs)
                 MyBase.OnMouseEnter(e)
 
                 'No border unless the mouse is over the button
@@ -623,7 +623,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             ''' </summary>
             ''' <param name="e"></param>
             ''' <remarks></remarks>
-            Protected Overrides Sub OnMouseLeave(e As System.EventArgs)
+            Protected Overrides Sub OnMouseLeave(e As EventArgs)
                 MyBase.OnMouseLeave(e)
 
                 'No border unless the mouse is over the button
@@ -652,7 +652,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             ''' </summary>
             Public Overrides ReadOnly Property Description() As String
                 Get
-                    Return SR.GetString(SR.APPDES_TabListDescription)
+                    Return My.Resources.Designer.APPDES_TabListDescription
                 End Get
             End Property
 

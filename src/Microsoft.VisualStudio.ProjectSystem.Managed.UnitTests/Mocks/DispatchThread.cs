@@ -137,7 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 {
                     _thread.Abort();
                 }
-                catch(System.Threading.ThreadAbortException)
+                catch(ThreadAbortException)
                 {
                 }
             }

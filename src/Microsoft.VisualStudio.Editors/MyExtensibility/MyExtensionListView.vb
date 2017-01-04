@@ -26,28 +26,28 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             End Get
             Set(value As IMenuCommandService)
                 Debug.Assert(value IsNot Nothing)
-                Me.UnregisterMenuCommands()
+                UnregisterMenuCommands()
                 _menuCommandService = value
-                Me.RegisterMenuCommands()
+                RegisterMenuCommands()
             End Set
         End Property
 
         Private Sub MyExtensionListView_ContextMenuShow( _
                 sender As Object, e As MouseEventArgs) Handles Me.ContextMenuShow
 
-            _menuCommandRemoveExtension.Enabled = Me.SelectedItems.Count > 0
+            _menuCommandRemoveExtension.Enabled = SelectedItems.Count > 0
 
-            Me.MenuCommandService.ShowContextMenu( _
+            MenuCommandService.ShowContextMenu( _
                 Constants.MenuConstants.CommandIDMYEXTENSIONContextMenu, e.X, e.Y)
         End Sub
 
         Private Sub RegisterMenuCommands()
             For Each menuCommand As MenuCommand In _menuCommands
-                Dim existingCommand As MenuCommand = Me.MenuCommandService.FindCommand(menuCommand.CommandID)
+                Dim existingCommand As MenuCommand = MenuCommandService.FindCommand(menuCommand.CommandID)
                 If existingCommand IsNot Nothing Then
-                    Me.MenuCommandService.RemoveCommand(existingCommand)
+                    MenuCommandService.RemoveCommand(existingCommand)
                 End If
-                Me.MenuCommandService.AddCommand(menuCommand)
+                MenuCommandService.AddCommand(menuCommand)
             Next
         End Sub
 

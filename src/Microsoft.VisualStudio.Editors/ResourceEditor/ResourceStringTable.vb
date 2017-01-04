@@ -85,15 +85,15 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             AllowUserToAddRows = False
             AllowUserToDeleteRows = False
-            Me.EditMode = DataGridViewEditMode.EditOnKeystrokeOrF2
-            Me.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
-            Me.DefaultCellStyle.WrapMode = DataGridViewTriState.True
+            EditMode = DataGridViewEditMode.EditOnKeystrokeOrF2
+            AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+            DefaultCellStyle.WrapMode = DataGridViewTriState.True
 
             ' when the NullValue set to empty string, DataGridView will compare input string with it by using String.Compare.
             '  Because the Chinese minority characters have zero weight, it always convert it to 'null/DBNull', which blocks the user
             ' to input those characters. (Devdiv bug: 105667).  It is a workaround to block user to input null value.
             '  Our code has already handled the empty string, so we don't need the extra NullValue process in the DataGridView.
-            Me.DefaultCellStyle.NullValue = Nothing
+            DefaultCellStyle.NullValue = Nothing
 
             VirtualMode = True
         End Sub
@@ -115,10 +115,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Return True
                 End If
 
-                Dim cells As DataGridViewSelectedCellCollection = MyBase.SelectedCells
+                Dim cells As DataGridViewSelectedCellCollection = SelectedCells
 
                 If cells.Count > 0 Then
-                    Dim rows As New Generic.Dictionary(Of Integer, Integer)
+                    Dim rows As New Dictionary(Of Integer, Integer)
                     For Each cell As DataGridViewCell In cells
                         If rows.ContainsKey(cell.RowIndex) Then
                             rows(cell.RowIndex) = rows(cell.RowIndex) + 1
@@ -153,13 +153,13 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Public Property TypeColumnVisible() As Boolean
             Get
-                Debug.Assert(Me.ColumnCount >= COLUMN_TYPE, "Columns not set up properly?")
-                Return Me.Columns(COLUMN_TYPE).Visible
+                Debug.Assert(ColumnCount >= COLUMN_TYPE, "Columns not set up properly?")
+                Return Columns(COLUMN_TYPE).Visible
             End Get
             Set(Value As Boolean)
-                Debug.Assert(Me.ColumnCount >= COLUMN_TYPE, "Columns not set up properly?")
+                Debug.Assert(ColumnCount >= COLUMN_TYPE, "Columns not set up properly?")
                 Debug.Assert(RowCountVirtual = 0, "Shouldn't be changing TypeColumnVisible after it's already been populated with data")
-                Me.Columns(COLUMN_TYPE).Visible = Value
+                Columns(COLUMN_TYPE).Visible = Value
             End Set
         End Property
 
@@ -172,11 +172,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Private ReadOnly Property ParentView() As ResourceEditorView
             Get
-                If TypeOf Me.Parent Is ResourceEditorView Then
-                    Return DirectCast(Me.Parent, ResourceEditorView)
+                If TypeOf Parent Is ResourceEditorView Then
+                    Return DirectCast(Parent, ResourceEditorView)
                 Else
                     Debug.Fail("Not parented to a ResourceEditorView?")
-                    Throw New System.InvalidOperationException
+                    Throw New InvalidOperationException
                 End If
             End Get
         End Property
@@ -225,12 +225,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 .CellTemplate = New ResourceStringTextBoxCell()
                 .FillWeight = s_defaultColumnWidthPercentage_Name
                 .MinimumWidth = ColumnWidth
-                .Name = SR.GetString(SR.RSE_ResourceNameColumn)
+                .Name = My.Resources.Designer.RSE_ResourceNameColumn
                 .Width = ColumnWidth
-                Debug.Assert(COLUMN_NAME = Me.Columns.GetColumnCount(DataGridViewElementStates.Visible), "COLUMN_NAME constant is not correct")
+                Debug.Assert(COLUMN_NAME = Columns.GetColumnCount(DataGridViewElementStates.Visible), "COLUMN_NAME constant is not correct")
                 .HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft
             End With
-            Me.Columns.Add(NameColumn)
+            Columns.Add(NameColumn)
 
             ' ==== Type Column
 
@@ -241,13 +241,13 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 .CellTemplate = New ResourceStringTextBoxCell()
                 .FillWeight = s_defaultColumnWidthPercentage_Type
                 .MinimumWidth = ColumnWidth
-                .Name = SR.GetString(SR.RSE_TypeColumn)
+                .Name = My.Resources.Designer.RSE_TypeColumn
                 .ReadOnly = True 'Can't modify the Type column - just for info
                 .Width = ColumnWidth
-                Debug.Assert(COLUMN_TYPE = Me.Columns.GetColumnCount(DataGridViewElementStates.Visible), "COLUMN_TYPE constant is not correct")
+                Debug.Assert(COLUMN_TYPE = Columns.GetColumnCount(DataGridViewElementStates.Visible), "COLUMN_TYPE constant is not correct")
                 .HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft
             End With
-            Me.Columns.Add(TypeColumn)
+            Columns.Add(TypeColumn)
 
             ' ==== Value Column
 
@@ -261,12 +261,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 .CellTemplate = New ResourceStringTextBoxCell()
                 .FillWeight = s_defaultColumnWidthPercentage_Value
                 .MinimumWidth = ColumnWidth
-                .Name = SR.GetString(SR.RSE_ResourceColumn)
+                .Name = My.Resources.Designer.RSE_ResourceColumn
                 .Width = ColumnWidth
-                Debug.Assert(COLUMN_VALUE = Me.Columns.GetColumnCount(DataGridViewElementStates.Visible), "COLUMN_VALUE constant is not correct")
+                Debug.Assert(COLUMN_VALUE = Columns.GetColumnCount(DataGridViewElementStates.Visible), "COLUMN_VALUE constant is not correct")
                 .HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft
             End With
-            Me.Columns.Add(ValueColumn)
+            Columns.Add(ValueColumn)
 
             ' ==== Comment Column
             ColumnWidth = DpiHelper.LogicalToDeviceUnitsX(s_columnMinScrollingWidth_Comment)
@@ -276,12 +276,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 .CellTemplate = New ResourceStringTextBoxCell()
                 .FillWeight = s_defaultColumnWidthPercentage_Comment
                 .MinimumWidth = ColumnWidth
-                .Name = SR.GetString(SR.RSE_CommentColumn)
+                .Name = My.Resources.Designer.RSE_CommentColumn
                 .Width = ColumnWidth
-                Debug.Assert(COLUMN_COMMENT = Me.Columns.GetColumnCount(DataGridViewElementStates.Visible), "COLUMN_COMMENT constant is not correct")
+                Debug.Assert(COLUMN_COMMENT = Columns.GetColumnCount(DataGridViewElementStates.Visible), "COLUMN_COMMENT constant is not correct")
                 .HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft
             End With
-            Me.Columns.Add(CommentColumn)
+            Columns.Add(CommentColumn)
 
             '... We need to turn off autosizing of columns because that would mean users would not 
             '      be allowed to change the column widths.
@@ -325,13 +325,13 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
 
             ' restore sort UI
-            For i As Integer = 0 To Me.Columns.Count - 1
+            For i As Integer = 0 To Columns.Count - 1
                 If i <> _sorter.ColumnIndex Then
-                    Me.Columns(i).HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.None
+                    Columns(i).HeaderCell.SortGlyphDirection = SortOrder.None
                 ElseIf _sorter.InReverseOrder Then
-                    Me.Columns(i).HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Descending
+                    Columns(i).HeaderCell.SortGlyphDirection = SortOrder.Descending
                 Else
-                    Me.Columns(i).HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Ascending
+                    Columns(i).HeaderCell.SortGlyphDirection = SortOrder.Ascending
                 End If
             Next
 
@@ -342,8 +342,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'Now add these resources into the table
             AddResourcesHelper(ResourcesToDisplay)
 
-            Me.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing
-            Me.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
+            RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing
+            ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
         End Sub
 
 
@@ -368,7 +368,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             'The error glyphs don't show up if the row height is below the glyph size.  We don't want that
             '  to happen, so restrict the minimum height.
-            NewRow.MinimumHeight = Math.Max(DpiHelper.LogicalToDeviceUnitsY(s_rowMinimumHeight), Me.Font.Height + DpiHelper.LogicalToDeviceUnitsY(s_ROW_BORDER_HEIGHT))
+            NewRow.MinimumHeight = Math.Max(DpiHelper.LogicalToDeviceUnitsY(s_rowMinimumHeight), Font.Height + DpiHelper.LogicalToDeviceUnitsY(s_ROW_BORDER_HEIGHT))
 
             'Build up the new row (with blank values) cell by cell
 
@@ -410,10 +410,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="HelpLink"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function DsMsgBox(Message As String, _
-                    Buttons As MessageBoxButtons, _
-                    Icon As MessageBoxIcon, _
-                    Optional DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1, _
+        Public Function DsMsgBox(Message As String,
+                    Buttons As MessageBoxButtons,
+                    Icon As MessageBoxIcon,
+                    Optional DefaultButton As MessageBoxDefaultButton = MessageBoxDefaultButton.Button1,
                     Optional HelpLink As String = Nothing) As DialogResult
             If ParentView IsNot Nothing Then
                 Return ParentView.DsMsgBox(Message, Buttons, Icon, DefaultButton, HelpLink)
@@ -440,7 +440,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     CancelEdit()
                     EndEdit(DataGridViewDataErrorContexts.InitialValueRestoration)
                 End If
-            Else If IsCurrentCellInEditMode Then
+            ElseIf IsCurrentCellInEditMode Then
                 ' We should leave EditMode anyway (we could be in ReadOnly mode after F5)
                 EndEdit(DataGridViewDataErrorContexts.InitialValueRestoration)
             End If
@@ -469,7 +469,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             MyBase.OnFontChanged(e)
 
             ' replace the RowTemplate, so new row would be initialized to the right size
-            Me.RowTemplate = CreateNewResourceRow()
+            RowTemplate = CreateNewResourceRow()
         End Sub
 #End Region
 
@@ -482,7 +482,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnDataError(displayErrorDialogIfNoHandler As Boolean, e As System.Windows.Forms.DataGridViewDataErrorEventArgs)
+        Protected Overrides Sub OnDataError(displayErrorDialogIfNoHandler As Boolean, e As DataGridViewDataErrorEventArgs)
             MyBase.OnDataError(displayErrorDialogIfNoHandler, e)
 
             Debug.Fail("DataError fired - do we need to handle this somehow?")
@@ -539,14 +539,14 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="e">Event args</param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnCellValidating(e As System.Windows.Forms.DataGridViewCellValidatingEventArgs)
+        Protected Overrides Sub OnCellValidating(e As DataGridViewCellValidatingEventArgs)
             MyBase.OnCellValidating(e)
 
             Dim originalValue As String = GetCellStringValue(e.RowIndex, e.ColumnIndex)
             Dim Exception As Exception = Nothing
 
             ' we should ignore the problem if it is the original value, or the cursor will be locked inside such cell
-            If String.Compare(CStr(e.FormattedValue), originalValue, StringComparison.Ordinal) = 0 OrElse _
+            If String.Compare(CStr(e.FormattedValue), originalValue, StringComparison.Ordinal) = 0 OrElse
                 ValidateCell(e.RowIndex, e.ColumnIndex, CStr(e.FormattedValue), Exception) Then
                 'Validation succeeded
                 e.Cancel = False
@@ -584,7 +584,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnCellBeginEdit(e As System.Windows.Forms.DataGridViewCellCancelEventArgs)
+        Protected Overrides Sub OnCellBeginEdit(e As DataGridViewCellCancelEventArgs)
             ' First of all, we should never enter edit mode if we are in read-only mode...
             If ParentView.ReadOnlyMode Then
                 e.Cancel = True
@@ -621,18 +621,18 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="rowIndex"></param>
         ''' <remarks></remarks>
         Private Sub ExpandRowHeightIfNeeded(rowIndex As Integer)
-            Dim preferredHeight As Integer = Me.Rows(rowIndex).GetPreferredHeight(rowIndex, DataGridViewAutoSizeRowMode.AllCells, True)
-            Dim currentHeight As Integer = Me.Rows(rowIndex).Height
+            Dim preferredHeight As Integer = Rows(rowIndex).GetPreferredHeight(rowIndex, DataGridViewAutoSizeRowMode.AllCells, True)
+            Dim currentHeight As Integer = Rows(rowIndex).Height
             If preferredHeight > currentHeight Then
                 Dim newHeight As Integer = preferredHeight
 
                 'Not greater than the datagrid view's height
-                Dim maxHeight As Integer = Me.ClientSize.Height - Me.ColumnHeadersHeight
+                Dim maxHeight As Integer = ClientSize.Height - ColumnHeadersHeight
                 newHeight = Math.Min(maxHeight, newHeight)
 
                 If newHeight > currentHeight Then
                     '... and not smaller than the current height
-                    Me.Rows(rowIndex).Height = newHeight
+                    Rows(rowIndex).Height = newHeight
                 End If
             End If
         End Sub
@@ -642,7 +642,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnCellEndEdit(e As System.Windows.Forms.DataGridViewCellEventArgs)
+        Protected Overrides Sub OnCellEndEdit(e As DataGridViewCellEventArgs)
             ParentView.OnItemEndEdit()
             MyBase.OnCellEndEdit(e)
         End Sub
@@ -667,8 +667,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End If
 
                 If _checkOutFailedInTheAction Then
-                    If Me.EditingControl IsNot Nothing Then
-                        Me.EditingControl.Select()
+                    If EditingControl IsNot Nothing Then
+                        EditingControl.Select()
                     End If
 
                     CancelEdit()
@@ -717,7 +717,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             AddResourcesHelper(Resources)
 
-            MyBase.Invalidate()
+            Invalidate()
         End Sub
 
 
@@ -730,7 +730,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Debug.Assert(ResourceFile IsNot Nothing, "Must call Populate() first")
 
             ' create a RowTemplate, so new row would be initialized to the right size
-            Me.RowTemplate = CreateNewResourceRow()
+            RowTemplate = CreateNewResourceRow()
 
             Dim RowCountOriginal As Integer = RowCountVirtual
 
@@ -854,7 +854,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 _removingRow = Nothing
             End Try
 
-            MyBase.Invalidate()
+            Invalidate()
         End Sub
 
 #End Region
@@ -882,7 +882,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <value></value>
         ''' <remarks>Marked invisible so it's less likely to be accidentally used.</remarks>
-        <System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)> _
+        <System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>
         Public Shadows ReadOnly Property RowCount() As Integer
             Get
                 Debug.Fail("Don't use this function - use RowCountVirtual instead - it doesn't include the add/new row at the bottom, just the actual entries")
@@ -913,7 +913,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Function GetRowFromResource(SearchResource As Resource) As DataGridViewRow
             Dim FoundIndex As Integer = GetRowIndexFromResource(SearchResource)
             If FoundIndex >= 0 Then
-                Return Me.Rows(FoundIndex)
+                Return Rows(FoundIndex)
             Else
                 Return Nothing
             End If
@@ -977,7 +977,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If Resource Is Nothing Then
                 Return String.Empty
             End If
-            Return ResourceStringTable.GetResourceCellStringValue(Resource, ColumnIndex)
+            Return GetResourceCellStringValue(Resource, ColumnIndex)
         End Function
 
         ''' <summary>
@@ -1005,7 +1005,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Dim StringResourceEditor As ResourceTypeEditorStringBase = DirectCast(Resource.ResourceTypeEditor, ResourceTypeEditorStringBase)
                     Try
                         Value = StringResourceEditor.StringGetFormattedCellValue(Resource, Resource.GetValue())
-                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(GetResourceCellStringValue), NameOf(ResourceStringTable))
+                    Catch ex As Exception When ReportWithoutCrash(ex, NameOf(GetResourceCellStringValue), NameOf(ResourceStringTable))
                     End Try
                     Debug.WriteLineIf(Switches.RSEVirtualStringTable.TraceVerbose, "RSEVirtualStringTable: OnCellValueNeeded: Value: " & Value)
 
@@ -1042,7 +1042,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Select Case e.ColumnIndex
 
                 Case COLUMN_NAME
-                    e.ErrorText = ResourceFile.GetResourceTaskMessage(Resource, ResourceEditor.ResourceFile.ResourceTaskType.BadName)
+                    e.ErrorText = ResourceFile.GetResourceTaskMessage(Resource, ResourceFile.ResourceTaskType.BadName)
                     Debug.WriteLineIf(Switches.RSEVirtualStringTable.TraceVerbose, "RSEVirtualStringTable: OnCellErrorTextNeeded: Name: " & CStr(e.ErrorText))
 
                 Case COLUMN_TYPE
@@ -1051,10 +1051,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Case COLUMN_VALUE
                     'Get the string-formatted value.
                     Dim StringResourceEditor As ResourceTypeEditorStringBase = DirectCast(Resource.ResourceTypeEditor, ResourceTypeEditorStringBase)
-                    e.ErrorText = ResourceFile.GetResourceTaskMessage(Resource, ResourceEditor.ResourceFile.ResourceTaskType.CantInstantiateResource)
+                    e.ErrorText = ResourceFile.GetResourceTaskMessage(Resource, ResourceFile.ResourceTaskType.CantInstantiateResource)
                     Try
                         Dim value As Object = StringResourceEditor.StringGetFormattedCellValue(Resource, Resource.GetValue())
-                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(OnCellErrorTextNeeded), NameOf(ResourceStringTable))
+                    Catch ex As Exception When ReportWithoutCrash(ex, NameOf(OnCellErrorTextNeeded), NameOf(ResourceStringTable))
                         If e.ErrorText = "" Then
                             'If there wasn't already an error message stored, use the exception we just got.
                             e.ErrorText = ex.Message
@@ -1063,7 +1063,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Debug.WriteLineIf(Switches.RSEVirtualStringTable.TraceVerbose, "RSEVirtualStringTable: OnCellErrorTextNeeded: Value: " & CStr(e.ErrorText))
 
                 Case COLUMN_COMMENT
-                    e.ErrorText = ResourceFile.GetResourceTaskMessage(Resource, ResourceEditor.ResourceFile.ResourceTaskType.CommentsNotSupportedInThisFile)
+                    e.ErrorText = ResourceFile.GetResourceTaskMessage(Resource, ResourceFile.ResourceTaskType.CommentsNotSupportedInThisFile)
                     Debug.WriteLineIf(Switches.RSEVirtualStringTable.TraceVerbose, "RSEVirtualStringTable: OnCellErrorTextNeeded: Comment: " & CStr(e.ErrorText))
 
                 Case Else
@@ -1110,7 +1110,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Dim value As Object = e.Value
 
-            If value Is Nothing OrElse TypeOf value Is System.DBNull Then
+            If value Is Nothing OrElse TypeOf value Is DBNull Then
                 value = String.Empty
             End If
 
@@ -1166,14 +1166,14 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnNewRowNeeded(e As System.Windows.Forms.DataGridViewRowEventArgs)
+        Protected Overrides Sub OnNewRowNeeded(e As DataGridViewRowEventArgs)
             MyBase.OnNewRowNeeded(e)
 
             'If we don't set a MinimumHeight of at least 20, the error glyphs won't
             '  show up at all.
             'See CreateNewResourceRow().  Currently you can't create a row for OnNewRowNeeded, there's
             '  supposed to be a template row to be able to use for this later in m3, if needed.
-            e.Row.MinimumHeight = Math.Max(DpiHelper.LogicalToDeviceUnitsY(s_rowMinimumHeight), Me.Font.Height + DpiHelper.LogicalToDeviceUnitsY(s_ROW_BORDER_HEIGHT))
+            e.Row.MinimumHeight = Math.Max(DpiHelper.LogicalToDeviceUnitsY(s_rowMinimumHeight), Font.Height + DpiHelper.LogicalToDeviceUnitsY(s_ROW_BORDER_HEIGHT))
 
             If ResourceFile Is Nothing Then
                 Debug.Fail("No resource file")
@@ -1201,7 +1201,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             MyBase.OnRowDirtyStateNeeded(e)
 
             'Only return true if the current cell is dirty (gives us cell-based commit)
-            e.Response = Me.IsCurrentCellDirty
+            e.Response = IsCurrentCellDirty
         End Sub
 
 #End Region
@@ -1253,7 +1253,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnUserAddedRow(e As System.Windows.Forms.DataGridViewRowEventArgs)
+        Protected Overrides Sub OnUserAddedRow(e As DataGridViewRowEventArgs)
             MyBase.OnUserAddedRow(e)
 
             If Not AllowUserToAddRows Then
@@ -1277,7 +1277,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnUserDeletingRow(e As System.Windows.Forms.DataGridViewRowCancelEventArgs)
+        Protected Overrides Sub OnUserDeletingRow(e As DataGridViewRowCancelEventArgs)
             MyBase.OnUserDeletingRow(e)
 
             If Not AllowUserToAddRows Then
@@ -1406,7 +1406,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If MyBase.SelectionMode = DataGridViewSelectionMode.FullRowSelect Then
 
                 'Add all rows which are selected in their entirety
-                Dim rows As DataGridViewSelectedRowCollection = MyBase.SelectedRows
+                Dim rows As DataGridViewSelectedRowCollection = SelectedRows
                 If rows.Count > 0 Then
                     ReDim indexArray(rows.Count - 1)
                     For Each Row As DataGridViewRow In rows
@@ -1418,7 +1418,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Next
                 End If
             Else
-                Dim cells As DataGridViewSelectedCellCollection = MyBase.SelectedCells
+                Dim cells As DataGridViewSelectedCellCollection = SelectedCells
 
                 If cells.Count > 0 Then
                     ReDim indexArray(cells.Count - 1)
@@ -1492,8 +1492,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If IsCurrentCellDirty Then
                 ' If validation failed, we shouldn't leave the cell...
                 ' We should put the focus back to the EditingControl
-                If Me.EditingControl IsNot Nothing Then
-                    Me.EditingControl.Select()
+                If EditingControl IsNot Nothing Then
+                    EditingControl.Select()
                 End If
                 Return
             End If
@@ -1570,22 +1570,22 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 
                 If columnIndex <> _sorter.ColumnIndex Then
-                    Me.Columns(_sorter.ColumnIndex).HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.None
+                    Columns(_sorter.ColumnIndex).HeaderCell.SortGlyphDirection = SortOrder.None
                     _sorter.ColumnIndex = columnIndex
                 End If
 
                 _sorter.InReverseOrder = inReverseOrder
 
                 If _sorter.InReverseOrder Then
-                    Me.Columns(columnIndex).HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Descending
+                    Columns(columnIndex).HeaderCell.SortGlyphDirection = SortOrder.Descending
                 Else
-                    Me.Columns(columnIndex).HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Ascending
+                    Columns(columnIndex).HeaderCell.SortGlyphDirection = SortOrder.Ascending
                 End If
 
                 ' Sort the virtual list...ReferenceList.Sort()
                 _virtualResourceList.Sort(_sorter)
 
-                Me.Refresh()
+                Refresh()
 
                 ' Restore current position...
                 If currentResource IsNot Nothing AndAlso currentCellColumnIndex >= 0 Then
@@ -1646,7 +1646,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <Summary>
             '''  Compare two list items
             ''' </Summary>
-            Public Function Compare(x As Object, y As Object) As Integer Implements System.Collections.IComparer.Compare
+            Public Function Compare(x As Object, y As Object) As Integer Implements IComparer.Compare
                 Dim ret As Integer = String.Compare(GetColumnValue(x, _columnIndex), GetColumnValue(y, _columnIndex), StringComparison.CurrentCultureIgnoreCase)
                 If ret = 0 AndAlso _columnIndex <> COLUMN_NAME Then
                     ret = String.Compare(GetColumnValue(x, COLUMN_NAME), GetColumnValue(y, COLUMN_NAME), StringComparison.CurrentCultureIgnoreCase)
@@ -1663,7 +1663,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Private Function GetColumnValue(obj As Object, column As Integer) As String
                 If TypeOf obj Is Resource Then
                     Dim value As String = Nothing
-                    value = ResourceStringTable.GetResourceCellStringValue(DirectCast(obj, Resource), column)
+                    value = GetResourceCellStringValue(DirectCast(obj, Resource), column)
                     If value IsNot Nothing Then
                         Return value
                     End If
@@ -1683,7 +1683,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <remarks></remarks>
         Friend Sub ClearSelectedCells()
-            Dim cells As DataGridViewSelectedCellCollection = MyBase.SelectedCells
+            Dim cells As DataGridViewSelectedCellCollection = SelectedCells
             If cells.Count = 0 Then
                 Return
             End If
@@ -1708,10 +1708,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If failedCount > 0 Then
                 If failedCount = cells.Count Then
                     ' throw an exception to abort the transaction...
-                    Throw New InvalidOperationException(SR.GetString(SR.RSE_Err_CantBeEmpty))
+                    Throw New InvalidOperationException(My.Resources.Designer.RSE_Err_CantBeEmpty)
                 End If
 
-                DsMsgBox(SR.GetString(SR.RSE_Err_CantBeEmpty), MessageBoxButtons.OK, MessageBoxIcon.Error)
+                DsMsgBox(My.Resources.Designer.RSE_Err_CantBeEmpty, MessageBoxButtons.OK, MessageBoxIcon.Error)
             End If
 
             Refresh()
@@ -1774,7 +1774,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Public Overrides Function PreProcessMessage(ByRef m As Message) As Boolean
             If m.Msg = Interop.win.WM_KEYDOWN AndAlso CInt(m.WParam) = Keys.F2 Then
-                Return MyBase.ProcessF2Key(Keys.F2 Or ModifierKeys)
+                Return ProcessF2Key(Keys.F2 Or ModifierKeys)
             End If
             Return MyBase.PreProcessMessage(m)
         End Function
@@ -1784,7 +1784,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  We override the EditType property to replace DataGridViewTextBoxEditingControl with ResourceStringTextBoxEditingControl
         ''' </summary>
         Friend Class ResourceStringTextBoxCell
-            Inherits DesignerFramework.DesignerDataGridView.EditOnClickDataGridViewTextBoxCell
+            Inherits EditOnClickDataGridViewTextBoxCell
 
             ''' <summary>
             ''' EditType returns the type of editor to edit one cell in the grid
@@ -1857,8 +1857,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             Dim pasteString As String = CStr(dataObject.GetData(GetType(String)))
                             If pasteString <> "" Then
                                 ' We want to trim the white space out. However, when the user is pasting in a middle of a exisiting string, we don't want to trim the space out.
-                                pasteString = TrimPastedString(pasteString, Me.SelectionStart = 0, Me.SelectionStart + Me.SelectionLength >= Me.Text.Length)
-                                MyBase.Paste(pasteString)
+                                pasteString = TrimPastedString(pasteString, SelectionStart = 0, SelectionStart + SelectionLength >= Text.Length)
+                                Paste(pasteString)
                             End If
                             Return
                         End If

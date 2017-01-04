@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         }
 
         public object Convert(object value, Type targetType,
-            object parameter, System.Globalization.CultureInfo culture)
+            object parameter, CultureInfo culture)
         {
             Assert(parameter != null, "you need to specify Normal or Inverted to your InvertableBooleanToVisibilityConverter!");
             if (value == null)
@@ -44,14 +44,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         }
 
         public object ConvertBack(object value, Type targetType,
-            object parameter, System.Globalization.CultureInfo culture)
+            object parameter, CultureInfo culture)
         {
             return null;
         }
     }
     internal class MultiValueBooleansToVisibilityConverter_OR : IMultiValueConverter
     {
-        public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             bool res = false;
             foreach (object v in values)
@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             return res ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException("ConvertBack should NOT be invoked");
         }
@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
     internal class MultiValueBooleansToVisibilityConverter_AND : IMultiValueConverter
     {
-        public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             bool res = true;
             foreach (object v in values)
@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             return res ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException("ConvertBack should NOT be invoked");
         }
@@ -93,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
     internal class MultiValueBoolToBool_And : IMultiValueConverter
     {
-        public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             foreach (object v in values)
             {
@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             return true;
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException("ConvertBack should NOT be invoked");
         }
@@ -114,14 +114,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     // Returns Visibility.Visible if the string is not null or empy, otherwise  Visibility.Collapsed;
     internal class StringToVisibilityConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if(value is string)
                 return string.IsNullOrEmpty((string) value)? Visibility.Collapsed: Visibility.Visible;
             return Visibility.Collapsed;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException("ConvertBack should NOT be invoked");
         }
@@ -130,13 +130,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     // Returns true if null or empty, otherwise false;
     internal class NullToTrueConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return value == null ? true : false;
 
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException("ConvertBack should NOT be invoked");
         }
@@ -144,7 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
     internal class NullToFalseConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             bool status = true;
             if (value == null)
@@ -160,7 +160,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             return status;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException("ConvertBack should NOT be invoked");
         }
@@ -169,7 +169,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     // Enum boolean converter
     internal class EnumToBooleanConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             string parameterString = parameter as string;
             if (parameterString == null)
@@ -183,7 +183,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             return parameterValue.Equals(value);
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             string parameterString = parameter as string;
             if (parameterString == null || value.Equals(false))
@@ -198,7 +198,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     /// </summary>
     internal class BoolToVisibleOrHiddenConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if(value == null || !(value is bool))
             {
@@ -208,7 +208,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             return ((bool)value) ? Visibility.Visible: Visibility.Hidden;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException("ConvertBack should NOT be invoked");
         }
@@ -218,7 +218,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     internal class NotBoolConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter,
-            System.Globalization.CultureInfo culture)
+            CultureInfo culture)
         {
             if (value is bool)
                 return !(bool)value;    
@@ -226,7 +226,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         }
 
         public object ConvertBack(object value, Type targetType, object parameter,
-            System.Globalization.CultureInfo culture)
+            CultureInfo culture)
         {
             return Convert(value, targetType, parameter, culture);
         }
@@ -235,12 +235,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     /// Converts null to Collapsed and non-null to Visible
     internal class NullToVisibilityConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
            return (value == null) ? Visibility.Collapsed : Visibility.Visible;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
@@ -248,12 +248,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     /// Converts null to false, non-null to true
     internal class NullToBoolConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
            return (value == null) ? false : true;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
@@ -276,7 +276,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     internal class TextBlockFormatToHyperlinkConverter : IMultiValueConverter
     {
                
-        public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             if (values.Length >= 3)
             {
@@ -314,7 +314,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             return null;
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

@@ -119,13 +119,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             // 1. "GenerateAssemblyInfo" is true AND
             // 2. "GenerateXXX" for this specific property is true.
             var propertyValue = await base.GetEvaluatedPropertyValueAsync("GenerateAssemblyInfo").ConfigureAwait(true);
-            if (!Boolean.TryParse(propertyValue, out bool value) || !value)
+            if (!bool.TryParse(propertyValue, out bool value) || !value)
             {
                 return false;
             }
 
             propertyValue = await base.GetEvaluatedPropertyValueAsync(info.GeneratePropertyInProjectFileName).ConfigureAwait(true);
-            if (!Boolean.TryParse(propertyValue, out value) || !value)
+            if (!bool.TryParse(propertyValue, out value) || !value)
             {
                 return false;
             }

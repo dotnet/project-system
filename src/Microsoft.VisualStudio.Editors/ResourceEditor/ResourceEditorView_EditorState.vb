@@ -132,7 +132,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Next
 
                     _statePersisted = True
-                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception depersisting editor state - state will not be restored", $"{NameOf(ResourceEditorView)}-{NameOf(EditorState)}")
+                Catch ex As Exception When Common.ReportWithoutCrash(ex, "Exception depersisting editor state - state will not be restored", $"{NameOf(ResourceEditorView)}-{NameOf(EditorState)}")
                     Clear()
 
                     'Exception can be safely ignored.  They just won't get the state restored later.
@@ -156,7 +156,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             For i As Integer = 0 To _stringTableColumnWidths.Length - 1
                                 Try
                                     View.StringTable.Columns(i).Width = _stringTableColumnWidths(i)
-                                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Unable to set stringtable column width in restoring editor state", $"{NameOf(ResourceEditorView)}-{NameOf(EditorState)}")
+                                Catch ex As Exception When Common.ReportWithoutCrash(ex, "Unable to set stringtable column width in restoring editor state", $"{NameOf(ResourceEditorView)}-{NameOf(EditorState)}")
                                     'Ignore exceptions if unable to set a column width (columns can have minimum widths)
                                 End Try
                             Next
@@ -167,7 +167,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             For i As Integer = 0 To _listViewColumnWidths.Length - 1
                                 Try
                                     View._resourceListView.Columns(i).Width = _listViewColumnWidths(i)
-                                Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Unable to set listview column width in restoring editor state", $"{NameOf(ResourceEditorView)}-{NameOf(EditorState)}")
+                                Catch ex As Exception When Common.ReportWithoutCrash(ex, "Unable to set listview column width in restoring editor state", $"{NameOf(ResourceEditorView)}-{NameOf(EditorState)}")
                                     'Ignore exceptions
                                 End Try
                             Next
@@ -214,7 +214,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             _stringTableCurrentCellAddress = View.StringTable.CurrentCellAddress
                         End If
 
-                    Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, "Exception saving editor state - state will not be saved", $"{NameOf(ResourceEditorView)}-{NameOf(EditorState)}")
+                    Catch ex As Exception When Common.ReportWithoutCrash(ex, "Exception saving editor state - state will not be saved", $"{NameOf(ResourceEditorView)}-{NameOf(EditorState)}")
                         Clear()
 
                         'Exception can be safely ignored.  They just won't get the state restored later.

@@ -70,7 +70,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="technology"></param>
         ''' <returns>The view for this root designer</returns>
         ''' <remarks></remarks>
-        Public Function GetView(technology As System.ComponentModel.Design.ViewTechnology) As Object Implements System.ComponentModel.Design.IRootDesigner.GetView
+        Public Function GetView(technology As ViewTechnology) As Object Implements IRootDesigner.GetView
             If technology <> ViewTechnology.Default Then
                 Debug.Fail("Unsupported view technology!")
                 Throw New NotSupportedException()
@@ -85,7 +85,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <value></value>
         ''' <remarks></remarks>
-        Public ReadOnly Property SupportedTechnologies() As System.ComponentModel.Design.ViewTechnology() Implements System.ComponentModel.Design.IRootDesigner.SupportedTechnologies
+        Public ReadOnly Property SupportedTechnologies() As ViewTechnology() Implements IRootDesigner.SupportedTechnologies
             Get
                 Return New ViewTechnology() {ViewTechnology.Default}
             End Get
@@ -134,8 +134,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Public Overloads Sub ShowContextMenu(sender As Object, e As System.Windows.Forms.MouseEventArgs)
-            MyBase.ShowContextMenu(Constants.MenuConstants.SettingsDesignerContextMenuID, e.X, e.Y)
+        Public Overloads Sub ShowContextMenu(sender As Object, e As Windows.Forms.MouseEventArgs)
+            ShowContextMenu(Constants.MenuConstants.SettingsDesignerContextMenuID, e.X, e.Y)
         End Sub
 
         Protected Overrides Sub Dispose(Disposing As Boolean)
@@ -161,7 +161,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Friend Shared Function FullyQualifiedGeneratedTypedSettingsClassName(Hierarchy As IVsHierarchy, ItemId As UInteger, Settings As DesignTimeSettings, Item As EnvDTE.ProjectItem) As String
             Dim Ns As String
             Ns = ProjectUtils.GeneratedSettingsClassNamespace(Hierarchy, ProjectUtils.ItemId(Hierarchy, Item), True)
-            Return ProjectUtils.FullyQualifiedClassName(Ns, SettingsDesigner.GeneratedClassName(Hierarchy, ItemId, Settings, ProjectUtils.FileName(Item)))
+            Return ProjectUtils.FullyQualifiedClassName(Ns, GeneratedClassName(Hierarchy, ItemId, Settings, ProjectUtils.FileName(Item)))
         End Function
 
 
@@ -198,7 +198,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 '
                 Dim isVbProject As Boolean = False
                 If Hierarchy IsNot Nothing Then
-                    isVbProject = Common.Utils.IsVbProject(Hierarchy)
+                    isVbProject = Common.IsVbProject(Hierarchy)
                 End If
 
                 If isVbProject AndAlso
@@ -217,13 +217,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                             ' No settings class provided - let's crack open the .settings file... 
                             '
                             Settings = New DesignTimeSettings()
-                            Using Reader As New System.IO.StreamReader(FullPath)
+                            Using Reader As New IO.StreamReader(FullPath)
                                 SettingsSerializer.Deserialize(Settings, Reader, True)
                             End Using
                         End If
 
                         If Settings.UseSpecialClassName Then
-                            Return SettingsDesigner.s_specialClassName
+                            Return s_specialClassName
                         End If
                     Catch ex As Exception When Common.ReportWithoutCrash(ex, String.Format("Failed to crack open {0} to determine if we were supposed to use the ""Special"" settings class name", FullPath), NameOf(SettingsDesigner))
                     End Try
@@ -246,10 +246,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <remarks></remarks>
         Private Shared Function GeneratedClassNameFromPath(PathName As String) As String
             If PathName Is Nothing Then
-                System.Diagnostics.Debug.Fail("Can't get a class name from an empty path!")
+                Debug.Fail("Can't get a class name from an empty path!")
                 Return ""
             End If
-            Return System.IO.Path.GetFileNameWithoutExtension(PathName)
+            Return IO.Path.GetFileNameWithoutExtension(PathName)
         End Function
 
         ''' <summary>
@@ -305,8 +305,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Dim hr As Integer = SpecialProjectItems.GetFile(__PSFFILEID2.PSFFILEID_AppSettings, CUInt(__PSFFLAGS.PSFF_FullPath), DefaultSettingsItemId, DefaultSettingsFilePath)
             If NativeMethods.Succeeded(hr) Then
                 If DefaultSettingsItemId <> VSITEMID.NIL Then
-                    Dim NormalizedDefaultSettingFilePath As String = System.IO.Path.GetFullPath(DefaultSettingsFilePath)
-                    Dim NormalizedSettingFilePath As String = System.IO.Path.GetFullPath(FilePath)
+                    Dim NormalizedDefaultSettingFilePath As String = IO.Path.GetFullPath(DefaultSettingsFilePath)
+                    Dim NormalizedSettingFilePath As String = IO.Path.GetFullPath(FilePath)
                     Return String.Equals(NormalizedDefaultSettingFilePath, NormalizedSettingFilePath, StringComparison.OrdinalIgnoreCase)
                 End If
             Else
@@ -350,7 +350,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Return result
             End If
 
-            Dim hierSp As IServiceProvider = Common.Utils.ServiceProviderFromHierarchy(hierarchy)
+            Dim hierSp As IServiceProvider = Common.ServiceProviderFromHierarchy(hierarchy)
             Dim project As EnvDTE.Project = Common.DTEUtils.EnvDTEProject(hierarchy)
 
             If project Is Nothing OrElse project.ConfigurationManager Is Nothing Then
@@ -366,7 +366,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     Dim path As String
                     path = ConfigHelper.GetUserConfigurationPath(hierSp, project, Configuration.ConfigurationUserLevel.PerUserRoaming, underHostingProcess:=False, buildConfiguration:=BuildConfiguration)
                     If path IsNot Nothing Then
-                        path = System.IO.Path.GetDirectoryName(path)
+                        path = IO.Path.GetDirectoryName(path)
                         ' Make sure we only add the path once...
                         If Not result.Contains(path) Then
                             result.Add(path)
@@ -375,7 +375,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
                     path = ConfigHelper.GetUserConfigurationPath(hierSp, project, Configuration.ConfigurationUserLevel.PerUserRoamingAndLocal, underHostingProcess:=False, buildConfiguration:=BuildConfiguration)
                     If path IsNot Nothing Then
-                        path = System.IO.Path.GetDirectoryName(path)
+                        path = IO.Path.GetDirectoryName(path)
                         ' Make sure we only add the path once...
                         If Not result.Contains(path) Then
                             result.Add(path)
@@ -403,11 +403,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
 
             ' The path passed in to us is the path to the current active user.config file..
-            Dim currentApplicationVersionDirectoryInfo As New System.IO.DirectoryInfo(path)
+            Dim currentApplicationVersionDirectoryInfo As New IO.DirectoryInfo(path)
 
             ' The application may have scribbled user.config files in sibling directories to the current version's
             ' directory, so we'll start off from there...
-            Dim applicationRootDirectoryInfo As System.IO.DirectoryInfo = currentApplicationVersionDirectoryInfo.Parent()
+            Dim applicationRootDirectoryInfo As IO.DirectoryInfo = currentApplicationVersionDirectoryInfo.Parent()
 
             ' If the parent directory doesn't exist, we are fine...
             If Not applicationRootDirectoryInfo.Exists Then
@@ -432,7 +432,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             If files IsNot Nothing Then
                 For Each file As String In files
                     Try
-                        System.IO.File.Delete(file)
+                        IO.File.Delete(file)
                     Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(DeleteFilesAndDirectories), NameOf(SettingsDesigner))
                         completeSuccess = False
                     End Try
@@ -442,7 +442,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             If directories IsNot Nothing Then
                 For Each directory As String In directories
                     Try
-                        System.IO.Directory.Delete(directory, False)
+                        IO.Directory.Delete(directory, False)
                     Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(DeleteFilesAndDirectories), NameOf(SettingsDesigner))
                         completeSuccess = False
                     End Try

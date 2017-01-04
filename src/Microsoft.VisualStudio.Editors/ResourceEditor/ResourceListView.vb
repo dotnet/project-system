@@ -170,19 +170,19 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Sub New()
             MyBase.New()
 
-            MyBase.HideSelection = False
-            MyBase.VirtualMode = True
+            HideSelection = False
+            VirtualMode = True
 
             'Default view
             View = ResourceView.List
 
             'Allow editing the Name by clicking on it.
-            Me.LabelEdit = True
+            LabelEdit = True
 
             'We want to use tooltips to show error messages
-            Me.ShowItemToolTips = True
+            ShowItemToolTips = True
 
-            Common.DTEUtils.ApplyListViewThemeStyles(Me.Handle)
+            Common.DTEUtils.ApplyListViewThemeStyles(Handle)
         End Sub
 
 
@@ -234,11 +234,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Shadows Property View() As ResourceView
             Get
                 Select Case MyBase.View
-                    Case System.Windows.Forms.View.Details
+                    Case Windows.Forms.View.Details
                         Return ResourceView.Details
-                    Case System.Windows.Forms.View.LargeIcon
+                    Case Windows.Forms.View.LargeIcon
                         Return ResourceView.Thumbnail
-                    Case System.Windows.Forms.View.List
+                    Case Windows.Forms.View.List
                         Return ResourceView.List
                     Case Else
                         Debug.Fail("MyBase.View should not have been any other value")
@@ -248,11 +248,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Select Case Value
                     Case ResourceView.Details
                         InitializeColumns()
-                        MyBase.View = System.Windows.Forms.View.Details
+                        MyBase.View = Windows.Forms.View.Details
                     Case ResourceView.List
-                        MyBase.View = System.Windows.Forms.View.List
+                        MyBase.View = Windows.Forms.View.List
                     Case ResourceView.Thumbnail
-                        MyBase.View = System.Windows.Forms.View.LargeIcon
+                        MyBase.View = Windows.Forms.View.LargeIcon
                     Case Else
                         Debug.Fail("Unrecognized view")
                 End Select
@@ -282,11 +282,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Private ReadOnly Property ParentView() As ResourceEditorView
             Get
-                If TypeOf Me.Parent Is ResourceEditorView Then
-                    Return DirectCast(Me.Parent, ResourceEditorView)
+                If TypeOf Parent Is ResourceEditorView Then
+                    Return DirectCast(Parent, ResourceEditorView)
                 Else
                     Debug.Fail("Not parented to a ResourceEditorView?")
-                    Throw New System.InvalidOperationException()
+                    Throw New InvalidOperationException()
                 End If
             End Get
         End Property
@@ -329,11 +329,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             If Not _columnInitialized Then
 
-                Columns.Add(SR.GetString(SR.RSE_DetailsCol_Name), DpiHelper.LogicalToDeviceUnitsX(s_defaultColumnWidthName), HorizontalAlignment.Left)
-                Columns.Add(SR.GetString(SR.RSE_DetailsCol_Filename), DpiHelper.LogicalToDeviceUnitsX(s_defaultColumnWidthFilename), HorizontalAlignment.Left)
-                Columns.Add(SR.GetString(SR.RSE_DetailsCol_ImageType), DpiHelper.LogicalToDeviceUnitsX(s_defaultColumnWidthImageType), HorizontalAlignment.Left)
-                Columns.Add(SR.GetString(SR.RSE_DetailsCol_Size), DpiHelper.LogicalToDeviceUnitsX(s_defaultColumnWidthSize), HorizontalAlignment.Left)
-                Columns.Add(SR.GetString(SR.RSE_DetailsCol_Comment), DpiHelper.LogicalToDeviceUnitsX(s_defaultColumnWidthComment), HorizontalAlignment.Left)
+                Columns.Add(My.Resources.Designer.RSE_DetailsCol_Name, DpiHelper.LogicalToDeviceUnitsX(s_defaultColumnWidthName), HorizontalAlignment.Left)
+                Columns.Add(My.Resources.Designer.RSE_DetailsCol_Filename, DpiHelper.LogicalToDeviceUnitsX(s_defaultColumnWidthFilename), HorizontalAlignment.Left)
+                Columns.Add(My.Resources.Designer.RSE_DetailsCol_ImageType, DpiHelper.LogicalToDeviceUnitsX(s_defaultColumnWidthImageType), HorizontalAlignment.Left)
+                Columns.Add(My.Resources.Designer.RSE_DetailsCol_Size, DpiHelper.LogicalToDeviceUnitsX(s_defaultColumnWidthSize), HorizontalAlignment.Left)
+                Columns.Add(My.Resources.Designer.RSE_DetailsCol_Comment, DpiHelper.LogicalToDeviceUnitsX(s_defaultColumnWidthComment), HorizontalAlignment.Left)
 
                 _columnInitialized = True
             End If
@@ -352,7 +352,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Overloads Sub Clear()
             StopIdleMessage()
 
-            MyBase.VirtualListSize = 0
+            VirtualListSize = 0
             _thumbnailCache = Nothing
             _virtualResourceList.Clear()
 
@@ -376,7 +376,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="CategoryToFilterOn">The category of resources to display.</param>
         ''' <remarks></remarks>
         Public Sub Populate(ResourceFile As ResourceFile, CategoryToFilterOn As Category)
-            MyBase.VirtualListSize = 0
+            VirtualListSize = 0
             _resourceFile = ResourceFile
 
             'Create and set up a new imagelist
@@ -445,11 +445,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             'Set the base listview's correct imagelist property to point to the imagelist we have created
             If View = ResourceView.Thumbnail Then
-                MyBase.SmallImageList = Nothing
-                MyBase.LargeImageList = _thumbnailImageList
+                SmallImageList = Nothing
+                LargeImageList = _thumbnailImageList
             Else
-                MyBase.LargeImageList = Nothing
-                MyBase.SmallImageList = _thumbnailImageList
+                LargeImageList = Nothing
+                SmallImageList = _thumbnailImageList
             End If
 
             'Set up the state imagelist (for displaying error glyphs next to the listview items)
@@ -457,11 +457,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             _stateImageList.ColorDepth = ColorDepth.Depth8Bit
             _stateImageList.ImageSize = ParentView.CachedResources.ErrorGlyphState.Size
             _stateImageList.Images.Add(ParentView.CachedResources.ErrorGlyphState)
-            MyBase.StateImageList = _stateImageList
+            StateImageList = _stateImageList
 
             'Finally, let the base listview know how many resources it has, so it can start
             '  querying us for info on them.
-            MyBase.VirtualListSize = _virtualResourceList.Count
+            VirtualListSize = _virtualResourceList.Count
 
             ParentView.RootDesigner.InvalidateFindLoop(False)
         End Sub
@@ -486,8 +486,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
 
             Dim ItemIndex As Integer = IndexOf(Resource)
-            Dim itemRectangle As Rectangle = MyBase.GetItemRect(ItemIndex)
-            If itemRectangle.IntersectsWith(Me.ClientRectangle) Then
+            Dim itemRectangle As Rectangle = GetItemRect(ItemIndex)
+            If itemRectangle.IntersectsWith(ClientRectangle) Then
                 'Reload the image...
                 RequireCacheImage(ItemIndex, ItemIndex)
                 Invalidate(itemRectangle)
@@ -500,7 +500,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnBeforeLabelEdit(e As System.Windows.Forms.LabelEditEventArgs)
+        Protected Overrides Sub OnBeforeLabelEdit(e As LabelEditEventArgs)
             If ParentView.ReadOnlyMode Then
                 e.CancelEdit = True
                 Return
@@ -510,7 +510,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 'See if we're able to check out the file before allowing the user to try to rename the resource.
                 ParentView.RootDesigner.DesignerLoader.ManualCheckOut()
                 ParentView.OnItemBeginEdit()
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(OnBeforeLabelEdit), NameOf(ResourceListView))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(OnBeforeLabelEdit), NameOf(ResourceListView))
                 e.CancelEdit = True
                 ParentView.DsMsgBox(ex)
             End Try
@@ -525,7 +525,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' We use this event to detect that the user has changed the name of a Resource by editing the label
         '''   on a listview item.
         ''' </remarks>
-        Protected Overrides Sub OnAfterLabelEdit(e As System.Windows.Forms.LabelEditEventArgs)
+        Protected Overrides Sub OnAfterLabelEdit(e As LabelEditEventArgs)
             MyBase.OnAfterLabelEdit(e)
             ParentView.OnItemEndEdit()
 
@@ -553,7 +553,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Else
                     Debug.Fail("Couldn't find resource from index")
                 End If
-            Catch ex As Exception When Common.Utils.ReportWithoutCrash(ex, NameOf(OnAfterLabelEdit), NameOf(ResourceListView))
+            Catch ex As Exception When ReportWithoutCrash(ex, NameOf(OnAfterLabelEdit), NameOf(ResourceListView))
                 ParentView.DsMsgBox(ex)
             End Try
         End Sub
@@ -564,11 +564,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <remarks></remarks>
         Public Sub BeginLabelEdit(Resource As Resource)
-            If Me.LabelEdit AndAlso Resource IsNot Nothing Then
+            If LabelEdit AndAlso Resource IsNot Nothing Then
                 Dim Index As Integer = IndexOf(Resource)
                 SelectResource(Index, True)
 
-                Dim HR As New System.Runtime.InteropServices.HandleRef(Me, Handle)
+                Dim HR As New HandleRef(Me, Handle)
                 If Interop.NativeMethods.IsWindowUnicode(Handle) Then
                     Interop.NativeMethods.SendMessage(HR, Interop.win.LVM_EDITLABELW, Index, 0)
                 Else
@@ -646,9 +646,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                     ' we save the information about current selection, so we can restore it later
                     selectedResources = GetSelectedResources()
-                    If Me.FocusedItem IsNot Nothing Then
-                        currentResource = GetResourceFromVirtualIndex(Me.FocusedItem.Index)
-                        Me.FocusedItem = Nothing
+                    If FocusedItem IsNot Nothing Then
+                        currentResource = GetResourceFromVirtualIndex(FocusedItem.Index)
+                        FocusedItem = Nothing
                     ElseIf selectedResources IsNot Nothing AndAlso selectedResources.Length > 0 Then
                         currentResource = selectedResources(0)
                     End If
@@ -675,8 +675,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 ' Restore current position...
                 If currentResource IsNot Nothing Then
                     Dim currentIndex As Integer = IndexOf(currentResource)
-                    Me.FocusedItem = Items(currentIndex)
-                    Me.EnsureVisible(currentIndex)
+                    FocusedItem = Items(currentIndex)
+                    EnsureVisible(currentIndex)
                 End If
 
                 ' Restore selection
@@ -695,7 +695,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Private Sub SetColumnSortImage(columnIndex As Integer, inReverseOrder As Boolean)
             Dim headerHandle As IntPtr
-            headerHandle = Interop.NativeMethods.SendMessage(Me.Handle, Interop.win.LVM_GETHEADER, IntPtr.Zero, IntPtr.Zero)
+            headerHandle = Interop.NativeMethods.SendMessage(Handle, Interop.win.LVM_GETHEADER, IntPtr.Zero, IntPtr.Zero)
             If headerHandle <> IntPtr.Zero Then
                 ' Use Win32 API to set the image to the column header object
                 Dim headItem As New Interop.HDITEM2
@@ -727,7 +727,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Private Sub ClearColumnSortImage(columnIndex As Integer)
             Dim headerHandle As IntPtr
-            headerHandle = Interop.NativeMethods.SendMessage(Me.Handle, Interop.win.LVM_GETHEADER, IntPtr.Zero, IntPtr.Zero)
+            headerHandle = Interop.NativeMethods.SendMessage(Handle, Interop.win.LVM_GETHEADER, IntPtr.Zero, IntPtr.Zero)
             If headerHandle <> IntPtr.Zero Then
                 ' Use Win32 API to remove the image to the column header object
                 Dim headItem As New Interop.HDITEM2
@@ -784,7 +784,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="e">Event args</param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnCacheVirtualItems(e As System.Windows.Forms.CacheVirtualItemsEventArgs)
+        Protected Overrides Sub OnCacheVirtualItems(e As CacheVirtualItemsEventArgs)
             MyBase.OnCacheVirtualItems(e)
 
             If _thumbnailCache IsNot Nothing Then
@@ -840,7 +840,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Dim Resource As Resource = GetResourceFromVirtualIndex(_imageStartIndex)
                     If Resource IsNot Nothing AndAlso Not _thumbnailCache.IsThumbnailInCache(Resource) Then
                         _idleProcessingIndex = _imageStartIndex
-                        AddHandler System.Windows.Forms.Application.Idle, AddressOf OnDelayLoadImages
+                        AddHandler Application.Idle, AddressOf OnDelayLoadImages
                         _onIdleEnabled = True
 
                         ' suspend delaying checking for performance...
@@ -881,7 +881,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Sub StopIdleMessage()
             If _onIdleEnabled Then
                 _cacheRequirementStack = Nothing
-                RemoveHandler System.Windows.Forms.Application.Idle, AddressOf OnDelayLoadImages
+                RemoveHandler Application.Idle, AddressOf OnDelayLoadImages
                 _onIdleEnabled = False
 
                 ResourceFile.SuspendDelayingCheckingForErrors(False)
@@ -928,8 +928,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             ' m_IdleProcessingIndex could be updated when ListView reentry us in GetItemRect.
 
                             ' We skip items out of the View Port...
-                            Dim itemRectangle As Rectangle = MyBase.GetItemRect(i)
-                            If itemRectangle.IntersectsWith(Me.ClientRectangle) Then
+                            Dim itemRectangle As Rectangle = GetItemRect(i)
+                            If itemRectangle.IntersectsWith(ClientRectangle) Then
                                 Dim Resource As Resource = GetResourceFromVirtualIndex(i)
                                 If Resource IsNot Nothing AndAlso Not _thumbnailCache.IsThumbnailInCache(Resource) Then
                                     If GetThumbnailIndex(Resource, False) <> s_IMAGELIST_INDEX_NEED_LOAD Then
@@ -967,7 +967,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="e">Retrieval arguments</param>
         ''' <remarks></remarks>
-        Protected Overrides Sub OnRetrieveVirtualItem(e As System.Windows.Forms.RetrieveVirtualItemEventArgs)
+        Protected Overrides Sub OnRetrieveVirtualItem(e As RetrieveVirtualItemEventArgs)
             MyBase.OnRetrieveVirtualItem(e)
 
             If ResourceFile Is Nothing Then
@@ -1135,7 +1135,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return s_IMAGELIST_INDEX_NEED_LOAD
             Else
                 Try
-                    ThumbnailSourceImage = Resource.ResourceTypeEditor.GetImageForThumbnail(Resource, Me.BackColor)
+                    ThumbnailSourceImage = Resource.ResourceTypeEditor.GetImageForThumbnail(Resource, BackColor)
                 Catch ex As Exception
                     'For some reason, we could not get a value for this resource.  So, we use an error glyph for the
                     '  source of the thumbnail image instead.  Note that an alternative would be to have a single
@@ -1236,7 +1236,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Function GetSelectedResources() As Resource()
             Dim Selected() As Resource
             Dim i As Integer
-            Dim SelectedListIndices As ListView.SelectedIndexCollection = MyBase.SelectedIndices
+            Dim SelectedListIndices As SelectedIndexCollection = SelectedIndices
             ReDim Selected(SelectedListIndices.Count - 1)
             For Each SelectedIndex As Integer In SelectedListIndices
                 Selected(i) = GetResourceFromVirtualIndex(SelectedIndex)
@@ -1261,9 +1261,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 If IndexOfResource >= 0 Then
                     SelectResource(IndexOfResource, True)
                     If firstOne Then
-                        MyBase.Items(IndexOfResource).EnsureVisible()
-                        If Me.FocusedItem Is Nothing OrElse Not Me.FocusedItem.Selected Then
-                            Me.FocusedItem = MyBase.Items(IndexOfResource)
+                        Items(IndexOfResource).EnsureVisible()
+                        If FocusedItem Is Nothing OrElse Not FocusedItem.Selected Then
+                            FocusedItem = Items(IndexOfResource)
                         End If
                         firstOne = False
                     End If
@@ -1274,7 +1274,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         End Sub
 
 #If True Then 'CONSIDER rewriting now that virtualized listview has way to select/deselect
-        <System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, Pack:=1, CharSet:=System.Runtime.InteropServices.CharSet.Auto)> _
+        <StructLayout(LayoutKind.Sequential, Pack:=1, CharSet:=CharSet.Auto)> _
         Private Structure LVITEM
             Public mask As Integer
             Public iItem As Integer
@@ -1299,22 +1299,22 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 
         Private Sub SetItemState(index As Integer, state As Integer, mask As Integer)
-            If index < 0 OrElse index >= MyBase.VirtualListSize Then
+            If index < 0 OrElse index >= VirtualListSize Then
                 Debug.Fail("")
                 Exit Sub
             End If
 
-            If MyBase.Handle <> IntPtr.Zero Then
+            If Handle <> IntPtr.Zero Then
                 Dim lvi As New LVITEM
                 lvi.mask = s_LVIF_STATE
                 lvi.state = state
                 lvi.stateMask = mask
-                SendMessage(MyBase.Handle, s_LVM_SETITEMSTATE, index, lvi)
+                SendMessage(Handle, s_LVM_SETITEMSTATE, index, lvi)
             End If
         End Sub
 
         Public Sub SelectResource(ResourceIndex As Integer, Selected As Boolean)
-            If ResourceIndex < 0 OrElse ResourceIndex >= MyBase.VirtualListSize Then
+            If ResourceIndex < 0 OrElse ResourceIndex >= VirtualListSize Then
                 Debug.Fail("SelectResource: index out of bounds")
                 Exit Sub
             End If
@@ -1339,11 +1339,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <remarks></remarks>
         Public Sub SelectAll()
-            For i As Integer = 0 To MyBase.VirtualListSize - 1
+            For i As Integer = 0 To VirtualListSize - 1
                 SelectedIndices.Add(i)
             Next
-            If Me.FocusedItem Is Nothing Then
-                Me.FocusedItem = Items(0)
+            If FocusedItem Is Nothing Then
+                FocusedItem = Items(0)
             End If
         End Sub
 
@@ -1363,11 +1363,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </remarks>
         Public Sub AddResources(Resources As IList)
             UnselectAll()
-            Debug.Assert(_virtualResourceList.Count = MyBase.VirtualListSize)
+            Debug.Assert(_virtualResourceList.Count = VirtualListSize)
 
             ' Select the last item, or the list view could scroll a lot when we add a new item to it.
             If _virtualResourceList.Count > 0 Then
-                Me.FocusedItem = Items(_virtualResourceList.Count - 1)
+                FocusedItem = Items(_virtualResourceList.Count - 1)
             End If
 
             'Alphabetize
@@ -1395,8 +1395,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Try
 
             'Update the virtual count and redraw with the new entries.
-            MyBase.VirtualListSize = _virtualResourceList.Count
-            MyBase.Invalidate()
+            VirtualListSize = _virtualResourceList.Count
+            Invalidate()
         End Sub
 
         ''' <summary>
@@ -1408,7 +1408,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks></remarks>
         Public Sub RemoveResources(Resources As IList)
             UnselectAll()
-            Debug.Assert(_virtualResourceList.Count = MyBase.VirtualListSize)
+            Debug.Assert(_virtualResourceList.Count = VirtualListSize)
 
             Dim DisableItemRetrievalSave As Boolean = _disableItemRetrieval
             _disableItemRetrieval = True
@@ -1422,8 +1422,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 _disableItemRetrieval = DisableItemRetrievalSave
             End Try
 
-            MyBase.VirtualListSize = _virtualResourceList.Count
-            MyBase.Invalidate()
+            VirtualListSize = _virtualResourceList.Count
+            Invalidate()
         End Sub
 
 #End Region
@@ -1470,7 +1470,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <Summary>
             '''  Compare two list items
             ''' </Summary>
-            Public Function Compare(x As Object, y As Object) As Integer Implements System.Collections.IComparer.Compare
+            Public Function Compare(x As Object, y As Object) As Integer Implements IComparer.Compare
                 Dim ret As Integer = String.Compare(GetColumnValue(x, _columnIndex), GetColumnValue(y, _columnIndex), StringComparison.CurrentCultureIgnoreCase)
                 If ret = 0 AndAlso _columnIndex <> 0 Then
                     ret = String.Compare(GetColumnValue(x, 0), GetColumnValue(y, 0), StringComparison.CurrentCultureIgnoreCase)
@@ -1486,7 +1486,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' </Summary>
             Private Function GetColumnValue(obj As Object, column As Integer) As String
                 If TypeOf obj Is Resource Then
-                    Return ResourceListView.GetDetailViewColumn(DirectCast(obj, Resource), column)
+                    Return GetDetailViewColumn(DirectCast(obj, Resource), column)
                 End If
 
                 Debug.Fail("DetailViewSorter: obj was not a Resource")

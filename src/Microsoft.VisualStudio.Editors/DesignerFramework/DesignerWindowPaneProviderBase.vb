@@ -83,7 +83,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 '// events from the shell and royaly screw things up.
                 '//
                 _view = New TopLevelControl()
-                AddHandler _view.GotFocus, AddressOf Me.OnViewFocus
+                AddHandler _view.GotFocus, AddressOf OnViewFocus
                 _view.BackColor = SystemColors.Window
 
                 'For debugging purposes
@@ -95,9 +95,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     PopulateView()
                 End If
 
-                AddHandler surface.Loaded, AddressOf Me.OnLoaded
-                AddHandler surface.Unloading, AddressOf Me.OnSurfaceUnloading
-                AddHandler surface.Unloaded, AddressOf Me.OnSurfaceUnloaded
+                AddHandler surface.Loaded, AddressOf OnLoaded
+                AddHandler surface.Unloading, AddressOf OnSurfaceUnloading
+                AddHandler surface.Unloaded, AddressOf OnSurfaceUnloaded
 
             End Sub
 
@@ -170,8 +170,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     End If
 
                     _undoEngine.Dispose()
-                    RemoveHandler _undoEngine.Undoing, AddressOf Me.OnUndoing
-                    RemoveHandler _undoEngine.Undone, AddressOf Me.OnUndone
+                    RemoveHandler _undoEngine.Undoing, AddressOf OnUndoing
+                    RemoveHandler _undoEngine.Undone, AddressOf OnUndone
                     _undoEngine = Nothing
                 End If
             End Sub
@@ -200,16 +200,16 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                         DisableUndo()
                         Dim ds As DesignSurface = Surface
                         If (ds IsNot Nothing) Then
-                            RemoveHandler ds.Loaded, AddressOf Me.OnLoaded
-                            RemoveHandler ds.Unloading, AddressOf Me.OnSurfaceUnloading
-                            RemoveHandler ds.Unloaded, AddressOf Me.OnSurfaceUnloaded
+                            RemoveHandler ds.Loaded, AddressOf OnLoaded
+                            RemoveHandler ds.Unloading, AddressOf OnSurfaceUnloading
+                            RemoveHandler ds.Unloaded, AddressOf OnSurfaceUnloaded
                         End If
                     End If
 
                     MyBase.Dispose(disposing)
                 Finally
                     If (disposing AndAlso disposedView IsNot Nothing) Then
-                        RemoveHandler disposedView.GotFocus, AddressOf Me.OnViewFocus
+                        RemoveHandler disposedView.GotFocus, AddressOf OnViewFocus
                         disposedView.Dispose()
                     End If
                 End Try
@@ -230,8 +230,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 '
                 If (GetService(GetType(ComponentSerializationService)) IsNot Nothing) Then
                     _undoEngine = New OleUndoEngine(Surface)
-                    AddHandler _undoEngine.Undoing, AddressOf Me.OnUndoing
-                    AddHandler _undoEngine.Undone, AddressOf Me.OnUndone
+                    AddHandler _undoEngine.Undoing, AddressOf OnUndoing
+                    AddHandler _undoEngine.Undone, AddressOf OnUndone
                     Dim c As IServiceContainer = DirectCast(GetService(GetType(IServiceContainer)), IServiceContainer)
                     If (c IsNot Nothing) Then
                         c.AddService(GetType(UndoEngine), _undoEngine)
@@ -321,7 +321,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <remarks></remarks>
             Private Sub OnUndoing(sender As Object, e As EventArgs)
                 If (_view IsNot Nothing AndAlso _view.IsHandleCreated) Then
-                    Microsoft.VisualStudio.Editors.Interop.NativeMethods.SendMessage(New HandleRef(_view, _view.Handle), NativeMethods.WM_SETREDRAW, 0, 0)
+                    NativeMethods.SendMessage(New HandleRef(_view, _view.Handle), NativeMethods.WM_SETREDRAW, 0, 0)
                     _undoCursor = Cursor.Current
                     Cursor.Current = Cursors.WaitCursor
                 End If
@@ -336,7 +336,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <remarks></remarks>
             Private Sub OnUndone(sender As Object, e As EventArgs)
                 If (_view IsNot Nothing AndAlso _view.IsHandleCreated) Then
-                    Microsoft.VisualStudio.Editors.Interop.NativeMethods.SendMessage(New HandleRef(_view, _view.Handle), NativeMethods.WM_SETREDRAW, 1, 0)
+                    NativeMethods.SendMessage(New HandleRef(_view, _view.Handle), NativeMethods.WM_SETREDRAW, 1, 0)
                     _view.Invalidate(True)
                     Cursor.Current = _undoCursor
                     _undoCursor = Nothing
@@ -367,7 +367,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     If Not DesignerRootView.CanFocus Then
                         Switches.TracePDFocus(TraceLevel.Warning, "  ... root view isn't currently focusable.")
                     End If
-                    Switches.TracePDFocus(TraceLevel.Warning, "  ... Focus ended up on HWND = " & Microsoft.VisualBasic.Hex(h.ToInt32))
+                    Switches.TracePDFocus(TraceLevel.Warning, "  ... Focus ended up on HWND = " & Hex(h.ToInt32))
 #End If
                 End If
             End Sub
@@ -407,7 +407,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 End Try
 
                 If (viewChild Is Nothing) Then
-                    Dim er As String = SR.GetString(SR.DFX_WindowPane_UnknownError)
+                    Dim er As String = My.Resources.Designer.DFX_WindowPane_UnknownError
                     Dim errors As ArrayList = New ArrayList()
                     errors.Add(er)
                     viewChild = New ErrorControl(errors)
@@ -442,14 +442,14 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             ''' <remarks></remarks>
             Private ReadOnly Property GetDialogFont() As Font
                 Get
-                    Dim uiSvc As System.Windows.Forms.Design.IUIService = CType(GetService(GetType(System.Windows.Forms.Design.IUIService)), System.Windows.Forms.Design.IUIService)
+                    Dim uiSvc As Design.IUIService = CType(GetService(GetType(Design.IUIService)), Design.IUIService)
                     If uiSvc IsNot Nothing Then
                         Return CType(uiSvc.Styles("DialogFont"), Font)
                     End If
 
                     Debug.Fail("Couldn't get a IUIService... cheating instead :)")
 
-                    Return Form.DefaultFont
+                    Return Control.DefaultFont
                 End Get
             End Property
 

@@ -132,6 +132,7 @@
     <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerOnDefaultActionCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\NuGet\ProjectRestoreInfoBuilderTests.cs" />
     <Compile Include="ProjectSystem\VS\OptionsSettingsTests.cs" />
+    <Compile Include="ProjectSystem\VS\Properties\OutputTypeExValueProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\PropertyPages\BuildMacroInfoTests.cs" />
     <Compile Include="ProjectSystem\VS\PropertyPages\DebugPageViewModelTests.cs" />
     <Compile Include="ProjectSystem\VS\PropertyPages\PropertyPageControlTests.cs" />

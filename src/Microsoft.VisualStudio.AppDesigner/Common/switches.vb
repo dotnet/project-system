@@ -3,7 +3,6 @@
 Imports System.Text
 Imports Microsoft.VisualStudio.Editors.AppDesInterop
 Imports Microsoft.VisualStudio.Editors.PropertyPages
-Imports VB = Microsoft.VisualBasic
 
 Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 
@@ -368,7 +367,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="msg"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Shared Function FormatWin32Message(msg As System.Windows.Forms.Message) As String
+        Private Shared Function FormatWin32Message(msg As Windows.Forms.Message) As String
             Dim str As New StringBuilder()
             Dim MsgType As String = Nothing
             Select Case msg.Msg
@@ -385,12 +384,12 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 
                 Case Else
                     If PDMessageRouting.Level >= TraceLevel.Verbose Then
-                        MsgType = "0x" & Microsoft.VisualBasic.Hex(msg.Msg)
+                        MsgType = "0x" & Hex(msg.Msg)
                     Else
                         Return Nothing
                     End If
             End Select
-            str.Append("MSG{" & MsgType & ", HWND=0x" & VB.Hex(msg.HWnd.ToInt32))
+            str.Append("MSG{" & MsgType & ", HWND=0x" & Hex(msg.HWnd.ToInt32))
 
             'Get the HWND's text
             Dim WindowText As New String(" "c, 30)
@@ -417,8 +416,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 ResetTimeCode()
             End If
 
-            Dim ts As TimeSpan = Microsoft.VisualBasic.Now.Subtract(s_timeCodeStart)
-            Return ts.TotalSeconds.ToString("0000.00000") & VB.vbTab
+            Dim ts As TimeSpan = Now.Subtract(s_timeCodeStart)
+            Return ts.TotalSeconds.ToString("0000.00000") & vbTab
             'Return n.ToString("hh:mm:ss.") & Microsoft.VisualBasic.Format(n.Millisecond, "000") & VB.vbTab
 #Else
             Return ""
@@ -428,7 +427,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         <Conditional("DEBUG")> _
         Public Shared Sub ResetTimeCode()
 #If DEBUG Then
-            s_timeCodeStart = VB.Now
+            s_timeCodeStart = Now
             s_firstTimeCodeTaken = True
 #End If
         End Sub
@@ -445,7 +444,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 
             Public Sub New(DisplayName As String, Description As String)
                 MyBase.New(DisplayName, Description)
-                Debug.Assert(GetType(System.Enum).IsAssignableFrom(GetType(T)), "EnumSwitch() requires an Enum as a type parameter")
+                Debug.Assert(GetType([Enum]).IsAssignableFrom(GetType(T)), "EnumSwitch() requires an Enum as a type parameter")
             End Sub
 
             ''' <summary>
@@ -456,7 +455,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             ''' <remarks></remarks>
             Public ReadOnly Property ValueDefined() As Boolean
                 Get
-                    Return MyBase.Value <> "" AndAlso CInt(System.Convert.ChangeType(Me.Value, TypeCode.Int32)) <> 0
+                    Return MyBase.Value <> "" AndAlso CInt(Convert.ChangeType(Value, TypeCode.Int32)) <> 0
                 End Get
             End Property
 
@@ -468,7 +467,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             ''' <remarks></remarks>
             Public Shadows Property Value() As T
                 Get
-                    Return CType(System.Enum.Parse(GetType(T), MyBase.Value), T)
+                    Return CType([Enum].Parse(GetType(T), MyBase.Value), T)
                 End Get
                 Set(value As T)
                     MyBase.Value = value.ToString()
@@ -481,7 +480,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             ''' </summary>
             ''' <remarks></remarks>
             Protected Overrides Sub OnValueChanged()
-                SwitchSetting = CInt(System.Convert.ChangeType(Value, TypeCode.Int32))
+                SwitchSetting = CInt(Convert.ChangeType(Value, TypeCode.Int32))
             End Sub
 
         End Class
@@ -512,7 +511,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         <Conditional("DEBUG")> _
         Public Shared Sub TracePDFocus(Level As TraceLevel, Message As String, ParamArray FormatArguments() As Object)
 #If DEBUG Then
-            Trace.WriteLineIf(PDFocus.Level >= Level, "PDFocus:" & VB.vbTab & TimeCode() & Format(Message, FormatArguments))
+            Trace.WriteLineIf(PDFocus.Level >= Level, "PDFocus:" & vbTab & TimeCode() & Format(Message, FormatArguments))
 #End If
         End Sub
 
@@ -588,7 +587,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         <Conditional("DEBUG")> _
         Public Shared Sub TracePDPerf(Message As String, ParamArray FormatArguments() As Object)
 #If DEBUG Then
-            Trace.WriteLineIf(PDPerf.TraceInfo, "PDPerf:" & VB.vbTab & TimeCode() & Format(Message, FormatArguments))
+            Trace.WriteLineIf(PDPerf.TraceInfo, "PDPerf:" & vbTab & TimeCode() & Format(Message, FormatArguments))
 #End If
         End Sub
 

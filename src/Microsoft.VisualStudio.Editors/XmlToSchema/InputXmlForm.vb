@@ -30,12 +30,12 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
             Common.TelemetryLogger.LogInputXmlFormEvent(Common.TelemetryLogger.InputXmlFormEvent.FormOpened)
         End Sub
 
-        Protected Overrides Sub ScaleControl(factor As System.Drawing.SizeF, specified As System.Windows.Forms.BoundsSpecified)
+        Protected Overrides Sub ScaleControl(factor As Drawing.SizeF, specified As BoundsSpecified)
             'First do standard DPI scaling logic
             MyBase.ScaleControl(factor, specified)
 
             'Prevent the dialog from getting too big
-            Me.MaximumSize = Screen.FromHandle(Me.Handle).WorkingArea.Size
+            MaximumSize = Screen.FromHandle(Handle).WorkingArea.Size
         End Sub
 
         Private Function ContainsFile(filePath As String) As Boolean
@@ -65,18 +65,18 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
                 Dim anyInvalid = False
                 Try
                     For Each fileName In _xmlFileDialog.FileNames
-                        Me.UseWaitCursor = True
+                        UseWaitCursor = True
                         XElement.Load(fileName)
                     Next
                 Catch ex As Exception
                     If FilterException(ex) Then
-                        ShowWarning(String.Format(SR.XmlToSchema_ErrorLoadingXml, ex.Message))
+                        ShowWarning(String.Format(My.Resources.Designer.XmlToSchema_ErrorLoadingXml, ex.Message))
                         anyInvalid = True
                     Else
                         Throw
                     End If
                 Finally
-                    Me.UseWaitCursor = False
+                    UseWaitCursor = False
                 End Try
 
                 If Not anyInvalid Then
@@ -129,7 +129,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
                 Return
             End If
             Try
-                Me.UseWaitCursor = True
+                UseWaitCursor = True
                 Application.DoEvents()
 
                 ' Infer schemas from XML sources.
@@ -165,12 +165,12 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
             Catch ex As Exception
                 Common.TelemetryLogger.LogInputXmlFormException(ex)
                 If FilterException(ex) Then
-                    ShowWarning(String.Format(SR.XmlToSchema_ErrorInXmlInference, ex.Message))
+                    ShowWarning(String.Format(My.Resources.Designer.XmlToSchema_ErrorInXmlInference, ex.Message))
                 Else
                     Throw
                 End If
             Finally
-                Me.UseWaitCursor = False
+                UseWaitCursor = False
             End Try
         End Sub
 

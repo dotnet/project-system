@@ -92,7 +92,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             resources.ApplyResources(Me.cboDebugInfo, "cboDebugInfo")
             Me.cboDebugInfo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.cboDebugInfo.FormattingEnabled = True
-            Me.cboDebugInfo.Items.AddRange(New Object() {resources.GetString("cboDebugInfo.Items"), resources.GetString("cboDebugInfo.Items1"), resources.GetString("cboDebugInfo.Items2")})
+            Me.cboDebugInfo.Items.AddRange(New Object() {resources.GetString("cboDebugInfo.Items"), resources.GetString("cboDebugInfo.Items1"), resources.GetString("cboDebugInfo.Items2"), resources.GetString("cboDebugInfo.Items3"), resources.GetString("cboDebugInfo.Items4")})
             Me.cboDebugInfo.Name = "cboDebugInfo"
             '
             'lblFileAlignment

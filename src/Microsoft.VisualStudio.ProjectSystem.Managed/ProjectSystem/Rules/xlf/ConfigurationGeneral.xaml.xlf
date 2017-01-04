@@ -111,10 +111,6 @@
         <source>Represent the language that is persisted in items and project templates</source>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|SaveAssemblyInfoInSource|DisplayName">
-        <source>Save assembly info attribute values in source</source>
-        <note></note>
-      </trans-unit>
     </body>
   </file>
 </xliff>

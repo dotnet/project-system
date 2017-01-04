@@ -119,21 +119,21 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Dim ImageFormat As ImageFormat = CType(Resource.GetValue(), Image).RawFormat
             If ImageFormat.Equals(ImageFormat.Bmp) Then
-                Return SR.GetString(SR.RSE_Type_BMP)
+                Return My.Resources.Designer.RSE_Type_BMP
             ElseIf ImageFormat.Equals(ImageFormat.Emf) Then
                 Debug.Fail("How did we get an EMF image?")
             ElseIf ImageFormat.Equals(ImageFormat.Exif) Then
-                Return SR.GetString(SR.RSE_Type_EXIF)
+                Return My.Resources.Designer.RSE_Type_EXIF
             ElseIf ImageFormat.Equals(ImageFormat.Gif) Then
-                Return SR.GetString(SR.RSE_Type_GIF)
+                Return My.Resources.Designer.RSE_Type_GIF
             ElseIf ImageFormat.Equals(ImageFormat.Jpeg) Then
-                Return SR.GetString(SR.RSE_Type_JPEG)
+                Return My.Resources.Designer.RSE_Type_JPEG
             ElseIf ImageFormat.Equals(ImageFormat.MemoryBmp) Then
-                Return SR.GetString(SR.RSE_Type_MEMBMP)
+                Return My.Resources.Designer.RSE_Type_MEMBMP
             ElseIf ImageFormat.Equals(ImageFormat.Png) Then
-                Return SR.GetString(SR.RSE_Type_PNG)
+                Return My.Resources.Designer.RSE_Type_PNG
             ElseIf ImageFormat.Equals(ImageFormat.Tiff) Then
-                Return SR.GetString(SR.RSE_Type_TIFF)
+                Return My.Resources.Designer.RSE_Type_TIFF
             ElseIf ImageFormat.Equals(ImageFormat.Wmf) Then
                 Debug.Fail("How did we get a WMF image?")
             Else
@@ -153,7 +153,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Overrides Function GetResourceFriendlySize(Resource As IResource) As String
             ValidateResourceValue(Resource)
             Dim Image As Image = DirectCast(Resource.GetValue(), Image)
-            Return String.Format(SR.GetString(SR.RSE_GraphicSizeFormat, Image.Width, Image.Height))
+            Return String.Format(My.Resources.Designer.GetString(My.Resources.Designer.RSE_GraphicSizeFormat, Image.Width, Image.Height))
         End Function
 
 
@@ -192,10 +192,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Extension = GetResourceFileExtension(NewResource)
                 End If
 
-                If String.Compare(Extension, EXT_TIF, StringComparison.OrdinalIgnoreCase) = 0 OrElse _
+                If String.Compare(Extension, EXT_TIF, StringComparison.OrdinalIgnoreCase) = 0 OrElse
                     String.Compare(Extension, EXT_TIFF, StringComparison.OrdinalIgnoreCase) = 0 Then
 
-                    Message = SR.GetString(SR.RSE_Err_CantAddFileToDeviceProject_1Arg, Extension)
+                    Message = My.Resources.Designer.GetString(My.Resources.Designer.RSE_Err_CantAddFileToDeviceProject_1Arg, Extension)
                     HelpID = HelpIDs.Err_CantAddFileToDeviceProject
                     Return False
                 End If
