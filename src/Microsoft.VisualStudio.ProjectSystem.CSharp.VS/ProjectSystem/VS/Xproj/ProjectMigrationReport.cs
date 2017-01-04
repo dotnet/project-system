@@ -22,13 +22,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         public string OutputMSBuildProject { get; private set; }
 
         [JsonProperty]
-        public List<MigrationError> Errors { get; private set; }
+        public IReadOnlyList<MigrationError> Errors { get; private set; }
 
         [JsonProperty]
-        public List<string> Warnings { get; private set; }
+        public IReadOnlyList<string> Warnings { get; private set; }
 
         [JsonProperty]
-        public List<string> PreExistingCsprojDependencies { get; private set; }
+        public IReadOnlyList<string> PreExistingCsprojDependencies { get; private set; }
 
         [JsonProperty]
         public bool Skipped { get; private set; }

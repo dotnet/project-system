@@ -176,15 +176,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
             // We're calling migrate on a single project and have don't follow turned on. We shouldn't see any other migration reports.
             Assumes.True(mainReport.ProjectMigrationReports.Count == 1);
-            var report = mainReport.ProjectMigrationReports.First();
+            var report = mainReport.ProjectMigrationReports[0];
             if (report.Failed)
             {
                 pLogger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_ERROR, projectName, xprojLocation,
                     GetDotnetGeneralErrorString(projectName, xprojLocation, report.ProjectDirectory, logFile, processExitCode));
             }
 
-            report.Errors.ForEach(error => pLogger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_ERROR, projectName, xprojLocation, error.FormattedErrorMessage));
-            report.Warnings.ForEach(warn => pLogger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_WARNING, projectName, xprojLocation, warn));
+            foreach (var error in report.Errors)
+            {
+                pLogger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_ERROR, projectName, xprojLocation, error.FormattedErrorMessage);
+            }
+
+            foreach (var warn in report.Warnings)
+            {
+                pLogger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_WARNING, projectName, xprojLocation, warn);
+            }
 
             _fileSystem.RemoveFile(logFile);
             return (report.OutputMSBuildProject, report.Succeeded);

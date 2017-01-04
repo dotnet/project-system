@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
     internal class MigrationReport
     {
         [JsonProperty]
-        public List<ProjectMigrationReport> ProjectMigrationReports { get; set; }
+        public IReadOnlyList<ProjectMigrationReport> ProjectMigrationReports { get; set; }
 
         [JsonProperty]
         public int MigratedProjectsCount { get; private set; }
