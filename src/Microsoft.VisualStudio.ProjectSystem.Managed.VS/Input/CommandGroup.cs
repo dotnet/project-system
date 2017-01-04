@@ -9,5 +9,6 @@ namespace Microsoft.VisualStudio.Input
     {
         public const string UIHierarchyWindow = VSConstants.CMDSETID.UIHierarchyWindowCommandSet_string;
         public const string VisualStudioStandard97 = VSConstants.CMDSETID.StandardCommandSet97_string;
+        public const string VisualStudioStandard2k = VSConstants.CMDSETID.StandardCommandSet2K_string;
     }
 }
