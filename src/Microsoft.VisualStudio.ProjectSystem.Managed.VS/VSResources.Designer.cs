@@ -487,11 +487,29 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not read post-migration report at &apos;{0}&apos;..
+        /// </summary>
+        internal static string XprojMigrationFailedCannotReadReport {
+            get {
+                return ResourceManager.GetString("XprojMigrationFailedCannotReadReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to migrate XProj project {0}. Could not find project.json at {1}..
         /// </summary>
         internal static string XprojMigrationFailedProjectJsonFileNotFound {
             get {
                 return ResourceManager.GetString("XprojMigrationFailedProjectJsonFileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to migrate XProj project {0}. &apos;{1}&apos; exited with error code {2}..
+        /// </summary>
+        internal static string XprojMigrationGeneralFailure {
+            get {
+                return ResourceManager.GetString("XprojMigrationGeneralFailure", resourceCulture);
             }
         }
     }

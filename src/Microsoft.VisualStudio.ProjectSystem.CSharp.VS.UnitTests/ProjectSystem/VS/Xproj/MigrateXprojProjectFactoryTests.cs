@@ -8,6 +8,7 @@ using System.Linq;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.Shell.Interop;
+using Newtonsoft.Json;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
@@ -15,11 +16,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
     [ProjectSystemTrait]
     public class MigrateXprojProjectFactoryTests
     {
-        private static readonly string RootLocation = @"C:\Temp";
-        private static readonly string ProjectName = "XprojMigrationTests";
+        private const string RootLocation = @"C:\Temp";
+        private const string ProjectName = "XprojMigrationTests";
         private static readonly string XprojLocation = Path.Combine(RootLocation, $"{ProjectName}.xproj");
         private static readonly string ProjectJsonLocation = Path.Combine(RootLocation, "project.json");
         private static readonly string BackupLocation = Path.Combine(RootLocation, "Backup");
+        private static readonly string CsprojLocation = Path.Combine(RootLocation, $"{ProjectName}.csproj");
+        private static readonly string LogFileLocation = Path.Combine(RootLocation, "asdf.1234");
+        private static readonly string MigrateCommand = $"dotnet migrate --skip-backup -s -x \"{XprojLocation}\" \"{RootLocation}\" -r \"{LogFileLocation}\" --format-report-file-json";
 
         [Fact]
         public void MigrateXprojProjectFactory_NullProcessRunner_ThrowsArgumentNullException()
@@ -97,7 +101,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             var loggedMessages = new List<LogMessage>();
             var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
 
-            Assert.True(migrator.MigrateProject(RootLocation, XprojLocation, "XprojMigrationTests", logger));
+            var migrateResults = migrator.MigrateProject(RootLocation, XprojLocation, "XprojMigrationTests", logger);
+
+            Assert.Equal(0, migrateResults.exitCode);
             Assert.Equal(0, loggedMessages.Count);
         }
 
@@ -111,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             var loggedMessages = new List<LogMessage>();
             var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
 
-            Assert.True(migrator.MigrateProject(RootLocation, XprojLocation, "XprojMigrationTests", logger));
+            Assert.Equal(0, migrator.MigrateProject(RootLocation, XprojLocation, "XprojMigrationTests", logger).exitCode);
             Assert.Equal(2, loggedMessages.Count);
             Assert.Equal(new LogMessage
             {
@@ -130,7 +136,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         }
 
         [Fact]
-        public void MigrateXprojProjectFactory_MigrateError_ReturnsFalse()
+        public void MigrateXprojProjectFactory_MigrateError_ReturnsErrorCode()
         {
             // Runner returns valid response, standard exit code
             var procRunner = ProcessRunnerFactory.ImplementRunner(ProcessVerifier, exitCode: VSConstants.E_FAIL);
@@ -138,52 +144,145 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
             var loggedMessages = new List<LogMessage>();
             var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
-            Assert.False(migrator.MigrateProject(RootLocation, XprojLocation, "XprojMigrationTests", logger));
-            Assert.Equal(1, loggedMessages.Count);
-            Assert.Equal(new LogMessage
-            {
-                Level = (uint)__VSUL_ERRORLEVEL.VSUL_ERROR,
-                Project = "XprojMigrationTests",
-                File = XprojLocation,
-                Message = $"Failed to migrate XProj project XprojMigrationTests. 'dotnet migrate --skip-backup -s -p \"{RootLocation}\" -x \"{XprojLocation}\"' exited with error code {VSConstants.E_FAIL}."
-            }, loggedMessages[0]);
+            var migrateResults = migrator.MigrateProject(RootLocation, XprojLocation, "XprojMigrationTests", logger);
+            Assert.Equal(VSConstants.E_FAIL, migrateResults.exitCode);
+            Assert.Equal(LogFileLocation, migrateResults.logFile);
         }
 
         [Fact]
         public void MigrateXprojProjectFactory_ValidCsproj_FindsCsproj()
         {
-            var csproj = Path.Combine(RootLocation, "XprojMigrationTests.csproj");
             var fileSystem = CreateFileSystem();
-
-            fileSystem.Create(csproj);
 
             var loggedMessages = new List<LogMessage>();
             var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
             var migrator = new MigrateXprojProjectFactory(ProcessRunnerFactory.CreateRunner(), fileSystem);
 
-            Assert.Equal(csproj, migrator.GetCsproj(RootLocation, "XprojMigrationTests", XprojLocation, logger));
+            var (foundProjectFile, success) = migrator.LogReport(LogFileLocation, 0, ProjectName, XprojLocation, logger);
+            Assert.Equal(CsprojLocation, foundProjectFile);
+            Assert.True(success);
             Assert.Equal(0, loggedMessages.Count);
         }
 
         [Fact]
-        public void MigrateXprojProjectFactory_NoCsproj_LogsError()
+        public void MigrateXprojProjectFactory_NoLogFile_LogsError()
         {
-            var csproj = Path.Combine(RootLocation, "XprojMigrationTests.csproj");
-            var fileSystem = CreateFileSystem();
+            var fileSystem = CreateFileSystem(withEntries: false);
 
             var loggedMessages = new List<LogMessage>();
             var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
             var migrator = new MigrateXprojProjectFactory(ProcessRunnerFactory.CreateRunner(), fileSystem);
 
-            Assert.Equal("", migrator.GetCsproj(RootLocation, "XprojMigrationTests", XprojLocation, logger));
-            Assert.Equal(1, loggedMessages.Count);
+            var (projectFile, success) = migrator.LogReport(LogFileLocation, VSConstants.E_FAIL, ProjectName, XprojLocation, logger);
+            Assert.Equal(string.Empty, projectFile);
+            Assert.False(success);
+            Assert.Equal(2, loggedMessages.Count);
             Assert.Equal(new LogMessage
             {
-                Level = (uint)__VSUL_ERRORLEVEL.VSUL_ERROR,
-                Project = "XprojMigrationTests",
                 File = XprojLocation,
-                Message = $"Expected to find migrated cpsroj in {RootLocation}, but did not find any."
+                Level = (uint)__VSUL_ERRORLEVEL.VSUL_ERROR,
+                Message = string.Format(VSResources.XprojMigrationFailedCannotReadReport, LogFileLocation),
+                Project = ProjectName
             }, loggedMessages[0]);
+            Assert.Equal(new LogMessage
+            {
+                File = XprojLocation,
+                Level = (uint)__VSUL_ERRORLEVEL.VSUL_ERROR,
+                Message = string.Format(VSResources.XprojMigrationGeneralFailure, ProjectName, MigrateCommand, VSConstants.E_FAIL),
+                Project = ProjectName
+            }, loggedMessages[1]);
+        }
+
+        [Fact]
+        public void MigrateXprojProjectFactory_InvalidLogFile_LogsError()
+        {
+            var fileSystem = CreateFileSystem(withEntries: false);
+            fileSystem.WriteAllText(LogFileLocation, string.Empty);
+
+            var loggedMessages = new List<LogMessage>();
+            var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
+            var migrator = new MigrateXprojProjectFactory(ProcessRunnerFactory.CreateRunner(), fileSystem);
+
+            var (projectFile, success) = migrator.LogReport(LogFileLocation, VSConstants.E_ABORT, ProjectName, XprojLocation, logger);
+            Assert.Equal(string.Empty, projectFile);
+            Assert.False(success);
+            Assert.Equal(2, loggedMessages.Count);
+            Assert.Equal(new LogMessage
+            {
+                File = XprojLocation,
+                Level = (uint)__VSUL_ERRORLEVEL.VSUL_ERROR,
+                Message = string.Format(VSResources.XprojMigrationFailedCannotReadReport, LogFileLocation),
+                Project = ProjectName
+            }, loggedMessages[0]);
+            Assert.Equal(new LogMessage
+            {
+                File = XprojLocation,
+                Level = (uint)__VSUL_ERRORLEVEL.VSUL_ERROR,
+                Message = string.Format(VSResources.XprojMigrationGeneralFailure, ProjectName, MigrateCommand, VSConstants.E_ABORT),
+                Project = ProjectName
+            }, loggedMessages[1]);
+        }
+
+        [Fact]
+        public void MigrateXprojProjectFactory_LogWithErrors_MessagesAreLoggedToVs()
+        {
+            var fileSystem = CreateFileSystem(withEntries: false);
+            var migrationReport = new MigrationReport(0, new List<ProjectMigrationReport>
+            {
+                new ProjectMigrationReport(false, string.Empty, RootLocation, ProjectName, new List<string>
+                {
+                    "Sample Warning 1",
+                    "Sample Warning 2"
+                }, new List<MigrationError> {
+                    new MigrationError("asdf1234", "General Error", "An error has occurred"),
+                    new MigrationError("fdsa4321", "Specific Error", "A different error has occurred")
+                })
+            });
+            fileSystem.WriteAllText(LogFileLocation, JsonConvert.SerializeObject(migrationReport));
+
+            var loggedMessages = new List<LogMessage>();
+            var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
+            var migrator = new MigrateXprojProjectFactory(ProcessRunnerFactory.CreateRunner(), fileSystem);
+
+            var (projectFile, success) = migrator.LogReport(LogFileLocation, VSConstants.E_ABORT, ProjectName, XprojLocation, logger);
+            Assert.Equal(string.Empty, projectFile);
+            Assert.False(success);
+            Assert.Equal(5, loggedMessages.Count);
+            Assert.Contains(new LogMessage
+            {
+                File = XprojLocation,
+                Level = (uint)__VSUL_ERRORLEVEL.VSUL_WARNING,
+                Message = "Sample Warning 1",
+                Project = ProjectName
+            }, loggedMessages);
+            Assert.Contains(new LogMessage
+            {
+                File = XprojLocation,
+                Level = (uint)__VSUL_ERRORLEVEL.VSUL_WARNING,
+                Message = "Sample Warning 2",
+                Project = ProjectName
+            }, loggedMessages);
+            Assert.Contains(new LogMessage
+            {
+                File = XprojLocation,
+                Level = (uint)__VSUL_ERRORLEVEL.VSUL_ERROR,
+                Message = "asdf1234::General Error: An error has occurred",
+                Project = ProjectName
+            }, loggedMessages);
+            Assert.Contains(new LogMessage
+            {
+                File = XprojLocation,
+                Level = (uint)__VSUL_ERRORLEVEL.VSUL_ERROR,
+                Message = "fdsa4321::Specific Error: A different error has occurred",
+                Project = ProjectName
+            }, loggedMessages);
+            Assert.Contains(new LogMessage
+            {
+                File = XprojLocation,
+                Level = (uint)__VSUL_ERRORLEVEL.VSUL_ERROR,
+                Message = string.Format(VSResources.XprojMigrationGeneralFailure, ProjectName, MigrateCommand, VSConstants.E_ABORT),
+                Project = ProjectName
+            }, loggedMessages);
         }
 
         [Fact]
@@ -207,11 +306,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         public void MigrateXprojProjectFactory_E2E_Works()
         {
             var fileSystem = CreateFileSystem();
-            var csproj = Path.Combine(BackupLocation, $"{ProjectName}.csproj");
             var processRunner = ProcessRunnerFactory.ImplementRunner(pInfo =>
             {
                 ProcessVerifier(pInfo);
-                fileSystem.Create(csproj);
+                fileSystem.Create(CsprojLocation);
             });
 
             var loggedMessages = new List<LogMessage>();
@@ -220,10 +318,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             var migrator = new MigrateXprojProjectFactory(processRunner, fileSystem);
 
             Assert.Equal(VSConstants.S_OK, migrator.UpgradeProject(XprojLocation, 0, BackupLocation, out string outCsproj, logger, out int upgradeRequired, out Guid newProjectFactory));
-            Assert.True(fileSystem.FileExists(csproj));
-            Assert.True(fileSystem.FileExists(Path.Combine(BackupLocation, $"{ProjectName}.csproj")));
+            Assert.True(fileSystem.FileExists(CsprojLocation));
+            Assert.True(fileSystem.FileExists(Path.Combine(BackupLocation, $"{ProjectName}.xproj")));
             Assert.True(fileSystem.FileExists(Path.Combine(BackupLocation, "project.json")));
-            Assert.Equal(csproj, outCsproj);
+            Assert.Equal(CsprojLocation, outCsproj);
             Assert.Equal((int)__VSPPROJECTUPGRADEVIAFACTORYREPAIRFLAGS.VSPUVF_PROJECT_ONEWAYUPGRADE, upgradeRequired);
             Assert.Equal(Guid.Parse(CSharpProjectSystemPackage.ProjectTypeGuid), newProjectFactory);
         }
@@ -231,12 +329,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         private void ProcessVerifier(ProcessStartInfo info)
         {
             Assert.Equal("dotnet.exe", info.FileName);
-            Assert.Equal($"migrate --skip-backup -s -x \"{XprojLocation}\" \"{RootLocation}\"", info.Arguments);
+            Assert.Equal($"migrate --skip-backup -s -x \"{XprojLocation}\" \"{RootLocation}\" -r \"{LogFileLocation}\" --format-report-file-json", info.Arguments);
             Assert.True(info.EnvironmentVariables.ContainsKey("DOTNET_SKIP_FIRST_TIME_EXPERIENCE"));
             Assert.Equal("true", info.EnvironmentVariables["DOTNET_SKIP_FIRST_TIME_EXPERIENCE"]);
         }
 
-        private IFileSystem CreateFileSystem(bool withEntries = true)
+        private IFileSystem CreateFileSystem(bool withEntries = true, MigrationReport report = null)
         {
             var fileSystem = new IFileSystemMock();
             if (withEntries)
@@ -245,6 +343,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
                 fileSystem.CreateDirectory(BackupLocation);
                 fileSystem.Create(XprojLocation);
                 fileSystem.Create(ProjectJsonLocation);
+            }
+
+            fileSystem.SetTempFile(LogFileLocation);
+
+            if (withEntries)
+            {
+                report = report ?? new MigrationReport(1, new List<ProjectMigrationReport>()
+                {
+                    new ProjectMigrationReport(true, CsprojLocation, RootLocation, ProjectName, new List<string>(), new List<MigrationError>())
+                });
+                fileSystem.WriteAllText(LogFileLocation, JsonConvert.SerializeObject(report));
             }
 
             return fileSystem;
