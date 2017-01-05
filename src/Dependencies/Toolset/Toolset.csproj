@@ -3,11 +3,16 @@
   <Import Project="..\..\..\build\Targets\ProducesNoOutput.Settings.targets" />
   <PropertyGroup>
     <ProjectGuid>{4D52C1E5-6F4B-4CDE-8149-AC374F018245}</ProjectGuid>
-    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <ProjectSystemLayer>Dependency</ProjectSystemLayer>
+    <TargetFramework>netstandard1.0</TargetFramework>
+    <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wpa81+wp8</PackageTargetFallback>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="project.json" />
+    <PackageReference Include="MicroBuild.Core" Version="0.2.0" />
+    <PackageReference Include="Microsoft.Net.Compilers"  Version="2.0.0-rc2-61102-09" ExcludeAssets="Build" />
+    <PackageReference Include="Microsoft.Net.RoslynDiagnostics" Version="1.2.0-beta2" ExcludeAssets="Build" />
+    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version ="15.0.25929-RC2" ExcludeAssets="Build" />
   </ItemGroup>
   <Import Project="..\..\..\build\Targets\ProducesNoOutput.Imports.targets" />
 </Project>

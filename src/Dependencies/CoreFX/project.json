@@ -1,9 +1,0 @@
-{
-  "supports": {},
-  "dependencies": {
-    "System.ValueTuple": "4.3.0"
-  },
-  "frameworks": {
-    ".NETFramework,Version=v4.6": { }
-  }
-}
