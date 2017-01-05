@@ -62,8 +62,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         [Theory]
         [InlineData("file:///[MyProviderType;MyItemSpec;MyItemType;MyUniqueToken]", "MyItemSpec", "MyItemSpec")]
-        [InlineData("file:///[MyProviderType;MyItemSpec;MyItemType;MyUniqueToken]", 
-                    "OtherCaption", 
+        [InlineData("file:///[MyProviderType;MyItemSpec;MyItemType;MyUniqueToken]",
+                    "OtherCaption",
                     "OtherCaption (MyItemSpec)")]
         public void DependencyNode_Alias(string idString, string caption, string expectedAlias)
         {
@@ -107,7 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
            var id = DependencyNodeId.FromString(
                 "file:///[MyProviderType;MyItemSpec;MyItemType;MyUniqueToken]");
-            
+
             var node = new DependencyNode(id, ProjectTreeFlags.Empty);
 
             // check empty node
@@ -140,9 +140,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var properties = new Dictionary<string, string>().ToImmutableDictionary();
 
             // Act
-            var node = new AssemblyDependencyNode(id, 
-                                                  ProjectTreeFlags.Empty, 
-                                                  priority, 
+            var node = new AssemblyDependencyNode(id,
+                                                  ProjectTreeFlags.Empty,
+                                                  priority,
                                                   properties,
                                                   resolved: true,
                                                   fusionName: fusionName);
@@ -418,14 +418,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             // Arrange
             var defaultFlags = DependencyNode.DependencyFlags.Union(DependencyNode.PreFilledFolderNode);
 
-            var caption = "Framework Assemblies";
+            var caption = VSResources.FrameworkAssembliesNodeName;
             var id = DependencyNodeId.FromString(
                         "file:///[MyProviderType;c:\\MyItemSpec.dll;MyItemType;MyUniqueToken]");
             var properties = new Dictionary<string, string>().ToImmutableDictionary();
             var myFlags = ProjectTreeFlags.Create("MyFlag");
 
             // Act
-            var node = new PackageFrameworkAssembliesDependencyNode(id,                                                       
+            var node = new PackageFrameworkAssembliesDependencyNode(id,
                                                         myFlags,
                                                         properties,
                                                         resolved: true);

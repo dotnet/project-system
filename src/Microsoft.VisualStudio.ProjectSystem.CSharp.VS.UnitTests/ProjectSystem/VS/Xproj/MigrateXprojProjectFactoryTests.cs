@@ -65,8 +65,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
             Assert.Equal(XprojLocation, loggedMessages[0].File);
             Assert.Equal(ProjectJsonLocation, loggedMessages[1].File);
-            Assert.Equal($"Backing up {XprojLocation} to {xprojBackedUp}.", loggedMessages[0].Message);
-            Assert.Equal($"Backing up {ProjectJsonLocation} to {projectJsonBackedUp}.", loggedMessages[1].Message);
+            Assert.Equal(string.Format(VSResources.MigrationBackupFile, XprojLocation, xprojBackedUp), loggedMessages[0].Message);
+            Assert.Equal(string.Format(VSResources.MigrationBackupFile, ProjectJsonLocation, projectJsonBackedUp), loggedMessages[1].Message);
 
             // Finally, assert that there actually are backup files in the backup directory
             var backedUpFiles = fileSystem.EnumerateFiles(BackupLocation, "*", SearchOption.TopDirectoryOnly);
@@ -103,9 +103,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             Assert.Equal(XprojLocation, loggedMessages[0].File);
             Assert.Equal(ProjectJsonLocation, loggedMessages[1].File);
             Assert.Equal(XprojUserLocation, loggedMessages[2].File);
-            Assert.Equal($"Backing up {XprojLocation} to {xprojBackedUp}.", loggedMessages[0].Message);
-            Assert.Equal($"Backing up {ProjectJsonLocation} to {projectJsonBackedUp}.", loggedMessages[1].Message);
-            Assert.Equal($"Backing up {XprojUserLocation} to {xprojUserBackedUp}.", loggedMessages[2].Message);
+            Assert.Equal(string.Format(VSResources.MigrationBackupFile, XprojLocation, xprojBackedUp), loggedMessages[0].Message);
+            Assert.Equal(string.Format(VSResources.MigrationBackupFile, ProjectJsonLocation, projectJsonBackedUp), loggedMessages[1].Message);
+            Assert.Equal(string.Format(VSResources.MigrationBackupFile, XprojUserLocation, xprojUserBackedUp), loggedMessages[2].Message);
 
             // Finally, assert that there actually are backup files in the backup directory
             var backedUpFiles = fileSystem.EnumerateFiles(BackupLocation, "*", SearchOption.TopDirectoryOnly);
@@ -131,7 +131,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             Assert.Equal((uint)__VSUL_ERRORLEVEL.VSUL_ERROR, loggedMessages[0].Level);
             Assert.Equal("XprojMigrationTests", loggedMessages[0].Project);
             Assert.Equal(ProjectJsonLocation, loggedMessages[0].File);
-            Assert.Equal($"Failed to migrate XProj project XprojMigrationTests. Could not find project.json at {ProjectJsonLocation}.", loggedMessages[0].Message);
+            Assert.Equal(string.Format(VSResources.XprojMigrationFailedProjectJsonFileNotFound, ProjectName, ProjectJsonLocation), loggedMessages[0].Message);
         }
 
         [Fact]
