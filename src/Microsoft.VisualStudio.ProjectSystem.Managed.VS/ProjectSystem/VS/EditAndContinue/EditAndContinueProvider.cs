@@ -12,11 +12,8 @@ using EncInterop = Microsoft.VisualStudio.LanguageServices.Implementation.EditAn
 namespace Microsoft.VisualStudio.ProjectSystem.Managed.VS.EditAndContinue
 {
 
-    [Export(ExportContractNames.VsTypes.ProjectNodeComExtension)]
+    [ExportProjectNodeComService(typeof(IVsENCRebuildableProjectCfg), typeof(EncInterop.IVsENCRebuildableProjectCfg2), typeof(EncInterop.IVsENCRebuildableProjectCfg4))]
     [AppliesTo(ProjectCapability.EditAndContinue)]
-    [ComServiceIid(typeof(IVsENCRebuildableProjectCfg))]
-    [ComServiceIid(typeof(EncInterop.IVsENCRebuildableProjectCfg2))]
-    [ComServiceIid(typeof(EncInterop.IVsENCRebuildableProjectCfg4))]
     internal class EditAndContinueProvider : IVsENCRebuildableProjectCfg, EncInterop.IVsENCRebuildableProjectCfg2, EncInterop.IVsENCRebuildableProjectCfg4
     {
         private readonly ILanguageServiceHost _host;
