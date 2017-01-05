@@ -7,16 +7,14 @@ namespace Microsoft.VisualStudio.Shell.Interop
 {
     internal static class IVsSolutionBuildManager2Factory
     {
-        public static IVsSolutionBuildManager2 Create(IVsUpdateSolutionEvents solutionEventsListener = null, IVsHierarchy hierarchyToBuild = null, Func<bool> isBuilding = null, bool cancelBuild = false)
+        public static IVsSolutionBuildManager2 Create(IVsUpdateSolutionEvents solutionEventsListener = null, IVsHierarchy hierarchyToBuild = null, bool isBuilding = false, bool cancelBuild = false)
         {
             var buildManager = new Mock<IVsSolutionBuildManager2>();
 
             solutionEventsListener = solutionEventsListener ?? IVsUpdateSolutionEventsFactory.Create();
             hierarchyToBuild = hierarchyToBuild ?? IVsHierarchyFactory.Create();
 
-            isBuilding = isBuilding ?? new Func<bool>(() => false);
-            var isBusy = isBuilding() ? 1 : 0;
-
+            int isBusy = isBuilding ? 1 : 0;
             buildManager.Setup(b => b.QueryBuildManagerBusy(out isBusy))
                 .Returns(VSConstants.S_OK);
 

@@ -95,13 +95,13 @@ Root (flags: {ProjectRoot})
             var nodes = ImmutableHashSet.Create(tree.Root);
 
             // Command is enabled if there is no build in progress.
-            var command = CreateInstance(isBuilding: () => false);
+            var command = CreateInstance(isBuilding: false);
             var results = await command.GetCommandStatusAsync(nodes, GetCommandId(), true, "commandText", (CommandStatus)0);
             Assert.True(results.Handled);
             Assert.Equal(CommandStatus.Enabled | CommandStatus.Supported, results.Status);
 
             // Command is disabled if there is build in progress.
-            command = CreateInstance(isBuilding: () => true);
+            command = CreateInstance(isBuilding: true);
             results = await command.GetCommandStatusAsync(nodes, GetCommandId(), true, "commandText", (CommandStatus)0);
             Assert.True(results.Handled);
             Assert.Equal(CommandStatus.Supported, results.Status);
@@ -122,8 +122,7 @@ Root (flags: {ProjectRoot})
             Action onUpdateSolutionDone = () => { buildCompleted = true; };
             var solutionEventsListener = IVsUpdateSolutionEventsFactory.Create(onUpdateSolutionBegin, onUpdateSolutionCancel, onUpdateSolutionDone);
 
-            Func<bool> isBuilding = () => true;
-            var command = CreateInstance(solutionEventsListener: solutionEventsListener, isBuilding: isBuilding);
+            var command = CreateInstance(solutionEventsListener: solutionEventsListener, isBuilding: true);
 
             // Ensure we handle the command, but don't invoke build as there is a build already in progress.
             var handled = await command.TryHandleCommandAsync(nodes, GetCommandId(), true, 0, IntPtr.Zero, IntPtr.Zero);
@@ -139,7 +138,7 @@ Root (flags: {ProjectRoot})
             GeneratePackageOnBuildPropertyProvider generatePackageOnBuildPropertyProvider = null,
             IVsSolutionBuildManager2 buildManager = null,
             IVsUpdateSolutionEvents solutionEventsListener = null,
-            Func<bool> isBuilding = null,
+            bool isBuilding = false,
             bool cancelBuild = false)
         {
             var hierarchy = IVsHierarchyFactory.Create();
