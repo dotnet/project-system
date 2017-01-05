@@ -136,8 +136,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         public void Dispose()
         {
             // Build manager APIs require UI thread access.
-            ThreadHelper.Generic.Invoke(() =>
+            _threadingService.ExecuteSynchronously(async() =>
             {
+                await _threadingService.SwitchToUIThread();
+
                 if (_buildManager != null)
                 {
                     // Unregister solution build events.
