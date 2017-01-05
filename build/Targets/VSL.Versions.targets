@@ -4,8 +4,17 @@
     <RoslynSemanticVersion Condition="'$(RoslynSemanticVersion)' == ''">2.0.0</RoslynSemanticVersion>
     <MicroBuildVersion>0.2.0</MicroBuildVersion>
     <BuildNumber Condition="'$(BuildNumber)' == ''">$(BUILD_BUILDNUMBER)</BuildNumber>
-    <BuildNumberPart1 Condition="'$(BuildNumber)' != ''">$(BuildNumber.Split('.')[0])</BuildNumberPart1>
-    <BuildNumberPart2 Condition="('$(BuildNumber)' != '') AND ($(BuildNumber.Split('.').Length) == 2)">$(BuildNumber.Split('.')[1].PadLeft(2,'0'))</BuildNumberPart2>
+
+    <!-- Split the build parts out from the BuildNumber which is given to us by MicroBuild in the format of yyyymmdd.nn
+         where BuildNumberFiveDigitDateStamp is mmmdd (such as 60615) and BuildNumberBuildOfTheDay is nn (which represents the nth build
+         started that day). So the first build of the day, 20160615.1, will produce something similar to BuildNumberFiveDigitDateStamp: 60615,
+         BuildNumberBuildOfTheDayPadded: 01;and the 12th build of the day, 20160615.12, will produce BuildNumberFiveDigitDateStamp: 60615, BuildNumberBuildOfTheDay: 12
+
+         Additionally, in order ensure the value fits in the 16-bit PE header fields, we will only take the last five digits of the BuildNumber, so
+         in the case of 20160615, we will set BuildNumberFiveDigitDateStamp to 60615. Unfortunately for releases in 2017 we can't go any higher, so
+         we will continue the month counting instead: the build after 61231 is 61301. -->
+    <BuildNumberFiveDigitDateStamp Condition="'$(BuildNumber)' != ''">$([MSBuild]::Subtract($(BuildNumber.Split('.')[0].Substring(3).Trim()), 8800))</BuildNumberFiveDigitDateStamp>
+    <BuildNumberBuildOfTheDayPadded Condition="('$(BuildNumber)' != '') AND ($(BuildNumber.Split('.').Length) == 2)">$(BuildNumber.Split('.')[1].PadLeft(2,'0'))</BuildNumberBuildOfTheDayPadded>
   </PropertyGroup>
 
   <Choose>
@@ -18,11 +27,11 @@
       </PropertyGroup>
     </When>
 
-    <When Condition="('$(BuildNumber)' != '') AND ('$(BuildNumberPart1)' != '') AND ('$(BuildNumberPart2)' != '')">
+    <When Condition="('$(BuildNumber)' != '') AND ('$(BuildNumberFiveDigitDateStamp)' != '') AND ('$(BuildNumberBuildOfTheDayPadded)' != '')">
       <!-- The user specified a build number, so we should use that. -->
       <PropertyGroup>
         <AssemblyVersion>$(RoslynSemanticVersion).0</AssemblyVersion>
-        <BuildVersion>$(RoslynSemanticVersion).$(BuildNumberPart1)$(BuildNumberPart2)</BuildVersion>
+        <BuildVersion>$(RoslynSemanticVersion).$(BuildNumberFiveDigitDateStamp)</BuildVersion>
       </PropertyGroup>
     </When>
 
@@ -31,7 +40,7 @@
           This happens if the build template does not pass BuildNumber down to MSBuild. -->
       <PropertyGroup>
         <AssemblyVersion>$(RoslynSemanticVersion).0</AssemblyVersion>
-        <BuildVersion>$(RoslynSemanticVersion).$(BuildNumberPart1)$(BuildNumberPart2)</BuildVersion>
+        <BuildVersion>$(RoslynSemanticVersion).$(BuildNumberFiveDigitDateStamp)</BuildVersion>
       </PropertyGroup>
     </When>
 
@@ -55,10 +64,10 @@
     <VSSemanticVersion>15.0.0</VSSemanticVersion>
 
     <RoslynNuGetPreReleaseVersion>$(RoslynSemanticVersion)-rc</RoslynNuGetPreReleaseVersion>
-    <RoslynNuGetPerBuildPreReleaseVersion Condition="'$(BuildNumberPart1)' != '' AND '$(BuildNumberPart2)' != ''">$(RoslynNuGetPreReleaseVersion)-$(BuildNumberPart1.Trim())-$(BuildNumberPart2.Trim())</RoslynNuGetPerBuildPreReleaseVersion>
+    <RoslynNuGetPerBuildPreReleaseVersion Condition="'$(BuildNumberFiveDigitDateStamp)' != '' AND '$(BuildNumberBuildOfTheDayPadded)' != ''">$(RoslynNuGetPreReleaseVersion)-$(BuildNumberFiveDigitDateStamp.Trim())-$(BuildNumberBuildOfTheDayPadded.Trim())</RoslynNuGetPerBuildPreReleaseVersion>
     <RoslynNuGetPerBuildPreReleaseVersion Condition="'$(RoslynNuGetPerBuildPreReleaseVersion)' == ''">1.0.0-rc</RoslynNuGetPerBuildPreReleaseVersion>
     <VSNuGetPreReleaseVersion>$(VSSemanticVersion)-rc</VSNuGetPreReleaseVersion>
-    <VSNuGetPerBuildPreReleaseVersion Condition="'$(BuildNumberPart1)' != '' AND '$(BuildNumberPart2)' != ''">$(VSNuGetPreReleaseVersion)-$(BuildNumberPart1.Trim())-$(BuildNumberPart2.Trim())</VSNuGetPerBuildPreReleaseVersion>
+    <VSNuGetPerBuildPreReleaseVersion Condition="'$(BuildNumberFiveDigitDateStamp)' != '' AND '$(BuildNumberBuildOfTheDayPadded)' != ''">$(VSNuGetPreReleaseVersion)-$(BuildNumberFiveDigitDateStamp.Trim())-$(BuildNumberBuildOfTheDayPadded.Trim())</VSNuGetPerBuildPreReleaseVersion>
     <VSNuGetPerBuildPreReleaseVersion Condition="'$(VSNuGetPerBuildPreReleaseVersion)' == ''">1.0.0-rc</VSNuGetPerBuildPreReleaseVersion>
   </PropertyGroup>
   
