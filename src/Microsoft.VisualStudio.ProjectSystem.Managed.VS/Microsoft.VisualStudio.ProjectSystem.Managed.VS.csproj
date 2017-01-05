@@ -40,6 +40,7 @@
     <Compile Include="ProjectSystem\VS\Editor\EditProjectFileVsFrameEvents.cs" />
     <Compile Include="ProjectSystem\VS\Editor\IMsBuildModelWatcher.cs" />
     <Compile Include="ProjectSystem\VS\Editor\MsBuildModelWatcher.cs" />
+    <Compile Include="ProjectSystem\VS\ExportProjectNodeComServiceAttribute.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\GenerateNuGetPackageTopLevelBuildMenuCommand.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\GenerateNuGetPackageProjectContextMenuCommand.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\AbstractGenerateNuGetPackageCommand.cs" />
