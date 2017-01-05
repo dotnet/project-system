@@ -14,11 +14,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         private readonly Dictionary<uint, IVsHierarchyEvents> _hierEventSinks;
         private readonly HashSet<uint> _pendingItemIds;
 
-        public UnconfiguredProjectHostObject(UnconfiguredProject unconfiguredProject)
-            : base (innerHierarchy: (IVsHierarchy)unconfiguredProject.Services.HostObject, innerVsProject: (IVsProject)unconfiguredProject.Services.HostObject)
+        public UnconfiguredProjectHostObject(IUnconfiguredProjectVsServices projectVsServices)
+            : base(projectVsServices.VsHierarchy, innerVsProject: projectVsServices.VsProject)
         {
-            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
-
             _hierEventSinks = new Dictionary<uint, IVsHierarchyEvents>();
             _pendingItemIds = new HashSet<uint>();
         }
