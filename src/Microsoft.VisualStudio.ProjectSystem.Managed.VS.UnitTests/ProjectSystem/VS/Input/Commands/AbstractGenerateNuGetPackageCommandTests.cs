@@ -1,13 +1,11 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.VisualStudio.Input;
-using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
-using Xunit;
-using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem.Build;
+using Microsoft.VisualStudio.Shell.Interop;
+using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
