@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 if (Guid.TryParse(projectChange.After.Properties[ConfigurationGeneral.ProjectGuidProperty], out Guid result))
                 {
                     _guid = result;
-                    await AddOrRemoveProjectFromStartupProjectList(initialize: true).ConfigureAwait(false);
+                    await AddOrRemoveProjectFromStartupProjectListAsync(initialize: true).ConfigureAwait(false);
                 }
 
                 return;
@@ -106,13 +106,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                */
             if (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.OutputTypeProperty))
             {
-                await AddOrRemoveProjectFromStartupProjectList().ConfigureAwait(false);
+                await AddOrRemoveProjectFromStartupProjectListAsync().ConfigureAwait(false);
             }
         }
 
-        private async Task AddOrRemoveProjectFromStartupProjectList(bool initialize = false)
+        private async Task AddOrRemoveProjectFromStartupProjectListAsync(bool initialize = false)
         {
-            bool isDebuggable = await IsDebuggable().ConfigureAwait(false);
+            bool isDebuggable = await IsDebuggableAsync().ConfigureAwait(false);
             await _threadingService.SwitchToUIThread();
 
             _startupProjectsListService = _startupProjectsListService ?? _serviceProvider.GetService<IVsStartupProjectsListService, SVsStartupProjectsListService>();
@@ -130,7 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
         }
 
-        private async Task<bool> IsDebuggable()
+        private async Task<bool> IsDebuggableAsync()
         {
             foreach (var provider in _launchProviders.Value.Debuggers)
             {
