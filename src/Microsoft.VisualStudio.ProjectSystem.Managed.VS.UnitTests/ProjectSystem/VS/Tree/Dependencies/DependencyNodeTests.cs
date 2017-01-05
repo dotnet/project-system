@@ -53,8 +53,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             // Assert
             var expectedFlags = resolved
-                ? DependencyNode.GenericResolvedDependencyFlags.Union(myFlags)
-                : DependencyNode.GenericUnresolvedDependencyFlags.Union(myFlags);
+                ? DependencyNode.ResolvedDependencyFlags.Union(myFlags)
+                : DependencyNode.UnresolvedDependencyFlags.Union(myFlags);
 
             Assert.True(node.Flags.Contains(expectedFlags));
             Assert.Equal(resolved, node.Resolved);
@@ -556,9 +556,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 : KnownMonikers.ReferenceWarning;
 
             var defaultFlags = (resolved
-                ? DependencyNode.ResolvedDependencyFlags
-                : DependencyNode.UnresolvedDependencyFlags)
-                .Add(ProjectTreeFlags.Common.ResolvedReference);
+                ? DependencyNode.GenericResolvedDependencyFlags
+                : DependencyNode.GenericUnresolvedDependencyFlags);
 
             var priority = resolved
                             ? DependencyNode.PackageNodePriority

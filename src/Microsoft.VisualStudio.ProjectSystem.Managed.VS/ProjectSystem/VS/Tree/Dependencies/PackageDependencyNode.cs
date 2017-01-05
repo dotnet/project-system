@@ -23,9 +23,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             ? PackageNodePriority 
                             : UnresolvedReferenceNodePriority;
 
-            Flags = (resolved ? ResolvedDependencyFlags : UnresolvedDependencyFlags)
-                        .Add(ProjectTreeFlags.Common.ResolvedReference)
+            Flags = (resolved ? GenericResolvedDependencyFlags : GenericUnresolvedDependencyFlags)
                         .Union(flags);
+
         }
 
         public override string Alias

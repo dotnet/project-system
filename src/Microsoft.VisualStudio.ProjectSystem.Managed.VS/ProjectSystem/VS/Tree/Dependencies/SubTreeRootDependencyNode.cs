@@ -21,6 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Caption = caption;
             Icon = icon;
             ExpandedIcon = expandedIcon ?? Icon;
+            Flags = flags.Add(ProjectTreeFlags.Common.NonFileSystemProjectItem.ToString());
         }
     }
 }

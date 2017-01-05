@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.Shell;
 
@@ -78,14 +79,52 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         /// <summary>
+        /// Finds direct child of IProjectTree by it's path constructed with projectPath 
+        /// and either itemspec or caption.
+        /// </summary>
+        /// <param name="tree"></param>
+        /// <param name="projectFolder"></param>
+        /// <param name="itemSpec"></param>
+        /// <param name="caption"></param>
+        /// <returns></returns>
+        public static IProjectTree FindNodeByPath(this IProjectTree tree, 
+                                                  string projectFolder, 
+                                                  string itemSpec, 
+                                                  string caption)
+        {
+            var treeNode = SafeFindNodeByPath(tree, projectFolder, itemSpec);
+            if (treeNode == null)
+            {
+                treeNode = SafeFindNodeByPath(tree, projectFolder, caption);
+            }
+
+            return treeNode;
+        }
+
+        private static IProjectTree SafeFindNodeByPath(IProjectTree tree, string projectFolder, string relativePath)
+        {
+            try
+            {
+                var nodeFullFilePath = Path.GetFullPath(Path.Combine(projectFolder, relativePath));
+                return FindNodeHelper(tree, nodeFullFilePath, child => child.FilePath);
+
+            }
+            catch (ArgumentException)
+            {
+                var nodeFullFilePath = Path.Combine(projectFolder, relativePath);
+                return FindNodeHelper(tree, nodeFullFilePath, child => child.FilePath);
+            }
+        }        
+
+        /// <summary>
         /// Finds direct child of IProjectTree by it's name
         /// </summary>
         /// <param name="tree"></param>
-        /// <param name="itemName"></param>
+        /// <param name="caption"></param>
         /// <returns></returns>
-        public static IProjectTree FindNodeByName(this IProjectTree tree, string itemName)
+        public static IProjectTree FindNodeByCaption(this IProjectTree tree, string caption)
         {
-            return FindNodeHelper(tree, itemName, child => child.Caption);
+            return FindNodeHelper(tree, caption, child => child.Caption);
         }
 
         private static IProjectTree FindNodeHelper(this IProjectTree tree, string itemToFind,

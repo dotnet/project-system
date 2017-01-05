@@ -108,8 +108,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Properties = properties;
             Resolved = resolved;
             Flags = Resolved
-                        ? GenericResolvedDependencyFlags.Union(flags)
-                        : GenericUnresolvedDependencyFlags.Union(flags);
+                        ? ResolvedDependencyFlags.Union(flags)
+                        : UnresolvedDependencyFlags.Union(flags);
         }
 
         /// <summary>

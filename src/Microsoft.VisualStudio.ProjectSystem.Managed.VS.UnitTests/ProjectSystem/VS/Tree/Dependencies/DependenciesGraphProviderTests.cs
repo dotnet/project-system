@@ -22,8 +22,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var projectPath = @"c:\myproject\project.csproj";
             var nodeIdString = @"file:///[MyProvider;MyNodeItemSpec]";
-            var inputNode = IGraphContextFactory.CreateNode(projectPath, nodeIdString);
-
+            var mockVsHierarchyItem = IVsHierarchyItemFactory.Implement(text: "MyNodeItemSpec");
+            var inputNode = IGraphContextFactory.CreateNode(projectPath, 
+                                                            nodeIdString, 
+                                                            hierarchyItem: mockVsHierarchyItem);
+            var rootNode = IDependencyNodeFactory.FromJson(@"
+{
+    ""Id"": {
+        ""ProviderType"": ""MyProvider"",
+        ""ItemSpec"": ""MyRootNode""
+    }
+}");
             var existingNode = IDependencyNodeFactory.FromJson(@"
 {
     ""Id"": {
@@ -38,10 +47,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         ""ItemSpec"": ""MyChildNodeItemSpec""
     }   
 }");
-
+            rootNode.AddChild(existingNode);
             existingNode.Children.Add(existingChildNode);
 
             var mockProvider = new IProjectDependenciesSubTreeProviderMock();
+            mockProvider.RootNode = rootNode;
             mockProvider.AddTestDependencyNodes(new[] { existingNode });
 
             var mockProjectContextProvider = IDependenciesGraphProjectContextProviderFactory.Implement(projectPath, mockProvider);
@@ -109,19 +119,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var projectPath = @"c:\myproject\project.csproj";
             var nodeIdString = @"file:///[MyProvider;MyNodeItemSpec]";
-            var inputNode = IGraphContextFactory.CreateNode(projectPath, nodeIdString);
 
-            var nodeJson = @"
+            var mockVsHierarchyItem = IVsHierarchyItemFactory.Implement(text: "MyNodeItemSpec");
+            var inputNode = IGraphContextFactory.CreateNode(projectPath, 
+                                                            nodeIdString, 
+                                                            hierarchyItem: mockVsHierarchyItem);
+            var rootNode = IDependencyNodeFactory.FromJson(@"
+{
+    ""Id"": {
+        ""ProviderType"": ""MyProvider"",
+        ""ItemSpec"": ""MyRootNode""
+    }
+}");
+            var existingNode = IDependencyNodeFactory.FromJson(@"
 {
     ""Id"": {
         ""ProviderType"": ""MyProvider"",
         ""ItemSpec"": ""MyNodeItemSpec""
     }
-}";
+}");
+            rootNode.AddChild(existingNode);
 
-            var existingNode = IDependencyNodeFactory.FromJson(nodeJson);
             var mockProvider = new IProjectDependenciesSubTreeProviderMock();
+            mockProvider.RootNode = rootNode;
             mockProvider.AddTestDependencyNodes(new[] { existingNode });
+
             var mockProjectContextProvider = IDependenciesGraphProjectContextProviderFactory.Implement(projectPath, mockProvider);
 
             var mockGraphContext = IGraphContextFactory.Implement(CancellationToken.None,
@@ -247,30 +269,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var projectPath = @"c:\myproject\project.csproj";
             var nodeIdString = @"file:///[MyProvider;MyNodeItemSpec]";
-
-            var nodeJson = @"
+            var rootNode = IDependencyNodeFactory.FromJson(@"
+{
+    ""Id"": {
+        ""ProviderType"": ""MyProvider"",
+        ""ItemSpec"": ""MyRootNode""
+    }
+}");
+            var existingNode = IDependencyNodeFactory.FromJson(@"
 {
     ""Id"": {
         ""ProviderType"": ""MyProvider"",
         ""ItemSpec"": ""MyNodeItemSpec""
     }
-}";
-            var childNodeJson = @"
+}");
+            var existingChildNode = IDependencyNodeFactory.FromJson(@"
 {
     ""Id"": {
         ""ProviderType"": ""MyProvider"",
         ""ItemSpec"": ""MyChildNodeItemSpec""
     }
-}";
-
-            var existingNode = IDependencyNodeFactory.FromJson(nodeJson);
-            var existingChildNode = IDependencyNodeFactory.FromJson(childNodeJson);
+}");
+            rootNode.AddChild(existingNode);
             existingNode.Children.Add(existingChildNode);
 
-            var inputNode = IGraphContextFactory.CreateNode(projectPath, nodeIdString, null);
+            var mockVsHierarchyItem = IVsHierarchyItemFactory.Implement(text: "MyNodeItemSpec");
+            var inputNode = IGraphContextFactory.CreateNode(projectPath, 
+                                                            nodeIdString,
+                                                            hierarchyItem:mockVsHierarchyItem);
             var outputNodes = new HashSet<GraphNode>();
 
             var mockProvider = new IProjectDependenciesSubTreeProviderMock();
+            mockProvider.RootNode = rootNode;
             mockProvider.AddTestDependencyNodes(new[] { existingNode });
 
             var mockProjectContextProvider = IDependenciesGraphProjectContextProviderFactory.Implement(projectPath, mockProvider);

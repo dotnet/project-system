@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.GraphModel.Schemas;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Microsoft.VisualStudio.Shell.Interop;
 using Moq;
+using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -20,7 +21,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public static GraphNode CreateNode(string projectPath, 
                                            string nodeIdString, 
-                                           IDependencyNode node = null)
+                                           IDependencyNode node = null,
+                                           IVsHierarchyItem hierarchyItem = null)
         {
             var graph = new Graph();
             var id = GraphNodeId.GetNested(
@@ -32,6 +34,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             if (node != null)
             {
                 graphNode.SetValue(DependenciesGraphSchema.DependencyNodeProperty, node);
+            }
+            if (hierarchyItem != null)
+            {
+                graphNode.SetValue(HierarchyGraphNodeProperties.HierarchyItem, hierarchyItem);
             }
 
             return graphNode;
@@ -120,10 +126,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var mockSearchQuery = new Mock<IVsSearchQuery>();
             mockSearchQuery.Setup(q => q.SearchString).Returns(searchString);
 
-            var mockSearchParameters = new Mock<Shell.ISolutionSearchParameters>();
+            var mockSearchParameters = new Mock<ISolutionSearchParameters>();
             mockSearchParameters.Setup(s => s.SearchQuery).Returns(mockSearchQuery.Object);
 
-            mock.Setup(g => g.GetValue<Shell.ISolutionSearchParameters>(It.IsAny<string>())).Returns(mockSearchParameters.Object);
+            mock.Setup(g => g.GetValue<ISolutionSearchParameters>(It.IsAny<string>())).Returns(mockSearchParameters.Object);
             mock.Setup(x => x.OnCompleted());
             mock.Setup(x => x.Graph).Returns(new Graph());
 
