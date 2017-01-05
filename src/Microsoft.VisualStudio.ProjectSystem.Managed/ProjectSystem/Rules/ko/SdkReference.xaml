@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="SdkReference" DisplayName="SDK 참조" PageTemplate="generic" Description="SDK 참조 속성" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" ItemType="SDKReference" HasConfigurationCondition="False" />
+  </Rule.DataSource>
+  <StringProperty Name="SDKRootFolder" DisplayName="SDK 루트" />
+  <StringProperty Name="AppXLocation" DisplayName="앱 패키지 위치" />
+  <StringProperty Name="FrameworkIdentity" DisplayName="FrameworkIdentity" />
+  <BoolProperty Name="CopyPayload" DisplayName="페이로드 복사" />
+  <StringProperty Name="CopyPayloadToSubDirectory" DisplayName="하위 디렉터리에 페이로드 복사" />
+  <BoolProperty Name="ExpandContent" DisplayName="콘텐츠 확장" />
+  <BoolProperty Name="ExpandReferenceAssemblies" DisplayName="참조 어셈블리 확장" />
+  <BoolProperty Name="CopyLocalExpandedReferenceAssemblies" DisplayName="확장된 로컬 참조 어셈블리 복사" />
+</Rule>

@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright, Microsoft Corporation, All rights reserved.-->
+<Rule Name="VisualBasic" DisplayName="파일 속성" PageTemplate="generic" Description="파일 속성" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="false" />
+  </Rule.DataSource>
+  <Rule.Categories>
+    <Category Name="Advanced" DisplayName="고급" />
+    <Category Name="Misc" DisplayName="기타" />
+  </Rule.Categories>
+  <DynamicEnumProperty Name="{}{ItemType}" DisplayName="빌드 작업" Category="Advanced" Description="파일이 빌드 및 배포 프로세스와 연결되는 방법입니다." EnumProvider="ItemTypes" />
+  <EnumProperty Name="CopyToOutputDirectory" DisplayName="출력 디렉터리에 복사" Category="Advanced" Description="소스 파일을 출력 디렉터리로 복사할 것인지 여부를 지정합니다.">
+    <EnumValue Name="Never" DisplayName="복사 안 함" />
+    <EnumValue Name="Always" DisplayName="항상 복사" />
+    <EnumValue Name="PreserveNewest" DisplayName="새 버전이면 복사" />
+  </EnumProperty>
+  <StringProperty Name="Identity" Visible="false" ReadOnly="true" Category="Misc" Description="Include 특성에 지정된 항목입니다.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="Identity" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FullPath" DisplayName="전체 경로" ReadOnly="true" Category="Misc" Description="파일의 위치입니다.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FullPath" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FileNameAndExtension" DisplayName="파일 이름" ReadOnly="true" Category="Misc" Description="파일 또는 폴더의 이름입니다.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FileNameAndExtension" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <BoolProperty Name="Visible" Visible="false" />
+  <StringProperty Name="DependentUpon" Visible="false">
+    <StringProperty.Metadata>
+      <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />
+    </StringProperty.Metadata>
+  </StringProperty>
+  <StringProperty Name="Link" Visible="false">
+    <StringProperty.DataSource>
+      <DataSource PersistenceStyle="Attribute" />
+    </StringProperty.DataSource>
+    <StringProperty.Metadata>
+      <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />
+    </StringProperty.Metadata>
+  </StringProperty>
+  <StringProperty Name="SubType" Visible="false" />
+  <StringProperty Name="LastGenOutput" Visible="false" Description="SFG의 결과로 생성된 마지막 파일의 파일 이름입니다." />
+  <BoolProperty Name="DesignTime" Visible="false" Description="이 파일에 디자이너가 있는지 여부를 나타내는 값입니다." />
+  <BoolProperty Name="AutoGen" Visible="false" Description="생성된 파일인지 여부를 나타내는 값입니다." />
+</Rule>

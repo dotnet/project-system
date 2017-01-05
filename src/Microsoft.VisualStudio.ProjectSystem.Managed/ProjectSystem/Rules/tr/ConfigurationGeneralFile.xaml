@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
+<Rule Name="ConfigurationGeneralFile" DisplayName="Genel" PageTemplate="generic" Description="Proje öğesi genel özellikleri" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="{}{AnyType}" />
+  </Rule.DataSource>
+  <Rule.Categories>
+    <Category Name="Advanced" DisplayName="Gelişmiş" />
+    <Category Name="Misc" DisplayName="Çeşitli" />
+  </Rule.Categories>
+  <DynamicEnumProperty Name="{}{ItemType}" DisplayName="Derleme Eylemi" Category="Advanced" Description="Dosyanın oluşturma ve dağıtım işlemleriyle olan ilişkisi." EnumProvider="ItemTypes" />
+  <EnumProperty Name="CopyToOutputDirectory" DisplayName="Çıkış Dizinine Kopyala" Category="Advanced" Description="Kaynak dosyasının çıkış dizinine kopyalanacağını belirtir.">
+    <EnumValue Name="Never" DisplayName="Kopyalama" />
+    <EnumValue Name="Always" DisplayName="Her zaman kopyala" />
+    <EnumValue Name="PreserveNewest" DisplayName="Daha yeniyse kopyala" />
+  </EnumProperty>
+  <StringProperty Name="Identity" Visible="false" ReadOnly="true" Category="Misc" Description="Include özniteliğinde belirtilen öğe.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="{}{AnyType}" PersistedName="Identity" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FullPath" DisplayName="Tam Yol" ReadOnly="true" Category="Misc" Description="Dosyanın konumu.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="{}{AnyType}" PersistedName="FullPath" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FileNameAndExtension" DisplayName="Dosya Adı" ReadOnly="true" Category="Misc" Description="Dosya veya klasörün adı.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="{}{AnyType}" PersistedName="FileNameAndExtension" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="URL" ReadOnly="true" Visible="false">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="{}{AnyType}" PersistedName="FullPath" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="DependentUpon" Visible="False" Description="Proje ağacında bu öğenin alt öğesi olarak göründüğü dosyanın yaprak adı." />
+  <BoolProperty Name="Visible" Visible="false" />
+  <StringProperty Name="Link" Visible="false" />
+  <StringProperty Name="Extension" Visible="False" ReadOnly="true">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="{}{AnyType}" PersistedName="Extension" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="GeneratorTarget" Visible="false" />
+  <EnumProperty Name="SubType" Visible="false">
+    <EnumValue Name="Designer" />
+    <EnumValue Name="Component" />
+    <EnumValue Name="Control" />
+    <EnumValue Name="Form" />
+    <EnumValue Name="Code" />
+  </EnumProperty>
+  <StringProperty Name="LastGenOutput" Visible="false" Description="SFG sonucu oluşturulan son dosyanın adı." />
+  <BoolProperty Name="DesignTime" Visible="false" Description="Bu dosyada bir tasarımcı olup olmadığını gösteren bir değer." />
+  <BoolProperty Name="AutoGen" Visible="false" Description="Bunun oluşturulmuş bir dosya olup olmadığını gösteren değer." />
+</Rule>

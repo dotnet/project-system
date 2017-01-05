@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright, Microsoft Corporation, All rights reserved.-->
+<Rule Name="ConfigurationGeneralBrowseObject" DisplayName="Obecné" PageTemplate="generic" Description="Obecné" OverrideMode="Replace" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.Categories>
+    <Category Name="General" DisplayName="Obecné" Description="Obecné" />
+  </Rule.Categories>
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" />
+  </Rule.DataSource>
+  <StringProperty Name="ApplicationIcon" DisplayName="Ikona aplikace" Visible="True" />
+  <StringProperty Name="TargetFrameworkMoniker" DisplayName="Moniker cílového rozhraní" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="AssemblyName" DisplayName="Název sestavení" Visible="True" />
+  <StringProperty Name="Name" Visible="True" />
+  <StringProperty Name="RootNamespace" DisplayName="Kořenový obor názvů" Visible="True" />
+  <StringProperty Name="DefaultNamespace" DisplayName="Výchozí obor názvů" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="RootNamespace" Persistence="ProjectFile" HasConfigurationCondition="false" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="TargetFrameworks" DisplayName="Cílové platformy" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworks" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <IntProperty Name="TargetFramework" ReadOnly="True" Visible="True">
+    <IntProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFramework" />
+    </IntProperty.DataSource>
+  </IntProperty>
+  <StringProperty Name="OutputName" Visible="True" />
+  <DynamicEnumProperty Name="OutputType" DisplayName="Typ výstupu" EnumProvider="OutputTypeEnumProvider" Visible="True" />
+  <EnumProperty Name="OutputTypeEx" DisplayName="Typ výstupu" Visible="True">
+    <EnumValue Name="winexe" DisplayName="0" />
+    <EnumValue Name="exe" DisplayName="1" />
+    <EnumValue Name="library" DisplayName="2" />
+    <EnumValue Name="appcontainerexe" DisplayName="3" />
+    <EnumValue Name="winmdobj" DisplayName="4" />
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="OutputTypeEx" HasConfigurationCondition="False" />
+    </EnumProperty.DataSource>
+  </EnumProperty>
+  <StringProperty Name="StartupObject" DisplayName="Typ obsahující vstupní bod" Visible="True" />
+  <StringProperty Name="ApplicationManifest" DisplayName="Manifest aplikace" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="ApplicationManifest" HasConfigurationCondition="false" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Win32ResourceFile" DisplayName="Soubor prostředků Win32" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="Win32Resource" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="DefineConstants" DisplayName="Definovat konstanty" Visible="True" />
+  <EnumProperty Name="PlatformTarget" DisplayName="Cílová platforma" Visible="True" />
+  <BoolProperty Name="Prefer32Bit" DisplayName="Preferovat 32bitovou" Visible="True" />
+  <BoolProperty Name="AllowUnsafeBlocks" Default="False" DisplayName="Povolit nezabezpečený kód" Visible="True" />
+  <StringProperty Name="Optimize" DisplayName="Optimalizovat" Visible="True" />
+  <EnumProperty Name="WarningLevel" DisplayName="Úroveň upozornění" Visible="True" />
+  <StringProperty Name="NoWarn" DisplayName="Potlačit upozornění" Visible="True" />
+  <BoolProperty Name="TreatWarningsAsErrors" Default="False" Description="Zpracovávat upozornění jako chyby" Visible="True" />
+  <StringProperty Name="TreatSpecificWarningsAsErrors" Description="Považovat specifická upozornění za chyby" Visible="True" />
+  <StringProperty Name="OutputPath" DisplayName="Výstupní cesta" Visible="True" />
+  <StringProperty Name="DocumentationFile" DisplayName="Soubor dokumentace" Visible="True" />
+  <EnumProperty Name="GenerateSerializationAssemblies" DisplayName="Generovat serializované sestavení" Visible="True">
+    <EnumValue Name="Auto" DisplayName="Automatické" IsDefault="True" />
+    <EnumValue Name="On" DisplayName="Zapnuto" />
+    <EnumValue Name="Off" DisplayName="Vypnuto" />
+  </EnumProperty>
+  <EnumProperty Name="LanguageVersion" DisplayName="Jazyková verze" Visible="True">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="LangVersion" />
+    </EnumProperty.DataSource>
+  </EnumProperty>
+  <EnumProperty Name="ErrorReport" DisplayName="Sestava chyb" Visible="True" />
+  <EnumProperty Name="DebugInfo" DisplayName="Informace o ladění" Visible="True">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="DebugType" />
+    </EnumProperty.DataSource>
+  </EnumProperty>
+  <BoolProperty Name="CheckForOverflowUnderflow" DisplayName="CheckForOverflowUnderflow" Visible="False">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="CheckForOverflowUnderflow" HasConfigurationCondition="True" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <StringProperty Name="DebugSymbols" DisplayName="Symboly ladění" Visible="True" />
+  <EnumProperty Name="FileAlignment" DisplayName="Zarovnání souboru" Visible="True" />
+  <StringProperty Name="BaseAddress" DisplayName="Základní adresa" Visible="True" />
+  <StringProperty Name="PreBuildEvent" DisplayName="Událost před sestavením" Visible="True" />
+  <StringProperty Name="PostBuildEvent" DisplayName="Událost po sestavení" Visible="True" />
+  <EnumProperty Name="RunPostBuildEvent" DisplayName="Spustit událost po sestavení" Visible="True">
+    <EnumValue Name="Always" DisplayName="Vždy" />
+    <EnumValue Name="OnBuildSuccess" DisplayName="Při úspěšném sestavení" IsDefault="True" />
+    <EnumValue Name="OnOutputUpdated" DisplayName="Když sestavení aktualizuje výstup projektu" />
+  </EnumProperty>
+  <StringProperty Name="ReferencePath" DisplayName="Cesta odkazu" Visible="True" />
+  <StringProperty Name="FileName" DisplayName="Soubor projektu" ReadOnly="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectFile" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FullPath" DisplayName="Složka projektu" ReadOnly="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="LocalPath" ReadOnly="True" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <!-- Package properties -->
+  <BoolProperty Name="GeneratePackageOnBuild" DisplayName="Generovat při sestavení balíček" Default="False" />
+  <StringProperty Name="PackageId" DisplayName="ID balíčku">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Version" DisplayName="Verze balíčku">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Authors" DisplayName="Autoři">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <BoolProperty Name="PackageRequireLicenseAcceptance" DisplayName="Balíček vyžaduje přijetí licence" Default="False" />
+  <StringProperty Name="PackageLicenseUrl" DisplayName="URL licence balíčku" />
+  <StringProperty Name="PackageProjectUrl" DisplayName="URL projektu balíčku" />
+  <StringProperty Name="PackageIconUrl" DisplayName="URL ikony balíčku" />
+  <StringProperty Name="PackageTags" DisplayName="Značky balíčku" />
+  <StringProperty Name="PackageReleaseNotes" DisplayName="Poznámky k verzi" />
+  <StringProperty Name="RepositoryUrl" DisplayName="URL úložiště" />
+  <StringProperty Name="RepositoryType" DisplayName="Typ úložiště" />
+  <!--AssemblyInfo properties-->
+  <StringProperty Name="Description" DisplayName="Popis sestavení" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Company" DisplayName="Společnost provádějící sestavení" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Product" DisplayName="Produkt" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Copyright" DisplayName="Autorská práva" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="AssemblyVersion" DisplayName="Verze sestavení" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FileVersion" DisplayName="Verze souboru sestavení" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="NeutralLanguage" DisplayName="Jazyk neutrálních prostředků" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <BoolProperty Name="SignAssembly" DisplayName="Podepsat sestavení" Visible="True" />
+  <BoolProperty Name="DelaySign" DisplayName="Jen příznak odložení" Visible="True" />
+  <StringProperty Name="AssemblyOriginatorKeyFile" DisplayName="Soubor klíče se silným názvem" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+</Rule>

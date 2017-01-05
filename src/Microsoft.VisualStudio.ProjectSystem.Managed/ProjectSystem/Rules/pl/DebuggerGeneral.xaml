@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
+<Rule Name="DebuggerGeneralProperties" DisplayName="Właściwości ogólne debugera" Description="Opcje ogólne debugera" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="UserFile" />
+  </Rule.DataSource>
+  <StringProperty Name="SymbolsPath" DisplayName="Ścieżka wyszukiwania symbolu" Description="Ścieżka wyszukiwania używana przez debuger do lokalizowania symboli."></StringProperty>
+  <StringProperty Name="DebuggerFlavor" Visible="false" Description="Reguła debugowania wybrana jako aktywny debuger."></StringProperty>
+  <EnumProperty Name="ImageClrType" Visible="false" Description="Właściwość „ukryty” przekazujemy do debugera, aby poinformować go, czy jest to zarządzany projekt.">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="UserFile" HasConfigurationCondition="false" PersistedName="_TargetImageClrType" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="Native" DisplayName="Obraz natywny" Description="Wykonywalny obraz do debugowania jest w pełni natywną aplikacją." />
+    <EnumValue Name="Mixed" DisplayName="Obraz mieszany" Description="Wykonywalny obraz do debugowania jest mieszaniną kodu natywnego i zarządzanego." />
+    <EnumValue Name="Managed" DisplayName="Zarządzany obraz" Description="Wykonywalny obraz do debugowania jest w pełni zarządzaną aplikacją." />
+  </EnumProperty>
+</Rule>

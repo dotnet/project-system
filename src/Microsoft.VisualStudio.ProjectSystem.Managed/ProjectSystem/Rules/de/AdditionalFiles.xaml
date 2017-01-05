@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
+<Rule Name="AdditionalFiles" DisplayName="Zusätzliche Datei" PageTemplate="generic" Description="Zusätzliche Dateielemente" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="AdditionalFiles" />
+  </Rule.DataSource>
+  <Rule.Categories>
+    <Category Name="Advanced" DisplayName="Erweitert" />
+    <Category Name="Misc" DisplayName="Sonst." />
+  </Rule.Categories>
+  <DynamicEnumProperty Name="{}{ItemType}" DisplayName="Buildvorgang" Category="Advanced" Description="Wie die Datei mit den Build- und Bereitstellungsprozessen verknüpft ist." EnumProvider="ItemTypes" />
+  <EnumProperty Name="CopyToOutputDirectory" DisplayName="In Ausgabeverzeichnis kopieren" Category="Advanced" Description="Gibt an, dass die Quelldatei in das Ausgabeverzeichnis kopiert wird.">
+    <EnumValue Name="Never" DisplayName="Nicht kopieren" />
+    <EnumValue Name="Always" DisplayName="Immer kopieren" />
+    <EnumValue Name="PreserveNewest" DisplayName="Kopieren, wenn neuer" />
+  </EnumProperty>
+  <StringProperty Name="Generator" Category="Advanced" DisplayName="Benutzerdefiniertes Tool" Description="Gibt das Tool an, das eine Datei zur Entwurfszeit transformiert und die Ausgabe in einer anderen Datei speichert. Datasetdateien (&quot;.xsd&quot;) verfügen beispielsweise über ein benutzerdefiniertes Standardtool." />
+  <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="Namespace des benutzerdefinierten Tools" Description="Der Namespace, in den die Ausgabe des benutzerdefinierten Tools kopiert wird." />
+  <StringProperty Name="Identity" Visible="false" ReadOnly="true" Category="Misc" Description="Das im Include-Attribut angegebene Element.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="Identity" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FullPath" DisplayName="Vollständiger Pfad" ReadOnly="true" Category="Misc" Description="Speicherort der Datei.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="FullPath" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FileNameAndExtension" DisplayName="Dateiname" ReadOnly="true" Category="Misc" Description="Name der Datei oder des Ordners.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="FileNameAndExtension" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="URL" ReadOnly="true" Visible="false">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="FullPath" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <BoolProperty Name="Visible" Visible="false" />
+  <StringProperty Name="DependentUpon" Visible="false" />
+  <StringProperty Name="Link" Visible="false">
+    <StringProperty.DataSource>
+      <DataSource PersistenceStyle="Attribute" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Extension" Visible="False" ReadOnly="true">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="Extension" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="LastGenOutput" Visible="false" Description="Der Dateiname der letzten durch SFG generierten Datei." />
+  <BoolProperty Name="DesignTime" Visible="false" Description="Ein Wert, der angibt, ob diese Datei über einen Designer verfügt." />
+  <BoolProperty Name="AutoGen" Visible="false" Description="Ein Wert, der angibt, ob es sich um eine generierte Datei handelt." />
+  <StringProperty Name="CustomTool" Visible="false" Description="DTE-Eigenschaft für den Zugriff auf die Generator-Eigenschaft.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="AdditionalFiles" PersistedName="Generator" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+</Rule>

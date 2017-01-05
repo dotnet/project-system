@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="ProjectReference" DisplayName="專案參考" PageTemplate="generic" Description="專案參考屬性" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" />
+  </Rule.DataSource>
+  <BoolProperty Name="ReferenceOutputAssembly" DisplayName="參考輸出組件" Description="這個值指出編譯器是否應該包含目標專案的主要輸出組件參考。" />
+  <BoolProperty Name="CopyLocalSatelliteAssemblies" DisplayName="複製附屬組件到本機" Description="表示是否應將參考目標的附屬組件複製到這個專案的輸出目錄。" />
+  <BoolProperty Name="LinkLibraryDependencies" Visible="False" />
+  <BoolProperty Name="UseLibraryDependencyInputs" Visible="False" />
+  <StringProperty Name="Project" Visible="False" Description="方案藉以追蹤個別專案參考目標的 GUID" />
+  <StringProperty Name="ReferencedProjectIdentifier" Visible="False" Description="儲存方案藉以追蹤個別專案參考目標之 GUID 的舊 (VS2010 Beta) 方式" />
+  <BoolProperty Name="CopyLocal" DisplayName="複製到本機" Description="表示是否將參考複製到輸出目錄。">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" PersistedName="Private" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="IncludeAssets" Description="要從此參考包含的資產" />
+  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="ExcludeAssets" Description="要從此參考排除的資產" />
+  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="PrivateAssets" Description="此參考中的私用資產" />
+</Rule>

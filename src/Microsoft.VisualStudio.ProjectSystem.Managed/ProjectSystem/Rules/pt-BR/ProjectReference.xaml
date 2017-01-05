@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="ProjectReference" DisplayName="Referência de Projeto" PageTemplate="generic" Description="Propriedades de referência de projeto" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" />
+  </Rule.DataSource>
+  <BoolProperty Name="ReferenceOutputAssembly" DisplayName="Assembly de Saída de Referência" Description="Um valor que indica se o compilador deve incluir uma referência ao assembly de saída principal do projeto de destino." />
+  <BoolProperty Name="CopyLocalSatelliteAssemblies" DisplayName="Assemblies Satélite do Local da Cópia" Description="Indica se os assemblies satélite do destino de referência devem ser copiados nesse diretório de saída do projeto." />
+  <BoolProperty Name="LinkLibraryDependencies" Visible="False" />
+  <BoolProperty Name="UseLibraryDependencyInputs" Visible="False" />
+  <StringProperty Name="Project" Visible="False" Description="o GUID com o qual a solução rastreia um destino de referência de projeto individual" />
+  <StringProperty Name="ReferencedProjectIdentifier" Visible="False" Description="O meio antigo (VS2010 beta) de armazenar o GUID com o qual a solução rastreia um destino de referência de projeto individual" />
+  <BoolProperty Name="CopyLocal" DisplayName="Local da Cópia" Description="Indica se a referência será copiada no diretório de saída.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" PersistedName="Private" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="IncludeAssets" Description="Ativos a serem incluídos dessa referência" />
+  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="ExcludeAssets" Description="Ativos a serem excluídos dessa referência" />
+  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="PrivateAssets" Description="Ativos que são privados nessa referência" />
+</Rule>

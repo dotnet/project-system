@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="PackageReference" DisplayName="패키지" PageTemplate="generic" Description="패키지" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" ItemType="PackageReference" HasConfigurationCondition="False" />
+  </Rule.DataSource>
+  <StringProperty Name="Description" ReadOnly="True" Visible="True" DisplayName="설명" Description="종속성 설명입니다." />
+  <StringProperty Name="Version" ReadOnly="True" DisplayName="버전" Description="종속성의 버전입니다.">
+    <StringProperty.DataSource>
+      <DataSource PersistenceStyle="Attribute" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="IncludeAssets" Description="이 참조에서 포함할 자산입니다." />
+  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="ExcludeAssets" Description="이 참조에서 제외할 자산입니다." />
+  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="PrivateAssets" Description="이 참조에서 private인 자산입니다." />
+  <StringProperty Name="Name" Visible="True" ReadOnly="True" />
+  <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="확인 결과 이 확인된 참조 항목으로 드러난 원래 참조 항목의 평가 항목 이름입니다." />
+  <StringProperty Name="Path" Visible="False" ReadOnly="True" />
+  <StringProperty Name="Type" Visible="False" ReadOnly="True" />
+  <StringProperty Name="RuntimeIdentifier" Visible="False" ReadOnly="True" />
+  <StringProperty Name="TargetFramework" Visible="False" ReadOnly="True" />
+  <StringProperty Name="FrameworkName" Visible="False" ReadOnly="True" />
+  <StringProperty Name="FrameworkVersion" Visible="False" ReadOnly="True" />
+</Rule>

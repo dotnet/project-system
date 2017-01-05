@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
+<Rule Name="DebuggerGeneralProperties" DisplayName="Hata Ayıklayıcı Genel Özellikleri" Description="Genel Hata Ayıklayıcı seçenekleri" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="UserFile" />
+  </Rule.DataSource>
+  <StringProperty Name="SymbolsPath" DisplayName="Simge Arama Yolu" Description="Simgeleri bulmak için hata ayıklayıcısı tarafından kullanılan arama yolu."></StringProperty>
+  <StringProperty Name="DebuggerFlavor" Visible="false" Description="Etkin hata ayıklayıcı olarak seçilen hata ayıklama kuralı."></StringProperty>
+  <EnumProperty Name="ImageClrType" Visible="false" Description="Hata ayıklayıcılarına bunun yönetilen bir proje olup olmadığını bildirmek için geçirdiğiniz 'gizli' özellik.">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="UserFile" HasConfigurationCondition="false" PersistedName="_TargetImageClrType" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="Native" DisplayName="Yerel Görüntü" Description="Hataları ayıklanacak yürütülebilir görüntü, tamamen yerel bir uygulamadır." />
+    <EnumValue Name="Mixed" DisplayName="Karışık Görüntü" Description="Hataları ayıklanacak yürütülebilir görüntü, yerel ve yönetilen kodun bir karışımıdır." />
+    <EnumValue Name="Managed" DisplayName="Yönetilen Görüntü" Description="Hataları ayıklanacak yönetilebilir görüntü, tamamen yönetilen bir uygulamadır." />
+  </EnumProperty>
+</Rule>

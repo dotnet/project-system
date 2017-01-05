@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="AssemblyReference" DisplayName="Referencia de ensamblado" PageTemplate="generic" Description="Propiedades de la referencia de ensamblado" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" />
+  </Rule.DataSource>
+  <StringListProperty Name="Aliases" DisplayName="Alias" Description="Lista de alias delimitada con comas para esta referencia." Separator="," />
+  <BoolProperty Name="CopyLocal" DisplayName="Copia local" Description="Indica si la referencia se copiará en el directorio de salida.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" PersistedName="Private" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <BoolProperty Name="EmbedInteropTypes" DisplayName="Incrustar tipos de interoperabilidad" Description="Indica si los tipos definidos en este ensamblado se incrustarán en el ensamblado de destino." />
+  <BoolProperty Name="SpecificVersion" DisplayName="Versión específica" Description="Indica si este ensamblado se puede resolver independientemente de las reglas de compatibilidad con múltiples versiones (multi-targeting) para la resolución de ensamblados.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="AssemblyReference" ItemType="Reference" HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <StringProperty Name="RequiredTargetFramework" DisplayName="Plataforma de destino requerida" Visible="False" />
+  <StringProperty Name="HintPath" Visible="false" />
+  <StringProperty Name="SDKName" Visible="false" />
+  <BoolProperty Name="IsWinMDFile" Visible="false" />
+  <StringProperty Name="ImageRuntime" DisplayName="Versión de runtime" Description="Versión de runtime de CLR de destino de este ensamblado." Visible="False" ReadOnly="True" />
+</Rule>

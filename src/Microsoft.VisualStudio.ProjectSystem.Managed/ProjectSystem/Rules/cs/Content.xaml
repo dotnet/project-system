@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
+<Rule Name="Content" DisplayName="Vlastnosti souboru" PageTemplate="generic" Description="Vlastnosti souboru" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="Content" />
+  </Rule.DataSource>
+  <Rule.Categories>
+    <Category Name="Advanced" DisplayName="Upřesnit" />
+    <Category Name="Misc" DisplayName="Různé" />
+  </Rule.Categories>
+  <DynamicEnumProperty Name="{}{ItemType}" DisplayName="Akce sestavení" Category="Advanced" Description="Jak se soubor vztahuje k procesům sestavení a nasazení." EnumProvider="ItemTypes" />
+  <EnumProperty Name="CopyToOutputDirectory" DisplayName="Kopírovat do výstupního adresáře" Category="Advanced" Description="Určuje zdrojový soubor, který se zkopíruje do výstupního adresáře.">
+    <EnumValue Name="Never" DisplayName="Nekopírovat" />
+    <EnumValue Name="Always" DisplayName="Kopírovat vždycky" />
+    <EnumValue Name="PreserveNewest" DisplayName="Kopírovat, pokud je novější" />
+  </EnumProperty>
+  <StringProperty Name="Identity" Visible="false" ReadOnly="true" Category="Misc" Description="Položka zadaná v atributu Include">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="Content" PersistedName="Identity" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FullPath" DisplayName="Úplná cesta" ReadOnly="true" Category="Misc" Description="Umístění souboru">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="Content" PersistedName="FullPath" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FileNameAndExtension" DisplayName="Název souboru" ReadOnly="true" Category="Misc" Description="Název souboru nebo složky">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="Content" PersistedName="FileNameAndExtension" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <BoolProperty Name="Visible" Visible="false" />
+  <StringProperty Name="DependentUpon" Visible="false">
+    <StringProperty.Metadata>
+      <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />
+    </StringProperty.Metadata>
+  </StringProperty>
+  <StringProperty Name="Link" Visible="false">
+    <StringProperty.DataSource>
+      <DataSource PersistenceStyle="Attribute" />
+    </StringProperty.DataSource>
+    <StringProperty.Metadata>
+      <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />
+    </StringProperty.Metadata>
+  </StringProperty>
+</Rule>

@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="ResolvedPackageReference" DisplayName="Pakiet" PageTemplate="generic" Description="Pakiet" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ResolvedReference" ItemType="PackageReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="ResolvePackageDependenciesDesignTime" />
+  </Rule.DataSource>
+  <StringProperty Name="Description" ReadOnly="True" Visible="True" DisplayName="Opis" Description="Opis zależności." />
+  <StringProperty Name="Version" ReadOnly="True" DisplayName="Wersja" Description="Wersja zależności."></StringProperty>
+  <StringProperty Name="Name" Visible="True" ReadOnly="True" />
+  <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="Sprawdzona nazwa elementu oryginalnego elementu odwołania, którego rozpoznanie spowodowało rozpoznanie tego elementu odwołania." />
+  <StringProperty Name="Path" Visible="False" ReadOnly="True" />
+  <StringProperty Name="Type" Visible="False" ReadOnly="True" />
+  <StringProperty Name="RuntimeIdentifier" Visible="False" ReadOnly="True" />
+  <StringProperty Name="TargetFramework" Visible="False" ReadOnly="True" />
+  <StringProperty Name="FrameworkName" Visible="False" ReadOnly="True" />
+  <StringProperty Name="FrameworkVersion" Visible="False" ReadOnly="True" />
+  <StringListProperty Name="Dependencies" DisplayName="Zależności" Visible="false" Description="Rozdzielana średnikami lista bezpośrednich zależności bieżącej zależności." Separator=";">
+    <StringListProperty.DataSource>
+      <DataSource Persistence="ResolvedReference" ItemType="PackageReference" HasConfigurationCondition="False" />
+    </StringListProperty.DataSource>
+  </StringListProperty>
+</Rule>

@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
+<Rule Name="ConfigurationGeneralFile" DisplayName="Allgemein" PageTemplate="generic" Description="Allgemeine Eigenschaften des Projektelements" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="{}{AnyType}" />
+  </Rule.DataSource>
+  <Rule.Categories>
+    <Category Name="Advanced" DisplayName="Erweitert" />
+    <Category Name="Misc" DisplayName="Sonst." />
+  </Rule.Categories>
+  <DynamicEnumProperty Name="{}{ItemType}" DisplayName="Buildvorgang" Category="Advanced" Description="Wie die Datei mit den Build- und Bereitstellungsprozessen verknüpft ist." EnumProvider="ItemTypes" />
+  <EnumProperty Name="CopyToOutputDirectory" DisplayName="In Ausgabeverzeichnis kopieren" Category="Advanced" Description="Gibt an, dass die Quelldatei in das Ausgabeverzeichnis kopiert wird.">
+    <EnumValue Name="Never" DisplayName="Nicht kopieren" />
+    <EnumValue Name="Always" DisplayName="Immer kopieren" />
+    <EnumValue Name="PreserveNewest" DisplayName="Kopieren, wenn neuer" />
+  </EnumProperty>
+  <StringProperty Name="Identity" Visible="false" ReadOnly="true" Category="Misc" Description="Das im Include-Attribut angegebene Element.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="{}{AnyType}" PersistedName="Identity" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FullPath" DisplayName="Vollständiger Pfad" ReadOnly="true" Category="Misc" Description="Speicherort der Datei.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="{}{AnyType}" PersistedName="FullPath" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FileNameAndExtension" DisplayName="Dateiname" ReadOnly="true" Category="Misc" Description="Name der Datei oder des Ordners.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="{}{AnyType}" PersistedName="FileNameAndExtension" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="URL" ReadOnly="true" Visible="false">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="{}{AnyType}" PersistedName="FullPath" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="DependentUpon" Visible="False" Description="Der Blattname der Datei, für die dieses Element im Projektbaum als untergeordnetes Element angezeigt wird." />
+  <BoolProperty Name="Visible" Visible="false" />
+  <StringProperty Name="Link" Visible="false" />
+  <StringProperty Name="Extension" Visible="False" ReadOnly="true">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="{}{AnyType}" PersistedName="Extension" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="GeneratorTarget" Visible="false" />
+  <EnumProperty Name="SubType" Visible="false">
+    <EnumValue Name="Designer" />
+    <EnumValue Name="Component" />
+    <EnumValue Name="Control" />
+    <EnumValue Name="Form" />
+    <EnumValue Name="Code" />
+  </EnumProperty>
+  <StringProperty Name="LastGenOutput" Visible="false" Description="Der Dateiname der letzten durch SFG generierten Datei." />
+  <BoolProperty Name="DesignTime" Visible="false" Description="Ein Wert, der angibt, ob diese Datei über einen Designer verfügt." />
+  <BoolProperty Name="AutoGen" Visible="false" Description="Ein Wert, der angibt, ob es sich um eine generierte Datei handelt." />
+</Rule>
