@@ -538,7 +538,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             {
                 await editorState.SaveProjectFileAsync();
             }
-            catch (Exception)
+            catch (InvalidOperationException)
             {
                 assertHit = true;
             }

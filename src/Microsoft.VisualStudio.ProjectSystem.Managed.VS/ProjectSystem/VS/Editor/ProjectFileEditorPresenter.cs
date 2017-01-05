@@ -285,8 +285,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         {
             lock (_lock)
             {
+                // If we're here and the editor is not open, there's a bug. Normally we'd use the assumes,
+                // but because of https://github.com/dotnet/roslyn-project-system/issues/1077 we can't
+                // and unit test the scenario. So we're throwing an InvalidOperationException instead.
+                // Assumes.True(_currentState != EditorState.NoEditor);
+                if (_currentState == EditorState.NoEditor)
+                {
+                    throw new InvalidOperationException("In SaveProjectFileAsync with no editor open! Bug!");
+                }
+
                 // In order to save, the editor must not be in the process of being updated.
-                Assumes.True(_currentState != EditorState.NoEditor);
                 if (_currentState != EditorState.EditorOpen)
                 {
                     return;
