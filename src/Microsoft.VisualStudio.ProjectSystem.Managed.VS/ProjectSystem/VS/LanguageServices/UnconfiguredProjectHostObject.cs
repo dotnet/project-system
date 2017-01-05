@@ -11,14 +11,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     /// </summary>
     internal sealed class UnconfiguredProjectHostObject : AbstractHostObject, IUnconfiguredProjectHostObject
     {
-        private readonly Dictionary<uint, IVsHierarchyEvents> _hierEventSinks;
-        private readonly HashSet<uint> _pendingItemIds;
+        private readonly Dictionary<uint, IVsHierarchyEvents> _hierEventSinks = new Dictionary<uint, IVsHierarchyEvents>();
+        private readonly HashSet<uint> _pendingItemIds = new HashSet<uint>();
 
         public UnconfiguredProjectHostObject(IUnconfiguredProjectVsServices projectVsServices)
             : base(projectVsServices.VsHierarchy, innerVsProject: projectVsServices.VsProject)
         {
-            _hierEventSinks = new Dictionary<uint, IVsHierarchyEvents>();
-            _pendingItemIds = new HashSet<uint>();
         }
 
         public IConfiguredProjectHostObject ActiveIntellisenseProjectHostObject { get; set; }
