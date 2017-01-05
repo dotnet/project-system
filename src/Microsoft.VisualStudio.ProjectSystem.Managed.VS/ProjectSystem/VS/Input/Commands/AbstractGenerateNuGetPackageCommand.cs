@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         private async Task<bool> IsReadyToBuildAsync()
         {
             // Ensure build manager is initialized.
-            await EnsureBuildManagerInitializedAsync().ConfigureAwait(false);
+            await EnsureBuildManagerInitializedAsync().ConfigureAwait(true);
 
             ErrorHandler.ThrowOnFailure(_buildManager.QueryBuildManagerBusy(out int busy));
             return busy == 0;
@@ -64,17 +64,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
         private async Task EnsureBuildManagerInitializedAsync()
         {
+            // Switch to UI thread for querying the build manager service.
+            await _threadingService.SwitchToUIThread();
+
             if (_buildManager == null)
             {
-                // Switch to UI thread for querying the build manager service.
-                await _threadingService.SwitchToUIThread();
+                _buildManager = _serviceProvider.GetService<IVsSolutionBuildManager2, SVsSolutionBuildManager>();
 
-                var buildManager = _serviceProvider.GetService<IVsSolutionBuildManager2, SVsSolutionBuildManager>();
-                if (Interlocked.CompareExchange(ref _buildManager, buildManager, null) == null)
-                {
-                    // Register for solution build events.
-                    _buildManager.AdviseUpdateSolutionEvents(this, out _solutionEventsCookie);
-                }
+                // Register for solution build events.
+                _buildManager.AdviseUpdateSolutionEvents(this, out _solutionEventsCookie);
             }
         }
 
@@ -87,18 +85,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             if (await IsReadyToBuildAsync().ConfigureAwait(false))
             {
+                // Build manager APIs require UI thread access.
+                await _threadingService.SwitchToUIThread();
+
                 // Save documents before build.
                 var projectVsHierarchy = (IVsHierarchy)UnconfiguredProject.Services.HostObject;
-                int hr = _buildManager.SaveDocumentsBeforeBuild(projectVsHierarchy, (uint)VSConstants.VSITEMID.Root, 0 /*docCookie*/);
-                ErrorHandler.ThrowOnFailure(hr);
+                ErrorHandler.ThrowOnFailure(_buildManager.SaveDocumentsBeforeBuild(projectVsHierarchy, (uint)VSConstants.VSITEMID.Root, 0 /*docCookie*/));
 
                 // Enable generating package on build ("GeneratePackageOnBuild") for all projects being built.
                 _generatePackageOnBuildPropertyProvider.OverrideGeneratePackageOnBuild(true);
 
                 // Kick off the build.
                 uint dwFlags = (uint)(VSSOLNBUILDUPDATEFLAGS.SBF_SUPPRESS_SAVEBEFOREBUILD_QUERY | VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD);
-                hr = _buildManager.StartSimpleUpdateProjectConfiguration(projectVsHierarchy, null, null, dwFlags, 0, 0);
-                return ErrorHandler.Succeeded(hr);
+                ErrorHandler.ThrowOnFailure(_buildManager.StartSimpleUpdateProjectConfiguration(projectVsHierarchy, null, null, dwFlags, 0, 0));
             }
 
             return true;
@@ -136,15 +135,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         #region IDisposable
         public void Dispose()
         {
-            var buildManager = _buildManager;
-            if (buildManager != null)
+            // Build manager APIs require UI thread access.
+            ThreadHelper.Generic.Invoke(() =>
             {
-                if (Interlocked.CompareExchange(ref _buildManager, null, buildManager) == buildManager)
+                if (_buildManager != null)
                 {
                     // Unregister solution build events.
-                    buildManager.UnadviseUpdateSolutionEvents(_solutionEventsCookie);
+                    _buildManager.UnadviseUpdateSolutionEvents(_solutionEventsCookie);
+                    _buildManager = null;
                 }
-            }
+            });
         }
         #endregion
     }
