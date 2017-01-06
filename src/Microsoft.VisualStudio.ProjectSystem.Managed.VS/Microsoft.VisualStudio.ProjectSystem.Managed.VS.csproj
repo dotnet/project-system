@@ -262,6 +262,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="VSResources.*.resx">
       <DependentUpon>VSResources.resx</DependentUpon>
+      <MergeWithCTO>true</MergeWithCTO>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -297,6 +298,10 @@
     <VSCTCompile Include="Menus.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
       <SubType>Designer</SubType>
+    </VSCTCompile>
+    <VSCTCompile Include="Menus.*.vsct">
+      <ResourceName>Menus.ctmenu</ResourceName>
+      <DependentUpon>Menus.vsct</DependentUpon>
     </VSCTCompile>
   </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
