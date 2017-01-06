@@ -3,5 +3,6 @@
 <ProjectSchemaDefinitions xmlns="http://schemas.microsoft.com/build/2009/properties">
   <ContentType Name="CSharpFile" DisplayName="C# dosyası" ItemType="Compile"></ContentType>
   <ItemType Name="Compile" DisplayName="C# derleyicisi" />
+  <ItemType Name="AdditionalFiles" DisplayName="C# analyzer additional file" />
   <FileExtension Name=".cs" ContentType="CSharpFile" />
 </ProjectSchemaDefinitions>

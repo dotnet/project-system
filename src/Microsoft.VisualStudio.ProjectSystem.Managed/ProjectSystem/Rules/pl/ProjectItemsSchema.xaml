@@ -12,7 +12,6 @@
   <ContentType Name="EmbeddedResource" DisplayName="Osadzony zasób" ItemType="EmbeddedResource">
     <NameValuePair Name="DefaultMetadata_Generator" Value="ResXFileCodeGenerator" />
   </ContentType>
-  <ItemType Name="AdditionalFiles" DisplayName="Dodatkowe pliki" />
   <ItemType Name="None" DisplayName="Brak" />
   <ItemType Name="Content" DisplayName="Zawartość" />
   <ItemType Name="EmbeddedResource" DisplayName="Osadzony zasób" />

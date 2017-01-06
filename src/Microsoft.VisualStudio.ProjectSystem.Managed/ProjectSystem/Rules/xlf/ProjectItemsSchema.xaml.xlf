@@ -39,10 +39,6 @@
         <source>Embedded resource</source>
         <note />
       </trans-unit>
-      <trans-unit id="ItemType|AdditionalFiles|DisplayName">
-        <source>AdditionalFiles</source>
-        <note />
-      </trans-unit>
       <trans-unit id="ItemType|None|DisplayName">
         <source>None</source>
         <note />

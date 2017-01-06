@@ -12,7 +12,6 @@
   <ContentType Name="EmbeddedResource" DisplayName="嵌入的资源" ItemType="EmbeddedResource">
     <NameValuePair Name="DefaultMetadata_Generator" Value="ResXFileCodeGenerator" />
   </ContentType>
-  <ItemType Name="AdditionalFiles" DisplayName="AdditionalFiles" />
   <ItemType Name="None" DisplayName="无" />
   <ItemType Name="Content" DisplayName="内容" />
   <ItemType Name="EmbeddedResource" DisplayName="嵌入的资源" />

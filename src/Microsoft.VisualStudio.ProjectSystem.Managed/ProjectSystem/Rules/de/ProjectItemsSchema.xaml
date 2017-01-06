@@ -12,7 +12,6 @@
   <ContentType Name="EmbeddedResource" DisplayName="Eingebettete Ressource" ItemType="EmbeddedResource">
     <NameValuePair Name="DefaultMetadata_Generator" Value="ResXFileCodeGenerator" />
   </ContentType>
-  <ItemType Name="AdditionalFiles" DisplayName="AdditionalFiles" />
   <ItemType Name="None" DisplayName="Keine" />
   <ItemType Name="Content" DisplayName="Inhalt" />
   <ItemType Name="EmbeddedResource" DisplayName="Eingebettete Ressource" />
