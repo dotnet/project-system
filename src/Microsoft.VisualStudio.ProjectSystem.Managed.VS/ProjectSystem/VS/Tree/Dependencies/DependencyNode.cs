@@ -132,6 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// So to allow tree provider store formal name we need this property too. 
         /// It is a hack now and we should make it public and move to IDependencyNode when
         /// we get a chance and it is safe to do a breaking change.
+        /// Tracking with https://github.com/dotnet/roslyn-project-system/issues/1101
         /// </summary>
         internal string Name { get; set; }
 

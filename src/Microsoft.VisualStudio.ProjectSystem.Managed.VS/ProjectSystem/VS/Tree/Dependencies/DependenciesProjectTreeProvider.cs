@@ -239,15 +239,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return null;
             }
 
-            // Note: all dependency nodes file path starts with file:///, but FindByPath is called eventually 
-            // from ParseCanonicalName, which in turn called from progression's SourceFileToHierarchyItem where
-            // LocalPath of the Uri is passed, not full Uri during search. Thus here we need to append file:/// 
-            // if it is not there.
-            //if (!path.StartsWith("file:///"))
-            //{
-            //    path = "file:///" + path.Trim('/');
-            //}
-
             var node = dependenciesNode.FindNodeByPath(path);
             if (node == null)
             {
@@ -406,7 +397,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             
             // when itemSpec is not in valid absolute path format, property page does not show 
             // item name correctly. Use real Name for the node here instead of caption, since caption
-            // can have other info liek version in it.
+            // can have other info like version in it.
             var itemSpec = nodeInfo.Flags.Contains(DependencyNode.CustomItemSpec)
                     ? DependencyNode.GetName(nodeInfo)
                     : nodeInfo.Id.ItemSpec;

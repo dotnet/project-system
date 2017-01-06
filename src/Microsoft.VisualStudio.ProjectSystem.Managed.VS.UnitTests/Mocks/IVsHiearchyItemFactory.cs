@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return Mock.Of<IVsHierarchyItem>();
         }
 
-        public static IVsHierarchyItem Implement(string text = null,
+        public static IVsHierarchyItem ImplementTextProperty(string text = null,
                                                  MockBehavior? mockBehavior = null)
         {
             var behavior = mockBehavior ?? MockBehavior.Default;

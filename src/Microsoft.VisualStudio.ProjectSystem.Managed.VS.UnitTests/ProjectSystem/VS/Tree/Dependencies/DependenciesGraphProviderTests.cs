@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var projectPath = @"c:\myproject\project.csproj";
             var nodeIdString = @"file:///[MyProvider;MyNodeItemSpec]";
-            var mockVsHierarchyItem = IVsHierarchyItemFactory.Implement(text: "MyNodeItemSpec");
+            var mockVsHierarchyItem = IVsHierarchyItemFactory.ImplementTextProperty(text: "MyNodeItemSpec");
             var inputNode = IGraphContextFactory.CreateNode(projectPath, 
                                                             nodeIdString, 
                                                             hierarchyItem: mockVsHierarchyItem);
@@ -120,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var projectPath = @"c:\myproject\project.csproj";
             var nodeIdString = @"file:///[MyProvider;MyNodeItemSpec]";
 
-            var mockVsHierarchyItem = IVsHierarchyItemFactory.Implement(text: "MyNodeItemSpec");
+            var mockVsHierarchyItem = IVsHierarchyItemFactory.ImplementTextProperty(text: "MyNodeItemSpec");
             var inputNode = IGraphContextFactory.CreateNode(projectPath, 
                                                             nodeIdString, 
                                                             hierarchyItem: mockVsHierarchyItem);
@@ -293,7 +293,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             rootNode.AddChild(existingNode);
             existingNode.Children.Add(existingChildNode);
 
-            var mockVsHierarchyItem = IVsHierarchyItemFactory.Implement(text: "MyNodeItemSpec");
+            var mockVsHierarchyItem = IVsHierarchyItemFactory.ImplementTextProperty(text: "MyNodeItemSpec");
             var inputNode = IGraphContextFactory.CreateNode(projectPath, 
                                                             nodeIdString,
                                                             hierarchyItem:mockVsHierarchyItem);

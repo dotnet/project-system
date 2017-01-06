@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 using Task = System.Threading.Tasks.Task;
-using System.IO;
+using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
@@ -714,24 +715,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 }
                 else
                 {
-                    var fullItemSpecPath = Path.GetFullPath(
-                                            Path.Combine(projectFolder,
-                                                         nodeInfo.Id.ItemSpec?.ToLowerInvariant()));
+                    var fullItemSpecPath = MakeRooted(projectFolder, nodeInfo.Id.ItemSpec);
                     if (!string.IsNullOrEmpty(fullItemSpecPath))
                     {
                         partialValues.Add(GraphNodeId.GetPartial(CodeGraphNodeIdName.File,
-                                                             new Uri(fullItemSpecPath, UriKind.RelativeOrAbsolute)));
+                            new Uri(fullItemSpecPath.ToLowerInvariant(), UriKind.RelativeOrAbsolute)));
                     }
                 }
             }
             else
             {
                 partialValues.Add(GraphNodeId.GetPartial(CodeGraphNodeIdName.File,
-                                                         new Uri(nodeInfo.Id.ToString().ToLowerInvariant(),
-                                                           UriKind.RelativeOrAbsolute)));
+                    new Uri(nodeInfo.Id.ToString().ToLowerInvariant(), UriKind.RelativeOrAbsolute)));
             }
 
             return GraphNodeId.GetNested(partialValues.ToArray());
+        }
+
+        private string MakeRooted(string projectFolder, string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                return null;
+            }
+
+            if (ManagedPathHelper.IsRooted(path))
+            {
+                return path;
+            }
+            else
+            {
+                return ManagedPathHelper.TryMakeRooted(projectFolder, path);
+            }
         }
 
         private GraphNode AddGraphNode(IGraphContext graphContext,
@@ -774,7 +789,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             newNode.AddCategory(DependenciesGraphSchema.CategoryDependency);
 
             graphContext.OutputNodes.Add(newNode);
-            
+
             if (parentNode != null)
             {
                 graphContext.Graph.Links.GetOrCreate(parentNode, newNode, /*label*/ null, CodeLinkCategories.Contains);
