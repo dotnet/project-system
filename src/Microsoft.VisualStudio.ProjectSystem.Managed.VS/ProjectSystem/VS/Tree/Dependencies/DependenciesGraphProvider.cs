@@ -312,7 +312,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     for (int i = 0; i < nodeChildren.Length; ++i)
                     {
                         var childNodeToAdd = nodeChildren[i];
-                        var childSubTreeProvider = childrenSubTreeProviders?[i];
+                        var childSubTreeProvider = childrenSubTreeProviders?[i] ?? subTreeProvider;
 
                         // start tracking changes if needed
                         if (graphContext.TrackChanges)
@@ -483,7 +483,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                  .FirstOrDefault();
                 if (node == null)
                 {
-                    // node is not ours or does node xist anymore
+                    // node is not ours or does node exist anymore
                     return (node, subTreeProvider);
                 }
             }
@@ -703,9 +703,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 var projectFolder = Path.GetDirectoryName(projectPath)?.ToLowerInvariant();
                 if (nodeInfo.Flags.Contains(DependencyNode.CustomItemSpec))
                 {
-                    partialValues.Add(GraphNodeId.GetPartial(CodeGraphNodeIdName.File,
-                                                         new Uri(Path.Combine(projectFolder, nodeInfo.Caption.ToLowerInvariant()),
-                                                           UriKind.RelativeOrAbsolute)));
+                    var name = DependencyNode.GetName(nodeInfo);
+                    if (name != null)
+                    {
+                        partialValues.Add(GraphNodeId.GetPartial(
+                            CodeGraphNodeIdName.File,
+                            new Uri(Path.Combine(projectFolder, name.ToLowerInvariant()),
+                            UriKind.RelativeOrAbsolute)));
+                    }
                 }
                 else
                 {
@@ -766,7 +771,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                              new SourceLocation(projectPath, new Position(nodeInfo.Priority, 0)));
             newNode.SetValue(DependenciesGraphSchema.ProviderProperty, subTreeProvider);
 
-            //newNode.AddCategory(DependenciesGraphSchema.CategoryDependency);
+            newNode.AddCategory(DependenciesGraphSchema.CategoryDependency);
 
             graphContext.OutputNodes.Add(newNode);
             

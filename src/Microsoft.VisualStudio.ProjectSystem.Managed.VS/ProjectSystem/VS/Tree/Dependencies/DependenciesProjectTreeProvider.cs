@@ -15,6 +15,7 @@ using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.References;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
 using Task = System.Threading.Tasks.Task;
@@ -179,14 +180,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     }
 
                     var nodeItemContext = node.BrowseObjectProperties.Context;
-                    var itemName = nodeItemContext.ItemName;
-                    if (PackageReference.SchemaName.Equals(nodeItemContext.ItemType))
-                    {
-                        // for packages captions always contain versions, but actual project items don't
-                        itemName = ExtractNameFromCaption(itemName);
-                    }
-
-                    var unresolvedReferenceItem = project.GetItemsByEvaluatedInclude(itemName)
+                    var unresolvedReferenceItem = project.GetItemsByEvaluatedInclude(nodeItemContext.ItemName)
                         .FirstOrDefault(item => string.Equals(item.ItemType, 
                                                               nodeItemContext.ItemType, 
                                                               StringComparison.OrdinalIgnoreCase));
@@ -226,17 +220,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     }
                 }
             }
-        }
-
-        private string ExtractNameFromCaption(string caption)
-        {
-            var index = caption?.IndexOf(' ');
-            if (index.HasValue && index.Value >= 0)
-            {
-                return caption.Substring(0, index.Value);
-            }
-
-            return caption;
         }
 
         /// <summary>
@@ -416,15 +399,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                        .Add(Folder.FullPathProperty, string.Empty);
 
             // For generic node types we do set correct, known item types, however for custom nodes
-            // provided by third party extensions we can not guaranty that item type will be known. 
+            // provided by third party extensions we can not guarantee that item type will be known. 
             // Thus always set predefined itemType for all custom nodes.
             // TODO: generate specific xaml rule for generic Dependency nodes
             var itemType = isGenericNodeType ? nodeInfo.Id.ItemType : Folder.SchemaName;
             
             // when itemSpec is not in valid absolute path format, property page does not show 
-            // item name correctly.
+            // item name correctly. Use real Name for the node here instead of caption, since caption
+            // can have other info liek version in it.
             var itemSpec = nodeInfo.Flags.Contains(DependencyNode.CustomItemSpec)
-                    ? nodeInfo.Caption
+                    ? DependencyNode.GetName(nodeInfo)
                     : nodeInfo.Id.ItemSpec;
             var itemContext = ProjectPropertiesContext.GetContext(UnconfiguredProject, itemType, itemSpec);
             var configuredProjectExports = GetActiveConfiguredProjectExports(ActiveConfiguredProject);
@@ -524,8 +508,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Requires.NotNullOrEmpty(subTreeProvider.RootNode.Caption, nameof(subTreeProvider.RootNode.Caption));
             Requires.NotNullOrEmpty(subTreeProvider.ProviderType, nameof(subTreeProvider.ProviderType));
 
-            var projectPath = Path.GetDirectoryName(UnconfiguredProject.FullPath);
-
+            var projectFolder = Path.GetDirectoryName(UnconfiguredProject.FullPath);
             var providerRootTreeNode = GetSubTreeRootNode(dependenciesNode,
                                                           subTreeProvider.RootNode.Flags);
             if (subTreeProvider.RootNode.HasChildren || subTreeProvider.ShouldBeVisibleWhenEmpty)
@@ -554,9 +537,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             return dependenciesNode;
                         }
 
-                        var treeNode = providerRootTreeNode.FindNodeByPath(projectPath,
-                                                                           removedItem.Id.ItemSpec,
-                                                                           removedItem.Caption);
+                        var treeNode = FindProjectTreeNode(providerRootTreeNode, removedItem, projectFolder);
                         if (treeNode != null)
                         {
                             providerRootTreeNode = treeNode.Remove();
@@ -570,9 +551,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             return dependenciesNode;
                         }
 
-                        var treeNode = providerRootTreeNode.FindNodeByPath(projectPath, 
-                                                                           updatedItem.Id.ItemSpec, 
-                                                                           updatedItem.Caption);
+                        var treeNode = FindProjectTreeNode(providerRootTreeNode, updatedItem, projectFolder);
                         if (treeNode != null)
                         {
 
@@ -605,9 +584,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             return dependenciesNode;
                         }
 
-                        var treeNode = providerRootTreeNode.FindNodeByPath(projectPath, 
-                                                                           addedItem.Id.ItemSpec, 
-                                                                           addedItem.Caption);
+                        var treeNode = FindProjectTreeNode(providerRootTreeNode, addedItem, projectFolder);
                         if (treeNode == null)
                         {
                             treeNode = CreateProjectItemTreeNode(providerRootTreeNode, addedItem, catalogs);
@@ -637,6 +614,42 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             return dependenciesNode;
         }
 
+        /// <summary>
+        /// Finds IProjectTree node in the top level children of a given parent IProjectTree node.
+        /// Depending on the type of IDependencyNode search method is different:
+        ///     - if dependency node has custom ItemSpec, we only can find it by caption.
+        ///     - if dependency node has normal ItemSpec, we first try to find it by path and then
+        ///       by caption if path was not found (since unresolved and resolved items can have 
+        ///       different items specs).
+        /// </summary>
+        private IProjectTree FindProjectTreeNode(IProjectTree parentNode, IDependencyNode nodeInfo, string projectPath)
+        {
+            IProjectTree treeNode = null;
+            if (nodeInfo.Flags.Contains(DependencyNode.CustomItemSpec))
+            {
+                treeNode = parentNode.FindNodeByCaption(nodeInfo.Caption);
+            }
+            else
+            {
+                var itemSpec = nodeInfo.Id.ItemSpec;
+                if (!ManagedPathHelper.IsRooted(itemSpec))
+                {
+                    itemSpec = ManagedPathHelper.TryMakeRooted(projectPath, itemSpec);
+                }
+
+                if (!string.IsNullOrEmpty(itemSpec))
+                {
+                    treeNode = parentNode.FindNodeByPath(itemSpec);
+                }
+
+                if (treeNode == null)
+                {
+                    treeNode = parentNode.FindNodeByCaption(nodeInfo.Caption);
+                }
+            }
+
+            return treeNode;
+        }
 
         /// <summary>
         /// Finds the resolved reference item for a given unresolved reference.
@@ -808,7 +821,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             unresolvedContext.ItemName);
             }
         }
-       
+
         /// <summary>
         /// Gets an IRule to attach to a project item so that browse object properties will be displayed.
         /// </summary>

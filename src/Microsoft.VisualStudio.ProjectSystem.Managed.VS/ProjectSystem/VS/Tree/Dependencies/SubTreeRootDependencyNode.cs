@@ -6,6 +6,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     internal class SubTreeRootDependencyNode : DependencyNode
     {
+        private static readonly ProjectTreeFlags SubTreeRootNodeFlags
+                = ProjectTreeFlags.Create("SubTreeRootNode");
+
         public SubTreeRootDependencyNode(string providerType,
                                          string caption,
                                          ProjectTreeFlags flags,
@@ -21,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Caption = caption;
             Icon = icon;
             ExpandedIcon = expandedIcon ?? Icon;
-            Flags = flags.Add(ProjectTreeFlags.Common.NonFileSystemProjectItem.ToString());
+            Flags = flags.Add(SubTreeRootNodeFlags.ToString());
         }
     }
 }

@@ -563,7 +563,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             ? DependencyNode.PackageNodePriority
                             : DependencyNode.UnresolvedReferenceNodePriority;
 
-            var caption = "MyCaption";
+            var name = "MyName";
+            var caption = "MyCaption (xxx)";
             var id = DependencyNodeId.FromString(
                         "file:///[MyProviderType;c:\\MyItemSpec.dll;MyItemType;MyUniqueToken]");
             var properties = new Dictionary<string, string>().ToImmutableDictionary();
@@ -571,6 +572,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             // Act
             var node = new PackageDependencyNode(id,
+                                                 name,
                                                  caption,
                                                  myFlags,
                                                  properties,
@@ -580,6 +582,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(expectedIcon, node.Icon);
             Assert.Equal(resolved, node.Resolved);
             Assert.Equal(priority, node.Priority);
+            Assert.Equal(name, node.Name);
             Assert.Equal(caption, node.Caption);
             Assert.Equal(node.Alias, node.Caption);
             Assert.Equal(properties, node.Properties);
@@ -592,8 +595,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var id = DependencyNodeId.FromString("file:///[MyProviderType]");
 
+            Assert.Throws<ArgumentNullException>("name", () => {
+                new PackageDependencyNode(id, null, null, ProjectTreeFlags.Empty);
+            });
+
             Assert.Throws<ArgumentNullException>("caption", () => {
-                new PackageDependencyNode(id, null, ProjectTreeFlags.Empty);
+                new PackageDependencyNode(id, "somename", null, ProjectTreeFlags.Empty);
             });
         }
     }

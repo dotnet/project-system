@@ -104,6 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             Id = id;
             Caption = Id.ItemSpec ?? string.Empty;
+            Name = Caption;
             Priority = priority;
             Properties = properties;
             Resolved = resolved;
@@ -125,6 +126,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         public string Caption { get; set; }
 
+        /// <summary>
+        /// Actual formal name of the node. In most cases it will be equal to Caption,
+        /// however in some cases caption would have name + version or something else.
+        /// So to allow tree provider store formal name we need this property too. 
+        /// It is a hack now and we should make it public and move to IDependencyNode when
+        /// we get a chance and it is safe to do a breaking change.
+        /// </summary>
+        internal string Name { get; set; }
+
+        /// <summary>
+        /// This is temporary until we can add Name to IDependencyNode to protect us from custom 
+        /// implementations of IDependencyNode which don't have Name yet.
+        /// </summary>
+        internal static string GetName(IDependencyNode node)
+        {
+            Requires.NotNull(node, nameof(node));
+
+            if (node is DependencyNode dependencyNode)
+            {
+                return dependencyNode.Name;
+            }
+            else
+            {
+                return node.Caption;
+            }
+        }
         /// <summary>
         /// Unique name constructed in the form Caption (ItemSpec).
         /// Is used to dedupe dependency nodes when they have same caption but different 
