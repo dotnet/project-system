@@ -246,7 +246,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
             await editorState.OpenEditorAsync();
 
-            Assert.True(await editorState.CloseWindowAsync());
+            Assert.True(await editorState.CanCloseWindowAsync());
         }
 
         [Fact]
@@ -284,7 +284,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
             await editorState.OpenEditorAsync();
 
-            Assert.False(await editorState.CloseWindowAsync());
+            Assert.False(await editorState.CanCloseWindowAsync());
         }
 
         [Fact]
@@ -320,7 +320,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 frameListenerFactory,
                 textBufferManagerFactory);
 
-            await editorState.DisposeEditorAsync();
+            await editorState.CloseCurrentEditorAsync();
             Mock.Get(textBufferManager).Verify(t => t.Dispose(), Times.Never);
             Mock.Get(textBufferListener).Verify(t => t.Dispose(), Times.Never);
             Mock.Get(frameListener).Verify(f => f.DisposeAsync(), Times.Never);
@@ -365,7 +365,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 Assert.Equal(ProjectFileEditorPresenter.EditorState.EditorClosing, editorState.CurrentState));
 
             await editorState.OpenEditorAsync();
-            await editorState.DisposeEditorAsync();
+            await editorState.CloseCurrentEditorAsync();
             Mock.Get(textBufferManager).Verify(t => t.Dispose(), Times.Once);
             Mock.Get(textBufferListener).Verify(t => t.Dispose(), Times.Once);
             Mock.Get(frameListener).Verify(f => f.DisposeAsync(), Times.Once);

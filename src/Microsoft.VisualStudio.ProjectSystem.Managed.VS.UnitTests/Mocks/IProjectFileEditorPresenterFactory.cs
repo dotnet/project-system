@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         public static IProjectFileEditorPresenter ImplementCloseWindowAsync(bool shouldClose)
         {
             var mock = new Mock<IProjectFileEditorPresenter>();
-            mock.Setup(e => e.CloseWindowAsync()).Returns(Task.FromResult(shouldClose));
+            mock.Setup(e => e.CanCloseWindowAsync()).Returns(Task.FromResult(shouldClose));
             return mock.Object;
         }
     }

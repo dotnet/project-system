@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         {
             if (_frame.Equals(frame))
             {
-                _threadingService.ExecuteSynchronously(_editorModel.DisposeEditorAsync);
+                _threadingService.ExecuteSynchronously(_editorModel.CloseCurrentEditorAsync);
             }
         }
 
@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
             // CloseWindowAsync returns true if closing the window succeeded. If it succeeded, we return false
             // to continue unloading the project. If the user cancelled close, we return true to cancel unload
-            shouldCancel = _threadingService.ExecuteSynchronously(_editorModel.CloseWindowAsync) ? 0 : 1;
+            shouldCancel = _threadingService.ExecuteSynchronously(_editorModel.CanCloseWindowAsync) ? 0 : 1;
             return VSConstants.S_OK;
         }
 

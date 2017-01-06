@@ -111,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var listener = new FrameOpenCloseListener(serviceProvider, editorState, new IProjectThreadingServiceMock(), unconfiguredProject);
             Assert.Equal(VSConstants.S_OK, listener.OnQueryUnloadProject(hierarchy, ref shouldCancel));
             Assert.Equal(0, shouldCancel);
-            Mock.Get(editorState).Verify(e => e.CloseWindowAsync(), Times.Once);
+            Mock.Get(editorState).Verify(e => e.CanCloseWindowAsync(), Times.Once);
         }
 
         [Fact]
@@ -134,7 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var listener = new FrameOpenCloseListener(serviceProvider, editorState, new IProjectThreadingServiceMock(), unconfiguredProject);
             Assert.Equal(VSConstants.S_OK, listener.OnQueryUnloadProject(hierarchy, ref shouldCancel));
             Assert.Equal(1, shouldCancel);
-            Mock.Get(editorState).Verify(e => e.CloseWindowAsync(), Times.Once);
+            Mock.Get(editorState).Verify(e => e.CanCloseWindowAsync(), Times.Once);
         }
 
         [Fact]
@@ -158,7 +158,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 UnconfiguredProjectFactory.Create(filePath: @"C:\ConsoleApp\ADifferentProject\ADifferentProject.csproj"));
             Assert.Equal(VSConstants.S_OK, listener.OnQueryUnloadProject(hierarchy, ref shouldCancel));
             Assert.Equal(0, shouldCancel);
-            Mock.Get(editorState).Verify(e => e.CloseWindowAsync(), Times.Never);
+            Mock.Get(editorState).Verify(e => e.CanCloseWindowAsync(), Times.Never);
         }
 
         private Func<Type, object> ServiceTypeChecker(IVsUIShell7 uiShell, IVsSolution solution)

@@ -165,7 +165,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         /// Tells the editor to call close on the existing window frame.
         /// </summary>
         /// <returns>True if the close was successful, false if the window is still open</returns>
-        public async Task<bool> CloseWindowAsync()
+        public async Task<bool> CanCloseWindowAsync()
         {
             // We can't switch to editor closing here because there's still the chance that some other action can cancel
             // the editor closing, without notifying us. A later callback will get hit once the close is guaranteed to happen.
@@ -184,7 +184,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         /// <summary>
         /// Starts the process of closing the project file editor, if one is open currently.
         /// </summary>
-        public async Task DisposeEditorAsync()
+        public async Task CloseCurrentEditorAsync()
         {
             lock (_lock)
             {

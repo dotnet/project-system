@@ -4,8 +4,15 @@ using System;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 {
+    /// <summary>
+    /// Watches for changes to the project file model maintained by VS, notifying <see cref="IProjectFileEditorPresenter"/>
+    /// when updates are made.
+    /// </summary>
     internal interface IProjectFileModelWatcher : IDisposable
     {
+        /// <summary>
+        /// Starts the event watching.
+        /// </summary>
         void InitializeModelWatcher();
     }
 }
