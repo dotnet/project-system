@@ -1,5 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
-
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
@@ -20,6 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             public IList<ILaunchProfile> Profiles { get; set; }
             public ILaunchSettingsProvider ProfileProvider { get; set; }
             public ILaunchSettings LaunchProfiles { get; set; }
+            public IList<Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>> UIProviders { get; set; } = new List<Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>>();
         }
 
         private Mock<DebugPageViewModel> CreateViewModel(ViewModelData data)
@@ -59,6 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
             viewModel.CallBase = true;
             viewModel.Protected().Setup<ILaunchSettingsProvider>("GetDebugProfileProvider").Returns(mockProfileProvider.Object);
+            viewModel.Protected().Setup<IEnumerable<Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>>>("GetUIProviders").Returns(data.UIProviders);
             return viewModel;
         }
                
@@ -90,14 +92,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             await viewModel.Object.Initialize();
             Assert.False(viewModel.Object.HasProfiles);
             Assert.False(viewModel.Object.IsProfileSelected);
-            Assert.False(viewModel.Object.IsExecutable);
+            Assert.False(viewModel.Object.SupportsExecutable);
             Assert.False(viewModel.Object.HasLaunchOption);
             Assert.Equal(string.Empty, viewModel.Object.WorkingDirectory);
             Assert.Equal(string.Empty, viewModel.Object.LaunchPage);
             Assert.Equal(string.Empty, viewModel.Object.ExecutablePath);
             Assert.Equal(string.Empty, viewModel.Object.CommandLineArguments);
-            Assert.Equal(string.Empty, viewModel.Object.SelectedCommandName);
         }
-
     }
 }
