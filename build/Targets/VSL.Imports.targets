@@ -485,10 +485,16 @@
       <Output TaskParameter="DestinationFiles" ItemName="FileWrites"/>
     </Copy>
 
+    <ItemGroup>
+       <_XamlPropertyRuleToCopy Include="@(XamlPropertyRule);@(XamlPropertyRuleNoCodeBehind);@(XamlPropertyProjectItemsSchema)" />
 
-    <!-- Copy rule files for testing purposes -->
-    <Copy SourceFiles="@(XamlPropertyRule);@(XamlPropertyRuleNoCodeBehind);@(XamlPropertyProjectItemsSchema)" 
-          DestinationFolder="$(OutDir)\Rules">
+       <!-- Pick up localized copies as well -->
+       <_XamlPropertyRuleToCopy Include="%(RootDir)%(Directory)\**\%(Filename)%(Extension)" />
+    </ItemGroup>
+
+    <!-- Copy rule files for testing and setup authoring purposes -->
+    <Copy SourceFiles="@(_XamlPropertyRuleToCopy)"
+          DestinationFiles="@(_XamlPropertyRuleToCopy->'$(OutDir)\Rules\%(RecursiveDir)%(Filename)%(Extension)')">
       
       <Output TaskParameter="DestinationFiles" ItemName="FileWrites"/>      
     </Copy>
