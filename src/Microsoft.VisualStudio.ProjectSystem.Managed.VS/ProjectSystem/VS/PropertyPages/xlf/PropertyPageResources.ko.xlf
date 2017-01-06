@@ -3,11 +3,6 @@
   <file datatype="xml" source-language="en" target-language="ko" original="src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/PropertyPages/PropertyPageResources.resx">
     <body>
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/PropertyPages/PropertyPageResources.resx" />
-      <trans-unit id="AdminRequiredForPort">
-        <source>You must run Visual Studio in the context of an administrator account to create IIS Express sites with ports less than 1024.</source>
-        <target state="translated">1024 미만의 포트로 IIS Express 사이트를 만들려면 Administrator 계정의 컨텍스트에서 Visual Studio를 실행해야 합니다.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="AllFiles">
         <source>All files</source>
         <target state="translated">모든 파일</target>
@@ -16,16 +11,6 @@
       <trans-unit id="ApplicationArgumentsWatermark">
         <source>Arguments to be passed to the application</source>
         <target state="translated">응용 프로그램에 전달할 인수</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ApplicationUrlWatermark">
-        <source>The URL of the application</source>
-        <target state="translated">응용 프로그램의 URL</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="CopyHyperlinkText">
-        <source>Copy</source>
-        <target state="translated">복사</target>
         <note />
       </trans-unit>
       <trans-unit id="DebugPropertyPageTitle">
@@ -58,31 +43,6 @@
         <target state="translated">실행할 실행 파일 경로</target>
         <note />
       </trans-unit>
-      <trans-unit id="IISExpressMissingAppUrl">
-        <source>The IIS settings are missing the App Url property. This is required to configure IIS to run the site.</source>
-        <target state="translated">IIS 설정에 앱 URL 속성이 없습니다. 사이트를 실행하려면 IIS를 구성해야 합니다.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="IISMissingAppUrl">
-        <source>The IIS settings are missing the App Url property. This is required to configure IIS to run the site.</source>
-        <target state="translated">IIS 설정에 앱 URL 속성이 없습니다. 사이트를 실행하려면 IIS를 구성해야 합니다.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="InvalidAppUrl">
-        <source>The Application Url is invalid. {0}</source>
-        <target state="translated">응용 프로그램 URL이 잘못되었습니다. {0}</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="InvalidIISAppUrl">
-        <source>The IIS Application Url is invalid. {0}</source>
-        <target state="translated">IIS 응용 프로그램 URL이 잘못되었습니다. {0}</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="InvalidIISExpressAppUrl">
-        <source>The IIS Express Application Url is invalid. {0}</source>
-        <target state="translated">IIS Express 응용 프로그램 URL이 잘못되었습니다. {0}</target>
-        <note />
-      </trans-unit>
       <trans-unit id="LaunchUrlWatermark">
         <source>Absolute or relative URL</source>
         <target state="translated">절대 또는 상대 URL</target>
@@ -101,11 +61,6 @@
       <trans-unit id="NewProfileSeedName">
         <source>newProfile</source>
         <target state="translated">newProfile</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProfileKindCommandName">
-        <source>Command</source>
-        <target state="translated">명령</target>
         <note />
       </trans-unit>
       <trans-unit id="ProfileKindExecutableName">
@@ -147,6 +102,11 @@
         <source>Absolute path to working directory</source>
         <target state="translated">작업 디렉터리의 절대 경로</target>
         <note />
+      </trans-unit>
+      <trans-unit id="ErrorsMustBeCorrectedPriorToSaving">
+        <source>The errors on the page must be corrected prior to saving your changes.</source>
+        <target state="new">The errors on the page must be corrected prior to saving your changes.</target>
+        <note></note>
       </trans-unit>
     </body>
   </file>
