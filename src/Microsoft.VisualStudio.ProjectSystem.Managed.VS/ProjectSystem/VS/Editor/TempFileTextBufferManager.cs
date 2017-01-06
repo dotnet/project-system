@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         private readonly Regex _whitespaceRegex = new Regex(@"\s");
 
         private readonly UnconfiguredProject _unconfiguredProject;
-        private readonly IProjectXmlAccessor _msbuildAccessor;
+        private readonly IProjectXmlAccessor _projectXmlAccessor;
         private readonly IVsEditorAdaptersFactoryService _editorAdaptersService;
         private readonly ITextDocumentFactoryService _textDocumentService;
         private readonly IVsShellUtilitiesHelper _shellUtilities;
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
         [ImportingConstructor]
         public TempFileTextBufferManager(UnconfiguredProject unconfiguredProject,
-            IProjectXmlAccessor msbuildAccessor,
+            IProjectXmlAccessor projectXmlAccessor,
             IVsEditorAdaptersFactoryService editorAdaptersService,
             ITextDocumentFactoryService textDocumentService,
             IVsShellUtilitiesHelper shellUtilities,
@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             base(threadingService != null ? threadingService.JoinableTaskContext : throw new ArgumentNullException(nameof(threadingService)))
         {
             Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
-            Requires.NotNull(msbuildAccessor, nameof(msbuildAccessor));
+            Requires.NotNull(projectXmlAccessor, nameof(projectXmlAccessor));
             Requires.NotNull(editorAdaptersService, nameof(editorAdaptersService));
             Requires.NotNull(textDocumentService, nameof(textDocumentService));
             Requires.NotNull(shellUtilities, nameof(shellUtilities));
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
 
             _unconfiguredProject = unconfiguredProject;
-            _msbuildAccessor = msbuildAccessor;
+            _projectXmlAccessor = projectXmlAccessor;
             _editorAdaptersService = editorAdaptersService;
             _textDocumentService = textDocumentService;
             _shellUtilities = shellUtilities;
@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         {
             FilePath = GetTempFileName(Path.GetFileName(_unconfiguredProject.FullPath));
 
-            var projectXml = await _msbuildAccessor.GetProjectXmlAsync().ConfigureAwait(false);
+            var projectXml = await _projectXmlAccessor.GetProjectXmlAsync().ConfigureAwait(false);
             _fileSystem.WriteAllText(FilePath, projectXml, await _unconfiguredProject.GetFileEncodingAsync().ConfigureAwait(false));
         }
 
@@ -84,12 +84,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
         public async Task ResetBufferAsync()
         {
-            var projectXml = await _msbuildAccessor.GetProjectXmlAsync().ConfigureAwait(false);
+            var projectXml = await _projectXmlAccessor.GetProjectXmlAsync().ConfigureAwait(false);
 
             // We compare the text we want to write with the text currently in the buffer, ignoring whitespace. If they're
             // the same, then we don't write anything. We ignore whitespace because of
             // https://github.com/dotnet/roslyn-project-system/issues/743. Once we can read the whitespace correctly from
-            // the msbuild model, we can stop stripping whitespace for this comparison.
+            // the msbuild model, we can stop stripping whitespace for this comparison. This instance is tracked by
+            // https://github.com/dotnet/roslyn-project-system/issues/1094
             var normalizedExistingText = _whitespaceRegex.Replace(await ReadBufferXmlAsync().ConfigureAwait(true), "");
             var normalizedProjectText = _whitespaceRegex.Replace(projectXml, "");
 
@@ -113,9 +114,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                     Verify.HResult(_textBuffer.GetStateFlags(out uint oldFlags));
                     _textBuffer.SetStateFlags(oldFlags & ~(uint)BUFFERSTATEFLAGS.BSF_USER_READONLY);
 
-                    _textDocument.TextBuffer.Replace(textSpan, projectXml);
+                    // Make sure that the buffer is reset back to the old flags, regardless of TextBuffer.Replace throwing any kind of exception
+                    try
+                    {
+                        _textDocument.TextBuffer.Replace(textSpan, projectXml);
+                    }
+                    finally
+                    {
+                        _textBuffer.SetStateFlags(oldFlags);
+                    }
 
-                    _textBuffer.SetStateFlags(oldFlags);
                 }
             }
         }
@@ -123,7 +131,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         public async Task SaveAsync()
         {
             var toWrite = await ReadBufferXmlAsync().ConfigureAwait(false);
-            await _msbuildAccessor.SaveProjectXmlAsync(toWrite).ConfigureAwait(false);
+            await _projectXmlAccessor.SaveProjectXmlAsync(toWrite).ConfigureAwait(false);
         }
 
         public async Task SetReadOnlyAsync(bool readOnly)

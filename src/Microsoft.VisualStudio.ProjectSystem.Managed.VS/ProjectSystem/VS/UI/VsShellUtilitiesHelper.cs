@@ -12,7 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
     /// Wrapper for VsShellUtilities to allow for testing.
     /// </summary>
     [Export(typeof(IVsShellUtilitiesHelper))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
     internal class VsShellUtilitiesHelper : IVsShellUtilitiesHelper
     {
         private readonly IProjectThreadingService _threadingService;

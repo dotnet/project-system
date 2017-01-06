@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.VS.UI;
-using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.TextManager.Interop;
@@ -37,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         [Fact]
         public void TempFileTextBufferManager_NullMsBuildAccessor_Throws()
         {
-            Assert.Throws<ArgumentNullException>("msbuildAccessor", () => new TempFileTextBufferManager(
+            Assert.Throws<ArgumentNullException>("projectXmlAccessor", () => new TempFileTextBufferManager(
                 UnconfiguredProjectFactory.Create(),
                 null,
                 IVsEditorAdaptersFactoryServiceFactory.Create(),
