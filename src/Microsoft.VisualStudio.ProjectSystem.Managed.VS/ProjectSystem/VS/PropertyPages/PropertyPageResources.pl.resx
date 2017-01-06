@@ -117,20 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AdminRequiredForPort" xml:space="preserve">
-    <value>Aby utworzyć witryny usług IIS Express o numerach portów mniejszych niż 1024, należy uruchomić program Visual Studio w kontekście konta administratora.</value>
-  </data>
   <data name="AllFiles" xml:space="preserve">
     <value>Wszystkie pliki</value>
   </data>
   <data name="ApplicationArgumentsWatermark" xml:space="preserve">
     <value>Argumenty, które mają zostać przekazane do aplikacji</value>
-  </data>
-  <data name="ApplicationUrlWatermark" xml:space="preserve">
-    <value>Adres URL aplikacji</value>
-  </data>
-  <data name="CopyHyperlinkText" xml:space="preserve">
-    <value>Kopiuj</value>
   </data>
   <data name="DebugPropertyPageTitle" xml:space="preserve">
     <value>Debuguj</value>
@@ -150,21 +141,6 @@
   <data name="ExecutablePathWatermark" xml:space="preserve">
     <value>Ścieżka pliku wykonywalnego do uruchomienia</value>
   </data>
-  <data name="IISExpressMissingAppUrl" xml:space="preserve">
-    <value>W ustawieniach usług IIS brakuje właściwości adresu URL aplikacji. Jest ona wymagana do skonfigurowania usług IIS pod kątem uruchamiania witryny.</value>
-  </data>
-  <data name="IISMissingAppUrl" xml:space="preserve">
-    <value>W ustawieniach usług IIS brakuje właściwości adresu URL aplikacji. Jest ona wymagana do skonfigurowania usług IIS pod kątem uruchamiania witryny.</value>
-  </data>
-  <data name="InvalidAppUrl" xml:space="preserve">
-    <value>Adres URL aplikacji jest nieprawidłowy. {0}</value>
-  </data>
-  <data name="InvalidIISAppUrl" xml:space="preserve">
-    <value>Adres URL aplikacji usług IIS jest nieprawidłowy. {0}</value>
-  </data>
-  <data name="InvalidIISExpressAppUrl" xml:space="preserve">
-    <value>Adres URL aplikacji usług IIS Express jest nieprawidłowy. {0}</value>
-  </data>
   <data name="LaunchUrlWatermark" xml:space="preserve">
     <value>Bezwzględny lub względny adres URL</value>
   </data>
@@ -176,9 +152,6 @@
   </data>
   <data name="NewProfileSeedName" xml:space="preserve">
     <value>newProfile</value>
-  </data>
-  <data name="ProfileKindCommandName" xml:space="preserve">
-    <value>Polecenie</value>
   </data>
   <data name="ProfileKindExecutableName" xml:space="preserve">
     <value>Plik wykonywalny</value>
@@ -203,5 +176,8 @@
   </data>
   <data name="WorkingDirectoryWatermark" xml:space="preserve">
     <value>Ścieżka bezwzględna do katalogu roboczego</value>
+  </data>
+  <data name="ErrorsMustBeCorrectedPriorToSaving" xml:space="preserve">
+    <value>The errors on the page must be corrected prior to saving your changes.</value>
   </data>
 </root>

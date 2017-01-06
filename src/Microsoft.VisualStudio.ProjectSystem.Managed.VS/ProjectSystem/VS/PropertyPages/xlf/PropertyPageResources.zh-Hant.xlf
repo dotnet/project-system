@@ -3,11 +3,6 @@
   <file datatype="xml" source-language="en" target-language="zh-Hant" original="src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/PropertyPages/PropertyPageResources.resx">
     <body>
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/PropertyPages/PropertyPageResources.resx" />
-      <trans-unit id="AdminRequiredForPort">
-        <source>You must run Visual Studio in the context of an administrator account to create IIS Express sites with ports less than 1024.</source>
-        <target state="translated">您必須在使用系統管理員帳戶的情況下執行 Visual Studio，才能以低於 1024 的連接埠建立 IIS Express 網站。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="AllFiles">
         <source>All files</source>
         <target state="translated">所有檔案</target>
@@ -16,16 +11,6 @@
       <trans-unit id="ApplicationArgumentsWatermark">
         <source>Arguments to be passed to the application</source>
         <target state="translated">要傳遞到應用程式的引數</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ApplicationUrlWatermark">
-        <source>The URL of the application</source>
-        <target state="translated">應用程式的 URL</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="CopyHyperlinkText">
-        <source>Copy</source>
-        <target state="translated">複製</target>
         <note />
       </trans-unit>
       <trans-unit id="DebugPropertyPageTitle">
@@ -58,31 +43,6 @@
         <target state="translated">要執行之可執行檔的路徑</target>
         <note />
       </trans-unit>
-      <trans-unit id="IISExpressMissingAppUrl">
-        <source>The IIS settings are missing the App Url property. This is required to configure IIS to run the site.</source>
-        <target state="translated">IIS 設定缺少應用程式 URL 屬性。設定 IIS 需要此屬性才能執行網站。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="IISMissingAppUrl">
-        <source>The IIS settings are missing the App Url property. This is required to configure IIS to run the site.</source>
-        <target state="translated">IIS 設定缺少應用程式 URL 屬性。設定 IIS 需要此屬性才能執行網站。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="InvalidAppUrl">
-        <source>The Application Url is invalid. {0}</source>
-        <target state="translated">應用程式 URL 無效。{0}</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="InvalidIISAppUrl">
-        <source>The IIS Application Url is invalid. {0}</source>
-        <target state="translated">IIS 應用程式 URL 無效。{0}</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="InvalidIISExpressAppUrl">
-        <source>The IIS Express Application Url is invalid. {0}</source>
-        <target state="translated">IIS Express 應用程式 URL 無效。{0}</target>
-        <note />
-      </trans-unit>
       <trans-unit id="LaunchUrlWatermark">
         <source>Absolute or relative URL</source>
         <target state="translated">絕對或相對 URL</target>
@@ -101,11 +61,6 @@
       <trans-unit id="NewProfileSeedName">
         <source>newProfile</source>
         <target state="translated">newProfile</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProfileKindCommandName">
-        <source>Command</source>
-        <target state="translated">命令</target>
         <note />
       </trans-unit>
       <trans-unit id="ProfileKindExecutableName">
@@ -147,6 +102,11 @@
         <source>Absolute path to working directory</source>
         <target state="translated">工作目錄的絕對路徑</target>
         <note />
+      </trans-unit>
+      <trans-unit id="ErrorsMustBeCorrectedPriorToSaving">
+        <source>The errors on the page must be corrected prior to saving your changes.</source>
+        <target state="new">The errors on the page must be corrected prior to saving your changes.</target>
+        <note></note>
       </trans-unit>
     </body>
   </file>

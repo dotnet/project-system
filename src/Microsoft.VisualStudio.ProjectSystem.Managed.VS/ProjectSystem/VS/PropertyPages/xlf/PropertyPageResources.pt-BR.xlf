@@ -3,11 +3,6 @@
   <file datatype="xml" source-language="en" target-language="pt-BR" original="src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/PropertyPages/PropertyPageResources.resx">
     <body>
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/PropertyPages/PropertyPageResources.resx" />
-      <trans-unit id="AdminRequiredForPort">
-        <source>You must run Visual Studio in the context of an administrator account to create IIS Express sites with ports less than 1024.</source>
-        <target state="translated">Você deve executar o Visual Studio no contexto de uma conta de administrador para criar sites do IIS Express com portas menores do que 1024.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="AllFiles">
         <source>All files</source>
         <target state="translated">Todos os arquivos</target>
@@ -16,16 +11,6 @@
       <trans-unit id="ApplicationArgumentsWatermark">
         <source>Arguments to be passed to the application</source>
         <target state="translated">Argumentos a serem passados para o aplicativo</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ApplicationUrlWatermark">
-        <source>The URL of the application</source>
-        <target state="translated">A URL do aplicativo</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="CopyHyperlinkText">
-        <source>Copy</source>
-        <target state="translated">Copiar</target>
         <note />
       </trans-unit>
       <trans-unit id="DebugPropertyPageTitle">
@@ -58,31 +43,6 @@
         <target state="translated">Caminho para o executável a ser executado</target>
         <note />
       </trans-unit>
-      <trans-unit id="IISExpressMissingAppUrl">
-        <source>The IIS settings are missing the App Url property. This is required to configure IIS to run the site.</source>
-        <target state="translated">A propriedade URL do Aplicativo está ausente nas configurações de IIS. Ela é necessária para configurar o IIS para executar o site.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="IISMissingAppUrl">
-        <source>The IIS settings are missing the App Url property. This is required to configure IIS to run the site.</source>
-        <target state="translated">A propriedade URL do Aplicativo está ausente nas configurações de IIS. Ela é necessária para configurar o IIS para executar o site.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="InvalidAppUrl">
-        <source>The Application Url is invalid. {0}</source>
-        <target state="translated">A URL do Aplicativo é inválida. {0}</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="InvalidIISAppUrl">
-        <source>The IIS Application Url is invalid. {0}</source>
-        <target state="translated">A URL do Aplicativo do IIS é inválida. {0}</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="InvalidIISExpressAppUrl">
-        <source>The IIS Express Application Url is invalid. {0}</source>
-        <target state="translated">A URL do Aplicativo do IIS Express é inválida. {0}</target>
-        <note />
-      </trans-unit>
       <trans-unit id="LaunchUrlWatermark">
         <source>Absolute or relative URL</source>
         <target state="translated">URL absoluta ou relativa</target>
@@ -101,11 +61,6 @@
       <trans-unit id="NewProfileSeedName">
         <source>newProfile</source>
         <target state="translated">newProfile</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ProfileKindCommandName">
-        <source>Command</source>
-        <target state="translated">Comando</target>
         <note />
       </trans-unit>
       <trans-unit id="ProfileKindExecutableName">
@@ -147,6 +102,11 @@
         <source>Absolute path to working directory</source>
         <target state="translated">Caminho absoluto para o diretório de trabalho</target>
         <note />
+      </trans-unit>
+      <trans-unit id="ErrorsMustBeCorrectedPriorToSaving">
+        <source>The errors on the page must be corrected prior to saving your changes.</source>
+        <target state="new">The errors on the page must be corrected prior to saving your changes.</target>
+        <note></note>
       </trans-unit>
     </body>
   </file>
