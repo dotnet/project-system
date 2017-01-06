@@ -12,7 +12,6 @@
   <ContentType Name="EmbeddedResource" DisplayName="Vložený prostředek" ItemType="EmbeddedResource">
     <NameValuePair Name="DefaultMetadata_Generator" Value="ResXFileCodeGenerator" />
   </ContentType>
-  <ItemType Name="AdditionalFiles" DisplayName="Další soubory" />
   <ItemType Name="None" DisplayName="Žádné" />
   <ItemType Name="Content" DisplayName="Obsah" />
   <ItemType Name="EmbeddedResource" DisplayName="Vložený prostředek" />

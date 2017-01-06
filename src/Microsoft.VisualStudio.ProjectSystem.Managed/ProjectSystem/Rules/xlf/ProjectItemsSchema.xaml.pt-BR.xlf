@@ -48,11 +48,6 @@
         <target state="translated">Recurso inserido</target>
         <note />
       </trans-unit>
-      <trans-unit id="ItemType|AdditionalFiles|DisplayName">
-        <source>AdditionalFiles</source>
-        <target state="translated">AdditionalFiles</target>
-        <note />
-      </trans-unit>
       <trans-unit id="ItemType|None|DisplayName">
         <source>None</source>
         <target state="translated">Nenhum</target>

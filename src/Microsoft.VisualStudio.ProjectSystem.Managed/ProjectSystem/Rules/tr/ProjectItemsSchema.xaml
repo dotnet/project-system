@@ -12,7 +12,6 @@
   <ContentType Name="EmbeddedResource" DisplayName="Eklenmiş kaynak" ItemType="EmbeddedResource">
     <NameValuePair Name="DefaultMetadata_Generator" Value="ResXFileCodeGenerator" />
   </ContentType>
-  <ItemType Name="AdditionalFiles" DisplayName="AdditionalFiles" />
   <ItemType Name="None" DisplayName="Hiçbiri" />
   <ItemType Name="Content" DisplayName="İçerik" />
   <ItemType Name="EmbeddedResource" DisplayName="Eklenmiş kaynak" />
