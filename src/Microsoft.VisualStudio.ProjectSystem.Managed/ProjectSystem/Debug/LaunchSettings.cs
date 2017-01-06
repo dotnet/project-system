@@ -52,9 +52,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             GlobalSettings = ImmutableDictionary<string, object>.Empty;
             foreach(var kvp in settings.GlobalSettings)
             {
-                if(kvp.Value is ICloneable)
+                if(kvp.Value is ICloneable clonableObject)
                 {
-                    GlobalSettings = GlobalSettings.Add(kvp.Key, ((ICloneable)kvp.Value).Clone());
+                    GlobalSettings = GlobalSettings.Add(kvp.Key, clonableObject.Clone());
                 }
                 else
                 {

@@ -51,7 +51,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         public DebugPageViewModel()
         {
-            
         }
 
         // for unit testing
@@ -142,7 +141,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             var customControl = ActiveProvider?.CustomUI;
             if(customControl != null)
             {
-                ActiveProvider?.ProfileSelected(CurrentLaunchSettings);
+                ActiveProvider.ProfileSelected(CurrentLaunchSettings);
 
                 context = customControl.DataContext as INotifyPropertyChanged;
                 if(context != null)
@@ -150,9 +149,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     context.PropertyChanged += OnCustomUIStateChanged;
                 }
 
-                if(context is INotifyDataErrorInfo)
+                if(context is INotifyDataErrorInfo notifyDataErrorInfo)
                 {
-                    ((INotifyDataErrorInfo)context).ErrorsChanged += OnCustomUIErrorsChanged;
+                    notifyDataErrorInfo.ErrorsChanged += OnCustomUIErrorsChanged;
                 }
             }
         }
@@ -273,35 +272,50 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         public bool SupportsExecutable
         {
-            get {  return ActiveProviderSupportsProperty(UIProfilePropertyName.Executable); }
+            get 
+            {  
+                return ActiveProviderSupportsProperty(UIProfilePropertyName.Executable); 
+            }
         }
 
         public bool SupportsArguments
         {
-            get {  return ActiveProviderSupportsProperty(UIProfilePropertyName.Arguments); }
+            get 
+            {  
+                return ActiveProviderSupportsProperty(UIProfilePropertyName.Arguments); 
+            }
         }
 
         public bool SupportsWorkingDirectory
         {
-            get {  return ActiveProviderSupportsProperty(UIProfilePropertyName.WorkingDirectory); }
+            get 
+            {  
+                return ActiveProviderSupportsProperty(UIProfilePropertyName.WorkingDirectory); 
+            }
         }
 
         public bool SupportsLaunchUrl
         {
-            get {  return ActiveProviderSupportsProperty(UIProfilePropertyName.LaunchUrl); }
+            get 
+            {  
+                return ActiveProviderSupportsProperty(UIProfilePropertyName.LaunchUrl); 
+            }
         }
 
         public bool SupportsEnvironmentVariables
         {
-            get {  return ActiveProviderSupportsProperty(UIProfilePropertyName.EnvironmentVariables); }
+            get 
+            {  
+                return ActiveProviderSupportsProperty(UIProfilePropertyName.EnvironmentVariables); 
+            }
         }
 
         /// <summary>
-        /// Helper returns true if there is an actife provider and it supports the specified property
+        /// Helper returns true if there is an active provider and it supports the specified property
         /// </summary>
         private bool ActiveProviderSupportsProperty(string propertyName)
         {
-            var activeProvider = ActiveProvider;;
+            var activeProvider = ActiveProvider;
             return activeProvider?.ShouldEnableProperty(propertyName) ?? false;
         }
 
@@ -582,12 +596,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 NotifyProfileCollectionChanged();
 
                 // If we have a selection, we want to leave it as is
-                if (curProfileName == null || newSettings.Profiles.FirstOrDefault(p => { return LaunchProfile.IsSameProfileName(p.Name, curProfileName); }) == null)
+                if (curProfileName == null || newSettings.Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, curProfileName)) == null)
                 {
                     // Note that we have to be careful since the collection can be empty. 
                     if (profiles.ActiveProfile != null && !string.IsNullOrEmpty(profiles.ActiveProfile.Name))
                     {
-                        SelectedDebugProfile = LaunchProfiles.Where((p) => LaunchProfile.IsSameProfileName(p.Name, profiles.ActiveProfile.Name)).Single();
+                        SelectedDebugProfile = LaunchProfiles.Where(p => LaunchProfile.IsSameProfileName(p.Name, profiles.ActiveProfile.Name)).Single();
                     }
                     else
                     {
@@ -603,7 +617,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 }
                 else
                 {
-                    SelectedDebugProfile = LaunchProfiles.Where((p) => LaunchProfile.IsSameProfileName(p.Name, curProfileName)).Single();
+                    SelectedDebugProfile = LaunchProfiles.Where(p => LaunchProfile.IsSameProfileName(p.Name, curProfileName)).Single();
                 }
             }
             finally
@@ -856,7 +870,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
             NotifyProfileCollectionChanged();
             
-            // Todo: Do we need this extra property change
+            // Fire a property changed so we can get the page to be dirty when we add a new profile
             OnPropertyChanged("_NewProfile");
             SelectedDebugProfile = profile;
         }
@@ -984,13 +998,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             get
             {
-                var notifyDataError = ActiveProvider?.CustomUI?.DataContext as INotifyDataErrorInfo;
-                if(notifyDataError != null)
+                if (ActiveProvider?.CustomUI?.DataContext is INotifyDataErrorInfo notifyDataError)
                 {
-                    if(notifyDataError.HasErrors)
-                    {
-                        return true;
-                    }
+                    return notifyDataError.HasErrors;
                 }
 
                 return false;

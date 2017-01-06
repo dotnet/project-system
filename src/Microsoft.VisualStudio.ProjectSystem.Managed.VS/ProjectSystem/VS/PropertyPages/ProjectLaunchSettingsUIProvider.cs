@@ -7,14 +7,16 @@ using Microsoft.VisualStudio.ProjectSystem.Debug;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     /// <summary>
-    /// Interface definition which allows a launch settings provider to participate in the debug property page UI. The Set of 
-    /// LaunchSettingUIProviders provides the set of entries for the debug dropdown command list.
+    /// Implementation of ILaunchSettingsUIProvider for the Executable launch type.
     /// </summary>
     [Export(typeof(ILaunchSettingsUIProvider))]
     [AppliesTo(ProjectCapability.LaunchProfiles)]
     [Order(0)]              // Lowest priority to allow this to be overridden
     internal class ProjectLaunchSettingsUIProvider : ILaunchSettingsUIProvider
     {
+        /// <summary>
+        /// Required to control the MEF scope
+        /// </summary>
         [ImportingConstructor]
         public ProjectLaunchSettingsUIProvider(UnconfiguredProject uncProject)
         {

@@ -31,9 +31,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {    
                 foreach(var kvp in settings.GlobalSettings)
                 {
-                    if(kvp.Value is ICloneable)
+                    if(kvp.Value is ICloneable clonableObject)
                     {
-                        GlobalSettings.Add(kvp.Key, ((ICloneable)kvp.Value).Clone());
+                        GlobalSettings.Add(kvp.Key, clonableObject.Clone());
                     }
                     else
                     {
