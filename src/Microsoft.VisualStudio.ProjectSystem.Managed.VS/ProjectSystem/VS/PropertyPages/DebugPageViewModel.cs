@@ -127,11 +127,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         public void SwitchProviders(ILaunchSettingsUIProvider oldProvider)
         {
             // Get the old custom control and disconnect from notifications
-            var context = oldProvider?.CustomUI?.DataContext as INotifyPropertyChanged;
-            if(context != null)
+            if (oldProvider?.CustomUI?.DataContext is INotifyPropertyChanged context)
             {
                 context.PropertyChanged -= OnCustomUIStateChanged;
-                if(context is INotifyDataErrorInfo)
+                if (context is INotifyDataErrorInfo)
                 {
                     ((INotifyDataErrorInfo)context).ErrorsChanged -= OnCustomUIErrorsChanged;
                 }
@@ -303,7 +302,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private bool ActiveProviderSupportsProperty(string propertyName)
         {
             var activeProvider = ActiveProvider;;
-            return activeProvider == null? false: activeProvider.ShouldEnableProperty(propertyName);
+            return activeProvider?.ShouldEnableProperty(propertyName) ?? false;
         }
 
         public bool IsProfileSelected
@@ -574,7 +573,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 PushIgnoreEvents();
 
                 // Remember the current selection
-                string curProfileName = SelectedDebugProfile == null ? null : SelectedDebugProfile.Name;
+                string curProfileName = SelectedDebugProfile?.Name;
 
                 // Update the set of settings and generate a property change so the list of profiles gets updated. Note that we always
                 // clear the active profile on the CurrentLaunchSettings so that when we do set one and property changed event is set

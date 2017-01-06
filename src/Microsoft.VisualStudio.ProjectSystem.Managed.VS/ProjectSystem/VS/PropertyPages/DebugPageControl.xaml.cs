@@ -99,33 +99,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         private void DebugPageControl_LayoutUpdated(Object sender, EventArgs e)
         {
-            if(_customControlLayoutUpdateRequired)
+            if(_customControlLayoutUpdateRequired && _mainGrid != null && DataContext != null)
             {
                 _customControlLayoutUpdateRequired = false;
-                // Get our grid. We actually want the grid added to the the outer grid since that is the one which 
-                // ultimately contains the custom control
-                Grid outerGrid = Content as Grid;
-                foreach(var child in outerGrid.Children)
+
+                // Get the control that was added to the grid
+                var customControl = ((DebugPageViewModel)DataContext).ActiveProviderUserControl;
+                if(customControl != null)
                 {
-                    if(child is Grid)
+                    if (customControl.Content is Grid childGrid && childGrid.ColumnDefinitions.Count == _mainGrid.ColumnDefinitions.Count)
                     {
-                        Grid hostingGrid = (Grid)child;
-
-                        // Get the control that was added to the grid
-                        var customControl = ((DebugPageViewModel)this.DataContext).ActiveProviderUserControl;
-                        if(customControl != null)
+                        for (int i = 0; i < childGrid.ColumnDefinitions.Count; i++)
                         {
-                            var childGrid = customControl.Content as Grid;
-                            if(childGrid != null && childGrid.ColumnDefinitions.Count == hostingGrid.ColumnDefinitions.Count)
-                            {
-                                for (int i = 0; i < childGrid.ColumnDefinitions.Count; i++)
-                                {
-                                    childGrid.ColumnDefinitions[i].Width = new GridLength(hostingGrid.ColumnDefinitions[i].ActualWidth);
-                                }
-                            }
+                            childGrid.ColumnDefinitions[i].Width = new GridLength(_mainGrid.ColumnDefinitions[i].ActualWidth);
                         }
-
-                        break;
                     }
                 }
             }
