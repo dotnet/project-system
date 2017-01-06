@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using Microsoft.VisualStudio.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Moq;
 
 namespace Microsoft.VisualStudio.Shell.Interop
@@ -35,6 +37,14 @@ namespace Microsoft.VisualStudio.Shell.Interop
             mock.As<IVsProject4>();
 
             return mock.Object;
+        }
+
+        public static IVsHierarchy ImplementAsUnconfiguredProject(UnconfiguredProject project)
+        {
+            var hier = new Mock<IVsHierarchy>();
+            var browse = hier.As<IVsBrowseObjectContext>();
+            browse.SetupGet(b => b.UnconfiguredProject).Returns(project);
+            return hier.Object;
         }
 
         public static void ImplementGetGuid(this IVsHierarchy hierarchy, VsHierarchyPropID propId, int hr)

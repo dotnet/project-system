@@ -21,6 +21,7 @@ namespace Microsoft.VisualStudio.IO
         {
             public string FileContents;
             public DateTime LastWriteTime = DateTime.MaxValue;
+            public Encoding FileEncoding = Encoding.Default;
         };
 
         Dictionary<string, FileData> _files = new Dictionary<string, FileData>(StringComparer.OrdinalIgnoreCase);
@@ -58,7 +59,6 @@ namespace Microsoft.VisualStudio.IO
         {
             _folders.Add(path);
         }
-
 
         public void SetDirectoryAttribute(string path, FileAttributes newAttribute)
         {
@@ -160,22 +160,23 @@ namespace Microsoft.VisualStudio.IO
 
         public void WriteAllText(string path, string content)
         {
-            if (_files.TryGetValue(path, out FileData curData))
-            {
-                // This makes sure each write to the file increases the timestamp
-                curData.FileContents = content;
-                SetLastWriteTime(curData);
-            }
-            else
-            {
-                _files[path] = new FileData() { FileContents = content };
-                SetLastWriteTime(_files[path]);
-            }
+            WriteAllText(path, content, Encoding.Default);
         }
 
         public void WriteAllText(string path, string content, Encoding encoding)
         {
-            WriteAllText(path, content);
+            if (_files.TryGetValue(path, out FileData curData))
+            {
+                // This makes sure each write to the file increases the timestamp
+                curData.FileContents = content;
+                curData.FileEncoding = encoding;
+                SetLastWriteTime(curData);
+            }
+            else
+            {
+                _files[path] = new FileData() { FileContents = content, FileEncoding = encoding };
+                SetLastWriteTime(_files[path]);
+            }
         }
 
         public DateTime LastFileWriteTime(string path)
