@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System;
 using System.ComponentModel.Composition;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -10,11 +12,8 @@ using EncInterop = Microsoft.VisualStudio.LanguageServices.Implementation.EditAn
 namespace Microsoft.VisualStudio.ProjectSystem.Managed.VS.EditAndContinue
 {
 
-    [Export(ExportContractNames.VsTypes.ProjectNodeComExtension)]
+    [ExportProjectNodeComService(typeof(IVsENCRebuildableProjectCfg), typeof(EncInterop.IVsENCRebuildableProjectCfg2), typeof(EncInterop.IVsENCRebuildableProjectCfg4))]
     [AppliesTo(ProjectCapability.EditAndContinue)]
-    [ComServiceIid(typeof(IVsENCRebuildableProjectCfg))]
-    [ComServiceIid(typeof(EncInterop.IVsENCRebuildableProjectCfg2))]
-    [ComServiceIid(typeof(EncInterop.IVsENCRebuildableProjectCfg4))]
     internal class EditAndContinueProvider : IVsENCRebuildableProjectCfg, EncInterop.IVsENCRebuildableProjectCfg2, EncInterop.IVsENCRebuildableProjectCfg4
     {
         private readonly ILanguageServiceHost _host;

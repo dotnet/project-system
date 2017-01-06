@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="ProjectReference" DisplayName="Odkaz na projekt" PageTemplate="generic" Description="Vlastnosti odkazu na projekt" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" />
+  </Rule.DataSource>
+  <BoolProperty Name="ReferenceOutputAssembly" DisplayName="Odkazovat výstupní sestavení" Description="Hodnota určující, zda má kompilátor zahrnout odkaz na primární výstupní sestavení cílového projektu" />
+  <BoolProperty Name="CopyLocalSatelliteAssemblies" DisplayName="Zkopírovat místní satelitní sestavení" Description="Určuje, zda se do výstupního adresáře tohoto projektu mají zkopírovat satelitní sestavení cíle odkazu." />
+  <BoolProperty Name="LinkLibraryDependencies" Visible="False" />
+  <BoolProperty Name="UseLibraryDependencyInputs" Visible="False" />
+  <StringProperty Name="Project" Visible="False" Description="Identifikátor GUID, pomocí něhož řešení sleduje jednotlivý cíl odkazu na projekt" />
+  <StringProperty Name="ReferencedProjectIdentifier" Visible="False" Description="Starý způsob (beta verze VS2010) uložení identifikátoru GUID, pomocí něhož řešení sleduje jednotlivý cíl odkazu na projekt" />
+  <BoolProperty Name="CopyLocal" DisplayName="Kopírovat místně" Description="Určuje, jestli se odkaz zkopíruje do výstupního adresáře.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" PersistedName="Private" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="IncludeAssets" Description="Prostředky zahrnuté z tohoto odkazu" />
+  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="ExcludeAssets" Description="Prostředky vyloučené z tohoto odkazu" />
+  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="PrivateAssets" Description="Soukromé prostředky v tomto odkazu" />
+</Rule>

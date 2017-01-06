@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="AssemblyReference" DisplayName="Derleme Başvurusu" PageTemplate="generic" Description="Bütünleştirilmiş kod başvurusu özellikleri" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" />
+  </Rule.DataSource>
+  <StringListProperty Name="Aliases" DisplayName="Diğer Adlar" Description="Bu başvurunun diğer adlarına yönelik virgülle ayrılmış bir liste." Separator="," />
+  <BoolProperty Name="CopyLocal" DisplayName="Yereli Kopyala" Description="Başvurunun çıkış dizinine kopyalanıp kopyalanmayacağını gösterir.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" PersistedName="Private" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <BoolProperty Name="EmbedInteropTypes" DisplayName="Birlikte Çalışma Türlerini Ekle" Description="Bu bütünleştirilmiş kodda tanımlanan türlerin hedef bütünleştirilmiş koda katıştırılıp katıştırılmayacağını belirtir." />
+  <BoolProperty Name="SpecificVersion" DisplayName="Belirli Bir Sürüm" Description="Bu bütünleştirilmiş kodun, bütünleştirilmiş kod çözümlemesine yönelik çoklu sürüm desteği kurallarına bağlı kalmadan çözümlenip çözümlenemeyeceğini belirtir.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="AssemblyReference" ItemType="Reference" HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <StringProperty Name="RequiredTargetFramework" DisplayName="Gerekli Hedef Çerçeve" Visible="False" />
+  <StringProperty Name="HintPath" Visible="false" />
+  <StringProperty Name="SDKName" Visible="false" />
+  <BoolProperty Name="IsWinMDFile" Visible="false" />
+  <StringProperty Name="ImageRuntime" DisplayName="Çalışma Zamanı Sürümü" Description="Bu derleme tarafından hedeflenen CLR çalışma zamanı sürümü." Visible="False" ReadOnly="True" />
+</Rule>

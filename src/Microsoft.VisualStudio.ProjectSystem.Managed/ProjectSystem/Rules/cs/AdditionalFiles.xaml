@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
+<Rule Name="AdditionalFiles" DisplayName="Další soubor" PageTemplate="generic" Description="Další položky souborů" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="AdditionalFiles" />
+  </Rule.DataSource>
+  <Rule.Categories>
+    <Category Name="Advanced" DisplayName="Upřesnit" />
+    <Category Name="Misc" DisplayName="Různé" />
+  </Rule.Categories>
+  <DynamicEnumProperty Name="{}{ItemType}" DisplayName="Akce sestavení" Category="Advanced" Description="Jak se soubor vztahuje k procesům sestavení a nasazení." EnumProvider="ItemTypes" />
+  <EnumProperty Name="CopyToOutputDirectory" DisplayName="Kopírovat do výstupního adresáře" Category="Advanced" Description="Určuje zdrojový soubor, který se zkopíruje do výstupního adresáře.">
+    <EnumValue Name="Never" DisplayName="Nekopírovat" />
+    <EnumValue Name="Always" DisplayName="Kopírovat vždycky" />
+    <EnumValue Name="PreserveNewest" DisplayName="Kopírovat, pokud je novější" />
+  </EnumProperty>
+  <StringProperty Name="Generator" Category="Advanced" DisplayName="Vlastní nástroj" Description="Určuje nástroj, který transformuje soubor v okamžiku návrhu a vloží výstup této transformace do jiného souboru. Například k souboru DataSet (.xsd) se dodává výchozí vlastní nástroj." />
+  <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="Obor názvů vlastního nástroje" Description="Obor názvů, do kterého se umístí výstup vlastního nástroje" />
+  <StringProperty Name="Identity" Visible="false" ReadOnly="true" Category="Misc" Description="Položka zadaná v atributu Include">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="Identity" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FullPath" DisplayName="Úplná cesta" ReadOnly="true" Category="Misc" Description="Umístění souboru">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="FullPath" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FileNameAndExtension" DisplayName="Název souboru" ReadOnly="true" Category="Misc" Description="Název souboru nebo složky">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="FileNameAndExtension" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="URL" ReadOnly="true" Visible="false">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="FullPath" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <BoolProperty Name="Visible" Visible="false" />
+  <StringProperty Name="DependentUpon" Visible="false" />
+  <StringProperty Name="Link" Visible="false">
+    <StringProperty.DataSource>
+      <DataSource PersistenceStyle="Attribute" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Extension" Visible="False" ReadOnly="true">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="Extension" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="LastGenOutput" Visible="false" Description="Název posledního souboru vygenerovaného jako výsledek nástroje SFG" />
+  <BoolProperty Name="DesignTime" Visible="false" Description="Hodnota určující, jestli má tento soubor návrháře" />
+  <BoolProperty Name="AutoGen" Visible="false" Description="Hodnota určující, jestli jde o vygenerovaný soubor" />
+  <StringProperty Name="CustomTool" Visible="false" Description="Vlastnost DTE pro přístup k vlastnosti Generator">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="AdditionalFiles" PersistedName="Generator" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+</Rule>

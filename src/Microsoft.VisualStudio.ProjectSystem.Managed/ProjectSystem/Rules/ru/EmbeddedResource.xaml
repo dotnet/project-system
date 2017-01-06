@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
+<Rule Name="EmbeddedResource" DisplayName="Внедренный ресурс" PageTemplate="generic" Description="Внедренные ресурсы" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="EmbeddedResource" />
+  </Rule.DataSource>
+  <Rule.Categories>
+    <Category Name="Advanced" DisplayName="Дополнительно" />
+    <Category Name="Misc" DisplayName="Прочее" />
+  </Rule.Categories>
+  <DynamicEnumProperty Name="{}{ItemType}" DisplayName="Действие при сборке" Category="Advanced" Description="Как файл связан с процессами сборки и развертывания." EnumProvider="ItemTypes" />
+  <EnumProperty Name="CopyToOutputDirectory" DisplayName="Копировать в выходной каталог" Category="Advanced" Description="Указывает, что файл исходного кода будет скопирован в выходной каталог.">
+    <EnumValue Name="Never" DisplayName="Не копировать" />
+    <EnumValue Name="Always" DisplayName="Всегда копировать" />
+    <EnumValue Name="PreserveNewest" DisplayName="Копировать более позднюю версию" />
+  </EnumProperty>
+  <StringProperty Name="Generator" Category="Advanced" DisplayName="Пользовательский инструмент" Description="Указывает инструмент, который преобразует файл во время разработки и помещает выходные данные этого преобразования в другой файл. Например, файл набора данных (XSD) поставляется с пользовательским инструментом по умолчанию." />
+  <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="Пространство имен пользовательского инструмента" Description="Пространство имен, в которое помещаются выходные данные пользовательского инструмента." />
+  <StringProperty Name="Identity" Visible="false" ReadOnly="true" Category="Misc" Description="Элемент, заданный в атрибуте Include.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="EmbeddedResource" PersistedName="Identity" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FullPath" DisplayName="Полный путь" ReadOnly="true" Category="Misc" Description="Расположение файла.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="EmbeddedResource" PersistedName="FullPath" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FileNameAndExtension" DisplayName="Имя файла" ReadOnly="true" Category="Misc" Description="Имя файла или папки.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="EmbeddedResource" PersistedName="FileNameAndExtension" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="URL" ReadOnly="true" Visible="false">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="EmbeddedResource" PersistedName="FullPath" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <BoolProperty Name="Visible" Visible="false" />
+  <StringProperty Name="DependentUpon" Visible="false" />
+  <StringProperty Name="Link" Visible="false">
+    <StringProperty.DataSource>
+      <DataSource PersistenceStyle="Attribute" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Extension" Visible="False" ReadOnly="true">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="EmbeddedResource" PersistedName="Extension" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="LastGenOutput" Visible="false" Description="Имя последнего файла, созданного в результате SFG." />
+  <BoolProperty Name="DesignTime" Visible="false" Description="Значение, указывающее, действительно ли данный файл имеет конструктор." />
+  <BoolProperty Name="AutoGen" Visible="false" Description="Значение, указывающее, является ли этот файл созданным." />
+  <StringProperty Name="CustomTool" Visible="false" Description="Свойство DTE для доступа к свойству Generator.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="EmbeddedResource" PersistedName="Generator" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+</Rule>

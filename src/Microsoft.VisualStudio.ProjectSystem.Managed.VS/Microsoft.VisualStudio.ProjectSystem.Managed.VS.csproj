@@ -48,6 +48,7 @@
     <Compile Include="ProjectSystem\VS\Editor\Listeners\TempFileBufferStateListener.cs" />
     <Compile Include="ProjectSystem\VS\Editor\TempFileTextBufferManager.cs" />
     <Compile Include="ProjectSystem\VS\EditAndContinue\EditAndContinueProvider.cs" />
+    <Compile Include="ProjectSystem\VS\ExportProjectNodeComServiceAttribute.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\GenerateNuGetPackageTopLevelBuildMenuCommand.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\GenerateNuGetPackageProjectContextMenuCommand.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\AbstractGenerateNuGetPackageCommand.cs" />
@@ -247,11 +248,17 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>PropertyPageResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="ProjectSystem\VS\PropertyPages\PropertyPageResources.*.resx">
+      <DependentUpon>PropertyPageResources.resx</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="VSResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>VSResources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
       <MergeWithCTO>true</MergeWithCTO>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VSResources.*.resx">
+      <DependentUpon>VSResources.resx</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

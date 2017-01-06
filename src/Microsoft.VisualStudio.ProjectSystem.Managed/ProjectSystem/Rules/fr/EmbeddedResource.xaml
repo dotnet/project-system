@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
+<Rule Name="EmbeddedResource" DisplayName="Ressource incorporée" PageTemplate="generic" Description="Ressources incorporées" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="EmbeddedResource" />
+  </Rule.DataSource>
+  <Rule.Categories>
+    <Category Name="Advanced" DisplayName="Avancé" />
+    <Category Name="Misc" DisplayName="Divers" />
+  </Rule.Categories>
+  <DynamicEnumProperty Name="{}{ItemType}" DisplayName="Action de génération" Category="Advanced" Description="Description de la relation entre le fichier, la build et les processus de déploiement." EnumProvider="ItemTypes" />
+  <EnumProperty Name="CopyToOutputDirectory" DisplayName="Copier dans le répertoire de sortie" Category="Advanced" Description="Spécifie le fichier source qui sera copié dans le répertoire de sortie.">
+    <EnumValue Name="Never" DisplayName="Ne pas copier" />
+    <EnumValue Name="Always" DisplayName="Toujours copier" />
+    <EnumValue Name="PreserveNewest" DisplayName="Copier si plus récent" />
+  </EnumProperty>
+  <StringProperty Name="Generator" Category="Advanced" DisplayName="Outil personnalisé" Description="Spécifie l'outil qui transforme un fichier au moment du design et qui place les résultats de cette transformation dans un autre fichier. Par exemple, un fichier dataset (.xsd) est fourni avec un outil personnalisé par défaut." />
+  <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="Espace de noms de l'outil personnalisé" Description="Espace de noms dans lequel est placé le résultat de l'outil personnalisé." />
+  <StringProperty Name="Identity" Visible="false" ReadOnly="true" Category="Misc" Description="Élément spécifié dans l'attribut Include.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="EmbeddedResource" PersistedName="Identity" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FullPath" DisplayName="Chemin complet" ReadOnly="true" Category="Misc" Description="Emplacement du fichier.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="EmbeddedResource" PersistedName="FullPath" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FileNameAndExtension" DisplayName="Nom de fichier" ReadOnly="true" Category="Misc" Description="Nom du fichier ou du dossier.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="EmbeddedResource" PersistedName="FileNameAndExtension" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="URL" ReadOnly="true" Visible="false">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="EmbeddedResource" PersistedName="FullPath" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <BoolProperty Name="Visible" Visible="false" />
+  <StringProperty Name="DependentUpon" Visible="false" />
+  <StringProperty Name="Link" Visible="false">
+    <StringProperty.DataSource>
+      <DataSource PersistenceStyle="Attribute" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Extension" Visible="False" ReadOnly="true">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="EmbeddedResource" PersistedName="Extension" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="LastGenOutput" Visible="false" Description="Nom du dernier fichier généré comme résultat de SFG." />
+  <BoolProperty Name="DesignTime" Visible="false" Description="Valeur indiquant si le fichier a un concepteur." />
+  <BoolProperty Name="AutoGen" Visible="false" Description="Valeur indiquant s'il s'agit d'un fichier généré." />
+  <StringProperty Name="CustomTool" Visible="false" Description="Propriété DTE pour accéder à la propriété Generator.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="EmbeddedResource" PersistedName="Generator" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+</Rule>

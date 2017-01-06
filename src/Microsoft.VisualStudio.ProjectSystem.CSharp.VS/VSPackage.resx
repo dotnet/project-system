@@ -120,6 +120,9 @@
   <data name="1" xml:space="preserve">
     <value>C#</value>
   </data>
+  <data name="10" xml:space="preserve">
+    <value>A project for creating a class library that targets .NET Core.</value>
+  </data>
   <data name="2" xml:space="preserve">
     <value>C# Project Files (*.csproj);*.csproj</value>
   </data>

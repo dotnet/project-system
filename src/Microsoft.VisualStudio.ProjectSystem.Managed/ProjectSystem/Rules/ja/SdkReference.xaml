@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="SdkReference" DisplayName="SDK 参照" PageTemplate="generic" Description="SDK 参照のプロパティ" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" ItemType="SDKReference" HasConfigurationCondition="False" />
+  </Rule.DataSource>
+  <StringProperty Name="SDKRootFolder" DisplayName="SDK ルート" />
+  <StringProperty Name="AppXLocation" DisplayName="アプリ パッケージの場所" />
+  <StringProperty Name="FrameworkIdentity" DisplayName="FrameworkIdentity" />
+  <BoolProperty Name="CopyPayload" DisplayName="ペイロードのコピー" />
+  <StringProperty Name="CopyPayloadToSubDirectory" DisplayName="サブディレクトリへのペイロードのコピー" />
+  <BoolProperty Name="ExpandContent" DisplayName="コンテンツの展開" />
+  <BoolProperty Name="ExpandReferenceAssemblies" DisplayName="参照アセンブリの展開" />
+  <BoolProperty Name="CopyLocalExpandedReferenceAssemblies" DisplayName="ローカルに展開された参照アセンブリのコピー" />
+</Rule>

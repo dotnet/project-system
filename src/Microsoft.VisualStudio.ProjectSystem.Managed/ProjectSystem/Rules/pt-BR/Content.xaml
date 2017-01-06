@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
+<Rule Name="Content" DisplayName="Propriedades do Arquivo" PageTemplate="generic" Description="Propriedades do Arquivo" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="Content" />
+  </Rule.DataSource>
+  <Rule.Categories>
+    <Category Name="Advanced" DisplayName="Avançado" />
+    <Category Name="Misc" DisplayName="Diversos" />
+  </Rule.Categories>
+  <DynamicEnumProperty Name="{}{ItemType}" DisplayName="Ação de Compilação" Category="Advanced" Description="Como o arquivo está relacionado aos processos de compilação e implantação." EnumProvider="ItemTypes" />
+  <EnumProperty Name="CopyToOutputDirectory" DisplayName="Copiar para Diretório de Saída" Category="Advanced" Description="Especifica se o arquivo fonte deve ser copiado no diretório de saída.">
+    <EnumValue Name="Never" DisplayName="Não copiar" />
+    <EnumValue Name="Always" DisplayName="Copiar sempre" />
+    <EnumValue Name="PreserveNewest" DisplayName="Copiar se for mais novo" />
+  </EnumProperty>
+  <StringProperty Name="Identity" Visible="false" ReadOnly="true" Category="Misc" Description="O item especificado no atributo Include.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="Content" PersistedName="Identity" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FullPath" DisplayName="Caminho Completo" ReadOnly="true" Category="Misc" Description="Localização do arquivo.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="Content" PersistedName="FullPath" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FileNameAndExtension" DisplayName="Nome do Arquivo" ReadOnly="true" Category="Misc" Description="Nome do arquivo ou da pasta.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="Content" PersistedName="FileNameAndExtension" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <BoolProperty Name="Visible" Visible="false" />
+  <StringProperty Name="DependentUpon" Visible="false">
+    <StringProperty.Metadata>
+      <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />
+    </StringProperty.Metadata>
+  </StringProperty>
+  <StringProperty Name="Link" Visible="false">
+    <StringProperty.DataSource>
+      <DataSource PersistenceStyle="Attribute" />
+    </StringProperty.DataSource>
+    <StringProperty.Metadata>
+      <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />
+    </StringProperty.Metadata>
+  </StringProperty>
+</Rule>

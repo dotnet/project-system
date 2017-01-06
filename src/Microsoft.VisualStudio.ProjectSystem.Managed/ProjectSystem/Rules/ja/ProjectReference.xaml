@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="ProjectReference" DisplayName="プロジェクト参照" PageTemplate="generic" Description="プロジェクト参照のプロパティ" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" />
+  </Rule.DataSource>
+  <BoolProperty Name="ReferenceOutputAssembly" DisplayName="参照出力アセンブリ" Description="コンパイラに対象プロジェクトのプライマリ出力アセンブリへの参照が含まれているかどうかを示す値です。" />
+  <BoolProperty Name="CopyLocalSatelliteAssemblies" DisplayName="ローカルのサテライト アセンブリをコピー" Description="参照先のサテライト アセンブリをこのプロジェクトの出力ディレクトリにコピーする必要があるかどうかを示します。" />
+  <BoolProperty Name="LinkLibraryDependencies" Visible="False" />
+  <BoolProperty Name="UseLibraryDependencyInputs" Visible="False" />
+  <StringProperty Name="Project" Visible="False" Description="個々のプロジェクトの参照先を追跡するためにソリューションで使用する GUID" />
+  <StringProperty Name="ReferencedProjectIdentifier" Visible="False" Description="個々のプロジェクトの参照先を追跡するためにソリューションで使用する GUID を格納する以前 (VS2010 beta) の方法" />
+  <BoolProperty Name="CopyLocal" DisplayName="ローカルにコピー" Description="参照が出力ディレクトリにコピーされるかどうかを示します。">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" PersistedName="Private" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="IncludeAssets" Description="この参照から含める資産" />
+  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="ExcludeAssets" Description="この参照から除外する資産" />
+  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="PrivateAssets" Description="この参照で非公開のアセット" />
+</Rule>

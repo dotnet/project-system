@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ClassTemplateName" xml:space="preserve">
+    <value>類別</value>
+  </data>
+  <data name="ProjectModificationsPrompt" xml:space="preserve">
+    <value>專案 '{0}' 已在環境外部修改。
+
+按 [重新載入] 從磁碟載入更新的專案。
+按 [略過] 以略過外部變更。所做的變更會在您下次開啟專案時使用。
+    </value>
+  </data>
+  <data name="ConflictingModificationsPrompt" xml:space="preserve">
+    <value>專案 '{0}' 已在環境外部修改，而專案有未儲存的變更。
+
+按 [另存新檔] 儲存未儲存的變更並從磁碟載入更新的專案。
+按 [捨棄] 以捨棄未儲存的變更並從磁碟載入更新的專案。
+按 [覆寫] 以您的變更來覆寫外部變更。
+按 [略過] 以略過外部變更。如果關閉並重新開啟專案，可能會遺失您所做的變更。
+    </value>
+  </data>
+  <data name="ConflictingProjectModificationTitle" xml:space="preserve">
+    <value>偵測到衝突的專案修改</value>
+  </data>
+  <data name="Discard" xml:space="preserve">
+    <value>捨棄(_D)</value>
+  </data>
+  <data name="Ignore" xml:space="preserve">
+    <value>略過(_I)</value>
+  </data>
+  <data name="IgnoreAll" xml:space="preserve">
+    <value>全部略過(_L)</value>
+  </data>
+  <data name="Overwrite" xml:space="preserve">
+    <value>覆寫(_O)</value>
+  </data>
+  <data name="ProjectModificationDlgTitle" xml:space="preserve">
+    <value>偵測到專案修改</value>
+  </data>
+  <data name="Reload" xml:space="preserve">
+    <value>重新載入(_R)</value>
+  </data>
+  <data name="ReloadAll" xml:space="preserve">
+    <value>全部重新載入(_L)</value>
+  </data>
+  <data name="RenameSymbolFailed" xml:space="preserve">
+    <value>重新命名程式碼項目 '{0}' 失敗。</value>
+  </data>
+  <data name="RenameSymbolPrompt" xml:space="preserve">
+    <value>您正在重新命名檔案。您是否也要重新命名此專案中對於程式碼項目 '{0}' 的所有參考?</value>
+  </data>
+  <data name="SaveAs" xml:space="preserve">
+    <value>另存新檔(_S)</value>
+  </data>
+  <data name="FailedToWatchProject" xml:space="preserve">
+    <value>嘗試監看專案檔 '{0}' 時發生未預期的錯誤</value>
+  </data>
+  <data name="FrameworkAssembliesNodeName" xml:space="preserve">
+    <value>架構組件</value>
+  </data>
+  <data name="ComNodeName" xml:space="preserve">
+    <value>COM</value>
+  </data>
+  <data name="SdkNodeName" xml:space="preserve">
+    <value>SDK</value>
+  </data>
+  <data name="AssembliesNodeName" xml:space="preserve">
+    <value>組件</value>
+  </data>
+  <data name="DependenciesLoadingPostfix" xml:space="preserve">
+    <value> (正在載入...)</value>
+  </data>
+  <data name="DependenciesNodeErrorsSuffix" xml:space="preserve">
+    <value>(錯誤 - 請參閱錯誤清單)</value>
+  </data>
+  <data name="DependenciesNodeName" xml:space="preserve">
+    <value>相依性</value>
+  </data>
+  <data name="GraphNodeCategoryDependency" xml:space="preserve">
+    <value>相依性</value>
+  </data>
+  <data name="NoItemTypeForRule" xml:space="preserve">
+    <value>必須找到規則 {0} 的項目類型。規則檔可能遺漏或格式錯誤。</value>
+  </data>
+  <data name="NuGetPackagesNodeName" xml:space="preserve">
+    <value>NuGet</value>
+  </data>
+  <data name="ProjectsNodeName" xml:space="preserve">
+    <value>專案</value>
+  </data>
+  <data name="AnalyzersNodeName" xml:space="preserve">
+    <value>分析器</value>
+  </data>
+  <data name="DotNetCoreProjectsNotSupported" xml:space="preserve">
+    <value>這一版的 Visual Studio 不支援 .NET Core 專案。稍後的更新將提供支援。</value>
+  </data>
+  <data name="ActiveLaunchProfileNotFound" xml:space="preserve">
+    <value>此專案未設有任何使用中的啟動設定檔。</value>
+  </data>
+  <data name="DontKnowHowToRunProfile" xml:space="preserve">
+    <value>專案不知道如何執行設定檔 {0}。</value>
+  </data>
+  <data name="ErrorInProfilesFile" xml:space="preserve">
+    <value>您必須先更正啟動設定檔中的錯誤，才能執行 '{0}' 專案。如需詳細資料，請查看錯誤清單。</value>
+  </data>
+  <data name="ErrorInProfilesFile2" xml:space="preserve">
+    <value>您必須先更正啟動設定檔中的錯誤，才能執行 '{0}' 專案。{1}。如需詳細資料，請查看錯誤清單。</value>
+  </data>
+  <data name="ProjectNotRunnableDirectly" xml:space="preserve">
+    <value>無法直接啟動輸出類型為類別庫的專案。
+
+為了為此專案偵錯，請將可執行檔專案新增至參考程式庫專案的此項解決方案，然後將這個可執行檔專案設定為啟始專案。</value>
+  </data>
+  <data name="NoUrlSpecified" xml:space="preserve">
+    <value>偵錯設定檔 '{0}' 已要求啟動網頁瀏覽器，但未指定 URL。</value>
+  </data>
+  <data name="InvalidAbsoluteUrlSpecified" xml:space="preserve">
+    <value>偵錯設定檔 '{0}' 已要求啟動網頁瀏覽器，但指定的 URL 不是有效的絕對 URL。{1}</value>
+  </data>
+  <data name="NoDebugExecutableSpecified" xml:space="preserve">
+    <value>偵錯設定檔 '{0}' 遺漏要進行偵錯之可執行檔的路徑。</value>
+  </data>
+  <data name="DebugExecutableNotFound" xml:space="preserve">
+    <value>'{1}' 偵錯設定檔中指定的偵錯可執行檔 '{0}' 不存在。</value>
+  </data>
+  <data name="WorkingDirecotryInvalid" xml:space="preserve">
+    <value>'{1}' 偵錯設定檔中指定的工作目錄 '{0}' 不存在。</value>
+  </data>
+  <data name="NoMigratedCSProjFound" xml:space="preserve">
+    <value>必須在 {0} 中找到已移轉的 cpsroj，但找不到任何檔案。</value>
+  </data>
+  <data name="XprojMigrationFailed" xml:space="preserve">
+    <value>無法移轉 XProj 專案 {0}。'dotnet migrate --skip-backup -s -p "{1}" -x "{2}"' 已結束，錯誤碼為 {3}。</value>
+  </data>
+  <data name="MigrationBackupFile" xml:space="preserve">
+    <value>正在將 {0} 備份到 {1}。</value>
+  </data>
+  <data name="XprojMigrationFailedProjectJsonFileNotFound" xml:space="preserve">
+    <value>無法移轉 XProj 專案 {0}。在 {1} 中找不到 project.json。</value>
+  </data>
+  <data name="EditProjectFileCommand" xml:space="preserve">
+    <value>編輯 {0}</value>
+  </data>
+  <data name="NoRunCommandSpecifiedInProject" xml:space="preserve">
+    <value>無法執行您的專案。未定義 "RunCommand" 屬性。</value>
+  </data>
+  <data name="MultiTFEditNotSupported" xml:space="preserve">
+    <value>不支援編輯多個目標 Framework。</value>
+  </data>
+  <data name="PackCommand" xml:space="preserve">
+    <value>封裝(&amp;P)</value>
+  </data>
+  <data name="PackSelectedProjectCommand" xml:space="preserve">
+    <value>封裝 {0}(&amp;P)</value>
+  </data>
+  <data name="XprojMigrationFailedCannotReadReport" xml:space="preserve">
+    <value>Could not read post-migration report at '{0}'.</value>
+  </data>
+  <data name="XprojMigrationGeneralFailure" xml:space="preserve">
+    <value>Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</value>
+  </data>
+</root>

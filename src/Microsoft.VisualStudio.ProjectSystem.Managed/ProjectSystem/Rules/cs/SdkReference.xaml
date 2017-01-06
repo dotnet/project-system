@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="SdkReference" DisplayName="Odkaz na SDK" PageTemplate="generic" Description="Vlastnosti odkazu na SDK" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" ItemType="SDKReference" HasConfigurationCondition="False" />
+  </Rule.DataSource>
+  <StringProperty Name="SDKRootFolder" DisplayName="Kořen SDK" />
+  <StringProperty Name="AppXLocation" DisplayName="Umístění balíčku aplikace" />
+  <StringProperty Name="FrameworkIdentity" DisplayName="FrameworkIdentity" />
+  <BoolProperty Name="CopyPayload" DisplayName="Kopírovat datovou část" />
+  <StringProperty Name="CopyPayloadToSubDirectory" DisplayName="Kopírovat datovou část do podadresáře" />
+  <BoolProperty Name="ExpandContent" DisplayName="Rozbalit obsah" />
+  <BoolProperty Name="ExpandReferenceAssemblies" DisplayName="Rozbalit referenční sestavení" />
+  <BoolProperty Name="CopyLocalExpandedReferenceAssemblies" DisplayName="Zkopírovat místní rozbalená referenční sestavení" />
+</Rule>

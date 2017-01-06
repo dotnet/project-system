@@ -6,9 +6,8 @@ using System.ComponentModel.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 {
-    [Export(ExportContractNames.VsTypes.ProjectNodeComExtension)]
+    [ExportProjectNodeComService(typeof(IVsSingleFileGeneratorFactory))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
-    [ComServiceIid(typeof(IVsSingleFileGeneratorFactory))]
     internal class SingleFileGeneratorFactoryAggregator : IVsSingleFileGeneratorFactory
     {
         // Constants for the generator information registry keys

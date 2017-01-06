@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
+<Rule Name="DebuggerGeneralProperties" DisplayName="디버거 일반 속성" Description="일반 디버거 옵션" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="UserFile" />
+  </Rule.DataSource>
+  <StringProperty Name="SymbolsPath" DisplayName="기호 검색 경로" Description="디버거가 기호를 찾기 위해 사용하는 검색 경로입니다."></StringProperty>
+  <StringProperty Name="DebuggerFlavor" Visible="false" Description="활성 디버거로 선택된 디버그 규칙입니다."></StringProperty>
+  <EnumProperty Name="ImageClrType" Visible="false" Description="관리되는 프로젝트인지 알 수 있도록 디버거로 전달되는 '숨김' 속성입니다.">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="UserFile" HasConfigurationCondition="false" PersistedName="_TargetImageClrType" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="Native" DisplayName="네이티브 이미지" Description="디버깅할 실행 가능 이미지가 완전한 네이티브 응용 프로그램입니다." />
+    <EnumValue Name="Mixed" DisplayName="혼합 이미지" Description="디버깅할 실행 가능 이미지가 네이티브 코드와 관리 코드가 혼합된 이미지입니다." />
+    <EnumValue Name="Managed" DisplayName="관리되는 이미지" Description="디버깅할 실행 가능 이미지가 완전히 관리되는 응용 프로그램입니다." />
+  </EnumProperty>
+</Rule>

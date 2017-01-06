@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="Folder" DisplayName="Genel" PageTemplate="generic" Description="Klasör Özellikleri" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFileFolderItems" HasConfigurationCondition="False" ItemType="Folder" />
+  </Rule.DataSource>
+  <StringProperty Name="Identity" Visible="false" ReadOnly="true" Category="Misc" />
+  <StringProperty Name="FullPath" DisplayName="Tam Yol" ReadOnly="true" Category="Misc" Description="Klasörün konumu" />
+  <StringProperty Name="FolderName" DisplayName="Klasör Adı" ReadOnly="true" Category="Misc" Description="Bu klasörün adı" />
+</Rule>

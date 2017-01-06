@@ -45,7 +45,7 @@ Root (flags: {ProjectRoot})
             var result = await command.GetCommandStatusAsync(nodes, CommandId, true, "", 0);
             Assert.True(result.Handled);
             Assert.Equal(CommandStatus.Enabled | CommandStatus.Supported, result.Status);
-            Assert.Equal($"Edit Root.{Extension}", result.CommandText);
+            Assert.Equal(string.Format(VSResources.EditProjectFileCommand, $"Root.{Extension}"), result.CommandText);
         }
 
         [Fact]

@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
+<Rule Name="Content" DisplayName="檔案屬性" PageTemplate="generic" Description="檔案屬性" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="Content" />
+  </Rule.DataSource>
+  <Rule.Categories>
+    <Category Name="Advanced" DisplayName="進階" />
+    <Category Name="Misc" DisplayName="其他" />
+  </Rule.Categories>
+  <DynamicEnumProperty Name="{}{ItemType}" DisplayName="建置動作" Category="Advanced" Description="檔案與組建和部署處理序相關聯的方式。" EnumProvider="ItemTypes" />
+  <EnumProperty Name="CopyToOutputDirectory" DisplayName="複製到輸出目錄" Category="Advanced" Description="指定是否要將原始程式檔複製到輸出目錄。">
+    <EnumValue Name="Never" DisplayName="不要複製" />
+    <EnumValue Name="Always" DisplayName="永遠複製" />
+    <EnumValue Name="PreserveNewest" DisplayName="有更新時才複製" />
+  </EnumProperty>
+  <StringProperty Name="Identity" Visible="false" ReadOnly="true" Category="Misc" Description="Include 屬性中指定的項目。">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="Content" PersistedName="Identity" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FullPath" DisplayName="完整路徑" ReadOnly="true" Category="Misc" Description="檔案的位置。">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="Content" PersistedName="FullPath" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FileNameAndExtension" DisplayName="檔案名稱" ReadOnly="true" Category="Misc" Description="檔案或資料夾的名稱。">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="Content" PersistedName="FileNameAndExtension" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <BoolProperty Name="Visible" Visible="false" />
+  <StringProperty Name="DependentUpon" Visible="false">
+    <StringProperty.Metadata>
+      <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />
+    </StringProperty.Metadata>
+  </StringProperty>
+  <StringProperty Name="Link" Visible="false">
+    <StringProperty.DataSource>
+      <DataSource PersistenceStyle="Attribute" />
+    </StringProperty.DataSource>
+    <StringProperty.Metadata>
+      <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />
+    </StringProperty.Metadata>
+  </StringProperty>
+</Rule>

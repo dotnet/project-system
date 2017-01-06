@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright, Microsoft Corporation, All rights reserved.-->
+<Rule Name="ConfigurationGeneralBrowseObject" DisplayName="Genel" PageTemplate="generic" Description="Genel" OverrideMode="Replace" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.Categories>
+    <Category Name="General" DisplayName="Genel" Description="Genel" />
+  </Rule.Categories>
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" />
+  </Rule.DataSource>
+  <StringProperty Name="ApplicationIcon" DisplayName="Uygulama Simgesi" Visible="True" />
+  <StringProperty Name="TargetFrameworkMoniker" DisplayName="Hedef Çerçeve Adı" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="AssemblyName" DisplayName="Bütünleştirilmiş Kod Adı" Visible="True" />
+  <StringProperty Name="Name" Visible="True" />
+  <StringProperty Name="RootNamespace" DisplayName="Kök ad alanı" Visible="True" />
+  <StringProperty Name="DefaultNamespace" DisplayName="Varsayılan ad alanı" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="RootNamespace" Persistence="ProjectFile" HasConfigurationCondition="false" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="TargetFrameworks" DisplayName="Hedef Çerçeveler" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworks" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <IntProperty Name="TargetFramework" ReadOnly="True" Visible="True">
+    <IntProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFramework" />
+    </IntProperty.DataSource>
+  </IntProperty>
+  <StringProperty Name="OutputName" Visible="True" />
+  <DynamicEnumProperty Name="OutputType" DisplayName="Çıkış Türü" EnumProvider="OutputTypeEnumProvider" Visible="True" />
+  <EnumProperty Name="OutputTypeEx" DisplayName="Çıkış Türü" Visible="True">
+    <EnumValue Name="winexe" DisplayName="0" />
+    <EnumValue Name="exe" DisplayName="1" />
+    <EnumValue Name="library" DisplayName="2" />
+    <EnumValue Name="appcontainerexe" DisplayName="3" />
+    <EnumValue Name="winmdobj" DisplayName="4" />
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="OutputTypeEx" HasConfigurationCondition="False" />
+    </EnumProperty.DataSource>
+  </EnumProperty>
+  <StringProperty Name="StartupObject" DisplayName="Giriş noktasını içeren tür" Visible="True" />
+  <StringProperty Name="ApplicationManifest" DisplayName="Uygulama Bildirimi" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="ApplicationManifest" HasConfigurationCondition="false" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Win32ResourceFile" DisplayName="Win32 Kaynak Dosyası" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="Win32Resource" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="DefineConstants" DisplayName="Sabitleri Tanımla" Visible="True" />
+  <EnumProperty Name="PlatformTarget" DisplayName="Platform Hedefi" Visible="True" />
+  <BoolProperty Name="Prefer32Bit" DisplayName="32Bit Tercih Et" Visible="True" />
+  <BoolProperty Name="AllowUnsafeBlocks" Default="False" DisplayName="Güvenli olmayan koda izin ver" Visible="True" />
+  <StringProperty Name="Optimize" DisplayName="İyileştir" Visible="True" />
+  <EnumProperty Name="WarningLevel" DisplayName="Uyarı Düzeyi" Visible="True" />
+  <StringProperty Name="NoWarn" DisplayName="Uyarıyı Gösterme" Visible="True" />
+  <BoolProperty Name="TreatWarningsAsErrors" Default="False" Description="Uyarıları hata olarak değerlendir" Visible="True" />
+  <StringProperty Name="TreatSpecificWarningsAsErrors" Description="Belirli uyarıları hata olarak değerlendir" Visible="True" />
+  <StringProperty Name="OutputPath" DisplayName="Çıkış Yolu" Visible="True" />
+  <StringProperty Name="DocumentationFile" DisplayName="Belge dosyası" Visible="True" />
+  <EnumProperty Name="GenerateSerializationAssemblies" DisplayName="Serileştirme bütünleştirilmiş kodları oluştur" Visible="True">
+    <EnumValue Name="Auto" DisplayName="Otomatik" IsDefault="True" />
+    <EnumValue Name="On" DisplayName="Açık" />
+    <EnumValue Name="Off" DisplayName="Kapalı" />
+  </EnumProperty>
+  <EnumProperty Name="LanguageVersion" DisplayName="Dil sürümü" Visible="True">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="LangVersion" />
+    </EnumProperty.DataSource>
+  </EnumProperty>
+  <EnumProperty Name="ErrorReport" DisplayName="Hata raporu" Visible="True" />
+  <EnumProperty Name="DebugInfo" DisplayName="Hata Ayıklama Bilgisi" Visible="True">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="DebugType" />
+    </EnumProperty.DataSource>
+  </EnumProperty>
+  <BoolProperty Name="CheckForOverflowUnderflow" DisplayName="CheckForOverflowUnderflow" Visible="False">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="CheckForOverflowUnderflow" HasConfigurationCondition="True" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <StringProperty Name="DebugSymbols" DisplayName="Hata ayıklama simgeleri" Visible="True" />
+  <EnumProperty Name="FileAlignment" DisplayName="Dosya Hizalama" Visible="True" />
+  <StringProperty Name="BaseAddress" DisplayName="Temel adres" Visible="True" />
+  <StringProperty Name="PreBuildEvent" DisplayName="Derleme Öncesi Olayı" Visible="True" />
+  <StringProperty Name="PostBuildEvent" DisplayName="Derleme Sonrası Olayı" Visible="True" />
+  <EnumProperty Name="RunPostBuildEvent" DisplayName="Derleme Sonrası Olayını Çalıştır" Visible="True">
+    <EnumValue Name="Always" DisplayName="Her Zaman" />
+    <EnumValue Name="OnBuildSuccess" DisplayName="Derleme başarılı olduğunda" IsDefault="True" />
+    <EnumValue Name="OnOutputUpdated" DisplayName="Oluşturma proje çıkışını güncelleştirdiğinde" />
+  </EnumProperty>
+  <StringProperty Name="ReferencePath" DisplayName="Başvuru Yolu" Visible="True" />
+  <StringProperty Name="FileName" DisplayName="Proje Dosyası" ReadOnly="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectFile" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FullPath" DisplayName="Proje Klasörü" ReadOnly="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="LocalPath" ReadOnly="True" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <!-- Package properties -->
+  <BoolProperty Name="GeneratePackageOnBuild" DisplayName="Derlemede Paket Oluştur" Default="False" />
+  <StringProperty Name="PackageId" DisplayName="Paket Kimliği">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Version" DisplayName="Paket Sürümü">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Authors" DisplayName="Yazarlar">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <BoolProperty Name="PackageRequireLicenseAcceptance" DisplayName="Paket, Lisansı Kabul Etmeyi Gerektiriyor" Default="False" />
+  <StringProperty Name="PackageLicenseUrl" DisplayName="Paket Lisans URL’si" />
+  <StringProperty Name="PackageProjectUrl" DisplayName="Paket Proje URL’si" />
+  <StringProperty Name="PackageIconUrl" DisplayName="Paket Simge URL’si" />
+  <StringProperty Name="PackageTags" DisplayName="Paket Etiketleri" />
+  <StringProperty Name="PackageReleaseNotes" DisplayName="Sürüm Notları" />
+  <StringProperty Name="RepositoryUrl" DisplayName="Depo URL’si" />
+  <StringProperty Name="RepositoryType" DisplayName="Depo Türü" />
+  <!--AssemblyInfo properties-->
+  <StringProperty Name="Description" DisplayName="Bütünleştirilmiş Kod Açıklaması" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Company" DisplayName="Bütünleştirilmiş Kod Şirketi" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Product" DisplayName="Ürün" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Copyright" DisplayName="Telif Hakkı" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="AssemblyVersion" DisplayName="Bütünleştirilmiş Kod Sürümü" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FileVersion" DisplayName="Bütünleştirilmiş Kod Dosyası Sürümü" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="NeutralLanguage" DisplayName="Bağımsız Kaynaklar Dili" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <BoolProperty Name="SignAssembly" DisplayName="Bütünleştirilmiş kodu imzala" Visible="True" />
+  <BoolProperty Name="DelaySign" DisplayName="Yalnızca gecikmeli imzalama" Visible="True" />
+  <StringProperty Name="AssemblyOriginatorKeyFile" DisplayName="Tanımlayıcı ad anahtar dosyası" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+</Rule>

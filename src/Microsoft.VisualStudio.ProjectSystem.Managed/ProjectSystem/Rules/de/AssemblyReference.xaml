@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="AssemblyReference" DisplayName="Assemblyverweis" PageTemplate="generic" Description="Assemblyverweiseigenschaften" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" />
+  </Rule.DataSource>
+  <StringListProperty Name="Aliases" DisplayName="Aliase" Description="Eine durch Komma getrennte Liste von Aliasen zu diesem Verweis." Separator="," />
+  <BoolProperty Name="CopyLocal" DisplayName="Lokale Kopie" Description="Gibt an, ob der Verweis in das Ausgabeverzeichnis kopiert wird.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" PersistedName="Private" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <BoolProperty Name="EmbedInteropTypes" DisplayName="Interoptypen einbetten" Description="Gibt an, ob in der Assembly definierte Typen in die Zielassembly eingebettet werden." />
+  <BoolProperty Name="SpecificVersion" DisplayName="Spezifische Version" Description="Gibt an, ob diese Assembly ohne Rücksicht auf die Regeln zur Festlegung von Zielversionen für die Assemblyauflösung aufgelöst werden kann.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="AssemblyReference" ItemType="Reference" HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <StringProperty Name="RequiredTargetFramework" DisplayName="Erforderliches Zielframework" Visible="False" />
+  <StringProperty Name="HintPath" Visible="false" />
+  <StringProperty Name="SDKName" Visible="false" />
+  <BoolProperty Name="IsWinMDFile" Visible="false" />
+  <StringProperty Name="ImageRuntime" DisplayName="Laufzeitversion" Description="Die Zielversion der CLR-Laufzeit für diese Assembly." Visible="False" ReadOnly="True" />
+</Rule>
