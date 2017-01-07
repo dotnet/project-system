@@ -22,9 +22,66 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var projectPath = @"c:\myproject\project.csproj";
             var nodeIdString = @"file:///[MyProvider;MyNodeItemSpec]";
-            var mockVsHierarchyItem = IVsHierarchyItemFactory.ImplementTextProperty(text: "MyNodeItemSpec");
+            var mockVsHierarchyItem = IVsHierarchyItemFactory.ImplementProperties(text: "MyNodeItemSpec");
             var inputNode = IGraphContextFactory.CreateNode(projectPath, 
                                                             nodeIdString, 
+                                                            hierarchyItem: mockVsHierarchyItem);
+            var rootNode = IDependencyNodeFactory.FromJson(@"
+{
+    ""Id"": {
+        ""ProviderType"": ""MyProvider"",
+        ""ItemSpec"": ""MyRootNode""
+    }
+}");
+            var existingNode = IDependencyNodeFactory.FromJson(@"
+{
+    ""Id"": {
+        ""ProviderType"": ""MyProvider"",
+        ""ItemSpec"": ""MyNodeItemSpec""
+    }
+}");
+            var existingChildNode = IDependencyNodeFactory.FromJson(@"
+{
+    ""Id"": {
+        ""ProviderType"": ""MyProvider"",
+        ""ItemSpec"": ""MyChildNodeItemSpec""
+    }   
+}");
+            rootNode.AddChild(existingNode);
+            existingNode.Children.Add(existingChildNode);
+
+            var mockProvider = new IProjectDependenciesSubTreeProviderMock();
+            mockProvider.RootNode = rootNode;
+            mockProvider.AddTestDependencyNodes(new[] { existingNode });
+
+            var mockProjectContextProvider = IDependenciesGraphProjectContextProviderFactory.Implement(projectPath, mockProvider);
+            var mockGraphContext = IGraphContextFactory.ImplementContainsChildren(inputNode);
+
+            var provider = new DependenciesGraphProvider(mockProjectContextProvider,
+                                                         Mock.Of<SVsServiceProvider>(),
+                                                         new IProjectThreadingServiceMock().JoinableTaskContext);
+
+            // Act
+            await provider.BeginGetGraphDataAsync(mockGraphContext);
+
+            // Assert
+            Assert.True(inputNode.GetValue<bool>(DgmlNodeProperties.ContainsChildren));
+            Assert.NotNull(inputNode.GetValue<IDependencyNode>(DependenciesGraphSchema.DependencyNodeProperty));
+            Assert.Equal(existingNode, inputNode.GetValue<IDependencyNode>(DependenciesGraphSchema.DependencyNodeProperty));
+            Assert.True(inputNode.GetValue(DependenciesGraphSchema.ProviderProperty) is IProjectDependenciesSubTreeProviderMock);
+        }
+
+        [Fact]
+        public async Task DependenciesGraphProvider_CheckChildrenAsync_TopLevelNodeWithoutId_ShouldGetProviderFromParent()
+        {
+            var projectPath = @"c:\myproject\project.csproj";
+            var parentNodeIdString = @"file:///[MyProvider;;;]";
+            var nodeFilePath = @"c:/myproject/MyNodeItemSpec";
+            var mockVsHierarchyItem = IVsHierarchyItemFactory.ImplementProperties(
+                                        text: "MyNodeItemSpec",
+                                        parentCanonicalName: parentNodeIdString);
+            var inputNode = IGraphContextFactory.CreateNode(projectPath,
+                                                            nodeFilePath,
                                                             hierarchyItem: mockVsHierarchyItem);
             var rootNode = IDependencyNodeFactory.FromJson(@"
 {
@@ -120,7 +177,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var projectPath = @"c:\myproject\project.csproj";
             var nodeIdString = @"file:///[MyProvider;MyNodeItemSpec]";
 
-            var mockVsHierarchyItem = IVsHierarchyItemFactory.ImplementTextProperty(text: "MyNodeItemSpec");
+            var mockVsHierarchyItem = IVsHierarchyItemFactory.ImplementProperties(text: "MyNodeItemSpec");
             var inputNode = IGraphContextFactory.CreateNode(projectPath, 
                                                             nodeIdString, 
                                                             hierarchyItem: mockVsHierarchyItem);
@@ -293,7 +350,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             rootNode.AddChild(existingNode);
             existingNode.Children.Add(existingChildNode);
 
-            var mockVsHierarchyItem = IVsHierarchyItemFactory.ImplementTextProperty(text: "MyNodeItemSpec");
+            var mockVsHierarchyItem = IVsHierarchyItemFactory.ImplementProperties(text: "MyNodeItemSpec");
             var inputNode = IGraphContextFactory.CreateNode(projectPath, 
                                                             nodeIdString,
                                                             hierarchyItem:mockVsHierarchyItem);
@@ -580,6 +637,134 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.False(outputArray[1].HasCategory(CodeNodeCategories.ProjectItem));
             Assert.False(outputArray[3].HasCategory(CodeNodeCategories.ProjectItem));
             Assert.False(outputArray[4].HasCategory(CodeNodeCategories.ProjectItem));
+        }
+
+        [Fact]
+        public async Task DependenciesGraphProvider_SearchAsync_TopLevel_GenericNode_WithCustomItemSpec()
+        {
+            // Arrange
+            var searchString = "1.0";
+            var projectPath = @"c:\myproject\project.csproj";
+            var rootNode = IDependencyNodeFactory.FromJson(@"
+{
+    ""Id"": {
+        ""ProviderType"": ""MyProvider"",
+        ""ItemSpec"": ""MyRootNode""
+    }
+}");
+
+            var topNode1 = IDependencyNodeFactory.FromJson(@"
+{
+    ""Id"": {
+        ""ProviderType"": ""MyProvider"",
+        ""ItemSpec"": ""MyTopNodeItemSpec""
+    }
+}", DependencyNode.GenericDependencyFlags.Union(DependencyNode.CustomItemSpec));
+            ((DependencyNode)topNode1).Name = "TopNodeName";
+            var childNode1 = IDependencyNodeFactory.FromJson(@"
+{
+    ""Id"": {
+        ""ProviderType"": ""MyProvider"",
+        ""ItemSpec"": ""MyChildNodeItemSpec1.0""
+    }
+}");
+            topNode1.Children.Add(childNode1);
+            rootNode.AddChild(topNode1);
+
+            var mockProvider = new IProjectDependenciesSubTreeProviderMock();
+            mockProvider.RootNode = rootNode;
+            mockProvider.AddTestDependencyNodes(new[] { topNode1 });
+            mockProvider.AddSearchResults(new[] { topNode1 });
+
+            var mockProjectContextProvider =
+                    IDependenciesGraphProjectContextProviderFactory.Implement(
+                        projectPath, subTreeProviders: new[] { mockProvider });
+
+            var outputNodes = new HashSet<GraphNode>();
+            var mockGraphContext = IGraphContextFactory.ImplementSearchAsync(searchString,
+                                                                             outputNodes: outputNodes);
+
+            var provider = new TestableDependenciesGraphProvider(mockProjectContextProvider,
+                                                         Mock.Of<SVsServiceProvider>(),
+                                                         new IProjectThreadingServiceMock().JoinableTaskContext);
+
+            // Act
+            await provider.BeginGetGraphDataAsync(mockGraphContext);
+
+            // Assert
+            Assert.Equal(2, outputNodes.Count);
+
+            var outputArray = outputNodes.ToArray();
+            // check if top level nodes got CodeNodeCategories.ProjectItem to make sure
+            // graph matched them back with IVsHierarchy nodes
+            Assert.True(outputArray[0].HasCategory(CodeNodeCategories.ProjectItem));
+            Assert.Equal(1, outputArray[0].OutgoingLinkCount);
+            Assert.Equal(@"c:/myproject/topnodename", outputArray[0].Id.GetNestedValueByName<Uri>(CodeGraphNodeIdName.File).AbsolutePath);
+            Assert.False(outputArray[1].HasCategory(CodeNodeCategories.ProjectItem));
+        }
+
+        [Fact]
+        public async Task DependenciesGraphProvider_SearchAsync_TopLevel_GenericNode_WithNormalItemSpec()
+        {
+            // Arrange
+            var searchString = "1.0";
+            var projectPath = @"c:\myproject\project.csproj";
+            var rootNode = IDependencyNodeFactory.FromJson(@"
+{
+    ""Id"": {
+        ""ProviderType"": ""MyProvider"",
+        ""ItemSpec"": ""MyRootNode""
+    }
+}");
+
+            var topNode1 = IDependencyNodeFactory.FromJson(@"
+{
+    ""Id"": {
+        ""ProviderType"": ""MyProvider"",
+        ""ItemSpec"": ""MyTopNodeItemSpec""
+    }
+}", DependencyNode.GenericDependencyFlags);
+            ((DependencyNode)topNode1).Name = "TopNodeName";
+            var childNode1 = IDependencyNodeFactory.FromJson(@"
+{
+    ""Id"": {
+        ""ProviderType"": ""MyProvider"",
+        ""ItemSpec"": ""MyChildNodeItemSpec1.0""
+    }
+}");
+            topNode1.Children.Add(childNode1);
+            rootNode.AddChild(topNode1);
+
+            var mockProvider = new IProjectDependenciesSubTreeProviderMock();
+            mockProvider.RootNode = rootNode;
+            mockProvider.AddTestDependencyNodes(new[] { topNode1 });
+            mockProvider.AddSearchResults(new[] { topNode1 });
+
+            var mockProjectContextProvider =
+                    IDependenciesGraphProjectContextProviderFactory.Implement(
+                        projectPath, subTreeProviders: new[] { mockProvider });
+
+            var outputNodes = new HashSet<GraphNode>();
+            var mockGraphContext = IGraphContextFactory.ImplementSearchAsync(searchString,
+                                                                             outputNodes: outputNodes);
+
+            var provider = new TestableDependenciesGraphProvider(mockProjectContextProvider,
+                                                         Mock.Of<SVsServiceProvider>(),
+                                                         new IProjectThreadingServiceMock().JoinableTaskContext);
+
+            // Act
+            await provider.BeginGetGraphDataAsync(mockGraphContext);
+
+            // Assert
+            Assert.Equal(2, outputNodes.Count);
+
+            var outputArray = outputNodes.ToArray();
+            // check if top level nodes got CodeNodeCategories.ProjectItem to make sure
+            // graph matched them back with IVsHierarchy nodes
+            Assert.True(outputArray[0].HasCategory(CodeNodeCategories.ProjectItem));
+            Assert.Equal(1, outputArray[0].OutgoingLinkCount);
+            Assert.Equal(@"c:/myproject/mytopnodeitemspec", outputArray[0].Id.GetNestedValueByName<Uri>(CodeGraphNodeIdName.File).AbsolutePath);
+            Assert.False(outputArray[1].HasCategory(CodeNodeCategories.ProjectItem));
         }
 
         [Fact]

@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     internal static class ManagedPathHelper
     {
         /// <summary>
-        /// Tests a path to see if it is absolute or not.  More reliable that Path.IsPathRooted.
+        /// Tests a path to see if it is absolute or not. More reliable than Path.IsPathRooted.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
             try
             {
-                return PathHelper.MakeRooted(basePath, path);
+                return PathHelper.MakeRooted(PathHelper.EnsureTrailingSlash(basePath), path);
             }
             catch (ArgumentException)
             {

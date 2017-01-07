@@ -366,52 +366,53 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
 
             var projectContexts = ProjectContextProvider.GetProjectContexts();
-            using (var scope = new GraphTransactionScope())
+            foreach (var projectContext in projectContexts)
             {
-                foreach (var projectContext in projectContexts)
+                var subTreeProviders = projectContext.GetProviders();
+                foreach (var subTreeProvider in subTreeProviders)
                 {
-                    var subTreeProviders = projectContext.GetProviders();
-                    foreach (var subTreeProvider in subTreeProviders)
+                    await RegisterSubTreeProviderAsync(subTreeProvider, graphContext).ConfigureAwait(false);
+
+                    foreach (var topLevelNode in subTreeProvider.RootNode.Children)
                     {
-                        await RegisterSubTreeProviderAsync(subTreeProvider, graphContext).ConfigureAwait(false);
-
-                        foreach (var topLevelNode in subTreeProvider.RootNode.Children)
+                        var refreshedTopLevelNode = subTreeProvider.GetDependencyNode(topLevelNode.Id);
+                        if (refreshedTopLevelNode == null)
                         {
-                            var refreshedTopLevelNode = subTreeProvider.GetDependencyNode(topLevelNode.Id);
-                            if (refreshedTopLevelNode == null)
-                            {
-                                continue;
-                            }
+                            continue;
+                        }
 
-                            var matchingNodes = await subTreeProvider.SearchAsync(refreshedTopLevelNode, searchTerm).ConfigureAwait(true);
-                            if (matchingNodes == null || matchingNodes.Count() <= 0)
-                            {
-                                continue;
-                            }
+                        var matchingNodes = await subTreeProvider.SearchAsync(refreshedTopLevelNode, searchTerm).ConfigureAwait(true);
+                        if (matchingNodes == null || matchingNodes.Count() <= 0)
+                        {
+                            continue;
+                        }
 
+                        // Note: scope should start and complete on the same thread, so we have to do it for each provider.
+                        using (var scope = new GraphTransactionScope())
+                        {
                             // add provider's root node to display matching nodes                                                         
                             var topLevelGraphNode = AddTopLevelGraphNode(graphContext,
-                                                                 projectContext.ProjectFilePath,
-                                                                 subTreeProvider,
-                                                                 nodeInfo: refreshedTopLevelNode);
+                                                                    projectContext.ProjectFilePath,
+                                                                    subTreeProvider,
+                                                                    nodeInfo: refreshedTopLevelNode);
 
                             // now recursively add graph nodes for provider nodes that match search criteria under 
                             // provider's root node
                             AddNodesToGraphRecursive(graphContext,
-                                                     projectContext.ProjectFilePath,
-                                                     subTreeProvider,
-                                                     topLevelGraphNode,
-                                                     matchingNodes);
+                                                        projectContext.ProjectFilePath,
+                                                        subTreeProvider,
+                                                        topLevelGraphNode,
+                                                        matchingNodes);
 
                             // 'node' is a GraphNode for top level dependency (which is part of solution explorer tree)
                             // Setting ProjectItem category (and correct GraphNodeId) ensures that search graph appears 
                             // under right solution explorer hierarchy item                     
                             topLevelGraphNode.AddCategory(CodeNodeCategories.ProjectItem);
+
+                            scope.Complete();
                         }
                     }
                 }
-
-                scope.Complete();
             }
 
             graphContext.OnCompleted();
@@ -732,23 +733,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             return GraphNodeId.GetNested(partialValues.ToArray());
         }
 
-        private string MakeRooted(string projectFolder, string path)
-        {
-            if (string.IsNullOrEmpty(path))
-            {
-                return null;
-            }
-
-            if (ManagedPathHelper.IsRooted(path))
-            {
-                return path;
-            }
-            else
-            {
-                return ManagedPathHelper.TryMakeRooted(projectFolder, path);
-            }
-        }
-
         private GraphNode AddGraphNode(IGraphContext graphContext,
                                        string projectPath,
                                        IProjectDependenciesSubTreeProvider subTreeProvider,
@@ -815,6 +799,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private static string GetIconStringName(ImageMoniker icon)
         {
             return $"{icon.Guid.ToString()};{icon.Id}";
+        }
+
+        private static string MakeRooted(string projectFolder, string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                return null;
+            }
+
+            if (ManagedPathHelper.IsRooted(path))
+            {
+                return path;
+            }
+            else
+            {
+                return ManagedPathHelper.TryMakeRooted(projectFolder, path);
+            }
         }
     }
 }

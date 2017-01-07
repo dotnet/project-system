@@ -383,7 +383,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                            IProjectCatalogSnapshot catalogs)
         {
             var isGenericNodeType = nodeInfo.Flags.Contains(DependencyNode.GenericDependencyFlags);
-
             var properties = nodeInfo.Properties ??
                     ImmutableDictionary<string, string>.Empty
                                                        .Add(Folder.IdentityProperty, nodeInfo.Caption)
@@ -393,6 +392,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             // provided by third party extensions we can not guarantee that item type will be known. 
             // Thus always set predefined itemType for all custom nodes.
             // TODO: generate specific xaml rule for generic Dependency nodes
+            // tracking issue: https://github.com/dotnet/roslyn-project-system/issues/1102
             var itemType = isGenericNodeType ? nodeInfo.Id.ItemType : Folder.SchemaName;
             
             // when itemSpec is not in valid absolute path format, property page does not show 
@@ -499,7 +499,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Requires.NotNullOrEmpty(subTreeProvider.RootNode.Caption, nameof(subTreeProvider.RootNode.Caption));
             Requires.NotNullOrEmpty(subTreeProvider.ProviderType, nameof(subTreeProvider.ProviderType));
 
-            var projectFolder = Path.GetDirectoryName(UnconfiguredProject.FullPath);
+            var projectFolder = Path.GetDirectoryName(UnconfiguredProject.FullPath);                                    
             var providerRootTreeNode = GetSubTreeRootNode(dependenciesNode,
                                                           subTreeProvider.RootNode.Flags);
             if (subTreeProvider.RootNode.HasChildren || subTreeProvider.ShouldBeVisibleWhenEmpty)
@@ -613,7 +613,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         ///       by caption if path was not found (since unresolved and resolved items can have 
         ///       different items specs).
         /// </summary>
-        private IProjectTree FindProjectTreeNode(IProjectTree parentNode, IDependencyNode nodeInfo, string projectPath)
+        private IProjectTree FindProjectTreeNode(IProjectTree parentNode, 
+                                                 IDependencyNode nodeInfo, 
+                                                 string projectFolder)
         {
             IProjectTree treeNode = null;
             if (nodeInfo.Flags.Contains(DependencyNode.CustomItemSpec))
@@ -625,7 +627,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 var itemSpec = nodeInfo.Id.ItemSpec;
                 if (!ManagedPathHelper.IsRooted(itemSpec))
                 {
-                    itemSpec = ManagedPathHelper.TryMakeRooted(projectPath, itemSpec);
+                    itemSpec = ManagedPathHelper.TryMakeRooted(projectFolder, itemSpec);
                 }
 
                 if (!string.IsNullOrEmpty(itemSpec))

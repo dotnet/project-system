@@ -104,7 +104,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             Id = id;
             Caption = Id.ItemSpec ?? string.Empty;
-            Name = Caption;
             Priority = priority;
             Properties = properties;
             Resolved = resolved;
@@ -134,7 +133,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// we get a chance and it is safe to do a breaking change.
         /// Tracking with https://github.com/dotnet/roslyn-project-system/issues/1101
         /// </summary>
-        internal string Name { get; set; }
+        private string _name;
+        internal string Name {
+            get
+            {
+                return _name ?? Caption;
+            }
+            set
+            {
+                _name = value;
+            }
+        }
 
         /// <summary>
         /// This is temporary until we can add Name to IDependencyNode to protect us from custom 
