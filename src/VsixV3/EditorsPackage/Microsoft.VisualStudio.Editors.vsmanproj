@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <Import Project="..\..\..\build\Targets\ProducesNoOutput.Settings.targets" />
-  <Import Project="..\..\..\build\Targets\VSL.Versions.targets" />
 
   <PropertyGroup>
     <FinalizeManifest>true</FinalizeManifest>
