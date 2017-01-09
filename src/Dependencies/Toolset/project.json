@@ -1,7 +1,12 @@
 {
   "supports": { },
   "dependencies": {
+    "MicroBuild.Core.Sentinel": "1.0.0",
     "MicroBuild.Core": "0.2.0",
+    "MicroBuild.Plugins.SwixBuild": {
+      "version": "1.0.101",
+      "exclude": "build"
+    },
     "Microsoft.Net.Compilers": {
       "version": "2.0.0-rc2-61102-09",
       "exclude": "build"
@@ -16,6 +21,6 @@
     }
   },
   "frameworks": {
-    ".NETPortable,Version=v4.5,Profile=Profile7": { }
+    ".NETPortable,Version=v4.5,Profile=Profile7": { "imports": "net461" }
   }
 }
