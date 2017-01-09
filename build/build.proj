@@ -83,7 +83,7 @@
 
     <MSBuild Projects="@(VsManProjectFile)"
              Targets="Rebuild"
-             Condition="'$(RunningInMicroBuild)' == 'true'"
+             
              />
   </Target>
 
