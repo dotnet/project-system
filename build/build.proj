@@ -108,7 +108,7 @@
 
   </Target>
 
-  <Target Name="Build" DependsOnTargets="RestorePackages;BuildSolution;BuildNuGetPackages;Test" />
-  <Target Name="Rebuild" DependsOnTargets="RestorePackages;RebuildSolution;RebuildNuGetPackages;Test" />
+  <Target Name="Build" DependsOnTargets="RestorePackages;BuildSolution;BuildNuGetPackages;BuildModernVsixPackages;Test" />
+  <Target Name="Rebuild" DependsOnTargets="RestorePackages;RebuildSolution;RebuildNuGetPackages;BuildModernVsixPackages;Test" />
 
 </Project>
