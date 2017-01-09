@@ -6,7 +6,7 @@
    </ImportGroup>
 
    <PropertyGroup>
-     <NuGetOutDir>$(OutDir)NugetPackages\</NuGetOutDir>
+     <NuGetOutDir>$(OutDir)NuGetPackages\</NuGetOutDir>
    </PropertyGroup>
 
    <ItemGroup>
