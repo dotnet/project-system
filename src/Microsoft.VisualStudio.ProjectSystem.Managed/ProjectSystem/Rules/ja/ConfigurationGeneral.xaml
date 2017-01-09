@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="ConfigurationGeneral" DisplayName="全般" PageTemplate="generic" Description="全般" OverrideMode="Replace" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.Categories>
+    <Category Name="General" DisplayName="全般" Description="全般" />
+  </Rule.Categories>
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" Label="Configuration" />
+  </Rule.DataSource>
+  <StringProperty Name="ApplicationIcon" DisplayName="アプリケーション アイコン" />
+  <StringListProperty Name="ProjectTypeGuids" Visible="False" />
+  <StringProperty Name="ProjectGuid" Visible="False">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ImplicitProjectFile" Label="Globals" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="TargetFrameworkIdentifier" DisplayName="ターゲット フレームワーク ID">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkIdentifier" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="TargetFrameworks" DisplayName="ターゲット フレームワーク">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworks" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="TargetFramework" DisplayName="ターゲット フレームワーク">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="TargetFramework" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="TargetFrameworkProfile" DisplayName="ターゲット フレームワーク プロファイル">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkProfile" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="TargetFrameworkVersion" DisplayName="ターゲット フレームワーク バージョン">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkVersion" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="TargetFrameworkMoniker" DisplayName="ターゲット フレームワーク モニカー">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="TargetPath" />
+  <StringProperty Name="DocumentationFile" DisplayName="XML ドキュメントのコメント ファイル" />
+  <StringProperty Name="AssemblyName" />
+  <StringProperty Name="Name" />
+  <StringProperty Name="RootNamespace" DisplayName="ルート名前空間">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" Label="Configuration" HasConfigurationCondition="false" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="OutputName" />
+  <StringProperty Name="OutputPath" />
+  <StringProperty Name="BaseIntermediateOutputPath" />
+  <EnumProperty Name="OutputType">
+    <EnumValue Name="Library" DisplayName="クラス ライブラリ" />
+    <EnumValue Name="exe" DisplayName="コンソール アプリケーション" />
+    <EnumValue Name="winexe" DisplayName="Windows アプリケーション" />
+    <EnumValue Name="AppContainerExe" DisplayName="Windows ストア アプリ" />
+    <EnumValue Name="WinMDObj" DisplayName="WinMD" />
+  </EnumProperty>
+  <StringListProperty Name="AvailablePlatforms" Separator="," />
+  <BoolProperty Name="Optimize" Description="コンパイラが出力を最適化するかどうかを示します。" />
+  <StringProperty Name="MSBuildProjectDirectory" Visible="false" />
+  <StringProperty Name="DefaultPlatform" Visible="false" />
+  <StringProperty Name="PackageAction" Visible="false" Description="プロジェクトをパッケージ化するときに使用する MSBuild ターゲットです。" />
+  <StringProperty Name="DefaultContentType" Visible="false" Description="ファイルを追加するときに使用する既定のコンテンツ タイプ名です。" />
+  <StringProperty Name="VCInstallDir" Visible="false" />
+  <StringProperty Name="VSInstallDir" Visible="false" />
+  <StringProperty Name="Platform" Visible="false" />
+  <StringProperty Name="Configuration" Visible="false" />
+  <StringProperty Name="DebuggerSymbolsPath" Visible="false" />
+  <StringProperty Name="IntDir" Visible="false" />
+  <StringProperty Name="TargetPlatformWinMDLocation" Visible="false" />
+  <StringProperty Name="SDKReferenceDirectoryRoot" Visible="false" />
+  <StringProperty Name="SDKReferenceRegistryRoot" Visible="false" />
+  <StringProperty Name="SDKExtensionDirectoryRoot" Visible="false" />
+  <StringProperty Name="SDKIdentifier" Visible="false" />
+  <StringProperty Name="SDKVersion" Visible="false" />
+  <StringProperty Name="TargetPlatformIdentifier" Visible="false" />
+  <StringProperty Name="TargetPlatformVersion" Visible="false" />
+  <BoolProperty Name="WindowsAppContainer" Visible="false" />
+  <BoolProperty Name="WinMDAssembly" Visible="false" />
+  <EnumProperty Name="TargetRuntime" Visible="false">
+    <EnumValue Name="Managed" />
+    <EnumValue Name="Native" />
+    <EnumValue Name="AppHost" DisplayName="Windows アプリ" />
+  </EnumProperty>
+  <StringProperty Name="AssemblySearchPaths" Visible="false" />
+  <StringProperty Name="WinRTReferenceTabs" Visible="false" />
+  <StringProperty Name="AssemblyReferenceTabs" Visible="false" />
+  <StringProperty Name="MinimumVisualStudioVersion" Visible="false" />
+  <BoolProperty Name="SuppressOutOfDateMessageOnBuild" Visible="false" Description="プロジェクトが最新ではないことをユーザーに確認せずにプロジェクトをビルドする場合は True を指定します。" />
+  <BoolProperty Name="ShowAllFiles" Visible="False">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="UserFile" HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <BoolProperty Name="AutoRefresh" Visible="False">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="UserFile" HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <StringProperty Name="AddItemTemplatesGuid" Visible="False" />
+  <StringProperty Name="ProjectUISubcaption" Visible="False" />
+  <StringProperty Name="SharedItemContextSubProjectGuid" Visible="False">
+    <StringProperty.DataSource>
+      <DataSource Persistence="UserFile" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="OneAppCapabilities" Visible="False" />
+  <StringProperty Name="SharedProjectAppliesTo" Visible="False" Description="最低でも共有プロジェクトの言語のテストを行う機能一致式。共有プロジェクトの参照の追加の選択肢をフィルターする場合に使用されます。" />
+  <BoolProperty Name="AlwaysUseNumericalSuffixInItemNames" Visible="False" Description="新たに追加された項目の名前の後に常に数字を付けるかどうかを示します。" />
+  <StringProperty Name="LanguageServiceName" ReadOnly="True" Visible="False" Description="Roslyn に渡される LanguageName を表します" />
+  <StringProperty Name="TemplateLanguage" ReadOnly="True" Visible="False" Description="項目やプロジェクト テンプレート内で保持される言語を表します" />
+</Rule>

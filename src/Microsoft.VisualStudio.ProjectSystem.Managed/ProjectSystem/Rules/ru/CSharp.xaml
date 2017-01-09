@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="CSharp" DisplayName="C#" PageTemplate="tool" Description="Исходный файл C#" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="false" />
+  </Rule.DataSource>
+  <Rule.Categories>
+    <Category Name="Advanced" DisplayName="Дополнительно" />
+    <Category Name="Misc" DisplayName="Прочее" />
+  </Rule.Categories>
+  <DynamicEnumProperty Name="{}{ItemType}" DisplayName="Действие при сборке" Category="Advanced" Description="Как файл связан с процессами сборки и развертывания." EnumProvider="ItemTypes" />
+  <EnumProperty Name="CopyToOutputDirectory" DisplayName="Копировать в выходной каталог" Category="Advanced" Description="Указывает, что файл исходного кода будет скопирован в выходной каталог.">
+    <EnumValue Name="Never" DisplayName="Не копировать" />
+    <EnumValue Name="Always" DisplayName="Всегда копировать" />
+    <EnumValue Name="PreserveNewest" DisplayName="Копировать более позднюю версию" />
+  </EnumProperty>
+  <StringProperty Name="Generator" Category="Advanced" DisplayName="Пользовательский инструмент" Description="Указывает инструмент, который преобразует файл во время разработки и помещает выходные данные этого преобразования в другой файл. Например, файл набора данных (XSD) поставляется с пользовательским инструментом по умолчанию." />
+  <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="Пространство имен пользовательского инструмента" Description="Пространство имен, в которое помещаются выходные данные пользовательского инструмента." />
+  <BoolProperty Name="ExcludedFromBuild" DisplayName="Исключено из сборки">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="true" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <BoolProperty Name="Visible" Visible="false" />
+  <StringProperty Name="DependentUpon" Visible="false">
+    <StringProperty.Metadata>
+      <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />
+    </StringProperty.Metadata>
+  </StringProperty>
+  <StringProperty Name="Link" Visible="false">
+    <StringProperty.DataSource>
+      <DataSource PersistenceStyle="Attribute" />
+    </StringProperty.DataSource>
+    <StringProperty.Metadata>
+      <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />
+    </StringProperty.Metadata>
+  </StringProperty>
+  <StringProperty Name="SubType" Visible="false" />
+  <StringProperty Name="LastGenOutput" Visible="false" Description="Имя последнего файла, созданного в результате SFG." />
+  <BoolProperty Name="DesignTime" Visible="false" Description="Значение, указывающее, действительно ли данный файл имеет конструктор." />
+  <BoolProperty Name="AutoGen" Visible="false" Description="Значение, указывающее, является ли этот файл созданным." />
+</Rule>

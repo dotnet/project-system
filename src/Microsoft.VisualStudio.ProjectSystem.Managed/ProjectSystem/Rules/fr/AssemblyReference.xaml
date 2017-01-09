@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="AssemblyReference" DisplayName="Référence de l'assembly" PageTemplate="generic" Description="Propriétés de la référence à l'assembly" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" />
+  </Rule.DataSource>
+  <StringListProperty Name="Aliases" DisplayName="Alias" Description="Liste d'alias à cette référence délimités par des virgules." Separator="," />
+  <BoolProperty Name="CopyLocal" DisplayName="Copie locale" Description="Indique si la référence sera copiée dans le répertoire de sortie.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" PersistedName="Private" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <BoolProperty Name="EmbedInteropTypes" DisplayName="Incorporer les types d'interopérabilité" Description="Indique si les types définis dans cet assembly seront incorporés dans l'assembly cible." />
+  <BoolProperty Name="SpecificVersion" DisplayName="Version spécifique" Description="Indique si cet assembly peut être résolu sans tenir compte des règles de multiciblage pour la résolution de l'assembly.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="AssemblyReference" ItemType="Reference" HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <StringProperty Name="RequiredTargetFramework" DisplayName="Framework cible requis" Visible="False" />
+  <StringProperty Name="HintPath" Visible="false" />
+  <StringProperty Name="SDKName" Visible="false" />
+  <BoolProperty Name="IsWinMDFile" Visible="false" />
+  <StringProperty Name="ImageRuntime" DisplayName="Version du runtime" Description="Version du runtime CLR ciblée par cet assembly." Visible="False" ReadOnly="True" />
+</Rule>

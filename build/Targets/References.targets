@@ -1,8 +1,24 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <Choose>
+    <When Condition="'$(ProjectSystemLayer)' == 'Toolset'">
+      <PropertyGroup>
+        <IncludeCoreFrameworkReferences>false</IncludeCoreFrameworkReferences>
+        <IncludeHostAgnosticReferences>false</IncludeHostAgnosticReferences>
+        <IncludeVisualStudioReferences>false</IncludeVisualStudioReferences>
+        <IncludeVisualStudioDesignerReferences>false</IncludeVisualStudioDesignerReferences>
+        <IncludeCPSReferences>false</IncludeCPSReferences>
+      </PropertyGroup>
+    </When>
     <When Condition="'$(ProjectSystemLayer)' == 'Dependency'">
       <PropertyGroup>
+        <!-- 
+             We reference the core framework from Dependency projects to make these primary refs, and prevent
+             MSBuild outputing MSB3277 when it finds conflicts between PLIB "old-style" assemblies and desktop
+             assemblies, which have the same name but different keys/versions.
+         -->
+
+        <IncludeCoreFrameworkReferences>true</IncludeCoreFrameworkReferences>
         <IncludeHostAgnosticReferences>false</IncludeHostAgnosticReferences>
         <IncludeVisualStudioReferences>false</IncludeVisualStudioReferences>
         <IncludeVisualStudioDesignerReferences>false</IncludeVisualStudioDesignerReferences>
@@ -11,6 +27,7 @@
     </When>
     <When Condition="'$(ProjectSystemLayer)' == 'HostAgnostic'">
       <PropertyGroup>
+        <IncludeCoreFrameworkReferences>true</IncludeCoreFrameworkReferences>
         <IncludeHostAgnosticReferences>true</IncludeHostAgnosticReferences>
         <IncludeVisualStudioReferences>false</IncludeVisualStudioReferences>
         <IncludeVisualStudioDesignerReferences>false</IncludeVisualStudioDesignerReferences>
@@ -19,6 +36,7 @@
     </When>
     <When Condition="'$(ProjectSystemLayer)' == 'VisualStudio'">
       <PropertyGroup>
+        <IncludeCoreFrameworkReferences>true</IncludeCoreFrameworkReferences>
         <IncludeHostAgnosticReferences>true</IncludeHostAgnosticReferences>
         <IncludeVisualStudioReferences>true</IncludeVisualStudioReferences>
         <IncludeVisualStudioDesignerReferences>false</IncludeVisualStudioDesignerReferences>
@@ -27,6 +45,7 @@
     </When>
     <When Condition="'$(ProjectSystemLayer)' == 'VisualStudioDesigner'">
       <PropertyGroup>
+        <IncludeCoreFrameworkReferences>true</IncludeCoreFrameworkReferences>
         <IncludeHostAgnosticReferences>true</IncludeHostAgnosticReferences>
         <IncludeVisualStudioReferences>true</IncludeVisualStudioReferences>
         <IncludeVisualStudioDesignerReferences>true</IncludeVisualStudioDesignerReferences>
@@ -45,16 +64,26 @@
 
   <!-- Don't be tempted to move this to conditional ItemGroup or <References> csproj/msvbprj do not like this-->
   <Choose>
-    <When Condition="'$(IncludeHostAgnosticReferences)' == 'true'">
+    <When Condition="'$(IncludeCoreFrameworkReferences)' == 'true'">
       <ItemGroup>
 
         <!-- Framework -->
         <Reference Include="System" />
-        <Reference Include="System.ComponentModel.Composition" />
         <Reference Include="System.Core" />
-        <Reference Include="System.Xaml" />
         <Reference Include="System.Xml" />
         <Reference Include="System.Xml.Linq" />
+
+      </ItemGroup>
+    </When>
+  </Choose>
+
+  <Choose>
+    <When Condition="'$(IncludeHostAgnosticReferences)' == 'true'">
+      <ItemGroup>
+
+        <!-- Framework -->
+        <Reference Include="System.ComponentModel.Composition" />
+        <Reference Include="System.Xaml" />
 
         <!-- NuGet Dependencies -->
         <ProjectReference Include="$(MSBuildThisFileDirectory)..\..\src\Dependencies\Roslyn\Roslyn.csproj">
@@ -119,7 +148,7 @@
         <Reference Include="Microsoft.VisualStudio.ComponentModelHost">
           <HintPath>$(DevEnvDir)\PublicAssemblies\Microsoft.VisualStudio.ComponentModelHost.dll</HintPath>
         </Reference>
-	<!--
+        <!--
 		Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll is needed by GraphProvider unit tests.
 		if it is not provided here, tests fail to load this assembly at runtime.
 	-->

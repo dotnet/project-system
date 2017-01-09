@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             _optionsSettings = optionsSettings;
         }
 
-        public abstract bool CanHandleRename(string oldFilePath, string newFilePath);
+        public abstract bool CanHandleRename(string oldFilePath, string newFilePath, bool isCaseSensitive);
 
         public abstract Task RenameAsync(Project newProject, string oldFilePath, string newFilePath);
 

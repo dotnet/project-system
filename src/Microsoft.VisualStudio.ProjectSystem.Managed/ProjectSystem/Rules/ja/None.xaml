@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
+<Rule Name="None" DisplayName="全般" PageTemplate="generic" Description="非ビルド項目" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="None" />
+  </Rule.DataSource>
+  <Rule.Categories>
+    <Category Name="Advanced" DisplayName="詳細設定" />
+    <Category Name="Misc" DisplayName="その他" />
+  </Rule.Categories>
+  <DynamicEnumProperty Name="{}{ItemType}" DisplayName="ビルド アクション" Category="Advanced" Description="ビルドおよび配置のプロセスにファイルがどのように関連しているかを示します。" EnumProvider="ItemTypes" />
+  <EnumProperty Name="CopyToOutputDirectory" DisplayName="出力ディレクトリにコピー" Category="Advanced" Description="ソース ファイルを出力ディレクトリにコピーするよう指定します。">
+    <EnumValue Name="Never" DisplayName="コピーしない" />
+    <EnumValue Name="Always" DisplayName="常にコピーする" />
+    <EnumValue Name="PreserveNewest" DisplayName="新しい場合はコピーする" />
+  </EnumProperty>
+  <StringProperty Name="Generator" Category="Advanced" DisplayName="カスタム ツール" Description="設計時にファイルを変換し、その変換結果を別のファイルに出力するツールを指定します。たとえば、データセット (.xsd) ファイルには既定のカスタム ツールが用意されています。" />
+  <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="カスタム ツールの名前空間" Description="カスタム ツールの出力を配置する名前空間です。" />
+  <StringProperty Name="Identity" Visible="false" ReadOnly="true" Category="Misc" Description="Include 属性に指定された項目です。">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="Identity" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FullPath" DisplayName="完全パス" ReadOnly="true" Category="Misc" Description="ファイルの場所。">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="FullPath" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FileNameAndExtension" DisplayName="ファイル名" ReadOnly="true" Category="Misc" Description="ファイルまたはフォルダーの名前です。">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="FileNameAndExtension" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="URL" ReadOnly="true" Visible="false">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="FullPath" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <BoolProperty Name="Visible" Visible="false" />
+  <StringProperty Name="DependentUpon" Visible="false" />
+  <StringProperty Name="Link" Visible="false">
+    <StringProperty.DataSource>
+      <DataSource PersistenceStyle="Attribute" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Extension" Visible="False" ReadOnly="true">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="Extension" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="LastGenOutput" Visible="false" Description="SFG の結果として最後に生成されたファイルのファイル名です。" />
+  <BoolProperty Name="DesignTime" Visible="false" Description="このファイルにデザイナーがあるかどうかを示す値です。" />
+  <BoolProperty Name="AutoGen" Visible="false" Description="生成されたファイルであるかどうかを示す値です。" />
+  <StringProperty Name="CustomTool" Visible="false" Description="Generator プロパティへのアクセスに使用する DTE プロパティです。">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="None" PersistedName="Generator" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+</Rule>

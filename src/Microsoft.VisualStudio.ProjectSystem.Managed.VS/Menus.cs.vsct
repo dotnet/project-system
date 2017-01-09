@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <!--  This is the file that defines the actual layout and type of the commands.
+        It is divided in different sections (e.g. command definition, command
+        placement, ...), with each defining a specific set of properties.
+        See the comment before each section for more details about how to
+        use it. -->
+  <!--  The VSCT compiler (the tool that translates this file into the binary
+        format that VisualStudio will consume) has the ability to run a preprocessor
+        on the vsct file; this preprocessor is (usually) the C++ preprocessor, so
+        it is possible to define includes and macros with the same syntax used
+        in C++ files. Using this ability of the compiler here, we include some files
+        defining some of the constants that we will use inside the file. -->
+  <!--This is the file that defines the IDs for all the commands exposed by VisualStudio. -->
+  <Extern href="stdidcmd.h" />
+  <!--This header contains the command ids for the menus provided by the shell. -->
+  <Extern href="vsshlids.h" />
+  <!--Definition of some VSCT specific constants. In this sample we use it for the IDs inside the guidOfficeIcon group. -->
+  <!--<Extern href="msobtnid.h" xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" />-->
+  <!-- This command is associated with the DebugTargetHandlerPackage as we want this package to handle our commands placed on the
+       debug (play button) menu contoller. It will redirect through code to our implementation of IVsProjectCfgDebugTargetSelection
+  -->
+  <Commands package="guidDebugTargetHandlerPackage">
+    <Buttons>
+      <Button guid="guidManagedProjectSystemCommandSet" id="cmdidProjectDebugger" priority="0x1000" type="Button">
+        <Parent guid="guidDebugTargetHandlerPackage" id="DebugTargetMenuControllerGroup" />
+        <CommandFlag>TextChanges</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DefaultDisabled</CommandFlag>
+        <CommandFlag>DynamicItemStart</CommandFlag>
+        <Strings>
+          <ButtonText>Webový ladicí program</ButtonText>
+        </Strings>
+      </Button>
+    </Buttons>
+  </Commands>
+  <Commands package="PackageGuidString">
+    <Groups>
+      <Group guid="guidSHLMainMenu" id="IDG_VS_CTXT_PROJECT_EDITFILE" priority="0x0180">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_PROJNODE" />
+      </Group>
+      <Group guid="guidSHLMainMenu" id="IDG_VS_CTXT_PROJECT_EDITFILE" priority="0x0180">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_PROJECT" />
+      </Group>
+    </Groups>
+    <Buttons>
+      <Button guid="guidManagedProjectSystemCommandSet" id="cmdidGenerateNuGetPackageProjectContextMenu" priority="0x450">
+        <Parent guid="guidSHLMainMenu" id="IDG_VS_CTXT_PROJECT_BUILD" />
+        <CommandFlag>TextChanges</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DefaultDisabled</CommandFlag>
+        <Strings>
+          <ButtonText>&amp;Zabalit</ButtonText>
+          <ToolTipText>Generovat balíček NuGet</ToolTipText>
+          <CommandName>GenerateNuGetPackageProjectContextMenu</CommandName>
+        </Strings>
+      </Button>
+      <Button guid="guidManagedProjectSystemCommandSet" id="cmdidGenerateNuGetPackageTopLevelBuild" priority="0x450">
+        <Parent guid="guidSHLMainMenu" id="IDG_VS_BUILD_SELECTION" />
+        <CommandFlag>TextChanges</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DefaultDisabled</CommandFlag>
+        <Strings>
+          <ButtonText>&amp;Zabalit výběr</ButtonText>
+          <ToolTipText>Generovat balíček NuGet pro vybraný projekt</ToolTipText>
+          <CommandName>GenerateNuGetPackageTopLevelBuild</CommandName>
+        </Strings>
+      </Button>
+    </Buttons>
+  </Commands>
+  <Symbols>
+    <!-- This is out managed package guid. -->
+    <GuidSymbol name="PackageGuidString" value="{A4F9D880-9492-4072-8BF3-2B5EEEDC9E68}" />
+    <GuidSymbol name="guidDebugTargetHandlerPackage" value="{6e87cfad-6c05-4adf-9cd7-3b7943875b7c}">
+      <IDSymbol name="DebugTargetMenuControllerGroup" value="0x1000" />
+      <IDSymbol name="DebugTargetMenuControllerFooterGroup" value="0x2000" />
+    </GuidSymbol>
+    <GuidSymbol name="guidManagedProjectSystemCommandSet" value="{568ABDF7-D522-474D-9EED-34B5E5095BA5}">
+      <!-- Note that these need room to grow hence they need to be spaced out-->
+      <IDSymbol name="cmdidProjectDebugger" value="0x0100" />
+      <IDSymbol name="cmdidGenerateNuGetPackageProjectContextMenu" value="0x2000" />
+      <IDSymbol name="cmdidGenerateNuGetPackageTopLevelBuild" value="0x2001" />
+    </GuidSymbol>
+  </Symbols>
+</CommandTable>

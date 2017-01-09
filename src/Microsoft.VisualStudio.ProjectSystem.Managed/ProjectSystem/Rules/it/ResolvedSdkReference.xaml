@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="ResolvedSdkReference" DisplayName="Riferimento a SDK risolto" PageTemplate="generic" Description="Riferimento a SDK risolto" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ResolvedReference" ItemType="SDKReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="ResolveSDKReferencesDesignTime" />
+  </Rule.DataSource>
+  <StringProperty Name="AppXLocation" DisplayName="Percorso pacchetto dell'app" />
+  <!-- This property should be the same as the one for the ResolvedReference item -->
+  <StringProperty Name="OriginalItemSpec" Visible="false" />
+  <StringProperty Name="FrameworkIdentity" DisplayName="FrameworkIdentity" />
+  <StringProperty Name="DisplayName" DisplayName="Nome visualizzato" Visible="False" />
+  <BoolProperty Name="CopyPayload" DisplayName="Copia payload" />
+  <BoolProperty Name="ExpandContent" DisplayName="Espandi contenuto" />
+  <BoolProperty Name="ExpandReferenceAssemblies" DisplayName="Espandi assembly di riferimento" />
+  <BoolProperty Name="CopyLocalExpandedReferenceAssemblies" DisplayName="Copia assembly di riferimento espansi locali" />
+</Rule>

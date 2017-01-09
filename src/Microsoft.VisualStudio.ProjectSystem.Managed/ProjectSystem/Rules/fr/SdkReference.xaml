@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="SdkReference" DisplayName="Référence SDK" PageTemplate="generic" Description="Propriétés de référence SDK" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" ItemType="SDKReference" HasConfigurationCondition="False" />
+  </Rule.DataSource>
+  <StringProperty Name="SDKRootFolder" DisplayName="Racine du SDK" />
+  <StringProperty Name="AppXLocation" DisplayName="Emplacement du package d'application" />
+  <StringProperty Name="FrameworkIdentity" DisplayName="FrameworkIdentity" />
+  <BoolProperty Name="CopyPayload" DisplayName="Copier la charge" />
+  <StringProperty Name="CopyPayloadToSubDirectory" DisplayName="Copier la charge dans le sous-répertoire" />
+  <BoolProperty Name="ExpandContent" DisplayName="Développer le contenu" />
+  <BoolProperty Name="ExpandReferenceAssemblies" DisplayName="Développer les assemblys de référence" />
+  <BoolProperty Name="CopyLocalExpandedReferenceAssemblies" DisplayName="Copier les assemblys de référence développés locaux" />
+</Rule>

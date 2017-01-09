@@ -3,13 +3,13 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.Shell.Flavor;
 using Microsoft.VisualStudio.Shell.Interop;
+using Newtonsoft.Json;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 {
@@ -27,47 +27,46 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             _fileSystem = fileSystem;
         }
 
-        public int UpgradeProject(string bstrFileName, uint fUpgradeFlag, string bstrCopyLocation, out string pbstrUpgradedFullyQualifiedFileName,
-            IVsUpgradeLogger pLogger, out int pUpgradeRequired, out Guid pguidNewProjectFactory)
+        public int UpgradeProject(string xprojLocation, uint upgradeFlags, string backupDirectory, out string migratedProjectFileLocation,
+            IVsUpgradeLogger logger, out int upgradeRequired, out Guid migratedProjectGuid)
         {
-            bool success;
-            var projectName = Path.GetFileNameWithoutExtension(bstrFileName);
-            var hr = UpgradeProject_CheckOnly(bstrFileName, pLogger, out pUpgradeRequired, out pguidNewProjectFactory, out uint dummy);
+            bool success = false;
+            var projectName = Path.GetFileNameWithoutExtension(xprojLocation);
+            var hr = UpgradeProject_CheckOnly(xprojLocation, logger, out upgradeRequired, out migratedProjectGuid, out uint dummy);
 
             // This implementation can only return S_OK. Throw if it returned something else.
             Verify.HResult(hr);
 
             // First, we back up the project. This function will take care of logging any backup failures.
-            if (!BackupProject(bstrCopyLocation, bstrFileName, projectName, pLogger))
+            if (!BackupProject(backupDirectory, xprojLocation, projectName, logger))
             {
-                pbstrUpgradedFullyQualifiedFileName = bstrFileName;
+                migratedProjectFileLocation = xprojLocation;
                 return VSConstants.VS_E_PROJECTMIGRATIONFAILED;
             }
 
-            // Next, we attempt to migrate. If migration failed, it will handle logging the result.
-            // TODO: This structure will likely want some refactoring once we have a Migration Report, tracked by:
-            // https://github.com/dotnet/roslyn-project-system/issues/507
-            var directory = Path.GetDirectoryName(bstrFileName);
-            var migrationResult = MigrateProject(directory, bstrFileName, projectName, pLogger);
+            var directory = Path.GetDirectoryName(xprojLocation);
+            var (logFile, processExitCode) = MigrateProject(directory, xprojLocation, projectName, logger);
 
-            if (!migrationResult)
+            if (!string.IsNullOrEmpty(logFile))
             {
-                // If migration failed, then we set the the new project file to point at the old project file.
-                success = false;
-                pbstrUpgradedFullyQualifiedFileName = bstrFileName;
+                (migratedProjectFileLocation, success) = LogReport(logFile, processExitCode, projectName, xprojLocation, logger);
             }
             else
             {
-                success = true;
-                pbstrUpgradedFullyQualifiedFileName = GetCsproj(directory, projectName, bstrFileName, pLogger);
+                migratedProjectFileLocation = null;
             }
 
-            if (string.IsNullOrEmpty(pbstrUpgradedFullyQualifiedFileName))
+            if (string.IsNullOrEmpty(migratedProjectFileLocation))
             {
                 // If we weren't able to find a new csproj, something went very wrong, and dotnet migrate is doing something that we don't expect.
-                Assumes.NotNullOrEmpty(pbstrUpgradedFullyQualifiedFileName);
-                pbstrUpgradedFullyQualifiedFileName = bstrFileName;
+                Assumes.NotNullOrEmpty(migratedProjectFileLocation);
+                migratedProjectFileLocation = xprojLocation;
                 success = false;
+            }
+
+            if (success)
+            {
+                CleanupXproj(directory, projectName);
             }
 
             return success ? VSConstants.S_OK : VSConstants.VS_E_PROJECTMIGRATIONFAILED;
@@ -77,11 +76,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         {
             var directory = Path.GetDirectoryName(xprojLocation);
 
-            // Back up the xproj and project.json to the backup location.
+            // Back up the xproj and project.json to the backup location. If it exists, also back up the .xproj.user file.
             var xprojName = Path.GetFileName(xprojLocation);
             var backupXprojPath = Path.Combine(backupLocation, xprojName);
             var projectJsonPath = Path.Combine(directory, "project.json");
             var backupProjectJsonPath = Path.Combine(backupLocation, "project.json");
+            var xprojUserPath = $"{xprojLocation}.user";
+            var backupXprojUserPath = Path.Combine(backupLocation, $"{xprojName}.user");
 
             // We don't need to check the xproj path. That's being given to us by VS and was specified in the solution.
             if (!_fileSystem.FileExists(projectJsonPath))
@@ -99,13 +100,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             _fileSystem.CopyFile(xprojLocation, backupXprojPath, true);
             _fileSystem.CopyFile(projectJsonPath, backupProjectJsonPath, true);
 
+            if (_fileSystem.FileExists(xprojUserPath))
+            {
+                pLogger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_INFORMATIONAL, projectName, xprojUserPath,
+                    string.Format(VSResources.MigrationBackupFile, xprojUserPath, backupXprojUserPath));
+                _fileSystem.CopyFile(xprojUserPath, backupXprojUserPath, true);
+            }
+
             return true;
         }
 
-        internal bool MigrateProject(string projectDirectory, string xprojLocation, string projectName, IVsUpgradeLogger pLogger)
+        internal (string logFile, int exitCode) MigrateProject(string projectDirectory, string xprojLocation, string projectName, IVsUpgradeLogger pLogger)
         {
+            var logFile = _fileSystem.GetTempDirectoryOrFileName();
+
             // We count on dotnet.exe being on the path
-            var pInfo = new ProcessStartInfo("dotnet.exe", $"migrate --skip-backup -s -x \"{xprojLocation}\" \"{projectDirectory}\"")
+            var pInfo = new ProcessStartInfo("dotnet.exe", GetDotnetArguments(xprojLocation, projectDirectory, logFile))
             {
                 UseShellExecute = false,
                 RedirectStandardError = true,
@@ -138,9 +148,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
             process.WaitForExit();
 
-            // TODO: we need to read the output from the migration report in addition to console output.
-            // We'll still want to read console output in case of a bug in the dotnet cli, and it errors with some exception
-            // https://github.com/dotnet/roslyn-project-system/issues/507
             var output = outputBuilder.ToString().Trim();
             var err = errBuilder.ToString().Trim();
 
@@ -154,56 +161,115 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
                 pLogger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_WARNING, projectName, xprojLocation, err);
             }
 
-            if (process.ExitCode != 0)
+            return (logFile, process.ExitCode);
+        }
+
+        internal (string projFile, bool success) LogReport(string logFile, int processExitCode,
+            string projectName, string xprojLocation, IVsUpgradeLogger pLogger)
+        {
+            (string, bool) LogAndReturnError()
             {
                 pLogger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_ERROR, projectName, xprojLocation,
-                    string.Format(VSResources.XprojMigrationFailed, projectName, projectDirectory, xprojLocation, process.ExitCode));
-                return false;
+                    string.Format(VSResources.XprojMigrationFailedCannotReadReport, logFile));
+                pLogger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_ERROR, projectName, xprojLocation,
+                    GetDotnetGeneralErrorString(projectName, xprojLocation, Path.GetDirectoryName(xprojLocation), logFile, processExitCode));
+                return (string.Empty, false);
             }
 
-            return true;
-        }
-
-        internal string GetCsproj(string projectDirectory, string projectName, string xprojLocation, IVsUpgradeLogger pLogger)
-        {
-            // TODO: We need to find the newly created csproj. This will only be necessary until dotnet migrate adds a Migration Report.
-            // https://github.com/dotnet/roslyn-project-system/issues/507
-            var files = _fileSystem.EnumerateFiles(projectDirectory, "*", SearchOption.TopDirectoryOnly);
-            var csproj = files.FirstOrDefault(file => file.EndsWith(".csproj")) ?? "";
-            if (string.IsNullOrEmpty(csproj))
+            if (!_fileSystem.FileExists(logFile))
             {
-                pLogger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_ERROR, projectName, xprojLocation, string.Format(VSResources.NoMigratedCSProjFound, projectDirectory));
+                return LogAndReturnError();
             }
 
-            return csproj;
+            var mainReport = JsonConvert.DeserializeObject<MigrationReport>(_fileSystem.ReadAllText(logFile));
+            if (mainReport == null)
+            {
+                return LogAndReturnError();
+            }
+
+            // We're calling migrate on a single project and have don't follow turned on. We shouldn't see any other migration reports.
+            Assumes.True(mainReport.ProjectMigrationReports.Count == 1);
+            var report = mainReport.ProjectMigrationReports[0];
+            if (report.Failed)
+            {
+                pLogger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_ERROR, projectName, xprojLocation,
+                    GetDotnetGeneralErrorString(projectName, xprojLocation, report.ProjectDirectory, logFile, processExitCode));
+            }
+
+            foreach (var error in report.Errors)
+            {
+                pLogger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_ERROR, projectName, xprojLocation, error.FormattedErrorMessage);
+            }
+
+            foreach (var warn in report.Warnings)
+            {
+                pLogger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_WARNING, projectName, xprojLocation, warn);
+            }
+
+            _fileSystem.RemoveFile(logFile);
+            return (report.OutputMSBuildProject, report.Succeeded);
         }
 
-        public int UpgradeProject_CheckOnly(string bstrFileName, IVsUpgradeLogger pLogger, out int pUpgradeRequired, out Guid pguidNewProjectFactory, out uint pUpgradeProjectCapabilityFlags)
+        internal void CleanupXproj(string projectLocation, string projectName)
         {
-            var isXproj = bstrFileName.EndsWith(".xproj");
+            // Clean up the .xproj, the project.json, the project.lock.json, and the xproj.user
+            _fileSystem.RemoveFile(Path.Combine(projectLocation, $"{projectName}.xproj"));
+            try
+            {
+                _fileSystem.RemoveFile(Path.Combine(projectLocation, $"{projectName}.xproj.user"));
+            }
+            catch (FileNotFoundException) { }
+            _fileSystem.RemoveFile(Path.Combine(projectLocation, "project.json"));
+            try
+            {
+                _fileSystem.RemoveFile(Path.Combine(projectLocation, "project.lock.json"));
+            }
+            catch (FileNotFoundException) { }
+        }
+
+        public int UpgradeProject_CheckOnly(string xprojLocation,
+            IVsUpgradeLogger logger,
+            out int upgradeRequired,
+            out Guid migratedProjectFactory,
+            out uint upgradeProjectCapabilityFlags)
+        {
+            var isXproj = xprojLocation.EndsWith(".xproj");
 
             // If the project is an xproj, then we need to one-way upgrade it. If it isn't, then there's nothing we can do with it.
-            pUpgradeRequired = isXproj ? (int)__VSPPROJECTUPGRADEVIAFACTORYREPAIRFLAGS.VSPUVF_PROJECT_ONEWAYUPGRADE :
+            upgradeRequired = isXproj ? (int)__VSPPROJECTUPGRADEVIAFACTORYREPAIRFLAGS.VSPUVF_PROJECT_ONEWAYUPGRADE :
                                          (int)__VSPPROJECTUPGRADEVIAFACTORYREPAIRFLAGS.VSPUVF_PROJECT_NOREPAIR;
 
             if (isXproj)
             {
-                pguidNewProjectFactory = new Guid($"{{{CSharpProjectSystemPackage.ProjectTypeGuid}}}");
-                pUpgradeProjectCapabilityFlags = (uint)(__VSPPROJECTUPGRADEVIAFACTORYFLAGS.PUVFF_BACKUPSUPPORTED | __VSPPROJECTUPGRADEVIAFACTORYFLAGS.PUVFF_COPYBACKUP);
+                migratedProjectFactory = new Guid($"{{{CSharpProjectSystemPackage.ProjectTypeGuid}}}");
+                upgradeProjectCapabilityFlags = (uint)(__VSPPROJECTUPGRADEVIAFACTORYFLAGS.PUVFF_BACKUPSUPPORTED | __VSPPROJECTUPGRADEVIAFACTORYFLAGS.PUVFF_COPYBACKUP);
             }
             else
             {
-                pguidNewProjectFactory = new Guid(CSharpProjectSystemPackage.XprojTypeGuid);
-                pUpgradeProjectCapabilityFlags = 0;
+                migratedProjectFactory = new Guid(CSharpProjectSystemPackage.XprojTypeGuid);
+                upgradeProjectCapabilityFlags = 0;
             }
 
             return VSConstants.S_OK;
         }
 
-        public void UpgradeProject_CheckOnly(string pszFileName, IVsUpgradeLogger pLogger, out uint pUpgradeRequired, out Guid pguidNewProjectFactory, out uint pUpgradeProjectCapabilityFlags)
+        private string GetDotnetArguments(string xprojLocation, string projectDirectory, string logFile) =>
+            $"migrate --skip-backup -s -x \"{xprojLocation}\" \"{projectDirectory}\" -r \"{logFile}\" --format-report-file-json";
+
+        private string GetDotnetGeneralErrorString(string projectName, string xprojLocation, string projectDirectory, string logFile, int exitCode) =>
+            string.Format(VSResources.XprojMigrationGeneralFailure,
+                projectName,
+                $"dotnet {GetDotnetArguments(xprojLocation, projectDirectory, logFile)}",
+                exitCode);
+
+        public void UpgradeProject_CheckOnly(string xprojLocation,
+            IVsUpgradeLogger logger,
+            out uint upgradeRequired,
+            out Guid migratedProjectFactory,
+            out uint upgradeProjectCapabilityFlags)
         {
-            UpgradeProject_CheckOnly(pszFileName, pLogger, out int upgradeRequired, out pguidNewProjectFactory, out pUpgradeProjectCapabilityFlags);
-            pUpgradeRequired = unchecked((uint)upgradeRequired);
+            UpgradeProject_CheckOnly(xprojLocation, logger, out int iUpgradeRequired, out migratedProjectFactory, out upgradeProjectCapabilityFlags);
+            upgradeRequired = unchecked((uint)iUpgradeRequired);
         }
 
         protected override object PreCreateForOuter(IntPtr outerProjectIUnknown)

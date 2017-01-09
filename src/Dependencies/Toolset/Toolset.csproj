@@ -4,7 +4,7 @@
   <PropertyGroup>
     <ProjectGuid>{4D52C1E5-6F4B-4CDE-8149-AC374F018245}</ProjectGuid>
     <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <ProjectSystemLayer>Dependency</ProjectSystemLayer>
+    <ProjectSystemLayer>Toolset</ProjectSystemLayer>
     <TargetFramework>netstandard1.0</TargetFramework>
     <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wpa81+wp8</PackageTargetFallback>
   </PropertyGroup>

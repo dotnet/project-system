@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright, Microsoft Corporation, All rights reserved.-->
+<Rule Name="VisualBasic" DisplayName="Propiedades del archivo" PageTemplate="generic" Description="Propiedades del archivo" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="false" />
+  </Rule.DataSource>
+  <Rule.Categories>
+    <Category Name="Advanced" DisplayName="Avanzadas" />
+    <Category Name="Misc" DisplayName="Varios" />
+  </Rule.Categories>
+  <DynamicEnumProperty Name="{}{ItemType}" DisplayName="Acción de compilación" Category="Advanced" Description="Cómo se relaciona el archivo con los procesos de compilación e implementación." EnumProvider="ItemTypes" />
+  <EnumProperty Name="CopyToOutputDirectory" DisplayName="Copiar en el directorio de salida" Category="Advanced" Description="Especifica que el archivo de código fuente se copiará en el directorio de salida.">
+    <EnumValue Name="Never" DisplayName="No copiar" />
+    <EnumValue Name="Always" DisplayName="Copiar siempre" />
+    <EnumValue Name="PreserveNewest" DisplayName="Copiar si es posterior" />
+  </EnumProperty>
+  <StringProperty Name="Identity" Visible="false" ReadOnly="true" Category="Misc" Description="El elemento especificado en el atributo Include.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="Identity" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FullPath" DisplayName="Ruta de acceso completa" ReadOnly="true" Category="Misc" Description="Ubicación del archivo.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FullPath" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FileNameAndExtension" DisplayName="Nombre de archivo" ReadOnly="true" Category="Misc" Description="Nombre del archivo o carpeta.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FileNameAndExtension" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <BoolProperty Name="Visible" Visible="false" />
+  <StringProperty Name="DependentUpon" Visible="false">
+    <StringProperty.Metadata>
+      <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />
+    </StringProperty.Metadata>
+  </StringProperty>
+  <StringProperty Name="Link" Visible="false">
+    <StringProperty.DataSource>
+      <DataSource PersistenceStyle="Attribute" />
+    </StringProperty.DataSource>
+    <StringProperty.Metadata>
+      <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />
+    </StringProperty.Metadata>
+  </StringProperty>
+  <StringProperty Name="SubType" Visible="false" />
+  <StringProperty Name="LastGenOutput" Visible="false" Description="Nombre del último archivo generado como resultado de SFG." />
+  <BoolProperty Name="DesignTime" Visible="false" Description="Valor que indica si el archivo tiene un diseñador." />
+  <BoolProperty Name="AutoGen" Visible="false" Description="Valor que indica si este es un archivo generado." />
+</Rule>

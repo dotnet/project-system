@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright, Microsoft Corporation, All rights reserved.-->
+<Rule Name="VisualBasic" DisplayName="Proprietà file" PageTemplate="generic" Description="Proprietà file" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="false" />
+  </Rule.DataSource>
+  <Rule.Categories>
+    <Category Name="Advanced" DisplayName="Avanzate" />
+    <Category Name="Misc" DisplayName="Varie" />
+  </Rule.Categories>
+  <DynamicEnumProperty Name="{}{ItemType}" DisplayName="Azione di compilazione" Category="Advanced" Description="Descrizione della relazione tra il file e i processi di compilazione e distribuzione." EnumProvider="ItemTypes" />
+  <EnumProperty Name="CopyToOutputDirectory" DisplayName="Copia nella directory di output" Category="Advanced" Description="Specifica se il file di origine verrà copiato nella directory di output.">
+    <EnumValue Name="Never" DisplayName="Non copiare" />
+    <EnumValue Name="Always" DisplayName="Copia sempre" />
+    <EnumValue Name="PreserveNewest" DisplayName="Copia se più recente" />
+  </EnumProperty>
+  <StringProperty Name="Identity" Visible="false" ReadOnly="true" Category="Misc" Description="L'elemento specificato nell'attributo Include.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="Identity" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FullPath" DisplayName="Percorso completo" ReadOnly="true" Category="Misc" Description="Percorso del file.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FullPath" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FileNameAndExtension" DisplayName="Nome file" ReadOnly="true" Category="Misc" Description="Nome del file o della cartella.">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FileNameAndExtension" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="URL" ReadOnly="true" Visible="false">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FullPath" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <EnumProperty Name="SubType" Visible="false">
+    <EnumValue Name="Designer" />
+    <EnumValue Name="Component" />
+    <EnumValue Name="Control" />
+    <EnumValue Name="Form" />
+    <EnumValue Name="Code" />
+  </EnumProperty>
+  <StringProperty Name="Extension" Visible="False" ReadOnly="true">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="Extension" />
+    </StringProperty.DataSource>
+  </StringProperty>
+</Rule>

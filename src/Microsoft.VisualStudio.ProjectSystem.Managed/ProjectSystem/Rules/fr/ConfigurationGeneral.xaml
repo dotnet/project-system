@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="ConfigurationGeneral" DisplayName="Général" PageTemplate="generic" Description="Général" OverrideMode="Replace" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.Categories>
+    <Category Name="General" DisplayName="Général" Description="Général" />
+  </Rule.Categories>
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" Label="Configuration" />
+  </Rule.DataSource>
+  <StringProperty Name="ApplicationIcon" DisplayName="Icône d'application" />
+  <StringListProperty Name="ProjectTypeGuids" Visible="False" />
+  <StringProperty Name="ProjectGuid" Visible="False">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ImplicitProjectFile" Label="Globals" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="TargetFrameworkIdentifier" DisplayName="Identificateur du Framework cible">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkIdentifier" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="TargetFrameworks" DisplayName="Frameworks cibles">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworks" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="TargetFramework" DisplayName="Framework cible">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="TargetFramework" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="TargetFrameworkProfile" DisplayName="Profil du framework cible">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkProfile" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="TargetFrameworkVersion" DisplayName="Version du framework cible">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkVersion" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="TargetFrameworkMoniker" DisplayName="Moniker du Framework cible">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="TargetPath" />
+  <StringProperty Name="DocumentationFile" DisplayName="Fichier de commentaires de document XML" />
+  <StringProperty Name="AssemblyName" />
+  <StringProperty Name="Name" />
+  <StringProperty Name="RootNamespace" DisplayName="Espace de noms racine">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" Label="Configuration" HasConfigurationCondition="false" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="OutputName" />
+  <StringProperty Name="OutputPath" />
+  <StringProperty Name="BaseIntermediateOutputPath" />
+  <EnumProperty Name="OutputType">
+    <EnumValue Name="Library" DisplayName="Bibliothèque de classes" />
+    <EnumValue Name="exe" DisplayName="Application console" />
+    <EnumValue Name="winexe" DisplayName="Application Windows" />
+    <EnumValue Name="AppContainerExe" DisplayName="Application du Windows Store" />
+    <EnumValue Name="WinMDObj" DisplayName="WinMD" />
+  </EnumProperty>
+  <StringListProperty Name="AvailablePlatforms" Separator="," />
+  <BoolProperty Name="Optimize" Description="Le compilateur doit-il optimiser la sortie ?" />
+  <StringProperty Name="MSBuildProjectDirectory" Visible="false" />
+  <StringProperty Name="DefaultPlatform" Visible="false" />
+  <StringProperty Name="PackageAction" Visible="false" Description="Cible MSBuild à utiliser lors de la création du package d'un projet." />
+  <StringProperty Name="DefaultContentType" Visible="false" Description="Nom du type de contenu par défaut à utiliser lors de l'ajout de fichiers." />
+  <StringProperty Name="VCInstallDir" Visible="false" />
+  <StringProperty Name="VSInstallDir" Visible="false" />
+  <StringProperty Name="Platform" Visible="false" />
+  <StringProperty Name="Configuration" Visible="false" />
+  <StringProperty Name="DebuggerSymbolsPath" Visible="false" />
+  <StringProperty Name="IntDir" Visible="false" />
+  <StringProperty Name="TargetPlatformWinMDLocation" Visible="false" />
+  <StringProperty Name="SDKReferenceDirectoryRoot" Visible="false" />
+  <StringProperty Name="SDKReferenceRegistryRoot" Visible="false" />
+  <StringProperty Name="SDKExtensionDirectoryRoot" Visible="false" />
+  <StringProperty Name="SDKIdentifier" Visible="false" />
+  <StringProperty Name="SDKVersion" Visible="false" />
+  <StringProperty Name="TargetPlatformIdentifier" Visible="false" />
+  <StringProperty Name="TargetPlatformVersion" Visible="false" />
+  <BoolProperty Name="WindowsAppContainer" Visible="false" />
+  <BoolProperty Name="WinMDAssembly" Visible="false" />
+  <EnumProperty Name="TargetRuntime" Visible="false">
+    <EnumValue Name="Managed" />
+    <EnumValue Name="Native" />
+    <EnumValue Name="AppHost" DisplayName="Application Windows" />
+  </EnumProperty>
+  <StringProperty Name="AssemblySearchPaths" Visible="false" />
+  <StringProperty Name="WinRTReferenceTabs" Visible="false" />
+  <StringProperty Name="AssemblyReferenceTabs" Visible="false" />
+  <StringProperty Name="MinimumVisualStudioVersion" Visible="false" />
+  <BoolProperty Name="SuppressOutOfDateMessageOnBuild" Visible="false" Description="True pour simplement générer les projets obsolètes sans jamais demander à l'utilisateur de confirmer." />
+  <BoolProperty Name="ShowAllFiles" Visible="False">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="UserFile" HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <BoolProperty Name="AutoRefresh" Visible="False">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="UserFile" HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <StringProperty Name="AddItemTemplatesGuid" Visible="False" />
+  <StringProperty Name="ProjectUISubcaption" Visible="False" />
+  <StringProperty Name="SharedItemContextSubProjectGuid" Visible="False">
+    <StringProperty.DataSource>
+      <DataSource Persistence="UserFile" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="OneAppCapabilities" Visible="False" />
+  <StringProperty Name="SharedProjectAppliesTo" Visible="False" Description="Expression de correspondance de fonctionnalité qui teste au minimum la langue du projet partagé. Permet de filtrer les choix relatifs à l'ajout de références du projet partagé." />
+  <BoolProperty Name="AlwaysUseNumericalSuffixInItemNames" Visible="False" Description="Indique si les noms des éléments venant d'être ajoutés doivent toujours avoir un nombre comme suffixe." />
+  <StringProperty Name="LanguageServiceName" ReadOnly="True" Visible="False" Description="Représente le nom de langage passé à Roslyn" />
+  <StringProperty Name="TemplateLanguage" ReadOnly="True" Visible="False" Description="Représente la langue persistante dans les éléments et les modèles de projet" />
+</Rule>

@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="ResolvedCOMReference" DisplayName="解析的 COM 引用" PageTemplate="generic" Description="解析的引用" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ResolvedReference" ItemType="COMReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="ResolveComReferencesDesignTime" />
+  </Rule.DataSource>
+  <StringProperty Name="Guid" DisplayName="CLSID" Description="COM 服务器的 GUID。" Visible="False" />
+  <IntProperty Name="VersionMajor" Visible="False" />
+  <IntProperty Name="VersionMinor" Visible="False" />
+  <StringProperty Name="WrapperTool" Visible="False" />
+  <StringListProperty Name="Aliases" DisplayName="别名" Description="此引用的别名的逗号分隔列表。" Separator=",">
+    <StringListProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="COMReference" HasConfigurationCondition="False" />
+    </StringListProperty.DataSource>
+  </StringListProperty>
+  <BoolProperty Name="CopyLocal" DisplayName="复制本地" Description="指示是否将引用复制到输出目录。">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="COMReference" HasConfigurationCondition="False" PersistedName="Private" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <StringProperty Name="Culture" ReadOnly="True" Visible="False" DisplayName="区域性" Description="程序集元数据中“区域性”字段的值。" />
+  <StringProperty Name="Description" ReadOnly="True" Visible="False" DisplayName="说明" Description="程序集元数据中“标题”字段的值。" />
+  <BoolProperty Name="EmbedInteropTypes" DisplayName="嵌入互操作类型" Description="指示是否将此程序集中定义的类型嵌入目标程序集。">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="COMReference" HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <EnumProperty Name="FileType" ReadOnly="True" Visible="False" DisplayName="文件类型" Description="引用的文件类型。">
+    <EnumValue Name="Assembly" DisplayName=".NET 程序集" />
+    <EnumValue Name="ActiveX" DisplayName="COM 类型库" />
+    <EnumValue Name="Native Assembly" DisplayName="本机程序集" />
+  </EnumProperty>
+  <StringProperty Name="Identity" ReadOnly="True" DisplayName="标识" Description="所引用程序集的安全标识(参见 System.Reflection.Assembly.Evidence 或 System.Security.Policy.Evidence)。">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="{}{Identity}" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="路径" Description="所引用的文件的位置。">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="Identity" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="RuntimeVersion" ReadOnly="True" Visible="False" DisplayName="运行时版本" Description="编译该程序集所使用的 .NET 运行时的版本。"></StringProperty>
+  <BoolProperty Name="SpecificVersion" DisplayName="特定版本" Visible="False" Description="指示是否可以解析此程序集，无论程序集解析的多定向规则是什么。" />
+  <BoolProperty Name="StrongName" ReadOnly="True" Visible="False" DisplayName="强名称" Description="True 表示已用密钥对对该引用进行了签名。"></BoolProperty>
+  <StringProperty Name="Version" ReadOnly="True" DisplayName="版本" Description="引用的版本。"></StringProperty>
+  <StringProperty Name="RequiredTargetFramework" DisplayName="需要目标框架" Visible="False" />
+  <StringProperty Name="HintPath" Visible="false" />
+  <StringProperty Name="SDKIdentity" Visible="false" />
+  <!-- This is the metadata we store on the reference item when we add it. -->
+  <BoolProperty Name="IsWinMDFile" Visible="false" Description="指示项目系统是否已确定此为 WinMD (而非程序集)" />
+  <!-- These are metadata added to the resolved item by MSBuild that we don't show to the user but use internally. -->
+  <BoolProperty Name="WinMDFile" Visible="false" ReadOnly="True" Description="指示生成系统是否已确定此为 WinMD (而非程序集)" />
+  <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="经解析得到此解析的引用项的原始引用项的计算项名称。" />
+  <StringProperty Name="FusionName" Visible="False" ReadOnly="True" />
+  <StringProperty Name="Name" Visible="false" ReadOnly="True" />
+</Rule>

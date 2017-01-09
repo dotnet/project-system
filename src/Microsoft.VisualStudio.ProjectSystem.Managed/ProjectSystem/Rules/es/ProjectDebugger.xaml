@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="ProjectDebugger" DisplayName="Inicio" PageTemplate="Debugger" Description="Opciones de depuración web" xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" />
+  </Rule.DataSource>
+  <!-- the command which appears in the debugger dropdown -->
+  <Rule.Metadata>
+    <sys:Guid x:Key="DebugTargetTypeCommandGuid">568ABDF7-D522-474D-9EED-34B5E5095BA5</sys:Guid>
+    <sys:UInt32 x:Key="DebugTargetTypeCommandId">0x100</sys:UInt32>
+    <sys:String x:Key="DebugTargetDropdownEnum">ActiveDebugProfile</sys:String>
+  </Rule.Metadata>
+  <DynamicEnumProperty Name="ActiveDebugProfile" DisplayName="Destino de depuración" EnumProvider="DebugProfileProvider" Description="Especifica el perfil que debe usarse para la depuración">
+    <DynamicEnumProperty.DataSource>
+      <DataSource Persistence="UserFile" HasConfigurationCondition="False" />
+    </DynamicEnumProperty.DataSource>
+  </DynamicEnumProperty>
+  <StringProperty Name="ActiveDebugFramework" ReadOnly="False" Visible="False">
+    <StringProperty.DataSource>
+      <DataSource Persistence="UserFile" HasConfigurationCondition="false" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="ActiveDebugRuntime" ReadOnly="False" Visible="False">
+    <StringProperty.DataSource>
+      <DataSource Persistence="UserFile" HasConfigurationCondition="false" />
+    </StringProperty.DataSource>
+  </StringProperty>
+</Rule>

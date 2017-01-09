@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="ResolvedAssemblyReference" DisplayName="已解析的組件參考" PageTemplate="generic" Description="已解析的參考" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ResolvedReference" ItemType="Reference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="ResolveAssemblyReferencesDesignTime" />
+  </Rule.DataSource>
+  <StringListProperty Name="Aliases" DisplayName="別名" Description="這個參考的逗號分隔別名清單。" Separator=",">
+    <StringListProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" />
+    </StringListProperty.DataSource>
+  </StringListProperty>
+  <BoolProperty Name="CopyLocal" DisplayName="複製到本機" Description="表示是否將參考複製到輸出目錄。">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" PersistedName="Private" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <StringProperty Name="Culture" ReadOnly="True" Visible="False" DisplayName="文化特性" Description="來自組件中繼資料 [文化特性] 欄位的值。" />
+  <StringProperty Name="Description" ReadOnly="True" Visible="False" DisplayName="說明" Description="來自組件中繼資料的 [標題] 欄位的值。" />
+  <BoolProperty Name="EmbedInteropTypes" DisplayName="內嵌 Interop 類型" Description="指出此組件中所定義的類型是否將內嵌在目標組件中。">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <EnumProperty Name="FileType" ReadOnly="True" Visible="False" DisplayName="檔案類型" Description="參考的檔案類型。">
+    <EnumValue Name="Assembly" DisplayName=".NET 組件" />
+    <EnumValue Name="ActiveX" DisplayName="COM 類型程式庫" />
+    <EnumValue Name="Native Assembly" DisplayName="原生組譯碼" />
+  </EnumProperty>
+  <StringProperty Name="Identity" ReadOnly="True" DisplayName="識別" Description="參考組件的安全性識別 (請參閱 System.Reflection.Assembly.Evidence 或 System.Security.Policy.Evidence)。">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="{}{Identity}" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="路徑" Description="正被參考之檔案的位置。">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="Identity" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="RuntimeVersion" ReadOnly="True" Visible="False" DisplayName="執行階段版本" Description="編譯此組件時所使用的 .NET 執行階段版本。"></StringProperty>
+  <BoolProperty Name="SpecificVersion" DisplayName="特定版本" Description="指出這個組件是否可以解析 (不考慮組件解析的多目標規則)。">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="AssemblyReference" ItemType="Reference" HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <BoolProperty Name="StrongName" ReadOnly="True" Visible="False" DisplayName="強式名稱" Description="True 表示已經使用金鑰組簽署此參考。"></BoolProperty>
+  <StringProperty Name="Version" ReadOnly="True" DisplayName="版本" Description="參考的版本。"></StringProperty>
+  <StringProperty Name="RequiredTargetFramework" DisplayName="需要的目標 Framework" Visible="False" />
+  <StringProperty Name="HintPath" Visible="false" />
+  <StringProperty Name="SDKIdentity" Visible="false" />
+  <!-- This is the metadata we store on the reference item when we add it. -->
+  <BoolProperty Name="IsWinMDFile" Visible="false" Description="表示專案系統是否確認這是 WinMD (而非組件)" />
+  <!-- These are metadata added to the resolved item by MSBuild that we don't show to the user but use internally. -->
+  <BoolProperty Name="WinMDFile" Visible="false" ReadOnly="True" Description="表示建置系統是否確認這是 WinMD (而非組件)" />
+  <StringProperty Name="Name" Visible="false" ReadOnly="True" />
+  <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="因解析而產生這個已解析參考項目的原始參考項目的評估項目名稱。" />
+  <StringProperty Name="ReferenceFromSDK" Visible="False" ReadOnly="True" Description="使用展開 SDK 目標時，這個參考的來源 SDK。" />
+  <StringProperty Name="FusionName" Visible="False" ReadOnly="True" Description="已解析之組件的完整融合名稱。" />
+  <StringProperty Name="ResolvedFrom" Visible="False" ReadOnly="True" Description="{}儲存機制為用來解析這一項的參考所保留的內容 (如果它在 GAC 中，即是 &quot;{GAC}&quot;)。" />
+  <StringProperty Name="FrameworkFile" Visible="False" ReadOnly="True" Description="此檔案是否為架構檔案;亦即在目標 Framework 目錄中或可轉散發清單中找到的檔案。" />
+</Rule>

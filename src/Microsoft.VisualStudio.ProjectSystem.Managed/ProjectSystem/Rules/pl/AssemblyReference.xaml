@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="AssemblyReference" DisplayName="Odwołanie do zestawu" PageTemplate="generic" Description="Właściwości odwołania do zestawu" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" />
+  </Rule.DataSource>
+  <StringListProperty Name="Aliases" DisplayName="Aliasy" Description="Rozdzielona przecinkami lista aliasów do tego odwołania." Separator="," />
+  <BoolProperty Name="CopyLocal" DisplayName="Kopia lokalna" Description="Wskazuje, czy odwołanie będzie kopiowane do katalogu wyjściowego.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" PersistedName="Private" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <BoolProperty Name="EmbedInteropTypes" DisplayName="Osadź typy międzyoperacyjne" Description="Wskazuje, czy typy zdefiniowane w tym zestawie będą osadzone w zestawie docelowym." />
+  <BoolProperty Name="SpecificVersion" DisplayName="Określona wersja" Description="Wskazuje, czy ten zestaw może zostać rozpoznany bez uwzględnienia reguł wielowersyjności kodu dla rozpoznawania zestawu.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="AssemblyReference" ItemType="Reference" HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <StringProperty Name="RequiredTargetFramework" DisplayName="Wymagana platforma docelowa" Visible="False" />
+  <StringProperty Name="HintPath" Visible="false" />
+  <StringProperty Name="SDKName" Visible="false" />
+  <BoolProperty Name="IsWinMDFile" Visible="false" />
+  <StringProperty Name="ImageRuntime" DisplayName="Wersja wykonawcza" Description="Wersja środowiska uruchomieniowego CLR będąca celem tego zestawu." Visible="False" ReadOnly="True" />
+</Rule>

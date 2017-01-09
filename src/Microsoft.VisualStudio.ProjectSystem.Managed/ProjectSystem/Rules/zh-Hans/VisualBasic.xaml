@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright, Microsoft Corporation, All rights reserved.-->
+<Rule Name="VisualBasic" DisplayName="文件属性" PageTemplate="generic" Description="文件属性" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="false" />
+  </Rule.DataSource>
+  <Rule.Categories>
+    <Category Name="Advanced" DisplayName="高级" />
+    <Category Name="Misc" DisplayName="杂项" />
+  </Rule.Categories>
+  <DynamicEnumProperty Name="{}{ItemType}" DisplayName="生成操作" Category="Advanced" Description="该文件与生成和部署过程的关系。" EnumProvider="ItemTypes" />
+  <EnumProperty Name="CopyToOutputDirectory" DisplayName="复制到输出目录" Category="Advanced" Description="指定将源文件复制到输出目录。">
+    <EnumValue Name="Never" DisplayName="不复制" />
+    <EnumValue Name="Always" DisplayName="始终复制" />
+    <EnumValue Name="PreserveNewest" DisplayName="如果较新则复制" />
+  </EnumProperty>
+  <StringProperty Name="Identity" Visible="false" ReadOnly="true" Category="Misc" Description="Include 特性中指定的项。">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="Identity" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FullPath" DisplayName="完整路径" ReadOnly="true" Category="Misc" Description="文件位置。">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FullPath" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FileNameAndExtension" DisplayName="文件名" ReadOnly="true" Category="Misc" Description="文件或文件夹的名称。">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FileNameAndExtension" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <BoolProperty Name="Visible" Visible="false" />
+  <StringProperty Name="DependentUpon" Visible="false">
+    <StringProperty.Metadata>
+      <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />
+    </StringProperty.Metadata>
+  </StringProperty>
+  <StringProperty Name="Link" Visible="false">
+    <StringProperty.DataSource>
+      <DataSource PersistenceStyle="Attribute" />
+    </StringProperty.DataSource>
+    <StringProperty.Metadata>
+      <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />
+    </StringProperty.Metadata>
+  </StringProperty>
+  <StringProperty Name="SubType" Visible="false" />
+  <StringProperty Name="LastGenOutput" Visible="false" Description="因 SFG 而生成的最后一个文件的文件名。" />
+  <BoolProperty Name="DesignTime" Visible="false" Description="该值指示此文件是否具有设计器。" />
+  <BoolProperty Name="AutoGen" Visible="false" Description="该值指示此文件是否为生成的文件。" />
+</Rule>

@@ -37,10 +37,19 @@
     <Compile Include="Input\VisualStudioStandard2kCommandId.cs" />
     <Compile Include="Input\VisualStudioStandard97CommandId.cs" />
     <Compile Include="Packaging\DplOptOutRegistrationAttribute.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\MSBuildXmlAccessor.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\ProjectFileEditorPresenter.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\IProjectFileEditorPresenter.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\ITextBufferManager.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\Listeners\FrameOpenCloseListener.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\Listeners\IFrameOpenCloseListener.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\Listeners\IProjectFileModelWatcher.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\Listeners\ITextBufferStateListener.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\Listeners\ProjectFileModelWatcher.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\Listeners\TempFileBufferStateListener.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\TempFileTextBufferManager.cs" />
     <Compile Include="ProjectSystem\VS\EditAndContinue\EditAndContinueProvider.cs" />
-    <Compile Include="ProjectSystem\VS\Editor\EditProjectFileVsFrameEvents.cs" />
-    <Compile Include="ProjectSystem\VS\Editor\IMsBuildModelWatcher.cs" />
-    <Compile Include="ProjectSystem\VS\Editor\MsBuildModelWatcher.cs" />
+    <Compile Include="ProjectSystem\VS\ExportProjectNodeComServiceAttribute.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\GenerateNuGetPackageTopLevelBuildMenuCommand.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\GenerateNuGetPackageProjectContextMenuCommand.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\AbstractGenerateNuGetPackageCommand.cs" />
@@ -85,9 +94,11 @@
     <Compile Include="ProjectSystem\VS\PropertyPages\DebugPageViewModel.cs" />
     <Compile Include="ProjectSystem\VS\PropertyPages\DebugPropertyPage.cs" />
     <Compile Include="ProjectSystem\VS\PropertyPages\EnvironmentGridTemplateColumn.cs" />
+    <Compile Include="ProjectSystem\VS\PropertyPages\ProjectLaunchSettingsUIProvider.cs" />
     <Compile Include="ProjectSystem\VS\PropertyPages\GetProfileNameDialog.xaml.cs">
       <DependentUpon>GetProfileNameDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ProjectSystem\VS\PropertyPages\ExecutableLaunchSettingsUIProvider.cs" />
     <Compile Include="ProjectSystem\VS\PropertyPages\IPageMetadata.cs" />
     <Compile Include="ProjectSystem\VS\PropertyPages\PropertyPage.cs">
       <SubType>UserControl</SubType>
@@ -154,6 +165,7 @@
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\PackageAnalyzerAssemblyDependencyNode.cs" />
     <Compile Include="ProjectSystem\VS\UI\DialogServices.cs" />
     <Compile Include="ProjectSystem\VS\UI\IDialogServices.cs" />
+    <Compile Include="ProjectSystem\VS\UI\IVsShellUtilitiesHelper.cs" />
     <Compile Include="ProjectSystem\VS\UI\MultiChoiceMsgBox.Xaml.cs">
       <DependentUpon>MultiChoiceMsgBox.xaml</DependentUpon>
     </Compile>
@@ -197,13 +209,14 @@
     <Compile Include="ProjectSystem\VS\Utilities\DelegateCommand.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\EnumMatchToBooleanConverter.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\FocusAttacher.cs" />
-    <Compile Include="ProjectSystem\VS\Utilities\IMsBuildAccessor.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\IProjectXmlAccessor.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\NameValuePair.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\ObservableList.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\ObservableListExtensions.cs" />
+    <Compile Include="ProjectSystem\VS\Utilities\ManagedPathHelper.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\UnitTestHelper.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\UIThreadHelper.cs" />
-    <Compile Include="ProjectSystem\VS\Utilities\VsShellUtilitiesHelper.cs" />
+    <Compile Include="ProjectSystem\VS\UI\VsShellUtilitiesHelper.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\WpfHelper.cs" />
     <Compile Include="ProjectSystem\VS\NuGet\ReferenceItem.cs" />
     <Compile Include="ProjectSystem\VS\NuGet\ReferenceItems.cs" />
@@ -237,13 +250,21 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ProjectSystem\VS\PropertyPages\PropertyPageResources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>PropertyPageResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProjectSystem\VS\PropertyPages\PropertyPageResources.*.resx">
+      <DependentUpon>PropertyPageResources.resx</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="VSResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>VSResources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <MergeWithCTO>true</MergeWithCTO>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VSResources.*.resx">
+      <DependentUpon>VSResources.resx</DependentUpon>
       <MergeWithCTO>true</MergeWithCTO>
     </EmbeddedResource>
   </ItemGroup>
@@ -280,6 +301,10 @@
     <VSCTCompile Include="Menus.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
       <SubType>Designer</SubType>
+    </VSCTCompile>
+    <VSCTCompile Include="Menus.*.vsct">
+      <ResourceName>Menus.ctmenu</ResourceName>
+      <DependentUpon>Menus.vsct</DependentUpon>
     </VSCTCompile>
   </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />

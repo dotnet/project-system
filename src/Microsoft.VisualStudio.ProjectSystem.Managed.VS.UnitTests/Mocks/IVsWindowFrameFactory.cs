@@ -25,5 +25,12 @@ namespace Microsoft.VisualStudio.Shell.Interop
             mock.Setup(w => w.SetProperty(It.IsAny<int>(), It.IsAny<object>())).Returns(setPropertyAction);
             return mock.Object;
         }
+
+        public static IVsWindowFrame ImplementCloseFrame(Func<uint, int> callback)
+        {
+            var mock = new Mock<IVsWindowFrame>();
+            mock.Setup(w => w.CloseFrame(It.IsAny<uint>())).Returns(callback);
+            return mock.Object;
+        }
     }
 }

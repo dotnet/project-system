@@ -48,11 +48,6 @@
         <target state="translated">Vložený prostředek</target>
         <note />
       </trans-unit>
-      <trans-unit id="ItemType|AdditionalFiles|DisplayName">
-        <source>AdditionalFiles</source>
-        <target state="translated">Další soubory</target>
-        <note />
-      </trans-unit>
       <trans-unit id="ItemType|None|DisplayName">
         <source>None</source>
         <target state="translated">Žádné</target>

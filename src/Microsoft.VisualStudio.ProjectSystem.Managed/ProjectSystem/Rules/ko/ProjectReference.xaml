@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="ProjectReference" DisplayName="프로젝트 참조" PageTemplate="generic" Description="프로젝트 참조 속성" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" />
+  </Rule.DataSource>
+  <BoolProperty Name="ReferenceOutputAssembly" DisplayName="참조 출력 어셈블리" Description="컴파일러가 대상 프로젝트의 기본 출력 어셈블리에 참조를 포함해야 하는지 여부를 나타내는 값입니다." />
+  <BoolProperty Name="CopyLocalSatelliteAssemblies" DisplayName="로컬 위성 어셈블리 복사" Description="참조 대상의 위성 어셈블리를 이 프로젝트의 출력 디렉터리에 복사해야 하는지 여부를 나타냅니다." />
+  <BoolProperty Name="LinkLibraryDependencies" Visible="False" />
+  <BoolProperty Name="UseLibraryDependencyInputs" Visible="False" />
+  <StringProperty Name="Project" Visible="False" Description="솔루션이 개별 프로젝트 참조 대상을 추적할 때 사용하는 GUID" />
+  <StringProperty Name="ReferencedProjectIdentifier" Visible="False" Description="솔루션이 개별 프로젝트 참조 대상을 추적할 때 사용하는 GUID를 저장하는 예전의(VS2010 베타) 방법" />
+  <BoolProperty Name="CopyLocal" DisplayName="로컬 복사" Description="참조를 출력 디렉터리로 복사할지 여부를 나타냅니다.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" PersistedName="Private" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="IncludeAssets" Description="이 참조에서 포함할 자산입니다." />
+  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="ExcludeAssets" Description="이 참조에서 제외할 자산입니다." />
+  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="PrivateAssets" Description="이 참조에서 private인 자산입니다." />
+</Rule>

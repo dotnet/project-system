@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright, Microsoft Corporation, All rights reserved.-->
+<Rule Name="ConfigurationGeneralBrowseObject" DisplayName="Generale" PageTemplate="generic" Description="Generale" OverrideMode="Replace" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.Categories>
+    <Category Name="General" DisplayName="Generale" Description="Generale" />
+  </Rule.Categories>
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" />
+  </Rule.DataSource>
+  <StringProperty Name="ApplicationIcon" DisplayName="Icona dell'applicazione" Visible="True" />
+  <StringProperty Name="TargetFrameworkMoniker" DisplayName="Moniker framework di destinazione" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="AssemblyName" DisplayName="Nome dell'assembly" Visible="True" />
+  <StringProperty Name="Name" Visible="True" />
+  <StringProperty Name="RootNamespace" DisplayName="Spazio dei nomi radice" Visible="True" />
+  <StringProperty Name="DefaultNamespace" DisplayName="Spazio dei nomi predefinito" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="RootNamespace" Persistence="ProjectFile" HasConfigurationCondition="false" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="TargetFrameworks" DisplayName="Framework di destinazione" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworks" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <IntProperty Name="TargetFramework" ReadOnly="True" Visible="True">
+    <IntProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFramework" />
+    </IntProperty.DataSource>
+  </IntProperty>
+  <StringProperty Name="OutputName" Visible="True" />
+  <DynamicEnumProperty Name="OutputType" DisplayName="Tipo di output" EnumProvider="OutputTypeEnumProvider" Visible="True" />
+  <EnumProperty Name="OutputTypeEx" DisplayName="Tipo di output" Visible="True">
+    <EnumValue Name="winexe" DisplayName="0" />
+    <EnumValue Name="exe" DisplayName="1" />
+    <EnumValue Name="library" DisplayName="2" />
+    <EnumValue Name="appcontainerexe" DisplayName="3" />
+    <EnumValue Name="winmdobj" DisplayName="4" />
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="OutputTypeEx" HasConfigurationCondition="False" />
+    </EnumProperty.DataSource>
+  </EnumProperty>
+  <StringProperty Name="StartupObject" DisplayName="Tipo che contiene il punto di ingresso" Visible="True" />
+  <StringProperty Name="ApplicationManifest" DisplayName="Manifesto dell'applicazione" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="ApplicationManifest" HasConfigurationCondition="false" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Win32ResourceFile" DisplayName="File di risorse Win32" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="Win32Resource" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="DefineConstants" DisplayName="Definisci costanti" Visible="True" />
+  <EnumProperty Name="PlatformTarget" DisplayName="Destinazione piattaforma" Visible="True" />
+  <BoolProperty Name="Prefer32Bit" DisplayName="Preferisci 32 bit" Visible="True" />
+  <BoolProperty Name="AllowUnsafeBlocks" Default="False" DisplayName="Consenti codice unsafe" Visible="True" />
+  <StringProperty Name="Optimize" DisplayName="Ottimizza" Visible="True" />
+  <EnumProperty Name="WarningLevel" DisplayName="Livello di avviso" Visible="True" />
+  <StringProperty Name="NoWarn" DisplayName="Non visualizzare l'avviso" Visible="True" />
+  <BoolProperty Name="TreatWarningsAsErrors" Default="False" Description="Considera gli avvisi come errori" Visible="True" />
+  <StringProperty Name="TreatSpecificWarningsAsErrors" Description="Considera avvisi specifici come errori" Visible="True" />
+  <StringProperty Name="OutputPath" DisplayName="Percorso di output" Visible="True" />
+  <StringProperty Name="DocumentationFile" DisplayName="File di documentazione" Visible="True" />
+  <EnumProperty Name="GenerateSerializationAssemblies" DisplayName="Genera assembly di serializzazione" Visible="True">
+    <EnumValue Name="Auto" DisplayName="Automatico" IsDefault="True" />
+    <EnumValue Name="On" DisplayName="Sì" />
+    <EnumValue Name="Off" DisplayName="No" />
+  </EnumProperty>
+  <EnumProperty Name="LanguageVersion" DisplayName="Versione del linguaggio" Visible="True">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="LangVersion" />
+    </EnumProperty.DataSource>
+  </EnumProperty>
+  <EnumProperty Name="ErrorReport" DisplayName="Segnalazione errori" Visible="True" />
+  <EnumProperty Name="DebugInfo" DisplayName="Informazioni di debug" Visible="True">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="DebugType" />
+    </EnumProperty.DataSource>
+  </EnumProperty>
+  <BoolProperty Name="CheckForOverflowUnderflow" DisplayName="CheckForOverflowUnderflow" Visible="False">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="CheckForOverflowUnderflow" HasConfigurationCondition="True" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <StringProperty Name="DebugSymbols" DisplayName="Simboli di debug" Visible="True" />
+  <EnumProperty Name="FileAlignment" DisplayName="Allineamento file" Visible="True" />
+  <StringProperty Name="BaseAddress" DisplayName="Indirizzo di base" Visible="True" />
+  <StringProperty Name="PreBuildEvent" DisplayName="Evento di pre-compilazione" Visible="True" />
+  <StringProperty Name="PostBuildEvent" DisplayName="Evento di post-compilazione" Visible="True" />
+  <EnumProperty Name="RunPostBuildEvent" DisplayName="Esegui evento di post-compilazione" Visible="True">
+    <EnumValue Name="Always" DisplayName="Sempre" />
+    <EnumValue Name="OnBuildSuccess" DisplayName="Dopo una compilazione riuscita" IsDefault="True" />
+    <EnumValue Name="OnOutputUpdated" DisplayName="Quando la compilazione aggiorna l'output del progetto" />
+  </EnumProperty>
+  <StringProperty Name="ReferencePath" DisplayName="Percorso del riferimento" Visible="True" />
+  <StringProperty Name="FileName" DisplayName="File di progetto" ReadOnly="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectFile" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FullPath" DisplayName="Cartella di progetto" ReadOnly="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="LocalPath" ReadOnly="True" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <!-- Package properties -->
+  <BoolProperty Name="GeneratePackageOnBuild" DisplayName="Genera pacchetto durante la compilazione" Default="False" />
+  <StringProperty Name="PackageId" DisplayName="ID pacchetto">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Version" DisplayName="Versione del pacchetto">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Authors" DisplayName="Autori">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <BoolProperty Name="PackageRequireLicenseAcceptance" DisplayName="Il pacchetto richiede l'accettazione della licenza" Default="False" />
+  <StringProperty Name="PackageLicenseUrl" DisplayName="URL della licenza del pacchetto" />
+  <StringProperty Name="PackageProjectUrl" DisplayName="URL del progetto del pacchetto" />
+  <StringProperty Name="PackageIconUrl" DisplayName="URL dell'icona del pacchetto" />
+  <StringProperty Name="PackageTags" DisplayName="Tag del pacchetto" />
+  <StringProperty Name="PackageReleaseNotes" DisplayName="Note sulla versione" />
+  <StringProperty Name="RepositoryUrl" DisplayName="URL del repository" />
+  <StringProperty Name="RepositoryType" DisplayName="Tipo di repository" />
+  <!--AssemblyInfo properties-->
+  <StringProperty Name="Description" DisplayName="Descrizione dell'assembly" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Company" DisplayName="Società dell'assembly" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Product" DisplayName="Prodotto" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Copyright" DisplayName="Copyright" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="AssemblyVersion" DisplayName="Versione dell'assembly" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FileVersion" DisplayName="Versione del file di assembly" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="NeutralLanguage" DisplayName="Lingua risorse di sistema" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <BoolProperty Name="SignAssembly" DisplayName="Firma l'assembly" Visible="True" />
+  <BoolProperty Name="DelaySign" DisplayName="Solo firma ritardata" Visible="True" />
+  <StringProperty Name="AssemblyOriginatorKeyFile" DisplayName="File di chiave con nome sicuro" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+</Rule>

@@ -48,6 +48,11 @@
         <target state="translated">클래스 라이브러리(.NET Core)</target>
         <note />
       </trans-unit>
+      <trans-unit id="10">
+        <source>A project for creating a class library that targets .NET Core.</source>
+        <target state="new">A project for creating a class library that targets .NET Core.</target>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="AssemblyReference" DisplayName="어셈블리 참조" PageTemplate="generic" Description="어셈블리 참조 속성" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" />
+  </Rule.DataSource>
+  <StringListProperty Name="Aliases" DisplayName="별칭" Description="이 참조에 대한 쉼표로 구분된 별칭 목록입니다." Separator="," />
+  <BoolProperty Name="CopyLocal" DisplayName="로컬 복사" Description="참조를 출력 디렉터리로 복사할지 여부를 나타냅니다.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" PersistedName="Private" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <BoolProperty Name="EmbedInteropTypes" DisplayName="Interop 형식 포함" Description="이 어셈블리에 정의된 형식이 대상 어셈블리에 포함되는지 여부를 나타냅니다." />
+  <BoolProperty Name="SpecificVersion" DisplayName="특정 버전" Description="어셈블리 확인을 위한 멀티 타기팅 규칙에 관계없이 이 어셈블리를 확인할 수 있는지 여부를 나타냅니다.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="AssemblyReference" ItemType="Reference" HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <StringProperty Name="RequiredTargetFramework" DisplayName="필요한 대상 프레임워크" Visible="False" />
+  <StringProperty Name="HintPath" Visible="false" />
+  <StringProperty Name="SDKName" Visible="false" />
+  <BoolProperty Name="IsWinMDFile" Visible="false" />
+  <StringProperty Name="ImageRuntime" DisplayName="런타임 버전" Description="이 어셈블리의 대상인 CLR 런타임 버전입니다." Visible="False" ReadOnly="True" />
+</Rule>

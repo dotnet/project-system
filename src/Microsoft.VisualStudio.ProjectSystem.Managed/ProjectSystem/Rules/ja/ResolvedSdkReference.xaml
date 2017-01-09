@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="ResolvedSdkReference" DisplayName="解決された SDK 参照" PageTemplate="generic" Description="解決された SDK 参照" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ResolvedReference" ItemType="SDKReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="ResolveSDKReferencesDesignTime" />
+  </Rule.DataSource>
+  <StringProperty Name="AppXLocation" DisplayName="アプリ パッケージの場所" />
+  <!-- This property should be the same as the one for the ResolvedReference item -->
+  <StringProperty Name="OriginalItemSpec" Visible="false" />
+  <StringProperty Name="FrameworkIdentity" DisplayName="FrameworkIdentity" />
+  <StringProperty Name="DisplayName" DisplayName="表示名" Visible="False" />
+  <BoolProperty Name="CopyPayload" DisplayName="ペイロードのコピー" />
+  <BoolProperty Name="ExpandContent" DisplayName="コンテンツの展開" />
+  <BoolProperty Name="ExpandReferenceAssemblies" DisplayName="参照アセンブリの展開" />
+  <BoolProperty Name="CopyLocalExpandedReferenceAssemblies" DisplayName="ローカルに展開された参照アセンブリのコピー" />
+</Rule>

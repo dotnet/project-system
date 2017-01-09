@@ -157,7 +157,15 @@
       <DependentUpon>ApplicationDesignerView.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="ApplicationDesigner\ApplicationDesignerView.*.resx">
+      <DependentUpon>ApplicationDesignerView.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="ApplicationDesigner\SpecialFileCustomView.resx">
+      <DependentUpon>SpecialFileCustomView.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ApplicationDesigner\SpecialFileCustomView.*.resx">
       <DependentUpon>SpecialFileCustomView.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -165,7 +173,15 @@
       <DependentUpon>PropPageDesignerView.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="PropPageDesigner\PropPageDesignerView.*.resx">
+      <DependentUpon>PropPageDesignerView.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="PropPages\PropPageHostDialog.resx">
+      <DependentUpon>PropPageHostDialog.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropPages\PropPageHostDialog.*.resx">
       <DependentUpon>PropPageHostDialog.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -180,9 +196,16 @@
       <LastGenOutput>Designer.Designer.vb</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Designer.*.resx">
+      <LogicalName>Microsoft.VisualStudio.AppDesigner.%(Filename).resources</LogicalName>
+      <DependentUpon>Designer.resx</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DesignerFramework\ErrorControl.resx">
+      <DependentUpon>ErrorControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DesignerFramework\ErrorControl.*.resx">
       <DependentUpon>ErrorControl.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\ApplicationDesigner\OverflowImage.png">

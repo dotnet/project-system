@@ -53,8 +53,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             // Assert
             var expectedFlags = resolved
-                ? DependencyNode.GenericResolvedDependencyFlags.Union(myFlags)
-                : DependencyNode.GenericUnresolvedDependencyFlags.Union(myFlags);
+                ? DependencyNode.ResolvedDependencyFlags.Union(myFlags)
+                : DependencyNode.UnresolvedDependencyFlags.Union(myFlags);
 
             Assert.True(node.Flags.Contains(expectedFlags));
             Assert.Equal(resolved, node.Resolved);
@@ -62,8 +62,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         [Theory]
         [InlineData("file:///[MyProviderType;MyItemSpec;MyItemType;MyUniqueToken]", "MyItemSpec", "MyItemSpec")]
-        [InlineData("file:///[MyProviderType;MyItemSpec;MyItemType;MyUniqueToken]", 
-                    "OtherCaption", 
+        [InlineData("file:///[MyProviderType;MyItemSpec;MyItemType;MyUniqueToken]",
+                    "OtherCaption",
                     "OtherCaption (MyItemSpec)")]
         public void DependencyNode_Alias(string idString, string caption, string expectedAlias)
         {
@@ -107,7 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
            var id = DependencyNodeId.FromString(
                 "file:///[MyProviderType;MyItemSpec;MyItemType;MyUniqueToken]");
-            
+
             var node = new DependencyNode(id, ProjectTreeFlags.Empty);
 
             // check empty node
@@ -138,11 +138,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var id = DependencyNodeId.FromString(
                         "file:///[MyProviderType;c:\\MyItemSpec.dll;MyItemType;MyUniqueToken]");
             var properties = new Dictionary<string, string>().ToImmutableDictionary();
+            var defaultFlags = DependencyNode.GenericResolvedDependencyFlags;
+            var myFlags = ProjectTreeFlags.Create("MyFlag");
 
             // Act
-            var node = new AssemblyDependencyNode(id, 
-                                                  ProjectTreeFlags.Empty, 
-                                                  priority, 
+            var node = new AssemblyDependencyNode(id,
+                                                  myFlags,
+                                                  priority,
                                                   properties,
                                                   resolved: true,
                                                   fusionName: fusionName);
@@ -151,11 +153,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(KnownMonikers.Reference, node.Icon);
             Assert.Equal(true, node.Resolved);
             Assert.Equal(expectedCaption, node.Caption);
+            Assert.Equal(expectedCaption, node.Name);
 
             // Just to double-check that these properties are still set as sexpected
             Assert.Equal(priority, node.Priority);
             Assert.Equal(properties, node.Properties);
             Assert.Equal(node.Icon, node.ExpandedIcon);
+            Assert.True(node.Flags.Contains(defaultFlags.Union(myFlags)));
         }
 
         [Theory]
@@ -169,10 +173,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var id = DependencyNodeId.FromString(
                         "file:///[MyProviderType;c:\\MyItemSpec.dll;MyItemType;MyUniqueToken]");
             var properties = new Dictionary<string, string>().ToImmutableDictionary();
+            var defaultFlags = DependencyNode.GenericUnresolvedDependencyFlags;
+            var myFlags = ProjectTreeFlags.Create("MyFlag");
 
             // Act
             var node = new AssemblyDependencyNode(id,
-                                                  ProjectTreeFlags.Empty,
+                                                  myFlags,
                                                   priority,
                                                   properties,
                                                   resolved: false,
@@ -182,11 +188,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(KnownMonikers.ReferenceWarning, node.Icon);
             Assert.Equal(false, node.Resolved);
             Assert.Equal("MyItemSpec.dll", node.Caption);
+            Assert.Equal("MyItemSpec.dll", node.Name);
 
             // Just to double-check that these properties are still set as sexpected
             Assert.Equal(priority, node.Priority);
             Assert.Equal(properties, node.Properties);
             Assert.Equal(node.Icon, node.ExpandedIcon);
+            Assert.True(node.Flags.Contains(defaultFlags.Union(myFlags)));
         }
 
         [Theory]
@@ -202,10 +210,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var id = DependencyNodeId.FromString(
                         $"file:///[AnalyzerDependency;{itemSpec};Analyzer;MyUniqueToken]");
             var properties = new Dictionary<string, string>().ToImmutableDictionary();
+            var defaultFlags = (resolved
+                ? DependencyNode.GenericResolvedDependencyFlags
+                : DependencyNode.GenericUnresolvedDependencyFlags);
+            var myFlags = ProjectTreeFlags.Create("MyFlag");
 
             // Act
             var node = new AnalyzerDependencyNode(id,
-                                                  ProjectTreeFlags.Empty,
+                                                  myFlags,
                                                   priority,
                                                   properties,
                                                   resolved: resolved);
@@ -214,11 +226,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(resolved? KnownMonikers.CodeInformation : KnownMonikers.ReferenceWarning, node.Icon);
             Assert.Equal(resolved, node.Resolved);
             Assert.Equal(expectedCaption, node.Caption);
+            Assert.Equal(expectedCaption, node.Name);
 
             // Just to double-check that these properties are still set as sexpected
             Assert.Equal(priority, node.Priority);
             Assert.Equal(properties, node.Properties);
             Assert.Equal(node.Icon, node.ExpandedIcon);
+            Assert.True(node.Flags.Contains(defaultFlags.Union(myFlags)));
         }
 
         [Theory]
@@ -234,10 +248,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var id = DependencyNodeId.FromString(
                         "file:///[MyProviderType;c:\\MyItemSpec.dll;MyItemType;MyUniqueToken]");
             var properties = new Dictionary<string, string>().ToImmutableDictionary();
+            var defaultFlags = (resolved
+                ? DependencyNode.GenericResolvedDependencyFlags
+                : DependencyNode.GenericUnresolvedDependencyFlags);
+            var myFlags = ProjectTreeFlags.Create("MyFlag");
 
             // Act
             var node = new ComDependencyNode(id,
-                                             ProjectTreeFlags.Empty,
+                                             myFlags,
                                              priority,
                                              properties,
                                              resolved: resolved);
@@ -246,11 +264,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(expectedIcon, node.Icon);
             Assert.Equal(resolved, node.Resolved);
             Assert.Equal(expectedCaption, node.Caption);
+            Assert.Equal(expectedCaption, node.Name);
 
             // Just to double-check that these properties are still set as sexpected
             Assert.Equal(priority, node.Priority);
             Assert.Equal(properties, node.Properties);
             Assert.Equal(node.Icon, node.ExpandedIcon);
+            Assert.True(node.Flags.Contains(defaultFlags.Union(myFlags)));
         }
 
         [Theory]
@@ -266,10 +286,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var id = DependencyNodeId.FromString(
                         "file:///[MyProviderType;c:\\MyItemSpec.dll;MyItemType;MyUniqueToken]");
             var properties = new Dictionary<string, string>().ToImmutableDictionary();
+            var defaultFlags = (resolved
+                ? DependencyNode.GenericResolvedDependencyFlags
+                : DependencyNode.GenericUnresolvedDependencyFlags);
+            var myFlags = ProjectTreeFlags.Create("MyFlag");
 
             // Act
             var node = new SdkDependencyNode(id,
-                                             ProjectTreeFlags.Empty,
+                                             myFlags,
                                              priority,
                                              properties,
                                              resolved: resolved);
@@ -278,11 +302,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(expectedIcon, node.Icon);
             Assert.Equal(resolved, node.Resolved);
             Assert.Equal("c:\\MyItemSpec.dll", node.Caption);
+            Assert.Equal("c:\\MyItemSpec.dll", node.Name);
 
             // Just to double-check that these properties are still set as sexpected
             Assert.Equal(priority, node.Priority);
             Assert.Equal(properties, node.Properties);
             Assert.Equal(node.Icon, node.ExpandedIcon);
+            Assert.True(node.Flags.Contains(defaultFlags.Union(myFlags)));
         }
 
         [Fact]
@@ -308,10 +334,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var id = DependencyNodeId.FromString(
                         "file:///[MyProviderType;c:\\MyItemSpec.dll;MyItemType;MyUniqueToken]");
             var properties = new Dictionary<string, string>().ToImmutableDictionary();
+            var defaultFlags = (resolved
+                ? DependencyNode.GenericResolvedDependencyFlags
+                : DependencyNode.GenericUnresolvedDependencyFlags);
+            var myFlags = ProjectTreeFlags.Create("MyFlag");
 
             // Act
             var node = new SharedProjectDependencyNode(id,
-                                                       ProjectTreeFlags.Empty,
+                                                       myFlags,
                                                        priority,
                                                        properties,
                                                        resolved: resolved);
@@ -320,11 +350,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(expectedIcon, node.Icon);
             Assert.Equal(resolved, node.Resolved);
             Assert.Equal("MyItemSpec", node.Caption);
+            Assert.Equal("MyItemSpec", node.Name);
 
             // Just to double-check that these properties are still set as sexpected
             Assert.Equal(priority, node.Priority);
             Assert.Equal(properties, node.Properties);
             Assert.Equal(node.Icon, node.ExpandedIcon);
+            Assert.True(node.Flags.Contains(defaultFlags.Union(myFlags)));
         }
 
         [Fact]
@@ -350,10 +382,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var id = DependencyNodeId.FromString(
                         "file:///[MyProviderType;c:\\MyItemSpec.dll;MyItemType;MyUniqueToken]");
             var properties = new Dictionary<string, string>().ToImmutableDictionary();
+            var defaultFlags = (resolved
+                ? DependencyNode.GenericResolvedDependencyFlags
+                : DependencyNode.GenericUnresolvedDependencyFlags);
+            var myFlags = ProjectTreeFlags.Create("MyFlag");
 
             // Act
             var node = new ProjectDependencyNode(id,
-                                                 ProjectTreeFlags.Empty,
+                                                 myFlags,
                                                  priority,
                                                  properties,
                                                  resolved: resolved);
@@ -362,11 +398,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(expectedIcon, node.Icon);
             Assert.Equal(resolved, node.Resolved);
             Assert.Equal("MyItemSpec", node.Caption);
+            Assert.Equal("MyItemSpec", node.Name);
 
             // Just to double-check that these properties are still set as sexpected
             Assert.Equal(priority, node.Priority);
             Assert.Equal(properties, node.Properties);
             Assert.Equal(node.Icon, node.ExpandedIcon);
+            Assert.True(node.Flags.Contains(defaultFlags.Union(myFlags)));
         }
 
         [Fact]
@@ -407,6 +445,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(KnownMonikers.QuestionMark, node.Icon);
             Assert.Equal(resolved, node.Resolved);
             Assert.Equal(caption, node.Caption);
+            Assert.Equal(caption, node.Name);
             Assert.Equal(properties, node.Properties);
             Assert.Equal(node.Icon, node.ExpandedIcon);
             Assert.True(node.Flags.Contains(defaultFlags.Union(myFlags)));
@@ -418,14 +457,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             // Arrange
             var defaultFlags = DependencyNode.DependencyFlags.Union(DependencyNode.PreFilledFolderNode);
 
-            var caption = "Framework Assemblies";
+            var caption = VSResources.FrameworkAssembliesNodeName;
             var id = DependencyNodeId.FromString(
                         "file:///[MyProviderType;c:\\MyItemSpec.dll;MyItemType;MyUniqueToken]");
             var properties = new Dictionary<string, string>().ToImmutableDictionary();
             var myFlags = ProjectTreeFlags.Create("MyFlag");
 
             // Act
-            var node = new PackageFrameworkAssembliesDependencyNode(id,                                                       
+            var node = new PackageFrameworkAssembliesDependencyNode(id,
                                                         myFlags,
                                                         properties,
                                                         resolved: true);
@@ -434,6 +473,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(KnownMonikers.Library, node.Icon);
             Assert.Equal(true, node.Resolved);
             Assert.Equal(caption, node.Caption);
+            Assert.Equal(caption, node.Name);
             Assert.Equal(properties, node.Properties);
             Assert.Equal(node.Icon, node.ExpandedIcon);
             Assert.True(node.Flags.Contains(defaultFlags.Union(myFlags)));
@@ -476,6 +516,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(resolved, node.Resolved);
             Assert.Equal(priority, node.Priority);
             Assert.Equal(caption, node.Caption);
+            Assert.Equal(caption, node.Name);
             Assert.Equal(node.Alias, node.Caption);
             Assert.Equal(properties, node.Properties);
             Assert.Equal(node.Icon, node.ExpandedIcon);
@@ -529,6 +570,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(resolved, node.Resolved);
             Assert.Equal(priority, node.Priority);
             Assert.Equal(caption, node.Caption);
+            Assert.Equal(caption, node.Name);
             Assert.Equal(node.Alias, node.Caption);
             Assert.Equal(properties, node.Properties);
             Assert.Equal(node.Icon, node.ExpandedIcon);
@@ -556,15 +598,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 : KnownMonikers.ReferenceWarning;
 
             var defaultFlags = (resolved
-                ? DependencyNode.ResolvedDependencyFlags
-                : DependencyNode.UnresolvedDependencyFlags)
-                .Add(ProjectTreeFlags.Common.ResolvedReference);
+                ? DependencyNode.GenericResolvedDependencyFlags
+                : DependencyNode.GenericUnresolvedDependencyFlags);
 
             var priority = resolved
                             ? DependencyNode.PackageNodePriority
                             : DependencyNode.UnresolvedReferenceNodePriority;
 
-            var caption = "MyCaption";
+            var name = "MyName";
+            var caption = "MyCaption (xxx)";
             var id = DependencyNodeId.FromString(
                         "file:///[MyProviderType;c:\\MyItemSpec.dll;MyItemType;MyUniqueToken]");
             var properties = new Dictionary<string, string>().ToImmutableDictionary();
@@ -572,6 +614,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             // Act
             var node = new PackageDependencyNode(id,
+                                                 name,
                                                  caption,
                                                  myFlags,
                                                  properties,
@@ -581,6 +624,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(expectedIcon, node.Icon);
             Assert.Equal(resolved, node.Resolved);
             Assert.Equal(priority, node.Priority);
+            Assert.Equal(name, node.Name);
             Assert.Equal(caption, node.Caption);
             Assert.Equal(node.Alias, node.Caption);
             Assert.Equal(properties, node.Properties);
@@ -593,8 +637,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var id = DependencyNodeId.FromString("file:///[MyProviderType]");
 
+            Assert.Throws<ArgumentNullException>("name", () => {
+                new PackageDependencyNode(id, null, null, ProjectTreeFlags.Empty);
+            });
+
             Assert.Throws<ArgumentNullException>("caption", () => {
-                new PackageDependencyNode(id, null, ProjectTreeFlags.Empty);
+                new PackageDependencyNode(id, "somename", null, ProjectTreeFlags.Empty);
             });
         }
     }

@@ -117,6 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 case DependencyType.Package:
                     dependencyNode = new PackageDependencyNode(
                                              id,
+                                             name: dependencyMetadata.Name,
                                              caption: dependencyMetadata.FriendlyName,
                                              flags: NuGetSubTreeNodeFlags,
                                              properties: dependencyMetadata.Properties,
