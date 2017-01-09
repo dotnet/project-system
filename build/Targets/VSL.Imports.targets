@@ -444,6 +444,13 @@
   <Import Project="$(VisualStudioBuildToolsNuGetPackagePath)\build\Microsoft.VsSDK.BuildTools.targets" Condition="'$(ImportVSSDKTargets)' == 'true' And Exists('$(VisualStudioBuildToolsNuGetPackagePath)\build\Microsoft.VsSDK.BuildTools.targets')" />  
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(ImportVSSDKTargets)' == 'true' And Exists('$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets')" /> 
 
+  <!-- The VSSDK immplements some targets which are run during design time builds per convention. 
+       If the Project is not a VSIX project and sets $CreateVSIXContainer=false these targets should be 
+       a no-op. However they dont check for that and that's a bug. To workaround, we override them
+       with empty targets and conditionally import these if CreateVSIXContainer is false.
+       Tracked by https://devdiv.visualstudio.com/DevDiv/_workitems?id=365685&fullScreen=false&_a=edit   -->
+  <Import Project="VSSDKDesignTimeBuildWorkaround.targets" Condition="'$(CreateVsixContainer)'=='false'" />
+  
   <!-- ====================================================================================
 
          Support for in-place modification of the compiled binary.
