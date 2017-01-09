@@ -5,8 +5,7 @@
     <UseVisualStudioVersion>true</UseVisualStudioVersion>
   </PropertyGroup>
 
-  <Import Project="..\..\..\build\Targets\ProducesNoOutput.Settings.targets" />
-  <Import Project="..\..\..\build\Targets\VSL.Versions.targets" />
+  <Import Project="..\..\..\build\Targets\VSL.Settings.targets" />
 
   <PropertyGroup>
     <FinalizeManifest>true</FinalizeManifest>
