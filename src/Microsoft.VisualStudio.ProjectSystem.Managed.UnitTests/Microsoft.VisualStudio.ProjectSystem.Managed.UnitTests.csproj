@@ -74,9 +74,9 @@
     <Compile Include="Mocks\IProjectTreeSnapshotFactory.cs" />
     <Compile Include="Mocks\IProjectVersionedValueFactory.cs" />
     <Compile Include="Mocks\IProjectAsynchronousTasksServiceFactory.cs" />
+    <Compile Include="Mocks\ISpecialFilesManagerFactory.cs" />
     <Compile Include="Mocks\IWorkspaceProjectContextFactory.cs" />
     <Compile Include="Mocks\IUnconfiguredProjectServicesFactory.cs" />
-    <Compile Include="Mocks\ProjectTreeProvider.cs" />
     <Compile Include="Mocks\PropertyPageData.cs" />
     <Compile Include="Mocks\IUnconfiguredProjectCommonServicesFactory.cs" />
     <Compile Include="Mocks\ProjectPropertiesFactory.cs" />
