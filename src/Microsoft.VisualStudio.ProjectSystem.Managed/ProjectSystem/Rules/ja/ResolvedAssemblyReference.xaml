@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="ResolvedAssemblyReference" DisplayName="解決されたアセンブリ参照" PageTemplate="generic" Description="解決された参照" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ResolvedReference" ItemType="Reference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="ResolveAssemblyReferencesDesignTime" />
+  </Rule.DataSource>
+  <StringListProperty Name="Aliases" DisplayName="エイリアス" Description="この参照へのエイリアスのコンマ区切りのリストです。" Separator=",">
+    <StringListProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" />
+    </StringListProperty.DataSource>
+  </StringListProperty>
+  <BoolProperty Name="CopyLocal" DisplayName="ローカルにコピー" Description="参照が出力ディレクトリにコピーされるかどうかを示します。">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" PersistedName="Private" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <StringProperty Name="Culture" ReadOnly="True" Visible="False" DisplayName="カルチャ" Description="アセンブリ メタデータの Culture フィールドの値です。" />
+  <StringProperty Name="Description" ReadOnly="True" Visible="False" DisplayName="説明" Description="アセンブリ メタデータの Title フィールドの値です。" />
+  <BoolProperty Name="EmbedInteropTypes" DisplayName="相互運用型の埋め込み" Description="このアセンブリ内で定義される型をターゲット アセンブリに埋め込むかどうかを示します。">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <EnumProperty Name="FileType" ReadOnly="True" Visible="False" DisplayName="ファイルの種類" Description="参照のファイルの種類です。">
+    <EnumValue Name="Assembly" DisplayName=".NET アセンブリ" />
+    <EnumValue Name="ActiveX" DisplayName="COM タイプ ライブラリ" />
+    <EnumValue Name="Native Assembly" DisplayName="ネイティブ アセンブリ" />
+  </EnumProperty>
+  <StringProperty Name="Identity" ReadOnly="True" DisplayName="ID" Description="参照されたアセンブリのセキュリティ ID です。System.Reflection.Assembly.Evidence または System.Security.Policy.Evidence を参照してください。">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="{}{Identity}" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="パス" Description="参照されているファイルの場所です。">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="Identity" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="RuntimeVersion" ReadOnly="True" Visible="False" DisplayName="ランタイム バージョン" Description="このアセンブリをコンパイルした .NET ランタイムのバージョンです。"></StringProperty>
+  <BoolProperty Name="SpecificVersion" DisplayName="特定バージョン" Description="アセンブリ解像度のマルチターゲット ルールに関係なく、このアセンブリを解決できるかどうかを示します。">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="AssemblyReference" ItemType="Reference" HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <BoolProperty Name="StrongName" ReadOnly="True" Visible="False" DisplayName="厳密な名前" Description="True は、参照がキー ペアで署名されたことを示します。"></BoolProperty>
+  <StringProperty Name="Version" ReadOnly="True" DisplayName="バージョン" Description="参照のバージョンです。"></StringProperty>
+  <StringProperty Name="RequiredTargetFramework" DisplayName="必要なターゲット フレームワーク" Visible="False" />
+  <StringProperty Name="HintPath" Visible="false" />
+  <StringProperty Name="SDKIdentity" Visible="false" />
+  <!-- This is the metadata we store on the reference item when we add it. -->
+  <BoolProperty Name="IsWinMDFile" Visible="false" Description="プロジェクト システムが (アセンブリではなく) WinMD であることを確認したかどうかを示します" />
+  <!-- These are metadata added to the resolved item by MSBuild that we don't show to the user but use internally. -->
+  <BoolProperty Name="WinMDFile" Visible="false" ReadOnly="True" Description="ビルド システムが (アセンブリではなく) WinMD であることを確認したかどうかを示します" />
+  <StringProperty Name="Name" Visible="false" ReadOnly="True" />
+  <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="結果がこの解決済みの参照項目であった元の参照項目の評価済み項目名です。" />
+  <StringProperty Name="ReferenceFromSDK" Visible="False" ReadOnly="True" Description="拡張 SDK の参照を使用するときにこの参照が属していた SDK です。" />
+  <StringProperty Name="FusionName" Visible="False" ReadOnly="True" Description="解決済みアセンブリの完全な fusion 名です。" />
+  <StringProperty Name="ResolvedFrom" Visible="False" ReadOnly="True" Description="{}これを解決するために参照を保持していたリポジトリを示します (GAC の場合は &quot;{GAC}&quot;)。" />
+  <StringProperty Name="FrameworkFile" Visible="False" ReadOnly="True" Description="ファイルが Framework ファイルかどうかを示します。つまり、ファイルが Framework のターゲット ディレクトリと再頒布リストのどちらにあったかを示します。" />
+</Rule>

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
+<Rule Name="SourceControl" DisplayName="Control de código fuente" PageTemplate="generic" Description="General" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" Label="Globals" HasConfigurationCondition="False" />
+  </Rule.DataSource>
+  <StringProperty Name="SccProjectName" />
+  <StringProperty Name="SccProvider" />
+  <StringProperty Name="SccAuxPath" />
+  <StringProperty Name="SccLocalPath" />
+</Rule>

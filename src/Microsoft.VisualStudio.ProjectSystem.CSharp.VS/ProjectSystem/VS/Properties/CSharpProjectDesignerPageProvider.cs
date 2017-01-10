@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 
@@ -13,23 +14,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     [AppliesTo(ProjectCapability.CSharp)]
     internal class CSharpProjectDesignerPageProvider : IVsProjectDesignerPageProvider
     {
+        private readonly IProjectCapabilitiesService _capabilities;
+
         [ImportingConstructor]
-        internal CSharpProjectDesignerPageProvider()
+        internal CSharpProjectDesignerPageProvider(IProjectCapabilitiesService capabilities)
         {
+            _capabilities = capabilities;
         }
 
         public Task<IReadOnlyCollection<IPageMetadata>> GetPagesAsync()
         {
-            return Task.FromResult<IReadOnlyCollection<IPageMetadata>>(
-                new IPageMetadata[] {
-                    CSharpProjectDesignerPage.Application,
-                    CSharpProjectDesignerPage.Build,
-                    CSharpProjectDesignerPage.BuildEvents,
-                    CSharpProjectDesignerPage.Package,
-                    CSharpProjectDesignerPage.Debug,
-                    CSharpProjectDesignerPage.ReferencePaths,
-                    CSharpProjectDesignerPage.Signing,
-            });
+            var builder = ImmutableArray.CreateBuilder<IPageMetadata>();
+
+            builder.Add(CSharpProjectDesignerPage.Application);
+            builder.Add(CSharpProjectDesignerPage.Build);
+            builder.Add(CSharpProjectDesignerPage.BuildEvents);
+
+            if (_capabilities.Contains(ProjectCapability.Pack))
+            {
+                builder.Add(CSharpProjectDesignerPage.Package);
+            }
+
+            builder.Add(CSharpProjectDesignerPage.Debug);
+            builder.Add(CSharpProjectDesignerPage.ReferencePaths);
+            builder.Add(CSharpProjectDesignerPage.Signing);
+
+            return Task.FromResult<IReadOnlyCollection<IPageMetadata>>(builder.ToImmutable());
         }
     }
 }

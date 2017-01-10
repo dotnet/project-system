@@ -48,11 +48,6 @@
         <target state="translated">Osadzony zasób</target>
         <note />
       </trans-unit>
-      <trans-unit id="ItemType|AdditionalFiles|DisplayName">
-        <source>AdditionalFiles</source>
-        <target state="translated">Dodatkowe pliki</target>
-        <note />
-      </trans-unit>
       <trans-unit id="ItemType|None|DisplayName">
         <source>None</source>
         <target state="translated">Brak</target>

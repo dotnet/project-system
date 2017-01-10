@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="DotNetCliToolReference" DisplayName="Paket" PageTemplate="generic" Description="Paket" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" ItemType="DotNetCliToolReference" HasConfigurationCondition="False" />
+  </Rule.DataSource>
+  <StringProperty Name="Description" ReadOnly="True" Visible="True" DisplayName="Açıklama" Description="Bağımlılık açıklaması" />
+  <StringProperty Name="Version" ReadOnly="True" DisplayName="Sürüm" Description="Bağımlılık sürümü."></StringProperty>
+  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="IncludeAssets" Description="Bu başvurudan eklenecek varlıklar" />
+  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="ExcludeAssets" Description="Bu başvurudan dışlanacak varlıklar" />
+  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="PrivateAssets" Description="Bu başvuruda özel olan varlıklar" />
+  <StringProperty Name="Name" Visible="True" ReadOnly="True" />
+  <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="Çözümlemesi, bu çözümlenen başvuru öğesiyle sonuçlanmış olan orijinal başvuru öğesinin değerlendirilen öğe adı." />
+  <StringProperty Name="Path" Visible="False" ReadOnly="True" />
+  <StringProperty Name="Type" Visible="False" ReadOnly="True" />
+  <StringProperty Name="RuntimeIdentifier" Visible="False" ReadOnly="True" />
+  <StringProperty Name="TargetFramework" Visible="False" ReadOnly="True" />
+  <StringProperty Name="FrameworkName" Visible="False" ReadOnly="True" />
+  <StringProperty Name="FrameworkVersion" Visible="False" ReadOnly="True" />
+</Rule>

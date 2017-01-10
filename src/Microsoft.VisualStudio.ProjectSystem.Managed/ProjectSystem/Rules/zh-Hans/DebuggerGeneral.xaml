@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
+<Rule Name="DebuggerGeneralProperties" DisplayName="调试器常规属性" Description="常规调试器选项" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="UserFile" />
+  </Rule.DataSource>
+  <StringProperty Name="SymbolsPath" DisplayName="符号搜索路径" Description="调试器用来定位符号的搜索路径。"></StringProperty>
+  <StringProperty Name="DebuggerFlavor" Visible="false" Description="选定为活动调试器的调试规则。"></StringProperty>
+  <EnumProperty Name="ImageClrType" Visible="false" Description="传递给调试器的“hidden”属性，以便让调试器知道此项目是否为托管项目。">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="UserFile" HasConfigurationCondition="false" PersistedName="_TargetImageClrType" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="Native" DisplayName="本机映像" Description="要调试的可执行文件映像是完全的本机应用程序。" />
+    <EnumValue Name="Mixed" DisplayName="混合映像" Description="要调试的可执行文件映像是本机代码和托管代码的混合。" />
+    <EnumValue Name="Managed" DisplayName="托管映像" Description="要调试的可执行文件映像是完全的托管应用程序。" />
+  </EnumProperty>
+</Rule>

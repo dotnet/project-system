@@ -117,20 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AdminRequiredForPort" xml:space="preserve">
-    <value>You must run Visual Studio in the context of an administrator account to create IIS Express sites with ports less than 1024.</value>
-  </data>
   <data name="AllFiles" xml:space="preserve">
     <value>All files</value>
   </data>
   <data name="ApplicationArgumentsWatermark" xml:space="preserve">
     <value>Arguments to be passed to the application</value>
-  </data>
-  <data name="ApplicationUrlWatermark" xml:space="preserve">
-    <value>The URL of the application</value>
-  </data>
-  <data name="CopyHyperlinkText" xml:space="preserve">
-    <value>Copy</value>
   </data>
   <data name="DebugPropertyPageTitle" xml:space="preserve">
     <value>Debug</value>
@@ -150,21 +141,6 @@
   <data name="ExecutablePathWatermark" xml:space="preserve">
     <value>Path to the executable to run</value>
   </data>
-  <data name="IISExpressMissingAppUrl" xml:space="preserve">
-    <value>The IIS settings are missing the App Url property. This is required to configure IIS to run the site.</value>
-  </data>
-  <data name="IISMissingAppUrl" xml:space="preserve">
-    <value>The IIS settings are missing the App Url property. This is required to configure IIS to run the site.</value>
-  </data>
-  <data name="InvalidAppUrl" xml:space="preserve">
-    <value>The Application Url is invalid. {0}</value>
-  </data>
-  <data name="InvalidIISAppUrl" xml:space="preserve">
-    <value>The IIS Application Url is invalid. {0}</value>
-  </data>
-  <data name="InvalidIISExpressAppUrl" xml:space="preserve">
-    <value>The IIS Express Application Url is invalid. {0}</value>
-  </data>
   <data name="LaunchUrlWatermark" xml:space="preserve">
     <value>Absolute or relative URL</value>
   </data>
@@ -176,9 +152,6 @@
   </data>
   <data name="NewProfileSeedName" xml:space="preserve">
     <value>newProfile</value>
-  </data>
-  <data name="ProfileKindCommandName" xml:space="preserve">
-    <value>Command</value>
   </data>
   <data name="ProfileKindExecutableName" xml:space="preserve">
     <value>Executable</value>
@@ -204,4 +177,6 @@
   <data name="WorkingDirectoryWatermark" xml:space="preserve">
     <value>Absolute path to working directory</value>
   </data>
-</root>
+  <data name="ErrorsMustBeCorrectedPriorToSaving" xml:space="preserve">
+    <value>The errors on the page must be corrected prior to saving your changes.</value>
+  </data></root>

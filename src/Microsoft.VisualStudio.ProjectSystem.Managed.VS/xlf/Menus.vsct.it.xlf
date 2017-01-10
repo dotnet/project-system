@@ -8,21 +8,6 @@
         <target state="translated">Debugger Web</target>
         <note />
       </trans-unit>
-      <trans-unit id="cmdidEditProjFile|ButtonText">
-        <source>Edit Project File</source>
-        <target state="translated">Modifica file di progetto</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="cmdidEditProjFile|ToolTipText">
-        <source>Edit Project File</source>
-        <target state="translated">Modifica file di progetto</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="cmdidEditProjFile|CommandName">
-        <source>EditProjectFile</source>
-        <target state="translated">EditProjectFile</target>
-        <note />
-      </trans-unit>
       <trans-unit id="cmdidGenerateNuGetPackageProjectContextMenu|ButtonText">
         <source>&amp;Pack</source>
         <target state="translated">Crea &amp;pacchetto</target>

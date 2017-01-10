@@ -673,7 +673,7 @@
     <value>10</value>
   </data>
   <data name="StartWorkingDirectoryBrowse.Text" xml:space="preserve">
-    <value>&amp;Bro&amp;wse...</value>
+    <value>Bro&amp;wse...</value>
   </data>
   <data name="&gt;&gt;StartWorkingDirectoryBrowse.Name" xml:space="preserve">
     <value>StartWorkingDirectoryBrowse</value>

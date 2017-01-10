@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Moq;
 
@@ -10,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal static class UnconfiguredProjectFactory
     {
         public static UnconfiguredProject Create(object hostObject = null, IEnumerable<string> capabilities = null, string filePath = null,
-            IProjectConfigurationsService projectConfigurationsService = null, ConfiguredProject configuredProject = null)
+            IProjectConfigurationsService projectConfigurationsService = null, ConfiguredProject configuredProject = null, Encoding projectEncoding = null)
         {
             capabilities = capabilities ?? Enumerable.Empty<string>();
 
@@ -35,7 +36,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             unconfiguredProject.Setup(u => u.GetSuggestedConfiguredProjectAsync()).Returns(Task.FromResult(configuredProject));
 
+            unconfiguredProject.Setup(u => u.GetFileEncodingAsync()).Returns(Task.FromResult(projectEncoding));
+
             return unconfiguredProject.Object;
+        }
+
+        public static UnconfiguredProject CreateWithUnconfiguredProjectAdvanced()
+        {
+            var mock = new Mock<UnconfiguredProject>();
+            mock.As<UnconfiguredProjectAdvanced>();
+            return mock.Object;
         }
     }
 }

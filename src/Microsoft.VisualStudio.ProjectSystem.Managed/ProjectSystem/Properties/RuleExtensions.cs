@@ -6,7 +6,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>
     /// Common helpers for property rules
-    /// <see cref="Microsoft.Build.Framework.XamlTypes.DataSource.SourceType"/>
+    /// <see cref="DataSource.SourceType"/>
     /// property.
     /// </summary>
     internal static class RuleExtensions

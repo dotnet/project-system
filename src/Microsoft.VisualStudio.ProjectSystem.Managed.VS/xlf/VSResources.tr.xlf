@@ -262,6 +262,16 @@ Bu projede hata ayıklamak için bu çözüme, kitaplık projesine başvuran bir
         <target state="translated">{0} öğesini &amp;paketle</target>
         <note />
       </trans-unit>
+      <trans-unit id="XprojMigrationFailedCannotReadReport">
+        <source>Could not read post-migration report at '{0}'.</source>
+        <target state="new">Could not read post-migration report at '{0}'.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="XprojMigrationGeneralFailure">
+        <source>Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</source>
+        <target state="new">Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</target>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
+<Rule Name="DebuggerGeneralProperties" DisplayName="偵錯工具一般屬性" Description="一般偵錯工具選項" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="UserFile" />
+  </Rule.DataSource>
+  <StringProperty Name="SymbolsPath" DisplayName="符號搜尋路徑" Description="偵錯工具用來尋找符號的搜尋路徑。"></StringProperty>
+  <StringProperty Name="DebuggerFlavor" Visible="false" Description="被選為現用偵錯工具的偵錯規則。"></StringProperty>
+  <EnumProperty Name="ImageClrType" Visible="false" Description="我們傳遞至偵錯工具的 'hidden' 屬性，讓偵錯工具知道這是否為 Managed 專案。">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="UserFile" HasConfigurationCondition="false" PersistedName="_TargetImageClrType" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="Native" DisplayName="原生映像" Description="要偵錯的可執行映像完全是一個原生應用程式。" />
+    <EnumValue Name="Mixed" DisplayName="混合映像" Description="要偵錯的可執行映像是機器碼與 Managed 程式碼的混合物。" />
+    <EnumValue Name="Managed" DisplayName="Managed 映像" Description="要偵錯的可執行映像完全是一個 Managed 應用程式。" />
+  </EnumProperty>
+</Rule>

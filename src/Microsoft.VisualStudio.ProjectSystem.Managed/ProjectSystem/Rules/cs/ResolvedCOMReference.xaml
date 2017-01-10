@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="ResolvedCOMReference" DisplayName="Rozpoznaný odkaz modelu COM" PageTemplate="generic" Description="Vyřešený odkaz" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ResolvedReference" ItemType="COMReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="ResolveComReferencesDesignTime" />
+  </Rule.DataSource>
+  <StringProperty Name="Guid" DisplayName="CLSID" Description="Identifikátor GUID serveru COM" Visible="False" />
+  <IntProperty Name="VersionMajor" Visible="False" />
+  <IntProperty Name="VersionMinor" Visible="False" />
+  <StringProperty Name="WrapperTool" Visible="False" />
+  <StringListProperty Name="Aliases" DisplayName="Aliasy" Description="Seznam aliasů tohoto odkazu oddělených čárkou" Separator=",">
+    <StringListProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="COMReference" HasConfigurationCondition="False" />
+    </StringListProperty.DataSource>
+  </StringListProperty>
+  <BoolProperty Name="CopyLocal" DisplayName="Kopírovat místně" Description="Určuje, jestli se odkaz zkopíruje do výstupního adresáře.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="COMReference" HasConfigurationCondition="False" PersistedName="Private" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <StringProperty Name="Culture" ReadOnly="True" Visible="False" DisplayName="Jazyková verze" Description="Hodnota pole Jazyková verze z metadat sestavení" />
+  <StringProperty Name="Description" ReadOnly="True" Visible="False" DisplayName="Popis" Description="Hodnota pole Název z metadat sestavení" />
+  <BoolProperty Name="EmbedInteropTypes" DisplayName="Vložit typy spolupráce" Description="Určuje, zda typy definované v tomto sestavení budou vloženy do cílového sestavení.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="COMReference" HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <EnumProperty Name="FileType" ReadOnly="True" Visible="False" DisplayName="Typ souboru" Description="Typ souboru odkazu">
+    <EnumValue Name="Assembly" DisplayName="Sestavení .NET" />
+    <EnumValue Name="ActiveX" DisplayName="Knihovna typů COM" />
+    <EnumValue Name="Native Assembly" DisplayName="Nativní sestavení" />
+  </EnumProperty>
+  <StringProperty Name="Identity" ReadOnly="True" DisplayName="Identita" Description="Identita zabezpečení odkazovaného sestavení (viz System.Reflection.Assembly.Evidence nebo System.Security.Policy.Evidence)">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="{}{Identity}" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Cesta" Description="Umístění odkazovaného souboru">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="Identity" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="RuntimeVersion" ReadOnly="True" Visible="False" DisplayName="Verze modulu runtime" Description="Verze modulu runtime .NET, pro kterou bylo toto sestavení zkompilováno"></StringProperty>
+  <BoolProperty Name="SpecificVersion" DisplayName="Specifická verze" Visible="False" Description="Určuje, zda toto sestavení může být vyřešeno bez ohledu na pravidla cílení na více verzí pro vyřešení sestavení." />
+  <BoolProperty Name="StrongName" ReadOnly="True" Visible="False" DisplayName="Silný název" Description="Hodnota True určuje, že odkaz byl podepsán pomocí páru klíčů."></BoolProperty>
+  <StringProperty Name="Version" ReadOnly="True" DisplayName="Verze" Description="Verze odkazu"></StringProperty>
+  <StringProperty Name="RequiredTargetFramework" DisplayName="Požadované cílové rozhraní" Visible="False" />
+  <StringProperty Name="HintPath" Visible="false" />
+  <StringProperty Name="SDKIdentity" Visible="false" />
+  <!-- This is the metadata we store on the reference item when we add it. -->
+  <BoolProperty Name="IsWinMDFile" Visible="false" Description="Určuje, zda projektový systém zjistil, že se jedná o soubor WinMD (na rozdíl od sestavení)." />
+  <!-- These are metadata added to the resolved item by MSBuild that we don't show to the user but use internally. -->
+  <BoolProperty Name="WinMDFile" Visible="false" ReadOnly="True" Description="Určuje, zda systém sestavení zjistil, že se jedná o soubor WinMD (na rozdíl od sestavení)." />
+  <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="Vyhodnocený název původní položky odkazu, jejíž překlad vedl ke vzniku tohoto nerozpoznaného odkazu" />
+  <StringProperty Name="FusionName" Visible="False" ReadOnly="True" />
+  <StringProperty Name="Name" Visible="false" ReadOnly="True" />
+</Rule>

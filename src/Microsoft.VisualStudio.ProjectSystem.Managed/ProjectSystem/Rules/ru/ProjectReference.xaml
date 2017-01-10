@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="ProjectReference" DisplayName="Ссылка проекта" PageTemplate="generic" Description="Свойства ссылки проекта" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" />
+  </Rule.DataSource>
+  <BoolProperty Name="ReferenceOutputAssembly" DisplayName="Ссылка на выходную сборку" Description="Значение, указывающее, должен ли компилятор включить ссылку на основную выходную сборку целевого проекта." />
+  <BoolProperty Name="CopyLocalSatelliteAssemblies" DisplayName="Копировать локальные вспомогательные сборки" Description="Указывает, должны ли вспомогательные сборки ссылочной целевой сборки копироваться в выходной каталог проекта." />
+  <BoolProperty Name="LinkLibraryDependencies" Visible="False" />
+  <BoolProperty Name="UseLibraryDependencyInputs" Visible="False" />
+  <StringProperty Name="Project" Visible="False" Description="идентификатор GUID, с помощью которого решение отслеживает ссылочную целевую сборку отдельного проекта" />
+  <StringProperty Name="ReferencedProjectIdentifier" Visible="False" Description="Старый (из бета-версии VS2010) способ хранения идентификатора GUID, с помощью которого решение отслеживает ссылочную целевую сборку отдельного проекта" />
+  <BoolProperty Name="CopyLocal" DisplayName="Копировать локально" Description="Указывает, будет ли ссылочная сборка скопирована в выходной каталог.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" PersistedName="Private" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="IncludeAssets" Description="Ресурсы, включаемые из этой ссылки" />
+  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="ExcludeAssets" Description="Ресурсы, исключаемые из этой ссылки" />
+  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="PrivateAssets" Description="Ресурсы, являющиеся закрытыми в этой ссылке" />
+</Rule>

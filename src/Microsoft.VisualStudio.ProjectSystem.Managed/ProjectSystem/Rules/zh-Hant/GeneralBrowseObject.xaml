@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright, Microsoft Corporation, All rights reserved.-->
+<Rule Name="ConfigurationGeneralBrowseObject" DisplayName="一般" PageTemplate="generic" Description="一般" OverrideMode="Replace" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.Categories>
+    <Category Name="General" DisplayName="一般" Description="一般" />
+  </Rule.Categories>
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" />
+  </Rule.DataSource>
+  <StringProperty Name="ApplicationIcon" DisplayName="應用程式圖示" Visible="True" />
+  <StringProperty Name="TargetFrameworkMoniker" DisplayName="目標 Framework Moniker" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="AssemblyName" DisplayName="組件名稱" Visible="True" />
+  <StringProperty Name="Name" Visible="True" />
+  <StringProperty Name="RootNamespace" DisplayName="根命名空間" Visible="True" />
+  <StringProperty Name="DefaultNamespace" DisplayName="預設命名空間" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="RootNamespace" Persistence="ProjectFile" HasConfigurationCondition="false" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="TargetFrameworks" DisplayName="目標 Framework" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworks" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <IntProperty Name="TargetFramework" ReadOnly="True" Visible="True">
+    <IntProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFramework" />
+    </IntProperty.DataSource>
+  </IntProperty>
+  <StringProperty Name="OutputName" Visible="True" />
+  <DynamicEnumProperty Name="OutputType" DisplayName="輸出類型" EnumProvider="OutputTypeEnumProvider" Visible="True" />
+  <EnumProperty Name="OutputTypeEx" DisplayName="輸出類型" Visible="True">
+    <EnumValue Name="winexe" DisplayName="0" />
+    <EnumValue Name="exe" DisplayName="1" />
+    <EnumValue Name="library" DisplayName="2" />
+    <EnumValue Name="appcontainerexe" DisplayName="3" />
+    <EnumValue Name="winmdobj" DisplayName="4" />
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="OutputTypeEx" HasConfigurationCondition="False" />
+    </EnumProperty.DataSource>
+  </EnumProperty>
+  <StringProperty Name="StartupObject" DisplayName="包含進入點的類型" Visible="True" />
+  <StringProperty Name="ApplicationManifest" DisplayName="應用程式資訊清單" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="ApplicationManifest" HasConfigurationCondition="false" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Win32ResourceFile" DisplayName="Win32 資源檔" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="Win32Resource" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="DefineConstants" DisplayName="定義常數" Visible="True" />
+  <EnumProperty Name="PlatformTarget" DisplayName="平台目標" Visible="True" />
+  <BoolProperty Name="Prefer32Bit" DisplayName="建議使用 32 位元" Visible="True" />
+  <BoolProperty Name="AllowUnsafeBlocks" Default="False" DisplayName="容許不安全的程式碼" Visible="True" />
+  <StringProperty Name="Optimize" DisplayName="最佳化" Visible="True" />
+  <EnumProperty Name="WarningLevel" DisplayName="警告層級" Visible="True" />
+  <StringProperty Name="NoWarn" DisplayName="隱藏警告" Visible="True" />
+  <BoolProperty Name="TreatWarningsAsErrors" Default="False" Description="將警告視為錯誤" Visible="True" />
+  <StringProperty Name="TreatSpecificWarningsAsErrors" Description="將特定警告視為錯誤" Visible="True" />
+  <StringProperty Name="OutputPath" DisplayName="輸出路徑" Visible="True" />
+  <StringProperty Name="DocumentationFile" DisplayName="文件檔案" Visible="True" />
+  <EnumProperty Name="GenerateSerializationAssemblies" DisplayName="產生序列化組件" Visible="True">
+    <EnumValue Name="Auto" DisplayName="自動" IsDefault="True" />
+    <EnumValue Name="On" DisplayName="開啟" />
+    <EnumValue Name="Off" DisplayName="關閉" />
+  </EnumProperty>
+  <EnumProperty Name="LanguageVersion" DisplayName="語言版本" Visible="True">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="LangVersion" />
+    </EnumProperty.DataSource>
+  </EnumProperty>
+  <EnumProperty Name="ErrorReport" DisplayName="錯誤報告" Visible="True" />
+  <EnumProperty Name="DebugInfo" DisplayName="偵錯資訊" Visible="True">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="DebugType" />
+    </EnumProperty.DataSource>
+  </EnumProperty>
+  <BoolProperty Name="CheckForOverflowUnderflow" DisplayName="CheckForOverflowUnderflow" Visible="False">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="CheckForOverflowUnderflow" HasConfigurationCondition="True" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <StringProperty Name="DebugSymbols" DisplayName="偵錯符號" Visible="True" />
+  <EnumProperty Name="FileAlignment" DisplayName="檔案記憶體對齊" Visible="True" />
+  <StringProperty Name="BaseAddress" DisplayName="基底位址" Visible="True" />
+  <StringProperty Name="PreBuildEvent" DisplayName="建置前事件" Visible="True" />
+  <StringProperty Name="PostBuildEvent" DisplayName="建置後事件" Visible="True" />
+  <EnumProperty Name="RunPostBuildEvent" DisplayName="執行建置後事件" Visible="True">
+    <EnumValue Name="Always" DisplayName="永遠" />
+    <EnumValue Name="OnBuildSuccess" DisplayName="建置成功時" IsDefault="True" />
+    <EnumValue Name="OnOutputUpdated" DisplayName="當組建更新專案輸出時" />
+  </EnumProperty>
+  <StringProperty Name="ReferencePath" DisplayName="參考路徑" Visible="True" />
+  <StringProperty Name="FileName" DisplayName="專案檔" ReadOnly="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectFile" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FullPath" DisplayName="專案資料夾" ReadOnly="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="LocalPath" ReadOnly="True" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <!-- Package properties -->
+  <BoolProperty Name="GeneratePackageOnBuild" DisplayName="建置時產生套件" Default="False" />
+  <StringProperty Name="PackageId" DisplayName="套件識別碼">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Version" DisplayName="套件版本">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Authors" DisplayName="作者">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <BoolProperty Name="PackageRequireLicenseAcceptance" DisplayName="套件要求接受授權" Default="False" />
+  <StringProperty Name="PackageLicenseUrl" DisplayName="套件授權 URL" />
+  <StringProperty Name="PackageProjectUrl" DisplayName="套件專案 URL" />
+  <StringProperty Name="PackageIconUrl" DisplayName="套件圖示 URL" />
+  <StringProperty Name="PackageTags" DisplayName="套件標記" />
+  <StringProperty Name="PackageReleaseNotes" DisplayName="版本資訊" />
+  <StringProperty Name="RepositoryUrl" DisplayName="存放庫 URL" />
+  <StringProperty Name="RepositoryType" DisplayName="存放庫類型" />
+  <!--AssemblyInfo properties-->
+  <StringProperty Name="Description" DisplayName="組件描述" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Company" DisplayName="組件公司" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Product" DisplayName="產品" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Copyright" DisplayName="著作權" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="AssemblyVersion" DisplayName="組件版本" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="FileVersion" DisplayName="組件檔版本" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="NeutralLanguage" DisplayName="中性資源語言" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <BoolProperty Name="SignAssembly" DisplayName="簽署組件" Visible="True" />
+  <BoolProperty Name="DelaySign" DisplayName="僅延遲簽署" Visible="True" />
+  <StringProperty Name="AssemblyOriginatorKeyFile" DisplayName="強式名稱金鑰檔" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+</Rule>

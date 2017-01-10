@@ -56,7 +56,10 @@
     <Compile Include="Mocks\IDebugLaunchProviderMetadataViewFactory.cs" />
     <Compile Include="Mocks\IDteServicesFactory.cs" />
     <Compile Include="Mocks\ExportFactoryFactory.cs" />
-    <Compile Include="Mocks\IMsBuildAccessorFactory.cs" />
+    <Compile Include="Mocks\IVsHiearchyItemFactory.cs" />
+    <Compile Include="Mocks\IProjectFileEditorPresenterFactory.cs" />
+    <Compile Include="Mocks\IFrameOpenCloseListenerFactory.cs" />
+    <Compile Include="Mocks\IProjectXmlAccessorFactory.cs" />
     <Compile Include="Mocks\IOutputGroupsFactory.cs" />
     <Compile Include="Mocks\IProjectCapabilitiesScopeFactory.cs" />
     <Compile Include="CollectionsExtensions.cs" />
@@ -67,17 +70,22 @@
     <Compile Include="Mocks\IJsonModel.cs" />
     <Compile Include="Mocks\IDependencyNodeFactory.cs" />
     <Compile Include="Mocks\IProjectCatalogSnapshotFactory.cs" />
+    <Compile Include="Mocks\IProjectFileModelWatcherFactory.cs" />
     <Compile Include="Mocks\ITextBufferFactory.cs" />
+    <Compile Include="Mocks\ITextBufferManagerMock.cs" />
+    <Compile Include="Mocks\ITextBufferStateListenerFactory.cs" />
     <Compile Include="Mocks\ITextDocumentFactory.cs" />
     <Compile Include="Mocks\ITextDocumentFactoryServiceFactory.cs" />
+    <Compile Include="Mocks\IVsUpdateSolutionEventsFactory.cs" />
+    <Compile Include="Mocks\IVsSolutionBuildManager2Factory.cs" />
     <Compile Include="Mocks\IVsEditorAdaptersFactoryServiceFactory.cs" />
     <Compile Include="Mocks\IVsPersistDocDataFactory.cs" />
     <Compile Include="Mocks\IVsProjectSpecialFilesFactory.cs" />
     <Compile Include="Mocks\IVsSettingsManagerFactory.cs" />
     <Compile Include="Mocks\IVsSettingsStoreTester.cs" />
+    <Compile Include="Mocks\IVsShellUtilitiesHelperFactory.cs" />
     <Compile Include="Mocks\IVsUIShell7Factory.cs" />
     <Compile Include="Mocks\IVsUnconfiguredProjectIntegrationServiceFactory.cs" />
-    <Compile Include="Mocks\MsBuildModelWatcherFactory.cs" />
     <Compile Include="Mocks\ProjectConfigurationFactory.cs" />
     <Compile Include="Mocks\IProjectSubscriptionUpdateFactory.cs" />
     <Compile Include="Mocks\IProjectRuleSnapshotFactory.cs" />
@@ -110,9 +118,17 @@
     <Compile Include="ProjectSystem\VS\Debug\DebugProfileEnumValuesGeneratorTests.cs" />
     <Compile Include="ProjectSystem\VS\Debug\ProjectDebuggerProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\DebugTests\StartupProjectRegistrarTests.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\ProjectFileEditorPresenterTests.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\Listeners\FrameOpenCloseListenerTests.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\Listeners\ProjectFileModelWatcherTests.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\Listeners\TempFileBufferStateListenerTests.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\TempFileTextBufferManagerTests.cs" />
     <Compile Include="ProjectSystem\VS\Generators\GeneratorExtensionRegistrationAttributeTests.cs" />
     <Compile Include="ProjectSystem\VS\Generators\SingleFileGeneratorFactoryAggregatorTests.cs" />
     <Compile Include="ProjectSystem\VS\Generators\RemoteCodeGenerationRegistrationAttributeTests.cs" />
+    <Compile Include="ProjectSystem\VS\Input\Commands\AbstractGenerateNuGetPackageCommandTests.cs" />
+    <Compile Include="ProjectSystem\VS\Input\Commands\GenerateNuGetPackageProjectContextMenuCommandTests.cs" />
+    <Compile Include="ProjectSystem\VS\Input\Commands\GenerateNuGetPackageTopLevelBuildMenuCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\EditProjectFileCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\AbstractOpenProjectDesignerCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\AbstractAddClassProjectCommandTests.cs" />
@@ -120,9 +136,9 @@
     <Compile Include="ProjectSystem\VS\Input\Commands\AddClassProjectVBCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\OpenProjectDesignerOnDefaultActionCommandTests.cs" />
-    <Compile Include="ProjectSystem\VS\Editor\MsBuildModelWatcherTests.cs" />
     <Compile Include="ProjectSystem\VS\NuGet\ProjectRestoreInfoBuilderTests.cs" />
     <Compile Include="ProjectSystem\VS\OptionsSettingsTests.cs" />
+    <Compile Include="ProjectSystem\VS\Properties\OutputTypeExValueProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\PropertyPages\BuildMacroInfoTests.cs" />
     <Compile Include="ProjectSystem\VS\PropertyPages\DebugPageViewModelTests.cs" />
     <Compile Include="ProjectSystem\VS\PropertyPages\PropertyPageControlTests.cs" />
@@ -146,7 +162,6 @@
     <Compile Include="ProjectSystem\VS\UnconfiguredProjectVsServicesTests.cs" />
     <Compile Include="ProjectSystem\VS\Properties\ProjectDesignerServiceTests.cs" />
     <Compile Include="ProjectSystem\VS\Utilities\EnumMatchToBooleanConverterTests.cs" />
-    <Compile Include="ProjectSystem\VS\Utilities\TestShellUtilitiesHelper.cs" />
     <Compile Include="Shell\HierarchyIdTests.cs" />
   </ItemGroup>
   <ItemGroup>

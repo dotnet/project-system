@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="ProjectReference" DisplayName="Riferimento al progetto" PageTemplate="generic" Description="Proprietà del riferimento al progetto" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" />
+  </Rule.DataSource>
+  <BoolProperty Name="ReferenceOutputAssembly" DisplayName="Assembly di output del riferimento" Description="Valore che indica se il compilatore deve includere un riferimento all'assembly di output primario del progetto di destinazione." />
+  <BoolProperty Name="CopyLocalSatelliteAssemblies" DisplayName="Copia assembly satellite locale" Description="Indica se gli assembly satellite della destinazione del riferimento devono essere copiati nella directory di output di questo progetto." />
+  <BoolProperty Name="LinkLibraryDependencies" Visible="False" />
+  <BoolProperty Name="UseLibraryDependencyInputs" Visible="False" />
+  <StringProperty Name="Project" Visible="False" Description="GUID con cui la soluzione tiene traccia della destinazione del riferimento di un singolo progetto" />
+  <StringProperty Name="ReferencedProjectIdentifier" Visible="False" Description="Modalità precedente (VS2010 beta) per archiviare il GUID con cui la soluzione tiene traccia della destinazione del riferimento di un singolo progetto" />
+  <BoolProperty Name="CopyLocal" DisplayName="Copia localmente" Description="Indica se il riferimento verrà copiato nella directory di output.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" PersistedName="Private" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="IncludeAssets" Description="Risorse da includere da questo riferimento" />
+  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="ExcludeAssets" Description="Risorse da escludere da questo riferimento" />
+  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="PrivateAssets" Description="Risorse private in questo riferimento" />
+</Rule>

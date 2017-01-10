@@ -8,9 +8,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     /// <summary>
     /// Implements the <see cref="IVsBuildMacroInfo"/> interface to be consumed by project properties.
     /// </summary>
-    [Export(ExportContractNames.VsTypes.ProjectNodeComExtension)]
+    [ExportProjectNodeComService((typeof(IVsBuildMacroInfo)))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
-    [ComServiceIid(typeof(IVsBuildMacroInfo))]
     internal class BuildMacroInfo : IVsBuildMacroInfo
     {
         /// <summary>
@@ -47,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             pbstrBuildMacroValue = null;
             var commonProperties = _configuredProject.Value.Services.ProjectPropertiesProvider.GetCommonProperties();
-            pbstrBuildMacroValue = _threadingService.ExecuteSynchronously<string>(() => commonProperties.GetEvaluatedPropertyValueAsync(bstrBuildMacroName));
+            pbstrBuildMacroValue = _threadingService.ExecuteSynchronously(() => commonProperties.GetEvaluatedPropertyValueAsync(bstrBuildMacroName));
 
             if (pbstrBuildMacroValue == null)
             {

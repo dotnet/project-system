@@ -2,17 +2,23 @@
 
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Packaging;
+using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.Input;
+using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
     [ProjectCommand(ManagedProjectSystemPackage.ManagedProjectSystemCommandSet, ManagedProjectSystemPackage.GenerateNuGetPackageProjectContextMenuCmdId)]
-    //[AppliesTo(ProjectCapability.GenerateNuGetPackage)]
+    [AppliesTo(ProjectCapability.Pack)]
     internal class GenerateNuGetPackageProjectContextMenuCommand : AbstractGenerateNuGetPackageCommand
     {
         [ImportingConstructor]
-        public GenerateNuGetPackageProjectContextMenuCommand(UnconfiguredProject unconfiguredProject, IProjectThreadingService threadingService)
-            : base (unconfiguredProject, threadingService)
+        public GenerateNuGetPackageProjectContextMenuCommand(
+            UnconfiguredProject unconfiguredProject,
+            IProjectThreadingService threadingService,
+            SVsServiceProvider serviceProvider,
+            GeneratePackageOnBuildPropertyProvider generatePackageOnBuildPropertyProvider)
+            : base(unconfiguredProject, threadingService, serviceProvider, generatePackageOnBuildPropertyProvider)
         {
         }
 

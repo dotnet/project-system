@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
+<Rule Name="DebuggerGeneralProperties" DisplayName="Общие свойства отладчика" Description="Общие параметры отладчика" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="UserFile" />
+  </Rule.DataSource>
+  <StringProperty Name="SymbolsPath" DisplayName="Путь поиска символов" Description="Путь поиска используется отладчиком для поиска символов."></StringProperty>
+  <StringProperty Name="DebuggerFlavor" Visible="false" Description="Правило отладки выбрано как активный отладчик."></StringProperty>
+  <EnumProperty Name="ImageClrType" Visible="false" Description="&quot;Скрытое&quot; свойство, передаваемое нами отладчикам, чтобы они знали, является ли проект управляемым.">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="UserFile" HasConfigurationCondition="false" PersistedName="_TargetImageClrType" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="Native" DisplayName="Машинный образ" Description="Исполняемый образ для отладки является полностью родным приложением." />
+    <EnumValue Name="Mixed" DisplayName="Смешанный образ" Description="Исполняемый образ для отладки - это смесь машинного и управляемого кода." />
+    <EnumValue Name="Managed" DisplayName="Управляемый образ" Description="Исполняемый образ для отладки является полностью управляемым приложением." />
+  </EnumProperty>
+</Rule>

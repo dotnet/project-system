@@ -10,7 +10,8 @@
     </ContentType>
 
     <ItemType Name="Compile" DisplayName="C# compiler"/>
-
-	<FileExtension Name=".cs" ContentType="CSharpFile"/>
+    <ItemType Name="AdditionalFiles" DisplayName="C# analyzer additional file"/>
+    
+    <FileExtension Name=".cs" ContentType="CSharpFile"/>
 </ProjectSchemaDefinitions>
 

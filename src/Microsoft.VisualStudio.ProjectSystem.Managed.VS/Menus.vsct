@@ -7,11 +7,11 @@
         See the comment before each section for more details about how to
         use it. -->
 
-  <!--  The VSCT compiler (the tool that translates this file into the binary 
-        format that VisualStudio will consume) has the ability to run a preprocessor 
-        on the vsct file; this preprocessor is (usually) the C++ preprocessor, so 
-        it is possible to define includes and macros with the same syntax used 
-        in C++ files. Using this ability of the compiler here, we include some files 
+  <!--  The VSCT compiler (the tool that translates this file into the binary
+        format that VisualStudio will consume) has the ability to run a preprocessor
+        on the vsct file; this preprocessor is (usually) the C++ preprocessor, so
+        it is possible to define includes and macros with the same syntax used
+        in C++ files. Using this ability of the compiler here, we include some files
         defining some of the constants that we will use inside the file. -->
 
   <!--This is the file that defines the IDs for all the commands exposed by VisualStudio. -->
@@ -23,7 +23,7 @@
   <!--Definition of some VSCT specific constants. In this sample we use it for the IDs inside the guidOfficeIcon group. -->
   <!--<Extern href="msobtnid.h" xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" />-->
 
-  <!-- This command is associated with the DebugTargetHandlerPackage as we want this package to handle our commands placed on the 
+  <!-- This command is associated with the DebugTargetHandlerPackage as we want this package to handle our commands placed on the
        debug (play button) menu contoller. It will redirect through code to our implementation of IVsProjectCfgDebugTargetSelection
   -->
   <Commands package="guidDebugTargetHandlerPackage">
@@ -44,25 +44,15 @@
 
   <Commands package="PackageGuidString">
     <Groups>
-      <Group guid="guidManagedProjectSystemCommandSet" id="cmdidEditProjFileGrp" priority="0x200">
-        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_PROJNODE" />
+      <Group guid="guidSHLMainMenu" id="IDG_VS_CTXT_PROJECT_EDITFILE" priority="0x0180">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_PROJNODE"/>
+      </Group>
+      <Group guid="guidSHLMainMenu" id="IDG_VS_CTXT_PROJECT_EDITFILE" priority="0x0180">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_PROJECT"/>
       </Group>
     </Groups>
 
     <Buttons>
-      <Button guid="guidManagedProjectSystemCommandSet" id="cmdidEditProjFile" priority="0x200">
-        <Parent guid="guidManagedProjectSystemCommandSet" id="cmdidEditProjFileGrp" />
-        <CommandFlag>TextChanges</CommandFlag>
-        <CommandFlag>DynamicVisibility</CommandFlag>
-        <CommandFlag>DefaultInvisible</CommandFlag>
-        <CommandFlag>DefaultDisabled</CommandFlag>
-        <Strings>
-          <ButtonText>Edit Project File</ButtonText>
-          <ToolTipText>Edit Project File</ToolTipText>
-          <CommandName>EditProjectFile</CommandName>
-        </Strings>
-      </Button>
-      
       <Button guid="guidManagedProjectSystemCommandSet" id="cmdidGenerateNuGetPackageProjectContextMenu" priority="0x450">
         <Parent guid="guidSHLMainMenu" id="IDG_VS_CTXT_PROJECT_BUILD" />
         <CommandFlag>TextChanges</CommandFlag>
@@ -103,8 +93,6 @@
     <GuidSymbol name="guidManagedProjectSystemCommandSet" value="{568ABDF7-D522-474D-9EED-34B5E5095BA5}">
       <!-- Note that these need room to grow hence they need to be spaced out-->
       <IDSymbol name="cmdidProjectDebugger" value="0x0100" />
-      <IDSymbol name="cmdidEditProjFileGrp" value="0x1000"/>
-      <IDSymbol name="cmdidEditProjFile" value="0x1001" />
       <IDSymbol name="cmdidGenerateNuGetPackageProjectContextMenu" value="0x2000" />
       <IDSymbol name="cmdidGenerateNuGetPackageTopLevelBuild" value="0x2001" />
     </GuidSymbol>

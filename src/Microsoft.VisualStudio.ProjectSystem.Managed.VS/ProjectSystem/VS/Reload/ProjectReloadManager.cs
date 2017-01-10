@@ -256,19 +256,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                             }
                                
                             var failedProjects = new List<Tuple<IReloadableProject, ProjectReloadResult>>();
-                            _threadHandling.ExecuteSynchronously(async () =>
+
+                            foreach (var project in changedProjects)
                             {
-                                foreach (var project in changedProjects)
+                                ProjectReloadResult result =  await project.ReloadProjectAsync().ConfigureAwait(true);
+
+                                if (result == ProjectReloadResult.ReloadFailed || result == ProjectReloadResult.ReloadFailedProjectDirty)
                                 {
-                                    ProjectReloadResult result =  await project.ReloadProjectAsync().ConfigureAwait(true);
-
-                                    if (result == ProjectReloadResult.ReloadFailed || result == ProjectReloadResult.ReloadFailedProjectDirty)
-                                    {
-                                        failedProjects.Add(new Tuple<IReloadableProject, ProjectReloadResult>(project, result));
-                                    }
+                                    failedProjects.Add(new Tuple<IReloadableProject, ProjectReloadResult>(project, result));
                                 }
-                            });
-
+                            }
+                            
                             ProcessProjectReloadFailures(failedProjects);
 
                         });
@@ -438,7 +436,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 ErrorHandler.ThrowOnFailure(VSConstants.E_UNEXPECTED);
             }
 
-            uint parentItemid  = (uint)project.VsHierarchy.GetProperty<int>(VsHierarchyPropID.ParentHierarchyItemid, unchecked((int)VSConstants.VSITEMID_NIL));
+            uint parentItemid  = (uint)project.VsHierarchy.GetProperty(VsHierarchyPropID.ParentHierarchyItemid, unchecked((int)VSConstants.VSITEMID_NIL));
             if (parentItemid == VSConstants.VSITEMID_NIL)
             {
                 ErrorHandler.ThrowOnFailure(VSConstants.E_UNEXPECTED);

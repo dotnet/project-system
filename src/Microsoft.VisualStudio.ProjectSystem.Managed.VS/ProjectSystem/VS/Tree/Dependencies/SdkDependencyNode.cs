@@ -32,6 +32,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             Priority = SdkNodePriority;
             ExpandedIcon = Icon;
+
+            Flags = (resolved ? GenericResolvedDependencyFlags : GenericUnresolvedDependencyFlags)
+                        .Union(flags);
         }
     }
 }

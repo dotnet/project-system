@@ -20,6 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             public IList<ILaunchProfile> Profiles { get; set; }
             public ILaunchSettingsProvider ProfileProvider { get; set; }
             public ILaunchSettings LaunchProfiles { get; set; }
+            public IList<Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>> UIProviders { get; set; } = new List<Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>>();
         }
 
         private Mock<DebugPageViewModel> CreateViewModel(ViewModelData data)
@@ -30,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj");
             var viewModel = new Mock<DebugPageViewModel>(false, unconfiguredProject);
 
-            mockSourceBlock.Setup<IDisposable>(m => m.LinkTo(It.IsAny<ITargetBlock<ILaunchSettings>>(), It.IsAny<DataflowLinkOptions>())).Callback
+            mockSourceBlock.Setup(m => m.LinkTo(It.IsAny<ITargetBlock<ILaunchSettings>>(), It.IsAny<DataflowLinkOptions>())).Callback
                 (
                     (ITargetBlock<ILaunchSettings> targetBlock, DataflowLinkOptions options) =>
                     {
@@ -59,6 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
             viewModel.CallBase = true;
             viewModel.Protected().Setup<ILaunchSettingsProvider>("GetDebugProfileProvider").Returns(mockProfileProvider.Object);
+            viewModel.Protected().Setup<IEnumerable<Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>>>("GetUIProviders").Returns(data.UIProviders);
             return viewModel;
         }
                
@@ -68,10 +70,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj");
             var viewModel = new DebugPageViewModel(false, unconfiguredProject);
 
-            Assert.IsType<VS.Utilities.DelegateCommand>(viewModel.BrowseDirectoryCommand);
-            Assert.IsType<VS.Utilities.DelegateCommand>(viewModel.BrowseExecutableCommand);
-            Assert.IsType<VS.Utilities.DelegateCommand>(viewModel.NewProfileCommand);
-            Assert.IsType<VS.Utilities.DelegateCommand>(viewModel.DeleteProfileCommand);
+            Assert.IsType<Utilities.DelegateCommand>(viewModel.BrowseDirectoryCommand);
+            Assert.IsType<Utilities.DelegateCommand>(viewModel.BrowseExecutableCommand);
+            Assert.IsType<Utilities.DelegateCommand>(viewModel.NewProfileCommand);
+            Assert.IsType<Utilities.DelegateCommand>(viewModel.DeleteProfileCommand);
         }
         
         [Fact]
@@ -90,14 +92,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             await viewModel.Object.Initialize();
             Assert.False(viewModel.Object.HasProfiles);
             Assert.False(viewModel.Object.IsProfileSelected);
-            Assert.False(viewModel.Object.IsExecutable);
+            Assert.False(viewModel.Object.SupportsExecutable);
             Assert.False(viewModel.Object.HasLaunchOption);
             Assert.Equal(string.Empty, viewModel.Object.WorkingDirectory);
             Assert.Equal(string.Empty, viewModel.Object.LaunchPage);
             Assert.Equal(string.Empty, viewModel.Object.ExecutablePath);
             Assert.Equal(string.Empty, viewModel.Object.CommandLineArguments);
-            Assert.Equal(string.Empty, viewModel.Object.SelectedCommandName);
         }
-
     }
 }

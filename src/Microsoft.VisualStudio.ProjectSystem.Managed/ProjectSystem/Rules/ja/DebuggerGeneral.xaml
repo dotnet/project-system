@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
+<Rule Name="DebuggerGeneralProperties" DisplayName="デバッガーの全般プロパティ" Description="デバッガーの全般オプション" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="UserFile" />
+  </Rule.DataSource>
+  <StringProperty Name="SymbolsPath" DisplayName="シンボルの検索パス" Description="シンボルを見つけるためにデバッガーが使用する検索パスです。"></StringProperty>
+  <StringProperty Name="DebuggerFlavor" Visible="false" Description="アクティブなデバッガーとして選択されるデバッグ規則です。"></StringProperty>
+  <EnumProperty Name="ImageClrType" Visible="false" Description="プロジェクトがマネージ プロジェクトであるかどうかを示すためにデバッガーに渡す 'hidden' プロパティです。">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="UserFile" HasConfigurationCondition="false" PersistedName="_TargetImageClrType" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="Native" DisplayName="ネイティブ イメージ" Description="デバッグ対象の実行可能イメージは、完全なネイティブ アプリケーションです。" />
+    <EnumValue Name="Mixed" DisplayName="混合イメージ" Description="デバッグ対象の実行可能イメージは、ネイティブ コードとマネージ コードの混合です。" />
+    <EnumValue Name="Managed" DisplayName="マネージ イメージ" Description="デバッグ対象の実行可能イメージは、完全なマネージ アプリケーションです。" />
+  </EnumProperty>
+</Rule>

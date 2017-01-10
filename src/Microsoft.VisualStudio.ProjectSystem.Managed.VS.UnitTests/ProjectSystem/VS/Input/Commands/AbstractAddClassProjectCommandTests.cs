@@ -194,7 +194,7 @@ Root (flags: {ProjectRoot})
 
             Assert.Equal(1, callCount);
             Assert.Equal(DirName, dirFilter);
-            Assert.Equal("Class", templateFilter);
+            Assert.Equal(VSResources.ClassTemplateName, templateFilter);
             Assert.Equal("folderName", browseLocations);
         }
 

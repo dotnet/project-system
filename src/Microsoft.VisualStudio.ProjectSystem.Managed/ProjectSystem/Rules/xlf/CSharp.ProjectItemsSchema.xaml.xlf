@@ -11,6 +11,10 @@
         <source>C# compiler</source>
         <note />
       </trans-unit>
+      <trans-unit id="ItemType|AdditionalFiles|DisplayName">
+        <source>C# analyzer additional file</source>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

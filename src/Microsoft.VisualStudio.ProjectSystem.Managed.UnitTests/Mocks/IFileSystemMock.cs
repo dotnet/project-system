@@ -21,6 +21,7 @@ namespace Microsoft.VisualStudio.IO
         {
             public string FileContents;
             public DateTime LastWriteTime = DateTime.MaxValue;
+            public Encoding FileEncoding = Encoding.Default;
         };
 
         Dictionary<string, FileData> _files = new Dictionary<string, FileData>(StringComparer.OrdinalIgnoreCase);
@@ -59,7 +60,6 @@ namespace Microsoft.VisualStudio.IO
             _folders.Add(path);
         }
 
-
         public void SetDirectoryAttribute(string path, FileAttributes newAttribute)
         {
         }
@@ -80,14 +80,14 @@ namespace Microsoft.VisualStudio.IO
             });
         }
 
-        public IEnumerable<string> EnumerateDirectories(string path, string searchPattern, System.IO.SearchOption searchOption)
+        public IEnumerable<string> EnumerateDirectories(string path, string searchPattern, SearchOption searchOption)
         {
             return EnumerateDirectories(path);
         }
 
         // SearchOption is ignored and always considered fully recursive.
         // Now supports search patterns
-        public IEnumerable<string> EnumerateFiles(string path, string searchPattern, System.IO.SearchOption searchOption)
+        public IEnumerable<string> EnumerateFiles(string path, string searchPattern, SearchOption searchOption)
         {
             var files = _files.Keys.Where(filePath => filePath.StartsWith(path));
 
@@ -136,7 +136,7 @@ namespace Microsoft.VisualStudio.IO
         {
             if (!FileExists(path))
             {
-                throw new System.IO.FileNotFoundException();
+                throw new FileNotFoundException();
             }
             _files.Remove(path);
         }
@@ -153,29 +153,30 @@ namespace Microsoft.VisualStudio.IO
         {
             if (!FileExists(path))
             {
-                throw new System.IO.FileNotFoundException();
+                throw new FileNotFoundException();
             }
             return _files[path].FileContents;
         }
 
         public void WriteAllText(string path, string content)
         {
-            if (_files.TryGetValue(path, out FileData curData))
-            {
-                // This makes sure each write to the file increases the timestamp
-                curData.FileContents = content;
-                SetLastWriteTime(curData);
-            }
-            else
-            {
-                _files[path] = new FileData() { FileContents = content };
-                SetLastWriteTime(_files[path]);
-            }
+            WriteAllText(path, content, Encoding.Default);
         }
 
         public void WriteAllText(string path, string content, Encoding encoding)
         {
-            WriteAllText(path, content);
+            if (_files.TryGetValue(path, out FileData curData))
+            {
+                // This makes sure each write to the file increases the timestamp
+                curData.FileContents = content;
+                curData.FileEncoding = encoding;
+                SetLastWriteTime(curData);
+            }
+            else
+            {
+                _files[path] = new FileData() { FileContents = content, FileEncoding = encoding };
+                SetLastWriteTime(_files[path]);
+            }
         }
 
         public DateTime LastFileWriteTime(string path)

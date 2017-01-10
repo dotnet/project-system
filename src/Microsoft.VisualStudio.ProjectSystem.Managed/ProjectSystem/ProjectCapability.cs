@@ -18,8 +18,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string AppDesigner = nameof(AppDesigner);
         public const string DependenciesTree = nameof(DependenciesTree);
         public const string EditAndContinue = nameof(EditAndContinue);
-        public const string LaunchProfiles = "LaunchProfiles";
-        public const string OpenProjectFile = "OpenProjectFile";
+        public const string LaunchProfiles = nameof(LaunchProfiles);
+        public const string OpenProjectFile = nameof(OpenProjectFile);
         public const string HandlesOwnReload = ProjectCapabilities.HandlesOwnReload;
         public const string ReferenceManagerAssemblies = nameof(ReferenceManagerAssemblies);
         public const string ReferenceManagerBrowse = nameof(ReferenceManagerBrowse);
@@ -27,6 +27,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string ReferenceManagerProjects = nameof(ReferenceManagerProjects);
         public const string ReferenceManagerSharedProjects = nameof(ReferenceManagerSharedProjects);
         public const string ReferenceManagerWinRT = nameof(ReferenceManagerWinRT);
-        public const string GenerateNuGetPackage = "GenerateNuGetPackage";
+        public const string Pack = nameof(Pack); // Keep this in sync with Microsoft.VisualStudio.Editors.ProjectCapability.Pack
     }
 }

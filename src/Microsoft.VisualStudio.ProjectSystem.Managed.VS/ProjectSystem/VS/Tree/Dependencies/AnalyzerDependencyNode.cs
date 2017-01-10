@@ -32,8 +32,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
 
             Priority = AnalyzerNodePriority;
-
             ExpandedIcon = Icon;
+
+            Flags = (resolved ? GenericResolvedDependencyFlags : GenericUnresolvedDependencyFlags)
+                        .Union(flags);
         }
     }
 }

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
+<Rule Name="DebuggerGeneralProperties" DisplayName="Obecné vlastnosti ladicího programu" Description="Obecné možnosti ladicího programu" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="UserFile" />
+  </Rule.DataSource>
+  <StringProperty Name="SymbolsPath" DisplayName="Cesta pro hledání symbolů" Description="Vyhledávací cesta, kterou ladicí program používá pro vyhledávání symbolů"></StringProperty>
+  <StringProperty Name="DebuggerFlavor" Visible="false" Description="Pravidlo ladění zvolené jako aktivní ladicí program"></StringProperty>
+  <EnumProperty Name="ImageClrType" Visible="false" Description="Skrytá vlastnost předávaná ladicím programům, podle níž poznají, zda se jedná o spravovaný projekt.">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="UserFile" HasConfigurationCondition="false" PersistedName="_TargetImageClrType" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="Native" DisplayName="Nativní bitová kopie" Description="Spustitelná bitová kopie, která se má ladit, je aplikace tvořená výhradně nativním kódem." />
+    <EnumValue Name="Mixed" DisplayName="Smíšená bitová kopie" Description="Spustitelná bitová kopie, která se má ladit, je kombinací nativního a spravovaného kódu." />
+    <EnumValue Name="Managed" DisplayName="Spravovaná bitová kopie" Description="Spustitelná bitová kopie, která se má ladit, je aplikace tvořená výhradně spravovaným kódem." />
+  </EnumProperty>
+</Rule>

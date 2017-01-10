@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="Folder" DisplayName="Geral" PageTemplate="generic" Description="Propriedades da Pasta" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFileFolderItems" HasConfigurationCondition="False" ItemType="Folder" />
+  </Rule.DataSource>
+  <StringProperty Name="Identity" Visible="false" ReadOnly="true" Category="Misc" />
+  <StringProperty Name="FullPath" DisplayName="Caminho Completo" ReadOnly="true" Category="Misc" Description="Localização da pasta" />
+  <StringProperty Name="FolderName" DisplayName="Nome da Pasta" ReadOnly="true" Category="Misc" Description="O nome desta pasta" />
+</Rule>

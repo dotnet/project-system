@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="ResolvedSdkReference" DisplayName="解析的 SDK 引用" PageTemplate="generic" Description="解析的 SDK 引用" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ResolvedReference" ItemType="SDKReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="ResolveSDKReferencesDesignTime" />
+  </Rule.DataSource>
+  <StringProperty Name="AppXLocation" DisplayName="应用包位置" />
+  <!-- This property should be the same as the one for the ResolvedReference item -->
+  <StringProperty Name="OriginalItemSpec" Visible="false" />
+  <StringProperty Name="FrameworkIdentity" DisplayName="FrameworkIdentity" />
+  <StringProperty Name="DisplayName" DisplayName="显示名称" Visible="False" />
+  <BoolProperty Name="CopyPayload" DisplayName="复制负载" />
+  <BoolProperty Name="ExpandContent" DisplayName="扩展内容" />
+  <BoolProperty Name="ExpandReferenceAssemblies" DisplayName="扩展引用程序集" />
+  <BoolProperty Name="CopyLocalExpandedReferenceAssemblies" DisplayName="复制本地扩展的引用程序集" />
+</Rule>

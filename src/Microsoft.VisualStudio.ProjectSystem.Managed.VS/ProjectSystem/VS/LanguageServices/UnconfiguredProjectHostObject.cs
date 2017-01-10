@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -12,16 +11,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     /// </summary>
     internal sealed class UnconfiguredProjectHostObject : AbstractHostObject, IUnconfiguredProjectHostObject
     {
-        private readonly Dictionary<uint, IVsHierarchyEvents> _hierEventSinks;
-        private readonly HashSet<uint> _pendingItemIds;
+        private readonly Dictionary<uint, IVsHierarchyEvents> _hierEventSinks = new Dictionary<uint, IVsHierarchyEvents>();
+        private readonly HashSet<uint> _pendingItemIds = new HashSet<uint>();
 
-        public UnconfiguredProjectHostObject(UnconfiguredProject unconfiguredProject)
-            : base (innerHierarchy: (IVsHierarchy)unconfiguredProject.Services.HostObject, innerVsProject: (IVsProject)unconfiguredProject.Services.HostObject)
+        public UnconfiguredProjectHostObject(IUnconfiguredProjectVsServices projectVsServices)
+            : base(innerHierarchy: projectVsServices.VsHierarchy, innerVsProject: projectVsServices.VsProject)
         {
-            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
-
-            _hierEventSinks = new Dictionary<uint, IVsHierarchyEvents>();
-            _pendingItemIds = new HashSet<uint>();
         }
 
         public IConfiguredProjectHostObject ActiveIntellisenseProjectHostObject { get; set; }

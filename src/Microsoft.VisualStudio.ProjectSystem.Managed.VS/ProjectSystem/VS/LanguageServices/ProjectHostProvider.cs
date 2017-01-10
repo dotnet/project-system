@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 
@@ -10,11 +9,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     internal sealed partial class ProjectHostProvider : IProjectHostProvider
     {
         [ImportingConstructor]
-        public ProjectHostProvider(UnconfiguredProject unconfiguredProject)
+        public ProjectHostProvider(IUnconfiguredProjectVsServices projectVsServices)
         {
-            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
+            Requires.NotNull(projectVsServices, nameof(projectVsServices));
 
-            UnconfiguredProjectHostObject = new UnconfiguredProjectHostObject(unconfiguredProject);
+            UnconfiguredProjectHostObject = new UnconfiguredProjectHostObject(projectVsServices);
         }
 
         public IUnconfiguredProjectHostObject UnconfiguredProjectHostObject { get; }

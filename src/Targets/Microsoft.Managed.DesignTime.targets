@@ -32,12 +32,11 @@
     <ProjectCapability Include="UseFileGlobs"/>
     <ProjectCapability Include="EditAndContinue"/>
     <ProjectCapability Include="OpenProjectFile"/>
-    <ProjectCapability Include="GenerateNuGetPackage"/>
 
     <!-- DependenciesTree capability lights up a Dependencies tree node and it's sub node providers-->
     <ProjectCapability Include="DependenciesTree" />
     <ProjectCapability Include="LaunchProfiles" />
-
+    <ProjectCapability Include="NoGeneralDependentFileIcon"/>
     <!--
       List of capabilities below is adding back common capabilities defined in imported targets.
       We disabled them with the property DefineCommonCapabilities=false to get rid of default

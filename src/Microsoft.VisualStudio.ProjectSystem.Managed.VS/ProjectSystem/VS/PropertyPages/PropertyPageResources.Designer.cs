@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        public PropertyPageResources() {
+        internal PropertyPageResources() {
         }
         
         /// <summary>
@@ -61,15 +61,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You must run Visual Studio in the context of an administrator account to create IIS Express sites with ports less than 1024..
-        /// </summary>
-        public static string AdminRequiredForPort {
-            get {
-                return ResourceManager.GetString("AdminRequiredForPort", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to All files.
         /// </summary>
         public static string AllFiles {
@@ -84,24 +75,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         public static string ApplicationArgumentsWatermark {
             get {
                 return ResourceManager.GetString("ApplicationArgumentsWatermark", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The URL of the application.
-        /// </summary>
-        public static string ApplicationUrlWatermark {
-            get {
-                return ResourceManager.GetString("ApplicationUrlWatermark", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Copy.
-        /// </summary>
-        public static string CopyHyperlinkText {
-            get {
-                return ResourceManager.GetString("CopyHyperlinkText", resourceCulture);
             }
         }
         
@@ -142,6 +115,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The errors on the page must be corrected prior to saving your changes..
+        /// </summary>
+        public static string ErrorsMustBeCorrectedPriorToSaving {
+            get {
+                return ResourceManager.GetString("ErrorsMustBeCorrectedPriorToSaving", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Executable files.
         /// </summary>
         public static string ExecutableFiles {
@@ -156,51 +138,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         public static string ExecutablePathWatermark {
             get {
                 return ResourceManager.GetString("ExecutablePathWatermark", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The IIS settings are missing the App Url property. This is required to configure IIS to run the site..
-        /// </summary>
-        public static string IISExpressMissingAppUrl {
-            get {
-                return ResourceManager.GetString("IISExpressMissingAppUrl", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The IIS settings are missing the App Url property. This is required to configure IIS to run the site..
-        /// </summary>
-        public static string IISMissingAppUrl {
-            get {
-                return ResourceManager.GetString("IISMissingAppUrl", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The Application Url is invalid. {0}.
-        /// </summary>
-        public static string InvalidAppUrl {
-            get {
-                return ResourceManager.GetString("InvalidAppUrl", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The IIS Application Url is invalid. {0}.
-        /// </summary>
-        public static string InvalidIISAppUrl {
-            get {
-                return ResourceManager.GetString("InvalidIISAppUrl", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The IIS Express Application Url is invalid. {0}.
-        /// </summary>
-        public static string InvalidIISExpressAppUrl {
-            get {
-                return ResourceManager.GetString("InvalidIISExpressAppUrl", resourceCulture);
             }
         }
         
@@ -237,15 +174,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         public static string NewProfileSeedName {
             get {
                 return ResourceManager.GetString("NewProfileSeedName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Command.
-        /// </summary>
-        public static string ProfileKindCommandName {
-            get {
-                return ResourceManager.GetString("ProfileKindCommandName", resourceCulture);
             }
         }
         

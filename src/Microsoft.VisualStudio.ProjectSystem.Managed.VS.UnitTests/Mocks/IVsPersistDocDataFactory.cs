@@ -15,5 +15,30 @@ namespace Microsoft.VisualStudio.Shell.Interop
             mock.As<IVsTextBuffer>();
             return mock.Object;
         }
+
+        public static IVsPersistDocData ImplementAsIVsTextBufferIsDocDataDirty(bool isDirty, int ret)
+        {
+            var mock = Mock.Get(ImplementAsIVsTextBuffer());
+            int isDirtyOut = 0;
+            mock.Setup(m => m.IsDocDataDirty(out isDirtyOut)).Returns((out int param) =>
+            {
+                param = isDirty ? 1 : 0;
+                return ret;
+            });
+            return mock.Object;
+        }
+
+        public static IVsPersistDocData ImplementAsIVsTextBufferGetStateFlags(uint existingFlags)
+        {
+            var mock = new Mock<IVsPersistDocData>();
+            var textBufferMock = mock.As<IVsTextBuffer>();
+            uint flags = 0;
+            textBufferMock.Setup(t => t.GetStateFlags(out flags)).Returns((out uint f) => {
+                f = existingFlags;
+                return VSConstants.S_OK;
+            });
+
+            return mock.Object;
+        }
     }
 }

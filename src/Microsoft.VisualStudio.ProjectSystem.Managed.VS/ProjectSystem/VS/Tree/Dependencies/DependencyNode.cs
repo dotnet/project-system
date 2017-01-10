@@ -108,8 +108,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Properties = properties;
             Resolved = resolved;
             Flags = Resolved
-                        ? GenericResolvedDependencyFlags.Union(flags)
-                        : GenericUnresolvedDependencyFlags.Union(flags);
+                        ? ResolvedDependencyFlags.Union(flags)
+                        : UnresolvedDependencyFlags.Union(flags);
         }
 
         /// <summary>
@@ -125,6 +125,43 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         public string Caption { get; set; }
 
+        /// <summary>
+        /// Actual formal name of the node. In most cases it will be equal to Caption,
+        /// however in some cases caption would have name + version or something else.
+        /// So to allow tree provider store formal name we need this property too. 
+        /// It is a hack now and we should make it public and move to IDependencyNode when
+        /// we get a chance and it is safe to do a breaking change.
+        /// Tracking with https://github.com/dotnet/roslyn-project-system/issues/1101
+        /// </summary>
+        private string _name;
+        internal string Name {
+            get
+            {
+                return _name ?? Caption;
+            }
+            set
+            {
+                _name = value;
+            }
+        }
+
+        /// <summary>
+        /// This is temporary until we can add Name to IDependencyNode to protect us from custom 
+        /// implementations of IDependencyNode which don't have Name yet.
+        /// </summary>
+        internal static string GetName(IDependencyNode node)
+        {
+            Requires.NotNull(node, nameof(node));
+
+            if (node is DependencyNode dependencyNode)
+            {
+                return dependencyNode.Name;
+            }
+            else
+            {
+                return node.Caption;
+            }
+        }
         /// <summary>
         /// Unique name constructed in the form Caption (ItemSpec).
         /// Is used to dedupe dependency nodes when they have same caption but different 

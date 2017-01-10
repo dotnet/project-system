@@ -37,6 +37,8 @@
     <Compile Include="ProjectSystem\Build\BuildProperty.cs" />
     <Compile Include="CommonConstants.cs" />
     <Compile Include="ProjectSystem\Build\CommandLineDesignTimeBuildPropertiesProvider.cs" />
+    <Compile Include="ProjectSystem\Build\GeneratePackageOnBuildDesignTimeBuildPropertyProvider.cs" />
+    <Compile Include="ProjectSystem\Build\GeneratePackageOnBuildPropertyProvider.cs" />
     <Compile Include="ProjectSystem\Build\TargetFrameworkGlobalBuildPropertyProvider.cs" />
     <Compile Include="ProjectSystem\ContractNames.cs" />
     <Compile Include="GlobalSuppressions.cs" />
@@ -44,7 +46,12 @@
     <Compile Include="ProjectSystem\Debug\IDebugTokenReplacer.cs" />
     <Compile Include="ProjectSystem\Debug\DebugTokenReplacer.cs" />
     <Compile Include="ProjectSystem\Debug\IJsonSection.cs" />
+    <Compile Include="ProjectSystem\Debug\IWritableLaunchProfile.cs" />
+    <Compile Include="ProjectSystem\Debug\IWritableLaunchSettings.cs" />
+    <Compile Include="ProjectSystem\Debug\ILaunchSettingsUIProvider.cs" />
     <Compile Include="ProjectSystem\Debug\ILaunchSettingsSerializationProvider.cs" />
+    <Compile Include="ProjectSystem\Debug\WritableLaunchSettings.cs" />
+    <Compile Include="ProjectSystem\Debug\WritableLaunchProfile.cs" />
     <Compile Include="ProjectSystem\Debug\LaunchProfileData.cs" />
     <Compile Include="ProjectSystem\Debug\LaunchProfile.cs" />
     <Compile Include="ProjectSystem\Debug\ILaunchProfile.cs" />
@@ -398,12 +405,18 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources.*.resx">
+      <DependentUpon>Resources.resx</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <XamlPropertyRule Include="ProjectSystem\Rules\AdditionalFiles.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="PresentationFramework" />
   </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
   <ItemDefinitionGroup>

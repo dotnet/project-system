@@ -1,0 +1,1713 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CMN_AllFilesFilter" xml:space="preserve">
+    <value>所有檔案</value>
+  </data>
+  <data name="PPG_PropertyPageControlName" xml:space="preserve">
+    <value>屬性頁</value>
+  </data>
+  <data name="PPG_ReferencesTitle" xml:space="preserve">
+    <value>參考</value>
+  </data>
+  <data name="PPG_VersionTitle" xml:space="preserve">
+    <value>版本</value>
+  </data>
+  <data name="PPG_SigningTitle" xml:space="preserve">
+    <value>簽署</value>
+  </data>
+  <data name="PPG_ApplicationTitle" xml:space="preserve">
+    <value>應用程式</value>
+  </data>
+  <data name="PPG_CompileTitle" xml:space="preserve">
+    <value>編譯</value>
+  </data>
+  <data name="PPG_DebugTitle" xml:space="preserve">
+    <value>偵錯</value>
+  </data>
+  <data name="PPG_DeployTitle" xml:space="preserve">
+    <value>部署</value>
+  </data>
+  <data name="PPG_VdtGeneralTitle" xml:space="preserve">
+    <value>資料庫</value>
+  </data>
+  <data name="PPG_Security" xml:space="preserve">
+    <value>安全性</value>
+  </data>
+  <data name="PPG_BuildTitle" xml:space="preserve">
+    <value>建置</value>
+  </data>
+  <data name="PPG_BuildEventsTitle" xml:space="preserve">
+    <value>建置事件</value>
+  </data>
+  <data name="PPG_ReferencePathsTitle" xml:space="preserve">
+    <value>參考路徑</value>
+  </data>
+  <data name="PPG_PreBuildCommandLineTitle" xml:space="preserve">
+    <value>建置前事件命令列</value>
+  </data>
+  <data name="PPG_PostBuildCommandLineTitle" xml:space="preserve">
+    <value>建置後事件命令列</value>
+  </data>
+  <data name="PPG_OutputPathNotSecure" xml:space="preserve">
+    <value>輸出路徑不受信任。
+應用程式嘗試執行需要完全信任的動作時，可能會擲回安全性例外狀況。
+按一下 [確定] 略過並繼續。按一下 [取消] 選擇其他輸出路徑。</value>
+  </data>
+  <data name="PPG_BrowseText" xml:space="preserve">
+    <value>&lt;瀏覽...&gt;</value>
+  </data>
+  <data name="PPG_StartupObjectNone" xml:space="preserve">
+    <value>(無)</value>
+  </data>
+  <data name="PPG_KeyFileNewText" xml:space="preserve">
+    <value>&lt;新增...&gt;</value>
+  </data>
+  <data name="PPG_KeyFileBrowseText" xml:space="preserve">
+    <value>&lt;瀏覽...&gt;</value>
+  </data>
+  <data name="PPG_ComboBoxSelect_None" xml:space="preserve">
+    <value>(無)</value>
+  </data>
+  <data name="PPG_ActiveConfigOrPlatformFormatString_1Arg" xml:space="preserve">
+    <value>使用中 ({0})</value>
+  </data>
+  <data name="PPG_AllConfigurations" xml:space="preserve">
+    <value>所有組態</value>
+  </data>
+  <data name="PPG_AllPlatforms" xml:space="preserve">
+    <value>所有平台</value>
+  </data>
+  <data name="PPG_NotApplicable" xml:space="preserve">
+    <value>N/A</value>
+  </data>
+  <data name="PPG_ConfigNotFound_2Args" xml:space="preserve">
+    <value>找不到平台 '{1}' 的組態 '{0}'。</value>
+  </data>
+  <data name="PPG_NeutralLanguage_None" xml:space="preserve">
+    <value>(無)</value>
+  </data>
+  <data name="PPG_SelectFileTitle" xml:space="preserve">
+    <value>選取檔案</value>
+  </data>
+  <data name="PPG_AddExistingFilesTitle" xml:space="preserve">
+    <value>將現有的檔案加入專案</value>
+  </data>
+  <data name="PPG_AddIconFilesFilter" xml:space="preserve">
+    <value>圖示檔</value>
+  </data>
+  <data name="PPG_ExeFilesFilter" xml:space="preserve">
+    <value>可執行檔</value>
+  </data>
+  <data name="PPG_SelectWorkingDirectoryTitle" xml:space="preserve">
+    <value>選取工作目錄</value>
+  </data>
+  <data name="PPG_SelectOutputPathTitle" xml:space="preserve">
+    <value>選取輸出路徑</value>
+  </data>
+  <data name="PPG_SelectReferencePath" xml:space="preserve">
+    <value>選取參考路徑</value>
+  </data>
+  <data name="PPG_AddWin32ResourceFilter" xml:space="preserve">
+    <value>Win32 資源檔</value>
+  </data>
+  <data name="PPG_AddWin32ResourceTitle" xml:space="preserve">
+    <value>將 Win32 資源檔加入專案</value>
+  </data>
+  <data name="PPG_InvalidFolderPath" xml:space="preserve">
+    <value>資料夾路徑不存在。
+請選取有效的資料夾路徑。</value>
+  </data>
+  <data name="PPG_AdvancedCompilerSettings_Title" xml:space="preserve">
+    <value>進階編譯器設定</value>
+  </data>
+  <data name="PPG_AdvancedBuildSettings_Title" xml:space="preserve">
+    <value>進階建置設定</value>
+  </data>
+  <data name="PPG_CompilerWarnings_Title" xml:space="preserve">
+    <value>編譯器警告</value>
+  </data>
+  <data name="PPG_ReferencePaths_Title" xml:space="preserve">
+    <value>參考路徑</value>
+  </data>
+  <data name="PPG_CompatibleSettings_Title" xml:space="preserve">
+    <value>相容設定</value>
+  </data>
+  <data name="PPG_AssemblyInfo_Title" xml:space="preserve">
+    <value>組件資訊</value>
+  </data>
+  <data name="PPG_AssemblyInfo_InvalidVersion" xml:space="preserve">
+    <value>無效的版本格式，必須是 "[Major]"、"[Major].[Minor]"、"[Major].[Minor].[Build]" 或 "[Major].[Minor].[Build].[Revision]"</value>
+  </data>
+  <data name="PPG_AssemblyInfo_BadWildcard" xml:space="preserve">
+    <value>此欄位不允許萬用字元 ("*")。</value>
+  </data>
+  <data name="PPG_AssemblyInfo_VersionOutOfRange_2Args" xml:space="preserve">
+    <value>'{0}' 的版本號碼的每個部分都必須是介於 0 和 {1} 之間的整數。</value>
+  </data>
+  <data name="PPG_Application_DefaultIconText" xml:space="preserve">
+    <value>(預設圖示)</value>
+  </data>
+  <data name="PPG_Application_InvalidSubMainStartup" xml:space="preserve">
+    <value>核取 [啟用應用程式架構] 時，啟始物件必須是表單。</value>
+  </data>
+  <data name="PPG_Application_StartupObjectNotSet" xml:space="preserve">
+    <value>(未設定)</value>
+  </data>
+  <data name="PPG_Application_CantAddIcon" xml:space="preserve">
+    <value>無法將圖示加入專案。</value>
+  </data>
+  <data name="PPG_Application_BadIcon" xml:space="preserve">
+    <value>圖示檔無效。</value>
+  </data>
+  <data name="PPG_Application_BadIcon_1Arg" xml:space="preserve">
+    <value>{0} 不是有效的圖示檔。</value>
+  </data>
+  <data name="PPG_Application_BadGuid" xml:space="preserve">
+    <value>GUID 應符合 dddddddd-dddd-dddd-dddd-dddddddddddd 格式。</value>
+  </data>
+  <data name="PPG_Application_MyAppCommentLine1" xml:space="preserve">
+    <value>注意:這是自動產生的檔案，請勿直接修改它。若要進行變更，</value>
+  </data>
+  <data name="PPG_Application_MyAppCommentLine2" xml:space="preserve">
+    <value> 或者您在這個檔案發生建置錯誤，請到專案設計工具</value>
+  </data>
+  <data name="PPG_Application_MyAppCommentLine3" xml:space="preserve">
+    <value> (移至專案屬性或者在 [方案總管] 中按兩下 [My Project] 節點)，</value>
+  </data>
+  <data name="PPG_Application_MyAppCommentLine4" xml:space="preserve">
+    <value> 然後在 [應用程式] 索引標籤上進行變更。</value>
+  </data>
+  <data name="PPG_Application_InvalidIdentifierStartupForm_1Arg" xml:space="preserve">
+    <value>'{0}' 不是有效的識別碼。請選取其他的啟動表單。</value>
+  </data>
+  <data name="PPG_Application_InvalidIdentifierSplashScreenForm_1Arg" xml:space="preserve">
+    <value>'{0}' 不是有效的識別碼。請選取其他的啟動顯示畫面表單。</value>
+  </data>
+  <data name="PPG_Application_SplashSameAsStart" xml:space="preserve">
+    <value>啟動顯示畫面表單不能是啟動表單。</value>
+  </data>
+  <data name="PPG_Application_StartupFormLabelText" xml:space="preserve">
+    <value>啟動表單(&amp;O):</value>
+  </data>
+  <data name="PPG_Application_AppEventsCommentLine1" xml:space="preserve">
+    <value>MyApplication 可以使用下列事件: </value>
+  </data>
+  <data name="PPG_Application_AppEventsCommentLine3" xml:space="preserve">
+    <value>Startup:在應用程式啟動時，但尚未建立啟動表單之前引發。</value>
+  </data>
+  <data name="PPG_Application_AppEventsCommentLine4" xml:space="preserve">
+    <value>Shutdown:在所有應用程式表單關閉之後引發。如果應用程式不正常終止，就不會引發此事件。</value>
+  </data>
+  <data name="PPG_Application_AppEventsCommentLine5" xml:space="preserve">
+    <value>UnhandledException:在應用程式發生未處理的例外狀況時引發。</value>
+  </data>
+  <data name="PPG_Application_AppEventsCommentLine6" xml:space="preserve">
+    <value>StartupNextInstance:在啟動單一執行個體應用程式且應用程式已於使用中時引發。 </value>
+  </data>
+  <data name="PPG_Application_AppEventsCommentLine7" xml:space="preserve">
+    <value>NetworkAvailabilityChanged:在連接或中斷網路連線時引發。</value>
+  </data>
+  <data name="PPG_AdvancedBuildSettings_InvalidBaseAddress" xml:space="preserve">
+    <value>基底位址必須是小於或等於 8 位數的十六進位數字，例如 0x11000000。</value>
+  </data>
+  <data name="PPG_Compile_Notification_None" xml:space="preserve">
+    <value>無</value>
+  </data>
+  <data name="PPG_Compile_Notification_Warning" xml:space="preserve">
+    <value>警告</value>
+  </data>
+  <data name="PPG_Compile_Notification_Error" xml:space="preserve">
+    <value>錯誤</value>
+  </data>
+  <data name="PPG_Compile_OptionStrict_Custom" xml:space="preserve">
+    <value>(自訂)</value>
+  </data>
+  <data name="PPG_Compile_42016" xml:space="preserve">
+    <value>隱含轉換</value>
+  </data>
+  <data name="PPG_Compile_42017_42018_42019" xml:space="preserve">
+    <value>晚期繫結，執行階段時呼叫可能失敗</value>
+  </data>
+  <data name="PPG_Compile_42020" xml:space="preserve">
+    <value>隱含類型，假設是 Object</value>
+  </data>
+  <data name="PPG_Compile_42104" xml:space="preserve">
+    <value>在指派之前使用變數</value>
+  </data>
+  <data name="PPG_Compile_42105_42106_42107" xml:space="preserve">
+    <value>傳回參考類型卻沒有傳回值的函式</value>
+  </data>
+  <data name="PPG_Compile_42353_42354_42355" xml:space="preserve">
+    <value>傳回內建實值類型卻沒有傳回值的函式</value>
+  </data>
+  <data name="PPG_Compile_42024" xml:space="preserve">
+    <value>未使用的區域變數</value>
+  </data>
+  <data name="PPG_Compile_42025" xml:space="preserve">
+    <value>執行個體變數存取共用成員</value>
+  </data>
+  <data name="PPG_Compile_42004" xml:space="preserve">
+    <value>遞迴運算子或屬性存取</value>
+  </data>
+  <data name="PPG_Compile_42029" xml:space="preserve">
+    <value>重複或重疊的 catch 區塊</value>
+  </data>
+  <data name="PPG_Compile_ResetIndeterminateWarningLevels" xml:space="preserve">
+    <value>一或多個組態衝突的警告設定。
+變更此設定將重設所有組態中的設定。</value>
+  </data>
+  <data name="PPG_MyApplication_StartupMode_FormCloses" xml:space="preserve">
+    <value>啟動表單關閉時</value>
+  </data>
+  <data name="PPG_MyApplication_StartupMode_AppExits" xml:space="preserve">
+    <value>最後表單關閉時</value>
+  </data>
+  <data name="PPG_MyApplication_AuthenMode_Windows" xml:space="preserve">
+    <value>Windows</value>
+  </data>
+  <data name="PPG_MyApplication_AuthenMode_ApplicationDefined" xml:space="preserve">
+    <value>由應用程式定義</value>
+  </data>
+  <data name="PPG_SecurityPage_Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="PPG_SecurityPage_Calculate" xml:space="preserve">
+    <value>計算使用權限(&amp;C)</value>
+  </data>
+  <data name="PPG_MgdStatus_Stopped" xml:space="preserve">
+    <value>已停止...</value>
+  </data>
+  <data name="PPG_MgdStatus_Starting" xml:space="preserve">
+    <value>正在啟動...</value>
+  </data>
+  <data name="PPG_MgdStatus_Building" xml:space="preserve">
+    <value>正在建置...</value>
+  </data>
+  <data name="PPG_MgdStatus_Analyzing" xml:space="preserve">
+    <value>正在分析...</value>
+  </data>
+  <data name="PPG_MgdStatus_AnalyzeFailed" xml:space="preserve">
+    <value>分析失敗</value>
+  </data>
+  <data name="PPG_MgdStatus_Aborting" xml:space="preserve">
+    <value>正在中止...</value>
+  </data>
+  <data name="PPG_MgdStatus_Cancelling" xml:space="preserve">
+    <value>正在取消...</value>
+  </data>
+  <data name="PPG_SecurityPage_InternetZone" xml:space="preserve">
+    <value>網際網路</value>
+  </data>
+  <data name="PPG_SecurityPage_LocalIntranetZone" xml:space="preserve">
+    <value>近端內部網路</value>
+  </data>
+  <data name="PPG_SecurityPage_CustomZone" xml:space="preserve">
+    <value>(自訂)</value>
+  </data>
+  <data name="PPG_SecurityPage_ZoneDefault" xml:space="preserve">
+    <value>(區域預設)</value>
+  </data>
+  <data name="PPG_SecurityPage_Included" xml:space="preserve">
+    <value>包含</value>
+  </data>
+  <data name="PPG_SecurityPage_Excluded" xml:space="preserve">
+    <value>排除</value>
+  </data>
+  <data name="PPG_SecurityPage_FullTrustToolTip" xml:space="preserve">
+    <value>應用程式必須有更高的使用權限，才能在選取的區域中執行。如需詳細資訊，請按一下上方的 [說明] 連結。</value>
+  </data>
+  <data name="PPG_SecurityPage_BadPermissionToolTip" xml:space="preserve">
+    <value>無法載入此使用權限。請按 DELETE 鍵，將它從專案中移除。</value>
+  </data>
+  <data name="PPG_SecurityPage_HeaderIncluded" xml:space="preserve">
+    <value>包含</value>
+  </data>
+  <data name="PPG_SecurityPage_HeaderPermission" xml:space="preserve">
+    <value>使用權限</value>
+  </data>
+  <data name="PPG_SecurityPage_HeaderSetting" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="PPG_SecurityPage_HelpLabelText" xml:space="preserve">
+    <value>指定執行 ClickOnce 應用程式所需的程式碼存取安全性權限。進一步了解程式碼存取安全性...</value>
+  </data>
+  <data name="PPG_SecurityPage_HelpLabelLink" xml:space="preserve">
+    <value>進一步了解程式碼存取安全性...</value>
+  </data>
+  <data name="PPG_SecurityPage_BadDropDownValue" xml:space="preserve">
+    <value>值無效</value>
+  </data>
+  <data name="PPG_SecurityPage_SecurityPermissionCannotBeExcluded" xml:space="preserve">
+    <value>應用程式必須包含 SecurityPermission，而且必須設定執行旗標，否則應用程式將無法執行。請將此使用權限標記為 [區域預設] 或 [包含]。</value>
+  </data>
+  <data name="PPG_SecurityPage_ExecuteCannotBeExcluded" xml:space="preserve">
+    <value>應用程式必須包含 SecurityPermission，而且必須設定執行旗標，否則應用程式將無法執行。已將執行旗標新增至資訊清單中的 SecurityPermission。</value>
+  </data>
+  <data name="PPG_SecurityPage_SwitchToFullTrustDialog" xml:space="preserve">
+    <value>此應用程式需要完全信任才能正確執行。要將它設定為完全信任應用程式嗎?</value>
+  </data>
+  <data name="PPG_SecurityPage_SwitchToFullTrustDialogTitle" xml:space="preserve">
+    <value>需要完全信任</value>
+  </data>
+  <data name="PPG_SecurityPage_CouldNotSaveManifest" xml:space="preserve">
+    <value>發生錯誤，無法儲存 app.manifest 檔案。
+錯誤:</value>
+  </data>
+  <data name="PPG_SecurityPage_CouldNotLoadManifest" xml:space="preserve">
+    <value>發生錯誤且無法載入 app.manifest 檔案。請移除您對檔案進行的任何變更，並重新載入 [安全性] 屬性頁。</value>
+  </data>
+  <data name="PPG_SecurityPage_CheckAccessibilityName" xml:space="preserve">
+    <value>包含</value>
+  </data>
+  <data name="PPG_SecurityPage_BlankAccessibilityName" xml:space="preserve">
+    <value>不包含</value>
+  </data>
+  <data name="PPG_SecurityPage_BangAccessibilityName" xml:space="preserve">
+    <value>包含在警告中</value>
+  </data>
+  <data name="PPG_SecurityPage_PermCalcFailed" xml:space="preserve">
+    <value>計算使用權限失敗。</value>
+  </data>
+  <data name="PPG_SecurityPage_PermCalcFailedCaption" xml:space="preserve">
+    <value>錯誤</value>
+  </data>
+  <data name="PPG_SecurityAdvancedPage_Title" xml:space="preserve">
+    <value>進階安全性設定</value>
+  </data>
+  <data name="PPG_MgdStatus_BuildFailed" xml:space="preserve">
+    <value>建置失敗。請按 [取消] 並更正建置失敗錯誤後，再分析一次。</value>
+  </data>
+  <data name="PPG_MgdStatus_BuildComplete" xml:space="preserve">
+    <value>建置完成...</value>
+  </data>
+  <data name="PPG_MgdStatus_BuildUnableToStart" xml:space="preserve">
+    <value>無法啟動建置。</value>
+  </data>
+  <data name="PPG_MgdStatus_BuildFailedToStart" xml:space="preserve">
+    <value>嚴重錯誤。必須開始建置才能分析使用權限，但建置尚未啟動。</value>
+  </data>
+  <data name="PPG_CustomPermissionSet" xml:space="preserve">
+    <value>(自訂)</value>
+  </data>
+  <data name="PPG_NonePermissionSet" xml:space="preserve">
+    <value>(無)</value>
+  </data>
+  <data name="PPG_Signing_KeyFileBrowse_Title" xml:space="preserve">
+    <value>選取現有的金鑰檔</value>
+  </data>
+  <data name="PPG_Signing_KeyFileBrowse_Filter" xml:space="preserve">
+    <value>金鑰檔</value>
+  </data>
+  <data name="PPG_Signing_KeyFileNew_Title" xml:space="preserve">
+    <value>建立金鑰檔</value>
+  </data>
+  <data name="PPG_Signing_OldPassWrong" xml:space="preserve">
+    <value>舊密碼無效。</value>
+  </data>
+  <data name="PPG_Signing_OldPassEmpty" xml:space="preserve">
+    <value>請輸入舊密碼。</value>
+  </data>
+  <data name="PPG_Signing_NewPassEmpty" xml:space="preserve">
+    <value>請輸入新密碼。</value>
+  </data>
+  <data name="PPG_Signing_NewPassMismatch" xml:space="preserve">
+    <value>新密碼不相符。請重新輸入密碼。</value>
+  </data>
+  <data name="PPG_Signing_NewPassTooShort" xml:space="preserve">
+    <value>新密碼長度必須至少為 6 個字元。請重新輸入密碼。</value>
+  </data>
+  <data name="PPG_Signing_BrowseCertTitle" xml:space="preserve">
+    <value>選取憑證</value>
+  </data>
+  <data name="PPG_Signing_BrowseCertStorePrompt" xml:space="preserve">
+    <value>選取簽署 ClickOnce 資訊清單的憑證</value>
+  </data>
+  <data name="PPG_Signing_BrowseCertFileFilter" xml:space="preserve">
+    <value>憑證檔</value>
+  </data>
+  <data name="PPG_Signing_IssuedTo" xml:space="preserve">
+    <value>核發對象</value>
+  </data>
+  <data name="PPG_Signing_IssuedBy" xml:space="preserve">
+    <value>核發者</value>
+  </data>
+  <data name="PPG_Signing_Purpose" xml:space="preserve">
+    <value>預期的用途</value>
+  </data>
+  <data name="PPG_Signing_ExpirationDate" xml:space="preserve">
+    <value>到期日</value>
+  </data>
+  <data name="PPG_Signing_InvalidPassword" xml:space="preserve">
+    <value>密碼無效。</value>
+  </data>
+  <data name="PPG_Signing_InvalidPasswordTitle" xml:space="preserve">
+    <value>密碼無效</value>
+  </data>
+  <data name="PPG_Signing_NoPrivateKey" xml:space="preserve">
+    <value>選取的檔案未包含私密金鑰。您必須選擇含有私密金鑰的憑證。</value>
+  </data>
+  <data name="PPG_Signing_NoPrivateKeyTitle" xml:space="preserve">
+    <value>金鑰無效</value>
+  </data>
+  <data name="PPG_Signing_CertCreationError" xml:space="preserve">
+    <value>建立憑證發生錯誤</value>
+  </data>
+  <data name="PPG_Signing_AllPurposes" xml:space="preserve">
+    <value>&lt;全部&gt;</value>
+  </data>
+  <data name="PPG_Signing_PasswordMismatch" xml:space="preserve">
+    <value>密碼不相符。</value>
+  </data>
+  <data name="PPG_Signing_NoPassword" xml:space="preserve">
+    <value>請輸入密碼。</value>
+  </data>
+  <data name="PPG_Signing_NoConfirm" xml:space="preserve">
+    <value>請確認密碼。</value>
+  </data>
+  <data name="PPG_Signing_NoData" xml:space="preserve">
+    <value>(無)</value>
+  </data>
+  <data name="PPG_Signing_OpenExistingKeyPasswordTitle" xml:space="preserve">
+    <value>輸入密碼以開啟檔案</value>
+  </data>
+  <data name="PPG_Signing_OpenExistingKeyPasswordPrompt" xml:space="preserve">
+    <value>輸入密碼以開啟檔案 {0}(&amp;P)</value>
+  </data>
+  <data name="PPG_Signing_CreateNewKeyPasswordPrompt" xml:space="preserve">
+    <value>輸入新檔案 {0} 的密碼(&amp;P)</value>
+  </data>
+  <data name="PPG_Signing_ProjectAlreadyContainsFile" xml:space="preserve">
+    <value>專案已經包含相同名稱的檔案。請選擇另一個憑證檔，或將專案中的檔案重新命名。</value>
+  </data>
+  <data name="PPG_Signing_CouldNotImportFile" xml:space="preserve">
+    <value>無法匯入檔案 '{0}': {1}</value>
+  </data>
+  <data name="PPG_Signing_KeyFileNameSuffix" xml:space="preserve">
+    <value>_TemporaryKey.pfx</value>
+  </data>
+  <data name="PPG_Signing_CertificateNotCodeSigning" xml:space="preserve">
+    <value>選取的憑證對程式碼簽署無效。請選擇其他憑證檔。</value>
+  </data>
+  <data name="PPG_UndoTransaction" xml:space="preserve">
+    <value>變更屬性: {0}</value>
+  </data>
+  <data name="PPG_WindowsApp" xml:space="preserve">
+    <value>Windows 應用程式</value>
+  </data>
+  <data name="PPG_WindowsService" xml:space="preserve">
+    <value>Windows 服務</value>
+  </data>
+  <data name="PPG_WindowsClassLib" xml:space="preserve">
+    <value>類別庫</value>
+  </data>
+  <data name="PPG_CommandLineApp" xml:space="preserve">
+    <value>主控台應用程式</value>
+  </data>
+  <data name="PPG_WebControlLib" xml:space="preserve">
+    <value>Web 控制項程式庫</value>
+  </data>
+  <data name="PPG_Reference_CanNotRemoveReference" xml:space="preserve">
+    <value>無法移除 '{0}'。{1}
+</value>
+  </data>
+  <data name="PPG_Reference_RemoveImportsFailUnexpected" xml:space="preserve">
+    <value>由於專案系統發生未預期的錯誤，導致專案匯入時新增或移除 '{0}' 失敗。傳回的錯誤是: '{1}'。</value>
+  </data>
+  <data name="PPG_Reference_AddWebReference" xml:space="preserve">
+    <value>新增 Web 參考失敗。{0}
+</value>
+  </data>
+  <data name="PPG_Reference_FailedToUpdateWebReference" xml:space="preserve">
+    <value>更新 Web 參考 '{0}' 失敗。
+{1}</value>
+  </data>
+  <data name="PPG_WebReferenceTypeName" xml:space="preserve">
+    <value>Web 參考屬性</value>
+  </data>
+  <data name="PPG_UrlBehavior_Static" xml:space="preserve">
+    <value>靜態</value>
+  </data>
+  <data name="PPG_UrlBehavior_Dynamic" xml:space="preserve">
+    <value>動態</value>
+  </data>
+  <data name="PPG_WebReferenceNameDescription" xml:space="preserve">
+    <value>Web 參考的名稱</value>
+  </data>
+  <data name="PPG_UrlBehaviorName" xml:space="preserve">
+    <value>URL 行為</value>
+  </data>
+  <data name="PPG_UrlBehaviorDescription" xml:space="preserve">
+    <value>Web 參考 URL 行為</value>
+  </data>
+  <data name="PPG_WebReferenceUrlName" xml:space="preserve">
+    <value>Web 參考 URL</value>
+  </data>
+  <data name="PPG_WebReferenceUrlDescription" xml:space="preserve">
+    <value>Web 參考 URL</value>
+  </data>
+  <data name="PPG_ReferenceDetail_Title" xml:space="preserve">
+    <value>參考屬性</value>
+  </data>
+  <data name="PropPage_RemoteMachineBlankError" xml:space="preserve">
+    <value>遠端電腦名稱不能為空白。請指定電腦名稱以進行遠端偵錯。</value>
+  </data>
+  <data name="PropPage_ProgramNotExist" xml:space="preserve">
+    <value>找不到外部程式。請輸入有效的可執行檔。</value>
+  </data>
+  <data name="PropPage_NeedExternalProgram" xml:space="preserve">
+    <value>外部程式屬性不可為空白。請輸入有效的可執行檔。</value>
+  </data>
+  <data name="PropPage_NotAnExeError" xml:space="preserve">
+    <value>僅可為 EXE 檔案偵錯。請輸入有效的可執行檔。</value>
+  </data>
+  <data name="PropPage_NeedURL" xml:space="preserve">
+    <value>URL 屬性不可為空白。請輸入有效的 URL。</value>
+  </data>
+  <data name="PropPage_InvalidURL" xml:space="preserve">
+    <value>URL 無效。請輸入有效的 URL，例如 "http://www.microsoft.com/"</value>
+  </data>
+  <data name="PropPage_WorkingDirError" xml:space="preserve">
+    <value>您輸入的工作目錄不存在。請輸入有效的工作目錄。</value>
+  </data>
+  <data name="PropPage_ReferenceNotFound" xml:space="preserve">
+    <value>&lt;系統找不到指定的參考&gt;</value>
+  </data>
+  <data name="PropPage_ImportedNamespacesTitle" xml:space="preserve">
+    <value>匯入的命名空間</value>
+  </data>
+  <data name="PropPage_ComputingReferencedNamespacesMessage" xml:space="preserve">
+    <value>正在計算參考的命名空間...</value>
+  </data>
+  <data name="PropPage_UnusedReferenceTitle" xml:space="preserve">
+    <value>未使用的參考</value>
+  </data>
+  <data name="PropPage_UnusedReferenceRemoveButton" xml:space="preserve">
+    <value>移除(&amp;R)</value>
+  </data>
+  <data name="PropPage_UnusedReferenceNoUnusedReferences" xml:space="preserve">
+    <value>沒有未使用的參考</value>
+  </data>
+  <data name="PropPage_UnusedReferenceCompileFail" xml:space="preserve">
+    <value>專案編譯失敗。無法判斷未使用的參考。</value>
+  </data>
+  <data name="PropPage_UnusedReferenceCompileWaiting" xml:space="preserve">
+    <value>正在蒐集未使用的參考清單...</value>
+  </data>
+  <data name="PropPage_UnusedReferenceError" xml:space="preserve">
+    <value>取得未使用的參考時發生錯誤。</value>
+  </data>
+  <data name="PPG_InvalidHexString" xml:space="preserve">
+    <value>基底位址必須是少於或等於 8 位數的十六進位數字，例如 &amp;H11000000。</value>
+  </data>
+  <data name="PropPage_NeedResFile" xml:space="preserve">
+    <value>"資源檔必須具有 .res 副檔名。請輸入有效的資源檔名稱。"</value>
+  </data>
+  <data name="PropPage_ResourceFileNotExist" xml:space="preserve">
+    <value>"輸入的資源檔不存在。"</value>
+  </data>
+  <data name="APPDES_Title" xml:space="preserve">
+    <value>專案設計工具</value>
+  </data>
+  <data name="APPDES_SettingsTabTitle" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="APPDES_ResourceTabTitle" xml:space="preserve">
+    <value>資源</value>
+  </data>
+  <data name="APPDES_ErrorLoading_Msg" xml:space="preserve">
+    <value>嘗試載入專案屬性視窗時發生錯誤。請關閉視窗後再試一次。
+{0}</value>
+  </data>
+  <data name="APPDES_ErrorLoadingPropPage" xml:space="preserve">
+    <value>嘗試載入頁面時發生錯誤。</value>
+  </data>
+  <data name="APPDES_DesignerLoader_NotDeferred" xml:space="preserve">
+    <value>無法顯示設計工具，因為設計工具的文件尚未載入。</value>
+  </data>
+  <data name="APPDES_ClickHereCreateResx" xml:space="preserve">
+    <value>此專案未包含預設的資源檔。請按一下這裡建立資源檔。</value>
+  </data>
+  <data name="APPDES_ClickHereCreateSettings" xml:space="preserve">
+    <value>此專案未包含預設的設定檔。請按一下這裡建立資源檔。</value>
+  </data>
+  <data name="APPDES_FileNotFound_1Arg" xml:space="preserve">
+    <value>找不到檔案 '{0}'。</value>
+  </data>
+  <data name="APPDES_EditorAlreadyOpen_1Arg" xml:space="preserve">
+    <value>檔案 '{0}' 已在編輯器中開啟。請關閉檔案後再試一次。</value>
+  </data>
+  <data name="APPDES_OverflowButton_AccessibilityName" xml:space="preserve">
+    <value>所有的專案設計工具頁面</value>
+  </data>
+  <data name="APPDES_OverflowButton_Tooltip" xml:space="preserve">
+    <value>其他設定</value>
+  </data>
+  <data name="APPDES_SpecialFileNotSupported" xml:space="preserve">
+    <value>這種類型的專案不支援所要求的檔案類型。</value>
+  </data>
+  <data name="PPG_Property_AssemblyName" xml:space="preserve">
+    <value>組件名稱</value>
+  </data>
+  <data name="PPG_Property_RootNamespace" xml:space="preserve">
+    <value>根命名空間</value>
+  </data>
+  <data name="PPG_Property_StartupObject" xml:space="preserve">
+    <value>啟始物件</value>
+  </data>
+  <data name="PPG_Property_ApplicationIcon" xml:space="preserve">
+    <value>應用程式圖示</value>
+  </data>
+  <data name="PPG_Property_AssemblyVersion" xml:space="preserve">
+    <value>組件版本</value>
+  </data>
+  <data name="PPG_Property_AssemblyFileVersion" xml:space="preserve">
+    <value>組件檔版本</value>
+  </data>
+  <data name="PPG_Property_AssemblyGuid" xml:space="preserve">
+    <value>組件 GUID</value>
+  </data>
+  <data name="PPG_Property_CustomSubMain" xml:space="preserve">
+    <value>啟用應用程式架構</value>
+  </data>
+  <data name="PPG_Property_StartProgram" xml:space="preserve">
+    <value>外部程式路徑</value>
+  </data>
+  <data name="PPG_Property_StartURL" xml:space="preserve">
+    <value>瀏覽器起始 URL</value>
+  </data>
+  <data name="PPG_Property_StartWorkingDirectory" xml:space="preserve">
+    <value>工作目錄</value>
+  </data>
+  <data name="PPG_Property_RemoteDebugMachine" xml:space="preserve">
+    <value>遠端電腦名稱</value>
+  </data>
+  <data name="APPDES_HostingPanelName" xml:space="preserve">
+    <value>專案設計工具頁面容器</value>
+  </data>
+  <data name="APPDES_TabButtonDefaultAction" xml:space="preserve">
+    <value>切換專案設計工具頁面</value>
+  </data>
+  <data name="APPDES_TabListDescription" xml:space="preserve">
+    <value>允許在使用中的專案設計工具頁面之間進行切換 (使用 Ctrl+PageUp 和 Ctrl+PageDown)</value>
+  </data>
+  <data name="APPDES_PageName" xml:space="preserve">
+    <value>{0} 頁:</value>
+  </data>
+  <data name="DFX_DesignerReadOnlyCaption" xml:space="preserve">
+    <value>{0} [唯讀]</value>
+  </data>
+  <data name="DFX_DesignerLoaderIVsTextStreamNotFound" xml:space="preserve">
+    <value>編輯器無法取得檔案 {0} 的 IVsTextStream。</value>
+  </data>
+  <data name="DFX_DesignerLoaderIVsTextStreamNotFoundNoFile" xml:space="preserve">
+    <value>編輯器無法取得 IVsTextStream。</value>
+  </data>
+  <data name="DFX_EditorNoDesignerService" xml:space="preserve">
+    <value>檔案 '{0}' 沒有 DesignerService。</value>
+  </data>
+  <data name="DFX_InvalidPhysicalViewName" xml:space="preserve">
+    <value>實體檢視名稱無效。</value>
+  </data>
+  <data name="DFX_UnableCreateTextBuffer" xml:space="preserve">
+    <value>無法建立文字緩衝區。</value>
+  </data>
+  <data name="DFX_NoLocalRegistry" xml:space="preserve">
+    <value>沒有 LocalRegistry 服務。</value>
+  </data>
+  <data name="DFX_ReplaceTextStreamFailed" xml:space="preserve">
+    <value>取代文字資料流失敗:{0}</value>
+  </data>
+  <data name="DFX_BufferReadOnly" xml:space="preserve">
+    <value>緩衝區為唯讀。</value>
+  </data>
+  <data name="DFX_IncompatibleBuffer" xml:space="preserve">
+    <value>已經在不相容的編輯器中開啟了檔案。</value>
+  </data>
+  <data name="DFX_NotSupported" xml:space="preserve">
+    <value>不支援的格式。</value>
+  </data>
+  <data name="DFX_WindowPane_UnknownError" xml:space="preserve">
+    <value>未知的錯誤。</value>
+  </data>
+  <data name="DFX_CreateEditorInstanceFailed_Ex" xml:space="preserve">
+    <value>無法建立設計工具。{0}</value>
+  </data>
+  <data name="DFX_UnableToCheckout" xml:space="preserve">
+    <value>無法簽出目前檔案。檔案可能處於唯讀或鎖定的狀態，或者您需要手動簽出檔案。</value>
+  </data>
+  <data name="DFX_Error_Default_Caption" xml:space="preserve">
+    <value>Microsoft Visual Studio</value>
+  </data>
+  <data name="OptionPage_Editor_InvalidTabSize" xml:space="preserve">
+    <value>請輸入介於 1 和 60 之間的整數。</value>
+  </data>
+  <data name="OptionPage_Editor_InvalidIndentSize" xml:space="preserve">
+    <value>請輸入介於 1 和 60 之間的整數。</value>
+  </data>
+  <data name="OptionPage_Environment_StartUpShowEmptyEnvironment" xml:space="preserve">
+    <value>顯示空白環境</value>
+  </data>
+  <data name="OptionPage_Environment_StartUpLoadLastLoadedSolution" xml:space="preserve">
+    <value>載入上次載入的解決方案</value>
+  </data>
+  <data name="OptionPage_Environment_StartUpShowNewProjectDialogBox" xml:space="preserve">
+    <value>顯示 [新增專案] 對話方塊</value>
+  </data>
+  <data name="OptionPage_Environment_StartUpShowOpenProjectDialogBox" xml:space="preserve">
+    <value>顯示 [開啟專案] 對話方塊</value>
+  </data>
+  <data name="OptionPage_Environment_ShowHelpOptionRequiresRestartOfIde" xml:space="preserve">
+    <value>在重新啟動環境之前，[說明] 選項中的變更將不會生效。</value>
+  </data>
+  <data name="OptionPage_Project_IllegalDefaultProjectDirectory" xml:space="preserve">
+    <value>指定的位置不正確或是唯讀磁碟，或含有為系統保留的裝置名稱。</value>
+  </data>
+  <data name="PermissionSet_Requires" xml:space="preserve">
+    <value>需要:</value>
+  </data>
+  <data name="RSE_ResourceNameColumn" xml:space="preserve">
+    <value>名稱</value>
+  </data>
+  <data name="RSE_TypeColumn" xml:space="preserve">
+    <value>類型</value>
+  </data>
+  <data name="RSE_ResourceColumn" xml:space="preserve">
+    <value>值</value>
+  </data>
+  <data name="RSE_CommentColumn" xml:space="preserve">
+    <value>註解</value>
+  </data>
+  <data name="SingleFileGenerator_FailedToGenerateFile_1Arg" xml:space="preserve">
+    <value>無法產生檔案: {0}</value>
+  </data>
+  <data name="RSE_Err_CantEditEmbeddedResource" xml:space="preserve">
+    <value>不支援直接編輯內嵌資源。要將此項目轉換成連結資源以便進行編輯嗎?</value>
+  </data>
+  <data name="RSE_Err_RenameNotSupported" xml:space="preserve">
+    <value>目前的物件是自動產生的，而且僅支援透過 Managed 資源編輯器重新命名。</value>
+  </data>
+  <data name="RSE_Err_CantFindResourceFile_1Arg" xml:space="preserve">
+    <value>找不到檔案 '{0}'，可能已移動或刪除。</value>
+  </data>
+  <data name="RSE_Err_LoadingResource_1Arg" xml:space="preserve">
+    <value>無法從檔案 '{0}' 載入資源。</value>
+  </data>
+  <data name="RSE_Err_NameBlank" xml:space="preserve">
+    <value>資源名稱不能為空白。</value>
+  </data>
+  <data name="RSE_Err_DuplicateName_1Arg" xml:space="preserve">
+    <value>已經有另一個名為 '{0}' 的資源。</value>
+  </data>
+  <data name="RSE_Err_UnexpectedResourceType" xml:space="preserve">
+    <value>資源不是預期的類型。</value>
+  </data>
+  <data name="RSE_Err_CantCreateNewResource_2Args" xml:space="preserve">
+    <value>無法建立新的資源檔 '{0}'。{1}</value>
+  </data>
+  <data name="RSE_Err_CantPlay_1Arg" xml:space="preserve">
+    <value>無法播放音效資源。{0}</value>
+  </data>
+  <data name="RSE_Err_CantSaveResource_1Arg" xml:space="preserve">
+    <value>無法將資源 '{0}' 儲存到檔案中。</value>
+  </data>
+  <data name="RSE_Err_UserCancel" xml:space="preserve">
+    <value>使用者已取消作業。</value>
+  </data>
+  <data name="RSE_Err_BadData" xml:space="preserve">
+    <value>資源值含有無效資料，或者格式不正確。</value>
+  </data>
+  <data name="RSE_Err_BadIdentifier_2Arg" xml:space="preserve">
+    <value>資源 '{0}' 的名稱無法作為有效的識別碼，因為它含有一或多個無效的字元: '{1}'。請移除或取代這些字元後再試一次。</value>
+  </data>
+  <data name="RSE_Err_MaxFilesLimitation" xml:space="preserve">
+    <value>指定了太多檔案，請少選一些檔案後再試一次。</value>
+  </data>
+  <data name="RSE_Err_InternalException" xml:space="preserve">
+    <value>未預期的錯誤。</value>
+  </data>
+  <data name="RSE_Err_Unexpected_NoResource_1Arg" xml:space="preserve">
+    <value>無法載入內部的當地語系化資源 '{0}'。</value>
+  </data>
+  <data name="RSE_Err_CantConvertFromString_2Args" xml:space="preserve">
+    <value>無法將值轉換成 {0} 類型的資源。
+
+{1}</value>
+  </data>
+  <data name="RSE_Err_CantUseEmptyValue" xml:space="preserve">
+    <value>在 {0} 類型的資源中值不可為空白。</value>
+  </data>
+  <data name="RSE_Err_CantBeEmpty" xml:space="preserve">
+    <value>有一或多個選取的資源值無法清除。</value>
+  </data>
+  <data name="RSE_Err_CantEditInDebugMode" xml:space="preserve">
+    <value>此時無法修改資源檔。</value>
+  </data>
+  <data name="RSE_Err_UpdateADependentFile" xml:space="preserve">
+    <value>您嘗試編輯的資源檔是另一個專案項目 (例如表單或控制項) 的一部分。編輯此項目可能導致專案項目損毀，而必須手動復原。此外，如果進一步對專案項目進行變更，可能會遺失此資源檔的變更。
+
+確定要編輯此檔案嗎?</value>
+  </data>
+  <data name="RSE_Err_CantAddUnsupportedResource_1Arg" xml:space="preserve">
+    <value>無法新增資源 '{0}'。</value>
+  </data>
+  <data name="RSE_Err_CantAddFileToDeviceProject_1Arg" xml:space="preserve">
+    <value>裝置不支援 '{0}' 檔案。</value>
+  </data>
+  <data name="RSE_Err_TypeIsNotSupported_1Arg" xml:space="preserve">
+    <value>資源項目使用 '{0}' 類型，但此專案不支援該類型。</value>
+  </data>
+  <data name="RSE_Err_CantSaveResouce_1Arg" xml:space="preserve">
+    <value>無法正確儲存資源項目 {0}，將捨棄這些項目。</value>
+  </data>
+  <data name="RSE_Err_Name" xml:space="preserve">
+    <value>'{0}'</value>
+  </data>
+  <data name="RSE_Err_NameList" xml:space="preserve">
+    <value>{0}、'{1}'</value>
+  </data>
+  <data name="RSE_NothingValue" xml:space="preserve">
+    <value>(Nothing/null)</value>
+  </data>
+  <data name="RSE_UnknownType" xml:space="preserve">
+    <value>(未知的類型)</value>
+  </data>
+  <data name="RSE_NonEditableValue" xml:space="preserve">
+    <value>(無法顯示值)</value>
+  </data>
+  <data name="RSE_DetailsCol_Name" xml:space="preserve">
+    <value>名稱</value>
+  </data>
+  <data name="RSE_DetailsCol_Filename" xml:space="preserve">
+    <value>檔名</value>
+  </data>
+  <data name="RSE_DetailsCol_ImageType" xml:space="preserve">
+    <value>類型</value>
+  </data>
+  <data name="RSE_DetailsCol_Size" xml:space="preserve">
+    <value>大小</value>
+  </data>
+  <data name="RSE_DetailsCol_Comment" xml:space="preserve">
+    <value>註解</value>
+  </data>
+  <data name="RSE_DetailsCol_Encoding" xml:space="preserve">
+    <value>文字編碼方式</value>
+  </data>
+  <data name="RSE_GraphicSizeFormat" xml:space="preserve">
+    <value>{0} x {1}</value>
+  </data>
+  <data name="RSE_FileSizeFormatKB" xml:space="preserve">
+    <value>{0} KB</value>
+  </data>
+  <data name="RSE_FileSizeFormatBytes_1Arg" xml:space="preserve">
+    <value>{0} 位元組</value>
+  </data>
+  <data name="RSE_Cat_Strings" xml:space="preserve">
+    <value>字串</value>
+  </data>
+  <data name="RSE_Cat_Images" xml:space="preserve">
+    <value>影像</value>
+  </data>
+  <data name="RSE_Cat_Icons" xml:space="preserve">
+    <value>圖示</value>
+  </data>
+  <data name="RSE_Cat_Audio" xml:space="preserve">
+    <value>音訊</value>
+  </data>
+  <data name="RSE_Cat_Files" xml:space="preserve">
+    <value>檔案</value>
+  </data>
+  <data name="RSE_Cat_Other" xml:space="preserve">
+    <value>其他</value>
+  </data>
+  <data name="RSE_Btn_Add" xml:space="preserve">
+    <value>新增(&amp;A)</value>
+  </data>
+  <data name="RSE_Btn_Remove" xml:space="preserve">
+    <value>移除(&amp;R)</value>
+  </data>
+  <data name="RSE_Btn_Views" xml:space="preserve">
+    <value>檢視(&amp;V)</value>
+  </data>
+  <data name="RSE_Btn_Add_ExistingFile" xml:space="preserve">
+    <value>現有檔案(&amp;E)...</value>
+  </data>
+  <data name="RSE_Btn_Add_String" xml:space="preserve">
+    <value>新增字串(&amp;S)</value>
+  </data>
+  <data name="RSE_Btn_Add_Image" xml:space="preserve">
+    <value>新增影像(&amp;I)</value>
+  </data>
+  <data name="RSE_Btn_Add_Image_PNG" xml:space="preserve">
+    <value>PNG 影像(&amp;P)...</value>
+  </data>
+  <data name="RSE_Btn_Add_Image_BMP" xml:space="preserve">
+    <value>BMP 影像(&amp;B)...</value>
+  </data>
+  <data name="RSE_Btn_Add_Image_GIF" xml:space="preserve">
+    <value>GIF 影像(&amp;G)...</value>
+  </data>
+  <data name="RSE_Btn_Add_Image_JPEG" xml:space="preserve">
+    <value>JPEG 影像(&amp;J)...</value>
+  </data>
+  <data name="RSE_Btn_Add_Image_TIFF" xml:space="preserve">
+    <value>TIFF 影像(&amp;T)...</value>
+  </data>
+  <data name="RSE_Btn_Add_Icon" xml:space="preserve">
+    <value>新增圖示(&amp;C)...</value>
+  </data>
+  <data name="RSE_Btn_Add_TextFile" xml:space="preserve">
+    <value>新增文字檔(&amp;T)...</value>
+  </data>
+  <data name="RSE_Type_BMP" xml:space="preserve">
+    <value>Windows 點陣圖</value>
+  </data>
+  <data name="RSE_Type_EXIF" xml:space="preserve">
+    <value>EXIF 影像</value>
+  </data>
+  <data name="RSE_Type_GIF" xml:space="preserve">
+    <value>圖形交換格式 (GIF)</value>
+  </data>
+  <data name="RSE_Type_JPEG" xml:space="preserve">
+    <value>JPEG 檔案交換格式</value>
+  </data>
+  <data name="RSE_Type_MEMBMP" xml:space="preserve">
+    <value>Windows 點陣圖</value>
+  </data>
+  <data name="RSE_Type_PNG" xml:space="preserve">
+    <value>可攜式網路圖形</value>
+  </data>
+  <data name="RSE_Type_TIFF" xml:space="preserve">
+    <value>TIF 檔案格式</value>
+  </data>
+  <data name="RSE_Type_Icon" xml:space="preserve">
+    <value>圖示</value>
+  </data>
+  <data name="RSE_Type_TextFile" xml:space="preserve">
+    <value>文字檔</value>
+  </data>
+  <data name="RSE_Type_BinaryFile" xml:space="preserve">
+    <value>二進位檔案</value>
+  </data>
+  <data name="RSE_Type_Wave" xml:space="preserve">
+    <value>聲音音效</value>
+  </data>
+  <data name="RES_PersistenceMode_Linked" xml:space="preserve">
+    <value>於編譯時間連結</value>
+  </data>
+  <data name="RES_PersistenceMode_Embeded" xml:space="preserve">
+    <value>內嵌於 .resx</value>
+  </data>
+  <data name="RSE_Filter_Bitmap" xml:space="preserve">
+    <value>點陣圖</value>
+  </data>
+  <data name="RSE_Filter_Icon" xml:space="preserve">
+    <value>圖示</value>
+  </data>
+  <data name="RSE_Filter_Audio" xml:space="preserve">
+    <value>音訊</value>
+  </data>
+  <data name="RSE_Filter_Text" xml:space="preserve">
+    <value>文字檔</value>
+  </data>
+  <data name="RSE_Filter_All" xml:space="preserve">
+    <value>所有檔案</value>
+  </data>
+  <data name="RSE_FilterSave_BMP" xml:space="preserve">
+    <value>Windows 點陣圖</value>
+  </data>
+  <data name="RSE_FilterSave_PNG" xml:space="preserve">
+    <value>可攜式網路圖形</value>
+  </data>
+  <data name="RSE_FilterSave_GIF" xml:space="preserve">
+    <value>圖形交換格式 (GIF)</value>
+  </data>
+  <data name="RSE_FilterSave_JPEG" xml:space="preserve">
+    <value>JPEG 檔案交換格式</value>
+  </data>
+  <data name="RSE_FilterSave_TIFF" xml:space="preserve">
+    <value>TIF 檔案格式</value>
+  </data>
+  <data name="RSE_FilterSave_Icon" xml:space="preserve">
+    <value>圖示</value>
+  </data>
+  <data name="RSE_Btn_Views_List" xml:space="preserve">
+    <value>清單(&amp;L)</value>
+  </data>
+  <data name="RSE_Btn_Views_Details" xml:space="preserve">
+    <value>詳細資料(&amp;D)</value>
+  </data>
+  <data name="RSE_Btn_Views_Thumbnail" xml:space="preserve">
+    <value>縮圖(&amp;T)</value>
+  </data>
+  <data name="RSE_ResourceEditor" xml:space="preserve">
+    <value>Managed 資源編輯器</value>
+  </data>
+  <data name="RSE_DlgTitle_AddExisting" xml:space="preserve">
+    <value>將現有的檔案加入資源</value>
+  </data>
+  <data name="RSE_DlgTitle_Import_1Arg" xml:space="preserve">
+    <value>將檔案匯入資源 '{0}'</value>
+  </data>
+  <data name="RSE_DlgTitle_Export_1Arg" xml:space="preserve">
+    <value>將資源 '{0}' 匯出到檔案</value>
+  </data>
+  <data name="RSE_DlgTitle_AddNew" xml:space="preserve">
+    <value>請指定新檔案的儲存位置</value>
+  </data>
+  <data name="RSE_Dlg_ReplaceExistingFile" xml:space="preserve">
+    <value>檔案 '{0}' 已經存在。要取代它嗎?</value>
+  </data>
+  <data name="RSE_Dlg_ReplaceExistingFiles" xml:space="preserve">
+    <value>下列檔案已經存在。要取代它們嗎?</value>
+  </data>
+  <data name="RSE_Dlg_ExportMultiple" xml:space="preserve">
+    <value>選取要匯出資源的資料夾。</value>
+  </data>
+  <data name="RSE_Dlg_ContinueAnyway" xml:space="preserve">
+    <value>您仍然要繼續嗎?</value>
+  </data>
+  <data name="RSE_Dlg_SetCustomTool" xml:space="preserve">
+    <value>您要對這個檔案啟用強類型的資源產生嗎?</value>
+  </data>
+  <data name="RSE_Task_BadLink_2Args" xml:space="preserve">
+    <value>無法載入資源 '{0}'，因為找不到連結的檔案: {1}。</value>
+  </data>
+  <data name="RSE_Task_CantInstantiate_2Args" xml:space="preserve">
+    <value>無法將資源 '{0}' 具現化。{1}</value>
+  </data>
+  <data name="RSE_Task_NonrecommendedName_1Arg" xml:space="preserve">
+    <value>資源 '{0}' 使用不建議採用的名稱，可能導致程式碼發生編譯錯誤。請選擇其他名稱。</value>
+  </data>
+  <data name="RSE_Task_CantChangeCustomToolOrNamespace" xml:space="preserve">
+    <value>無法設定此檔案的自訂工具或自訂工具命名空間屬性，因此無法變更強型別的資源產生選項。如果專案檔已簽入，請試著將它簽出。</value>
+  </data>
+  <data name="RSE_Task_WarningCustomToolNotSet" xml:space="preserve">
+    <value>按兩下這裡，啟用此檔案的強類型資源。</value>
+  </data>
+  <data name="RSE_Task_InvalidName_1Arg" xml:space="preserve">
+    <value>資源名稱 '{0}' 不是有效的識別項。</value>
+  </data>
+  <data name="RSE_EncodingDisplayName" xml:space="preserve">
+    <value>{0} - 字碼頁 {1}</value>
+  </data>
+  <data name="RSE_DefaultEncoding" xml:space="preserve">
+    <value>(預設)</value>
+  </data>
+  <data name="RSE_Undo_ChangeName" xml:space="preserve">
+    <value>變更資源名稱</value>
+  </data>
+  <data name="RSE_Undo_AddResources_1Arg" xml:space="preserve">
+    <value>新增 {0} 個新資源</value>
+  </data>
+  <data name="RSE_Undo_RemoveResources_1Arg" xml:space="preserve">
+    <value>移除 {0} 個資源</value>
+  </data>
+  <data name="RSE_Undo_DeleteResourceCell" xml:space="preserve">
+    <value>刪除 {0} 個儲存格中的值</value>
+  </data>
+  <data name="RSE_CategiesLabel" xml:space="preserve">
+    <value>分類(&amp;C):</value>
+  </data>
+  <data name="RSE_PropDesc_Name" xml:space="preserve">
+    <value>用來在程式碼中識別資源的名稱。</value>
+  </data>
+  <data name="RSE_PropDesc_Comment" xml:space="preserve">
+    <value>資源的其他資訊。這個屬性僅在設計階段時有意義。</value>
+  </data>
+  <data name="RSE_PropDesc_Encoding" xml:space="preserve">
+    <value>檔案的字元編碼方式。</value>
+  </data>
+  <data name="RSE_PropDesc_Filename" xml:space="preserve">
+    <value>連結資源的路徑。</value>
+  </data>
+  <data name="RSE_PropDesc_FileType" xml:space="preserve">
+    <value>指定檔案資源是文字或二進位格式。</value>
+  </data>
+  <data name="RSE_PropDesc_Persistence" xml:space="preserve">
+    <value>指定資源為內嵌還是連結。內嵌資源儲存在資源檔中，而連結資源則位於磁碟上的外部位置。</value>
+  </data>
+  <data name="RSE_PropDesc_Type" xml:space="preserve">
+    <value>將會在強型別資源類別中以此類型產生資源。例如，可能會將資源產生為 String 或 Bitmap 物件。</value>
+  </data>
+  <data name="RSE_PropDesc_Value" xml:space="preserve">
+    <value>資源的值。</value>
+  </data>
+  <data name="RFS_CantCreateResourcesFolder_Folder_ExMsg" xml:space="preserve">
+    <value>無法將 '{0}' 資料夾新增至此專案。
+
+{1}</value>
+  </data>
+  <data name="RFS_CantAddFileToProject_File_ExMsg" xml:space="preserve">
+    <value>無法將 '{0}' 加入專案。
+
+{1}</value>
+  </data>
+  <data name="RFS_CantAddFileToProject_File" xml:space="preserve">
+    <value>無法將 '{0}' 加入專案。</value>
+  </data>
+  <data name="RFS_QueryReplaceFile_File" xml:space="preserve">
+    <value>名稱為 '{0}' 的檔案已經存在。要取代它嗎?</value>
+  </data>
+  <data name="RFS_QueryReplaceFileTitle_Editor" xml:space="preserve">
+    <value>{0} - 目的檔案已經存在</value>
+  </data>
+  <data name="RFS_QueryRemoveLink_Folder_Link" xml:space="preserve">
+    <value>已經有名為 "{0}" 的連結檔案存在專案資料夾 "{1}" 中。要移除它嗎?</value>
+  </data>
+  <data name="RFS_QueryRemoveLinkTitle_Editor" xml:space="preserve">
+    <value>{0} - 目的檔案已經存在</value>
+  </data>
+  <data name="RFS_FindNotFound_File" xml:space="preserve">
+    <value>找不到檔案 '{0}'，可能已移動或刪除。</value>
+  </data>
+  <data name="SD_ComboBoxItem_ConnectionStringType" xml:space="preserve">
+    <value>連接字串</value>
+  </data>
+  <data name="SD_ComboBoxItem_WebReferenceType" xml:space="preserve">
+    <value>Web 服務 URL</value>
+  </data>
+  <data name="SD_ComboBoxItem_BrowseType" xml:space="preserve">
+    <value>瀏覽...</value>
+  </data>
+  <data name="SD_ComboBoxItem_ApplicationScope" xml:space="preserve">
+    <value>應用程式</value>
+  </data>
+  <data name="SD_ComboBoxItem_WebApplicationScope" xml:space="preserve">
+    <value>應用程式 (Web)</value>
+  </data>
+  <data name="SD_ComboBoxItem_UserScope" xml:space="preserve">
+    <value>使用者</value>
+  </data>
+  <data name="SD_ComboBoxItem_WebUserScope" xml:space="preserve">
+    <value>使用者 (Web)</value>
+  </data>
+  <data name="SD_GridViewNameColumnHeaderText" xml:space="preserve">
+    <value>名稱</value>
+  </data>
+  <data name="SD_GridViewTypeColumnHeaderText" xml:space="preserve">
+    <value>類型</value>
+  </data>
+  <data name="SD_GridViewScopeColumnHeaderText" xml:space="preserve">
+    <value>範圍</value>
+  </data>
+  <data name="SD_GridViewValueColumnHeaderText" xml:space="preserve">
+    <value>值</value>
+  </data>
+  <data name="SD_UnknownType" xml:space="preserve">
+    <value>類型 '{0}' 未定義。</value>
+  </data>
+  <data name="SD_UndoTran_NameChanged" xml:space="preserve">
+    <value>名稱已變更</value>
+  </data>
+  <data name="SD_UndoTran_TypeChanged" xml:space="preserve">
+    <value>類型已變更</value>
+  </data>
+  <data name="SD_UndoTran_ScopeChanged" xml:space="preserve">
+    <value>範圍已變更</value>
+  </data>
+  <data name="SD_UndoTran_RoamingChanged" xml:space="preserve">
+    <value>漫遊已變更</value>
+  </data>
+  <data name="SD_UndoTran_DescriptionChanged" xml:space="preserve">
+    <value>描述已變更</value>
+  </data>
+  <data name="SD_UndoTran_ProviderChanged" xml:space="preserve">
+    <value>提供者已變更</value>
+  </data>
+  <data name="SD_UndoTran_SerializedValueChanged" xml:space="preserve">
+    <value>值已變更</value>
+  </data>
+  <data name="SD_UndoTran_GenerateDefaultValueInCode" xml:space="preserve">
+    <value>在已變更的程式碼中產生預設值</value>
+  </data>
+  <data name="SD_UndoTran_RemoveMultipleSettings_1Arg" xml:space="preserve">
+    <value>移除 {0} 項設定</value>
+  </data>
+  <data name="SD_Err_CantLoadSettingsFile" xml:space="preserve">
+    <value>無法載入設定檔。檔案可能已損毀，或是包含無效的 XML 或重複的識別碼。</value>
+  </data>
+  <data name="SD_NewValuesAdded" xml:space="preserve">
+    <value>app.config 檔的新值已自動加入</value>
+  </data>
+  <data name="SD_ReplaceValueWithAppConfigValueTitle" xml:space="preserve">
+    <value>在 app.config 檔中，設定 '{0}' 的值已經變更。</value>
+  </data>
+  <data name="SD_ReplaceValueWithAppConfigValue" xml:space="preserve">
+    <value>.settings 檔的目前值是 '{0}'
+app.config 檔的新值是 '{1}'
+
+要更新 .settings 檔的值嗎?</value>
+  </data>
+  <data name="SD_FailedToLoadAppConfigValues" xml:space="preserve">
+    <value>讀取 app.config 檔時發生錯誤。檔案可能已損毀或是包含無效的 XML。</value>
+  </data>
+  <data name="SD_FailedToSaveAppConfigValues" xml:space="preserve">
+    <value>將值儲存到 app.config 檔時發生錯誤。檔案可能已損毀或是包含無效的 XML。</value>
+  </data>
+  <data name="SD_ERR_DuplicateName_1Arg" xml:space="preserve">
+    <value>已經有另一個名為 '{0}' 的設定。</value>
+  </data>
+  <data name="SD_ERR_InvalidIdentifier_1Arg" xml:space="preserve">
+    <value>'{0}' 不是有效的識別碼。</value>
+  </data>
+  <data name="SD_ERR_InvalidTypeName_1Arg" xml:space="preserve">
+    <value>'{0}' 不是有效的類型名稱。</value>
+  </data>
+  <data name="SD_ERR_NameEmpty" xml:space="preserve">
+    <value>設定名稱不可為空白。</value>
+  </data>
+  <data name="SD_ERR_InvalidValue_2Arg" xml:space="preserve">
+    <value>'{0}' 不能轉換成類型 '{1}' 的執行個體。</value>
+  </data>
+  <data name="SD_ERR_GenericTypesNotSupported_1Arg" xml:space="preserve">
+    <value>不支援泛型類型。</value>
+  </data>
+  <data name="SD_ERR_AbstractTypesNotSupported_1Arg" xml:space="preserve">
+    <value>不支援抽象類型。</value>
+  </data>
+  <data name="SD_ERR_RenameNotSupported" xml:space="preserve">
+    <value>目前的物件是自動產生的，而且僅支援透過設定設計工具重新命名。</value>
+  </data>
+  <data name="SD_ERR_RenameNotSupportedForWcfGeneratedCode" xml:space="preserve">
+    <value>目前物件由 Wcf 用戶端產生器自動產生，無法重新命名。</value>
+  </data>
+  <data name="SD_ERR_ModifyParamsNotSupported" xml:space="preserve">
+    <value>目前的物件是自動產生的，而且不支援修改參數的功能。</value>
+  </data>
+  <data name="SD_ERR_CantEditInDebugMode" xml:space="preserve">
+    <value>目前無法修改設定檔。</value>
+  </data>
+  <data name="SD_MNU_AddSettingText" xml:space="preserve">
+    <value>新增設定(&amp;A)</value>
+  </data>
+  <data name="SD_MNU_RemoveSettingText" xml:space="preserve">
+    <value>移除設定(&amp;E)</value>
+  </data>
+  <data name="SD_FullDescriptionText" xml:space="preserve">
+    <value>應用程式設定可以讓您動態儲存及擷取應用程式的屬性設定和其他資訊。例如，應用程式可以儲存使用者的色彩偏好設定，然後下次執行應用程式時再擷取這些設定。</value>
+  </data>
+  <data name="SD_LinkPartOfDescriptionText" xml:space="preserve">
+    <value>進一步了解有關應用程式設定...</value>
+  </data>
+  <data name="SD_IncludeSensitiveInfoInConnectionStringWarning" xml:space="preserve">
+    <value>這個連接字串似乎含有連接資料庫所需的敏感性資料 (例如密碼)。但是，將敏感性資料儲存在連接字串中可能會有安全性的風險。要在連接字串中包含敏感性資料嗎?</value>
+  </data>
+  <data name="SD_SelectATypeTreeView_AccessibleName" xml:space="preserve">
+    <value>選取類型</value>
+  </data>
+  <data name="SD_CODEGENCMT_COMMON1" xml:space="preserve">
+    <value>這個類別可以讓您處理設定類別上的特定事件: </value>
+  </data>
+  <data name="SD_CODEGENCMT_COMMON2" xml:space="preserve">
+    <value> 在設定值變更之前引發 SettingChanging 事件。</value>
+  </data>
+  <data name="SD_CODEGENCMT_COMMON3" xml:space="preserve">
+    <value> 在設定值變更之後引發 PropertyChanged 事件。</value>
+  </data>
+  <data name="SD_CODEGENCMT_COMMON4" xml:space="preserve">
+    <value> 在載入設定值之後引發 SettingsLoaded 事件。</value>
+  </data>
+  <data name="SD_CODEGENCMT_COMMON5" xml:space="preserve">
+    <value> 在儲存設定值之前引發 SettingsSaving 事件。</value>
+  </data>
+  <data name="SD_CODEGENCMT_HOWTO_ATTACHEVTS" xml:space="preserve">
+    <value>若要加入用於儲存與變更設定的事件處理常式，請取消註解下列程式行: </value>
+  </data>
+  <data name="SD_CODEGENCMT_HANDLE_CHANGING" xml:space="preserve">
+    <value>在此加入程式碼以處理 SettingChangingEvent 事件。</value>
+  </data>
+  <data name="SD_CODEGENCMT_HANDLE_SAVING" xml:space="preserve">
+    <value>在此加入程式碼以處理 SettingsSaving 事件。</value>
+  </data>
+  <data name="SD_CODEGEN_FAILEDOPENCREATEEXTENDINGFILE" xml:space="preserve">
+    <value>無法建立或開啟檔案。</value>
+  </data>
+  <data name="SD_DESCR_Description" xml:space="preserve">
+    <value>設定的描述。</value>
+  </data>
+  <data name="SD_DESCR_GenerateDefaultValueInCode" xml:space="preserve">
+    <value>指定是否應該在強類型設定類別中產生預設的設定值。</value>
+  </data>
+  <data name="SD_DESCR_Group" xml:space="preserve">
+    <value>指定此設定檔所屬的群組。</value>
+  </data>
+  <data name="SD_DESCR_GroupDescription" xml:space="preserve">
+    <value>此設定檔所屬群組的說明。</value>
+  </data>
+  <data name="SD_DESCR_Roaming" xml:space="preserve">
+    <value>表示啟用 Windows 漫遊設定檔時是否要使用漫遊設定。</value>
+  </data>
+  <data name="SD_DESCR_Name" xml:space="preserve">
+    <value>用來識別設定的名稱。</value>
+  </data>
+  <data name="SD_DESCR_Provider" xml:space="preserve">
+    <value>用來管理設定的提供者 (System.Configuration.Provider.ProviderBase)。</value>
+  </data>
+  <data name="SD_DESCR_Scope" xml:space="preserve">
+    <value>指定設定是針對應用程式 (唯讀) 或是針對使用者 (讀寫)。</value>
+  </data>
+  <data name="SD_DESCR_SerializedSettingType" xml:space="preserve">
+    <value>將會在強型別設定類別中以此類型產生設定。例如，可能會將設定產生為 String 或 Integer 物件。</value>
+  </data>
+  <data name="SD_DESCR_Value" xml:space="preserve">
+    <value>目前的設定值。</value>
+  </data>
+  <data name="SD_SyncFiles_1Arg" xml:space="preserve">
+    <value>下列檔案將刪除:
+
+{0}</value>
+  </data>
+  <data name="SD_SyncFilesNoFilesFound_1Arg" xml:space="preserve">
+    <value>在下列位置中找不到 user.config 檔案:
+
+{0}</value>
+  </data>
+  <data name="SD_SyncFilesOneOrMoreFailed" xml:space="preserve">
+    <value>一或多個 user.config 檔案尚未移除。</value>
+  </data>
+  <data name="SD_SFG_AutoSaveRegionText" xml:space="preserve">
+    <value>My.Settings 自動儲存功能</value>
+  </data>
+  <data name="General_MissingService" xml:space="preserve">
+    <value>找不到服務 '{0}'。請確認此應用程式已正確安裝。</value>
+  </data>
+  <data name="PPG_Application_RootNamespaceJSharp" xml:space="preserve">
+    <value>預設套件(&amp;K):</value>
+  </data>
+  <data name="RSE_AccessModifier_Custom" xml:space="preserve">
+    <value>(自訂)</value>
+  </data>
+  <data name="RSE_NoCodeGeneration" xml:space="preserve">
+    <value>沒有程式碼產生</value>
+  </data>
+  <data name="PPG_WindowsApp_WPF" xml:space="preserve">
+    <value>WPF 應用程式</value>
+  </data>
+  <data name="PPG_WPFApp_InvalidShutdownMode" xml:space="preserve">
+    <value>(無效值: "{0}")</value>
+  </data>
+  <data name="PPG_WPFApp_ShutdownMode_OnExplicitShutdown" xml:space="preserve">
+    <value>在明確關機時</value>
+  </data>
+  <data name="PPG_WPFApp_ShutdownMode_OnLastWindowClose" xml:space="preserve">
+    <value>在最後一個視窗關閉時</value>
+  </data>
+  <data name="PPG_WPFApp_ShutdownMode_OnMainWindowClose" xml:space="preserve">
+    <value>在主視窗關閉時</value>
+  </data>
+  <data name="PPG_WPFApp_Xaml_CouldntFindRootElement" xml:space="preserve">
+    <value>應用程式定義檔案中找不到預期的根項目 "{0}"。</value>
+  </data>
+  <data name="PPG_WPFApp_Xaml_UnexpectedFormat_2Args" xml:space="preserve">
+    <value>此 .xaml 檔在第 {0} 行第 {1} 欄不是預期的格式。</value>
+  </data>
+  <data name="PPG_Application_StartupObjectLabelText" xml:space="preserve">
+    <value>啟始物件(&amp;O):</value>
+  </data>
+  <data name="PPG_Application_StartupUriLabelText" xml:space="preserve">
+    <value>啟動 URI(&amp;U):</value>
+  </data>
+  <data name="PPG_WPFApp_AppXamlOpenInUnsupportedEditor" xml:space="preserve">
+    <value>此應用程式定義檔案已經在不相容的編輯器中開啟。請先關閉其他編輯器，然後重新載入此專案屬性頁。</value>
+  </data>
+  <data name="PPG_WPFApp_CantOpenOrCreateAppXaml_1Arg" xml:space="preserve">
+    <value>嘗試開啟或建立此專案的應用程式定義檔案時發生錯誤。{0}</value>
+  </data>
+  <data name="PPG_WPFApp_ErrorControlMessage_1Arg" xml:space="preserve">
+    <value>嘗試載入此專案的應用程式定義檔案時發生錯誤。無法剖析檔案 '{0}'。請在 XAML 編輯器中編輯此檔案以修正錯誤。</value>
+  </data>
+  <data name="PPG_WPFApp_CantReadPropertyValue" xml:space="preserve">
+    <value>(錯誤)</value>
+  </data>
+  <data name="PPG_Unexpected" xml:space="preserve">
+    <value>發生未指定的錯誤。</value>
+  </data>
+  <data name="PPG_WPFApp_CantFindAppXaml" xml:space="preserve">
+    <value>此專案未包含應用程式定義檔案。</value>
+  </data>
+  <data name="PPG_WPFApp_CouldntCreateApplicationEventsFile_1Arg" xml:space="preserve">
+    <value>嘗試建立應用程式事件檔時發生錯誤。{0}</value>
+  </data>
+  <data name="General_InvalidArgument_1Arg" xml:space="preserve">
+    <value>引數 '{0}' 無效</value>
+  </data>
+  <data name="PPG_CommandLineApp_WPF" xml:space="preserve">
+    <value>WPF 主控台應用程式</value>
+  </data>
+  <data name="PPG_WindowsClassLib_WPF" xml:space="preserve">
+    <value>WPF 類別庫</value>
+  </data>
+  <data name="PPG_Application_DefaultManifestText" xml:space="preserve">
+    <value>用預設設定嵌入資訊清單</value>
+  </data>
+  <data name="PPG_Application_NoManifestText" xml:space="preserve">
+    <value>建立無資訊清單應用程式</value>
+  </data>
+  <data name="PPG_Application_BadManifest" xml:space="preserve">
+    <value>資訊清單檔案無效。</value>
+  </data>
+  <data name="PPG_Services" xml:space="preserve">
+    <value>服務</value>
+  </data>
+  <data name="PPG_Services_HelpLabelText" xml:space="preserve">
+    <value>用戶端應用程式服務可以讓您的 Windows 應用程式使用 ASP.NET 登入 (驗證)、角色和設定檔 (設定) 服務。若要啟用用戶端應用程式服務，您必須將應用程式的 [目標 Framework] 設定為完整版的 .NET Framework 3.5 (含) 以後版本。  </value>
+  </data>
+  <data name="PPG_Services_HelpLabelLink" xml:space="preserve">
+    <value>進一步了解用戶端應用程式服務...</value>
+  </data>
+  <data name="PPG_ServicesAdvancedPage_Title" xml:space="preserve">
+    <value>服務的進階設定</value>
+  </data>
+  <data name="PPG_Services_ConfirmRemoveServices" xml:space="preserve">
+    <value>停用應用程式服務將會清除驗證、角色和設定的預設服務。按一下 [確定] 即可停用應用程式服務。</value>
+  </data>
+  <data name="PPG_Services_ConfirmRemoveServices_Caption" xml:space="preserve">
+    <value>停用應用程式服務</value>
+  </data>
+  <data name="PPG_Services_Seconds" xml:space="preserve">
+    <value>秒</value>
+  </data>
+  <data name="PPG_Services_Minutes" xml:space="preserve">
+    <value>分鐘</value>
+  </data>
+  <data name="PPG_Services_Hours" xml:space="preserve">
+    <value>小時</value>
+  </data>
+  <data name="PPG_Services_Days" xml:space="preserve">
+    <value>日</value>
+  </data>
+  <data name="PPG_Services_VersionWarning" xml:space="preserve">
+    <value>若要啟用用戶端應用程式服務，您必須將應用程式的 [目標 Framework] 設定為 .NET Framework 3.5 (含) 以後版本。在 C#，您可以在 [應用程式] 屬性頁上進行此設定。在 Visual Basic，您可以按一下 [進階編譯選項]，在 [編譯] 屬性頁上進行此設定。</value>
+  </data>
+  <data name="PPG_Services_InvalidAppConfigXml" xml:space="preserve">
+    <value>讀取應用程式組態檔時發生錯誤。檔案可能已損毀或是包含無效的 XML。</value>
+  </data>
+  <data name="PPG_Services_InvalidUrl" xml:space="preserve">
+    <value>URL 無效。請輸入有效的 URL，例如 http://microsoft.com/services</value>
+  </data>
+  <data name="PPG_Services_InvalidUrls" xml:space="preserve">
+    <value>應用程式組態檔中某項服務的 URL 不是預期的格式。</value>
+  </data>
+  <data name="PPG_Services_ConnectionStringsDontMatch" xml:space="preserve">
+    <value>驗證、角色和 Web 設定提供者已透過應用程式組態檔設定成不共用通用的連接字串。</value>
+  </data>
+  <data name="PPG_Services_connectionStringValueDefaultDisplayValue" xml:space="preserve">
+    <value>指定 SQL Server 資料庫的連接字串，或者使用特殊連接字串 "Data Source = |SQL/CE|"，它會使 SQL Server Compact 產生離線存放區使用的本機資料庫檔案。</value>
+  </data>
+  <data name="SD_ERR_UnreferencedTypeNameList_1Arg" xml:space="preserve">
+    <value>不了解下列類型名稱: '{0}'。請確認您具備這些類型的參考。</value>
+  </data>
+  <data name="SD_ERR_DuplicateNameList_1Arg" xml:space="preserve">
+    <value>已經有使用下列名稱的設定: {0}。</value>
+  </data>
+  <data name="SD_ERR_CantAuthenticate" xml:space="preserve">
+    <value>無法驗證此使用者名稱/密碼組合。</value>
+  </data>
+  <data name="PPG_WindowsFormsApp" xml:space="preserve">
+    <value>Windows Forms 應用程式</value>
+  </data>
+  <data name="PPG_ServiceReferenceNamespaceDescription" xml:space="preserve">
+    <value>服務參考的命名空間。</value>
+  </data>
+  <data name="PPG_ServiceReferenceTypeName" xml:space="preserve">
+    <value>服務參考屬性</value>
+  </data>
+  <data name="PPG_ServiceReferenceUrlDescription" xml:space="preserve">
+    <value>中繼資料位置 URL</value>
+  </data>
+  <data name="PPG_ServiceReferenceUrlName" xml:space="preserve">
+    <value>中繼資料位置</value>
+  </data>
+  <data name="PPG_ServiceReferenceProperty_MultipleUrlNotSupported" xml:space="preserve">
+    <value>不支援具有多個來源 URL 的服務參考。</value>
+  </data>
+  <data name="PPG_ServiceReferenceProperty_SetReferenceUrlEmpty" xml:space="preserve">
+    <value>無法將參考 URL 變更為空白。參考 URL 必須是有效的 URL。</value>
+  </data>
+  <data name="DFX_OneOrMoreFilesReloaded" xml:space="preserve">
+    <value>在簽出期間重新載入了一或多個檔案。請重試作業。</value>
+  </data>
+  <data name="PPG_ProjectReloadedSomePropertiesMayNotHaveBeenSet" xml:space="preserve">
+    <value>專案已重新載入，此頁面上的某些變更可能已遺失。</value>
+  </data>
+  <data name="PPG_SecurityPage_XBAPOutOfTrustZoneToolTip" xml:space="preserve">
+    <value>由於這項要求的更高使用權限，此應用程式將無法在選取的區域中執行。如需詳細資訊，請按一下上方的 [說明] 連結。</value>
+  </data>
+  <data name="XmlToSchema_InvalidXMLFormat" xml:space="preserve">
+    <value>無效的 XML 格式: {0}</value>
+  </data>
+  <data name="XmlToSchema_XMLSchemaInferenceWizard" xml:space="preserve">
+    <value>XML 結構描述推斷精靈</value>
+  </data>
+  <data name="XmlToSchema_Error" xml:space="preserve">
+    <value>錯誤: {0}</value>
+  </data>
+  <data name="XmlToSchema_ErrorInXmlInference" xml:space="preserve">
+    <value>XML 結構描述推斷時發生錯誤: {0}</value>
+  </data>
+  <data name="XmlToSchema_ErrorLoadingXml" xml:space="preserve">
+    <value>載入 XML 時發生錯誤: {0}</value>
+  </data>
+  <data name="XmlToSchema_InvalidEmptyItemName" xml:space="preserve">
+    <value>空白專案項目名稱無效。</value>
+  </data>
+  <data name="XmlToSchema_InvalidProjectPath" xml:space="preserve">
+    <value>無效的專案路徑: {0}</value>
+  </data>
+  <data name="XmlToSchema_NoProjectSelected" xml:space="preserve">
+    <value>未選取專案。</value>
+  </data>
+  <data name="ResolveKeySource_InvalidKeyName" xml:space="preserve">
+    <value>無效的金鑰檔名稱 "{0}"。</value>
+  </data>
+  <data name="Unable_To_Get_Checksum" xml:space="preserve">
+    <value>無法取得金鑰檔 "{0}" 的 MD5 總和檢查碼。{1}。</value>
+  </data>
+  <data name="ErrorImportingKey" xml:space="preserve">
+    <value>匯入金鑰時發生錯誤</value>
+  </data>
+  <data name="CSRDlg_MultipleURL" xml:space="preserve">
+    <value>多重位址 (可在 .svcmap 檔案中編輯)</value>
+  </data>
+  <data name="PPG_WinMDObj" xml:space="preserve">
+    <value>Windows 執行階段元件</value>
+  </data>
+  <data name="PPG_AppContainerExe" xml:space="preserve">
+    <value>Windows 市集應用程式</value>
+  </data>
+  <data name="PPG_UnknownOutputType" xml:space="preserve">
+    <value>未知的輸出類型: {0}</value>
+  </data>
+  <data name="SD_DefaultSettingName" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="PropPage_ComputingCurrentImportsMessage" xml:space="preserve">
+    <value>正在計算目前的匯入...</value>
+  </data>
+  <data name="PropPage_CurrentImportsTitle" xml:space="preserve">
+    <value>目前的匯入</value>
+  </data>
+  <data name="PPG_PackageTitle" xml:space="preserve">
+    <value>套件</value>
+  </data>
+  <data name="PPG_Property_PackageVersion" xml:space="preserve">
+    <value>套件版本</value>
+  </data>
+</root>

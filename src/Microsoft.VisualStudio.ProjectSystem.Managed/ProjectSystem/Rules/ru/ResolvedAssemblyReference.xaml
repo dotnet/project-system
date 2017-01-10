@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="ResolvedAssemblyReference" DisplayName="Разрешенная ссылка на сборку" PageTemplate="generic" Description="Разрешенная ссылка" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ResolvedReference" ItemType="Reference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="ResolveAssemblyReferencesDesignTime" />
+  </Rule.DataSource>
+  <StringListProperty Name="Aliases" DisplayName="Псевдонимы" Description="Разделенный запятыми список псевдонимов данной сборки." Separator=",">
+    <StringListProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" />
+    </StringListProperty.DataSource>
+  </StringListProperty>
+  <BoolProperty Name="CopyLocal" DisplayName="Копировать локально" Description="Указывает, будет ли ссылочная сборка скопирована в выходной каталог.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" PersistedName="Private" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <StringProperty Name="Culture" ReadOnly="True" Visible="False" DisplayName="Культура" Description="Значение поля культуры из метаданных сборки." />
+  <StringProperty Name="Description" ReadOnly="True" Visible="False" DisplayName="Описание" Description="Значение поля заголовка из метаданных сборки." />
+  <BoolProperty Name="EmbedInteropTypes" DisplayName="Внедрить типы взаимодействия" Description="Указывает, будут ли типы, определенные в этой сборке, внедрены в целевую сборку.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <EnumProperty Name="FileType" ReadOnly="True" Visible="False" DisplayName="Тип файла" Description="Тип файла ссылки.">
+    <EnumValue Name="Assembly" DisplayName="Сборка .NET" />
+    <EnumValue Name="ActiveX" DisplayName="Библиотека типов COM" />
+    <EnumValue Name="Native Assembly" DisplayName="Машинная сборка" />
+  </EnumProperty>
+  <StringProperty Name="Identity" ReadOnly="True" DisplayName="Идентификатор" Description="Идентификатор безопасности сборки, на которую указывает ссылка (см System.Reflection.Assembly.Evidence или System.Security.Policy.Evidence).">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="{}{Identity}" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Путь" Description="Расположение файла, на который указывает ссылка.">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="Identity" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="RuntimeVersion" ReadOnly="True" Visible="False" DisplayName="Версия среды выполнения" Description="Версия среды выполнения .NET, для которой была скомпилирована эта сборка."></StringProperty>
+  <BoolProperty Name="SpecificVersion" DisplayName="Конкретная версия" Description="Определяет, может ли эта сборка быть разрешена без применения правил настройки разрешения сборки для различных версий.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="AssemblyReference" ItemType="Reference" HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <BoolProperty Name="StrongName" ReadOnly="True" Visible="False" DisplayName="Строгое имя" Description="Значение true указывает, что ссылочная сборка была подписана с помощью пары ключей."></BoolProperty>
+  <StringProperty Name="Version" ReadOnly="True" DisplayName="Версия" Description="Версия ссылочной сборки."></StringProperty>
+  <StringProperty Name="RequiredTargetFramework" DisplayName="Требуемая версия .NET Framework" Visible="False" />
+  <StringProperty Name="HintPath" Visible="false" />
+  <StringProperty Name="SDKIdentity" Visible="false" />
+  <!-- This is the metadata we store on the reference item when we add it. -->
+  <BoolProperty Name="IsWinMDFile" Visible="false" Description="Указывает, действительно ли система проекта подтвердила, что файл является WinMD-файлом (а не сборкой)" />
+  <!-- These are metadata added to the resolved item by MSBuild that we don't show to the user but use internally. -->
+  <BoolProperty Name="WinMDFile" Visible="false" ReadOnly="True" Description="Указывает, действительно ли система сборки подтвердила, что файл является WinMD-файлом (а не сборкой)" />
+  <StringProperty Name="Name" Visible="false" ReadOnly="True" />
+  <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="Вычисленное имя исходного ссылочного элемента, в результате разрешения которого был получен данный разрешенный ссылочный элемент." />
+  <StringProperty Name="ReferenceFromSDK" Visible="False" ReadOnly="True" Description="Пакет SDK, из которого получена эта ссылочная сборка, при использовании расширенной целевой сборки SDK." />
+  <StringProperty Name="FusionName" Visible="False" ReadOnly="True" Description="Полное fusion-имя разрешенной сборки." />
+  <StringProperty Name="ResolvedFrom" Visible="False" ReadOnly="True" Description="{}Репозиторий, в котором хранилась ссылка, с помощью которой было выполнено данное разрешение. (&quot;{GAC}&quot;, если репозиторием был глобальный кэш сборок)." />
+  <StringProperty Name="FrameworkFile" Visible="False" ReadOnly="True" Description="Является ли этот файл файлом платформы. Т. е. находится в каталоге или списке распространения целевой платформы." />
+</Rule>

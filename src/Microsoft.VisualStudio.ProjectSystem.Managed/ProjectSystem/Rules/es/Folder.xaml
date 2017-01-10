@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="Folder" DisplayName="General" PageTemplate="generic" Description="Propiedades de carpeta" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFileFolderItems" HasConfigurationCondition="False" ItemType="Folder" />
+  </Rule.DataSource>
+  <StringProperty Name="Identity" Visible="false" ReadOnly="true" Category="Misc" />
+  <StringProperty Name="FullPath" DisplayName="Ruta de acceso completa" ReadOnly="true" Category="Misc" Description="Ubicación de la carpeta" />
+  <StringProperty Name="FolderName" DisplayName="Nombre de carpeta" ReadOnly="true" Category="Misc" Description="Nombre de esta carpeta" />
+</Rule>

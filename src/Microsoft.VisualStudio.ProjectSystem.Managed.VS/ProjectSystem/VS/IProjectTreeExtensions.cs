@@ -81,11 +81,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// Finds direct child of IProjectTree by it's name
         /// </summary>
         /// <param name="tree"></param>
-        /// <param name="itemName"></param>
+        /// <param name="caption"></param>
         /// <returns></returns>
-        public static IProjectTree FindNodeByName(this IProjectTree tree, string itemName)
+        public static IProjectTree FindNodeByCaption(this IProjectTree tree, string caption)
         {
-            return FindNodeHelper(tree, itemName, child => child.Caption);
+            return FindNodeHelper(tree, caption, child => child.Caption);
         }
 
         private static IProjectTree FindNodeHelper(this IProjectTree tree, string itemToFind,

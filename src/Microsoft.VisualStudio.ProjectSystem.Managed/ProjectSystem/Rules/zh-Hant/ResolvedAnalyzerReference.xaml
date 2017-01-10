@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="ResolvedAnalyzerReference" DisplayName="已解析的分析器參考" PageTemplate="generic" Description="已解析的分析器參考屬性" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" ItemType="Analyzer" HasConfigurationCondition="False" />
+  </Rule.DataSource>
+  <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="因解析而產生這個已解析參考項目的原始參考項目的評估項目名稱。">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="Analyzer" PersistedName="FullPath" />
+    </StringProperty.DataSource>
+  </StringProperty>
+</Rule>

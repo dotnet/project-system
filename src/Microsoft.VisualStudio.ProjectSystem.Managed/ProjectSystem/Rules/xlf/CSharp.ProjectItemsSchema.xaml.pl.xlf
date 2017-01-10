@@ -13,6 +13,11 @@
         <target state="translated">Kompilator C#</target>
         <note />
       </trans-unit>
+      <trans-unit id="ItemType|AdditionalFiles|DisplayName">
+        <source>C# analyzer additional file</source>
+        <target state="new">C# analyzer additional file</target>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

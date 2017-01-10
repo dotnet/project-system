@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="CSharp" DisplayName="C#" PageTemplate="tool" Description="C# kaynak dosyası" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="false" />
+  </Rule.DataSource>
+  <Rule.Categories>
+    <Category Name="Advanced" DisplayName="Gelişmiş" />
+    <Category Name="Misc" DisplayName="Çeşitli" />
+  </Rule.Categories>
+  <DynamicEnumProperty Name="{}{ItemType}" DisplayName="Derleme Eylemi" Category="Advanced" Description="Dosyanın oluşturma ve dağıtım işlemleriyle olan ilişkisi." EnumProvider="ItemTypes" />
+  <EnumProperty Name="CopyToOutputDirectory" DisplayName="Çıkış Dizinine Kopyala" Category="Advanced" Description="Kaynak dosyasının çıkış dizinine kopyalanacağını belirtir.">
+    <EnumValue Name="Never" DisplayName="Kopyalama" />
+    <EnumValue Name="Always" DisplayName="Her zaman kopyala" />
+    <EnumValue Name="PreserveNewest" DisplayName="Daha yeniyse kopyala" />
+  </EnumProperty>
+  <StringProperty Name="Generator" Category="Advanced" DisplayName="Özel Araç" Description="Bir dosyayı tasarım zamanında dönüştüren ve dönüştürme çıkışını başka bir dosyaya yerleştiren aracı belirtir. Örneğin, bir veri kümesi (.xsd) dosyası, varsayılan bir özel araçla gelir." />
+  <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="Özel Araç İsim Uzayı" Description="Özel aracın çıkışının yerleştirileceği isim uzayı." />
+  <BoolProperty Name="ExcludedFromBuild" DisplayName="Derlemeden Dışlandı">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="true" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <BoolProperty Name="Visible" Visible="false" />
+  <StringProperty Name="DependentUpon" Visible="false">
+    <StringProperty.Metadata>
+      <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />
+    </StringProperty.Metadata>
+  </StringProperty>
+  <StringProperty Name="Link" Visible="false">
+    <StringProperty.DataSource>
+      <DataSource PersistenceStyle="Attribute" />
+    </StringProperty.DataSource>
+    <StringProperty.Metadata>
+      <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />
+    </StringProperty.Metadata>
+  </StringProperty>
+  <StringProperty Name="SubType" Visible="false" />
+  <StringProperty Name="LastGenOutput" Visible="false" Description="SFG sonucu oluşturulan son dosyanın adı." />
+  <BoolProperty Name="DesignTime" Visible="false" Description="Bu dosyada bir tasarımcı olup olmadığını gösteren bir değer." />
+  <BoolProperty Name="AutoGen" Visible="false" Description="Bunun oluşturulmuş bir dosya olup olmadığını gösteren değer." />
+</Rule>

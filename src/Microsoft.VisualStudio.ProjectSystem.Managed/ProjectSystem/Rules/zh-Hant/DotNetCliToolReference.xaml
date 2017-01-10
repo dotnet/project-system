@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="DotNetCliToolReference" DisplayName="套件" PageTemplate="generic" Description="套件" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" ItemType="DotNetCliToolReference" HasConfigurationCondition="False" />
+  </Rule.DataSource>
+  <StringProperty Name="Description" ReadOnly="True" Visible="True" DisplayName="說明" Description="相依性描述。" />
+  <StringProperty Name="Version" ReadOnly="True" DisplayName="版本" Description="相依性的版本。"></StringProperty>
+  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="IncludeAssets" Description="要從此參考包含的資產" />
+  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="ExcludeAssets" Description="要從此參考排除的資產" />
+  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="PrivateAssets" Description="此參考中的私用資產" />
+  <StringProperty Name="Name" Visible="True" ReadOnly="True" />
+  <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="因解析而產生這個已解析參考項目的原始參考項目的評估項目名稱。" />
+  <StringProperty Name="Path" Visible="False" ReadOnly="True" />
+  <StringProperty Name="Type" Visible="False" ReadOnly="True" />
+  <StringProperty Name="RuntimeIdentifier" Visible="False" ReadOnly="True" />
+  <StringProperty Name="TargetFramework" Visible="False" ReadOnly="True" />
+  <StringProperty Name="FrameworkName" Visible="False" ReadOnly="True" />
+  <StringProperty Name="FrameworkVersion" Visible="False" ReadOnly="True" />
+</Rule>

@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             Assert.True(rootNode is SubTreeRootDependencyNode);
             Assert.True(rootNode.Flags.Contains(provider.ProjectSubTreeRootNodeFlags));
-            Assert.Equal("Projects", rootNode.Caption);
+            Assert.Equal(VSResources.ProjectsNodeName, rootNode.Caption);
             Assert.Equal(KnownMonikers.ApplicationGroup, rootNode.Icon);
             Assert.Equal(ProjectDependenciesSubTreeProvider.ProviderTypeString, rootNode.Id.ProviderType);
         }
@@ -51,10 +51,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     ""Id"": {
         ""ProviderType"": ""ProviderUnderTest"",
-        ""ItemSpec"": ""MyDependencyNodeItemSpec1"",
-        ""UniqueToken"":""c:\\myproject\\project.csproj""
+        ""ItemSpec"": ""MyDependencyNodeItemSpec1""
     }
 }");
+            myDependencyNode1.Id.ContextProject = "c:\\myproject\\project.csproj";
 
             myTopNode1.Children.Add(myDependencyNode1);
             myRootNode.Children.Add(myTopNode1);
@@ -131,8 +131,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                                           projectContextProvider: mockProjectContextProvider);
             provider.SetRootNode(myRootNode);
 
-            // Act 
-            var resultNode = provider.GetDependencyNode(myDependencyNode1.Id);                       
+            // Act
+            var resultNode = provider.GetDependencyNode(myDependencyNode1.Id);
 
             // Assert
             Assert.Equal(resultNode.Id, myDependencyNode1.Id);
@@ -151,11 +151,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var provider = new TestableProjectDependenciesSubTreeProvider(unconfiguredProject: mockUnconfiguredProject,
                                                                           projectContextProvider: null);
 
-            // Act 
+            // Act
             var resultNode = provider.TestCreateDependencyNode(testProjectPath, "myItemType");
 
             Assert.Equal(resultNode.Id.ItemSpec, testProjectPath);
-            Assert.Equal(resultNode.Id.UniqueToken, 
+            Assert.Equal(resultNode.Id.ContextProject,
                          Path.GetFullPath(Path.Combine(Path.GetDirectoryName(projectPath), testProjectPath)));
         }
 
@@ -184,7 +184,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             public void SetRootNode(IDependencyNode node)
             {
-                RootNode = node;                
+                RootNode = node;
             }
         }
     }
