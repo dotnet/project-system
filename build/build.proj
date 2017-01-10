@@ -107,8 +107,8 @@
     <Error Text="There were test failures, for full log see %(HtmlTestFile.FullPath)" Condition="$(ExitCode) != 0" />
 
   </Target>
-
-  <Target Name="Build" DependsOnTargets="RestorePackages;BuildSolution;BuildNuGetPackages;BuildModernVsixPackages;Test" />
-  <Target Name="Rebuild" DependsOnTargets="RestorePackages;RebuildSolution;RebuildNuGetPackages;BuildModernVsixPackages;Test" />
+ 
+  <Target Name="Build" DependsOnTargets="RestorePackages;BuildSolution;BuildNuGetPackages;Test" />
+  <Target Name="Rebuild" DependsOnTargets="RestorePackages;RebuildSolution;RebuildNuGetPackages;Test" />
 
 </Project>
