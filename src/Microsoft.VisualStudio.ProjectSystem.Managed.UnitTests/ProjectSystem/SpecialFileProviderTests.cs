@@ -16,10 +16,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var fileSystem = IFileSystemFactory.Create();
             var sourceItemsProvider = IProjectItemProviderFactory.Create();
+            var specialFilesManager = ISpecialFilesManagerFactory.Create();
 
             Assert.Throws<ArgumentNullException>("projectTree", () =>
             {
-                new SettingsFileSpecialFileProvider(null, sourceItemsProvider, null, fileSystem);
+                new SettingsFileSpecialFileProvider(null, sourceItemsProvider, null, fileSystem, specialFilesManager);
             });
         }
 
@@ -28,10 +29,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var projectTree = IPhysicalProjectTreeFactory.Create();
             var fileSystem = IFileSystemFactory.Create();
+            var specialFilesManager = ISpecialFilesManagerFactory.Create();
 
             Assert.Throws<ArgumentNullException>("sourceItemsProvider", () =>
             {
-                new SettingsFileSpecialFileProvider(projectTree, null, null, fileSystem);
+                new SettingsFileSpecialFileProvider(projectTree, null, null, fileSystem, specialFilesManager);
             });
         }
 
@@ -40,10 +42,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var projectTree = IPhysicalProjectTreeFactory.Create();
             var sourceItemsProvider = IProjectItemProviderFactory.Create();
+            var specialFilesManager = ISpecialFilesManagerFactory.Create();
 
             Assert.Throws<ArgumentNullException>("fileSystem", () =>
             {
-                new SettingsFileSpecialFileProvider(projectTree, sourceItemsProvider, null, null);
+                new SettingsFileSpecialFileProvider(projectTree, sourceItemsProvider, null, null, specialFilesManager);
             });
         }
 
@@ -71,24 +74,41 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
     Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
         Settings.settings (flags: {Linked}), FilePath: ""C:\SomeOtherPath\Settings.settings""
 ", @"C:\SomeOtherPath\Settings.settings")]
-        // File inside a non-app designer folder - return default path.
-        [InlineData(@"
-Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
-    Properties (flags: {Folder}), FilePath: ""C:\Foo\Properties""
-        Settings.settings, FilePath: ""C:\Foo\Properties\Settings.settings""
-", @"C:\Foo\Settings.settings")]
+
         public async Task FindFile_FromAppDesignerFolder(string input, string expectedFilePath)
         {
             var inputTree = ProjectTreeParser.Parse(input);
-
-            var projectTree = IPhysicalProjectTreeFactory.Create(currentTree: inputTree);
+            var projectTreeProvider = new ProjectTreeProvider();
+            var projectTree = IPhysicalProjectTreeFactory.Create(currentTree: inputTree, provider: projectTreeProvider);
             var sourceItemsProvider = IProjectItemProviderFactory.Create();
             var fileSystem = IFileSystemFactory.Create(path => true);
+            var specialFilesManager = ISpecialFilesManagerFactory.ImplementGetFile(@"C:\Foo\Properties");
 
-            var provider = new SettingsFileSpecialFileProvider(projectTree, sourceItemsProvider, null, fileSystem);
+            var provider = new SettingsFileSpecialFileProvider(projectTree, sourceItemsProvider, null, fileSystem, specialFilesManager);
 
             var filePath = await provider.GetFileAsync(SpecialFiles.AppSettings, SpecialFileFlags.FullPath);
             Assert.Equal(expectedFilePath, filePath);
+        }
+
+        [Fact]
+        public async Task GetFile_WhenNoAppDesigner_ReturnsPathUnderProjectRoot()
+        {
+            var inputTree = ProjectTreeParser.Parse(@"
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
+    Properties (flags: {Folder}), FilePath: ""C:\Foo\Properties""
+        Settings.settings, FilePath: ""C:\Foo\Properties\Settings.settings""");
+
+            var projectTreeProvider = new ProjectTreeProvider();
+            var projectTree = IPhysicalProjectTreeFactory.Create(currentTree: inputTree, provider: projectTreeProvider);
+            var sourceItemsProvider = IProjectItemProviderFactory.Create();
+            var fileSystem = IFileSystemFactory.Create(path => true);
+            var specialFilesManager = ISpecialFilesManagerFactory.ImplementGetFile(null); // No AppDesigner
+
+            var provider = new SettingsFileSpecialFileProvider(projectTree, sourceItemsProvider, null, fileSystem, specialFilesManager);
+
+            var filePath = await provider.GetFileAsync(SpecialFiles.AppSettings, SpecialFileFlags.FullPath);
+
+            Assert.Equal(@"C:\Foo\Settings.settings", filePath);
         }
 
         [Theory]
@@ -111,8 +131,9 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
             var projectTree = IPhysicalProjectTreeFactory.Create(currentTree: inputTree);
             var sourceItemsProvider = IProjectItemProviderFactory.Create();
             var fileSystem = IFileSystemFactory.Create(path => true);
+            var specialFilesManager = ISpecialFilesManagerFactory.Create();
 
-            var provider = new AppConfigFileSpecialFileProvider(projectTree, sourceItemsProvider, null, fileSystem);
+            var provider = new AppConfigFileSpecialFileProvider(projectTree, sourceItemsProvider, null, fileSystem, specialFilesManager);
 
             var filePath = await provider.GetFileAsync(SpecialFiles.AppConfig, SpecialFileFlags.FullPath);
             Assert.Equal(expectedFilePath, filePath);
@@ -132,8 +153,9 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
             var projectTree = IPhysicalProjectTreeFactory.Create(currentTree: inputTree);
             var sourceItemsProvider = IProjectItemProviderFactory.Create();
             var fileSystem = IFileSystemFactory.Create(path => true);
+            var specialFilesManager = ISpecialFilesManagerFactory.Create();
 
-            var provider = new SettingsFileSpecialFileProvider(projectTree, sourceItemsProvider, null, fileSystem);
+            var provider = new SettingsFileSpecialFileProvider(projectTree, sourceItemsProvider, null, fileSystem, specialFilesManager);
 
             var filePath = await provider.GetFileAsync(SpecialFiles.AppSettings, SpecialFileFlags.FullPath);
             Assert.Equal(expectedFilePath, filePath);
@@ -159,8 +181,9 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
             var projectTree = IPhysicalProjectTreeFactory.Create(currentTree: inputTree);
             var sourceItemsProvider = IProjectItemProviderFactory.Create();
             var fileSystem = IFileSystemFactory.Create(path => fileExistsOnDisk);
+            var specialFilesManager = ISpecialFilesManagerFactory.Create();
 
-            var provider = new SettingsFileSpecialFileProvider(projectTree, sourceItemsProvider, null, fileSystem);
+            var provider = new SettingsFileSpecialFileProvider(projectTree, sourceItemsProvider, null, fileSystem, specialFilesManager);
 
             var filePath = await provider.GetFileAsync(SpecialFiles.AppSettings, SpecialFileFlags.FullPath);
             Assert.Equal(expectedFilePath, filePath);
@@ -191,7 +214,9 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
                                                            return null;
                                                        });
 
-            var provider = new SettingsFileSpecialFileProvider(projectTree, sourceItemsProvider, null, fileSystem);
+            var specialFilesManager = ISpecialFilesManagerFactory.Create();
+
+            var provider = new SettingsFileSpecialFileProvider(projectTree, sourceItemsProvider, null, fileSystem, specialFilesManager);
             var filePath = await provider.GetFileAsync(SpecialFiles.AppSettings, SpecialFileFlags.CreateIfNotExist);
 
             Assert.Equal(expectedFilePath, filePath);
@@ -223,7 +248,9 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
                                                            return null;
                                                        });
 
-            var provider = new AppConfigFileSpecialFileProvider(projectTree, sourceItemsProvider, null, fileSystem);
+            var specialFilesManager = ISpecialFilesManagerFactory.Create();
+
+            var provider = new AppConfigFileSpecialFileProvider(projectTree, sourceItemsProvider, null, fileSystem, specialFilesManager);
             var filePath = await provider.GetFileAsync(SpecialFiles.AppConfig, SpecialFileFlags.CreateIfNotExist);
 
             Assert.Equal(expectedFilePath, filePath);
@@ -256,7 +283,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
             var inputTree = ProjectTreeParser.Parse(input);
             var expectedTree = ProjectTreeParser.Parse(expected);
 
-            var projectTreeProvider = IProjectTreeProviderFactory.Create(@"C:\Foo\Properties");
+            var projectTreeProvider = new ProjectTreeProvider();
             var projectTree = IPhysicalProjectTreeFactory.Create(provider: projectTreeProvider, currentTree: inputTree);
             var sourceItemsProvider = IProjectItemProviderFactory.CreateWithAdd(inputTree);
             var fileSystem = IFileSystemFactory.Create(path => fileExistsOnDisk,
@@ -268,7 +295,9 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
                                                            return null;
                                                        });
 
-            var provider = new SettingsFileSpecialFileProvider(projectTree, sourceItemsProvider, null, fileSystem);
+            var specialFilesManager = ISpecialFilesManagerFactory.ImplementGetFile(@"C:\Foo\Properties");
+
+            var provider = new SettingsFileSpecialFileProvider(projectTree, sourceItemsProvider, null, fileSystem, specialFilesManager);
             var filePath = await provider.GetFileAsync(SpecialFiles.AppSettings, SpecialFileFlags.CreateIfNotExist);
 
             Assert.Equal(expectedFilePath, filePath);
@@ -302,8 +331,9 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
                                                            return null;
                                                        });
             var templateProvider = new Lazy<ICreateFileFromTemplateService>(() => ICreateFileFromTemplateServiceFactory.Create());
+            var specialFilesManager = ISpecialFilesManagerFactory.Create();
 
-            var provider = new SettingsFileSpecialFileProvider(projectTree, sourceItemsProvider, templateProvider, fileSystem);
+            var provider = new SettingsFileSpecialFileProvider(projectTree, sourceItemsProvider, templateProvider, fileSystem, specialFilesManager);
             var filePath = await provider.GetFileAsync(SpecialFiles.AppSettings, SpecialFileFlags.CreateIfNotExist);
 
             Assert.Equal(expectedFilePath, filePath);
