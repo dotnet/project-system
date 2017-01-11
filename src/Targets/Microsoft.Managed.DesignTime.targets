@@ -26,12 +26,8 @@
 
   <!-- Project Capabilities -->
   <ItemGroup Condition="'$(DefineCommonManagedCapabilities)' == 'true'">
-    <ProjectCapability Include="AppDesigner"/>
     <ProjectCapability Include="ManagedLang"/> <!-- Temporary: See https://github.com/dotnet/roslyn-project-system/issues/47 -->
-    <ProjectCapability Include="HandlesOwnReload"/>
     <ProjectCapability Include="UseFileGlobs"/>
-    <ProjectCapability Include="EditAndContinue"/>
-    <ProjectCapability Include="OpenProjectFile"/>
 
     <!-- DependenciesTree capability lights up a Dependencies tree node and it's sub node providers-->
     <ProjectCapability Include="DependenciesTree" />
