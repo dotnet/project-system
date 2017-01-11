@@ -64,7 +64,6 @@
     <Compile Include="ProjectSystem\LanguageServices\IConfiguredProjectHostObject.cs" />
     <Compile Include="ProjectSystem\LanguageServices\ConfiguredProjectReadyToBuild.cs" />
     <Compile Include="ProjectSystem\LanguageServices\IUnconfiguredProjectHostObject.cs" />
-    <Compile Include="ProjectSystem\DefaultCapabilitiesProvider.cs" />
     <Compile Include="ProjectSystem\ActiveConfiguredProjectsProvider.cs" />
     <Compile Include="ProjectSystem\LanguageServices\CommandLineParserService.cs" />
     <Compile Include="ProjectSystem\LanguageServices\Handlers\AbstractLanguageServiceRuleHandler.cs" />

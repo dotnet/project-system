@@ -5,16 +5,16 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.Packaging;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Generators;
 using Microsoft.VisualStudio.ProjectSystem.VS.Xproj;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
+using Microsoft.VisualStudio.ProjectSystem;
 
 // We register ourselves as a new CPS "project type"
-[assembly: ProjectTypeRegistration(projectTypeGuid: CSharpProjectSystemPackage.ProjectTypeGuid, displayName: "#1", displayProjectFileExtensions: "#2", defaultProjectExtension: "csproj", language: "CSharp", resourcePackageGuid: CSharpProjectSystemPackage.PackageGuid, Capabilities = ManagedProjectSystemPackage.DefaultCapabilities)]
+[assembly: ProjectTypeRegistration(projectTypeGuid: CSharpProjectSystemPackage.ProjectTypeGuid, displayName: "#1", displayProjectFileExtensions: "#2", defaultProjectExtension: "csproj", language: "CSharp", resourcePackageGuid: CSharpProjectSystemPackage.PackageGuid, Capabilities = CSharpProjectSystemPackage.CSharpDefaultCapabilities)]
 
 namespace Microsoft.VisualStudio.Packaging
 {
@@ -43,6 +43,8 @@ namespace Microsoft.VisualStudio.Packaging
 
         private const string DebugPropertyClassId = "{0273C280-1882-4ED0-9308-52914672E3AA}";
         private const string DebugPropertyClassInfo = "Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.DebugPropertyPage";
+
+        public const string CSharpDefaultCapabilities = ManagedProjectSystemPackage.DefaultCapabilities + "; " + ProjectCapability.CSharp;
 
         private IVsProjectFactory _factory;
 
