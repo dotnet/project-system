@@ -97,32 +97,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 }
                 else
                 {
-                    // What we need to do is load the one on disk. This accomplishes two things: 1) verifies that at least the msbuild is OK. If it isn't
-                    // we want to let the normal solution reload occur so that the user sees the failure, and 2) it allows us to clear the current project
-                    // and do a deep copy from the newly loaded one to the original - replacing its contents. Note that the Open call is cached so that if
-                    // the project is already in a collection, it will just return the cached one. For this reason, and the fact we don't want the project to
-                    // appear in the global project collection, the file is opened in a new collection which we will discard when done.
                     try
                     {
-                        ProjectCollection thisCollection = new ProjectCollection();
-                        var newProject = ProjectRootElement.Open(_projectVsServices.Project.FullPath, thisCollection);
-
-                        // First copy to a temp project, so that any failures will not corrupt the users project.
-                        ProjectRootElement.Create().DeepCopyFrom(newProject);
-
-                        msbuildProject.RemoveAllChildren();
-                        msbuildProject.DeepCopyFrom(newProject);
+                        // This reloads the project off disk and handles if the new XML is invalid
+                        msbuildProject.Reload();
 
                         // There isn't a way to clear the dirty flag on the project xml, so to work around that the project is saved
-                        // to a StringWriter. 
+                        // to a StringWriter.
                         var tw = new StringWriter();
                         msbuildProject.Save(tw);
-
-                        thisCollection.UnloadAllProjects();
                     }
                     catch (Microsoft.Build.Exceptions.InvalidProjectFileException)
                     {
-                        // Indicate we weren't able to complete the action. We want to do a normal reload 
+                        // Indicate we weren't able to complete the action. We want to do a normal reload
                         return ProjectReloadResult.ReloadFailed;
                     }
                     catch (Exception ex)
