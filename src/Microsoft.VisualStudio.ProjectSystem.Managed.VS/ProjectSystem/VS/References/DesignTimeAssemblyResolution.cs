@@ -18,8 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
     /// <summary>
     ///     Provides an implementation of <see cref="IVsDesignTimeAssemblyResolution"/> that sits over the top of VSLangProj.References.
     /// </summary>
-    [Export(ExportContractNames.VsTypes.ProjectNodeComExtension)]  // Need to override CPS's version, which it implements on the project node as IVsDesignTimeAssemblyResolution
-    [ComServiceIid(typeof(IVsDesignTimeAssemblyResolution))]
+    [ExportProjectNodeComService(typeof(IVsDesignTimeAssemblyResolution))]  // Need to override CPS's version, which it implements on the project node as IVsDesignTimeAssemblyResolution
     [ExportVsProfferedProjectService(typeof(SVsDesignTimeAssemblyResolution))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
     [Order(1)] // Before CPS's version
