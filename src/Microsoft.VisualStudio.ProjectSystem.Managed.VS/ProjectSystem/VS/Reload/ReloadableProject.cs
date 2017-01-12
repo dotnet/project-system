@@ -101,6 +101,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     {
                         // This reloads the project off disk and handles if the new XML is invalid
                         msbuildProject.Reload();
+
+                        // There isn't a way to clear the dirty flag on the project xml, so to work around that the project is saved
+                        // to a StringWriter.
+                        var tw = new StringWriter();
+                        msbuildProject.Save(tw);
                     }
                     catch (Microsoft.Build.Exceptions.InvalidProjectFileException)
                     {
