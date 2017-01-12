@@ -119,13 +119,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             var resolvedReferences = new Dictionary<string, ResolvedReference>(StringComparer.Ordinal);
 
             VSProject project = GetVSProject();
-            foreach (Reference3 reference in project.References.OfType<Reference3>())
+            if (project != null)
             {
-                // We only want resolved assembly references
-                if (reference.Type != prjReferenceType.prjReferenceTypeAssembly && !reference.Resolved)
-                    continue;
+                foreach (Reference3 reference in project.References.OfType<Reference3>())
+                {
+                    // We only want resolved assembly references
+                    if (reference.Type != prjReferenceType.prjReferenceTypeAssembly && !reference.Resolved)
+                        continue;
 
-                resolvedReferences[reference.Name] = new ResolvedReference(reference.Path, TryParseVersionOrNull(reference.Version));
+                    resolvedReferences[reference.Name] = new ResolvedReference(reference.Path, TryParseVersionOrNull(reference.Version));
+                }
             }
 
             return resolvedReferences;
