@@ -98,6 +98,7 @@
     <Compile Include="Mocks\IVsSolutionFactory.cs" />
     <Compile Include="Mocks\IVsFileChangeExFactory.cs" />
     <Compile Include="Mocks\IVsStartupProjectsListServiceFactory.cs" />
+    <Compile Include="Mocks\Reference3Factory.cs" />
     <Compile Include="Mocks\RegistrationContextFactory.cs" />
     <Compile Include="Mocks\IVsAddProjectItemDlgFactory.cs" />
     <Compile Include="Mocks\SVsServiceProviderFactory.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="Mocks\IVsProjectFactory.cs" />
     <Compile Include="Mocks\ProjectFactory.cs" />
     <Compile Include="Mocks\SolutionFactory.cs" />
+    <Compile Include="Mocks\VSProjectFactory.cs" />
     <Compile Include="ProjectSystem\VS\Build\LanguageServiceErrorListProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\CreateFileFromTemplateServiceTests.cs" />
     <Compile Include="ProjectSystem\VS\Debug\ConsoleDebugLaunchProviderTests.cs" />
@@ -143,6 +145,7 @@
     <Compile Include="ProjectSystem\VS\PropertyPages\PropertyPageControlTests.cs" />
     <Compile Include="ProjectSystem\VS\PropertyPages\PropertyPageTests.cs" />
     <Compile Include="ProjectSystem\VS\PropertyPages\TestPropertyProviders.cs" />
+    <Compile Include="ProjectSystem\VS\References\DesignTimeAssemblyResolutionTests.cs" />
     <Compile Include="ProjectSystem\VS\References\ReferenceContextProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\Reload\ReloadableProjectTests.cs" />
     <Compile Include="ProjectSystem\VS\Reload\ProjectReloadManagerTests.cs" />
