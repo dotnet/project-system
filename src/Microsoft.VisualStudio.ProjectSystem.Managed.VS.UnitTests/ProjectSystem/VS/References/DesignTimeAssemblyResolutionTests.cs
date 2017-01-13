@@ -195,7 +195,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         [Theory]    // Input                                                                        // Name             // Version          // Path
         [InlineData("System",                                                                       "System.Core",      "",                 @"C:\System.Core.dll")]
         [InlineData("System",                                                                       "system",           "",                 @"C:\System.dll")]
-        [InlineData("system",                                                                       "System",           "",                 @"C:\System.dll")]
         [InlineData("encyclopædia",                                                                 "encyclopaedia",    "",                 @"C:\System.dll")]
         [InlineData("System, Version=1.0.0.0",                                                      "System",           "",                 @"C:\System.dll")]
         [InlineData("System, Version=2.0.0.0",                                                      "System",           "1.0.0.0",          @"C:\System.dll")]
