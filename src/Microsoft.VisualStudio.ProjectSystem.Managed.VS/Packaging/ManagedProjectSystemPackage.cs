@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Runtime.InteropServices;
+using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.Packaging
@@ -15,6 +16,10 @@ namespace Microsoft.VisualStudio.Packaging
         public const long EditProjectFileCmdId = 0x1001;
         public const long GenerateNuGetPackageProjectContextMenuCmdId = 0x2000;
         public const long GenerateNuGetPackageTopLevelBuildCmdId = 0x2001;
+        public const string DefaultCapabilities = ProjectCapability.AppDesigner + "; " +
+                                                  ProjectCapability.EditAndContinue + "; " +
+                                                  ProjectCapability.HandlesOwnReload + "; " +
+                                                  ProjectCapability.OpenProjectFile;
 
         public ManagedProjectSystemPackage()
         {

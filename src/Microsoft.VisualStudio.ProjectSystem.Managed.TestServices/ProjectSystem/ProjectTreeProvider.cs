@@ -10,15 +10,34 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal class ProjectTreeProvider : IProjectTreeProvider
     {
-        public NamedIdentity DataSourceKey => throw new NotImplementedException();
+        public ProjectTreeProvider()
+        {
+        }
 
-        public IComparable DataSourceVersion => throw new NotImplementedException();
+        public IReceivableSourceBlock<IProjectVersionedValue<IProjectTreeSnapshot>> Tree
+        {
+            get { throw new NotImplementedException(); }
+        }
 
-        public IReceivableSourceBlock<IProjectVersionedValue<IProjectTreeSnapshot>> SourceBlock => throw new NotImplementedException();
+        public IReceivableSourceBlock<IProjectVersionedValue<IProjectTreeSnapshot>> SourceBlock
+        {
+            get { throw new NotImplementedException(); }
+        }
 
-        public IReceivableSourceBlock<IProjectVersionedValue<IProjectTreeSnapshot>> Tree => throw new NotImplementedException();
+        public NamedIdentity DataSourceKey
+        {
+            get { throw new NotImplementedException(); }
+        }
 
-        ISourceBlock<IProjectVersionedValue<object>> IProjectValueDataSource.SourceBlock => throw new NotImplementedException();
+        public IComparable DataSourceVersion
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        ISourceBlock<IProjectVersionedValue<object>> IProjectValueDataSource.SourceBlock
+        {
+            get { throw new NotImplementedException(); }
+        }
 
         public bool CanCopy(IImmutableSet<IProjectTree> nodes, IProjectTree receiver, bool deleteOriginal = false)
         {
@@ -37,7 +56,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public IProjectTree FindByPath(IProjectTree root, string path)
         {
-            throw new NotImplementedException();
+            Requires.NotNull(root, nameof(root));
+            Requires.NotNullOrEmpty(path, nameof(path));
+
+            foreach (IProjectTree child in root.GetSelfAndDescendentsBreadthFirst())
+            {
+                if (StringComparer.CurrentCultureIgnoreCase.Equals(child.FilePath, path))
+                    return child;
+            }
+
+            return null;            
         }
 
         public string GetAddNewItemDirectory(IProjectTree target)
@@ -60,7 +88,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public Task RemoveAsync(IImmutableSet<IProjectTree> nodes, DeleteOptions deleteOptions = DeleteOptions.None)
         {
-            throw new NotImplementedException();
+            foreach (IProjectTree node in nodes)
+            {
+                node.Parent.Remove(node);
+            }
+
+            return Task.CompletedTask;
         }
 
         public Task RenameAsync(IProjectTree node, string value)
