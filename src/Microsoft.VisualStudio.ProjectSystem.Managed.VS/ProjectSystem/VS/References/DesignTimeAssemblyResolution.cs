@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
     /// <summary>
     ///     Provides an implementation of <see cref="IVsDesignTimeAssemblyResolution"/> that sits over the top of VSLangProj.References.
     /// </summary>
-    [ExportProjectNodeComService(typeof(IVsDesignTimeAssemblyResolution))]  // Need to override CPS's version, which it implements on the project node as IVsDesignTimeAssemblyResolution
+    [Export]
     [ExportVsProfferedProjectService(typeof(SVsDesignTimeAssemblyResolution))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
     [Order(1)] // Before CPS's version
@@ -43,6 +43,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             Requires.NotNull(projectVsServices, nameof(projectVsServices));
 
             _projectVsServices = projectVsServices;
+        }
+
+        // BUG (https://devdiv.visualstudio.com/DevDiv/_workitems?id=367916): VS MEF rejects a part marked 
+        // with two Export/Metadata attributes where one is AllowMultiple=false
+        [ExportProjectNodeComService(typeof(IVsDesignTimeAssemblyResolution))]  // Need to override CPS's version, which it implements on the project node as IVsDesignTimeAssemblyResolution
+        [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+        [Order(1)] // Before CPS's version
+        public IVsDesignTimeAssemblyResolution ComService
+        {
+            get { return this; }
         }
 
         public int GetTargetFramework(out string ppTargetFramework)
