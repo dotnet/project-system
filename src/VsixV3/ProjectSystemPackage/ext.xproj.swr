@@ -1,0 +1,15 @@
+use vs
+
+vs.fileAssociations
+  vs.fileAssociation extension=".xproj"
+                     progId="VisualStudio.xproj.[InstanceId]"
+                     contentType="text/plain"
+                     defaultProgramRegistrationPath=$(VSDefaultProgramPath)
+
+vs.progIds
+  vs.progId id="VisualStudio.xproj.[InstanceId]"
+            displayName="ASP.NET 5 (XPROJ)"
+            path="[InstallDir]\Common7\IDE\devenv.exe"
+            defaultIconPath="[InstallDir]\VC#\VCSPackages\csproj.dll"
+            defaultIconPosition=0
+            alwaysShowExtension=true
