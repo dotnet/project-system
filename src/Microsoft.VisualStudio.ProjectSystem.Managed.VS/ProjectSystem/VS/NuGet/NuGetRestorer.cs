@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private readonly ActiveConfiguredProjectsProvider _activeConfiguredProjectsProvider;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IActiveProjectConfigurationRefreshService _activeProjectConfigurationRefreshService;
-        private IDisposable _evaluationSubscriptionLink;
+        private IDisposable _designTimeBuildSubscriptionLink;
         private IDisposable _targetFrameworkSubscriptionLink;
 
         private const int perfPackageRestoreEnd = 7343;
@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private static ImmutableHashSet<string> _targetFrameworkWatchedRules = Empty.OrdinalIgnoreCaseStringSet
             .Add(NuGetRestore.SchemaName);
 
-        private static ImmutableHashSet<string> _evaluationWatchedRules = Empty.OrdinalIgnoreCaseStringSet
+        private static ImmutableHashSet<string> _designTimeBuildWatchedRules = Empty.OrdinalIgnoreCaseStringSet
             .Add(NuGetRestore.SchemaName)
             .Add(ProjectReference.SchemaName)
             .Add(PackageReference.SchemaName)
@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
         protected override Task DisposeCoreAsync(bool initialized)
         {
-            _evaluationSubscriptionLink?.Dispose();
+            _designTimeBuildSubscriptionLink?.Dispose();
             _targetFrameworkSubscriptionLink?.Dispose();
             return Task.CompletedTask;
         }
@@ -98,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             // active configuration should be updated before resetting subscriptions
             await RefreshActiveConfigurationAsync().ConfigureAwait(false);
 
-            _evaluationSubscriptionLink?.Dispose();
+            _designTimeBuildSubscriptionLink?.Dispose();
 
             var currentProjects = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsAsync().ConfigureAwait(false);
 
@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             {
                 var sourceLinkOptions = new StandardRuleDataflowLinkOptions
                 {
-                    RuleNames = _evaluationWatchedRules,
+                    RuleNames = _designTimeBuildWatchedRules,
                     PropagateCompletion = true
                 };
 
@@ -117,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
                 var targetLinkOptions = new DataflowLinkOptions { PropagateCompletion = true };
 
-                _evaluationSubscriptionLink = ProjectDataSources.SyncLinkTo(sourceBlocks.ToImmutableList(), target, targetLinkOptions);
+                _designTimeBuildSubscriptionLink = ProjectDataSources.SyncLinkTo(sourceBlocks.ToImmutableList(), target, targetLinkOptions);
             }
         }
 
