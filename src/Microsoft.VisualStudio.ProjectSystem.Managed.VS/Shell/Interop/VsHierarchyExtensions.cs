@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
         }
 
         /// <summary>
-        ///     Gets the value of the specified property if the hierarchy supports it.
+        ///     Gets the value of the specified property if the hierarchy supports it, or throws an excepton if there was an error.
         /// </summary>
         public static T GetProperty<T>(this IVsHierarchy hierarchy, VsHierarchyPropID property, T defaultValue = default(T))
         {
@@ -35,23 +35,51 @@ namespace Microsoft.VisualStudio.Shell.Interop
         }
 
         /// <summary>
-        ///     Gets the value of the specified property if the hierarchy supports it.
+        ///     Gets the value of the specified property of the specified item if the hierarchy supports it, or throws an exception if there was an error.
         /// </summary>
         public static T GetProperty<T>(this IVsHierarchy hierarchy, HierarchyId item, VsHierarchyPropID property, T defaultValue = default(T))
+        {
+            HResult hr = GetProperty(hierarchy, item, property, defaultValue, out T result);
+            if (hr.Failed)
+                throw hr.Exception;
+
+            return result;
+        }
+
+        /// <summary>
+        ///     Gets the value of the specified property if the hierarchy supports it, or returns a HRESULT if there was an error.
+        /// </summary>
+        public static int GetProperty<T>(this IVsHierarchy hierarchy, VsHierarchyPropID property, T defaultValue, out T result)
+        {
+            return GetProperty(hierarchy, HierarchyId.Root, property, defaultValue, out result);
+        }
+
+        /// <summary>
+        ///     Gets the value of the specified property of the specified item if the hierarchy supports it, or returns a HRESULT if there was an error.
+        /// </summary>
+        public static int GetProperty<T>(this IVsHierarchy hierarchy, HierarchyId item, VsHierarchyPropID property, T defaultValue, out T result)
         {
             Requires.NotNull(hierarchy, nameof(hierarchy));
 
             if (item.IsNilOrEmpty || item.IsSelection)
                 throw new ArgumentException(null, nameof(item));
+
             HResult hr = hierarchy.GetProperty(item, (int)property, out object resultObject);
+            if (hr.IsOK)
+            {
+                // NOTE: We consider it a bug in the underlying project system or the caller if this cast fails
+                result = (T)resultObject;
+                return HResult.OK;
+            }
+
             if (hr == VSConstants.DISP_E_MEMBERNOTFOUND)
-                return defaultValue;
+            {
+                result = defaultValue;
+                return HResult.OK;
+            }
 
-            if (hr.Failed)
-                throw hr.Exception;
-
-            // NOTE: We consider it a bug in the underlying project system or the caller if this cast fails
-            return (T)resultObject;
+            result = default(T);
+            return hr;
         }
 
         /// <summary>
