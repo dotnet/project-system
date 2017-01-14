@@ -199,6 +199,8 @@
        once the actual targets are available after package restore-->
   <Target Name="ResolvePackageDependenciesDesignTime" />
 
+  <Target Name="ResolvePackageReferencesDesignTime" Returns="@(PackageReference)" />
+
   <!-- Validates that the correct properties have been set for design-time compiles  -->
   <Target Name="_CheckCompileDesignTimePrerequisite">
 

@@ -111,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 };
 
                 var sourceBlocks = currentProjects.Select(
-                    cp => cp.Services.ProjectSubscription.ProjectRuleSource.SourceBlock.SyncLinkOptions<IProjectValueVersions>(sourceLinkOptions));
+                    cp => cp.Services.ProjectSubscription.JointRuleSource.SourceBlock.SyncLinkOptions<IProjectValueVersions>(sourceLinkOptions));
 
                 var target = new ActionBlock<Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary>>(ProjectPropertyChangedAsync);
 
