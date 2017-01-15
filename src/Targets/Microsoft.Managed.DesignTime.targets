@@ -199,6 +199,10 @@
        once the actual targets are available after package restore-->
   <Target Name="ResolvePackageDependenciesDesignTime" />
 
+  <!-- This target is used to collect the PackageReferences in the project. This target can be overriden to add\remove packagereferences before they are
+       sent to NuGet to be restored.-->
+  <Target Name="CollectPackageReferences" Returns="@(PackageReference)" />
+
   <!-- Validates that the correct properties have been set for design-time compiles  -->
   <Target Name="_CheckCompileDesignTimePrerequisite">
 
