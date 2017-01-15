@@ -6,10 +6,12 @@
     <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <ProjectSystemLayer>Toolset</ProjectSystemLayer>
     <TargetFramework>netstandard1.0</TargetFramework>
-    <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wpa81+wp8</PackageTargetFallback>
+    <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wpa81+wp8;net461</PackageTargetFallback>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="MicroBuild.Core" Version="0.2.0" />
+    <PackageReference Include="MicroBuild.Core.Sentinel" Version="1.0.0" />
+    <PackageReference Include="MicroBuild.Plugins.SwixBuild" Version="1.0.101" ExcludeAssets="Build" />
     <PackageReference Include="Microsoft.Net.Compilers"  Version="2.0.0-rc2-61102-09" ExcludeAssets="Build" />
     <PackageReference Include="Microsoft.Net.RoslynDiagnostics" Version="1.2.0-beta2" ExcludeAssets="Build" />
     <PackageReference Include="Microsoft.VSSDK.BuildTools" Version ="15.0.25929-RC2" ExcludeAssets="Build" />

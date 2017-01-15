@@ -520,6 +520,36 @@
     </FilesToSign>
   </ItemGroup>
 
+  <Target Name="IncludeResourcesDllForSigning" AfterTargets="CopyFilesToOutputDirectory"> 
+    <ItemGroup> 
+      <!-- Handle the resources dll if there are any --> 
+      <FilesToSign Condition="'$(ShouldSignBuild)' == 'true' AND '$(NonShipping)' != 'true' AND '$(ProjectSystemLayer)' != 'Dependency'" Include="$(OutDir)\**\$(AssemblyName).resources.dll"> 
+          <Authenticode>Microsoft</Authenticode> 
+          <StrongName>$(StrongNameCertificateFriendlyId)</StrongName> 
+      </FilesToSign> 
+    </ItemGroup> 
+  </Target>
+
+  <!-- This target is similar to SatelliteDllsProjectOutputGroup except it includes path from the final output path rather than intermediate output path -->
+  <Target Name="SatelliteDllsProjectOutputGroupWithFinalOutputPath" 
+        Returns="@(SatelliteDllsProjectOutputGroupWithFinalOutputPathOutput)" 
+        DependsOnTargets="$(SatelliteDllsProjectOutputGroupDependsOn)"> 
+
+    <ItemGroup> 
+      <SatelliteDllsProjectOutputGroupWithFinalOutputPathItem Include="$(OutputPath)%(EmbeddedResource.Culture)\$(TargetName).resources.dll" 
+                                                         Condition="'%(WithCulture)' == 'true'"> 
+        <TargetPath>%(EmbeddedResource.Culture)\$(TargetName).resources.dll</TargetPath> 
+      </SatelliteDllsProjectOutputGroupWithFinalOutputPathItem> 
+    </ItemGroup> 
+
+    <!-- Convert intermediate items into final items; this way we can get the full path for each item. --> 
+    <ItemGroup> 
+      <SatelliteDllsProjectOutputGroupWithFinalOutputPathOutput Include="@(SatelliteDllsProjectOutputGroupWithFinalOutputPathItem->'%(FullPath)')"> 
+        <OriginalItemSpec>%(SatelliteDllsProjectOutputGroupWithFinalOutputPathItem.Identity)</OriginalItemSpec> 
+      </SatelliteDllsProjectOutputGroupWithFinalOutputPathOutput> 
+    </ItemGroup> 
+  </Target> 
+
   <!-- ====================================================================================
 
   Copying vsixmanifest to a separate folder

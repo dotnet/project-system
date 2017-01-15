@@ -19,6 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         private readonly IPhysicalProjectTree _projectTree;
         private readonly IProjectItemProvider _sourceItemsProvider;
         private readonly IFileSystem _fileSystem;
+        private readonly ISpecialFilesManager _specialFilesManager;
 
         /// <summary>
         /// A service that knows to create a file from a template. In non-VS scenarios
@@ -30,16 +31,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         public AbstractSpecialFileProvider(IPhysicalProjectTree projectTree,
                                            [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
                                            [Import(AllowDefault = true)] Lazy<ICreateFileFromTemplateService> templateFileCreationService,
-                                           IFileSystem fileSystem)
+                                           IFileSystem fileSystem,
+                                           ISpecialFilesManager specialFileManager)
         {
             Requires.NotNull(projectTree, nameof(projectTree));
             Requires.NotNull(sourceItemsProvider, nameof(sourceItemsProvider));
             Requires.NotNull(fileSystem, nameof(fileSystem));
+            Requires.NotNull(specialFileManager, nameof(specialFileManager));
 
             _projectTree = projectTree;
             _sourceItemsProvider = sourceItemsProvider;
             _templateFileCreationService = templateFileCreationService;
             _fileSystem = fileSystem;
+            _specialFilesManager = specialFileManager;
         }
 
         /// <summary>
@@ -80,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         public async Task<string> GetFileAsync(SpecialFiles fileId, SpecialFileFlags flags, CancellationToken cancellationToken = default(CancellationToken))
         {
             // Search for the file in the app designer and root folders.
-            IProjectTree specialFileNode = FindFile(Name);
+            IProjectTree specialFileNode = await FindFileAsync(Name).ConfigureAwait(false);
             if (specialFileNode != null)
             {
                 if (await IsNodeInSyncWithDiskAsync(specialFileNode, forceSync: flags.HasFlag(SpecialFileFlags.CreateIfNotExist), cancellationToken: cancellationToken).ConfigureAwait(false))
@@ -111,19 +115,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         ///       Look under the appdesigner folder for files that normally live there.
         ///       Look under the project root for all files.
         /// </summary>
-        private IProjectTree FindFile(string specialFileName)
+        private async Task<IProjectTree> FindFileAsync(string specialFileName)
         {
             IProjectTree rootNode = _projectTree.CurrentTree;
             IProjectTree specialFileNode;
 
             // First, we look in the AppDesigner folder.
-            IProjectTree appDesignerFolder = GetAppDesignerFolder();
-            if (appDesignerFolder != null && CreatedByDefaultUnderAppDesignerFolder)
+            if (CreatedByDefaultUnderAppDesignerFolder)
             {
-                specialFileNode = FindFileWithinNode(appDesignerFolder, specialFileName);
-                if (specialFileNode != null)
+                IProjectTree appDesignerFolder = await GetAppDesignerFolderAsync(createIfNotExists: false).ConfigureAwait(false);
+                if (appDesignerFolder != null)
                 {
-                    return specialFileNode;
+                    specialFileNode = FindFileWithinNode(appDesignerFolder, specialFileName);
+                    if (specialFileNode != null)
+                    {
+                        return specialFileNode;
+                    }
                 }
             }
 
@@ -196,14 +203,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         /// </summary>
         private async Task<string> CreateFileAsync(SpecialFiles fileId, string specialFileName)
         {
-            IProjectTree rootNode = _projectTree.CurrentTree;
-            IProjectTree appDesignerFolder = GetAppDesignerFolder();
-            if (appDesignerFolder == null && CreatedByDefaultUnderAppDesignerFolder)
-            {
-                return null;
-            }
-
-            var parentNode = CreatedByDefaultUnderAppDesignerFolder ? appDesignerFolder : rootNode;
+            IProjectTree rootNode = await GetParentFolderAsync(createIfNotExists: true).ConfigureAwait(false);
 
             var parentPath = _projectTree.TreeProvider.GetRootedAddNewItemDirectory(rootNode);
             var specialFilePath = Path.Combine(parentPath, specialFileName);
@@ -227,11 +227,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             return specialFilePath;
         }
 
-        private IProjectTree GetAppDesignerFolder()
+        private async Task<IProjectTree> GetParentFolderAsync(bool createIfNotExists)
         {
+            if (CreatedByDefaultUnderAppDesignerFolder)
+            {
+                IProjectTree tree = await GetAppDesignerFolderAsync(createIfNotExists).ConfigureAwait(false);
+                if (tree != null)
+                    return tree;
+            }
+
+            return _projectTree.CurrentTree;
+        }
+
+        private async Task<IProjectTree> GetAppDesignerFolderAsync(bool createIfNotExists)
+        {
+            SpecialFileFlags flags = SpecialFileFlags.FullPath;
+            if (createIfNotExists)
+                flags |= SpecialFileFlags.CreateIfNotExist;
+
+            string path = await _specialFilesManager.GetFileAsync(SpecialFiles.AppDesigner, flags)
+                                                    .ConfigureAwait(false);
+            if (path == null)
+                return null;
+
             IProjectTree rootNode = _projectTree.CurrentTree;
 
-            return rootNode.Children.FirstOrDefault(child => child.IsFolder && child.Flags.HasFlag(ProjectTreeFlags.Common.AppDesignerFolder));
+            return _projectTree.TreeProvider.FindByPath(_projectTree.CurrentTree, path);
         }
     }
 }

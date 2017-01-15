@@ -45,6 +45,7 @@
     <Compile Include="ProjectSystem\ProjectTreeParser\Tokenizer.Token.cs" />
     <Compile Include="ProjectSystem\ProjectTreeParser\Tokenizer.TokenType.cs" />
     <Compile Include="ProjectSystem\ProjectTreePropertiesProviderExtensions.cs" />
+    <Compile Include="ProjectSystem\ProjectTreeProvider.cs" />
     <Compile Include="ProjectSystem\ProjectTreeWriter.cs" />
     <Compile Include="ProjectSystem\ProjectTreeWriterOptions.cs" />
     <Compile Include="Workspaces\WorkspaceFactory.cs" />
