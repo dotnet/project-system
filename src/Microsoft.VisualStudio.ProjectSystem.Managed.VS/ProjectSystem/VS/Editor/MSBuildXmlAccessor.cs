@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 // encoded as UTF-8. This will mess up the project file encoding, so we strip it here to prevent that case.
                 // Note that if the user adds the header manually it will still be stripped, so we need to find a better
                 // long term solution for this.
-                if (xmlString.StartsWith("<?xml"))
+                if (xmlString.StartsWith("<?xml", StringComparison.Ordinal))
                 {
                     xmlString = xmlString.Substring(xmlString.IndexOf(Environment.NewLine) + Environment.NewLine.Length);
                 }
