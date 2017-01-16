@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
@@ -29,7 +30,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 var stringWriter = new StringWriter();
                 var projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
                 projectXml.Save(stringWriter);
-                return stringWriter.ToString();
+                var xmlString = stringWriter.ToString();
+                // Remove the xml prelude to deal with https://github.com/dotnet/roslyn-project-system/issues/1168 until
+                // we have a better solution. The XML returned here has a utf-16 header, even if the project file is
+                // encoded as UTF-8. This will mess up the project file encoding, so we strip it here to prevent that case.
+                // Note that if the user adds the header manually it will still be stripped, so we need to find a better
+                // long term solution for this.
+                if (xmlString.StartsWith("<?xml", StringComparison.Ordinal))
+                {
+                    xmlString = xmlString.Substring(xmlString.IndexOf(Environment.NewLine) + Environment.NewLine.Length);
+                }
+                return xmlString;
             }
         }
 
