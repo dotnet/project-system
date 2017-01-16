@@ -40,7 +40,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|CopyToOutputDirectory|Description">
         <source>Specifies the source file will be copied to the output directory.</source>
-        <target state="translated">Consente di specificare se il file di origine verrà copiato nella directory di output.</target>
+        <target state="translated">Specifica se il file di origine verrà copiato nella directory di output.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|CopyToOutputDirectory.Never|DisplayName">
@@ -110,7 +110,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|DesignTime|Description">
         <source>A value indicating whether this file has a designer.</source>
-        <target state="translated">Valore che indica se per questo file esiste una finestra di progettazione.</target>
+        <target state="translated">Valore che indica se per il file esiste una finestra di progettazione.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AutoGen|Description">

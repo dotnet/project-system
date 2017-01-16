@@ -105,8 +105,8 @@
       </trans-unit>
       <trans-unit id="ErrorsMustBeCorrectedPriorToSaving">
         <source>The errors on the page must be corrected prior to saving your changes.</source>
-        <target state="new">The errors on the page must be corrected prior to saving your changes.</target>
-        <note></note>
+        <target state="translated">ページ上のエラーは変更を保存する前に修正する必要があります。</target>
+        <note />
       </trans-unit>
     </body>
   </file>

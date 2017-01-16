@@ -20,7 +20,7 @@
       </trans-unit>
       <trans-unit id="4">
         <source>A project for creating a command-line application that can run on .NET Core on Windows, Linux and MacOS.</source>
-        <target state="translated">Projekt pro vytvoření aplikace příkazového řádku, která běží na platformě .NET Core v systémech Windows, Linux a MacOS.</target>
+        <target state="translated">Projekt pro vytvoření aplikace příkazového řádku, která běží na platformě .NET Core v systémech Windows, Linux a MacOS</target>
         <note />
       </trans-unit>
       <trans-unit id="5">
@@ -30,7 +30,7 @@
       </trans-unit>
       <trans-unit id="6">
         <source>A project for creating a class library that targets .NET Standard.</source>
-        <target state="translated">Projekt pro vytvoření knihovny tříd určené pro .NET Standard.</target>
+        <target state="translated">Projekt pro vytvoření knihovny tříd určené pro .NET Standard</target>
         <note />
       </trans-unit>
       <trans-unit id="7">
@@ -50,8 +50,8 @@
       </trans-unit>
       <trans-unit id="10">
         <source>A project for creating a class library that targets .NET Core.</source>
-        <target state="new">A project for creating a class library that targets .NET Core.</target>
-        <note></note>
+        <target state="translated">Projekt pro vytvoření knihovny tříd určené pro .NET Core</target>
+        <note />
       </trans-unit>
     </body>
   </file>

@@ -264,13 +264,13 @@ Bu projede hata ayıklamak için bu çözüme, kitaplık projesine başvuran bir
       </trans-unit>
       <trans-unit id="XprojMigrationFailedCannotReadReport">
         <source>Could not read post-migration report at '{0}'.</source>
-        <target state="new">Could not read post-migration report at '{0}'.</target>
-        <note></note>
+        <target state="translated">'{0}' üzerindeki geçiş sonrası raporu okunamadı.</target>
+        <note />
       </trans-unit>
       <trans-unit id="XprojMigrationGeneralFailure">
         <source>Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</source>
-        <target state="new">Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</target>
-        <note></note>
+        <target state="translated">{0} XProj projesinin geçişi sağlanamadı. '{1}', {2} hata koduyla çıkış yaptı.</target>
+        <note />
       </trans-unit>
     </body>
   </file>

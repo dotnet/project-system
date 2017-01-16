@@ -264,13 +264,13 @@ Para depurar esse projeto, adicione um projeto executável a essa solução que 
       </trans-unit>
       <trans-unit id="XprojMigrationFailedCannotReadReport">
         <source>Could not read post-migration report at '{0}'.</source>
-        <target state="new">Could not read post-migration report at '{0}'.</target>
-        <note></note>
+        <target state="translated">Não foi possível ler o relatório pós-migração em '{0}'.</target>
+        <note />
       </trans-unit>
       <trans-unit id="XprojMigrationGeneralFailure">
         <source>Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</source>
-        <target state="new">Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</target>
-        <note></note>
+        <target state="translated">Falha ao migrar o projeto XProj {0}. '{1}' fechado com o código de erro {2}.</target>
+        <note />
       </trans-unit>
     </body>
   </file>

@@ -85,7 +85,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">
         <source>Full Path</source>
-        <target state="translated">Chemin complet</target>
+        <target state="translated">Chemin d'accès complet</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|Description">
