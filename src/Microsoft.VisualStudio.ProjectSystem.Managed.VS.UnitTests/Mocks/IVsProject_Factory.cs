@@ -5,6 +5,8 @@ using Moq;
 
 namespace Microsoft.VisualStudio.Shell.Interop
 {
+    // Named with an _ instead of IVsProjectFactory to avoid collisions with the actual IVsProjectFactory
+    // class.
     internal static class IVsProject_Factory
     {
         public static void ImplementOpenItemWithSpecific(this IVsProject4 project, Guid editorType, Guid logicalView, int hr)
