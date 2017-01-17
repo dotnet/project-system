@@ -40,6 +40,12 @@ namespace Moq
             return Returns(valueFunction, (object)action);
         }
 
+        public static IReturnsThrows<TMock, TReturn> Returns<TMock, TReturn, TOut1, TOut2, TOut3, TResult>(this IReturns<TMock, TReturn> valueFunction, FuncWithOutThreeArgs<TOut1, TOut2, TOut3, TResult> action)
+            where TMock : class
+        {
+            return Returns(valueFunction, (object)action);
+        }
+
         private static IReturnsThrows<TMock, TReturn> Returns<TMock, TReturn>(IReturns<TMock, TReturn> valueFunction, object action)
             where TMock : class
         {
