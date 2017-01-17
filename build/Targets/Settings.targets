@@ -36,6 +36,13 @@
       <TargetFrameworkRootPath>$(MSBuildBinPath)\reference-assemblies\Framework</TargetFrameworkRootPath>
   </PropertyGroup>
 
+  <!-- Set the BaseIntermediateOutputPath before importing the common.props because that's
+       where msbuild looks for generated nuget targets.-->
+  <PropertyGroup>
+    <OutDir Condition="'$(OutDir)' == ''">$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\..\bin\$(Configuration)'))\</OutDir>
+    <BaseIntermediateOutputPath>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\..\bin\obj\$(MSBuildProjectName)'))\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
   <!-- This imports the .NET SDK which will pull in Microsoft.Common.props -->
   <Import Project="$(MSBuildSDKsPath)\Microsoft.NET.Sdk\Sdk\Sdk.props" 
           Condition="Exists('$(MSBuildSDKsPath)\Microsoft.NET.Sdk\Sdk\Sdk.props')" />
@@ -143,11 +150,6 @@
   <ItemGroup Condition="'$(ProjectLanguage)' == 'CSharp' AND '$(TargetNetFX20)' == 'true'">
     <_ExplicitReference Include="$(FrameworkPathOverride)\mscorlib.dll" />
   </ItemGroup>
-
-  <PropertyGroup>
-    <OutDir Condition="'$(OutDir)' == ''">$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\..\bin\$(Configuration)'))\</OutDir>
-    <BaseIntermediateOutputPath>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\..\bin\obj\$(MSBuildProjectName)'))\</BaseIntermediateOutputPath>
-  </PropertyGroup>
 
   <PropertyGroup>
     <!-- Capture the root, so we'll always have it even if we're building to a sub-folder -->
