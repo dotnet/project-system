@@ -110,7 +110,7 @@
     <Compile Include="Mocks\IVsLanguageServiceBuildErrorReporter2Factory.cs" />
     <Compile Include="Mocks\IVsWindowFrameFactory.cs" />
     <Compile Include="Mocks\IVsHierarchyFactory.cs" />
-    <Compile Include="Mocks\IVsProjectFactory.cs" />
+    <Compile Include="Mocks\IVsProject_Factory.cs" />
     <Compile Include="Mocks\ProjectFactory.cs" />
     <Compile Include="Mocks\SolutionFactory.cs" />
     <Compile Include="Mocks\VSProjectFactory.cs" />

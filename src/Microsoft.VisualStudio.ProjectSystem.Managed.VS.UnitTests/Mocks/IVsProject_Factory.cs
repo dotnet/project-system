@@ -5,7 +5,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.Shell.Interop
 {
-    internal static class IVsProjectFactory
+    internal static class IVsProject_Factory
     {
         public static void ImplementOpenItemWithSpecific(this IVsProject4 project, Guid editorType, Guid logicalView, int hr)
         {

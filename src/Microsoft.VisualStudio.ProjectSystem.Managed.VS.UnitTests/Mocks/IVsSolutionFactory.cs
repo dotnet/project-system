@@ -6,6 +6,16 @@ namespace Microsoft.VisualStudio.Shell.Interop
 {
     internal static class IVsSolutionFactory
     {
+        public static IVsSolution CreateWithSolutionDirectory(FuncWithOutThreeArgs<string, string, string, int> func)
+        {
+            var mock = new Mock<IVsSolution>();
+            string directory;
+            string solutionFile;
+            string userSettings;
+            mock.Setup(x => x.GetSolutionInfo(out directory, out solutionFile, out userSettings)).Returns(func);
+            return mock.Object;
+        }
+
         public static IVsSolution CreateWithAdviseUnadviseSolutionEvents(uint adviseCookie)
         {
             var mock = new Mock<IVsSolution>();

@@ -18,13 +18,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
     {
         private readonly ProcessRunner _runner;
         private readonly IFileSystem _fileSystem;
+        private readonly IServiceProvider _serviceProvider;
 
-        public MigrateXprojProjectFactory(ProcessRunner runner, IFileSystem fileSystem)
+        public MigrateXprojProjectFactory(ProcessRunner runner, IFileSystem fileSystem, IServiceProvider serviceProvider)
         {
             Requires.NotNull(runner, nameof(runner));
             Requires.NotNull(fileSystem, nameof(fileSystem));
+            Requires.NotNull(serviceProvider, nameof(serviceProvider));
             _runner = runner;
             _fileSystem = fileSystem;
+            _serviceProvider = serviceProvider;
         }
 
         public int UpgradeProject(string xprojLocation, uint upgradeFlags, string backupDirectory, out string migratedProjectFileLocation,
@@ -44,8 +47,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
                 return VSConstants.VS_E_PROJECTMIGRATIONFAILED;
             }
 
+            var solution = _serviceProvider.GetService<IVsSolution, SVsSolution>();
+            Verify.HResult(solution.GetSolutionInfo(out string solutionDirectory, out string solutionFile, out string userOptsFile));
+
             var directory = Path.GetDirectoryName(xprojLocation);
-            var (logFile, processExitCode) = MigrateProject(directory, xprojLocation, projectName, logger);
+            var (logFile, processExitCode) = MigrateProject(solutionDirectory, directory, xprojLocation, projectName, logger);
 
             if (!string.IsNullOrEmpty(logFile))
             {
@@ -110,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             return true;
         }
 
-        internal (string logFile, int exitCode) MigrateProject(string projectDirectory, string xprojLocation, string projectName, IVsUpgradeLogger pLogger)
+        internal (string logFile, int exitCode) MigrateProject(string solutionDirectory, string projectDirectory, string xprojLocation, string projectName, IVsUpgradeLogger pLogger)
         {
             var logFile = _fileSystem.GetTempDirectoryOrFileName();
 
@@ -120,7 +126,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
                 UseShellExecute = false,
                 RedirectStandardError = true,
                 RedirectStandardOutput = true,
-                CreateNoWindow = true
+                CreateNoWindow = true,
+                WorkingDirectory = solutionDirectory
             };
 
             // First time setup isn't necessary for migration, and causes a long pause with no indication anything is happening.
