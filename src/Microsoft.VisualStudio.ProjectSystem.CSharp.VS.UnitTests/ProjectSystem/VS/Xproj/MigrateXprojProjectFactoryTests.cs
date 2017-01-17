@@ -26,10 +26,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         private static readonly string XprojUserLocation = Path.Combine(RootLocation, $"{ProjectName}.xproj.user");
         private static readonly string ProjectJsonLocation = Path.Combine(RootLocation, "project.json");
         private static readonly string ProjectLockJsonLocation = Path.Combine(RootLocation, "project.lock.json");
-        private static readonly string BackupLocation = Path.Combine(RootLocation, "Backup");
+        private static readonly string BackupLocation = Path.Combine(SlnLocation, "Backup");
         private static readonly string CsprojLocation = Path.Combine(RootLocation, $"{ProjectName}.csproj");
         private static readonly string LogFileLocation = Path.Combine(RootLocation, "asdf.1234");
         private static readonly string MigrateCommand = $"dotnet migrate --skip-backup -s -x \"{XprojLocation}\" \"{RootLocation}\" -r \"{LogFileLocation}\" --format-report-file-json";
+        private static readonly string GlobalJsonLocation = Path.Combine(SlnLocation, "global.json");
 
         [Fact]
         public void MigrateXprojProjectFactory_NullProcessRunner_ThrowsArgumentNullException()
@@ -382,9 +383,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         }
 
         [Fact]
+        public void MigrateXprojProjectFactory_GlobalJsonExists_BacksUpAndRemovesGlobalJson()
+        {
+            var fileSystem = CreateFileSystem(withEntries: true, withGlobalJson: true);
+
+            var migrator = CreateInstance(ProcessRunnerFactory.CreateRunner(), fileSystem);
+
+            var loggedMessages = new List<LogMessage>();
+            var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
+            var globalJsonBackedUp = Path.Combine(BackupLocation, "global.json");
+
+            migrator.BackupAndDeleteGlobalJson(SlnLocation, BackupLocation, XprojLocation, ProjectName, logger);
+            Assert.False(fileSystem.FileExists(GlobalJsonLocation));
+            Assert.True(fileSystem.FileExists(globalJsonBackedUp));
+            Assert.Equal(1, loggedMessages.Count);
+            Assert.Equal(new LogMessage
+            {
+                File = GlobalJsonLocation,
+                Level = (uint)__VSUL_ERRORLEVEL.VSUL_INFORMATIONAL,
+                Message = string.Format(VSResources.MigrationBackupFile, GlobalJsonLocation, globalJsonBackedUp),
+                Project = ProjectName
+            }, loggedMessages[0]);
+        }
+
+        [Fact]
         public void MigrateXprojProjectFactory_E2E_Works()
         {
-            var fileSystem = CreateFileSystem(withEntries: true, withXprojUser: true, withProjectLock: true);
+            var fileSystem = CreateFileSystem(withEntries: true, withXprojUser: true, withProjectLock: true, withGlobalJson: true);
             var processRunner = ProcessRunnerFactory.ImplementRunner(pInfo =>
             {
                 ProcessVerifier(pInfo);
@@ -405,6 +430,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             Assert.False(fileSystem.FileExists(ProjectJsonLocation));
             Assert.False(fileSystem.FileExists(XprojUserLocation));
             Assert.False(fileSystem.FileExists(ProjectLockJsonLocation));
+            Assert.False(fileSystem.FileExists(GlobalJsonLocation));
             Assert.Equal(CsprojLocation, outCsproj);
             Assert.Equal((int)__VSPPROJECTUPGRADEVIAFACTORYREPAIRFLAGS.VSPUVF_PROJECT_ONEWAYUPGRADE, upgradeRequired);
             Assert.Equal(Guid.Parse(CSharpProjectSystemPackage.ProjectTypeGuid), newProjectFactory);
@@ -439,7 +465,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             };
         }
 
-        private IFileSystem CreateFileSystem(bool withEntries = true, MigrationReport report = null, bool withXprojUser = false, bool withProjectLock = false)
+        private IFileSystem CreateFileSystem(bool withEntries = true,
+            MigrationReport report = null,
+            bool withXprojUser = false,
+            bool withProjectLock = false,
+            bool withGlobalJson = false)
         {
             var fileSystem = new IFileSystemMock();
             if (withEntries)
@@ -456,6 +486,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
                 if (withProjectLock)
                 {
                     fileSystem.Create(ProjectLockJsonLocation);
+                }
+
+                if (withGlobalJson)
+                {
+                    fileSystem.Create(GlobalJsonLocation);
                 }
             }
 

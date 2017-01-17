@@ -50,6 +50,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             var solution = _serviceProvider.GetService<IVsSolution, SVsSolution>();
             Verify.HResult(solution.GetSolutionInfo(out string solutionDirectory, out string solutionFile, out string userOptsFile));
 
+            BackupAndDeleteGlobalJson(solutionDirectory, backupDirectory, xprojLocation, projectName, logger);
+
             var directory = Path.GetDirectoryName(xprojLocation);
             var (logFile, processExitCode) = MigrateProject(solutionDirectory, directory, xprojLocation, projectName, logger);
 
@@ -114,6 +116,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             }
 
             return true;
+        }
+
+        internal void BackupAndDeleteGlobalJson(string solutionDirectory, string backupLocation, string xprojLocation, string projectName, IVsUpgradeLogger pLogger)
+        {
+            var globalJson = Path.Combine(solutionDirectory, "global.json");
+            if (_fileSystem.FileExists(globalJson))
+            {
+                // We want to find the root backup directory that VS created for backup. We can't just assume it's solution/Backup, because VS will create
+                // a new directory if that already exists. So just iterate up until we find the correct directory.
+                solutionDirectory = solutionDirectory.TrimEnd(Path.DirectorySeparatorChar);
+                var rootBackupDirectory = backupLocation;
+                var levelUpBackupDirectory = Path.GetDirectoryName(rootBackupDirectory).TrimEnd(Path.DirectorySeparatorChar);
+                while (!StringComparers.Paths.Equals(levelUpBackupDirectory, solutionDirectory))
+                {
+                    rootBackupDirectory = levelUpBackupDirectory;
+                    levelUpBackupDirectory = Path.GetDirectoryName(levelUpBackupDirectory).TrimEnd(Path.DirectorySeparatorChar);
+                }
+
+                // rootBackupDirectory is now the actual root backup directory. Back up the global.json and delete the existing one
+                var globalJsonBackupPath = Path.Combine(rootBackupDirectory, "global.json");
+                pLogger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_INFORMATIONAL, projectName, globalJson,
+                    string.Format(VSResources.MigrationBackupFile, globalJson, globalJsonBackupPath));
+                _fileSystem.CopyFile(globalJson, globalJsonBackupPath, true);
+                _fileSystem.RemoveFile(globalJson);
+            }
         }
 
         internal (string logFile, int exitCode) MigrateProject(string solutionDirectory, string projectDirectory, string xprojLocation, string projectName, IVsUpgradeLogger pLogger)
