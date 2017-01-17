@@ -12,5 +12,11 @@
   <ItemGroup>
     <Content Include="project.json" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Immutable\Immutable.csproj">
+      <Project>{dcda908d-ef5e-494b-addc-c26f5fd610ca}</Project>
+      <Name>Immutable</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="..\..\..\build\Targets\ProducesNoOutput.Imports.targets" />
 </Project>
