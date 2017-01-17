@@ -49,7 +49,7 @@ set BinariesDirectory=%Root%bin\%BuildConfiguration%\
 set LogFile=%BinariesDirectory%Build.log
 if not exist "%BinariesDirectory%" mkdir "%BinariesDirectory%" || goto :BuildFailed
 
-msbuild /nologo /nodeReuse:%NodeReuse% /consoleloggerparameters:Verbosity=minimal /fileLogger /fileloggerparameters:LogFile="%LogFile%";verbosity=diagnostic /t:"%MSBuildTarget%" /p:Configuration="%BuildConfiguration%" /p:RunTests="%RunTests%" /p:DeployVsixExtension="%DeployVsixExtension%" "%Root%build\build.proj" %MSBuildAdditionalArguments%
+msbuild /nologo /warnaserror /nodeReuse:%NodeReuse% /consoleloggerparameters:Verbosity=minimal /fileLogger /fileloggerparameters:LogFile="%LogFile%";verbosity=diagnostic /t:"%MSBuildTarget%" /p:Configuration="%BuildConfiguration%" /p:RunTests="%RunTests%" /p:DeployVsixExtension="%DeployVsixExtension%" "%Root%build\build.proj" %MSBuildAdditionalArguments%
 if ERRORLEVEL 1 (
     echo.
     call :PrintColor Red "Build failed, for full log see %LogFile%."
