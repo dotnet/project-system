@@ -8,7 +8,8 @@
     xmlns="http://schemas.microsoft.com/build/2009/properties">
     
     <Rule.DataSource>
-        <DataSource Persistence="ProjectFile" ItemType="PackageReference" HasConfigurationCondition="False" />
+        <DataSource Persistence="ProjectFile" ItemType="PackageReference" HasConfigurationCondition="False"
+                    SourceType="TargetResults" MSBuildTarget="CollectPackageReferences" />
     </Rule.DataSource>
     
     <StringProperty Name="Description" 
