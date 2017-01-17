@@ -50,7 +50,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             var solution = _serviceProvider.GetService<IVsSolution, SVsSolution>();
             Verify.HResult(solution.GetSolutionInfo(out string solutionDirectory, out string solutionFile, out string userOptsFile));
 
-            BackupAndDeleteGlobalJson(solutionDirectory, backupDirectory, xprojLocation, projectName, logger);
+            var backupResult = BackupAndDeleteGlobalJson(solutionDirectory, backupDirectory, xprojLocation, projectName, logger);
+            if (!backupResult.Succeeded)
+            {
+                migratedProjectGuid = Guid.Parse(CSharpProjectSystemPackage.XprojTypeGuid);
+                migratedProjectFileLocation = xprojLocation;
+                return backupResult;
+            }
 
             var directory = Path.GetDirectoryName(xprojLocation);
             var (logFile, processExitCode) = MigrateProject(solutionDirectory, directory, xprojLocation, projectName, logger);
@@ -61,12 +67,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             }
             else
             {
+                migratedProjectGuid = Guid.Parse(CSharpProjectSystemPackage.XprojTypeGuid);
                 migratedProjectFileLocation = null;
             }
 
             if (string.IsNullOrEmpty(migratedProjectFileLocation))
             {
                 // If we weren't able to find a new csproj, something went very wrong, and dotnet migrate is doing something that we don't expect.
+                migratedProjectGuid = Guid.Parse(CSharpProjectSystemPackage.XprojTypeGuid);
                 Assumes.NotNullOrEmpty(migratedProjectFileLocation);
                 migratedProjectFileLocation = xprojLocation;
                 success = false;
@@ -118,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             return true;
         }
 
-        internal void BackupAndDeleteGlobalJson(string solutionDirectory, string backupLocation, string xprojLocation, string projectName, IVsUpgradeLogger pLogger)
+        internal HResult BackupAndDeleteGlobalJson(string solutionDirectory, string backupLocation, string xprojLocation, string projectName, IVsUpgradeLogger pLogger)
         {
             var globalJson = Path.Combine(solutionDirectory, "global.json");
             if (_fileSystem.FileExists(globalJson))
@@ -139,8 +147,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
                 pLogger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_INFORMATIONAL, projectName, globalJson,
                     string.Format(VSResources.MigrationBackupFile, globalJson, globalJsonBackupPath));
                 _fileSystem.CopyFile(globalJson, globalJsonBackupPath, true);
-                _fileSystem.RemoveFile(globalJson);
+                try
+                {
+                    _fileSystem.RemoveFile(globalJson);
+                }
+                catch (IOException e)
+                {
+                    pLogger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_ERROR, projectName, globalJson,
+                        e.Message);
+                    return e.HResult;
+                }
             }
+            return VSConstants.S_OK;
         }
 
         internal (string logFile, int exitCode) MigrateProject(string solutionDirectory, string projectDirectory, string xprojLocation, string projectName, IVsUpgradeLogger pLogger)
