@@ -145,7 +145,7 @@
 
   <PropertyGroup>
     <OutDir Condition="'$(OutDir)' == ''">$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\..\bin\$(Configuration)'))\</OutDir>
-    <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)' == ''">$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\..\bin\obj\$(MSBuildProjectName)'))\</BaseIntermediateOutputPath>
+    <BaseIntermediateOutputPath>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\..\bin\obj\$(MSBuildProjectName)'))\</BaseIntermediateOutputPath>
   </PropertyGroup>
 
   <PropertyGroup>

@@ -12,5 +12,11 @@
   <ItemGroup>
     <Content Include="project.json" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Json.net\Json.net.csproj">
+      <Project>{ca374af1-c983-4019-8fd0-01fa510c6e56}</Project>
+      <Name>Json.net</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="..\..\..\build\Targets\ProducesNoOutput.Imports.targets" />
 </Project>
