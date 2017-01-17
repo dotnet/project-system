@@ -50,8 +50,8 @@
       </trans-unit>
       <trans-unit id="10">
         <source>A project for creating a class library that targets .NET Core.</source>
-        <target state="new">A project for creating a class library that targets .NET Core.</target>
-        <note></note>
+        <target state="translated">用于创建目标为 .NET Core 的类库的项目。</target>
+        <note />
       </trans-unit>
     </body>
   </file>

@@ -75,8 +75,8 @@
       </trans-unit>
       <trans-unit id="StartWorkingDirectoryBrowse.Text">
         <source>Bro&amp;wse...</source>
-        <target state="needs-review-translation">Par&amp;courir...</target>
-        <note></note>
+        <target state="translated">Par&amp;courir...</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnableDebuggerLabel.Text">
         <source>Debugger engines</source>

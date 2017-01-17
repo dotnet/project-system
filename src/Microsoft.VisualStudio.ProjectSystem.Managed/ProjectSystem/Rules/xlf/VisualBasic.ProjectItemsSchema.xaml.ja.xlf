@@ -15,8 +15,8 @@
       </trans-unit>
       <trans-unit id="ItemType|AdditionalFiles|DisplayName">
         <source>VB analyzer additional file</source>
-        <target state="new">VB analyzer additional file</target>
-        <note></note>
+        <target state="translated">VB アナライザー追加ファイル</target>
+        <note />
       </trans-unit>
     </body>
   </file>

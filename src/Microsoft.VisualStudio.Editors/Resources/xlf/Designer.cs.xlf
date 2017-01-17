@@ -139,7 +139,7 @@ Pokud chcete tento stav ignorovat a pokračovat v operaci , klikněte na OK. Pok
       </trans-unit>
       <trans-unit id="PPG_ConfigNotFound_2Args">
         <source>Could not find the configuration '{0}' for platform '{1}'.</source>
-        <target state="translated">Nepodařilo se najít konfiguraci {0} pro platformu {1}.</target>
+        <target state="translated">Konfigurace {0} pro platformu {1} se nenašla.</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_NeutralLanguage_None">
