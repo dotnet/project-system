@@ -12,30 +12,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         private readonly IProjectLockService _projectLockService;
         private readonly UnconfiguredProject _unconfiguredProject;
         private readonly IFileSystem _fileSystem;
-        private readonly ExportFactory<ProjectEncodingStringWriter> _stringWriterFactory;
 
         [ImportingConstructor]
         public MSBuildXmlAccessor(IProjectLockService projectLockService,
             UnconfiguredProject unconfiguredProject,
-            IFileSystem fileSystem,
-            ExportFactory<ProjectEncodingStringWriter> stringWriterFactory)
+            IFileSystem fileSystem)
         {
             Requires.NotNull(projectLockService, nameof(projectLockService));
             Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
             Requires.NotNull(fileSystem, nameof(fileSystem));
-            Requires.NotNull(stringWriterFactory, nameof(stringWriterFactory));
 
             _projectLockService = projectLockService;
             _unconfiguredProject = unconfiguredProject;
             _fileSystem = fileSystem;
-            _stringWriterFactory = stringWriterFactory;
         }
 
         public async Task<string> GetProjectXmlAsync()
         {
             using (var access = await _projectLockService.ReadLockAsync())
             {
-                var stringWriter = _stringWriterFactory.CreateExport().Value;
+                var stringWriter = new EncodingStringWriter(await _unconfiguredProject.GetFileEncodingAsync().ConfigureAwait(true));
                 var projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
                 projectXml.Save(stringWriter);
                 return stringWriter.ToString();
