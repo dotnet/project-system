@@ -3,6 +3,7 @@
   <Import Project="..\..\..\build\Targets\VSL.Settings.targets" />
 
   <PropertyGroup>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FinalizeManifest>true</FinalizeManifest>
     <FinalizeSkipLayout>true</FinalizeSkipLayout>
     <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>

@@ -3,6 +3,7 @@
   <Import Project="..\..\..\build\Targets\VSL.Settings.targets" />
 
   <PropertyGroup>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <OutputArchitecture>neutral</OutputArchitecture>
     <OutputLocalized>false</OutputLocalized>
     <OutputType>vsix</OutputType>
