@@ -61,7 +61,7 @@
       </trans-unit>
       <trans-unit id="StartWorkingDirectoryBrowse.Text">
         <source>Bro&amp;wse...</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnableDebuggerLabel.Text">
         <source>Debugger engines</source>
