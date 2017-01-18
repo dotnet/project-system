@@ -552,7 +552,7 @@
        <_XamlPropertyRuleToCopy Include="@(XamlPropertyRule);@(XamlPropertyRuleNoCodeBehind);@(XamlPropertyProjectItemsSchema)" />
 
        <!-- Pick up localized copies as well -->
-       <_XamlPropertyRuleToCopy Include="%(RootDir)%(Directory)\**\%(Filename)%(Extension)" />
+       <_XamlPropertyRuleToCopy Include="%(RootDir)%(Directory)**\%(Filename)%(Extension)" />
     </ItemGroup>
 
     <!-- Copy rule files for testing and setup authoring purposes -->
