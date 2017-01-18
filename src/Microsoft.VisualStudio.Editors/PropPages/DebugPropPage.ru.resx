@@ -160,7 +160,7 @@
     <value>Поиск рабочего каталога</value>
   </data>
   <data name="StartWorkingDirectoryBrowse.Text" xml:space="preserve">
-    <value>О&amp;бзор...</value>
+    <value>&amp;Обзор...</value>
   </data>
   <data name="EnableDebuggerLabel.Text" xml:space="preserve">
     <value>Модули отладчика</value>

@@ -271,9 +271,9 @@ Pour déboguer ce projet, ajoutez à cette solution un projet exécutable qui fa
     <value>&amp;Compresser {0}</value>
   </data>
   <data name="XprojMigrationFailedCannotReadReport" xml:space="preserve">
-    <value>Could not read post-migration report at '{0}'.</value>
+    <value>Impossible de lire le rapport postmigration de '{0}'.</value>
   </data>
   <data name="XprojMigrationGeneralFailure" xml:space="preserve">
-    <value>Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</value>
+    <value>Échec de la migration du projet XProj {0}. '{1}' a quitté avec le code d'erreur {2}.</value>
   </data>
 </root>

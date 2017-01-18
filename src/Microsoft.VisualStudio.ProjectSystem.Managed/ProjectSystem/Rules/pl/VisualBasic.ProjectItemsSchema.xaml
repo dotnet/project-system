@@ -3,6 +3,6 @@
 <ProjectSchemaDefinitions xmlns="http://schemas.microsoft.com/build/2009/properties">
   <ContentType Name="VisualBasicFile" DisplayName="Plik VB" ItemType="Compile"></ContentType>
   <ItemType Name="Compile" DisplayName="Kompilator VB" />
-  <ItemType Name="AdditionalFiles" DisplayName="VB analyzer additional file" />
+  <ItemType Name="AdditionalFiles" DisplayName="Dodatkowy plik analizatora VB" />
   <FileExtension Name=".vb" ContentType="VisualBasicFile" />
 </ProjectSchemaDefinitions>

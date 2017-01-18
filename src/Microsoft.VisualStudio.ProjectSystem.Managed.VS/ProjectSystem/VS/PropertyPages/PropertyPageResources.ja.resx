@@ -178,6 +178,6 @@
     <value>作業ディレクトリへの絶対パス</value>
   </data>
   <data name="ErrorsMustBeCorrectedPriorToSaving" xml:space="preserve">
-    <value>The errors on the page must be corrected prior to saving your changes.</value>
+    <value>ページ上のエラーは変更を保存する前に修正する必要があります。</value>
   </data>
 </root>

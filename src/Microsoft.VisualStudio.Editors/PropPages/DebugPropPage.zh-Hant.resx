@@ -160,7 +160,7 @@
     <value>瀏覽工作目錄</value>
   </data>
   <data name="StartWorkingDirectoryBrowse.Text" xml:space="preserve">
-    <value>瀏覽(&amp;B/W)...</value>
+    <value>瀏覽(&amp;W)...</value>
   </data>
   <data name="EnableDebuggerLabel.Text" xml:space="preserve">
     <value>偵錯工具引擎</value>

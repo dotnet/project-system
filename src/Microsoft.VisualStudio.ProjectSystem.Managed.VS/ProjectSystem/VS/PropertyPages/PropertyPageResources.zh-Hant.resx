@@ -178,6 +178,6 @@
     <value>工作目錄的絕對路徑</value>
   </data>
   <data name="ErrorsMustBeCorrectedPriorToSaving" xml:space="preserve">
-    <value>The errors on the page must be corrected prior to saving your changes.</value>
+    <value>必須先修正頁面上的錯誤，才能儲存您的變更。</value>
   </data>
 </root>

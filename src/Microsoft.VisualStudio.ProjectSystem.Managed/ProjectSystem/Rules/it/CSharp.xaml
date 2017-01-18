@@ -9,7 +9,7 @@
     <Category Name="Misc" DisplayName="Varie" />
   </Rule.Categories>
   <DynamicEnumProperty Name="{}{ItemType}" DisplayName="Azione di compilazione" Category="Advanced" Description="Descrizione della relazione tra il file e i processi di compilazione e distribuzione." EnumProvider="ItemTypes" />
-  <EnumProperty Name="CopyToOutputDirectory" DisplayName="Copia nella directory di output" Category="Advanced" Description="Consente di specificare se il file di origine verrà copiato nella directory di output.">
+  <EnumProperty Name="CopyToOutputDirectory" DisplayName="Copia nella directory di output" Category="Advanced" Description="Specifica se il file di origine verrà copiato nella directory di output.">
     <EnumValue Name="Never" DisplayName="Non copiare" />
     <EnumValue Name="Always" DisplayName="Copia sempre" />
     <EnumValue Name="PreserveNewest" DisplayName="Copia se più recente" />
@@ -37,6 +37,6 @@
   </StringProperty>
   <StringProperty Name="SubType" Visible="false" />
   <StringProperty Name="LastGenOutput" Visible="false" Description="Nome dell'ultimo file generato come risultato di SFG." />
-  <BoolProperty Name="DesignTime" Visible="false" Description="Valore che indica se per questo file esiste una finestra di progettazione." />
+  <BoolProperty Name="DesignTime" Visible="false" Description="Valore che indica se per il file esiste una finestra di progettazione." />
   <BoolProperty Name="AutoGen" Visible="false" Description="Valore che indica se si tratta di un file generato." />
 </Rule>
