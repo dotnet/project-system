@@ -120,6 +120,7 @@
     <Compile Include="ProjectSystem\VS\Debug\DebugProfileEnumValuesGeneratorTests.cs" />
     <Compile Include="ProjectSystem\VS\Debug\ProjectDebuggerProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\DebugTests\StartupProjectRegistrarTests.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\ProjectEncodingStringWriterTests.cs" />
     <Compile Include="ProjectSystem\VS\Editor\ProjectFileEditorPresenterTests.cs" />
     <Compile Include="ProjectSystem\VS\Editor\Listeners\FrameOpenCloseListenerTests.cs" />
     <Compile Include="ProjectSystem\VS\Editor\Listeners\ProjectFileModelWatcherTests.cs" />

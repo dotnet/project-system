@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Moq;
+using System;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -45,6 +46,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var mock = new Mock<UnconfiguredProject>();
             mock.As<UnconfiguredProjectAdvanced>();
+            return mock.Object;
+        }
+
+        public static UnconfiguredProject ImplementGetEncodingAsync(Func<Task<Encoding>> encoding)
+        {
+            var mock = new Mock<UnconfiguredProject>();
+            mock.Setup(u => u.GetFileEncodingAsync()).Returns(encoding);
             return mock.Object;
         }
     }
