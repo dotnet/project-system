@@ -451,6 +451,24 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Run C&amp;ode Analysis.
+        /// </summary>
+        internal static string RunCodeAnalysisProjectContextMenuCommand {
+            get {
+                return ResourceManager.GetString("RunCodeAnalysisProjectContextMenuCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run Code &amp;Analysis on {0}.
+        /// </summary>
+        internal static string RunCodeAnalysisTopLevelBuildMenuCommand {
+            get {
+                return ResourceManager.GetString("RunCodeAnalysisTopLevelBuildMenuCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Save As.
         /// </summary>
         internal static string SaveAs {

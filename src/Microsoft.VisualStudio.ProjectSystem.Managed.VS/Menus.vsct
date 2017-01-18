@@ -98,4 +98,8 @@
     </GuidSymbol>
   </Symbols>
 
+  <UsedCommands>
+    <UsedCommand guid="guidVSStd2K" id="ECMD_RUNFXCOPSEL" />
+    <UsedCommand guid="guidVSStd2K" id="ECMD_RUNFXCOPPROJCTX" />
+  </UsedCommands>
 </CommandTable>

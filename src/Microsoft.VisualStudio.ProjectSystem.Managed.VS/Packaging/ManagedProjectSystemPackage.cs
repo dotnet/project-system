@@ -21,6 +21,11 @@ namespace Microsoft.VisualStudio.Packaging
                                                   ProjectCapability.HandlesOwnReload + "; " +
                                                   ProjectCapability.OpenProjectFile;
 
+        public const long RunCodeAnalysisTopLevelBuildMenuCmdId = 0x066f;
+        public const long RunCodeAnalysisProjectContextMenuCmdId = 0x0670;
+        public const string CodeAnalysisPackageGuid = "B20604B0-72BC-4953-BB92-95BF26D30CFA";
+        public const string VSStd2KCommandSet = "1496A755-94DE-11D0-8C3F-00C04FC2AAE2";
+
         public ManagedProjectSystemPackage()
         {
         }

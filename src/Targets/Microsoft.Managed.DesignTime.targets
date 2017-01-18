@@ -53,7 +53,8 @@
 
     <ProjectCapability Include="LanguageService" />
     <ProjectCapability Include="ProjectConfigurationsInferredFromUsage" />
-
+    <ProjectCapability Include="CodeAnalysis" />
+    
     <!-- Reference Manager capabilities -->
     <ProjectCapability Include="ReferenceManagerAssemblies" />
     <ProjectCapability Include="ReferenceManagerBrowse" />
