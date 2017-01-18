@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 
@@ -8,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     [Export(typeof(IConfiguredProjectReadyToBuild))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
     [Order(int.MaxValue)]
-    internal sealed class ConfiguredProjectReadyToBuild : IConfiguredProjectReadyToBuild
+    internal sealed class ConfiguredProjectReadyToBuild : IConfiguredProjectReadyToBuild, IDisposable
     {
         private readonly ConfiguredProject _configuredProject;
         private readonly IActiveConfiguredProjectProvider _activeConfiguredProjectProvider;
@@ -26,7 +27,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             _configuredProject = configuredProject;
             _activeConfiguredProjectProvider = activeConfiguredProjectProvider;
             _activationTask = new TaskCompletionSource<object>();
+
+            _activeConfiguredProjectProvider.Changed += ActiveConfiguredProject_Changed;
         }
+
+        private void ActiveConfiguredProject_Changed(object sender, ActiveConfigurationChangedEventArgs e) => GetLatestActivationTask();
 
         public bool IsValidToBuild => GetLatestActivationTask().IsCompleted;
         public async Task WaitReadyToBuildAsync() => await GetLatestActivationTask().ConfigureAwait(false);
@@ -51,6 +56,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 return _activationTask.Task;
             }
+        }
+
+        public void Dispose()
+        {
+            _activationTask.TrySetCanceled();
+            _activeConfiguredProjectProvider.Changed -= ActiveConfiguredProject_Changed;            
         }
     }
 }
