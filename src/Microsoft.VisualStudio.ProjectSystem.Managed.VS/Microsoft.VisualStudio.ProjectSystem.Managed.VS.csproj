@@ -37,6 +37,7 @@
     <Compile Include="Input\VisualStudioStandard97CommandId.cs" />
     <Compile Include="Packaging\DplOptOutRegistrationAttribute.cs" />
     <Compile Include="ProjectSystem\VS\Editor\MSBuildXmlAccessor.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\EncodingStringWriter.cs" />
     <Compile Include="ProjectSystem\VS\Editor\ProjectFileEditorPresenter.cs" />
     <Compile Include="ProjectSystem\VS\Editor\IProjectFileEditorPresenter.cs" />
     <Compile Include="ProjectSystem\VS\Editor\ITextBufferManager.cs" />
