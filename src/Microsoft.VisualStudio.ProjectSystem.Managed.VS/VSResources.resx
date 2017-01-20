@@ -276,4 +276,10 @@ In order to debug this project, add an executable project to this solution which
   <data name="XprojMigrationGeneralFailure" xml:space="preserve">
     <value>Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</value>
   </data>
+  <data name="RunCodeAnalysisProjectContextMenuCommand" xml:space="preserve">
+    <value>Run C&amp;ode Analysis</value>
+  </data>
+  <data name="RunCodeAnalysisTopLevelBuildMenuCommand" xml:space="preserve">
+    <value>Run Code &amp;Analysis on {0}</value>
+  </data>
 </root>
