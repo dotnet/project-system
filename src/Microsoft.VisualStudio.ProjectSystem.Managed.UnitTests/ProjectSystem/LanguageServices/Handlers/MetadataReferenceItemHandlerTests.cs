@@ -56,14 +56,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             var handler = new MetadataReferenceItemHandler(project);
             var projectDir = Path.GetDirectoryName(project.FullPath);
-            var added = CSharpCommandLineParser.Default.Parse(args: new[] { @"/reference:Assembly1.dll", @"/reference:C:\ProjectFolder\Assembly2.dll", @"/reference:..\ProjectFolder\Assembly2.dll" }, baseDirectory: projectDir, sdkDirectory: null);
+            var added = CSharpCommandLineParser.Default.Parse(args: new[] { @"/reference:Assembly1.dll", @"/reference:C:\ProjectFolder\Assembly2.dll", @"/reference:..\ProjectFolder\Assembly3.dll" }, baseDirectory: projectDir, sdkDirectory: null);
             var removed = CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null);
 
             handler.Handle(added: added, removed: removed, context: context, isActiveContext: true);
 
-            Assert.Equal(2, referencesPushedToWorkspace.Count);
+            Assert.Equal(3, referencesPushedToWorkspace.Count);
             Assert.Contains(@"C:\ProjectFolder\Assembly1.dll", referencesPushedToWorkspace);
             Assert.Contains(@"C:\ProjectFolder\Assembly2.dll", referencesPushedToWorkspace);
+            Assert.Contains(@"C:\ProjectFolder\Assembly3.dll", referencesPushedToWorkspace);
         }
     }
 }
