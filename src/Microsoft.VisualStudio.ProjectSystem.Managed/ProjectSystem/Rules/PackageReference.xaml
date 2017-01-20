@@ -74,4 +74,8 @@
     <StringProperty Name="FrameworkVersion" 
                     Visible="False" 
                     ReadOnly="True" />
+
+    <StringProperty Name="IsImplicitlyDefined" 
+                    Visible="False" 
+                    ReadOnly="True" />
 </Rule>

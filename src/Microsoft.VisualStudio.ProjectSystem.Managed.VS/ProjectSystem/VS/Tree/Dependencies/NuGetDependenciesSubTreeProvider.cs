@@ -421,6 +421,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     if (!TopLevelDependencies.TryGetValue(addedItemSpec, out DependencyMetadata metadata))
                     {
                         metadata = CreateUnresolvedMetadata(addedItemSpec, properties);
+                        if (metadata.IsImplicitlyDefined)
+                        {
+                            continue;
+                        }
+
                         TopLevelDependencies.Add(addedItemSpec, metadata);
 
                         dependenciesChange.AddedNodes.Add(metadata);
@@ -500,7 +505,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
 
             var addedTopLevelDependencies = newDependencies.Where(
-                                                x => allTargetsDependencies.Contains(x.ItemSpec));
+                x => allTargetsDependencies.Contains(x.ItemSpec) && !x.IsImplicitlyDefined);
             foreach (var addedDependency in addedTopLevelDependencies)
             {
                 dependenciesChange.AddedNodes.Add(addedDependency);
@@ -626,6 +631,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             public bool Resolved { get; private set; }
             public string ItemSpec { get; set; }
             public string Target { get; }
+            public bool IsImplicitlyDefined { get; private set; }
 
             public string FriendlyName
             {
@@ -659,8 +665,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 Path = properties.ContainsKey(MetadataKeys.Path) ? properties[MetadataKeys.Path] : string.Empty;
 
                 bool.TryParse(properties.ContainsKey(MetadataKeys.Resolved)
-                ? properties[MetadataKeys.Resolved] : "true", out bool resolved);
+                    ? properties[MetadataKeys.Resolved] : "true", out bool resolved);
                 Resolved = resolved;
+
+                bool.TryParse(properties.ContainsKey(MetadataKeys.IsImplicitlyDefined)
+                    ? properties[MetadataKeys.IsImplicitlyDefined] : "false", out bool isImplicitlyDefined);
+                IsImplicitlyDefined = isImplicitlyDefined;
 
                 var dependenciesHashSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 if (properties.ContainsKey(MetadataKeys.Dependencies) && properties[MetadataKeys.Dependencies] != null)
@@ -880,6 +890,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             public const string Path = "Path";
             public const string Resolved = "Resolved";
             public const string Dependencies = "Dependencies";
+            public const string IsImplicitlyDefined = "IsImplicitlyDefined";
 
             // Target Metadata
             public const string RuntimeIdentifier = "RuntimeIdentifier";
