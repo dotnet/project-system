@@ -432,6 +432,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Check snapshot
             Assert.Equal(2, provider.CurrentSnapshot.Profiles.Count);
             Assert.Equal(1, provider.CurrentSnapshot.GlobalSettings.Count);
+
+            // Verify the activeProfile is set to the first one since no existing snapshot
+            Assert.Equal("IIS Express", provider.CurrentSnapshot.ActiveProfile.Name);
+        }
+
+        [Fact]
+        public async Task LaunchSettingsProvider_UpdateAndSaveProfilesAsync_ActiveProfilePreserved()
+        {
+            IFileSystemMock moqFS = new IFileSystemMock();
+            var provider = GetLaunchSettingsProvider(moqFS, "Properties", "bar");
+
+            var existingSettings = new Mock<ILaunchSettings>();
+            existingSettings.Setup(m => m.ActiveProfile).Returns(new LaunchProfile() {Name= "bar"});
+            provider.SetCurrentSnapshot(existingSettings.Object);
+            var profiles = new List<ILaunchProfile>()
+            {
+                {new LaunchProfile() { Name = "IIS Express", CommandName="IISExpress", LaunchBrowser=true } },
+                {new LaunchProfile() { Name = "bar", ExecutablePath ="c:\\test\\project\\bin\\test.exe", CommandLineArgs=@"-someArg"} }
+            };
+
+            var testSettings = new Mock<ILaunchSettings>();
+            testSettings.Setup(m => m.ActiveProfile).Returns(() => {return profiles[0];});
+            testSettings.Setup(m => m.Profiles).Returns(() =>
+            {
+                return profiles.ToImmutableList();
+            });
+
+            testSettings.Setup(m => m.GlobalSettings).Returns(() => ImmutableDictionary<string, object>.Empty);
+
+            await provider.UpdateAndSaveSettingsAsync(testSettings.Object).ConfigureAwait(true);
+
+            // Verify the activeProfile hasn't changed
+            Assert.Equal("bar", provider.CurrentSnapshot.ActiveProfile.Name);
         }
 
         [Theory]

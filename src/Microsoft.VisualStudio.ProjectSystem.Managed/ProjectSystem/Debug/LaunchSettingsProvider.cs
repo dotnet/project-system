@@ -664,10 +664,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public async Task UpdateAndSaveSettingsAsync(ILaunchSettings newSettings)
         {
             // Make sure the profiles are copied. We don't want them to mutate.
-            var curSnapshot = CurrentSnapshot;
-            var activeProfile = curSnapshot?.ActiveProfile?.Name;
+            var activeProfileName = ActiveProfile?.Name;
 
-            ILaunchSettings newSnapshot = new LaunchSettings(newSettings.Profiles, newSettings.GlobalSettings, activeProfile);
+            ILaunchSettings newSnapshot = new LaunchSettings(newSettings.Profiles, newSettings.GlobalSettings, activeProfileName);
 
             await CheckoutSettingsFileAsync().ConfigureAwait(false);
 
