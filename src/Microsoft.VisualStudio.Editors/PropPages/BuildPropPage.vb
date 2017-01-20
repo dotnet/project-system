@@ -74,6 +74,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                      New SingleConfigPropertyControlData(SingleConfigPropertyControlData.Configs.Release,
                         VsProjPropId.VBPROJPROPID_OutputPath, "OutputPath", txtOutputPath, New Control() {lblOutputPath}),
                      New PropertyControlData(VsProjPropId.VBPROJPROPID_DocumentationFile, "DocumentationFile", txtXMLDocumentationFile, AddressOf XMLDocumentationFileInit, AddressOf XMLDocumentationFileGet, ControlDataFlags.None, New Control() {txtXMLDocumentationFile, chkXMLDocumentationFile}),
+                     New PropertyControlData(VsProjPropId.VBPROJPROPID_AssemblyName, "AssemblyName", Nothing, AddressOf AssemblyNameSet, Nothing),
                      New PropertyControlData(VsProjPropId.VBPROJPROPID_RegisterForComInterop, "RegisterForComInterop", chkRegisterForCOM, AddressOf RegisterForCOMInteropSet, AddressOf RegisterForCOMInteropGet),
                      New PropertyControlData(VsProjPropId110.VBPROJPROPID_OutputTypeEx, "OutputTypeEx", Nothing, AddressOf OutputTypeSet, Nothing),
                      New SingleConfigPropertyControlData(SingleConfigPropertyControlData.Configs.Release,
@@ -164,6 +165,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub AdvancedButton_Click(sender As Object, e As EventArgs) Handles btnAdvanced.Click
             ShowChildPage(My.Resources.Designer.PPG_AdvancedBuildSettings_Title, GetType(AdvBuildSettingsPropPage), HelpKeywords.CSProjPropAdvancedCompile)
         End Sub
+
+        Private Function AssemblyNameSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
+            ' Setting the Assembly Name should not affect already defined values
+            Return True
+        End Function
 
         Private Function ShouldEnableRegisterForCOM() As Boolean
 
