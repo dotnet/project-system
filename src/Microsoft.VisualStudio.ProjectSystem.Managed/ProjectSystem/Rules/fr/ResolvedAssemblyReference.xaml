@@ -31,7 +31,7 @@
       <DataSource PersistedName="{}{Identity}" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Chemin" Description="Emplacement du fichier référencé.">
+  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Chemin d'accès" Description="Emplacement du fichier référencé.">
     <StringProperty.DataSource>
       <DataSource PersistedName="Identity" />
     </StringProperty.DataSource>

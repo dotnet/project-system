@@ -21,7 +21,7 @@
       <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="Identity" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="FullPath" DisplayName="Chemin complet" ReadOnly="true" Category="Misc" Description="Emplacement du fichier.">
+  <StringProperty Name="FullPath" DisplayName="Chemin d'accès complet" ReadOnly="true" Category="Misc" Description="Emplacement du fichier.">
     <StringProperty.DataSource>
       <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="FullPath" />
     </StringProperty.DataSource>

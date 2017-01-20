@@ -3,6 +3,6 @@
 <ProjectSchemaDefinitions xmlns="http://schemas.microsoft.com/build/2009/properties">
   <ContentType Name="VisualBasicFile" DisplayName="Soubor VB" ItemType="Compile"></ContentType>
   <ItemType Name="Compile" DisplayName="Kompilátor VB" />
-  <ItemType Name="AdditionalFiles" DisplayName="VB analyzer additional file" />
+  <ItemType Name="AdditionalFiles" DisplayName="Další soubor analyzátoru VB" />
   <FileExtension Name=".vb" ContentType="VisualBasicFile" />
 </ProjectSchemaDefinitions>

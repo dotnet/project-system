@@ -145,6 +145,6 @@
     <value>클래스 라이브러리(.NET Core)</value>
   </data>
   <data name="10" xml:space="preserve">
-    <value>A project for creating a class library that targets .NET Core.</value>
+    <value>.NET Core를 대상으로 하는 클래스 라이브러리를 만드는 프로젝트입니다.</value>
   </data>
 </root>

@@ -178,6 +178,6 @@
     <value>Абсолютный путь к рабочему каталогу</value>
   </data>
   <data name="ErrorsMustBeCorrectedPriorToSaving" xml:space="preserve">
-    <value>The errors on the page must be corrected prior to saving your changes.</value>
+    <value>Устраните ошибки на странице перед тем, как сохранять изменения.</value>
   </data>
 </root>

@@ -198,7 +198,7 @@ Pokud chcete tento stav ignorovat a pokračovat v operaci , klikněte na OK. Pok
     <value>Není k dispozici</value>
   </data>
   <data name="PPG_ConfigNotFound_2Args" xml:space="preserve">
-    <value>Nepodařilo se najít konfiguraci {0} pro platformu {1}.</value>
+    <value>Konfigurace {0} pro platformu {1} se nenašla.</value>
   </data>
   <data name="PPG_NeutralLanguage_None" xml:space="preserve">
     <value>(žádné)</value>

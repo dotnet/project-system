@@ -178,6 +178,6 @@
     <value>Caminho absoluto para o diretório de trabalho</value>
   </data>
   <data name="ErrorsMustBeCorrectedPriorToSaving" xml:space="preserve">
-    <value>The errors on the page must be corrected prior to saving your changes.</value>
+    <value>Os erros na página devem ser corrigidos antes de salvar suas mudanças.</value>
   </data>
 </root>

@@ -178,6 +178,6 @@
     <value>Ruta de acceso absoluta al directorio de trabajo</value>
   </data>
   <data name="ErrorsMustBeCorrectedPriorToSaving" xml:space="preserve">
-    <value>The errors on the page must be corrected prior to saving your changes.</value>
+    <value>Deben corregirse los errores de la página antes de guardar los cambios.</value>
   </data>
 </root>

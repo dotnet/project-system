@@ -271,9 +271,9 @@ Bu projede hata ayıklamak için bu çözüme, kitaplık projesine başvuran bir
     <value>{0} öğesini &amp;paketle</value>
   </data>
   <data name="XprojMigrationFailedCannotReadReport" xml:space="preserve">
-    <value>Could not read post-migration report at '{0}'.</value>
+    <value>'{0}' üzerindeki geçiş sonrası raporu okunamadı.</value>
   </data>
   <data name="XprojMigrationGeneralFailure" xml:space="preserve">
-    <value>Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</value>
+    <value>{0} XProj projesinin geçişi sağlanamadı. '{1}', {2} hata koduyla çıkış yaptı.</value>
   </data>
 </root>

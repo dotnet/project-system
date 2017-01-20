@@ -628,7 +628,7 @@ Errore:</value>
 </value>
   </data>
   <data name="PPG_Reference_RemoveImportsFailUnexpected" xml:space="preserve">
-    <value>Non è stato possibile aggiungere o rimuovere '{0}' come importazione del progetto a causa di un errore imprevisto del sistema di progetto. Errore restituito: '{1}'.</value>
+    <value>Non è stato possibile aggiungere o rimuovere '{0}' come importazione del progetto a causa di un errore imprevisto del sistema di progetto.  Errore restituito: '{1}'.</value>
   </data>
   <data name="PPG_Reference_AddWebReference" xml:space="preserve">
     <value>Non è stato possibile aggiungere il riferimento Web. {0}
@@ -732,7 +732,7 @@ Errore:</value>
     <value>Risorse</value>
   </data>
   <data name="APPDES_ErrorLoading_Msg" xml:space="preserve">
-    <value>Si è verificato un errore durante il tentativo di caricamento della finestra delle proprietà del progetto. Chiudere la finestra e riprovare.
+    <value>Si è verificato un errore durante il tentativo di caricare la finestra delle proprietà del progetto.  Chiudere la finestra e riprovare.
 {0}</value>
   </data>
   <data name="APPDES_ErrorLoadingPropPage" xml:space="preserve">
@@ -751,7 +751,7 @@ Errore:</value>
     <value>Il file '{0}' non è stato trovato.</value>
   </data>
   <data name="APPDES_EditorAlreadyOpen_1Arg" xml:space="preserve">
-    <value>Il file '{0}' è già aperto in un editor. Chiudere il file e riprovare.</value>
+    <value>Il file '{0}' è già aperto in un editor.  Chiudere il file e riprovare.</value>
   </data>
   <data name="APPDES_OverflowButton_AccessibilityName" xml:space="preserve">
     <value>Tutte le pagine Creazione progetti</value>
@@ -904,7 +904,7 @@ Errore:</value>
     <value>L'oggetto corrente è stato generato automaticamente e supporta la ridenominazione solo tramite Editor risorse gestite.</value>
   </data>
   <data name="RSE_Err_CantFindResourceFile_1Arg" xml:space="preserve">
-    <value>Il file '{0}' non è stato trovato. Potrebbe essere stato spostato o eliminato.</value>
+    <value>Il file '{0}' non è stato trovato.  È possibile che sia stato spostato o eliminato.</value>
   </data>
   <data name="RSE_Err_LoadingResource_1Arg" xml:space="preserve">
     <value>Non è possibile caricare la risorsa dal file '{0}'.</value>
@@ -934,7 +934,7 @@ Errore:</value>
     <value>Il valore della risorsa contiene dati non validi o è in un formato non corretto.</value>
   </data>
   <data name="RSE_Err_BadIdentifier_2Arg" xml:space="preserve">
-    <value>Il nome della risorsa '{0}' non può essere usato come identificatore valido perché contiene uno o più caratteri non validi: \'{1\}'. Rimuovere o sostituire tali caratteri e riprovare.</value>
+    <value>Il nome della risorsa '{0}' non può essere usato come identificatore valido perché contiene uno o più caratteri non validi: \'{1\}'.  Rimuovere o sostituire tali caratteri e riprovare.</value>
   </data>
   <data name="RSE_Err_MaxFilesLimitation" xml:space="preserve">
     <value>Sono stati specificati troppi file.  Selezionare un numero minore di file e riprovare.</value>
@@ -960,9 +960,9 @@ Errore:</value>
     <value>Non è possibile modificare il file di risorse in questo momento.</value>
   </data>
   <data name="RSE_Err_UpdateADependentFile" xml:space="preserve">
-    <value>Si sta provando a modificare un file di risorse che fa parte di un altro elemento del progetto, ad esempio un form o un controllo. La modifica del file potrebbe comportare il danneggiamento dell'elemento del progetto e di conseguenza sarà necessario eseguire un ripristino manuale. Inoltre, le modifiche apportate a questo file di risorse potrebbero andare perse se si apportano altre modifiche all'elemento del progetto.
+    <value>Si sta provando a modificare un file di risorse che fa parte di un altro elemento del progetto, ad esempio un form o un controllo.  La modifica del file potrebbe comportare il danneggiamento dell'elemento del progetto e di conseguenza sarà necessario eseguire un ripristino manuale.  Inoltre, le modifiche apportate a questo file di risorse potrebbero andare perdute se si effettuano altre modifiche all'elemento del progetto.
 
-Modificare questo file?</value>
+Modificare il file?</value>
   </data>
   <data name="RSE_Err_CantAddUnsupportedResource_1Arg" xml:space="preserve">
     <value>Non è possibile aggiungere la risorsa '{0}'.</value>
@@ -974,7 +974,7 @@ Modificare questo file?</value>
     <value>L'elemento risorsa usa il tipo '{0}', che non è supportato in questo progetto.</value>
   </data>
   <data name="RSE_Err_CantSaveResouce_1Arg" xml:space="preserve">
-    <value>Non è possibile salvare correttamente gli elementi risorsa {0}. Gli elementi verranno ignorati.</value>
+    <value>Non è possibile salvare correttamente gli elementi risorsa {0}.  Gli elementi verranno ignorati.</value>
   </data>
   <data name="RSE_Err_Name" xml:space="preserve">
     <value>'{0}'</value>
@@ -1172,7 +1172,7 @@ Modificare questo file?</value>
     <value>Specificare dove salvare il nuovo file</value>
   </data>
   <data name="RSE_Dlg_ReplaceExistingFile" xml:space="preserve">
-    <value>Il file '{0}' esiste già. Sostituirlo?</value>
+    <value>Il file '{0}' esiste già.  Sostituirlo?</value>
   </data>
   <data name="RSE_Dlg_ReplaceExistingFiles" xml:space="preserve">
     <value>I file seguenti esistono già.  Sostituirli?</value>
@@ -1193,7 +1193,7 @@ Modificare questo file?</value>
     <value>Non è stato possibile creare un'istanza della risorsa '{0}'. {1}</value>
   </data>
   <data name="RSE_Task_NonrecommendedName_1Arg" xml:space="preserve">
-    <value>È consigliabile non usare il nome della risorsa '{0}' perché potrebbe causare errori di compilazione nel codice. Scegliere un altro nome.</value>
+    <value>È consigliabile non usare il nome della risorsa '{0}' perché potrebbe causare errori di compilazione nel codice.  Scegliere un altro nome.</value>
   </data>
   <data name="RSE_Task_CantChangeCustomToolOrNamespace" xml:space="preserve">
     <value>Non è possibile impostare le proprietà dello strumento personalizzato o dello spazio dei nomi dello strumento personalizzato del file per modificare le opzioni di generazione di risorse fortemente tipizzate.  Se il file di progetto è archiviato, provare a estrarlo.</value>
@@ -1250,7 +1250,7 @@ Modificare questo file?</value>
     <value>Valore della risorsa.</value>
   </data>
   <data name="RFS_CantCreateResourcesFolder_Folder_ExMsg" xml:space="preserve">
-    <value>Non è possibile aggiungere una cartella '{0}' a questo progetto.
+    <value>Non è possibile aggiungere una cartella '{0}' al progetto.
 
 {1}</value>
   </data>
@@ -1263,19 +1263,19 @@ Modificare questo file?</value>
     <value>Non è possibile aggiungere '{0}' al progetto.</value>
   </data>
   <data name="RFS_QueryReplaceFile_File" xml:space="preserve">
-    <value>Esiste già un file denominato '{0}'. Sostituirlo?</value>
+    <value>Esiste già un file denominato '{0}'.  Sostituirlo?</value>
   </data>
   <data name="RFS_QueryReplaceFileTitle_Editor" xml:space="preserve">
     <value>{0} - File di destinazione esistente</value>
   </data>
   <data name="RFS_QueryRemoveLink_Folder_Link" xml:space="preserve">
-    <value>Nella cartella di progetto "{1}" esiste già un file collegato con il nome "{0}". Rimuoverlo?</value>
+    <value>Nella cartella di progetto "{1}" esiste già un file collegato con il nome "{0}".  Rimuoverlo?</value>
   </data>
   <data name="RFS_QueryRemoveLinkTitle_Editor" xml:space="preserve">
     <value>{0} - File di destinazione esistente</value>
   </data>
   <data name="RFS_FindNotFound_File" xml:space="preserve">
-    <value>Il file '{0}' non è stato trovato. Potrebbe essere stato spostato o eliminato.</value>
+    <value>Il file '{0}' non è stato trovato.  È possibile che sia stato spostato o eliminato.</value>
   </data>
   <data name="SD_ComboBoxItem_ConnectionStringType" xml:space="preserve">
     <value>Stringa di connessione</value>
@@ -1350,10 +1350,10 @@ Modificare questo file?</value>
     <value>Il valore dell'impostazione '{0}' è stato modificato nel file app.config.</value>
   </data>
   <data name="SD_ReplaceValueWithAppConfigValue" xml:space="preserve">
-    <value>Il valore corrente nel file con estensione settings è '{0}'
+    <value>Il valore corrente nel file .settings è '{0}'
 Il nuovo valore nel file app.config è '{1}'
 
-Aggiornare il valore nel file con estensione settings?</value>
+Aggiornare il valore nel file .settings?</value>
   </data>
   <data name="SD_FailedToLoadAppConfigValues" xml:space="preserve">
     <value>Si è verificato un errore durante la lettura del file app.config. Il file potrebbe essere danneggiato o contenere XML non valido.</value>
@@ -1486,7 +1486,7 @@ Aggiornare il valore nel file con estensione settings?</value>
     <value>Funzionalità di salvataggio automatico My.Settings</value>
   </data>
   <data name="General_MissingService" xml:space="preserve">
-    <value>Il servizio '{0}' non è stato trovato. Assicurarsi che l'applicazione sia installata correttamente.</value>
+    <value>Il servizio '{0}' non è stato trovato.  Assicurarsi che l'applicazione sia installata correttamente.</value>
   </data>
   <data name="PPG_Application_RootNamespaceJSharp" xml:space="preserve">
     <value>&amp;Pacchetto predefinito:</value>
@@ -1531,7 +1531,7 @@ Aggiornare il valore nel file con estensione settings?</value>
     <value>Si è verificato un errore durante il tentativo di apertura o creazione del file di definizione dell'applicazione (ADF) per questo progetto. {0}</value>
   </data>
   <data name="PPG_WPFApp_ErrorControlMessage_1Arg" xml:space="preserve">
-    <value>Si è verificato un errore durante il tentativo di caricamento del file di definizione dell'applicazione (ADF) per il progetto. Non è stato possibile analizzare il file '{0}'. Per correggere l'errore, modificare il file nell'editor XAML.</value>
+    <value>Si è verificato un errore durante il tentativo di caricamento del file di definizione dell'applicazione (ADF) per il progetto.  Non è stato possibile analizzare il file '{0}'.  Per correggere l'errore, modificare il file nell'editor XAML.</value>
   </data>
   <data name="PPG_WPFApp_CantReadPropertyValue" xml:space="preserve">
     <value>(Errore)</value>
@@ -1567,7 +1567,7 @@ Aggiornare il valore nel file con estensione settings?</value>
     <value>Servizi</value>
   </data>
   <data name="PPG_Services_HelpLabelText" xml:space="preserve">
-    <value>I servizi dell'applicazione client consentono alle applicazioni basate su Windows di usare accesso ASP.NET (autenticazione), ruoli e servizi profili (impostazioni). Per abilitare i servizi dell'applicazione client, è necessario impostare la versione di .NET Framework di destinazione dell'applicazione sulla versione completa di .NET Framework 3.5 o versione successiva. </value>
+    <value>I servizi dell'applicazione client consentono alle applicazioni basate su Windows di usare accesso ASP.NET (autenticazione), ruoli e servizi profili (impostazioni). Per abilitare i servizi dell'applicazione client, è necessario impostare la versione di .NET Framework di destinazione dell'applicazione sulla versione completa di .NET Framework 3.5 o versione successiva.  </value>
   </data>
   <data name="PPG_Services_HelpLabelLink" xml:space="preserve">
     <value>Altre informazioni sui servizi dell'applicazione client...</value>
@@ -1612,7 +1612,7 @@ Aggiornare il valore nel file con estensione settings?</value>
     <value>Specificare una stringa di connessione a un database di SQL Server oppure usare la stringa di connessione speciale "Data Source = |SQL/CE|", per fare in modo che in SQL Server Compact vengano generati i file di database locali per l'archiviazione offline.</value>
   </data>
   <data name="SD_ERR_UnreferencedTypeNameList_1Arg" xml:space="preserve">
-    <value>I nomi di tipi seguenti non sono stati riconosciuti: '{0}'. Assicurarsi che siano disponibili riferimenti a questi tipi.</value>
+    <value>I nomi di tipi seguenti non sono stati riconosciuti: '{0}'.  Assicurarsi che siano disponibili riferimenti a questi tipi.</value>
   </data>
   <data name="SD_ERR_DuplicateNameList_1Arg" xml:space="preserve">
     <value>Esistono già impostazioni con i nomi seguenti: {0}.</value>

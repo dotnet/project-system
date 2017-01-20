@@ -160,7 +160,7 @@
     <value>Çalışma dizinine gözat</value>
   </data>
   <data name="StartWorkingDirectoryBrowse.Text" xml:space="preserve">
-    <value>&amp;Göz&amp;at...</value>
+    <value>Göz&amp;at...</value>
   </data>
   <data name="EnableDebuggerLabel.Text" xml:space="preserve">
     <value>Hata ayıklama altyapıları</value>

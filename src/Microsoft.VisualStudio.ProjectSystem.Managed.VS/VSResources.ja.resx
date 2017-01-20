@@ -271,9 +271,9 @@
     <value>{0} のパック(&amp;P)</value>
   </data>
   <data name="XprojMigrationFailedCannotReadReport" xml:space="preserve">
-    <value>Could not read post-migration report at '{0}'.</value>
+    <value>'{0}' で移行後のレポートを読み取れませんでした。</value>
   </data>
   <data name="XprojMigrationGeneralFailure" xml:space="preserve">
-    <value>Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</value>
+    <value>XProj プロジェクト {0} の移行に失敗しました。'{1}' はエラー コード {2} で終了しました。</value>
   </data>
 </root>

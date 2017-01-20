@@ -145,6 +145,6 @@
     <value>Biblioteka klas (.NET Core)</value>
   </data>
   <data name="10" xml:space="preserve">
-    <value>A project for creating a class library that targets .NET Core.</value>
+    <value>Projekt służący do tworzenia biblioteki klas przeznaczonej dla środowiska .NET Core.</value>
   </data>
 </root>

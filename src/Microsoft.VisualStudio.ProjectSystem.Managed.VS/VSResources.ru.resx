@@ -271,9 +271,9 @@
     <value>&amp;Упаковать {0}</value>
   </data>
   <data name="XprojMigrationFailedCannotReadReport" xml:space="preserve">
-    <value>Could not read post-migration report at '{0}'.</value>
+    <value>Не удалось прочитать отчет, формируемый после миграции, в "{0}".</value>
   </data>
   <data name="XprojMigrationGeneralFailure" xml:space="preserve">
-    <value>Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</value>
+    <value>Не удалось переместить проект XProj "{0}". "{1}" завершено с кодом ошибки {2}.</value>
   </data>
 </root>

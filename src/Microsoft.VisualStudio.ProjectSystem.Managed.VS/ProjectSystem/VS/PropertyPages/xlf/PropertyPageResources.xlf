@@ -85,7 +85,7 @@
       </trans-unit>
       <trans-unit id="ErrorsMustBeCorrectedPriorToSaving">
         <source>The errors on the page must be corrected prior to saving your changes.</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>
