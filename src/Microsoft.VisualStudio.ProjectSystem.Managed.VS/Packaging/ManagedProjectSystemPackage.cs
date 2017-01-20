@@ -19,7 +19,8 @@ namespace Microsoft.VisualStudio.Packaging
         public const string DefaultCapabilities = ProjectCapability.AppDesigner + "; " +
                                                   ProjectCapability.EditAndContinue + "; " +
                                                   ProjectCapability.HandlesOwnReload + "; " +
-                                                  ProjectCapability.OpenProjectFile;
+                                                  ProjectCapability.OpenProjectFile + "; " +
+                                                  ProjectCapability.PreserveFormatting;
 
         public ManagedProjectSystemPackage()
         {

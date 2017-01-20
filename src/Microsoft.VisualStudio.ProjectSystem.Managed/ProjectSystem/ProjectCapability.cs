@@ -28,5 +28,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string ReferenceManagerSharedProjects = nameof(ReferenceManagerSharedProjects);
         public const string ReferenceManagerWinRT = nameof(ReferenceManagerWinRT);
         public const string Pack = nameof(Pack); // Keep this in sync with Microsoft.VisualStudio.Editors.ProjectCapability.Pack
+        public const string PreserveFormatting = nameof(PreserveFormatting);
     }
 }

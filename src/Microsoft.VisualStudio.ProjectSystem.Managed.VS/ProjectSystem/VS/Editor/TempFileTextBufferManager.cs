@@ -85,16 +85,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         public async Task ResetBufferAsync()
         {
             var projectXml = await _projectXmlAccessor.GetProjectXmlAsync().ConfigureAwait(false);
+            var existingText = await ReadBufferXmlAsync().ConfigureAwait(false);
 
-            // We compare the text we want to write with the text currently in the buffer, ignoring whitespace. If they're
-            // the same, then we don't write anything. We ignore whitespace because of
-            // https://github.com/dotnet/roslyn-project-system/issues/743. Once we can read the whitespace correctly from
-            // the msbuild model, we can stop stripping whitespace for this comparison. This instance is tracked by
-            // https://github.com/dotnet/roslyn-project-system/issues/1094
-            var normalizedExistingText = _whitespaceRegex.Replace(await ReadBufferXmlAsync().ConfigureAwait(true), "");
-            var normalizedProjectText = _whitespaceRegex.Replace(projectXml, "");
-
-            if (!normalizedExistingText.Equals(normalizedProjectText, StringComparison.Ordinal))
+            if (!existingText.Equals(projectXml, StringComparison.Ordinal))
             {
                 await _threadingService.SwitchToUIThread();
                 // If the docdata is not dirty, we just update the buffer to avoid the file reload pop-up. Otherwise,
@@ -123,7 +116,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                     {
                         _textBuffer.SetStateFlags(oldFlags);
                     }
-
                 }
             }
         }
