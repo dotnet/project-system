@@ -45,11 +45,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         }
 
         /// <summary>
-        /// All controls are supported
+        /// Launch url is not supported
         /// </summary>
         public bool ShouldEnableProperty(string propertyName)
         {
-            return true;
+            return  string.Equals(propertyName, UIProfilePropertyName.LaunchUrl, System.StringComparison.OrdinalIgnoreCase) ? false : true;
         }
 
         /// <summary>
