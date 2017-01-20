@@ -29,15 +29,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
         public async Task<string> GetProjectXmlAsync()
         {
-            var configuredProject = await _unconfiguredProject.GetSuggestedConfiguredProjectAsync().ConfigureAwait(false);
-            if (configuredProject == null)
-            {
-                return string.Empty;
-            }
             using (var access = await _projectLockService.ReadLockAsync())
             {
-                var projectXml = await access.GetProjectAsync(configuredProject).ConfigureAwait(true);
-                return projectXml.Xml.RawXml;
+                var projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
+                return projectXml.RawXml;
             }
         }
 
