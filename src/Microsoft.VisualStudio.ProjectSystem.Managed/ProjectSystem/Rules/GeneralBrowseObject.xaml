@@ -13,7 +13,7 @@
   </Rule.Categories>
 
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" />
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
 
   <StringProperty Name="ApplicationIcon" DisplayName="Application Icon" Visible="True" />
