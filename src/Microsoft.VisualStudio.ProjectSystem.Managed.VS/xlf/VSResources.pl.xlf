@@ -264,13 +264,13 @@ Aby debugować ten projekt, dodaj projekt wykonywalny do tego rozwiązania, któ
       </trans-unit>
       <trans-unit id="XprojMigrationFailedCannotReadReport">
         <source>Could not read post-migration report at '{0}'.</source>
-        <target state="new">Could not read post-migration report at '{0}'.</target>
-        <note></note>
+        <target state="translated">Nie można odczytać raportu po migracji w „{0}”.</target>
+        <note />
       </trans-unit>
       <trans-unit id="XprojMigrationGeneralFailure">
         <source>Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</source>
-        <target state="new">Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</target>
-        <note></note>
+        <target state="translated">Nie można migrować projektu XProj {0}. Element „{1}” zakończył działanie z kodem błędu {2}.</target>
+        <note />
       </trans-unit>
     </body>
   </file>

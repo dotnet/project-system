@@ -264,13 +264,13 @@ Pour déboguer ce projet, ajoutez à cette solution un projet exécutable qui fa
       </trans-unit>
       <trans-unit id="XprojMigrationFailedCannotReadReport">
         <source>Could not read post-migration report at '{0}'.</source>
-        <target state="new">Could not read post-migration report at '{0}'.</target>
-        <note></note>
+        <target state="translated">Impossible de lire le rapport postmigration de '{0}'.</target>
+        <note />
       </trans-unit>
       <trans-unit id="XprojMigrationGeneralFailure">
         <source>Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</source>
-        <target state="new">Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</target>
-        <note></note>
+        <target state="translated">Échec de la migration du projet XProj {0}. '{1}' a quitté avec le code d'erreur {2}.</target>
+        <note />
       </trans-unit>
     </body>
   </file>

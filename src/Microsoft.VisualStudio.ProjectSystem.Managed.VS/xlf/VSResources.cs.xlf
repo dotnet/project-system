@@ -264,13 +264,13 @@ Pokud chcete projekt ladit, přidejte do řešení spustitelný projekt, který 
       </trans-unit>
       <trans-unit id="XprojMigrationFailedCannotReadReport">
         <source>Could not read post-migration report at '{0}'.</source>
-        <target state="new">Could not read post-migration report at '{0}'.</target>
-        <note></note>
+        <target state="translated">Nejde přečíst zprávu po migraci na {0}.</target>
+        <note />
       </trans-unit>
       <trans-unit id="XprojMigrationGeneralFailure">
         <source>Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</source>
-        <target state="new">Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</target>
-        <note></note>
+        <target state="translated">Nepovedlo se migrovat projekt XProj {0}. {1} se ukončil s kódem chyby {2}.</target>
+        <note />
       </trans-unit>
     </body>
   </file>

@@ -264,13 +264,13 @@ Um das Projekt zu debuggen, fügen Sie dieser Projektmappe ein ausführbares Pro
       </trans-unit>
       <trans-unit id="XprojMigrationFailedCannotReadReport">
         <source>Could not read post-migration report at '{0}'.</source>
-        <target state="new">Could not read post-migration report at '{0}'.</target>
-        <note></note>
+        <target state="translated">Der Postmigrationsbericht unter "{0}" konnte nicht gelesen werden.</target>
+        <note />
       </trans-unit>
       <trans-unit id="XprojMigrationGeneralFailure">
         <source>Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</source>
-        <target state="new">Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</target>
-        <note></note>
+        <target state="translated">Fehler beim Migrieren des XProj-Projekts {0}. "{1}" wurde mit dem Fehlercode {2} beendet.</target>
+        <note />
       </trans-unit>
     </body>
   </file>

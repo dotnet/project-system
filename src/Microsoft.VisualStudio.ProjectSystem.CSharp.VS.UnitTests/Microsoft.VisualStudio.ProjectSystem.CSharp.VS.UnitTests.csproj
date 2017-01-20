@@ -43,6 +43,10 @@
       <Project>{c7ec63f8-f96a-4a8f-b879-d572516746b4}</Project>
       <Name>Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests\Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests.csproj">
+      <Project>{469b50e9-fe67-459e-8afa-44cbe523dbf6}</Project>
+      <Name>Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.VS\Microsoft.VisualStudio.ProjectSystem.Managed.VS.csproj">
       <Project>{1c5666ea-24a4-4ec2-b8fb-faedf6b14697}</Project>
       <Name>Microsoft.VisualStudio.ProjectSystem.Managed.VS</Name>

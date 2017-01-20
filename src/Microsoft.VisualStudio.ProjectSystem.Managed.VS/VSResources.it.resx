@@ -133,7 +133,7 @@ Fare clic su Ignora per ignorare le modifiche esterne. Le modifiche verranno usa
 Scegliere Salva con nome per salvare le modifiche e caricare il progetto aggiornato dal disco.
 Scegliere Rimuovi per eliminare le modifiche non salvate e caricare il progetto aggiornato dal disco.
 Scegliere Sovrascrivi per sovrascrivere le modifiche esterne con le proprie.
-Scegliere Ignora per ignorare le modifiche esterne. Le modifiche potrebbero andare perse se si chiude e riapre il progetto.
+Fare clic su Ignora per ignorare le modifiche esterne. Le modifiche potrebbero andare perse se si chiude e riapre il progetto.
     </value>
   </data>
   <data name="ConflictingProjectModificationTitle" xml:space="preserve">
@@ -215,7 +215,7 @@ Scegliere Ignora per ignorare le modifiche esterne. Le modifiche potrebbero anda
     <value>Non ci sono profili di avvio attivi configurati per questo progetto.</value>
   </data>
   <data name="DontKnowHowToRunProfile" xml:space="preserve">
-    <value>Il progetto non contiene informazioni sufficienti per eseguire il profilo {0}.</value>
+    <value>Il progetto non dispone di informazioni sufficienti per eseguire il profilo {0}.</value>
   </data>
   <data name="ErrorInProfilesFile" xml:space="preserve">
     <value>Per eseguire il progetto '{0}', è prima necessario correggere un errore nel file delle impostazioni di avvio. Per informazioni dettagliate, vedere l'elenco errori.</value>
@@ -271,9 +271,9 @@ Per eseguire il debug del progetto, aggiungere a questa soluzione un progetto es
     <value>Crea &amp;pacchetto di {0}</value>
   </data>
   <data name="XprojMigrationFailedCannotReadReport" xml:space="preserve">
-    <value>Could not read post-migration report at '{0}'.</value>
+    <value>Non è stato possibile leggere il report post-migrazione all'indirizzo '{0}'.</value>
   </data>
   <data name="XprojMigrationGeneralFailure" xml:space="preserve">
-    <value>Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</value>
+    <value>Non è stato possibile eseguire la migrazione del progetto XProj {0}. '{1}' è stato terminato con il codice errore {2}.</value>
   </data>
 </root>

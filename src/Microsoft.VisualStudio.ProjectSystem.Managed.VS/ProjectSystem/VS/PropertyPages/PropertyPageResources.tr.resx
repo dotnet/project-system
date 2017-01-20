@@ -178,6 +178,6 @@
     <value>Çalışma dizininin mutlak yolu</value>
   </data>
   <data name="ErrorsMustBeCorrectedPriorToSaving" xml:space="preserve">
-    <value>The errors on the page must be corrected prior to saving your changes.</value>
+    <value>Değişiklikleriniz kaydedilmeden önce bu sayfadaki hataların düzeltilmesi gerekiyor.</value>
   </data>
 </root>

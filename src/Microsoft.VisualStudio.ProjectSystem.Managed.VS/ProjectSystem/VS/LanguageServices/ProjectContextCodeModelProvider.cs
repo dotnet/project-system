@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.ComponentModel.Composition;
 using EnvDTE;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
@@ -59,7 +60,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             {
                 await _threadingService.SwitchToUIThread();
 
-                return _codeModelFactory.GetFileCodeModel(projectContext, fileItem);
+                try
+                {
+                    return _codeModelFactory.GetFileCodeModel(projectContext, fileItem);
+                }
+                catch (NotImplementedException)
+                {   // Isn't a file that Roslyn knows about
+                }
+
+                return null;
             });
         }
     }

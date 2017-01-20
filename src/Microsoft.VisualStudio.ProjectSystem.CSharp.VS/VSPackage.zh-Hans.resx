@@ -145,6 +145,6 @@
     <value>类库 (.NET Core)</value>
   </data>
   <data name="10" xml:space="preserve">
-    <value>A project for creating a class library that targets .NET Core.</value>
+    <value>用于创建目标为 .NET Core 的类库的项目。</value>
   </data>
 </root>

@@ -118,11 +118,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Try
                         mtSvr = New MultiTargetService(VsHierarchy, ProjectItemid, isGlobalDTAR:=False)
                     Catch ex As ArgumentException
-                        ' Can happen if there is no supported TargetFrameworkMoniker
+                        ' Failed to follow a type forward
                         mtSvr = Nothing
                     Catch ex As InvalidOperationException
-                        ' Can also happen if there is no supported TargetFrameworkMoniker, in a .NETCore project
-                        ' TODO: fix MultiTargetService to work for .NET Core apps. Tracked by https://github.com/dotnet/roslyn-project-system/issues/686
+                        ' Could not resolve mscorlib or System.Runtime
                         mtSvr = Nothing
                     End Try
 

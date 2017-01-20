@@ -178,6 +178,6 @@
     <value>Chemin absolu du répertoire de travail</value>
   </data>
   <data name="ErrorsMustBeCorrectedPriorToSaving" xml:space="preserve">
-    <value>The errors on the page must be corrected prior to saving your changes.</value>
+    <value>Les erreurs de la page doivent être corrigées avant d’enregistrer vos modifications.</value>
   </data>
 </root>

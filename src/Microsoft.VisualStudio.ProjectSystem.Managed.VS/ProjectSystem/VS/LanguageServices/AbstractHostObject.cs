@@ -11,9 +11,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     /// <summary>
     /// Base type for language service host object for cross targeting projects.
     /// </summary>
-    internal abstract class AbstractHostObject : IVsHierarchy, IVsContainedLanguageProjectNameProvider, IVsProject
+    internal abstract class AbstractHostObject : IVsHierarchy, IVsContainedLanguageProjectNameProvider, IVsProject4
     {
-        protected AbstractHostObject(IVsHierarchy innerHierarchy, IVsProject innerVsProject)
+        protected AbstractHostObject(IVsHierarchy innerHierarchy, IVsProject4 innerVsProject)
         {
             Requires.NotNull(innerHierarchy, nameof(innerHierarchy));
             Requires.NotNull(innerVsProject, nameof(innerVsProject));
@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         }
 
         protected IVsHierarchy InnerHierarchy { get; }
-        protected IVsProject InnerVsProject { get; }
+        protected IVsProject4 InnerVsProject { get; }
         public abstract string ActiveIntellisenseProjectDisplayName { get; }
 
         #region IVsHierarchy members
@@ -130,7 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         #endregion
 
-        #region IVsProject members
+        #region IVsProject4 members
         public int AddItem(uint itemidLoc, VSADDITEMOPERATION dwAddItemOperation, string pszItemName, uint cFilesToOpen, string[] rgpszFilesToOpen, IntPtr hwndDlgOwner, VSADDRESULT[] pResult)
         {
             return InnerVsProject.AddItem(itemidLoc, dwAddItemOperation, pszItemName, cFilesToOpen, rgpszFilesToOpen, hwndDlgOwner, pResult);
@@ -159,6 +159,51 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         public int OpenItem(uint itemid, ref Guid rguidLogicalView, IntPtr punkDocDataExisting, out IVsWindowFrame ppWindowFrame)
         {
             return InnerVsProject.OpenItem(itemid, ref rguidLogicalView, punkDocDataExisting, out ppWindowFrame);
+        }
+
+        public int RemoveItem(uint dwReserved, uint itemid, out int pfResult)
+        {
+            return InnerVsProject.RemoveItem(dwReserved, itemid, out pfResult);
+        }
+
+        public int ReopenItem(uint itemid, ref Guid rguidEditorType, string pszPhysicalView, ref Guid rguidLogicalView, IntPtr punkDocDataExisting, out IVsWindowFrame ppWindowFrame)
+        {
+            return InnerVsProject.ReopenItem(itemid, ref rguidEditorType, pszPhysicalView, ref rguidLogicalView, punkDocDataExisting, out ppWindowFrame);
+        }
+
+        public int AddItemWithSpecific(uint itemidLoc, VSADDITEMOPERATION dwAddItemOperation, string pszItemName, uint cFilesToOpen, string[] rgpszFilesToOpen, IntPtr hwndDlgOwner, uint grfEditorFlags, ref Guid rguidEditorType, string pszPhysicalView, ref Guid rguidLogicalView, VSADDRESULT[] pResult)
+        {
+            return InnerVsProject.AddItemWithSpecific(itemidLoc, dwAddItemOperation, pszItemName, cFilesToOpen, rgpszFilesToOpen, hwndDlgOwner, grfEditorFlags, ref rguidEditorType, pszPhysicalView, ref rguidLogicalView, pResult);
+        }
+
+        public int OpenItemWithSpecific(uint itemid, uint grfEditorFlags, ref Guid rguidEditorType, string pszPhysicalView, ref Guid rguidLogicalView, IntPtr punkDocDataExisting, out IVsWindowFrame ppWindowFrame)
+        {
+            return InnerVsProject.OpenItemWithSpecific(itemid, grfEditorFlags, ref rguidEditorType, pszPhysicalView, ref rguidLogicalView, punkDocDataExisting, out ppWindowFrame);
+        }
+
+        public int TransferItem(string pszMkDocumentOld, string pszMkDocumentNew, IVsWindowFrame punkWindowFrame)
+        {
+            return InnerVsProject.TransferItem(pszMkDocumentOld, pszMkDocumentNew, punkWindowFrame);
+        }
+
+        public int ContainsFileEndingWith(string pszEndingWith, out int pfDoesContain)
+        {
+            return InnerVsProject.ContainsFileEndingWith(pszEndingWith, out pfDoesContain);
+        }
+
+        public int ContainsFileWithItemType(string pszItemType, out int pfDoesContain)
+        {
+            return InnerVsProject.ContainsFileWithItemType(pszItemType, out pfDoesContain);
+        }
+
+        public int GetFilesEndingWith(string pszEndingWith, uint celt, uint[] rgItemids, out uint pcActual)
+        {
+            return InnerVsProject.GetFilesEndingWith(pszEndingWith, celt, rgItemids, out pcActual);
+        }
+
+        public int GetFilesWithItemType(string pszItemType, uint celt, uint[] rgItemids, out uint pcActual)
+        {
+            return InnerVsProject.GetFilesWithItemType(pszItemType, celt, rgItemids, out pcActual);
         }
 
         #endregion

@@ -41,7 +41,7 @@
       </trans-unit>
       <trans-unit id="10">
         <source>A project for creating a class library that targets .NET Core.</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

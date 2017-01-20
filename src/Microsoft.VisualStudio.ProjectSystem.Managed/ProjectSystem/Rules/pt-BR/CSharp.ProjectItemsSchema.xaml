@@ -3,6 +3,6 @@
 <ProjectSchemaDefinitions xmlns="http://schemas.microsoft.com/build/2009/properties">
   <ContentType Name="CSharpFile" DisplayName="Arquivo C#" ItemType="Compile"></ContentType>
   <ItemType Name="Compile" DisplayName="Compilador C#" />
-  <ItemType Name="AdditionalFiles" DisplayName="C# analyzer additional file" />
+  <ItemType Name="AdditionalFiles" DisplayName="Arquivo adicional do analisador C#" />
   <FileExtension Name=".cs" ContentType="CSharpFile" />
 </ProjectSchemaDefinitions>

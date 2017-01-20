@@ -271,9 +271,9 @@ Pokud chcete projekt ladit, přidejte do řešení spustitelný projekt, který 
     <value>&amp;Zabalit {0}</value>
   </data>
   <data name="XprojMigrationFailedCannotReadReport" xml:space="preserve">
-    <value>Could not read post-migration report at '{0}'.</value>
+    <value>Nejde přečíst zprávu po migraci na {0}.</value>
   </data>
   <data name="XprojMigrationGeneralFailure" xml:space="preserve">
-    <value>Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</value>
+    <value>Nepovedlo se migrovat projekt XProj {0}. {1} se ukončil s kódem chyby {2}.</value>
   </data>
 </root>

@@ -178,6 +178,6 @@
     <value>Absoluter Pfad zum Arbeitsverzeichnis</value>
   </data>
   <data name="ErrorsMustBeCorrectedPriorToSaving" xml:space="preserve">
-    <value>The errors on the page must be corrected prior to saving your changes.</value>
+    <value>Die Fehler auf der Seite müssen vor dem Speichern Ihrer Änderungen korrigiert werden.</value>
   </data>
 </root>

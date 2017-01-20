@@ -160,7 +160,7 @@
     <value>Przeglądaj w poszukiwaniu katalogu roboczego</value>
   </data>
   <data name="StartWorkingDirectoryBrowse.Text" xml:space="preserve">
-    <value>&amp;Prze&amp;glądaj...</value>
+    <value>Prze&amp;glądaj...</value>
   </data>
   <data name="EnableDebuggerLabel.Text" xml:space="preserve">
     <value>Aparaty debugowania</value>

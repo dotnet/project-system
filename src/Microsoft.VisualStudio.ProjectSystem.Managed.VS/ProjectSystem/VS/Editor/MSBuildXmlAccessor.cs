@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.ComponentModel.Composition;
-using System.IO;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.IO;
 
@@ -15,8 +14,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         private readonly IFileSystem _fileSystem;
 
         [ImportingConstructor]
-        public MSBuildXmlAccessor(IProjectLockService projectLockService, UnconfiguredProject unconfiguredProject, IFileSystem fileSystem)
+        public MSBuildXmlAccessor(IProjectLockService projectLockService,
+            UnconfiguredProject unconfiguredProject,
+            IFileSystem fileSystem)
         {
+            Requires.NotNull(projectLockService, nameof(projectLockService));
+            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
+            Requires.NotNull(fileSystem, nameof(fileSystem));
+
             _projectLockService = projectLockService;
             _unconfiguredProject = unconfiguredProject;
             _fileSystem = fileSystem;
@@ -26,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         {
             using (var access = await _projectLockService.ReadLockAsync())
             {
-                var stringWriter = new StringWriter();
+                var stringWriter = new EncodingStringWriter(await _unconfiguredProject.GetFileEncodingAsync().ConfigureAwait(true));
                 var projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
                 projectXml.Save(stringWriter);
                 return stringWriter.ToString();

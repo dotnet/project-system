@@ -38,6 +38,7 @@
     <Compile Include="Input\VisualStudioStandard97CommandId.cs" />
     <Compile Include="Packaging\DplOptOutRegistrationAttribute.cs" />
     <Compile Include="ProjectSystem\VS\Editor\MSBuildXmlAccessor.cs" />
+    <Compile Include="ProjectSystem\VS\Editor\EncodingStringWriter.cs" />
     <Compile Include="ProjectSystem\VS\Editor\ProjectFileEditorPresenter.cs" />
     <Compile Include="ProjectSystem\VS\Editor\IProjectFileEditorPresenter.cs" />
     <Compile Include="ProjectSystem\VS\Editor\ITextBufferManager.cs" />
@@ -126,6 +127,8 @@
     <Compile Include="ProjectSystem\VS\References\AssemblyReferenceContextProvider.cs" />
     <Compile Include="ProjectSystem\VS\References\BaseReferenceContextProvider.cs" />
     <Compile Include="ProjectSystem\VS\References\ComReferencesProviderContext.cs" />
+    <Compile Include="ProjectSystem\VS\References\DesignTimeAssemblyResolution.cs" />
+    <Compile Include="ProjectSystem\VS\References\DesignTimeAssemblyResolution.ResolvedReference.cs" />
     <Compile Include="ProjectSystem\VS\References\ProjectReferencesProviderContext.cs" />
     <Compile Include="ProjectSystem\VS\References\SharedProjectReferencesProviderContext.cs" />
     <Compile Include="ProjectSystem\VS\References\WinRTReferencesProviderContext.cs" />
@@ -227,6 +230,7 @@
     <Compile Include="Shell\HierarchyId.cs" />
     <Compile Include="Shell\Interop\VsProjectExtensions.cs" />
     <Compile Include="Shell\Interop\VsHierarchyExtensions.cs" />
+    <Compile Include="Shell\ServiceProviderToOleServiceProviderAdapter.cs" />
     <Compile Include="Threading\Tasks\VsTaskScheduler.cs" />
     <Compile Include="VSResources.Designer.cs">
       <AutoGen>True</AutoGen>

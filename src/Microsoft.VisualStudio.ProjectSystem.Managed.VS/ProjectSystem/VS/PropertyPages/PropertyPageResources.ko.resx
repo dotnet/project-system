@@ -178,6 +178,6 @@
     <value>작업 디렉터리의 절대 경로</value>
   </data>
   <data name="ErrorsMustBeCorrectedPriorToSaving" xml:space="preserve">
-    <value>The errors on the page must be corrected prior to saving your changes.</value>
+    <value>페이지의 오류는 변경 내용을 저장하기 전에 수정해야 합니다.</value>
   </data>
 </root>

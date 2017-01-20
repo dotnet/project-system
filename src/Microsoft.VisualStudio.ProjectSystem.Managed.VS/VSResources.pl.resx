@@ -271,9 +271,9 @@ Aby debugować ten projekt, dodaj projekt wykonywalny do tego rozwiązania, któ
     <value>&amp;Spakuj element {0}</value>
   </data>
   <data name="XprojMigrationFailedCannotReadReport" xml:space="preserve">
-    <value>Could not read post-migration report at '{0}'.</value>
+    <value>Nie można odczytać raportu po migracji w „{0}”.</value>
   </data>
   <data name="XprojMigrationGeneralFailure" xml:space="preserve">
-    <value>Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</value>
+    <value>Nie można migrować projektu XProj {0}. Element „{1}” zakończył działanie z kodem błędu {2}.</value>
   </data>
 </root>

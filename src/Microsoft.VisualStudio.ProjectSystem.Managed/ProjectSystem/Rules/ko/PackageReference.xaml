@@ -2,7 +2,7 @@
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Rule Name="PackageReference" DisplayName="패키지" PageTemplate="generic" Description="패키지" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile" ItemType="PackageReference" HasConfigurationCondition="False" />
+    <DataSource Persistence="ProjectFile" ItemType="PackageReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="CollectPackageReferences" />
   </Rule.DataSource>
   <StringProperty Name="Description" ReadOnly="True" Visible="True" DisplayName="설명" Description="종속성 설명입니다." />
   <StringProperty Name="Version" ReadOnly="True" DisplayName="버전" Description="종속성의 버전입니다.">

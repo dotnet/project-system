@@ -160,7 +160,7 @@
     <value>Procurar diretório de trabalho</value>
   </data>
   <data name="StartWorkingDirectoryBrowse.Text" xml:space="preserve">
-    <value>&amp;Pro&amp;curar...</value>
+    <value>Pro&amp;curar...</value>
   </data>
   <data name="EnableDebuggerLabel.Text" xml:space="preserve">
     <value>Mecanismos depuradores</value>

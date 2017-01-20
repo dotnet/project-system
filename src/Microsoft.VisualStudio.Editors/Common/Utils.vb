@@ -141,13 +141,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return CUInt(LongValue And UInteger.MaxValue)
         End Function
 
-        Public Function NoOverflowCInt(LongValue As Long) As Integer
-            If LongValue <= UInteger.MaxValue Then
-                Return CInt(LongValue)
-            End If
-            Return CInt(LongValue And UInteger.MaxValue)
-        End Function
-
         ''' <summary>
         ''' Retrieves a given bitmap from the manifest resources (unmodified)
         ''' </summary>
