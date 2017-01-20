@@ -16,6 +16,17 @@
     <Category Name="Misc" DisplayName="Misc" />
   </Rule.Categories>
 
+  <StringProperty
+      Name="Generator"
+      Category="Advanced"
+      DisplayName="Custom Tool"
+      Description="Specifies the tool that transforms a file at design time and places the output of that transformation into another file. For example, a dataset (.xsd) file comes with a default custom tool." />
+  <StringProperty
+      Name="CustomToolNamespace"
+      Category="Advanced"
+      DisplayName="Custom Tool Namespace"
+      Description="The namespace into which the output of the custom tool is placed." />
+
   <DynamicEnumProperty
       Name="{}{ItemType}"
       DisplayName="Build Action"
