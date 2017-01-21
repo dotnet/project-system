@@ -99,6 +99,7 @@
     <Compile Include="Mocks\IVsSolutionFactory.cs" />
     <Compile Include="Mocks\IVsFileChangeExFactory.cs" />
     <Compile Include="Mocks\IVsStartupProjectsListServiceFactory.cs" />
+    <Compile Include="Mocks\ProjectItemFactory.cs" />
     <Compile Include="Mocks\Reference3Factory.cs" />
     <Compile Include="Mocks\RegistrationContextFactory.cs" />
     <Compile Include="Mocks\IVsAddProjectItemDlgFactory.cs" />
