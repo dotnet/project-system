@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using EnvDTE;
 using EnvDTE80;
+using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
@@ -20,6 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
         public int OnAfterOpenSolution(object pUnkReserved, int fNewSolution)
         {
+            UIThreadHelper.VerifyOnUIThread();
             var dte = _serviceProvider.GetService<DTE2, DTE>();
             var solution = _serviceProvider.GetService<IVsSolution, SVsSolution>();
             try

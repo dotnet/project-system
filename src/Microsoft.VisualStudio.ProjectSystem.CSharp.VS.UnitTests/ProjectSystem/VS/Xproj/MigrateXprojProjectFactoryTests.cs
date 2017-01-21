@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.Packaging;
+using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Flavor;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -459,6 +460,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
         private MigrateXprojProjectFactory CreateInstance(ProcessRunner processRunner, IFileSystem fileSystem, IVsSolution solutionParam = null)
         {
+            UnitTestHelper.IsRunningUnitTests = true;
             var solution = solutionParam ?? IVsSolutionFactory.CreateWithSolutionDirectory(CreateSolutionInfo());
             var serviceProvider = IServiceProviderFactory.Create(typeof(SVsSolution), solution);
 

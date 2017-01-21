@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using EnvDTE;
 using EnvDTE80;
+using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell.Interop;
 using Moq;
 using Xunit;
@@ -24,6 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         [Fact]
         public void GlobalJsonRemover_RemovesJson_WhenExists()
         {
+            UnitTestHelper.IsRunningUnitTests = true;
             var solution = IVsSolutionFactory.CreateWithSolutionDirectory(DirectoryInfoCallback);
             var projectItem = ProjectItemFactory.Create();
             var dteSolution = SolutionFactory.ImplementFindProjectItem(path =>
@@ -57,6 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         [Fact]
         public void GlobalJsonRemover_NoJson_DoesntCrash()
         {
+            UnitTestHelper.IsRunningUnitTests = true;
             var solution = IVsSolutionFactory.CreateWithSolutionDirectory(DirectoryInfoCallback);
             var dteSolution = SolutionFactory.ImplementFindProjectItem(path =>
             {
@@ -88,6 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         [Fact]
         public void GlobalJsonRemover_AfterRemoval_UnadvisesEvents()
         {
+            UnitTestHelper.IsRunningUnitTests = true;
             var solution = IVsSolutionFactory.CreateWithSolutionDirectory(DirectoryInfoCallback);
             var projectItem = ProjectItemFactory.Create();
             var dteSolution = SolutionFactory.ImplementFindProjectItem(path =>

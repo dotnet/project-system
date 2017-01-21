@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.Packaging;
+using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell.Flavor;
 using Microsoft.VisualStudio.Shell.Interop;
 using Newtonsoft.Json;
@@ -33,6 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         public int UpgradeProject(string xprojLocation, uint upgradeFlags, string backupDirectory, out string migratedProjectFileLocation,
             IVsUpgradeLogger logger, out int upgradeRequired, out Guid migratedProjectGuid)
         {
+            UIThreadHelper.VerifyOnUIThread();
             bool success = false;
             var projectName = Path.GetFileNameWithoutExtension(xprojLocation);
             var hr = UpgradeProject_CheckOnly(xprojLocation, logger, out upgradeRequired, out migratedProjectGuid, out uint dummy);
