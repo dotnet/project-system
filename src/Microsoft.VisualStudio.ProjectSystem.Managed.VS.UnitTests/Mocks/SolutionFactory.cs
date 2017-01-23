@@ -23,5 +23,13 @@ namespace EnvDTE80
 
             return mock.Object;
         }
+
+        public static Solution ImplementFindProjectItem(Func<string, ProjectItem> callback)
+        {
+            var mock = new Mock<Solution>();
+            mock.As<Solution2>();
+            mock.Setup(m => m.FindProjectItem(It.IsAny<string>())).Returns(callback);
+            return mock.Object;
+        }
     }
 }
