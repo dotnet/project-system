@@ -61,11 +61,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add.
+        /// </summary>
+        public static string AddBtn {
+            get {
+                return ResourceManager.GetString("AddBtn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All files.
         /// </summary>
         public static string AllFiles {
             get {
                 return ResourceManager.GetString("AllFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Application arguments:.
+        /// </summary>
+        public static string ApplicationArguments {
+            get {
+                return ResourceManager.GetString("ApplicationArguments", resourceCulture);
             }
         }
         
@@ -79,6 +97,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Browse....
+        /// </summary>
+        public static string BrowseBtn {
+            get {
+                return ResourceManager.GetString("BrowseBtn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Debug.
         /// </summary>
         public static string DebugPropertyPageTitle {
@@ -88,11 +115,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string DeleteBtn {
+            get {
+                return ResourceManager.GetString("DeleteBtn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Duplicate Key.
         /// </summary>
         public static string DuplicateKey {
             get {
                 return ResourceManager.GetString("DuplicateKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Environment variables:.
+        /// </summary>
+        public static string EnvironmentVariables {
+            get {
+                return ResourceManager.GetString("EnvironmentVariables", resourceCulture);
             }
         }
         
@@ -124,6 +169,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Executable.
+        /// </summary>
+        public static string Executable {
+            get {
+                return ResourceManager.GetString("Executable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Executable files.
         /// </summary>
         public static string ExecutableFiles {
@@ -138,6 +192,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         public static string ExecutablePathWatermark {
             get {
                 return ResourceManager.GetString("ExecutablePathWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Launch:.
+        /// </summary>
+        public static string Launch {
+            get {
+                return ResourceManager.GetString("Launch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Launch URL:.
+        /// </summary>
+        public static string LaunchURL {
+            get {
+                return ResourceManager.GetString("LaunchURL", resourceCulture);
             }
         }
         
@@ -160,6 +232,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string NameHeader {
+            get {
+                return ResourceManager.GetString("NameHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New....
+        /// </summary>
+        public static string NewBtn {
+            get {
+                return ResourceManager.GetString("NewBtn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New profile.
         /// </summary>
         public static string NewProfileCaption {
@@ -174,6 +264,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         public static string NewProfileSeedName {
             get {
                 return ResourceManager.GetString("NewProfileSeedName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile:.
+        /// </summary>
+        public static string Profile {
+            get {
+                return ResourceManager.GetString("Profile", resourceCulture);
             }
         }
         
@@ -232,11 +331,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remove.
+        /// </summary>
+        public static string RemoveBtn {
+            get {
+                return ResourceManager.GetString("RemoveBtn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Value cannot be empty..
         /// </summary>
         public static string ValueCannotBeEmpty {
             get {
                 return ResourceManager.GetString("ValueCannotBeEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value.
+        /// </summary>
+        public static string ValueHeader {
+            get {
+                return ResourceManager.GetString("ValueHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Working directory:.
+        /// </summary>
+        public static string WorkingDirectory {
+            get {
+                return ResourceManager.GetString("WorkingDirectory", resourceCulture);
             }
         }
         
