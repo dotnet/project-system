@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Action<string> onSourceFileRemoved = s => sourceFilesPushedToWorkspace.Remove(s);
 
             var project = UnconfiguredProjectFactory.Create(filePath: @"C:\Myproject.csproj");
-            var context = IWorkspaceProjectContextFactory.Create(project, onSourceFileAdded, onSourceFileRemoved);
+            var context = IWorkspaceProjectContextFactory.CreateForSourceFiles(project, onSourceFileAdded, onSourceFileRemoved);
 
             var handler = new SourceItemHandler(project, IPhysicalProjectTreeFactory.Create());
             var projectDir = Path.GetDirectoryName(project.FullPath);
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Action<string> onSourceFileRemoved = s => sourceFilesPushedToWorkspace.Remove(s);
 
             var project = UnconfiguredProjectFactory.Create(filePath: @"C:\ProjectFolder\Myproject.csproj");
-            var context = IWorkspaceProjectContextFactory.Create(project, onSourceFileAdded, onSourceFileRemoved);
+            var context = IWorkspaceProjectContextFactory.CreateForSourceFiles(project, onSourceFileAdded, onSourceFileRemoved);
 
             var handler = new SourceItemHandler(project, IPhysicalProjectTreeFactory.Create());
             var projectDir = Path.GetDirectoryName(project.FullPath);

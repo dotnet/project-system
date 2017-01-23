@@ -93,6 +93,7 @@
     <Compile Include="ProjectSystem\Debug\LaunchSettingsProviderTests.cs" />
     <Compile Include="ProjectSystem\Debug\LaunchSettingsTests.cs" />
     <Compile Include="ProjectSystem\Imaging\ProjectImageProviderAggregatorTests.cs" />
+    <Compile Include="ProjectSystem\LanguageServices\Handlers\MetadataReferenceItemHandlerTests.cs" />
     <Compile Include="ProjectSystem\LanguageServices\Handlers\SourceItemHandlerTests.cs" />
     <Compile Include="ProjectSystem\PhysicalProjectTreeStorageTests.cs" />
     <Compile Include="ProjectSystem\Properties\AssemblyInfoPropertiesProviderTests.cs" />
