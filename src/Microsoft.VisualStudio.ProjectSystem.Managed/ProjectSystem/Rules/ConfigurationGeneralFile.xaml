@@ -8,7 +8,7 @@
   xmlns="http://schemas.microsoft.com/build/2009/properties">
 
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="{}{AnyType}" />
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="{}{AnyType}" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
 
   <Rule.Categories>
@@ -40,7 +40,7 @@
       Category="Misc"
       Description="The item specified in the Include attribute.">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="{}{AnyType}" PersistedName="Identity" />
+      <DataSource Persistence="Intrinsic" ItemType="{}{AnyType}" PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
 
@@ -51,7 +51,7 @@
       Category="Misc"
       Description="Location of the file.">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="{}{AnyType}" PersistedName="FullPath" />
+      <DataSource Persistence="Intrinsic" ItemType="{}{AnyType}" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
 
@@ -62,13 +62,13 @@
       Category="Misc"
       Description="Name of the file or folder.">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="{}{AnyType}" PersistedName="FileNameAndExtension" />
+      <DataSource Persistence="Intrinsic" ItemType="{}{AnyType}" PersistedName="FileNameAndExtension" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
 
   <StringProperty Name="URL" ReadOnly="true" Visible="false">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="{}{AnyType}" PersistedName="FullPath" />
+      <DataSource Persistence="Intrinsic" ItemType="{}{AnyType}" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="DependentUpon" Visible="False" Description="The leaf name of the file that this item appears as a child to in the project tree." />
@@ -76,7 +76,7 @@
   <StringProperty Name="Link" Visible="false" />
   <StringProperty Name="Extension" Visible="False" ReadOnly="true">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="{}{AnyType}" PersistedName="Extension" />
+      <DataSource Persistence="Intrinsic" ItemType="{}{AnyType}" PersistedName="Extension" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="GeneratorTarget" Visible="false" />

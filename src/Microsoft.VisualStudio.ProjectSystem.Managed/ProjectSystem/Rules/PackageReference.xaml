@@ -23,7 +23,7 @@
                     DisplayName="Version"
                     Description="Version of dependency.">
         <StringProperty.DataSource>
-            <DataSource PersistenceStyle="Attribute" />
+            <DataSource PersistenceStyle="Attribute" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
 
