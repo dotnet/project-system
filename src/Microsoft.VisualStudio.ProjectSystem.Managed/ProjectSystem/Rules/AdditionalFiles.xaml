@@ -56,7 +56,7 @@
       Category="Misc"
       Description="Location of the file.">
     <StringProperty.DataSource>
-            <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
+      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
 
@@ -67,7 +67,7 @@
       Category="Misc"
       Description="Name of the file or folder.">
     <StringProperty.DataSource>
-            <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="FileNameAndExtension" SourceOfDefaultValue="AfterContext" />
+      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="FileNameAndExtension" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
 
