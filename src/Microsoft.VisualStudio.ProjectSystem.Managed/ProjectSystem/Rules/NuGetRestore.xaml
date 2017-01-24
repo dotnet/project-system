@@ -66,4 +66,20 @@
                     Visible="False" 
                     ReadOnly="True" />
 
+    <StringProperty Name="PackageVersion" 
+                    Visible="False" 
+                    ReadOnly="True" />
+
+    <StringProperty Name="Version" 
+                    Visible="False" 
+                    ReadOnly="True" />
+
+    <StringProperty Name="VersionPrefix" 
+                    Visible="False" 
+                    ReadOnly="True" />
+
+    <StringProperty Name="VersionSuffix" 
+                    Visible="False" 
+                    ReadOnly="True" />
+
 </Rule>
