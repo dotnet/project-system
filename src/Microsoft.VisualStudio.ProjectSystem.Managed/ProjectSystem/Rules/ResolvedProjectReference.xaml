@@ -8,7 +8,7 @@
     xmlns="http://schemas.microsoft.com/build/2009/properties">
     <Rule.DataSource>
         <DataSource Persistence="ResolvedReference" ItemType="ProjectReference" HasConfigurationCondition="False" 
-                    SourceType="TargetResults" MSBuildTarget="ResolveProjectReferencesDesignTime" />
+                    SourceType="TargetResults" MSBuildTarget="ResolveProjectReferencesDesignTime" SourceOfDefaultValue="AfterContext" />
     </Rule.DataSource>
 
     <StringListProperty Name="Aliases"

@@ -9,7 +9,7 @@
    
     <Rule.DataSource>
         <DataSource Persistence="ResolvedReference" ItemType="PackageReference" HasConfigurationCondition="False" 
-                    SourceType="TargetResults" MSBuildTarget="ResolvePackageDependenciesDesignTime" />
+                    SourceType="TargetResults" MSBuildTarget="ResolvePackageDependenciesDesignTime" SourceOfDefaultValue="AfterContext" />
     </Rule.DataSource>
 
     <StringProperty Name="Description" 
