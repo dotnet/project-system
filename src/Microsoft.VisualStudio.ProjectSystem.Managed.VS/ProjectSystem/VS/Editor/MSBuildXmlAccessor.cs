@@ -31,10 +31,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         {
             using (var access = await _projectLockService.ReadLockAsync())
             {
-                var stringWriter = new EncodingStringWriter(await _unconfiguredProject.GetFileEncodingAsync().ConfigureAwait(true));
                 var projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
-                projectXml.Save(stringWriter);
-                return stringWriter.ToString();
+                return projectXml.RawXml;
             }
         }
 
