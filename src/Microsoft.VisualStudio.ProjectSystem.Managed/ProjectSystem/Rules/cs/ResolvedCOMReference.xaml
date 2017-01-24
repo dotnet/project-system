@@ -2,7 +2,7 @@
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Rule Name="ResolvedCOMReference" DisplayName="Rozpoznaný odkaz modelu COM" PageTemplate="generic" Description="Vyřešený odkaz" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ResolvedReference" ItemType="COMReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="ResolveComReferencesDesignTime" />
+    <DataSource Persistence="ResolvedReference" ItemType="COMReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="ResolveComReferencesDesignTime" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <StringProperty Name="Guid" DisplayName="CLSID" Description="Identifikátor GUID serveru COM" Visible="False" />
   <IntProperty Name="VersionMajor" Visible="False" />
@@ -10,19 +10,19 @@
   <StringProperty Name="WrapperTool" Visible="False" />
   <StringListProperty Name="Aliases" DisplayName="Aliasy" Description="Seznam aliasů tohoto odkazu oddělených čárkou" Separator=",">
     <StringListProperty.DataSource>
-      <DataSource Persistence="ProjectFile" ItemType="COMReference" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFile" ItemType="COMReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringListProperty.DataSource>
   </StringListProperty>
   <BoolProperty Name="CopyLocal" DisplayName="Kopírovat místně" Description="Určuje, jestli se odkaz zkopíruje do výstupního adresáře.">
     <BoolProperty.DataSource>
-      <DataSource Persistence="ProjectFile" ItemType="COMReference" HasConfigurationCondition="False" PersistedName="Private" />
+      <DataSource Persistence="ProjectFile" ItemType="COMReference" HasConfigurationCondition="False" PersistedName="Private" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
   <StringProperty Name="Culture" ReadOnly="True" Visible="False" DisplayName="Jazyková verze" Description="Hodnota pole Jazyková verze z metadat sestavení" />
   <StringProperty Name="Description" ReadOnly="True" Visible="False" DisplayName="Popis" Description="Hodnota pole Název z metadat sestavení" />
   <BoolProperty Name="EmbedInteropTypes" DisplayName="Vložit typy spolupráce" Description="Určuje, zda typy definované v tomto sestavení budou vloženy do cílového sestavení.">
     <BoolProperty.DataSource>
-      <DataSource Persistence="ProjectFile" ItemType="COMReference" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFile" ItemType="COMReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
   <EnumProperty Name="FileType" ReadOnly="True" Visible="False" DisplayName="Typ souboru" Description="Typ souboru odkazu">
@@ -32,12 +32,12 @@
   </EnumProperty>
   <StringProperty Name="Identity" ReadOnly="True" DisplayName="Identita" Description="Identita zabezpečení odkazovaného sestavení (viz System.Reflection.Assembly.Evidence nebo System.Security.Policy.Evidence)">
     <StringProperty.DataSource>
-      <DataSource PersistedName="{}{Identity}" />
+      <DataSource PersistedName="{}{Identity}" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Cesta" Description="Umístění odkazovaného souboru">
     <StringProperty.DataSource>
-      <DataSource PersistedName="Identity" />
+      <DataSource PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="RuntimeVersion" ReadOnly="True" Visible="False" DisplayName="Verze modulu runtime" Description="Verze modulu runtime .NET, pro kterou bylo toto sestavení zkompilováno"></StringProperty>

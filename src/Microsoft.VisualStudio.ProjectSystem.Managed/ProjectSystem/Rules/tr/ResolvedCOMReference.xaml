@@ -2,7 +2,7 @@
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Rule Name="ResolvedCOMReference" DisplayName="Çözümlenen COM Başvurusu" PageTemplate="generic" Description="Çözümlenen başvuru" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ResolvedReference" ItemType="COMReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="ResolveComReferencesDesignTime" />
+    <DataSource Persistence="ResolvedReference" ItemType="COMReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="ResolveComReferencesDesignTime" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <StringProperty Name="Guid" DisplayName="CLSID" Description="COM sunucusunun GUID'i." Visible="False" />
   <IntProperty Name="VersionMajor" Visible="False" />
@@ -10,19 +10,19 @@
   <StringProperty Name="WrapperTool" Visible="False" />
   <StringListProperty Name="Aliases" DisplayName="Diğer Adlar" Description="Bu başvurunun diğer adlarına yönelik virgülle ayrılmış bir liste." Separator=",">
     <StringListProperty.DataSource>
-      <DataSource Persistence="ProjectFile" ItemType="COMReference" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFile" ItemType="COMReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringListProperty.DataSource>
   </StringListProperty>
   <BoolProperty Name="CopyLocal" DisplayName="Yereli Kopyala" Description="Başvurunun çıkış dizinine kopyalanıp kopyalanmayacağını gösterir.">
     <BoolProperty.DataSource>
-      <DataSource Persistence="ProjectFile" ItemType="COMReference" HasConfigurationCondition="False" PersistedName="Private" />
+      <DataSource Persistence="ProjectFile" ItemType="COMReference" HasConfigurationCondition="False" PersistedName="Private" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
   <StringProperty Name="Culture" ReadOnly="True" Visible="False" DisplayName="Kültür" Description="Derleme meta verilerindeki kültür alanının değeri." />
   <StringProperty Name="Description" ReadOnly="True" Visible="False" DisplayName="Açıklama" Description="Bütünleştirilmiş kod meta verisinin Title (Başlık) alanının değeri." />
   <BoolProperty Name="EmbedInteropTypes" DisplayName="Birlikte Çalışma Türlerini Ekle" Description="Bu bütünleştirilmiş kodda tanımlanan türlerin hedef bütünleştirilmiş koda katıştırılıp katıştırılmayacağını belirtir.">
     <BoolProperty.DataSource>
-      <DataSource Persistence="ProjectFile" ItemType="COMReference" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFile" ItemType="COMReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
   <EnumProperty Name="FileType" ReadOnly="True" Visible="False" DisplayName="Dosya Türü" Description="Başvurunun dosya türü.">
@@ -32,12 +32,12 @@
   </EnumProperty>
   <StringProperty Name="Identity" ReadOnly="True" DisplayName="Kimlik" Description="Başvurulan bütünleştirilmiş kodun güvenlik kimliği (bkz. System.Reflection.Assembly.Evidence veya System.Security.Policy.Evidence).">
     <StringProperty.DataSource>
-      <DataSource PersistedName="{}{Identity}" />
+      <DataSource PersistedName="{}{Identity}" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Yol" Description="Başvurulan dosyanın konumu.">
     <StringProperty.DataSource>
-      <DataSource PersistedName="Identity" />
+      <DataSource PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="RuntimeVersion" ReadOnly="True" Visible="False" DisplayName="Çalışma Zamanı Sürümü" Description="Bu bütünleştirilmiş kodun üzerinde derlendiği .NET çalışma zamanı modülünün sürümü."></StringProperty>
