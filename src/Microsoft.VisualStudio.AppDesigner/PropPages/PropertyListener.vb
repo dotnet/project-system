@@ -77,7 +77,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             VsExtensibleObject.GetAutomationObject(ConfigFullName, Dispatch)
                             Debug.Assert(Dispatch IsNot Nothing, "Couldn't get automation object for configuration")
                             Dim ConfigProperties As VSLangProj.ProjectConfigurationProperties = TryCast(Dispatch, VSLangProj.ProjectConfigurationProperties)
-                            Debug.Assert(ConfigProperties IsNot Nothing, "Couldn't get ProjectConfigurationProperties from config")
+                            Debug.Assert(ConfigProperties IsNot Nothing OrElse CpsPropertyDescriptorWrapper.IsCpsComponent(Dispatch), "Couldn't get ProjectConfigurationProperties from config")
                             If ConfigProperties IsNot Nothing Then
                                 EventSource = ConfigProperties
                                 Debug.Assert(SupportsConnectionPointContainer(EventSource), "Unable to get connection point container from configuration")
