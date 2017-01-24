@@ -36,6 +36,7 @@
   </StringProperty>
   <StringProperty Name="BaseIntermediateOutputPath" Visible="False" ReadOnly="True" />
   <StringProperty Name="MSBuildProjectDirectory" Visible="False" ReadOnly="True" />
+  <StringProperty Name="MSBuildProjectFile" Visible="False" ReadOnly="True" />
   <StringProperty Name="PackageTargetFallback" Visible="False" ReadOnly="True" />
   <StringProperty Name="RuntimeIdentifier" Visible="False" ReadOnly="True" />
   <StringProperty Name="RuntimeIdentifiers" Visible="False" ReadOnly="True" />
