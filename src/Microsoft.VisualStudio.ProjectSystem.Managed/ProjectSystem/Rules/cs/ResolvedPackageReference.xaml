@@ -2,7 +2,7 @@
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Rule Name="ResolvedPackageReference" DisplayName="Balíček" PageTemplate="generic" Description="Balíček" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ResolvedReference" ItemType="PackageReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="ResolvePackageDependenciesDesignTime" />
+    <DataSource Persistence="ResolvedReference" ItemType="PackageReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="ResolvePackageDependenciesDesignTime" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <StringProperty Name="Description" ReadOnly="True" Visible="True" DisplayName="Popis" Description="Popis závislosti" />
   <StringProperty Name="Version" ReadOnly="True" DisplayName="Verze" Description="Verze závislosti"></StringProperty>
@@ -16,7 +16,7 @@
   <StringProperty Name="FrameworkVersion" Visible="False" ReadOnly="True" />
   <StringListProperty Name="Dependencies" DisplayName="Závislosti" Visible="false" Description="Seznam přímých závislostí aktuální závislosti, který je oddělený středníkem." Separator=";">
     <StringListProperty.DataSource>
-      <DataSource Persistence="ResolvedReference" ItemType="PackageReference" HasConfigurationCondition="False" />
+      <DataSource Persistence="ResolvedReference" ItemType="PackageReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringListProperty.DataSource>
   </StringListProperty>
 </Rule>

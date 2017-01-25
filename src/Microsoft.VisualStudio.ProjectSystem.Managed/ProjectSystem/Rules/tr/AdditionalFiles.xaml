@@ -2,7 +2,7 @@
 <!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
 <Rule Name="AdditionalFiles" DisplayName="Ek Dosya" PageTemplate="generic" Description="Ek dosya öğeleri" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="AdditionalFiles" />
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="AdditionalFiles" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <Rule.Categories>
     <Category Name="Advanced" DisplayName="Gelişmiş" />
@@ -18,34 +18,34 @@
   <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="Özel Araç İsim Uzayı" Description="Özel aracın çıkışının yerleştirileceği isim uzayı." />
   <StringProperty Name="Identity" Visible="false" ReadOnly="true" Category="Misc" Description="Include özniteliğinde belirtilen öğe.">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="Identity" />
+      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="FullPath" DisplayName="Tam Yol" ReadOnly="true" Category="Misc" Description="Dosyanın konumu.">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="FullPath" />
+      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="FileNameAndExtension" DisplayName="Dosya Adı" ReadOnly="true" Category="Misc" Description="Dosya veya klasörün adı.">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="FileNameAndExtension" />
+      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="FileNameAndExtension" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="URL" ReadOnly="true" Visible="false">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="FullPath" />
+      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <BoolProperty Name="Visible" Visible="false" />
   <StringProperty Name="DependentUpon" Visible="false" />
   <StringProperty Name="Link" Visible="false">
     <StringProperty.DataSource>
-      <DataSource PersistenceStyle="Attribute" />
+      <DataSource PersistenceStyle="Attribute" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="Extension" Visible="False" ReadOnly="true">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="Extension" />
+      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="Extension" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="LastGenOutput" Visible="false" Description="SFG sonucu oluşturulan son dosyanın adı." />
@@ -53,7 +53,7 @@
   <BoolProperty Name="AutoGen" Visible="false" Description="Bunun oluşturulmuş bir dosya olup olmadığını gösteren değer." />
   <StringProperty Name="CustomTool" Visible="false" Description="Generator özelliğine erişmek için DTE Özelliği.">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFile" ItemType="AdditionalFiles" PersistedName="Generator" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFile" ItemType="AdditionalFiles" PersistedName="Generator" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
 </Rule>

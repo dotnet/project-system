@@ -2,7 +2,7 @@
 <!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
 <Rule Name="AdditionalFiles" DisplayName="Dodatkowy plik" PageTemplate="generic" Description="Elementy dodatkowego pliku" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="AdditionalFiles" />
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="AdditionalFiles" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <Rule.Categories>
     <Category Name="Advanced" DisplayName="Zaawansowane" />
@@ -18,34 +18,34 @@
   <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="Przestrzeń nazw narzędzia niestandardowego" Description="Przestrzeń nazw, w której zostaną umieszczone dane wyjściowe narzędzia niestandardowego." />
   <StringProperty Name="Identity" Visible="false" ReadOnly="true" Category="Misc" Description="Element wskazany w atrybucie Include.">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="Identity" />
+      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="FullPath" DisplayName="Pełna ścieżka" ReadOnly="true" Category="Misc" Description="Lokalizacja pliku.">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="FullPath" />
+      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="FileNameAndExtension" DisplayName="Nazwa pliku" ReadOnly="true" Category="Misc" Description="Nazwa pliku lub folderu.">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="FileNameAndExtension" />
+      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="FileNameAndExtension" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="URL" ReadOnly="true" Visible="false">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="FullPath" />
+      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <BoolProperty Name="Visible" Visible="false" />
   <StringProperty Name="DependentUpon" Visible="false" />
   <StringProperty Name="Link" Visible="false">
     <StringProperty.DataSource>
-      <DataSource PersistenceStyle="Attribute" />
+      <DataSource PersistenceStyle="Attribute" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="Extension" Visible="False" ReadOnly="true">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="Extension" />
+      <DataSource Persistence="Intrinsic" ItemType="AdditionalFiles" PersistedName="Extension" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="LastGenOutput" Visible="false" Description="Nazwa pliku ostatniego pliku generowanego w wyniku SFG." />
@@ -53,7 +53,7 @@
   <BoolProperty Name="AutoGen" Visible="false" Description="Wartość wskazująca, czy jest to wygenerowany plik." />
   <StringProperty Name="CustomTool" Visible="false" Description="Właściwość DTE do dostępu do właściwości Generator.">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFile" ItemType="AdditionalFiles" PersistedName="Generator" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFile" ItemType="AdditionalFiles" PersistedName="Generator" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
 </Rule>

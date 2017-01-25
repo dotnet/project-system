@@ -7,7 +7,7 @@
   Description="Projects that must be built as part of the containing project, but without an actual build dependency"
   xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="SubProject" />
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="SubProject" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
 
   <StringProperty Name="ProjectTypeGuid" Visible="False" />

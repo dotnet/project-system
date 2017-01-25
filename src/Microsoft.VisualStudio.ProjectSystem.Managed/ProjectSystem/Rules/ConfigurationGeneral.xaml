@@ -11,43 +11,43 @@
         <Category Name="General" DisplayName="General" Description="General" />
     </Rule.Categories>
     <Rule.DataSource>
-        <DataSource Persistence="ProjectFile" Label="Configuration" />
+        <DataSource Persistence="ProjectFile" Label="Configuration" SourceOfDefaultValue="AfterContext" />
     </Rule.DataSource>
     <StringProperty Name="ApplicationIcon" DisplayName="Application Icon" />
     <StringListProperty Name="ProjectTypeGuids" Visible="False" />
     <StringProperty Name="ProjectGuid" Visible="False">
         <StringProperty.DataSource>
-            <DataSource Persistence="ImplicitProjectFile" Label="Globals" HasConfigurationCondition="False" />
+            <DataSource Persistence="ImplicitProjectFile" Label="Globals" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
     <StringProperty Name="TargetFrameworkIdentifier" DisplayName="Target Framework Identifier">
         <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkIdentifier" HasConfigurationCondition="False" />
+            <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkIdentifier" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
     <StringProperty Name="TargetFrameworks" DisplayName="Target Frameworks">
         <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworks" HasConfigurationCondition="False" />
+            <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworks" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
     <StringProperty Name="TargetFramework" DisplayName="Target Framework">
         <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" PersistedName="TargetFramework" HasConfigurationCondition="False" />
+            <DataSource Persistence="ProjectFile" PersistedName="TargetFramework" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
     <StringProperty Name="TargetFrameworkProfile" DisplayName="Target Framework Profile">
         <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkProfile" HasConfigurationCondition="False" />
+            <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkProfile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
     <StringProperty Name="TargetFrameworkVersion" DisplayName="Target Framework Version">
         <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkVersion" HasConfigurationCondition="False" />
+            <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkVersion" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>    
     <StringProperty Name="TargetFrameworkMoniker" DisplayName="Target Framework Moniker">
         <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" />
+            <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
 
@@ -57,7 +57,7 @@
     <StringProperty Name="Name" />
     <StringProperty Name="RootNamespace" DisplayName="Root namespace">
         <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" Label="Configuration" HasConfigurationCondition="false" />
+            <DataSource Persistence="ProjectFile" Label="Configuration" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
     <StringProperty Name="OutputName" />
@@ -104,19 +104,19 @@
     <BoolProperty Name="SuppressOutOfDateMessageOnBuild" Visible="false" Description="True to just build out-of-date projects without ever prompting the user to confirm." />
     <BoolProperty Name="ShowAllFiles" Visible="False">
         <BoolProperty.DataSource>
-            <DataSource Persistence="UserFile" HasConfigurationCondition="False" />
+            <DataSource Persistence="UserFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </BoolProperty.DataSource>
     </BoolProperty>
     <BoolProperty Name="AutoRefresh" Visible="False">
         <BoolProperty.DataSource>
-            <DataSource Persistence="UserFile" HasConfigurationCondition="False" />
+            <DataSource Persistence="UserFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </BoolProperty.DataSource>
     </BoolProperty>
     <StringProperty Name="AddItemTemplatesGuid" Visible="False" />
     <StringProperty Name="ProjectUISubcaption" Visible="False" />
     <StringProperty Name="SharedItemContextSubProjectGuid" Visible="False">
         <StringProperty.DataSource>
-            <DataSource Persistence="UserFile" HasConfigurationCondition="False" />
+            <DataSource Persistence="UserFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
     <StringProperty Name="OneAppCapabilities" Visible="False" />

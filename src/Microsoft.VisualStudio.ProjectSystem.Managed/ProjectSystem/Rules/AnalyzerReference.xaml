@@ -7,6 +7,6 @@
     Description="Analyzer reference properties"
     xmlns="http://schemas.microsoft.com/build/2009/properties">
     <Rule.DataSource>
-        <DataSource Persistence="ProjectFile" ItemType="Analyzer" HasConfigurationCondition="False" />
+        <DataSource Persistence="ProjectFile" ItemType="Analyzer" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </Rule.DataSource>
 </Rule>
