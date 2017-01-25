@@ -33,6 +33,7 @@
     <EnumValue Name="On" DisplayName="On" />
     <EnumValue Name="Off" DisplayName="Off" />
   </EnumProperty>
+  <BoolProperty Name="RegisterForComInterop" Default="False" DisplayName="Register for COM Interop" Visible="True"/>
     
   <!-- Advanced Build Page Properties -->
   <EnumProperty Name="LanguageVersion" DisplayName="Language version" Visible="True">
