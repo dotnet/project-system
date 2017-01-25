@@ -50,6 +50,7 @@
     <Compile Include="ProjectSystem\VS\Editor\TempFileTextBufferManager.cs" />
     <Compile Include="ProjectSystem\VS\EditAndContinue\EditAndContinueProvider.cs" />
     <Compile Include="ProjectSystem\VS\ExportProjectNodeComServiceAttribute.cs" />
+    <Compile Include="ProjectSystem\VS\Input\Commands\FaultedTreeCommandGroupHandler.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\GenerateNuGetPackageTopLevelBuildMenuCommand.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\GenerateNuGetPackageProjectContextMenuCommand.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\AbstractGenerateNuGetPackageCommand.cs" />
