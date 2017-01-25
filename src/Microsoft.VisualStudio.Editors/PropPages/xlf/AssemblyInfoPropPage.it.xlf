@@ -30,7 +30,7 @@
       </trans-unit>
       <trans-unit id="DescriptionLabel.Text">
         <source>&amp;Description:</source>
-        <target state="translated">De&amp;scrizione:</target>
+        <target state="translated">Descri&amp;zione:</target>
         <note />
       </trans-unit>
       <trans-unit id="ComVisibleCheckBox.Text">
