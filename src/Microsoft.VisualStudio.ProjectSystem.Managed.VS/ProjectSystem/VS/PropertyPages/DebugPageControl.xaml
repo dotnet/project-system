@@ -56,7 +56,7 @@
                 Grid.Row="0"
                 x:Uid="profileLabel" 
                 Margin="4,4,3,5"
-                Content="_Profile"
+                Content="{x:Static Member=local:PropertyPageResources.Profile}"
                 IsTabStop="False" 
                 VerticalAlignment="Center"
                 Target="{Binding ElementName=profileCombo}"/>
@@ -92,7 +92,7 @@
                     Margin="6,8,1,8"
                     VerticalContentAlignment="Center"
                     VerticalAlignment="Center"
-                    Content="_New..."
+                    Content="{x:Static Member=local:PropertyPageResources.NewBtn}"
                     IsEnabled="{Binding Path=NewProfileEnabled, Mode=OneWay}"
                     Command="{Binding Path=NewProfileCommand}">
                 </Button>
@@ -104,7 +104,7 @@
                     Margin="6,8,1,8"
                     VerticalContentAlignment="Center"
                     VerticalAlignment="Center"
-                    Content="D_elete"
+                    Content="{x:Static Member=local:PropertyPageResources.DeleteBtn}"
                     IsEnabled="{Binding Path=DeleteProfileEnabled, Mode=OneWay}"
                     Command="{Binding Path=DeleteProfileCommand}">
                 </Button>
@@ -113,10 +113,9 @@
                 x:Uid="launchLabel"
                 Grid.Row="1" 
                 Margin="4,5,3,4"
-                Content="_Launch:"
+                Content="{x:Static Member=local:PropertyPageResources.Launch}"
                 MinWidth="150" 
-                IsTabStop="False" 
-                VerticalAlignment="Center"
+                IsTabStop="False"
                 Target="{Binding ElementName=launchCombo}"/>
             <ComboBox
                 Grid.Row="1"
@@ -137,7 +136,7 @@
                 Grid.Row="2"
                 x:Uid="executableLabel"
                 Margin="4,4,3,5"
-                Content="E_xecutable:"
+                Content="{x:Static Member=local:PropertyPageResources.Executable}"
                 IsTabStop="False" 
                 VerticalAlignment="Center"
                 Visibility="{Binding Path=SupportsExecutable, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
@@ -165,7 +164,7 @@
                 HorizontalAlignment="Left"
                 VerticalContentAlignment="Center"
                 VerticalAlignment="Center"
-                Content="Browse..."
+                Content="{x:Static Member=local:PropertyPageResources.BrowseBtn}"
                 IsEnabled="{Binding Path=IsProfileSelected, Mode=OneWay}"
                 Visibility="{Binding Path=SupportsExecutable, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
                 Command="{Binding Path=BrowseExecutableCommand}"/>
@@ -173,8 +172,8 @@
                 Grid.Row="4"
                 x:Uid="argumentsLabel"
                 Margin="4,4,3,0"
-                Content="_Application arguments:"
-                IsTabStop="False" 
+                Content="{x:Static Member=local:PropertyPageResources.ApplicationArguments}"
+                IsTabStop="False"
                 VerticalAlignment="Top"
                 Visibility="{Binding Path=SupportsArguments, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
                 Target="{Binding ElementName=txtArguments}"/>
@@ -196,7 +195,7 @@
                 Grid.Row="5"
                 x:Uid="workingDirectoryLabel"
                 Margin="4,4,3,5"
-                Content="W_orking directory:"
+                Content="{x:Static Member=local:PropertyPageResources.WorkingDirectory}"
                 VerticalAlignment="Center"
                 Visibility="{Binding Path=SupportsWorkingDirectory, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
                 Target="{Binding ElementName=txtWorkingDirectory}"/>
@@ -224,7 +223,7 @@
                 HorizontalAlignment="Left"
                 VerticalContentAlignment="Center"
                 VerticalAlignment="Center"
-                Content="Browse..."
+                Content="{x:Static Member=local:PropertyPageResources.BrowseBtn}"
                 IsEnabled="{Binding Path=IsProfileSelected, Mode=OneWay}"
                 Visibility="{Binding Path=SupportsWorkingDirectory, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
                 Command="{Binding Path=BrowseDirectoryCommand}"/>
@@ -239,7 +238,7 @@
                 IsEnabled="{Binding Path=IsProfileSelected, Mode=OneWay}"
                 Visibility="{Binding Path=SupportsLaunchUrl, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
                 VerticalContentAlignment="Center"
-                Content="Launch _URL:"/>
+                Content="{x:Static Member=local:PropertyPageResources.LaunchURL}"/>
             <local:WatermarkTextBox 
                 Grid.Row="6"
                 Grid.Column="1"
@@ -266,7 +265,7 @@
                 IsTabStop="False"
                 VerticalAlignment="Top"
                 Visibility="{Binding Path=SupportsEnvironmentVariables, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
-                Content="Environment variables:"/>
+                Content="{x:Static Member=local:PropertyPageResources.EnvironmentVariables}"/>
             <DataGrid
                 x:Name="dataGridEnvironmentVariables"
                 Grid.Row="7"
@@ -301,7 +300,7 @@
                     </Style>
                 </DataGrid.CellStyle>
                 <DataGrid.Columns>
-                    <local:EnvironmentDataGridTemplateColumn x:Uid="HeaderName" Header="Name" MinWidth="80">
+                    <local:EnvironmentDataGridTemplateColumn x:Uid="HeaderName" Header="{x:Static Member=local:PropertyPageResources.NameHeader}" MinWidth="80">
                         <local:EnvironmentDataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Border Padding="4,0,4,0">
@@ -323,7 +322,7 @@
                             </DataTemplate>
                         </local:EnvironmentDataGridTemplateColumn.CellEditingTemplate>
                     </local:EnvironmentDataGridTemplateColumn>
-                    <local:EnvironmentDataGridTemplateColumn x:Uid="HeaderValue" Header="Value" MinWidth="255">
+                    <local:EnvironmentDataGridTemplateColumn x:Uid="HeaderValue" Header="{x:Static Member=local:PropertyPageResources.ValueHeader}" MinWidth="255">
                         <local:EnvironmentDataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Border Padding="4,0,4,0">
@@ -356,27 +355,27 @@
                     Margin="0,8,0,10" 
                     MinWidth="80"
                     MinHeight="23"
-                    Command="{Binding Path=AddEnvironmentVariableRowCommand}">
+                    Command="{Binding Path=AddEnvironmentVariableRowCommand}"
+                    Content="{x:Static Member=local:PropertyPageResources.AddBtn}">
                     <Button.IsEnabled>
                         <MultiBinding Converter="{StaticResource MultiValueBoolToBoolAnd}">
                             <Binding Path="EnvironmentVariablesValid" Mode="OneWay"/>
                             <Binding Path="IsProfileSelected" Mode="OneWay"/>
                         </MultiBinding>
                     </Button.IsEnabled>
-                    A_dd
                 </Button>
                 <Button 
                     x:Uid="RemoveEnvironmentVariableButton" 
                     MinWidth="80"
                     MinHeight="23"
-                    Command="{Binding Path=RemoveEnvironmentVariableRowCommand}">
+                    Command="{Binding Path=RemoveEnvironmentVariableRowCommand}"
+                    Content="{x:Static Member=local:PropertyPageResources.RemoveBtn}">
                     <Button.IsEnabled>
                         <MultiBinding Converter="{StaticResource MultiValueBoolToBoolAnd}">
                             <Binding Path="RemoveEnvironmentVariablesRow" Mode="OneWay"/>
                             <Binding Path="IsProfileSelected" Mode="OneWay"/>
                         </MultiBinding>
                     </Button.IsEnabled>
-                    Remo_ve
                 </Button>
             </StackPanel>
             <!-- Where the custom control is placed for the active provider -->

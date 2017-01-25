@@ -2,7 +2,7 @@
 <!--Copyright, Microsoft Corporation, All rights reserved.-->
 <Rule Name="VisualBasic" DisplayName="Vlastnosti souboru" PageTemplate="generic" Description="Vlastnosti souboru" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="false" />
+    <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <Rule.Categories>
     <Category Name="Advanced" DisplayName="Upřesnit" />
@@ -16,17 +16,17 @@
   </EnumProperty>
   <StringProperty Name="Identity" Visible="false" ReadOnly="true" Category="Misc" Description="Položka zadaná v atributu Include">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="Identity" />
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="FullPath" DisplayName="Úplná cesta" ReadOnly="true" Category="Misc" Description="Umístění souboru">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FullPath" />
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="FileNameAndExtension" DisplayName="Název souboru" ReadOnly="true" Category="Misc" Description="Název souboru nebo složky">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FileNameAndExtension" />
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FileNameAndExtension" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <BoolProperty Name="Visible" Visible="false" />
@@ -37,7 +37,7 @@
   </StringProperty>
   <StringProperty Name="Link" Visible="false">
     <StringProperty.DataSource>
-      <DataSource PersistenceStyle="Attribute" />
+      <DataSource PersistenceStyle="Attribute" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
     <StringProperty.Metadata>
       <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />

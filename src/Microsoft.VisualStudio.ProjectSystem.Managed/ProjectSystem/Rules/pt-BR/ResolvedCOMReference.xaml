@@ -2,7 +2,7 @@
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Rule Name="ResolvedCOMReference" DisplayName="Referência COM resolvida" PageTemplate="generic" Description="Referência resolvida" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ResolvedReference" ItemType="COMReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="ResolveComReferencesDesignTime" />
+    <DataSource Persistence="ResolvedReference" ItemType="COMReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="ResolveComReferencesDesignTime" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <StringProperty Name="Guid" DisplayName="CLSID" Description="O GUID do servidor COM." Visible="False" />
   <IntProperty Name="VersionMajor" Visible="False" />
@@ -10,19 +10,19 @@
   <StringProperty Name="WrapperTool" Visible="False" />
   <StringListProperty Name="Aliases" DisplayName="Aliases" Description="Uma lista delimitada por vírgula de aliases para esta referência." Separator=",">
     <StringListProperty.DataSource>
-      <DataSource Persistence="ProjectFile" ItemType="COMReference" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFile" ItemType="COMReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringListProperty.DataSource>
   </StringListProperty>
   <BoolProperty Name="CopyLocal" DisplayName="Local da Cópia" Description="Indica se a referência será copiada no diretório de saída.">
     <BoolProperty.DataSource>
-      <DataSource Persistence="ProjectFile" ItemType="COMReference" HasConfigurationCondition="False" PersistedName="Private" />
+      <DataSource Persistence="ProjectFile" ItemType="COMReference" HasConfigurationCondition="False" PersistedName="Private" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
   <StringProperty Name="Culture" ReadOnly="True" Visible="False" DisplayName="Cultura" Description="O valor do campo de cultura dos metadados do assembly." />
   <StringProperty Name="Description" ReadOnly="True" Visible="False" DisplayName="Descrição" Description="O valor do campo Título dos metadados do assembly." />
   <BoolProperty Name="EmbedInteropTypes" DisplayName="Inserir Tipos Interop" Description="Indica se os tipos definidos neste assembly serão inseridos no assembly de destino.">
     <BoolProperty.DataSource>
-      <DataSource Persistence="ProjectFile" ItemType="COMReference" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFile" ItemType="COMReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
   <EnumProperty Name="FileType" ReadOnly="True" Visible="False" DisplayName="Tipo de Arquivo" Description="O tipo de arquivo da referência.">
@@ -32,12 +32,12 @@
   </EnumProperty>
   <StringProperty Name="Identity" ReadOnly="True" DisplayName="Identidade" Description="Identidade de segurança do assembly referenciado (veja System.Reflection.Assembly.Evidence ou System.Security.Policy.Evidence).">
     <StringProperty.DataSource>
-      <DataSource PersistedName="{}{Identity}" />
+      <DataSource PersistedName="{}{Identity}" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Caminho" Description="Localização do arquivo que está sendo referenciado.">
     <StringProperty.DataSource>
-      <DataSource PersistedName="Identity" />
+      <DataSource PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="RuntimeVersion" ReadOnly="True" Visible="False" DisplayName="Versão de Tempo de Execução" Description="Versão de tempo de execução do .NET em que esse assembly foi compilado."></StringProperty>

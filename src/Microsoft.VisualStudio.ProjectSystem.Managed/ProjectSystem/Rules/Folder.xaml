@@ -7,7 +7,7 @@
   Description="Folder Properties"
   xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFileFolderItems" HasConfigurationCondition="False" ItemType="Folder" />
+    <DataSource Persistence="ProjectFileFolderItems" HasConfigurationCondition="False" ItemType="Folder" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
 
   <StringProperty Name="Identity" Visible="false" ReadOnly="true" Category="Misc" />

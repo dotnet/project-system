@@ -8,7 +8,7 @@
     xmlns="http://schemas.microsoft.com/build/2009/properties">
     <Rule.DataSource>
         <DataSource Persistence="ResolvedReference" ItemType="ProjectReference" HasConfigurationCondition="False" 
-                    SourceType="TargetResults" MSBuildTarget="ResolveProjectReferencesDesignTime" />
+                    SourceType="TargetResults" MSBuildTarget="ResolveProjectReferencesDesignTime" SourceOfDefaultValue="AfterContext" />
     </Rule.DataSource>
 
     <StringListProperty Name="Aliases"
@@ -16,7 +16,7 @@
                         Description="A comma-delimited list of aliases to this reference."
                         Separator=",">
         <StringListProperty.DataSource>
-            <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" />
+            <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </StringListProperty.DataSource>
     </StringListProperty>
 
@@ -24,7 +24,7 @@
                   DisplayName="Copy Local"
                   Description="Indicates whether the reference will be copied to the output directory.">
         <BoolProperty.DataSource>
-            <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" PersistedName="Private" />
+            <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" PersistedName="Private" SourceOfDefaultValue="AfterContext" />
         </BoolProperty.DataSource>
     </BoolProperty>
 
@@ -44,7 +44,7 @@
                   DisplayName="Embed Interop Types"
                   Description="Indicates whether types defined in this assembly will be embedded into the target assembly.">
         <BoolProperty.DataSource>
-            <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" />
+            <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </BoolProperty.DataSource>
     </BoolProperty>
 
@@ -63,7 +63,7 @@
                     DisplayName="Identity"
                     Description="Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).">
         <StringProperty.DataSource>
-            <DataSource PersistedName="{}{Identity}" />
+            <DataSource PersistedName="{}{Identity}" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
 
@@ -72,7 +72,7 @@
                     DisplayName="Path"
                     Description="Location of the file being referenced.">
         <StringProperty.DataSource>
-            <DataSource PersistedName="Identity" />
+            <DataSource PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
 

@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     internal static class IWorkspaceProjectContextFactory
     {
-        public static IWorkspaceProjectContext Create(UnconfiguredProject project, Action<string> addSourceFile = null, Action<string> removeSourceFile = null)
+        public static IWorkspaceProjectContext CreateForSourceFiles(UnconfiguredProject project, Action<string> addSourceFile = null, Action<string> removeSourceFile = null)
         {
             var context = new Mock<IWorkspaceProjectContext>();
 
@@ -27,6 +27,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             {
                 context.Setup(c => c.RemoveSourceFile(It.IsAny<string>()))
                     .Callback<string>(p1 => removeSourceFile(p1));
+            }
+
+            return context.Object;
+        }
+
+        public static IWorkspaceProjectContext CreateForMetadataReferences(UnconfiguredProject project, Action<string> addMetadataReference = null, Action<string> removeMetadataReference = null)
+        {
+            var context = new Mock<IWorkspaceProjectContext>();
+
+            context.SetupGet(c => c.ProjectFilePath)
+                .Returns(project.FullPath);
+
+            if (addMetadataReference != null)
+            {
+                context.Setup(c => c.AddMetadataReference(It.IsAny<string>(), It.IsAny<MetadataReferenceProperties>()))
+                    .Callback<string, MetadataReferenceProperties>((p1, p2) => addMetadataReference(p1));
+            }
+
+            if (removeMetadataReference != null)
+            {
+                context.Setup(c => c.RemoveMetadataReference(It.IsAny<string>()))
+                    .Callback<string>(p1 => removeMetadataReference(p1));
             }
 
             return context.Object;

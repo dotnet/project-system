@@ -2,12 +2,12 @@
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Rule Name="PackageReference" DisplayName="パッケージ" PageTemplate="generic" Description="パッケージ" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile" ItemType="PackageReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="CollectPackageReferences" />
+    <DataSource Persistence="ProjectFile" ItemType="PackageReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="CollectPackageReferences" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <StringProperty Name="Description" ReadOnly="True" Visible="True" DisplayName="説明" Description="依存関係の説明。" />
   <StringProperty Name="Version" ReadOnly="True" DisplayName="バージョン" Description="依存関係のバージョン。">
     <StringProperty.DataSource>
-      <DataSource PersistenceStyle="Attribute" />
+      <DataSource PersistenceStyle="Attribute" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="IncludeAssets" Visible="True" DisplayName="IncludeAssets" Description="この参照から含める資産" />

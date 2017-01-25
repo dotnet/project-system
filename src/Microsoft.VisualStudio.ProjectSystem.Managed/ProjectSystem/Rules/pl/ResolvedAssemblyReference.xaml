@@ -2,23 +2,23 @@
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Rule Name="ResolvedAssemblyReference" DisplayName="Rozpoznane odwołanie do zestawu" PageTemplate="generic" Description="Rozpoznane odwołanie" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ResolvedReference" ItemType="Reference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="ResolveAssemblyReferencesDesignTime" />
+    <DataSource Persistence="ResolvedReference" ItemType="Reference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="ResolveAssemblyReferencesDesignTime" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <StringListProperty Name="Aliases" DisplayName="Aliasy" Description="Rozdzielona przecinkami lista aliasów do tego odwołania." Separator=",">
     <StringListProperty.DataSource>
-      <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringListProperty.DataSource>
   </StringListProperty>
   <BoolProperty Name="CopyLocal" DisplayName="Kopia lokalna" Description="Wskazuje, czy odwołanie będzie kopiowane do katalogu wyjściowego.">
     <BoolProperty.DataSource>
-      <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" PersistedName="Private" />
+      <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" PersistedName="Private" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
   <StringProperty Name="Culture" ReadOnly="True" Visible="False" DisplayName="Kultura" Description="Wartość pola kultury z metadanych zestawu." />
   <StringProperty Name="Description" ReadOnly="True" Visible="False" DisplayName="Opis" Description="Wartość pola Tytuł z metadanych zestawu." />
   <BoolProperty Name="EmbedInteropTypes" DisplayName="Osadź typy międzyoperacyjne" Description="Wskazuje, czy typy zdefiniowane w tym zestawie będą osadzone w zestawie docelowym.">
     <BoolProperty.DataSource>
-      <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
   <EnumProperty Name="FileType" ReadOnly="True" Visible="False" DisplayName="Typ pliku" Description="Typ pliku odwołania.">
@@ -28,18 +28,18 @@
   </EnumProperty>
   <StringProperty Name="Identity" ReadOnly="True" DisplayName="Tożsamość" Description="Tożsamość zabezpieczeń zestawu, do którego się odwoływano (zobacz System.Reflection.Assembly.Evidence lub System.Security.Policy.Evidence).">
     <StringProperty.DataSource>
-      <DataSource PersistedName="{}{Identity}" />
+      <DataSource PersistedName="{}{Identity}" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Ścieżka" Description="Lokalizacja pliku, którego dotyczy odwołanie.">
     <StringProperty.DataSource>
-      <DataSource PersistedName="Identity" />
+      <DataSource PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="RuntimeVersion" ReadOnly="True" Visible="False" DisplayName="Wersja wykonawcza" Description="Wersja środowiska uruchomieniowego .NET, za pomocą którego został skompilowany ten zestaw."></StringProperty>
   <BoolProperty Name="SpecificVersion" DisplayName="Określona wersja" Description="Wskazuje, czy ten zestaw może zostać rozpoznany bez uwzględnienia reguł wielowersyjności kodu dla rozpoznawania zestawu.">
     <BoolProperty.DataSource>
-      <DataSource Persistence="AssemblyReference" ItemType="Reference" HasConfigurationCondition="False" />
+      <DataSource Persistence="AssemblyReference" ItemType="Reference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
   <BoolProperty Name="StrongName" ReadOnly="True" Visible="False" DisplayName="Silna nazwa" Description="Wartość true wskazuje, że odwołanie zostało podpisane parą kluczy."></BoolProperty>

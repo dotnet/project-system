@@ -8,7 +8,7 @@
 	xmlns="http://schemas.microsoft.com/build/2009/properties">
 
     <Rule.DataSource>
-        <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" />
+        <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </Rule.DataSource>
 
     <BoolProperty Name="ReferenceOutputAssembly"
@@ -36,7 +36,8 @@
             <DataSource Persistence="ProjectFile"
                         ItemType="ProjectReference"
                         HasConfigurationCondition="False"
-                        PersistedName="Private" />
+                        PersistedName="Private" 
+                        SourceOfDefaultValue="AfterContext" />
         </BoolProperty.DataSource>
     </BoolProperty>
 

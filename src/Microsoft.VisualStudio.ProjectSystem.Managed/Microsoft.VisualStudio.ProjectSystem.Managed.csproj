@@ -36,6 +36,7 @@
     <Compile Include="Extensions\ProjectConfigurationExtensions.cs" />
     <Compile Include="ProjectSystem\Build\BuildProperty.cs" />
     <Compile Include="CommonConstants.cs" />
+    <Compile Include="ProjectSystem\Build\TurnOffUseHostCompilerIfAvailableBuildPropertiesProvider.cs" />
     <Compile Include="ProjectSystem\Build\CommandLineDesignTimeBuildPropertiesProvider.cs" />
     <Compile Include="ProjectSystem\Build\GeneratePackageOnBuildDesignTimeBuildPropertyProvider.cs" />
     <Compile Include="ProjectSystem\Build\GeneratePackageOnBuildPropertyProvider.cs" />

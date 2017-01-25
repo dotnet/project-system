@@ -145,7 +145,7 @@
     <value>&amp;Wersja zestawu:</value>
   </data>
   <data name="FileVersionLabel.Text" xml:space="preserve">
-    <value>&amp;Wersja pliku:</value>
+    <value>Wersja pli&amp;ku:</value>
   </data>
   <data name="FileVersionMajorTextBox.AccessibleName" xml:space="preserve">
     <value>Główna</value>

@@ -2,23 +2,23 @@
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Rule Name="ResolvedProjectReference" DisplayName="Référence de projet résolue" PageTemplate="generic" Description="Référence résolue" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ResolvedReference" ItemType="ProjectReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="ResolveProjectReferencesDesignTime" />
+    <DataSource Persistence="ResolvedReference" ItemType="ProjectReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="ResolveProjectReferencesDesignTime" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <StringListProperty Name="Aliases" DisplayName="Alias" Description="Liste d'alias à cette référence délimités par des virgules." Separator=",">
     <StringListProperty.DataSource>
-      <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringListProperty.DataSource>
   </StringListProperty>
   <BoolProperty Name="CopyLocal" DisplayName="Copie locale" Description="Indique si la référence sera copiée dans le répertoire de sortie.">
     <BoolProperty.DataSource>
-      <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" PersistedName="Private" />
+      <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" PersistedName="Private" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
   <StringProperty Name="Culture" ReadOnly="True" DisplayName="Culture" Description="Valeur du champ Culture des métadonnées de l'assembly."></StringProperty>
   <StringProperty Name="Description" ReadOnly="True" DisplayName="Description" Description="Valeur du champ Title des métadonnées de l'assembly."></StringProperty>
   <BoolProperty Name="EmbedInteropTypes" DisplayName="Incorporer les types d'interopérabilité" Description="Indique si les types définis dans cet assembly seront incorporés dans l'assembly cible.">
     <BoolProperty.DataSource>
-      <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
   <EnumProperty Name="FileType" ReadOnly="True" Visible="False" DisplayName="Type de fichier" Description="Type de fichier de la référence.">
@@ -28,12 +28,12 @@
   </EnumProperty>
   <StringProperty Name="Identity" ReadOnly="True" DisplayName="Identité" Description="Identité de sécurité de l'assembly référencé (consultez System.Reflection.Assembly.Evidence ou System.Security.Policy.Evidence).">
     <StringProperty.DataSource>
-      <DataSource PersistedName="{}{Identity}" />
+      <DataSource PersistedName="{}{Identity}" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Chemin d'accès" Description="Emplacement du fichier référencé.">
     <StringProperty.DataSource>
-      <DataSource PersistedName="Identity" />
+      <DataSource PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="RuntimeVersion" ReadOnly="True" Visible="False" DisplayName="Version du runtime" Description="Version du runtime .NET avec lequel cet assembly a été compilé."></StringProperty>

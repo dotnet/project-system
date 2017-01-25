@@ -15,7 +15,7 @@
       </trans-unit>
       <trans-unit id="OutputTypeLabel.Text">
         <source>O&amp;utput type:</source>
-        <target state="translated">Type de s&amp;ortie :</target>
+        <target state="translated">&amp;Type de sortie :</target>
         <note />
       </trans-unit>
       <trans-unit id="StartupObjectLabel.Text">

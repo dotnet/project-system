@@ -7,7 +7,7 @@
   Description="General"
   xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile" Label="Globals" HasConfigurationCondition="False" />
+    <DataSource Persistence="ProjectFile" Label="Globals" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <StringProperty Name="SccProjectName" />
   <StringProperty Name="SccProvider" />

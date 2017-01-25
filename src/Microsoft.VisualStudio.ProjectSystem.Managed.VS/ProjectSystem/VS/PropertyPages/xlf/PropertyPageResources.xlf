@@ -87,6 +87,62 @@
         <source>The errors on the page must be corrected prior to saving your changes.</source>
         <note />
       </trans-unit>
+      <trans-unit id="AddBtn">
+        <source>Add</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ApplicationArguments">
+        <source>Application arguments:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BrowseBtn">
+        <source>Browse...</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="DeleteBtn">
+        <source>Delete</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnvironmentVariables">
+        <source>Environment variables:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Executable">
+        <source>Executable</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Launch">
+        <source>Launch:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="LaunchURL">
+        <source>Launch URL:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="NameHeader">
+        <source>Name</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="NewBtn">
+        <source>New...</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Profile">
+        <source>Profile:</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="RemoveBtn">
+        <source>Remove</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ValueHeader">
+        <source>Value</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="WorkingDirectory">
+        <source>Working directory:</source>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

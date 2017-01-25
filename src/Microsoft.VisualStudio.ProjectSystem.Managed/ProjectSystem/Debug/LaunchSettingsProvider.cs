@@ -658,14 +658,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         /// <summary>
         /// Replaces the current set of profiles with the contents of profiles. If changes were
-        /// made, the file will be checked out and saved.
+        /// made, the file will be checked out and saved. Note it ignores the value of the active profile
+        /// as this setting is controlled by a user property.
         /// </summary>
         public async Task UpdateAndSaveSettingsAsync(ILaunchSettings newSettings)
         {
             // Make sure the profiles are copied. We don't want them to mutate.
-            ILaunchSettings newSnapshot = new LaunchSettings(newSettings.Profiles, newSettings.GlobalSettings, newSettings.ActiveProfile?.Name);
+            var activeProfileName = ActiveProfile?.Name;
 
-            // Being saved and changeMade are different since the active profile change does not require them to be saved.
+            ILaunchSettings newSnapshot = new LaunchSettings(newSettings.Profiles, newSettings.GlobalSettings, activeProfileName);
+
             await CheckoutSettingsFileAsync().ConfigureAwait(false);
 
             SaveSettingsToDisk(newSettings);
@@ -683,6 +685,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {
                 return CurrentSnapshot;
             }
+
             await _firstSnapshotCompletionSource.Task.TryWaitForCompleteOrTimeout(timeout).ConfigureAwait(false);
             return CurrentSnapshot;
         }

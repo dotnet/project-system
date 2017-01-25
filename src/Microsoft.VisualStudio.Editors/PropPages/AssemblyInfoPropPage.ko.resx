@@ -139,7 +139,7 @@
     <value>어셈블리를 COM에 노출(&amp;M)</value>
   </data>
   <data name="NeutralLanguageLabel.Text" xml:space="preserve">
-    <value>중립 언어(&amp;):</value>
+    <value>중립 언어(&amp;N):</value>
   </data>
   <data name="AssemblyVersionLabel.Text" xml:space="preserve">
     <value>어셈블리 버전(&amp;A):</value>

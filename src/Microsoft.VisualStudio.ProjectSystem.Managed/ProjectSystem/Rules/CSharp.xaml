@@ -7,7 +7,7 @@
 	Description="C# source file"
 	xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="false" />
+    <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <Rule.Categories>
     <Category Name="Advanced" DisplayName="Advanced" />
@@ -40,7 +40,7 @@
 
   <BoolProperty Name="ExcludedFromBuild" DisplayName="Excluded From Build">
     <BoolProperty.DataSource>
-      <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="true" />
+      <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="true" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
   <BoolProperty Name="Visible" Visible="false" />
@@ -51,7 +51,7 @@
   </StringProperty>
   <StringProperty Name="Link" Visible="false">
     <StringProperty.DataSource>
-      <DataSource PersistenceStyle="Attribute" />
+      <DataSource PersistenceStyle="Attribute" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
     <StringProperty.Metadata>
       <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />

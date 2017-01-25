@@ -8,7 +8,7 @@
     xmlns="http://schemas.microsoft.com/build/2009/properties">
     
     <Rule.DataSource>
-        <DataSource Persistence="ProjectFile" ItemType="DotNetCliToolReference" HasConfigurationCondition="False" />
+        <DataSource Persistence="ProjectFile" ItemType="DotNetCliToolReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </Rule.DataSource>
     
     <StringProperty Name="Description" 

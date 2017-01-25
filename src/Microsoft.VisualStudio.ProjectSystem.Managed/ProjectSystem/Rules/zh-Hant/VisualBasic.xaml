@@ -2,7 +2,7 @@
 <!--Copyright, Microsoft Corporation, All rights reserved.-->
 <Rule Name="VisualBasic" DisplayName="檔案屬性" PageTemplate="generic" Description="檔案屬性" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="false" />
+    <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <Rule.Categories>
     <Category Name="Advanced" DisplayName="進階" />
@@ -16,17 +16,17 @@
   </EnumProperty>
   <StringProperty Name="Identity" Visible="false" ReadOnly="true" Category="Misc" Description="Include 屬性中指定的項目。">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="Identity" />
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="FullPath" DisplayName="完整路徑" ReadOnly="true" Category="Misc" Description="檔案的位置。">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FullPath" />
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="FileNameAndExtension" DisplayName="檔案名稱" ReadOnly="true" Category="Misc" Description="檔案或資料夾的名稱。">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FileNameAndExtension" />
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FileNameAndExtension" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <BoolProperty Name="Visible" Visible="false" />
@@ -37,7 +37,7 @@
   </StringProperty>
   <StringProperty Name="Link" Visible="false">
     <StringProperty.DataSource>
-      <DataSource PersistenceStyle="Attribute" />
+      <DataSource PersistenceStyle="Attribute" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
     <StringProperty.Metadata>
       <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />

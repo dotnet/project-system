@@ -2,23 +2,23 @@
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Rule Name="ResolvedProjectReference" DisplayName="解析的项目引用" PageTemplate="generic" Description="解析的引用" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ResolvedReference" ItemType="ProjectReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="ResolveProjectReferencesDesignTime" />
+    <DataSource Persistence="ResolvedReference" ItemType="ProjectReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="ResolveProjectReferencesDesignTime" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <StringListProperty Name="Aliases" DisplayName="别名" Description="此引用的别名的逗号分隔列表。" Separator=",">
     <StringListProperty.DataSource>
-      <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringListProperty.DataSource>
   </StringListProperty>
   <BoolProperty Name="CopyLocal" DisplayName="复制本地" Description="指示是否将引用复制到输出目录。">
     <BoolProperty.DataSource>
-      <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" PersistedName="Private" />
+      <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" PersistedName="Private" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
   <StringProperty Name="Culture" ReadOnly="True" DisplayName="区域性" Description="程序集元数据中“区域性”字段的值。"></StringProperty>
   <StringProperty Name="Description" ReadOnly="True" DisplayName="说明" Description="程序集元数据中“标题”字段的值。"></StringProperty>
   <BoolProperty Name="EmbedInteropTypes" DisplayName="嵌入互操作类型" Description="指示是否将此程序集中定义的类型嵌入目标程序集。">
     <BoolProperty.DataSource>
-      <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
   <EnumProperty Name="FileType" ReadOnly="True" Visible="False" DisplayName="文件类型" Description="引用的文件类型。">
@@ -28,12 +28,12 @@
   </EnumProperty>
   <StringProperty Name="Identity" ReadOnly="True" DisplayName="标识" Description="所引用程序集的安全标识(参见 System.Reflection.Assembly.Evidence 或 System.Security.Policy.Evidence)。">
     <StringProperty.DataSource>
-      <DataSource PersistedName="{}{Identity}" />
+      <DataSource PersistedName="{}{Identity}" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="路径" Description="所引用的文件的位置。">
     <StringProperty.DataSource>
-      <DataSource PersistedName="Identity" />
+      <DataSource PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="RuntimeVersion" ReadOnly="True" Visible="False" DisplayName="运行时版本" Description="编译该程序集所使用的 .NET 运行时的版本。"></StringProperty>
