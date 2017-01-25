@@ -121,7 +121,7 @@
     <value>程序集名称(&amp;N):</value>
   </data>
   <data name="RootNamespaceLabel.Text" xml:space="preserve">
-    <value>默认命名空间(&amp;I):</value>
+    <value>默认命名空间(&amp;L):</value>
   </data>
   <data name="OutputTypeLabel.Text" xml:space="preserve">
     <value>输出类型(&amp;U):</value>

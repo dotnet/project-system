@@ -147,4 +147,10 @@
   <data name="10" xml:space="preserve">
     <value>專案，用於建立以 .NET Core 為目標的類別庫。</value>
   </data>
+  <data name="11" xml:space="preserve">
+    <value>xUnit Test Project (.NET Core)</value>
+  </data>
+  <data name="12" xml:space="preserve">
+    <value>A project that contains xunit tests that can run on .NET Core on Windows, Linux and MacOS</value>
+  </data>
 </root>

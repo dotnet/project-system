@@ -147,4 +147,10 @@
   <data name="10" xml:space="preserve">
     <value>.NET Core를 대상으로 하는 클래스 라이브러리를 만드는 프로젝트입니다.</value>
   </data>
+  <data name="11" xml:space="preserve">
+    <value>xUnit Test Project (.NET Core)</value>
+  </data>
+  <data name="12" xml:space="preserve">
+    <value>A project that contains xunit tests that can run on .NET Core on Windows, Linux and MacOS</value>
+  </data>
 </root>

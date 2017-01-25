@@ -180,4 +180,46 @@
   <data name="ErrorsMustBeCorrectedPriorToSaving" xml:space="preserve">
     <value>Před uložením změn je potřeba opravit chyby na stránce.</value>
   </data>
+  <data name="AddBtn" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="ApplicationArguments" xml:space="preserve">
+    <value>Application arguments:</value>
+  </data>
+  <data name="BrowseBtn" xml:space="preserve">
+    <value>Browse...</value>
+  </data>
+  <data name="DeleteBtn" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="EnvironmentVariables" xml:space="preserve">
+    <value>Environment variables:</value>
+  </data>
+  <data name="Executable" xml:space="preserve">
+    <value>Executable</value>
+  </data>
+  <data name="Launch" xml:space="preserve">
+    <value>Launch:</value>
+  </data>
+  <data name="LaunchURL" xml:space="preserve">
+    <value>Launch URL:</value>
+  </data>
+  <data name="NameHeader" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="NewBtn" xml:space="preserve">
+    <value>New...</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profile:</value>
+  </data>
+  <data name="RemoveBtn" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="ValueHeader" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="WorkingDirectory" xml:space="preserve">
+    <value>Working directory:</value>
+  </data>
 </root>

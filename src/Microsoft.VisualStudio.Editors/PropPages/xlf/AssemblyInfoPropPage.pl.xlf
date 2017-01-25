@@ -50,7 +50,7 @@
       </trans-unit>
       <trans-unit id="FileVersionLabel.Text">
         <source>&amp;File version:</source>
-        <target state="translated">&amp;Wersja pliku:</target>
+        <target state="translated">Wersja pli&amp;ku:</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMajorTextBox.AccessibleName">
