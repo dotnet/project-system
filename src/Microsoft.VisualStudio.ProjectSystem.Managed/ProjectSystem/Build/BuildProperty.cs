@@ -17,5 +17,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         ///     that would have been passed to Csc.exe and Vbc.exe.
         /// </summary>
         public static string ProvideCommandLineArgs = nameof(ProvideCommandLineArgs);
+
+        /// <summary>
+        ///     Indicates whether Csc/Vbc tasks should call into the in-proc host compiler.
+        /// </summary>
+        public static string UseHostCompilerIfAvailable = nameof(UseHostCompilerIfAvailable);
     }
 }
