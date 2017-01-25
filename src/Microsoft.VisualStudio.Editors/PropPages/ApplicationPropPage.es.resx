@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AssemblyNameLabel.Text" xml:space="preserve">
-    <value>&amp;Nombre de ensamblado:</value>
+    <value>Nombre de ensam&amp;blado:</value>
   </data>
   <data name="RootNamespaceLabel.Text" xml:space="preserve">
     <value>Espa&amp;cio de nombres predeterminado:</value>
   </data>
   <data name="OutputTypeLabel.Text" xml:space="preserve">
-    <value>Tipo de &amp;salida:</value>
+    <value>&amp;Tipo de salida:</value>
   </data>
   <data name="StartupObjectLabel.Text" xml:space="preserve">
     <value>&amp;Objeto de inicio:</value>
@@ -139,7 +139,7 @@
     <value>Especifique cómo se administrarán los recursos de la aplicación:</value>
   </data>
   <data name="IconRadioButton.Text" xml:space="preserve">
-    <value>I&amp;cono y manifiesto</value>
+    <value>Icono y mani&amp;fiesto</value>
   </data>
   <data name="ManifestExplanationLabel.Text" xml:space="preserve">
     <value>Un manifiesto determina una configuración específica para una aplicación. Para insertar un manifiesto personalizado, agréguelo primero al proyecto y, después, selecciónelo en la lista siguiente.</value>

@@ -133,7 +133,7 @@
     <value>&amp;Società:</value>
   </data>
   <data name="DescriptionLabel.Text" xml:space="preserve">
-    <value>De&amp;scrizione:</value>
+    <value>Descri&amp;zione:</value>
   </data>
   <data name="ComVisibleCheckBox.Text" xml:space="preserve">
     <value>&amp;Rendi assembly visibile a COM</value>
