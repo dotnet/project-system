@@ -5,7 +5,7 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/GeneralBrowseObject.xaml" />
       <trans-unit id="Category|General|DisplayName">
         <source>General</source>
-        <target state="translated">Genel</target>
+        <target state="translated">Общие</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|Description">
@@ -125,12 +125,12 @@
       </trans-unit>
       <trans-unit id="Rule|ConfiguredBrowseObject|DisplayName">
         <source>General</source>
-        <target state="new">General</target>
+        <target state="translated">Общие</target>
         <note></note>
       </trans-unit>
       <trans-unit id="Rule|ConfiguredBrowseObject|Description">
         <source>General</source>
-        <target state="new">General</target>
+        <target state="translated">Общие</target>
         <note></note>
       </trans-unit>
       <trans-unit id="BoolProperty|RegisterForComInterop|DisplayName">

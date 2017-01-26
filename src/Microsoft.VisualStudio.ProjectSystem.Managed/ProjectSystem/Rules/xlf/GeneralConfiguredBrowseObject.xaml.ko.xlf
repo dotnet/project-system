@@ -125,12 +125,12 @@
       </trans-unit>
       <trans-unit id="Rule|ConfiguredBrowseObject|DisplayName">
         <source>General</source>
-        <target state="new">General</target>
+        <target state="translated">일반</target>
         <note></note>
       </trans-unit>
       <trans-unit id="Rule|ConfiguredBrowseObject|Description">
         <source>General</source>
-        <target state="new">General</target>
+        <target state="translated">일반</target>
         <note></note>
       </trans-unit>
       <trans-unit id="BoolProperty|RegisterForComInterop|DisplayName">
