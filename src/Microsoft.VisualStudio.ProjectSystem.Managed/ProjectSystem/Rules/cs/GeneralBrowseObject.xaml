@@ -54,41 +54,6 @@
       <DataSource Persistence="ProjectFile" PersistedName="Win32Resource" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="DefineConstants" DisplayName="Definovat konstanty" Visible="True" />
-  <EnumProperty Name="PlatformTarget" DisplayName="Cílová platforma" Visible="True" />
-  <BoolProperty Name="Prefer32Bit" DisplayName="Preferovat 32bitovou" Visible="True" />
-  <BoolProperty Name="AllowUnsafeBlocks" Default="False" DisplayName="Povolit nezabezpečený kód" Visible="True" />
-  <StringProperty Name="Optimize" DisplayName="Optimalizovat" Visible="True" />
-  <EnumProperty Name="WarningLevel" DisplayName="Úroveň upozornění" Visible="True" />
-  <StringProperty Name="NoWarn" DisplayName="Potlačit upozornění" Visible="True" />
-  <BoolProperty Name="TreatWarningsAsErrors" Default="False" Description="Zpracovávat upozornění jako chyby" Visible="True" />
-  <StringProperty Name="TreatSpecificWarningsAsErrors" Description="Považovat specifická upozornění za chyby" Visible="True" />
-  <StringProperty Name="OutputPath" DisplayName="Výstupní cesta" Visible="True" />
-  <StringProperty Name="DocumentationFile" DisplayName="Soubor dokumentace" Visible="True" />
-  <EnumProperty Name="GenerateSerializationAssemblies" DisplayName="Generovat serializované sestavení" Visible="True">
-    <EnumValue Name="Auto" DisplayName="Automatické" IsDefault="True" />
-    <EnumValue Name="On" DisplayName="Zapnuto" />
-    <EnumValue Name="Off" DisplayName="Vypnuto" />
-  </EnumProperty>
-  <EnumProperty Name="LanguageVersion" DisplayName="Jazyková verze" Visible="True">
-    <EnumProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="LangVersion" SourceOfDefaultValue="AfterContext" />
-    </EnumProperty.DataSource>
-  </EnumProperty>
-  <EnumProperty Name="ErrorReport" DisplayName="Sestava chyb" Visible="True" />
-  <EnumProperty Name="DebugInfo" DisplayName="Informace o ladění" Visible="True">
-    <EnumProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="DebugType" SourceOfDefaultValue="AfterContext" />
-    </EnumProperty.DataSource>
-  </EnumProperty>
-  <BoolProperty Name="CheckForOverflowUnderflow" DisplayName="CheckForOverflowUnderflow" Visible="False">
-    <BoolProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="CheckForOverflowUnderflow" HasConfigurationCondition="True" SourceOfDefaultValue="AfterContext" />
-    </BoolProperty.DataSource>
-  </BoolProperty>
-  <StringProperty Name="DebugSymbols" DisplayName="Symboly ladění" Visible="True" />
-  <EnumProperty Name="FileAlignment" DisplayName="Zarovnání souboru" Visible="True" />
-  <StringProperty Name="BaseAddress" DisplayName="Základní adresa" Visible="True" />
   <StringProperty Name="PreBuildEvent" DisplayName="Událost před sestavením" Visible="True" />
   <StringProperty Name="PostBuildEvent" DisplayName="Událost po sestavení" Visible="True" />
   <EnumProperty Name="RunPostBuildEvent" DisplayName="Spustit událost po sestavení" Visible="True">

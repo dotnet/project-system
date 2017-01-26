@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright, Microsoft Corporation, All rights reserved.-->
+<Rule Name="ConfiguredBrowseObject" DisplayName="Ogólne" PageTemplate="generic" Description="Ogólne" OverrideMode="Replace" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.Categories>
+    <Category Name="General" DisplayName="Ogólne" Description="Ogólne" />
+  </Rule.Categories>
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="True" SourceOfDefaultValue="AfterContext" />
+  </Rule.DataSource>
+  <!-- Build Page Properties -->
+  <StringProperty Name="DefineConstants" DisplayName="Zdefiniuj stałe" Visible="True" />
+  <EnumProperty Name="PlatformTarget" DisplayName="Miejsce docelowe platformy" Visible="True" />
+  <BoolProperty Name="Prefer32Bit" DisplayName="Preferuj wersję 32-bitową" Visible="True" />
+  <BoolProperty Name="AllowUnsafeBlocks" Default="False" DisplayName="Zezwalaj na niebezpieczny kod" Visible="True" />
+  <StringProperty Name="Optimize" DisplayName="Optymalizuj" Visible="True" />
+  <EnumProperty Name="WarningLevel" DisplayName="Poziom ostrzeżenia" Visible="True" />
+  <StringProperty Name="NoWarn" DisplayName="Pomiń ostrzeżenie" Visible="True" />
+  <BoolProperty Name="TreatWarningsAsErrors" Default="False" Description="Traktuj ostrzeżenia jako błędy" Visible="True" />
+  <StringProperty Name="TreatSpecificWarningsAsErrors" Description="Traktuj konkretne ostrzeżenia jako błędy" Visible="True" />
+  <StringProperty Name="OutputPath" DisplayName="Ścieżka wyjściowa" Visible="True" />
+  <StringProperty Name="DocumentationFile" DisplayName="Plik dokumentacji" Visible="True" />
+  <EnumProperty Name="GenerateSerializationAssemblies" DisplayName="Generuj zestawy serializacji" Visible="True">
+    <EnumValue Name="Auto" DisplayName="Automatycznie" IsDefault="True" />
+    <EnumValue Name="On" DisplayName="Włączony" />
+    <EnumValue Name="Off" DisplayName="Wyłączony" />
+  </EnumProperty>
+  <!-- ** removed for RTM: needs translation
+  <BoolProperty Name="RegisterForComInterop" Default="False" DisplayName="Register for COM Interop" Visible="True"/>
+    -->
+  <!-- Advanced Build Page Properties -->
+  <EnumProperty Name="LanguageVersion" DisplayName="Wersja językowa" Visible="True">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="LangVersion" SourceOfDefaultValue="AfterContext" />
+    </EnumProperty.DataSource>
+  </EnumProperty>
+  <EnumProperty Name="ErrorReport" DisplayName="Raport o błędach" Visible="True" />
+  <EnumProperty Name="DebugInfo" DisplayName="Informacje o debugowaniu" Visible="True">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="DebugType" SourceOfDefaultValue="AfterContext" />
+    </EnumProperty.DataSource>
+  </EnumProperty>
+  <BoolProperty Name="CheckForOverflowUnderflow" DisplayName="CheckForOverflowUnderflow" Visible="False">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="CheckForOverflowUnderflow" HasConfigurationCondition="True" SourceOfDefaultValue="AfterContext" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <StringProperty Name="DebugSymbols" DisplayName="Symbole debugowania" Visible="True" />
+  <EnumProperty Name="FileAlignment" DisplayName="Wyrównanie pliku" Visible="True" />
+  <StringProperty Name="BaseAddress" DisplayName="Adres podstawowy" Visible="True" />
+</Rule>
