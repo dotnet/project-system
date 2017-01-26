@@ -136,36 +136,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             // releases its hold on the UI thread. This prevents unnecessary race conditions and prevent the user
             // from interacting with the project until the evaluation has completed.
             await _projectVsServices.ProjectTree.TreeService.PublishLatestTreeAsync(blockDuringLoadingTree: true).ConfigureAwait(false);
-            
+
             return ProjectReloadResult.ReloadCompleted;
         }
 
         private static bool NeedsForcedReload(ImmutableArray<ProjectPropertyElement> oldProperties, ImmutableArray<ProjectPropertyElement> newProperties)
         {
-            ComputeProjectTargets(oldProperties, out bool oldHasTargetFrameworkProperty, out bool oldHasTargetFrameworksProperty);
-            ComputeProjectTargets(newProperties, out bool newHasTargetFrameworkProperty, out bool newHasTargetFrameworksProperty);
+            var oldTargets = ComputeProjectTargets(oldProperties);
+            var newTargets = ComputeProjectTargets(newProperties);
 
             // If user added or removed TargetFramework/TargetFrameworks property, then force a full project reload.
-            return oldHasTargetFrameworkProperty != newHasTargetFrameworkProperty || oldHasTargetFrameworksProperty != newHasTargetFrameworksProperty;
+            return oldTargets.HasTargetFramework != newTargets.HasTargetFramework || oldTargets.HasTargetFrameworks != newTargets.HasTargetFrameworks;
         }
 
-        private static void ComputeProjectTargets(ImmutableArray<ProjectPropertyElement> properties, out bool hasTargetFramework, out bool hasTargetFrameworks)
+        private static (bool HasTargetFramework, bool HasTargetFrameworks) ComputeProjectTargets(ImmutableArray<ProjectPropertyElement> properties)
         {
-            hasTargetFramework = false;
-            hasTargetFrameworks = false;
+            (bool HasTargetFramework, bool HasTargetFrameworks) targets = (false, false);
 
             foreach (var property in properties)
             {
                 if (property.Name.Equals(ConfigurationGeneral.TargetFrameworkProperty, StringComparison.OrdinalIgnoreCase))
                 {
-                    hasTargetFramework = true;
+                    targets.HasTargetFramework = true;
                 }
 
                 if (property.Name.Equals(ConfigurationGeneral.TargetFrameworksProperty, StringComparison.OrdinalIgnoreCase))
                 {
-                    hasTargetFrameworks = true;
+                    targets.HasTargetFrameworks = true;
                 }
             }
+
+            return targets;
         }
     }
 }

@@ -304,7 +304,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 }
                 else
                 {
-                    Requires.Range(failure.Item2 == ProjectReloadResult.ReloadFailed || failure.Item2 == ProjectReloadResult.NeedsForceReload, nameof (failure));
+                    Assumes.True(failure.Item2 == ProjectReloadResult.ReloadFailed || failure.Item2 == ProjectReloadResult.NeedsForceReload);
 
                     if (ignoreAll)
                     {   
