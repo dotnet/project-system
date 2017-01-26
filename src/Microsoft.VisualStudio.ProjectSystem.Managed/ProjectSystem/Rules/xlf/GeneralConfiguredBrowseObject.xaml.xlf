@@ -107,10 +107,6 @@
         <source>General</source>
         <note></note>
       </trans-unit>
-      <trans-unit id="BoolProperty|RegisterForComInterop|DisplayName">
-        <source>Register for COM Interop</source>
-        <note></note>
-      </trans-unit>
     </body>
   </file>
 </xliff>

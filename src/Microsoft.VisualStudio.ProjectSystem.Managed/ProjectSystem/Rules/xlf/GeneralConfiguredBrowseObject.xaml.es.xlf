@@ -133,11 +133,6 @@
         <target state="translated">General</target>
         <note></note>
       </trans-unit>
-      <trans-unit id="BoolProperty|RegisterForComInterop|DisplayName">
-        <source>Register for COM Interop</source>
-        <target state="new">Register for COM Interop</target>
-        <note></note>
-      </trans-unit>
     </body>
   </file>
 </xliff>
