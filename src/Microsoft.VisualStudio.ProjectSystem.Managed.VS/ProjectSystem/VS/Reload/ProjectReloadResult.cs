@@ -11,5 +11,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         ReloadCompleted,
         ReloadFailedProjectDirty,    // A complete reload of the project is required beccause the project is dirty in memory
         ReloadFailed,                // A complete reload of the project is required for some other reason - usually msbuild level reload failed
+        NeedsForceReload             // A complete reload of the project is required because there is a fundamental change to the project (e.g. switched from single-targeting to multi-targeting)
     }
 }

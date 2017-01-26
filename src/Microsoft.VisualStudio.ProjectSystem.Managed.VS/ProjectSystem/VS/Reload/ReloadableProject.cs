@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Build.Construction;
-using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
 
@@ -99,8 +99,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 {
                     try
                     {
+                        var oldProjectProperties = msbuildProject.Properties.ToImmutableArray();
+
                         // This reloads the project off disk and handles if the new XML is invalid
                         msbuildProject.Reload();
+
+                        var newProjectProperties = msbuildProject.Properties.ToImmutableArray();
+                        if (NeedsForcedReload(oldProjectProperties, newProjectProperties))
+                        {
+                            return ProjectReloadResult.NeedsForceReload;
+                        }
 
                         // There isn't a way to clear the dirty flag on the project xml, so to work around that the project is saved
                         // to a StringWriter.
@@ -130,6 +138,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             await _projectVsServices.ProjectTree.TreeService.PublishLatestTreeAsync(blockDuringLoadingTree: true).ConfigureAwait(false);
             
             return ProjectReloadResult.ReloadCompleted;
+        }
+
+        private static bool NeedsForcedReload(ImmutableArray<ProjectPropertyElement> oldProperties, ImmutableArray<ProjectPropertyElement> newProperties)
+        {
+            ComputeProjectTargets(oldProperties, out bool oldHasTargetFrameworkProperty, out bool oldHasTargetFrameworksProperty);
+            ComputeProjectTargets(newProperties, out bool newHasTargetFrameworkProperty, out bool newHasTargetFrameworksProperty);
+
+            // If user added or removed TargetFramework/TargetFrameworks property, then force a full project reload.
+            return oldHasTargetFrameworkProperty != newHasTargetFrameworkProperty || oldHasTargetFrameworksProperty != newHasTargetFrameworksProperty;
+        }
+
+        private static void ComputeProjectTargets(ImmutableArray<ProjectPropertyElement> properties, out bool hasTargetFramework, out bool hasTargetFrameworks)
+        {
+            hasTargetFramework = false;
+            hasTargetFrameworks = false;
+
+            foreach (var property in properties)
+            {
+                if (property.Name.Equals(ConfigurationGeneral.TargetFrameworkProperty, StringComparison.OrdinalIgnoreCase))
+                {
+                    hasTargetFramework = true;
+                }
+
+                if (property.Name.Equals(ConfigurationGeneral.TargetFrameworksProperty, StringComparison.OrdinalIgnoreCase))
+                {
+                    hasTargetFrameworks = true;
+                }
+            }
         }
     }
 }
