@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ja" original="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/GeneralBrowseObject.xaml">
+    <body>
+      <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/GeneralBrowseObject.xaml" />
+      <trans-unit id="Category|General|DisplayName">
+        <source>General</source>
+        <target state="translated">全般</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|General|Description">
+        <source>General</source>
+        <target state="translated">全般</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DefineConstants|DisplayName">
+        <source>Define Constants</source>
+        <target state="translated">定数の定義</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|PlatformTarget|DisplayName">
+        <source>Platform Target</source>
+        <target state="translated">プラットフォーム ターゲット</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Prefer32Bit|DisplayName">
+        <source>Prefer 32Bit</source>
+        <target state="translated">32 ビット優先</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
+        <source>Allow unsafe code</source>
+        <target state="translated">アンセーフ コードの許可</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Optimize|DisplayName">
+        <source>Optimize</source>
+        <target state="translated">最適化</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|WarningLevel|DisplayName">
+        <source>Warning Level</source>
+        <target state="translated">警告レベル</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|NoWarn|DisplayName">
+        <source>Supress Warning</source>
+        <target state="translated">警告を抑制する</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|TreatWarningsAsErrors|Description">
+        <source>Treat warnings as errors</source>
+        <target state="translated">警告をエラーとして扱う</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|OutputPath|DisplayName">
+        <source>Output Path</source>
+        <target state="translated">出力パス</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DocumentationFile|DisplayName">
+        <source>Documentation file</source>
+        <target state="translated">ドキュメント ファイル</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|GenerateSerializationAssemblies|DisplayName">
+        <source>Generate serialization assemblies</source>
+        <target state="translated">シリアル化アセンブリの生成</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|GenerateSerializationAssemblies.Auto|DisplayName">
+        <source>Auto</source>
+        <target state="translated">自動</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|GenerateSerializationAssemblies.On|DisplayName">
+        <source>On</source>
+        <target state="translated">オン</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|GenerateSerializationAssemblies.Off|DisplayName">
+        <source>Off</source>
+        <target state="translated">オフ</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|LanguageVersion|DisplayName">
+        <source>Language version</source>
+        <target state="translated">言語バージョン</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ErrorReport|DisplayName">
+        <source>Error report</source>
+        <target state="translated">エラー レポート</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|DebugInfo|DisplayName">
+        <source>Debug Info</source>
+        <target state="translated">デバッグ情報</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|CheckForOverflowUnderflow|DisplayName">
+        <source>CheckForOverflowUnderflow</source>
+        <target state="translated">CheckForOverflowUnderflow</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DebugSymbols|DisplayName">
+        <source>Debug symbols</source>
+        <target state="translated">デバッグ シンボル</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|FileAlignment|DisplayName">
+        <source>File Alignment</source>
+        <target state="translated">ファイルの配置</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|BaseAddress|DisplayName">
+        <source>Base address</source>
+        <target state="translated">ベース アドレス</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TreatSpecificWarningsAsErrors|Description">
+        <source>Treat specific warnings as errors</source>
+        <target state="translated">特定の警告をエラーとして扱う</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|ConfiguredBrowseObject|DisplayName">
+        <source>General</source>
+        <target state="new">General</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Rule|ConfiguredBrowseObject|Description">
+        <source>General</source>
+        <target state="new">General</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|RegisterForComInterop|DisplayName">
+        <source>Register for COM Interop</source>
+        <target state="new">Register for COM Interop</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
