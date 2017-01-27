@@ -14,6 +14,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
     internal sealed class ProjectReloadInterceptor : IProjectReloadInterceptor
     {
+        [ImportingConstructor]
+        public ProjectReloadInterceptor()
+        {
+        }
+
         public ProjectReloadResult InterceptProjectReload(ImmutableArray<ProjectPropertyElement> oldProperties, ImmutableArray<ProjectPropertyElement> newProperties)
         {
             if (NeedsForcedReload(oldProperties, newProperties))
