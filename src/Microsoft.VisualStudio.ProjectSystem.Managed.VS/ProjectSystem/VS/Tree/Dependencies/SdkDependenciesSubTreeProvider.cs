@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
+using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
@@ -23,8 +24,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public readonly ProjectTreeFlags SdkSubTreeNodeFlags
                             = ProjectTreeFlags.Create("SdkSubTreeNode");
 
-        public SdkDependenciesSubTreeProvider()
+        [ImportingConstructor]
+        public SdkDependenciesSubTreeProvider(INuGetPackagesDataProvider nuGetPackagesSnapshotProvider)
         {
+            NuGetPackagesDataProvider = nuGetPackagesSnapshotProvider;
+
             // subscribe to design time build to get corresponding items
             UnresolvedReferenceRuleNames = Empty.OrdinalIgnoreCaseStringSet
                 .Add(SdkReference.SchemaName);
@@ -32,6 +36,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ResolvedReferenceRuleNames = Empty.OrdinalIgnoreCaseStringSet
                 .Add(ResolvedSdkReference.SchemaName);
         }
+
+        private INuGetPackagesDataProvider NuGetPackagesDataProvider { get; }
 
         public override string ProviderType
         {
@@ -88,6 +94,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                          priority: priority,
                                          properties: properties,
                                          resolved: resolved);
+        }
+
+        public override IDependencyNode GetDependencyNode(DependencyNodeId id)
+        {
+            var node = base.GetDependencyNode(id);
+            if (node == null)
+            {
+                return null;
+            }
+
+            if (!node.Properties.TryGetValue(SdkReference.SDKPackageItemSpecProperty, out string packageItemSpec)
+               || string.IsNullOrEmpty(packageItemSpec))
+            {
+                return node;
+            }
+
+            NuGetPackagesDataProvider.UpdateNodeChildren(packageItemSpec, node);
+
+            return node;
+        }
+
+        public override Task<IEnumerable<IDependencyNode>> SearchAsync(IDependencyNode node, string searchTerm)
+        {
+            if (!node.Properties.TryGetValue(SdkReference.SDKPackageItemSpecProperty, out string packageItemSpec)
+               || string.IsNullOrEmpty(packageItemSpec))
+            {
+                return base.SearchAsync(node, searchTerm);
+            }
+
+            return NuGetPackagesDataProvider.SearchAsync(packageItemSpec, searchTerm);
         }
     }
 }
