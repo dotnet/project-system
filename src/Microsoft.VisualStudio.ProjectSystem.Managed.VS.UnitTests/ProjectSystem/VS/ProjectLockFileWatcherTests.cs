@@ -25,12 +25,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
             var fileChangeService = IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(adviseCookie);
             spMock.AddService(typeof(IVsFileChangeEx), typeof(SVsFileChangeEx), fileChangeService);
 
-            var propertyData = new PropertyPageData
-            {
-                Category = ConfigurationGeneral.SchemaName,
-                PropertyName = ConfigurationGeneral.BaseIntermediateOutputPathProperty,
-                Value = "obj\\"
-            };
+            var propertyData = CreateBaseIntermediateOutputPathProperty("obj\\");
             var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj");
             var watcher = new ProjectLockFileWatcher(spMock,
                                                      IProjectTreeProviderFactory.Create(),
@@ -85,12 +80,8 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
             var fileChangeService = IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(adviseCookie);
             spMock.AddService(typeof(IVsFileChangeEx), typeof(SVsFileChangeEx), fileChangeService);
 
-            var propertyData = new PropertyPageData
-            {
-                Category = ConfigurationGeneral.SchemaName,
-                PropertyName = ConfigurationGeneral.BaseIntermediateOutputPathProperty,
-                Value = "obj\\"
-            };
+            var propertyData = CreateBaseIntermediateOutputPathProperty("obj\\");
+
             var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj");
             var watcher = new ProjectLockFileWatcher(spMock,
                                                      IProjectTreeProviderFactory.Create(),
@@ -107,9 +98,21 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
 
             // If fileToWatch is null then we expect to not register any filewatcher.
             Mock<IVsFileChangeEx> fileChangeServiceMock = Mock.Get(fileChangeService);
-            fileChangeServiceMock.Verify(s => s.AdviseFileChange(It.IsAny<string>(), It.IsAny<uint>(), watcher, out adviseCookie), 
+            fileChangeServiceMock.Verify(s => s.AdviseFileChange(It.IsAny<string>(), It.IsAny<uint>(), watcher, out adviseCookie),
                                          Times.Exactly(numRegisterCalls));
             fileChangeServiceMock.Verify(s => s.UnadviseFileChange(adviseCookie), Times.Exactly(numUnregisterCalls));
+        }
+
+
+
+        private PropertyPageData CreateBaseIntermediateOutputPathProperty(object baseIntermediateOutputPath)
+        {
+            return new PropertyPageData
+            {
+                Category = ConfigurationGeneral.SchemaName,
+                PropertyName = ConfigurationGeneral.BaseIntermediateOutputPathProperty,
+                Value = baseIntermediateOutputPath
+            };
         }
     }
 }
