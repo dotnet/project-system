@@ -8,16 +8,18 @@
     xmlns="http://schemas.microsoft.com/build/2009/properties">
     <Rule.DataSource>
         <DataSource Persistence="ResolvedReference" ItemType="SDKReference" HasConfigurationCondition="False"
-                    SourceType="TargetResults" MSBuildTarget="ResolveSDKReferencesDesignTime" SourceOfDefaultValue="AfterContext" />
+                    SourceType="TargetResults" MSBuildTarget="CollectResolvedSDKReferencesDesignTime" />
     </Rule.DataSource>
     <StringProperty Name="AppXLocation" DisplayName="App Package Location" />
 
     <!-- This property should be the same as the one for the ResolvedReference item -->
     <StringProperty Name="OriginalItemSpec" Visible="false" />
-
     <StringProperty Name="FrameworkIdentity" DisplayName="FrameworkIdentity" />
-
     <StringProperty Name="DisplayName" DisplayName="Display Name" Visible="False"/>
+    <StringProperty Name="Name" DisplayName="Name"/>
+    <StringProperty Name="Version" DisplayName="Version"/>
+    <StringProperty Name="Path" DisplayName="Path"/>
+    <StringProperty Name="SDKPackageItemSpec" DisplayName="Path" Visible="False"/>
     <BoolProperty Name="CopyPayload" DisplayName="Copy Payload" />
     <BoolProperty Name="ExpandContent" DisplayName="Expand Content" />
     <BoolProperty Name="ExpandReferenceAssemblies" DisplayName="Expand Reference Assemblies" />

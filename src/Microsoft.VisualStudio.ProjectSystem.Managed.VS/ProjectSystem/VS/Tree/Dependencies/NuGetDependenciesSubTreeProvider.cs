@@ -16,8 +16,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     /// Provides NuGet packages sub node to global Dependencies project tree node.
     /// </summary>
     [Export(typeof(IProjectDependenciesSubTreeProvider))]
+    [Export(typeof(INuGetPackagesDataProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal class NuGetDependenciesSubTreeProvider : DependenciesSubTreeProviderBase
+    internal class NuGetDependenciesSubTreeProvider : DependenciesSubTreeProviderBase, INuGetPackagesDataProvider
     {
         public const string ProviderTypeString = "NuGetDependency";
 
@@ -164,7 +165,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                              id,
                                              flags: NuGetSubTreeNodeFlags);
         }
-       
+
         public override IDependencyNode GetDependencyNode(DependencyNodeId id)
         {
             lock (_snapshotLock)
@@ -179,40 +180,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     return null;
                 }
 
-                // create node and it's direct children
-                node = CreateDependencyNode(dependencyMetadata, id);
-                CurrentSnapshot.NodesCache.Add(id, node);
-
-                var frameworkAssemblies = new List<DependencyMetadata>();
-                foreach (var childItemSpec in dependencyMetadata.DependenciesItemSpecs)
-                {
-                    if (!CurrentSnapshot.DependenciesWorld.TryGetValue(childItemSpec, out DependencyMetadata childDependencyMetadata))
-                    {
-                        continue;
-                    }
-
-                    if (childDependencyMetadata.DependencyType == DependencyType.FrameworkAssembly)
-                    {
-                        frameworkAssemblies.Add(childDependencyMetadata);
-                        continue;
-                    }
-
-                    node.AddChild(CreateDependencyNode(childDependencyMetadata, topLevel: false));
-                }
-
-                if (frameworkAssemblies.Count > 0)
-                {
-                    var frameworkAssembliesNode = CreateFrameworkAssembliesFolder();
-                    node.AddChild(frameworkAssembliesNode);
-
-                    foreach(var fxAssemblyMetadata in frameworkAssemblies)
-                    {
-                        frameworkAssembliesNode.AddChild(CreateDependencyNode(fxAssemblyMetadata, topLevel: false));
-                    }
-                }
-
-                return node;
+                return GetDependencyNode(id, dependencyMetadata);
             }
+        }
+
+        private IDependencyNode GetDependencyNode(DependencyNodeId id, DependencyMetadata dependencyMetadata)
+        {
+            // create node and it's direct children
+            var node = CreateDependencyNode(dependencyMetadata, id);
+            CurrentSnapshot.NodesCache.Add(id, node);
+
+            var frameworkAssemblies = new List<DependencyMetadata>();
+            foreach (var childItemSpec in dependencyMetadata.DependenciesItemSpecs)
+            {
+                if (!CurrentSnapshot.DependenciesWorld.TryGetValue(childItemSpec, out DependencyMetadata childDependencyMetadata))
+                {
+                    continue;
+                }
+
+                if (childDependencyMetadata.DependencyType == DependencyType.FrameworkAssembly)
+                {
+                    frameworkAssemblies.Add(childDependencyMetadata);
+                    continue;
+                }
+
+                node.AddChild(CreateDependencyNode(childDependencyMetadata, topLevel: false));
+            }
+
+            if (frameworkAssemblies.Count > 0)
+            {
+                var frameworkAssembliesNode = CreateFrameworkAssembliesFolder();
+                node.AddChild(frameworkAssembliesNode);
+
+                foreach (var fxAssemblyMetadata in frameworkAssemblies)
+                {
+                    frameworkAssembliesNode.AddChild(CreateDependencyNode(fxAssemblyMetadata, topLevel: false));
+                }
+            }
+
+            return node;
         }
 
         protected override DependenciesChange ProcessDependenciesChanges(
@@ -522,31 +528,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         public override Task<IEnumerable<IDependencyNode>> SearchAsync(IDependencyNode node, string searchTerm)
         {
-            lock (_snapshotLock)
-            {
-                if (!CurrentSnapshot.DependenciesWorld.TryGetValue(node.Id.ItemSpec, out DependencyMetadata rootDependency))
-                {
-                    return Task.FromResult<IEnumerable<IDependencyNode>>(null);
-                }
-
-                var flatMatchingDependencies = new HashSet<DependencyMetadata>();
-                foreach (var kvp in CurrentSnapshot.DependenciesWorld)
-                {
-                    if (kvp.Value.Name.ToLowerInvariant().Contains(searchTerm)
-                        || kvp.Value.Version.ToLowerInvariant().Contains(searchTerm))
-                    {
-                        flatMatchingDependencies.Add(kvp.Value);
-                    }
-                }
-
-                if (flatMatchingDependencies.Count <= 0)
-                {
-                    return Task.FromResult<IEnumerable<IDependencyNode>>(null);
-                }
-
-                return Task.FromResult<IEnumerable<IDependencyNode>>(
-                            SearchRecursive(rootDependency, flatMatchingDependencies));
-            }
+            return SearchAsync(node.Id.ItemSpec, searchTerm);
         }
 
         private IList<IDependencyNode> SearchRecursive(DependencyMetadata rootDependency,
@@ -574,6 +556,64 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             return matchingNodes;
         }
+
+        // INuGetPackagesDataProvider methods
+
+        public Task<IEnumerable<IDependencyNode>> SearchAsync(string packageItemSpec, string searchTerm)
+        {
+            lock (_snapshotLock)
+            {
+                if (!CurrentSnapshot.DependenciesWorld.TryGetValue(packageItemSpec, out DependencyMetadata rootDependency))
+                {
+                    return Task.FromResult<IEnumerable<IDependencyNode>>(null);
+                }
+
+                var flatMatchingDependencies = new HashSet<DependencyMetadata>();
+                foreach (var kvp in CurrentSnapshot.DependenciesWorld)
+                {
+                    if (kvp.Value.Name.ToLowerInvariant().Contains(searchTerm)
+                        || kvp.Value.Version.ToLowerInvariant().Contains(searchTerm))
+                    {
+                        flatMatchingDependencies.Add(kvp.Value);
+                    }
+                }
+
+                if (flatMatchingDependencies.Count <= 0)
+                {
+                    return Task.FromResult<IEnumerable<IDependencyNode>>(null);
+                }
+
+                return Task.FromResult<IEnumerable<IDependencyNode>>(
+                            SearchRecursive(rootDependency, flatMatchingDependencies));
+            }
+        }
+
+        public void UpdateNodeChildren(string packageItemSpec, IDependencyNode originalNode)
+        {
+            lock (_snapshotLock)
+            {
+                originalNode.Children.Clear();
+
+                if (!CurrentSnapshot.NodesCache.TryGetValue(originalNode.Id, out IDependencyNode node))
+                {
+                    if (!CurrentSnapshot.DependenciesWorld.TryGetValue(packageItemSpec, out DependencyMetadata dependencyMetadata))
+                    {
+                        return;
+                    }
+
+                    node = GetDependencyNode(originalNode.Id, dependencyMetadata);
+                }
+
+                if (node == null)
+                {
+                    return;
+                }
+
+                originalNode.Children.AddRange(node.Children);
+            }
+        }
+
+        // End of INuGetPackagesDataProvider methods
 
         private static DependencyMetadata CreateUnresolvedMetadata(string itemSpec,
                                                             IImmutableDictionary<string, string> properties)
