@@ -230,6 +230,9 @@
     <Compile Include="ProjectSystem\Rules\GeneralBrowseObject.cs">
       <DependentUpon>GeneralBrowseObject.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ProjectSystem\Rules\ConfiguredBrowseObject.cs">
+      <DependentUpon>GeneralConfiguredBrowseObject.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ProjectSystem\Rules\None.cs">
       <DependentUpon>None.xaml</DependentUpon>
     </Compile>
@@ -317,6 +320,10 @@
       <SubType>Designer</SubType>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\GeneralBrowseObject.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\GeneralConfiguredBrowseObject.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
     </XamlPropertyRule>

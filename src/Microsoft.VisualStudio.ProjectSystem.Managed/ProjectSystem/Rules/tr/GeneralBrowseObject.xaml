@@ -54,41 +54,6 @@
       <DataSource Persistence="ProjectFile" PersistedName="Win32Resource" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="DefineConstants" DisplayName="Sabitleri Tanımla" Visible="True" />
-  <EnumProperty Name="PlatformTarget" DisplayName="Platform Hedefi" Visible="True" />
-  <BoolProperty Name="Prefer32Bit" DisplayName="32Bit Tercih Et" Visible="True" />
-  <BoolProperty Name="AllowUnsafeBlocks" Default="False" DisplayName="Güvenli olmayan koda izin ver" Visible="True" />
-  <StringProperty Name="Optimize" DisplayName="İyileştir" Visible="True" />
-  <EnumProperty Name="WarningLevel" DisplayName="Uyarı Düzeyi" Visible="True" />
-  <StringProperty Name="NoWarn" DisplayName="Uyarıyı Gösterme" Visible="True" />
-  <BoolProperty Name="TreatWarningsAsErrors" Default="False" Description="Uyarıları hata olarak değerlendir" Visible="True" />
-  <StringProperty Name="TreatSpecificWarningsAsErrors" Description="Belirli uyarıları hata olarak değerlendir" Visible="True" />
-  <StringProperty Name="OutputPath" DisplayName="Çıkış Yolu" Visible="True" />
-  <StringProperty Name="DocumentationFile" DisplayName="Belge dosyası" Visible="True" />
-  <EnumProperty Name="GenerateSerializationAssemblies" DisplayName="Serileştirme bütünleştirilmiş kodları oluştur" Visible="True">
-    <EnumValue Name="Auto" DisplayName="Otomatik" IsDefault="True" />
-    <EnumValue Name="On" DisplayName="Açık" />
-    <EnumValue Name="Off" DisplayName="Kapalı" />
-  </EnumProperty>
-  <EnumProperty Name="LanguageVersion" DisplayName="Dil sürümü" Visible="True">
-    <EnumProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="LangVersion" SourceOfDefaultValue="AfterContext" />
-    </EnumProperty.DataSource>
-  </EnumProperty>
-  <EnumProperty Name="ErrorReport" DisplayName="Hata raporu" Visible="True" />
-  <EnumProperty Name="DebugInfo" DisplayName="Hata Ayıklama Bilgisi" Visible="True">
-    <EnumProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="DebugType" SourceOfDefaultValue="AfterContext" />
-    </EnumProperty.DataSource>
-  </EnumProperty>
-  <BoolProperty Name="CheckForOverflowUnderflow" DisplayName="CheckForOverflowUnderflow" Visible="False">
-    <BoolProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="CheckForOverflowUnderflow" HasConfigurationCondition="True" SourceOfDefaultValue="AfterContext" />
-    </BoolProperty.DataSource>
-  </BoolProperty>
-  <StringProperty Name="DebugSymbols" DisplayName="Hata ayıklama simgeleri" Visible="True" />
-  <EnumProperty Name="FileAlignment" DisplayName="Dosya Hizalama" Visible="True" />
-  <StringProperty Name="BaseAddress" DisplayName="Temel adres" Visible="True" />
   <StringProperty Name="PreBuildEvent" DisplayName="Derleme Öncesi Olayı" Visible="True" />
   <StringProperty Name="PostBuildEvent" DisplayName="Derleme Sonrası Olayı" Visible="True" />
   <EnumProperty Name="RunPostBuildEvent" DisplayName="Derleme Sonrası Olayını Çalıştır" Visible="True">

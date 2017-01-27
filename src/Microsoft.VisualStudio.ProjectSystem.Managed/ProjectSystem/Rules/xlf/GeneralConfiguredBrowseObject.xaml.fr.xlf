@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="fr" original="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/GeneralBrowseObject.xaml">
+    <body>
+      <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/GeneralBrowseObject.xaml" />
+      <trans-unit id="Category|General|DisplayName">
+        <source>General</source>
+        <target state="translated">Général</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|General|Description">
+        <source>General</source>
+        <target state="translated">Général</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DefineConstants|DisplayName">
+        <source>Define Constants</source>
+        <target state="translated">Définir des constantes</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|PlatformTarget|DisplayName">
+        <source>Platform Target</source>
+        <target state="translated">Plateforme cible</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Prefer32Bit|DisplayName">
+        <source>Prefer 32Bit</source>
+        <target state="translated">Préférer 32 bits</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
+        <source>Allow unsafe code</source>
+        <target state="translated">Autoriser le code unsafe</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Optimize|DisplayName">
+        <source>Optimize</source>
+        <target state="translated">Optimiser</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|WarningLevel|DisplayName">
+        <source>Warning Level</source>
+        <target state="translated">Niveau d'avertissement</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|NoWarn|DisplayName">
+        <source>Supress Warning</source>
+        <target state="translated">Supprimer l'avertissement</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|TreatWarningsAsErrors|Description">
+        <source>Treat warnings as errors</source>
+        <target state="translated">Considérer les avertissements comme des erreurs</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|OutputPath|DisplayName">
+        <source>Output Path</source>
+        <target state="translated">Chemin de sortie</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DocumentationFile|DisplayName">
+        <source>Documentation file</source>
+        <target state="translated">Fichier de documentation</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|GenerateSerializationAssemblies|DisplayName">
+        <source>Generate serialization assemblies</source>
+        <target state="translated">Générer des assemblys de sérialisation</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|GenerateSerializationAssemblies.Auto|DisplayName">
+        <source>Auto</source>
+        <target state="translated">Auto</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|GenerateSerializationAssemblies.On|DisplayName">
+        <source>On</source>
+        <target state="translated">Activé</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|GenerateSerializationAssemblies.Off|DisplayName">
+        <source>Off</source>
+        <target state="translated">Désactivé</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|LanguageVersion|DisplayName">
+        <source>Language version</source>
+        <target state="translated">Version du langage</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ErrorReport|DisplayName">
+        <source>Error report</source>
+        <target state="translated">Rapport d'erreurs</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|DebugInfo|DisplayName">
+        <source>Debug Info</source>
+        <target state="translated">Informations de débogage</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|CheckForOverflowUnderflow|DisplayName">
+        <source>CheckForOverflowUnderflow</source>
+        <target state="translated">CheckForOverflowUnderflow</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DebugSymbols|DisplayName">
+        <source>Debug symbols</source>
+        <target state="translated">Symboles de débogage</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|FileAlignment|DisplayName">
+        <source>File Alignment</source>
+        <target state="translated">Alignement des fichiers</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|BaseAddress|DisplayName">
+        <source>Base address</source>
+        <target state="translated">Adresse de base</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TreatSpecificWarningsAsErrors|Description">
+        <source>Treat specific warnings as errors</source>
+        <target state="translated">Considérer les avertissements spécifiques comme des erreurs</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|ConfiguredBrowseObject|DisplayName">
+        <source>General</source>
+        <target state="translated">Général</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Rule|ConfiguredBrowseObject|Description">
+        <source>General</source>
+        <target state="translated">Général</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -54,41 +54,6 @@
       <DataSource Persistence="ProjectFile" PersistedName="Win32Resource" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="DefineConstants" DisplayName="Zdefiniuj stałe" Visible="True" />
-  <EnumProperty Name="PlatformTarget" DisplayName="Miejsce docelowe platformy" Visible="True" />
-  <BoolProperty Name="Prefer32Bit" DisplayName="Preferuj wersję 32-bitową" Visible="True" />
-  <BoolProperty Name="AllowUnsafeBlocks" Default="False" DisplayName="Zezwalaj na niebezpieczny kod" Visible="True" />
-  <StringProperty Name="Optimize" DisplayName="Optymalizuj" Visible="True" />
-  <EnumProperty Name="WarningLevel" DisplayName="Poziom ostrzeżenia" Visible="True" />
-  <StringProperty Name="NoWarn" DisplayName="Pomiń ostrzeżenie" Visible="True" />
-  <BoolProperty Name="TreatWarningsAsErrors" Default="False" Description="Traktuj ostrzeżenia jako błędy" Visible="True" />
-  <StringProperty Name="TreatSpecificWarningsAsErrors" Description="Traktuj konkretne ostrzeżenia jako błędy" Visible="True" />
-  <StringProperty Name="OutputPath" DisplayName="Ścieżka wyjściowa" Visible="True" />
-  <StringProperty Name="DocumentationFile" DisplayName="Plik dokumentacji" Visible="True" />
-  <EnumProperty Name="GenerateSerializationAssemblies" DisplayName="Generuj zestawy serializacji" Visible="True">
-    <EnumValue Name="Auto" DisplayName="Automatycznie" IsDefault="True" />
-    <EnumValue Name="On" DisplayName="Włączony" />
-    <EnumValue Name="Off" DisplayName="Wyłączony" />
-  </EnumProperty>
-  <EnumProperty Name="LanguageVersion" DisplayName="Wersja językowa" Visible="True">
-    <EnumProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="LangVersion" SourceOfDefaultValue="AfterContext" />
-    </EnumProperty.DataSource>
-  </EnumProperty>
-  <EnumProperty Name="ErrorReport" DisplayName="Raport o błędach" Visible="True" />
-  <EnumProperty Name="DebugInfo" DisplayName="Informacje o debugowaniu" Visible="True">
-    <EnumProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="DebugType" SourceOfDefaultValue="AfterContext" />
-    </EnumProperty.DataSource>
-  </EnumProperty>
-  <BoolProperty Name="CheckForOverflowUnderflow" DisplayName="CheckForOverflowUnderflow" Visible="False">
-    <BoolProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="CheckForOverflowUnderflow" HasConfigurationCondition="True" SourceOfDefaultValue="AfterContext" />
-    </BoolProperty.DataSource>
-  </BoolProperty>
-  <StringProperty Name="DebugSymbols" DisplayName="Symbole debugowania" Visible="True" />
-  <EnumProperty Name="FileAlignment" DisplayName="Wyrównanie pliku" Visible="True" />
-  <StringProperty Name="BaseAddress" DisplayName="Adres podstawowy" Visible="True" />
   <StringProperty Name="PreBuildEvent" DisplayName="Zdarzenie przed kompilacją" Visible="True" />
   <StringProperty Name="PostBuildEvent" DisplayName="Zdarzenie po kompilacji" Visible="True" />
   <EnumProperty Name="RunPostBuildEvent" DisplayName="Uruchom zdarzenie po kompilacji" Visible="True">

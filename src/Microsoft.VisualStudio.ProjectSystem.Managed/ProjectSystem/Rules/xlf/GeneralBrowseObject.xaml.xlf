@@ -83,90 +83,6 @@
         <source>Win32 Resource File</source>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|DefineConstants|DisplayName">
-        <source>Define Constants</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|PlatformTarget|DisplayName">
-        <source>Platform Target</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|Prefer32Bit|DisplayName">
-        <source>Prefer 32Bit</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
-        <source>Allow unsafe code</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Optimize|DisplayName">
-        <source>Optimize</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|WarningLevel|DisplayName">
-        <source>Warning Level</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|NoWarn|DisplayName">
-        <source>Supress Warning</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|TreatWarningsAsErrors|Description">
-        <source>Treat warnings as errors</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|OutputPath|DisplayName">
-        <source>Output Path</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|DocumentationFile|DisplayName">
-        <source>Documentation file</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|GenerateSerializationAssemblies|DisplayName">
-        <source>Generate serialization assemblies</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|GenerateSerializationAssemblies.Auto|DisplayName">
-        <source>Auto</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|GenerateSerializationAssemblies.On|DisplayName">
-        <source>On</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|GenerateSerializationAssemblies.Off|DisplayName">
-        <source>Off</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|LanguageVersion|DisplayName">
-        <source>Language version</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|ErrorReport|DisplayName">
-        <source>Error report</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|DebugInfo|DisplayName">
-        <source>Debug Info</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|CheckForOverflowUnderflow|DisplayName">
-        <source>CheckForOverflowUnderflow</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|DebugSymbols|DisplayName">
-        <source>Debug symbols</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|FileAlignment|DisplayName">
-        <source>File Alignment</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|BaseAddress|DisplayName">
-        <source>Base address</source>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|PreBuildEvent|DisplayName">
         <source>Pre Build Event</source>
         <note />
@@ -229,10 +145,6 @@
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyOriginatorKeyFile|DisplayName">
         <source>Strong name key file</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|TreatSpecificWarningsAsErrors|Description">
-        <source>Treat specific warnings as errors</source>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GeneratePackageOnBuild|DisplayName">

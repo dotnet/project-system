@@ -54,41 +54,6 @@
       <DataSource Persistence="ProjectFile" PersistedName="Win32Resource" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="DefineConstants" DisplayName="定数の定義" Visible="True" />
-  <EnumProperty Name="PlatformTarget" DisplayName="プラットフォーム ターゲット" Visible="True" />
-  <BoolProperty Name="Prefer32Bit" DisplayName="32 ビット優先" Visible="True" />
-  <BoolProperty Name="AllowUnsafeBlocks" Default="False" DisplayName="アンセーフ コードの許可" Visible="True" />
-  <StringProperty Name="Optimize" DisplayName="最適化" Visible="True" />
-  <EnumProperty Name="WarningLevel" DisplayName="警告レベル" Visible="True" />
-  <StringProperty Name="NoWarn" DisplayName="警告を抑制する" Visible="True" />
-  <BoolProperty Name="TreatWarningsAsErrors" Default="False" Description="警告をエラーとして扱う" Visible="True" />
-  <StringProperty Name="TreatSpecificWarningsAsErrors" Description="特定の警告をエラーとして扱う" Visible="True" />
-  <StringProperty Name="OutputPath" DisplayName="出力パス" Visible="True" />
-  <StringProperty Name="DocumentationFile" DisplayName="ドキュメント ファイル" Visible="True" />
-  <EnumProperty Name="GenerateSerializationAssemblies" DisplayName="シリアル化アセンブリの生成" Visible="True">
-    <EnumValue Name="Auto" DisplayName="自動" IsDefault="True" />
-    <EnumValue Name="On" DisplayName="オン" />
-    <EnumValue Name="Off" DisplayName="オフ" />
-  </EnumProperty>
-  <EnumProperty Name="LanguageVersion" DisplayName="言語バージョン" Visible="True">
-    <EnumProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="LangVersion" SourceOfDefaultValue="AfterContext" />
-    </EnumProperty.DataSource>
-  </EnumProperty>
-  <EnumProperty Name="ErrorReport" DisplayName="エラー レポート" Visible="True" />
-  <EnumProperty Name="DebugInfo" DisplayName="デバッグ情報" Visible="True">
-    <EnumProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="DebugType" SourceOfDefaultValue="AfterContext" />
-    </EnumProperty.DataSource>
-  </EnumProperty>
-  <BoolProperty Name="CheckForOverflowUnderflow" DisplayName="CheckForOverflowUnderflow" Visible="False">
-    <BoolProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="CheckForOverflowUnderflow" HasConfigurationCondition="True" SourceOfDefaultValue="AfterContext" />
-    </BoolProperty.DataSource>
-  </BoolProperty>
-  <StringProperty Name="DebugSymbols" DisplayName="デバッグ シンボル" Visible="True" />
-  <EnumProperty Name="FileAlignment" DisplayName="ファイルの配置" Visible="True" />
-  <StringProperty Name="BaseAddress" DisplayName="ベース アドレス" Visible="True" />
   <StringProperty Name="PreBuildEvent" DisplayName="ビルド前のイベント" Visible="True" />
   <StringProperty Name="PostBuildEvent" DisplayName="ビルド後のイベント" Visible="True" />
   <EnumProperty Name="RunPostBuildEvent" DisplayName="ビルド後イベントの実行" Visible="True">
