@@ -1,12 +1,11 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Build.Construction;
-using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
 
@@ -22,6 +21,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     [AppliesTo("HandlesOwnReload")]
     internal class ReloadableProject : OnceInitializedOnceDisposedAsync, IReloadableProject
     {
+        private readonly IUnconfiguredProjectVsServices _projectVsServices;
+        private readonly IProjectReloadManager _reloadManager;
 
         [ImportingConstructor]
         public ReloadableProject(IUnconfiguredProjectVsServices projectVsServices, IProjectReloadManager reloadManager)
@@ -29,10 +30,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             _projectVsServices = projectVsServices;
             _reloadManager = reloadManager;
+
+            ProjectReloadInterceptors = new OrderPrecedenceImportCollection<IProjectReloadInterceptor>(projectCapabilityCheckProvider: projectVsServices.Project);
         }
 
-        private readonly IUnconfiguredProjectVsServices _projectVsServices;
-        private readonly IProjectReloadManager _reloadManager;
+        [ImportMany]
+        public OrderPrecedenceImportCollection<IProjectReloadInterceptor> ProjectReloadInterceptors { get; }
 
         public string ProjectFile
         {
@@ -99,8 +102,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 {
                     try
                     {
+                        var oldProjectProperties = msbuildProject.Properties.ToImmutableArray();
+
                         // This reloads the project off disk and handles if the new XML is invalid
                         msbuildProject.Reload();
+
+                        // Handle project reload interception. 
+                        if (ProjectReloadInterceptors.Count > 0)
+                        {
+                            var newProjectProperties = msbuildProject.Properties.ToImmutableArray();
+
+                            foreach (var projectReloadInterceptor in ProjectReloadInterceptors)
+                            {
+                                var reloadResult = projectReloadInterceptor.Value.InterceptProjectReload(oldProjectProperties, newProjectProperties);
+                                if (reloadResult != ProjectReloadResult.NoAction)
+                                {
+                                    return reloadResult;
+                                }
+                            }
+                        }
 
                         // There isn't a way to clear the dirty flag on the project xml, so to work around that the project is saved
                         // to a StringWriter.
@@ -128,7 +148,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             // releases its hold on the UI thread. This prevents unnecessary race conditions and prevent the user
             // from interacting with the project until the evaluation has completed.
             await _projectVsServices.ProjectTree.TreeService.PublishLatestTreeAsync(blockDuringLoadingTree: true).ConfigureAwait(false);
-            
+
             return ProjectReloadResult.ReloadCompleted;
         }
     }
