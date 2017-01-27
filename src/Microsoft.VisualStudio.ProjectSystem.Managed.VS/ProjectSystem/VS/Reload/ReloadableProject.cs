@@ -23,18 +23,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     {
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IProjectReloadManager _reloadManager;
-        private readonly IProjectReloadInterceptor _projectReloadInterceptor;
+        private readonly OrderPrecedenceImportCollection<IProjectReloadInterceptor> _projectReloadInterceptors;
 
         [ImportingConstructor]
         public ReloadableProject(
             IUnconfiguredProjectVsServices projectVsServices,
             IProjectReloadManager reloadManager,
-            [Import(AllowDefault = true)]IProjectReloadInterceptor projectReloadInteceptor = null)
+            [ImportMany]OrderPrecedenceImportCollection<IProjectReloadInterceptor> projectReloadInteceptors)
             : base(projectVsServices.ThreadingService.JoinableTaskContext)
         {
             _projectVsServices = projectVsServices;
             _reloadManager = reloadManager;
-            _projectReloadInterceptor = projectReloadInteceptor;
+            _projectReloadInterceptors = projectReloadInteceptors;
         }
 
         public string ProjectFile
@@ -108,14 +108,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         msbuildProject.Reload();
 
                         // Handle project reload interception. 
-                        if (_projectReloadInterceptor != null)
+                        if (_projectReloadInterceptors != null)
                         {
                             var newProjectProperties = msbuildProject.Properties.ToImmutableArray();
 
-                            var reloadResult = _projectReloadInterceptor.InterceptProjectReload(oldProjectProperties, newProjectProperties);
-                            if (reloadResult != ProjectReloadResult.NoAction)
+                            foreach (var projectReloadInterceptor in _projectReloadInterceptors)
                             {
-                                return reloadResult;
+                                var reloadResult = projectReloadInterceptor.Value.InterceptProjectReload(oldProjectProperties, newProjectProperties);
+                                if (reloadResult != ProjectReloadResult.NoAction)
+                                {
+                                    return reloadResult;
+                                }
                             }
                         }
 

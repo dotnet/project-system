@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var rlmMock = new Mock<IProjectReloadManager>(MockBehavior.Strict);
             rlmMock.Setup(x => x.RegisterProjectAsync(It.IsAny<IReloadableProject>())).Returns(Task.CompletedTask);
 
-            var project = new ReloadableProject(IUnconfiguredProjectVsServicesFactory.Implement(), rlmMock.Object);
+            var project = new ReloadableProject(IUnconfiguredProjectVsServicesFactory.Implement(), rlmMock.Object, projectReloadInteceptors: null);
             
             await project.Initialize();
                 
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var rlmMock = new Mock<IProjectReloadManager>(MockBehavior.Strict);
             rlmMock.Setup(x => x.UnregisterProjectAsync(It.IsAny<IReloadableProject>())).Returns(Task.CompletedTask);
 
-            var project = new ReloadableProject(IUnconfiguredProjectVsServicesFactory.Implement(), rlmMock.Object);
+            var project = new ReloadableProject(IUnconfiguredProjectVsServicesFactory.Implement(), rlmMock.Object, projectReloadInteceptors: null);
             
             await project.DisposeAsync();
                 

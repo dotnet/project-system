@@ -105,6 +105,7 @@
     <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\TargetFrameworkValueProviderTests.cs" />
     <Compile Include="ProjectSystem\Properties\OutputTypeEnumProviderTests.cs" />
     <Compile Include="ProjectSystem\References\AlwaysAllowValidProjectReferenceCheckerTests.cs" />
+    <Compile Include="ProjectSystem\Reload\ProjectReloadInterceptorTests.cs" />
     <Compile Include="ProjectSystem\SpecialFileProviders\AppDesignerFolderSpecialFileProviderTests.cs" />
     <Compile Include="ProjectSystem\SpecialFileProviderTests.cs" />
     <Compile Include="ProjectSystem\PhysicalProjectTreeTests.cs" />
