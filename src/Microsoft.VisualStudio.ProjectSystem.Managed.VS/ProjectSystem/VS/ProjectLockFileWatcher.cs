@@ -77,7 +77,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             var projectLockFilePath = await GetProjectLockFilePathAsync(newTree).ConfigureAwait(false);
 
-            // project.json may have been renamed to {projectName}.project.json. In that case change the file watcher.
+            // project.json may have been renamed to {projectName}.project.json or in the case of the project.assets.json, 
+            // the immediate path could have changed. In either case, change the file watcher.
             if (!PathHelper.IsSamePath(projectLockFilePath, _fileBeingWatched))
             {
                 UnregisterFileWatcherIfAny();
