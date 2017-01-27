@@ -124,6 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         
         private void RegisterFileWatcherAsync(string projectLockJsonFilePath)
         {
+            // Note file change service is free-threaded
             if (_fileChangeService != null)
             {
                 int hr = _fileChangeService.AdviseFileChange(projectLockJsonFilePath, (uint)(_VSFILECHANGEFLAGS.VSFILECHG_Time | _VSFILECHANGEFLAGS.VSFILECHG_Size | _VSFILECHANGEFLAGS.VSFILECHG_Add | _VSFILECHANGEFLAGS.VSFILECHG_Del), this, out _filechangeCookie);
@@ -133,6 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private void UnregisterFileWatcherIfAny()
         {
+            // Note file change service is free-threaded
             if (_filechangeCookie != VSConstants.VSCOOKIE_NIL && _fileChangeService != null)
             {
                 // There's nothing for us to do if this fails. So ignore the return value.
