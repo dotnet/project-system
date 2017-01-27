@@ -6,7 +6,6 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Build.Construction;
 using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
 
@@ -22,17 +21,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     [AppliesTo("HandlesOwnReload")]
     internal class ReloadableProject : OnceInitializedOnceDisposedAsync, IReloadableProject
     {
+        private readonly IUnconfiguredProjectVsServices _projectVsServices;
+        private readonly IProjectReloadManager _reloadManager;
+        private readonly IProjectReloadInterceptor _projectReloadInterceptor;
 
         [ImportingConstructor]
-        public ReloadableProject(IUnconfiguredProjectVsServices projectVsServices, IProjectReloadManager reloadManager)
+        public ReloadableProject(
+            IUnconfiguredProjectVsServices projectVsServices,
+            IProjectReloadManager reloadManager,
+            [Import(AllowDefault = true)]IProjectReloadInterceptor projectReloadInteceptor = null)
             : base(projectVsServices.ThreadingService.JoinableTaskContext)
         {
             _projectVsServices = projectVsServices;
             _reloadManager = reloadManager;
+            _projectReloadInterceptor = projectReloadInteceptor;
         }
-
-        private readonly IUnconfiguredProjectVsServices _projectVsServices;
-        private readonly IProjectReloadManager _reloadManager;
 
         public string ProjectFile
         {
@@ -104,10 +107,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         // This reloads the project off disk and handles if the new XML is invalid
                         msbuildProject.Reload();
 
-                        var newProjectProperties = msbuildProject.Properties.ToImmutableArray();
-                        if (NeedsForcedReload(oldProjectProperties, newProjectProperties))
+                        // Handle project reload interception. 
+                        if (_projectReloadInterceptor != null)
                         {
-                            return ProjectReloadResult.NeedsForceReload;
+                            var newProjectProperties = msbuildProject.Properties.ToImmutableArray();
+
+                            var reloadResult = _projectReloadInterceptor.InterceptProjectReload(oldProjectProperties, newProjectProperties);
+                            if (reloadResult != ProjectReloadResult.NoAction)
+                            {
+                                return reloadResult;
+                            }
                         }
 
                         // There isn't a way to clear the dirty flag on the project xml, so to work around that the project is saved
@@ -138,35 +147,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             await _projectVsServices.ProjectTree.TreeService.PublishLatestTreeAsync(blockDuringLoadingTree: true).ConfigureAwait(false);
 
             return ProjectReloadResult.ReloadCompleted;
-        }
-
-        private static bool NeedsForcedReload(ImmutableArray<ProjectPropertyElement> oldProperties, ImmutableArray<ProjectPropertyElement> newProperties)
-        {
-            var oldTargets = ComputeProjectTargets(oldProperties);
-            var newTargets = ComputeProjectTargets(newProperties);
-
-            // If user added or removed TargetFramework/TargetFrameworks property, then force a full project reload.
-            return oldTargets.HasTargetFramework != newTargets.HasTargetFramework || oldTargets.HasTargetFrameworks != newTargets.HasTargetFrameworks;
-        }
-
-        private static (bool HasTargetFramework, bool HasTargetFrameworks) ComputeProjectTargets(ImmutableArray<ProjectPropertyElement> properties)
-        {
-            (bool HasTargetFramework, bool HasTargetFrameworks) targets = (false, false);
-
-            foreach (var property in properties)
-            {
-                if (property.Name.Equals(ConfigurationGeneral.TargetFrameworkProperty, StringComparison.OrdinalIgnoreCase))
-                {
-                    targets.HasTargetFramework = true;
-                }
-
-                if (property.Name.Equals(ConfigurationGeneral.TargetFrameworksProperty, StringComparison.OrdinalIgnoreCase))
-                {
-                    targets.HasTargetFrameworks = true;
-                }
-            }
-
-            return targets;
         }
     }
 }

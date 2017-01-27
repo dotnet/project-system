@@ -100,6 +100,9 @@
     <Compile Include="ProjectSystem\Properties\RuleDataSourceTypes.cs" />
     <Compile Include="ProjectSystem\Properties\AssemblyAttributeProperties\SourceAssemblyAttributePropertyValueProvider.cs" />
     <Compile Include="ProjectSystem\References\AlwaysAllowValidProjectReferenceChecker.cs" />
+    <Compile Include="ProjectSystem\Reload\ProjectReloadInterceptor.cs" />
+    <Compile Include="ProjectSystem\Reload\IProjectReloadInterceptor.cs" />
+    <Compile Include="ProjectSystem\Reload\ProjectReloadResult.cs" />
     <Compile Include="ProjectSystem\Rules\AnalyzerReference.xaml.cs">
       <DependentUpon>AnalyzerReference.xaml</DependentUpon>
     </Compile>
