@@ -30,7 +30,6 @@
     <ProjectSystemLayer>VisualStudio</ProjectSystemLayer>
     <ProducingSignedVsix>true</ProducingSignedVsix>
     <IsProductComponent>true</IsProductComponent>
-    <InstallRoot>Default</InstallRoot>
     <Ngen>true</Ngen>
     <NgenArchitecture>All</NgenArchitecture>
     <NgenPriority>3</NgenPriority>
