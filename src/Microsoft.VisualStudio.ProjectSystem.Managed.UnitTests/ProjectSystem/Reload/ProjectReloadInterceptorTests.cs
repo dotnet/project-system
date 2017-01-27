@@ -68,8 +68,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var targetFrameworksProperty = targetFrameworks == null ? string.Empty : string.Format(propertyFormat, ConfigurationGeneral.TargetFrameworksProperty, targetFrameworks);
             var projectFile = string.Format(projectFileFormat, targetFrameworkProperty, targetFrameworksProperty);
 
-            XmlDocument document = new XmlDocument();
-
             using (Stream str = new MemoryStream(Encoding.UTF8.GetBytes(projectFile)))
             using (XmlReader xr = XmlReader.Create(str))
             {
