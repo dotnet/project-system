@@ -3,9 +3,9 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
-using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
@@ -18,10 +18,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     {
         public const string ProviderTypeString = "SdkDependency";
 
-        public readonly ProjectTreeFlags SdkSubTreeRootNodeFlags
+        public static readonly ProjectTreeFlags SdkSubTreeRootNodeFlags
                             = ProjectTreeFlags.Create("SdkSubTreeRootNode");
 
-        public readonly ProjectTreeFlags SdkSubTreeNodeFlags
+        public static readonly ProjectTreeFlags SdkSubTreeNodeFlags
                             = ProjectTreeFlags.Create("SdkSubTreeNode");
 
         [ImportingConstructor]
