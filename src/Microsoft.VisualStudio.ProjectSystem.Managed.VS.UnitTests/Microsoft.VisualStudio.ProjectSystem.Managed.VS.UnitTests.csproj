@@ -61,7 +61,6 @@
     <Compile Include="Mocks\IFrameOpenCloseListenerFactory.cs" />
     <Compile Include="Mocks\IProjectXmlAccessorFactory.cs" />
     <Compile Include="Mocks\IOutputGroupsFactory.cs" />
-    <Compile Include="Mocks\IProjectCapabilitiesScopeFactory.cs" />
     <Compile Include="CollectionsExtensions.cs" />
     <Compile Include="Mocks\DependenciesChangeFactory.cs" />
     <Compile Include="Mocks\IGraphContextFactory.cs" />

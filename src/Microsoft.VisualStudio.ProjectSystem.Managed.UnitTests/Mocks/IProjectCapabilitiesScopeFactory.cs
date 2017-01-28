@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Moq;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IProjectCapabilitiesScopeFactory
     {
