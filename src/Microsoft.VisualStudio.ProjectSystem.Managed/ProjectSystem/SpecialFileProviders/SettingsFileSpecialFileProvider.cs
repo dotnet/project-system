@@ -15,13 +15,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
                                                [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
                                                [Import(AllowDefault = true)] Lazy<ICreateFileFromTemplateService> templateFileCreationService,
                                                IFileSystem fileSystem,
-                                               ISpecialFilesManager specialFilesManager)
-            : base(projectTree, sourceItemsProvider, templateFileCreationService, fileSystem, specialFilesManager)
+                                               ISpecialFilesManager specialFilesManager,
+                                               UnconfiguredProject unconfiguredProject)
+            : base(projectTree, sourceItemsProvider, templateFileCreationService, fileSystem, specialFilesManager, unconfiguredProject)
         {
         }
 
         protected override string Name => "Settings.settings";
 
         protected override string TemplateName => "SettingsInternal.zip";
+
+        protected override string ApplicableCapability => ProjectCapability.AppDesigner;
     }
 }
