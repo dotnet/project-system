@@ -16,8 +16,7 @@ namespace Microsoft.VisualStudio.Packaging
         public const long EditProjectFileCmdId = 0x1001;
         public const long GenerateNuGetPackageProjectContextMenuCmdId = 0x2000;
         public const long GenerateNuGetPackageTopLevelBuildCmdId = 0x2001;
-        public const string DefaultCapabilities = ProjectCapability.AppDesigner + "; " +
-                                                  ProjectCapability.EditAndContinue + "; " +
+        public const string DefaultCapabilities = ProjectCapability.EditAndContinue + "; " +
                                                   ProjectCapability.HandlesOwnReload + "; " +
                                                   ProjectCapability.OpenProjectFile + "; " +
                                                   ProjectCapability.PreserveFormatting;

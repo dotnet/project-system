@@ -51,6 +51,7 @@
                           DeclaredSourceItems;
                           UserSourceItems;" />
 
+    <ProjectCapability Include="AppDesigner" />
     <ProjectCapability Include="LanguageService" />
     <ProjectCapability Include="ProjectConfigurationsInferredFromUsage" />
 
