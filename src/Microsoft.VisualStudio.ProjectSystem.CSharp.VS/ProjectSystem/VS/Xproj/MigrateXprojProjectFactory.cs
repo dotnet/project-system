@@ -11,6 +11,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell.Flavor;
 using Microsoft.VisualStudio.Shell.Interop;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 {
@@ -20,15 +21,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         private readonly ProcessRunner _runner;
         private readonly IFileSystem _fileSystem;
         private readonly IServiceProvider _serviceProvider;
+        private readonly GlobalJsonRemover.GlobalJsonSetup _globalJsonSetup;
 
-        public MigrateXprojProjectFactory(ProcessRunner runner, IFileSystem fileSystem, IServiceProvider serviceProvider)
+        public MigrateXprojProjectFactory(ProcessRunner runner,
+            IFileSystem fileSystem,
+            IServiceProvider serviceProvider,
+            GlobalJsonRemover.GlobalJsonSetup globalJsonSetup)
         {
             Requires.NotNull(runner, nameof(runner));
             Requires.NotNull(fileSystem, nameof(fileSystem));
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
+            Requires.NotNull(globalJsonSetup, nameof(globalJsonSetup));
             _runner = runner;
             _fileSystem = fileSystem;
             _serviceProvider = serviceProvider;
+            _globalJsonSetup = globalJsonSetup;
         }
 
         public int UpgradeProject(string xprojLocation, uint upgradeFlags, string backupDirectory, out string migratedProjectFileLocation,
@@ -133,6 +140,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             var globalJson = Path.Combine(solutionDirectory, "global.json");
             if (_fileSystem.FileExists(globalJson))
             {
+                // We want to set up the remover if it hasn't been set up already. If it has been set up already, then we can just return, as backup
+                // and parsing for the sdk element will already have occurred.
+                if (!_globalJsonSetup.SetupRemoval(solution, _serviceProvider, _fileSystem))
+                    return HResult.OK;
+
                 // We want to find the root backup directory that VS created for backup. We can't just assume it's solution/Backup, because VS will create
                 // a new directory if that already exists. So just iterate up until we find the correct directory.
                 solutionDirectory = solutionDirectory.TrimEnd(Path.DirectorySeparatorChar);
@@ -149,22 +161,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
                 pLogger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_INFORMATIONAL, projectName, globalJson,
                     string.Format(VSResources.MigrationBackupFile, globalJson, globalJsonBackupPath));
                 _fileSystem.CopyFile(globalJson, globalJsonBackupPath, true);
-                try
-                {
-                    _fileSystem.RemoveFile(globalJson);
 
-                    var remover = new GlobalJsonRemover(_serviceProvider);
-                    HResult hr = solution.AdviseSolutionEvents(remover, out uint cookie);
-                    if (hr.Succeeded)
-                    {
-                        remover.SolutionCookie = cookie;
-                    }
-                }
-                catch (IOException e)
+                // Now parse the global.json, and remove the "sdk" element if it exists
+                var json = JsonConvert.DeserializeObject<JObject>(_fileSystem.ReadAllText(globalJson));
+                if (json.Remove("sdk"))
                 {
-                    pLogger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_ERROR, projectName, globalJson,
-                        e.Message);
-                    return e.HResult;
+                    _fileSystem.WriteAllText(globalJson, JsonConvert.SerializeObject(json));
                 }
             }
             return VSConstants.S_OK;
