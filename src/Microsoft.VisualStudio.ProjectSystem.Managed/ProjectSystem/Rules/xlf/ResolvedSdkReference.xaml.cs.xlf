@@ -48,6 +48,26 @@
         <target state="translated">Zkopírovat místní rozbalená referenční sestavení</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|SDKRootFolder|DisplayName">
+        <source>SDK Root</source>
+        <target state="new">SDK Root</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Name|DisplayName">
+        <source>Name</source>
+        <target state="new">Name</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Version|DisplayName">
+        <source>Version</source>
+        <target state="new">Version</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|CopyPayloadToSubDirectory|DisplayName">
+        <source>Copy Payload to Subdirectory</source>
+        <target state="new">Copy Payload to Subdirectory</target>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

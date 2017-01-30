@@ -43,6 +43,18 @@
         <source>Copy Local Expanded Reference Assemblies</source>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|DisplayName|DisplayName">
+        <source>Display Name</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Name|DisplayName">
+        <source>Name</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Version|DisplayName">
+        <source>Version</source>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>
