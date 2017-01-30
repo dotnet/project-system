@@ -2,7 +2,7 @@
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Rule Name="ResolvedSdkReference" DisplayName="已解析的 SDK 參考" PageTemplate="generic" Description="已解析的 SDK 參考" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ResolvedReference" ItemType="SDKReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="ResolveSDKReferencesDesignTime" SourceOfDefaultValue="AfterContext" />
+    <DataSource Persistence="ResolvedReference" ItemType="SDKReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="CollectResolvedSDKReferencesDesignTime"  SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <StringProperty Name="AppXLocation" DisplayName="應用程式套件位置" />
   <!-- This property should be the same as the one for the ResolvedReference item -->
@@ -13,4 +13,9 @@
   <BoolProperty Name="ExpandContent" DisplayName="展開內容" />
   <BoolProperty Name="ExpandReferenceAssemblies" DisplayName="展開參考組件" />
   <BoolProperty Name="CopyLocalExpandedReferenceAssemblies" DisplayName="複製展開的參考組件到本機" />
+  <StringProperty Name="SDKRootFolder" DisplayName="SDK Root" />
+  <StringProperty Name="Name" DisplayName="Name"/>
+  <StringProperty Name="Version" DisplayName="Version"/>
+  <StringProperty Name="SDKPackageItemSpec" DisplayName="Path" Visible="False"/>
+  <StringProperty Name="CopyPayloadToSubDirectory" DisplayName="Copy Payload to Subdirectory" />
 </Rule>

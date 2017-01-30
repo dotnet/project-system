@@ -8,11 +8,12 @@
 	xmlns="http://schemas.microsoft.com/build/2009/properties">
     <Rule.DataSource>
         <DataSource Persistence="ProjectFile" ItemType="SDKReference" HasConfigurationCondition="False"
-                    SourceType="TargetResults" MSBuildTarget="CollectSDKReferencesDesignTime" />        
+                    SourceType="TargetResults" MSBuildTarget="CollectSDKReferencesDesignTime" SourceOfDefaultValue="AfterContext" />        
     </Rule.DataSource>
     <StringProperty Name="SDKRootFolder" DisplayName="SDK Root" />
     <StringProperty Name="AppXLocation" DisplayName="App Package Location" />
     <StringProperty Name="FrameworkIdentity" DisplayName="FrameworkIdentity" />
+	<StringProperty Name="DisplayName" DisplayName="Display Name" Visible="False"/>
     <StringProperty Name="Name" DisplayName="Name"/>
     <StringProperty Name="Version" DisplayName="Version"/>
     <StringProperty Name="SDKPackageItemSpec" DisplayName="Path" Visible="False"/>

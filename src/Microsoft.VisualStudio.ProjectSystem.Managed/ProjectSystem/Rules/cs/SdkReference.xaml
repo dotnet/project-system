@@ -2,7 +2,7 @@
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Rule Name="SdkReference" DisplayName="Odkaz na SDK" PageTemplate="generic" Description="Vlastnosti odkazu na SDK" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile" ItemType="SDKReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    <DataSource Persistence="ProjectFile" ItemType="SDKReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="CollectSDKReferencesDesignTime" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <StringProperty Name="SDKRootFolder" DisplayName="Kořen SDK" />
   <StringProperty Name="AppXLocation" DisplayName="Umístění balíčku aplikace" />
@@ -12,4 +12,8 @@
   <BoolProperty Name="ExpandContent" DisplayName="Rozbalit obsah" />
   <BoolProperty Name="ExpandReferenceAssemblies" DisplayName="Rozbalit referenční sestavení" />
   <BoolProperty Name="CopyLocalExpandedReferenceAssemblies" DisplayName="Zkopírovat místní rozbalená referenční sestavení" />
+  <StringProperty Name="DisplayName" DisplayName="Zobrazený název" Visible="False" />
+  <StringProperty Name="Name" DisplayName="Name"/>
+  <StringProperty Name="Version" DisplayName="Version"/>
+  <StringProperty Name="SDKPackageItemSpec" DisplayName="Path" Visible="False"/>
 </Rule>
