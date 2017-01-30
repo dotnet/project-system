@@ -16,6 +16,6 @@
   <StringProperty Name="SDKRootFolder" DisplayName="SDK Root" />
   <StringProperty Name="Name" DisplayName="Name"/>
   <StringProperty Name="Version" DisplayName="Version"/>
-  <StringProperty Name="SDKPackageItemSpec" DisplayName="Path" Visible="False"/>
+  <StringProperty Name="SDKPackageItemSpec" Visible="False"/>
   <StringProperty Name="CopyPayloadToSubDirectory" DisplayName="Copy Payload to Subdirectory" />
 </Rule>

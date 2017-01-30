@@ -15,5 +15,5 @@
   <StringProperty Name="DisplayName" DisplayName="Anzeigename" Visible="False" />
   <StringProperty Name="Name" DisplayName="Name"/>
   <StringProperty Name="Version" DisplayName="Version"/>
-  <StringProperty Name="SDKPackageItemSpec" DisplayName="Path" Visible="False"/>
+  <StringProperty Name="SDKPackageItemSpec" Visible="False"/>
 </Rule>
