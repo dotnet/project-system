@@ -78,7 +78,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
                 globalJson?.Delete();
                 try
                 {
-
                     _fileSystem.RemoveFile(globalJsonPath);
                 }
                 catch (FileNotFoundException) { }
