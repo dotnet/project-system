@@ -2,7 +2,7 @@
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Rule Name="SdkReference" DisplayName="Riferimento a SDK" PageTemplate="generic" Description="Proprietà del riferimento a SDK" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile" ItemType="SDKReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    <DataSource Persistence="ProjectFile" ItemType="SDKReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="CollectSDKReferencesDesignTime" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <StringProperty Name="SDKRootFolder" DisplayName="Radice SDK" />
   <StringProperty Name="AppXLocation" DisplayName="Percorso pacchetto dell'app" />
@@ -12,4 +12,8 @@
   <BoolProperty Name="ExpandContent" DisplayName="Espandi contenuto" />
   <BoolProperty Name="ExpandReferenceAssemblies" DisplayName="Espandi assembly di riferimento" />
   <BoolProperty Name="CopyLocalExpandedReferenceAssemblies" DisplayName="Copia assembly di riferimento espansi locali" />
+  <StringProperty Name="DisplayName" DisplayName="Nome visualizzato" Visible="False" />  
+  <StringProperty Name="Name" DisplayName="Name"/>
+  <StringProperty Name="Version" DisplayName="Version"/>
+  <StringProperty Name="SDKPackageItemSpec" DisplayName="Path" Visible="False"/>
 </Rule>
