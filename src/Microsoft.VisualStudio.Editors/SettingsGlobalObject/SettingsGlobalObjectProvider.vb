@@ -2615,10 +2615,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
     Friend Class ProjectUtilities
 
         Public Shared Function GetVsHierarchy(provider As IServiceProvider, project As Project) As IVsHierarchy
-            ' YUCK.  We need to use DTE to get references because VSIP doesn't define
+            ' We need to use DTE to get references because VSIP doesn't define
             ' that concept.  We need to use VSIP to get deploy dependencies because
-            ' DTE doesn't define THAT.  There is no way to go between a DTE project
-            ' and a VSIP hierarchy other than the slow nasty junk we do below:
+            ' DTE doesn't define that.  There is no way to go between a DTE project
+            ' and a VSIP hierarchy other than the slow workaround below:
             Dim solution As IVsSolution = CType(provider.GetService(GetType(IVsSolution)), IVsSolution)
             If (solution Is Nothing) Then
                 Debug.Fail("No solution.")
