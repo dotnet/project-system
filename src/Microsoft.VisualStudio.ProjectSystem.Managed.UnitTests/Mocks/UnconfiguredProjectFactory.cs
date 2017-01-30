@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Moq;
@@ -13,6 +14,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public static UnconfiguredProject Create(object hostObject = null, IEnumerable<string> capabilities = null, string filePath = null,
             IProjectConfigurationsService projectConfigurationsService = null, ConfiguredProject configuredProject = null, Encoding projectEncoding = null)
         {
+            capabilities = capabilities ?? Enumerable.Empty<string>();
+
             var service = IProjectServiceFactory.Create();
 
             var unconfiguredProjectServices = new Mock<IUnconfiguredProjectServices>();
@@ -35,10 +38,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             unconfiguredProject.Setup(u => u.GetSuggestedConfiguredProjectAsync()).Returns(Task.FromResult(configuredProject));
 
             unconfiguredProject.Setup(u => u.GetFileEncodingAsync()).Returns(Task.FromResult(projectEncoding));
-
-            var capabilitiesScope = IProjectCapabilitiesScopeFactory.Create(capabilities);
-            unconfiguredProject.Setup(u => u.Capabilities)
-                                .Returns(capabilitiesScope);
 
             return unconfiguredProject.Object;
         }

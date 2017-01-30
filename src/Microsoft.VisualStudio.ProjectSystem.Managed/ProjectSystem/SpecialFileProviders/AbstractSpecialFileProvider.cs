@@ -4,6 +4,7 @@ using System;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.IO;
@@ -19,7 +20,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         private readonly IProjectItemProvider _sourceItemsProvider;
         private readonly IFileSystem _fileSystem;
         private readonly ISpecialFilesManager _specialFilesManager;
-        private readonly UnconfiguredProject _unconfiguredProject;
 
         /// <summary>
         /// A service that knows to create a file from a template. In non-VS scenarios
@@ -32,21 +32,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
                                            [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
                                            [Import(AllowDefault = true)] Lazy<ICreateFileFromTemplateService> templateFileCreationService,
                                            IFileSystem fileSystem,
-                                           ISpecialFilesManager specialFileManager,
-                                           UnconfiguredProject unconfiguredProject)
+                                           ISpecialFilesManager specialFileManager)
         {
             Requires.NotNull(projectTree, nameof(projectTree));
             Requires.NotNull(sourceItemsProvider, nameof(sourceItemsProvider));
             Requires.NotNull(fileSystem, nameof(fileSystem));
             Requires.NotNull(specialFileManager, nameof(specialFileManager));
-            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
 
             _projectTree = projectTree;
             _sourceItemsProvider = sourceItemsProvider;
             _templateFileCreationService = templateFileCreationService;
             _fileSystem = fileSystem;
             _specialFilesManager = specialFileManager;
-            _unconfiguredProject = unconfiguredProject;
         }
 
         /// <summary>
@@ -71,8 +68,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             get;
         }
 
-        protected virtual string ApplicableCapability => null;
-
         /// <summary>
         /// We follow this algorithm for looking up files:
         ///
@@ -88,38 +83,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         /// </summary>
         public async Task<string> GetFileAsync(SpecialFiles fileId, SpecialFileFlags flags, CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (ApplicableCapability == null || _unconfiguredProject.Capabilities.AppliesTo(ApplicableCapability))
+            // Search for the file in the app designer and root folders.
+            IProjectTree specialFileNode = await FindFileAsync(Name).ConfigureAwait(false);
+            if (specialFileNode != null)
             {
-                // Search for the file in the app designer and root folders.
-                IProjectTree specialFileNode = await FindFileAsync(Name).ConfigureAwait(false);
-                if (specialFileNode != null)
+                if (await IsNodeInSyncWithDiskAsync(specialFileNode, forceSync: flags.HasFlag(SpecialFileFlags.CreateIfNotExist), cancellationToken: cancellationToken).ConfigureAwait(false))
                 {
-                    if (await IsNodeInSyncWithDiskAsync(specialFileNode, forceSync: flags.HasFlag(SpecialFileFlags.CreateIfNotExist), cancellationToken: cancellationToken).ConfigureAwait(false))
-                    {
-                        return specialFileNode.FilePath;
-                    }
+                    return specialFileNode.FilePath;
                 }
-
-                // File doesn't exist. Create it if we've been asked to.
-                if (flags.HasFlag(SpecialFileFlags.CreateIfNotExist))
-                {
-                    string createdFilePath = await CreateFileAsync(fileId, Name).ConfigureAwait(false);
-                    if (createdFilePath != null)
-                    {
-                        return createdFilePath;
-                    }
-                }
-
-                // We haven't found the file but return the default file path as that's the contract.
-                IProjectTree rootNode = _projectTree.CurrentTree;
-                string rootFilePath = _projectTree.TreeProvider.GetPath(rootNode);
-                string fullPath = Path.Combine(Path.GetDirectoryName(rootFilePath), Name);
-                return fullPath;
             }
-            else
+
+            // File doesn't exist. Create it if we've been asked to.
+            if (flags.HasFlag(SpecialFileFlags.CreateIfNotExist))
             {
-                return null;
+                string createdFilePath = await CreateFileAsync(fileId, Name).ConfigureAwait(false);
+                if (createdFilePath != null)
+                {
+                    return createdFilePath;
+                }
             }
+
+            // We haven't found the file but return the default file path as that's the contract.
+            IProjectTree rootNode = _projectTree.CurrentTree;
+            string rootFilePath = _projectTree.TreeProvider.GetPath(rootNode);
+            string fullPath = Path.Combine(Path.GetDirectoryName(rootFilePath), Name);
+            return fullPath;
         }
 
         /// <summary>
