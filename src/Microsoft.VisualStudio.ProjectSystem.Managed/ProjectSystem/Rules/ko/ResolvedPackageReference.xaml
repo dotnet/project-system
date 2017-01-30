@@ -19,4 +19,6 @@
       <DataSource Persistence="ResolvedReference" ItemType="PackageReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringListProperty.DataSource>
   </StringListProperty>
+  <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
+  <BoolProperty Name="IsTopLevelDependency" Visible="False" ReadOnly="True"/>
 </Rule>

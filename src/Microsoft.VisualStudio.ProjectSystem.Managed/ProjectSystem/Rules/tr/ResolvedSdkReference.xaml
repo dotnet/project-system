@@ -2,7 +2,7 @@
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Rule Name="ResolvedSdkReference" DisplayName="Çözümlenen SDK Başvurusu" PageTemplate="generic" Description="Çözümlenen SDK başvurusu" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ResolvedReference" ItemType="SDKReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="ResolveSDKReferencesDesignTime" SourceOfDefaultValue="AfterContext" />
+    <DataSource Persistence="ResolvedReference" ItemType="SDKReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="CollectResolvedSDKReferencesDesignTime"  SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <StringProperty Name="AppXLocation" DisplayName="Uygulama Paketi Konumu" />
   <!-- This property should be the same as the one for the ResolvedReference item -->
@@ -13,4 +13,9 @@
   <BoolProperty Name="ExpandContent" DisplayName="İçeriği Genişlet" />
   <BoolProperty Name="ExpandReferenceAssemblies" DisplayName="Başvuru Bütünleştirilmiş Kodlarını Genişlet" />
   <BoolProperty Name="CopyLocalExpandedReferenceAssemblies" DisplayName="Yerel Genişletilmiş Başvuru Derlemelerini Kopyala" />
+  <StringProperty Name="SDKRootFolder" DisplayName="SDK Root" />
+  <StringProperty Name="Name" DisplayName="Name"/>
+  <StringProperty Name="Version" DisplayName="Version"/>
+  <StringProperty Name="SDKPackageItemSpec" Visible="False"/>
+  <StringProperty Name="CopyPayloadToSubDirectory" DisplayName="Copy Payload to Subdirectory" />
 </Rule>

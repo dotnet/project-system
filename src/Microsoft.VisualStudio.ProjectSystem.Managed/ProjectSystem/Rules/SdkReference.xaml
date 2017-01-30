@@ -7,11 +7,16 @@
 	Description="SDK reference properties"
 	xmlns="http://schemas.microsoft.com/build/2009/properties">
     <Rule.DataSource>
-        <DataSource Persistence="ProjectFile" ItemType="SDKReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+        <DataSource Persistence="ProjectFile" ItemType="SDKReference" HasConfigurationCondition="False"
+                    SourceType="TargetResults" MSBuildTarget="CollectSDKReferencesDesignTime" SourceOfDefaultValue="AfterContext" />        
     </Rule.DataSource>
     <StringProperty Name="SDKRootFolder" DisplayName="SDK Root" />
     <StringProperty Name="AppXLocation" DisplayName="App Package Location" />
     <StringProperty Name="FrameworkIdentity" DisplayName="FrameworkIdentity" />
+    <StringProperty Name="DisplayName" DisplayName="Display Name" Visible="False"/>
+    <StringProperty Name="Name" DisplayName="Name"/>
+    <StringProperty Name="Version" DisplayName="Version"/>
+    <StringProperty Name="SDKPackageItemSpec" Visible="False"/>
     <BoolProperty Name="CopyPayload" DisplayName="Copy Payload" />
     <StringProperty Name="CopyPayloadToSubDirectory" DisplayName="Copy Payload to Subdirectory" />
     <BoolProperty Name="ExpandContent" DisplayName="Expand Content" />

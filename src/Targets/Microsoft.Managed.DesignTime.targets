@@ -160,7 +160,7 @@
 
     <!-- Sdk references -->
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)SdkReference.xaml">
-      <Context>;BrowseObject</Context>
+      <Context>Project;ProjectSubscriptionService;BrowseObject</Context>
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedSdkReference.xaml">
@@ -202,6 +202,8 @@
        target, that is available only after restoring the .Net Core SDK targets. This No-op target will satisfy the check and will get overriden
        once the actual targets are available after package restore-->
   <Target Name="ResolvePackageDependenciesDesignTime" />
+  <Target Name="CollectSDKReferencesDesignTime" />
+  <Target Name="CollectResolvedSDKReferencesDesignTime" />
 
   <!-- This target is used to collect the PackageReferences in the project. This target can be overriden to add\remove packagereferences before they are
        sent to NuGet to be restored.-->

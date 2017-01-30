@@ -2,7 +2,7 @@
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Rule Name="SdkReference" DisplayName="SDK 引用" PageTemplate="generic" Description="SDK 引用属性" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile" ItemType="SDKReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    <DataSource Persistence="ProjectFile" ItemType="SDKReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="CollectSDKReferencesDesignTime" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <StringProperty Name="SDKRootFolder" DisplayName="SDK 根" />
   <StringProperty Name="AppXLocation" DisplayName="应用包位置" />
@@ -12,4 +12,8 @@
   <BoolProperty Name="ExpandContent" DisplayName="扩展内容" />
   <BoolProperty Name="ExpandReferenceAssemblies" DisplayName="扩展引用程序集" />
   <BoolProperty Name="CopyLocalExpandedReferenceAssemblies" DisplayName="复制本地扩展的引用程序集" />
+  <StringProperty Name="DisplayName" DisplayName="显示名称" Visible="False" />
+  <StringProperty Name="Name" DisplayName="Name"/>
+  <StringProperty Name="Version" DisplayName="Version"/>
+  <StringProperty Name="SDKPackageItemSpec" Visible="False"/> 
 </Rule>

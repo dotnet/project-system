@@ -272,12 +272,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 ""Items"": {
                     ""package1"": {
                         ""Version"": ""1.0.0""
+                    },
+                    ""ImplicitPackage2"": {
+                        ""Version"": ""1.0.0"",
+                        ""IsImplicitlyDefined"":""true""
                     }
                 },
                 ""RuleName"": ""PackageReference""
             },
             ""Difference"": {
-                ""AddedItems"": [ ""package1"" ],
+                ""AddedItems"": [ ""package1"", ""ImplicitPackage2"" ],
                 ""ChangedItems"": [ ],
                 ""RemovedItems"": [ ],
                 ""AnyChanges"": ""true""
@@ -300,12 +304,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         ""Path"":""SomePath"",
                         ""Resolved"":""true"",
                         ""Dependencies"":""""
+                    },
+                    ""tfm1/ImplicitPackage/1.0.0"": {
+                        ""Name"": ""ImplicitPackage"",
+                        ""Version"": ""1.0.0"",
+                        ""Type"":""Package"",
+                        ""Path"":""SomePath"",
+                        ""Resolved"":""true"",
+                        ""Dependencies"":"""",
+                        ""IsImplicitlyDefined"":""true""
                     }
                 },
                 ""RuleName"": ""ResolvedPackageReference""
             },
             ""Difference"": {
-                ""AddedItems"": [ ""tfm1"", ""tfm1/package1/1.0.0"" ],
+                ""AddedItems"": [ ""tfm1"", ""tfm1/package1/1.0.0"", ""tfm1/ImplicitPackage/1.0.0"" ],
                 ""ChangedItems"": [ ],
                 ""RemovedItems"": [ ],
                 ""AnyChanges"": ""true""
@@ -707,7 +720,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 ""Type"": ""Package"",
                 ""Path"": ""SomePath"",
                 ""Resolved"": ""true"",
-                ""Dependencies"": """"
+                ""Dependencies"": """",
+                ""IsImplicitlyDefined"":""true""
             }
         },
         {
@@ -766,6 +780,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var currentSnapshotTargets = provider.GetCurrentSnapshotTargets();
 
             Assert.True(currentSnapshotTargets.Contains("tfm1"));
+
+            Assert.Equal("True", provider.GetCurrentSnapshotDependencyProperty("tfm1/Package3/2.0.0", "IsImplicitlyDefined"));
         }
 
         [Fact]
@@ -1110,6 +1126,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 if (propertyName.Equals("Version"))
                 {
                     return metadata.Version;
+                }
+                else if (propertyName.Equals("IsImplicitlyDefined"))
+                {
+                    return metadata.IsImplicitlyDefined.ToString();
                 }
 
                 return null;

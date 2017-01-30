@@ -2,7 +2,7 @@
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Rule Name="SdkReference" DisplayName="Odwołanie SDK" PageTemplate="generic" Description="Właściwości odwołania SDK" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile" ItemType="SDKReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    <DataSource Persistence="ProjectFile" ItemType="SDKReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="CollectSDKReferencesDesignTime" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <StringProperty Name="SDKRootFolder" DisplayName="Główny zestaw SDK" />
   <StringProperty Name="AppXLocation" DisplayName="Lokalizacja pakietu aplikacji" />
@@ -12,4 +12,8 @@
   <BoolProperty Name="ExpandContent" DisplayName="Rozwiń zawartość" />
   <BoolProperty Name="ExpandReferenceAssemblies" DisplayName="Rozwiń zestawy odwołań" />
   <BoolProperty Name="CopyLocalExpandedReferenceAssemblies" DisplayName="Kopiuj lokalne rozwinięte zestawy referencyjne" />
+  <StringProperty Name="DisplayName" DisplayName="Wyświetl nazwę" Visible="False" />
+  <StringProperty Name="Name" DisplayName="Name"/>
+  <StringProperty Name="Version" DisplayName="Version"/>
+  <StringProperty Name="SDKPackageItemSpec" Visible="False"/> 
 </Rule>
