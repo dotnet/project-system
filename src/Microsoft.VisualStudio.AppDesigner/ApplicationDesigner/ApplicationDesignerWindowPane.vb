@@ -39,7 +39,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             'Create our view control and hook its focus event.
             'Do not be tempted to create a container control here
             '   and use it for focus management!  It will steal key
-            '   events from the shell and royaly screw things up.
+            '   events from the shell and break things.
             '
             _view = New ApplicationDesignerWindowPaneControl()
             AddHandler _view.GotFocus, AddressOf OnViewFocus
