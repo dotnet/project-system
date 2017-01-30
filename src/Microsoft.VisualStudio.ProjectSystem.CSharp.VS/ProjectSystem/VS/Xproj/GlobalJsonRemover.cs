@@ -12,6 +12,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 {
     internal class GlobalJsonRemover : IVsSolutionEvents
     {
+        /// <summary>
+        /// Static GlobalJsonRemover instance. All interactions must occur on the UI thread.
+        /// </summary>
         private static GlobalJsonRemover s_remover;
 
         /// <summary>
