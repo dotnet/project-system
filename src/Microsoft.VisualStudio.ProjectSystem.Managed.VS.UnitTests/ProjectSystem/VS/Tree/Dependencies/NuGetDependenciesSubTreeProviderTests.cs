@@ -663,7 +663,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         ""ItemType"": ""PackageReference""
     }
 }");
-            var searchResults = await provider.SearchAsync(rootNodeNode, "ass");
+            var searchResults = await provider.SearchAsync(rootNodeNode, "assem");
 
             Assert.NotNull(searchResults);
             Assert.Equal(2, searchResults.Count());
