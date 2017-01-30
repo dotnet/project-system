@@ -103,7 +103,31 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
             fileChangeServiceMock.Verify(s => s.UnadviseFileChange(adviseCookie), Times.Exactly(numUnregisterCalls));
         }
 
+        [Fact]
+        public void WhenBaseIntermediateOutputPathNotSet_DoesNotAttemptToAdviseFileChange()
+        {
+            var spMock = new IServiceProviderMoq();
+            var fileChangeService = IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(100);
+            spMock.AddService(typeof(IVsFileChangeEx), typeof(SVsFileChangeEx), fileChangeService);
 
+            var propertyData = CreateBaseIntermediateOutputPathProperty(string.Empty);
+
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj");
+            var watcher = new ProjectLockFileWatcher(spMock,
+                                                     IProjectTreeProviderFactory.Create(),
+                                                     IUnconfiguredProjectCommonServicesFactory.Create(unconfiguredProject,
+                                                                                                      projectProperties: ProjectPropertiesFactory.Create(unconfiguredProject, new[] { propertyData })),
+                                                     IProjectLockServiceFactory.Create());
+
+            var tree = ProjectTreeParser.Parse(@"Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""");
+            watcher.Load();
+            watcher.ProjectTree_ChangedAsync(IProjectVersionedValueFactory<IProjectTreeSnapshot>.Create(IProjectTreeSnapshotFactory.Create(tree)));
+
+            Mock<IVsFileChangeEx> fileChangeServiceMock = Mock.Get(fileChangeService);
+            uint cookie;
+            fileChangeServiceMock.Verify(s => s.AdviseFileChange(It.IsAny<string>(), It.IsAny<uint>(), watcher, out cookie),
+                                         Times.Never());
+        }
 
         private PropertyPageData CreateBaseIntermediateOutputPathProperty(object baseIntermediateOutputPath)
         {
