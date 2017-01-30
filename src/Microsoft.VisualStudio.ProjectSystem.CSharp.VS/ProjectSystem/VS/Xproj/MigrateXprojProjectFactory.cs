@@ -166,7 +166,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
                 var json = JsonConvert.DeserializeObject<JObject>(_fileSystem.ReadAllText(globalJson));
                 if (json.Remove("sdk"))
                 {
-                    _fileSystem.WriteAllText(globalJson, JsonConvert.SerializeObject(json));
+                    try
+                    {
+                        _fileSystem.WriteAllText(globalJson, JsonConvert.SerializeObject(json));
+                    }
+                    catch (IOException ex)
+                    {
+                        pLogger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_ERROR, projectName, globalJson, ex.Message);
+                        return ex.HResult;
+                    }
                 }
             }
             return VSConstants.S_OK;
