@@ -762,6 +762,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     PropDesc = m_PropPage.m_ObjectsPropertyDescriptorsArray(0)(PropertyName)
                     If PropDesc IsNot Nothing Then
                         Common.Switches.TracePDProperties(TraceLevel.Info, "PropertyControlData.Initialize(" & PropertyName & "): Property found")
+
+                        ' If the property page is backed by CPS project properties, use special wrapper for descriptor
+                        If CpsPropertyDescriptorWrapper.IsAnyCpsComponent(m_PropPage.m_Objects) Then
+                            PropDesc = New CpsPropertyDescriptorWrapper(PropDesc)
+                        End If
                     End If
 
                     'Only if we didn't find it there, look directly on the project for the property (only for configuration-specific
@@ -786,7 +791,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 m_Initializing = False
             End Try
         End Sub
-
 
         ''' <summary>
         ''' Initializes the value for the property by getting the value from the project system

@@ -283,7 +283,7 @@
     <value>GUID は dddddddd-dddd-dddd-dddd-dddddddddddd の形式でなければなりません。</value>
   </data>
   <data name="PPG_Application_MyAppCommentLine1" xml:space="preserve">
-    <value>メモ: このファイルは自動生成されました。直接変更しないでください。変更したり、</value>
+    <value>メモ:このファイルは自動生成されました。直接変更しないでください。変更したり、</value>
   </data>
   <data name="PPG_Application_MyAppCommentLine2" xml:space="preserve">
     <value> ビルド エラーが発生した場合は、プロジェクト デザイナー へ移動し (プロジェクト</value>
@@ -310,19 +310,19 @@
     <value>次のイベントは MyApplication に対して利用できます:</value>
   </data>
   <data name="PPG_Application_AppEventsCommentLine3" xml:space="preserve">
-    <value>Startup: アプリケーションが開始されたとき、スタートアップ フォームが作成される前に発生します。</value>
+    <value>Startup:アプリケーションが開始されたとき、スタートアップ フォームが作成される前に発生します。</value>
   </data>
   <data name="PPG_Application_AppEventsCommentLine4" xml:space="preserve">
-    <value>Shutdown: アプリケーション フォームがすべて閉じられた後に発生します。このイベントは、アプリケーションが異常終了したときには発生しません。</value>
+    <value>Shutdown:アプリケーション フォームがすべて閉じられた後に発生します。このイベントは、アプリケーションが異常終了したときには発生しません。</value>
   </data>
   <data name="PPG_Application_AppEventsCommentLine5" xml:space="preserve">
-    <value>UnhandledException: ハンドルされていない例外がアプリケーションで発生したときに発生するイベントです。</value>
+    <value>UnhandledException:ハンドルされない例外がアプリケーションで発生したときに発生します。</value>
   </data>
   <data name="PPG_Application_AppEventsCommentLine6" xml:space="preserve">
-    <value>StartupNextInstance: 単一インスタンス アプリケーションが起動され、それが既にアクティブであるときに発生します。 </value>
+    <value>StartupNextInstance:単一インスタンス アプリケーションが起動され、それが既にアクティブであるときに発生します。 </value>
   </data>
   <data name="PPG_Application_AppEventsCommentLine7" xml:space="preserve">
-    <value>NetworkAvailabilityChanged: ネットワーク接続が接続されたとき、または切断されたときに発生します。</value>
+    <value>NetworkAvailabilityChanged:ネットワーク接続が接続されたとき、または切断されたときに発生します。</value>
   </data>
   <data name="PPG_AdvancedBuildSettings_InvalidBaseAddress" xml:space="preserve">
     <value>ベース アドレスは 8 桁以下の 16 進数である必要があります (例: 0x11000000)。</value>
@@ -1244,7 +1244,7 @@
     <value>リソースを埋め込むかリンクするかを指定します。埋め込まれたリソースはリソース ファイルに保存されます。リンクされたリソースは、ディスク上の外部の場所に存在します。</value>
   </data>
   <data name="RSE_PropDesc_Type" xml:space="preserve">
-    <value>リソースは、たとえば String や Bitmap オブジェクトとして生成されるように、この型として厳密に型指定されたリソース クラスで生成されます。</value>
+    <value>このリソースは、この型として厳密に型指定されたリソース クラスで生成されます。たとえば、リソースは String または Bitmap オブジェクトとして生成されます。</value>
   </data>
   <data name="RSE_PropDesc_Value" xml:space="preserve">
     <value>リソースの値です。</value>
@@ -1464,7 +1464,7 @@ app.config ファイルでの新しい値は '{1}' です
     <value>設定がアプリケーションごと (読み取り専用) であるか、ユーザーごと (編集可能) であるかを指定します</value>
   </data>
   <data name="SD_DESCR_SerializedSettingType" xml:space="preserve">
-    <value>設定は、たとえば String や Integer オブジェクトとして生成されるように、この型として厳密に型指定された設定クラスで生成されます。</value>
+    <value>この設定は、この型として厳密に型指定された設定クラスで生成されます。たとえば、設定は String または Integer オブジェクトとして生成されます。</value>
   </data>
   <data name="SD_DESCR_Value" xml:space="preserve">
     <value>設定用の現在の値です。</value>

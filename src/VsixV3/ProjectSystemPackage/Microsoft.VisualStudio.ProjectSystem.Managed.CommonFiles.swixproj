@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Package Include="Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.swr" />
+    <Package Include="ext.xproj.swr" />
   </ItemGroup>
 
   <Import Project="$(NuGetPackageRoot)\MicroBuild.Core\$(MicroBuildVersion)\build\MicroBuild.Core.targets" />

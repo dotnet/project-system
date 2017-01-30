@@ -46,11 +46,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         }
 
         /// <summary>
-        /// Disable the executable controls
+        /// Disable the executable and launch url controls
         /// </summary>
         public bool ShouldEnableProperty(string propertyName)
         {
-            return string.Equals(propertyName, UIProfilePropertyName.Executable, System.StringComparison.OrdinalIgnoreCase)? false : true;
+            return string.Equals(propertyName, UIProfilePropertyName.Executable, System.StringComparison.OrdinalIgnoreCase) || 
+                   string.Equals(propertyName, UIProfilePropertyName.LaunchUrl, System.StringComparison.OrdinalIgnoreCase) ? false : true;
         }
 
         /// <summary>

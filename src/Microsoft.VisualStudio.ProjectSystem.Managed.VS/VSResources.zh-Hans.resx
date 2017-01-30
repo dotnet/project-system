@@ -271,9 +271,9 @@
     <value>打包 {0} (&amp;P)</value>
   </data>
   <data name="XprojMigrationFailedCannotReadReport" xml:space="preserve">
-    <value>Could not read post-migration report at '{0}'.</value>
+    <value>无法读取“{0}”处的迁移后报表。</value>
   </data>
   <data name="XprojMigrationGeneralFailure" xml:space="preserve">
-    <value>Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</value>
+    <value>XProj 项目 {0} 迁移失败。“{1}”退出时出现错误代码 {2}。</value>
   </data>
 </root>

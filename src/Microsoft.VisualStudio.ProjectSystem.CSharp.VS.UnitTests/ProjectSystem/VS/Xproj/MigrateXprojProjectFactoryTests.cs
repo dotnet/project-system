@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.Packaging;
+using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Flavor;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -389,11 +390,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
             var migrator = CreateInstance(ProcessRunnerFactory.CreateRunner(), fileSystem);
 
+            GlobalJsonRemover remover = null;
+
+            var solution = IVsSolutionFactory.Implement((IVsSolutionEvents events, out uint cookie) =>
+            {
+                remover = (GlobalJsonRemover)events;
+                cookie = 1234;
+                return VSConstants.S_OK;
+            }, IVsSolutionFactory.DefaultUnadviseCallback, CreateSolutionInfo());
+
             var loggedMessages = new List<LogMessage>();
             var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
             var globalJsonBackedUp = Path.Combine(BackupLocation, "global.json");
 
-            migrator.BackupAndDeleteGlobalJson(SlnLocation, BackupLocation, XprojLocation, ProjectName, logger);
+            migrator.BackupAndDeleteGlobalJson(SlnLocation, solution, BackupLocation, XprojLocation, ProjectName, logger);
             Assert.False(fileSystem.FileExists(GlobalJsonLocation));
             Assert.True(fileSystem.FileExists(globalJsonBackedUp));
             Assert.Equal(1, loggedMessages.Count);
@@ -404,6 +414,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
                 Message = string.Format(VSResources.MigrationBackupFile, GlobalJsonLocation, globalJsonBackedUp),
                 Project = ProjectName
             }, loggedMessages[0]);
+            Assert.NotNull(remover);
+            Assert.Equal(1234u, remover.SolutionCookie);
         }
 
         [Fact]
@@ -416,10 +428,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
                 fileSystem.Create(CsprojLocation);
             });
 
+            GlobalJsonRemover remover = null;
+            var solution = IVsSolutionFactory.Implement((IVsSolutionEvents events, out uint cookie) =>
+            {
+                remover = (GlobalJsonRemover)events;
+                cookie = 1234;
+                return VSConstants.S_OK;
+            }, IVsSolutionFactory.DefaultUnadviseCallback, CreateSolutionInfo());
+
             var loggedMessages = new List<LogMessage>();
             var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
 
-            var migrator = CreateInstance(processRunner, fileSystem);
+            var migrator = CreateInstance(processRunner, fileSystem, solution);
 
             Assert.Equal(VSConstants.S_OK, migrator.UpgradeProject(XprojLocation, 0, BackupLocation, out string outCsproj, logger, out int upgradeRequired, out Guid newProjectFactory));
             Assert.True(fileSystem.FileExists(CsprojLocation));
@@ -434,11 +454,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             Assert.Equal(CsprojLocation, outCsproj);
             Assert.Equal((int)__VSPPROJECTUPGRADEVIAFACTORYREPAIRFLAGS.VSPUVF_PROJECT_ONEWAYUPGRADE, upgradeRequired);
             Assert.Equal(Guid.Parse(CSharpProjectSystemPackage.ProjectTypeGuid), newProjectFactory);
+            Assert.NotNull(remover);
+            Assert.Equal(1234u, remover.SolutionCookie);
         }
 
-        private MigrateXprojProjectFactory CreateInstance(ProcessRunner processRunner, IFileSystem fileSystem)
+        private MigrateXprojProjectFactory CreateInstance(ProcessRunner processRunner, IFileSystem fileSystem, IVsSolution solutionParam = null)
         {
-            var solution = IVsSolutionFactory.CreateWithSolutionDirectory(CreateSolutionInfo());
+            UnitTestHelper.IsRunningUnitTests = true;
+            var solution = solutionParam ?? IVsSolutionFactory.CreateWithSolutionDirectory(CreateSolutionInfo());
             var serviceProvider = IServiceProviderFactory.Create(typeof(SVsSolution), solution);
 
             var migrator = new MigrateXprojProjectFactory(processRunner, fileSystem, serviceProvider);

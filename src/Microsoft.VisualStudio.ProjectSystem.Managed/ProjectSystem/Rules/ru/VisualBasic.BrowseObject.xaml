@@ -2,7 +2,7 @@
 <!--Copyright, Microsoft Corporation, All rights reserved.-->
 <Rule Name="VisualBasic" DisplayName="Свойства файла" PageTemplate="generic" Description="Свойства файла" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="false" />
+    <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <Rule.Categories>
     <Category Name="Advanced" DisplayName="Дополнительно" />
@@ -16,22 +16,22 @@
   </EnumProperty>
   <StringProperty Name="Identity" Visible="false" ReadOnly="true" Category="Misc" Description="Элемент, заданный в атрибуте Include.">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="Identity" />
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="FullPath" DisplayName="Полный путь" ReadOnly="true" Category="Misc" Description="Расположение файла.">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FullPath" />
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="FileNameAndExtension" DisplayName="Имя файла" ReadOnly="true" Category="Misc" Description="Имя файла или папки.">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FileNameAndExtension" />
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FileNameAndExtension" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="URL" ReadOnly="true" Visible="false">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FullPath" />
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <EnumProperty Name="SubType" Visible="false">
@@ -43,7 +43,7 @@
   </EnumProperty>
   <StringProperty Name="Extension" Visible="False" ReadOnly="true">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="Extension" />
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="Extension" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
 </Rule>

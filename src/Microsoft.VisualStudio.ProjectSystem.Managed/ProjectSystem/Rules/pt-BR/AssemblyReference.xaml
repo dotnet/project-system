@@ -2,18 +2,18 @@
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Rule Name="AssemblyReference" DisplayName="Referência de assembly" PageTemplate="generic" Description="Propriedades de referência do assembly" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" />
+    <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <StringListProperty Name="Aliases" DisplayName="Aliases" Description="Uma lista delimitada por vírgula de aliases para esta referência." Separator="," />
   <BoolProperty Name="CopyLocal" DisplayName="Local da Cópia" Description="Indica se a referência será copiada no diretório de saída.">
     <BoolProperty.DataSource>
-      <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" PersistedName="Private" />
+      <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" PersistedName="Private" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
   <BoolProperty Name="EmbedInteropTypes" DisplayName="Inserir Tipos Interop" Description="Indica se os tipos definidos neste assembly serão inseridos no assembly de destino." />
   <BoolProperty Name="SpecificVersion" DisplayName="Versão Específica" Description="Indica se este assembly pode ser resolvido sem considerar as regras de multiplataforma para a resolução do assembly.">
     <BoolProperty.DataSource>
-      <DataSource Persistence="AssemblyReference" ItemType="Reference" HasConfigurationCondition="False" />
+      <DataSource Persistence="AssemblyReference" ItemType="Reference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
   <StringProperty Name="RequiredTargetFramework" DisplayName="Estrutura de Destino Necessária" Visible="False" />

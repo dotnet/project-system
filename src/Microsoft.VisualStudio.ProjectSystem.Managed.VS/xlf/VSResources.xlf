@@ -205,11 +205,11 @@ In order to debug this project, add an executable project to this solution which
       </trans-unit>
       <trans-unit id="XprojMigrationFailedCannotReadReport">
         <source>Could not read post-migration report at '{0}'.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="XprojMigrationGeneralFailure">
         <source>Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

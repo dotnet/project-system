@@ -145,6 +145,12 @@
     <value>Biblioteka klas (.NET Core)</value>
   </data>
   <data name="10" xml:space="preserve">
-    <value>A project for creating a class library that targets .NET Core.</value>
+    <value>Projekt służący do tworzenia biblioteki klas przeznaczonej dla środowiska .NET Core.</value>
+  </data>
+  <data name="11" xml:space="preserve">
+    <value>xUnit Test Project (.NET Core)</value>
+  </data>
+  <data name="12" xml:space="preserve">
+    <value>A project that contains xunit tests that can run on .NET Core on Windows, Linux and MacOS</value>
   </data>
 </root>

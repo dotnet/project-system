@@ -40,7 +40,7 @@
       </trans-unit>
       <trans-unit id="NeutralLanguageLabel.Text">
         <source>&amp;Neutral language:</source>
-        <target state="translated">중립 언어(&amp;):</target>
+        <target state="translated">중립 언어(&amp;N):</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionLabel.Text">

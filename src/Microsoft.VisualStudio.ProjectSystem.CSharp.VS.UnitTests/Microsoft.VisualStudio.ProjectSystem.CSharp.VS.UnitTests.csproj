@@ -71,6 +71,7 @@
     <Compile Include="ProjectSystem\VS\LanguageServices\CSharpCodeDomProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\Properties\CSharpProjectGuidProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\CSharpProjectCompatibilityProviderTests.cs" />
+    <Compile Include="ProjectSystem\VS\Xproj\GlobalJsonRemoverTests.cs" />
     <Compile Include="ProjectSystem\VS\Xproj\MigrateXprojProjectFactoryTests.cs" />
   </ItemGroup>
   <ItemGroup>

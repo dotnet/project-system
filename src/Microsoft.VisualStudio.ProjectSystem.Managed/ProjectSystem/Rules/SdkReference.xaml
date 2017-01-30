@@ -7,7 +7,7 @@
 	Description="SDK reference properties"
 	xmlns="http://schemas.microsoft.com/build/2009/properties">
     <Rule.DataSource>
-        <DataSource Persistence="ProjectFile" ItemType="SDKReference" HasConfigurationCondition="False" />
+        <DataSource Persistence="ProjectFile" ItemType="SDKReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </Rule.DataSource>
     <StringProperty Name="SDKRootFolder" DisplayName="SDK Root" />
     <StringProperty Name="AppXLocation" DisplayName="App Package Location" />

@@ -16,7 +16,7 @@ namespace VSLangProj80
             return mock.Object;
         }
 
-        public static Reference3 CreateAssemblyReference(string name, string version, string path = null)
+        public static Reference3 CreateAssemblyReference(string name, string version = null, string path = null, prjReferenceType referenceType = prjReferenceType.prjReferenceTypeAssembly)
         {
             var mock = new Mock<Reference3>();
             mock.SetupGet(r => r.Name)
@@ -32,7 +32,7 @@ namespace VSLangProj80
                 .Returns(path != null);
 
             mock.SetupGet(r => r.Type)
-                .Returns(prjReferenceType.prjReferenceTypeAssembly);
+                .Returns(referenceType);
 
             return mock.Object;            
         }

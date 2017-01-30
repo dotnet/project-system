@@ -271,9 +271,9 @@
     <value>封裝 {0}(&amp;P)</value>
   </data>
   <data name="XprojMigrationFailedCannotReadReport" xml:space="preserve">
-    <value>Could not read post-migration report at '{0}'.</value>
+    <value>無法讀取位於 '{0}' 的移轉後報告。</value>
   </data>
   <data name="XprojMigrationGeneralFailure" xml:space="preserve">
-    <value>Failed to migrate XProj project {0}. '{1}' exited with error code {2}.</value>
+    <value>無法移轉 XProj 檔案 {0}。'{1}' 已結束，出現錯誤碼 {2}。</value>
   </data>
 </root>

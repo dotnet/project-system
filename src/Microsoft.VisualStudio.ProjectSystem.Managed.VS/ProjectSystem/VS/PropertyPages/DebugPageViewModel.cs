@@ -3,6 +3,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -327,11 +328,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-        public List<IWritableLaunchProfile> LaunchProfiles
+        private  ObservableCollection<IWritableLaunchProfile> _launchProfiles = new ObservableCollection<IWritableLaunchProfile>();
+        public ObservableCollection<IWritableLaunchProfile> LaunchProfiles
         {
             get
             {
-                return CurrentLaunchSettings?.Profiles;
+                return _launchProfiles;
             }
         }
 
@@ -340,7 +342,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         private void NotifyProfileCollectionChanged()
         {
-            OnPropertyChanged(nameof(LaunchProfiles));
             OnPropertyChanged(nameof(HasProfiles));
             OnPropertyChanged(nameof(NewProfileEnabled));
         }
@@ -523,6 +524,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             {
                 SelectedDebugProfile.EnvironmentVariables.Clear();
             }
+
             await provider.UpdateAndSaveSettingsAsync(CurrentLaunchSettings.ToLaunchSettings()).ConfigureAwait(false);
         }
 
@@ -593,6 +595,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 // clear the active profile on the CurrentLaunchSettings so that when we do set one and property changed event is set
                 CurrentLaunchSettings = newSettings;
                 CurrentLaunchSettings.ActiveProfile = null;
+
+                // Reload the launch profiles collection
+                LaunchProfiles.Clear();
+                foreach(var profile in CurrentLaunchSettings.Profiles)
+                {
+                    LaunchProfiles.Add(profile);
+                }
+
                 NotifyProfileCollectionChanged();
 
                 // If we have a selection, we want to leave it as is
@@ -856,7 +866,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     {
                         var profileToRemove = SelectedDebugProfile;
                         SelectedDebugProfile = null;
+
+                        CurrentLaunchSettings.Profiles.Remove(profileToRemove);
                         LaunchProfiles.Remove(profileToRemove);
+                        
                         SelectedDebugProfile = LaunchProfiles.Count > 0 ? LaunchProfiles[0] : null;
                         NotifyProfileCollectionChanged();
                     }));
@@ -867,6 +880,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             var profile = new WritableLaunchProfile() { Name = name, CommandName = commandName };
             CurrentLaunchSettings.Profiles.Add(profile);
+            LaunchProfiles.Add(profile);
 
             NotifyProfileCollectionChanged();
             

@@ -2,7 +2,7 @@
 <!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
 <Rule Name="Content" DisplayName="Propiedades del archivo" PageTemplate="generic" Description="Propiedades del archivo" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="Content" />
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="Content" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <Rule.Categories>
     <Category Name="Advanced" DisplayName="Avanzadas" />
@@ -16,17 +16,17 @@
   </EnumProperty>
   <StringProperty Name="Identity" Visible="false" ReadOnly="true" Category="Misc" Description="El elemento especificado en el atributo Include.">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="Content" PersistedName="Identity" />
+      <DataSource Persistence="Intrinsic" ItemType="Content" PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="FullPath" DisplayName="Ruta de acceso completa" ReadOnly="true" Category="Misc" Description="Ubicación del archivo.">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="Content" PersistedName="FullPath" />
+      <DataSource Persistence="Intrinsic" ItemType="Content" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="FileNameAndExtension" DisplayName="Nombre de archivo" ReadOnly="true" Category="Misc" Description="Nombre del archivo o carpeta.">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="Content" PersistedName="FileNameAndExtension" />
+      <DataSource Persistence="Intrinsic" ItemType="Content" PersistedName="FileNameAndExtension" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <BoolProperty Name="Visible" Visible="false" />
@@ -37,7 +37,7 @@
   </StringProperty>
   <StringProperty Name="Link" Visible="false">
     <StringProperty.DataSource>
-      <DataSource PersistenceStyle="Attribute" />
+      <DataSource PersistenceStyle="Attribute" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
     <StringProperty.Metadata>
       <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />

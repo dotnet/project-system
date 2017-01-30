@@ -36,6 +36,7 @@
     <Compile Include="Extensions\ProjectConfigurationExtensions.cs" />
     <Compile Include="ProjectSystem\Build\BuildProperty.cs" />
     <Compile Include="CommonConstants.cs" />
+    <Compile Include="ProjectSystem\Build\TurnOffUseHostCompilerIfAvailableBuildPropertiesProvider.cs" />
     <Compile Include="ProjectSystem\Build\CommandLineDesignTimeBuildPropertiesProvider.cs" />
     <Compile Include="ProjectSystem\Build\GeneratePackageOnBuildDesignTimeBuildPropertyProvider.cs" />
     <Compile Include="ProjectSystem\Build\GeneratePackageOnBuildPropertyProvider.cs" />
@@ -99,6 +100,9 @@
     <Compile Include="ProjectSystem\Properties\RuleDataSourceTypes.cs" />
     <Compile Include="ProjectSystem\Properties\AssemblyAttributeProperties\SourceAssemblyAttributePropertyValueProvider.cs" />
     <Compile Include="ProjectSystem\References\AlwaysAllowValidProjectReferenceChecker.cs" />
+    <Compile Include="ProjectSystem\Reload\ProjectReloadInterceptor.cs" />
+    <Compile Include="ProjectSystem\Reload\IProjectReloadInterceptor.cs" />
+    <Compile Include="ProjectSystem\Reload\ProjectReloadResult.cs" />
     <Compile Include="ProjectSystem\Rules\AnalyzerReference.xaml.cs">
       <DependentUpon>AnalyzerReference.xaml</DependentUpon>
     </Compile>
@@ -229,6 +233,9 @@
     <Compile Include="ProjectSystem\Rules\GeneralBrowseObject.cs">
       <DependentUpon>GeneralBrowseObject.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ProjectSystem\Rules\ConfiguredBrowseObject.cs">
+      <DependentUpon>GeneralConfiguredBrowseObject.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ProjectSystem\Rules\None.cs">
       <DependentUpon>None.xaml</DependentUpon>
     </Compile>
@@ -316,6 +323,10 @@
       <SubType>Designer</SubType>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\GeneralBrowseObject.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\GeneralConfiguredBrowseObject.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
     </XamlPropertyRule>

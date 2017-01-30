@@ -2,12 +2,12 @@
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Rule Name="PackageReference" DisplayName="Paket" PageTemplate="generic" Description="Paket" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile" ItemType="PackageReference" HasConfigurationCondition="False" />
+    <DataSource Persistence="ProjectFile" ItemType="PackageReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="CollectPackageReferences" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <StringProperty Name="Description" ReadOnly="True" Visible="True" DisplayName="Açıklama" Description="Bağımlılık açıklaması" />
   <StringProperty Name="Version" ReadOnly="True" DisplayName="Sürüm" Description="Bağımlılık sürümü.">
     <StringProperty.DataSource>
-      <DataSource PersistenceStyle="Attribute" />
+      <DataSource PersistenceStyle="Attribute" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="IncludeAssets" Visible="True" DisplayName="IncludeAssets" Description="Bu başvurudan eklenecek varlıklar" />

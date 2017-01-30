@@ -145,6 +145,12 @@
     <value>类库 (.NET Core)</value>
   </data>
   <data name="10" xml:space="preserve">
-    <value>A project for creating a class library that targets .NET Core.</value>
+    <value>用于创建目标为 .NET Core 的类库的项目。</value>
+  </data>
+  <data name="11" xml:space="preserve">
+    <value>xUnit Test Project (.NET Core)</value>
+  </data>
+  <data name="12" xml:space="preserve">
+    <value>A project that contains xunit tests that can run on .NET Core on Windows, Linux and MacOS</value>
   </data>
 </root>

@@ -53,6 +53,16 @@
         <target state="translated">.NET Core を対象とするクラス ライブラリを作成するためのプロジェクトです。</target>
         <note />
       </trans-unit>
+      <trans-unit id="11">
+        <source>xUnit Test Project (.NET Core)</source>
+        <target state="new">xUnit Test Project (.NET Core)</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="12">
+        <source>A project that contains xunit tests that can run on .NET Core on Windows, Linux and MacOS</source>
+        <target state="new">A project that contains xunit tests that can run on .NET Core on Windows, Linux and MacOS</target>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

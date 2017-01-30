@@ -127,13 +127,13 @@
     <value>Konzolová aplikace (.NET Core)</value>
   </data>
   <data name="4" xml:space="preserve">
-    <value>Projekt pro vytvoření aplikace příkazového řádku, která běží na platformě .NET Core v systémech Windows, Linux a MacOS.</value>
+    <value>Projekt pro vytvoření aplikace příkazového řádku, která běží na platformě .NET Core v systémech Windows, Linux a MacOS</value>
   </data>
   <data name="5" xml:space="preserve">
     <value>Knihovna tříd (.NET Standard)</value>
   </data>
   <data name="6" xml:space="preserve">
-    <value>Projekt pro vytvoření knihovny tříd určené pro .NET Standard.</value>
+    <value>Projekt pro vytvoření knihovny tříd určené pro .NET Standard</value>
   </data>
   <data name="7" xml:space="preserve">
     <value>Načtený editor souboru projektu</value>
@@ -145,6 +145,12 @@
     <value>Knihovna tříd (.NET Core)</value>
   </data>
   <data name="10" xml:space="preserve">
-    <value>A project for creating a class library that targets .NET Core.</value>
+    <value>Projekt pro vytvoření knihovny tříd určené pro .NET Core</value>
+  </data>
+  <data name="11" xml:space="preserve">
+    <value>xUnit Test Project (.NET Core)</value>
+  </data>
+  <data name="12" xml:space="preserve">
+    <value>A project that contains xunit tests that can run on .NET Core on Windows, Linux and MacOS</value>
   </data>
 </root>

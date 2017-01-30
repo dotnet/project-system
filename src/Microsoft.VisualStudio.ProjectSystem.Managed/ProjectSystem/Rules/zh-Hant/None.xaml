@@ -2,7 +2,7 @@
 <!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
 <Rule Name="None" DisplayName="一般" PageTemplate="generic" Description="非組建項目" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="None" />
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="None" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <Rule.Categories>
     <Category Name="Advanced" DisplayName="進階" />
@@ -18,34 +18,34 @@
   <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="自訂工具命名空間" Description="自訂工具產生的輸出所放置的命名空間。" />
   <StringProperty Name="Identity" Visible="false" ReadOnly="true" Category="Misc" Description="Include 屬性中指定的項目。">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="Identity" />
+      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="FullPath" DisplayName="完整路徑" ReadOnly="true" Category="Misc" Description="檔案的位置。">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="FullPath" />
+      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="FileNameAndExtension" DisplayName="檔案名稱" ReadOnly="true" Category="Misc" Description="檔案或資料夾的名稱。">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="FileNameAndExtension" />
+      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="FileNameAndExtension" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="URL" ReadOnly="true" Visible="false">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="FullPath" />
+      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <BoolProperty Name="Visible" Visible="false" />
   <StringProperty Name="DependentUpon" Visible="false" />
   <StringProperty Name="Link" Visible="false">
     <StringProperty.DataSource>
-      <DataSource PersistenceStyle="Attribute" />
+      <DataSource PersistenceStyle="Attribute" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="Extension" Visible="False" ReadOnly="true">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="Extension" />
+      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="Extension" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="LastGenOutput" Visible="false" Description="因為 SFG 而產生的最後一個檔案的檔案名稱。" />
@@ -53,7 +53,7 @@
   <BoolProperty Name="AutoGen" Visible="false" Description="這個值指出這是否為產生的檔案。" />
   <StringProperty Name="CustomTool" Visible="false" Description="用於存取 Generator 屬性的 DTE 屬性。">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFile" ItemType="None" PersistedName="Generator" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFile" ItemType="None" PersistedName="Generator" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
 </Rule>

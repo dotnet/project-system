@@ -142,7 +142,6 @@
     <Compile Include="ProjectSystem\VS\Properties\InterceptedProjectProperties\TargetFrameworkMonikerValueProvider.cs" />
     <Compile Include="ProjectSystem\VS\Properties\ProjectFileOrAssemblyInfoPropertiesProvider.cs" />
     <Compile Include="ProjectSystem\VS\Reload\IReloadableProject.cs" />
-    <Compile Include="ProjectSystem\VS\Reload\ProjectReloadResult.cs" />
     <Compile Include="ProjectSystem\VS\Reload\ReloadableProject.cs" />
     <Compile Include="ProjectSystem\VS\Renamer.cs" />
     <Compile Include="ProjectSystem\VS\Build\LanguageServiceErrorListProvider.ErrorListDetails.cs" />

@@ -8,37 +8,37 @@
     xmlns="http://schemas.microsoft.com/build/2009/properties">
     
     <Rule.DataSource>
-        <DataSource Persistence="ProjectFile" Label="Configuration" />
+        <DataSource Persistence="ProjectFile" Label="Configuration" SourceOfDefaultValue="AfterContext" />
     </Rule.DataSource>
 
     <StringProperty Name="TargetFrameworkIdentifier" DisplayName="Target Framework Identifier">
         <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkIdentifier" HasConfigurationCondition="False" />
+            <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkIdentifier" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
     <StringProperty Name="TargetFrameworks" DisplayName="Target Frameworks">
         <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworks" HasConfigurationCondition="False" />
+            <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworks" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
     <StringProperty Name="TargetFramework" DisplayName="Target Framework">
         <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" PersistedName="TargetFramework" HasConfigurationCondition="False" />
+            <DataSource Persistence="ProjectFile" PersistedName="TargetFramework" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
     <StringProperty Name="TargetFrameworkProfile" DisplayName="Target Framework Profile">
         <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkProfile" HasConfigurationCondition="False" />
+            <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkProfile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
     <StringProperty Name="TargetFrameworkVersion" DisplayName="Target Framework Version">
         <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkVersion" HasConfigurationCondition="False" />
+            <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkVersion" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>    
     <StringProperty Name="TargetFrameworkMoniker" DisplayName="Target Framework Moniker">
         <StringProperty.DataSource>
-            <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" />
+            <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
 
@@ -47,6 +47,10 @@
                     ReadOnly="True" />
 
     <StringProperty Name="MSBuildProjectDirectory" 
+                    Visible="False" 
+                    ReadOnly="True" />
+
+    <StringProperty Name="MSBuildProjectFile" 
                     Visible="False" 
                     ReadOnly="True" />
 
@@ -59,6 +63,22 @@
                     ReadOnly="True" />
 
     <StringProperty Name="RuntimeIdentifiers" 
+                    Visible="False" 
+                    ReadOnly="True" />
+
+    <StringProperty Name="PackageVersion" 
+                    Visible="False" 
+                    ReadOnly="True" />
+
+    <StringProperty Name="Version" 
+                    Visible="False" 
+                    ReadOnly="True" />
+
+    <StringProperty Name="VersionPrefix" 
+                    Visible="False" 
+                    ReadOnly="True" />
+
+    <StringProperty Name="VersionSuffix" 
                     Visible="False" 
                     ReadOnly="True" />
 

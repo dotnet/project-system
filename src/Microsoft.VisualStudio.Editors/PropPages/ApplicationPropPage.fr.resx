@@ -124,7 +124,7 @@
     <value>Espace de noms par dé&amp;faut :</value>
   </data>
   <data name="OutputTypeLabel.Text" xml:space="preserve">
-    <value>Type de s&amp;ortie :</value>
+    <value>&amp;Type de sortie :</value>
   </data>
   <data name="StartupObjectLabel.Text" xml:space="preserve">
     <value>&amp;Objet de démarrage :</value>

@@ -2385,7 +2385,13 @@ NextControl:
         ''' <returns>The PropertyDescriptor for the property.</returns>
         ''' <remarks></remarks>
         Protected Function GetPropertyDescriptor(PropertyName As String) As PropertyDescriptor
-            Return m_ObjectsPropertyDescriptorsArray(0)(PropertyName)
+            Dim d = m_ObjectsPropertyDescriptorsArray(0)(PropertyName)
+
+            If CpsPropertyDescriptorWrapper.IsAnyCpsComponent(m_Objects) Then
+                d = New CpsPropertyDescriptorWrapper(d)
+            End If
+
+            Return d
         End Function
 #End Region
 

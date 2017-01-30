@@ -5,12 +5,12 @@
     <Category Name="General" DisplayName="Общие" Description="Общие" />
   </Rule.Categories>
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" />
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <StringProperty Name="ApplicationIcon" DisplayName="Значок приложения" Visible="True" />
   <StringProperty Name="TargetFrameworkMoniker" DisplayName="Моникер целевой платформы" Visible="True">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="AssemblyName" DisplayName="Имя сборки" Visible="True" />
@@ -18,17 +18,17 @@
   <StringProperty Name="RootNamespace" DisplayName="Корневое пространство имен" Visible="True" />
   <StringProperty Name="DefaultNamespace" DisplayName="Пространство имен по умолчанию" Visible="True">
     <StringProperty.DataSource>
-      <DataSource PersistedName="RootNamespace" Persistence="ProjectFile" HasConfigurationCondition="false" />
+      <DataSource PersistedName="RootNamespace" Persistence="ProjectFile" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="TargetFrameworks" DisplayName="Целевые платформы" Visible="True">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworks" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworks" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <IntProperty Name="TargetFramework" ReadOnly="True" Visible="True">
     <IntProperty.DataSource>
-      <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFramework" />
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFramework" SourceOfDefaultValue="AfterContext" />
     </IntProperty.DataSource>
   </IntProperty>
   <StringProperty Name="OutputName" Visible="True" />
@@ -40,55 +40,20 @@
     <EnumValue Name="appcontainerexe" DisplayName="3" />
     <EnumValue Name="winmdobj" DisplayName="4" />
     <EnumProperty.DataSource>
-      <DataSource Persistence="ProjectFileWithInterception" PersistedName="OutputTypeEx" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="OutputTypeEx" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </EnumProperty.DataSource>
   </EnumProperty>
   <StringProperty Name="StartupObject" DisplayName="Тип, содержащий точку входа" Visible="True" />
   <StringProperty Name="ApplicationManifest" DisplayName="Манифест приложения" Visible="True">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFileWithInterception" PersistedName="ApplicationManifest" HasConfigurationCondition="false" />
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="ApplicationManifest" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="Win32ResourceFile" DisplayName="Файл ресурсов Win32" Visible="True">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="Win32Resource" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFile" PersistedName="Win32Resource" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="DefineConstants" DisplayName="Определить константы" Visible="True" />
-  <EnumProperty Name="PlatformTarget" DisplayName="Цель платформы" Visible="True" />
-  <BoolProperty Name="Prefer32Bit" DisplayName="Предпочтительно 32-разр." Visible="True" />
-  <BoolProperty Name="AllowUnsafeBlocks" Default="False" DisplayName="Разрешить небезопасный код" Visible="True" />
-  <StringProperty Name="Optimize" DisplayName="Оптимизировать" Visible="True" />
-  <EnumProperty Name="WarningLevel" DisplayName="Уровень предупреждения" Visible="True" />
-  <StringProperty Name="NoWarn" DisplayName="Отключить предупреждение" Visible="True" />
-  <BoolProperty Name="TreatWarningsAsErrors" Default="False" Description="Обрабатывать предупреждения как ошибки" Visible="True" />
-  <StringProperty Name="TreatSpecificWarningsAsErrors" Description="Интерпретировать указанные предупреждения как ошибки" Visible="True" />
-  <StringProperty Name="OutputPath" DisplayName="Выходной путь" Visible="True" />
-  <StringProperty Name="DocumentationFile" DisplayName="Файл документации" Visible="True" />
-  <EnumProperty Name="GenerateSerializationAssemblies" DisplayName="Создать сборки сериализации" Visible="True">
-    <EnumValue Name="Auto" DisplayName="Авто" IsDefault="True" />
-    <EnumValue Name="On" DisplayName="Вкл." />
-    <EnumValue Name="Off" DisplayName="Выкл." />
-  </EnumProperty>
-  <EnumProperty Name="LanguageVersion" DisplayName="Версия языка" Visible="True">
-    <EnumProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="LangVersion" />
-    </EnumProperty.DataSource>
-  </EnumProperty>
-  <EnumProperty Name="ErrorReport" DisplayName="Отчет об ошибках" Visible="True" />
-  <EnumProperty Name="DebugInfo" DisplayName="Сведения об отладке" Visible="True">
-    <EnumProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="DebugType" />
-    </EnumProperty.DataSource>
-  </EnumProperty>
-  <BoolProperty Name="CheckForOverflowUnderflow" DisplayName="CheckForOverflowUnderflow" Visible="False">
-    <BoolProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="CheckForOverflowUnderflow" HasConfigurationCondition="True" />
-    </BoolProperty.DataSource>
-  </BoolProperty>
-  <StringProperty Name="DebugSymbols" DisplayName="Символы отладки" Visible="True" />
-  <EnumProperty Name="FileAlignment" DisplayName="Выравнивание файла" Visible="True" />
-  <StringProperty Name="BaseAddress" DisplayName="Базовый адрес" Visible="True" />
   <StringProperty Name="PreBuildEvent" DisplayName="События перед сборкой" Visible="True" />
   <StringProperty Name="PostBuildEvent" DisplayName="События после сборки" Visible="True" />
   <EnumProperty Name="RunPostBuildEvent" DisplayName="Выполнять события после сборки" Visible="True">
@@ -99,34 +64,34 @@
   <StringProperty Name="ReferencePath" DisplayName="Путь для ссылок" Visible="True" />
   <StringProperty Name="FileName" DisplayName="Файл проекта" ReadOnly="True">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectFile" />
+      <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectFile" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="FullPath" DisplayName="Папка проекта" ReadOnly="True">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" />
+      <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="LocalPath" ReadOnly="True" Visible="True">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" />
+      <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <!-- Package properties -->
   <BoolProperty Name="GeneratePackageOnBuild" DisplayName="Создать пакет при сборке" Default="False" />
   <StringProperty Name="PackageId" DisplayName="Идентификатор пакета">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="Version" DisplayName="Версия пакета">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="Authors" DisplayName="Авторы">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <BoolProperty Name="PackageRequireLicenseAcceptance" DisplayName="Для пакета требуется прием условий лицензионного соглашения." Default="False" />
@@ -140,44 +105,44 @@
   <!--AssemblyInfo properties-->
   <StringProperty Name="Description" DisplayName="Описание сборки" Visible="True">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="Company" DisplayName="Компания, предоставившая сборку" Visible="True">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="Product" DisplayName="Продукт" Visible="True">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="Copyright" DisplayName="Авторские права" Visible="True">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="AssemblyVersion" DisplayName="Версия сборки" Visible="True">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="FileVersion" DisplayName="Версия файла сборки" Visible="True">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="NeutralLanguage" DisplayName="Нейтральный язык ресурсов" Visible="True">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <BoolProperty Name="SignAssembly" DisplayName="Подписать сборку" Visible="True" />
   <BoolProperty Name="DelaySign" DisplayName="Только отложенная подпись" Visible="True" />
   <StringProperty Name="AssemblyOriginatorKeyFile" DisplayName="Файл ключа строгого имени" Visible="True">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
 </Rule>

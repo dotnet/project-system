@@ -2,14 +2,14 @@
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Rule Name="CSharp" DisplayName="C#" PageTemplate="tool" Description="File di origine di C#" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="false" />
+    <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <Rule.Categories>
     <Category Name="Advanced" DisplayName="Avanzate" />
     <Category Name="Misc" DisplayName="Varie" />
   </Rule.Categories>
   <DynamicEnumProperty Name="{}{ItemType}" DisplayName="Azione di compilazione" Category="Advanced" Description="Descrizione della relazione tra il file e i processi di compilazione e distribuzione." EnumProvider="ItemTypes" />
-  <EnumProperty Name="CopyToOutputDirectory" DisplayName="Copia nella directory di output" Category="Advanced" Description="Consente di specificare se il file di origine verrà copiato nella directory di output.">
+  <EnumProperty Name="CopyToOutputDirectory" DisplayName="Copia nella directory di output" Category="Advanced" Description="Specifica se il file di origine verrà copiato nella directory di output.">
     <EnumValue Name="Never" DisplayName="Non copiare" />
     <EnumValue Name="Always" DisplayName="Copia sempre" />
     <EnumValue Name="PreserveNewest" DisplayName="Copia se più recente" />
@@ -18,7 +18,7 @@
   <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="Spazio dei nomi strumento personalizzato" Description="Spazio dei nomi in cui viene inserito l'output dello strumento personalizzato." />
   <BoolProperty Name="ExcludedFromBuild" DisplayName="Escluso dalla compilazione">
     <BoolProperty.DataSource>
-      <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="true" />
+      <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="true" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
   <BoolProperty Name="Visible" Visible="false" />
@@ -29,7 +29,7 @@
   </StringProperty>
   <StringProperty Name="Link" Visible="false">
     <StringProperty.DataSource>
-      <DataSource PersistenceStyle="Attribute" />
+      <DataSource PersistenceStyle="Attribute" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
     <StringProperty.Metadata>
       <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />
@@ -37,6 +37,6 @@
   </StringProperty>
   <StringProperty Name="SubType" Visible="false" />
   <StringProperty Name="LastGenOutput" Visible="false" Description="Nome dell'ultimo file generato come risultato di SFG." />
-  <BoolProperty Name="DesignTime" Visible="false" Description="Valore che indica se per questo file esiste una finestra di progettazione." />
+  <BoolProperty Name="DesignTime" Visible="false" Description="Valore che indica se per il file esiste una finestra di progettazione." />
   <BoolProperty Name="AutoGen" Visible="false" Description="Valore che indica se si tratta di un file generato." />
 </Rule>

@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.Packaging;
+using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell.Flavor;
 using Microsoft.VisualStudio.Shell.Interop;
 using Newtonsoft.Json;
@@ -33,6 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         public int UpgradeProject(string xprojLocation, uint upgradeFlags, string backupDirectory, out string migratedProjectFileLocation,
             IVsUpgradeLogger logger, out int upgradeRequired, out Guid migratedProjectGuid)
         {
+            UIThreadHelper.VerifyOnUIThread();
             bool success = false;
             var projectName = Path.GetFileNameWithoutExtension(xprojLocation);
             var hr = UpgradeProject_CheckOnly(xprojLocation, logger, out upgradeRequired, out migratedProjectGuid, out uint dummy);
@@ -50,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             var solution = _serviceProvider.GetService<IVsSolution, SVsSolution>();
             Verify.HResult(solution.GetSolutionInfo(out string solutionDirectory, out string solutionFile, out string userOptsFile));
 
-            var backupResult = BackupAndDeleteGlobalJson(solutionDirectory, backupDirectory, xprojLocation, projectName, logger);
+            var backupResult = BackupAndDeleteGlobalJson(solutionDirectory, solution, backupDirectory, xprojLocation, projectName, logger);
             if (!backupResult.Succeeded)
             {
                 migratedProjectGuid = Guid.Parse(CSharpProjectSystemPackage.XprojTypeGuid);
@@ -126,7 +128,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             return true;
         }
 
-        internal HResult BackupAndDeleteGlobalJson(string solutionDirectory, string backupLocation, string xprojLocation, string projectName, IVsUpgradeLogger pLogger)
+        internal HResult BackupAndDeleteGlobalJson(string solutionDirectory, IVsSolution solution, string backupLocation, string xprojLocation, string projectName, IVsUpgradeLogger pLogger)
         {
             var globalJson = Path.Combine(solutionDirectory, "global.json");
             if (_fileSystem.FileExists(globalJson))
@@ -150,6 +152,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
                 try
                 {
                     _fileSystem.RemoveFile(globalJson);
+
+                    var remover = new GlobalJsonRemover(_serviceProvider);
+                    HResult hr = solution.AdviseSolutionEvents(remover, out uint cookie);
+                    if (hr.Succeeded)
+                    {
+                        remover.SolutionCookie = cookie;
+                    }
                 }
                 catch (IOException e)
                 {
