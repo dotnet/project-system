@@ -169,14 +169,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         {
                             Verify.NotDisposed(this);
 
-                            var intermediateBlockDesignTime = new BufferBlock<
-                                                            IProjectVersionedValue<
-                                                                IProjectSubscriptionUpdate>>();
+                            var intermediateBlockDesignTime = 
+                                new BufferBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(
+                                    new ExecutionDataflowBlockOptions()
+                                    {
+                                        NameFormat = "DependenciesSubTree DesignTime Input: {1}"
+                                    });
+
+                            var intermediateBlockEvaluation =
+                                new BufferBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(
+                                    new ExecutionDataflowBlockOptions()
+                                    {
+                                        NameFormat = "DependenciesSubTree Evaluation Input: {1}"
+                                    });
 
                             _subscriptionLinks.Add(ProjectSubscriptionService.JointRuleSource.SourceBlock.LinkTo(
                                 intermediateBlockDesignTime,
                                 ruleNames: UnresolvedReferenceRuleNames.Union(ResolvedReferenceRuleNames),
-                                suppressVersionOnlyUpdates: true));
+                                suppressVersionOnlyUpdates: false, 
+                                linkOptions: new DataflowLinkOptions { PropagateCompletion = true }));
+
+                            _subscriptionLinks.Add(ProjectSubscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
+                                intermediateBlockEvaluation,
+                                ruleNames: UnresolvedReferenceRuleNames,
+                                suppressVersionOnlyUpdates: false,
+                                linkOptions: new DataflowLinkOptions { PropagateCompletion = true }));
 
                             var actionBlock = new ActionBlock<
                                                     IProjectVersionedValue<
@@ -191,29 +208,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                         ProjectSubscriptionService_Changed),
                                                    new ExecutionDataflowBlockOptions()
                                                    {
-                                                       NameFormat = "ReferencesSubtree Input: {1}"
+                                                       NameFormat = "DependenciesSubTree Input: {1}"
                                                    });
 
                             _projectSyncLinks.Add(ProjectDataSources.SyncLinkTo(
                                 intermediateBlockDesignTime.SyncLinkOptions(),
                                 ProjectSubscriptionService.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
                                 ProjectSubscriptionService.SharedFoldersSource.SourceBlock.SyncLinkOptions(),
-                                actionBlock));
-
-                            var intermediateBlockEvaluation = new BufferBlock<
-                                IProjectVersionedValue<
-                                    IProjectSubscriptionUpdate>>();
-                            _subscriptionLinks.Add(ProjectSubscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
-                                intermediateBlockEvaluation,
-                                ruleNames: UnresolvedReferenceRuleNames,
-                                suppressVersionOnlyUpdates: true));
+                                actionBlock,
+                                linkOptions: new DataflowLinkOptions { PropagateCompletion = true }));
 
                             _projectSyncLinks.Add(ProjectDataSources.SyncLinkTo(
                                 intermediateBlockEvaluation.SyncLinkOptions(),
                                 ProjectSubscriptionService.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
                                 ProjectSubscriptionService.SharedFoldersSource.SourceBlock.SyncLinkOptions(),
-                                actionBlock));
-
+                                actionBlock,
+                                linkOptions: new DataflowLinkOptions { PropagateCompletion = true }));
                         }
                     },
                     registerFaultHandler: true);
