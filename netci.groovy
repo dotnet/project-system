@@ -192,7 +192,7 @@ static void addVsiMultiScm(def myJob, def project) {
                     relativeTargetDirectory('sdk')
                 }
                 // pull in a specific LKG commit from master.
-                branch('${GitBranchOrCommit}')
+                branch('4fb9f58664b1d516564ee8d3c3a5de79b9a82955')
             }
             git {
                 remote {
@@ -204,7 +204,7 @@ static void addVsiMultiScm(def myJob, def project) {
                 }
                 // roslyn-internal - pull in a specific LKG commit from master.
                 // In future, '*/master' can be placed here to pull latest sources.
-                branch('${GitBranchOrCommit}')
+                branch('001bd94b02eec43afd37ed455a946808c7f5dfaf')
             }
         }
     }
