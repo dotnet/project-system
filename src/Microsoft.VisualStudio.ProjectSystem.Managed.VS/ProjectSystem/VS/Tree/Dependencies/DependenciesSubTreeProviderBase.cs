@@ -368,22 +368,65 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                         updatedUnresolvedSnapshots,
                                                         catalogs,
                                                         out IProjectRuleSnapshot unresolvedReferenceSnapshot);
-                    var node = rootTreeNodes.FindNode(removedItemSpec, unresolvedItemType);
+                    if (unresolvedItemType != null)
+                    {
+                        // if in current unresolved refs snapshot we have item matching unresolvedItemSpec,
+                        // we check if there is an existing node in the tree matching it - if yes, remove it.
+                        // Note: when resolved item was added to the tree, it was added with OriginalItemSpec,
+                        // which matches it's unresolved counter part, that's why here we search for unresolvedItemSpec, 
+                        // but not for removedItemSpec.
+                        var node = rootTreeNodes.FindNode(unresolvedItemSpec, unresolvedItemType);
+                        if (node != null)
+                        {
+                            dependenciesChange.RemovedNodes.Add(node);
+
+                            IImmutableDictionary<string, string> properties = null;
+                            if (unresolvedReferenceSnapshot != null)
+                            {
+                                properties = GetProjectItemProperties(unresolvedReferenceSnapshot, unresolvedItemSpec);
+                            }
+
+                            node = CreateDependencyNode(unresolvedItemSpec,
+                                                        unresolvedItemType,
+                                                        properties: properties,
+                                                        resolved: false);
+                            dependenciesChange.AddedNodes.Add(node);
+                        }
+                    }
+                    else
+                    {
+                        // we end up here when identity of unresolved reference changes and we don't even find
+                        // it in unresolved references changes (might happen when HintPath is used) or when DT 
+                        // events for unresolved changes come separatelly form resolved changes.
+                        var node = rootTreeNodes.FindNode(removedItemSpec);
+                        if (node != null)
+                        {
+                            dependenciesChange.RemovedNodes.Add(node);
+                        }
+                    }
+                }
+
+                foreach (string changedItemSpec in resolvedReferenceRuleChanges.Difference.ChangedItems)
+                {
+                    string unresolvedItemSpec = resolvedReferenceRuleChanges.After
+                                                    .Items[changedItemSpec][OriginalItemSpecPropertyName];
+                    string unresolvedItemType = GetUnresolvedReferenceItemType(unresolvedItemSpec,
+                                                        updatedUnresolvedSnapshots,
+                                                        catalogs,
+                                                        out IProjectRuleSnapshot unresolvedReferenceSnapshot);
+                    if (unresolvedItemType == null)
+                    {
+                        continue;
+                    }
+
+                    var node = rootTreeNodes.FindNode(unresolvedItemSpec, unresolvedItemType);
                     if (node != null)
                     {
-                        dependenciesChange.RemovedNodes.Add(node);
-
-                        IImmutableDictionary<string, string> properties = null;
-                        if (unresolvedReferenceSnapshot != null)
-                        {
-                            properties = GetProjectItemProperties(unresolvedReferenceSnapshot, unresolvedItemSpec);
-                        }
-
-                        node = CreateDependencyNode(unresolvedItemSpec,
-                                                    unresolvedItemType,
-                                                    properties: properties,
-                                                    resolved: false);
-                        dependenciesChange.AddedNodes.Add(node);
+                        var properties = GetProjectItemProperties(resolvedReferenceRuleChanges.After, changedItemSpec);
+                        var newNode = CreateDependencyNode(unresolvedItemSpec,
+                                                        itemType: unresolvedItemType,
+                                                        properties: properties);
+                        dependenciesChange.UpdatedNodes.Add(newNode);
                     }
                 }
 
