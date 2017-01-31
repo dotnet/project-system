@@ -55,13 +55,13 @@
       </trans-unit>
       <trans-unit id="11">
         <source>xUnit Test Project (.NET Core)</source>
-        <target state="new">xUnit Test Project (.NET Core)</target>
-        <note></note>
+        <target state="translated">Projet de test xUnit (.NET Core)</target>
+        <note />
       </trans-unit>
       <trans-unit id="12">
         <source>A project that contains xunit tests that can run on .NET Core on Windows, Linux and MacOS</source>
-        <target state="new">A project that contains xunit tests that can run on .NET Core on Windows, Linux and MacOS</target>
-        <note></note>
+        <target state="translated">Projet qui contient les tests xunit pouvant être exécutés sur .NET Core dans Windows, Linux et MacOS</target>
+        <note />
       </trans-unit>
     </body>
   </file>
