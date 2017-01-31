@@ -12,10 +12,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string VisualBasic = ProjectCapabilities.VB;
         public const string VisualBasicLanguageService = ProjectCapabilities.VB + " & " + ProjectCapabilities.LanguageService;
         public const string CSharpLanguageService = ProjectCapabilities.CSharp + " & " + ProjectCapabilities.LanguageService;
-        public const string CSharpOrVisualBasic = ProjectCapabilities.CSharp + " | " + ProjectCapabilities.VB;
-        public const string CSharpOrVisualBasicLanguageService = "(" + ProjectCapabilities.CSharp + " | " + ProjectCapabilities.VB + ") & " + ProjectCapabilities.LanguageService;
-        public const string CSharpOrVisualBasicOpenProjectFile = "(" + CSharp + " | " + VisualBasic + ") & " + OpenProjectFile;
+        public const string CSharpOrVisualBasic = "(" + ProjectCapabilities.CSharp + " | " + ProjectCapabilities.VB + ")";
+        public const string CSharpOrVisualBasicLanguageService = CSharpOrVisualBasic +" & " + ProjectCapabilities.LanguageService;
+        public const string CSharpOrVisualBasicOpenProjectFile = CSharpOrVisualBasic + " & " + OpenProjectFile;
         public const string AppDesigner = nameof(AppDesigner);
+        public const string AppSettings = nameof(AppSettings);
         public const string DependenciesTree = nameof(DependenciesTree);
         public const string EditAndContinue = nameof(EditAndContinue);
         public const string LaunchProfiles = nameof(LaunchProfiles);
