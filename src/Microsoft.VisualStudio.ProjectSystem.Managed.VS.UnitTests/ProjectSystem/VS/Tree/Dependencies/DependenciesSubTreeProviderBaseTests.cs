@@ -140,7 +140,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 ""Items"": {
                     ""resolvedItemTobeRemoved"": {
                         ""OriginalItemSpec"":""unresolvedItemTobeAddedInsteadOfRemovedResolvedItem""
-                    }
+                    },
+                    ""resolvedItemTobeRemovedWithNonExistentOriginalItemSpec"": {
+                        ""OriginalItemSpec"":""nonExistentUnresolvedOriginalItemSpec""
+                    },
                 },
                 ""RuleName"":""rulenameResolved""
             },
@@ -148,7 +151,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 ""AddedItems"": [ ""item21"", ""item22"", ""itemWithoutOriginalItemSpec"", ""itemWithoutPropertiesInAfter"", 
                                   ""unresolvedItemTobeRemoved"" ],
                 ""ChangedItems"": [ ],
-                ""RemovedItems"": [ ""resolvedItemTobeRemoved"" ],
+                ""RemovedItems"": [ ""resolvedItemTobeRemoved"", ""resolvedItemTobeRemovedWithNonExistentOriginalItemSpec"" ],
                 ""AnyChanges"": ""true""
             },
         },
@@ -213,7 +216,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
     ""Id"": {
         ""ProviderType"": ""MyProvider"",
-        ""ItemSpec"": ""resolvedItemTobeRemoved"",
+        ""ItemSpec"": ""unresolvedItemTobeAddedInsteadOfRemovedResolvedItem"",
         ""ItemType"": ""myUnresolvedItemType""
     }
 }");
@@ -226,16 +229,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         ""ItemType"": ""myUnresolvedItemType""
     }
 }");
+
+            var unresolvedItemTobeRemovedNodeWithNonExistentOriginalItemSpecNode = IDependencyNodeFactory.FromJson(@"
+{
+    ""Id"": {
+        ""ProviderType"": ""MyProvider"",
+        ""ItemSpec"": ""resolvedItemTobeRemovedWithNonExistentOriginalItemSpec"",
+        ""ItemType"": ""myUnresolvedItemType""
+    }
+}");
             rootNode.AddChild(item4Node);
             rootNode.AddChild(resolvedItemTobeRemovedNode);
             rootNode.AddChild(unresolvedItemTobeRemovedNode);
+            rootNode.AddChild(unresolvedItemTobeRemovedNodeWithNonExistentOriginalItemSpecNode);
 
             var catalogs = IProjectCatalogSnapshotFactory.ImplementRulesWithItemTypes(
                 new Dictionary<string, string>
                 {
                     { "rulenameResolved", "myResolvedItemType" },
                     { "rulenameUnresolved", "myUnresolvedItemType" },
-                    { "unresolvedItemTobeRemoved", "myUnresolvedItemType" }
+                    { "unresolvedItemTobeRemoved", "myUnresolvedItemType" },
+                    { "unresolvedItemTobeAddedInsteadOfRemovedResolvedItem", "myUnresolvedItemType" }
                 });
 
             var provider = new TestableDependenciesSubTreeProviderBase();
@@ -273,13 +287,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.True(addedNodesArray[4].Resolved);
             Assert.Equal("unresolvedItemTobeRemoved", addedNodesArray[4].Caption);
 
-            Assert.Equal(3, resultChanges.RemovedNodes.Count);
+            Assert.Equal(4, resultChanges.RemovedNodes.Count);
 
             var removedNodesArray = resultChanges.RemovedNodes.ToArray();
 
             Assert.Equal(item4Node.Id, removedNodesArray[0].Id);
             Assert.Equal(resolvedItemTobeRemovedNode.Id, removedNodesArray[1].Id);
-            Assert.Equal(unresolvedItemTobeRemovedNode.Id, removedNodesArray[2].Id);
+            Assert.Equal(unresolvedItemTobeRemovedNodeWithNonExistentOriginalItemSpecNode.Id, removedNodesArray[2].Id);
+            Assert.Equal(unresolvedItemTobeRemovedNode.Id, removedNodesArray[3].Id);
         }
 
         [Fact]
