@@ -31,27 +31,28 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private static bool NeedsForcedReload(ImmutableArray<ProjectPropertyElement> oldProperties, ImmutableArray<ProjectPropertyElement> newProperties)
         {
-            // If user added or removed TargetFramework/TargetFrameworks property, then force a full project reload.
+            // If user added/removed/edited TargetFramework/TargetFrameworks property, then force a full project reload.
             var oldTargets = ComputeProjectTargets(oldProperties);
             var newTargets = ComputeProjectTargets(newProperties);
 
-            return oldTargets.HasTargetFramework != newTargets.HasTargetFramework || oldTargets.HasTargetFrameworks != newTargets.HasTargetFrameworks;
+            return !StringComparers.PropertyValues.Equals(oldTargets.TargetFramework, newTargets.TargetFramework) ||
+                !StringComparers.PropertyValues.Equals(oldTargets.TargetFrameworks, newTargets.TargetFrameworks);
         }
 
-        private static (bool HasTargetFramework, bool HasTargetFrameworks) ComputeProjectTargets(ImmutableArray<ProjectPropertyElement> properties)
+        private static (string TargetFramework, string TargetFrameworks) ComputeProjectTargets(ImmutableArray<ProjectPropertyElement> properties)
         {
-            (bool HasTargetFramework, bool HasTargetFrameworks) targets = (false, false);
+            (string TargetFramework, string TargetFrameworks) targets = (null, null);
 
             foreach (var property in properties)
             {
                 if (property.Name.Equals(ConfigurationGeneral.TargetFrameworkProperty, StringComparison.OrdinalIgnoreCase))
                 {
-                    targets.HasTargetFramework = true;
+                    targets.TargetFramework = property.Value;
                 }
 
                 if (property.Name.Equals(ConfigurationGeneral.TargetFrameworksProperty, StringComparison.OrdinalIgnoreCase))
                 {
-                    targets.HasTargetFrameworks = true;
+                    targets.TargetFrameworks = property.Value;
                 }
             }
 

@@ -304,8 +304,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 }
                 else
                 {
-                    Assumes.True(failure.Item2 == ProjectReloadResult.ReloadFailed || failure.Item2 == ProjectReloadResult.NeedsForceReload);
-
                     if (ignoreAll)
                     {   
                         // do nothing
@@ -316,7 +314,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     }
                     else
                     {
-                        ProcessProjectWhichFailedReload(failure.Item1, out ignoreAll, out reloadAll);
+                        ProcessProjectWhichFailedReload(failure.Item1, failure.Item2, out ignoreAll, out reloadAll);
                     }
                 }
             }
@@ -326,8 +324,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// Puts up a prompt appropriate for project which failed the autoload. ignoreAll or reloadAll will be set
         /// to true if the user selected those options
         /// </summary>
-        private void ProcessProjectWhichFailedReload(IReloadableProject project, out bool ignoreAll, out bool reloadAll)
+        private void ProcessProjectWhichFailedReload(IReloadableProject project, ProjectReloadResult reloadResult, out bool ignoreAll, out bool reloadAll)
         {
+            Assumes.True(reloadResult == ProjectReloadResult.ReloadFailed || reloadResult == ProjectReloadResult.NeedsForceReload);
+
             ignoreAll = false;
             reloadAll = false;
             var buttons = new string[] {VSResources.IgnoreAll,
@@ -335,8 +335,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                         VSResources.ReloadAll,
                                         VSResources.Reload};
 
-            // TODO: Consider showing different messages for reload failed and needs forced reload.
-            var msgText = string.Format(VSResources.ProjectModificationsPrompt, Path.GetFileNameWithoutExtension(project.ProjectFile));
+            var formatText = reloadResult == ProjectReloadResult.NeedsForceReload ? VSResources.ProjectForceReloadPrompt : VSResources.ProjectModificationsPrompt;
+            var msgText = string.Format(formatText, Path.GetFileNameWithoutExtension(project.ProjectFile));
             switch (_dialogServices.ShowMultiChoiceMsgBox(VSResources.ProjectModificationDlgTitle, msgText, buttons))
             {
                 case MultiChoiceMsgBoxResult.Cancel:
