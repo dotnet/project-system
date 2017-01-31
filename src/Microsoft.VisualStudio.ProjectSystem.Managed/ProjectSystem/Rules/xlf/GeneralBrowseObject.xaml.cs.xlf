@@ -103,6 +103,111 @@
         <target state="translated">Soubor prostředků Win32</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|DefineConstants|DisplayName">
+        <source>Define Constants</source>
+        <target state="translated">Definovat konstanty</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|PlatformTarget|DisplayName">
+        <source>Platform Target</source>
+        <target state="translated">Cílová platforma</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Prefer32Bit|DisplayName">
+        <source>Prefer 32Bit</source>
+        <target state="translated">Preferovat 32bitovou</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
+        <source>Allow unsafe code</source>
+        <target state="translated">Povolit nezabezpečený kód</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Optimize|DisplayName">
+        <source>Optimize</source>
+        <target state="translated">Optimalizovat</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|WarningLevel|DisplayName">
+        <source>Warning Level</source>
+        <target state="translated">Úroveň upozornění</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|NoWarn|DisplayName">
+        <source>Supress Warning</source>
+        <target state="translated">Potlačit upozornění</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|TreatWarningsAsErrors|Description">
+        <source>Treat warnings as errors</source>
+        <target state="translated">Zpracovávat upozornění jako chyby</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|OutputPath|DisplayName">
+        <source>Output Path</source>
+        <target state="translated">Výstupní cesta</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DocumentationFile|DisplayName">
+        <source>Documentation file</source>
+        <target state="translated">Soubor dokumentace</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|GenerateSerializationAssemblies|DisplayName">
+        <source>Generate serialization assemblies</source>
+        <target state="translated">Generovat serializované sestavení</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|GenerateSerializationAssemblies.Auto|DisplayName">
+        <source>Auto</source>
+        <target state="translated">Automatické</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|GenerateSerializationAssemblies.On|DisplayName">
+        <source>On</source>
+        <target state="translated">Zapnuto</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|GenerateSerializationAssemblies.Off|DisplayName">
+        <source>Off</source>
+        <target state="translated">Vypnuto</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|LanguageVersion|DisplayName">
+        <source>Language version</source>
+        <target state="translated">Jazyková verze</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ErrorReport|DisplayName">
+        <source>Error report</source>
+        <target state="translated">Sestava chyb</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|DebugInfo|DisplayName">
+        <source>Debug Info</source>
+        <target state="translated">Informace o ladění</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|CheckForOverflowUnderflow|DisplayName">
+        <source>CheckForOverflowUnderflow</source>
+        <target state="translated">CheckForOverflowUnderflow</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DebugSymbols|DisplayName">
+        <source>Debug symbols</source>
+        <target state="translated">Symboly ladění</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|FileAlignment|DisplayName">
+        <source>File Alignment</source>
+        <target state="translated">Zarovnání souboru</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|BaseAddress|DisplayName">
+        <source>Base address</source>
+        <target state="translated">Základní adresa</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|PreBuildEvent|DisplayName">
         <source>Pre Build Event</source>
         <target state="translated">Událost před sestavením</target>
@@ -181,6 +286,11 @@
       <trans-unit id="StringProperty|AssemblyOriginatorKeyFile|DisplayName">
         <source>Strong name key file</source>
         <target state="translated">Soubor klíče se silným názvem</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TreatSpecificWarningsAsErrors|Description">
+        <source>Treat specific warnings as errors</source>
+        <target state="translated">Považovat specifická upozornění za chyby</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GeneratePackageOnBuild|DisplayName">

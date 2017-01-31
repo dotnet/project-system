@@ -110,73 +110,73 @@
       </trans-unit>
       <trans-unit id="AddBtn">
         <source>Add</source>
-        <target state="new">Add</target>
-        <note></note>
+        <target state="translated">Ekle</target>
+        <note />
       </trans-unit>
       <trans-unit id="ApplicationArguments">
         <source>Application arguments:</source>
-        <target state="new">Application arguments:</target>
-        <note></note>
+        <target state="translated">Uygulama bağımsız değişkenleri:</target>
+        <note />
       </trans-unit>
       <trans-unit id="BrowseBtn">
         <source>Browse...</source>
-        <target state="new">Browse...</target>
-        <note></note>
+        <target state="translated">Gözat...</target>
+        <note />
       </trans-unit>
       <trans-unit id="DeleteBtn">
         <source>Delete</source>
-        <target state="new">Delete</target>
-        <note></note>
+        <target state="translated">Sil</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnvironmentVariables">
         <source>Environment variables:</source>
-        <target state="new">Environment variables:</target>
-        <note></note>
+        <target state="translated">Ortam değişkenleri:</target>
+        <note />
       </trans-unit>
       <trans-unit id="Executable">
         <source>Executable</source>
-        <target state="new">Executable</target>
-        <note></note>
+        <target state="translated">Yürütülebilir</target>
+        <note />
       </trans-unit>
       <trans-unit id="Launch">
         <source>Launch:</source>
-        <target state="new">Launch:</target>
-        <note></note>
+        <target state="translated">Başlatma:</target>
+        <note />
       </trans-unit>
       <trans-unit id="LaunchURL">
         <source>Launch URL:</source>
-        <target state="new">Launch URL:</target>
-        <note></note>
+        <target state="translated">Başlatma URL’si:</target>
+        <note />
       </trans-unit>
       <trans-unit id="NameHeader">
         <source>Name</source>
-        <target state="new">Name</target>
-        <note></note>
+        <target state="translated">Ad</target>
+        <note />
       </trans-unit>
       <trans-unit id="NewBtn">
         <source>New...</source>
-        <target state="new">New...</target>
-        <note></note>
+        <target state="translated">Yeni...</target>
+        <note />
       </trans-unit>
       <trans-unit id="Profile">
         <source>Profile:</source>
-        <target state="new">Profile:</target>
-        <note></note>
+        <target state="translated">Profil:</target>
+        <note />
       </trans-unit>
       <trans-unit id="RemoveBtn">
         <source>Remove</source>
-        <target state="new">Remove</target>
-        <note></note>
+        <target state="translated">Kaldır</target>
+        <note />
       </trans-unit>
       <trans-unit id="ValueHeader">
         <source>Value</source>
-        <target state="new">Value</target>
-        <note></note>
+        <target state="translated">Değer</target>
+        <note />
       </trans-unit>
       <trans-unit id="WorkingDirectory">
         <source>Working directory:</source>
-        <target state="new">Working directory:</target>
-        <note></note>
+        <target state="translated">Çalışma dizini:</target>
+        <note />
       </trans-unit>
     </body>
   </file>
