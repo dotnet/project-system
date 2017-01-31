@@ -61,6 +61,9 @@
     <ProjectCapability Include="ReferenceManagerProjects" />
     <ProjectCapability Include="ReferenceManagerSharedProjects" />
     <ProjectCapability Include="ReferenceManagerWinRT" />
+
+    <!-- Settings page capability -->
+    <ProjectCapability Include="AppSettings" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'"/>
  </ItemGroup>
 
   <!-- Common Project System rules that override rules defined in msbuild. These are exact copy of the rules defined in msbuild. -->
