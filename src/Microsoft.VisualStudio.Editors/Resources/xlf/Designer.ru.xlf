@@ -351,7 +351,7 @@ Please select a valid folder path.</source>
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_InvalidBaseAddress">
         <source>Base address must be a hexadecimal number with less than or equal to 8 digits, for example, 0x11000000.</source>
-        <target state="translated">Базовый адрес должен быть шестнадцатеричным числом, содержащим не более 8 цифр, например, H11000000.</target>
+        <target state="translated">Базовый адрес должен быть шестнадцатеричным числом (длина — не более 8 цифр), например: 0x11000000.</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Compile_Notification_None">
@@ -1001,7 +1001,7 @@ Error:</source>
       </trans-unit>
       <trans-unit id="PPG_InvalidHexString">
         <source>Base address must be a hexadecimal number with less than or equal to 8 digits, for example, &amp;H11000000.</source>
-        <target state="translated">&amp;Базовый адрес должен быть шестнадцатеричным числом, например: H11000000.</target>
+        <target state="translated">&amp;Базовый адрес должен быть шестнадцатеричным числом (длина — не более 8 цифр), например: H11000000.</target>
         <note />
       </trans-unit>
       <trans-unit id="PropPage_NeedResFile">

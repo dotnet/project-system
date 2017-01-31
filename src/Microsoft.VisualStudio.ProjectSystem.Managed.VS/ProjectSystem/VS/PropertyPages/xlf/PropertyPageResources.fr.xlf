@@ -110,73 +110,73 @@
       </trans-unit>
       <trans-unit id="AddBtn">
         <source>Add</source>
-        <target state="new">Add</target>
-        <note></note>
+        <target state="translated">Ajouter</target>
+        <note />
       </trans-unit>
       <trans-unit id="ApplicationArguments">
         <source>Application arguments:</source>
-        <target state="new">Application arguments:</target>
-        <note></note>
+        <target state="translated">Arguments de l'application :</target>
+        <note />
       </trans-unit>
       <trans-unit id="BrowseBtn">
         <source>Browse...</source>
-        <target state="new">Browse...</target>
-        <note></note>
+        <target state="translated">Parcourir...</target>
+        <note />
       </trans-unit>
       <trans-unit id="DeleteBtn">
         <source>Delete</source>
-        <target state="new">Delete</target>
-        <note></note>
+        <target state="translated">Supprimer</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnvironmentVariables">
         <source>Environment variables:</source>
-        <target state="new">Environment variables:</target>
-        <note></note>
+        <target state="translated">Variables d’environnement :</target>
+        <note />
       </trans-unit>
       <trans-unit id="Executable">
         <source>Executable</source>
-        <target state="new">Executable</target>
-        <note></note>
+        <target state="translated">Exécutable</target>
+        <note />
       </trans-unit>
       <trans-unit id="Launch">
         <source>Launch:</source>
-        <target state="new">Launch:</target>
-        <note></note>
+        <target state="translated">Lancer :</target>
+        <note />
       </trans-unit>
       <trans-unit id="LaunchURL">
         <source>Launch URL:</source>
-        <target state="new">Launch URL:</target>
-        <note></note>
+        <target state="translated">Lancer l’URL :</target>
+        <note />
       </trans-unit>
       <trans-unit id="NameHeader">
         <source>Name</source>
-        <target state="new">Name</target>
-        <note></note>
+        <target state="translated">Nom</target>
+        <note />
       </trans-unit>
       <trans-unit id="NewBtn">
         <source>New...</source>
-        <target state="new">New...</target>
-        <note></note>
+        <target state="translated">Nouveau...</target>
+        <note />
       </trans-unit>
       <trans-unit id="Profile">
         <source>Profile:</source>
-        <target state="new">Profile:</target>
-        <note></note>
+        <target state="translated">Profil :</target>
+        <note />
       </trans-unit>
       <trans-unit id="RemoveBtn">
         <source>Remove</source>
-        <target state="new">Remove</target>
-        <note></note>
+        <target state="translated">Effacer</target>
+        <note />
       </trans-unit>
       <trans-unit id="ValueHeader">
         <source>Value</source>
-        <target state="new">Value</target>
-        <note></note>
+        <target state="translated">Valeur</target>
+        <note />
       </trans-unit>
       <trans-unit id="WorkingDirectory">
         <source>Working directory:</source>
-        <target state="new">Working directory:</target>
-        <note></note>
+        <target state="translated">Répertoire de travail :</target>
+        <note />
       </trans-unit>
     </body>
   </file>
