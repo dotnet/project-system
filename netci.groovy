@@ -85,9 +85,9 @@ git submodule update --init --recursive
 init.cmd
             """)
 
-            // Build the SDK.
+            // Build the SDK and install .NET Core Templates.
             batchFile("""
-echo *** Step 4: Build the SDK  ***
+echo *** Step 4: Build the SDK and install .NET Core Templates  ***
 SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
 SET DeveloperCommandPrompt=%VS150COMNTOOLS%\\VsMSBuildCmd.bat
 
@@ -97,9 +97,31 @@ call "%DeveloperCommandPrompt%" || goto :BuildFailed "VsMSBuildCmd.bat"
 SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
 SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
 
-pushd %WORKSPACE%\\sdk
+SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
 echo *** Build SDK
 call build.cmd -Configuration release -SkipTests || goto :BuildFailed "SDK"
+
+SET VSIXExpInstallerExe=%USERPROFILE%\\.nuget\\packages\\roslyntools.microsoft.vsixexpinstaller\\0.2.4-beta\\tools\\VsixExpInstaller.exe
+
+SET VSIXTarget=%WORKSPACE%\\sdk\\bin\\Release\\Microsoft.VisualStudio.ProjectSystem.CSharp.NetStandard.Templates.vsix
+echo *** Install %VSIXTarget%
+%VSIXExpInstallerExe% /rootsuffix:RoslynDev %VSIXTarget%
+if not "%ERRORLEVEL%"=="0" echo ERROR: %VSIXTarget% did not install successfully
+
+SET VSIXTarget=%WORKSPACE%\\sdk\\bin\\Release\\Microsoft.VisualStudio.ProjectSystem.CSharp.Templates.vsix
+echo *** Install %VSIXTarget%
+%VSIXExpInstallerExe% /rootsuffix:RoslynDev %VSIXTarget%
+if not "%ERRORLEVEL%"=="0" echo ERROR: %VSIXTarget% did not install successfully
+
+SET VSIXTarget=%WORKSPACE%\\sdk\\bin\\Release\\Microsoft.VisualStudio.ProjectSystem.VisualBasic.NetStandard.Templates.vsix
+echo *** Install %VSIXTarget%
+%VSIXExpInstallerExe% /rootsuffix:RoslynDev %VSIXTarget%
+if not "%ERRORLEVEL%"=="0" echo ERROR: %VSIXTarget% did not install successfully
+
+SET VSIXTarget=%WORKSPACE%\\sdk\\bin\\Release\\Microsoft.VisualStudio.ProjectSystem.VisualBasic.Templates.vsix
+echo *** Install %VSIXTarget%
+%VSIXExpInstallerExe% /rootsuffix:RoslynDev %VSIXTarget%
+if not "%ERRORLEVEL%"=="0" echo ERROR: %VSIXTarget% did not install successfully
 
 exit /b 0
 
@@ -192,7 +214,7 @@ static void addVsiMultiScm(def myJob, def project) {
                     relativeTargetDirectory('sdk')
                 }
                 // pull in a specific LKG commit from master.
-                branch('4fb9f58664b1d516564ee8d3c3a5de79b9a82955')
+                branch('72754c921d6a205eddab7c37b991666ada7aa3dc')
             }
             git {
                 remote {
