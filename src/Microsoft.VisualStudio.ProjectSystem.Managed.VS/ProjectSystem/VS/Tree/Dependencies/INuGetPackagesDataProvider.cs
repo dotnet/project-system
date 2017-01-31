@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// turns out to be a nuget package.
         /// </summary>
         /// <param name="packageItemSpec">Package reference items spec for which we need to do a search</param>
-        /// <param name="searchTerm"></param>
+        /// <param name="searchTerm">String to be searched</param>
         /// <returns></returns>
         Task<IEnumerable<IDependencyNode>> SearchAsync(string packageItemSpec, string searchTerm);
     }
