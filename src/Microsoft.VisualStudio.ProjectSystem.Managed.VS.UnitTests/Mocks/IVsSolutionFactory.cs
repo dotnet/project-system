@@ -15,6 +15,8 @@ namespace Microsoft.VisualStudio.Shell.Interop
 
         public static Func<uint, int> DefaultUnadviseCallback => (uint cookie) => VSConstants.S_OK;
 
+        public static IVsSolution Create() => Mock.Of<IVsSolution>();
+
         public static IVsSolution CreateWithSolutionDirectory(FuncWithOutThreeArgs<string, string, string, int> func)
         {
             var mock = new Mock<IVsSolution>();

@@ -5,7 +5,6 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.Packaging;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Generators;
 using Microsoft.VisualStudio.ProjectSystem.VS.Xproj;
@@ -53,7 +52,10 @@ namespace Microsoft.VisualStudio.Packaging
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-            _factory = new MigrateXprojProjectFactory(new ProcessRunner(), new Win32FileSystem(), ServiceProvider.GlobalProvider);
+            _factory = new MigrateXprojProjectFactory(new ProcessRunner(),
+                new Win32FileSystem(),
+                ServiceProvider.GlobalProvider,
+                new GlobalJsonRemover.GlobalJsonSetup());
             _factory.SetSite(new ServiceProviderToOleServiceProviderAdapter(ServiceProvider.GlobalProvider));
             RegisterProjectFactory(_factory);
         }
