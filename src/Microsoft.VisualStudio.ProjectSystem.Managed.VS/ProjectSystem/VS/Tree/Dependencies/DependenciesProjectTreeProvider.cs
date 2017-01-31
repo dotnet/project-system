@@ -58,6 +58,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider> SubTreeProviders { get; }
 
         /// <summary>
+        /// Keeps latest data source versions sent from each subtree provider. Is needed for merging and 
+        /// posting consistent data source versions after we process tree updates.
+        /// </summary>
+        private Dictionary<string, IImmutableDictionary<NamedIdentity, IComparable>> _latestDataSourcesVersions =
+            new Dictionary<string, IImmutableDictionary<NamedIdentity, IComparable>>(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="DependenciesProjectTreeProvider"/> class.
         /// </summary>
         [ImportingConstructor]
@@ -341,11 +348,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                     ProjectContextChanged?.Invoke(this, new ProjectContextEventArgs(this));
 
-                    // Note: temporary workaround to prevent data sources being out of sync is send null always,
-                    // this would stop error dialog, however subscribers could not check for Dependencies tree changes
-                    // until real fix is checked it (its fine since there probably should not be any at the moment).
-                    return Task.FromResult(new TreeUpdateResult(dependenciesNode, false, null /*e.DataSourceVersions*/));
+                    return Task.FromResult(new TreeUpdateResult(dependenciesNode, 
+                                                                false, 
+                                                                GetMergedDataSourceVersions(e)));
                 });
+        }
+
+        /// <summary>
+        /// Note: this is important to merge data source versions correctly here, since 
+        /// and different providers sending this event might have different processing time 
+        /// and we might end up in later data source versions coming before earlier ones. If 
+        /// we post greater versions before lower ones there will be exception and data flow 
+        /// might be broken after that. 
+        /// Another reason post data source versions here is that there could be other 
+        /// components waiting for Dependencies tree changes and if we don't post versions,
+        /// they could not track our changes.
+        /// </summary>
+        private IImmutableDictionary<NamedIdentity, IComparable> GetMergedDataSourceVersions(
+                    DependenciesChangedEventArgs e)
+        {
+            IImmutableDictionary<NamedIdentity, IComparable> mergedDataSourcesVersions = null;
+            lock (_latestDataSourcesVersions)
+            {
+                if (!string.IsNullOrEmpty(e.Provider.ProviderType) && e.DataSourceVersions != null)
+                {
+                    _latestDataSourcesVersions[e.Provider.ProviderType] = e.DataSourceVersions;
+                }
+
+                mergedDataSourcesVersions = 
+                    ProjectDataSources.MergeDataSourceVersions(_latestDataSourcesVersions.Values);
+            }
+
+            return mergedDataSourcesVersions;
         }
 
         /// <summary>
