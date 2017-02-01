@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         private static readonly string BackupLocation = Path.Combine(SlnLocation, "Backup");
         private static readonly string CsprojLocation = Path.Combine(RootLocation, $"{ProjectName}.csproj");
         private static readonly string LogFileLocation = Path.Combine(RootLocation, "asdf.1234");
-        private static readonly string MigrateCommand = $"dotnet migrate --skip-backup -s -x \"{XprojLocation}\" \"{RootLocation}\" -r \"{LogFileLocation}\" --format-report-file-json";
+        private static readonly string MigrateCommand = $"dotnet migrate --skip-backup -s -x \"{XprojLocation}\" \"{ProjectJsonLocation}\" -r \"{LogFileLocation}\" --format-report-file-json";
         private static readonly string GlobalJsonLocation = Path.Combine(SlnLocation, "global.json");
 
         [Fact]
@@ -471,7 +471,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         private void ProcessVerifier(ProcessStartInfo info)
         {
             Assert.Equal("dotnet.exe", info.FileName);
-            Assert.Equal($"migrate --skip-backup -s -x \"{XprojLocation}\" \"{RootLocation}\" -r \"{LogFileLocation}\" --format-report-file-json", info.Arguments);
+            Assert.Equal($"migrate --skip-backup -s -x \"{XprojLocation}\" \"{ProjectJsonLocation}\" -r \"{LogFileLocation}\" --format-report-file-json", info.Arguments);
             Assert.True(info.EnvironmentVariables.ContainsKey("DOTNET_SKIP_FIRST_TIME_EXPERIENCE"));
             Assert.Equal("true", info.EnvironmentVariables["DOTNET_SKIP_FIRST_TIME_EXPERIENCE"]);
             Assert.Equal(SlnLocation, info.WorkingDirectory);
