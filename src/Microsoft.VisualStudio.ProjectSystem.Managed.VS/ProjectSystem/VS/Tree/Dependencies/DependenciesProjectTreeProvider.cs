@@ -133,9 +133,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return false;
             }
 
-            return nodes.All(node => (node.Flags.Contains(DependencyNode.GenericDependencyFlags) 
-                                        && node.BrowseObjectProperties != null)
-                                     || node.Flags.Contains(ProjectTreeFlags.Common.SharedProjectImportReference));
+            return nodes.All(node => (node.Flags.Contains(DependencyNode.GenericDependencyFlags)
+                                        && node.BrowseObjectProperties != null
+                                        && !node.Flags.Contains(DependencyNode.DoesNotSupportRemove)));
         }
 
         /// <summary>
