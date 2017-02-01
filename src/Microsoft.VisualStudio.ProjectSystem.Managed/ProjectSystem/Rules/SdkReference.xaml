@@ -10,16 +10,16 @@
         <DataSource Persistence="ProjectFile" ItemType="SDKReference" HasConfigurationCondition="False"
                     SourceType="TargetResults" MSBuildTarget="CollectSDKReferencesDesignTime" SourceOfDefaultValue="AfterContext" />        
     </Rule.DataSource>
-    <StringProperty Name="SDKRootFolder" DisplayName="SDK Root" />
-    <StringProperty Name="AppXLocation" DisplayName="App Package Location" />
-    <StringProperty Name="FrameworkIdentity" DisplayName="FrameworkIdentity" />
-    <StringProperty Name="DisplayName" DisplayName="Display Name" Visible="False"/>
-    <StringProperty Name="Name" DisplayName="Name"/>
-    <StringProperty Name="Version" DisplayName="Version"/>
-    <StringProperty Name="SDKPackageItemSpec" Visible="False"/>
-    <BoolProperty Name="CopyPayload" DisplayName="Copy Payload" />
-    <StringProperty Name="CopyPayloadToSubDirectory" DisplayName="Copy Payload to Subdirectory" />
-    <BoolProperty Name="ExpandContent" DisplayName="Expand Content" />
-    <BoolProperty Name="ExpandReferenceAssemblies" DisplayName="Expand Reference Assemblies" />
-    <BoolProperty Name="CopyLocalExpandedReferenceAssemblies" DisplayName="Copy Local Expanded Reference Assemblies" />
+    <StringProperty Name="SDKRootFolder" DisplayName="SDK Root" ReadOnly="True" />
+    <StringProperty Name="AppXLocation" DisplayName="App Package Location" ReadOnly="True" />
+    <StringProperty Name="FrameworkIdentity" DisplayName="FrameworkIdentity" ReadOnly="True" />
+    <StringProperty Name="DisplayName" DisplayName="Display Name" Visible="False" ReadOnly="True" />
+    <StringProperty Name="Name" DisplayName="Name" ReadOnly="True" />
+    <StringProperty Name="Version" DisplayName="Version" ReadOnly="True" />
+    <StringProperty Name="SDKPackageItemSpec" Visible="False" ReadOnly="True" />
+    <BoolProperty Name="CopyPayload" DisplayName="Copy Payload" ReadOnly="True" />
+    <StringProperty Name="CopyPayloadToSubDirectory" DisplayName="Copy Payload to Subdirectory" ReadOnly="True" />
+    <BoolProperty Name="ExpandContent" DisplayName="Expand Content" ReadOnly="True" />
+    <BoolProperty Name="ExpandReferenceAssemblies" DisplayName="Expand Reference Assemblies" ReadOnly="True" />
+    <BoolProperty Name="CopyLocalExpandedReferenceAssemblies" DisplayName="Copy Local Expanded Reference Assemblies" ReadOnly="True" />
 </Rule>
