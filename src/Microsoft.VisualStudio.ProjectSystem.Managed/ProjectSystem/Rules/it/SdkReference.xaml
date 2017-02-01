@@ -7,13 +7,13 @@
   <StringProperty Name="SDKRootFolder" DisplayName="Radice SDK" />
   <StringProperty Name="AppXLocation" DisplayName="Percorso pacchetto dell'app" />
   <StringProperty Name="FrameworkIdentity" DisplayName="FrameworkIdentity" />
+  <StringProperty Name="DisplayName" DisplayName="Display Name" Visible="False" />
+  <StringProperty Name="Name" DisplayName="Name" />
+  <StringProperty Name="Version" DisplayName="Version" />
+  <StringProperty Name="SDKPackageItemSpec" Visible="False" />
   <BoolProperty Name="CopyPayload" DisplayName="Copia payload" />
   <StringProperty Name="CopyPayloadToSubDirectory" DisplayName="Copia payload nella sottodirectory" />
   <BoolProperty Name="ExpandContent" DisplayName="Espandi contenuto" />
   <BoolProperty Name="ExpandReferenceAssemblies" DisplayName="Espandi assembly di riferimento" />
   <BoolProperty Name="CopyLocalExpandedReferenceAssemblies" DisplayName="Copia assembly di riferimento espansi locali" />
-  <StringProperty Name="DisplayName" DisplayName="Nome visualizzato" Visible="False" />  
-  <StringProperty Name="Name" DisplayName="Name"/>
-  <StringProperty Name="Version" DisplayName="Version"/>
-  <StringProperty Name="SDKPackageItemSpec" Visible="False"/>
 </Rule>

@@ -148,9 +148,9 @@
     <value>Проект для создания библиотеки классов, использующей .NET Core.</value>
   </data>
   <data name="11" xml:space="preserve">
-    <value>xUnit Test Project (.NET Core)</value>
+    <value>Тестовый проект xUnit (.NET Core)</value>
   </data>
   <data name="12" xml:space="preserve">
-    <value>A project that contains xunit tests that can run on .NET Core on Windows, Linux and MacOS</value>
+    <value>Проект с тестами xunit, которые могут выполняться на базе .NET Core в Windows, Linux и MacOS</value>
   </data>
 </root>
