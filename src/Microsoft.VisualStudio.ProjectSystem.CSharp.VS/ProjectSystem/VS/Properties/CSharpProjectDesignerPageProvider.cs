@@ -36,7 +36,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             }
 
             builder.Add(CSharpProjectDesignerPage.Debug);
-            builder.Add(CSharpProjectDesignerPage.ReferencePaths);
             builder.Add(CSharpProjectDesignerPage.Signing);
 
             return Task.FromResult<IReadOnlyCollection<IPageMetadata>>(builder.ToImmutable());

@@ -21,14 +21,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         {
             var provider = CreateInstance();
             var pages = await provider.GetPagesAsync();
+            ProjectDesignerPageMetadata[] expectedPages = new ProjectDesignerPageMetadata[]
+            {
+                CSharpProjectDesignerPage.Application,
+                CSharpProjectDesignerPage.Build,
+                CSharpProjectDesignerPage.BuildEvents,
+                CSharpProjectDesignerPage.Debug,
+                CSharpProjectDesignerPage.Signing,
+            };
 
-            Assert.Equal(pages.Count(), 6);
-            Assert.Same(pages.ElementAt(0), CSharpProjectDesignerPage.Application);
-            Assert.Same(pages.ElementAt(1), CSharpProjectDesignerPage.Build);
-            Assert.Same(pages.ElementAt(2), CSharpProjectDesignerPage.BuildEvents);
-            Assert.Same(pages.ElementAt(3), CSharpProjectDesignerPage.Debug);
-            Assert.Same(pages.ElementAt(4), CSharpProjectDesignerPage.ReferencePaths);
-            Assert.Same(pages.ElementAt(5), CSharpProjectDesignerPage.Signing);
+            Assert.Equal(expectedPages.Length, pages.Count());
+            for (int i = 0; i < pages.Count; i++)
+                Assert.Same(expectedPages[i], pages.ElementAt(i));
         }
 
         [Fact]
@@ -37,14 +41,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             var provider = CreateInstance(ProjectCapability.Pack);
             var pages = await provider.GetPagesAsync();
 
-            Assert.Equal(pages.Count(), 7);
-            Assert.Same(pages.ElementAt(0), CSharpProjectDesignerPage.Application);
-            Assert.Same(pages.ElementAt(1), CSharpProjectDesignerPage.Build);
-            Assert.Same(pages.ElementAt(2), CSharpProjectDesignerPage.BuildEvents);
-            Assert.Same(pages.ElementAt(3), CSharpProjectDesignerPage.Package);
-            Assert.Same(pages.ElementAt(4), CSharpProjectDesignerPage.Debug);
-            Assert.Same(pages.ElementAt(5), CSharpProjectDesignerPage.ReferencePaths);
-            Assert.Same(pages.ElementAt(6), CSharpProjectDesignerPage.Signing);
+            ProjectDesignerPageMetadata[] expectedPages = new ProjectDesignerPageMetadata[]
+            {
+                CSharpProjectDesignerPage.Application,
+                CSharpProjectDesignerPage.Build,
+                CSharpProjectDesignerPage.BuildEvents,
+                CSharpProjectDesignerPage.Package,
+                CSharpProjectDesignerPage.Debug,
+                CSharpProjectDesignerPage.Signing,
+            };
+
+            Assert.Equal(expectedPages.Length, pages.Count());
+            for (int i = 0; i < pages.Count; i++)
+                Assert.Same(expectedPages[i], pages.ElementAt(i));
         }
 
         private static CSharpProjectDesignerPageProvider CreateInstance(params string[] capabilities)
