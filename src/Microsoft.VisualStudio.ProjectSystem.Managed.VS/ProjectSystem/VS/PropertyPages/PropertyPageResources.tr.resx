@@ -181,45 +181,45 @@
     <value>Değişiklikleriniz kaydedilmeden önce bu sayfadaki hataların düzeltilmesi gerekiyor.</value>
   </data>
   <data name="AddBtn" xml:space="preserve">
-    <value>Add</value>
+    <value>Ekle</value>
   </data>
   <data name="ApplicationArguments" xml:space="preserve">
-    <value>Application arguments:</value>
+    <value>Uygulama bağımsız değişkenleri:</value>
   </data>
   <data name="BrowseBtn" xml:space="preserve">
-    <value>Browse...</value>
+    <value>Gözat...</value>
   </data>
   <data name="DeleteBtn" xml:space="preserve">
-    <value>Delete</value>
+    <value>Sil</value>
   </data>
   <data name="EnvironmentVariables" xml:space="preserve">
-    <value>Environment variables:</value>
+    <value>Ortam değişkenleri:</value>
   </data>
   <data name="Executable" xml:space="preserve">
-    <value>Executable</value>
+    <value>Yürütülebilir</value>
   </data>
   <data name="Launch" xml:space="preserve">
-    <value>Launch:</value>
+    <value>Başlatma:</value>
   </data>
   <data name="LaunchURL" xml:space="preserve">
-    <value>Launch URL:</value>
+    <value>Başlatma URL’si:</value>
   </data>
   <data name="NameHeader" xml:space="preserve">
-    <value>Name</value>
+    <value>Ad</value>
   </data>
   <data name="NewBtn" xml:space="preserve">
-    <value>New...</value>
+    <value>Yeni...</value>
   </data>
   <data name="Profile" xml:space="preserve">
-    <value>Profile:</value>
+    <value>Profil:</value>
   </data>
   <data name="RemoveBtn" xml:space="preserve">
-    <value>Remove</value>
+    <value>Kaldır</value>
   </data>
   <data name="ValueHeader" xml:space="preserve">
-    <value>Value</value>
+    <value>Değer</value>
   </data>
   <data name="WorkingDirectory" xml:space="preserve">
-    <value>Working directory:</value>
+    <value>Çalışma dizini:</value>
   </data>
 </root>

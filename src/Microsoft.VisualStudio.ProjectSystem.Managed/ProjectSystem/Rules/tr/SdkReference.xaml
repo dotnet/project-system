@@ -7,13 +7,13 @@
   <StringProperty Name="SDKRootFolder" DisplayName="SDK Kökü" />
   <StringProperty Name="AppXLocation" DisplayName="Uygulama Paketi Konumu" />
   <StringProperty Name="FrameworkIdentity" DisplayName="FrameworkIdentity" />
+  <StringProperty Name="DisplayName" DisplayName="Display Name" Visible="False" />
+  <StringProperty Name="Name" DisplayName="Name" />
+  <StringProperty Name="Version" DisplayName="Version" />
+  <StringProperty Name="SDKPackageItemSpec" Visible="False" />
   <BoolProperty Name="CopyPayload" DisplayName="Yükü Kopyala" />
   <StringProperty Name="CopyPayloadToSubDirectory" DisplayName="Yükü Alt Dizine Kopyala" />
   <BoolProperty Name="ExpandContent" DisplayName="İçeriği Genişlet" />
   <BoolProperty Name="ExpandReferenceAssemblies" DisplayName="Başvuru Bütünleştirilmiş Kodlarını Genişlet" />
   <BoolProperty Name="CopyLocalExpandedReferenceAssemblies" DisplayName="Yerel Genişletilmiş Başvuru Derlemelerini Kopyala" />
-  <StringProperty Name="DisplayName" DisplayName="Görünen Ad" Visible="False" />
-  <StringProperty Name="Name" DisplayName="Name"/>
-  <StringProperty Name="Version" DisplayName="Version"/>
-  <StringProperty Name="SDKPackageItemSpec" Visible="False"/> 
 </Rule>
