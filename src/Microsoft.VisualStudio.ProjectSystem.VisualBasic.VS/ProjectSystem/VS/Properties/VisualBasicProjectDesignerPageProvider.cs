@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     ///     Provides project designer property pages.
     /// </summary>
     [Export(typeof(IVsProjectDesignerPageProvider))]
-    [AppliesTo(ProjectCapability.VisualBasic)]
+    [AppliesTo(ProjectCapability.VisualBasicAppDesigner)]
     internal class VisualBasicProjectDesignerPageProvider : IVsProjectDesignerPageProvider
     {
         private readonly IProjectCapabilitiesService _capabilities;
