@@ -4,18 +4,18 @@
   <Rule.DataSource>
     <DataSource Persistence="ResolvedReference" ItemType="SDKReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="CollectResolvedSDKReferencesDesignTime" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
-  <StringProperty Name="AppXLocation" DisplayName="Lokalizacja pakietu aplikacji" />
+  <StringProperty Name="AppXLocation" DisplayName="Lokalizacja pakietu aplikacji" ReadOnly="True" />
   <!-- This property should be the same as the one for the ResolvedReference item -->
-  <StringProperty Name="OriginalItemSpec" Visible="false" />
-  <StringProperty Name="SDKRootFolder" DisplayName="SDK Root" />
-  <StringProperty Name="FrameworkIdentity" DisplayName="FrameworkIdentity" />
-  <StringProperty Name="DisplayName" DisplayName="Wyświetl nazwę" Visible="False" />
-  <StringProperty Name="Name" DisplayName="Name" />
-  <StringProperty Name="Version" DisplayName="Version" />
-  <StringProperty Name="SDKPackageItemSpec" Visible="False" />
-  <BoolProperty Name="CopyPayload" DisplayName="Kopiuj ładunek" />
-  <StringProperty Name="CopyPayloadToSubDirectory" DisplayName="Copy Payload to Subdirectory" />
-  <BoolProperty Name="ExpandContent" DisplayName="Rozwiń zawartość" />
-  <BoolProperty Name="ExpandReferenceAssemblies" DisplayName="Rozwiń zestawy odwołań" />
-  <BoolProperty Name="CopyLocalExpandedReferenceAssemblies" DisplayName="Kopiuj lokalne rozwinięte zestawy referencyjne" />
+  <StringProperty Name="OriginalItemSpec" Visible="false" ReadOnly="True" />
+  <StringProperty Name="SDKRootFolder" DisplayName="SDK Root" ReadOnly="True" />
+  <StringProperty Name="FrameworkIdentity" DisplayName="FrameworkIdentity" ReadOnly="True" />
+  <StringProperty Name="DisplayName" DisplayName="Wyświetl nazwę" Visible="False" ReadOnly="True" />
+  <StringProperty Name="Name" DisplayName="Name" ReadOnly="True" />
+  <StringProperty Name="Version" DisplayName="Version" ReadOnly="True" />
+  <StringProperty Name="SDKPackageItemSpec" Visible="False" ReadOnly="True" />
+  <BoolProperty Name="CopyPayload" DisplayName="Kopiuj ładunek" ReadOnly="True" />
+  <StringProperty Name="CopyPayloadToSubDirectory" DisplayName="Copy Payload to Subdirectory" ReadOnly="True" />
+  <BoolProperty Name="ExpandContent" DisplayName="Rozwiń zawartość" ReadOnly="True" />
+  <BoolProperty Name="ExpandReferenceAssemblies" DisplayName="Rozwiń zestawy odwołań" ReadOnly="True" />
+  <BoolProperty Name="CopyLocalExpandedReferenceAssemblies" DisplayName="Kopiuj lokalne rozwinięte zestawy referencyjne" ReadOnly="True" />
 </Rule>
