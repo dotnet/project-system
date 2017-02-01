@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.Imaging.Interop;
+using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Threading;
@@ -50,6 +51,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private List<IDisposable> _projectSyncLinks;
 
         private object _rootNodeSync = new object();
+
+        /// <summary>
+        /// Stores latest data sources versions sent from DesignTimeBuild
+        /// </summary>
+        private IImmutableDictionary<NamedIdentity, IComparable> _latestDataSourceVersions = null;
 
         /// <summary>
         /// Gets the project asynchronous tasks service.
@@ -195,7 +201,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                 suppressVersionOnlyUpdates: false,
                                 linkOptions: new DataflowLinkOptions { PropagateCompletion = true }));
 
-                            var actionBlock = new ActionBlock<
+                            var actionBlockDesignTimeBuild = new ActionBlock<
                                                     IProjectVersionedValue<
                                                         Tuple<IProjectSubscriptionUpdate,
                                                                IProjectCatalogSnapshot,
@@ -204,25 +210,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                         IProjectVersionedValue<
                                                             Tuple<IProjectSubscriptionUpdate,
                                                                   IProjectCatalogSnapshot,
-                                                                  IProjectSharedFoldersSnapshot>>>(
-                                                        ProjectSubscriptionService_Changed),
+                                                                  IProjectSharedFoldersSnapshot>>>(e => 
+                                                        ProjectSubscriptionService_Changed(e, RuleHandlerType.DesignTimeBuild)),
                                                    new ExecutionDataflowBlockOptions()
                                                    {
-                                                       NameFormat = "DependenciesSubTree Input: {1}"
+                                                       NameFormat = "DependenciesSubTree DesignTime Input: {1}"
+                                                   });
+
+                            var actionBlockEvaluation = new ActionBlock<
+                                                    IProjectVersionedValue<
+                                                        Tuple<IProjectSubscriptionUpdate,
+                                                               IProjectCatalogSnapshot,
+                                                               IProjectSharedFoldersSnapshot>>>
+                                                  (new Action<
+                                                        IProjectVersionedValue<
+                                                            Tuple<IProjectSubscriptionUpdate,
+                                                                  IProjectCatalogSnapshot,
+                                                                  IProjectSharedFoldersSnapshot>>>(e =>
+                                                        ProjectSubscriptionService_Changed(e, RuleHandlerType.Evaluation)),
+                                                   new ExecutionDataflowBlockOptions()
+                                                   {
+                                                       NameFormat = "DependenciesSubTree Evaluation Input: {1}"
                                                    });
 
                             _projectSyncLinks.Add(ProjectDataSources.SyncLinkTo(
                                 intermediateBlockDesignTime.SyncLinkOptions(),
                                 ProjectSubscriptionService.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
                                 ProjectSubscriptionService.SharedFoldersSource.SourceBlock.SyncLinkOptions(),
-                                actionBlock,
+                                actionBlockDesignTimeBuild,
                                 linkOptions: new DataflowLinkOptions { PropagateCompletion = true }));
 
                             _projectSyncLinks.Add(ProjectDataSources.SyncLinkTo(
                                 intermediateBlockEvaluation.SyncLinkOptions(),
                                 ProjectSubscriptionService.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
                                 ProjectSubscriptionService.SharedFoldersSource.SourceBlock.SyncLinkOptions(),
-                                actionBlock,
+                                actionBlockEvaluation,
                                 linkOptions: new DataflowLinkOptions { PropagateCompletion = true }));
                         }
                     },
@@ -249,10 +271,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// Handles changes to the references items in the project and updates the project tree.
         /// </summary>
         /// <param name="e">A description of the changes made to the project.</param>
+        /// <param name="handlerType">Specifies type of the event: DesignTimeBuild or Evaluation.</param>
         private void ProjectSubscriptionService_Changed(IProjectVersionedValue<
                                                             Tuple<IProjectSubscriptionUpdate,
                                                                   IProjectCatalogSnapshot,
-                                                                  IProjectSharedFoldersSnapshot>> e)
+                                                                  IProjectSharedFoldersSnapshot>> e,
+                                                        RuleHandlerType handlerType)
         {
             DependenciesChange dependenciesChange;
 
@@ -282,7 +306,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 dependenciesChange.AddedNodes.ForEach(RootNode.AddChild);
             }
 
-            OnDependenciesChanged(dependenciesChange.GetDiff(), e);
+            OnDependenciesChanged(dependenciesChange.GetDiff(), e, handlerType);
         }
 
         public virtual IDependencyNode GetDependencyNode(DependencyNodeId nodeId)
@@ -552,14 +576,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                              IProjectVersionedValue<
                                                 Tuple<IProjectSubscriptionUpdate,
                                                         IProjectCatalogSnapshot,
-                                                        IProjectSharedFoldersSnapshot>> e)
+                                                        IProjectSharedFoldersSnapshot>> e,
+                                             RuleHandlerType handlerType)
         {
+            IImmutableDictionary<NamedIdentity, IComparable> dataSourceVersions = null;
+            lock (_syncObject)
+            {
+                if (_latestDataSourceVersions == null)
+                {
+                    // very first time send some versions even for Evaluation
+                    dataSourceVersions = e?.DataSourceVersions;
+                }
+
+                _latestDataSourceVersions = e?.DataSourceVersions;
+                if (handlerType == RuleHandlerType.DesignTimeBuild)
+                {
+                    // Only update versions after DesignTimeBuild events, since they would bring resolved 
+                    // dependencies and if some components would want to known when tree latest state changed,
+                    // DesignTimeBuild events are the ones that bring final state.
+                    dataSourceVersions = _latestDataSourceVersions;
+                }
+            }
+
             DependenciesChanged(this,
                                 new DependenciesChangedEventArgs(
                                         this,
                                         changes,
                                         e?.Value?.Item2,
-                                        e?.DataSourceVersions));
+                                        dataSourceVersions));
         }
 
         /// <summary>
