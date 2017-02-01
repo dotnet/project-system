@@ -225,8 +225,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(KnownMonikers.BrowserSDK, node.Icon);
             Assert.Equal(SdkDependenciesSubTreeProvider.ProviderTypeString, node.Id.ProviderType);
             Assert.Equal(DependencyNode.SdkNodePriority, node.Priority);
-            Assert.Equal(1, node.Properties.Count);
+            Assert.Equal(2, node.Properties.Count);
             Assert.Equal("myValue", node.Properties["myproPerty"]);
+            Assert.Equal("somevalue", node.Properties[SdkReference.SDKPackageItemSpecProperty]);
         }
 
         private class TestableSdkDependenciesSubTreeProvider : SdkDependenciesSubTreeProvider
