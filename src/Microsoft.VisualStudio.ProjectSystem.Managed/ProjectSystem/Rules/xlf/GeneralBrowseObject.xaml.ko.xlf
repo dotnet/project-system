@@ -103,111 +103,6 @@
         <target state="translated">Win32 리소스 파일</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|DefineConstants|DisplayName">
-        <source>Define Constants</source>
-        <target state="translated">상수 정의</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|PlatformTarget|DisplayName">
-        <source>Platform Target</source>
-        <target state="translated">플랫폼 대상</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|Prefer32Bit|DisplayName">
-        <source>Prefer 32Bit</source>
-        <target state="translated">32비트 기본 사용</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
-        <source>Allow unsafe code</source>
-        <target state="translated">안전하지 않은 코드 허용</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Optimize|DisplayName">
-        <source>Optimize</source>
-        <target state="translated">최적화</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|WarningLevel|DisplayName">
-        <source>Warning Level</source>
-        <target state="translated">경고 수준</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|NoWarn|DisplayName">
-        <source>Supress Warning</source>
-        <target state="translated">경고 표시 안 함</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|TreatWarningsAsErrors|Description">
-        <source>Treat warnings as errors</source>
-        <target state="translated">경고를 오류로 처리</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|OutputPath|DisplayName">
-        <source>Output Path</source>
-        <target state="translated">출력 경로</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|DocumentationFile|DisplayName">
-        <source>Documentation file</source>
-        <target state="translated">문서 파일</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|GenerateSerializationAssemblies|DisplayName">
-        <source>Generate serialization assemblies</source>
-        <target state="translated">Serialization 어셈블리 생성</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|GenerateSerializationAssemblies.Auto|DisplayName">
-        <source>Auto</source>
-        <target state="translated">자동</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|GenerateSerializationAssemblies.On|DisplayName">
-        <source>On</source>
-        <target state="translated">설정</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|GenerateSerializationAssemblies.Off|DisplayName">
-        <source>Off</source>
-        <target state="translated">해제</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|LanguageVersion|DisplayName">
-        <source>Language version</source>
-        <target state="translated">언어 버전</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|ErrorReport|DisplayName">
-        <source>Error report</source>
-        <target state="translated">오류 보고서</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|DebugInfo|DisplayName">
-        <source>Debug Info</source>
-        <target state="translated">디버그 정보</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|CheckForOverflowUnderflow|DisplayName">
-        <source>CheckForOverflowUnderflow</source>
-        <target state="translated">CheckForOverflowUnderflow</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|DebugSymbols|DisplayName">
-        <source>Debug symbols</source>
-        <target state="translated">디버그 기호</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|FileAlignment|DisplayName">
-        <source>File Alignment</source>
-        <target state="translated">파일 맞춤</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|BaseAddress|DisplayName">
-        <source>Base address</source>
-        <target state="translated">기준 주소</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|PreBuildEvent|DisplayName">
         <source>Pre Build Event</source>
         <target state="translated">빌드 전 이벤트</target>
@@ -286,11 +181,6 @@
       <trans-unit id="StringProperty|AssemblyOriginatorKeyFile|DisplayName">
         <source>Strong name key file</source>
         <target state="translated">강력한 이름 키 파일</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|TreatSpecificWarningsAsErrors|Description">
-        <source>Treat specific warnings as errors</source>
-        <target state="translated">특정 경고를 오류로 처리</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GeneratePackageOnBuild|DisplayName">
