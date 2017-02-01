@@ -7,13 +7,13 @@
   <StringProperty Name="SDKRootFolder" DisplayName="Racine du SDK" />
   <StringProperty Name="AppXLocation" DisplayName="Emplacement du package d'application" />
   <StringProperty Name="FrameworkIdentity" DisplayName="FrameworkIdentity" />
+  <StringProperty Name="DisplayName" DisplayName="Display Name" Visible="False" />
+  <StringProperty Name="Name" DisplayName="Name" />
+  <StringProperty Name="Version" DisplayName="Version" />
+  <StringProperty Name="SDKPackageItemSpec" Visible="False" />
   <BoolProperty Name="CopyPayload" DisplayName="Copier la charge" />
   <StringProperty Name="CopyPayloadToSubDirectory" DisplayName="Copier la charge dans le sous-répertoire" />
   <BoolProperty Name="ExpandContent" DisplayName="Développer le contenu" />
   <BoolProperty Name="ExpandReferenceAssemblies" DisplayName="Développer les assemblys de référence" />
   <BoolProperty Name="CopyLocalExpandedReferenceAssemblies" DisplayName="Copier les assemblys de référence développés locaux" />
-  <StringProperty Name="DisplayName" DisplayName="Nom complet" Visible="False" />
-  <StringProperty Name="Name" DisplayName="Name"/>
-  <StringProperty Name="Version" DisplayName="Version"/>
-  <StringProperty Name="SDKPackageItemSpec" Visible="False"/>
 </Rule>

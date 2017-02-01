@@ -15,7 +15,7 @@
       </trans-unit>
       <trans-unit id="HonorServerCookieExpirationCheckbox.Text">
         <source>&amp;Require users to log on again whenever the server cookie expires</source>
-        <target state="translated">Sunucu tanımlama bilgisi sona e&amp;rdiğinde kullanıcıların yeniden oturumaçması gerekir</target>
+        <target state="translated">Sunucu tanımlama bilgisi sona e&amp;rdiğinde kullanıcıların yeniden oturum açması gerekir</target>
         <note />
       </trans-unit>
       <trans-unit id="UseCustomConnectionStringCheckBox.Text">

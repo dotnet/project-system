@@ -7,13 +7,13 @@
   <StringProperty Name="SDKRootFolder" DisplayName="SDK 루트" />
   <StringProperty Name="AppXLocation" DisplayName="앱 패키지 위치" />
   <StringProperty Name="FrameworkIdentity" DisplayName="FrameworkIdentity" />
+  <StringProperty Name="DisplayName" DisplayName="Display Name" Visible="False" />
+  <StringProperty Name="Name" DisplayName="Name" />
+  <StringProperty Name="Version" DisplayName="Version" />
+  <StringProperty Name="SDKPackageItemSpec" Visible="False" />
   <BoolProperty Name="CopyPayload" DisplayName="페이로드 복사" />
   <StringProperty Name="CopyPayloadToSubDirectory" DisplayName="하위 디렉터리에 페이로드 복사" />
   <BoolProperty Name="ExpandContent" DisplayName="콘텐츠 확장" />
   <BoolProperty Name="ExpandReferenceAssemblies" DisplayName="참조 어셈블리 확장" />
   <BoolProperty Name="CopyLocalExpandedReferenceAssemblies" DisplayName="확장된 로컬 참조 어셈블리 복사" />
-  <StringProperty Name="DisplayName" DisplayName="표시 이름" Visible="False" />
-  <StringProperty Name="Name" DisplayName="Name"/>
-  <StringProperty Name="Version" DisplayName="Version"/>
-  <StringProperty Name="SDKPackageItemSpec" Visible="False"/> 
 </Rule>

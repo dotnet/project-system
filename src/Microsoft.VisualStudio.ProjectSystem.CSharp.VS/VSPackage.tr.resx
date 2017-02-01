@@ -148,9 +148,9 @@
     <value>.NET Core’u hedefleyen bir sınıf kitaplığı oluşturmaya yönelik proje.</value>
   </data>
   <data name="11" xml:space="preserve">
-    <value>xUnit Test Project (.NET Core)</value>
+    <value>xUnit Test Projesi (.NET Core)</value>
   </data>
   <data name="12" xml:space="preserve">
-    <value>A project that contains xunit tests that can run on .NET Core on Windows, Linux and MacOS</value>
+    <value>Windows, Linux ve MacOS’ta .NET Core üzerinde çalışabilen xunit testlerini içeren bir proje</value>
   </data>
 </root>

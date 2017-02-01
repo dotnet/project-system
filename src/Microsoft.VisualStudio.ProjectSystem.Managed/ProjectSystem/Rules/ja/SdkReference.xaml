@@ -7,13 +7,13 @@
   <StringProperty Name="SDKRootFolder" DisplayName="SDK ルート" />
   <StringProperty Name="AppXLocation" DisplayName="アプリ パッケージの場所" />
   <StringProperty Name="FrameworkIdentity" DisplayName="FrameworkIdentity" />
+  <StringProperty Name="DisplayName" DisplayName="Display Name" Visible="False" />
+  <StringProperty Name="Name" DisplayName="Name" />
+  <StringProperty Name="Version" DisplayName="Version" />
+  <StringProperty Name="SDKPackageItemSpec" Visible="False" />
   <BoolProperty Name="CopyPayload" DisplayName="ペイロードのコピー" />
   <StringProperty Name="CopyPayloadToSubDirectory" DisplayName="サブディレクトリへのペイロードのコピー" />
   <BoolProperty Name="ExpandContent" DisplayName="コンテンツの展開" />
   <BoolProperty Name="ExpandReferenceAssemblies" DisplayName="参照アセンブリの展開" />
   <BoolProperty Name="CopyLocalExpandedReferenceAssemblies" DisplayName="ローカルに展開された参照アセンブリのコピー" />
-  <StringProperty Name="DisplayName" DisplayName="表示名" Visible="False" />
-  <StringProperty Name="Name" DisplayName="Name"/>
-  <StringProperty Name="Version" DisplayName="Version"/>
-  <StringProperty Name="SDKPackageItemSpec" Visible="False"/> 
 </Rule>
