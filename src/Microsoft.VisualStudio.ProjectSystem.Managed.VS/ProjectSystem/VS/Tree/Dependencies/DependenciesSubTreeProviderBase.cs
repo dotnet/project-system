@@ -304,9 +304,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 });
 
                 dependenciesChange.AddedNodes.ForEach(RootNode.AddChild);
-            }
 
-            OnDependenciesChanged(dependenciesChange.GetDiff(), e, handlerType);
+                OnDependenciesChanged(dependenciesChange.GetDiff(), e, handlerType);
+            }
         }
 
         public virtual IDependencyNode GetDependencyNode(DependencyNodeId nodeId)
