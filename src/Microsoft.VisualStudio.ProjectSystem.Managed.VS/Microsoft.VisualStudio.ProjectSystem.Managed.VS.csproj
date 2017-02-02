@@ -161,6 +161,7 @@
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\AnalyzerDependenciesSubTreeProvider.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\AnalyzerDependencyNode.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\DependencyNodeResolvedStateComparer.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\IDependenciesChangeDiffExtensions.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\IDependencyNodeExtensions.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\INuGetPackagesDataProvider.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\PackageAnalyzerAssemblyDependencyNode.cs" />
