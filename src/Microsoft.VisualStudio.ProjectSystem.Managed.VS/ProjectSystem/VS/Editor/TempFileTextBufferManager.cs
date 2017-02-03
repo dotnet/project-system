@@ -111,13 +111,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                     try
                     {
                         _textDocument.TextBuffer.Replace(textSpan, projectXml);
+                        // We save the DocData here so that if the user decides to Undo the change from the file itself, the editor will be considered
+                        // dirty and will prompt about unsaved changes if closed before saving again.
+                        _docData.SaveDocData(VSSAVEFLAGS.VSSAVE_Save, out string unused, out int cancelled);
                     }
                     finally
                     {
-                        _textBuffer.SetStateFlags(oldFlags);
+                        var isReadonly = (oldFlags & (uint)BUFFERSTATEFLAGS.BSF_USER_READONLY) == (uint)BUFFERSTATEFLAGS.BSF_USER_READONLY;
+                        if (isReadonly)
+                        {
+                            Verify.HResult(_textBuffer.GetStateFlags(out uint newFlags));
+                            _textBuffer.SetStateFlags(newFlags | (uint)BUFFERSTATEFLAGS.BSF_USER_READONLY);
+                        }
                     }
                 }
             }
+
+            // Since we're writing to the file on disk in all scenarios, we can potentially race with the project reload mechanism during project
+            // close if the file on disk has divergent changes from the temp file. This causes a series of confusing popups for the user that make
+            // it very likely they will accidentally discard changes. We save here to make sure we don't run into that race.
+            await _unconfiguredProject.SaveAsync().ConfigureAwait(false);
         }
 
         public async Task SaveAsync()
