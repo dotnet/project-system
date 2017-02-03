@@ -36,25 +36,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             if (outputType != null)
             {
-                switch (outputType.ToLowerInvariant())
+                switch (outputType)
                 {
-                    case "winexe":
+                    case "WinExe":
                         // prjOutputTypeEx_WinExe
                         value = "0";
                         break;
-                    case "exe":
+                    case "Exe":
                         // prjOutputTypeEx_Exe
                         value = "1";
                         break;
-                    case "library":
+                    case "Library":
                         // prjOutputTypeEx_Library
                         value = "2";
                         break;
-                    case "winmdobj":
+                    case "WinMDObj":
                         // prjOutputTypeEx_WinMDObj
                         value = "3";
                         break;
-                    case "appcontainerexe":
+                    case "AppContainerExe":
                         // prjOutputTypeEx_AppContainerExe
                         value = "4";
                         break;
