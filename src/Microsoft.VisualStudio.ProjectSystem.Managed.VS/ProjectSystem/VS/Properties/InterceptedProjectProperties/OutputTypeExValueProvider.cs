@@ -66,9 +66,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
         public override async Task<string> OnSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string> dimensionalConditions = null)
         {
+            // Set the value of OutputType
             var configuration = await _properties.GetConfigurationGeneralBrowseObjectPropertiesAsync().ConfigureAwait(true);
             await configuration.OutputType.SetValueAsync(unevaluatedPropertyValue).ConfigureAwait(false);
-            return unevaluatedPropertyValue;
+
+            // return null so that OutputTypeEx is not written to the project
+            return null;
         }
     }
 }
