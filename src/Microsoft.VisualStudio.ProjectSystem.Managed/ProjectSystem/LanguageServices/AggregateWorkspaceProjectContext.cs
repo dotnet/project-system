@@ -124,6 +124,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return true;
         }
 
+        /// <summary>
+        /// Returns true if this cross-targeting aggregate project context has the same set of target frameworks and active target framework as the given active and known configurations.
+        /// </summary>
+        public bool HasMatchingTargetFrameworks(ProjectConfiguration activeProjectConfiguration, IEnumerable<ProjectConfiguration> knownProjectConfigurations)
+        {
+            Assumes.True(IsCrossTargeting);
+            Assumes.True(activeProjectConfiguration.IsCrossTargeting());
+            Assumes.True(knownProjectConfigurations.All(c => c.IsCrossTargeting()));
+
+            var activeTargetFramework = activeProjectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty];
+            if (!string.Equals(activeTargetFramework, _activeTargetFramework))
+            {
+                // Active target framework is different.
+                return false;
+            }
+
+            var targetFrameworks = knownProjectConfigurations.Select(c => c.Dimensions[ConfigurationGeneral.TargetFrameworkProperty]).ToImmutableHashSet();
+            if (targetFrameworks.Count != _configuredProjectContextsByTargetFramework.Count)
+            {
+                // Different number of target frameworks.
+                return false;
+            }
+
+            foreach (var targetFramework in targetFrameworks)
+            {
+                if (!_configuredProjectContextsByTargetFramework.ContainsKey(targetFramework))
+                {
+                    // Differing TargetFramework
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         public void Dispose(Func<IWorkspaceProjectContext, bool> shouldDisposeInnerContext)
         {
             // Workaround Roslyn deadlock https://github.com/dotnet/roslyn/issues/14479.
