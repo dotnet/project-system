@@ -89,8 +89,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var id = new DependencyNodeId(ProviderType,
                                           itemSpec,
                                           itemType ?? ResolvedProjectReference.PrimaryDataSourceItemType);
+            var flags = SdkSubTreeNodeFlags;
+            if (IsImplicit(properties, out string packageItemSpec))
+            {
+                flags = flags.Union(DependencyNode.DoesNotSupportRemove);
+            }
+
             return new SdkDependencyNode(id,
-                                         flags: SdkSubTreeNodeFlags,
+                                         flags: flags,
                                          priority: priority,
                                          properties: properties,
                                          resolved: resolved);
@@ -104,8 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return null;
             }
 
-            if (!node.Properties.TryGetValue(SdkReference.SDKPackageItemSpecProperty, out string packageItemSpec)
-               || string.IsNullOrEmpty(packageItemSpec))
+            if (!IsImplicit(node, out string packageItemSpec))
             {
                 return node;
             }
@@ -117,13 +122,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         public override Task<IEnumerable<IDependencyNode>> SearchAsync(IDependencyNode node, string searchTerm)
         {
-            if (!node.Properties.TryGetValue(SdkReference.SDKPackageItemSpecProperty, out string packageItemSpec)
-               || string.IsNullOrEmpty(packageItemSpec))
+            if (!IsImplicit(node, out string packageItemSpec))
             {
                 return base.SearchAsync(node, searchTerm);
             }
 
             return NuGetPackagesDataProvider.SearchAsync(packageItemSpec, searchTerm);
+        }
+
+        private bool IsImplicit(IDependencyNode node, out string packageItemSpec)
+        {
+            return IsImplicit(node.Properties, out packageItemSpec);
+        }
+
+        private bool IsImplicit(IImmutableDictionary<string, string> properties, out string packageItemSpec)
+        {
+            return properties.TryGetValue(SdkReference.SDKPackageItemSpecProperty, out packageItemSpec)
+               && !string.IsNullOrEmpty(packageItemSpec);
         }
     }
 }

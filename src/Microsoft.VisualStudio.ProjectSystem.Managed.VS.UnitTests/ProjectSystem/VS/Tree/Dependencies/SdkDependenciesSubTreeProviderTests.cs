@@ -192,12 +192,42 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             Assert.True(node is SdkDependencyNode);
             Assert.True(node.Flags.Contains(SdkDependenciesSubTreeProvider.SdkSubTreeNodeFlags));
+            Assert.False(node.Flags.Contains(DependencyNode.DoesNotSupportRemove));
             Assert.Equal(itemSpec, node.Caption);
             Assert.Equal(KnownMonikers.BrowserSDK, node.Icon);
             Assert.Equal(SdkDependenciesSubTreeProvider.ProviderTypeString, node.Id.ProviderType);
             Assert.Equal(DependencyNode.SdkNodePriority, node.Priority);
             Assert.Equal(1, node.Properties.Count);
             Assert.Equal("myValue", node.Properties["myproPerty"]);
+        }
+
+        [Fact]
+        public void SdkDependenciesSubTreeProvider_CreateDependencyNode_Implicit()
+        {
+            const string itemSpec = "myItemSpec";
+            const string itemType = "myItemType";
+            const int priority = 15;
+            var properties = new Dictionary<string, string>
+            {
+                { "myproPerty", "myValue" },
+                { SdkReference.SDKPackageItemSpecProperty, "somevalue" }
+            };
+            const bool resolved = true;
+
+            var provider = new TestableSdkDependenciesSubTreeProvider(null);
+
+            var node = provider.TestCreateDependencyNode(itemSpec, itemType, priority, properties, resolved);
+
+            Assert.True(node is SdkDependencyNode);
+            Assert.True(node.Flags.Contains(SdkDependenciesSubTreeProvider.SdkSubTreeNodeFlags));
+            Assert.True(node.Flags.Contains(DependencyNode.DoesNotSupportRemove));
+            Assert.Equal(itemSpec, node.Caption);
+            Assert.Equal(KnownMonikers.BrowserSDK, node.Icon);
+            Assert.Equal(SdkDependenciesSubTreeProvider.ProviderTypeString, node.Id.ProviderType);
+            Assert.Equal(DependencyNode.SdkNodePriority, node.Priority);
+            Assert.Equal(2, node.Properties.Count);
+            Assert.Equal("myValue", node.Properties["myproPerty"]);
+            Assert.Equal("somevalue", node.Properties[SdkReference.SDKPackageItemSpecProperty]);
         }
 
         private class TestableSdkDependenciesSubTreeProvider : SdkDependenciesSubTreeProvider
