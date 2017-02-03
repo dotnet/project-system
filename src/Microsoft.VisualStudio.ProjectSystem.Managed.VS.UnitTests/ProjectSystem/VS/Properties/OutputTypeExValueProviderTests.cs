@@ -54,8 +54,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
                 UnconfiguredProjectFactory.Create(),
                 new PropertyPageData()
                 {
-                    Category = ConfigurationGeneral.SchemaName,
-                    PropertyName = ConfigurationGeneral.OutputTypeProperty,
+                    Category = ConfigurationGeneralBrowseObject.SchemaName,
+                    PropertyName = ConfigurationGeneralBrowseObject.OutputTypeProperty,
                     Value = "InitialValue"
                 });
             var provider = new OutputTypeExValueProvider(properties);
