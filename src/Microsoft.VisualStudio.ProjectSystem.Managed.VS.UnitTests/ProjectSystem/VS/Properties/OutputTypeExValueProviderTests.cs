@@ -16,18 +16,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             {
                 yield return new object[]
                 {
-                    new PageEnumValue(new EnumValue { Name = "exe", DisplayName = "1" }),
+                    new PageEnumValue(new EnumValue { Name = "Exe", DisplayName = "1" }),
                     "1"
                 };
             }
         }
 
         [Theory]
-        [InlineData("WINEXE", "0")]
-        [InlineData("EXE", "1")]
-        [InlineData("LIBRARY", "2")]
-        [InlineData("WINMDOBJ", "3")]
-        [InlineData("APPCONTAINEREXE", "4")]
+        [InlineData("WinExe", "0")]
+        [InlineData("Exe", "1")]
+        [InlineData("Library", "2")]
+        [InlineData("WinMDObj", "3")]
+        [InlineData("AppContainerExe", "4")]
         [InlineData("InvalidValue", null)]
         [MemberData("ExeEnumValue", "1")]
         public async void GetEvaluatedValue(object propertyValue, string expectedPropertyValue)
@@ -54,14 +54,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
                 UnconfiguredProjectFactory.Create(),
                 new PropertyPageData()
                 {
-                    Category = ConfigurationGeneral.SchemaName,
-                    PropertyName = ConfigurationGeneral.OutputTypeProperty,
+                    Category = ConfigurationGeneralBrowseObject.SchemaName,
+                    PropertyName = ConfigurationGeneralBrowseObject.OutputTypeProperty,
                     Value = "InitialValue"
                 });
             var provider = new OutputTypeExValueProvider(properties);
 
-            var actualPropertyValue = await provider.OnSetPropertyValueAsync(propertyValue, null);
-            Assert.Equal(propertyValue, actualPropertyValue);
+            var outputTypeExValue = await provider.OnSetPropertyValueAsync(propertyValue, null);
+            Assert.Equal(null, outputTypeExValue);
         }
     }
 }

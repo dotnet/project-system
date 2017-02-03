@@ -36,25 +36,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             if (outputType != null)
             {
-                switch (outputType.ToLowerInvariant())
+                switch (outputType)
                 {
-                    case "winexe":
+                    case "WinExe":
                         // prjOutputTypeEx_WinExe
                         value = "0";
                         break;
-                    case "exe":
+                    case "Exe":
                         // prjOutputTypeEx_Exe
                         value = "1";
                         break;
-                    case "library":
+                    case "Library":
                         // prjOutputTypeEx_Library
                         value = "2";
                         break;
-                    case "winmdobj":
+                    case "WinMDObj":
                         // prjOutputTypeEx_WinMDObj
                         value = "3";
                         break;
-                    case "appcontainerexe":
+                    case "AppContainerExe":
                         // prjOutputTypeEx_AppContainerExe
                         value = "4";
                         break;
@@ -66,9 +66,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
         public override async Task<string> OnSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string> dimensionalConditions = null)
         {
-            var configuration = await _properties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
+            // Set the value of OutputType
+            var configuration = await _properties.GetConfigurationGeneralBrowseObjectPropertiesAsync().ConfigureAwait(true);
             await configuration.OutputType.SetValueAsync(unevaluatedPropertyValue).ConfigureAwait(false);
-            return unevaluatedPropertyValue;
+
+            // return null so that OutputTypeEx is not written to the project
+            return null;
         }
     }
 }
