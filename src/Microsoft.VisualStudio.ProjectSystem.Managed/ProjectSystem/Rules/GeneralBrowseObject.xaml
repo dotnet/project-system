@@ -88,30 +88,30 @@
   </StringProperty>
 
   <!-- Package properties -->
-  <BoolProperty Name="GeneratePackageOnBuild" DisplayName="Generate Package On Build" Default="False"/>
-  <StringProperty Name="PackageId" DisplayName="Package Id">
+  <BoolProperty Name="GeneratePackageOnBuild" DisplayName="Generate Package On Build" Default="False" Visible="False"/>
+  <StringProperty Name="PackageId" DisplayName="Package Id" Visible="False">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="Version" DisplayName="Package Version">
+  <StringProperty Name="Version" DisplayName="Package Version" Visible="False">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="Authors" DisplayName="Authors">
+  <StringProperty Name="Authors" DisplayName="Authors" Visible="False">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <BoolProperty Name="PackageRequireLicenseAcceptance" DisplayName="Package Require License Acceptance" Default="False"/>
-  <StringProperty Name="PackageLicenseUrl" DisplayName="Package License Url"/>
-  <StringProperty Name="PackageProjectUrl" DisplayName="Package Project Url"/>
-  <StringProperty Name="PackageIconUrl" DisplayName="Package Icon Url"/>
-  <StringProperty Name="PackageTags" DisplayName="Package Tags"/>
-  <StringProperty Name="PackageReleaseNotes" DisplayName="Release Notes"/>
-  <StringProperty Name="RepositoryUrl" DisplayName="Repository Url"/>
-  <StringProperty Name="RepositoryType" DisplayName="Repository Type"/>
+  <BoolProperty Name="PackageRequireLicenseAcceptance" DisplayName="Package Require License Acceptance" Default="False" Visible="False"/>
+  <StringProperty Name="PackageLicenseUrl" DisplayName="Package License Url" Visible="False"/>
+  <StringProperty Name="PackageProjectUrl" DisplayName="Package Project Url" Visible="False"/>
+  <StringProperty Name="PackageIconUrl" DisplayName="Package Icon Url" Visible="False"/>
+  <StringProperty Name="PackageTags" DisplayName="Package Tags" Visible="False"/>
+  <StringProperty Name="PackageReleaseNotes" DisplayName="Release Notes" Visible="False"/>
+  <StringProperty Name="RepositoryUrl" DisplayName="Repository Url" Visible="False"/>
+  <StringProperty Name="RepositoryType" DisplayName="Repository Type" Visible="False"/>
 
   <!--AssemblyInfo properties-->
   <StringProperty Name="Description" DisplayName="Assembly Description" Visible="False">
