@@ -17,34 +17,34 @@
   </Rule.DataSource>
 
   <!-- Build Page Properties -->
-  <StringProperty Name="DefineConstants" DisplayName="Define Constants" Visible="True"/>
-  <EnumProperty Name="PlatformTarget" DisplayName="Platform Target" Visible="True"/>
-  <BoolProperty Name="Prefer32Bit" DisplayName="Prefer 32Bit" Visible="True"/>
-  <BoolProperty Name="AllowUnsafeBlocks"  Default="False"  DisplayName="Allow unsafe code" Visible="True"/>
-  <StringProperty Name="Optimize" DisplayName="Optimize" Visible="True"/>
-  <EnumProperty Name="WarningLevel" DisplayName="Warning Level" Visible="True"/>
-  <StringProperty Name="NoWarn" DisplayName="Supress Warning" Visible="True"/>
-  <BoolProperty Name="TreatWarningsAsErrors"  Default="False" Description="Treat warnings as errors" Visible="True"/>
-  <StringProperty Name="TreatSpecificWarningsAsErrors"  Description="Treat specific warnings as errors" Visible="True" />
-  <StringProperty Name="OutputPath" DisplayName="Output Path" Visible="True"/>
-  <StringProperty Name="DocumentationFile" DisplayName="Documentation file" Visible="True"/>
-  <EnumProperty Name="GenerateSerializationAssemblies" DisplayName="Generate serialization assemblies" Visible="True">
+  <StringProperty Name="DefineConstants" DisplayName="Define Constants" Visible="False"/>
+  <EnumProperty Name="PlatformTarget" DisplayName="Platform Target" Visible="False"/>
+  <BoolProperty Name="Prefer32Bit" DisplayName="Prefer 32Bit" Visible="False"/>
+  <BoolProperty Name="AllowUnsafeBlocks"  Default="False"  DisplayName="Allow unsafe code" Visible="False"/>
+  <StringProperty Name="Optimize" DisplayName="Optimize" Visible="False"/>
+  <EnumProperty Name="WarningLevel" DisplayName="Warning Level" Visible="False"/>
+  <StringProperty Name="NoWarn" DisplayName="Supress Warning" Visible="False"/>
+  <BoolProperty Name="TreatWarningsAsErrors"  Default="False" Description="Treat warnings as errors" Visible="False"/>
+  <StringProperty Name="TreatSpecificWarningsAsErrors"  Description="Treat specific warnings as errors" Visible="False" />
+  <StringProperty Name="OutputPath" DisplayName="Output Path" Visible="False"/>
+  <StringProperty Name="DocumentationFile" DisplayName="Documentation file" Visible="False"/>
+  <EnumProperty Name="GenerateSerializationAssemblies" DisplayName="Generate serialization assemblies" Visible="False">
     <EnumValue Name="Auto" DisplayName="Auto" IsDefault="True" />
     <EnumValue Name="On" DisplayName="On" />
     <EnumValue Name="Off" DisplayName="Off" />
   </EnumProperty>
   <!-- ** removed for RTM: needs translation
-  <BoolProperty Name="RegisterForComInterop" Default="False" DisplayName="Register for COM Interop" Visible="True"/>
+  <BoolProperty Name="RegisterForComInterop" Default="False" DisplayName="Register for COM Interop" Visible="False"/>
     -->
     
   <!-- Advanced Build Page Properties -->
-  <EnumProperty Name="LanguageVersion" DisplayName="Language version" Visible="True">
+  <EnumProperty Name="LanguageVersion" DisplayName="Language version" Visible="False">
     <EnumProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="LangVersion" SourceOfDefaultValue="AfterContext"/>
     </EnumProperty.DataSource>
   </EnumProperty>
-  <EnumProperty Name="ErrorReport" DisplayName="Error report" Visible="True"/>
-  <EnumProperty Name="DebugInfo" DisplayName="Debug Info" Visible="True">
+  <EnumProperty Name="ErrorReport" DisplayName="Error report" Visible="False"/>
+  <EnumProperty Name="DebugInfo" DisplayName="Debug Info" Visible="False">
     <EnumProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="DebugType" SourceOfDefaultValue="AfterContext"/>
     </EnumProperty.DataSource>
@@ -54,7 +54,7 @@
       <DataSource Persistence="ProjectFile" PersistedName="CheckForOverflowUnderflow" HasConfigurationCondition="True" SourceOfDefaultValue="AfterContext"/>
     </BoolProperty.DataSource>
   </BoolProperty>
-  <StringProperty Name="DebugSymbols" DisplayName="Debug symbols" Visible="True"/>
-  <EnumProperty Name="FileAlignment" DisplayName="File Alignment" Visible="True"/>
-  <StringProperty Name="BaseAddress" DisplayName="Base address" Visible="True"/>
+  <StringProperty Name="DebugSymbols" DisplayName="Debug symbols" Visible="False"/>
+  <EnumProperty Name="FileAlignment" DisplayName="File Alignment" Visible="False"/>
+  <StringProperty Name="BaseAddress" DisplayName="Base address" Visible="False"/>
 </Rule>
