@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             // Act
             var node = new DependencyNode(id, ProjectTreeFlags.Empty);
-            node.Caption = caption;
+            node.SetProperties(caption:caption);
 
             // Assert
             Assert.Equal(expectedAlias, node.Alias);

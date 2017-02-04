@@ -473,7 +473,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             // item name correctly. Use real Name for the node here instead of caption, since caption
             // can have other info like version in it.
             var itemSpec = nodeInfo.Flags.Contains(DependencyNode.CustomItemSpec)
-                    ? DependencyNode.GetName(nodeInfo)
+                    ? nodeInfo.Name
                     : nodeInfo.Id.ItemSpec;
             var itemContext = ProjectPropertiesContext.GetContext(UnconfiguredProject, itemType, itemSpec);
             var configuredProjectExports = GetActiveConfiguredProjectExports(ActiveConfiguredProject);

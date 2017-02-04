@@ -289,7 +289,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 }
 
                 var nodeChildren = node.Children.ToArray();
-
                 if (!string.IsNullOrEmpty(node.Id.ContextProject))
                 {
                     projectPath = node.Id.ContextProject;
@@ -373,7 +372,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 {
                     await RegisterSubTreeProviderAsync(subTreeProvider, graphContext).ConfigureAwait(false);
 
-                    foreach (var topLevelNode in subTreeProvider.RootNode.Children)
+                    var rootNodeChildren = subTreeProvider.RootNode.Children;
+                    foreach (var topLevelNode in rootNodeChildren)
                     {
                         var refreshedTopLevelNode = subTreeProvider.GetDependencyNode(topLevelNode.Id);
                         if (refreshedTopLevelNode == null)
@@ -481,7 +481,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 // level node. Note: nodeId above we need only to get correct sub tree provider, but
                 // it would not contain our top level node's ItemSpec, ItemType etc. We need to get it here.
                 var caption = hierarchyItem.Text;
-                node = subTreeProvider.RootNode.Children.Where(x => x.Caption.Equals(caption, StringComparison.OrdinalIgnoreCase))
+                var rootNodeChildren = subTreeProvider.RootNode.Children;
+                node = rootNodeChildren.Where(x => x.Caption.Equals(caption, StringComparison.OrdinalIgnoreCase))
                                                  .FirstOrDefault();
                 if (node == null)
                 {
@@ -512,7 +513,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 var graphNode = AddGraphNode(graphContext, projectPath, subTreeProvider, parentNode, nodeInfo);
                 graphContext.Graph.Links.GetOrCreate(parentNode, graphNode, null, GraphCommonSchema.Contains);
 
-                AddNodesToGraphRecursive(graphContext, projectPath, subTreeProvider, graphNode, nodeInfo.Children);                
+                var nodeChildren = nodeInfo.Children;
+                AddNodesToGraphRecursive(graphContext, projectPath, subTreeProvider, graphNode, nodeChildren);
             }
         }
 
@@ -590,7 +592,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                 // store existing children, since existingNodeInfo instance might be updated 
                 // (this is a side effect for top level nodes)
-                var existingChildren = new HashSet<IDependencyNode>(existingNodeInfo.Children);
+                var existingChildren = existingNodeInfo.Children;
 
                 // Get updated reference from the new snapshot
                 var updatedNodeInfo = subTreeProvider.GetDependencyNode(existingNodeInfo.Id);
@@ -599,13 +601,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     continue;
                 }
 
+                var updatedChildren = updatedNodeInfo.Children;
+
                 using (var scope = new GraphTransactionScope())
                 {
                     var comparer = new DependencyNodeResolvedStateComparer();
                     // Diff existing node children and updated node children to get whats removed
-                    var nodesToRemove = existingChildren.Except(updatedNodeInfo.Children, comparer).ToList();
+                    var nodesToRemove = existingChildren.Except(updatedChildren, comparer).ToList();
                     // Diff updated node children and existing node children to get whats added
-                    var nodesToAdd = updatedNodeInfo.Children.Except(existingChildren, comparer).ToList();
+                    var nodesToAdd = updatedChildren.Except(existingChildren, comparer).ToList();
 
                     foreach (var nodeToRemove in nodesToRemove)
                     {
@@ -705,12 +709,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 var projectFolder = Path.GetDirectoryName(projectPath)?.ToLowerInvariant();
                 if (nodeInfo.Flags.Contains(DependencyNode.CustomItemSpec))
                 {
-                    var name = DependencyNode.GetName(nodeInfo);
-                    if (name != null)
+                    if (nodeInfo.Name != null)
                     {
                         partialValues.Add(GraphNodeId.GetPartial(
                             CodeGraphNodeIdName.File,
-                            new Uri(Path.Combine(projectFolder, name.ToLowerInvariant()),
+                            new Uri(Path.Combine(projectFolder, nodeInfo.Name.ToLowerInvariant()),
                             UriKind.RelativeOrAbsolute)));
                     }
                 }

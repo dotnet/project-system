@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Moq;
@@ -23,7 +24,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var mock = new Mock<INuGetPackagesDataProvider>(behavior);
             mock.Setup(x => x.UpdateNodeChildren(itemSpec, node));
 
-            node.Children.AddRange(childrenToAdd);
+            childrenToAdd.ToList().ForEach(x => node.AddChild(x));
+
             return mock.Object;
         }
 

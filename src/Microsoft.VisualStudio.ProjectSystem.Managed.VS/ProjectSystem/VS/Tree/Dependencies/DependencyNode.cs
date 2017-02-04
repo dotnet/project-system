@@ -3,7 +3,6 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
-using System.Linq;
 using Microsoft.VisualStudio.Imaging.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
@@ -134,45 +133,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// Note: Dependency node has public set for caption, since sometimes providers need
         /// to change captions. All other consumers will use IDependencyNode which has only "get".
         /// </summary>
-        public string Caption { get; set; }
+        public string Caption { get; protected set; }
 
-        /// <summary>
-        /// Actual formal name of the node. In most cases it will be equal to Caption,
-        /// however in some cases caption would have name + version or something else.
-        /// So to allow tree provider store formal name we need this property too. 
-        /// It is a hack now and we should make it public and move to IDependencyNode when
-        /// we get a chance and it is safe to do a breaking change.
-        /// Tracking with https://github.com/dotnet/roslyn-project-system/issues/1101
-        /// </summary>
         private string _name;
-        internal string Name {
+        public string Name {
             get
             {
                 return _name ?? Caption;
             }
-            set
+            internal set
             {
                 _name = value;
             }
         }
 
-        /// <summary>
-        /// This is temporary until we can add Name to IDependencyNode to protect us from custom 
-        /// implementations of IDependencyNode which don't have Name yet.
-        /// </summary>
-        internal static string GetName(IDependencyNode node)
-        {
-            Requires.NotNull(node, nameof(node));
-
-            if (node is DependencyNode dependencyNode)
-            {
-                return dependencyNode.Name;
-            }
-            else
-            {
-                return node.Caption;
-            }
-        }
         /// <summary>
         /// Unique name constructed in the form Caption (ItemSpec).
         /// Is used to dedupe dependency nodes when they have same caption but different 
@@ -201,16 +175,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         public int Priority { get; protected set; }
 
-        public ProjectTreeFlags Flags { get; set; }
+        public ProjectTreeFlags Flags { get; internal set; }
 
         public IImmutableDictionary<string, string> Properties { get; protected set; }
 
-        private HashSet<IDependencyNode> _children = new HashSet<IDependencyNode>();
-        public HashSet<IDependencyNode> Children
+        private ImmutableHashSet<IDependencyNode> _children = ImmutableHashSet<IDependencyNode>.Empty;
+        public ImmutableHashSet<IDependencyNode> Children
         {
             get
             {
-                return _children;
+                lock (_children)
+                {
+                    return _children;
+                }
             }
         }
 
@@ -218,30 +195,86 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             get
             {
-                return Children.Any();
+                return Children.Count > 0;
             }
         }
 
+        /// <summary>
+        /// Adds a child to the node
+        /// </summary>
+        /// <param name="childNode">child node to be added. Should not be null.</param>
         public void AddChild(IDependencyNode childNode)
         {
             Requires.NotNull(childNode, nameof(childNode));
 
-            _children.Add(childNode);
+            lock(_children)
+            {
+                _children = _children.Add(childNode);
+            }
         }
 
+        /// <summary>
+        /// Adds children to the node
+        /// </summary>
+        /// <param name="children">child nodes to be added. Should not be null.</param>
+        public void AddChildren(IEnumerable<IDependencyNode> children)
+        {
+            Requires.NotNull(children, nameof(children));
+
+            lock (_children)
+            {
+                var builder = _children.ToBuilder();
+                foreach (var child in children)
+                {
+                    builder.Add(child);
+                }
+
+                _children = builder.ToImmutableHashSet();
+            }
+        }
+
+        /// <summary>
+        /// Removes child from node's children.
+        /// </summary>
+        /// <param name="childNode">Node to be removed if it belongs to children. Should not be null.</param>
         public void RemoveChild(IDependencyNode childNode)
         {
             Requires.NotNull(childNode, nameof(childNode));
 
-            if (_children.Contains(childNode))
+            lock (_children)
             {
-                _children.Remove(childNode);
+                if (_children.Contains(childNode))
+                {
+                    _children = _children.Remove(childNode);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Removes all children from node
+        /// </summary>
+        public void RemoveAllChildren()
+        {
+            lock (_children)
+            {
+                _children = _children.Clear();
+            }
+        }
+
+        /// <summary>
+        /// Changes some properties of the node
+        /// </summary>
+        public void SetProperties(string caption = null)
+        {
+            if (caption != null)
+            {
+                Caption = caption;
             }
         }
 
         public override int GetHashCode()
         {
-            return unchecked(Id.GetHashCode());
+            return unchecked(Id.GetHashCode() + Resolved.GetHashCode());
         }
 
         public override bool Equals(object obj)
@@ -256,7 +289,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         public bool Equals(IDependencyNode other)
         {
-            if (other != null && other.Id.Equals(Id))
+            if (other != null && other.Id.Equals(Id) && other.Resolved.Equals(Resolved))
             {
                 return true;
             }

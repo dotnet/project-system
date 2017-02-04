@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         ""ItemSpec"": ""TopNodeItemSpec1""
     }
 }");
-            ((DependencyNode)topNode1).Caption = "Caption1";
+            topNode1.SetProperties(caption: "Caption1");
 
             var topNode2 = IDependencyNodeFactory.FromJson(@"
 {
@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         ""ItemSpec"": ""TopNodeItemSpec2""
     }
 }");
-            ((DependencyNode)topNode2).Caption = "Caption2";
+            topNode2.SetProperties(caption: "Caption2");
 
             var topNode3 = IDependencyNodeFactory.FromJson(@"
 {
@@ -67,12 +67,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         ""ItemSpec"": ""TopNodeItemSpec3""
     }
 }");
-            ((DependencyNode)topNode3).Caption = "Caption3";
+            topNode3.SetProperties(caption: "Caption3");
 
-            ((DependencyNode)topNode2).Caption = topNode2.Alias;
-            rootNode.Children.Add(topNode1);
-            rootNode.Children.Add(topNode2);
-            rootNode.Children.Add(topNode3);
+            topNode2.SetProperties(caption:topNode2.Alias);
+            rootNode.AddChild(topNode1);
+            rootNode.AddChild(topNode2);
+            rootNode.AddChild(topNode3);
 
             var dependenciesChange = DependenciesChangeFactory.FromJson(@"
 {
@@ -96,8 +96,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     ""RemovedNodes"": [ ]
 }");
             var addedNodesArray = dependenciesChange.AddedNodes.ToArray();
-            ((DependencyNode)addedNodesArray[0]).Caption = "Caption1";
-            ((DependencyNode)addedNodesArray[1]).Caption = "Caption2";
+            addedNodesArray[0].SetProperties(caption:"Caption1");
+            addedNodesArray[1].SetProperties(caption:"Caption2");
 
             var provider = new TestableDependenciesSubTreeProviderBase();
             provider.SetRootNode(rootNode);
