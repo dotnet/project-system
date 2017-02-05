@@ -7,7 +7,7 @@
     Description="Resolved Analyzer reference properties"
     xmlns="http://schemas.microsoft.com/build/2009/properties">
     <Rule.DataSource>
-        <DataSource Persistence="ProjectFile" ItemType="Analyzer" HasConfigurationCondition="False" />
+        <DataSource Persistence="ResolvedReference" ItemType="Analyzer" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </Rule.DataSource>
 
     <StringProperty Name="OriginalItemSpec" 
@@ -15,7 +15,7 @@
                     ReadOnly="True" 
                     Description="The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.">
         <StringProperty.DataSource>
-            <DataSource Persistence="Intrinsic" ItemType="Analyzer" PersistedName="FullPath" />
+            <DataSource Persistence="Intrinsic" ItemType="Analyzer" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
 </Rule>

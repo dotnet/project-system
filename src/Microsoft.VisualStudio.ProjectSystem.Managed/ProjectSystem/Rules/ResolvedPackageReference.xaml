@@ -9,7 +9,7 @@
    
     <Rule.DataSource>
         <DataSource Persistence="ResolvedReference" ItemType="PackageReference" HasConfigurationCondition="False" 
-                    SourceType="TargetResults" MSBuildTarget="ResolvePackageDependenciesDesignTime" />
+                    SourceType="TargetResults" MSBuildTarget="ResolvePackageDependenciesDesignTime" SourceOfDefaultValue="AfterContext" />
     </Rule.DataSource>
 
     <StringProperty Name="Description" 
@@ -53,6 +53,10 @@
                     Visible="False" 
                     ReadOnly="True" />
 
+    <StringProperty Name="IsImplicitlyDefined" 
+                    Visible="False" 
+                    ReadOnly="True" />
+    
     <StringProperty Name="FrameworkVersion" 
                     Visible="False" 
                     ReadOnly="True" />
@@ -63,7 +67,10 @@
                         Description="A semicolon-delimited list of direct dependencies of current dependency."
                         Separator=";">
         <StringListProperty.DataSource>
-            <DataSource Persistence="ResolvedReference" ItemType="PackageReference" HasConfigurationCondition="False" />
+            <DataSource Persistence="ResolvedReference" ItemType="PackageReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </StringListProperty.DataSource>
     </StringListProperty>
+    <BoolProperty Name="IsTopLevelDependency" 
+                  Visible="False"
+                  ReadOnly="True"/>
 </Rule>

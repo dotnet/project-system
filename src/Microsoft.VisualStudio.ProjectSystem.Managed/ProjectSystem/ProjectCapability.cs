@@ -10,12 +10,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string AlwaysAvailable = ProjectCapabilities.AlwaysApplicable;
         public const string CSharp = ProjectCapabilities.CSharp;
         public const string VisualBasic = ProjectCapabilities.VB;
+        public const string VisualBasicAppDesigner = ProjectCapabilities.VB + " & " + AppDesigner;
         public const string VisualBasicLanguageService = ProjectCapabilities.VB + " & " + ProjectCapabilities.LanguageService;
+        public const string CSharpAppDesigner = ProjectCapabilities.CSharp + " & " + AppDesigner;
         public const string CSharpLanguageService = ProjectCapabilities.CSharp + " & " + ProjectCapabilities.LanguageService;
-        public const string CSharpOrVisualBasic = ProjectCapabilities.CSharp + " | " + ProjectCapabilities.VB;
-        public const string CSharpOrVisualBasicLanguageService = "(" + ProjectCapabilities.CSharp + " | " + ProjectCapabilities.VB + ") & " + ProjectCapabilities.LanguageService;
-        public const string CSharpOrVisualBasicOpenProjectFile = "(" + CSharp + " | " + VisualBasic + ") & " + OpenProjectFile;
+        public const string CSharpOrVisualBasic = "(" + ProjectCapabilities.CSharp + " | " + ProjectCapabilities.VB + ")";
+        public const string CSharpOrVisualBasicLanguageService = CSharpOrVisualBasic +" & " + ProjectCapabilities.LanguageService;
+        public const string CSharpOrVisualBasicOpenProjectFile = CSharpOrVisualBasic + " & " + OpenProjectFile;
         public const string AppDesigner = nameof(AppDesigner);
+        public const string AppSettings = nameof(AppSettings);
         public const string DependenciesTree = nameof(DependenciesTree);
         public const string EditAndContinue = nameof(EditAndContinue);
         public const string LaunchProfiles = nameof(LaunchProfiles);
@@ -28,5 +31,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string ReferenceManagerSharedProjects = nameof(ReferenceManagerSharedProjects);
         public const string ReferenceManagerWinRT = nameof(ReferenceManagerWinRT);
         public const string Pack = nameof(Pack); // Keep this in sync with Microsoft.VisualStudio.Editors.ProjectCapability.Pack
+        public const string PreserveFormatting = nameof(PreserveFormatting);
     }
 }

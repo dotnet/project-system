@@ -8,12 +8,13 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.VisualStudio.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Microsoft.VisualStudio.Threading.Tasks;
-using Microsoft.VisualStudio.IO;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
@@ -201,7 +202,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // states that files can be in.
             if (ProjectSubscriptionService != null)
             {
-                var projectChangesBlock = new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(ProjectRuleBlock_ChangedAsync);
+                // The use of AsyncLazy with dataflow can allow state stored in the execution context to leak through. The downstream affect is 
+                // calls to say, get properties, may fail. To avoid this, we capture the execution context here, and it will be reapplied when
+                // we get new subscription data from the dataflow. 
+                var projectChangesBlock = new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(
+                            DataflowUtilities.CaptureAndApplyExecutionContext<IProjectVersionedValue<IProjectSubscriptionUpdate>>(ProjectRuleBlock_ChangedAsync));
 
                 ProjectRuleSubscriptionLink = ProjectSubscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
                     projectChangesBlock,
@@ -658,14 +663,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         /// <summary>
         /// Replaces the current set of profiles with the contents of profiles. If changes were
-        /// made, the file will be checked out and saved.
+        /// made, the file will be checked out and saved. Note it ignores the value of the active profile
+        /// as this setting is controlled by a user property.
         /// </summary>
         public async Task UpdateAndSaveSettingsAsync(ILaunchSettings newSettings)
         {
             // Make sure the profiles are copied. We don't want them to mutate.
-            ILaunchSettings newSnapshot = new LaunchSettings(newSettings.Profiles, newSettings.GlobalSettings, newSettings.ActiveProfile?.Name);
+            var activeProfileName = ActiveProfile?.Name;
 
-            // Being saved and changeMade are different since the active profile change does not require them to be saved.
+            ILaunchSettings newSnapshot = new LaunchSettings(newSettings.Profiles, newSettings.GlobalSettings, activeProfileName);
+
             await CheckoutSettingsFileAsync().ConfigureAwait(false);
 
             SaveSettingsToDisk(newSettings);
@@ -683,6 +690,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {
                 return CurrentSnapshot;
             }
+
             await _firstSnapshotCompletionSource.Task.TryWaitForCompleteOrTimeout(timeout).ConfigureAwait(false);
             return CurrentSnapshot;
         }

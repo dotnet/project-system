@@ -2,7 +2,7 @@
 <!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
 <Rule Name="None" DisplayName="Общие" PageTemplate="generic" Description="Элементы, не относящиеся к сборке" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="None" />
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="None" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <Rule.Categories>
     <Category Name="Advanced" DisplayName="Дополнительно" />
@@ -18,34 +18,34 @@
   <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="Пространство имен пользовательского инструмента" Description="Пространство имен, в которое помещаются выходные данные пользовательского инструмента." />
   <StringProperty Name="Identity" Visible="false" ReadOnly="true" Category="Misc" Description="Элемент, заданный в атрибуте Include.">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="Identity" />
+      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="FullPath" DisplayName="Полный путь" ReadOnly="true" Category="Misc" Description="Расположение файла.">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="FullPath" />
+      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="FileNameAndExtension" DisplayName="Имя файла" ReadOnly="true" Category="Misc" Description="Имя файла или папки.">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="FileNameAndExtension" />
+      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="FileNameAndExtension" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="URL" ReadOnly="true" Visible="false">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="FullPath" />
+      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <BoolProperty Name="Visible" Visible="false" />
   <StringProperty Name="DependentUpon" Visible="false" />
   <StringProperty Name="Link" Visible="false">
     <StringProperty.DataSource>
-      <DataSource PersistenceStyle="Attribute" />
+      <DataSource PersistenceStyle="Attribute" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="Extension" Visible="False" ReadOnly="true">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="Extension" />
+      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="Extension" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="LastGenOutput" Visible="false" Description="Имя последнего файла, созданного в результате SFG." />
@@ -53,7 +53,7 @@
   <BoolProperty Name="AutoGen" Visible="false" Description="Значение, указывающее, является ли этот файл созданным." />
   <StringProperty Name="CustomTool" Visible="false" Description="Свойство DTE для доступа к свойству Generator.">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFile" ItemType="None" PersistedName="Generator" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFile" ItemType="None" PersistedName="Generator" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
 </Rule>

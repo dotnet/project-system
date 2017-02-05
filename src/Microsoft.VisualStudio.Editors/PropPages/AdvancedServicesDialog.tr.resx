@@ -124,7 +124,7 @@
     <value>Çe&amp;vrimdışı oturum açmayı etkinleştirmek için şifreyi yerel olarak karmaya kaydedin</value>
   </data>
   <data name="HonorServerCookieExpirationCheckbox.Text" xml:space="preserve">
-    <value>Sunucu tanımlama bilgisi sona e&amp;rdiğinde kullanıcıların yeniden oturumaçması gerekir</value>
+    <value>Sunucu tanımlama bilgisi sona e&amp;rdiğinde kullanıcıların yeniden oturum açması gerekir</value>
   </data>
   <data name="UseCustomConnectionStringCheckBox.Text" xml:space="preserve">
     <value>Özel bağlantı dizesi &amp;kullan:</value>

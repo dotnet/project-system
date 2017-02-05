@@ -57,6 +57,7 @@
     <Compile Include="Mocks\IDebugLaunchProviderMetadataViewFactory.cs" />
     <Compile Include="Mocks\IDteServicesFactory.cs" />
     <Compile Include="Mocks\ExportFactoryFactory.cs" />
+    <Compile Include="Mocks\INuGetPackagesDataProviderFactory.cs" />
     <Compile Include="Mocks\IVsHiearchyItemFactory.cs" />
     <Compile Include="Mocks\IProjectFileEditorPresenterFactory.cs" />
     <Compile Include="Mocks\IFrameOpenCloseListenerFactory.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="Mocks\IVsSolutionFactory.cs" />
     <Compile Include="Mocks\IVsFileChangeExFactory.cs" />
     <Compile Include="Mocks\IVsStartupProjectsListServiceFactory.cs" />
+    <Compile Include="Mocks\ProjectItemFactory.cs" />
     <Compile Include="Mocks\Reference3Factory.cs" />
     <Compile Include="Mocks\RegistrationContextFactory.cs" />
     <Compile Include="Mocks\IVsAddProjectItemDlgFactory.cs" />
@@ -157,6 +159,7 @@
     <Compile Include="ProjectSystem\VS\SpecialFileProviders\VsProjectSpecialFilesManagerTests.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\DependenciesGraphProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\DependenciesSubTreeProviderBaseTests.cs" />
+    <Compile Include="ProjectSystem\VS\Tree\Dependencies\SdkDependenciesSubTreeProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\ProjectDependenciesSubTreeProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\NuGetDependenciesSubTreeProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\UI\MultiChoiceMsgBoxViewModelTests.cs" />

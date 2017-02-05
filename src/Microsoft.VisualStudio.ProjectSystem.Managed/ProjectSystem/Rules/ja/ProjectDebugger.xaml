@@ -2,7 +2,7 @@
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Rule Name="ProjectDebugger" DisplayName="開始" PageTemplate="Debugger" Description="Web デバッグ オプション" xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" />
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <!-- the command which appears in the debugger dropdown -->
   <Rule.Metadata>
@@ -12,17 +12,17 @@
   </Rule.Metadata>
   <DynamicEnumProperty Name="ActiveDebugProfile" DisplayName="デバッグ ターゲット" EnumProvider="DebugProfileProvider" Description="デバッグに使用するプロファイルを指定する">
     <DynamicEnumProperty.DataSource>
-      <DataSource Persistence="UserFile" HasConfigurationCondition="False" />
+      <DataSource Persistence="UserFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </DynamicEnumProperty.DataSource>
   </DynamicEnumProperty>
   <StringProperty Name="ActiveDebugFramework" ReadOnly="False" Visible="False">
     <StringProperty.DataSource>
-      <DataSource Persistence="UserFile" HasConfigurationCondition="false" />
+      <DataSource Persistence="UserFile" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="ActiveDebugRuntime" ReadOnly="False" Visible="False">
     <StringProperty.DataSource>
-      <DataSource Persistence="UserFile" HasConfigurationCondition="false" />
+      <DataSource Persistence="UserFile" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
 </Rule>

@@ -7,7 +7,7 @@
     Description="Assembly reference properties"
     xmlns="http://schemas.microsoft.com/build/2009/properties">
     <Rule.DataSource>
-        <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" />
+        <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </Rule.DataSource>
 
     <StringListProperty Name="Aliases"
@@ -19,7 +19,7 @@
                 DisplayName="Copy Local"
                 Description="Indicates whether the reference will be copied to the output directory.">
         <BoolProperty.DataSource>
-            <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" PersistedName="Private" />
+            <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" PersistedName="Private" SourceOfDefaultValue="AfterContext" />
         </BoolProperty.DataSource>
     </BoolProperty>
 
@@ -31,7 +31,7 @@
                   DisplayName="Specific Version"
                   Description="Indicates whether this assembly can be resolved without regard to multi-targeting rules for assembly resolution.">
         <BoolProperty.DataSource>
-            <DataSource Persistence="AssemblyReference" ItemType="Reference" HasConfigurationCondition="False"/>
+            <DataSource Persistence="AssemblyReference" ItemType="Reference" HasConfigurationCondition="False"  SourceOfDefaultValue="AfterContext" />
         </BoolProperty.DataSource>
     </BoolProperty>
 

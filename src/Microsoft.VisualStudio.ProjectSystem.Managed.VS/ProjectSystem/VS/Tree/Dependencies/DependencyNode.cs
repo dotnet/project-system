@@ -67,6 +67,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public static readonly ProjectTreeFlags CustomItemSpec
                 = ProjectTreeFlags.Create("CustomItemSpec");
 
+        public static readonly ProjectTreeFlags DoesNotSupportRemove
+                = ProjectTreeFlags.Create("DoesNotSupportRemove");
+
         /// <summary>
         /// These set of flags is internal and should be used only by standard known
         /// project item nodes, that come from design time build. This is important,

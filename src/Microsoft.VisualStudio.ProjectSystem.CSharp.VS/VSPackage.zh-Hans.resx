@@ -147,4 +147,10 @@
   <data name="10" xml:space="preserve">
     <value>用于创建目标为 .NET Core 的类库的项目。</value>
   </data>
+  <data name="11" xml:space="preserve">
+    <value>xUnit 测试项目 (.NET Core)</value>
+  </data>
+  <data name="12" xml:space="preserve">
+    <value>包含 xunit 测试的项目，测试可在 Windows、Linux 和 MacOS 上的 .NET Core 上运行</value>
+  </data>
 </root>

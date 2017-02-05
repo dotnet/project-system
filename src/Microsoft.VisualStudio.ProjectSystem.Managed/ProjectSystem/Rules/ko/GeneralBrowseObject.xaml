@@ -5,12 +5,12 @@
     <Category Name="General" DisplayName="일반" Description="일반" />
   </Rule.Categories>
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" />
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <StringProperty Name="ApplicationIcon" DisplayName="응용 프로그램 아이콘" Visible="True" />
   <StringProperty Name="TargetFrameworkMoniker" DisplayName="대상 프레임워크 모니커" Visible="True">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="AssemblyName" DisplayName="어셈블리 이름" Visible="True" />
@@ -18,17 +18,17 @@
   <StringProperty Name="RootNamespace" DisplayName="루트 네임스페이스" Visible="True" />
   <StringProperty Name="DefaultNamespace" DisplayName="기본 네임스페이스" Visible="True">
     <StringProperty.DataSource>
-      <DataSource PersistedName="RootNamespace" Persistence="ProjectFile" HasConfigurationCondition="false" />
+      <DataSource PersistedName="RootNamespace" Persistence="ProjectFile" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="TargetFrameworks" DisplayName="대상 프레임워크" Visible="True">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworks" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworks" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <IntProperty Name="TargetFramework" ReadOnly="True" Visible="True">
     <IntProperty.DataSource>
-      <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFramework" />
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFramework" SourceOfDefaultValue="AfterContext" />
     </IntProperty.DataSource>
   </IntProperty>
   <StringProperty Name="OutputName" Visible="True" />
@@ -40,55 +40,20 @@
     <EnumValue Name="appcontainerexe" DisplayName="3" />
     <EnumValue Name="winmdobj" DisplayName="4" />
     <EnumProperty.DataSource>
-      <DataSource Persistence="ProjectFileWithInterception" PersistedName="OutputTypeEx" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="OutputTypeEx" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </EnumProperty.DataSource>
   </EnumProperty>
   <StringProperty Name="StartupObject" DisplayName="진입점을 포함하는 형식입니다." Visible="True" />
   <StringProperty Name="ApplicationManifest" DisplayName="응용 프로그램 매니페스트" Visible="True">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFileWithInterception" PersistedName="ApplicationManifest" HasConfigurationCondition="false" />
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="ApplicationManifest" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="Win32ResourceFile" DisplayName="Win32 리소스 파일" Visible="True">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="Win32Resource" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFile" PersistedName="Win32Resource" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="DefineConstants" DisplayName="상수 정의" Visible="True" />
-  <EnumProperty Name="PlatformTarget" DisplayName="플랫폼 대상" Visible="True" />
-  <BoolProperty Name="Prefer32Bit" DisplayName="32비트 기본 사용" Visible="True" />
-  <BoolProperty Name="AllowUnsafeBlocks" Default="False" DisplayName="안전하지 않은 코드 허용" Visible="True" />
-  <StringProperty Name="Optimize" DisplayName="최적화" Visible="True" />
-  <EnumProperty Name="WarningLevel" DisplayName="경고 수준" Visible="True" />
-  <StringProperty Name="NoWarn" DisplayName="경고 표시 안 함" Visible="True" />
-  <BoolProperty Name="TreatWarningsAsErrors" Default="False" Description="경고를 오류로 처리" Visible="True" />
-  <StringProperty Name="TreatSpecificWarningsAsErrors" Description="특정 경고를 오류로 처리" Visible="True" />
-  <StringProperty Name="OutputPath" DisplayName="출력 경로" Visible="True" />
-  <StringProperty Name="DocumentationFile" DisplayName="문서 파일" Visible="True" />
-  <EnumProperty Name="GenerateSerializationAssemblies" DisplayName="Serialization 어셈블리 생성" Visible="True">
-    <EnumValue Name="Auto" DisplayName="자동" IsDefault="True" />
-    <EnumValue Name="On" DisplayName="설정" />
-    <EnumValue Name="Off" DisplayName="해제" />
-  </EnumProperty>
-  <EnumProperty Name="LanguageVersion" DisplayName="언어 버전" Visible="True">
-    <EnumProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="LangVersion" />
-    </EnumProperty.DataSource>
-  </EnumProperty>
-  <EnumProperty Name="ErrorReport" DisplayName="오류 보고서" Visible="True" />
-  <EnumProperty Name="DebugInfo" DisplayName="디버그 정보" Visible="True">
-    <EnumProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="DebugType" />
-    </EnumProperty.DataSource>
-  </EnumProperty>
-  <BoolProperty Name="CheckForOverflowUnderflow" DisplayName="CheckForOverflowUnderflow" Visible="False">
-    <BoolProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="CheckForOverflowUnderflow" HasConfigurationCondition="True" />
-    </BoolProperty.DataSource>
-  </BoolProperty>
-  <StringProperty Name="DebugSymbols" DisplayName="디버그 기호" Visible="True" />
-  <EnumProperty Name="FileAlignment" DisplayName="파일 맞춤" Visible="True" />
-  <StringProperty Name="BaseAddress" DisplayName="기준 주소" Visible="True" />
   <StringProperty Name="PreBuildEvent" DisplayName="빌드 전 이벤트" Visible="True" />
   <StringProperty Name="PostBuildEvent" DisplayName="빌드 후 이벤트" Visible="True" />
   <EnumProperty Name="RunPostBuildEvent" DisplayName="빌드 후 이벤트 실행" Visible="True">
@@ -99,34 +64,34 @@
   <StringProperty Name="ReferencePath" DisplayName="참조 경로" Visible="True" />
   <StringProperty Name="FileName" DisplayName="프로젝트 파일" ReadOnly="True">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectFile" />
+      <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectFile" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="FullPath" DisplayName="프로젝트 폴더" ReadOnly="True">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" />
+      <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="LocalPath" ReadOnly="True" Visible="True">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" />
+      <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <!-- Package properties -->
   <BoolProperty Name="GeneratePackageOnBuild" DisplayName="빌드 시 패키지 생성" Default="False" />
   <StringProperty Name="PackageId" DisplayName="패키지 ID">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="Version" DisplayName="패키지 버전">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="Authors" DisplayName="작성자">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <BoolProperty Name="PackageRequireLicenseAcceptance" DisplayName="패키지에 라이선스 승인 필요" Default="False" />
@@ -140,44 +105,44 @@
   <!--AssemblyInfo properties-->
   <StringProperty Name="Description" DisplayName="어셈블리 설명" Visible="True">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="Company" DisplayName="어셈블리 회사" Visible="True">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="Product" DisplayName="제품" Visible="True">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="Copyright" DisplayName="저작권" Visible="True">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="AssemblyVersion" DisplayName="어셈블리 버전" Visible="True">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="FileVersion" DisplayName="어셈블리 파일 버전" Visible="True">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="NeutralLanguage" DisplayName="중립 리소스 언어" Visible="True">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFileOrAssemblyInfo" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <BoolProperty Name="SignAssembly" DisplayName="어셈블리에 서명" Visible="True" />
   <BoolProperty Name="DelaySign" DisplayName="서명만 연기" Visible="True" />
   <StringProperty Name="AssemblyOriginatorKeyFile" DisplayName="강력한 이름 키 파일" Visible="True">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
 </Rule>

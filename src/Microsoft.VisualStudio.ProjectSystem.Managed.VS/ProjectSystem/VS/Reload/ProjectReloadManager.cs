@@ -261,9 +261,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                             {
                                 ProjectReloadResult result =  await project.ReloadProjectAsync().ConfigureAwait(true);
 
-                                if (result == ProjectReloadResult.ReloadFailed || result == ProjectReloadResult.ReloadFailedProjectDirty)
+                                switch (result)
                                 {
-                                    failedProjects.Add(new Tuple<IReloadableProject, ProjectReloadResult>(project, result));
+                                    case ProjectReloadResult.ReloadFailed:
+                                    case ProjectReloadResult.ReloadFailedProjectDirty:
+                                    case ProjectReloadResult.NeedsForceReload:
+                                        failedProjects.Add(new Tuple<IReloadableProject, ProjectReloadResult>(project, result));
+                                        break;
                                 }
                             }
                             
@@ -300,6 +304,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 }
                 else
                 {
+                    Assumes.True(failure.Item2 == ProjectReloadResult.ReloadFailed || failure.Item2 == ProjectReloadResult.NeedsForceReload);
+
                     if (ignoreAll)
                     {   
                         // do nothing
@@ -329,6 +335,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                         VSResources.ReloadAll,
                                         VSResources.Reload};
 
+            // TODO: Consider showing different messages for reload failed and needs forced reload.
             var msgText = string.Format(VSResources.ProjectModificationsPrompt, Path.GetFileNameWithoutExtension(project.ProjectFile));
             switch (_dialogServices.ShowMultiChoiceMsgBox(VSResources.ProjectModificationDlgTitle, msgText, buttons))
             {

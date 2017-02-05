@@ -1,11 +1,22 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using Moq;
 
 namespace Microsoft.VisualStudio.Shell.Interop
 {
     internal static class IVsSolutionFactory
     {
+        public static FuncWithOut<IVsSolutionEvents, uint, int> DefaultAdviseCallback => (IVsSolutionEvents events, out uint cookie) =>
+        {
+            cookie = 0;
+            return VSConstants.S_OK;
+        };
+
+        public static Func<uint, int> DefaultUnadviseCallback => (uint cookie) => VSConstants.S_OK;
+
+        public static IVsSolution Create() => Mock.Of<IVsSolution>();
+
         public static IVsSolution CreateWithSolutionDirectory(FuncWithOutThreeArgs<string, string, string, int> func)
         {
             var mock = new Mock<IVsSolution>();
@@ -21,6 +32,22 @@ namespace Microsoft.VisualStudio.Shell.Interop
             var mock = new Mock<IVsSolution>();
             mock.Setup(x => x.AdviseSolutionEvents(It.IsAny<IVsSolutionEvents>(), out adviseCookie)).Returns(VSConstants.S_OK);
             mock.Setup(x => x.UnadviseSolutionEvents(It.IsAny<uint>())).Returns(VSConstants.S_OK);
+            return mock.Object;
+        }
+
+        public static IVsSolution Implement(FuncWithOut<IVsSolutionEvents, uint, int> adviseCallback,
+            Func<uint, int> unadviseCallback,
+            FuncWithOutThreeArgs<string, string, string, int> solutionInfoCallback)
+        {
+            var mock = new Mock<IVsSolution>();
+            uint cookie;
+            string directory;
+            string solutionFile;
+            string userSettings;
+
+            mock.Setup(x => x.AdviseSolutionEvents(It.IsAny<IVsSolutionEvents>(), out cookie)).Returns(adviseCallback);
+            mock.Setup(x => x.UnadviseSolutionEvents(It.IsAny<uint>())).Returns(unadviseCallback);
+            mock.Setup(x => x.GetSolutionInfo(out directory, out solutionFile, out userSettings)).Returns(solutionInfoCallback);
             return mock.Object;
         }
     }

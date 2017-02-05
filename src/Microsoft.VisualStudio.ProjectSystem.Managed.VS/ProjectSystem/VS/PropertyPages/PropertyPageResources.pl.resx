@@ -180,4 +180,46 @@
   <data name="ErrorsMustBeCorrectedPriorToSaving" xml:space="preserve">
     <value>Przed zapisaniem zmian należy poprawić błędy na stronie.</value>
   </data>
+  <data name="AddBtn" xml:space="preserve">
+    <value>Dodaj</value>
+  </data>
+  <data name="ApplicationArguments" xml:space="preserve">
+    <value>Argumenty aplikacji:</value>
+  </data>
+  <data name="BrowseBtn" xml:space="preserve">
+    <value>Przeglądaj...</value>
+  </data>
+  <data name="DeleteBtn" xml:space="preserve">
+    <value>Usuń</value>
+  </data>
+  <data name="EnvironmentVariables" xml:space="preserve">
+    <value>Zmienne środowiskowe:</value>
+  </data>
+  <data name="Executable" xml:space="preserve">
+    <value>Plik wykonywalny</value>
+  </data>
+  <data name="Launch" xml:space="preserve">
+    <value>Uruchom:</value>
+  </data>
+  <data name="LaunchURL" xml:space="preserve">
+    <value>Adres URL uruchamiania:</value>
+  </data>
+  <data name="NameHeader" xml:space="preserve">
+    <value>Nazwa</value>
+  </data>
+  <data name="NewBtn" xml:space="preserve">
+    <value>Nowy...</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profil:</value>
+  </data>
+  <data name="RemoveBtn" xml:space="preserve">
+    <value>Usuń</value>
+  </data>
+  <data name="ValueHeader" xml:space="preserve">
+    <value>Wartość</value>
+  </data>
+  <data name="WorkingDirectory" xml:space="preserve">
+    <value>Katalog roboczy:</value>
+  </data>
 </root>

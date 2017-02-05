@@ -180,4 +180,46 @@
   <data name="ErrorsMustBeCorrectedPriorToSaving" xml:space="preserve">
     <value>Les erreurs de la page doivent être corrigées avant d’enregistrer vos modifications.</value>
   </data>
+  <data name="AddBtn" xml:space="preserve">
+    <value>Ajouter</value>
+  </data>
+  <data name="ApplicationArguments" xml:space="preserve">
+    <value>Arguments de l'application :</value>
+  </data>
+  <data name="BrowseBtn" xml:space="preserve">
+    <value>Parcourir...</value>
+  </data>
+  <data name="DeleteBtn" xml:space="preserve">
+    <value>Supprimer</value>
+  </data>
+  <data name="EnvironmentVariables" xml:space="preserve">
+    <value>Variables d’environnement :</value>
+  </data>
+  <data name="Executable" xml:space="preserve">
+    <value>Exécutable</value>
+  </data>
+  <data name="Launch" xml:space="preserve">
+    <value>Lancer :</value>
+  </data>
+  <data name="LaunchURL" xml:space="preserve">
+    <value>Lancer l’URL :</value>
+  </data>
+  <data name="NameHeader" xml:space="preserve">
+    <value>Nom</value>
+  </data>
+  <data name="NewBtn" xml:space="preserve">
+    <value>Nouveau...</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profil :</value>
+  </data>
+  <data name="RemoveBtn" xml:space="preserve">
+    <value>Effacer</value>
+  </data>
+  <data name="ValueHeader" xml:space="preserve">
+    <value>Valeur</value>
+  </data>
+  <data name="WorkingDirectory" xml:space="preserve">
+    <value>Répertoire de travail :</value>
+  </data>
 </root>

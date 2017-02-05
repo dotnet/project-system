@@ -58,6 +58,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider> SubTreeProviders { get; }
 
         /// <summary>
+        /// Keeps latest data source versions sent from each subtree provider. Is needed for merging and 
+        /// posting consistent data source versions after we process tree updates.
+        /// </summary>
+        private Dictionary<string, IImmutableDictionary<NamedIdentity, IComparable>> _latestDataSourcesVersions =
+            new Dictionary<string, IImmutableDictionary<NamedIdentity, IComparable>>(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="DependenciesProjectTreeProvider"/> class.
         /// </summary>
         [ImportingConstructor]
@@ -126,9 +133,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return false;
             }
 
-            return nodes.All(node => (node.Flags.Contains(DependencyNode.GenericDependencyFlags) 
-                                        && node.BrowseObjectProperties != null)
-                                     || node.Flags.Contains(ProjectTreeFlags.Common.SharedProjectImportReference));
+            return nodes.All(node => (node.Flags.Contains(DependencyNode.GenericDependencyFlags)
+                                        && node.BrowseObjectProperties != null
+                                        && !node.Flags.Contains(DependencyNode.DoesNotSupportRemove)));
         }
 
         /// <summary>
@@ -341,11 +348,40 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                     ProjectContextChanged?.Invoke(this, new ProjectContextEventArgs(this));
 
-                    // Note: temporary workaround to prevent data sources being out of sync is send null always,
-                    // this would stop error dialog, however subscribers could not check for Dependencies tree changes
-                    // until real fix is checked it (its fine since there probably should not be any at the moment).
-                    return Task.FromResult(new TreeUpdateResult(dependenciesNode, false, null /*e.DataSourceVersions*/));
+                    // TODO We still are getting mismatched data sources and need to figure out better 
+                    // way of merging, mute them for now and get to it in U1
+                    return Task.FromResult(new TreeUpdateResult(dependenciesNode, 
+                                                                false, 
+                                                                null /*GetMergedDataSourceVersions(e)*/));
                 });
+        }
+
+        /// <summary>
+        /// Note: this is important to merge data source versions correctly here, since 
+        /// and different providers sending this event might have different processing time 
+        /// and we might end up in later data source versions coming before earlier ones. If 
+        /// we post greater versions before lower ones there will be exception and data flow 
+        /// might be broken after that. 
+        /// Another reason post data source versions here is that there could be other 
+        /// components waiting for Dependencies tree changes and if we don't post versions,
+        /// they could not track our changes.
+        /// </summary>
+        private IImmutableDictionary<NamedIdentity, IComparable> GetMergedDataSourceVersions(
+                    DependenciesChangedEventArgs e)
+        {
+            IImmutableDictionary<NamedIdentity, IComparable> mergedDataSourcesVersions = null;
+            lock (_latestDataSourcesVersions)
+            {
+                if (!string.IsNullOrEmpty(e.Provider.ProviderType) && e.DataSourceVersions != null)
+                {
+                    _latestDataSourcesVersions[e.Provider.ProviderType] = e.DataSourceVersions;
+                }
+
+                mergedDataSourcesVersions = 
+                    ProjectDataSources.MergeDataSourceVersions(_latestDataSourcesVersions.Values);
+            }
+
+            return mergedDataSourcesVersions;
         }
 
         /// <summary>
@@ -761,13 +797,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             Requires.NotNull(namedCatalogs, nameof(namedCatalogs));
 
+            // Note: usually for default/generic dependencies we have sets of 2 rule schemas:
+            //  - rule for unresolved dependency, they persist in ProjectFile
+            //  - rule for resolved dependency, they persist in ResolvedReference
+            // So to be able to find rule for resolved or unresolved reference we need to be consistent there 
+            // and make sure we do set ResolvedReference persistense for resolved dependnecies, since we rely
+            // on that here when pick correct rule schema.
+            // (old code used to check if rule datasource has SourceType=TargetResults, which was true for Resolved,
+            // dependencies. However now we have custom logic for collecting unresolved dependencies too and use 
+            // DesignTime build results there too. Thats why we swicthed to check for persistence).
             var browseObjectCatalog = namedCatalogs[PropertyPageContexts.BrowseObject];
             return from schemaName in browseObjectCatalog.GetPropertyPagesSchemas(itemType)
                    let schema = browseObjectCatalog.GetSchema(schemaName)
                    where schema.DataSource != null 
                          && string.Equals(itemType, schema.DataSource.ItemType, StringComparison.OrdinalIgnoreCase)
-                         && (resolved == string.Equals(schema.DataSource.SourceType, 
-                                                       RuleDataSourceTypes.TargetResults, 
+                         && (resolved == string.Equals(schema.DataSource.Persistence,
+                                                       RuleDataSourceTypes.PersistenceResolvedReference,
                                                        StringComparison.OrdinalIgnoreCase))
                    select schema;
         }

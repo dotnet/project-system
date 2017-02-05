@@ -103,111 +103,6 @@
         <target state="translated">Win32 Kaynak Dosyası</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|DefineConstants|DisplayName">
-        <source>Define Constants</source>
-        <target state="translated">Sabitleri Tanımla</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|PlatformTarget|DisplayName">
-        <source>Platform Target</source>
-        <target state="translated">Platform Hedefi</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|Prefer32Bit|DisplayName">
-        <source>Prefer 32Bit</source>
-        <target state="translated">32Bit Tercih Et</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
-        <source>Allow unsafe code</source>
-        <target state="translated">Güvenli olmayan koda izin ver</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Optimize|DisplayName">
-        <source>Optimize</source>
-        <target state="translated">İyileştir</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|WarningLevel|DisplayName">
-        <source>Warning Level</source>
-        <target state="translated">Uyarı Düzeyi</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|NoWarn|DisplayName">
-        <source>Supress Warning</source>
-        <target state="translated">Uyarıyı Gösterme</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|TreatWarningsAsErrors|Description">
-        <source>Treat warnings as errors</source>
-        <target state="translated">Uyarıları hata olarak değerlendir</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|OutputPath|DisplayName">
-        <source>Output Path</source>
-        <target state="translated">Çıkış Yolu</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|DocumentationFile|DisplayName">
-        <source>Documentation file</source>
-        <target state="translated">Belge dosyası</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|GenerateSerializationAssemblies|DisplayName">
-        <source>Generate serialization assemblies</source>
-        <target state="translated">Serileştirme bütünleştirilmiş kodları oluştur</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|GenerateSerializationAssemblies.Auto|DisplayName">
-        <source>Auto</source>
-        <target state="translated">Otomatik</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|GenerateSerializationAssemblies.On|DisplayName">
-        <source>On</source>
-        <target state="translated">Açık</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|GenerateSerializationAssemblies.Off|DisplayName">
-        <source>Off</source>
-        <target state="translated">Kapalı</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|LanguageVersion|DisplayName">
-        <source>Language version</source>
-        <target state="translated">Dil sürümü</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|ErrorReport|DisplayName">
-        <source>Error report</source>
-        <target state="translated">Hata raporu</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|DebugInfo|DisplayName">
-        <source>Debug Info</source>
-        <target state="translated">Hata Ayıklama Bilgisi</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|CheckForOverflowUnderflow|DisplayName">
-        <source>CheckForOverflowUnderflow</source>
-        <target state="translated">CheckForOverflowUnderflow</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|DebugSymbols|DisplayName">
-        <source>Debug symbols</source>
-        <target state="translated">Hata ayıklama simgeleri</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|FileAlignment|DisplayName">
-        <source>File Alignment</source>
-        <target state="translated">Dosya Hizalama</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|BaseAddress|DisplayName">
-        <source>Base address</source>
-        <target state="translated">Temel adres</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|PreBuildEvent|DisplayName">
         <source>Pre Build Event</source>
         <target state="translated">Derleme Öncesi Olayı</target>
@@ -286,11 +181,6 @@
       <trans-unit id="StringProperty|AssemblyOriginatorKeyFile|DisplayName">
         <source>Strong name key file</source>
         <target state="translated">Tanımlayıcı ad anahtar dosyası</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|TreatSpecificWarningsAsErrors|Description">
-        <source>Treat specific warnings as errors</source>
-        <target state="translated">Belirli uyarıları hata olarak değerlendir</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GeneratePackageOnBuild|DisplayName">

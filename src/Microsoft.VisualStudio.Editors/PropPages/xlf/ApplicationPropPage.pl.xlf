@@ -10,7 +10,7 @@
       </trans-unit>
       <trans-unit id="RootNamespaceLabel.Text">
         <source>Defau&amp;lt namespace:</source>
-        <target state="translated">Domyśl&amp;na przestrzeń nazw:</target>
+        <target state="translated">&amp;Domyślna przestrzeń nazw:</target>
         <note />
       </trans-unit>
       <trans-unit id="OutputTypeLabel.Text">

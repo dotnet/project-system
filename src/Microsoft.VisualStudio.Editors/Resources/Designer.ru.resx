@@ -325,7 +325,7 @@
     <value>NetworkAvailabilityChanged: возникает при изменении состояния подключения — при подключении или отключении.</value>
   </data>
   <data name="PPG_AdvancedBuildSettings_InvalidBaseAddress" xml:space="preserve">
-    <value>Базовый адрес должен быть шестнадцатеричным числом, содержащим не более 8 цифр, например, H11000000.</value>
+    <value>Базовый адрес должен быть шестнадцатеричным числом (длина — не более 8 цифр), например: 0x11000000.</value>
   </data>
   <data name="PPG_Compile_Notification_None" xml:space="preserve">
     <value>Нет</value>
@@ -714,7 +714,7 @@
     <value>Ошибка при получении неиспользуемых ссылок.</value>
   </data>
   <data name="PPG_InvalidHexString" xml:space="preserve">
-    <value>&amp;Базовый адрес должен быть шестнадцатеричным числом, например: H11000000.</value>
+    <value>&amp;Базовый адрес должен быть шестнадцатеричным числом (длина — не более 8 цифр), например: H11000000.</value>
   </data>
   <data name="PropPage_NeedResFile" xml:space="preserve">
     <value>"У файлов ресурсов должно быть расширение RES. Укажите допустимое имя файла ресурсов".</value>

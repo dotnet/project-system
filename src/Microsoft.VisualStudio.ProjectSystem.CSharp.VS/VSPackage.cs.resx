@@ -147,4 +147,10 @@
   <data name="10" xml:space="preserve">
     <value>Projekt pro vytvoření knihovny tříd určené pro .NET Core</value>
   </data>
+  <data name="11" xml:space="preserve">
+    <value>Projekt testování xUnit (.NET Core)</value>
+  </data>
+  <data name="12" xml:space="preserve">
+    <value>Projekt obsahující testy jednotek xunit, které je možné spustit na .NET Core ve Windows, Linuxu a MacOS</value>
+  </data>
 </root>

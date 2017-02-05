@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright, Microsoft Corporation, All rights reserved.-->
+<Rule
+  Name="ConfiguredBrowseObject"
+  DisplayName="General"
+  PageTemplate="generic"
+  Description="General"
+  OverrideMode= "Replace"
+  xmlns="http://schemas.microsoft.com/build/2009/properties">
+
+  <Rule.Categories>
+    <Category Name="General" DisplayName="General" Description="General" />
+  </Rule.Categories>
+
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="True" SourceOfDefaultValue="AfterContext"/>
+  </Rule.DataSource>
+
+  <!-- Build Page Properties -->
+  <StringProperty Name="DefineConstants" DisplayName="Define Constants" Visible="False"/>
+  <EnumProperty Name="PlatformTarget" DisplayName="Platform Target" Visible="False"/>
+  <BoolProperty Name="Prefer32Bit" DisplayName="Prefer 32Bit" Visible="False"/>
+  <BoolProperty Name="AllowUnsafeBlocks"  Default="False"  DisplayName="Allow unsafe code" Visible="False"/>
+  <StringProperty Name="Optimize" DisplayName="Optimize" Visible="False"/>
+  <EnumProperty Name="WarningLevel" DisplayName="Warning Level" Visible="False"/>
+  <StringProperty Name="NoWarn" DisplayName="Supress Warning" Visible="False"/>
+  <BoolProperty Name="TreatWarningsAsErrors"  Default="False" Description="Treat warnings as errors" Visible="False"/>
+  <StringProperty Name="TreatSpecificWarningsAsErrors"  Description="Treat specific warnings as errors" Visible="False" />
+  <StringProperty Name="OutputPath" DisplayName="Output Path" Visible="False"/>
+  <StringProperty Name="DocumentationFile" DisplayName="Documentation file" Visible="False"/>
+  <EnumProperty Name="GenerateSerializationAssemblies" DisplayName="Generate serialization assemblies" Visible="False">
+    <EnumValue Name="Auto" DisplayName="Auto" IsDefault="True" />
+    <EnumValue Name="On" DisplayName="On" />
+    <EnumValue Name="Off" DisplayName="Off" />
+  </EnumProperty>
+  <!-- ** removed for RTM: needs translation
+  <BoolProperty Name="RegisterForComInterop" Default="False" DisplayName="Register for COM Interop" Visible="False"/>
+    -->
+    
+  <!-- Advanced Build Page Properties -->
+  <EnumProperty Name="LanguageVersion" DisplayName="Language version" Visible="False">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="LangVersion" SourceOfDefaultValue="AfterContext"/>
+    </EnumProperty.DataSource>
+  </EnumProperty>
+  <EnumProperty Name="ErrorReport" DisplayName="Error report" Visible="False"/>
+  <EnumProperty Name="DebugInfo" DisplayName="Debug Info" Visible="False">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="DebugType" SourceOfDefaultValue="AfterContext"/>
+    </EnumProperty.DataSource>
+  </EnumProperty>
+  <BoolProperty Name="CheckForOverflowUnderflow" DisplayName="CheckForOverflowUnderflow" Visible="False">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="CheckForOverflowUnderflow" HasConfigurationCondition="True" SourceOfDefaultValue="AfterContext"/>
+    </BoolProperty.DataSource>
+  </BoolProperty>
+  <StringProperty Name="DebugSymbols" DisplayName="Debug symbols" Visible="False"/>
+  <EnumProperty Name="FileAlignment" DisplayName="File Alignment" Visible="False"/>
+  <StringProperty Name="BaseAddress" DisplayName="Base address" Visible="False"/>
+</Rule>

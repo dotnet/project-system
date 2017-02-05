@@ -2,7 +2,7 @@
 <!--Copyright, Microsoft Corporation, All rights reserved.-->
 <Rule Name="SubProject" DisplayName="Allgemein" PageTemplate="generic" Description="Projekte, die als Teil des enthaltenden Projekts, jedoch ohne eine tatsächliche Buildabhängigkeit erstellt werden müssen" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="SubProject" />
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="SubProject" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <StringProperty Name="ProjectTypeGuid" Visible="False" />
   <StringProperty Name="ProjectId" Visible="False" />

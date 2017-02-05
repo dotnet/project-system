@@ -53,6 +53,16 @@
         <target state="translated">用于创建目标为 .NET Core 的类库的项目。</target>
         <note />
       </trans-unit>
+      <trans-unit id="11">
+        <source>xUnit Test Project (.NET Core)</source>
+        <target state="translated">xUnit 测试项目 (.NET Core)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="12">
+        <source>A project that contains xunit tests that can run on .NET Core on Windows, Linux and MacOS</source>
+        <target state="translated">包含 xunit 测试的项目，测试可在 Windows、Linux 和 MacOS 上的 .NET Core 上运行</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

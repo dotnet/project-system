@@ -125,6 +125,7 @@
     <Compile Include="PropPageDesigner\PropPageDesignerWindowPane.vb" />
     <Compile Include="PropPages\ChildPageSite.vb" />
     <Compile Include="PropPages\ControlDataFlags.vb" />
+    <Compile Include="PropPages\CpsPropertyDescriptorWrapper.vb" />
     <Compile Include="PropPages\HiddenIfMissingPropertyControlData.vb" />
     <Compile Include="PropPages\ProjectReloadedException.vb" />
     <Compile Include="PropPages\PropertyControlData.vb" />

@@ -103,111 +103,6 @@
         <target state="translated">Файл ресурсов Win32</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|DefineConstants|DisplayName">
-        <source>Define Constants</source>
-        <target state="translated">Определить константы</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|PlatformTarget|DisplayName">
-        <source>Platform Target</source>
-        <target state="translated">Цель платформы</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|Prefer32Bit|DisplayName">
-        <source>Prefer 32Bit</source>
-        <target state="translated">Предпочтительно 32-разр.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
-        <source>Allow unsafe code</source>
-        <target state="translated">Разрешить небезопасный код</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Optimize|DisplayName">
-        <source>Optimize</source>
-        <target state="translated">Оптимизировать</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|WarningLevel|DisplayName">
-        <source>Warning Level</source>
-        <target state="translated">Уровень предупреждения</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|NoWarn|DisplayName">
-        <source>Supress Warning</source>
-        <target state="translated">Отключить предупреждение</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|TreatWarningsAsErrors|Description">
-        <source>Treat warnings as errors</source>
-        <target state="translated">Обрабатывать предупреждения как ошибки</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|OutputPath|DisplayName">
-        <source>Output Path</source>
-        <target state="translated">Выходной путь</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|DocumentationFile|DisplayName">
-        <source>Documentation file</source>
-        <target state="translated">Файл документации</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|GenerateSerializationAssemblies|DisplayName">
-        <source>Generate serialization assemblies</source>
-        <target state="translated">Создать сборки сериализации</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|GenerateSerializationAssemblies.Auto|DisplayName">
-        <source>Auto</source>
-        <target state="translated">Авто</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|GenerateSerializationAssemblies.On|DisplayName">
-        <source>On</source>
-        <target state="translated">Вкл.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|GenerateSerializationAssemblies.Off|DisplayName">
-        <source>Off</source>
-        <target state="translated">Выкл.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|LanguageVersion|DisplayName">
-        <source>Language version</source>
-        <target state="translated">Версия языка</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|ErrorReport|DisplayName">
-        <source>Error report</source>
-        <target state="translated">Отчет об ошибках</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|DebugInfo|DisplayName">
-        <source>Debug Info</source>
-        <target state="translated">Сведения об отладке</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|CheckForOverflowUnderflow|DisplayName">
-        <source>CheckForOverflowUnderflow</source>
-        <target state="translated">CheckForOverflowUnderflow</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|DebugSymbols|DisplayName">
-        <source>Debug symbols</source>
-        <target state="translated">Символы отладки</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|FileAlignment|DisplayName">
-        <source>File Alignment</source>
-        <target state="translated">Выравнивание файла</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|BaseAddress|DisplayName">
-        <source>Base address</source>
-        <target state="translated">Базовый адрес</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|PreBuildEvent|DisplayName">
         <source>Pre Build Event</source>
         <target state="translated">События перед сборкой</target>
@@ -286,11 +181,6 @@
       <trans-unit id="StringProperty|AssemblyOriginatorKeyFile|DisplayName">
         <source>Strong name key file</source>
         <target state="translated">Файл ключа строгого имени</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|TreatSpecificWarningsAsErrors|Description">
-        <source>Treat specific warnings as errors</source>
-        <target state="translated">Интерпретировать указанные предупреждения как ошибки</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GeneratePackageOnBuild|DisplayName">

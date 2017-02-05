@@ -53,6 +53,16 @@
         <target state="translated">Proyecto para crear una biblioteca de clases para .NET Core.</target>
         <note />
       </trans-unit>
+      <trans-unit id="11">
+        <source>xUnit Test Project (.NET Core)</source>
+        <target state="translated">Proyecto de pruebas xUnit (.NET Core)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="12">
+        <source>A project that contains xunit tests that can run on .NET Core on Windows, Linux and MacOS</source>
+        <target state="translated">Proyecto que contiene pruebas xUnit que se pueden ejecutar en .NET Core en Windows, Linux y Mac OS.</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

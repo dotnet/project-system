@@ -180,4 +180,46 @@
   <data name="ErrorsMustBeCorrectedPriorToSaving" xml:space="preserve">
     <value>必須先修正頁面上的錯誤，才能儲存您的變更。</value>
   </data>
+  <data name="AddBtn" xml:space="preserve">
+    <value>新增</value>
+  </data>
+  <data name="ApplicationArguments" xml:space="preserve">
+    <value>應用程式引數:</value>
+  </data>
+  <data name="BrowseBtn" xml:space="preserve">
+    <value>瀏覽...</value>
+  </data>
+  <data name="DeleteBtn" xml:space="preserve">
+    <value>刪除</value>
+  </data>
+  <data name="EnvironmentVariables" xml:space="preserve">
+    <value>環境變數:</value>
+  </data>
+  <data name="Executable" xml:space="preserve">
+    <value>可執行檔</value>
+  </data>
+  <data name="Launch" xml:space="preserve">
+    <value>啟動:</value>
+  </data>
+  <data name="LaunchURL" xml:space="preserve">
+    <value>啟動 URL:</value>
+  </data>
+  <data name="NameHeader" xml:space="preserve">
+    <value>名稱</value>
+  </data>
+  <data name="NewBtn" xml:space="preserve">
+    <value>新增...</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>設定檔:</value>
+  </data>
+  <data name="RemoveBtn" xml:space="preserve">
+    <value>移除</value>
+  </data>
+  <data name="ValueHeader" xml:space="preserve">
+    <value>值</value>
+  </data>
+  <data name="WorkingDirectory" xml:space="preserve">
+    <value>工作目錄:</value>
+  </data>
 </root>

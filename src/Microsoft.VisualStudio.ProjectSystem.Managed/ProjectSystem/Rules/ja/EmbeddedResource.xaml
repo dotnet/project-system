@@ -2,7 +2,7 @@
 <!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
 <Rule Name="EmbeddedResource" DisplayName="埋め込みリソース" PageTemplate="generic" Description="埋め込まれたリソース" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="EmbeddedResource" />
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="EmbeddedResource" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <Rule.Categories>
     <Category Name="Advanced" DisplayName="詳細設定" />
@@ -18,34 +18,34 @@
   <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="カスタム ツールの名前空間" Description="カスタム ツールの出力を配置する名前空間です。" />
   <StringProperty Name="Identity" Visible="false" ReadOnly="true" Category="Misc" Description="Include 属性に指定された項目です。">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="EmbeddedResource" PersistedName="Identity" />
+      <DataSource Persistence="Intrinsic" ItemType="EmbeddedResource" PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="FullPath" DisplayName="完全パス" ReadOnly="true" Category="Misc" Description="ファイルの場所。">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="EmbeddedResource" PersistedName="FullPath" />
+      <DataSource Persistence="Intrinsic" ItemType="EmbeddedResource" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="FileNameAndExtension" DisplayName="ファイル名" ReadOnly="true" Category="Misc" Description="ファイルまたはフォルダーの名前です。">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="EmbeddedResource" PersistedName="FileNameAndExtension" />
+      <DataSource Persistence="Intrinsic" ItemType="EmbeddedResource" PersistedName="FileNameAndExtension" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="URL" ReadOnly="true" Visible="false">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="EmbeddedResource" PersistedName="FullPath" />
+      <DataSource Persistence="Intrinsic" ItemType="EmbeddedResource" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <BoolProperty Name="Visible" Visible="false" />
   <StringProperty Name="DependentUpon" Visible="false" />
   <StringProperty Name="Link" Visible="false">
     <StringProperty.DataSource>
-      <DataSource PersistenceStyle="Attribute" />
+      <DataSource PersistenceStyle="Attribute" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="Extension" Visible="False" ReadOnly="true">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="EmbeddedResource" PersistedName="Extension" />
+      <DataSource Persistence="Intrinsic" ItemType="EmbeddedResource" PersistedName="Extension" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="LastGenOutput" Visible="false" Description="SFG の結果として最後に生成されたファイルのファイル名です。" />
@@ -53,7 +53,7 @@
   <BoolProperty Name="AutoGen" Visible="false" Description="生成されたファイルであるかどうかを示す値です。" />
   <StringProperty Name="CustomTool" Visible="false" Description="Generator プロパティへのアクセスに使用する DTE プロパティです。">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFile" ItemType="EmbeddedResource" PersistedName="Generator" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFile" ItemType="EmbeddedResource" PersistedName="Generator" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
 </Rule>

@@ -108,6 +108,76 @@
         <target state="translated">Deben corregirse los errores de la página antes de guardar los cambios.</target>
         <note />
       </trans-unit>
+      <trans-unit id="AddBtn">
+        <source>Add</source>
+        <target state="translated">Agregar</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationArguments">
+        <source>Application arguments:</source>
+        <target state="translated">Argumentos de aplicación:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BrowseBtn">
+        <source>Browse...</source>
+        <target state="translated">Examinar...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DeleteBtn">
+        <source>Delete</source>
+        <target state="translated">Eliminar</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnvironmentVariables">
+        <source>Environment variables:</source>
+        <target state="translated">Variables de entorno:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Executable">
+        <source>Executable</source>
+        <target state="translated">Archivo ejecutable</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Launch">
+        <source>Launch:</source>
+        <target state="translated">Iniciar:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LaunchURL">
+        <source>Launch URL:</source>
+        <target state="translated">Iniciar dirección URL:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NameHeader">
+        <source>Name</source>
+        <target state="translated">Nombre</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NewBtn">
+        <source>New...</source>
+        <target state="translated">Nuevo...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Profile">
+        <source>Profile:</source>
+        <target state="translated">Perfil:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RemoveBtn">
+        <source>Remove</source>
+        <target state="translated">Quitar</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValueHeader">
+        <source>Value</source>
+        <target state="translated">Valor</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WorkingDirectory">
+        <source>Working directory:</source>
+        <target state="translated">Directorio de trabajo:</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

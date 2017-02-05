@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.Imaging.Interop;
+using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Threading;
@@ -50,6 +51,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private List<IDisposable> _projectSyncLinks;
 
         private object _rootNodeSync = new object();
+
+        /// <summary>
+        /// Stores latest data sources versions sent from DesignTimeBuild
+        /// </summary>
+        private IImmutableDictionary<NamedIdentity, IComparable> _latestDataSourceVersions = null;
 
         /// <summary>
         /// Gets the project asynchronous tasks service.
@@ -169,16 +175,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         {
                             Verify.NotDisposed(this);
 
-                            var intermediateBlockDesignTime = new BufferBlock<
-                                                            IProjectVersionedValue<
-                                                                IProjectSubscriptionUpdate>>();
+                            var intermediateBlockDesignTime = 
+                                new BufferBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(
+                                    new ExecutionDataflowBlockOptions()
+                                    {
+                                        NameFormat = "DependenciesSubTree DesignTime Input: {1}"
+                                    });
+
+                            var intermediateBlockEvaluation =
+                                new BufferBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(
+                                    new ExecutionDataflowBlockOptions()
+                                    {
+                                        NameFormat = "DependenciesSubTree Evaluation Input: {1}"
+                                    });
 
                             _subscriptionLinks.Add(ProjectSubscriptionService.JointRuleSource.SourceBlock.LinkTo(
                                 intermediateBlockDesignTime,
                                 ruleNames: UnresolvedReferenceRuleNames.Union(ResolvedReferenceRuleNames),
-                                suppressVersionOnlyUpdates: true));
+                                suppressVersionOnlyUpdates: false, 
+                                linkOptions: new DataflowLinkOptions { PropagateCompletion = true }));
 
-                            var actionBlock = new ActionBlock<
+                            _subscriptionLinks.Add(ProjectSubscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
+                                intermediateBlockEvaluation,
+                                ruleNames: UnresolvedReferenceRuleNames,
+                                suppressVersionOnlyUpdates: false,
+                                linkOptions: new DataflowLinkOptions { PropagateCompletion = true }));
+
+                            var actionBlockDesignTimeBuild = new ActionBlock<
                                                     IProjectVersionedValue<
                                                         Tuple<IProjectSubscriptionUpdate,
                                                                IProjectCatalogSnapshot,
@@ -187,33 +210,42 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                         IProjectVersionedValue<
                                                             Tuple<IProjectSubscriptionUpdate,
                                                                   IProjectCatalogSnapshot,
-                                                                  IProjectSharedFoldersSnapshot>>>(
-                                                        ProjectSubscriptionService_Changed),
+                                                                  IProjectSharedFoldersSnapshot>>>(e => 
+                                                        ProjectSubscriptionService_Changed(e, RuleHandlerType.DesignTimeBuild)),
                                                    new ExecutionDataflowBlockOptions()
                                                    {
-                                                       NameFormat = "ReferencesSubtree Input: {1}"
+                                                       NameFormat = "DependenciesSubTree DesignTime Input: {1}"
+                                                   });
+
+                            var actionBlockEvaluation = new ActionBlock<
+                                                    IProjectVersionedValue<
+                                                        Tuple<IProjectSubscriptionUpdate,
+                                                               IProjectCatalogSnapshot,
+                                                               IProjectSharedFoldersSnapshot>>>
+                                                  (new Action<
+                                                        IProjectVersionedValue<
+                                                            Tuple<IProjectSubscriptionUpdate,
+                                                                  IProjectCatalogSnapshot,
+                                                                  IProjectSharedFoldersSnapshot>>>(e =>
+                                                        ProjectSubscriptionService_Changed(e, RuleHandlerType.Evaluation)),
+                                                   new ExecutionDataflowBlockOptions()
+                                                   {
+                                                       NameFormat = "DependenciesSubTree Evaluation Input: {1}"
                                                    });
 
                             _projectSyncLinks.Add(ProjectDataSources.SyncLinkTo(
                                 intermediateBlockDesignTime.SyncLinkOptions(),
                                 ProjectSubscriptionService.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
                                 ProjectSubscriptionService.SharedFoldersSource.SourceBlock.SyncLinkOptions(),
-                                actionBlock));
-
-                            var intermediateBlockEvaluation = new BufferBlock<
-                                IProjectVersionedValue<
-                                    IProjectSubscriptionUpdate>>();
-                            _subscriptionLinks.Add(ProjectSubscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
-                                intermediateBlockEvaluation,
-                                ruleNames: UnresolvedReferenceRuleNames,
-                                suppressVersionOnlyUpdates: true));
+                                actionBlockDesignTimeBuild,
+                                linkOptions: new DataflowLinkOptions { PropagateCompletion = true }));
 
                             _projectSyncLinks.Add(ProjectDataSources.SyncLinkTo(
                                 intermediateBlockEvaluation.SyncLinkOptions(),
                                 ProjectSubscriptionService.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
                                 ProjectSubscriptionService.SharedFoldersSource.SourceBlock.SyncLinkOptions(),
-                                actionBlock));
-
+                                actionBlockEvaluation,
+                                linkOptions: new DataflowLinkOptions { PropagateCompletion = true }));
                         }
                     },
                     registerFaultHandler: true);
@@ -239,10 +271,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// Handles changes to the references items in the project and updates the project tree.
         /// </summary>
         /// <param name="e">A description of the changes made to the project.</param>
+        /// <param name="handlerType">Specifies type of the event: DesignTimeBuild or Evaluation.</param>
         private void ProjectSubscriptionService_Changed(IProjectVersionedValue<
                                                             Tuple<IProjectSubscriptionUpdate,
                                                                   IProjectCatalogSnapshot,
-                                                                  IProjectSharedFoldersSnapshot>> e)
+                                                                  IProjectSharedFoldersSnapshot>> e,
+                                                        RuleHandlerType handlerType)
         {
             DependenciesChange dependenciesChange;
 
@@ -270,9 +304,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 });
 
                 dependenciesChange.AddedNodes.ForEach(RootNode.AddChild);
-            }
 
-            OnDependenciesChanged(dependenciesChange.GetDiff(), e);
+                OnDependenciesChanged(dependenciesChange.GetDiff(), e, handlerType);
+            }
         }
 
         public virtual IDependencyNode GetDependencyNode(DependencyNodeId nodeId)
@@ -368,22 +402,65 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                         updatedUnresolvedSnapshots,
                                                         catalogs,
                                                         out IProjectRuleSnapshot unresolvedReferenceSnapshot);
-                    var node = rootTreeNodes.FindNode(removedItemSpec, unresolvedItemType);
+                    if (unresolvedItemType != null)
+                    {
+                        // if in current unresolved refs snapshot we have item matching unresolvedItemSpec,
+                        // we check if there is an existing node in the tree matching it - if yes, remove it.
+                        // Note: when resolved item was added to the tree, it was added with OriginalItemSpec,
+                        // which matches it's unresolved counter part, that's why here we search for unresolvedItemSpec, 
+                        // but not for removedItemSpec.
+                        var node = rootTreeNodes.FindNode(unresolvedItemSpec, unresolvedItemType);
+                        if (node != null)
+                        {
+                            dependenciesChange.RemovedNodes.Add(node);
+
+                            IImmutableDictionary<string, string> properties = null;
+                            if (unresolvedReferenceSnapshot != null)
+                            {
+                                properties = GetProjectItemProperties(unresolvedReferenceSnapshot, unresolvedItemSpec);
+                            }
+
+                            node = CreateDependencyNode(unresolvedItemSpec,
+                                                        unresolvedItemType,
+                                                        properties: properties,
+                                                        resolved: false);
+                            dependenciesChange.AddedNodes.Add(node);
+                        }
+                    }
+                    else
+                    {
+                        // we end up here when identity of unresolved reference changes and we don't even find
+                        // it in unresolved references changes (might happen when HintPath is used) or when DT 
+                        // events for unresolved changes come separatelly form resolved changes.
+                        var node = rootTreeNodes.FindNode(removedItemSpec);
+                        if (node != null)
+                        {
+                            dependenciesChange.RemovedNodes.Add(node);
+                        }
+                    }
+                }
+
+                foreach (string changedItemSpec in resolvedReferenceRuleChanges.Difference.ChangedItems)
+                {
+                    string unresolvedItemSpec = resolvedReferenceRuleChanges.After
+                                                    .Items[changedItemSpec][OriginalItemSpecPropertyName];
+                    string unresolvedItemType = GetUnresolvedReferenceItemType(unresolvedItemSpec,
+                                                        updatedUnresolvedSnapshots,
+                                                        catalogs,
+                                                        out IProjectRuleSnapshot unresolvedReferenceSnapshot);
+                    if (unresolvedItemType == null)
+                    {
+                        continue;
+                    }
+
+                    var node = rootTreeNodes.FindNode(unresolvedItemSpec, unresolvedItemType);
                     if (node != null)
                     {
-                        dependenciesChange.RemovedNodes.Add(node);
-
-                        IImmutableDictionary<string, string> properties = null;
-                        if (unresolvedReferenceSnapshot != null)
-                        {
-                            properties = GetProjectItemProperties(unresolvedReferenceSnapshot, unresolvedItemSpec);
-                        }
-
-                        node = CreateDependencyNode(unresolvedItemSpec,
-                                                    unresolvedItemType,
-                                                    properties: properties,
-                                                    resolved: false);
-                        dependenciesChange.AddedNodes.Add(node);
+                        var properties = GetProjectItemProperties(resolvedReferenceRuleChanges.After, changedItemSpec);
+                        var newNode = CreateDependencyNode(unresolvedItemSpec,
+                                                        itemType: unresolvedItemType,
+                                                        properties: properties);
+                        dependenciesChange.UpdatedNodes.Add(newNode);
                     }
                 }
 
@@ -542,14 +619,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                              IProjectVersionedValue<
                                                 Tuple<IProjectSubscriptionUpdate,
                                                         IProjectCatalogSnapshot,
-                                                        IProjectSharedFoldersSnapshot>> e)
+                                                        IProjectSharedFoldersSnapshot>> e,
+                                             RuleHandlerType handlerType)
         {
+            IImmutableDictionary<NamedIdentity, IComparable> dataSourceVersions = null;
+            lock (_syncObject)
+            {
+                if (_latestDataSourceVersions == null)
+                {
+                    // very first time send some versions even for Evaluation
+                    dataSourceVersions = e?.DataSourceVersions;
+                }
+
+                _latestDataSourceVersions = e?.DataSourceVersions;
+                if (handlerType == RuleHandlerType.DesignTimeBuild)
+                {
+                    // Only update versions after DesignTimeBuild events, since they would bring resolved 
+                    // dependencies and if some components would want to known when tree latest state changed,
+                    // DesignTimeBuild events are the ones that bring final state.
+                    dataSourceVersions = _latestDataSourceVersions;
+                }
+            }
+
             DependenciesChanged(this,
                                 new DependenciesChangedEventArgs(
                                         this,
                                         changes,
                                         e?.Value?.Item2,
-                                        e?.DataSourceVersions));
+                                        dataSourceVersions));
         }
 
         /// <summary>

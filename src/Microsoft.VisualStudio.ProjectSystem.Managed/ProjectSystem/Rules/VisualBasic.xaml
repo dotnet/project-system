@@ -8,7 +8,7 @@
   xmlns="http://schemas.microsoft.com/build/2009/properties">
 
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="false" />
+    <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
 
   <Rule.Categories>
@@ -40,7 +40,7 @@
       Category="Misc"
       Description="The item specified in the Include attribute.">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="Identity" />
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
 
@@ -51,7 +51,7 @@
       Category="Misc"
       Description="Location of the file.">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FullPath" />
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
 
@@ -62,7 +62,7 @@
       Category="Misc"
       Description="Name of the file or folder.">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FileNameAndExtension" />
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FileNameAndExtension" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
 
@@ -74,7 +74,7 @@
   </StringProperty>
   <StringProperty Name="Link" Visible="false">
     <StringProperty.DataSource>
-      <DataSource PersistenceStyle="Attribute" />
+      <DataSource PersistenceStyle="Attribute" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
     <StringProperty.Metadata>
       <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />

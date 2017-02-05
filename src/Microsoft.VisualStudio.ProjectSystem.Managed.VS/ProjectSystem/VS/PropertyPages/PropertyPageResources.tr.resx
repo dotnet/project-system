@@ -180,4 +180,46 @@
   <data name="ErrorsMustBeCorrectedPriorToSaving" xml:space="preserve">
     <value>Değişiklikleriniz kaydedilmeden önce bu sayfadaki hataların düzeltilmesi gerekiyor.</value>
   </data>
+  <data name="AddBtn" xml:space="preserve">
+    <value>Ekle</value>
+  </data>
+  <data name="ApplicationArguments" xml:space="preserve">
+    <value>Uygulama bağımsız değişkenleri:</value>
+  </data>
+  <data name="BrowseBtn" xml:space="preserve">
+    <value>Gözat...</value>
+  </data>
+  <data name="DeleteBtn" xml:space="preserve">
+    <value>Sil</value>
+  </data>
+  <data name="EnvironmentVariables" xml:space="preserve">
+    <value>Ortam değişkenleri:</value>
+  </data>
+  <data name="Executable" xml:space="preserve">
+    <value>Yürütülebilir</value>
+  </data>
+  <data name="Launch" xml:space="preserve">
+    <value>Başlatma:</value>
+  </data>
+  <data name="LaunchURL" xml:space="preserve">
+    <value>Başlatma URL’si:</value>
+  </data>
+  <data name="NameHeader" xml:space="preserve">
+    <value>Ad</value>
+  </data>
+  <data name="NewBtn" xml:space="preserve">
+    <value>Yeni...</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profil:</value>
+  </data>
+  <data name="RemoveBtn" xml:space="preserve">
+    <value>Kaldır</value>
+  </data>
+  <data name="ValueHeader" xml:space="preserve">
+    <value>Değer</value>
+  </data>
+  <data name="WorkingDirectory" xml:space="preserve">
+    <value>Çalışma dizini:</value>
+  </data>
 </root>

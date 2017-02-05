@@ -11,11 +11,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     /// </summary>
     [Export(typeof(ILanguageServiceCommandLineHandler))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
-    internal class MetadataReferenceFilesLanguageServiceItemHandler : ILanguageServiceCommandLineHandler
+    internal class MetadataReferenceItemHandler : ILanguageServiceCommandLineHandler
     {
+        private readonly UnconfiguredProject _unconfiguredProject;
+
         [ImportingConstructor]
-        public MetadataReferenceFilesLanguageServiceItemHandler(UnconfiguredProject project)
+        public MetadataReferenceItemHandler(UnconfiguredProject project)
         {
+            Requires.NotNull(project, nameof(project));
+
+            _unconfiguredProject = project;
         }
 
         public void Handle(CommandLineArguments added, CommandLineArguments removed, IWorkspaceProjectContext context, bool isActiveContext)
@@ -25,12 +30,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             foreach (CommandLineReference reference in removed.MetadataReferences)
             {
-                context.RemoveMetadataReference(reference.Reference);
+                var fullPath = _unconfiguredProject.MakeRooted(reference.Reference);
+                context.RemoveMetadataReference(fullPath);
             }
 
             foreach (CommandLineReference reference in added.MetadataReferences)
             {
-                context.AddMetadataReference(reference.Reference, reference.Properties);
+                var fullPath = _unconfiguredProject.MakeRooted(reference.Reference);
+                context.AddMetadataReference(fullPath, reference.Properties);
             }
         }
     }

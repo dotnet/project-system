@@ -2,7 +2,7 @@
 <!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
 <Rule Name="ConfigurationGeneralFile" DisplayName="Ogólne" PageTemplate="generic" Description="Ogólne właściwości elementu projektu" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="{}{AnyType}" />
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="{}{AnyType}" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <Rule.Categories>
     <Category Name="Advanced" DisplayName="Zaawansowane" />
@@ -16,22 +16,22 @@
   </EnumProperty>
   <StringProperty Name="Identity" Visible="false" ReadOnly="true" Category="Misc" Description="Element wskazany w atrybucie Include.">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="{}{AnyType}" PersistedName="Identity" />
+      <DataSource Persistence="Intrinsic" ItemType="{}{AnyType}" PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="FullPath" DisplayName="Pełna ścieżka" ReadOnly="true" Category="Misc" Description="Lokalizacja pliku.">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="{}{AnyType}" PersistedName="FullPath" />
+      <DataSource Persistence="Intrinsic" ItemType="{}{AnyType}" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="FileNameAndExtension" DisplayName="Nazwa pliku" ReadOnly="true" Category="Misc" Description="Nazwa pliku lub folderu.">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="{}{AnyType}" PersistedName="FileNameAndExtension" />
+      <DataSource Persistence="Intrinsic" ItemType="{}{AnyType}" PersistedName="FileNameAndExtension" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="URL" ReadOnly="true" Visible="false">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="{}{AnyType}" PersistedName="FullPath" />
+      <DataSource Persistence="Intrinsic" ItemType="{}{AnyType}" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="DependentUpon" Visible="False" Description="Nazwa liścia pliku, w którym ten element pojawia się jako potomny w drzewie projektu." />
@@ -39,7 +39,7 @@
   <StringProperty Name="Link" Visible="false" />
   <StringProperty Name="Extension" Visible="False" ReadOnly="true">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="{}{AnyType}" PersistedName="Extension" />
+      <DataSource Persistence="Intrinsic" ItemType="{}{AnyType}" PersistedName="Extension" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="GeneratorTarget" Visible="false" />

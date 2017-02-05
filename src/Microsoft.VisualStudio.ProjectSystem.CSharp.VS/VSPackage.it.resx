@@ -147,4 +147,10 @@
   <data name="10" xml:space="preserve">
     <value>Progetto per la creazione di una libreria di classi destinata a .NET Core.</value>
   </data>
+  <data name="11" xml:space="preserve">
+    <value>Progetto di test xUnit (.NET Core)</value>
+  </data>
+  <data name="12" xml:space="preserve">
+    <value>Progetto che contiene i test xunit eseguibili in .NET Core in Windows, Linux e MacOS</value>
+  </data>
 </root>

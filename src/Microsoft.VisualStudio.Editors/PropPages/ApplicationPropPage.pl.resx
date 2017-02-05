@@ -121,7 +121,7 @@
     <value>&amp;Nazwa zestawu:</value>
   </data>
   <data name="RootNamespaceLabel.Text" xml:space="preserve">
-    <value>Domyśl&amp;na przestrzeń nazw:</value>
+    <value>&amp;Domyślna przestrzeń nazw:</value>
   </data>
   <data name="OutputTypeLabel.Text" xml:space="preserve">
     <value>Typ wy&amp;jściowy:</value>

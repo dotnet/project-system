@@ -53,6 +53,16 @@
         <target state="translated">Projekt pro vytvoření knihovny tříd určené pro .NET Core</target>
         <note />
       </trans-unit>
+      <trans-unit id="11">
+        <source>xUnit Test Project (.NET Core)</source>
+        <target state="translated">Projekt testování xUnit (.NET Core)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="12">
+        <source>A project that contains xunit tests that can run on .NET Core on Windows, Linux and MacOS</source>
+        <target state="translated">Projekt obsahující testy jednotek xunit, které je možné spustit na .NET Core ve Windows, Linuxu a MacOS</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

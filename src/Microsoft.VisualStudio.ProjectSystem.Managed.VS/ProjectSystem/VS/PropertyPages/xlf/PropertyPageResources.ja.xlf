@@ -108,6 +108,76 @@
         <target state="translated">ページ上のエラーは変更を保存する前に修正する必要があります。</target>
         <note />
       </trans-unit>
+      <trans-unit id="AddBtn">
+        <source>Add</source>
+        <target state="translated">追加</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationArguments">
+        <source>Application arguments:</source>
+        <target state="translated">アプリケーション引数:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BrowseBtn">
+        <source>Browse...</source>
+        <target state="translated">参照...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DeleteBtn">
+        <source>Delete</source>
+        <target state="translated">削除</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnvironmentVariables">
+        <source>Environment variables:</source>
+        <target state="translated">環境変数:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Executable">
+        <source>Executable</source>
+        <target state="translated">実行可能ファイル</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Launch">
+        <source>Launch:</source>
+        <target state="translated">起動:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LaunchURL">
+        <source>Launch URL:</source>
+        <target state="translated">起動 URL:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NameHeader">
+        <source>Name</source>
+        <target state="translated">名前</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NewBtn">
+        <source>New...</source>
+        <target state="translated">新規...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Profile">
+        <source>Profile:</source>
+        <target state="translated">プロファイル:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RemoveBtn">
+        <source>Remove</source>
+        <target state="translated">削除</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValueHeader">
+        <source>Value</source>
+        <target state="translated">値</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WorkingDirectory">
+        <source>Working directory:</source>
+        <target state="translated">作業ディレクトリ:</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

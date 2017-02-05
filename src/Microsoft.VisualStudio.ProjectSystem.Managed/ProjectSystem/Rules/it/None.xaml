@@ -2,7 +2,7 @@
 <!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
 <Rule Name="None" DisplayName="Generale" PageTemplate="generic" Description="Elementi non di compilazione" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="None" />
+    <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="None" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <Rule.Categories>
     <Category Name="Advanced" DisplayName="Avanzate" />
@@ -18,34 +18,34 @@
   <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="Spazio dei nomi strumento personalizzato" Description="Spazio dei nomi in cui viene inserito l'output dello strumento personalizzato." />
   <StringProperty Name="Identity" Visible="false" ReadOnly="true" Category="Misc" Description="Elemento specificato nell'attributo Include.">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="Identity" />
+      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="FullPath" DisplayName="Percorso completo" ReadOnly="true" Category="Misc" Description="Percorso del file.">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="FullPath" />
+      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="FileNameAndExtension" DisplayName="Nome file" ReadOnly="true" Category="Misc" Description="Nome del file o della cartella.">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="FileNameAndExtension" />
+      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="FileNameAndExtension" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="URL" ReadOnly="true" Visible="false">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="FullPath" />
+      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <BoolProperty Name="Visible" Visible="false" />
   <StringProperty Name="DependentUpon" Visible="false" />
   <StringProperty Name="Link" Visible="false">
     <StringProperty.DataSource>
-      <DataSource PersistenceStyle="Attribute" />
+      <DataSource PersistenceStyle="Attribute" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="Extension" Visible="False" ReadOnly="true">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="Extension" />
+      <DataSource Persistence="Intrinsic" ItemType="None" PersistedName="Extension" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="LastGenOutput" Visible="false" Description="Nome dell'ultimo file generato come risultato di SFG." />
@@ -53,7 +53,7 @@
   <BoolProperty Name="AutoGen" Visible="false" Description="Valore che indica se si tratta di un file generato." />
   <StringProperty Name="CustomTool" Visible="false" Description="Proprietà DTE per l'accesso alla proprietà Generator.">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFile" ItemType="None" PersistedName="Generator" HasConfigurationCondition="False" />
+      <DataSource Persistence="ProjectFile" ItemType="None" PersistedName="Generator" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
 </Rule>

@@ -283,7 +283,7 @@ Selezionare un percorso della cartella valido.</value>
     <value>Il formato del GUID deve essere dddddddd-dddd-dddd-dddd-dddddddddddd.</value>
   </data>
   <data name="PPG_Application_MyAppCommentLine1" xml:space="preserve">
-    <value>NOTA: Questo file è generato automaticamente e non può essere modificato direttamente.  Per apportare modifiche</value>
+    <value>NOTA: questo file è generato automaticamente e non può essere modificato direttamente. Per apportare modifiche</value>
   </data>
   <data name="PPG_Application_MyAppCommentLine2" xml:space="preserve">
     <value> o se vengono rilevati errori di compilazione nel file, passare a Creazione progetti</value>
@@ -313,7 +313,7 @@ Selezionare un percorso della cartella valido.</value>
     <value>Startup: generato all'avvio dell'applicazione, prima della creazione del form di avvio.</value>
   </data>
   <data name="PPG_Application_AppEventsCommentLine4" xml:space="preserve">
-    <value>Shutdown: generato dopo la chiusura di tutti i form dell'applicazione.  Questo evento non viene generato se l'applicazione termina in modo anomalo.</value>
+    <value>Shutdown: generato dopo la chiusura di tutti i form dell'applicazione. Questo evento non viene generato se l'applicazione termina in modo anomalo.</value>
   </data>
   <data name="PPG_Application_AppEventsCommentLine5" xml:space="preserve">
     <value>UnhandledException: generato se nell'applicazione si verifica un'eccezione non gestita.</value>
@@ -492,7 +492,7 @@ Errore:</value>
     <value>Impostazioni di sicurezza avanzate</value>
   </data>
   <data name="PPG_MgdStatus_BuildFailed" xml:space="preserve">
-    <value>Compilazione non riuscita.  Fare clic su ANNULLA e correggere l'errore di compilazione prima di eseguire di nuovo l'analisi.</value>
+    <value>Compilazione non riuscita. Fare clic su ANNULLA e correggere l'errore di compilazione prima di eseguire di nuovo l'analisi.</value>
   </data>
   <data name="PPG_MgdStatus_BuildComplete" xml:space="preserve">
     <value>Compilazione completata...</value>
@@ -501,7 +501,7 @@ Errore:</value>
     <value>Non è possibile avviare la compilazione.</value>
   </data>
   <data name="PPG_MgdStatus_BuildFailedToStart" xml:space="preserve">
-    <value>Errore grave.  Per analizzare le autorizzazioni, è necessario avviare la compilazione,  che non è stata avviata.</value>
+    <value>Errore grave. Per analizzare le autorizzazioni, è necessario avviare la compilazione,  che non è stata avviata.</value>
   </data>
   <data name="PPG_CustomPermissionSet" xml:space="preserve">
     <value>(Personalizzata)</value>
@@ -628,7 +628,7 @@ Errore:</value>
 </value>
   </data>
   <data name="PPG_Reference_RemoveImportsFailUnexpected" xml:space="preserve">
-    <value>Non è stato possibile aggiungere o rimuovere '{0}' come importazione del progetto a causa di un errore imprevisto del sistema di progetto.  Errore restituito: '{1}'.</value>
+    <value>Non è stato possibile aggiungere o rimuovere '{0}' come importazione del progetto a causa di un errore imprevisto del sistema di progetto. Errore restituito: '{1}'.</value>
   </data>
   <data name="PPG_Reference_AddWebReference" xml:space="preserve">
     <value>Non è stato possibile aggiungere il riferimento Web. {0}
@@ -666,7 +666,7 @@ Errore:</value>
     <value>Proprietà del riferimento</value>
   </data>
   <data name="PropPage_RemoteMachineBlankError" xml:space="preserve">
-    <value>Il nome del computer remoto non può essere vuoto.  Specificare il nome del computer di cui eseguire il debug remoto.</value>
+    <value>Il nome del computer remoto non può essere vuoto. Specificare il nome del computer di cui eseguire il debug remoto.</value>
   </data>
   <data name="PropPage_ProgramNotExist" xml:space="preserve">
     <value>Il programma esterno non è stato trovato. Immettere un file eseguibile valido.</value>
@@ -732,7 +732,7 @@ Errore:</value>
     <value>Risorse</value>
   </data>
   <data name="APPDES_ErrorLoading_Msg" xml:space="preserve">
-    <value>Si è verificato un errore durante il tentativo di caricare la finestra delle proprietà del progetto.  Chiudere la finestra e riprovare.
+    <value>Si è verificato un errore durante il tentativo di caricare la finestra delle proprietà del progetto. Chiudere la finestra e riprovare.
 {0}</value>
   </data>
   <data name="APPDES_ErrorLoadingPropPage" xml:space="preserve">
@@ -742,16 +742,16 @@ Errore:</value>
     <value>Non è possibile visualizzare la finestra di progettazione perché il documento non è mai stato caricato.</value>
   </data>
   <data name="APPDES_ClickHereCreateResx" xml:space="preserve">
-    <value>Questo progetto non contiene un file di risorse predefinito.  Fare clic qui per crearne uno.</value>
+    <value>Questo progetto non contiene un file di risorse predefinito. Fare clic qui per crearne uno.</value>
   </data>
   <data name="APPDES_ClickHereCreateSettings" xml:space="preserve">
-    <value>Questo progetto non contiene un file di impostazioni predefinito.  Fare clic qui per crearne uno.</value>
+    <value>Questo progetto non contiene un file di impostazioni predefinito. Fare clic qui per crearne uno.</value>
   </data>
   <data name="APPDES_FileNotFound_1Arg" xml:space="preserve">
     <value>Il file '{0}' non è stato trovato.</value>
   </data>
   <data name="APPDES_EditorAlreadyOpen_1Arg" xml:space="preserve">
-    <value>Il file '{0}' è già aperto in un editor.  Chiudere il file e riprovare.</value>
+    <value>Il file '{0}' è già aperto in un editor. Chiudere il file e riprovare.</value>
   </data>
   <data name="APPDES_OverflowButton_AccessibilityName" xml:space="preserve">
     <value>Tutte le pagine Creazione progetti</value>
@@ -850,7 +850,7 @@ Errore:</value>
     <value>Non è possibile creare la finestra di progettazione. {0}</value>
   </data>
   <data name="DFX_UnableToCheckout" xml:space="preserve">
-    <value>Non è possibile estrarre il file corrente.  Il file potrebbe essere di sola lettura o bloccato oppure deve essere estratto manualmente.</value>
+    <value>Non è possibile estrarre il file corrente. Il file potrebbe essere di sola lettura o bloccato oppure deve essere estratto manualmente.</value>
   </data>
   <data name="DFX_Error_Default_Caption" xml:space="preserve">
     <value>Microsoft Visual Studio</value>
@@ -904,7 +904,7 @@ Errore:</value>
     <value>L'oggetto corrente è stato generato automaticamente e supporta la ridenominazione solo tramite Editor risorse gestite.</value>
   </data>
   <data name="RSE_Err_CantFindResourceFile_1Arg" xml:space="preserve">
-    <value>Il file '{0}' non è stato trovato.  È possibile che sia stato spostato o eliminato.</value>
+    <value>Il file '{0}' non è stato trovato. È possibile che sia stato spostato o eliminato.</value>
   </data>
   <data name="RSE_Err_LoadingResource_1Arg" xml:space="preserve">
     <value>Non è possibile caricare la risorsa dal file '{0}'.</value>
@@ -934,10 +934,10 @@ Errore:</value>
     <value>Il valore della risorsa contiene dati non validi o è in un formato non corretto.</value>
   </data>
   <data name="RSE_Err_BadIdentifier_2Arg" xml:space="preserve">
-    <value>Il nome della risorsa '{0}' non può essere usato come identificatore valido perché contiene uno o più caratteri non validi: \'{1\}'.  Rimuovere o sostituire tali caratteri e riprovare.</value>
+    <value>Il nome della risorsa '{0}' non può essere usato come identificatore valido perché contiene uno o più caratteri non validi: \'{1\}'. Rimuovere o sostituire tali caratteri e riprovare.</value>
   </data>
   <data name="RSE_Err_MaxFilesLimitation" xml:space="preserve">
-    <value>Sono stati specificati troppi file.  Selezionare un numero minore di file e riprovare.</value>
+    <value>Sono stati specificati troppi file. Selezionare un numero minore di file e riprovare.</value>
   </data>
   <data name="RSE_Err_InternalException" xml:space="preserve">
     <value>Errore imprevisto.</value>
@@ -960,7 +960,7 @@ Errore:</value>
     <value>Non è possibile modificare il file di risorse in questo momento.</value>
   </data>
   <data name="RSE_Err_UpdateADependentFile" xml:space="preserve">
-    <value>Si sta provando a modificare un file di risorse che fa parte di un altro elemento del progetto, ad esempio un form o un controllo.  La modifica del file potrebbe comportare il danneggiamento dell'elemento del progetto e di conseguenza sarà necessario eseguire un ripristino manuale.  Inoltre, le modifiche apportate a questo file di risorse potrebbero andare perdute se si effettuano altre modifiche all'elemento del progetto.
+    <value>Si sta provando a modificare un file di risorse che fa parte di un altro elemento del progetto, ad esempio un form o un controllo. La modifica del file potrebbe comportare il danneggiamento dell'elemento del progetto e di conseguenza sarà necessario eseguire un ripristino manuale. Inoltre, le modifiche apportate a questo file di risorse potrebbero andare perdute se si effettuano altre modifiche all'elemento del progetto.
 
 Modificare il file?</value>
   </data>
@@ -974,7 +974,7 @@ Modificare il file?</value>
     <value>L'elemento risorsa usa il tipo '{0}', che non è supportato in questo progetto.</value>
   </data>
   <data name="RSE_Err_CantSaveResouce_1Arg" xml:space="preserve">
-    <value>Non è possibile salvare correttamente gli elementi risorsa {0}.  Gli elementi verranno ignorati.</value>
+    <value>Non è possibile salvare correttamente gli elementi risorsa {0}. Gli elementi verranno ignorati.</value>
   </data>
   <data name="RSE_Err_Name" xml:space="preserve">
     <value>'{0}'</value>
@@ -1172,10 +1172,10 @@ Modificare il file?</value>
     <value>Specificare dove salvare il nuovo file</value>
   </data>
   <data name="RSE_Dlg_ReplaceExistingFile" xml:space="preserve">
-    <value>Il file '{0}' esiste già.  Sostituirlo?</value>
+    <value>Il file '{0}' esiste già. Sostituirlo?</value>
   </data>
   <data name="RSE_Dlg_ReplaceExistingFiles" xml:space="preserve">
-    <value>I file seguenti esistono già.  Sostituirli?</value>
+    <value>I file seguenti esistono già. Sostituirli?</value>
   </data>
   <data name="RSE_Dlg_ExportMultiple" xml:space="preserve">
     <value>Selezionare una cartella in cui esportare le risorse.</value>
@@ -1193,10 +1193,10 @@ Modificare il file?</value>
     <value>Non è stato possibile creare un'istanza della risorsa '{0}'. {1}</value>
   </data>
   <data name="RSE_Task_NonrecommendedName_1Arg" xml:space="preserve">
-    <value>È consigliabile non usare il nome della risorsa '{0}' perché potrebbe causare errori di compilazione nel codice.  Scegliere un altro nome.</value>
+    <value>È consigliabile non usare il nome della risorsa '{0}' perché potrebbe causare errori di compilazione nel codice. Scegliere un altro nome.</value>
   </data>
   <data name="RSE_Task_CantChangeCustomToolOrNamespace" xml:space="preserve">
-    <value>Non è possibile impostare le proprietà dello strumento personalizzato o dello spazio dei nomi dello strumento personalizzato del file per modificare le opzioni di generazione di risorse fortemente tipizzate.  Se il file di progetto è archiviato, provare a estrarlo.</value>
+    <value>Non è possibile impostare le proprietà dello strumento personalizzato o dello spazio dei nomi dello strumento personalizzato del file per modificare le opzioni di generazione di risorse fortemente tipizzate. Se il file di progetto è archiviato, provare a estrarlo.</value>
   </data>
   <data name="RSE_Task_WarningCustomToolNotSet" xml:space="preserve">
     <value>Fare doppio clic qui per abilitare le risorse fortemente tipizzate per questo file.</value>
@@ -1229,7 +1229,7 @@ Modificare il file?</value>
     <value>Nome usato per identificare la risorsa nel codice.</value>
   </data>
   <data name="RSE_PropDesc_Comment" xml:space="preserve">
-    <value>Informazioni aggiuntive relative alla risorsa.  Questa proprietà è significativa solo in fase di progettazione.</value>
+    <value>Informazioni aggiuntive relative alla risorsa. Questa proprietà è significativa solo in fase di progettazione.</value>
   </data>
   <data name="RSE_PropDesc_Encoding" xml:space="preserve">
     <value>Codifica dei caratteri del file.</value>
@@ -1241,10 +1241,10 @@ Modificare il file?</value>
     <value>Consente di specificare se il file è di testo o binario.</value>
   </data>
   <data name="RSE_PropDesc_Persistence" xml:space="preserve">
-    <value>Consente di specificare se la risorsa è incorporata o collegata.  Le risorse incorporate vengono salvate nel file di risorsa.  Le risorse collegate si trovano in un percorso esterno sul disco.</value>
+    <value>Consente di specificare se la risorsa è incorporata o collegata. Le risorse incorporate vengono salvate nel file di risorsa. Le risorse collegate si trovano in un percorso esterno sul disco.</value>
   </data>
   <data name="RSE_PropDesc_Type" xml:space="preserve">
-    <value>La risorsa verrà generata con questo tipo nella classe di risorse fortemente tipizzate.  Ad esempio, la risorsa potrebbe essere generata come un oggetto String o Bitmap.</value>
+    <value>La risorsa verrà generata con questo tipo nella classe di risorse fortemente tipizzate. Ad esempio, la risorsa potrebbe essere generata come un oggetto String o Bitmap.</value>
   </data>
   <data name="RSE_PropDesc_Value" xml:space="preserve">
     <value>Valore della risorsa.</value>
@@ -1263,19 +1263,19 @@ Modificare il file?</value>
     <value>Non è possibile aggiungere '{0}' al progetto.</value>
   </data>
   <data name="RFS_QueryReplaceFile_File" xml:space="preserve">
-    <value>Esiste già un file denominato '{0}'.  Sostituirlo?</value>
+    <value>Esiste già un file denominato '{0}'. Sostituirlo?</value>
   </data>
   <data name="RFS_QueryReplaceFileTitle_Editor" xml:space="preserve">
     <value>{0} - File di destinazione esistente</value>
   </data>
   <data name="RFS_QueryRemoveLink_Folder_Link" xml:space="preserve">
-    <value>Nella cartella di progetto "{1}" esiste già un file collegato con il nome "{0}".  Rimuoverlo?</value>
+    <value>Nella cartella di progetto "{1}" esiste già un file collegato con il nome "{0}". Rimuoverlo?</value>
   </data>
   <data name="RFS_QueryRemoveLinkTitle_Editor" xml:space="preserve">
     <value>{0} - File di destinazione esistente</value>
   </data>
   <data name="RFS_FindNotFound_File" xml:space="preserve">
-    <value>Il file '{0}' non è stato trovato.  È possibile che sia stato spostato o eliminato.</value>
+    <value>Il file '{0}' non è stato trovato. È possibile che sia stato spostato o eliminato.</value>
   </data>
   <data name="SD_ComboBoxItem_ConnectionStringType" xml:space="preserve">
     <value>Stringa di connessione</value>
@@ -1341,7 +1341,7 @@ Modificare il file?</value>
     <value>Rimuovi {0} impostazione/i</value>
   </data>
   <data name="SD_Err_CantLoadSettingsFile" xml:space="preserve">
-    <value>Non è possibile caricare il file di impostazioni.  Potrebbe essere danneggiato oppure contenere XML non valido o identificatori duplicati.</value>
+    <value>Non è possibile caricare il file di impostazioni. Potrebbe essere danneggiato oppure contenere XML non valido o identificatori duplicati.</value>
   </data>
   <data name="SD_NewValuesAdded" xml:space="preserve">
     <value>Sono stati aggiunti automaticamente nuovi valori dal file app.config</value>
@@ -1486,7 +1486,7 @@ Aggiornare il valore nel file .settings?</value>
     <value>Funzionalità di salvataggio automatico My.Settings</value>
   </data>
   <data name="General_MissingService" xml:space="preserve">
-    <value>Il servizio '{0}' non è stato trovato.  Assicurarsi che l'applicazione sia installata correttamente.</value>
+    <value>Il servizio '{0}' non è stato trovato. Assicurarsi che l'applicazione sia installata correttamente.</value>
   </data>
   <data name="PPG_Application_RootNamespaceJSharp" xml:space="preserve">
     <value>&amp;Pacchetto predefinito:</value>
@@ -1525,13 +1525,13 @@ Aggiornare il valore nel file .settings?</value>
     <value>&amp;URI di avvio:</value>
   </data>
   <data name="PPG_WPFApp_AppXamlOpenInUnsupportedEditor" xml:space="preserve">
-    <value>Il file di definizione dell'applicazione (ADF) è già aperto in un editor non compatibile.  Chiudere l'altro editor e ricaricare la pagina delle proprietà del progetto.</value>
+    <value>Il file di definizione dell'applicazione (ADF) è già aperto in un editor non compatibile. Chiudere l'altro editor e ricaricare la pagina delle proprietà del progetto.</value>
   </data>
   <data name="PPG_WPFApp_CantOpenOrCreateAppXaml_1Arg" xml:space="preserve">
     <value>Si è verificato un errore durante il tentativo di apertura o creazione del file di definizione dell'applicazione (ADF) per questo progetto. {0}</value>
   </data>
   <data name="PPG_WPFApp_ErrorControlMessage_1Arg" xml:space="preserve">
-    <value>Si è verificato un errore durante il tentativo di caricamento del file di definizione dell'applicazione (ADF) per il progetto.  Non è stato possibile analizzare il file '{0}'.  Per correggere l'errore, modificare il file nell'editor XAML.</value>
+    <value>Si è verificato un errore durante il tentativo di caricamento del file di definizione dell'applicazione (ADF) per il progetto. Non è stato possibile analizzare il file '{0}'. Per correggere l'errore, modificare il file nell'editor XAML.</value>
   </data>
   <data name="PPG_WPFApp_CantReadPropertyValue" xml:space="preserve">
     <value>(Errore)</value>
@@ -1576,7 +1576,7 @@ Aggiornare il valore nel file .settings?</value>
     <value>Impostazioni avanzate per i servizi</value>
   </data>
   <data name="PPG_Services_ConfirmRemoveServices" xml:space="preserve">
-    <value>La disabilitazione dei servizi dell'applicazione comporta la cancellazione dei servizi predefiniti per autenticazione, ruoli e impostazioni.  Fare clic su OK per disabilitare i servizi dell'applicazione.</value>
+    <value>La disabilitazione dei servizi dell'applicazione comporta la cancellazione dei servizi predefiniti per autenticazione, ruoli e impostazioni. Fare clic su OK per disabilitare i servizi dell'applicazione.</value>
   </data>
   <data name="PPG_Services_ConfirmRemoveServices_Caption" xml:space="preserve">
     <value>Disabilita servizi dell'applicazione</value>
@@ -1597,7 +1597,7 @@ Aggiornare il valore nel file .settings?</value>
     <value>Per abilitare i servizi dell'applicazione client, è necessario impostare la versione di .NET Framework di destinazione dell'applicazione su .NET Framework 3.5 o versione successiva. A tale scopo, in C# è possibile usare la pagina delle proprietà dell'applicazione. In Visual Basic, invece, usare la pagina delle proprietà di compilazione facendo clic su Opzioni di compilazione avanzate.</value>
   </data>
   <data name="PPG_Services_InvalidAppConfigXml" xml:space="preserve">
-    <value>Si è verificato un errore durante la lettura del file di configurazione dell'applicazione.  Il file potrebbe essere danneggiato o contenere XML non valido.</value>
+    <value>Si è verificato un errore durante la lettura del file di configurazione dell'applicazione. Il file potrebbe essere danneggiato o contenere XML non valido.</value>
   </data>
   <data name="PPG_Services_InvalidUrl" xml:space="preserve">
     <value>L'URL non è valido. Immettere un URL valido, ad esempio http://microsoft.com/services</value>
@@ -1612,7 +1612,7 @@ Aggiornare il valore nel file .settings?</value>
     <value>Specificare una stringa di connessione a un database di SQL Server oppure usare la stringa di connessione speciale "Data Source = |SQL/CE|", per fare in modo che in SQL Server Compact vengano generati i file di database locali per l'archiviazione offline.</value>
   </data>
   <data name="SD_ERR_UnreferencedTypeNameList_1Arg" xml:space="preserve">
-    <value>I nomi di tipi seguenti non sono stati riconosciuti: '{0}'.  Assicurarsi che siano disponibili riferimenti a questi tipi.</value>
+    <value>I nomi di tipi seguenti non sono stati riconosciuti: '{0}'. Assicurarsi che siano disponibili riferimenti a questi tipi.</value>
   </data>
   <data name="SD_ERR_DuplicateNameList_1Arg" xml:space="preserve">
     <value>Esistono già impostazioni con i nomi seguenti: {0}.</value>

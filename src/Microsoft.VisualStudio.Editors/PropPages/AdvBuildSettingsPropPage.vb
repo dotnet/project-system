@@ -162,7 +162,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Function BaseAddressSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             If (IsExeProject()) Then
-                '// EXE's don't support base addresses so just disable the control and set the disabled text to the default for 
+                '// EXE's don't support base addresses so just disable the control and set the text to the default for 
                 '// EXE's.
 
                 txtDLLBase.Enabled = False
