@@ -311,12 +311,8 @@
         Text="Must specify a build version in order to real sign a build." />
 
     <Error
-        Condition="'$(CheckForOverflowUnderflow)' != '' OR '$(RemoveIntegerChecks)' != ''"
-        Text="The following properties cannot be set by individual projects: CheckForOverflowUnderflow and RemoveIntegerChecks" />
-
-    <PropertyGroup Condition="'$(ProjectLanguage)' == 'CSharp'">
-      <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-    </PropertyGroup>
+        Condition="'$(RemoveIntegerChecks)' != ''"
+        Text="The following properties cannot be set by individual projects: RemoveIntegerChecks" />
 
     <PropertyGroup Condition="'$(ProjectLanguage)' == 'VB'">
       <RemoveIntegerChecks>true</RemoveIntegerChecks>
