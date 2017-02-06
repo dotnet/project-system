@@ -34,6 +34,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// </summary>
         private AggregateWorkspaceProjectContext _currentAggregateProjectContext;
 
+        /// <summary>
+        /// Current TargetFramework for non-cross targeting project - accesses to this field must be done with a lock.
+        /// </summary>
+        private string _currentTargetFramework;
+
         [ImportingConstructor]
         public LanguageServiceHost(IUnconfiguredProjectCommonServices commonServices,
                                    Lazy<IProjectContextProvider> contextProvider,
@@ -120,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 await HandleAsync(e, handlerType).ConfigureAwait(false);
             });
 
-            // If "TargetFrameworks" property has changed, we need to refresh the project context and subscriptions.
+            // If "TargetFramework" or "TargetFrameworks" property has changed, we need to refresh the project context and subscriptions.
             if (HasTargetFrameworksChanged(e))
             {
                 await UpdateProjectContextAndSubscriptionsAsync().ConfigureAwait(false);
@@ -142,7 +147,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
 
         /// <summary>
-        /// Ensures that <see cref="_currentAggregateProjectContext"/> is updated for the latest TargetFrameworks from the project properties
+        /// Ensures that <see cref="_currentAggregateProjectContext"/> is updated for the latest target frameworks from the project properties
         /// and returns this value.
         /// </summary>
         private async Task<AggregateWorkspaceProjectContext> UpdateProjectContextAsync()
@@ -151,36 +156,44 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             AggregateWorkspaceProjectContext previousContextToDispose = null;
             using (await _gate.DisposableWaitAsync().ConfigureAwait(false))
             {
+                string newTargetFramework = null;
+                var projectProperties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
+
                 // Check if we have already computed the project context.
                 if (_currentAggregateProjectContext != null)
                 {
-                    // For non-cross targeting projects, we can use the current project context.
-                    // For cross-targeting projects, we need to verify that the TargetFrameworks for the current project context matches latest TargetFrameworks project property value.
+                    // For non-cross targeting projects, we can use the current project context if the TargetFramework hasn't changed.
+                    // For cross-targeting projects, we need to verify that the current project context matches latest frameworks targeted by the project.
                     // If not, we create a new one and dispose the current one.
 
                     if (!_currentAggregateProjectContext.IsCrossTargeting)
                     {
-                        return _currentAggregateProjectContext;
+                        newTargetFramework = (string)await projectProperties.TargetFramework.GetValueAsync().ConfigureAwait(false);
+                        if (StringComparers.PropertyValues.Equals(_currentTargetFramework, newTargetFramework))
+                        {
+                            return _currentAggregateProjectContext;
+                        }
+
+                        // Dispose the old workspace project context for the previous target framework.
+                        await DisposeAggregateProjectContextAsync(_currentAggregateProjectContext).ConfigureAwait(false);
                     }
-
-                    var projectProperties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
-                    var targetFrameworks = (string)await projectProperties.TargetFrameworks.GetValueAsync().ConfigureAwait(false);
-
-                    if (_currentAggregateProjectContext.HasMatchingTargetFrameworks(targetFrameworks))
+                    else
                     {
-                        return _currentAggregateProjectContext;
-                    }
+                        // Check if the current project context is up-to-date for the current active and known project configurations.
+                        var activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
+                        var knownProjectConfigurations = await _commonServices.Project.Services.ProjectConfigurationsService.GetKnownProjectConfigurationsAsync().ConfigureAwait(false);
+                        if (knownProjectConfigurations.All(c => c.IsCrossTargeting()) &&
+                            _currentAggregateProjectContext.HasMatchingTargetFrameworks(activeProjectConfiguration, knownProjectConfigurations))
+                        {
+                            return _currentAggregateProjectContext;
+                        }
 
-                    // Check if the current project context is up-to-date for the current active and known project configurations.
-                    var activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
-                    var knownProjectConfigurations = await _commonServices.Project.Services.ProjectConfigurationsService.GetKnownProjectConfigurationsAsync().ConfigureAwait(false);
-                    if (knownProjectConfigurations.All(c => c.IsCrossTargeting()) &&
-                        _currentAggregateProjectContext.HasMatchingTargetFrameworks(activeProjectConfiguration, knownProjectConfigurations))
-                    {
-                        return _currentAggregateProjectContext;
+                        previousContextToDispose = _currentAggregateProjectContext;
                     }
-
-                    previousContextToDispose = _currentAggregateProjectContext;
+                }
+                else
+                {
+                    newTargetFramework = (string)await projectProperties.TargetFrameworks.GetValueAsync().ConfigureAwait(false);
                 }
 
                 // Force refresh the CPS active project configuration (needs UI thread).
@@ -189,22 +202,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 // Create new project context.
                 _currentAggregateProjectContext = await _contextProvider.Value.CreateProjectContextAsync().ConfigureAwait(false);
+                _currentTargetFramework = newTargetFramework;
 
                 // Dispose the old project context, if one exists.
                 if (previousContextToDispose != null)
                 {
-                    await _contextProvider.Value.ReleaseProjectContextAsync(previousContextToDispose).ConfigureAwait(false);
-
-                    foreach (var innerContext in previousContextToDispose.DisposedInnerProjectContexts)
-                    {
-                        foreach (var handler in Handlers)
-                        {
-                            await handler.Value.OnContextReleasedAsync(innerContext).ConfigureAwait(false);
-                        }
-                    }
+                    await DisposeAggregateProjectContextAsync(previousContextToDispose).ConfigureAwait(false);
                 }
 
                 return _currentAggregateProjectContext;
+            }
+        }
+
+        private async Task DisposeAggregateProjectContextAsync(AggregateWorkspaceProjectContext projectContext)
+        {
+            await _contextProvider.Value.ReleaseProjectContextAsync(projectContext).ConfigureAwait(false);
+
+            foreach (var innerContext in projectContext.DisposedInnerProjectContexts)
+            {
+                foreach (var handler in Handlers)
+                {
+                    await handler.Value.OnContextReleasedAsync(innerContext).ConfigureAwait(false);
+                }
             }
         }
 
@@ -281,7 +300,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private bool HasTargetFrameworksChanged(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
         {
             return e.Value.ProjectChanges.TryGetValue(ConfigurationGeneral.SchemaName, out IProjectChangeDescription projectChange) &&
-                projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.TargetFrameworksProperty);
+                (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.TargetFrameworkProperty) ||
+                 projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.TargetFrameworksProperty));
         }
 
         protected override async Task DisposeCoreAsync(bool initialized)
