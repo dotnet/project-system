@@ -8,33 +8,33 @@
     <DataSource Persistence="ProjectFile" HasConfigurationCondition="True" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <!-- Build Page Properties -->
-  <StringProperty Name="DefineConstants" DisplayName="Definovat konstanty" Visible="True" />
-  <EnumProperty Name="PlatformTarget" DisplayName="Cílová platforma" Visible="True" />
-  <BoolProperty Name="Prefer32Bit" DisplayName="Preferovat 32bitovou" Visible="True" />
-  <BoolProperty Name="AllowUnsafeBlocks" Default="False" DisplayName="Povolit nezabezpečený kód" Visible="True" />
-  <StringProperty Name="Optimize" DisplayName="Optimalizovat" Visible="True" />
-  <EnumProperty Name="WarningLevel" DisplayName="Úroveň upozornění" Visible="True" />
-  <StringProperty Name="NoWarn" DisplayName="Potlačit upozornění" Visible="True" />
-  <BoolProperty Name="TreatWarningsAsErrors" Default="False" Description="Zpracovávat upozornění jako chyby" Visible="True" />
-  <StringProperty Name="TreatSpecificWarningsAsErrors" Description="Považovat specifická upozornění za chyby" Visible="True" />
-  <StringProperty Name="OutputPath" DisplayName="Výstupní cesta" Visible="True" />
-  <StringProperty Name="DocumentationFile" DisplayName="Soubor dokumentace" Visible="True" />
-  <EnumProperty Name="GenerateSerializationAssemblies" DisplayName="Generovat serializované sestavení" Visible="True">
+  <StringProperty Name="DefineConstants" DisplayName="Definovat konstanty" Visible="False" />
+  <EnumProperty Name="PlatformTarget" DisplayName="Cílová platforma" Visible="False" />
+  <BoolProperty Name="Prefer32Bit" DisplayName="Preferovat 32bitovou" Visible="False" />
+  <BoolProperty Name="AllowUnsafeBlocks" Default="False" DisplayName="Povolit nezabezpečený kód" Visible="False" />
+  <StringProperty Name="Optimize" DisplayName="Optimalizovat" Visible="False" />
+  <EnumProperty Name="WarningLevel" DisplayName="Úroveň upozornění" Visible="False" />
+  <StringProperty Name="NoWarn" DisplayName="Potlačit upozornění" Visible="False" />
+  <BoolProperty Name="TreatWarningsAsErrors" Default="False" Description="Zpracovávat upozornění jako chyby" Visible="False" />
+  <StringProperty Name="TreatSpecificWarningsAsErrors" Description="Považovat specifická upozornění za chyby" Visible="False" />
+  <StringProperty Name="OutputPath" DisplayName="Výstupní cesta" Visible="False" />
+  <StringProperty Name="DocumentationFile" DisplayName="Soubor dokumentace" Visible="False" />
+  <EnumProperty Name="GenerateSerializationAssemblies" DisplayName="Generovat serializované sestavení" Visible="False">
     <EnumValue Name="Auto" DisplayName="Automatické" IsDefault="True" />
     <EnumValue Name="On" DisplayName="Zapnuto" />
     <EnumValue Name="Off" DisplayName="Vypnuto" />
   </EnumProperty>
   <!-- ** removed for RTM: needs translation
-  <BoolProperty Name="RegisterForComInterop" Default="False" DisplayName="Register for COM Interop" Visible="True"/>
+  <BoolProperty Name="RegisterForComInterop" Default="False" DisplayName="Register for COM Interop" Visible="False"/>
     -->
   <!-- Advanced Build Page Properties -->
-  <EnumProperty Name="LanguageVersion" DisplayName="Jazyková verze" Visible="True">
+  <EnumProperty Name="LanguageVersion" DisplayName="Jazyková verze" Visible="False">
     <EnumProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="LangVersion" SourceOfDefaultValue="AfterContext" />
     </EnumProperty.DataSource>
   </EnumProperty>
-  <EnumProperty Name="ErrorReport" DisplayName="Sestava chyb" Visible="True" />
-  <EnumProperty Name="DebugInfo" DisplayName="Informace o ladění" Visible="True">
+  <EnumProperty Name="ErrorReport" DisplayName="Sestava chyb" Visible="False" />
+  <EnumProperty Name="DebugInfo" DisplayName="Informace o ladění" Visible="False">
     <EnumProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="DebugType" SourceOfDefaultValue="AfterContext" />
     </EnumProperty.DataSource>
@@ -44,7 +44,7 @@
       <DataSource Persistence="ProjectFile" PersistedName="CheckForOverflowUnderflow" HasConfigurationCondition="True" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
-  <StringProperty Name="DebugSymbols" DisplayName="Symboly ladění" Visible="True" />
-  <EnumProperty Name="FileAlignment" DisplayName="Zarovnání souboru" Visible="True" />
-  <StringProperty Name="BaseAddress" DisplayName="Základní adresa" Visible="True" />
+  <StringProperty Name="DebugSymbols" DisplayName="Symboly ladění" Visible="False" />
+  <EnumProperty Name="FileAlignment" DisplayName="Zarovnání souboru" Visible="False" />
+  <StringProperty Name="BaseAddress" DisplayName="Základní adresa" Visible="False" />
 </Rule>
