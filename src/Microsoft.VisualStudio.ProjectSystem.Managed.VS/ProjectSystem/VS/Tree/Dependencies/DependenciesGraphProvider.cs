@@ -482,8 +482,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 // it would not contain our top level node's ItemSpec, ItemType etc. We need to get it here.
                 var caption = hierarchyItem.Text;
                 var rootNodeChildren = subTreeProvider.RootNode.Children;
-                node = rootNodeChildren.Where(x => x.Caption.Equals(caption, StringComparison.OrdinalIgnoreCase))
-                                                 .FirstOrDefault();
+                node = rootNodeChildren.FirstOrDefault(x => x.Caption.Equals(caption, StringComparison.OrdinalIgnoreCase));
                 if (node == null)
                 {
                     // node is not ours or does node exist anymore

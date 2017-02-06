@@ -122,6 +122,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         : UnresolvedDependencyFlags.Union(flags);
         }
 
+        private object _childrenLock = new object();
+
         /// <summary>
         /// Unique id of the node, combination of ItemSpec, ItemType, ProviderType and when
         /// needed some unique token.
@@ -184,7 +186,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             get
             {
-                lock (_children)
+                lock (_childrenLock)
                 {
                     return _children;
                 }
@@ -207,7 +209,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             Requires.NotNull(childNode, nameof(childNode));
 
-            lock(_children)
+            lock(_childrenLock)
             {
                 _children = _children.Add(childNode);
             }
@@ -221,7 +223,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             Requires.NotNull(children, nameof(children));
 
-            lock (_children)
+            lock (_childrenLock)
             {
                 var builder = _children.ToBuilder();
                 foreach (var child in children)
@@ -241,7 +243,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             Requires.NotNull(childNode, nameof(childNode));
 
-            lock (_children)
+            lock (_childrenLock)
             {
                 if (_children.Contains(childNode))
                 {
@@ -255,7 +257,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         public void RemoveAllChildren()
         {
-            lock (_children)
+            lock (_childrenLock)
             {
                 _children = _children.Clear();
             }
@@ -274,7 +276,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         public override int GetHashCode()
         {
-            return unchecked(Id.GetHashCode() + Resolved.GetHashCode());
+            return unchecked(Id.GetHashCode());
         }
 
         public override bool Equals(object obj)
@@ -289,7 +291,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         public bool Equals(IDependencyNode other)
         {
-            if (other != null && other.Id.Equals(Id) && other.Resolved.Equals(Resolved))
+            if (other != null && other.Id.Equals(Id))
             {
                 return true;
             }

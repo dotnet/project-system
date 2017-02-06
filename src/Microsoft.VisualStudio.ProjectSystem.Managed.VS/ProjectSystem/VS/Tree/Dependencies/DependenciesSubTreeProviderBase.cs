@@ -86,16 +86,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             get
             {
-                if (_rootNode == null)
+                lock (_rootNodeSync)
                 {
-                    EnsureInitialized();
-                    _rootNode = CreateRootNode();
-                }
+                    if (_rootNode == null)
+                    {
+                        EnsureInitialized();
+                        _rootNode = CreateRootNode();
+                    }
 
-                return _rootNode;
+                    return _rootNode;
+                }
             }
             protected set
             {
+                // this is only for unit tests, product code should override CreateRootNode()
                 _rootNode = value;
             }
         }

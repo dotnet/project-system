@@ -531,8 +531,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             Assert.NotNull(resultNode);
             Assert.Equal(5, resultNode.Children.Count);
-
-            var childrenArray = resultNode.Children.ToArray();
+            
             var packageNode = resultNode.Children.FirstOrDefault(x => x.Caption.Equals("Package3 (2.0.0)"));
             Assert.NotNull(packageNode);
             Assert.True(packageNode is PackageDependencyNode);
