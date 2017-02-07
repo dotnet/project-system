@@ -181,45 +181,45 @@
     <value>Před uložením změn je potřeba opravit chyby na stránce.</value>
   </data>
   <data name="AddBtn" xml:space="preserve">
-    <value>Add</value>
+    <value>Přidat</value>
   </data>
   <data name="ApplicationArguments" xml:space="preserve">
-    <value>Application arguments:</value>
+    <value>Argumenty aplikace:</value>
   </data>
   <data name="BrowseBtn" xml:space="preserve">
-    <value>Browse...</value>
+    <value>Procházet...</value>
   </data>
   <data name="DeleteBtn" xml:space="preserve">
-    <value>Delete</value>
+    <value>Odstranit</value>
   </data>
   <data name="EnvironmentVariables" xml:space="preserve">
-    <value>Environment variables:</value>
+    <value>Proměnné prostředí:</value>
   </data>
   <data name="Executable" xml:space="preserve">
-    <value>Executable</value>
+    <value>Spustitelný soubor</value>
   </data>
   <data name="Launch" xml:space="preserve">
-    <value>Launch:</value>
+    <value>Spustit:</value>
   </data>
   <data name="LaunchURL" xml:space="preserve">
-    <value>Launch URL:</value>
+    <value>Adresa URL pro spuštění:</value>
   </data>
   <data name="NameHeader" xml:space="preserve">
-    <value>Name</value>
+    <value>Název</value>
   </data>
   <data name="NewBtn" xml:space="preserve">
-    <value>New...</value>
+    <value>Nový...</value>
   </data>
   <data name="Profile" xml:space="preserve">
-    <value>Profile:</value>
+    <value>Profil:</value>
   </data>
   <data name="RemoveBtn" xml:space="preserve">
-    <value>Remove</value>
+    <value>Odebrat</value>
   </data>
   <data name="ValueHeader" xml:space="preserve">
-    <value>Value</value>
+    <value>Hodnota</value>
   </data>
   <data name="WorkingDirectory" xml:space="preserve">
-    <value>Working directory:</value>
+    <value>Pracovní adresář:</value>
   </data>
 </root>

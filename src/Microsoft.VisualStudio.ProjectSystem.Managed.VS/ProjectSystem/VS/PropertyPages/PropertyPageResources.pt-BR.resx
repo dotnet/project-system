@@ -181,45 +181,45 @@
     <value>Os erros na página devem ser corrigidos antes de salvar suas mudanças.</value>
   </data>
   <data name="AddBtn" xml:space="preserve">
-    <value>Add</value>
+    <value>Adicionar</value>
   </data>
   <data name="ApplicationArguments" xml:space="preserve">
-    <value>Application arguments:</value>
+    <value>Argumentos do aplicativo:</value>
   </data>
   <data name="BrowseBtn" xml:space="preserve">
-    <value>Browse...</value>
+    <value>Procurar...</value>
   </data>
   <data name="DeleteBtn" xml:space="preserve">
-    <value>Delete</value>
+    <value>Excluir</value>
   </data>
   <data name="EnvironmentVariables" xml:space="preserve">
-    <value>Environment variables:</value>
+    <value>Variáveis do ambiente:</value>
   </data>
   <data name="Executable" xml:space="preserve">
-    <value>Executable</value>
+    <value>Executável</value>
   </data>
   <data name="Launch" xml:space="preserve">
-    <value>Launch:</value>
+    <value>Inicializar:</value>
   </data>
   <data name="LaunchURL" xml:space="preserve">
-    <value>Launch URL:</value>
+    <value>Inicializar URL:</value>
   </data>
   <data name="NameHeader" xml:space="preserve">
-    <value>Name</value>
+    <value>Nome</value>
   </data>
   <data name="NewBtn" xml:space="preserve">
-    <value>New...</value>
+    <value>Novo...</value>
   </data>
   <data name="Profile" xml:space="preserve">
-    <value>Profile:</value>
+    <value>Perfil:</value>
   </data>
   <data name="RemoveBtn" xml:space="preserve">
-    <value>Remove</value>
+    <value>Remover</value>
   </data>
   <data name="ValueHeader" xml:space="preserve">
-    <value>Value</value>
+    <value>Valor</value>
   </data>
   <data name="WorkingDirectory" xml:space="preserve">
-    <value>Working directory:</value>
+    <value>Diretório de trabalho:</value>
   </data>
 </root>

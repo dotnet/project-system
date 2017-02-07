@@ -8,12 +8,13 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.VisualStudio.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Microsoft.VisualStudio.Threading.Tasks;
-using Microsoft.VisualStudio.IO;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
@@ -201,7 +202,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // states that files can be in.
             if (ProjectSubscriptionService != null)
             {
-                var projectChangesBlock = new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(ProjectRuleBlock_ChangedAsync);
+                // The use of AsyncLazy with dataflow can allow state stored in the execution context to leak through. The downstream affect is 
+                // calls to say, get properties, may fail. To avoid this, we capture the execution context here, and it will be reapplied when
+                // we get new subscription data from the dataflow. 
+                var projectChangesBlock = new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(
+                            DataflowUtilities.CaptureAndApplyExecutionContext<IProjectVersionedValue<IProjectSubscriptionUpdate>>(ProjectRuleBlock_ChangedAsync));
 
                 ProjectRuleSubscriptionLink = ProjectSubscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
                     projectChangesBlock,
