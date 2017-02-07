@@ -191,8 +191,7 @@ static void addVsiMultiScm(def myJob, def project) {
                     relativeTargetDirectory('roslyn-internal')
                 }
                 // roslyn-internal - pull in a specific LKG commit from master.
-                // In future, '*/master' can be placed here to pull latest sources.
-                branch('808de0c5801b309ae3a13f201a1486ff6a91df57')
+                branch('${GitBranchOrCommit}')
             }
         }
     }
