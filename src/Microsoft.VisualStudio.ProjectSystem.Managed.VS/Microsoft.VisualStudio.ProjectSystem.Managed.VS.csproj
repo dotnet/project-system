@@ -61,10 +61,13 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="NuGet.SolutionRestoreManager.Interop" Version="4.0.0-rc-2024" />
     <PackageReference Include="NuGet.VisualStudio" Version="4.0.0-rc-2048" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="ManagedImages.imagemanifest">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="ProjectSystem\VS\PropertyPages\PropertyPageResources.resx">
@@ -103,6 +106,108 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Resource Include="Resources\Icons\LibraryWarning_16x.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Resources\Icons\NuGetGreyPrivate_16x.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Resources\Icons\ReferenceGroupWarning_16x.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Resources\Icons\ReferenceGroup_16x.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Resources\Icons\ApplicationPrivate_16x.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Resources\Icons\ApplicationWarning_16x.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Resources\Icons\CodeInformationPrivate_16x.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Resources\Icons\CodeInformationWarning_16x.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Resources\Icons\ComponentPrivate_16x.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Resources\Icons\ComponentWarning_16x.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Resources\Icons\Component_16x.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Resources\Icons\ErrorSmall_16x.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Resources\Icons\ReferencePrivate_16x.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Resources\Icons\SDKPrivate_16x.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Resources\Icons\SDKWarning_16x.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Resources\Icons\SDK_16x.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Resources\Icons\SharedProjectPrivate_16x.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Resources\Icons\SharedProjectWarning_16x.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Resources\Icons\SharedProject_16x.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Resources\Icons\WarningSmall_16x.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Resources\Icons\ApplicationPrivate_16x.png" />
+    <Resource Include="Resources\Icons\ApplicationWarning_16x.png" />
+    <Resource Include="Resources\Icons\CodeInformationPrivate_16x.png" />
+    <Resource Include="Resources\Icons\CodeInformationWarning_16x.png" />
+    <Resource Include="Resources\Icons\ComponentPrivate_16x.png" />
+    <Resource Include="Resources\Icons\ComponentWarning_16x.png" />
+    <Resource Include="Resources\Icons\Component_16x.png" />
+    <Resource Include="Resources\Icons\ErrorSmall_16x.png" />
+    <Resource Include="Resources\Icons\NuGetGreyWarning_16x.png" />
+    <Resource Include="Resources\Icons\NuGetGrey_16x.png" />
+    <Resource Include="Resources\Icons\ReferencePrivate_16x.png" />
+    <Resource Include="Resources\Icons\SDKPrivate_16x.png" />
+    <Resource Include="Resources\Icons\SDKWarning_16x.png" />
+    <Resource Include="Resources\Icons\SDK_16x.png" />
+    <Resource Include="Resources\Icons\SharedProjectPrivate_16x.png" />
+    <Resource Include="Resources\Icons\SharedProjectWarning_16x.png" />
+    <Resource Include="Resources\Icons\SharedProject_16x.png" />
+    <Resource Include="Resources\Icons\WarningSmall_16x.png" />
+    <Resource Include="Resources\Icons\LibraryWarning_16x.png" />
+    <Resource Include="Resources\Icons\NuGetGreyPrivate_16x.png" />
+    <Resource Include="Resources\Icons\ReferenceGroupWarning_16x.png" />
+    <Resource Include="Resources\Icons\ReferenceGroup_16x.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />

@@ -29,6 +29,11 @@
     <Compile Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests\Properties\AssemblyAttributes.cs">
       <Link>Properties\AssemblyAttributes.cs</Link>
     </Compile>
+    <None Include="ProjectSystem\VS\Tree\Dependencies\DependenciesGraphProviderTests.cs" />
+    <None Include="ProjectSystem\VS\Tree\Dependencies\DependenciesSubTreeProviderBaseTests.cs" />
+    <None Include="ProjectSystem\VS\Tree\Dependencies\SdkDependenciesSubTreeProviderTests.cs" />
+    <None Include="ProjectSystem\VS\Tree\Dependencies\ProjectDependenciesSubTreeProviderTests.cs" />
+    <None Include="ProjectSystem\VS\Tree\Dependencies\NuGetDependenciesSubTreeProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
