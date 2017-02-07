@@ -193,7 +193,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 }
                 else
                 {
-                    newTargetFramework = (string)await projectProperties.TargetFrameworks.GetValueAsync().ConfigureAwait(false);
+                    newTargetFramework = (string)await projectProperties.TargetFramework.GetValueAsync().ConfigureAwait(false);
                 }
 
                 // Force refresh the CPS active project configuration (needs UI thread).

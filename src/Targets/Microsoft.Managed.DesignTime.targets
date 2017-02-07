@@ -18,8 +18,33 @@
     <DefineCommonManagedReferenceSchemas Condition=" '$(DefineCommonManagedReferenceSchemas)' == '' ">true</DefineCommonManagedReferenceSchemas>
 
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
 
-    <ManagedXamlResourcesDirectory Condition="$(ManagedXamlResourcesDirectory) == ''">$(MSBuildThisFileDirectory)</ManagedXamlResourcesDirectory>
+  <!--
+    Locate the approriate localized xaml resources based on the language ID or name.
+
+    The logic here matches the resource manager sufficiently to handle the fixed set of 
+    possible VS languages and directories on disk.
+
+    We cannot respect the exact probe order of the resource manager as this has to evaluate statically
+    and we have only LangName and LangID and no access to System.Globalization API.
+  -->
+  <PropertyGroup Condition="'$(ManagedXamlResourcesDirectory)' == ''">
+    <!-- 1. Probe for exact match against LangName. (e.g. pt-BR) -->
+    <ManagedXamlResourcesDirectory>$(MSBuildThisFileDirectory)$(LangName)</ManagedXamlResourcesDirectory>
+
+    <!-- 2. Handle special cases of languages which would not match above or below. -->
+    <ManagedXamlResourcesDirectory Condition="!Exists('$(ManagedXamlResourcesDirectory)') and '$(LangID)' == '2052'">$(MSBuildThisFileDirectory)zh-Hans</ManagedXamlResourcesDirectory>
+    <ManagedXamlResourcesDirectory Condition="!Exists('$(ManagedXamlResourcesDirectory)') and '$(LangID)' == '1028'">$(MSBuildThisFileDirectory)zh-Hant</ManagedXamlResourcesDirectory>
+
+    <!-- 3. Probe for parent by taking portion the portion before the hyphen (e.g. fr-FR -> fr) -->
+    <ManagedXamlResourcesDirectory Condition="!Exists('$(ManagedXamlResourcesDirectory)')">$(MSBuildThisFileDirectory)$(LangName.Split('-')[0])</ManagedXamlResourcesDirectory>
+
+    <!-- 4. Fall back to neutral English resources if all of the above fail -->
+    <ManagedXamlResourcesDirectory Condition="!Exists('$(ManagedXamlResourcesDirectory)')">$(MSBuildThisFileDirectory)</ManagedXamlResourcesDirectory>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <ManagedXamlResourcesDirectory Condition="!HasTrailingSlash('$(ManagedXamlResourcesDirectory)')">$(ManagedXamlResourcesDirectory)\</ManagedXamlResourcesDirectory>
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>

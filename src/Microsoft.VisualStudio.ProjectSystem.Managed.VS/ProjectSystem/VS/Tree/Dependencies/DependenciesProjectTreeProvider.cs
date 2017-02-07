@@ -348,9 +348,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                     ProjectContextChanged?.Invoke(this, new ProjectContextEventArgs(this));
 
+                    // TODO We still are getting mismatched data sources and need to figure out better 
+                    // way of merging, mute them for now and get to it in U1
                     return Task.FromResult(new TreeUpdateResult(dependenciesNode, 
                                                                 false, 
-                                                                GetMergedDataSourceVersions(e)));
+                                                                null /*GetMergedDataSourceVersions(e)*/));
                 });
         }
 
