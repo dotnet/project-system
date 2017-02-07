@@ -122,7 +122,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         : UnresolvedDependencyFlags.Union(flags);
         }
 
-        private object _childrenLock = new object();
+        private readonly object _childrenLock = new object();
 
         /// <summary>
         /// Unique id of the node, combination of ItemSpec, ItemType, ProviderType and when
@@ -276,7 +276,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         public override int GetHashCode()
         {
-            return unchecked(Id.GetHashCode());
+            return Id.GetHashCode();
         }
 
         public override bool Equals(object obj)
