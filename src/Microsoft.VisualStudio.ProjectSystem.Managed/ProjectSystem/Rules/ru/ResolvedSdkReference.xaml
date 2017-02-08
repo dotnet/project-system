@@ -13,8 +13,8 @@
   <StringProperty Name="Name" DisplayName="Name" ReadOnly="True" />
   <StringProperty Name="Version" DisplayName="Version" ReadOnly="True" />
   <StringProperty Name="SDKPackageItemSpec" Visible="False" ReadOnly="True" />
-  <BoolProperty Name="CopyPayload" DisplayName="Копировать полезные данные" />
-  <StringProperty Name="CopyPayloadToSubDirectory" DisplayName="Копировать полезные данные в подкаталог" ReadOnly="True" />
+  <BoolProperty Name="CopyPayload" DisplayName="Копировать полезные данные" ReadOnly="True" />
+  <StringProperty Name="CopyPayloadToSubDirectory" DisplayName="Copy Payload to Subdirectory" ReadOnly="True" />
   <BoolProperty Name="ExpandContent" DisplayName="Расширить содержимое" ReadOnly="True" />
   <BoolProperty Name="ExpandReferenceAssemblies" DisplayName="Расширить эталонные сборки" ReadOnly="True" />
   <BoolProperty Name="CopyLocalExpandedReferenceAssemblies" DisplayName="Копировать локальные расширенные ссылочные сборки" ReadOnly="True" />
