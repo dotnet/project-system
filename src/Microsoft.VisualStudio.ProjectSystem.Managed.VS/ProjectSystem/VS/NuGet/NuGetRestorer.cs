@@ -135,7 +135,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             if (projectRestoreInfo != null)
             {
                 _projectVsServices.Project.Services.ProjectAsynchronousTasks
-                    .RegisterCriticalAsyncTask(JoinableFactory.RunAsync(async () =>
+                    .RegisterAsyncTask(JoinableFactory.RunAsync(async () =>
                     {
                         await _solutionRestoreService
                                .NominateProjectAsync(_projectVsServices.Project.FullPath, projectRestoreInfo,
@@ -144,7 +144,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
                         Microsoft.Internal.Performance.CodeMarkers.Instance.CodeMarker(perfPackageRestoreEnd);
 
-                    }), registerFaultHandler: true);
+                    }),
+                    ProjectCriticalOperation.Build | ProjectCriticalOperation.Unload | ProjectCriticalOperation.Rename,
+                    registerFaultHandler: true);
             }
 
             return Task.CompletedTask;
