@@ -17,11 +17,13 @@ def branch = GithubBranchName
                 // Indicates that a batch script should be run with the build string (see above)
                 // Also available is:
                 // shell (for unix scripting)
-                batchFile("""SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
+                batchFile("""
+SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
 SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VSSDK\\
 SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VSSDK\\
 
-build.cmd /no-deploy-extension /${configuration.toLowerCase()}""")
+build.cmd /no-deploy-extension /${configuration.toLowerCase()}
+""")
             }
         }
 
@@ -61,7 +63,7 @@ SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterpri
 SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
 
 build.cmd /release /skiptests
-            """)
+""")
 
             // Patch all the MSBuild xaml and targets files from the current roslyn-project-system commit into VS install.
             batchFile("""
@@ -73,7 +75,7 @@ xcopy /SIY "%VS_MSBUILD_MANAGED%" .\\backup\\Managed
 
 xcopy /SIY .\\src\\Targets\\*.targets "%VS_MSBUILD_MANAGED%"
 xcopy /SIY .\\bin\\Release\\Rules\\*.xaml "%VS_MSBUILD_MANAGED%"
-            """)
+""")
 
             // Pull down the Open submodule of roslyn-internal as the 'Open' sources are not present until this step is executed
             batchFile("""
@@ -83,7 +85,7 @@ git submodule init
 git submodule sync
 git submodule update --init --recursive
 init.cmd
-            """)
+""")
 
             // Build the SDK and install .NET Core Templates.
             batchFile("""
@@ -128,7 +130,7 @@ exit /b 0
 :BuildFailed
 echo %1 - Build failed with ERRORLEVEL %ERRORLEVEL%
 exit /b 1
-           """)
+""")
 
             // Build roslyn-internal and run netcore VSI tao tests.
             batchFile("""
@@ -145,7 +147,7 @@ set TMP=%TEMP%
 set EchoOn=true
 
 BuildAndTest.cmd -build:true -clean:false -deployExtensions:true -trackFileAccess:false -officialBuild:false -realSignBuild:false -parallel:true -release:true -delaySignBuild:true -samples:false -unit:false -eta:false -vs:true -cibuild:true -x64:false -netcoretestrun
-            """)
+""")
 
             // Revert patched targets and rules from backup.
             batchFile("""
@@ -155,7 +157,7 @@ SET VS_MSBUILD_MANAGED=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enter
 del /SQ "%VS_MSBUILD_MANAGED%\\"
 xcopy /SIY .\\backup\\Managed "%VS_MSBUILD_MANAGED%"
 rmdir /S /Q backup
-            """)
+""")
 
         }
     }
