@@ -13,12 +13,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
         public static IProjectXmlAccessor Create() => Mock.Of<IProjectXmlAccessor>();
 
-        public static IProjectXmlAccessor ImplementGetProjectXml(string xml) => ImplementGetProjectXml(() => xml);
+        public static IProjectXmlAccessor ImplementGetProjectXml(string xml) => Implement(() => xml, s => { });
 
-        public static IProjectXmlAccessor ImplementGetProjectXml(Func<string> xmlFunc)
+        public static IProjectXmlAccessor Implement(Func<string> xmlFunc, Action<string> saveCallback)
         {
             var mock = new Mock<IProjectXmlAccessor>();
             mock.Setup(m => m.GetProjectXmlAsync()).Returns(() => Task.FromResult(xmlFunc()));
+            mock.Setup(m => m.SaveProjectXmlAsync(It.IsAny<string>())).Callback(saveCallback).Returns(Task.CompletedTask);
             return mock.Object;
         }
     }
