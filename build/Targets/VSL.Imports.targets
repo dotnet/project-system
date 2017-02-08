@@ -214,45 +214,8 @@
     <LanguageTargets Condition="'$(LanguageTargets)' == ''">$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets> 
   </PropertyGroup>
 
-  <Choose>
-    <When Condition="'$(ProjectLanguage)' == 'VB'">
-      <PropertyGroup>
-        <MSBuildTargetsLanguageName>VisualBasic</MSBuildTargetsLanguageName>
-      </PropertyGroup>
-    </When>
-    <When Condition="'$(ProjectLanguage)' == 'CSharp'">
-      <PropertyGroup>
-        <MSBuildTargetsLanguageName>CSharp</MSBuildTargetsLanguageName>
-      </PropertyGroup>
-    </When>
-    <When Condition="'$(ProjectLanguage)' == ''">
-      <PropertyGroup>
-        <MSBuildTargetsLanguageName>CSharp</MSBuildTargetsLanguageName>
-      </PropertyGroup>
-    </When>
-  </Choose>
-
-  <Choose>
-    <When Condition="'$(ProjectLanguage)' == 'C++'">
-      <PropertyGroup>
-        <MSBuildTargetsFilePath>$(VCTargetsPath)\Microsoft.Cpp.targets</MSBuildTargetsFilePath>
-      </PropertyGroup>
-    </When>
-    <When Condition="'$(TargetFrameworkIdentifier)' == '.NETPortable'">
-      <PropertyGroup>
-        <MSBuildTargetsFilePath>$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.$(MSBuildTargetsLanguageName).targets</MSBuildTargetsFilePath>
-      </PropertyGroup>
-    </When>
-    <Otherwise>
-      <PropertyGroup>
-        <!-- The SDK.targets imports the language specific targets -->
-        <MSBuildTargetsFilePath>$(MSBuildSDKsPath)\Microsoft.NET.Sdk\Sdk\Sdk.targets</MSBuildTargetsFilePath>
-      </PropertyGroup>
-    </Otherwise>
-  </Choose>
-
   <Import Project="References.targets" />
-  <Import Project="$(MSBuildTargetsFilePath)" />
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
 
   <!-- On Mono on *nix the NuGet targets aren't imported by default, so we do that here -->
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\NuGet\Microsoft.NuGet.targets"

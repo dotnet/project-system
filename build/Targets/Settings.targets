@@ -45,8 +45,7 @@
   </PropertyGroup>
 
   <!-- This imports the .NET SDK which will pull in Microsoft.Common.props -->
-  <Import Project="$(MSBuildSDKsPath)\Microsoft.NET.Sdk\Sdk\Sdk.props" 
-          Condition="Exists('$(MSBuildSDKsPath)\Microsoft.NET.Sdk\Sdk\Sdk.props')" />
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
   
   <!-- NuGet props aren't imported by default on *nix so we do that here -->
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\NuGet\Microsoft.NuGet.props"
