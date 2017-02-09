@@ -205,7 +205,7 @@ static void addVsiMultiScm(def myJob, def project, def isPR) {
                 remote {
                     // Use the input project
                     github(project)
-                    if (isPullR) {
+                    if (isPR) {
                         // Set the refspec
                         refspec('${GitRefSpec}')
                     }
