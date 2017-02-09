@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
@@ -72,6 +73,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
         }
 
+        public override bool CanDependOnProvider(IProjectDependenciesSubTreeProvider otherProvider)
+        {
+            return NuGetDependenciesSubTreeProvider.ProviderTypeString
+                    .Equals(otherProvider?.ProviderType, StringComparison.OrdinalIgnoreCase);
+        }
+
         protected override IDependencyNode CreateRootNode()
         {
             return new SubTreeRootDependencyNode(ProviderType, 
@@ -92,7 +99,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var flags = SdkSubTreeNodeFlags;
             if (IsImplicit(properties, out string packageItemSpec))
             {
-                flags = flags.Union(DependencyNode.DoesNotSupportRemove);
+                flags = flags.Union(DependencyNode.DoesNotSupportRemove)
+                             .Union(DependencyNode.DependsOnOtherProviders);
             }
 
             return new SdkDependencyNode(id,

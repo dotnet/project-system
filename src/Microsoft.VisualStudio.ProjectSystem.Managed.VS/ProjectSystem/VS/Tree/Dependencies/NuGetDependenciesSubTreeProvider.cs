@@ -21,7 +21,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     internal class NuGetDependenciesSubTreeProvider : DependenciesSubTreeProviderBase, INuGetPackagesDataProvider
     {
         public const string ProviderTypeString = "NuGetDependency";
-
         public static readonly ProjectTreeFlags NuGetSubTreeRootNodeFlags
                             = ProjectTreeFlags.Create("NuGetSubTreeRootNode");
 
@@ -201,6 +200,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 if (childDependencyMetadata.DependencyType == DependencyType.FrameworkAssembly)
                 {
                     frameworkAssemblies.Add(childDependencyMetadata);
+                    continue;
+                }
+                else if (childDependencyMetadata.Properties.TryGetValue(MetadataKeys.IsImplicitlyDefined, out string isImplicitPackageString)
+                    && bool.TryParse(isImplicitPackageString, out bool isImplicitPackage)
+                    && isImplicitPackage)
+                {
+                    // we don't want to show implicit packages at all, since they are SDK's
                     continue;
                 }
 

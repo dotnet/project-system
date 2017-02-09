@@ -127,6 +127,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         public abstract IEnumerable<ImageMoniker> Icons { get; }
 
+        public virtual bool CanDependOnProvider(IProjectDependenciesSubTreeProvider otherProvider)
+        {
+            return false;
+        }
+
         /// <summary>
         /// Creates a root node specific to provider implementation
         /// </summary>
