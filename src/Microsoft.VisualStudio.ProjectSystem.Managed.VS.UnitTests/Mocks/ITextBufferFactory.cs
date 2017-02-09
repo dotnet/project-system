@@ -17,5 +17,14 @@ namespace Microsoft.VisualStudio.Text
             mock.SetupGet(t => t.CurrentSnapshot).Returns(snapshotMock.Object);
             return mock.Object;
         }
+
+        public static ITextBuffer ImplementSnapshot(Func<string> textFunc)
+        {
+            var mock = new Mock<ITextBuffer>();
+            var snapshotMock = new Mock<ITextSnapshot>();
+            snapshotMock.Setup(s => s.GetText()).Returns(textFunc);
+            mock.SetupGet(t => t.CurrentSnapshot).Returns(snapshotMock.Object);
+            return mock.Object;
+        }
     }
 }
