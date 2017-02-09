@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
@@ -98,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                  KnownMonikers.PackageReference);
         }
 
-        private IDependencyNode CreateDependencyNode(DependencyMetadata dependencyMetadata, 
+        protected IDependencyNode CreateDependencyNode(DependencyMetadata dependencyMetadata, 
                                                      DependencyNodeId id = null,
                                                      bool topLevel = true)
         {
@@ -116,12 +117,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             switch(dependencyMetadata.DependencyType)
             {
                 case DependencyType.Package:
+                    var packageProperties = dependencyMetadata.Properties;
+                    if (topLevel)
+                    {
+                        var targets = CurrentSnapshot.GetTargetsForPackage(dependencyMetadata);
+                        packageProperties = dependencyMetadata.Properties
+                            .SetItem(ResolvedPackageReference.TargetFrameworkProperty, targets);
+                    }
+
                     dependencyNode = new PackageDependencyNode(
                                              id,
                                              name: dependencyMetadata.Name,
                                              caption: dependencyMetadata.FriendlyName,
                                              flags: NuGetSubTreeNodeFlags,
-                                             properties: dependencyMetadata.Properties,
+                                             properties: packageProperties,
                                              resolved: dependencyMetadata.Resolved);
                     break;
                 case DependencyType.Assembly:
@@ -666,6 +675,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 FrameworkVersion = properties.ContainsKey(MetadataKeys.FrameworkVersion) 
                                     ? properties[MetadataKeys.FrameworkVersion] : string.Empty;
             }
+
+            public override string ToString()
+            {
+                var name = FrameworkName;
+                if (string.IsNullOrEmpty(FrameworkVersion))
+                {
+                    return name;
+                }
+
+                var versionFriendlyString = string.Empty;
+
+                try
+                {
+                    var version = new Version(FrameworkVersion);
+                    if (version.Build > 0)
+                    {
+                        versionFriendlyString = version.ToString(3);
+                    }
+                    else
+                    {
+                        versionFriendlyString = version.ToString(2);
+                    }
+                }
+                catch
+                {
+                    versionFriendlyString = FrameworkVersion;
+                }
+
+                return $"{name} {versionFriendlyString}";
+            }
         }
 
         protected class DependencyMetadata
@@ -922,6 +961,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 }
 
                 return topLevelDependenciesItemSpecs;
+            }
+
+            public string GetTargetsForPackage(DependencyMetadata packageMetadata)
+            {
+                var builder = new StringBuilder();
+                foreach (var target in Targets)
+                {
+                    if (!DependenciesWorld.TryGetValue(target.Key, out DependencyMetadata targetMetadata))
+                    {
+                        continue;
+                    }
+
+                    foreach (var dependencyItemSpec in targetMetadata.DependenciesItemSpecs)
+                    {
+                        if (!DependenciesWorld.TryGetValue(dependencyItemSpec, out DependencyMetadata targetDependency))
+                        {
+                            continue;
+                        }
+
+                        if (packageMetadata.Name.Equals(targetDependency?.Name)
+                            && packageMetadata.Version.Equals(targetDependency?.Version))
+                        {
+                            builder.Append(target.Value.ToString());
+                            builder.Append(';');
+                        }
+                    }
+                }
+
+                return builder.ToString().TrimEnd(';');
             }
         }
 
