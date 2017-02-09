@@ -148,9 +148,9 @@
     <value>Projekt pro vytvoření knihovny tříd určené pro .NET Core</value>
   </data>
   <data name="11" xml:space="preserve">
-    <value>xUnit Test Project (.NET Core)</value>
+    <value>Projekt testování xUnit (.NET Core)</value>
   </data>
   <data name="12" xml:space="preserve">
-    <value>A project that contains xunit tests that can run on .NET Core on Windows, Linux and MacOS</value>
+    <value>Projekt obsahující testy jednotek xunit, které je možné spustit na .NET Core ve Windows, Linuxu a MacOS</value>
   </data>
 </root>

@@ -298,7 +298,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
 
 #If DEBUG Then
-        'These are placed here to prevent screwing up the WinForms designer
+        'These are placed here to prevent breaking the WinForms designer
         'resulting from the #if DEBUG
         Private Shared s_propPageDesignerViewCount As Integer = 0
         Private Shared s_instanceCount As Integer

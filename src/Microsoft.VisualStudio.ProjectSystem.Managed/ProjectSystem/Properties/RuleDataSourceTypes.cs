@@ -10,9 +10,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     internal static class RuleDataSourceTypes
     {
         /// <summary>
-        /// The data comes from an executed MSBuild targets' Returns items.
+        /// All resolved Dependency nodes must have persistence "ResolvedReference" to be able to 
+        /// differentiate between unresolved and resolved rule.
         /// </summary>
-        internal const string TargetResults = nameof(TargetResults);
+        internal const string PersistenceResolvedReference = "ResolvedReference";
 
         /// <summary>
         /// The data comes from items or item metadata in the project.

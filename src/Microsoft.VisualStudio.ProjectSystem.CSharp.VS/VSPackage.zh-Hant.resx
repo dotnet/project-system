@@ -148,9 +148,9 @@
     <value>專案，用於建立以 .NET Core 為目標的類別庫。</value>
   </data>
   <data name="11" xml:space="preserve">
-    <value>xUnit Test Project (.NET Core)</value>
+    <value>xUnit 測試專案 (.NET Core)</value>
   </data>
   <data name="12" xml:space="preserve">
-    <value>A project that contains xunit tests that can run on .NET Core on Windows, Linux and MacOS</value>
+    <value>此專案包含 xunit 測試，可以在 Windows、Linux 及 MacOS 的 .NET Core 上執行。</value>
   </data>
 </root>

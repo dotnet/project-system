@@ -18,8 +18,33 @@
     <DefineCommonManagedReferenceSchemas Condition=" '$(DefineCommonManagedReferenceSchemas)' == '' ">true</DefineCommonManagedReferenceSchemas>
 
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
 
-    <ManagedXamlResourcesDirectory Condition="$(ManagedXamlResourcesDirectory) == ''">$(MSBuildThisFileDirectory)</ManagedXamlResourcesDirectory>
+  <!--
+    Locate the approriate localized xaml resources based on the language ID or name.
+
+    The logic here matches the resource manager sufficiently to handle the fixed set of 
+    possible VS languages and directories on disk.
+
+    We cannot respect the exact probe order of the resource manager as this has to evaluate statically
+    and we have only LangName and LangID and no access to System.Globalization API.
+  -->
+  <PropertyGroup Condition="'$(ManagedXamlResourcesDirectory)' == ''">
+    <!-- 1. Probe for exact match against LangName. (e.g. pt-BR) -->
+    <ManagedXamlResourcesDirectory>$(MSBuildThisFileDirectory)$(LangName)</ManagedXamlResourcesDirectory>
+
+    <!-- 2. Handle special cases of languages which would not match above or below. -->
+    <ManagedXamlResourcesDirectory Condition="!Exists('$(ManagedXamlResourcesDirectory)') and '$(LangID)' == '2052'">$(MSBuildThisFileDirectory)zh-Hans</ManagedXamlResourcesDirectory>
+    <ManagedXamlResourcesDirectory Condition="!Exists('$(ManagedXamlResourcesDirectory)') and '$(LangID)' == '1028'">$(MSBuildThisFileDirectory)zh-Hant</ManagedXamlResourcesDirectory>
+
+    <!-- 3. Probe for parent by taking portion the portion before the hyphen (e.g. fr-FR -> fr) -->
+    <ManagedXamlResourcesDirectory Condition="!Exists('$(ManagedXamlResourcesDirectory)')">$(MSBuildThisFileDirectory)$(LangName.Split('-')[0])</ManagedXamlResourcesDirectory>
+
+    <!-- 4. Fall back to neutral English resources if all of the above fail -->
+    <ManagedXamlResourcesDirectory Condition="!Exists('$(ManagedXamlResourcesDirectory)')">$(MSBuildThisFileDirectory)</ManagedXamlResourcesDirectory>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <ManagedXamlResourcesDirectory Condition="!HasTrailingSlash('$(ManagedXamlResourcesDirectory)')">$(ManagedXamlResourcesDirectory)\</ManagedXamlResourcesDirectory>
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
@@ -61,6 +86,9 @@
     <ProjectCapability Include="ReferenceManagerProjects" />
     <ProjectCapability Include="ReferenceManagerSharedProjects" />
     <ProjectCapability Include="ReferenceManagerWinRT" />
+
+    <!-- Settings page capability -->
+    <ProjectCapability Include="AppSettings" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'"/>
  </ItemGroup>
 
   <!-- Common Project System rules that override rules defined in msbuild. These are exact copy of the rules defined in msbuild. -->
@@ -160,7 +188,7 @@
 
     <!-- Sdk references -->
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)SdkReference.xaml">
-      <Context>;BrowseObject</Context>
+      <Context>Project;ProjectSubscriptionService;BrowseObject</Context>
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedSdkReference.xaml">
@@ -202,6 +230,8 @@
        target, that is available only after restoring the .Net Core SDK targets. This No-op target will satisfy the check and will get overriden
        once the actual targets are available after package restore-->
   <Target Name="ResolvePackageDependenciesDesignTime" />
+  <Target Name="CollectSDKReferencesDesignTime" />
+  <Target Name="CollectResolvedSDKReferencesDesignTime" />
 
   <!-- This target is used to collect the PackageReferences in the project. This target can be overriden to add\remove packagereferences before they are
        sent to NuGet to be restored.-->

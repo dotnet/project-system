@@ -16,8 +16,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     /// Provides NuGet packages sub node to global Dependencies project tree node.
     /// </summary>
     [Export(typeof(IProjectDependenciesSubTreeProvider))]
+    [Export(typeof(INuGetPackagesDataProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal class NuGetDependenciesSubTreeProvider : DependenciesSubTreeProviderBase
+    internal class NuGetDependenciesSubTreeProvider : DependenciesSubTreeProviderBase, INuGetPackagesDataProvider
     {
         public const string ProviderTypeString = "NuGetDependency";
 
@@ -164,7 +165,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                              id,
                                              flags: NuGetSubTreeNodeFlags);
         }
-       
+
         public override IDependencyNode GetDependencyNode(DependencyNodeId id)
         {
             lock (_snapshotLock)
@@ -179,40 +180,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     return null;
                 }
 
-                // create node and it's direct children
-                node = CreateDependencyNode(dependencyMetadata, id);
-                CurrentSnapshot.NodesCache.Add(id, node);
-
-                var frameworkAssemblies = new List<DependencyMetadata>();
-                foreach (var childItemSpec in dependencyMetadata.DependenciesItemSpecs)
-                {
-                    if (!CurrentSnapshot.DependenciesWorld.TryGetValue(childItemSpec, out DependencyMetadata childDependencyMetadata))
-                    {
-                        continue;
-                    }
-
-                    if (childDependencyMetadata.DependencyType == DependencyType.FrameworkAssembly)
-                    {
-                        frameworkAssemblies.Add(childDependencyMetadata);
-                        continue;
-                    }
-
-                    node.AddChild(CreateDependencyNode(childDependencyMetadata, topLevel: false));
-                }
-
-                if (frameworkAssemblies.Count > 0)
-                {
-                    var frameworkAssembliesNode = CreateFrameworkAssembliesFolder();
-                    node.AddChild(frameworkAssembliesNode);
-
-                    foreach(var fxAssemblyMetadata in frameworkAssemblies)
-                    {
-                        frameworkAssembliesNode.AddChild(CreateDependencyNode(fxAssemblyMetadata, topLevel: false));
-                    }
-                }
-
-                return node;
+                return GetDependencyNode(id, dependencyMetadata);
             }
+        }
+
+        private IDependencyNode GetDependencyNode(DependencyNodeId id, DependencyMetadata dependencyMetadata)
+        {
+            // create node and it's direct children
+            var node = CreateDependencyNode(dependencyMetadata, id);
+            CurrentSnapshot.NodesCache.Add(id, node);
+
+            var frameworkAssemblies = new List<DependencyMetadata>();
+            foreach (var childItemSpec in dependencyMetadata.DependenciesItemSpecs)
+            {
+                if (!CurrentSnapshot.DependenciesWorld.TryGetValue(childItemSpec, out DependencyMetadata childDependencyMetadata))
+                {
+                    continue;
+                }
+
+                if (childDependencyMetadata.DependencyType == DependencyType.FrameworkAssembly)
+                {
+                    frameworkAssemblies.Add(childDependencyMetadata);
+                    continue;
+                }
+
+                node.AddChild(CreateDependencyNode(childDependencyMetadata, topLevel: false));
+            }
+
+            if (frameworkAssemblies.Count > 0)
+            {
+                var frameworkAssembliesNode = CreateFrameworkAssembliesFolder();
+                node.AddChild(frameworkAssembliesNode);
+
+                foreach (var fxAssemblyMetadata in frameworkAssemblies)
+                {
+                    frameworkAssembliesNode.AddChild(CreateDependencyNode(fxAssemblyMetadata, topLevel: false));
+                }
+            }
+
+            return node;
         }
 
         protected override DependenciesChange ProcessDependenciesChanges(
@@ -421,6 +427,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     if (!TopLevelDependencies.TryGetValue(addedItemSpec, out DependencyMetadata metadata))
                     {
                         metadata = CreateUnresolvedMetadata(addedItemSpec, properties);
+                        if (metadata.IsImplicitlyDefined)
+                        {
+                            continue;
+                        }
+
                         TopLevelDependencies.Add(addedItemSpec, metadata);
 
                         dependenciesChange.AddedNodes.Add(metadata);
@@ -500,7 +511,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
 
             var addedTopLevelDependencies = newDependencies.Where(
-                                                x => allTargetsDependencies.Contains(x.ItemSpec));
+                x => allTargetsDependencies.Contains(x.ItemSpec) && !x.IsImplicitlyDefined);
             foreach (var addedDependency in addedTopLevelDependencies)
             {
                 dependenciesChange.AddedNodes.Add(addedDependency);
@@ -517,31 +528,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         public override Task<IEnumerable<IDependencyNode>> SearchAsync(IDependencyNode node, string searchTerm)
         {
-            lock (_snapshotLock)
-            {
-                if (!CurrentSnapshot.DependenciesWorld.TryGetValue(node.Id.ItemSpec, out DependencyMetadata rootDependency))
-                {
-                    return Task.FromResult<IEnumerable<IDependencyNode>>(null);
-                }
-
-                var flatMatchingDependencies = new HashSet<DependencyMetadata>();
-                foreach (var kvp in CurrentSnapshot.DependenciesWorld)
-                {
-                    if (kvp.Value.Name.ToLowerInvariant().Contains(searchTerm)
-                        || kvp.Value.Version.ToLowerInvariant().Contains(searchTerm))
-                    {
-                        flatMatchingDependencies.Add(kvp.Value);
-                    }
-                }
-
-                if (flatMatchingDependencies.Count <= 0)
-                {
-                    return Task.FromResult<IEnumerable<IDependencyNode>>(null);
-                }
-
-                return Task.FromResult<IEnumerable<IDependencyNode>>(
-                            SearchRecursive(rootDependency, flatMatchingDependencies));
-            }
+            return SearchAsync(node.Id.ItemSpec, searchTerm);
         }
 
         private IList<IDependencyNode> SearchRecursive(DependencyMetadata rootDependency,
@@ -569,6 +556,80 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             return matchingNodes;
         }
+
+        // INuGetPackagesDataProvider methods
+
+        /// <summary>
+        /// Allows to other providers to use nuget package dependencies search on a given node if it 
+        /// turns out to be a nuget package.
+        /// </summary>
+        /// <param name="packageItemSpec">Package reference items spec for which we need to do a search</param>
+        /// <param name="searchTerm">String to be searched</param>
+        /// <returns></returns>
+        public Task<IEnumerable<IDependencyNode>> SearchAsync(string packageItemSpec, string searchTerm)
+        {
+            lock (_snapshotLock)
+            {
+                if (!CurrentSnapshot.DependenciesWorld.TryGetValue(packageItemSpec, out DependencyMetadata rootDependency))
+                {
+                    return Task.FromResult<IEnumerable<IDependencyNode>>(null);
+                }
+
+                var flatMatchingDependencies = new HashSet<DependencyMetadata>();
+                foreach (var kvp in CurrentSnapshot.DependenciesWorld)
+                {
+                    if (kvp.Value.Name.ToLowerInvariant().Contains(searchTerm)
+                        || kvp.Value.Version.ToLowerInvariant().Contains(searchTerm))
+                    {
+                        flatMatchingDependencies.Add(kvp.Value);
+                    }
+                }
+
+                if (flatMatchingDependencies.Count <= 0)
+                {
+                    return Task.FromResult<IEnumerable<IDependencyNode>>(null);
+                }
+
+                return Task.FromResult<IEnumerable<IDependencyNode>>(
+                            SearchRecursive(rootDependency, flatMatchingDependencies));
+            }
+        }
+
+        /// <summary>
+        /// For given node tries to find matching nuget package and adds direct package dependencies
+        /// nodes to given node's children collection. Use case is, when other provider has a node,
+        /// that is actually a package, it would call this method when GraphProvider is about to 
+        /// check if node has children or not.
+        /// </summary>
+        /// <param name="packageItemSpec">Package reference items spec that is supposed to be associated 
+        /// with the given node</param>
+        /// <param name="originalNode">Node to fill children for, if it's is a package</param>
+        public void UpdateNodeChildren(string packageItemSpec, IDependencyNode originalNode)
+        {
+            lock (_snapshotLock)
+            {
+                originalNode.Children.Clear();
+
+                if (!CurrentSnapshot.NodesCache.TryGetValue(originalNode.Id, out IDependencyNode node))
+                {
+                    if (!CurrentSnapshot.DependenciesWorld.TryGetValue(packageItemSpec, out DependencyMetadata dependencyMetadata))
+                    {
+                        return;
+                    }
+
+                    node = GetDependencyNode(originalNode.Id, dependencyMetadata);
+                }
+
+                if (node == null)
+                {
+                    return;
+                }
+
+                originalNode.Children.AddRange(node.Children);
+            }
+        }
+
+        // End of INuGetPackagesDataProvider methods
 
         private static DependencyMetadata CreateUnresolvedMetadata(string itemSpec,
                                                             IImmutableDictionary<string, string> properties)
@@ -626,6 +687,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             public bool Resolved { get; private set; }
             public string ItemSpec { get; set; }
             public string Target { get; }
+            public bool IsImplicitlyDefined { get; private set; }
 
             public string FriendlyName
             {
@@ -659,8 +721,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 Path = properties.ContainsKey(MetadataKeys.Path) ? properties[MetadataKeys.Path] : string.Empty;
 
                 bool.TryParse(properties.ContainsKey(MetadataKeys.Resolved)
-                ? properties[MetadataKeys.Resolved] : "true", out bool resolved);
+                    ? properties[MetadataKeys.Resolved] : "true", out bool resolved);
                 Resolved = resolved;
+
+                bool.TryParse(properties.ContainsKey(MetadataKeys.IsImplicitlyDefined)
+                    ? properties[MetadataKeys.IsImplicitlyDefined] : "false", out bool isImplicitlyDefined);
+                IsImplicitlyDefined = isImplicitlyDefined;
 
                 var dependenciesHashSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 if (properties.ContainsKey(MetadataKeys.Dependencies) && properties[MetadataKeys.Dependencies] != null)
@@ -880,6 +946,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             public const string Path = "Path";
             public const string Resolved = "Resolved";
             public const string Dependencies = "Dependencies";
+            public const string IsImplicitlyDefined = "IsImplicitlyDefined";
 
             // Target Metadata
             public const string RuntimeIdentifier = "RuntimeIdentifier";

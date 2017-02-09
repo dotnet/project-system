@@ -228,6 +228,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             await textBufferManager.ResetBufferAsync();
             Mock.Get(textBuffer).Verify(t => t.Replace(It.IsAny<Span>(), xml), Times.Once);
             Assert.Equal("<Project />", fileSystem.ReadAllText(tempProjectPath));
+            Mock.Get(unconfiguredProject).Verify(u => u.SaveAsync(null), Times.Once);
         }
 
         [Fact]
@@ -272,6 +273,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             await textBufferManager.ResetBufferAsync();
             Mock.Get(textBuffer).Verify(t => t.Replace(It.IsAny<Span>(), It.IsAny<string>()), Times.Never);
             Assert.Equal("<Project></Project>", fileSystem.ReadAllText(tempProjectPath));
+            Mock.Get(unconfiguredProject).Verify(u => u.SaveAsync(null), Times.Once);
         }
 
         [Fact]

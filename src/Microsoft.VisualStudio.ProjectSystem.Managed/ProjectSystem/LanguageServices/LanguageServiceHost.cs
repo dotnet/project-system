@@ -171,6 +171,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                         return _currentAggregateProjectContext;
                     }
 
+                    // Check if the current project context is up-to-date for the current active and known project configurations.
+                    var activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
+                    var knownProjectConfigurations = await _commonServices.Project.Services.ProjectConfigurationsService.GetKnownProjectConfigurationsAsync().ConfigureAwait(false);
+                    if (knownProjectConfigurations.All(c => c.IsCrossTargeting()) &&
+                        _currentAggregateProjectContext.HasMatchingTargetFrameworks(activeProjectConfiguration, knownProjectConfigurations))
+                    {
+                        return _currentAggregateProjectContext;
+                    }
+
                     previousContextToDispose = _currentAggregateProjectContext;
                 }
 

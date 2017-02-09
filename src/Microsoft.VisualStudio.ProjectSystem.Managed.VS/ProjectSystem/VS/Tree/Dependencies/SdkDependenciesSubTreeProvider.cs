@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
 
@@ -17,14 +18,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     {
         public const string ProviderTypeString = "SdkDependency";
 
-        public readonly ProjectTreeFlags SdkSubTreeRootNodeFlags
+        public static readonly ProjectTreeFlags SdkSubTreeRootNodeFlags
                             = ProjectTreeFlags.Create("SdkSubTreeRootNode");
 
-        public readonly ProjectTreeFlags SdkSubTreeNodeFlags
+        public static readonly ProjectTreeFlags SdkSubTreeNodeFlags
                             = ProjectTreeFlags.Create("SdkSubTreeNode");
 
-        public SdkDependenciesSubTreeProvider()
+        [ImportingConstructor]
+        public SdkDependenciesSubTreeProvider(INuGetPackagesDataProvider nuGetPackagesSnapshotProvider)
         {
+            NuGetPackagesDataProvider = nuGetPackagesSnapshotProvider;
+
             // subscribe to design time build to get corresponding items
             UnresolvedReferenceRuleNames = Empty.OrdinalIgnoreCaseStringSet
                 .Add(SdkReference.SchemaName);
@@ -32,6 +36,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ResolvedReferenceRuleNames = Empty.OrdinalIgnoreCaseStringSet
                 .Add(ResolvedSdkReference.SchemaName);
         }
+
+        private INuGetPackagesDataProvider NuGetPackagesDataProvider { get; }
 
         public override string ProviderType
         {
@@ -83,11 +89,56 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var id = new DependencyNodeId(ProviderType,
                                           itemSpec,
                                           itemType ?? ResolvedProjectReference.PrimaryDataSourceItemType);
+            var flags = SdkSubTreeNodeFlags;
+            if (IsImplicit(properties, out string packageItemSpec))
+            {
+                flags = flags.Union(DependencyNode.DoesNotSupportRemove);
+            }
+
             return new SdkDependencyNode(id,
-                                         flags: SdkSubTreeNodeFlags,
+                                         flags: flags,
                                          priority: priority,
                                          properties: properties,
                                          resolved: resolved);
+        }
+
+        public override IDependencyNode GetDependencyNode(DependencyNodeId id)
+        {
+            var node = base.GetDependencyNode(id);
+            if (node == null)
+            {
+                return null;
+            }
+
+            if (!IsImplicit(node, out string packageItemSpec))
+            {
+                return node;
+            }
+
+            NuGetPackagesDataProvider.UpdateNodeChildren(packageItemSpec, node);
+
+            return node;
+        }
+
+        public override Task<IEnumerable<IDependencyNode>> SearchAsync(IDependencyNode node, string searchTerm)
+        {
+            if (!IsImplicit(node, out string packageItemSpec))
+            {
+                return base.SearchAsync(node, searchTerm);
+            }
+
+            return NuGetPackagesDataProvider.SearchAsync(packageItemSpec, searchTerm);
+        }
+
+        private bool IsImplicit(IDependencyNode node, out string packageItemSpec)
+        {
+            return IsImplicit(node.Properties, out packageItemSpec);
+        }
+
+        private bool IsImplicit(IImmutableDictionary<string, string> properties, out string packageItemSpec)
+        {
+            return properties.TryGetValue(SdkReference.SDKPackageItemSpecProperty, out packageItemSpec)
+               && !string.IsNullOrEmpty(packageItemSpec);
         }
     }
 }

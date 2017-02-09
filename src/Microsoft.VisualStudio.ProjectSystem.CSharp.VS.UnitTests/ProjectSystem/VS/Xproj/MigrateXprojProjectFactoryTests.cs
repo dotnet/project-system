@@ -14,6 +14,8 @@ using Microsoft.VisualStudio.Shell.Flavor;
 using Microsoft.VisualStudio.Shell.Interop;
 using Newtonsoft.Json;
 using Xunit;
+using Moq;
+using Newtonsoft.Json.Linq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 {
@@ -36,19 +38,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         [Fact]
         public void MigrateXprojProjectFactory_NullProcessRunner_ThrowsArgumentNullException()
         {
-            Assert.Throws<ArgumentNullException>("runner", () => new MigrateXprojProjectFactory(null, new IFileSystemMock(), IServiceProviderFactory.Create()));
+            Assert.Throws<ArgumentNullException>("runner", () => new MigrateXprojProjectFactory(
+                null,
+                new IFileSystemMock(),
+                IServiceProviderFactory.Create(),
+                GlobalJsonSetupFactory.Create()));
         }
 
         [Fact]
         public void MigrateXprojProjectFactory_NullFileSystem_ThrowsArgumentNullException()
         {
-            Assert.Throws<ArgumentNullException>("fileSystem", () => new MigrateXprojProjectFactory(ProcessRunnerFactory.CreateRunner(), null, IServiceProviderFactory.Create()));
+            Assert.Throws<ArgumentNullException>("fileSystem", () => new MigrateXprojProjectFactory(
+                ProcessRunnerFactory.CreateRunner(),
+                null,
+                IServiceProviderFactory.Create(),
+                GlobalJsonSetupFactory.Create()));
         }
 
         [Fact]
         public void MigrateXprojProjectFactory_NullServiceProvider_ThrowsArgumentNullException()
         {
-            Assert.Throws<ArgumentNullException>("serviceProvider", () => new MigrateXprojProjectFactory(ProcessRunnerFactory.CreateRunner(), new IFileSystemMock(), null));
+            Assert.Throws<ArgumentNullException>("serviceProvider", () => new MigrateXprojProjectFactory(
+                ProcessRunnerFactory.CreateRunner(),
+                new IFileSystemMock(),
+                null,
+                GlobalJsonSetupFactory.Create()));
+        }
+
+        [Fact]
+        public void MigrateXprojProjectFactory_NullGlobalJsonSetup_ThrowsArgumentNullException()
+        {
+            Assert.Throws<ArgumentNullException>("globalJsonSetup", () => new MigrateXprojProjectFactory(
+                ProcessRunnerFactory.CreateRunner(),
+                new IFileSystemMock(),
+                IServiceProviderFactory.Create(),
+                null));
         }
 
         [Fact]
@@ -387,24 +411,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         public void MigrateXprojProjectFactory_GlobalJsonExists_BacksUpAndRemovesGlobalJson()
         {
             var fileSystem = CreateFileSystem(withEntries: true, withGlobalJson: true);
+            var solution = IVsSolutionFactory.CreateWithSolutionDirectory(CreateSolutionInfo());
+            var setup = GlobalJsonSetupFactory.Create(true);
 
-            var migrator = CreateInstance(ProcessRunnerFactory.CreateRunner(), fileSystem);
-
-            GlobalJsonRemover remover = null;
-
-            var solution = IVsSolutionFactory.Implement((IVsSolutionEvents events, out uint cookie) =>
-            {
-                remover = (GlobalJsonRemover)events;
-                cookie = 1234;
-                return VSConstants.S_OK;
-            }, IVsSolutionFactory.DefaultUnadviseCallback, CreateSolutionInfo());
+            var migrator = CreateInstance(ProcessRunnerFactory.CreateRunner(), fileSystem, globalJsonSetup: setup);
 
             var loggedMessages = new List<LogMessage>();
             var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
             var globalJsonBackedUp = Path.Combine(BackupLocation, "global.json");
 
             migrator.BackupAndDeleteGlobalJson(SlnLocation, solution, BackupLocation, XprojLocation, ProjectName, logger);
-            Assert.False(fileSystem.FileExists(GlobalJsonLocation));
             Assert.True(fileSystem.FileExists(globalJsonBackedUp));
             Assert.Equal(1, loggedMessages.Count);
             Assert.Equal(new LogMessage
@@ -414,8 +430,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
                 Message = string.Format(VSResources.MigrationBackupFile, GlobalJsonLocation, globalJsonBackedUp),
                 Project = ProjectName
             }, loggedMessages[0]);
-            Assert.NotNull(remover);
-            Assert.Equal(1234u, remover.SolutionCookie);
+            Mock.Get(setup).Verify(g => g.SetupRemoval(solution, It.IsAny<IServiceProvider>(), fileSystem));
+        }
+
+        [Fact]
+        public void MigrateXprojProjectFactory_GlobalJsonHasSdkElement_ElementIsRemoved()
+        {
+            var fileSystem = CreateFileSystem(withEntries: true, withGlobalJson: true);
+            var solution = IVsSolutionFactory.CreateWithSolutionDirectory(CreateSolutionInfo());
+            var setup = GlobalJsonSetupFactory.Create(true);
+
+            var migrator = CreateInstance(ProcessRunnerFactory.CreateRunner(), fileSystem, globalJsonSetup: setup);
+
+            var loggedMessages = new List<LogMessage>();
+            var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
+            var globalJsonBackedUp = Path.Combine(BackupLocation, "global.json");
+
+            fileSystem.WriteAllText(GlobalJsonLocation, @"
+{
+    ""sdk"": {
+        ""version"": ""1.0.0-preview2-003121""
+    }
+}");
+
+            migrator.BackupAndDeleteGlobalJson(SlnLocation, solution, BackupLocation, XprojLocation, ProjectName, logger);
+            Assert.True(fileSystem.FileExists(globalJsonBackedUp));
+            Assert.Equal(1, loggedMessages.Count);
+            Assert.Equal(new LogMessage
+            {
+                File = GlobalJsonLocation,
+                Level = (uint)__VSUL_ERRORLEVEL.VSUL_INFORMATIONAL,
+                Message = string.Format(VSResources.MigrationBackupFile, GlobalJsonLocation, globalJsonBackedUp),
+                Project = ProjectName
+            }, loggedMessages[0]);
+            Mock.Get(setup).Verify(g => g.SetupRemoval(solution, It.IsAny<IServiceProvider>(), fileSystem));
+            Assert.True(JToken.DeepEquals(new JObject(), JsonConvert.DeserializeObject<JObject>(fileSystem.ReadAllText(GlobalJsonLocation))));
         }
 
         [Fact]
@@ -428,43 +477,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
                 fileSystem.Create(CsprojLocation);
             });
 
-            GlobalJsonRemover remover = null;
-            var solution = IVsSolutionFactory.Implement((IVsSolutionEvents events, out uint cookie) =>
-            {
-                remover = (GlobalJsonRemover)events;
-                cookie = 1234;
-                return VSConstants.S_OK;
-            }, IVsSolutionFactory.DefaultUnadviseCallback, CreateSolutionInfo());
+            var solution = IVsSolutionFactory.CreateWithSolutionDirectory(CreateSolutionInfo());
+            var setup = GlobalJsonSetupFactory.Create(true);
 
             var loggedMessages = new List<LogMessage>();
             var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
 
-            var migrator = CreateInstance(processRunner, fileSystem, solution);
+            var migrator = CreateInstance(processRunner, fileSystem, solution, setup);
 
             Assert.Equal(VSConstants.S_OK, migrator.UpgradeProject(XprojLocation, 0, BackupLocation, out string outCsproj, logger, out int upgradeRequired, out Guid newProjectFactory));
             Assert.True(fileSystem.FileExists(CsprojLocation));
             Assert.True(fileSystem.FileExists(Path.Combine(BackupLocation, $"{ProjectName}.xproj")));
             Assert.True(fileSystem.FileExists(Path.Combine(BackupLocation, "project.json")));
             Assert.True(fileSystem.FileExists(Path.Combine(BackupLocation, $"{ProjectName}.xproj.user")));
+            Assert.True(fileSystem.FileExists(Path.Combine(BackupLocation, $"global.json")));
             Assert.False(fileSystem.FileExists(XprojLocation));
             Assert.False(fileSystem.FileExists(ProjectJsonLocation));
             Assert.False(fileSystem.FileExists(XprojUserLocation));
             Assert.False(fileSystem.FileExists(ProjectLockJsonLocation));
-            Assert.False(fileSystem.FileExists(GlobalJsonLocation));
             Assert.Equal(CsprojLocation, outCsproj);
             Assert.Equal((int)__VSPPROJECTUPGRADEVIAFACTORYREPAIRFLAGS.VSPUVF_PROJECT_ONEWAYUPGRADE, upgradeRequired);
             Assert.Equal(Guid.Parse(CSharpProjectSystemPackage.ProjectTypeGuid), newProjectFactory);
-            Assert.NotNull(remover);
-            Assert.Equal(1234u, remover.SolutionCookie);
+            Mock.Get(setup).Verify(g => g.SetupRemoval(solution, It.IsAny<IServiceProvider>(), fileSystem));
         }
 
-        private MigrateXprojProjectFactory CreateInstance(ProcessRunner processRunner, IFileSystem fileSystem, IVsSolution solutionParam = null)
+        private MigrateXprojProjectFactory CreateInstance(ProcessRunner processRunner,
+            IFileSystem fileSystem,
+            IVsSolution solutionParam = null,
+            GlobalJsonRemover.GlobalJsonSetup globalJsonSetup = null)
         {
             UnitTestHelper.IsRunningUnitTests = true;
             var solution = solutionParam ?? IVsSolutionFactory.CreateWithSolutionDirectory(CreateSolutionInfo());
             var serviceProvider = IServiceProviderFactory.Create(typeof(SVsSolution), solution);
+            var setup = globalJsonSetup ?? GlobalJsonSetupFactory.Create();
 
-            var migrator = new MigrateXprojProjectFactory(processRunner, fileSystem, serviceProvider);
+            var migrator = new MigrateXprojProjectFactory(processRunner, fileSystem, serviceProvider, setup);
             return migrator;
         }
 
@@ -513,7 +560,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
                 if (withGlobalJson)
                 {
-                    fileSystem.Create(GlobalJsonLocation);
+                    fileSystem.WriteAllText(GlobalJsonLocation, JsonConvert.SerializeObject(new object()));
                 }
             }
 

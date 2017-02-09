@@ -138,7 +138,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     .RegisterCriticalAsyncTask(JoinableFactory.RunAsync(async () =>
                     {
                         await _solutionRestoreService
-                               .NominateProjectAsync(_projectVsServices.Project.FullPath, projectRestoreInfo, CancellationToken.None)
+                               .NominateProjectAsync(_projectVsServices.Project.FullPath, projectRestoreInfo,
+                                    _projectVsServices.Project.Services.ProjectAsynchronousTasks.UnloadCancellationToken)
                                .ConfigureAwait(false);
 
                         Microsoft.Internal.Performance.CodeMarkers.Instance.CodeMarker(perfPackageRestoreEnd);

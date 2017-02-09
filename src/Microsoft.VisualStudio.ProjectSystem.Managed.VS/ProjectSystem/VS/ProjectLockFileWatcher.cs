@@ -75,14 +75,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 return;
             }
 
+            // NOTE: Project lock file path may be null
             var projectLockFilePath = await GetProjectLockFilePathAsync(newTree).ConfigureAwait(false);
 
-            // project.json may have been renamed to {projectName}.project.json. In that case change the file watcher.
+            // project.json may have been renamed to {projectName}.project.json or in the case of the project.assets.json, 
+            // the immediate path could have changed. In either case, change the file watcher.
             if (!PathHelper.IsSamePath(projectLockFilePath, _fileBeingWatched))
             {
                 UnregisterFileWatcherIfAny();
                 RegisterFileWatcherAsync(projectLockFilePath);
-                _fileBeingWatched = projectLockFilePath;
             }
         }
 
@@ -101,6 +102,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             // with <PackageReference> items.
             var configurationGeneral = await _projectServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
             var objDirectory = (string) await configurationGeneral.BaseIntermediateOutputPath.GetValueAsync().ConfigureAwait(false);
+            if (objDirectory.Length == 0)
+            {   // Don't have an intermdiate directory set, probably missing SDK attribute or Microsoft.Common.props
+
+                return null; 
+            }
+
             objDirectory = _projectServices.Project.MakeRooted(objDirectory);
             var projectAssetsFilePath = PathHelper.Combine(objDirectory, "project.assets.json");
             return projectAssetsFilePath;
@@ -124,15 +131,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         
         private void RegisterFileWatcherAsync(string projectLockJsonFilePath)
         {
-            if (_fileChangeService != null)
+            // Note file change service is free-threaded
+            if (_fileChangeService != null && projectLockJsonFilePath != null)
             {
                 int hr = _fileChangeService.AdviseFileChange(projectLockJsonFilePath, (uint)(_VSFILECHANGEFLAGS.VSFILECHG_Time | _VSFILECHANGEFLAGS.VSFILECHG_Size | _VSFILECHANGEFLAGS.VSFILECHG_Add | _VSFILECHANGEFLAGS.VSFILECHG_Del), this, out _filechangeCookie);
                 ErrorHandler.ThrowOnFailure(hr);
             }
+
+            _fileBeingWatched = projectLockJsonFilePath;
         }
 
         private void UnregisterFileWatcherIfAny()
         {
+            // Note file change service is free-threaded
             if (_filechangeCookie != VSConstants.VSCOOKIE_NIL && _fileChangeService != null)
             {
                 // There's nothing for us to do if this fails. So ignore the return value.
