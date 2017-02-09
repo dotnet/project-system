@@ -167,7 +167,7 @@ rmdir /S /Q backup
     Utilities.setMachineAffinity(newVsiJob, 'Windows_NT', 'latest-or-auto-dev15-internal')
     Utilities.standardJobSetup(newVsiJob, project, isPR, "*/${branch}")
     // ISSUE: Temporary until a full builder for source control is available.
-    addVsiMultiScm(newVsiJob, project)
+    addVsiMultiScm(newVsiJob, project, isPR)
 
     if (isPR) {
         def triggerPhrase = generateTriggerPhrase(newVsiJobName, "vsi")
