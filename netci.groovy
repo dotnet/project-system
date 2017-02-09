@@ -8,7 +8,7 @@ def branch = GithubBranchName
 // 'isPullR' used as a parameter elsewhere in the file
 def isPullR = false
 if (isPR) {
-    def isPullR = true
+    isPullR = true
 }
 
 // Generate the builds for debug and release, commit and PRJob
