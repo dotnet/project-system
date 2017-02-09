@@ -17,11 +17,14 @@ def branch = GithubBranchName
                 // Indicates that a batch script should be run with the build string (see above)
                 // Also available is:
                 // shell (for unix scripting)
-                batchFile("""SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
+                batchFile("""
+echo *** Build Roslyn Project System ***
+SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
 SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VSSDK\\
 SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VSSDK\\
 
-build.cmd /no-deploy-extension /${configuration.toLowerCase()}""")
+build.cmd /no-deploy-extension /${configuration.toLowerCase()}
+""")
             }
         }
 
@@ -55,17 +58,17 @@ build.cmd /no-deploy-extension /${configuration.toLowerCase()}""")
         steps {
             // Build roslyn-project-system repo - we also need to set certain environment variables for building the repo with VS15 toolset.
             batchFile("""
-echo *** Step 1: Build Roslyn Project System ***
+echo *** Build Roslyn Project System ***
 SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
 SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
 SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
 
 build.cmd /release /skiptests
-            """)
+""")
 
             // Patch all the MSBuild xaml and targets files from the current roslyn-project-system commit into VS install.
             batchFile("""
-echo *** Step 2: Patch the MSBuild xaml and targets ***
+echo *** Patch the MSBuild xaml and targets ***
 SET VS_MSBUILD_MANAGED=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\Managed
 
 mkdir backup
@@ -73,21 +76,21 @@ xcopy /SIY "%VS_MSBUILD_MANAGED%" .\\backup\\Managed
 
 xcopy /SIY .\\src\\Targets\\*.targets "%VS_MSBUILD_MANAGED%"
 xcopy /SIY .\\bin\\Release\\Rules\\*.xaml "%VS_MSBUILD_MANAGED%"
-            """)
+""")
 
             // Pull down the Open submodule of roslyn-internal as the 'Open' sources are not present until this step is executed
             batchFile("""
-echo *** Step 3: Pull down the Open submodule for Roslyn-Internal ***
+echo *** Pull down the Open submodule for Roslyn-Internal ***
 pushd %WORKSPACE%\\roslyn-internal
 git submodule init
 git submodule sync
 git submodule update --init --recursive
 init.cmd
-            """)
+""")
 
             // Build the SDK and install .NET Core Templates.
             batchFile("""
-echo *** Step 4: Build the SDK and install .NET Core Templates  ***
+echo *** Build the SDK and install .NET Core Templates  ***
 SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
 SET DeveloperCommandPrompt=%VS150COMNTOOLS%\\VsMSBuildCmd.bat
 
@@ -128,11 +131,11 @@ exit /b 0
 :BuildFailed
 echo %1 - Build failed with ERRORLEVEL %ERRORLEVEL%
 exit /b 1
-           """)
+""")
 
             // Build roslyn-internal and run netcore VSI tao tests.
             batchFile("""
-echo *** Step 5: Build and Test Roslyn-Internal ***
+echo *** Build Roslyn Internal and Test Roslyn Project System ***
 SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
 SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
 SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
@@ -145,17 +148,17 @@ set TMP=%TEMP%
 set EchoOn=true
 
 BuildAndTest.cmd -build:true -clean:false -deployExtensions:true -trackFileAccess:false -officialBuild:false -realSignBuild:false -parallel:true -release:true -delaySignBuild:true -samples:false -unit:false -eta:false -vs:true -cibuild:true -x64:false -netcoretestrun
-            """)
+""")
 
             // Revert patched targets and rules from backup.
             batchFile("""
-echo *** Step 6: Revert the MSBuild xaml and targets ***
+echo *** Revert the MSBuild xaml and targets ***
 SET VS_MSBUILD_MANAGED=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\Managed
 
 del /SQ "%VS_MSBUILD_MANAGED%\\"
 xcopy /SIY .\\backup\\Managed "%VS_MSBUILD_MANAGED%"
 rmdir /S /Q backup
-            """)
+""")
 
         }
     }
@@ -164,7 +167,7 @@ rmdir /S /Q backup
     Utilities.setMachineAffinity(newVsiJob, 'Windows_NT', 'latest-or-auto-dev15-internal')
     Utilities.standardJobSetup(newVsiJob, project, isPR, "*/${branch}")
     // ISSUE: Temporary until a full builder for source control is available.
-    addVsiMultiScm(newVsiJob, project)
+    addVsiMultiScm(newVsiJob, project, isPR)
 
     if (isPR) {
         def triggerPhrase = generateTriggerPhrase(newVsiJobName, "vsi")
@@ -194,14 +197,18 @@ static void addVsiArchive(def myJob) {
 }
 
 // ISSUE: Temporary until a full builder for multi-scm source control is available.
-// Replace the scm settings with a multiScm setup.  Note that this will not work for PR jobs
-static void addVsiMultiScm(def myJob, def project) {
+// Replace the scm settings with a multiScm setup.  Note: for PR jobs; explicitly set the refspec
+static void addVsiMultiScm(def myJob, def project, def isPR) {
     myJob.with {
         multiscm {
             git {
                 remote {
                     // Use the input project
                     github(project)
+                    if (isPR) {
+                        // Set the refspec
+                        refspec('${GitRefSpec}')
+                    }
                 }
                 // Pull from the desired branch input branch passed as a parameter (set up by standardJobSetup)
                 branch('${GitBranchOrCommit}')
@@ -226,7 +233,7 @@ static void addVsiMultiScm(def myJob, def project) {
                 }
                 // roslyn-internal - pull in a specific LKG commit from master.
                 // In future, '*/master' can be placed here to pull latest sources.
-                branch('001bd94b02eec43afd37ed455a946808c7f5dfaf')
+                branch('b76a821248f61be8dd4bdfaf7475116574741734')
             }
         }
     }
