@@ -5,6 +5,12 @@ import jobs.generation.*;
 def project = GithubProject
 def branch = GithubBranchName
 
+// 'isPullR' used as a parameter elsewhere in the file
+def isPullR = false
+if (isPR) {
+    def isPullR = true
+}
+
 // Generate the builds for debug and release, commit and PRJob
 [true, false].each { isPR -> // Defines a closure over true and false, value assigned to isPR
     ['Debug', 'Release'].each { configuration ->
@@ -198,14 +204,14 @@ static void addVsiArchive(def myJob) {
 
 // ISSUE: Temporary until a full builder for multi-scm source control is available.
 // Replace the scm settings with a multiScm setup.  Note: for PR jobs; explicitly set the refspec
-static void addVsiMultiScm(def myJob, def project) {
+static void addVsiMultiScm(def myJob, def project, def isPullR) {
     myJob.with {
         multiscm {
             git {
                 remote {
                     // Use the input project
                     github(project)
-                    if (isPR) {
+                    if (isPullR) {
                         // Set the refspec
                         refspec('${GitRefSpec}')
                     }
