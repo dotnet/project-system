@@ -28,14 +28,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly List<IDisposable> _designTimeBuildSubscriptionLinks;
 
         /// <summary>
-        /// Current AggregateWorkspaceProjectContext - accesses to this field must be done with a lock.
+        /// Current AggregateWorkspaceProjectContext - accesses to this field must be done with a lock on <see cref="_gate"/>.
         /// Note that at any given time, we can have only a single non-disposed aggregate project context.
         /// Otherwise, we can end up with an invalid state of multiple workspace project contexts for the same configured project.
         /// </summary>
         private AggregateWorkspaceProjectContext _currentAggregateProjectContext;
 
         /// <summary>
-        /// Current TargetFramework for non-cross targeting project - accesses to this field must be done with a lock.
+        /// Current TargetFramework for non-cross targeting project - accesses to this field must be done with a lock on <see cref="_gate"/>.
         /// </summary>
         private string _currentTargetFramework;
 
