@@ -260,6 +260,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [InlineData(@"[assembly: System.Reflection.AssemblyVersionAttribute(""random"")]", "AssemblyVersion", "random", typeof(AssemblyVersionValueProvider))]
         [InlineData(@"[assembly: System.Reflection.AssemblyInformationalVersionAttribute(""2.0.0"")]", "AssemblyVersion", "2.0.0.0", typeof(AssemblyVersionValueProvider))]
         [InlineData(@"[assembly: System.Reflection.AssemblyInformationalVersionAttribute(""2.0.1-beta1"")]", "AssemblyVersion", "2.0.1.0", typeof(AssemblyVersionValueProvider))]
+        [InlineData(@"[assembly: System.Reflection.AssemblyInformationalVersionAttribute(""2016.2"")]", "AssemblyVersion", "2016.2.0.0", typeof(AssemblyVersionValueProvider))]
         // FileVersion
         [InlineData(@"", "FileVersion", "1.0.0.0", typeof(FileVersionValueProvider))]
         [InlineData(@"[assembly: System.Reflection.AssemblyFileVersionAttribute(""1.1.1"")]", "FileVersion", "1.1.1", typeof(FileVersionValueProvider))]
@@ -267,13 +268,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [InlineData(@"[assembly: System.Reflection.AssemblyFileVersionAttribute(""random"")]", "FileVersion", "random", typeof(FileVersionValueProvider))]
         [InlineData(@"[assembly: System.Reflection.AssemblyInformationalVersionAttribute(""2.0.0"")]", "FileVersion", "2.0.0.0", typeof(FileVersionValueProvider))]
         [InlineData(@"[assembly: System.Reflection.AssemblyInformationalVersionAttribute(""2.0.1-beta1"")]", "FileVersion", "2.0.1.0", typeof(FileVersionValueProvider))]
-        // PackageVersion
+        [InlineData(@"[assembly: System.Reflection.AssemblyInformationalVersionAttribute(""2016.2"")]", "FileVersion", "2016.2.0.0", typeof(FileVersionValueProvider))]
+        // Version
         [InlineData(@"", "Version", null, null)]
         [InlineData(@"[assembly: System.Reflection.AssemblyInformationalVersionAttribute(""1.1.1"")]", "Version", "1.1.1", null)]
         [InlineData(@"[assembly: System.Reflection.AssemblyInformationalVersionAttribute("""")]", "Version", "", null)]
         [InlineData(@"[assembly: System.Reflection.AssemblyInformationalVersionAttribute(""random"")]", "Version", "random", null)]
         [InlineData(@"[assembly: System.Reflection.AssemblyInformationalVersionAttribute(""2.0.0"")]", "Version", "2.0.0", null)]
         [InlineData(@"[assembly: System.Reflection.AssemblyInformationalVersionAttribute(""2.0.1-beta1"")]", "Version", "2.0.1-beta1", null)]
+        [InlineData(@"[assembly: System.Reflection.AssemblyInformationalVersionAttribute(""2016.2"")]", "Version", "2016.2", null)]
         internal async void SourceFileProperties_DefaultValues_GetEvalutedPropertyAsync(string code, string propertyName, string expectedValue, Type interceptingProviderType)
         {
             var interceptingProvider = interceptingProviderType != null ?
@@ -325,6 +328,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [InlineData("AssemblyVersion", "1.0.0.0", "1.0.0.0", "1.0.0.0", typeof(AssemblyVersionValueProvider))]
         [InlineData("AssemblyVersion", "1.1.1", "1.0.0.0", "1.0.0.0", typeof(AssemblyVersionValueProvider))]
         [InlineData("AssemblyVersion", "1.0.0.0", "1.0.0", "1.0.0", typeof(AssemblyVersionValueProvider))]
+        [InlineData("AssemblyVersion", null, "2016.2", "2016.2", typeof(AssemblyVersionValueProvider))]
         // FileVersion
         [InlineData("FileVersion", null, "1.0.0.0", "1.0.0.0", typeof(FileVersionValueProvider))]
         [InlineData("FileVersion", "", "1.0.0.0", "1.0.0.0", typeof(FileVersionValueProvider))]
@@ -332,6 +336,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [InlineData("FileVersion", "1.0.0.0", "1.0.0.0", "1.0.0.0", typeof(FileVersionValueProvider))]
         [InlineData("FileVersion", "1.1.1", "1.0.0.0", "1.0.0.0", typeof(FileVersionValueProvider))]
         [InlineData("FileVersion", "1.0.0.0", "1.0.0", "1.0.0", typeof(FileVersionValueProvider))]
+        [InlineData("FileVersion", null, "2016.2", "2016.2", typeof(FileVersionValueProvider))]
         // PackageVersion
         [InlineData("Version", null, "1.0.0", "1.0.0", null)]
         [InlineData("Version", null, "1.0.0-beta1", "1.0.0-beta1", null)]
@@ -343,6 +348,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [InlineData("Version", "1.0.0", "1.0.0-beta1", "1.0.0-beta1", null)]
         [InlineData("Version", "1.1.1", "1.0.0.0", "1.0.0.0", null)]
         [InlineData("Version", "1.0.0", "1.0.0.0", "1.0.0.0", null)]
+        [InlineData("Version", null, "2016.2", "2016.2", null)]
         internal async void ProjectFileProperties_WithInterception_SetEvalutedPropertyAsync(string propertyName, string existingPropertyValue, string propertyValueToSet, string expectedValue, Type interceptingProviderType)
         {
             var interceptingProvider = interceptingProviderType != null ?
