@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
@@ -141,6 +142,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             }
         }
 
+        private JoinableTask<T> ExecuteWithinLockAsync<T>(Func<Task<T>> task)
+        {
+            return JoinableFactory.RunAsync(async delegate
+            {
+                using (JoinableCollection.Join())
+                using (await _gate.DisposableWaitAsync().ConfigureAwait(false))
+                {
+                    return await task().ConfigureAwait(false);
+                }
+            });
+        }
+
+        private JoinableTask ExecuteWithinLockAsync(Func<Task> task)
+        {
+            return JoinableFactory.RunAsync(async delegate
+            {
+                using (JoinableCollection.Join())
+                using (await _gate.DisposableWaitAsync().ConfigureAwait(false))
+                {
+                    await task().ConfigureAwait(false);
+                }
+            });
+        }
+
         /// <summary>
         /// Ensures that <see cref="_currentAggregateProjectContext"/> is updated for the latest TargetFrameworks from the project properties
         /// and returns this value.
@@ -149,7 +174,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             // Ensure that only single thread is attempting to create a project context.
             AggregateWorkspaceProjectContext previousContextToDispose = null;
-            using (await _gate.DisposableWaitAsync().ConfigureAwait(false))
+            return await ExecuteWithinLockAsync(async () =>
             {
                 // Check if we have already computed the project context.
                 if (_currentAggregateProjectContext != null)
@@ -205,7 +230,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 }
 
                 return _currentAggregateProjectContext;
-            }
+            });
         }
 
         private void AddSubscriptions(AggregateWorkspaceProjectContext newProjectContext)
@@ -238,7 +263,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             // We need to process the update within a lock to ensure that we do not release this context during processing.
             // TODO: Enable concurrent execution of updates themeselves, i.e. two separate invocations of HandleAsync
             //       should be able to run concurrently. 
-            using (await _gate.DisposableWaitAsync().ConfigureAwait(true))
+            await ExecuteWithinLockAsync(async () =>
             {
                 // Get the inner workspace project context to update for this change.
                 var projectContextToUpdate = _currentAggregateProjectContext.GetInnerProjectContext(update.Value.ProjectConfiguration, out bool isActiveContext);
@@ -267,7 +292,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                         await handler.HandleAsync(update, projectChange, projectContextToUpdate, isActiveContext).ConfigureAwait(true);
                     }
                 }
-            }
+            });
         }
 
         private IEnumerable<string> GetWatchedRules(RuleHandlerType handlerType)
@@ -290,13 +315,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             {
                 DisposeAndClearSubscriptions();
 
-                using (await _gate.DisposableWaitAsync().ConfigureAwait(false))
+                await ExecuteWithinLockAsync(async () =>
                 {
                     if (_currentAggregateProjectContext != null)
                     {
                         await _contextProvider.Value.ReleaseProjectContextAsync(_currentAggregateProjectContext).ConfigureAwait(false);
                     }
-                }
+                });
             }
         }
 
