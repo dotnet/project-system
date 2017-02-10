@@ -50,6 +50,9 @@
       <Group guid="guidSHLMainMenu" id="IDG_VS_CTXT_PROJECT_EDITFILE" priority="0x0180">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_PROJECT"/>
       </Group>
+      <Group guid="guidSHLMainMenu" id="IDG_VS_CTXT_PROJECT_EDITFILE" priority="0x0180">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_ITEMNODE"/>
+      </Group>
     </Groups>
 
     <Buttons>
