@@ -4,7 +4,6 @@ using System;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.IO;
