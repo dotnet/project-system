@@ -336,6 +336,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         private void OnDependenciesChanged(object sender, DependenciesChangedEventArgs e)
         {
+            if (!e.Changes.AnyChanges())
+            {
+                return;
+            }
+
             var nowait = SubmitTreeUpdateAsync(
                 (treeSnapshot, configuredProjectExports, cancellationToken) =>
                 {

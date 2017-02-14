@@ -184,7 +184,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 ""ItemSpec"": ""tfm2/ExistingUnresolvedPackage/2.0.0"",
                 ""ItemType"": ""PackageReference""
             }
-        }
+        }        
     ],    
     ""UpdatedNodes"": [
         {
@@ -219,7 +219,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         string existingDependenciesChanges)
         {
             // Arrange
-            var projectSubscriptionUpdate = IProjectSubscriptionUpdateFactory.FromJson(projectSubscriptionUpdateJson);
+            var projectSubscriptionUpdate = IProjectSubscriptionUpdateFactory.FromJson(projectSubscriptionUpdateJson);           
             var mockRootNode = IDependencyNodeFactory.Implement(existingTopLevelNodesJson);
 
             var provider = new TestableNuGetDependenciesSubTreeProvider();
@@ -255,6 +255,104 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     Assert.True(currentSnapshot.Any(x => x.Equals(addedNode.Id.ItemSpec, StringComparison.OrdinalIgnoreCase)));
                 }
             }
+        }
+
+        [Theory]
+        [InlineData(
+@"{
+    ""ProjectChanges"": {
+        ""PackageReference"": {
+            ""After"": {
+                ""Items"": {                    
+                    ""ChangedUnresolvedPackage"": {
+                        ""Version"": ""2.0.0""
+                    }
+                },
+                ""RuleName"": ""PackageReference""
+            },
+            ""Difference"": {
+                ""AddedItems"": [ ],
+                ""ChangedItems"": [ ""ChangedUnresolvedPackage"" ],
+                ""RemovedItems"": [ ],
+                ""AnyChanges"": ""true""
+            },
+        },
+        ""ResolvedPackageReference"": {
+            ""After"": {
+                ""Items"": {                    
+                },
+                ""RuleName"": ""ResolvedPackageReference""
+            },
+            ""Difference"": {
+                ""AddedItems"": [ ],
+                ""ChangedItems"": [ ],
+                ""RemovedItems"": [ ],
+                ""AnyChanges"": ""false""
+            },
+        }
+    }
+}",
+@"
+{
+    ""AddedNodes"": [
+        {
+            ""Id"": {
+                ""ProviderType"": ""NuGetDependency"",
+                ""ItemSpec"": ""ChangedUnresolvedPackage"",
+                ""ItemType"": ""PackageReference""
+            }
+        }       
+    ],    
+    ""UpdatedNodes"": [
+    ],
+    ""RemovedNodes"": [
+        {
+            ""Id"": {
+                ""ProviderType"": ""NuGetDependency"",
+                ""ItemSpec"": ""tfm/ChangedUnresolvedPackage/1.0.0"",
+                ""ItemType"": ""PackageReference""
+            }
+        }
+    ]
+}")]
+        public void NuGetDependenciesSubTreeProvider_ProcessDependenciesChanges_UnresolvedChangedNode(
+                        string projectSubscriptionUpdateJson,
+                        string existingDependenciesChanges)
+        {
+            // Arrange
+            var projectSubscriptionUpdate = IProjectSubscriptionUpdateFactory.FromJson(projectSubscriptionUpdateJson);
+
+            var mockRootNode = IDependencyNodeFactory.FromJson(@"
+{
+    ""Id"": {
+        ""ProviderType"": ""NuGetDependency"",
+        ""ItemSpec"": ""root""
+    },
+    ""Properties"": {
+    }
+}");
+            var unresolvedNodeToChange = new PackageDependencyNode(
+                                             new DependencyNodeId(NuGetDependenciesSubTreeProvider.ProviderTypeString,
+                                                                  "tfm/ChangedUnresolvedPackage/1.0.0",
+                                                                  "PackageReference"),
+                                             name: "ChangedUnresolvedPackage",
+                                             caption: "ChangedUnresolvedPackage (1.0.0)",
+                                             flags: NuGetDependenciesSubTreeProvider.NuGetSubTreeNodeFlags,
+                                             properties: new Dictionary<string, string>().ToImmutableDictionary(),
+                                             resolved: true);
+            mockRootNode.AddChild(unresolvedNodeToChange);
+            var provider = new TestableNuGetDependenciesSubTreeProvider();
+            provider.AddTopLevelDependency("ChangedUnresolvedPackage");
+
+            provider.SetRootNode(mockRootNode);
+
+            // Act
+            var resultDependenciesChange = provider.TestDependenciesChanged(projectSubscriptionUpdate, catalogs: null);
+
+            // Assert
+            // check that DependenciesChange returned is as expected
+            var expectedResult = DependenciesChangeFactory.FromJson(existingDependenciesChanges);
+            Assert.True(DependenciesChangeFactory.AreEqual(expectedResult, resultDependenciesChange));            
         }
 
         [Theory]
@@ -1182,6 +1280,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             public HashSet<string> GetUniqueTopLevelDependencies()
             {
                 return CurrentSnapshot.GetUniqueTopLevelDependencies();
+            }
+
+            public void AddTopLevelDependency(string itemSpec)
+            {
+                TopLevelDependencies.Add(itemSpec, new DependencyMetadata(itemSpec,
+                                                            new Dictionary<string, string>().ToImmutableDictionary()));
             }
 
             public void AddChildToNodeInCache(string itemSpec, IDependencyNode childNode)

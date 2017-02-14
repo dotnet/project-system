@@ -308,6 +308,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     {
                         dependenciesChange.UpdatedNodes.Add(itemNode);
                     }
+                    else
+                    {
+                        itemNode = rootNodes.FirstOrDefault(
+                                    x => DependencyNode.GetName(x).Equals(unresolvedMetadata.Name, StringComparison.OrdinalIgnoreCase));
+                        if (itemNode != null)
+                        {
+                            dependenciesChange.RemovedNodes.Add(itemNode);
+                            itemNode = CreateDependencyNode(unresolvedMetadata, topLevel: true);
+                            dependenciesChange.AddedNodes.Add(itemNode);
+                        }
+                    }
                 }
 
                 // add
