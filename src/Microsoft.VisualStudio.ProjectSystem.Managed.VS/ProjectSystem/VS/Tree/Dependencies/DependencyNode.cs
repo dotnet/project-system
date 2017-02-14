@@ -71,6 +71,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 = ProjectTreeFlags.Create("DoesNotSupportRemove");
 
         /// <summary>
+        /// This flg indicates that dependency shows a hierarchy or other data that is coming from other sub 
+        /// tree provider. This would allow components responsible for data displaying do necessary steps to 
+        /// stay in sync with other providers changes.
+        /// </summary>
+        public static readonly ProjectTreeFlags DependsOnOtherProviders
+                 = ProjectTreeFlags.Create("DependsOnOtherProviders");
+
+        /// <summary>
         /// These set of flags is internal and should be used only by standard known
         /// project item nodes, that come from design time build. This is important,
         /// since some of flags enable other functionality, like Add Reference dialog

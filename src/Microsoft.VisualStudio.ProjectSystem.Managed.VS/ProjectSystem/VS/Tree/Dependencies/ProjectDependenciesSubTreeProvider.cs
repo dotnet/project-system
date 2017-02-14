@@ -75,6 +75,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
         }
 
+        public override bool CanDependOnProvider(IProjectDependenciesSubTreeProvider otherProvider)
+        {
+            // projects depend on all kinds of providers changes
+            return true;
+        }
+
         protected override IDependencyNode CreateRootNode()
         {
             return new SubTreeRootDependencyNode(ProviderType, 
@@ -115,7 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                      bool resolved)
         {
             return new ProjectDependencyNode(id,
-                                             flags: ProjectSubTreeNodeFlags,
+                                             flags: ProjectSubTreeNodeFlags.Union(DependencyNode.DependsOnOtherProviders),
                                              priority: priority,
                                              properties: properties,
                                              resolved: resolved);
