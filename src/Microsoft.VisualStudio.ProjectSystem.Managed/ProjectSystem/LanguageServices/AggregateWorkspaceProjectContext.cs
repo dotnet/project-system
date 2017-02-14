@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
-using Microsoft.VisualStudio.ProjectSystem.Build;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
@@ -72,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             if (projectConfiguration.IsCrossTargeting())
             {
-                var targetFramework = projectConfiguration.Dimensions[TargetFrameworkProjectConfigurationDimensionProvider.TargetFrameworkPropertyName];
+                var targetFramework = projectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty];
                 isActiveConfiguration = string.Equals(targetFramework, _activeTargetFramework);
                 return _configuredProjectContextsByTargetFramework.TryGetValue(targetFramework, out IWorkspaceProjectContext projectContext) ?
                     projectContext :

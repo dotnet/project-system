@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using Microsoft.VisualStudio.ProjectSystem.Build;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -15,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <returns></returns>
         internal static bool IsCrossTargeting(this ProjectConfiguration projectConfiguration)
         {
-            return projectConfiguration.Dimensions.ContainsKey(TargetFrameworkProjectConfigurationDimensionProvider.TargetFrameworkPropertyName);
+            return projectConfiguration.Dimensions.ContainsKey(ConfigurationGeneral.TargetFrameworkProperty);
         }
 
         /// <summary>
@@ -42,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 var dimensionValue = dimensionKvp.Value;
 
                 // Ignore the TargetFramework.
-                if (string.Equals(dimensionName, TargetFrameworkProjectConfigurationDimensionProvider.TargetFrameworkPropertyName, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(dimensionName, ConfigurationGeneral.TargetFrameworkProperty, StringComparison.OrdinalIgnoreCase))
                 {
                     continue;
                 }
