@@ -3,6 +3,7 @@
 using EnvDTE;
 using Microsoft.VisualStudio.Shell.Interop;
 using VSLangProj;
+using VSLangProj110;
 using VSLangProj80;
 using Xunit;
 
@@ -164,9 +165,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         }
 
         [Fact]
-        public void ResolveAssemblyPathInTargetFx_NonAssembly_SetsResolvedAssemblyPathsToZero()
+        public void ResolveAssemblyPathInTargetFx_ComReference_SetsResolvedAssemblyPathsToZero()
         {   
-            var reference = Reference3Factory.CreateAssemblyReference("mscorlib", "1.0.0.0", referenceType: prjReferenceType.prjReferenceTypeActiveX);
+            var reference = Reference3Factory.CreateAssemblyReference("mscorlib", "1.0.0.0", type: prjReferenceType.prjReferenceTypeActiveX, refType:__PROJECTREFERENCETYPE.PROJREFTYPE_ACTIVEX);
+
+            var resolution = CreateInstance(reference);
+
+            var result = resolution.ResolveAssemblyPathInTargetFx(new string[] { "mscorlib" }, 1, new VsResolvedAssemblyPath[1], out uint resolvedAssemblyPaths);
+
+            Assert.Equal(VSConstants.S_OK, result);
+            Assert.Equal(0u, resolvedAssemblyPaths);
+        }
+
+        [Fact]
+        public void ResolveAssemblyPathInTargetFx_SdkReference_SetsResolvedAssemblyPathsToZero()
+        {
+            // SDKs say they are "assemblies" for Reference.Type, but SDK for Reference.RefType
+            var reference = Reference3Factory.CreateAssemblyReference("mscorlib", "1.0.0.0", type: prjReferenceType.prjReferenceTypeAssembly, refType: (__PROJECTREFERENCETYPE)__PROJECTREFERENCETYPE2.PROJREFTYPE_SDK);
 
             var resolution = CreateInstance(reference);
 
