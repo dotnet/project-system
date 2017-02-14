@@ -47,11 +47,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
     internal class ProjectContextEventArgs : EventArgs
     {
-        public ProjectContextEventArgs(IDependenciesGraphProjectContext context)
+        public ProjectContextEventArgs(IDependenciesGraphProjectContext context,
+                                       IDependenciesChangeDiff diff = null)
         {
             Context = context;
+            Diff = diff ?? new DependenciesChange().GetDiff();
         }
 
         public IDependenciesGraphProjectContext Context { get; }
+        public IDependenciesChangeDiff Diff { get; }
     }
 }

@@ -323,12 +323,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             if (disposing)
             {
-                foreach (var provider in SubTreeProviders)
-                {
-                    provider.Value.DependenciesChanged -= OnDependenciesChanged;
-                }
-
                 ProjectContextUnloaded?.Invoke(this, new ProjectContextEventArgs(this));
+
+                try
+                {
+                    foreach (var provider in SubTreeProviders)
+                    {
+                        provider.Value.DependenciesChanged -= OnDependenciesChanged;
+                    }
+                }
+                catch(ObjectDisposedException)
+                {
+                    // do nothing - we are cleaning up here and sometimes CPS throws Object disposed exception
+                }
             }
 
             base.Dispose(disposing);
@@ -347,7 +354,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                                          catalogs: e.Catalogs);
                     dependenciesNode = RefreshDependentProvidersNodes(dependenciesNode, e.Provider);
 
-                    ProjectContextChanged?.Invoke(this, new ProjectContextEventArgs(this));
+                    ProjectContextChanged?.Invoke(this, new ProjectContextEventArgs(this, e.Changes));
 
                     // TODO We still are getting mismatched data sources and need to figure out better 
                     // way of merging, mute them for now and get to it in U1

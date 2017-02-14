@@ -178,7 +178,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 var rootNodeChildren = subTreeProvider.RootNode.Children;
                 foreach (var child in rootNodeChildren)
                 {
-                    node.AddChild(child);
+                    node.AddChild(DependencyNode.Clone(child));
                 }
             }
 

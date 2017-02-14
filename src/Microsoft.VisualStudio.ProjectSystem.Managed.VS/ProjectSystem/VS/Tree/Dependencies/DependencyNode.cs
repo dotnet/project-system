@@ -69,6 +69,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public static readonly ProjectTreeFlags DoesNotSupportRemove
                 = ProjectTreeFlags.Create("DoesNotSupportRemove");
 
+         /// <summary>
+         /// This flg indicates that dependency shows a hierarchy or other data that is coming from other sub 
+         /// tree provider. This would allow components responsible for data displaying do necessary steps to 
+         /// stay in sync with other providers changes.
+         /// </summary>
+         public static readonly ProjectTreeFlags DependsOnOtherProviders
+                 = ProjectTreeFlags.Create("DependsOnOtherProviders");
+
         /// <summary>
         /// This flg indicates that dependency shows a hierarchy or other data that is coming from other sub 
         /// tree provider. This would allow components responsible for data displaying do necessary steps to 
@@ -120,6 +128,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Flags = Resolved
                         ? ResolvedDependencyFlags.Union(flags)
                         : UnresolvedDependencyFlags.Union(flags);
+        }
+
+        private DependencyNode(IDependencyNode node)
+        {
+            Id = node.Id;
+            Caption = node.Caption;
+            Name = node.Name;
+            Priority = node.Priority;
+            Properties = node.Properties;
+            Resolved = node.Resolved;
+            Flags = node.Flags;
+            Icon = node.Icon;
+            ExpandedIcon = node.ExpandedIcon;
+
+            AddChildren(node.Children);
         }
 
         private readonly object _childrenLock = new object();
@@ -297,6 +320,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
 
             return false;
+        }
+
+        public static IDependencyNode Clone(IDependencyNode node)
+        {
+            return new DependencyNode(node);
         }
     }
 }
