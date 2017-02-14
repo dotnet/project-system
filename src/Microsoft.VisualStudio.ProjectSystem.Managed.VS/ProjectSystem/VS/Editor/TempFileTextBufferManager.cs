@@ -30,10 +30,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         private readonly IFileSystem _fileSystem;
         private readonly IProjectThreadingService _threadingService;
         private readonly IServiceProvider _serviceProvider;
+        private readonly object _savedXmlLock = new object();
 
         private IVsTextBuffer _textBuffer;
         private ITextDocument _textDocument;
         private IVsPersistDocData _docData;
+        /// <summary>
+        /// Access is synchronized by <seealso cref="_savedXmlLock"/>.
+        /// </summary>
+        private string _lastSavedXml;
 
         [ImportingConstructor]
         public TempFileTextBufferManager(UnconfiguredProject unconfiguredProject,
@@ -87,7 +92,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             var projectXml = await _projectXmlAccessor.GetProjectXmlAsync().ConfigureAwait(false);
             var existingText = await ReadBufferXmlAsync().ConfigureAwait(false);
 
-            if (!existingText.Equals(projectXml, StringComparison.Ordinal))
+            var isLastSavedEqual = false;
+            lock (_savedXmlLock)
+            {
+                // If the project xml is the same as the last thing we saved, then any changes in the editor are new changes
+                // on top of the existing changes, and we should not attempt to overwrite them.
+                isLastSavedEqual = projectXml.Equals(_lastSavedXml, StringComparison.Ordinal);
+            }
+
+            if (!isLastSavedEqual && !existingText.Equals(projectXml, StringComparison.Ordinal))
             {
                 await _threadingService.SwitchToUIThread();
                 // If the docdata is not dirty, we just update the buffer to avoid the file reload pop-up. Otherwise,
@@ -137,6 +150,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         {
             var toWrite = await ReadBufferXmlAsync().ConfigureAwait(false);
             await _projectXmlAccessor.SaveProjectXmlAsync(toWrite).ConfigureAwait(false);
+            lock(_savedXmlLock)
+            {
+                _lastSavedXml = toWrite;
+            }
         }
 
         public async Task SetReadOnlyAsync(bool readOnly)

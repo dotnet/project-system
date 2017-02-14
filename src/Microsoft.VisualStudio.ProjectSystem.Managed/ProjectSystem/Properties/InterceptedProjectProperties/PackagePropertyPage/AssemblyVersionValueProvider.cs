@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
                 return s_DefaultAssemblyVersion;
             }
 
-            return new Version(defaultVersion.Major, defaultVersion.Minor, defaultVersion.Build, revision: 0);
+            return new Version(defaultVersion.Major, defaultVersion.Minor, Math.Max(defaultVersion.Build, 0), revision: Math.Max(defaultVersion.Revision, 0));
         }
     }
 }

@@ -196,7 +196,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
             var xml = "<Project />";
 
-            var msbuildAccessor = IProjectXmlAccessorFactory.ImplementGetProjectXml(() => xml);
+            var msbuildAccessor = IProjectXmlAccessorFactory.Implement(() => xml, s => { });
 
             var docData = IVsPersistDocDataFactory.ImplementAsIVsTextBufferIsDocDataDirty(false, VSConstants.S_OK);
             var textBuffer = ITextBufferFactory.ImplementSnapshot("<Project />");
@@ -241,7 +241,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
             var xml = "<Project />";
 
-            var msbuildAccessor = IProjectXmlAccessorFactory.ImplementGetProjectXml(() => xml);
+            var msbuildAccessor = IProjectXmlAccessorFactory.Implement(() => xml, s => { });
 
             var docData = IVsPersistDocDataFactory.ImplementAsIVsTextBufferIsDocDataDirty(true, VSConstants.S_OK);
             var textBuffer = ITextBufferFactory.ImplementSnapshot("<Project />");
@@ -399,6 +399,57 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 
             await textBufferManager.DisposeAsync();
             Assert.False(fileSystem.DirectoryExists(tempFilePath));
+        }
+
+        [Fact]
+        public async Task TempFileTextBufferManager_NoChangesFrom_DoesNotOverwriteNewChanges()
+        {
+            var projectFilePath = @"C:\ConsoleApp\ConsoleApp1\ConsoleApp1.csproj";
+            // Use some file encoding that's not the default
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFilePath, projectEncoding: Encoding.UTF8);
+
+            var projectXml = "<Project />";
+            var bufferXml = "<Project></Project>";
+
+
+            var docData = IVsPersistDocDataFactory.ImplementAsIVsTextBufferIsDocDataDirty(true, VSConstants.S_OK);
+            var textBuffer = ITextBufferFactory.ImplementSnapshot(() => bufferXml);
+            var textDocument = ITextDocumentFactory.ImplementTextBuffer(textBuffer);
+
+            var fileSystem = new IFileSystemMock();
+            var tempFilePath = @"C:\Temp\asdf.1234";
+            var tempProjectPath = Path.Combine(tempFilePath, "ConsoleApp1.csproj");
+            fileSystem.SetTempFile(tempFilePath);
+
+            var msbuildAccessor = IProjectXmlAccessorFactory.Implement(() => projectXml, xml => fileSystem.WriteAllText(tempProjectPath, xml));
+
+            var shellUtility = IVsShellUtilitiesHelperFactory.ImplementGetRDTInfo(Path.Combine(tempFilePath, "ConsoleApp1.csproj"), docData);
+            var editorAdapterFactory = IVsEditorAdaptersFactoryServiceFactory.ImplementGetDocumentBuffer(textBuffer);
+            var textDocumentService = ITextDocumentFactoryServiceFactory.ImplementGetTextDocument(textDocument, true);
+
+            var textBufferManager = new TempFileTextBufferManager(unconfiguredProject,
+                msbuildAccessor,
+                editorAdapterFactory,
+                textDocumentService,
+                shellUtility,
+                fileSystem,
+                new IProjectThreadingServiceMock(),
+                IServiceProviderFactory.Create());
+
+            await textBufferManager.InitializeBufferAsync();
+            var tempFile = fileSystem.Files.First(data => StringComparers.Paths.Equals(tempProjectPath, data.Key));
+
+            // First save. File system should be "<Project></Project>", last saved is also "<Project></Project>"
+            await textBufferManager.SaveAsync();
+            Assert.Equal("<Project></Project>", fileSystem.ReadAllText(tempProjectPath));
+
+            // Now we simulate some changes to the buffer and call Reset. Both the last saved and current project xml should be "<Project></Project>", so
+            // the buffer shouldn't be reset
+            projectXml = bufferXml;
+            bufferXml = "<Project>asdf</Project>";
+            await textBufferManager.ResetBufferAsync();
+            Mock.Get(textBuffer).Verify(t => t.Replace(It.IsAny<Span>(), It.IsAny<string>()), Times.Never);
+            Assert.Equal("<Project></Project>", fileSystem.ReadAllText(tempProjectPath));
         }
     }
 }
