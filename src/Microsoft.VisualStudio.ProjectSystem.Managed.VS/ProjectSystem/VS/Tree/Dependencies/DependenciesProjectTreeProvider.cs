@@ -352,8 +352,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                                          changes: e.Changes,
                                                                          cancellationToken: cancellationToken,
                                                                          catalogs: e.Catalogs);
-                    dependenciesNode = RefreshDependentProvidersNodes(dependenciesNode, e.Provider);
-
+                    
                     ProjectContextChanged?.Invoke(this, new ProjectContextEventArgs(this, e.Changes));
 
                     // TODO We still are getting mismatched data sources and need to figure out better 
@@ -362,43 +361,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                                 false, 
                                                                 null /*GetMergedDataSourceVersions(e)*/));
                 });
-        }
-
-        private IProjectTree RefreshDependentProvidersNodes(IProjectTree dependenciesNode, 
-                                                            IProjectDependenciesSubTreeProvider changedProvider)
-        {
-            foreach (var subTreeProvider in SubTreeProviders)
-            {
-                var providerRootTreeNode = GetSubTreeRootNode(dependenciesNode,
-                                      subTreeProvider.Value.RootNode.Flags);
-                if (providerRootTreeNode == null)
-                {
-                    continue;
-                }
-
-                var provider = subTreeProvider.Value as DependenciesSubTreeProviderBase;
-                if (provider == null || !provider.CanDependOnProvider(changedProvider))
-                {
-                    continue;
-                }
-
-                var newProviderNode = providerRootTreeNode;
-                foreach (var treeNode in providerRootTreeNode.Children)
-                {
-                    if (!treeNode.Flags.Contains(DependencyNode.DependsOnOtherProviders))
-                    {
-                        continue;
-                    }
-
-                    var newNode = treeNode;
-                    newProviderNode = newProviderNode.Remove(treeNode);
-                    newProviderNode = newProviderNode.Add(treeNode).Parent;
-                }
-
-                dependenciesNode = newProviderNode.Parent;
-            }
-
-            return dependenciesNode;
         }
 
         /// <summary>

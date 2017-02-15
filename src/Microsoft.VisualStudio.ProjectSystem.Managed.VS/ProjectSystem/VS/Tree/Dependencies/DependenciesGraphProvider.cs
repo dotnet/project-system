@@ -245,7 +245,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 var trackChanges = false;
                 using (var scope = new GraphTransactionScope())
                 {
-                    if (node.Flags.Contains(DependencyNode.DependsOnOtherProviders))
+                    if (node.Flags.Contains(DependencyNode.DependsOnOtherProviders)
+                        || subTreeProvider.ProviderType.Equals(SdkDependenciesSubTreeProvider.ProviderTypeString, StringComparison.OrdinalIgnoreCase))
                     {
                         trackChanges = true;
                     }

@@ -99,8 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var flags = SdkSubTreeNodeFlags;
             if (IsImplicit(properties, out string packageItemSpec))
             {
-                flags = flags.Union(DependencyNode.DoesNotSupportRemove)
-                             .Union(DependencyNode.DependsOnOtherProviders);
+                flags = flags.Union(DependencyNode.DoesNotSupportRemove);
             }
 
             return new SdkDependencyNode(id,
