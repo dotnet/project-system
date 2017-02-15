@@ -528,10 +528,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(existingChildNode, childGraphNode.GetValue<IDependencyNode>(DependenciesGraphSchema.DependencyNodeProperty));
             Assert.False(childGraphNode.GetValue<bool>(DgmlNodeProperties.ContainsChildren));
             var childProjectPath = childGraphNode.Id.GetNestedValueByName<Uri>(CodeGraphNodeIdName.Assembly);
-            Assert.Equal(contextProjectPath.Replace('\\', '/'), childProjectPath.AbsolutePath);
+            Assert.Equal(projectPath.Replace('\\', '/'), childProjectPath.AbsolutePath);
             var childSubTreeProvider = childGraphNode.GetValue(DependenciesGraphSchema.ProviderProperty);
             Assert.True(childSubTreeProvider is IProjectDependenciesSubTreeProviderMock);
-            Assert.Equal("MyContextProvider", ((IProjectDependenciesSubTreeProviderMock)childSubTreeProvider).ProviderTestType);
+            Assert.Equal("MyDefaultTestProvider", ((IProjectDependenciesSubTreeProviderMock)childSubTreeProvider).ProviderTestType);
             Assert.Equal(1, childGraphNode.IncomingLinkCount);
             Assert.Equal(1, provider.GetRegisteredSubTreeProviders().Count());
         }
@@ -884,7 +884,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         ""ProviderType"": ""MyProvider"",
         ""ItemSpec"": ""MyNodeItemSpec""
     }
-}");
+}", DependencyNode.DependsOnOtherProviders);
             existingNode.Id.ContextProject = contextProjectPath;
             var existingChildNode = IDependencyNodeFactory.FromJson(@"
 {
@@ -900,7 +900,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         ""ProviderType"": ""MyProvider"",
         ""ItemSpec"": ""MyNodeItemSpec""
     }
-}");
+}", DependencyNode.DependsOnOtherProviders);
             existingRefreshedNode.Id.ContextProject = contextProjectPath;
 
             var newChildNode = IDependencyNodeFactory.FromJson(@"
@@ -912,6 +912,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 }");
             existingNode.AddChild(existingChildNode);
             existingRefreshedNode.AddChild(newChildNode);
+
+            var diff = IDependenciesChangeDiffFactory.Implement(new[] { newChildNode },
+                    new IDependencyNode[] { }, new IDependencyNode[] { });
 
             var mockProvider = new IProjectDependenciesSubTreeProviderMock();
             mockProvider.AddTestDependencyNodes(new[] { existingRefreshedNode });
@@ -929,7 +932,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                          Mock.Of<SVsServiceProvider>(),
                                                          new IProjectThreadingServiceMock().JoinableTaskContext);
             provider.AddExpandedGraphContext(mockGraphContext);
-            var changes = new ProjectContextEventArgs(updatedProjectContext);
+            var changes = new ProjectContextEventArgs(updatedProjectContext, diff);
 
             // Act
             await provider.TrackChangesAsync(changes);
@@ -940,7 +943,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var outputDependency = outputNode.GetValue<IDependencyNode>(DependenciesGraphSchema.DependencyNodeProperty);
             Assert.Equal(newChildNode.Id, outputDependency.Id);
             var childProjectPath = outputNode.Id.GetNestedValueByName<Uri>(CodeGraphNodeIdName.Assembly);
-            Assert.Equal(contextProjectPath.Replace('\\', '/'), childProjectPath.AbsolutePath);
+            Assert.Equal(projectPath.Replace('\\', '/'), childProjectPath.AbsolutePath);
         }
 
         [Theory]
