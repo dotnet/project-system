@@ -77,6 +77,7 @@
     <Compile Include="Mocks\ITextBufferStateListenerFactory.cs" />
     <Compile Include="Mocks\ITextDocumentFactory.cs" />
     <Compile Include="Mocks\ITextDocumentFactoryServiceFactory.cs" />
+    <Compile Include="Mocks\IActiveDebugFrameworkServicesFactory.cs" />
     <Compile Include="Mocks\IVsUpdateSolutionEventsFactory.cs" />
     <Compile Include="Mocks\IVsSolutionBuildManager2Factory.cs" />
     <Compile Include="Mocks\IVsEditorAdaptersFactoryServiceFactory.cs" />
@@ -131,6 +132,8 @@
     <Compile Include="ProjectSystem\VS\Generators\SingleFileGeneratorFactoryAggregatorTests.cs" />
     <Compile Include="ProjectSystem\VS\Generators\RemoteCodeGenerationRegistrationAttributeTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\AbstractGenerateNuGetPackageCommandTests.cs" />
+    <Compile Include="ProjectSystem\VS\Input\Commands\DebugFrameworksDynamicMenuCommandTests.cs" />
+    <Compile Include="ProjectSystem\VS\Input\Commands\DebugFrameworksMenuTextUpdaterTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\GenerateNuGetPackageProjectContextMenuCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\GenerateNuGetPackageTopLevelBuildMenuCommandTests.cs" />
     <Compile Include="ProjectSystem\VS\Input\Commands\EditProjectFileCommandTests.cs" />
