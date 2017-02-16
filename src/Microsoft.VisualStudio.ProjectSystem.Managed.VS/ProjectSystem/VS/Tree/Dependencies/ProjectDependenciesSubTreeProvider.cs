@@ -167,7 +167,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return node;
             }
 
-            node.Children.Clear();
+            node.RemoveAllChildren();
             foreach (var subTreeProvider in projectContext.GetProviders())
             {
                 if (subTreeProvider.RootNode == null || !subTreeProvider.RootNode.HasChildren)
@@ -175,15 +175,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     continue;
                 }
 
-                foreach (var child in subTreeProvider.RootNode.Children)
+                var rootNodeChildren = subTreeProvider.RootNode.Children;
+                foreach (var child in rootNodeChildren)
                 {
-                    node.AddChild(child);
+                    node.AddChild(DependencyNode.Clone(child));
                 }
             }
 
             // create a new instance of the node to allow graph provider to compare changes
             var newNode = CreateDependencyNode(node.Id, node.Priority, node.Properties, node.Resolved);
-            newNode.Children.AddRange(node.Children);
+            newNode.AddChildren(node.Children);
+
             return newNode;
         }
 
@@ -200,7 +202,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Requires.NotNull(dependenciesChange, nameof(dependenciesChange));
 
             var sharedFolderProjectPaths = sharedFolders.Value.Select(sf => sf.ProjectPath);
-            var currentSharedImportNodes = RootNode.Children
+            var rootNodeChildren = RootNode.Children;
+            var currentSharedImportNodes = rootNodeChildren
                     .Where(x => x.Flags.Contains(ProjectTreeFlags.Common.SharedProjectImportReference));
             var currentSharedImportNodePaths = currentSharedImportNodes.Select(x => x.Id.ItemSpec);
 
@@ -209,7 +212,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var itemType = ResolvedProjectReference.PrimaryDataSourceItemType;
             foreach (string addedSharedImportPath in addedSharedImportPaths)
             {
-                var node = RootNode.Children.FindNode(addedSharedImportPath, itemType);
+                rootNodeChildren = RootNode.Children;
+                var node = rootNodeChildren.FindNode(addedSharedImportPath, itemType);
                 if (node == null)
                 {
                     var sharedFlags = ProjectTreeFlags.Create(ProjectTreeFlags.Common.SharedProjectImportReference);

@@ -56,8 +56,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 }");
             myDependencyNode1.Id.ContextProject = "c:\\myproject\\project.csproj";
 
-            myTopNode1.Children.Add(myDependencyNode1);
-            myRootNode.Children.Add(myTopNode1);
+            myTopNode1.AddChild(myDependencyNode1);
+            myRootNode.AddChild(myTopNode1);
 
             // other provider nodes
             var otherProviderRootNode = IDependencyNodeFactory.FromJson(@"
@@ -114,9 +114,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         ""ItemSpec"": ""MyChildNodeItemSpec""
     }
 }");
-            topNode1.Children.Add(childNode1);
-            topNode2.Children.Add(childNode3);
-            topNode2.Children.Add(childNode2);
+            topNode1.AddChild(childNode1);
+            topNode2.AddChild(childNode3);
+            topNode2.AddChild(childNode2);
             otherProviderRootNode.AddChild(topNode1);
             otherProviderRootNode.AddChild(topNode2);
             otherProviderRootNode.AddChild(topNode3);

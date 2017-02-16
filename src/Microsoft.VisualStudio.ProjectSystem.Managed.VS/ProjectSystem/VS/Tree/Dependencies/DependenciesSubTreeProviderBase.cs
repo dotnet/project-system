@@ -86,16 +86,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             get
             {
-                if (_rootNode == null)
+                lock (_rootNodeSync)
                 {
-                    EnsureInitialized();
-                    _rootNode = CreateRootNode();
-                }
+                    if (_rootNode == null)
+                    {
+                        EnsureInitialized();
+                        _rootNode = CreateRootNode();
+                    }
 
-                return _rootNode;
+                    return _rootNode;
+                }
             }
             protected set
             {
+                // this is only for unit tests, product code should override CreateRootNode()
                 _rootNode = value;
             }
         }
@@ -300,7 +304,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                 dependenciesChange.UpdatedNodes.ForEach((topLevelNode) =>
                 {
-                    var oldNode = RootNode.Children.FirstOrDefault(x => x.Id.Equals(topLevelNode.Id));
+                    var rootNodeChildren = RootNode.Children;
+                    var oldNode = rootNodeChildren.FirstOrDefault(x => x.Id.Equals(topLevelNode.Id));
                     if (oldNode != null)
                     {
                         RootNode.RemoveChild(oldNode);
@@ -308,7 +313,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     }
                 });
 
-                dependenciesChange.AddedNodes.ForEach(RootNode.AddChild);
+                RootNode.AddChildren(dependenciesChange.AddedNodes);
 
                 OnDependenciesChanged(dependenciesChange.GetDiff(), e, handlerType);
             }
@@ -318,7 +323,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             Requires.NotNull(nodeId, nameof(nodeId));
 
-            return RootNode.Children.FirstOrDefault(x => x.Id.Equals(nodeId));
+            var rootNodeChildren = RootNode.Children;
+            return rootNodeChildren.FirstOrDefault(x => x.Id.Equals(nodeId));
         }
 
         public virtual Task<IEnumerable<IDependencyNode>> SearchAsync(IDependencyNode node, string searchTerm)
@@ -342,7 +348,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                               StringComparison.OrdinalIgnoreCase)))
                 .ToDictionary(d => d.After.RuleName, d => d, StringComparer.OrdinalIgnoreCase);
 
-            var rootTreeNodes = new HashSet<IDependencyNode>(RootNode.Children);
+            var rootTreeNodes = RootNode.Children;
             var dependenciesChange = new DependenciesChange();
             foreach (var unresolvedChange in unresolvedReferenceSnapshots.Values)
             {
@@ -538,12 +544,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             // same caption. If yes, we just need to apply alias to our current node only.
             foreach (var nodeToAdd in dependenciesChange.AddedNodes)
             {
+                var rootNodeChildren = RootNode.Children;
                 var shouldApplyAlias = false;
-                var matchingChild = RootNode.Children.FirstOrDefault(
+                var matchingChild = rootNodeChildren.FirstOrDefault(
                         x => x.Caption.Equals(nodeToAdd.Caption, StringComparison.OrdinalIgnoreCase));
                 if (matchingChild == null)
                 {
-                    shouldApplyAlias = RootNode.Children.Any(
+                    shouldApplyAlias = rootNodeChildren.Any(
                         x => x.Caption.Equals(
                                 string.Format(CultureInfo.CurrentCulture, "{0} ({1})", nodeToAdd.Caption, x.Id.ItemSpec),
                                 StringComparison.OrdinalIgnoreCase));
@@ -557,14 +564,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 {
                     if (matchingChild != null)
                     {
-                        ((DependencyNode)matchingChild).Caption = matchingChild.Alias;
+                        matchingChild.SetProperties(caption: matchingChild.Alias);
                         dependenciesChange.UpdatedNodes.Add(matchingChild);
                     }
 
-                    ((DependencyNode)nodeToAdd).Caption = nodeToAdd.Alias;
+                    nodeToAdd.SetProperties(caption:nodeToAdd.Alias);
                 }
 
-                RootNode.Children.Add(nodeToAdd);
+                RootNode.AddChild(nodeToAdd);
             }
         }
 
