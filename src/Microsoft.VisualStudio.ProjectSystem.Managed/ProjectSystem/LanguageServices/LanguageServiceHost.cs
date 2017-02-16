@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             {
                 var watchedEvaluationRules = GetWatchedRules(RuleHandlerType.Evaluation);
                 var watchedDesignTimeBuildRules = GetWatchedRules(RuleHandlerType.DesignTimeBuild);
-                
+
                 _designTimeBuildSubscriptionLinks.Add(_activeConfiguredProjectSubscriptionService.JointRuleSource.SourceBlock.LinkTo(
                   new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedAsync(e, RuleHandlerType.DesignTimeBuild)),
                   ruleNames: watchedDesignTimeBuildRules.Union(watchedEvaluationRules), suppressVersionOnlyUpdates: true));
@@ -246,7 +246,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             {
                 var watchedEvaluationRules = GetWatchedRules(RuleHandlerType.Evaluation);
                 var watchedDesignTimeBuildRules = GetWatchedRules(RuleHandlerType.DesignTimeBuild);
-                
+
                 foreach (var configuredProject in newProjectContext.InnerConfiguredProjects)
                 {
                     if (_projectConfigurationsWithSubscriptions.Contains(configuredProject.ProjectConfiguration))
