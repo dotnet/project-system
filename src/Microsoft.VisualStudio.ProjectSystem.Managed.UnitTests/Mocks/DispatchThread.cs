@@ -27,8 +27,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     unused.UnhandledException += new DispatcherUnhandledExceptionEventHandler(OnUnhandledException);
 
                     resetEvent.Set();
-
-                    Dispatcher.Run();
+                    try
+                    {
+                        Dispatcher.Run();
+                    }
+                    catch(ThreadAbortException)
+                    {
+                    }
                 });
 
                 _thread.Name = GetType().FullName;
