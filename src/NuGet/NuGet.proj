@@ -11,12 +11,12 @@
 
    <ItemGroup>
      <NuSpec Include="Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.nuspec">
-       <NuPkgOutput>$(NuGetOutDir)%(FileName).$(VSNuGetPerBuildPreReleaseVersion).nupkg</NuPkgOutput>
-       <NuGetArguments>-Version "$(VSNuGetPerBuildPreReleaseVersion)"</NuGetArguments>
+       <NuPkgOutput>$(NuGetOutDir)%(FileName).$(VSNuGetPerBuildReleaseVersion).nupkg</NuPkgOutput>
+       <NuGetArguments>-Version "$(VSNuGetPerBuildReleaseVersion)"</NuGetArguments>
      </NuSpec>
      <NuSpec Include="Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.nuspec">
-       <NuPkgOutput>$(NuGetOutDir)%(FileName).$(VSNuGetPerBuildPreReleaseVersion).nupkg</NuPkgOutput>
-       <NuGetArguments>-Version "$(VSNuGetPerBuildPreReleaseVersion)"</NuGetArguments>
+       <NuPkgOutput>$(NuGetOutDir)%(FileName).$(VSNuGetPerBuildReleaseVersion).nupkg</NuPkgOutput>
+       <NuGetArguments>-Version "$(VSNuGetPerBuildReleaseVersion)"</NuGetArguments>
      </NuSpec>
      <NuSpec Include="Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.nuspec">
        <NuPkgOutput>$(NuGetOutDir)%(FileName).$(RoslynNuGetPerBuildPreReleaseVersion).nupkg</NuPkgOutput>

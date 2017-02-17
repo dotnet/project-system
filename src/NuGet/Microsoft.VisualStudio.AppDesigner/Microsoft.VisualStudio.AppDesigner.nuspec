@@ -7,15 +7,15 @@
       This package implements the AppDesigner, which is the designer host used for project property pages among other things in Visual Studio
     </description>
     <language>en-US</language>
-    <version>15.0.0-alpha</version> <!-- This value will be overriden by the Nuget pack call. Having this value to satisfy the schema. -->
+    <version>15.0.0</version> <!-- This value will be overriden by the Nuget pack call. Having this value to satisfy the schema. -->
     <authors>dotnet</authors>
     <projectUrl>https://github.com/dotnet/roslyn-project-system/</projectUrl>
     <dependencies>
       <dependency id="Microsoft.VisualStudio.ManagedInterfaces" version="8.0.50727" />
       <dependency id="Microsoft.VisualStudio.TextManager.Interop.10.0" version="10.0.30319" />
       <dependency id="Microsoft.VisualStudio.TextManager.Interop.12.0" version="12.0.30110" />
-      <dependency id="Microsoft.VisualStudio.Shell.15.0" version="15.0.25726-Dev15Preview" />
-      <dependency id="Microsoft.VisualStudio.Shell.Design" version="15.0.25726-Dev15Preview" />
+      <dependency id="Microsoft.VisualStudio.Shell.15.0" version="15.0.26201" />
+      <dependency id="Microsoft.VisualStudio.Shell.Design" version="15.0.26201" />
       <dependency id="Microsoft.VisualStudio.Shell.Interop.10.0" version="10.0.30319" />
       <dependency id="Microsoft.VisualStudio.Shell.Interop.11.0" version="11.0.61030" />
     </dependencies>
