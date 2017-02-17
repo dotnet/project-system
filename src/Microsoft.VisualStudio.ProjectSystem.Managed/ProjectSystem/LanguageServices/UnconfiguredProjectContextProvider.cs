@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         private readonly ITaskScheduler _taskScheduler;
         private readonly List<AggregateWorkspaceProjectContext> _contexts = new List<AggregateWorkspaceProjectContext>();
         private readonly IProjectHostProvider _projectHostProvider;
-        private readonly ActiveConfiguredProjectsProvider _activeConfiguredProjectsProvider;
+        private readonly IActiveConfiguredProjectsProvider _activeConfiguredProjectsProvider;
         private readonly IUnconfiguredProjectHostObject _unconfiguredProjectHostObject;
         private readonly Dictionary<ConfiguredProject, IWorkspaceProjectContext> _configuredProjectContextsMap = new Dictionary<ConfiguredProject, IWorkspaceProjectContext>();
         private readonly Dictionary<ConfiguredProject, IConfiguredProjectHostObject> _configuredProjectHostObjectsMap = new Dictionary<ConfiguredProject, IConfiguredProjectHostObject>();
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                                                  IProjectAsyncLoadDashboard asyncLoadDashboard,
                                                  ITaskScheduler taskScheduler,
                                                  IProjectHostProvider projectHostProvider,
-                                                 ActiveConfiguredProjectsProvider activeConfiguredProjectsProvider)
+                                                 IActiveConfiguredProjectsProvider activeConfiguredProjectsProvider)
         {
             Requires.NotNull(commonServices, nameof(commonServices));
             Requires.NotNull(contextFactory, nameof(contextFactory));

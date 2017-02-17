@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Mocks\ConfiguredProjectFactory.cs" />
     <Compile Include="Mocks\DispatchThread.cs" />
+    <Compile Include="Mocks\IActiveConfiguredProjectsProviderFactory.cs" />
     <Compile Include="Mocks\IFolderManagerFactory.cs" />
     <Compile Include="Mocks\IProjectLockServiceFactory.cs" />
     <Compile Include="Mocks\ActiveConfiguredProjectFactory.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="OrderPrecedenceImportCollectionExtensions.cs" />
     <Compile Include="ProjectSystem\AppDesignerFolderProjectTreePropertiesProviderTests.cs" />
     <Compile Include="ProjectSystem\Build\TargetFrameworkGlobalBuildPropertyProviderTests.cs" />
+    <Compile Include="ProjectSystem\Debug\ActiveDebugFrameworkServicesTests.cs" />
     <Compile Include="ProjectSystem\Debug\LaunchProfileDataTests.cs" />
     <Compile Include="ProjectSystem\Debug\LaunchProfileTests.cs" />
     <Compile Include="ProjectSystem\Debug\DebugTokenReplacerTests.cs" />
