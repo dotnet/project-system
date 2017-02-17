@@ -47,4 +47,9 @@
   <StringProperty Name="DebugSymbols" DisplayName="调试符号" Visible="False" />
   <EnumProperty Name="FileAlignment" DisplayName="文件对齐" Visible="False" />
   <StringProperty Name="BaseAddress" DisplayName="基址" Visible="False" />
+  <StringProperty Name="FullPath" DisplayName="Project Folder" ReadOnly="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 </Rule>

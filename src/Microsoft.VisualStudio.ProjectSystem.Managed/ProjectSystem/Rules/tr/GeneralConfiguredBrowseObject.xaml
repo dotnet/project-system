@@ -47,4 +47,9 @@
   <StringProperty Name="DebugSymbols" DisplayName="Hata ayıklama simgeleri" Visible="False" />
   <EnumProperty Name="FileAlignment" DisplayName="Dosya Hizalama" Visible="False" />
   <StringProperty Name="BaseAddress" DisplayName="Temel adres" Visible="False" />
+  <StringProperty Name="FullPath" DisplayName="Project Folder" ReadOnly="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 </Rule>
