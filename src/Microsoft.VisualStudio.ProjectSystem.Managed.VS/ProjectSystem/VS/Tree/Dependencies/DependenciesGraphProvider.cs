@@ -413,13 +413,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                                     subTreeProvider,
                                                                     nodeInfo: refreshedTopLevelNode);
 
+                            var flatSearchResults = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
                             // now recursively add graph nodes for provider nodes that match search criteria under 
                             // provider's root node
                             AddNodesToGraphRecursive(graphContext,
-                                                        projectContext.ProjectFilePath,
-                                                        subTreeProvider,
-                                                        topLevelGraphNode,
-                                                        matchingNodes);
+                                                     projectContext.ProjectFilePath,
+                                                     subTreeProvider,
+                                                     topLevelGraphNode,
+                                                     matchingNodes,
+                                                     searchTerm,
+                                                     flatSearchResults);
 
                             // 'node' is a GraphNode for top level dependency (which is part of solution explorer tree)
                             // Setting ProjectItem category (and correct GraphNodeId) ensures that search graph appears 
@@ -522,15 +526,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                               string projectPath,
                                               IProjectDependenciesSubTreeProvider subTreeProvider,
                                               GraphNode parentNode, 
-                                              IEnumerable<IDependencyNode> nodes)
+                                              IEnumerable<IDependencyNode> nodes,
+                                              string searchTerm,
+                                              HashSet<string> flatSearchResults)
         {
             foreach(var nodeInfo in nodes)
             {
-                var graphNode = AddGraphNode(graphContext, projectPath, subTreeProvider, parentNode, nodeInfo);
-                graphContext.Graph.Links.GetOrCreate(parentNode, graphNode, null, GraphCommonSchema.Contains);
+                if (nodeInfo.Caption.ToLowerInvariant().Contains(searchTerm) 
+                    && !flatSearchResults.Contains(nodeInfo.Caption))
+                {
+                    flatSearchResults.Add(nodeInfo.Caption);
+                    var graphNode = AddGraphNode(graphContext, projectPath, subTreeProvider, parentNode, nodeInfo);
+                    graphContext.Graph.Links.GetOrCreate(parentNode, graphNode, null, GraphCommonSchema.Contains);
+                }
 
                 var nodeChildren = nodeInfo.Children;
-                AddNodesToGraphRecursive(graphContext, projectPath, subTreeProvider, graphNode, nodeChildren);
+                AddNodesToGraphRecursive(graphContext, projectPath, subTreeProvider, parentNode, nodeChildren, searchTerm, flatSearchResults);
             }
         }
 

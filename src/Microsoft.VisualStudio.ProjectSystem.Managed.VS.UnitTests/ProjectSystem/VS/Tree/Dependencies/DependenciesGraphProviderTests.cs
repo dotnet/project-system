@@ -627,14 +627,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             await provider.BeginGetGraphDataAsync(mockGraphContext);
 
             // Assert
-            Assert.Equal(5, outputNodes.Count);
+            Assert.Equal(4, outputNodes.Count);
 
             var topNode1Result = GetNodeById(projectPath, outputNodes, topNode1.Id);
             Assert.True(topNode1Result.HasCategory(CodeNodeCategories.ProjectItem));
             Assert.Equal(1, topNode1Result.OutgoingLinkCount);
 
             var topNode2Result = GetNodeById(projectPath, outputNodes, topNode2.Id);
-            Assert.Equal(2, topNode2Result.OutgoingLinkCount);
+            Assert.Equal(1, topNode2Result.OutgoingLinkCount);
             Assert.True(topNode2Result.HasCategory(CodeNodeCategories.ProjectItem));
 
             var childNode1Result = GetNodeById(projectPath, outputNodes, childNode1.Id);
@@ -644,10 +644,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var childNode2Result = GetNodeById(projectPath, outputNodes, childNode2.Id);
             Assert.Equal(0, childNode2Result.OutgoingLinkCount);
             Assert.False(childNode2Result.HasCategory(CodeNodeCategories.ProjectItem));
-
-            var childNode3Result = GetNodeById(projectPath, outputNodes, childNode3.Id);
-            Assert.Equal(0, childNode3Result.OutgoingLinkCount);
-            Assert.False(childNode3Result.HasCategory(CodeNodeCategories.ProjectItem));
         }
 
         private GraphNode GetNodeById(string projectPath, IEnumerable<GraphNode> nodes, DependencyNodeId id)
