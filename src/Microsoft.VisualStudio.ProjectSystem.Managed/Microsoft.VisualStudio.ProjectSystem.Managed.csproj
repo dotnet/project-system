@@ -28,6 +28,7 @@
   <ItemGroup>
     <Compile Include="Extensions\SemaphoreSlimExtensions.cs" />
     <Compile Include="Extensions\ProjectConfigurationExtensions.cs" />
+    <Compile Include="ProjectSystem\IActiveConfiguredProjectsProvider.cs" />
     <Compile Include="ProjectSystem\Build\BuildProperty.cs" />
     <Compile Include="CommonConstants.cs" />
     <Compile Include="ProjectSystem\Build\TurnOffUseHostCompilerIfAvailableBuildPropertiesProvider.cs" />
