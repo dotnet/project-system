@@ -27,6 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private readonly List<IDisposable> _evaluationSubscriptionLinks;
         private readonly List<IDisposable> _designTimeBuildSubscriptionLinks;
+        private readonly HashSet<ProjectConfiguration> _projectConfigurationsWithSubscriptions;
 
         /// <summary>
         /// Current AggregateWorkspaceProjectContext - accesses to this field must be done with a lock on <see cref="_gate"/>.
@@ -62,6 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             Handlers = new OrderPrecedenceImportCollection<ILanguageServiceRuleHandler>(projectCapabilityCheckProvider: commonServices.Project);
             _evaluationSubscriptionLinks = new List<IDisposable>();
             _designTimeBuildSubscriptionLinks = new List<IDisposable>();
+            _projectConfigurationsWithSubscriptions = new HashSet<ProjectConfiguration>();
         }
 
         public object HostSpecificErrorReporter => _currentAggregateProjectContext?.HostSpecificErrorReporter;
@@ -92,6 +94,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 _evaluationSubscriptionLinks.Add(_activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
                     new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedAsync(e, RuleHandlerType.Evaluation)),
                     ruleNames: watchedEvaluationRules, suppressVersionOnlyUpdates: true));
+
+                _projectConfigurationsWithSubscriptions.Add(_commonServices.ActiveConfiguredProject.ProjectConfiguration);
             }
 
             return Task.CompletedTask;
@@ -118,9 +122,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private async Task OnProjectChangedCoreAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, RuleHandlerType handlerType)
         {
-            // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
-            await _commonServices.ThreadingService.SwitchToUIThread();
-
             await _tasksService.LoadedProjectAsync(async () =>
             {
                 await HandleAsync(e, handlerType).ConfigureAwait(false);
@@ -137,13 +138,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             var previousProjectContext = _currentAggregateProjectContext;
             var newProjectContext = await UpdateProjectContextAsync().ConfigureAwait(false);
+
             if (previousProjectContext != newProjectContext)
             {
-                // Dispose existing subscriptions.
-                DisposeAndClearSubscriptions();
-
-                // Add subscriptions for the configured projects in the new project context.
-                AddSubscriptions(newProjectContext);
+                // Add subscriptions for the new configured projects in the new project context.
+                await AddSubscriptionsAsync(newProjectContext).ConfigureAwait(false);
             }
         }
 
@@ -258,17 +257,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             }
         }
 
-        private void AddSubscriptions(AggregateWorkspaceProjectContext newProjectContext)
+        private async Task AddSubscriptionsAsync(AggregateWorkspaceProjectContext newProjectContext)
         {
             Requires.NotNull(newProjectContext, nameof(newProjectContext));
+
+            await _commonServices.ThreadingService.SwitchToUIThread();
 
             using (_tasksService.LoadedProject())
             {
                 var watchedEvaluationRules = GetWatchedRules(RuleHandlerType.Evaluation);
                 var watchedDesignTimeBuildRules = GetWatchedRules(RuleHandlerType.DesignTimeBuild);
-                
+
                 foreach (var configuredProject in newProjectContext.InnerConfiguredProjects)
                 {
+                    if (_projectConfigurationsWithSubscriptions.Contains(configuredProject.ProjectConfiguration))
+                    {
+                        continue;
+                    }
+
                     _designTimeBuildSubscriptionLinks.Add(configuredProject.Services.ProjectSubscription.JointRuleSource.SourceBlock.LinkTo(
                         new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedCoreAsync(e, RuleHandlerType.DesignTimeBuild)),
                         ruleNames: watchedDesignTimeBuildRules.Union(watchedEvaluationRules), suppressVersionOnlyUpdates: true));
@@ -276,6 +282,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     _evaluationSubscriptionLinks.Add(configuredProject.Services.ProjectSubscription.ProjectRuleSource.SourceBlock.LinkTo(
                         new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedCoreAsync(e, RuleHandlerType.Evaluation)),
                         ruleNames: watchedEvaluationRules, suppressVersionOnlyUpdates: true));
+
+                    _projectConfigurationsWithSubscriptions.Add(configuredProject.ProjectConfiguration);
                 }
             }
         }
@@ -290,6 +298,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             //       should be able to run concurrently. 
             await ExecuteWithinLockAsync(async () =>
             {
+                // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
+                await _commonServices.ThreadingService.SwitchToUIThread();
+
                 // Get the inner workspace project context to update for this change.
                 var projectContextToUpdate = _currentAggregateProjectContext.GetInnerProjectContext(update.Value.ProjectConfiguration, out bool isActiveContext);
                 if (projectContextToUpdate == null)
@@ -360,6 +371,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             _evaluationSubscriptionLinks.Clear();
             _designTimeBuildSubscriptionLinks.Clear();
+            _projectConfigurationsWithSubscriptions.Clear();
         }
     }
 }
