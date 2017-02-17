@@ -231,12 +231,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                      IProjectSubscriptionUpdate projectSubscriptionUpdate,
                                                      IProjectCatalogSnapshot catalogs)
         {
-            var dependenciesChange = new DependenciesChange();            
-            // take a snapshot for current top level tree nodes
-            var rootNodes = new HashSet<IDependencyNode>(RootNode.Children);
+            var dependenciesChange = new DependenciesChange();
 
             lock (_snapshotLock)
             {
+                var rootNodes = RootNode.Children;
                 var unresolvedChanges = ProcessUnresolvedChanges(projectSubscriptionUpdate);
                 var resolvedChanges = ProcessResolvedChanges(projectSubscriptionUpdate, rootNodes);
 
@@ -449,7 +448,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         private NugetDependenciesChange ProcessResolvedChanges(IProjectSubscriptionUpdate projectSubscriptionUpdate,
-                                                               HashSet<IDependencyNode> rootTreeNodes)
+                                                               ImmutableHashSet<IDependencyNode> rootTreeNodes)
         {
             var changes = projectSubscriptionUpdate.ProjectChanges;
             var resolvedChanges = ResolvedReferenceRuleNames.Where(x => changes.Keys.Contains(x))
@@ -614,7 +613,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             lock (_snapshotLock)
             {
-                originalNode.Children.Clear();
+                originalNode.RemoveAllChildren();
 
                 if (!CurrentSnapshot.NodesCache.TryGetValue(originalNode.Id, out IDependencyNode node))
                 {
@@ -631,7 +630,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     return;
                 }
 
-                originalNode.Children.AddRange(node.Children);
+                var nodeChildren = node.Children;
+                foreach (var child in nodeChildren)
+                {
+                    originalNode.AddChild(child);
+                }
             }
         }
 
@@ -870,7 +873,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 var nodesToClean = new List<IDependencyNode>();
                 foreach (var nodeInCache in NodesCache)
                 {
-                    if (nodeInCache.Value.Children.Any(x => x.Id.ItemSpec.Equals(itemSpec, StringComparison.OrdinalIgnoreCase))
+                    var nodeChildren = nodeInCache.Value.Children;
+                    if (nodeChildren.Any(x => x.Id.ItemSpec.Equals(itemSpec, StringComparison.OrdinalIgnoreCase))
                         || nodeInCache.Key.ItemSpec.Equals(itemSpec, StringComparison.OrdinalIgnoreCase))
                     {
                         nodesToClean.Add(nodeInCache.Value);
@@ -887,7 +891,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 NodesCache.Remove(node.Id);
 
-                foreach (var childNode in node.Children)
+                var nodeChildren = node.Children;
+                foreach (var childNode in nodeChildren)
                 {
                     RemoveNodeFromCacheRecursive(childNode);
                 }
