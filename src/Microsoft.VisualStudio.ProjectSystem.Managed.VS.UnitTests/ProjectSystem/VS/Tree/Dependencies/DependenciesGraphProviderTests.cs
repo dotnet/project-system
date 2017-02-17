@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.GraphModel;
@@ -628,29 +629,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             // Assert
             Assert.Equal(5, outputNodes.Count);
 
-            var topNode1Result = GetNodeById(outputNodes, topNode1.Id);
+            var topNode1Result = GetNodeById(projectPath, outputNodes, topNode1.Id);
             Assert.True(topNode1Result.HasCategory(CodeNodeCategories.ProjectItem));
             Assert.Equal(1, topNode1Result.OutgoingLinkCount);
 
-            var topNode2Result = GetNodeById(outputNodes, topNode2.Id);
+            var topNode2Result = GetNodeById(projectPath, outputNodes, topNode2.Id);
             Assert.Equal(2, topNode2Result.OutgoingLinkCount);
             Assert.True(topNode2Result.HasCategory(CodeNodeCategories.ProjectItem));
 
-            var childNode1Result = GetNodeById(outputNodes, childNode1.Id);
+            var childNode1Result = GetNodeById(projectPath, outputNodes, childNode1.Id);
             Assert.Equal(0, childNode1Result.OutgoingLinkCount);
             Assert.False(childNode1Result.HasCategory(CodeNodeCategories.ProjectItem));
 
-            var childNode2Result = GetNodeById(outputNodes, childNode2.Id);
+            var childNode2Result = GetNodeById(projectPath, outputNodes, childNode2.Id);
             Assert.Equal(0, childNode2Result.OutgoingLinkCount);
             Assert.False(childNode2Result.HasCategory(CodeNodeCategories.ProjectItem));
 
-            var childNode3Result = GetNodeById(outputNodes, childNode3.Id);
+            var childNode3Result = GetNodeById(projectPath, outputNodes, childNode3.Id);
             Assert.Equal(0, childNode3Result.OutgoingLinkCount);
             Assert.False(childNode3Result.HasCategory(CodeNodeCategories.ProjectItem));
         }
 
-        private GraphNode GetNodeById(IEnumerable<GraphNode> nodes, DependencyNodeId id)
+        private GraphNode GetNodeById(string projectPath, IEnumerable<GraphNode> nodes, DependencyNodeId id)
         {
+            var projectFolder = Path.GetDirectoryName(projectPath);
             foreach (var node in nodes)
             {
                 var value = node.Id.GetNestedValueByName<Uri>(CodeGraphNodeIdName.File);
@@ -663,10 +665,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                 var idString = (value.IsAbsoluteUri ? value.LocalPath : value.ToString()).Trim('/');
                 var nodeId = DependencyNodeId.FromString(idString);
-                // Assembly and File are represented by a Uri, extract LocalPath string from Uri
-                if (nodeId.Equals(id))
+                if (nodeId != null && nodeId.Equals(id))
                 {
                     return node;
+                } 
+                else
+                {
+                    var topLevelId = Path.Combine(projectFolder, id.ItemSpec).Replace('/', '\\');
+                    if (topLevelId.Equals(idString, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return node;
+                    }
                 }
             }
 

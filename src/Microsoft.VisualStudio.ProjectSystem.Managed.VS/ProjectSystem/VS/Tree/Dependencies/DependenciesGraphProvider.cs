@@ -836,37 +836,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var partialValues = new List<GraphNodeId>
             {
-                GraphNodeId.GetPartial(CodeGraphNodeIdName.Assembly,
-                                                     new Uri(projectPath, UriKind.RelativeOrAbsolute))
+                GraphNodeId.GetPartial(CodeGraphNodeIdName.Assembly, new Uri(projectPath, UriKind.RelativeOrAbsolute))
             };
 
-            if (nodeInfo.Flags.Contains(DependencyNode.GenericDependencyFlags))
+            var projectFolder = Path.GetDirectoryName(projectPath)?.ToLowerInvariant();
+            if (nodeInfo.Flags.Contains(DependencyNode.CustomItemSpec))
             {
-                var projectFolder = Path.GetDirectoryName(projectPath)?.ToLowerInvariant();
-                if (nodeInfo.Flags.Contains(DependencyNode.CustomItemSpec))
+                if (nodeInfo.Name != null)
                 {
-                    if (nodeInfo.Name != null)
-                    {
-                        partialValues.Add(GraphNodeId.GetPartial(
-                            CodeGraphNodeIdName.File,
-                            new Uri(Path.Combine(projectFolder, nodeInfo.Name.ToLowerInvariant()),
-                            UriKind.RelativeOrAbsolute)));
-                    }
-                }
-                else
-                {
-                    var fullItemSpecPath = MakeRooted(projectFolder, nodeInfo.Id.ItemSpec);
-                    if (!string.IsNullOrEmpty(fullItemSpecPath))
-                    {
-                        partialValues.Add(GraphNodeId.GetPartial(CodeGraphNodeIdName.File,
-                            new Uri(fullItemSpecPath.ToLowerInvariant(), UriKind.RelativeOrAbsolute)));
-                    }
+                    partialValues.Add(GraphNodeId.GetPartial(
+                        CodeGraphNodeIdName.File,
+                        new Uri(Path.Combine(projectFolder, nodeInfo.Name.ToLowerInvariant()),
+                        UriKind.RelativeOrAbsolute)));
                 }
             }
             else
             {
-                partialValues.Add(GraphNodeId.GetPartial(CodeGraphNodeIdName.File,
-                    new Uri(nodeInfo.Id.ToString().ToLowerInvariant(), UriKind.RelativeOrAbsolute)));
+                var fullItemSpecPath = MakeRooted(projectFolder, nodeInfo.Id.ItemSpec);
+                if (!string.IsNullOrEmpty(fullItemSpecPath))
+                {
+                    partialValues.Add(GraphNodeId.GetPartial(CodeGraphNodeIdName.File,
+                        new Uri(fullItemSpecPath.ToLowerInvariant(), UriKind.RelativeOrAbsolute)));
+                }
             }
 
             return GraphNodeId.GetNested(partialValues.ToArray());
