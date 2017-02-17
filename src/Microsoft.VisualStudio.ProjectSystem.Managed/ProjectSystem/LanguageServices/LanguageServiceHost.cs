@@ -137,7 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             if (previousProjectContext != newProjectContext)
             {
                 // Add subscriptions for the new configured projects in the new project context.
-                AddSubscriptions(newProjectContext);
+                await AddSubscriptionsAsync(newProjectContext).ConfigureAwait(false);
             }
         }
 
@@ -238,9 +238,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             });
         }
 
-        private void AddSubscriptions(AggregateWorkspaceProjectContext newProjectContext)
+        private async Task AddSubscriptionsAsync(AggregateWorkspaceProjectContext newProjectContext)
         {
             Requires.NotNull(newProjectContext, nameof(newProjectContext));
+
+            await _commonServices.ThreadingService.SwitchToUIThread();
 
             using (_tasksService.LoadedProject())
             {
