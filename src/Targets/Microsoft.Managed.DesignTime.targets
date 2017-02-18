@@ -77,7 +77,7 @@
                           UserSourceItems;" />
 
     <ProjectCapability Include="LanguageService" />
-    <ProjectCapability Include="ProjectConfigurationsInferredFromUsage" />
+    <ProjectCapability Include="ProjectConfigurationsDeclaredDimensions" />
 
     <!-- Reference Manager capabilities -->
     <ProjectCapability Include="ReferenceManagerAssemblies" />

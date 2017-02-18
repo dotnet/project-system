@@ -13,11 +13,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
     [AppliesTo(ProjectCapabilities.AlwaysApplicable)]
     internal sealed class DefaultCapabilitiesProvider : UnconfiguredProjectCapabilitiesProviderBase
     {
-        private static readonly ImmutableHashSet<string> CSharpDefaultCapabilities = ImmutableHashSet<string>.Empty.Add(ProjectCapabilities.ProjectConfigurationsInferredFromUsage)
+        private static readonly ImmutableHashSet<string> CSharpDefaultCapabilities = ImmutableHashSet<string>.Empty.Add(ProjectCapabilities.ProjectConfigurationsDeclaredDimensions)
                                                                                                                    .Add(ProjectCapabilities.LanguageService)
                                                                                                                    .Add(ProjectCapabilities.CSharp);
 
-        private static readonly ImmutableHashSet<string> VisualBasicDefaultCapabilities = ImmutableHashSet<string>.Empty.Add(ProjectCapabilities.ProjectConfigurationsInferredFromUsage)
+        private static readonly ImmutableHashSet<string> VisualBasicDefaultCapabilities = ImmutableHashSet<string>.Empty.Add(ProjectCapabilities.ProjectConfigurationsDeclaredDimensions)
                                                                                                                         .Add(ProjectCapabilities.LanguageService)
                                                                                                                         .Add(ProjectCapabilities.VB);
 

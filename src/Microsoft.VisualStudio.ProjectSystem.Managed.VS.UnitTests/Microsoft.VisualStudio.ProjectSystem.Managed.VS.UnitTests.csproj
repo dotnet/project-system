@@ -117,6 +117,9 @@
     <Compile Include="Mocks\SolutionFactory.cs" />
     <Compile Include="Mocks\VSProjectFactory.cs" />
     <Compile Include="ProjectSystem\VS\Build\LanguageServiceErrorListProviderTests.cs" />
+    <Compile Include="ProjectSystem\VS\Configuration\TargetFrameworkProjectConfigurationDimensionProviderTest.cs" />
+    <Compile Include="ProjectSystem\VS\Configuration\PlatformProjectConfigurationDimensionProviderTest.cs" />
+    <Compile Include="ProjectSystem\VS\Configuration\ConfigurationProjectConfigurationDimensionProviderTest.cs" />
     <Compile Include="ProjectSystem\VS\CreateFileFromTemplateServiceTests.cs" />
     <Compile Include="ProjectSystem\VS\Debug\ConsoleDebugLaunchProviderTests.cs" />
     <Compile Include="ProjectSystem\VS\Debug\DebugProfileEnumValuesGeneratorTests.cs" />

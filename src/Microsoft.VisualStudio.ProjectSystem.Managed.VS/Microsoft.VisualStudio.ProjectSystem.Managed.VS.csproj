@@ -36,6 +36,10 @@
     <Compile Include="Input\VisualStudioStandard2kCommandId.cs" />
     <Compile Include="Input\VisualStudioStandard97CommandId.cs" />
     <Compile Include="Packaging\DplOptOutRegistrationAttribute.cs" />
+    <Compile Include="ProjectSystem\VS\Configuration\BaseProjectConfigurationDimensionProvider.cs" />
+    <Compile Include="ProjectSystem\VS\Configuration\PlatformProjectConfigurationDimensionProvider.cs" />
+    <Compile Include="ProjectSystem\VS\Configuration\ConfigurationProjectConfigurationDimensionProvider.cs" />
+    <Compile Include="ProjectSystem\VS\Configuration\TargetFrameworkProjectConfigurationDimensionProvider.cs" />
     <Compile Include="ProjectSystem\VS\Editor\MSBuildXmlAccessor.cs" />
     <Compile Include="ProjectSystem\VS\Editor\ProjectFileEditorPresenter.cs" />
     <Compile Include="ProjectSystem\VS\Editor\IProjectFileEditorPresenter.cs" />

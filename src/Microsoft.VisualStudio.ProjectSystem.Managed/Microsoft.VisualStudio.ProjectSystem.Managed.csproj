@@ -147,7 +147,6 @@
     <Compile Include="ProjectSystem\Rules\CompilerCommandLineArgs.cs">
       <DependentUpon>CompilerCommandLineArgs.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Configurations\TargetFrameworkProjectConfigurationDimensionProvider.cs" />
     <Compile Include="Collections\DictionaryEqualityComparer.cs" />
     <Compile Include="ProjectSystem\SpecialFileProviders\AppDesignerFolderSpecialFileProvider.cs" />
     <Compile Include="ProjectSystem\SpecialFileProviders\ISpecialFilesManager.cs" />
