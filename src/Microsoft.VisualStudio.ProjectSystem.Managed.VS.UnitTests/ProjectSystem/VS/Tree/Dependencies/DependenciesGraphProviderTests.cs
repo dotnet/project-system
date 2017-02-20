@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.GraphModel;
@@ -23,8 +24,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var projectPath = @"c:\myproject\project.csproj";
             var nodeIdString = @"file:///[MyProvider;MyNodeItemSpec]";
             var mockVsHierarchyItem = IVsHierarchyItemFactory.ImplementProperties(text: "MyNodeItemSpec");
-            var inputNode = IGraphContextFactory.CreateNode(projectPath, 
-                                                            nodeIdString, 
+            var inputNode = IGraphContextFactory.CreateNode(projectPath,
+                                                            nodeIdString,
                                                             hierarchyItem: mockVsHierarchyItem);
             var rootNode = IDependencyNodeFactory.FromJson(@"
 {
@@ -48,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     }   
 }");
             rootNode.AddChild(existingNode);
-            existingNode.Children.Add(existingChildNode);
+            existingNode.AddChild(existingChildNode);
 
             var mockProvider = new IProjectDependenciesSubTreeProviderMock();
             mockProvider.RootNode = rootNode;
@@ -105,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     }   
 }");
             rootNode.AddChild(existingNode);
-            existingNode.Children.Add(existingChildNode);
+            existingNode.AddChild(existingChildNode);
 
             var mockProvider = new IProjectDependenciesSubTreeProviderMock();
             mockProvider.RootNode = rootNode;
@@ -178,8 +179,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var nodeIdString = @"file:///[MyProvider;MyNodeItemSpec]";
 
             var mockVsHierarchyItem = IVsHierarchyItemFactory.ImplementProperties(text: "MyNodeItemSpec");
-            var inputNode = IGraphContextFactory.CreateNode(projectPath, 
-                                                            nodeIdString, 
+            var inputNode = IGraphContextFactory.CreateNode(projectPath,
+                                                            nodeIdString,
                                                             hierarchyItem: mockVsHierarchyItem);
             var rootNode = IDependencyNodeFactory.FromJson(@"
 {
@@ -245,7 +246,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             var existingNode = IDependencyNodeFactory.FromJson(nodeJson);
             var existingChildNode = IDependencyNodeFactory.FromJson(childNodeJson);
-            existingNode.Children.Add(existingChildNode);
+            existingNode.AddChild(existingChildNode);
 
             var inputNode = IGraphContextFactory.CreateNode(projectPath, nodeIdString, existingNode);
             var outputNodes = new HashSet<GraphNode>();
@@ -348,12 +349,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     }
 }");
             rootNode.AddChild(existingNode);
-            existingNode.Children.Add(existingChildNode);
+            existingNode.AddChild(existingChildNode);
 
             var mockVsHierarchyItem = IVsHierarchyItemFactory.ImplementProperties(text: "MyNodeItemSpec");
-            var inputNode = IGraphContextFactory.CreateNode(projectPath, 
+            var inputNode = IGraphContextFactory.CreateNode(projectPath,
                                                             nodeIdString,
-                                                            hierarchyItem:mockVsHierarchyItem);
+                                                            hierarchyItem: mockVsHierarchyItem);
             var outputNodes = new HashSet<GraphNode>();
 
             var mockProvider = new IProjectDependenciesSubTreeProviderMock();
@@ -438,7 +439,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var existingNode = IDependencyNodeFactory.FromJson(nodeJson, DependencyNode.PreFilledFolderNode);
             var existingChildNode = IDependencyNodeFactory.FromJson(childNodeJson, DependencyNode.PreFilledFolderNode);
 
-            existingNode.Children.Add(existingChildNode);
+            existingNode.AddChild(existingChildNode);
 
             var inputNode = IGraphContextFactory.CreateNode(projectPath, nodeIdString, existingNode);
             var outputNodes = new HashSet<GraphNode>();
@@ -494,7 +495,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var existingNode = IDependencyNodeFactory.FromJson(nodeJson);
             existingNode.Id.ContextProject = contextProjectPath;
             var existingChildNode = IDependencyNodeFactory.FromJson(childNodeJson);
-            existingNode.Children.Add(existingChildNode);
+            existingNode.AddChild(existingChildNode);
 
             var inputNode = IGraphContextFactory.CreateNode(projectPath, nodeIdString, existingNode);
             var outputNodes = new HashSet<GraphNode>();
@@ -528,10 +529,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(existingChildNode, childGraphNode.GetValue<IDependencyNode>(DependenciesGraphSchema.DependencyNodeProperty));
             Assert.False(childGraphNode.GetValue<bool>(DgmlNodeProperties.ContainsChildren));
             var childProjectPath = childGraphNode.Id.GetNestedValueByName<Uri>(CodeGraphNodeIdName.Assembly);
-            Assert.Equal(contextProjectPath.Replace('\\', '/'), childProjectPath.AbsolutePath);
+            Assert.Equal(projectPath.Replace('\\', '/'), childProjectPath.AbsolutePath);
             var childSubTreeProvider = childGraphNode.GetValue(DependenciesGraphSchema.ProviderProperty);
             Assert.True(childSubTreeProvider is IProjectDependenciesSubTreeProviderMock);
-            Assert.Equal("MyContextProvider", ((IProjectDependenciesSubTreeProviderMock)childSubTreeProvider).ProviderTestType);
+            Assert.Equal("MyDefaultTestProvider", ((IProjectDependenciesSubTreeProviderMock)childSubTreeProvider).ProviderTestType);
             Assert.Equal(1, childGraphNode.IncomingLinkCount);
             Assert.Equal(1, provider.GetRegisteredSubTreeProviders().Count());
         }
@@ -596,15 +597,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         ""ItemSpec"": ""MyChildNodeItemSpec""
     }
 }");
-            topNode1.Children.Add(childNode1);
-            topNode2.Children.Add(childNode3);
-            topNode2.Children.Add(childNode2);
+            topNode1.AddChild(childNode1);
+            topNode2.AddChild(childNode3);
+            topNode2.AddChild(childNode2);
             rootNode.AddChild(topNode1);
             rootNode.AddChild(topNode2);
             rootNode.AddChild(topNode3);
 
-            var mockProvider = new IProjectDependenciesSubTreeProviderMock();
-            mockProvider.RootNode = rootNode;
+            var mockProvider = new IProjectDependenciesSubTreeProviderMock
+            {
+                RootNode = rootNode
+            };
             mockProvider.AddTestDependencyNodes(new[] { topNode1, topNode2, topNode3 });
             mockProvider.AddSearchResults(new[] { topNode1, topNode2, topNode3 });
 
@@ -624,19 +627,55 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             await provider.BeginGetGraphDataAsync(mockGraphContext);
 
             // Assert
-            Assert.Equal(5, outputNodes.Count);
+            Assert.Equal(4, outputNodes.Count);
 
-            var outputArray = outputNodes.ToArray();
-            // check if top level nodes got CodeNodeCategories.ProjectItem to make sure
-            // graph matched them back with IVsHierarchy nodes
-            Assert.True(outputArray[0].HasCategory(CodeNodeCategories.ProjectItem));
-            Assert.Equal(1, outputArray[0].OutgoingLinkCount);
-            Assert.True(outputArray[2].HasCategory(CodeNodeCategories.ProjectItem));
-            Assert.Equal(2, outputArray[2].OutgoingLinkCount);
+            var topNode1Result = GetNodeById(projectPath, outputNodes, topNode1.Id);
+            Assert.True(topNode1Result.HasCategory(CodeNodeCategories.ProjectItem));
+            Assert.Equal(1, topNode1Result.OutgoingLinkCount);
 
-            Assert.False(outputArray[1].HasCategory(CodeNodeCategories.ProjectItem));
-            Assert.False(outputArray[3].HasCategory(CodeNodeCategories.ProjectItem));
-            Assert.False(outputArray[4].HasCategory(CodeNodeCategories.ProjectItem));
+            var topNode2Result = GetNodeById(projectPath, outputNodes, topNode2.Id);
+            Assert.Equal(1, topNode2Result.OutgoingLinkCount);
+            Assert.True(topNode2Result.HasCategory(CodeNodeCategories.ProjectItem));
+
+            var childNode1Result = GetNodeById(projectPath, outputNodes, childNode1.Id);
+            Assert.Equal(0, childNode1Result.OutgoingLinkCount);
+            Assert.False(childNode1Result.HasCategory(CodeNodeCategories.ProjectItem));
+
+            var childNode2Result = GetNodeById(projectPath, outputNodes, childNode2.Id);
+            Assert.Equal(0, childNode2Result.OutgoingLinkCount);
+            Assert.False(childNode2Result.HasCategory(CodeNodeCategories.ProjectItem));
+        }
+
+        private GraphNode GetNodeById(string projectPath, IEnumerable<GraphNode> nodes, DependencyNodeId id)
+        {
+            var projectFolder = Path.GetDirectoryName(projectPath);
+            foreach (var node in nodes)
+            {
+                var value = node.Id.GetNestedValueByName<Uri>(CodeGraphNodeIdName.File);
+
+                // for idPartName == CodeGraphNodeIdName.File it can be null, avoid unnecessary exception
+                if (value == null)
+                {
+                    continue;
+                }
+
+                var idString = (value.IsAbsoluteUri ? value.LocalPath : value.ToString()).Trim('/');
+                var nodeId = DependencyNodeId.FromString(idString);
+                if (nodeId != null && nodeId.Equals(id))
+                {
+                    return node;
+                } 
+                else
+                {
+                    var topLevelId = Path.Combine(projectFolder, id.ItemSpec).Replace('/', '\\');
+                    if (topLevelId.Equals(idString, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return node;
+                    }
+                }
+            }
+
+            return null;
         }
 
         [Fact]
@@ -668,7 +707,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         ""ItemSpec"": ""MyChildNodeItemSpec1.0""
     }
 }");
-            topNode1.Children.Add(childNode1);
+            topNode1.AddChild(childNode1);
             rootNode.AddChild(topNode1);
 
             var mockProvider = new IProjectDependenciesSubTreeProviderMock();
@@ -722,9 +761,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     ""Id"": {
         ""ProviderType"": ""MyProvider"",
         ""ItemSpec"": ""MyTopNodeItemSpec""
-    }
+    },
+    ""Name"":""TopNodeName""
 }", DependencyNode.GenericDependencyFlags);
-            ((DependencyNode)topNode1).Name = "TopNodeName";
+
             var childNode1 = IDependencyNodeFactory.FromJson(@"
 {
     ""Id"": {
@@ -732,7 +772,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         ""ItemSpec"": ""MyChildNodeItemSpec1.0""
     }
 }");
-            topNode1.Children.Add(childNode1);
+            topNode1.AddChild(childNode1);
             rootNode.AddChild(topNode1);
 
             var mockProvider = new IProjectDependenciesSubTreeProviderMock();
@@ -803,7 +843,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         ""ItemSpec"": ""MyChildNodeItemSpecNew""
     }
 }");
-            existingNode.Children.Add(existingChildNode);
+            existingNode.AddChild(existingChildNode);
             existingRefreshedNode.AddChild(newChildNode);
 
             var mockProvider = new IProjectDependenciesSubTreeProviderMock();
@@ -823,8 +863,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                          new IProjectThreadingServiceMock().JoinableTaskContext);
             provider.AddExpandedGraphContext(mockGraphContext);
 
+            var changes = new ProjectContextEventArgs(updatedProjectContext);
+
             // Act
-            await provider.TrackChangesAsync(updatedProjectContext);
+            await provider.TrackChangesAsync(changes);
 
             // Assert
             Assert.Equal(1, outputNodes.Count);
@@ -847,7 +889,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         ""ProviderType"": ""MyProvider"",
         ""ItemSpec"": ""MyNodeItemSpec""
     }
-}");
+}", DependencyNode.DependsOnOtherProviders);
             existingNode.Id.ContextProject = contextProjectPath;
             var existingChildNode = IDependencyNodeFactory.FromJson(@"
 {
@@ -863,7 +905,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         ""ProviderType"": ""MyProvider"",
         ""ItemSpec"": ""MyNodeItemSpec""
     }
-}");
+}", DependencyNode.DependsOnOtherProviders);
             existingRefreshedNode.Id.ContextProject = contextProjectPath;
 
             var newChildNode = IDependencyNodeFactory.FromJson(@"
@@ -873,8 +915,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         ""ItemSpec"": ""MyChildNodeItemSpecNew""
     }
 }");
-            existingNode.Children.Add(existingChildNode);
+            existingNode.AddChild(existingChildNode);
             existingRefreshedNode.AddChild(newChildNode);
+
+            var diff = IDependenciesChangeDiffFactory.Implement(new[] { newChildNode },
+                    new IDependencyNode[] { }, new IDependencyNode[] { });
 
             var mockProvider = new IProjectDependenciesSubTreeProviderMock();
             mockProvider.AddTestDependencyNodes(new[] { existingRefreshedNode });
@@ -892,9 +937,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                          Mock.Of<SVsServiceProvider>(),
                                                          new IProjectThreadingServiceMock().JoinableTaskContext);
             provider.AddExpandedGraphContext(mockGraphContext);
+            var changes = new ProjectContextEventArgs(updatedProjectContext, diff);
 
             // Act
-            await provider.TrackChangesAsync(updatedProjectContext);
+            await provider.TrackChangesAsync(changes);
 
             // Assert
             Assert.Equal(1, outputNodes.Count);
@@ -902,7 +948,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var outputDependency = outputNode.GetValue<IDependencyNode>(DependenciesGraphSchema.DependencyNodeProperty);
             Assert.Equal(newChildNode.Id, outputDependency.Id);
             var childProjectPath = outputNode.Id.GetNestedValueByName<Uri>(CodeGraphNodeIdName.Assembly);
-            Assert.Equal(contextProjectPath.Replace('\\', '/'), childProjectPath.AbsolutePath);
+            Assert.Equal(projectPath.Replace('\\', '/'), childProjectPath.AbsolutePath);
         }
 
         [Theory]
@@ -944,7 +990,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         ""ItemSpec"": ""MyChildNodeItemSpecNew""
     }
 }");
-            existingNode.Children.Add(existingChildNode);
+            existingNode.AddChild(existingChildNode);
             existingRefreshedNode.AddChild(newChildNode);
 
             var mockProvider = new IProjectDependenciesSubTreeProviderMock();
@@ -970,9 +1016,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                          Mock.Of<SVsServiceProvider>(),
                                                          new IProjectThreadingServiceMock().JoinableTaskContext);
             provider.AddExpandedGraphContext(mockGraphContext);
+            var changes = new ProjectContextEventArgs(updatedProjectContext);
 
             // Act
-            await provider.TrackChangesAsync(updatedProjectContext);
+            await provider.TrackChangesAsync(changes);
 
             // Assert
             Assert.Equal(0, outputNodes.Count);
@@ -998,8 +1045,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             public void AddExpandedGraphContext(IGraphContext context)
             {
                 ContextHolder = context;
-                ExpandedGraphContexts = new PlatformUI.WeakCollection<IGraphContext>();
-                ExpandedGraphContexts.Add(context);
+                ExpandedGraphContexts = new PlatformUI.WeakCollection<IGraphContext>
+                {
+                    context
+                };
             }
 
             public IEnumerable<IGraphContext> GetExpandedGraphContexts()

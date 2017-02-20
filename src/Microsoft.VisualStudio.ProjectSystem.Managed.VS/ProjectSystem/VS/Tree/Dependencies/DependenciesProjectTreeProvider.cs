@@ -323,12 +323,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             if (disposing)
             {
-                foreach (var provider in SubTreeProviders)
-                {
-                    provider.Value.DependenciesChanged -= OnDependenciesChanged;
-                }
-
                 ProjectContextUnloaded?.Invoke(this, new ProjectContextEventArgs(this));
+
+                try
+                {
+                    foreach (var provider in SubTreeProviders)
+                    {
+                        provider.Value.DependenciesChanged -= OnDependenciesChanged;
+                    }
+                }
+                catch(ObjectDisposedException)
+                {
+                    // do nothing - we are cleaning up here and sometimes CPS throws Object disposed exception
+                }
             }
 
             base.Dispose(disposing);
@@ -345,8 +352,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                                          changes: e.Changes,
                                                                          cancellationToken: cancellationToken,
                                                                          catalogs: e.Catalogs);
-
-                    ProjectContextChanged?.Invoke(this, new ProjectContextEventArgs(this));
+                    
+                    ProjectContextChanged?.Invoke(this, new ProjectContextEventArgs(this, e.Changes));
 
                     // TODO We still are getting mismatched data sources and need to figure out better 
                     // way of merging, mute them for now and get to it in U1
@@ -435,7 +442,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             // item name correctly. Use real Name for the node here instead of caption, since caption
             // can have other info like version in it.
             var itemSpec = nodeInfo.Flags.Contains(DependencyNode.CustomItemSpec)
-                    ? DependencyNode.GetName(nodeInfo)
+                    ? nodeInfo.Name
                     : nodeInfo.Id.ItemSpec;
             var itemContext = ProjectPropertiesContext.GetContext(UnconfiguredProject, itemType, itemSpec);
             var configuredProjectExports = GetActiveConfiguredProjectExports(ActiveConfiguredProject);

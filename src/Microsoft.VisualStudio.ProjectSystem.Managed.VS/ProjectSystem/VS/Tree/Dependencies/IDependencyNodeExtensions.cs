@@ -13,7 +13,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public static IDependencyNode FindNode(this IDependencyNode self, DependencyNodeId id, bool recursive = false)
         {
             IDependencyNode resultNode = null;
-            foreach(var child in self.Children)
+            var children = self.Children;
+            foreach (var child in children)
             {
                 if (child.Id.Equals(id))
                 {

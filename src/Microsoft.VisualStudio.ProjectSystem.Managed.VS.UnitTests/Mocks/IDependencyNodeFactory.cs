@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Moq;
 using Newtonsoft.Json.Linq;
@@ -22,7 +24,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (children != null)
             {
-                mock.Setup(x => x.Children).Returns(new HashSet<IDependencyNode>(children));
+                var builder = ImmutableHashSet.CreateBuilder<IDependencyNode>();
+                children.ToList().ForEach(x => builder.Add(x));
+
+                mock.Setup(x => x.Children).Returns(builder.ToImmutableHashSet());
             }
 
             return mock.Object;
@@ -38,7 +43,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             {
                 var json = JObject.Parse(childrenJson);
                 var children = json.ToObject<DependenciesNodeCollection>();
-                mock.Setup(x => x.Children).Returns(new HashSet<IDependencyNode>(children.Nodes));
+                var builder = ImmutableHashSet.CreateBuilder<IDependencyNode>();
+                children.Nodes.ToList().ForEach(x => builder.Add(x));
+                mock.Setup(x => x.Children).Returns(builder.ToImmutableHashSet());
             }
 
             return mock.Object;
@@ -56,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (flags != null && flags.HasValue)
             {
-                data.Flags = data.Flags.Union(flags.Value);
+                ((DependencyNode)data).Flags = data.Flags.Union(flags.Value);
             }
             return data;
         }

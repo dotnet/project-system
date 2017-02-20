@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return;
             }
 
-            ProjectContextChanged?.Invoke(this, new ProjectContextEventArgs(context));
+            ProjectContextChanged?.Invoke(this, e);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return;
             }
 
-            ProjectContextUnloaded?.Invoke(this, new ProjectContextEventArgs(context));
+            ProjectContextUnloaded?.Invoke(this, e);
             // Remove context for the unloaded project from the cache
             ProjectContexts.TryRemove(context.ProjectFilePath, out IDependenciesGraphProjectContext removedContext);
 
