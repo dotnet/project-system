@@ -8,9 +8,14 @@
     <ProjectGuid>{83B4B0CC-33C2-46E3-A330-DFF43A0EC18D}</ProjectGuid>
     <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <ProjectSystemLayer>Dependency</ProjectSystemLayer>
+    <TargetFramework>net46</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="project.json" />
+    <PackageReference Include="Microsoft.Build" Version="15.1.0-preview-000516-03" />
+    <PackageReference Include="Microsoft.Build.Framework" Version="15.1.0-preview-000516-03" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.1.0-preview-000516-03" />
+    <PackageReference Include="Microsoft.Build.Tasks.Core" Version="15.1.0-preview-000516-03" />
+    <PackageReference Include="Microsoft.Build.Engine" Version="15.1.0-preview-000516-03" />
   </ItemGroup>
   <Import Project="..\..\..\build\Targets\ProducesNoOutput.Imports.targets" />
 </Project>

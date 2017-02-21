@@ -7,9 +7,10 @@
   <PropertyGroup>
     <ProjectGuid>{CF97A73F-F2F1-4893-960C-9C2B95738870}</ProjectGuid>
     <ProjectSystemLayer>Dependency</ProjectSystemLayer>
+    <TargetFramework>net46</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="project.json" />
+    <PackageReference Include="Microsoft.VisualStudio.LanguageServices" Version="2.0.0-rc2" />
   </ItemGroup>
   <Import Project="..\..\..\build\Targets\ProducesNoOutput.Imports.targets" />
 </Project>

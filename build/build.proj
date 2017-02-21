@@ -27,16 +27,15 @@
     <VsManProjectFile Include="$(RepositoryRootDirectory)src\VsixV3\ProjectSystemPackage\Microsoft.VisualStudio.ProjectSystem.Managed.vsmanproj" />
   </ItemGroup>
 
-  <PropertyGroup>
-    <!-- NuGet will not automatically find the correct version of MSBuild. We need to specify the path. -->
-    <NugetArguments>-verbosity quiet -msbuildpath &quot;$(DevenvDir)\..\..\MSBuild\15.0\bin&quot;</NugetArguments>
-  </PropertyGroup>
-
   <Target Name="RestorePackages">
 
     <Message Text="Restoring packages for %(SolutionFile.Filename)" Importance="high" />
 
-    <Exec Command="&quot;$(RepositoryRootDirectory)build\bin\NuGet.exe&quot; restore $(NugetArguments) &quot;@(SolutionFile)&quot;" />
+    <MSBuild BuildInParallel="true"
+             Projects="@(SolutionFile)"
+             Targets="restore"
+             Properties="$(CommonMSBuildGlobalProperties)"
+             />
   </Target>
 
   <Target Name="BuildSolution">

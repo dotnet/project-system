@@ -8,9 +8,10 @@
     <ProjectGuid>{CA374AF1-C983-4019-8FD0-01FA510C6E56}</ProjectGuid>
     <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <ProjectSystemLayer>Dependency</ProjectSystemLayer>
+    <TargetFramework>net46</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="project.json" />
+    <PackageReference Include="Newtonsoft.Json" Version="8.0.3" />
   </ItemGroup>
   <Import Project="..\..\..\build\Targets\ProducesNoOutput.Imports.targets" />
 </Project>

@@ -10,6 +10,7 @@
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
     <AssemblyName>Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFramework>net46</TargetFramework>
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
     <ImportVSSDKTargets>true</ImportVSSDKTargets>
     <CreateVsixContainer>false</CreateVsixContainer>
@@ -55,9 +56,6 @@
     </Compile>
     <Compile Include="ProjectSystem\VS\VisualBasicProjectGuidProvider.cs" />
     <Compile Include="Packaging\VisualBasicProjectSystemPackage.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="VSPackage.resx" />

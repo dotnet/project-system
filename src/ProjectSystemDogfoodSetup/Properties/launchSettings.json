@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "ProjectSystemDogfoodSetup": {
+      "commandName": "Executable",
+      "executablePath": "devenv.exe",
+      "commandLineArgs": "/rootsuffix RoslynDev"
+    }
+  }
+}

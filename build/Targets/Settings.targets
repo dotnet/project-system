@@ -36,10 +36,17 @@
       <TargetFrameworkRootPath>$(MSBuildBinPath)\reference-assemblies\Framework</TargetFrameworkRootPath>
   </PropertyGroup>
 
-  <!-- This file is imported by all projects at the beginning of the project files -->
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props"
-          Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props') AND '$(MSBuildProjectExtension)' != '.vcxproj'" />
+  <!-- Set the BaseIntermediateOutputPath before importing the common.props because that's
+       where msbuild looks for generated nuget targets.-->
+  <PropertyGroup>
+    <OutDir Condition="'$(OutDir)' == ''">$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\..\bin\$(Configuration)'))\</OutDir>
+    <BaseIntermediateOutputPath>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\..\bin\obj\$(MSBuildProjectName)'))\</BaseIntermediateOutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
 
+  <!-- This imports the .NET SDK which will pull in Microsoft.Common.props -->
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  
   <!-- NuGet props aren't imported by default on *nix so we do that here -->
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\NuGet\Microsoft.NuGet.props"
           Condition="'$(OS)' != 'Windows_NT'" />
@@ -59,6 +66,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <EnableDefaultItems>false</EnableDefaultItems>
     <VisualStudioReferenceMajorVersion Condition="'$(VisualStudioReferenceMajorVersion)' == ''">$(VisualStudioVersion.Substring(0, $(VisualStudioVersion.IndexOf('.'))))</VisualStudioReferenceMajorVersion>
     <VisualStudioReferenceAssemblyVersion Condition="'$(VisualStudioReferenceAssemblyVersion)' == ''">$(VisualStudioReferenceMajorVersion).0.0.0</VisualStudioReferenceAssemblyVersion>
     <VisualStudioCodename>Dev$(VisualStudioReferenceMajorVersion)</VisualStudioCodename>
@@ -142,11 +150,6 @@
   <ItemGroup Condition="'$(ProjectLanguage)' == 'CSharp' AND '$(TargetNetFX20)' == 'true'">
     <_ExplicitReference Include="$(FrameworkPathOverride)\mscorlib.dll" />
   </ItemGroup>
-
-  <PropertyGroup>
-    <OutDir Condition="'$(OutDir)' == ''">$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\..\bin\$(Configuration)'))\</OutDir>
-    <BaseIntermediateOutputPath>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\..\bin\obj\$(MSBuildProjectName)'))\</BaseIntermediateOutputPath>
-  </PropertyGroup>
 
   <PropertyGroup>
     <!-- Capture the root, so we'll always have it even if we're building to a sub-folder -->

@@ -12,13 +12,7 @@
     </When>
     <When Condition="'$(ProjectSystemLayer)' == 'Dependency'">
       <PropertyGroup>
-        <!-- 
-             We reference the core framework from Dependency projects to make these primary refs, and prevent
-             MSBuild outputing MSB3277 when it finds conflicts between PLIB "old-style" assemblies and desktop
-             assemblies, which have the same name but different keys/versions.
-         -->
-
-        <IncludeCoreFrameworkReferences>true</IncludeCoreFrameworkReferences>
+        <IncludeCoreFrameworkReferences>false</IncludeCoreFrameworkReferences>
         <IncludeHostAgnosticReferences>false</IncludeHostAgnosticReferences>
         <IncludeVisualStudioReferences>false</IncludeVisualStudioReferences>
         <IncludeVisualStudioDesignerReferences>false</IncludeVisualStudioDesignerReferences>

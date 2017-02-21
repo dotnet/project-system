@@ -10,6 +10,7 @@
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
     <AssemblyName>Microsoft.VisualStudio.ProjectSystem.VisualBasic</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFramework>net46</TargetFramework>
     <ImportVSSDKTargets>false</ImportVSSDKTargets>
     <CreateVsixContainer>false</CreateVsixContainer>
     <DeployExtension>false</DeployExtension>
@@ -37,9 +38,6 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ProjectSystem\LanguageServices\VisualBasicCommandLineParserProvider.cs" />
     <Compile Include="ProjectSystem\SpecialFileProviders\BasicAssemblyInfoSpecialFileProvider.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="project.json" />
   </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
   <ItemDefinitionGroup>

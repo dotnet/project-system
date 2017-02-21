@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <IsPortable>false</IsPortable>
@@ -8,9 +8,28 @@
     <ProjectGuid>{8DA861D8-0CCE-4334-B6C0-01A846C881EC}</ProjectGuid>
     <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <ProjectSystemLayer>Dependency</ProjectSystemLayer>
+    <TargetFramework>net46</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="project.json" />
+    <PackageReference Include="Microsoft.VisualStudio.Designer.Interfaces" Version="1.1.4322" />
+    <PackageReference Include="Microsoft.VisualStudio.ManagedInterfaces" Version="8.0.50727" />
+    <PackageReference Include="Microsoft.VisualStudio.WCFReference.Interop" Version="9.0.30729" />
+    <PackageReference Include="Microsoft.VisualStudio.Data.Core" Version="9.0.21022" />
+    <PackageReference Include="Microsoft.VisualStudio.Data.Services" Version="9.0.21022" />
+    <PackageReference Include="Microsoft.VisualStudio.TextManager.Interop.10.0" Version="10.0.30319" />
+    <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.10.0" Version="10.0.30319" />
+    <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.11.0" Version="11.0.61030" />
+    <PackageReference Include="Microsoft.VisualStudio.TextManager.Interop.12.0" Version="12.0.30110" />
+    <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.12.1.DesignTime" Version="12.1.30328" />
+    <PackageReference Include="Microsoft.VisualStudio.TextManager.Interop.12.1.DesignTime" Version="12.1.30328" />
+    <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.14.0.DesignTime" Version="14.1.24720" />
+    <PackageReference Include="Microsoft.VisualStudio.SDK.EmbedInteropTypes" Version="14.1.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Editor" Version="15.0.25726-Preview5" />
+    <PackageReference Include="Microsoft.VisualStudio.ImageCatalog" Version="15.0.25726-Preview5" />
+    <PackageReference Include="Microsoft.VisualStudio.Shell.Design" Version="15.0.25726-Preview5" />
+    <PackageReference Include="Microsoft.VisualStudio.Shell.15.0" Version="15.0.25726-Preview5" />
+    <PackageReference Include="RoslynDependencies.Microsoft.VisualStudio.GraphModel" Version="15.0.25807" />
+    <PackageReference Include="Microsoft.VisualStudio.Telemetry" Version="15.0.691-master31907920" ExcludeAssets="Build" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Json.net\Json.net.csproj">

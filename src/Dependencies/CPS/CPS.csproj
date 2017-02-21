@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <IsPortable>false</IsPortable>
@@ -8,9 +8,10 @@
     <ProjectGuid>{03AB838C-1B9D-4ECA-856F-476616C35F0C}</ProjectGuid>
     <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <ProjectSystemLayer>Dependency</ProjectSystemLayer>
+    <TargetFramework>net46</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="project.json" />
+    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.SDK" Version="15.0.661-pre-g3d0c752f96" PrivateAssets="None" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Immutable\Immutable.csproj">
