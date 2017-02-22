@@ -7,7 +7,7 @@ using Xunit;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
 {
     [ProjectSystemTrait]
-    public class ConfigurationConfigurationProjectConfigurationDimensionProviderTest
+    public class ConfigurationProjectConfigurationDimensionProviderTest
     {
         const string Configurations = nameof(Configurations);
 

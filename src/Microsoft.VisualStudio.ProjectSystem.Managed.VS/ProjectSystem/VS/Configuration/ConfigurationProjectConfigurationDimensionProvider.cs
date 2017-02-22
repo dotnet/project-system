@@ -9,6 +9,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
     /// <summary>
     /// Provides 'Configuration' project configuration dimension and values.
     /// </summary>
+    /// <remarks>
+    /// The Order attribute will determine the order of the dimensions inside the configuration
+    /// service. We want Configuration|Platform|TargetFramework as the defaults so the values
+    /// start at MaxValue and get decremented for each in order for future extenders to fall
+    /// below these 3 providers.
+    /// </remarks>
     [Export(typeof(IProjectConfigurationDimensionsProvider2))]
     [AppliesTo(ProjectCapabilities.ProjectConfigurationsDeclaredDimensions)]
     [Order(int.MaxValue)]
@@ -52,8 +58,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
                     {
                         await OnConfigurationRenamed(args.Project, args.OldDimensionValue, args.DimensionValue).ConfigureAwait(true);
                     }
-
-                    // await _projectXmlAccessor.ExecuteInWriteLock((msbuildProject) => msbuildProject.Save()).ConfigureAwait(true);
                 }
             }
         }
