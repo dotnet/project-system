@@ -65,6 +65,7 @@
     <Compile Include="ApplicationDesigner\PropertyPageSite.vb" />
     <Compile Include="ApplicationDesigner\SpecialFileCustomView.Designer.vb">
       <DependentUpon>SpecialFileCustomView.vb</DependentUpon>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="ApplicationDesigner\SpecialFileCustomView.vb">
       <SubType>UserControl</SubType>
@@ -88,6 +89,7 @@
     <Compile Include="DesignerFramework\DesignUtil.vb" />
     <Compile Include="DesignerFramework\ErrorControl.Designer.vb">
       <DependentUpon>ErrorControl.vb</DependentUpon>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="DesignerFramework\ErrorControl.vb">
       <SubType>UserControl</SubType>

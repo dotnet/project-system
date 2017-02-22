@@ -103,6 +103,7 @@
     </Compile>
     <Compile Include="ProjectSystem\VS\PropertyPages\PropertyPage.Designer.cs">
       <DependentUpon>PropertyPage.cs</DependentUpon>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="ProjectSystem\VS\PropertyPages\PropertyPageControl.cs" />
     <Compile Include="ProjectSystem\VS\PropertyPages\PropertyPageElementHost.cs" />
@@ -118,6 +119,7 @@
     </Compile>
     <Compile Include="ProjectSystem\VS\PropertyPages\WpfBasedPropertyPage.Designer.cs">
       <DependentUpon>WpfBasedPropertyPage.cs</DependentUpon>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="ProjectSystem\VS\NuGet\NuGetRestorer.cs" />
     <Compile Include="ProjectSystem\VS\References\AddFileContextProvider.cs" />

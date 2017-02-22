@@ -445,67 +445,86 @@
     <Compile Include="ProjectCapability.vb" />
     <Compile Include="PropPages\AdvancedServicesDialog.Designer.vb">
       <DependentUpon>AdvancedServicesDialog.vb</DependentUpon>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="PropPages\AdvBuildSettingsPropPage.Designer.vb">
       <DependentUpon>AdvBuildSettingsPropPage.vb</DependentUpon>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="PropPages\AdvCompilerSettingsPropPage.Designer.vb">
       <DependentUpon>AdvCompilerSettingsPropPage.vb</DependentUpon>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="PropPages\ApplicationPropPageVBBase.Designer.vb">
       <DependentUpon>ApplicationPropPageVBBase.vb</DependentUpon>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="PropPages\AssemblyInfoUtils.vb" />
     <Compile Include="PropPages\ApplicationPropPageVBWinForms.Designer.vb">
       <DependentUpon>ApplicationPropPageVBWinForms.vb</DependentUpon>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="PropPages\PackagePropPage.Designer.vb">
       <DependentUpon>PackagePropPage.vb</DependentUpon>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="PropPages\PackagePropPage.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="PropPages\AssemblyInfoPropPage.Designer.vb">
       <DependentUpon>AssemblyInfoPropPage.vb</DependentUpon>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="PropPages\BuildEventCommandLineDialog.Designer.vb">
       <DependentUpon>BuildEventCommandLineDialog.vb</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="PropPages\BuildEventsPropPage.Designer.vb">
       <DependentUpon>BuildEventsPropPage.vb</DependentUpon>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="PropPages\BuildPropPage.Designer.vb">
       <DependentUpon>BuildPropPage.vb</DependentUpon>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="PropPages\CompilePropPage2.Designer.vb">
       <DependentUpon>CompilePropPage2.vb</DependentUpon>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="PropPages\CSharpApplicationPropPage.Designer.vb">
       <DependentUpon>CSharpApplicationPropPage.vb</DependentUpon>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="PropPages\DebugPropPage.Designer.vb">
       <DependentUpon>DebugPropPage.vb</DependentUpon>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="PropPages\ReferencePathsPropPage.Designer.vb">
       <DependentUpon>ReferencePathsPropPage.vb</DependentUpon>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="PropPages\ReferencePropPage.Designer.vb">
       <DependentUpon>ReferencePropPage.vb</DependentUpon>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="PropPages\ServicesAuthenticationForm.Designer.vb">
       <DependentUpon>ServicesAuthenticationForm.vb</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="PropPages\ServicesPropPage.Designer.vb">
       <DependentUpon>ServicesPropPage.vb</DependentUpon>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="PropPages\TextBoxWithWorkaroundForAutoCompleteAppend.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="PropPages\UnusedReferencePropPage.Designer.vb">
       <DependentUpon>UnusedReferencePropPage.vb</DependentUpon>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="PropPages\WPF\ApplicationPropPageVBWPF.Designer.vb">
       <DependentUpon>ApplicationPropPageVBWPF.vb</DependentUpon>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="StrongNameHelpers.vb" />
     <Compile Include="..\Common\ManagedCodeMarkers.vb">
@@ -521,12 +540,14 @@
     <Compile Include="AddImportsDialogs\AddImportsDialogService.vb" />
     <Compile Include="AddImportsDialogs\AutoAddImportsCollisionDialog.Designer.vb">
       <DependentUpon>AutoAddImportsCollisionDialog.vb</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="AddImportsDialogs\AutoAddImportsCollisionDialog.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AddImportsDialogs\AutoAddImportsExtensionCollisionDialog.Designer.vb">
       <DependentUpon>AutoAddImportsExtensionCollisionDialog.vb</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="AddImportsDialogs\AutoAddImportsExtensionCollisionDialog.vb">
       <SubType>Form</SubType>
@@ -575,6 +596,7 @@
     <Compile Include="DesignerFramework\DesignUtil.vb" />
     <Compile Include="DesignerFramework\ErrorControl.Designer.vb">
       <DependentUpon>ErrorControl.vb</DependentUpon>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="DesignerFramework\ErrorControl.vb">
       <SubType>UserControl</SubType>
@@ -582,7 +604,9 @@
     <Compile Include="DesignerFramework\GenericComponentSerializationService.vb" />
     <Compile Include="DesignerFramework\GenericComponentSerializationStore.vb" />
     <Compile Include="DesignerFramework\SourceCodeControlManager.vb" />
-    <Compile Include="DesignerFramework\ThemedBorderUserControl.Designer.vb" />
+    <Compile Include="DesignerFramework\ThemedBorderUserControl.Designer.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="DesignerFramework\ThemedBorderUserControl.vb">
       <SubType>UserControl</SubType>
     </Compile>
@@ -634,7 +658,9 @@
     <Compile Include="package\EditorToolsOptionsPage.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="package\EditorToolsOptionsPanel.Designer.vb" />
+    <Compile Include="package\EditorToolsOptionsPanel.Designer.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="package\EditorToolsOptionsPanel.vb">
       <SubType>UserControl</SubType>
     </Compile>
@@ -657,6 +683,7 @@
     </Compile>
     <Compile Include="PropPages\ApplicationPropPage.Designer.vb">
       <DependentUpon>ApplicationPropPage.vb</DependentUpon>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="proppages\ApplicationPropPageBase.vb">
       <SubType>UserControl</SubType>
@@ -744,6 +771,7 @@
     <Compile Include="PropPages\WPF\AppDotXamlDocument.vb" />
     <Compile Include="PropPages\WPF\AppDotXamlErrorControl.Designer.vb">
       <DependentUpon>AppDotXamlErrorControl.vb</DependentUpon>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="PropPages\WPF\AppDotXamlErrorControl.vb">
       <SubType>UserControl</SubType>
@@ -868,12 +896,14 @@
     <Compile Include="XmlIntellisense\XmlIntellisenseInterop.vb" />
     <Compile Include="XmlToSchema\InputXmlForm.Designer.vb">
       <DependentUpon>InputXmlForm.vb</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="XmlToSchema\InputXmlForm.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="XmlToSchema\PasteXmlDialog.Designer.vb">
       <DependentUpon>PasteXmlDialog.vb</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="XmlToSchema\PasteXmlDialog.vb">
       <SubType>Form</SubType>
@@ -883,6 +913,7 @@
     </Compile>
     <Compile Include="XmlToSchema\WebUrlDialog.Designer.vb">
       <DependentUpon>WebUrlDialog.vb</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="XmlToSchema\WebUrlDialog.vb">
       <SubType>Form</SubType>
