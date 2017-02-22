@@ -47,4 +47,9 @@
   <StringProperty Name="DebugSymbols" DisplayName="Symbole debugowania" Visible="False" />
   <EnumProperty Name="FileAlignment" DisplayName="Wyrównanie pliku" Visible="False" />
   <StringProperty Name="BaseAddress" DisplayName="Adres podstawowy" Visible="False" />
+  <StringProperty Name="FullPath" DisplayName="Project Folder" ReadOnly="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 </Rule>

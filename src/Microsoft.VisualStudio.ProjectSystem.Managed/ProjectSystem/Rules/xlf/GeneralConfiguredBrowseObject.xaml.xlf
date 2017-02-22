@@ -107,6 +107,10 @@
         <source>General</source>
         <note></note>
       </trans-unit>
+      <trans-unit id="StringProperty|FullPath|DisplayName">
+        <source>Project Folder</source>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>
