@@ -27,18 +27,12 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.VS\Microsoft.VisualStudio.ProjectSystem.Managed.VS.csproj">
-      <Project>{1c5666ea-24a4-4ec2-b8fb-faedf6b14697}</Project>
-      <Name>Microsoft.VisualStudio.ProjectSystem.Managed.VS</Name>
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj">
-      <Project>{6c6a41ce-72c5-4d77-8208-d01693f9bc88}</Project>
-      <Name>Microsoft.VisualStudio.ProjectSystem.Managed</Name>
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.VisualBasic\Microsoft.VisualStudio.ProjectSystem.VisualBasic.csproj">
-      <Project>{04aa393a-48c2-424d-985c-77385a962019}</Project>
-      <Name>Microsoft.VisualStudio.ProjectSystem.VisualBasic</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>

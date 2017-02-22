@@ -8,10 +8,7 @@
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.SDK" Version="15.0.661-pre-g3d0c752f96" PrivateAssets="None" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Immutable\Immutable.csproj">
-      <Project>{dcda908d-ef5e-494b-addc-c26f5fd610ca}</Project>
-      <Name>Immutable</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\Immutable\Immutable.csproj" />
   </ItemGroup>
   <Import Project="..\..\..\build\Targets\ProducesNoOutput.Imports.targets" />
 </Project>

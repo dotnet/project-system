@@ -26,18 +26,10 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DeployTestDependencies\DeployTestDependencies.csproj">
-      <Project>{37ba82e6-9abd-4aca-aa26-2dfd39a359a5}</Project>
-      <Name>DeployTestDependencies</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.csproj">
-      <Project>{23bcbc90-ed65-4ee3-8af1-dd7caefdbee9}</Project>
-      <Name>Microsoft.VisualStudio.ProjectSystem.Managed.TestServices</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj">
-      <Project>{6c6a41ce-72c5-4d77-8208-d01693f9bc88}</Project>
-      <Name>Microsoft.VisualStudio.ProjectSystem.Managed</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.csproj" />
+    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Common\Test\App.config">

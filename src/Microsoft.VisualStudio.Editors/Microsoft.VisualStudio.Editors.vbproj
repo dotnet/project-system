@@ -32,10 +32,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj">
-      <Project>{19725D6F-4690-412B-934A-FC48D752B802}</Project>
-      <Name>Microsoft.VisualStudio.AppDesigner</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj" />
   </ItemGroup>
   <ItemGroup>
     <Import Include="VSConstants=Microsoft.VisualStudio.VSConstants" />

@@ -27,10 +27,7 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj">
-      <Project>{6c6a41ce-72c5-4d77-8208-d01693f9bc88}</Project>
-      <Name>Microsoft.VisualStudio.ProjectSystem.Managed</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />

@@ -1,5 +1,5 @@
 ﻿<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Project DefaultTargets="Build">
+<Project>
   <PropertyGroup>
     <UseVisualStudioVersion>true</UseVisualStudioVersion>
   </PropertyGroup>
@@ -40,7 +40,6 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj">
-      <Project>{19725d6f-4690-412b-934a-fc48d752b802}</Project>
       <Name>Microsoft.VisualStudio.AppDesigner</Name>
       <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroupWithFinalOutputPath%3b</IncludeOutputGroupsInVSIX>
       <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
@@ -50,7 +49,6 @@
       <NgenPriority>3</NgenPriority>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.vbproj">
-      <Project>{CD6E5D00-7B0B-442D-9F5D-EAEC1A71838A}</Project>
       <Name>Microsoft.VisualStudio.Editors</Name>
       <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroupWithFinalOutputPath%3bPkgdefProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
       <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
