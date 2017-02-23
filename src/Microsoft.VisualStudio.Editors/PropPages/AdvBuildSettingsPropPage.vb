@@ -192,12 +192,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Function IsExeProject() As Boolean
 
-            Dim obj As Object = Nothing
             Dim OutputType As VSLangProj.prjOutputType
 
             Try
-                GetCurrentProperty(VsProjPropId.VBPROJPROPID_OutputType, "OutputType", obj)
-                OutputType = CType(obj, VSLangProj.prjOutputType)
+                OutputType = OutputTypeProperty
             Catch ex As InvalidCastException
                 '// When all else fails assume dll (so they can edit it)
                 OutputType = VSLangProj.prjOutputType.prjOutputTypeLibrary
