@@ -34,12 +34,8 @@
       <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
       <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
     </ProjectReference>
-    <ProjectReference Include="..\ProjectSystemSetup\ProjectSystemSetup.csproj">
-      <Name>ProjectSystemSetup</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj">
-      <Name>VisualStudioEditorsSetup</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\ProjectSystemSetup\ProjectSystemSetup.csproj" />
+    <ProjectReference Include="..\VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj" />
   </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
 </Project>
