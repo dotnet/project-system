@@ -4,7 +4,8 @@
   </PropertyGroup>
   <Import Project="..\..\build\Targets\VSL.Settings.targets" />
   <PropertyGroup>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <OptionCompare>binary</OptionCompare>
     <OptionExplicit>On</OptionExplicit>
     <OptionStrict>On</OptionStrict>
