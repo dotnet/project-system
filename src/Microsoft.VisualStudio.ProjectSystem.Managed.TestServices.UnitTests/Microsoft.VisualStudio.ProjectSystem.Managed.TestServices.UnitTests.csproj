@@ -1,13 +1,7 @@
 ﻿<Project>
   <Import Project="..\..\build\Targets\VSL.Settings.targets" />
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
-    <AssemblyName>Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.UnitTests</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <TargetFramework>net46</TargetFramework>    
     <SignAssembly>true</SignAssembly>
     <Nonshipping>true</Nonshipping>
@@ -15,6 +9,7 @@
     <OutDir>$(OutDir)Tests\</OutDir>
     <ProjectSystemLayer>HostAgnostic</ProjectSystemLayer>
     <ProjectSystemProjectType>Test</ProjectSystemProjectType>
+    <EnableDefaultItems>true</EnableDefaultItems>
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests" />
@@ -35,9 +30,6 @@
     <None Include="..\Common\Test\App.config">
       <Link>App.config</Link>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="ProjectSystem\ProjectTreeParserTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
