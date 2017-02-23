@@ -21,7 +21,6 @@
     <ProjectSystemLayer>VisualStudio</ProjectSystemLayer>
     <UseCodebase>true</UseCodebase>
     <Nonshipping>true</Nonshipping>
-    <EnableDefaultItems>true</EnableDefaultItems>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Dogfood.pkgdef">

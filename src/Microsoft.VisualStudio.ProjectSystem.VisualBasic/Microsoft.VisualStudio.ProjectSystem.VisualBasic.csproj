@@ -10,7 +10,6 @@
     <SignAssembly>true</SignAssembly>
     <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
     <ProjectSystemLayer>HostAgnostic</ProjectSystemLayer>
-    <EnableDefaultItems>true</EnableDefaultItems>    
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS" />

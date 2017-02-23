@@ -13,7 +13,6 @@
     <SignAssembly>true</SignAssembly>
     <NoWarn>$(NoWarn);42105;42107;42353;42355</NoWarn>
     <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
-    <EnableDefaultItems>true</EnableDefaultItems>
     <!-- Override Roslyn which embeds by default -->
     <VBRuntime>Default</VBRuntime>
     <TargetFramework>net46</TargetFramework>

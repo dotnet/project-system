@@ -22,7 +22,6 @@
     <ProjectSystemLayer>VisualStudio</ProjectSystemLayer>
     <ProducingSignedVsix>true</ProducingSignedVsix>
     <IsProductComponent>true</IsProductComponent>
-    <EnableDefaultItems>true</EnableDefaultItems>    
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.CSharp.VS\Microsoft.VisualStudio.ProjectSystem.CSharp.VS.csproj">

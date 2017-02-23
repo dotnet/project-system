@@ -11,7 +11,6 @@
     <SignAssembly>true</SignAssembly>
     <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
     <ProjectSystemLayer>VisualStudio</ProjectSystemLayer>
-    <EnableDefaultItems>true</EnableDefaultItems>    
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.UnitTests" />
