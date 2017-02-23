@@ -32,7 +32,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ProjectSystem\VS\LanguageServices\VisualBasicCodeDomProvider.cs">
+    <Compile Update="ProjectSystem\VS\LanguageServices\VisualBasicCodeDomProvider.cs">
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>

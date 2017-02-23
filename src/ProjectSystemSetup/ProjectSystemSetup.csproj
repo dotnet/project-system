@@ -2,10 +2,7 @@
 <Project>
   <Import Project="..\..\build\Targets\VSL.Settings.targets" />
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputType>Library</OutputType>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
     <AssemblyName>ProjectSystem</AssemblyName>
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
@@ -25,17 +22,7 @@
     <ProjectSystemLayer>VisualStudio</ProjectSystemLayer>
     <ProducingSignedVsix>true</ProducingSignedVsix>
     <IsProductComponent>true</IsProductComponent>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-  </PropertyGroup>
-  <PropertyGroup>
-    <!-- Debugging Settings (usually stored in .user project stored in project file to be available to everyone -->
-    <StartAction>Program</StartAction>
-    <StartProgram>$(DevEnvDir)devenv.exe</StartProgram>
-    <StartArguments>/rootsuffix RoslynDev /log</StartArguments>
-    <EnableUnmanagedDebugging>true</EnableUnmanagedDebugging>
+    <EnableDefaultItems>true</EnableDefaultItems>    
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.CSharp.VS\Microsoft.VisualStudio.ProjectSystem.CSharp.VS.csproj">
@@ -87,13 +74,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="source.extension.vsixmanifest" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="..\Common\ProvideBindingRedirectionAttribute.cs">
       <Link>ProvideBindingRedirectionAttribute.cs</Link>
     </Compile>
-    <Compile Include="AssemblyRedirects.cs" />
   </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
 </Project>
