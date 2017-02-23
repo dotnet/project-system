@@ -1,13 +1,7 @@
 ﻿<Project>
   <Import Project="..\..\build\Targets\VSL.Settings.targets" />
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
-    <AssemblyName>Microsoft.VisualStudio.ProjectSystem.VisualBasic</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <TargetFramework>net46</TargetFramework>
     <ImportVSSDKTargets>false</ImportVSSDKTargets>
     <CreateVsixContainer>false</CreateVsixContainer>
@@ -16,6 +10,7 @@
     <SignAssembly>true</SignAssembly>
     <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
     <ProjectSystemLayer>HostAgnostic</ProjectSystemLayer>
+    <EnableDefaultItems>true</EnableDefaultItems>    
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS" />
@@ -28,11 +23,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="ProjectSystem\LanguageServices\VisualBasicCommandLineParserProvider.cs" />
-    <Compile Include="ProjectSystem\SpecialFileProviders\BasicAssemblyInfoSpecialFileProvider.cs" />
   </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
   <ItemDefinitionGroup>

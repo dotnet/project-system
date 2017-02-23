@@ -1,13 +1,7 @@
 ﻿<Project>
   <Import Project="..\..\build\Targets\VSL.Settings.targets" />
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
-    <AssemblyName>Microsoft.VisualStudio.ProjectSystem.CSharp.VS.UnitTests</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <TargetFramework>net46</TargetFramework>
     <SignAssembly>true</SignAssembly>
     <Nonshipping>true</Nonshipping>
@@ -15,6 +9,7 @@
     <OutDir>$(OutDir)Tests\</OutDir>
     <ProjectSystemLayer>VisualStudio</ProjectSystemLayer>
     <ProjectSystemProjectType>Test</ProjectSystemProjectType>
+    <EnableDefaultItems>true</EnableDefaultItems>    
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleToMoq Include="DynamicProxyGenAssembly2" />
@@ -38,23 +33,11 @@
     <Compile Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests\Properties\AssemblyAttributes.cs">
       <Link>Properties\AssemblyAttributes.cs</Link>
     </Compile>
-    <Compile Include="Mocks\IVsUpgradeLoggerFactory.cs" />
-    <Compile Include="Mocks\ProcessRunnerFactory.cs" />
-    <Compile Include="Packaging\CSharpProjectSystemPackageTests.cs" />
-    <Compile Include="ProjectSystem\VS\LanguageServices\CSharpLanguageFeaturesProviderTests.cs" />
-    <Compile Include="ProjectSystem\VS\Properties\CSharpProjectDesignerPageProviderTests.cs" />
-    <Compile Include="ProjectSystem\VS\Imaging\CSharpProjectImageProviderTests.cs" />
-    <Compile Include="ProjectSystem\VS\LanguageServices\CSharpCodeDomProviderTests.cs" />
-    <Compile Include="ProjectSystem\VS\Properties\CSharpProjectGuidProviderTests.cs" />
-    <Compile Include="ProjectSystem\VS\CSharpProjectCompatibilityProviderTests.cs" />
-    <Compile Include="ProjectSystem\VS\Xproj\GlobalJsonRemoverTests.cs" />
-    <Compile Include="ProjectSystem\VS\Xproj\MigrateXprojProjectFactoryTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Common\Test\App.config">
       <Link>App.config</Link>
     </None>
-    <Compile Include="Mocks\GlobalJsonSetupFactory.cs" />
   </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
   <Import Project="..\..\build\Targets\Roslyn.Toolsets.Xunit.targets" />
