@@ -1,31 +1,49 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Threading;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
 using IOLEServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
+using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
-    internal abstract class VsContainedLanguageComponentsFactoryBase : IVsContainedLanguageComponentsFactory
+    internal abstract class VsContainedLanguageComponentsFactoryBase : OnceInitializedOnceDisposedAsync, IVsContainedLanguageComponentsFactory
     {
-        public VsContainedLanguageComponentsFactoryBase(SVsServiceProvider serviceProvider,
-                                                        IUnconfiguredProjectVsServices projectServices,
-                                                        IProjectHostProvider projectHostProvider,
-                                                        Guid languageServiceGuid)
+        public VsContainedLanguageComponentsFactoryBase(
+            IUnconfiguredProjectCommonServices commonServices,
+            SVsServiceProvider serviceProvider,
+            IUnconfiguredProjectVsServices projectServices,
+            IProjectHostProvider projectHostProvider,
+            ILanguageServiceHost languageServiceHost,
+            Guid languageServiceGuid)
+            : base(commonServices.ThreadingService.JoinableTaskContext)
         {
             ServiceProvider = serviceProvider;
             ProjectServices = projectServices;
             LanguageServiceGuid = languageServiceGuid;
             ProjectHostProvider = projectHostProvider;
+            LanguageServiceHost = languageServiceHost;
         }
 
         private Guid LanguageServiceGuid { get; }
         private SVsServiceProvider ServiceProvider { get; }
         private IUnconfiguredProjectVsServices ProjectServices { get; }
         private IProjectHostProvider ProjectHostProvider { get; }
+        private ILanguageServiceHost LanguageServiceHost { get; }
+
+        protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
+        {
+            await LanguageServiceHost.InitializeAsync(cancellationToken).ConfigureAwait(false);
+        }
+
+        protected override Task DisposeCoreAsync(bool initialized)
+        {
+            return Task.CompletedTask;
+        }
 
         /// <summary>
         ///     Gets an object that represents a host-specific IVsContainedLanguageFactory implementation and
@@ -47,6 +65,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
             ProjectServices.ThreadingService.JoinableTaskFactory.Run(async () =>
             {
+                await InitializeAsync().ConfigureAwait(false);
+
                 await ProjectServices.ThreadingService.JoinableTaskFactory.SwitchToMainThreadAsync();
 
                 var priority = new VSDOCUMENTPRIORITY[1];

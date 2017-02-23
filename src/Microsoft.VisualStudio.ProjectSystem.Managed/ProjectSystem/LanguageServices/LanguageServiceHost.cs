@@ -110,6 +110,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             await UpdateProjectContextAndSubscriptionsAsync().ConfigureAwait(false);
         }
 
+        Task ILanguageServiceHost.InitializeAsync(CancellationToken cancellationToken)
+        {
+            return InitializeAsync(cancellationToken);
+        }
+
         private async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, RuleHandlerType handlerType)
         {
             if (IsDisposing || IsDisposed)
@@ -186,6 +191,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             AggregateWorkspaceProjectContext previousContextToDispose = null;
             return await ExecuteWithinLockAsync(async () =>
             {
+                await _commonServices.ThreadingService.SwitchToUIThread();
+
                 string newTargetFramework = null;
                 var projectProperties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
 

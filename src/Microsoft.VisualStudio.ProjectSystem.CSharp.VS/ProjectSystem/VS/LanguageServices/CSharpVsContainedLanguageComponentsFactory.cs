@@ -13,10 +13,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     {
         private static Guid CSharpLanguageServiceGuid = new Guid("694dd9b6-b865-4c5b-ad85-86356e9c88dc");
         [ImportingConstructor]
-        public CSharpVsContainedLanguageComponentsFactory(SVsServiceProvider serviceProvider,
-                                                        IUnconfiguredProjectVsServices projectServices,
-                                                        IProjectHostProvider projectHostProvider)
-            : base(serviceProvider, projectServices, projectHostProvider, CSharpLanguageServiceGuid)
+        public CSharpVsContainedLanguageComponentsFactory(
+            IUnconfiguredProjectCommonServices commonServices,
+            SVsServiceProvider serviceProvider,
+            IUnconfiguredProjectVsServices projectServices,
+            IProjectHostProvider projectHostProvider,
+            ILanguageServiceHost languageServiceHost)
+            : base(commonServices, serviceProvider, projectServices, projectHostProvider, languageServiceHost, CSharpLanguageServiceGuid)
         {
         }
     }
