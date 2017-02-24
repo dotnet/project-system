@@ -14,10 +14,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         private static Guid VisualBasicLanguageServiceGuid = new Guid("e34acdc0-baae-11d0-88bf-00a0c9110049");
 
         [ImportingConstructor]
-        public VisualBasicVsContainedLanguageComponentsFactory(SVsServiceProvider serviceProvider,
-                                                        IUnconfiguredProjectVsServices projectServices,
-                                                        IProjectHostProvider projectHostProvider)
-            : base(serviceProvider, projectServices, projectHostProvider, VisualBasicLanguageServiceGuid)
+        public VisualBasicVsContainedLanguageComponentsFactory(
+            IUnconfiguredProjectCommonServices commonServices,
+            SVsServiceProvider serviceProvider,
+            IUnconfiguredProjectVsServices projectServices,
+            IProjectHostProvider projectHostProvider,
+            ILanguageServiceHost languageServiceHost)
+            : base(commonServices, serviceProvider, projectServices, projectHostProvider, languageServiceHost, VisualBasicLanguageServiceGuid)
         {
         }
     }
