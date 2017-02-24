@@ -14,6 +14,8 @@
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.CSharp.VS" />
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic" />
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.FSharp" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.FSharp.VS" />
     <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.CSharp.UnitTests" />
     <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.CSharp.VS.UnitTests" />
     <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic.UnitTests" />
@@ -31,6 +33,9 @@
     </Compile>
     <Compile Update="ProjectSystem\Rules\AdditionalFiles.cs">
       <DependentUpon>AdditionalFiles.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\FSharp.cs">
+      <DependentUpon>FSharp.xaml</DependentUpon>
     </Compile>
     <Compile Update="ProjectSystem\Rules\ProjectDebugger.xaml.cs">
       <DependentUpon>ProjectDebugger.xaml</DependentUpon>
@@ -129,6 +134,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <XamlPropertyRule Include="ProjectSystem\Rules\FSharp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+    </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\CSharp.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
@@ -243,11 +252,15 @@
     </XamlPropertyRuleNoCodeBehind>
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\VisualBasic.BrowseObject.xaml">
     </XamlPropertyRuleNoCodeBehind>
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\FSharp.BrowseObject.xaml">
+    </XamlPropertyRuleNoCodeBehind>
     <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\ProjectItemsSchema.xaml">
     </XamlPropertyProjectItemsSchema>
     <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\CSharp.ProjectItemsSchema.xaml">
     </XamlPropertyProjectItemsSchema>
     <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\VisualBasic.ProjectItemsSchema.xaml">
+    </XamlPropertyProjectItemsSchema>
+    <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\FSharp.ProjectItemsSchema.xaml">
     </XamlPropertyProjectItemsSchema>
   </ItemGroup>
   <ItemGroup>

@@ -53,6 +53,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Targets", "Targets", "{573BCEB9-1EC1-49E0-8332-E8436304DFFA}"
 	ProjectSection(SolutionItems) = preProject
 		Targets\Microsoft.CSharp.DesignTime.targets = Targets\Microsoft.CSharp.DesignTime.targets
+		Targets\Microsoft.FSharp.DesignTime.targets = Targets\Microsoft.FSharp.DesignTime.targets
 		Targets\Microsoft.Managed.DesignTime.targets = Targets\Microsoft.Managed.DesignTime.targets
 		Targets\Microsoft.VisualBasic.DesignTime.targets = Targets\Microsoft.VisualBasic.DesignTime.targets
 	EndProjectSection

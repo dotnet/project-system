@@ -1,0 +1,48 @@
+<!--
+
+  This file contains Visual Studio and designer-related properties and items for C# projects.
+
+-->
+
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Import Project="Microsoft.Managed.DesignTime.targets" />
+
+  <!-- Properties -->
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <AppDesignerFolder Condition="'$(AppDesignerFolder)' == ''">Properties</AppDesignerFolder>
+    <AppDesignerFolderContentsVisibleOnlyInShowAllFiles Condition="'$(AppDesignerFolderContentsVisibleOnlyInShowAllFiles)' == ''">false</AppDesignerFolderContentsVisibleOnlyInShowAllFiles>
+    <LanguageServiceName Condition="'$(LanguageServiceName)' == ''">F#</LanguageServiceName>
+    <TemplateLanguage Condition="'$(TemplateLanguage)' == ''">FSharp</TemplateLanguage>
+    <AddItemTemplatesGuid Condition="'$(AddItemTemplatesGuid)' == ''">{F2A71F9B-5D33-465A-A702-920D77279786}</AddItemTemplatesGuid>
+  </PropertyGroup>
+
+    <ItemGroup>
+     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)FSharp.ProjectItemsSchema.xaml;"/>
+     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)FSharp.xaml;">
+      <Context>File</Context>
+     </PropertyPageSchema>
+     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)FSharp.BrowseObject.xaml;">
+      <Context>BrowseObject</Context>
+     </PropertyPageSchema>
+
+     <ProjectCapability Include="CSharp;FSharp;Managed"/>
+    </ItemGroup>
+
+    <!-- Targets -->
+
+    <!-- Returns Csc command-line arguments for the language service -->
+    <Target Name="CompileDesignTime"
+            Returns="@(_CompilerCommandLineArgs)"
+            DependsOnTargets="_CheckCompileDesignTimePrerequisite;Compile"
+            Condition="'$(IsCrossTargetingBuild)' != 'true'"
+          >
+
+      <ItemGroup>
+        <_CompilerCommandLineArgs Include="@(FscCommandLineArgs)"/>
+      </ItemGroup>
+      
+    </Target>
+
+</Project>
