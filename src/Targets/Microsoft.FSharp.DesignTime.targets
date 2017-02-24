@@ -18,31 +18,34 @@
     <AddItemTemplatesGuid Condition="'$(AddItemTemplatesGuid)' == ''">{F2A71F9B-5D33-465A-A702-920D77279786}</AddItemTemplatesGuid>
   </PropertyGroup>
 
-    <ItemGroup>
-     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)FSharp.ProjectItemsSchema.xaml;"/>
-     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)FSharp.xaml;">
+  <ItemGroup>
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)FSharp.ProjectItemsSchema.xaml;"/>
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)FSharp.xaml;">
       <Context>File</Context>
-     </PropertyPageSchema>
-     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)FSharp.BrowseObject.xaml;">
+    </PropertyPageSchema>
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)FSharp.BrowseObject.xaml;">
       <Context>BrowseObject</Context>
-     </PropertyPageSchema>
+    </PropertyPageSchema>
 
-     <ProjectCapability Include="CSharp;FSharp;Managed"/>
-    </ItemGroup>
+    <ProjectCapability Include="FSharp;Managed"/>
+    <!--HACK: Adding the C# capability as a big hack to make all the components light up. This should be removed and all components need to be audited to see which of them will
+        apply to F# -->
+    <ProjectCapability Include="CSharp"/>
+  </ItemGroup>
 
-    <!-- Targets -->
+  <!-- Targets -->
 
-    <!-- Returns Csc command-line arguments for the language service -->
-    <Target Name="CompileDesignTime"
-            Returns="@(_CompilerCommandLineArgs)"
-            DependsOnTargets="_CheckCompileDesignTimePrerequisite;Compile"
-            Condition="'$(IsCrossTargetingBuild)' != 'true'"
+  <!-- Returns Csc command-line arguments for the language service -->
+  <Target Name="CompileDesignTime"
+          Returns="@(_CompilerCommandLineArgs)"
+          DependsOnTargets="_CheckCompileDesignTimePrerequisite;Compile"
+          Condition="'$(IsCrossTargetingBuild)' != 'true'"
           >
 
-      <ItemGroup>
-        <_CompilerCommandLineArgs Include="@(FscCommandLineArgs)"/>
-      </ItemGroup>
-      
-    </Target>
+    <ItemGroup>
+      <_CompilerCommandLineArgs Include="@(FscCommandLineArgs)"/>
+    </ItemGroup>
+
+  </Target>
 
 </Project>
