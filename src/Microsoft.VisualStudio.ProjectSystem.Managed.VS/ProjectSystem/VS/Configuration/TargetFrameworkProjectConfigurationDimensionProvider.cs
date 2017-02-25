@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
     /// start at MaxValue and get decremented for each in order for future extenders to fall
     /// below these 3 providers.
     /// </remarks>
-    [Export(typeof(IProjectConfigurationDimensionsProvider2))]
+    [Export(typeof(IProjectConfigurationDimensionsProvider))]
     [AppliesTo(ProjectCapabilities.ProjectConfigurationsDeclaredDimensions)]
     [Order(int.MaxValue -2)]
     internal class TargetFrameworkProjectConfigurationDimensionProvider : BaseProjectConfigurationDimensionProvider
