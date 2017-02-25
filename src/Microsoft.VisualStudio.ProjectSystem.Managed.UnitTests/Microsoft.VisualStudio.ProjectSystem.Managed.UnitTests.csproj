@@ -85,6 +85,8 @@
     <Compile Include="Mocks\IProjectTreeProviderFactory.cs" />
     <Compile Include="Mocks\UnconfiguredProjectFactory.cs" />
     <Compile Include="Mocks\IProjectDesignerServiceFactory.cs" />
+    <Compile Include="MsBuild\MsBuildTempProjectFile.cs" />
+    <Compile Include="MsBuild\MsBuildUtilitiesTest.cs" />
     <Compile Include="OrderPrecedenceImportCollectionExtensions.cs" />
     <Compile Include="ProjectSystem\AppDesignerFolderProjectTreePropertiesProviderTests.cs" />
     <Compile Include="ProjectSystem\Build\TargetFrameworkGlobalBuildPropertyProviderTests.cs" />

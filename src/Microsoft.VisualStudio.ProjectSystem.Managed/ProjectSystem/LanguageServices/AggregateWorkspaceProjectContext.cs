@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
-using Microsoft.VisualStudio.ProjectSystem.Build;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
@@ -72,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             if (projectConfiguration.IsCrossTargeting())
             {
-                var targetFramework = projectConfiguration.Dimensions[TargetFrameworkProjectConfigurationDimensionProvider.TargetFrameworkPropertyName];
+                var targetFramework = projectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty];
                 isActiveConfiguration = string.Equals(targetFramework, _activeTargetFramework);
                 return _configuredProjectContextsByTargetFramework.TryGetValue(targetFramework, out IWorkspaceProjectContext projectContext) ?
                     projectContext :
@@ -99,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             Requires.NotNull(targetFrameworksProperty, nameof(targetFrameworksProperty));
             Requires.Range(IsCrossTargeting, nameof(targetFrameworksProperty), "This method should only be invoked for Cross targeting projects");
 
-            ImmutableArray<string> parsedTargetFrameworks = TargetFrameworkProjectConfigurationDimensionProvider.ParseTargetFrameworks(targetFrameworksProperty);
+            ImmutableArray<string> parsedTargetFrameworks = MsBuildUtilities.GetPropertyValues(targetFrameworksProperty);
             if (parsedTargetFrameworks.Length != _configuredProjectContextsByTargetFramework.Count)
             {
                 // Different number of target frameworks.

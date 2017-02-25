@@ -35,6 +35,7 @@
   <ItemGroup>
     <Compile Include="Extensions\SemaphoreSlimExtensions.cs" />
     <Compile Include="Extensions\ProjectConfigurationExtensions.cs" />
+    <Compile Include="MsBuildUtilities.cs" />
     <Compile Include="ProjectSystem\Build\BuildProperty.cs" />
     <Compile Include="CommonConstants.cs" />
     <Compile Include="ProjectSystem\Build\TurnOffUseHostCompilerIfAvailableBuildPropertiesProvider.cs" />
@@ -147,7 +148,6 @@
     <Compile Include="ProjectSystem\Rules\CompilerCommandLineArgs.cs">
       <DependentUpon>CompilerCommandLineArgs.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Configurations\TargetFrameworkProjectConfigurationDimensionProvider.cs" />
     <Compile Include="Collections\DictionaryEqualityComparer.cs" />
     <Compile Include="ProjectSystem\SpecialFileProviders\AppDesignerFolderSpecialFileProvider.cs" />
     <Compile Include="ProjectSystem\SpecialFileProviders\ISpecialFilesManager.cs" />
