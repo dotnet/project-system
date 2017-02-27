@@ -74,9 +74,11 @@ echo   Build targets:
 echo     /build                   Perform a build (default)
 echo     /rebuild                 Perform a clean, then build
 echo.
-echo   Build options:
+echo   Configurations:
 echo     /debug                   Perform debug build (default)
 echo     /release                 Perform release build
+echo.
+echo   Build options:
 echo     /no-node-reuse           Prevents MSBuild from reusing existing MSBuild instances,
 echo                              useful for avoiding unexpected behavior on build machines
 echo     /no-multi-proc           No multi-proc build, useful for diagnosing build logs
