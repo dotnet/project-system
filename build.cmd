@@ -83,7 +83,7 @@ echo     /no-node-reuse           Prevents MSBuild from reusing existing MSBuild
 echo                              useful for avoiding unexpected behavior on build machines
 echo     /no-multi-proc           No multi-proc build, useful for diagnosing build logs
 echo     /no-deploy-extension     Does not deploy the VSIX extension when building the solution
-echo     /skiptests               Don't run unit tests
+echo     /skiptests               Does not run unit tests
 goto :eof
 
 :BuildFailed
