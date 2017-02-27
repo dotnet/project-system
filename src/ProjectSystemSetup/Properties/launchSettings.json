@@ -2,8 +2,8 @@
   "profiles": {
     "ProjectSystemSetup": {
       "commandName": "Executable",
-      "executablePath": "devenv.exe",
-      "commandLineArgs": "/rootsuffix RoslynDev"
+      "executablePath": "$(DevEnvDir)devenv.exe",
+      "commandLineArgs": "/rootsuffix RoslynDev /log"
     }
   }
 }

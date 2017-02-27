@@ -1,15 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Project>
   <Import Project="..\..\build\Targets\VSL.Settings.targets" />
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{15DCB34C-B628-49B8-B472-BBA65A0AB6A5}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
-    <AssemblyName>Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <TargetFramework>net46</TargetFramework>
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
     <ImportVSSDKTargets>true</ImportVSSDKTargets>
@@ -29,37 +22,22 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.VS\Microsoft.VisualStudio.ProjectSystem.Managed.VS.csproj">
-      <Project>{1c5666ea-24a4-4ec2-b8fb-faedf6b14697}</Project>
-      <Name>Microsoft.VisualStudio.ProjectSystem.Managed.VS</Name>
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj">
-      <Project>{6c6a41ce-72c5-4d77-8208-d01693f9bc88}</Project>
-      <Name>Microsoft.VisualStudio.ProjectSystem.Managed</Name>
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.VisualBasic\Microsoft.VisualStudio.ProjectSystem.VisualBasic.csproj">
-      <Project>{04aa393a-48c2-424d-985c-77385a962019}</Project>
-      <Name>Microsoft.VisualStudio.ProjectSystem.VisualBasic</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="ProjectSystem\VS\LanguageServices\VisualBasicVsContainedLanguageComponentsFactory.cs" />
-    <Compile Include="ProjectSystem\VS\VisualBasicProjectCompatibilityProvider.cs" />
-    <Compile Include="ProjectSystem\VS\Imaging\VisualBasicProjectImageProvider.cs" />
-    <Compile Include="ProjectSystem\VS\Properties\VisualBasicProjectDesignerPage.cs" />
-    <Compile Include="ProjectSystem\VS\Properties\VisualBasicProjectDesignerPageProvider.cs" />
-    <Compile Include="ProjectSystem\VS\LanguageServices\VisualBasicCodeDomProvider.cs">
+    <Compile Update="ProjectSystem\VS\LanguageServices\VisualBasicCodeDomProvider.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ProjectSystem\VS\VisualBasicProjectGuidProvider.cs" />
-    <Compile Include="Packaging\VisualBasicProjectSystemPackage.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="VSPackage.resx" />
-    <EmbeddedResource Include="VSPackage.*.resx">
+    <EmbeddedResource Update="VSPackage.*.resx">
       <DependentUpon>VSPackage.resx</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
