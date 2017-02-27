@@ -16,8 +16,6 @@
     <BaseNuGetRuntimeIdentifier Condition="'$(OS)' == 'Windows_NT'">win7</BaseNuGetRuntimeIdentifier>
   </PropertyGroup>
 
-  <Import Project="$(NuGetPackageRoot)\Microsoft.Net.Compilers\2.0.0-rc2-61102-09\build\Microsoft.Net.Compilers.props" Condition="Exists('$(NuGetPackageRoot)\Microsoft.Net.Compilers\2.0.0-rc2-61102-09\build\Microsoft.Net.Compilers.props')" />
-
   <!-- Import the global NuGet packages -->
   <PropertyGroup>
     <RoslynDiagnosticsNugetPackageVersion>1.2.0-beta2</RoslynDiagnosticsNugetPackageVersion>
