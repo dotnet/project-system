@@ -14,9 +14,10 @@ set DeployVsixExtension=true
 :ParseArguments
 if "%1" == "" goto :DoneParsing
 if /I "%1" == "/?" call :Usage && exit /b 1
+if /I "%1" == "/build" set MSBuildTarget=Build&&shift&& goto :ParseArguments
+if /I "%1" == "/rebuild" set MSBuildTarget=Rebuild&&shift&& goto :ParseArguments
 if /I "%1" == "/debug" set BuildConfiguration=Debug&&shift&& goto :ParseArguments
 if /I "%1" == "/release" set BuildConfiguration=Release&&shift&& goto :ParseArguments
-if /I "%1" == "/rebuild" set MSBuildTarget=Rebuild&&shift&& goto :ParseArguments
 if /I "%1" == "/skiptests" set RunTests=false&&shift&& goto :ParseArguments
 if /I "%1" == "/no-deploy-extension" set DeployVsixExtension=false&&shift&& goto :ParseArguments
 if /I "%1" == "/no-node-reuse" set NodeReuse=false&&shift&& goto :ParseArguments
@@ -67,11 +68,11 @@ call :PrintColor Green "Build completed successfully, for full logs see %LogFile
 exit /b 0
 
 :Usage
-echo Usage: %BatchFile% [/rebuild^|/restore^|/modernvsixonly] [/debug^|/release] [/no-node-reuse] [/no-multi-proc] [/skiptests] [/no-deploy-extension]
+echo Usage: %BatchFile% [/build^|/rebuild] [/debug^|/release] [/no-node-reuse] [/no-multi-proc] [/skiptests] [/no-deploy-extension]
 echo.
 echo   Build targets:
+echo     /build                   Perform a build (default)
 echo     /rebuild                 Perform a clean, then build
-echo     /skiptests               Don't run unit tests
 echo.
 echo   Build options:
 echo     /debug                   Perform debug build (default)
@@ -80,6 +81,7 @@ echo     /no-node-reuse           Prevents MSBuild from reusing existing MSBuild
 echo                              useful for avoiding unexpected behavior on build machines
 echo     /no-multi-proc           No multi-proc build, useful for diagnosing build logs
 echo     /no-deploy-extension     Does not deploy the VSIX extension when building the solution
+echo     /skiptests               Don't run unit tests
 goto :eof
 
 :BuildFailed
