@@ -10,5 +10,6 @@ namespace Microsoft.VisualStudio.Input
         public const long Open = (long)VSConstants.VSStd97CmdID.Open;
         public const long AddClass = (long)VSConstants.VSStd97CmdID.AddClass;
         public const long SaveProjectItem = (long)VSConstants.VSStd97CmdID.SaveProjectItem;
+        public const long UnloadProject = (long)VSConstants.VSStd97CmdID.UnloadProject;
     }
 }
