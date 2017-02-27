@@ -60,6 +60,8 @@
 
     <Target Name="BuildNuGetPackages">
 
+      <Message Text="Building NuGet packages [$(Configuration)]" Importance="high" />
+      
       <MSBuild BuildInParallel="true"
                Projects="@(NuGetProjectFile)"
                Targets="Build"
@@ -68,7 +70,9 @@
     </Target>
   
     <Target Name="RebuildNuGetPackages">
-  
+
+      <Message Text="Rebuilding NuGet packages [$(Configuration)]" Importance="high" />
+      
       <MSBuild BuildInParallel="true"
                Projects="@(NuGetProjectFile)"
                Targets="Rebuild"
@@ -78,6 +82,8 @@
 
   <Target Name="BuildModernVsixPackages">
 
+    <Message Text="Rebuilding Modern VSIX Packages [$(Configuration)]" Importance="high" />
+    
     <MSBuild Projects="@(VsManProjectFile)"
              Targets="Rebuild"
              
