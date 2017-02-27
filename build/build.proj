@@ -58,27 +58,27 @@
              />
   </Target>
 
-    <Target Name="BuildNuGetPackages">
+  <Target Name="BuildNuGetPackages">
 
-      <Message Text="Building NuGet packages [$(Configuration)]" Importance="high" />
+    <Message Text="Building NuGet packages [$(Configuration)]" Importance="high" />
       
-      <MSBuild BuildInParallel="true"
-               Projects="@(NuGetProjectFile)"
-               Targets="Build"
-               Properties="$(CommonMSBuildGlobalProperties)"
-               />
-    </Target>
+    <MSBuild BuildInParallel="true"
+              Projects="@(NuGetProjectFile)"
+              Targets="Build"
+              Properties="$(CommonMSBuildGlobalProperties)"
+              />
+  </Target>
   
-    <Target Name="RebuildNuGetPackages">
+  <Target Name="RebuildNuGetPackages">
 
-      <Message Text="Rebuilding NuGet packages [$(Configuration)]" Importance="high" />
+    <Message Text="Rebuilding NuGet packages [$(Configuration)]" Importance="high" />
       
-      <MSBuild BuildInParallel="true"
-               Projects="@(NuGetProjectFile)"
-               Targets="Rebuild"
-               Properties="$(CommonMSBuildGlobalProperties)"
-               />
-    </Target>
+    <MSBuild BuildInParallel="true"
+              Projects="@(NuGetProjectFile)"
+              Targets="Rebuild"
+              Properties="$(CommonMSBuildGlobalProperties)"
+              />
+  </Target>
 
   <Target Name="BuildModernVsixPackages">
 
@@ -86,8 +86,8 @@
     
     <MSBuild Projects="@(VsManProjectFile)"
              Targets="Rebuild"
-             
              />
+
   </Target>
 
   <Target Name="Test" Condition="'$(RunTests)' == 'true'">
@@ -104,6 +104,7 @@
           LogStandardErrorAsError="true"
           IgnoreExitCode="true"
           >
+
       <Output TaskParameter="ExitCode" PropertyName="ExitCode" />
     </Exec>
 
