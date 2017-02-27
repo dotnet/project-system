@@ -23,8 +23,8 @@
 
     "Microsoft.VisualStudio.Editor": "15.0.25726-Preview5",
     "Microsoft.VisualStudio.ImageCatalog": "15.0.25726-Preview5",
-    "Microsoft.VisualStudio.Shell.Design": "15.0.25726-Preview5",
-    "Microsoft.VisualStudio.Shell.15.0": "15.0.25726-Preview5",
+    "Microsoft.VisualStudio.Shell.Design": "15.0.26201",
+    "Microsoft.VisualStudio.Shell.15.0": "15.0.26201",
     "RoslynDependencies.Microsoft.VisualStudio.GraphModel": "15.0.25807",
     "Microsoft.VisualStudio.Telemetry": {
       "version": "15.0.691-master31907920",

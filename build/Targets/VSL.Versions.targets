@@ -61,14 +61,13 @@
 
   <!-- NuGet version -->
   <PropertyGroup>
-    <VSSemanticVersion>15.0.1</VSSemanticVersion>
+    <VSSemanticVersion>15.0</VSSemanticVersion>
 
-    <RoslynNuGetPreReleaseVersion>$(RoslynSemanticVersion)-rc</RoslynNuGetPreReleaseVersion>
-    <RoslynNuGetPerBuildPreReleaseVersion Condition="'$(BuildNumberFiveDigitDateStamp)' != '' AND '$(BuildNumberBuildOfTheDayPadded)' != ''">$(RoslynNuGetPreReleaseVersion)-$(BuildNumberFiveDigitDateStamp.Trim())-$(BuildNumberBuildOfTheDayPadded.Trim())</RoslynNuGetPerBuildPreReleaseVersion>
-    <RoslynNuGetPerBuildPreReleaseVersion Condition="'$(RoslynNuGetPerBuildPreReleaseVersion)' == ''">1.0.0-rc</RoslynNuGetPerBuildPreReleaseVersion>
-    <VSNuGetPreReleaseVersion>$(VSSemanticVersion)-rc</VSNuGetPreReleaseVersion>
-    <VSNuGetPerBuildPreReleaseVersion Condition="'$(BuildNumberFiveDigitDateStamp)' != '' AND '$(BuildNumberBuildOfTheDayPadded)' != ''">$(VSNuGetPreReleaseVersion)-$(BuildNumberFiveDigitDateStamp.Trim())-$(BuildNumberBuildOfTheDayPadded.Trim())</VSNuGetPerBuildPreReleaseVersion>
-    <VSNuGetPerBuildPreReleaseVersion Condition="'$(VSNuGetPerBuildPreReleaseVersion)' == ''">1.0.0-rc</VSNuGetPerBuildPreReleaseVersion>
+    <RoslynNuGetReleaseVersion>$(RoslynSemanticVersion.Substring(0, $(RoslynSemanticVersion.LastIndexOf('.'))))</RoslynNuGetReleaseVersion>
+    <RoslynNuGetPerBuildReleaseVersion Condition="'$(BuildNumberFiveDigitDateStamp)' != '' AND '$(BuildNumberBuildOfTheDayPadded)' != ''">$(RoslynNuGetReleaseVersion).$(BuildNumberFiveDigitDateStamp.Trim())$(BuildNumberBuildOfTheDayPadded.Trim())</RoslynNuGetPerBuildReleaseVersion>
+    <RoslynNuGetPerBuildReleaseVersion Condition="'$(RoslynNuGetPerBuildReleaseVersion)' == ''">1.0.0</RoslynNuGetPerBuildReleaseVersion>
+    <VSNuGetPerBuildReleaseVersion Condition="'$(BuildNumberFiveDigitDateStamp)' != '' AND '$(BuildNumberBuildOfTheDayPadded)' != ''">$(VSSemanticVersion).$(BuildNumberFiveDigitDateStamp.Trim())$(BuildNumberBuildOfTheDayPadded.Trim())</VSNuGetPerBuildReleaseVersion>
+    <VSNuGetPerBuildReleaseVersion Condition="'$(VSNuGetPerBuildReleaseVersion)' == ''">1.0.0</VSNuGetPerBuildReleaseVersion>
   </PropertyGroup>
   
 </Project>
