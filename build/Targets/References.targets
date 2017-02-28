@@ -12,13 +12,7 @@
     </When>
     <When Condition="'$(ProjectSystemLayer)' == 'Dependency'">
       <PropertyGroup>
-        <!-- 
-             We reference the core framework from Dependency projects to make these primary refs, and prevent
-             MSBuild outputing MSB3277 when it finds conflicts between PLIB "old-style" assemblies and desktop
-             assemblies, which have the same name but different keys/versions.
-         -->
-
-        <IncludeCoreFrameworkReferences>true</IncludeCoreFrameworkReferences>
+        <IncludeCoreFrameworkReferences>false</IncludeCoreFrameworkReferences>
         <IncludeHostAgnosticReferences>false</IncludeHostAgnosticReferences>
         <IncludeVisualStudioReferences>false</IncludeVisualStudioReferences>
         <IncludeVisualStudioDesignerReferences>false</IncludeVisualStudioDesignerReferences>
@@ -257,16 +251,5 @@
       </ItemGroup>
     </When>
   </Choose>
-
-  <!-- Alias Microsoft.VisualStudio.Shell.14.0, so that the types don't clash with Microsoft.VisualStudio.Shell.15.0.
-       See: https://github.com/dotnet/roslyn-project-system/issues/142
-  -->
-  <Target Name="AliasShell14" AfterTargets="ResolveNuGetPackageAssets">
-    <ItemGroup>
-      <Reference Condition="'%(Reference.NuGetPackageId)' == 'Microsoft.VisualStudio.Shell.14.0'">
-        <Aliases>Shell14</Aliases>
-      </Reference>
-    </ItemGroup>
-  </Target>
 
 </Project>

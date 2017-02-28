@@ -1,15 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Project>
   <Import Project="..\..\build\Targets\VSL.Settings.targets" />
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C7EC63F8-F96A-4A8F-B879-D572516746B4}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
-    <AssemblyName>Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFramework>net46</TargetFramework>
     <SignAssembly>true</SignAssembly>
     <Nonshipping>true</Nonshipping>
     <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
@@ -27,94 +21,10 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DeployTestDependencies\DeployTestDependencies.csproj">
-      <Project>{37ba82e6-9abd-4aca-aa26-2dfd39a359a5}</Project>
-      <Name>DeployTestDependencies</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.csproj">
-      <Project>{23bcbc90-ed65-4ee3-8af1-dd7caefdbee9}</Project>
-      <Name>Microsoft.VisualStudio.ProjectSystem.Managed.TestServices</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj">
-      <Project>{6c6a41ce-72c5-4d77-8208-d01693f9bc88}</Project>
-      <Name>Microsoft.VisualStudio.ProjectSystem.Managed</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Mocks\ConfiguredProjectFactory.cs" />
-    <Compile Include="Mocks\DispatchThread.cs" />
-    <Compile Include="Mocks\IFolderManagerFactory.cs" />
-    <Compile Include="Mocks\IProjectLockServiceFactory.cs" />
-    <Compile Include="Mocks\ActiveConfiguredProjectFactory.cs" />
-    <Compile Include="Mocks\ICreateFileFromTemplateServiceFactory.cs" />
-    <Compile Include="Mocks\IFileSystemMock.cs" />
-    <Compile Include="Mocks\IProjectFaultHandlerServiceFactory.cs" />
-    <Compile Include="Mocks\IProjectServicesFactory.cs" />
-    <Compile Include="Mocks\IProjectServiceFactory.cs" />
-    <Compile Include="Mocks\IPhysicalProjectTreeStorageFactory.cs" />
-    <Compile Include="Mocks\ISourceCodeControlIntegrationFactory.cs" />
-    <Compile Include="Mocks\IProjectThreadingServiceMock.cs" />
-    <Compile Include="Mocks\IFileSystemFactory.cs" />
-    <Compile Include="Mocks\IInterceptingPropertyValueProviderFactory.cs" />
-    <Compile Include="Mocks\IOrderPrecedenceMetadataViewFactory.cs" />
-    <Compile Include="Mocks\IPhysicalProjectTreeFactory.cs" />
-    <Compile Include="Mocks\IProjectCapabilitiesServiceFactory.cs" />
-    <Compile Include="Mocks\IProjectInstancePropertiesProviderFactory.cs" />
-    <Compile Include="Mocks\IProjectPropertiesFactory.cs" />
-    <Compile Include="Mocks\IProjectRuleSnapshotFactory.cs" />
-    <Compile Include="Mocks\IProjectRuleSnapshotsFactory.cs" />
-    <Compile Include="Mocks\IProjectItemProviderFactory.cs" />
-    <Compile Include="Mocks\IProjectThreadingServiceFactory.cs" />
-    <Compile Include="Mocks\IProjectTreeCustomizablePropertyContextFactory.cs" />
-    <Compile Include="Mocks\IProjectTreeCustomizablePropertyValuesFactory.cs" />
-    <Compile Include="Mocks\IProjectPropertiesProviderFactory.cs" />
-    <Compile Include="Mocks\IInterceptingPropertyValueProviderMetadataFactory.cs" />
-    <Compile Include="Mocks\IProjectTreeServiceStateFactory.cs" />
-    <Compile Include="Mocks\IProjectTreeServiceFactory.cs" />
-    <Compile Include="Mocks\IProjectTreeSnapshotFactory.cs" />
-    <Compile Include="Mocks\IProjectVersionedValueFactory.cs" />
-    <Compile Include="Mocks\IProjectAsynchronousTasksServiceFactory.cs" />
-    <Compile Include="Mocks\ISpecialFilesManagerFactory.cs" />
-    <Compile Include="Mocks\IWorkspaceProjectContextFactory.cs" />
-    <Compile Include="Mocks\IUnconfiguredProjectServicesFactory.cs" />
-    <Compile Include="Mocks\PropertyPageData.cs" />
-    <Compile Include="Mocks\IUnconfiguredProjectCommonServicesFactory.cs" />
-    <Compile Include="Mocks\ProjectPropertiesFactory.cs" />
-    <Compile Include="Mocks\IProjectImageProviderFactory.cs" />
-    <Compile Include="Mocks\IProjectTreeProviderFactory.cs" />
-    <Compile Include="Mocks\UnconfiguredProjectFactory.cs" />
-    <Compile Include="Mocks\IProjectDesignerServiceFactory.cs" />
-    <Compile Include="OrderPrecedenceImportCollectionExtensions.cs" />
-    <Compile Include="ProjectSystem\AppDesignerFolderProjectTreePropertiesProviderTests.cs" />
-    <Compile Include="ProjectSystem\Build\TargetFrameworkGlobalBuildPropertyProviderTests.cs" />
-    <Compile Include="ProjectSystem\Debug\LaunchProfileDataTests.cs" />
-    <Compile Include="ProjectSystem\Debug\LaunchProfileTests.cs" />
-    <Compile Include="ProjectSystem\Debug\DebugTokenReplacerTests.cs" />
-    <Compile Include="ProjectSystem\Debug\LaunchSettingsProviderTests.cs" />
-    <Compile Include="ProjectSystem\Debug\LaunchSettingsTests.cs" />
-    <Compile Include="ProjectSystem\Imaging\ProjectImageProviderAggregatorTests.cs" />
-    <Compile Include="ProjectSystem\LanguageServices\Handlers\MetadataReferenceItemHandlerTests.cs" />
-    <Compile Include="ProjectSystem\LanguageServices\Handlers\SourceItemHandlerTests.cs" />
-    <Compile Include="ProjectSystem\PhysicalProjectTreeStorageTests.cs" />
-    <Compile Include="ProjectSystem\Properties\AssemblyInfoPropertiesProviderTests.cs" />
-    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\ApplicationManifestValueProviderTests.cs" />
-    <Compile Include="ProjectSystem\Properties\ImplicitProjectPropertiesProviderTests.cs" />
-    <Compile Include="ProjectSystem\ProjectRootImageProjectTreeModifierTests.cs" />
-    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\InterceptedProjectPropertiesProviderTests.cs" />
-    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\AssemblyOriginatorKeyFileValueProviderTests.cs" />
-    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\TargetFrameworkValueProviderTests.cs" />
-    <Compile Include="ProjectSystem\Properties\OutputTypeEnumProviderTests.cs" />
-    <Compile Include="ProjectSystem\References\AlwaysAllowValidProjectReferenceCheckerTests.cs" />
-    <Compile Include="ProjectSystem\Reload\ProjectReloadInterceptorTests.cs" />
-    <Compile Include="ProjectSystem\SpecialFileProviders\AppDesignerFolderSpecialFileProviderTests.cs" />
-    <Compile Include="ProjectSystem\SpecialFileProviderTests.cs" />
-    <Compile Include="ProjectSystem\PhysicalProjectTreeTests.cs" />
-    <Compile Include="ProjectSystem\UnconfiguredProjectCommonServicesTests.cs" />
-    <Compile Include="Threading\Tasks\TaskExtensionsTests.cs" />
-    <Compile Include="ProjectSystem\Utilities\StringExtensionsTests .cs" />
-    <Compile Include="ProjectSystem\Utilities\TaskDelaySchedulerTests.cs" />
-    <Compile Include="Properties\AssemblyAttributes.cs" />
-    <Compile Include="ResolveDependenciesLocallyTestFramework.cs" />
+    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.csproj" />
+    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
@@ -123,7 +33,6 @@
     <None Include="..\Common\Test\App.config">
       <Link>App.config</Link>
     </None>
-    <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="WindowsBase" />
