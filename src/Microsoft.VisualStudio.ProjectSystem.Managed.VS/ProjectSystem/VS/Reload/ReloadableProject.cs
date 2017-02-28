@@ -14,9 +14,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     // <summary>
     // ProjectReloadHandler
     //
-    // Auto-loaded component which represents a project which can auto-reload without going through the normal solution level reload. Upon load it 
+    // Auto-loaded component which represents a project which can auto-reload without going through the normal solution level reload. Upon load it
     // registers itself with the IProjectReloadManager which is the component which monitors for file changes and calls back on the this object to perform
-    // the actual reload operation. 
+    // the actual reload operation.
     [Export(typeof(ReloadableProject))]
     [AppliesTo("HandlesOwnReload")]
     internal class ReloadableProject : OnceInitializedOnceDisposedAsync, IReloadableProject
@@ -81,8 +81,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         /// <summary>
-        /// Function called after a project file change has been detected which pushes the changes to CPS. The return value indicates the status of the 
-        /// reload. 
+        /// Function called after a project file change has been detected which pushes the changes to CPS. The return value indicates the status of the
+        /// reload.
         /// </summary>
         public async Task<ProjectReloadResult> ReloadProjectAsync()
         {
@@ -107,7 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         // This reloads the project off disk and handles if the new XML is invalid
                         msbuildProject.Reload();
 
-                        // Handle project reload interception. 
+                        // Handle project reload interception.
                         if (ProjectReloadInterceptors.Count > 0)
                         {
                             var newProjectProperties = msbuildProject.Properties.ToImmutableArray();
