@@ -103,6 +103,7 @@
       <Output TaskParameter="ExitCode" PropertyName="ExitCode" />
     </Exec>
 
+    <Message Text="All tests passed, for full log see %(HtmlTestFile.FullPath)" Condition="$(ExitCode) == 0" Importance="high" />
     <Error Text="There were test failures, for full log see %(HtmlTestFile.FullPath)" Condition="$(ExitCode) != 0" />
 
   </Target>
