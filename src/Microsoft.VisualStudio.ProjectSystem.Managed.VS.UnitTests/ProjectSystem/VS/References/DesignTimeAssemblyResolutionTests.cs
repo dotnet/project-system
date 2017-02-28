@@ -217,7 +217,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         [InlineData("System, Version=1.0.0.0",                                                      "System",           "1.0.0.0",          @"C:\System.dll")]
         [InlineData("System, Version=1.0.0.0",                                                      "System",           "2.0.0.0",          @"C:\System.dll")]      // We let a later version satisfy an earlier version
         [InlineData("System, Version=1.0",                                                          "System",           "2.0.0.0",          @"C:\System.dll")]
-        [InlineData("System, Version=1.0",                                                          "System",           "2.0.0.0",          @"C:\System.dll")]
         [InlineData("System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",    "System",           "4.0.0.0",          @"C:\System.dll")]
         public void ResolveAssemblyPathInTargetFx_NameThatMatches_ReturnsResolvedPaths(string input, string name, string version, string path)
         {
