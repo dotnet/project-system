@@ -51,7 +51,6 @@
 
   <!-- Project Capabilities -->
   <ItemGroup Condition="'$(DefineCommonManagedCapabilities)' == 'true'">
-    <ProjectCapability Include="ManagedLang"/> <!-- Temporary: See https://github.com/dotnet/roslyn-project-system/issues/47 -->
     <ProjectCapability Include="UseFileGlobs"/>
 
     <!-- DependenciesTree capability lights up a Dependencies tree node and it's sub node providers-->
