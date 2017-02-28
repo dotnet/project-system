@@ -158,6 +158,8 @@
     <Compile Include="ProjectSystem\VS\Rename\SimpleRenameStrategy.cs" />
     <Compile Include="ProjectSystem\VS\RoslynServices.cs" />
     <Compile Include="ProjectSystem\VS\SpecialFilesProviders\VsProjectSpecialFilesManager.cs" />
+    <Compile Include="ProjectSystem\VS\Telemetry\ITelemetryService.cs" />
+    <Compile Include="ProjectSystem\VS\Telemetry\VsTelemetryService.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\AnalyzerDependenciesSubTreeProvider.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\AnalyzerDependencyNode.cs" />
     <Compile Include="ProjectSystem\VS\Tree\Dependencies\DependencyNodeResolvedStateComparer.cs" />

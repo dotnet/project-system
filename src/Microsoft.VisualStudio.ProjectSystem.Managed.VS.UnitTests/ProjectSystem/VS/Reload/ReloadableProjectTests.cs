@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.ProjectSystem.VS.Telemetry;
 using Microsoft.VisualStudio.Shell.Interop;
 using Moq;
 using Xunit;
@@ -20,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var rlmMock = new Mock<IProjectReloadManager>(MockBehavior.Strict);
             rlmMock.Setup(x => x.RegisterProjectAsync(It.IsAny<IReloadableProject>())).Returns(Task.CompletedTask);
 
-            var project = new ReloadableProject(IUnconfiguredProjectVsServicesFactory.Implement(), rlmMock.Object);
+            var project = new ReloadableProject(IUnconfiguredProjectVsServicesFactory.Implement(), rlmMock.Object, ITelemetryServiceFactory.Create());
             
             await project.Initialize();
                 
@@ -37,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var rlmMock = new Mock<IProjectReloadManager>(MockBehavior.Strict);
             rlmMock.Setup(x => x.UnregisterProjectAsync(It.IsAny<IReloadableProject>())).Returns(Task.CompletedTask);
 
-            var project = new ReloadableProject(IUnconfiguredProjectVsServicesFactory.Implement(), rlmMock.Object);
+            var project = new ReloadableProject(IUnconfiguredProjectVsServicesFactory.Implement(), rlmMock.Object, ITelemetryServiceFactory.Create());
             
             await project.DisposeAsync();
                 

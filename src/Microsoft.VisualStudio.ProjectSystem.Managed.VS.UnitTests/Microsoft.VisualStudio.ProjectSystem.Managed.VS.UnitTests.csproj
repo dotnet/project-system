@@ -58,6 +58,7 @@
     <Compile Include="Mocks\ExportFactoryFactory.cs" />
     <Compile Include="Mocks\INuGetPackagesDataProviderFactory.cs" />
     <Compile Include="Mocks\IDependenciesChangeDiffFactory.cs" />
+    <Compile Include="Mocks\ITelemetryServiceFactory.cs" />
     <Compile Include="Mocks\IVsHiearchyItemFactory.cs" />
     <Compile Include="Mocks\IProjectFileEditorPresenterFactory.cs" />
     <Compile Include="Mocks\IFrameOpenCloseListenerFactory.cs" />
