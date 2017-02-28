@@ -35,7 +35,7 @@
     <!-- Returns Csc command-line arguments for the language service -->
     <Target Name="CompileDesignTime"
             Returns="@(_CompilerCommandLineArgs)"
-            DependsOnTargets="_CheckCompileDesignTimePrerequisite;Compile"
+            DependsOnTargets="_CheckForInvalidConfigurationAndPlatform;_CheckCompileDesignTimePrerequisite;Compile"
             Condition="'$(IsCrossTargetingBuild)' != 'true'"
           >
 
