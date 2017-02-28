@@ -4,6 +4,6 @@ namespace Microsoft.VisualStudio.Input
 {
     internal static class VisualStudioStandard2kCommandId
     {
-        public const long EditProjectFile = 1632;
+        public const long EditProjectFile = 1632;   // cmdidEditProjectFile
     }
 }
