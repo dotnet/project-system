@@ -1,25 +1,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <Choose>
-    <When Condition="'$(ProjectSystemLayer)' == 'Toolset'">
-      <PropertyGroup>
-        <IncludeCoreFrameworkReferences>false</IncludeCoreFrameworkReferences>
-        <IncludeHostAgnosticReferences>false</IncludeHostAgnosticReferences>
-        <IncludeVisualStudioReferences>false</IncludeVisualStudioReferences>
-        <IncludeVisualStudioDesignerReferences>false</IncludeVisualStudioDesignerReferences>
-        <IncludeCPSReferences>false</IncludeCPSReferences>
-      </PropertyGroup>
-    </When>
-    <When Condition="'$(ProjectSystemLayer)' == 'Dependency'">
-      <PropertyGroup>
-        <IncludeCoreFrameworkReferences>false</IncludeCoreFrameworkReferences>
-        <IncludeHostAgnosticReferences>false</IncludeHostAgnosticReferences>
-        <IncludeVisualStudioReferences>false</IncludeVisualStudioReferences>
-        <IncludeVisualStudioDesignerReferences>false</IncludeVisualStudioDesignerReferences>
-        <IncludeVisualStudioVsLangProjReferences>false</IncludeVisualStudioVsLangProjReferences>
-        <IncludeCPSReferences>false</IncludeCPSReferences>
-      </PropertyGroup>
-    </When>
     <When Condition="'$(ProjectSystemLayer)' == 'HostAgnostic'">
       <PropertyGroup>
         <IncludeCoreFrameworkReferences>true</IncludeCoreFrameworkReferences>
