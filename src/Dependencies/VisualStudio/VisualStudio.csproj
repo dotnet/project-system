@@ -21,8 +21,8 @@
     <PackageReference Include="Microsoft.VisualStudio.SDK.EmbedInteropTypes" Version="14.1.2" />
     <PackageReference Include="Microsoft.VisualStudio.Editor" Version="15.0.25726-Preview5" />
     <PackageReference Include="Microsoft.VisualStudio.ImageCatalog" Version="15.0.25726-Preview5" />
-    <PackageReference Include="Microsoft.VisualStudio.Shell.Design" Version="15.0.25726-Preview5" />
-    <PackageReference Include="Microsoft.VisualStudio.Shell.15.0" Version="15.0.25726-Preview5" />
+    <PackageReference Include="Microsoft.VisualStudio.Shell.Design" Version="15.0.26201" />
+    <PackageReference Include="Microsoft.VisualStudio.Shell.15.0" Version="15.0.26201" />
     <PackageReference Include="RoslynDependencies.Microsoft.VisualStudio.GraphModel" Version="15.0.25807" />
     <PackageReference Include="Microsoft.VisualStudio.Telemetry" Version="15.0.691-master31907920" ExcludeAssets="Build" />
   </ItemGroup>

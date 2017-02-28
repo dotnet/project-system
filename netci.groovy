@@ -233,7 +233,7 @@ static void addVsiMultiScm(def myJob, def project, def isPR) {
                 }
                 // roslyn-internal - pull in a specific LKG commit from master.
                 // In future, '*/master' can be placed here to pull latest sources.
-                branch('b76a821248f61be8dd4bdfaf7475116574741734')
+                branch('701bf9e9bcb896b12364b413231666182b7aa78a')
             }
         }
     }

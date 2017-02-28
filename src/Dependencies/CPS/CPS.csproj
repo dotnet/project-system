@@ -6,7 +6,7 @@
     <TargetFramework>net46</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.SDK" Version="15.0.661-pre-g3d0c752f96" PrivateAssets="None" />
+    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.SDK" Version="15.0.737" PrivateAssets="None" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Immutable\Immutable.csproj" />

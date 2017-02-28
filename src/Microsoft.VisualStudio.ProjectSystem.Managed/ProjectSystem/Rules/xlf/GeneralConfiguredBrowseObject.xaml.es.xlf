@@ -133,6 +133,11 @@
         <target state="translated">General</target>
         <note></note>
       </trans-unit>
+      <trans-unit id="StringProperty|FullPath|DisplayName">
+        <source>Project Folder</source>
+        <target state="new">Project Folder</target>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

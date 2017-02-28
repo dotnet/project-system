@@ -47,4 +47,9 @@
   <StringProperty Name="DebugSymbols" DisplayName="Symboly ladění" Visible="False" />
   <EnumProperty Name="FileAlignment" DisplayName="Zarovnání souboru" Visible="False" />
   <StringProperty Name="BaseAddress" DisplayName="Základní adresa" Visible="False" />
+  <StringProperty Name="FullPath" DisplayName="Project Folder" ReadOnly="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 </Rule>

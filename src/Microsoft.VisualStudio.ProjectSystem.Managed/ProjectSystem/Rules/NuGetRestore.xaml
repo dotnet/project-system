@@ -66,6 +66,10 @@
                     Visible="False" 
                     ReadOnly="True" />
 
+    <StringProperty Name="PackageId" 
+                    Visible="False" 
+                    ReadOnly="True" />
+
     <StringProperty Name="PackageVersion" 
                     Visible="False" 
                     ReadOnly="True" />
