@@ -82,10 +82,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             {
                 // Make sure the tree matches the same version of the evaluation that we're handling for active project context.
                 // If we are dealing with non- active project context, then just use the latest published tree.
-                // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
                 IProjectTreeServiceState treeState = isActiveContext ?
-                    await PublishTreeAsync(e).ConfigureAwait(true) :
-                    await PublishLatestTreeAsync(e).ConfigureAwait(true);
+                    await PublishTreeAsync(e).ConfigureAwait(true) :    // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
+                    await _projectTree.TreeService.PublishLatestTreeAsync(blockDuringLoadingTree: true).ConfigureAwait(true);
 
                 foreach (string filePath in diff.AddedItems)
                 {
@@ -183,13 +182,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 // Project configuration changed while we blocked waiting for the tree, instead of trying to match
                 // exactly the same version, just give up and publish the latest tree. Note, don't need to handle
                 // ActiveProjectConfigurationChangedException as it will retry if the configuration changed.
-                return PublishLatestTreeAsync(e);
+                return _projectTree.TreeService.PublishLatestTreeAsync(blockDuringLoadingTree: true);
             }
-        }
-
-        private Task<IProjectTreeServiceState> PublishLatestTreeAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
-        {
-            return _projectTree.TreeService.PublishLatestTreeAsync(blockDuringLoadingTree: true);
         }
     }
 }
