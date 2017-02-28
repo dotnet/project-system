@@ -1,25 +1,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <Choose>
-    <When Condition="'$(ProjectSystemLayer)' == 'Toolset'">
-      <PropertyGroup>
-        <IncludeCoreFrameworkReferences>false</IncludeCoreFrameworkReferences>
-        <IncludeHostAgnosticReferences>false</IncludeHostAgnosticReferences>
-        <IncludeVisualStudioReferences>false</IncludeVisualStudioReferences>
-        <IncludeVisualStudioDesignerReferences>false</IncludeVisualStudioDesignerReferences>
-        <IncludeCPSReferences>false</IncludeCPSReferences>
-      </PropertyGroup>
-    </When>
-    <When Condition="'$(ProjectSystemLayer)' == 'Dependency'">
-      <PropertyGroup>
-        <IncludeCoreFrameworkReferences>false</IncludeCoreFrameworkReferences>
-        <IncludeHostAgnosticReferences>false</IncludeHostAgnosticReferences>
-        <IncludeVisualStudioReferences>false</IncludeVisualStudioReferences>
-        <IncludeVisualStudioDesignerReferences>false</IncludeVisualStudioDesignerReferences>
-        <IncludeVisualStudioVsLangProjReferences>false</IncludeVisualStudioVsLangProjReferences>
-        <IncludeCPSReferences>false</IncludeCPSReferences>
-      </PropertyGroup>
-    </When>
     <When Condition="'$(ProjectSystemLayer)' == 'HostAgnostic'">
       <PropertyGroup>
         <IncludeCoreFrameworkReferences>true</IncludeCoreFrameworkReferences>
@@ -84,34 +65,17 @@
         <Reference Include="System.Xaml" />
 
         <!-- NuGet Dependencies -->
-        <ProjectReference Include="$(MSBuildThisFileDirectory)..\..\src\Dependencies\Roslyn\Roslyn.csproj">
-          <Project>{cf97a73f-f2f1-4893-960c-9c2b95738870}</Project>
-          <Name>Roslyn</Name>
-        </ProjectReference>
-        <ProjectReference Include="$(MSBuildThisFileDirectory)..\..\src\Dependencies\CoreFX\CoreFX.csproj">
-          <Project>{88DDC6CF-7FD2-4201-A626-9412183067B7}</Project>
-          <Name>CoreFX</Name>
-        </ProjectReference>
-        <ProjectReference Include="$(MSBuildThisFileDirectory)..\..\src\Dependencies\Composition\Composition.csproj">
-          <Project>{a57ddfe5-ab0e-4371-98e5-11b9218df11c}</Project>
-          <Name>Composition</Name>
-        </ProjectReference>
-        <ProjectReference Include="$(MSBuildThisFileDirectory)..\..\src\Dependencies\Immutable\Immutable.csproj">
-          <Project>{dcda908d-ef5e-494b-addc-c26f5fd610ca}</Project>
-          <Name>Immutable</Name>
-        </ProjectReference>
-        <ProjectReference Include="$(MSBuildThisFileDirectory)..\..\src\Dependencies\Metadata\Metadata.csproj">
-          <Project>{e6796b97-d5c6-45b2-ae46-351d15dcfc71}</Project>
-          <Name>Metadata</Name>
-        </ProjectReference>
-        <ProjectReference Include="$(MSBuildThisFileDirectory)..\..\src\Dependencies\Json.net\Json.net.csproj">
-          <Project>{ca374af1-c983-4019-8fd0-01fa510c6e56}</Project>
-          <Name>Json.net</Name>
-        </ProjectReference>
-        <ProjectReference Include="$(MSBuildThisFileDirectory)..\..\src\Dependencies\MSBuild\MSBuild.csproj">
-          <Project>{83b4b0cc-33c2-46e3-a330-dff43a0ec18d}</Project>
-          <Name>MSBuild</Name>
-        </ProjectReference>
+        <PackageReference Include="System.Collections.Immutable" Version="1.3.1" />
+        <PackageReference Include="System.Reflection.Metadata" Version="1.4.1-beta-24430-01" />
+        <PackageReference Include="System.ValueTuple" Version="4.3.0" />
+        <PackageReference Include="Microsoft.Composition" Version="1.0.27" />
+        <PackageReference Include="Newtonsoft.Json" Version="8.0.3" />
+        <PackageReference Include="Microsoft.VisualStudio.LanguageServices" Version="2.0.0-rc2" />
+        <PackageReference Include="Microsoft.Build" Version="15.1.0-preview-000516-03" />
+        <PackageReference Include="Microsoft.Build.Framework" Version="15.1.0-preview-000516-03" />
+        <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.1.0-preview-000516-03" />
+        <PackageReference Include="Microsoft.Build.Tasks.Core" Version="15.1.0-preview-000516-03" />
+        <PackageReference Include="Microsoft.Build.Engine" Version="15.1.0-preview-000516-03" />
       </ItemGroup>
     </When>
   </Choose>
@@ -120,10 +84,7 @@
     <When Condition="'$(IncludeCPSReferences)' == 'true'">
       <ItemGroup>
 
-        <ProjectReference Include="$(MSBuildThisFileDirectory)..\..\src\Dependencies\CPS\CPS.csproj">
-          <Project>{03ab838c-1b9d-4eca-856f-476616c35f0c}</Project>
-          <Name>CPS</Name>
-        </ProjectReference>
+        <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.SDK" Version="15.0.737" PrivateAssets="None" />
 
       </ItemGroup>
     </When>
@@ -153,11 +114,26 @@
         <Reference Include="Microsoft.VisualStudio.Diagnostics.PerformanceProvider">
           <HintPath>$(DevEnvDir)\PrivateAssemblies\Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll</HintPath>
         </Reference>
-        <!-- NuGet Dependencies -->
-        <ProjectReference Include="$(MSBuildThisFileDirectory)..\..\src\Dependencies\VisualStudio\VisualStudio.csproj">
-          <Project>{8da861d8-0cce-4334-b6c0-01a846c881ec}</Project>
-          <Name>VisualStudio</Name>
-        </ProjectReference>
+
+        <PackageReference Include="Microsoft.VisualStudio.Designer.Interfaces" Version="1.1.4322" />
+        <PackageReference Include="Microsoft.VisualStudio.ManagedInterfaces" Version="8.0.50727" />
+        <PackageReference Include="Microsoft.VisualStudio.WCFReference.Interop" Version="9.0.30729" />
+        <PackageReference Include="Microsoft.VisualStudio.Data.Core" Version="9.0.21022" />
+        <PackageReference Include="Microsoft.VisualStudio.Data.Services" Version="9.0.21022" />
+        <PackageReference Include="Microsoft.VisualStudio.TextManager.Interop.10.0" Version="10.0.30319" />
+        <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.10.0" Version="10.0.30319" />
+        <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.11.0" Version="11.0.61030" />
+        <PackageReference Include="Microsoft.VisualStudio.TextManager.Interop.12.0" Version="12.0.30110" />
+        <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.12.1.DesignTime" Version="12.1.30328" />
+        <PackageReference Include="Microsoft.VisualStudio.TextManager.Interop.12.1.DesignTime" Version="12.1.30328" />
+        <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.14.0.DesignTime" Version="14.1.24720" />
+        <PackageReference Include="Microsoft.VisualStudio.SDK.EmbedInteropTypes" Version="14.1.2" />
+        <PackageReference Include="Microsoft.VisualStudio.Editor" Version="15.0.25726-Preview5" />
+        <PackageReference Include="Microsoft.VisualStudio.ImageCatalog" Version="15.0.25726-Preview5" />
+        <PackageReference Include="Microsoft.VisualStudio.Shell.Design" Version="15.0.26201" />
+        <PackageReference Include="Microsoft.VisualStudio.Shell.15.0" Version="15.0.26201" />
+        <PackageReference Include="RoslynDependencies.Microsoft.VisualStudio.GraphModel" Version="15.0.25807" />
+        <PackageReference Include="Microsoft.VisualStudio.Telemetry" Version="15.0.691-master31907920" ExcludeAssets="Build" />
 
       </ItemGroup>
 
@@ -238,15 +214,8 @@
     <When Condition="'$(IncludeTestReferences)' == 'true'">
       <ItemGroup>
 
-        <ProjectReference Include="$(MSBuildThisFileDirectory)..\..\src\Dependencies\Moq.net\Moq.net.csproj">
-          <Project>{a32eab7f-691c-4d00-98c4-f50c37bb4754}</Project>
-          <Name>Moq.net</Name>
-        </ProjectReference>
-
-        <ProjectReference Include="$(MSBuildThisFileDirectory)..\..\src\Dependencies\xUnit.net\xUnit.net.csproj">
-          <Project>{8635cb8f-d210-41ed-b4ff-71502cdb475c}</Project>
-          <Name>xUnit.net</Name>
-        </ProjectReference>
+        <PackageReference Include="Moq" Version="4.2.1402.2112" />
+        <PackageReference Include="xunit" Version="2.1.0" />
 
       </ItemGroup>
     </When>
