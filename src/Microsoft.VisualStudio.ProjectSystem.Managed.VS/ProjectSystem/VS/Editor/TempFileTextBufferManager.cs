@@ -150,9 +150,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         {
             // We must clear the project dirty flag first. If it's dirty in memory, the ProjectReloadManager will detect that
             // the project is dirty and fail the reload, and discard the changes.
-            var saveTask = _projectXmlAccessor.ClearProjectDirtyFlagAsync();
+            var clearFlagTask = _projectXmlAccessor.ClearProjectDirtyFlagAsync();
             var toWrite = await ReadBufferXmlAsync().ConfigureAwait(false);
-            await saveTask.ConfigureAwait(false);
+            await clearFlagTask.ConfigureAwait(false);
             await _projectXmlAccessor.SaveProjectXmlAsync(toWrite).ConfigureAwait(false);
             lock (_savedXmlLock)
             {
