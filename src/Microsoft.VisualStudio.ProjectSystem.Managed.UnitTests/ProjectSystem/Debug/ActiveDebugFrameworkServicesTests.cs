@@ -1,12 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
-using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Moq;
 using Xunit;
 
@@ -79,6 +75,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             var debugFrameworkSvcs = new ActiveDebugFrameworkServices(null, commonServices);
             await debugFrameworkSvcs.SetActiveDebuggingFrameworkPropertyAsync("netcoreapp1.0");
+            // Just verifies it doesn't throw. In other words, the function is trying to set the correct property. The way the proeprty mocks
+            // are set up there is no easy way to capture the value being set without rewriting how they work.
         }
 
         [Theory]
@@ -123,114 +121,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             var debugFrameworkSvcs = new ActiveDebugFrameworkServices(projectConfgProvider.Object, commonServices);
             var activeConfiguredProject = await debugFrameworkSvcs.GetConfiguredProjectForActiveFrameworkAsync();
             Assert.Equal(selectedConfigFramework,  activeConfiguredProject.ProjectConfiguration.Dimensions.GetValueOrDefault("TargetFramework"));
-
         }
-
-        //[Fact]
-        //public void ExecCommand_HandleNullProject()
-        //{
-        //    var startupHelper = new Mock<IStartupProjectHelper>();
-        //                        startupHelper.Setup(x => x.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-        //                                     .Returns((IActiveDebugFrameworkServices)null);
-
-        //    var command = new TestDebugFrameworksDynamicMenuCommand(startupHelper.Object);
-        //    Assert.Equal(false, command.ExecCommand(0, EventArgs.Empty));
-        //    startupHelper.Verify();
-        //}
-
-        //[Fact]
-        //public void QueryStatus_HandleNullProject()
-        //{
-        //    var startupHelper = new Mock<IStartupProjectHelper>();
-        //                        startupHelper.Setup(x => x.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-        //                                     .Returns((IActiveDebugFrameworkServices)null);
-
-        //    var command = new TestDebugFrameworksDynamicMenuCommand(startupHelper.Object);
-        //    Assert.Equal(false, command.QueryStatusCommand(0, EventArgs.Empty));
-        //    startupHelper.Verify();
-        //}
-
-        //[Fact]
-        //public void QueryStatus_NullFrameworks()
-        //{
-        //    var activeDebugFrameworkSvcs = new IActiveDebugFrameworkServicesFactory()
-        //                                       .ImplementGetProjectFrameworksAsync(null);
-        //    var startupHelper = new Mock<IStartupProjectHelper>();
-        //    startupHelper.Setup(x => x.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-        //                 .Returns(activeDebugFrameworkSvcs.Object);
-
-        //    var command = new TestDebugFrameworksDynamicMenuCommand(startupHelper.Object);
-        //    Assert.True(command.QueryStatusCommand(0, EventArgs.Empty));
-        //    Assert.False(command.Visible);
-        //    Assert.Equal("", command.Text);
-        //    Assert.False(command.Checked);
-        //    Assert.False(command.Enabled);
-
-        //    startupHelper.Verify();
-        //    activeDebugFrameworkSvcs.Verify();
-        //}
-
-        //[Theory]
-        //[InlineData(false)]
-        //[InlineData(true)]
-        //public void QueryStatus_LessThan2Frameworks(bool createList)
-        //{
-        //    var activeDebugFrameworkSvcs = new IActiveDebugFrameworkServicesFactory()
-        //                                       .ImplementGetProjectFrameworksAsync(createList? new List<string>(){"netcoreapp1.0"} : null);
-        //    var startupHelper = new Mock<IStartupProjectHelper>();
-        //    startupHelper.Setup(x => x.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-        //                 .Returns(activeDebugFrameworkSvcs.Object);
-
-        //    var command = new TestDebugFrameworksDynamicMenuCommand(startupHelper.Object);
-        //    Assert.True(command.QueryStatusCommand(0, EventArgs.Empty));
-        //    Assert.False(command.Visible);
-        //    Assert.Equal("", command.Text);
-        //    Assert.False(command.Checked);
-        //    Assert.False(command.Enabled);
-
-        //    startupHelper.Verify();
-        //    activeDebugFrameworkSvcs.Verify();
-        //}
-
-        //[Theory]
-        //[InlineData(0, "netcoreapp1.0")]
-        //[InlineData(1, "net461")]
-        //[InlineData(2, "net461")]
-        //[InlineData(2, "net462")]
-        //public void QueryStatus_TestValidFrameworkIndexes(int cmdIndex, string activeFramework)
-        //{
-        //    var frameworks = new List<string>(){"netcoreapp1.0", "net461", "net462"};
-
-        //    var activeDebugFrameworkSvcs = new IActiveDebugFrameworkServicesFactory()
-        //                                       .ImplementGetProjectFrameworksAsync(frameworks)
-        //                                       .ImplementGetActiveDebuggingFrameworkPropertyAsync(activeFramework);
-
-        //    var startupHelper = new Mock<IStartupProjectHelper>();
-        //    startupHelper.Setup(x => x.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-        //                 .Returns(activeDebugFrameworkSvcs.Object);
-
-        //    var command = new TestDebugFrameworksDynamicMenuCommand(startupHelper.Object);
-        //    Assert.True(command.QueryStatusCommand(cmdIndex, EventArgs.Empty));
-        //    Assert.True(command.Visible);
-        //    Assert.Equal(frameworks[cmdIndex], command.Text);
-        //    Assert.Equal(frameworks[cmdIndex] == activeFramework, command.Checked);
-        //    Assert.True(command.Enabled);
-
-        //    startupHelper.Verify();
-        //    activeDebugFrameworkSvcs.Verify();
-        //}
-
-        //class TestDebugFrameworksDynamicMenuCommand : DebugFrameworksDynamicMenuCommand
-        //{
-        //    public TestDebugFrameworksDynamicMenuCommand(IStartupProjectHelper startupHelper)
-        //        : base(startupHelper)
-        //    {
-        //    }
-
-        //    protected override void ExecuteSynchronously(Func<Task> asyncFunction)
-        //    {
-        //        asyncFunction.Invoke().Wait();
-        //    }
-        //}
     }
 }

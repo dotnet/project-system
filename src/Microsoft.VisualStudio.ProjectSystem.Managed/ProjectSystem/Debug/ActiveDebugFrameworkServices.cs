@@ -95,7 +95,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 {
                     return configuredProject;
                 }
-
             }
 
             // All that is left is to return the first one.

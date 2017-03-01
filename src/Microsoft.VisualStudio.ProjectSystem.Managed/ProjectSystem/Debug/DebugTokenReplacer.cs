@@ -19,16 +19,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         [ImportingConstructor]
         public DebugTokenReplacer(IUnconfiguredProjectCommonServices unconnfiguredServices, IEnvironmentHelper environmentHelper,
-                                  IActiveDebugFrameworkServices activeDebugFramework)
+                                  IActiveDebugFrameworkServices activeDebugFrameworkService)
         {
             UnconfiguredServices = unconnfiguredServices;
             EnvironmentHelper = environmentHelper;
-            ActiveDebugFramework = activeDebugFramework;
+            ActiveDebugFrameworkService = activeDebugFrameworkService;
         }
 
         private IUnconfiguredProjectCommonServices UnconfiguredServices { get; }
         private IEnvironmentHelper EnvironmentHelper { get; }
-        private IActiveDebugFrameworkServices ActiveDebugFramework { get; }
+        private IActiveDebugFrameworkServices ActiveDebugFrameworkService { get; }
 
         // Regular expression string to extract $(sometoken) elements from a string
         private static Regex MatchTokenRegex = new Regex(@"(\$\((?<token>[^\)]+)\))", RegexOptions.IgnoreCase);
@@ -123,9 +123,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         protected virtual async Task<IProjectReadAccess> AccessProject()
         {
-            var debuggingConfig = await ActiveDebugFramework.GetConfiguredProjectForActiveFrameworkAsync().ConfigureAwait(true);
+            var activeDebuggingConfiguredProject = await ActiveDebugFrameworkService.GetConfiguredProjectForActiveFrameworkAsync().ConfigureAwait(true);
 
-            return new ProjectReadAccessor(UnconfiguredServices.ProjectLockService, debuggingConfig);
+            return new ProjectReadAccessor(UnconfiguredServices.ProjectLockService, activeDebuggingConfiguredProject);
         }
     }
 
