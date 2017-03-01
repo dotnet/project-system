@@ -18,10 +18,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         /// Saves the given xml to the project file.
         /// </summary>
         Task SaveProjectXmlAsync(string toSave);
-
-        /// <summary>
-        /// Clears the dirty flag on the UnconfiguredProject.
-        /// </summary>
-        Task ClearProjectDirtyFlagAsync();
     }
 }

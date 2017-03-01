@@ -42,19 +42,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             using (var access = await _projectLockService.WriteLockAsync())
             {
                 await access.CheckoutAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
-                var encoding = await _unconfiguredProject.GetFileEncodingAsync().ConfigureAwait(false);
-                _fileSystem.WriteAllText(_unconfiguredProject.FullPath, toSave, encoding);
-            }
-        }
-
-        public async Task ClearProjectDirtyFlagAsync()
-        {
-            using (var access = await _projectLockService.WriteLockAsync())
-            {
-                await access.CheckoutAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
+                // We must clear the project dirty flag first. If it's dirty in memory, the ProjectReloadManager will detect that
+                // the project is dirty and fail the reload, and discard the changes.
                 var projectRoot = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
                 var stringWriter = new StringWriter();
                 projectRoot.Save(stringWriter);
+                var encoding = await _unconfiguredProject.GetFileEncodingAsync().ConfigureAwait(false);
+                _fileSystem.WriteAllText(_unconfiguredProject.FullPath, toSave, encoding);
             }
         }
     }
