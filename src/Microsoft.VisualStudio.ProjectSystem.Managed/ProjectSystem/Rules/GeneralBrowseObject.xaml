@@ -42,7 +42,7 @@
   </IntProperty>
   <StringProperty Name="OutputName" Visible="False" />
   <DynamicEnumProperty Name="OutputType" DisplayName="Output Type" EnumProvider="OutputTypeEnumProvider" Visible="False"/>
-  <EnumProperty Name="OutputTypeEx" DisplayName="Output Type" Visible="True">
+  <EnumProperty Name="OutputTypeEx" DisplayName="Output Type" Visible="False">
     <EnumValue Name="WinExe" DisplayName="0" />
     <EnumValue Name="Exe" DisplayName="1" />
     <EnumValue Name="Library" DisplayName="2" />
