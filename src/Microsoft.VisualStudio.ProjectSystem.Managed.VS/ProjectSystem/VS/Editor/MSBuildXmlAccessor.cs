@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.ComponentModel.Composition;
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.IO;
 
@@ -43,6 +44,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 await access.CheckoutAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
                 var encoding = await _unconfiguredProject.GetFileEncodingAsync().ConfigureAwait(false);
                 _fileSystem.WriteAllText(_unconfiguredProject.FullPath, toSave, encoding);
+            }
+        }
+
+        public async Task ClearProjectDirtyFlagAsync()
+        {
+            using (var access = await _projectLockService.WriteLockAsync())
+            {
+                await access.CheckoutAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
+                var projectRoot = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
+                var stringWriter = new StringWriter();
+                projectRoot.Save(stringWriter);
             }
         }
     }

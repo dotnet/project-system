@@ -315,7 +315,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             Assert.Equal("<Project />", fileSystem.ReadAllText(tempProjectPath));
 
             await textBufferManager.SaveAsync();
-            Mock.Get(msbuildAccessor).Verify(m => m.SaveProjectXmlAsync("<Project></Project>"));
+            Mock.Get(msbuildAccessor).Verify(m => m.ClearProjectDirtyFlagAsync(), Times.Once);
+            Mock.Get(msbuildAccessor).Verify(m => m.SaveProjectXmlAsync("<Project></Project>"), Times.Once);
         }
 
         [Fact]
