@@ -82,20 +82,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
         private Task OnProjectFactoryCompletedAsync()
         {
-            using (_tasksService.LoadedProject())
-            {
-                var watchedEvaluationRules = GetWatchedRules(RuleHandlerType.Evaluation);
-
-                _evaluationSubscriptionLinks.Add(_activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
-                    new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => InitializeAsync(e, RuleHandlerType.Evaluation)),
-                    ruleNames: watchedEvaluationRules, suppressVersionOnlyUpdates: true));
-            }
-
-            return Task.CompletedTask;
+            return InitializeAsync();
         }
 
         protected async override Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
+            if (IsDisposing || IsDisposed)
+                return;
+
             // Don't initialize if we're unloading
             _tasksService.UnloadCancellationToken.ThrowIfCancellationRequested();
 
@@ -106,14 +100,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         Task ILanguageServiceHost.InitializeAsync(CancellationToken cancellationToken)
         {
             return InitializeAsync(cancellationToken);
-        }
-
-        private async Task InitializeAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, RuleHandlerType handlerType)
-        {
-            if (IsDisposing || IsDisposed)
-                return;
-
-            await InitializeAsync().ConfigureAwait(false);
         }
 
         private async Task OnProjectChangedCoreAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, RuleHandlerType handlerType)
