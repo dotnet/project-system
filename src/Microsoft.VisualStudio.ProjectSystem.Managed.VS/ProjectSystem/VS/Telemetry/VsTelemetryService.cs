@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Telemetry
         public void Report(string eventPostfix, string description, Exception exception, Func<IFaultUtility, int> callback = null)
         {
             TelemetryService.DefaultSession.PostFault(
-                eventName: $"vs.projectsystem.{eventPostfix}",
+                eventName: $"vs/projectsystem/{eventPostfix}",
                 description: description,
                 exceptionObject: exception,
                 gatherEventDetails: callback);
