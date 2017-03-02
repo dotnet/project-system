@@ -85,17 +85,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             using (_tasksService.LoadedProject())
             {
                 var watchedEvaluationRules = GetWatchedRules(RuleHandlerType.Evaluation);
-                var watchedDesignTimeBuildRules = GetWatchedRules(RuleHandlerType.DesignTimeBuild);
-
-                _designTimeBuildSubscriptionLinks.Add(_activeConfiguredProjectSubscriptionService.JointRuleSource.SourceBlock.LinkTo(
-                  new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedAsync(e, RuleHandlerType.DesignTimeBuild)),
-                  ruleNames: watchedDesignTimeBuildRules.Union(watchedEvaluationRules), suppressVersionOnlyUpdates: true));
 
                 _evaluationSubscriptionLinks.Add(_activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
-                    new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedAsync(e, RuleHandlerType.Evaluation)),
+                    new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => InitializeAsync(e, RuleHandlerType.Evaluation)),
                     ruleNames: watchedEvaluationRules, suppressVersionOnlyUpdates: true));
-
-                _projectConfigurationsWithSubscriptions.Add(_commonServices.ActiveConfiguredProject.ProjectConfiguration);
             }
 
             return Task.CompletedTask;
@@ -115,14 +108,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return InitializeAsync(cancellationToken);
         }
 
-        private async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, RuleHandlerType handlerType)
+        private async Task InitializeAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, RuleHandlerType handlerType)
         {
             if (IsDisposing || IsDisposed)
                 return;
 
             await InitializeAsync().ConfigureAwait(false);
-
-            await OnProjectChangedCoreAsync(e, handlerType).ConfigureAwait(false);
         }
 
         private async Task OnProjectChangedCoreAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, RuleHandlerType handlerType)
