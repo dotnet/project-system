@@ -134,8 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     catch (Microsoft.Build.Exceptions.InvalidProjectFileException ex)
                     {
                         // Indicate we weren't able to complete the action. We want to do a normal reload
-                        var faultEvent = new FaultEvent("vs.projectsystem.projectreload.reload-failed", "Project Reload Failure due to invalid project file", ex);
-                        _telemetryService.PostEvent(faultEvent);
+                        _telemetryService.Report("projectreload.reload-failed", "Project Reload Failure due to invalid project file", ex);
                         return ProjectReloadResult.ReloadFailed;
                     }
                     catch (Exception ex)
@@ -144,8 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         // The only safe thing to do at this point is to reload the project in the solution
                         // TODO: should we have an additional return value here to indicate that the existing project could be in a bad
                         // state and the reload needs to happen without the user being able to block it?
-                        var faultEvent = new FaultEvent("vs.projectsystem.projectreload.reload-failed", "Project Reload Failure due to general exception", ex);
-                        _telemetryService.PostEvent(faultEvent);
+                        _telemetryService.Report("projectreload.reload-failed", "Project Reload Failure due to general fault", ex);
                         System.Diagnostics.Debug.Assert(false, "Replace xml failed with: " + ex.Message);
                         return ProjectReloadResult.ReloadFailed;
                     }
