@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26226.0
+VisualStudioVersion = 15.0.26228.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeployTestDependencies", "DeployTestDependencies\DeployTestDependencies.csproj", "{37BA82E6-9ABD-4ACA-AA26-2DFD39A359A5}"
 EndProject
@@ -63,6 +63,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.FSharp", "Microsoft.VisualStudio.ProjectSystem.FSharp\Microsoft.VisualStudio.ProjectSystem.FSharp.csproj", "{7CDAA9BE-513D-421F-9A72-46764449C503}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.FSharp.VS", "Microsoft.VisualStudio.ProjectSystem.FSharp.VS\Microsoft.VisualStudio.ProjectSystem.FSharp.VS.csproj", "{B9B06285-2AEB-4126-A825-31F738A4EDFA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.FSharp.UnitTests", "Microsoft.VisualStudio.ProjectSystem.FSharp.UnitTests\Microsoft.VisualStudio.ProjectSystem.FSharp.UnitTests.csproj", "{2E6BC62C-D52B-47EC-B0F6-B9A68C057217}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.FSharp.VS.UnitTests", "Microsoft.VisualStudio.ProjectSystem.FSharp.VS.UnitTests\Microsoft.VisualStudio.ProjectSystem.FSharp.VS.UnitTests.csproj", "{B70FA177-894C-4964-B6A7-937A361321BF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -159,6 +163,14 @@ Global
 		{B9B06285-2AEB-4126-A825-31F738A4EDFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9B06285-2AEB-4126-A825-31F738A4EDFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9B06285-2AEB-4126-A825-31F738A4EDFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E6BC62C-D52B-47EC-B0F6-B9A68C057217}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E6BC62C-D52B-47EC-B0F6-B9A68C057217}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E6BC62C-D52B-47EC-B0F6-B9A68C057217}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E6BC62C-D52B-47EC-B0F6-B9A68C057217}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B70FA177-894C-4964-B6A7-937A361321BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B70FA177-894C-4964-B6A7-937A361321BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B70FA177-894C-4964-B6A7-937A361321BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B70FA177-894C-4964-B6A7-937A361321BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
