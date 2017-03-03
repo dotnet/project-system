@@ -3,11 +3,52 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26226.0
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeployTestDependencies", "DeployTestDependencies\DeployTestDependencies.csproj", "{37BA82E6-9ABD-4ACA-AA26-2DFD39A359A5}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Microsoft.VisualStudio.AppDesigner", "Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj", "{19725D6F-4690-412B-934A-FC48D752B802}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Microsoft.VisualStudio.Editors", "Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.vbproj", "{CD6E5D00-7B0B-442D-9F5D-EAEC1A71838A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.VisualStudio.ProjectSystem.CSharp", "Microsoft.VisualStudio.ProjectSystem.CSharp\Microsoft.VisualStudio.ProjectSystem.CSharp.csproj", "{7D150B7B-CE02-4CD4-8EC9-6A7C18727A36}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.VisualStudio.ProjectSystem.CSharp.UnitTests", "Microsoft.VisualStudio.ProjectSystem.CSharp.UnitTests\Microsoft.VisualStudio.ProjectSystem.CSharp.UnitTests.csproj", "{F81A2B36-6763-42B8-8F4D-5199325D40C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.VisualStudio.ProjectSystem.CSharp.VS", "Microsoft.VisualStudio.ProjectSystem.CSharp.VS\Microsoft.VisualStudio.ProjectSystem.CSharp.VS.csproj", "{765EF6EB-9F36-4D68-8C3D-9E11CD49E0BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.VisualStudio.ProjectSystem.CSharp.VS.UnitTests", "Microsoft.VisualStudio.ProjectSystem.CSharp.VS.UnitTests\Microsoft.VisualStudio.ProjectSystem.CSharp.VS.UnitTests.csproj", "{8123135E-B2A1-4CD1-9658-DDACABEAB8FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.VisualStudio.ProjectSystem.Managed", "Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj", "{6C6A41CE-72C5-4D77-8208-D01693F9BC88}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests", "Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests.csproj", "{C7EC63F8-F96A-4A8F-B879-D572516746B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.VisualStudio.ProjectSystem.Managed.VS", "Microsoft.VisualStudio.ProjectSystem.Managed.VS\Microsoft.VisualStudio.ProjectSystem.Managed.VS.csproj", "{1C5666EA-24A4-4EC2-B8FB-FAEDF6B14697}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests", "Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests\Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests.csproj", "{469B50E9-FE67-459E-8AFA-44CBE523DBF6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.VisualStudio.ProjectSystem.VisualBasic", "Microsoft.VisualStudio.ProjectSystem.VisualBasic\Microsoft.VisualStudio.ProjectSystem.VisualBasic.csproj", "{04AA393A-48C2-424D-985C-77385A962019}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.VisualStudio.ProjectSystem.VisualBasic.UnitTests", "Microsoft.VisualStudio.ProjectSystem.VisualBasic.UnitTests\Microsoft.VisualStudio.ProjectSystem.VisualBasic.UnitTests.csproj", "{FE8D7869-3ABA-45D3-8058-E60C9F1267BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS", "Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS\Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.csproj", "{15DCB34C-B628-49B8-B472-BBA65A0AB6A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.UnitTests", "Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.UnitTests\Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.UnitTests.csproj", "{2F58FC7F-85D9-427A-84F0-A6AA741E5BBA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectSystemSetup", "ProjectSystemSetup\ProjectSystemSetup.csproj", "{9FBD7EF2-9449-486D-9FDD-FA56160AA8BB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{49705330-A4F5-47EA-BB10-3B783CE91AEA} = {49705330-A4F5-47EA-BB10-3B783CE91AEA}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualStudioEditorsSetup", "VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj", "{49705330-A4F5-47EA-BB10-3B783CE91AEA}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A50EC328-5D30-4624-98AD-B649461DB772}"
 	ProjectSection(SolutionItems) = preProject
 		NuGet.config = NuGet.config
 		ProjectSystem.runsettings = ProjectSystem.runsettings
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.VisualStudio.ProjectSystem.Managed.TestServices", "Microsoft.VisualStudio.ProjectSystem.Managed.TestServices\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.csproj", "{23BCBC90-ED65-4EE3-8AF1-DD7CAEFDBEE9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.UnitTests", "Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.UnitTests\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.UnitTests.csproj", "{369DCA0F-A079-4D0C-8B32-53879199B681}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Targets", "Targets", "{573BCEB9-1EC1-49E0-8332-E8436304DFFA}"
 	ProjectSection(SolutionItems) = preProject
@@ -16,48 +57,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Targets", "Targets", "{573B
 		Targets\Microsoft.VisualBasic.DesignTime.targets = Targets\Microsoft.VisualBasic.DesignTime.targets
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeployTestDependencies", "DeployTestDependencies\DeployTestDependencies.csproj", "{37BA82E6-9ABD-4ACA-AA26-2DFD39A359A5}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Microsoft.VisualStudio.AppDesigner", "Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj", "{19725D6F-4690-412B-934A-FC48D752B802}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Microsoft.VisualStudio.Editors", "Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.vbproj", "{CD6E5D00-7B0B-442D-9F5D-EAEC1A71838A}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.CSharp", "Microsoft.VisualStudio.ProjectSystem.CSharp\Microsoft.VisualStudio.ProjectSystem.CSharp.csproj", "{7D150B7B-CE02-4CD4-8EC9-6A7C18727A36}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.CSharp.UnitTests", "Microsoft.VisualStudio.ProjectSystem.CSharp.UnitTests\Microsoft.VisualStudio.ProjectSystem.CSharp.UnitTests.csproj", "{F81A2B36-6763-42B8-8F4D-5199325D40C1}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.CSharp.VS", "Microsoft.VisualStudio.ProjectSystem.CSharp.VS\Microsoft.VisualStudio.ProjectSystem.CSharp.VS.csproj", "{765EF6EB-9F36-4D68-8C3D-9E11CD49E0BC}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.CSharp.VS.UnitTests", "Microsoft.VisualStudio.ProjectSystem.CSharp.VS.UnitTests\Microsoft.VisualStudio.ProjectSystem.CSharp.VS.UnitTests.csproj", "{8123135E-B2A1-4CD1-9658-DDACABEAB8FC}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.Managed", "Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj", "{6C6A41CE-72C5-4D77-8208-D01693F9BC88}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests", "Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests.csproj", "{C7EC63F8-F96A-4A8F-B879-D572516746B4}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.Managed.VS", "Microsoft.VisualStudio.ProjectSystem.Managed.VS\Microsoft.VisualStudio.ProjectSystem.Managed.VS.csproj", "{1C5666EA-24A4-4EC2-B8FB-FAEDF6B14697}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests", "Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests\Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests.csproj", "{469B50E9-FE67-459E-8AFA-44CBE523DBF6}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.VisualBasic", "Microsoft.VisualStudio.ProjectSystem.VisualBasic\Microsoft.VisualStudio.ProjectSystem.VisualBasic.csproj", "{04AA393A-48C2-424D-985C-77385A962019}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.VisualBasic.UnitTests", "Microsoft.VisualStudio.ProjectSystem.VisualBasic.UnitTests\Microsoft.VisualStudio.ProjectSystem.VisualBasic.UnitTests.csproj", "{FE8D7869-3ABA-45D3-8058-E60C9F1267BF}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS", "Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS\Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.csproj", "{15DCB34C-B628-49B8-B472-BBA65A0AB6A5}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.UnitTests", "Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.UnitTests\Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.UnitTests.csproj", "{2F58FC7F-85D9-427A-84F0-A6AA741E5BBA}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectSystemSetup", "ProjectSystemSetup\ProjectSystemSetup.csproj", "{9FBD7EF2-9449-486D-9FDD-FA56160AA8BB}"
-	ProjectSection(ProjectDependencies) = postProject
-		{49705330-A4F5-47EA-BB10-3B783CE91AEA} = {49705330-A4F5-47EA-BB10-3B783CE91AEA}
-	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualStudioEditorsSetup", "VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj", "{49705330-A4F5-47EA-BB10-3B783CE91AEA}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.Managed.TestServices", "Microsoft.VisualStudio.ProjectSystem.Managed.TestServices\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.csproj", "{23BCBC90-ED65-4EE3-8AF1-DD7CAEFDBEE9}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.UnitTests", "Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.UnitTests\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.UnitTests.csproj", "{369DCA0F-A079-4D0C-8B32-53879199B681}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectSystemDogfoodSetup", "ProjectSystemDogfoodSetup\ProjectSystemDogfoodSetup.csproj", "{F9522F27-B9AC-4D6F-8F54-6A8BD4D33574}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectSystemDogfoodSetup", "ProjectSystemDogfoodSetup\ProjectSystemDogfoodSetup.csproj", "{F9522F27-B9AC-4D6F-8F54-6A8BD4D33574}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
