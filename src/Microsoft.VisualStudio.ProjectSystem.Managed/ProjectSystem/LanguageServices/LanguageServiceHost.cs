@@ -104,6 +104,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private async Task OnProjectChangedCoreAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, RuleHandlerType handlerType)
         {
+            if (IsDisposing || IsDisposed)
+                return;
+
             await _tasksService.LoadedProjectAsync(async () =>
             {
                 await HandleAsync(e, handlerType).ConfigureAwait(false);
