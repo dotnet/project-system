@@ -18,7 +18,7 @@ if /I "%1" == "/debug" set BuildConfiguration=Debug&&shift&& goto :ParseArgument
 if /I "%1" == "/release" set BuildConfiguration=Release&&shift&& goto :ParseArguments
 if /I "%1" == "/rebuild" set MSBuildTarget=Rebuild&&shift&& goto :ParseArguments
 if /I "%1" == "/restore" set MSBuildTarget=RestorePackages&&shift&& goto :ParseArguments
-if /I "%1" == "/modernvsixonly" set MSBuildTarget=BuildModernVsixPackages&&shift&& goto :ParseArguments
+if /I "%1" == "/modernvsixonly" set MSBuildTarget=BuildModernVsixPackages&set CopyOutputArtifactsAfterBuild=true&&shift&& goto :ParseArguments
 if /I "%1" == "/skiptests" set RunTests=false&&shift&& goto :ParseArguments
 if /I "%1" == "/no-deploy-extension" set DeployVsixExtension=false&&shift&& goto :ParseArguments
 if /I "%1" == "/no-node-reuse" set NodeReuse=false&&shift&& goto :ParseArguments
@@ -56,9 +56,18 @@ if ERRORLEVEL 1 (
     exit /b 1
 )
 
+REM Run copy as a final step after Modern Vsixes are built
+if /I "%RunningInMicroBuild%" == "true" (
+  if /I "%SignType%" == "Real" (
+    if /I "%CopyOutputArtifactsAfterBuild%" == "true" (
+      call build\Scripts\CopyOutput.cmd
+    )
+  )
+)
+exit /b 0
+
 echo.
 call :PrintColor Green "Build completed successfully, for full log see %LogFile%"
-exit /b 0
 
 :Usage
 echo Usage: %BatchFile% [/rebuild^|/restore^|/modernvsixonly] [/debug^|/release] [/no-node-reuse] [/no-multi-proc] [/skiptests] [/no-deploy-extension]
