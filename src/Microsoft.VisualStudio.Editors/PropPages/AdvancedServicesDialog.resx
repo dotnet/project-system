@@ -225,7 +225,7 @@
     <value>275, 17</value>
   </data>
   <data name="SavePasswordHashLocallyCheckbox.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="SavePasswordHashLocallyCheckbox.Text" xml:space="preserve">
     <value>&amp;Save password hash locally to enable offline login</value>
@@ -258,7 +258,7 @@
     <value>185, 17</value>
   </data>
   <data name="HonorServerCookieExpirationCheckbox.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="HonorServerCookieExpirationCheckbox.Text" xml:space="preserve">
     <value>&amp;Require users to log on again whenever the server cookie expires</value>
@@ -291,7 +291,7 @@
     <value>184, 17</value>
   </data>
   <data name="UseCustomConnectionStringCheckBox.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="UseCustomConnectionStringCheckBox.Text" xml:space="preserve">
     <value>&amp;Use custom connection string:</value>
@@ -360,7 +360,7 @@
     <value>476, 60</value>
   </data>
   <data name="CustomConnectionString.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="&gt;&gt;CustomConnectionString.Name" xml:space="preserve">
     <value>CustomConnectionString</value>
