@@ -58,7 +58,7 @@ REM version but different contents than the legacy VSIX projects.
 for %%T IN (Restore %MSBuildBuildTarget%, BuildModernVsixPackages) do (
   
   set LogFile=%BinariesDirectory%%%T.log
-  set LogFiles=!LogFiles!!LogFile!
+  set LogFiles=!LogFiles!!LogFile! 
   
   if "%%T" == "Restore" (
     set ConsoleLoggerVerbosity=quiet
