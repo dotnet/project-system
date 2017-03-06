@@ -10,6 +10,7 @@ set DeveloperCommandPrompt=%VS150COMNTOOLS%\VsDevCmd.bat
 set MSBuildAdditionalArguments=/m
 set RunTests=true
 set DeployVsixExtension=true
+set ConsoleLoggerVerbosity=minimal
 set FileLoggerVerbosity=detailed
 REM Turn on MSBuild async logging to speed up builds
 set MSBUILDLOGASYNC=1 
@@ -57,9 +58,14 @@ REM version but different contents than the legacy VSIX projects.
 for %%T IN (Restore %MSBuildBuildTarget%, BuildModernVsixPackages) do (
   
   set LogFile=%BinariesDirectory%%%T.log
-  set LogFiles=!LogFiles!!LogFile! 
+  set LogFiles=!LogFiles!!LogFile!
   
-  msbuild /nologo /warnaserror /nodeReuse:%NodeReuse% /consoleloggerparameters:Verbosity=minimal /fileLogger /fileloggerparameters:LogFile="!LogFile!";verbosity=%FileLoggerVerbosity% /t:"%%T" /p:Configuration="%BuildConfiguration%" /p:RunTests="%RunTests%" /p:DeployVsixExtension="%DeployVsixExtension%" "%Root%build\build.proj" %MSBuildAdditionalArguments%
+  if "%%T" == "Restore" (
+    set ConsoleLoggerVerbosity=quiet
+    echo   Restoring packages for ProjectSystem
+  )
+  
+  msbuild /nologo /warnaserror /nodeReuse:%NodeReuse% /consoleloggerparameters:Verbosity=!ConsoleLoggerVerbosity! /fileLogger /fileloggerparameters:LogFile="!LogFile!";verbosity=%FileLoggerVerbosity% /t:"%%T" /p:Configuration="%BuildConfiguration%" /p:RunTests="%RunTests%" /p:DeployVsixExtension="%DeployVsixExtension%" "%Root%build\build.proj" %MSBuildAdditionalArguments%
   if ERRORLEVEL 1 (
     echo.
     call :PrintColor Red "Build failed, for full log see !LogFile!."
