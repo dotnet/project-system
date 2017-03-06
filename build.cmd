@@ -50,10 +50,11 @@ if "%VisualStudioVersion%" == "" (
 set BinariesDirectory=%Root%bin\%BuildConfiguration%\
 if not exist "%BinariesDirectory%" mkdir "%BinariesDirectory%" || goto :BuildFailed
 
-REM We need to build the VSIX and Modern VSIX packages in a different MSBuild process because
-REM MicroBuild when building the modern VSIX packages has a dependency on a dll with the same 
-REM version but different contents.
-for %%T IN (%MSBuildBuildTarget%, BuildModernVsixPackages) do (
+REM We build Restore, Build and BuildModernVsixPackages in different MSBuild processes.
+REM Restore because we want to control the verbosity due to https://github.com/NuGet/Home/issues/4695.
+REM BuildModernVsixPackages because under MicroBuild, it has a dependency on a dll with the same 
+REM version but different contents than the legacy VSIX projects.
+for %%T IN (Restore %MSBuildBuildTarget%, BuildModernVsixPackages) do (
   
   set LogFile=%BinariesDirectory%%%T.log
   set LogFiles=!LogFiles!!LogFile! 

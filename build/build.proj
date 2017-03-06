@@ -24,7 +24,7 @@
     <VsManProjectFile Include="$(RepositoryRootDirectory)src\VsixV3\ProjectSystemPackage\Microsoft.VisualStudio.ProjectSystem.Managed.vsmanproj" />
   </ItemGroup>
 
-  <Target Name="RestorePackages">
+  <Target Name="Restore">
 
     <Message Text="Restoring packages for %(SolutionFile.Filename)" Importance="high" />
 
@@ -111,7 +111,7 @@
 
   </Target>
  
-  <Target Name="Build" DependsOnTargets="RestorePackages;BuildSolution;BuildNuGetPackages;Test" />
-  <Target Name="Rebuild" DependsOnTargets="RestorePackages;RebuildSolution;RebuildNuGetPackages;Test" />
+  <Target Name="Build" DependsOnTargets="BuildSolution;BuildNuGetPackages;Test" />
+  <Target Name="Rebuild" DependsOnTargets="RebuildSolution;RebuildNuGetPackages;Test" />
 
 </Project>
