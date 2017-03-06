@@ -229,7 +229,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Public Function ActivateLogicalView(ByRef rguidLogicalView As Guid) As Integer Implements IVsMultiViewDocumentView.ActivateLogicalView
             Common.Switches.TracePDFocus(TraceLevel.Warning, "CodeMarker: perfMSVSEditorsActivateLogicalViewStart")
             Common.Switches.TracePDPerf("CodeMarker: perfMSVSEditorsActivateLogicalViewStart")
-            CodeMarkers.Instance.CodeMarker(CodeMarkerEvent.perfMSVSEditorsActivateLogicalViewStart)
+            CodeMarkers.Instance.CodeMarker(RoslynCodeMarkerEvent.perfMSVSEditorsActivateLogicalViewStart)
 
             If AppDesignerView Is Nothing Then
                 PopulateView(rguidLogicalView)
@@ -243,7 +243,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 End If
             End If
 
-            CodeMarkers.Instance.CodeMarker(CodeMarkerEvent.perfMSVSEditorsActivateLogicalViewEnd)
+            CodeMarkers.Instance.CodeMarker(RoslynCodeMarkerEvent.perfMSVSEditorsActivateLogicalViewEnd)
             Common.Switches.TracePDFocus(TraceLevel.Warning, "CodeMarker: perfMSVSEditorsActivateLogicalViewEnd")
             Common.Switches.TracePDPerf("CodeMarker: perfMSVSEditorsActivateLogicalViewEnd")
         End Function
