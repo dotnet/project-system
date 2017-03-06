@@ -29,7 +29,7 @@
     <NugetArguments>-verbosity quiet -msbuildpath &quot;$(DevenvDir)\..\..\MSBuild\15.0\bin&quot;</NugetArguments>
   </PropertyGroup>
 
-  <Target Name="RestorePackages">
+  <Target Name="Restore">
 
     <Message Text="Restoring packages for %(SolutionFile.Filename)" Importance="high" />
 
@@ -112,7 +112,7 @@
 
   </Target>
  
-  <Target Name="Build" DependsOnTargets="RestorePackages;BuildSolution;BuildNuGetPackages;Test" />
-  <Target Name="Rebuild" DependsOnTargets="RestorePackages;RebuildSolution;RebuildNuGetPackages;Test" />
+  <Target Name="Build" DependsOnTargets="BuildSolution;BuildNuGetPackages;Test" />
+  <Target Name="Rebuild" DependsOnTargets="RebuildSolution;RebuildNuGetPackages;Test" />
 
 </Project>
