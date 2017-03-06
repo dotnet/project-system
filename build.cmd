@@ -4,7 +4,7 @@ setlocal enabledelayedexpansion
 set BatchFile=%0
 set Root=%~dp0
 set BuildConfiguration=Debug
-set MSBuildTarget=Build
+set MSBuildBuildTarget=Build
 set NodeReuse=true
 set DeveloperCommandPrompt=%VS150COMNTOOLS%\VsDevCmd.bat
 set MSBuildAdditionalArguments=/m
@@ -17,8 +17,8 @@ set MSBUILDLOGASYNC=1
 :ParseArguments
 if "%1" == "" goto :DoneParsing
 if /I "%1" == "/?" call :Usage && exit /b 1
-if /I "%1" == "/build" set MSBuildTarget=Build&&shift&& goto :ParseArguments
-if /I "%1" == "/rebuild" set MSBuildTarget=Rebuild&&shift&& goto :ParseArguments
+if /I "%1" == "/build" set MSBuildBuildTarget=Build&&shift&& goto :ParseArguments
+if /I "%1" == "/rebuild" set MSBuildBuildTarget=Rebuild&&shift&& goto :ParseArguments
 if /I "%1" == "/debug" set BuildConfiguration=Debug&&shift&& goto :ParseArguments
 if /I "%1" == "/release" set BuildConfiguration=Release&&shift&& goto :ParseArguments
 if /I "%1" == "/skiptests" set RunTests=false&&shift&& goto :ParseArguments
@@ -53,7 +53,7 @@ if not exist "%BinariesDirectory%" mkdir "%BinariesDirectory%" || goto :BuildFai
 REM We need to build the VSIX and Modern VSIX packages in a different MSBuild process because
 REM MicroBuild when building the modern VSIX packages has a dependency on a dll with the same 
 REM version but different contents.
-for %%T IN (%MSBuildTarget%, BuildModernVsixPackages) do (
+for %%T IN (%MSBuildBuildTarget%, BuildModernVsixPackages) do (
   
   set LogFile=%BinariesDirectory%%%T.log
   set LogFiles=!LogFiles!!LogFile! 
