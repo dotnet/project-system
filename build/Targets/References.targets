@@ -120,6 +120,7 @@
           <HintPath>$(DevEnvDir)\PrivateAssemblies\Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll</HintPath>
         </Reference>
 
+        <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="15.0.26124-rc3" />
         <PackageReference Include="Microsoft.VisualStudio.Designer.Interfaces" Version="1.1.4322" />
         <PackageReference Include="Microsoft.VisualStudio.ManagedInterfaces" Version="8.0.50727" />
         <PackageReference Include="Microsoft.VisualStudio.WCFReference.Interop" Version="9.0.30729" />
