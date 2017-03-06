@@ -10,6 +10,7 @@ set DeveloperCommandPrompt=%VS150COMNTOOLS%\VsDevCmd.bat
 set MSBuildAdditionalArguments=/m
 set RunTests=true
 set DeployVsixExtension=true
+set FileLoggerVerbosity=detailed
 REM Turn on MSBuild async logging to speed up builds
 set MSBUILDLOGASYNC=1 
 
@@ -23,7 +24,7 @@ if /I "%1" == "/release" set BuildConfiguration=Release&&shift&& goto :ParseArgu
 if /I "%1" == "/skiptests" set RunTests=false&&shift&& goto :ParseArguments
 if /I "%1" == "/no-deploy-extension" set DeployVsixExtension=false&&shift&& goto :ParseArguments
 if /I "%1" == "/no-node-reuse" set NodeReuse=false&&shift&& goto :ParseArguments
-if /I "%1" == "/no-multi-proc" set MSBuildAdditionalArguments=&&shift&& goto :ParseArguments
+if /I "%1" == "/diagnostic" set FileLoggerVerbosity=diagnostic&&set MSBuildAdditionalArguments=&&shift&& goto :ParseArguments
 call :Usage && exit /b 1
 :DoneParsing
 
@@ -57,7 +58,7 @@ for %%T IN (%MSBuildTarget%, BuildModernVsixPackages) do (
   set LogFile=%BinariesDirectory%%%T.log
   set LogFiles=!LogFiles!!LogFile! 
   
-  msbuild /nologo /warnaserror /nodeReuse:%NodeReuse% /consoleloggerparameters:Verbosity=minimal /fileLogger /fileloggerparameters:LogFile="!LogFile!";verbosity=diagnostic /t:"%%T" /p:Configuration="%BuildConfiguration%" /p:RunTests="%RunTests%" /p:DeployVsixExtension="%DeployVsixExtension%" "%Root%build\build.proj" %MSBuildAdditionalArguments%
+  msbuild /nologo /warnaserror /nodeReuse:%NodeReuse% /consoleloggerparameters:Verbosity=minimal /fileLogger /fileloggerparameters:LogFile="!LogFile!";verbosity=%FileLoggerVerbosity% /t:"%%T" /p:Configuration="%BuildConfiguration%" /p:RunTests="%RunTests%" /p:DeployVsixExtension="%DeployVsixExtension%" "%Root%build\build.proj" %MSBuildAdditionalArguments%
   if ERRORLEVEL 1 (
     echo.
     call :PrintColor Red "Build failed, for full log see !LogFile!."
@@ -73,19 +74,19 @@ exit /b 0
 echo Usage: %BatchFile% [/build^|/rebuild] [/debug^|/release] [/no-node-reuse] [/no-multi-proc] [/skiptests] [/no-deploy-extension]
 echo.
 echo   Build targets:
-echo     /build                   Perform a build (default)
-echo     /rebuild                 Perform a clean, then build
+echo     /build                  Perform a build (default)
+echo     /rebuild                Perform a clean, then build
 echo.
 echo   Configurations:
-echo     /debug                   Perform debug build (default)
-echo     /release                 Perform release build
+echo     /debug                  Perform debug build (default)
+echo     /release                Perform release build
 echo.
 echo   Build options:
-echo     /no-node-reuse           Prevents MSBuild from reusing existing MSBuild instances,
-echo                              useful for avoiding unexpected behavior on build machines
-echo     /no-multi-proc           No multi-proc build, useful for diagnosing build logs
-echo     /no-deploy-extension     Does not deploy the VSIX extension when building the solution
-echo     /skiptests               Does not run unit tests
+echo     /diagnostic             Turns on diagnostic logging and turns off multi-proc build, useful for diagnosing build logs
+echo     /no-node-reuse          Prevents MSBuild from reusing existing MSBuild instances,
+echo                             useful for avoiding unexpected behavior on build machines
+echo     /no-deploy-extension    Does not deploy the VSIX extension when building the solution
+echo     /skiptests              Does not run unit tests
 goto :eof
 
 :BuildFailed
