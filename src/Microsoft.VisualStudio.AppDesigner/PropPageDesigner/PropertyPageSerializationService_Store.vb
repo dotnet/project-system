@@ -1,12 +1,5 @@
 ' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-'******************************************************************************
-'* PropertyPageSerializationService.vb
-'*
-'* Copyright (C) 1999-2003 Microsoft Corporation. All Rights Reserved.
-'* Information Contained Herein Is Proprietary and Confidential.
-'******************************************************************************'-------------------------------------------------------------------------------
-
 Imports System.ComponentModel
 Imports System.ComponentModel.Design
 Imports System.IO
