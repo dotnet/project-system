@@ -2,6 +2,7 @@
   <PropertyGroup>
     <RoslynSemanticVersion Condition="'$(RoslynSemanticVersion)' == '' AND '$(UseVisualStudioVersion)' == 'true'">15.0.1</RoslynSemanticVersion>
     <RoslynSemanticVersion Condition="'$(RoslynSemanticVersion)' == ''">2.0.1</RoslynSemanticVersion>
+    <MicroBuildVersion>0.2.0</MicroBuildVersion>
     <BuildNumber Condition="'$(BuildNumber)' == ''">$(BUILD_BUILDNUMBER)</BuildNumber>
 
     <!-- Split the build parts out from the BuildNumber which is given to us by MicroBuild in the format of yyyymmdd.nn
