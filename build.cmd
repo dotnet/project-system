@@ -62,7 +62,7 @@ for %%T IN (Restore %MSBuildBuildTarget%, BuildModernVsixPackages) do (
   
   if "%%T" == "Restore" (
     set ConsoleLoggerVerbosity=quiet
-    echo   Restoring packages for ProjectSystem
+    echo   Restoring packages for ProjectSystem (this may take some time^)
   )
 
   set BuildCommand=msbuild /nologo /warnaserror /nodeReuse:%NodeReuse% /consoleloggerparameters:Verbosity=!ConsoleLoggerVerbosity! /fileLogger /fileloggerparameters:LogFile="!LogFile!";verbosity=%FileLoggerVerbosity% /t:"%%T" /p:Configuration="%BuildConfiguration%" /p:RunTests="%RunTests%" /p:DeployVsixExtension="%DeployVsixExtension%" "%Root%build\build.proj" %MSBuildAdditionalArguments%

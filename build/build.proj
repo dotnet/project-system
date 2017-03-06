@@ -31,7 +31,7 @@
 
   <Target Name="Restore">
 
-    <Message Text="Restoring packages for %(SolutionFile.Filename)" Importance="high" />
+    <Message Text="Restoring packages for %(SolutionFile.Filename) (this may take some time)" Importance="high" />
 
     <Exec Command="&quot;$(RepositoryRootDirectory)build\bin\NuGet.exe&quot; restore $(NugetArguments) &quot;@(SolutionFile)&quot;" />
   </Target>
