@@ -10,6 +10,8 @@ set DeveloperCommandPrompt=%VS150COMNTOOLS%\VsDevCmd.bat
 set MSBuildAdditionalArguments=/m
 set RunTests=true
 set DeployVsixExtension=true
+REM Turn on MSBuild async logging to speed up builds
+set MSBUILDLOGASYNC=1 
 
 :ParseArguments
 if "%1" == "" goto :DoneParsing
