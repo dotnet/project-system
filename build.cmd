@@ -64,8 +64,14 @@ for %%T IN (Restore %MSBuildBuildTarget%, BuildModernVsixPackages) do (
     set ConsoleLoggerVerbosity=quiet
     echo   Restoring packages for ProjectSystem
   )
+
+  set BuildCommand=msbuild /nologo /warnaserror /nodeReuse:%NodeReuse% /consoleloggerparameters:Verbosity=!ConsoleLoggerVerbosity! /fileLogger /fileloggerparameters:LogFile="!LogFile!";verbosity=%FileLoggerVerbosity% /t:"%%T" /p:Configuration="%BuildConfiguration%" /p:RunTests="%RunTests%" /p:DeployVsixExtension="%DeployVsixExtension%" "%Root%build\build.proj" %MSBuildAdditionalArguments%
+  if "%FileLoggerVerbosity%" == "diagnostic" (
+    echo !BuildCommand!
+  )
   
-  msbuild /nologo /warnaserror /nodeReuse:%NodeReuse% /consoleloggerparameters:Verbosity=!ConsoleLoggerVerbosity! /fileLogger /fileloggerparameters:LogFile="!LogFile!";verbosity=%FileLoggerVerbosity% /t:"%%T" /p:Configuration="%BuildConfiguration%" /p:RunTests="%RunTests%" /p:DeployVsixExtension="%DeployVsixExtension%" "%Root%build\build.proj" %MSBuildAdditionalArguments%
+  !BuildCommand!
+
   if ERRORLEVEL 1 (
     echo.
     call :PrintColor Red "Build failed, for full log see !LogFile!."
