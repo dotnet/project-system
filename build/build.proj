@@ -26,7 +26,7 @@
 
   <Target Name="Restore">
 
-    <Message Text="Restoring packages for %(SolutionFile.Filename)" Importance="high" />
+    <Message Text="Restoring packages for %(SolutionFile.Filename) (this may take some time)" Importance="high" />
 
     <MSBuild BuildInParallel="true"
              Projects="@(SolutionFile)"
