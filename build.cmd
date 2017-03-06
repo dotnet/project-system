@@ -10,7 +10,6 @@ set DeveloperCommandPrompt=%VS150COMNTOOLS%\VsDevCmd.bat
 set MSBuildAdditionalArguments=/m
 set RunTests=true
 set DeployVsixExtension=true
-set ConsoleLoggerVerbosity=minimal
 set FileLoggerVerbosity=detailed
 REM Turn on MSBuild async logging to speed up builds
 set MSBUILDLOGASYNC=1 
@@ -63,6 +62,8 @@ for %%T IN (Restore %MSBuildBuildTarget%, BuildModernVsixPackages) do (
   if "%%T" == "Restore" (
     set ConsoleLoggerVerbosity=quiet
     echo   Restoring packages for ProjectSystem (this may take some time^)
+  ) else (
+    set ConsoleLoggerVerbosity=minimal
   )
 
   set BuildCommand=msbuild /nologo /warnaserror /nodeReuse:%NodeReuse% /consoleloggerparameters:Verbosity=!ConsoleLoggerVerbosity! /fileLogger /fileloggerparameters:LogFile="!LogFile!";verbosity=%FileLoggerVerbosity% /t:"%%T" /p:Configuration="%BuildConfiguration%" /p:RunTests="%RunTests%" /p:DeployVsixExtension="%DeployVsixExtension%" "%Root%build\build.proj" %MSBuildAdditionalArguments%
