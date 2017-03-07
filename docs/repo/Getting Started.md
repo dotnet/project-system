@@ -1,7 +1,7 @@
 ### Code
 
 #### Visual Studio
-From within [Visual Studio "15" Preview 2](https://www.visualstudio.com/en-us/downloads/visual-studio-next-downloads-vs), simply open _src\ProjectSystem.sln_.
+From within [Visual Studio 2017](https://www.visualstudio.com/downloads/), simply open _src\ProjectSystem.sln_.
 
 Inside Visual Studio, you can build, deploy and run tests.
 
