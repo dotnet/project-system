@@ -1,7 +1,4 @@
-<Project
-  xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
-  DefaultTargets="Build"
-  ToolsVersion="14.0">
+<Project DefaultTargets="Build">
 
   <PropertyGroup>
     <RepositoryRootDirectory>$(MSBuildThisFileDirectory)..\</RepositoryRootDirectory>
@@ -15,7 +12,7 @@
 
   <ItemGroup>
     <SolutionFile Include="$(RepositoryRootDirectory)src\ProjectSystem.sln" />
-    <NuGetProjectFile Include="$(RepositoryRootDirectory)src\Nuget\Nuget.proj" />
+    <NuGetProjectFile Include="$(RepositoryRootDirectory)src\NuGet\NuGet.proj" />
     <VsManProjectFile Include="$(RepositoryRootDirectory)src\VsixV3\EditorsPackage\Microsoft.VisualStudio.Editors.vsmanproj" />
     <VsManProjectFile Include="$(RepositoryRootDirectory)src\VsixV3\ProjectSystemPackage\Microsoft.VisualStudio.ProjectSystem.Managed.vsmanproj" />
   </ItemGroup>
@@ -25,9 +22,9 @@
     <NugetArguments>-verbosity quiet -msbuildpath &quot;$(DevenvDir)\..\..\MSBuild\15.0\bin&quot;</NugetArguments>
   </PropertyGroup>
 
-  <Target Name="RestorePackages">
+  <Target Name="Restore">
 
-    <Message Text="Restoring packages for %(SolutionFile.Filename)" Importance="high" />
+    <Message Text="Restoring packages for %(SolutionFile.Filename) (this may take some time)" Importance="high" />
 
     <Exec Command="&quot;$(RepositoryRootDirectory)build\bin\NuGet.exe&quot; restore $(NugetArguments) &quot;@(SolutionFile)&quot;" />
   </Target>
@@ -52,7 +49,7 @@
              />
   </Target>
 
-    <Target Name="BuildNuGetPackages">
+  <Target Name="BuildNuGetPackages">
 
     <Message Text="Building NuGet packages [$(Configuration)]" Importance="high" />
       
@@ -74,10 +71,12 @@
 
   <Target Name="BuildModernVsixPackages">
 
+    <Message Text="Rebuilding Modern VSIX Packages [$(Configuration)]" Importance="high" />
+    
     <MSBuild Projects="@(VsManProjectFile)"
              Targets="Rebuild"
-             
              />
+
   </Target>
 
   <Target Name="Test" Condition="'$(RunTests)' == 'true'">
@@ -94,6 +93,7 @@
           LogStandardErrorAsError="true"
           IgnoreExitCode="true"
           >
+
       <Output TaskParameter="ExitCode" PropertyName="ExitCode" />
     </Exec>
 
@@ -101,7 +101,7 @@
 
   </Target>
  
-  <Target Name="Build" DependsOnTargets="RestorePackages;BuildSolution;BuildNuGetPackages;Test" />
-  <Target Name="Rebuild" DependsOnTargets="RestorePackages;RebuildSolution;RebuildNuGetPackages;Test" />
+  <Target Name="Build" DependsOnTargets="BuildSolution;BuildNuGetPackages;Test" />
+  <Target Name="Rebuild" DependsOnTargets="RebuildSolution;RebuildNuGetPackages;Test" />
 
 </Project>
