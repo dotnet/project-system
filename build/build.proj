@@ -14,10 +14,6 @@
     <CommonMSBuildGlobalProperties>
       Configuration=$(Configuration);
     </CommonMSBuildGlobalProperties>
-    <CommonMSBuildGlobalProperties Condition="'$(RunningInMicroBuild)' == 'true'">
-      $(CommonMSBuildGlobalProperties)
-      DeployExtension=false;
-    </CommonMSBuildGlobalProperties>
   </PropertyGroup>
 
   <ItemGroup>
