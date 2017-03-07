@@ -76,6 +76,11 @@
         <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.1.0-preview-000516-03" />
         <PackageReference Include="Microsoft.Build.Tasks.Core" Version="15.1.0-preview-000516-03" />
         <PackageReference Include="Microsoft.Build.Engine" Version="15.1.0-preview-000516-03" />
+
+        <!-- MicroBuild -->
+        <PackageReference Include="MicroBuild.Core.Sentinel" Version="1.0.0" />
+        <PackageReference Include="MicroBuild.Core" Version="$(MicroBuildVersion)" />
+        <PackageReference Include="MicroBuild.Plugins.SwixBuild" Version="1.0.101" ExcludeAssets="Build" />
       </ItemGroup>
     </When>
   </Choose>
