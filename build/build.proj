@@ -8,9 +8,6 @@
          by NuGet.exe, so don't be tempted to change the name.-->
     <NUGET_PACKAGES Condition="'$(NUGET_PACKAGES)' == ''">$(UserProfile)\.nuget\packages</NUGET_PACKAGES>
 
-    <CommonMSBuildGlobalProperties>
-      Configuration=$(Configuration);
-    </CommonMSBuildGlobalProperties>
   </PropertyGroup>
 
   <ItemGroup>
@@ -38,7 +35,6 @@
     <MSBuild BuildInParallel="true"
              Projects="@(SolutionFile)"
              Targets="Build"
-             Properties="$(CommonMSBuildGlobalProperties)"
              />
   </Target>
 
@@ -49,7 +45,6 @@
     <MSBuild BuildInParallel="true"
              Projects="@(SolutionFile)"
              Targets="Rebuild"
-             Properties="$(CommonMSBuildGlobalProperties)"
              />
   </Target>
 
@@ -60,7 +55,6 @@
     <MSBuild BuildInParallel="true"
               Projects="@(NuGetProjectFile)"
               Targets="Build"
-              Properties="$(CommonMSBuildGlobalProperties)"
               />
   </Target>
   
@@ -71,7 +65,6 @@
     <MSBuild BuildInParallel="true"
               Projects="@(NuGetProjectFile)"
               Targets="Rebuild"
-              Properties="$(CommonMSBuildGlobalProperties)"
               />
   </Target>
 
