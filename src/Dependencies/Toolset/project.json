@@ -4,7 +4,7 @@
     "MicroBuild.Core.Sentinel": "1.0.0",
     "MicroBuild.Core": "0.2.0",
     "MicroBuild.Plugins.SwixBuild": {
-      "version": "1.0.101",
+      "version": "1.1.0-g0701ee829f",
       "exclude": "build"
     },
     "Microsoft.Net.Compilers": {
