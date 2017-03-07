@@ -80,7 +80,7 @@
         <!-- MicroBuild -->
         <PackageReference Include="MicroBuild.Core.Sentinel" Version="1.0.0" />
         <PackageReference Include="MicroBuild.Core" Version="$(MicroBuildVersion)" />
-        <PackageReference Include="MicroBuild.Plugins.SwixBuild" Version="1.0.101" ExcludeAssets="Build" />
+        <PackageReference Include="MicroBuild.Plugins.SwixBuild" Version="1.1.0-g0701ee829f" ExcludeAssets="Build" />
       </ItemGroup>
     </When>
   </Choose>
