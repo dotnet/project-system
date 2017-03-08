@@ -88,16 +88,6 @@
     </ProjectReference>
     -->
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="MyExtensibility\MyExtensibilityTestRes.resx">
-      <SubType>Designer</SubType>
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>MyExtensibilityTestRes.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Zapotec.bmp" />
-  </ItemGroup>
   <!--Import the targets-->
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
 </Project>
