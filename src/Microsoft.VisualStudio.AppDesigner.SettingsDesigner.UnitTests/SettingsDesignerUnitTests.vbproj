@@ -74,5 +74,5 @@
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.vbproj" />
   </ItemGroup>
-  <Import Project="..\..\..\build\Targets\VSL.Imports.targets" />
+  <Import Project="..\..\build\Targets\VSL.Imports.targets" />
 </Project>
