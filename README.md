@@ -1,10 +1,12 @@
-## Welcome to the Roslyn C# and Visual Basic project system
+## Welcome to the new C# and Visual Basic project system
 
-|Debug|Release|
-|:--:|:--:|
-|[![Build Status](http://ci.dot.net/job/dotnet_roslyn-project-system/job/master/job/windows_debug/badge/icon)](http://ci.dot.net/job/dotnet_roslyn-project-system/job/master/job/windows_debug/)|[![Build Status](http://ci.dot.net/job/dotnet_roslyn-project-system/job/master/job/windows_release/badge/icon)](http://ci.dot.net/job/dotnet_roslyn-project-system/job/master/job/windows_release/)|
+|Branch|Debug|Release|
+|---|:--:|:--:|
+|dev15.0.x|[![Build Status](http://ci.dot.net/job/dotnet_roslyn-project-system/job/dev15.0.x/job/windows_debug/badge/icon)](http://ci.dot.net/job/dotnet_roslyn-project-system/job/dev15.0.x/job/windows_debug/)|[![Build Status](http://ci.dot.net/job/dotnet_roslyn-project-system/job/dev15.0.x/job/windows_release/badge/icon)](http://ci.dot.net/job/dotnet_roslyn-project-system/job/dev15.0.x/job/windows_release/)|
+|dev15.1.x|[![Build Status](http://ci.dot.net/job/dotnet_roslyn-project-system/job/dev15.1.x/job/windows_debug/badge/icon)](http://ci.dot.net/job/dotnet_roslyn-project-system/job/dev15.1.x/job/windows_debug/)|[![Build Status](http://ci.dot.net/job/dotnet_roslyn-project-system/job/dev15.1.x/job/windows_release/badge/icon)](http://ci.dot.net/job/dotnet_roslyn-project-system/job/dev15.1.x/job/windows_release/)|
+|master|[![Build Status](http://ci.dot.net/job/dotnet_roslyn-project-system/job/master/job/windows_debug/badge/icon)](http://ci.dot.net/job/dotnet_roslyn-project-system/job/master/job/windows_debug/)|[![Build Status](http://ci.dot.net/job/dotnet_roslyn-project-system/job/master/job/windows_release/badge/icon)](http://ci.dot.net/job/dotnet_roslyn-project-system/job/master/job/windows_release/)|
 
-In the Visual Studio "15" timeframe, the C# and Visual Basic project systems will be rewritten on top of the new [Visual Studio Common Project System (CPS)](https://blogs.msdn.microsoft.com/visualstudio/2015/06/02/introducing-the-project-system-extensibility-preview/).
+The repository contains the new C# and Visual Basic project system that has been rewritten on top of the [Visual Studio Common Project System (CPS)](https://blogs.msdn.microsoft.com/visualstudio/2015/06/02/introducing-the-project-system-extensibility-preview/). In Visual Studio 2017, this project system is used by default for the Shared Projects, .NET Core and .NET Standard project types, but long term it will be the basis of all C#/VB project types.
 
 The current C# and Visual Basic project systems (csproj.dll and msvbprj.dll), which first shipped back in Visual Studio.net nearly 15 years ago have served us well, but are:
 
