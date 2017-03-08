@@ -1,7 +1,7 @@
 ## Welcome to the new C# and Visual Basic project system
 
 |Branch|Debug|Release|
-|--|:--:|:--:|
+|---|:--:|:--:|
 |dev15.0.x|[![Build Status](http://ci.dot.net/job/dotnet_roslyn-project-system/job/dev15.0.x/job/windows_debug/badge/icon)](http://ci.dot.net/job/dotnet_roslyn-project-system/job/dev15.0.x/job/windows_debug/)|[![Build Status](http://ci.dot.net/job/dotnet_roslyn-project-system/job/dev15.0.x/job/windows_release/badge/icon)](http://ci.dot.net/job/dotnet_roslyn-project-system/job/dev15.0.x/job/windows_release/)|
 |dev15.1.x|[![Build Status](http://ci.dot.net/job/dotnet_roslyn-project-system/job/dev15.1.x/job/windows_debug/badge/icon)](http://ci.dot.net/job/dotnet_roslyn-project-system/job/dev15.1.x/job/windows_debug/)|[![Build Status](http://ci.dot.net/job/dotnet_roslyn-project-system/job/dev15.1.x/job/windows_release/badge/icon)](http://ci.dot.net/job/dotnet_roslyn-project-system/job/dev15.1.x/job/windows_release/)|
 |master|[![Build Status](http://ci.dot.net/job/dotnet_roslyn-project-system/job/master/job/windows_debug/badge/icon)](http://ci.dot.net/job/dotnet_roslyn-project-system/job/master/job/windows_debug/)|[![Build Status](http://ci.dot.net/job/dotnet_roslyn-project-system/job/master/job/windows_release/badge/icon)](http://ci.dot.net/job/dotnet_roslyn-project-system/job/master/job/windows_release/)|
