@@ -1,5 +1,5 @@
 ﻿<Project>
-  <Import Project="..\..\..\build\Targets\VSL.Settings.targets" />
+  <Import Project="..\..\build\Targets\VSL.Settings.targets" />
   <PropertyGroup Label="Dependencies">
     <UsingPartitionEnv>true</UsingPartitionEnv>
     <UsingProjectEnvCommonIDE>true</UsingProjectEnvCommonIDE>
@@ -99,5 +99,5 @@
     <None Include="Resources\Zapotec.bmp" />
   </ItemGroup>
   <!--Import the targets-->
-  <Import Project="..\..\..\build\Targets\VSL.Imports.targets" />
+  <Import Project="..\..\build\Targets\VSL.Imports.targets" />
 </Project>
