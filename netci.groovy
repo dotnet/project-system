@@ -34,7 +34,7 @@ build.cmd /no-deploy-extension /${configuration.toLowerCase()}
         archiveSettings.setFailIfNothingArchived()
         archiveSettings.setArchiveOnFailure()
         Utilities.addArchival(newJob, archiveSettings)
-        Utilities.setMachineAffinity(newJob, 'Windows_NT', 'latest-or-auto-dev15-rc')
+        Utilities.setMachineAffinity(newJob, 'Windows_NT', 'latest-or-auto-vs15-0')
         Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
         Utilities.addXUnitDotNETResults(newJob, "**/*TestResults.xml")
         if (isPR) {
@@ -164,7 +164,7 @@ rmdir /S /Q backup
     }
 
     addVsiArchive(newVsiJob)
-    Utilities.setMachineAffinity(newVsiJob, 'Windows_NT', 'latest-or-auto-dev15-internal')
+    Utilities.setMachineAffinity(newVsiJob, 'Windows_NT', 'latest-or-auto-vs15-0-internal')
     Utilities.standardJobSetup(newVsiJob, project, isPR, "*/${branch}")
     // ISSUE: Temporary until a full builder for source control is available.
     addVsiMultiScm(newVsiJob, project, isPR)
@@ -173,7 +173,7 @@ rmdir /S /Q backup
         def triggerPhrase = generateTriggerPhrase(newVsiJobName, "vsi")
         Utilities.addGithubPRTriggerForBranch(newVsiJob, branch, newVsiJobName, triggerPhrase, /*triggerPhraseOnly*/ true)
     } else {
-        Utilities.addGithubPushTrigger(newVsiJob)        
+        Utilities.addGithubPushTrigger(newVsiJob)
     }
 
     Utilities.addHtmlPublisher(newVsiJob, "roslyn-internal/Open/Binaries/Release/Exes/EditorTestApp/VSIntegrationTestLogs", 'VS Integration Test Logs', '*.html')
