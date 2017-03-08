@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.0
+VisualStudioVersion = 15.0.26226.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeployTestDependencies", "DeployTestDependencies\DeployTestDependencies.csproj", "{37BA82E6-9ABD-4ACA-AA26-2DFD39A359A5}"
 EndProject
@@ -60,6 +60,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectSystemDogfoodSetup", "ProjectSystemDogfoodSetup\ProjectSystemDogfoodSetup.csproj", "{F9522F27-B9AC-4D6F-8F54-6A8BD4D33574}"
 EndProject
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "SettingsDesignerUnitTests", "Microsoft.VisualStudio.Editors.SettingsDesigner.UnitTests\SettingsDesignerUnitTests.vbproj", "{A03E115A-9193-455D-A70A-CFEB943D0319}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.VisualStudio.Editors.UnitTests", "Microsoft.VisualStudio.Editor.UnitTests\Microsoft.VisualStudio.Editors.UnitTests.csproj", "{991DBD0C-6DB5-48B8-B41E-E1092445240D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -152,6 +154,10 @@ Global
 		{A03E115A-9193-455D-A70A-CFEB943D0319}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A03E115A-9193-455D-A70A-CFEB943D0319}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A03E115A-9193-455D-A70A-CFEB943D0319}.Release|Any CPU.Build.0 = Release|Any CPU
+		{991DBD0C-6DB5-48B8-B41E-E1092445240D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{991DBD0C-6DB5-48B8-B41E-E1092445240D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{991DBD0C-6DB5-48B8-B41E-E1092445240D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{991DBD0C-6DB5-48B8-B41E-E1092445240D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
