@@ -1,23 +1,24 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project>
+  <Import Project="..\..\..\build\Targets\VSL.Settings.targets" />
   <PropertyGroup>
-    <OutputType>library</OutputType>
-    <OutputPath>bin\</OutputPath>
-    <AssemblyName>SettingsDesignerUnitTests</AssemblyName>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <DocumentationFile>SettingsDesignerUnitTests.xml</DocumentationFile>
     <CreateTlb>true</CreateTlb>
     <UseVsVersion>true</UseVsVersion>
+    <EnableDefaultItems>false</EnableDefaultItems> <!-- Excludes all the test files -->
     <AssemblyAttributeComVisible>true</AssemblyAttributeComVisible>
     <GenerateAssemblyRefs>true</GenerateAssemblyRefs>
     <GenerateVrgFromRegAsmOutput>true</GenerateVrgFromRegAsmOutput>
     <GenerateVrgReferencePaths>$(SdkRefPath)</GenerateVrgReferencePaths>
     <GenerateSkuVrg>false</GenerateSkuVrg>
     <NoRuntimeCompatibilityAttribute>true</NoRuntimeCompatibilityAttribute>
-    <RootNamespace>SettingsDesignerUnitTests</RootNamespace>
-    <ProjectGuid>{E854C63F-78DC-4111-BE98-7C4C97B83ED1}</ProjectGuid>
-    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <RootNamespace></RootNamespace>
+    <TargetFramework>net46</TargetFramework>
   </PropertyGroup>
+
+<!-- 
+  Excluding all references since we get the dependencies from Package References.
+  Todo: Set the appropriate properties to get its corresponding Package references.
   <ItemGroup>
     <Reference Include="Accessibility, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="envdte, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
@@ -132,35 +133,9 @@
       <HintPath>$(VenusRefV2Path)\VsWebSite.Interop.dll</HintPath>
     </Reference>
   </ItemGroup>
+  -->
   <ItemGroup>
-    <Import Include="Microsoft.VisualBasic" />
-    <Import Include="System" />
+    <ProjectReference Include="..\..\Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.vbproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="DesignTimeSettingInstanceTest.vb" />
-    <Compile Include="DesignTimeSettingsTest.vb" />
-    <Compile Include="MockObjects.vb" />
-    <Compile Include="My Project\AssemblyInfo.vb" />
-    <Compile Include="SettingsTypeCacheTest.vb" />
-    <Compile Include="SettingsTypeDiscoveryServiceTest.vb" />
-    <Compile Include="SettingsValueSerializerTest.vb" />
-    <Compile Include="SettingTypeNameResolutionServiceTest.vb" />
-    <Compile Include="SettingTypeValidatorTest.vb" />
-    <Compile Include="TestClasses.vb" />
-    <Compile Include="TypePickerDialogTest.vb" />
-    <Compile Include="VSCodeGenAccessors.vb" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\wizard\vbdesigner\designer\Microsoft.VisualStudio.Editors.vbproj">
-      <Project>{CD6E5D00-7B0B-442D-9F5D-EAEC1A71838A}</Project>
-      <Name>Microsoft.VisualStudio.Editors</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.Targets" />
-  <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
+    <Import Project="..\..\..\build\Targets\VSL.Imports.targets" />
 </Project>
