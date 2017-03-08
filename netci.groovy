@@ -34,7 +34,7 @@ build.cmd /no-deploy-extension /${configuration.toLowerCase()}
         archiveSettings.setFailIfNothingArchived()
         archiveSettings.setArchiveOnFailure()
         Utilities.addArchival(newJob, archiveSettings)
-        Utilities.setMachineAffinity(newJob, 'Windows_NT', 'latest-or-auto-vs15-0')
+        Utilities.setMachineAffinity(newJob, 'Windows_NT', 'latest-or-auto-dev15-0')
         Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
         Utilities.addXUnitDotNETResults(newJob, "**/*TestResults.xml")
         if (isPR) {
@@ -164,7 +164,7 @@ rmdir /S /Q backup
     }
 
     addVsiArchive(newVsiJob)
-    Utilities.setMachineAffinity(newVsiJob, 'Windows_NT', 'latest-or-auto-vs15-0-internal')
+    Utilities.setMachineAffinity(newVsiJob, 'Windows_NT', 'latest-or-auto-dev15-0-internal')
     Utilities.standardJobSetup(newVsiJob, project, isPR, "*/${branch}")
     // ISSUE: Temporary until a full builder for source control is available.
     addVsiMultiScm(newVsiJob, project, isPR)
