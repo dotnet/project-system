@@ -1,11 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="dogfood" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <!--Import the settings-->
-  <PropertyGroup Label="BuildProps">
-    <BuildPropsFile>$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildProjectDirectory), Build.props))\Build.props</BuildPropsFile>
-  </PropertyGroup>
-  <Import Project="$(BuildPropsFile)" Condition="'$(BuildProps_Imported)'!='True' AND Exists('$(BuildPropsFile)') AND '$(VisualStudioDir)'==''" />
-  <Import Project="$(_NTDRIVE)$(_NTROOT)\tools\Microsoft.DevDiv.Settings.targets" />
+﻿<Project>
+  <Import Project="..\..\..\build\Targets\VSL.Settings.targets" />
   <PropertyGroup Label="Dependencies">
     <UsingPartitionEnv>true</UsingPartitionEnv>
     <UsingProjectEnvCommonIDE>true</UsingProjectEnvCommonIDE>
@@ -36,15 +30,10 @@
     <UsingPartitionXmake>true</UsingPartitionXmake>
     <UsingProjectXmakeXmaketasks>true</UsingProjectXmakeXmaketasks>
   </PropertyGroup>
-  <ImportGroup Label="Dependencies">
-    <Import Project="$(PartitionExports)" />
-  </ImportGroup>
   <PropertyGroup>
-    <ProjectGuid>{E85B4D17-9B82-4DE5-95B1-F72AF2F100FC}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <OutputPath>$(BinariesDirectory)\suitebin\$(BuildArchitecture)</OutputPath>
-    <RootNamespace>Microsoft.VisualStudio.Editors.UnitTests</RootNamespace>
-    <AssemblyName>Microsoft.VisualStudio.Editors.UnitTests</AssemblyName>
+    <EnableDefaultItems>false</EnableDefaultItems> <!-- Excludes all the test files -->
+    <RootNamespace></RootNamespace>
+    <TargetFramework>net46</TargetFramework>
     <AssemblyAttributeClsCompliant>true</AssemblyAttributeClsCompliant>
     <SignAssemblyAttribute>true</SignAssemblyAttribute>
     <Nonshipping>true</Nonshipping>
@@ -55,6 +44,9 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
   </PropertyGroup>
+  <!-- 
+  Excluding all references since we get the dependencies from Package References.
+  Todo: Set the appropriate properties to get its corresponding Package references.
   <ItemGroup>
     <Reference Include="Accessibility" />
     <Reference Include="CustomMarshalers" />
@@ -86,121 +78,15 @@
     <Reference Include="VJSharpCodeProvider" />
     <Reference Include="$(VenusRefV2Path)\VsWebSite.Interop.dll" />
   </ItemGroup>
+  -->
   <ItemGroup>
-    <ProjectReference Include="..\designer\Microsoft.VisualStudio.Editors.vbproj">
-      <Project>{CD6E5D00-7B0B-442D-9F5D-EAEC1A71838A}</Project>
-      <Name>Microsoft.VisualStudio.Editors</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj">
-      <Project>{19725D6F-4690-412B-934A-FC48D752B802}</Project>
-      <Name>Microsoft.VisualStudio.AppDesigner</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.vbproj" />
+    <ProjectReference Include="..\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj" />
+    <!--
     <ProjectReference Include="..\..\vsdesigner\designer\Microsoft.VSDesigner.csproj">
       <Project>{DD3E93B7-041D-4ECD-A359-11A7DB0CD8C8}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Mocks\IEnumHierarchiesMock.cs" />
-    <Compile Include="Mocks\IEnumWebServicesMock.cs" />
-    <Compile Include="Mocks\IVSMDCodeDomProviderMock.cs" />
-    <Compile Include="Mocks\IEnumFakeOfT.cs" />
-    <Compile Include="Mocks\ServiceProviderMock.cs" />
-    <Compile Include="ApplicationDesigner\ApplicationDesignerPanelTests.cs" />
-    <Compile Include="DesignerFramework\AccessModifierComboboxTests.cs" />
-    <Compile Include="DesignerFramework\AccessModifierCombobox_AccessibilityConverterTests.cs" />
-    <Compile Include="Mocks\DTE\ProjectItemWithBuildActionFake.cs" />
-    <Compile Include="Mocks\DTE\ProjectItemsFake.cs" />
-    <Compile Include="MyExtensibility\MyExtensibilityTestRes.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MyExtensibilityTestRes.resx</DependentUpon>
-    </Compile>
-    <Compile Include="PropertyPages\PropertyPageExceptionTests.cs" />
-    <Compile Include="PropertyPages\WPF\XamlReadWriteExceptionTests.cs" />
-    <Compile Include="VSCodeGenAccessors_PartialClasses.cs" />
-    <Compile Include="Mocks\UIServiceFake.cs" />
-    <Compile Include="Mocks\UIServiceMock.cs" />
-    <Compile Include="Mocks\Utility.cs" />
-    <Compile Include="Mocks\VsBrowseObjectFake.cs" />
-    <Compile Include="Mocks\VsCfgBrowseObjectFake.cs" />
-    <Compile Include="MyExtensibility\MyExtensibilitySettingsTest.cs" />
-    <Compile Include="MyExtensibility\MyExtensibilityTestUtil.cs" />
-    <Compile Include="MyExtensibility\MyExtensionProjectFileTest.cs" />
-    <Compile Include="MyExtensibility\MyExtensionTemplateTest.cs" />
-    <Compile Include="Mocks\VsTextBufferFake.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResourceEditor\CsvEncoderTest.cs" />
-    <Compile Include="PropertyPages\AdvCompilerSettingsPropPageTests.cs" />
-    <Compile Include="PropertyPages\ProjectReloadedExceptionTests.cs" />
-    <Compile Include="PropertyPages\TargetFrameworkAssemblies_TargetFrameworkTests.cs" />
-    <Compile Include="PropertyPages\Mocks\VsTargetFrameworkAssembliesFake.cs" />
-    <Compile Include="PropertyPages\TargetFrameworkAssembliesTests.cs" />
-    <Compile Include="PropertyPages\ImportIdentityTests.cs" />
-    <Compile Include="VSCodeGenAccessors.cs" />
-    <Compile Include="PropertyPages\WPF\ApplicationPropPageVBWPFTests.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="PropertyPages\ApplicationPropPageVBWinFormsTests.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="AuthoringTests.txt" />
-    <Compile Include="Mocks\ExpectedException.cs" />
-    <Compile Include="Mocks\VBPackageWithDependencyInjection.cs" />
-    <Compile Include="PropertyPages\ApplicationPropPageBaseTests.cs" />
-    <Compile Include="PropertyPages\Mocks\ComPropertyPageFake.cs" />
-    <Compile Include="PropertyPages\Mocks\DesignerTransactionFake.cs" />
-    <Compile Include="PropertyPages\Mocks\ProjectFlavor\ProjectCfgExtenderFake.cs" />
-    <Compile Include="PropertyPages\Mocks\ProjectFlavor\ProjectExtenderFake.cs" />
-    <Compile Include="PropertyPages\Mocks\ProjectFlavor\PropertyFilterOptions.cs" />
-    <Compile Include="PropertyPages\Mocks\PropertyPageSiteFakeWithUndo.cs" />
-    <Compile Include="PropertyPages\Mocks\PropertyPageSiteOwnerFake.cs" />
-    <Compile Include="PropertyPages\Mocks\VsQueryEditQuerySave2Fake.cs" />
-    <Compile Include="PropertyPages\ApplicationWithMyPropPageComClassTests.cs" />
-    <Compile Include="PropertyPages\WPF\ApplicationWithMyPropPageComClassTests.cs" />
-    <Compile Include="PropertyPages\ApplicationPropPageVBBaseTests.cs" />
-    <Compile Include="PropertyPages\Mocks\FakePropertyPageHosting\FakePropertyPageHosting_Base.cs" />
-    <Compile Include="PropertyPages\Mocks\FakePropertyPageHosting\FakePropertyPageHosting_Base_ConfigDependent.cs" />
-    <Compile Include="PropertyPages\Mocks\FakePropertyPageHosting\FakePropertyPageHosting_Base_NonConfigDependent.cs" />
-    <Compile Include="Mocks\DTE\BuildEventsFake.cs" />
-    <Compile Include="Mocks\DTE\DTEFake.cs" />
-    <Compile Include="Mocks\DTE\EventsFake.cs" />
-    <Compile Include="PropertyPages\Mocks\MyApplicationPropertiesFake.cs" />
-    <Compile Include="PropertyPages\Mocks\ProjectFlavor\ObjectExtendersFake.cs" />
-    <Compile Include="Mocks\DTE\ProjectFake.cs" />
-    <Compile Include="PropertyPages\Mocks\ProjectPropertiesFake.cs" />
-    <Compile Include="PropertyPages\Mocks\PropertyFake.cs" />
-    <Compile Include="PropertyPages\Mocks\PropertyFakePropertyDescriptor.cs" />
-    <Compile Include="PropertyPages\Mocks\PropertyPageSiteFake.cs" />
-    <Compile Include="PropertyPages\Mocks\VBEntryPointProviderFake.cs" />
-    <Compile Include="PropertyPages\Mocks\VsDebuggerFake.cs" />
-    <Compile Include="PropertyPages\Mocks\VsHierarchyFake.cs" />
-    <Compile Include="PropertyPages\Mocks\VsMonitorSelectionFake.cs" />
-    <Compile Include="PropertyPages\Mocks\VsProjectSpecialFiles.cs" />
-    <Compile Include="PropertyPages\Mocks\VsShellFake.cs" />
-    <Compile Include="PropertyPages\PropPageUserControlBaseTests.cs" />
-    <Compile Include="PropertyPages\StandardTestsForPropertyPages.cs" />
-    <Compile Include="PropertyPages\StandardTestsForApplicationPropPageVBBaseDescendentPropertyPages.cs" />
-    <Compile Include="PropertyPages\WPF\AppDotXamlDocumentTests.cs" />
-    <Compile Include="ResourceEditor\ResourceFileTests.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ResxGenerator\ResxFileCodeGeneratorTest.cs" />
-    <Compile Include="Mocks\DTE\ProjectItemFake.cs" />
-    <Compile Include="Mocks\DTE\PropertyFake.cs" />
-    <Compile Include="Mocks\DTE\ProjectItemWithCustomToolFake.cs" />
-    <Compile Include="Mocks\DTE\PropertiesFake.cs" />
-    <Compile Include="ResourceEditor\ResourceEditorAccessibilityComboboxTests.cs" />
-    <Compile Include="SettingsDesigner\DesignTimeSettingInstanceTest.cs" />
-    <Compile Include="SettingsDesigner\ProjectUtilsTest.cs" />
-    <Compile Include="SettingsDesigner\SettingsDesignerAccessibilityComboboxTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="SettingsDesigner\SettingsSingleFileGeneratorTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="SettingsDesigner\SettingsDesignerViewTest.cs" />
+    -->
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MyExtensibility\MyExtensibilityTestRes.resx">
@@ -213,5 +99,5 @@
     <None Include="Resources\Zapotec.bmp" />
   </ItemGroup>
   <!--Import the targets-->
-  <Import Project="$(_NTDRIVE)$(_NTROOT)\tools\Microsoft.DevDiv.targets" />
+  <Import Project="..\..\..\build\Targets\VSL.Imports.targets" />
 </Project>
