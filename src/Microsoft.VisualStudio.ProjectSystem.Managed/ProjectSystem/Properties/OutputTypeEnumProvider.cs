@@ -24,15 +24,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             private readonly Dictionary<string, IEnumValue> _listedOutputTypeValues = new Dictionary<string, IEnumValue>
             {
-                { "winexe",          new PageEnumValue(new EnumValue {Name = "winexe",  DisplayName = "0" }) },
-                { "exe",             new PageEnumValue(new EnumValue {Name = "exe",     DisplayName = "1" }) },
-                { "library",         new PageEnumValue(new EnumValue {Name = "library", DisplayName = "2" }) },
+                { "WinExe",          new PageEnumValue(new EnumValue {Name = "WinExe",  DisplayName = "0" }) },
+                { "Exe",             new PageEnumValue(new EnumValue {Name = "Exe",     DisplayName = "1" }) },
+                { "Library",         new PageEnumValue(new EnumValue {Name = "Library", DisplayName = "2" }) },
             };
 
             private readonly Dictionary<string, IEnumValue> _mappedOutputTypeValues = new Dictionary<string, IEnumValue>
             {
-                { "winmdobj",        new PageEnumValue(new EnumValue {Name = "library", DisplayName = "2" }) },
-                { "appcontainerexe", new PageEnumValue(new EnumValue {Name = "exe",     DisplayName = "1" }) }
+                { "WinMDObj",        new PageEnumValue(new EnumValue {Name = "Library", DisplayName = "2" }) },
+                { "AppContainerExe", new PageEnumValue(new EnumValue {Name = "Exe",     DisplayName = "1" }) }
             };
 
             public bool AllowCustomValues => false;
@@ -46,13 +46,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             public Task<IEnumValue> TryCreateEnumValueAsync(string userSuppliedValue)
             {
-                string lowercasedValue = userSuppliedValue.ToLowerInvariant();
-                if (_listedOutputTypeValues.TryGetValue(lowercasedValue, out IEnumValue value))
+                if (_listedOutputTypeValues.TryGetValue(userSuppliedValue, out IEnumValue value))
                 {
                     return Task.FromResult(value);
                 }
 
-                if (_mappedOutputTypeValues.TryGetValue(lowercasedValue, out value))
+                if (_mappedOutputTypeValues.TryGetValue(userSuppliedValue, out value))
                 {
                     return Task.FromResult(value);
                 }
