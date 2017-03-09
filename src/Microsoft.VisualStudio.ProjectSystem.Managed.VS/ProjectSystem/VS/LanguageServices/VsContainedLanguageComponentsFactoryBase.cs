@@ -13,6 +13,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
     internal abstract class VsContainedLanguageComponentsFactoryBase : OnceInitializedOnceDisposedAsync, IVsContainedLanguageComponentsFactory
     {
+        private readonly Guid _languageServiceGuid;
+        private readonly SVsServiceProvider _serviceProvider;
+        private readonly IUnconfiguredProjectVsServices _projectVsServices;
+        private readonly IProjectHostProvider _projectHostProvider;
+        private readonly ILanguageServiceHost _languageServiceHost;
+
         public VsContainedLanguageComponentsFactoryBase(
             IUnconfiguredProjectCommonServices commonServices,
             SVsServiceProvider serviceProvider,
@@ -22,22 +28,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             Guid languageServiceGuid)
             : base(commonServices.ThreadingService.JoinableTaskContext)
         {
-            ServiceProvider = serviceProvider;
-            ProjectServices = projectServices;
-            LanguageServiceGuid = languageServiceGuid;
-            ProjectHostProvider = projectHostProvider;
-            LanguageServiceHost = languageServiceHost;
+            _serviceProvider = serviceProvider;
+            _projectVsServices = projectServices;
+            _languageServiceGuid = languageServiceGuid;
+            _projectHostProvider = projectHostProvider;
+            _languageServiceHost = languageServiceHost;
         }
-
-        private Guid LanguageServiceGuid { get; }
-        private SVsServiceProvider ServiceProvider { get; }
-        private IUnconfiguredProjectVsServices ProjectServices { get; }
-        private IProjectHostProvider ProjectHostProvider { get; }
-        private ILanguageServiceHost LanguageServiceHost { get; }
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            await LanguageServiceHost.InitializeAsync(cancellationToken).ConfigureAwait(false);
+            await _languageServiceHost.InitializeAsync(cancellationToken).ConfigureAwait(false);
         }
 
         protected override Task DisposeCoreAsync(bool initialized)
@@ -63,14 +63,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             IVsHierarchy myHierarchy = null;
             IVsContainedLanguageFactory myContainedLanguageFactory = null;
 
-            ProjectServices.ThreadingService.JoinableTaskFactory.Run(async () =>
+            _projectVsServices.ThreadingService.JoinableTaskFactory.Run(async () =>
             {
                 await InitializeAsync().ConfigureAwait(false);
 
-                await ProjectServices.ThreadingService.JoinableTaskFactory.SwitchToMainThreadAsync();
+                await _projectVsServices.ThreadingService.JoinableTaskFactory.SwitchToMainThreadAsync();
 
                 var priority = new VSDOCUMENTPRIORITY[1];
-                HResult result = ProjectServices.VsProject.IsDocumentInProject(filePath, 
+                HResult result = _projectVsServices.VsProject.IsDocumentInProject(filePath, 
                                                                                out int isFound, 
                                                                                priority, 
                                                                                out myItemId);
@@ -79,9 +79,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                     return;
                 }
              
-                myHierarchy = (IVsHierarchy)ProjectHostProvider.UnconfiguredProjectHostObject.ActiveIntellisenseProjectHostObject;
+                myHierarchy = (IVsHierarchy)_projectHostProvider.UnconfiguredProjectHostObject.ActiveIntellisenseProjectHostObject;
 
-                var oleServiceProvider = ServiceProvider.GetService(typeof(IOLEServiceProvider)) as IOLEServiceProvider;
+                var oleServiceProvider = _serviceProvider.GetService(typeof(IOLEServiceProvider)) as IOLEServiceProvider;
                 if (oleServiceProvider == null)
                 {
                     return;
@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
                 myContainedLanguageFactory = (IVsContainedLanguageFactory)PackageUtilities.QueryService(
                                                 oleServiceProvider,
-                                                LanguageServiceGuid);
+                                                _languageServiceGuid);
             });
 
             hierarchy = myHierarchy;
