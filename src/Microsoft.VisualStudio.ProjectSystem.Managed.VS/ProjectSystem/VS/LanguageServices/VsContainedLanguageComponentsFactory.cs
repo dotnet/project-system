@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
@@ -12,14 +13,17 @@ using SVsServiceProvider = Microsoft.VisualStudio.Shell.SVsServiceProvider;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
-    internal abstract class VsContainedLanguageComponentsFactoryBase : OnceInitializedOnceDisposedAsync, IVsContainedLanguageComponentsFactory
+    [Export(typeof(IVsContainedLanguageComponentsFactory))]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+    internal class VsContainedLanguageComponentsFactory : OnceInitializedOnceDisposedAsync, IVsContainedLanguageComponentsFactory
     {
         private readonly SVsServiceProvider _serviceProvider;
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IProjectHostProvider _projectHostProvider;
         private readonly ILanguageServiceHost _languageServiceHost;
 
-        public VsContainedLanguageComponentsFactoryBase(
+        [ImportingConstructor]
+        public VsContainedLanguageComponentsFactory(
             IUnconfiguredProjectCommonServices commonServices,
             SVsServiceProvider serviceProvider,
             IUnconfiguredProjectVsServices projectServices,
