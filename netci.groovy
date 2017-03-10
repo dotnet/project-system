@@ -88,6 +88,29 @@ git submodule sync
 git submodule update --init --recursive
 """)
 
+            // Build the SDK and install .NET Core Templates.
+            batchFile("""
+echo *** Build the SDK and install .NET Core Templates  ***
+SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
+SET DeveloperCommandPrompt=%VS150COMNTOOLS%\\VsMSBuildCmd.bat
+
+echo  *** Call VsMSBuildCmd.bat
+call "%DeveloperCommandPrompt%" || goto :BuildFailed "VsMSBuildCmd.bat"
+
+SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
+SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
+
+pushd %WORKSPACE%\\sdk
+echo *** Build SDK
+call build.cmd -Configuration release -SkipTests || goto :BuildFailed "SDK"
+
+exit /b 0
+
+:BuildFailed
+echo %1 - Build failed with ERRORLEVEL %ERRORLEVEL%
+exit /b 1
+""")
+
             // Build roslyn-internal and run netcore VSI tao tests.
             batchFile("""
 echo *** Build Roslyn Internal and Test Roslyn Project System ***
@@ -170,6 +193,16 @@ static void addVsiMultiScm(def myJob, def project, def isPR) {
             }
             git {
                 remote {
+                    url('https://github.com/dotnet/sdk')
+                }
+                extensions {
+                    relativeTargetDirectory('sdk')
+                }
+                // pull in a specific LKG commit from master.
+                branch('8da08465436bfe805afb91c6ddf8654a078d0249')
+            }
+            git {
+                remote {
                     url('https://github.com/dotnet/roslyn-internal')
                     credentials('dotnet-bot-private-repo-token')
                 }
@@ -178,7 +211,7 @@ static void addVsiMultiScm(def myJob, def project, def isPR) {
                 }
                 // roslyn-internal - pull in a specific LKG commit from master.
                 // In future, '*/master' can be placed here to pull latest sources.
-                branch('0df1ac55417ef29f4893a29aff756e1bb816e249')
+                branch('2caecb78873f0b6f6fed1dfe0b0ff04201817ca7')
             }
         }
     }
