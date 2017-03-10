@@ -59,6 +59,7 @@ build.cmd /no-deploy-extension /${configuration.toLowerCase()}
             // Build roslyn-project-system repo - we also need to set certain environment variables for building the repo with VS15 toolset.
             batchFile("""
 echo *** Build Roslyn Project System ***
+rmdir /S /Q %USERPROFILE%\.nuget\packages\microbuild.plugins.swixbuild
 SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
 SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
 SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
@@ -85,52 +86,6 @@ pushd %WORKSPACE%\\roslyn-internal
 git submodule init
 git submodule sync
 git submodule update --init --recursive
-init.cmd
-""")
-
-            // Build the SDK and install .NET Core Templates.
-            batchFile("""
-echo *** Build the SDK and install .NET Core Templates  ***
-SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
-SET DeveloperCommandPrompt=%VS150COMNTOOLS%\\VsMSBuildCmd.bat
-
-echo  *** Call VsMSBuildCmd.bat
-call "%DeveloperCommandPrompt%" || goto :BuildFailed "VsMSBuildCmd.bat"
-
-SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
-SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
-
-pushd %WORKSPACE%\\sdk
-echo *** Build SDK
-call build.cmd -Configuration release -SkipTests || goto :BuildFailed "SDK"
-
-SET VSIXExpInstallerExe=%USERPROFILE%\\.nuget\\packages\\roslyntools.microsoft.vsixexpinstaller\\0.2.4-beta\\tools\\VsixExpInstaller.exe
-
-SET VSIXTarget=%WORKSPACE%\\sdk\\bin\\Release\\Microsoft.VisualStudio.ProjectSystem.CSharp.NetStandard.Templates.vsix
-echo *** Install %VSIXTarget%
-%VSIXExpInstallerExe% /rootsuffix:RoslynDev %VSIXTarget%
-if not "%ERRORLEVEL%"=="0" echo ERROR: %VSIXTarget% did not install successfully
-
-SET VSIXTarget=%WORKSPACE%\\sdk\\bin\\Release\\Microsoft.VisualStudio.ProjectSystem.CSharp.Templates.vsix
-echo *** Install %VSIXTarget%
-%VSIXExpInstallerExe% /rootsuffix:RoslynDev %VSIXTarget%
-if not "%ERRORLEVEL%"=="0" echo ERROR: %VSIXTarget% did not install successfully
-
-SET VSIXTarget=%WORKSPACE%\\sdk\\bin\\Release\\Microsoft.VisualStudio.ProjectSystem.VisualBasic.NetStandard.Templates.vsix
-echo *** Install %VSIXTarget%
-%VSIXExpInstallerExe% /rootsuffix:RoslynDev %VSIXTarget%
-if not "%ERRORLEVEL%"=="0" echo ERROR: %VSIXTarget% did not install successfully
-
-SET VSIXTarget=%WORKSPACE%\\sdk\\bin\\Release\\Microsoft.VisualStudio.ProjectSystem.VisualBasic.Templates.vsix
-echo *** Install %VSIXTarget%
-%VSIXExpInstallerExe% /rootsuffix:RoslynDev %VSIXTarget%
-if not "%ERRORLEVEL%"=="0" echo ERROR: %VSIXTarget% did not install successfully
-
-exit /b 0
-
-:BuildFailed
-echo %1 - Build failed with ERRORLEVEL %ERRORLEVEL%
-exit /b 1
 """)
 
             // Build roslyn-internal and run netcore VSI tao tests.
@@ -215,16 +170,6 @@ static void addVsiMultiScm(def myJob, def project, def isPR) {
             }
             git {
                 remote {
-                    url('https://github.com/dotnet/sdk')
-                }
-                extensions {
-                    relativeTargetDirectory('sdk')
-                }
-                // pull in a specific LKG commit from master.
-                branch('72754c921d6a205eddab7c37b991666ada7aa3dc')
-            }
-            git {
-                remote {
                     url('https://github.com/dotnet/roslyn-internal')
                     credentials('dotnet-bot-private-repo-token')
                 }
@@ -233,7 +178,7 @@ static void addVsiMultiScm(def myJob, def project, def isPR) {
                 }
                 // roslyn-internal - pull in a specific LKG commit from master.
                 // In future, '*/master' can be placed here to pull latest sources.
-                branch('701bf9e9bcb896b12364b413231666182b7aa78a')
+                branch('0df1ac55417ef29f4893a29aff756e1bb816e249')
             }
         }
     }
