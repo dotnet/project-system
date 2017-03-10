@@ -90,7 +90,7 @@ git submodule update --init --recursive
 
             // Build the SDK and install .NET Core Templates.
             batchFile("""
-echo *** Build the SDK and install .NET Core Templates  ***
+echo *** Build the SDK  ***
 SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
 SET DeveloperCommandPrompt=%VS150COMNTOOLS%\\VsMSBuildCmd.bat
 
@@ -122,8 +122,6 @@ pushd %WORKSPACE%\\roslyn-internal
 set TEMP=%WORKSPACE%\\roslyn-internal\\Open\\Binaries\\Temp
 mkdir %TEMP%
 set TMP=%TEMP%
-
-set EchoOn=true
 
 BuildAndTest.cmd -build:true -clean:false -deployExtensions:true -trackFileAccess:false -officialBuild:false -realSignBuild:false -parallel:true -release:true -delaySignBuild:true -samples:false -unit:false -eta:false -vs:true -cibuild:true -x64:false -netcoretestrun
 """)
