@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
 using System;
 using System.Text;
 using System.Collections.Generic;
@@ -1543,8 +1545,8 @@ namespace Microsoft.VisualStudio.Editors.UnitTests.PropertyPageTests.WPF
             _page.UseApplicationFrameworkCheckBox.Checked = true;
 
             // From spec:  When the checkbox is checked by the user, the <StartupObject> 
-            //   element in the .vbproj file is removed, the “Windows application framework 
-            //   properties” groupbox is enabled, and a valid application definition file 
+            //   element in the .vbproj file is removed, the ï¿½Windows application framework 
+            //   propertiesï¿½ groupbox is enabled, and a valid application definition file 
             //   is added to the project if one does not exist.
             using (AppDotXamlDocument document = _page.Fake_getAppDotXamlDocumentResults.CreateAppDotXamlDocumentFromTextBuffer())
             {
@@ -1610,9 +1612,9 @@ namespace Microsoft.VisualStudio.Editors.UnitTests.PropertyPageTests.WPF
            
             _page.UseApplicationFrameworkCheckBox.Checked = false;
 
-            // From spec:  When the checkbox is unchecked, the “Startup Uri:” combo box...
-            //   its value set to “Sub Main” and its label changed to “Startup Object:”.  The 
-            //   <StartupObject> element in the .vbproj file is subsequently set to “Sub Main”.
+            // From spec:  When the checkbox is unchecked, the ï¿½Startup Uri:ï¿½ combo box...
+            //   its value set to ï¿½Sub Mainï¿½ and its label changed to ï¿½Startup Object:ï¿½.  The 
+            //   <StartupObject> element in the .vbproj file is subsequently set to ï¿½Sub Mainï¿½.
             using (AppDotXamlDocument document = _page.Fake_getAppDotXamlDocumentResults.CreateAppDotXamlDocumentFromTextBuffer())
             {
                 Assert.IsTrue(_page.UseApplicationFrameworkCheckBox.Enabled);

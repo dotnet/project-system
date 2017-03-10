@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
 using System;
 using System.Text;
 using System.Collections.Generic;
@@ -761,8 +763,8 @@ namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         [TestMethod]
         public void EscapeXmlString_MiscChars()
         {
-            Assert.AreEqual("lt&lt;, gr&gt;, squote&apos;, dquote&quot;, equals=, tab\t, esszetß",
-                AppDotXamlDocument.EscapeXmlString("lt<, gr>, squote', dquote\", equals=, tab\t, esszetß"));
+            Assert.AreEqual("lt&lt;, gr&gt;, squote&apos;, dquote&quot;, equals=, tab\t, esszetï¿½",
+                AppDotXamlDocument.EscapeXmlString("lt<, gr>, squote', dquote\", equals=, tab\t, esszetï¿½"));
         }
 
         #endregion
@@ -790,15 +792,15 @@ namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         [TestMethod]
         public void UnescapeXmlContent_MiscChars()
         {
-            Assert.AreEqual("lt<, gr>, squote', dquote\", equals=, tab\t, esszetß",
-                AppDotXamlDocument.UnescapeXmlContent("lt&lt;, gr&gt;, squote&apos;, dquote&quot;, equals=, tab\t, esszetß"));
+            Assert.AreEqual("lt<, gr>, squote', dquote\", equals=, tab\t, esszetï¿½",
+                AppDotXamlDocument.UnescapeXmlContent("lt&lt;, gr&gt;, squote&apos;, dquote&quot;, equals=, tab\t, esszetï¿½"));
         }
 
         [TestMethod]
         public void UnescapeXmlContent_CDATA()
         {
-            Assert.AreEqual("'Räksmörgås' \"hi\".xaml",
-                AppDotXamlDocument.UnescapeXmlContent("'Räk<![CDATA[smörg]]>ås' \"hi&quot;.xaml"));
+            Assert.AreEqual("'Rï¿½ksmï¿½rgï¿½s' \"hi\".xaml",
+                AppDotXamlDocument.UnescapeXmlContent("'Rï¿½k<![CDATA[smï¿½rg]]>ï¿½s' \"hi&quot;.xaml"));
         }
 
         #endregion
@@ -1563,7 +1565,7 @@ namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 string.Join("\r\n", new string[] {
                     "<Application ",
                     "xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\">",
-                    "  <Application.StartupUri>Räk<![CDATA[smörg]]>ås.xaml</Application.StartupUri>",
+                    "  <Application.StartupUri>Rï¿½k<![CDATA[smï¿½rg]]>ï¿½s.xaml</Application.StartupUri>",
                     "  <Application.MainWindow>",
                     "  <NavigationWindow Source=\"MainPage.xaml\" Visibility=\"Visible\"></NavigationWindow> </Application.MainWindow>",
                     "</Application>"});
@@ -1574,7 +1576,7 @@ namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
                     string value = xamlReader.GetStartupUri();
 
-                    Assert.AreEqual("Räksmörgås.xaml", value);
+                    Assert.AreEqual("Rï¿½ksmï¿½rgï¿½s.xaml", value);
                 }
             }
         }
@@ -1586,7 +1588,7 @@ namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 string.Join("\r\n", new string[] {
                     "<Application ",
                     "xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\">",
-                    "  <Application.StartupUri><![CDATA[smörg]]></Application.StartupUri>",
+                    "  <Application.StartupUri><![CDATA[smï¿½rg]]></Application.StartupUri>",
                     "  <Application.MainWindow>",
                     "  <NavigationWindow Source=\"MainPage.xaml\" Visibility=\"Visible\"></NavigationWindow> </Application.MainWindow>",
                     "</Application>"});
@@ -1597,7 +1599,7 @@ namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
 
                     string value = xamlReader.GetStartupUri();
 
-                    Assert.AreEqual("smörg", value);
+                    Assert.AreEqual("smï¿½rg", value);
                 }
             }
         }
@@ -1610,7 +1612,7 @@ namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                     "<Application ",
                     "xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\">",
                     "  <Application.StartupUri>",
-                    "<![CDATA[smörg]]></Application.StartupUri>",
+                    "<![CDATA[smï¿½rg]]></Application.StartupUri>",
                     "  <Application.MainWindow>",
                     "  <NavigationWindow Source=\"MainPage.xaml\" Visibility=\"Visible\"></NavigationWindow> </Application.MainWindow>",
                     "</Application>"});
@@ -1620,7 +1622,7 @@ namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 {
                     string value = xamlReader.GetStartupUri();
 
-                    Assert.AreEqual("smörg", value);
+                    Assert.AreEqual("smï¿½rg", value);
                 }
             }
         }
@@ -1630,7 +1632,7 @@ namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         {
             string text = string.Join("\r\n", new string[]{
                 @"<Application>",
-                "  <Application.StartupUri>Räk<![CDATA[smörg]]>ås.xaml</Application.StartupUri>",
+                "  <Application.StartupUri>Rï¿½k<![CDATA[smï¿½rg]]>ï¿½s.xaml</Application.StartupUri>",
                 "</Application>"});
             using (VsTextBufferFake buffer = new VsTextBufferFake(text))
             {
@@ -1638,7 +1640,7 @@ namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 {
                     string value = xamlReader.GetStartupUri();
 
-                    Assert.AreEqual("Räksmörgås.xaml", value);
+                    Assert.AreEqual("Rï¿½ksmï¿½rgï¿½s.xaml", value);
                 }
             }
         }
@@ -1652,7 +1654,7 @@ namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                     "xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"",
                     "xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"",
                     ">",
-                    "<Application.StartupUri>Räk<![CDATA[smörg]]>ås.xaml</Application.StartupUri>",
+                    "<Application.StartupUri>Rï¿½k<![CDATA[smï¿½rg]]>ï¿½s.xaml</Application.StartupUri>",
                     "</Application>"});
             using (VsTextBufferFake buffer = new VsTextBufferFake(text))
             {
@@ -1660,7 +1662,7 @@ namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 {
                     string value = xamlReader.GetStartupUri();
 
-                    Assert.AreEqual("Räksmörgås.xaml", value);
+                    Assert.AreEqual("Rï¿½ksmï¿½rgï¿½s.xaml", value);
                 }
             }
         }
@@ -1916,13 +1918,13 @@ namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Test_SetStartupUri(
                 string.Join("\r\n", new string[] {
                     @"<Application xmlns='http://schemas.microsoft.com/presentation' xmlns:x='http://schemas.microsoft.com/xaml'>",
-                    "  <Application.StartupUri>Räk<![CDATA[smörg]]>ås.xaml</Application.StartupUri>",
+                    "  <Application.StartupUri>Rï¿½k<![CDATA[smï¿½rg]]>ï¿½s.xaml</Application.StartupUri>",
                     "</Application>"}),
-                "Räksmörgås.xaml",
-                "What's a Räksmörgås, anyway?.xaml",
+                "Rï¿½ksmï¿½rgï¿½s.xaml",
+                "What's a Rï¿½ksmï¿½rgï¿½s, anyway?.xaml",
                 string.Join("\r\n", new string[] {
                     "<Application xmlns='http://schemas.microsoft.com/presentation' xmlns:x='http://schemas.microsoft.com/xaml'>",
-                    "  <Application.StartupUri>What&apos;s a Räksmörgås, anyway?.xaml</Application.StartupUri>",
+                    "  <Application.StartupUri>What&apos;s a Rï¿½ksmï¿½rgï¿½s, anyway?.xaml</Application.StartupUri>",
                     "</Application>"})
             );
         }
