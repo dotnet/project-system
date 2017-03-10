@@ -86,7 +86,6 @@ if /I "%RunningInMicroBuild%" == "true" (
     call build\Scripts\CopyOutput.cmd
   )
 )
-exit /b 0
 
 echo.
 call :PrintColor Green "Build completed successfully, for full logs see %LogFiles%"
