@@ -150,7 +150,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         {
             var toWrite = await ReadBufferXmlAsync().ConfigureAwait(false);
             await _projectXmlAccessor.SaveProjectXmlAsync(toWrite).ConfigureAwait(false);
-            lock(_savedXmlLock)
+            lock (_savedXmlLock)
             {
                 _lastSavedXml = toWrite;
             }

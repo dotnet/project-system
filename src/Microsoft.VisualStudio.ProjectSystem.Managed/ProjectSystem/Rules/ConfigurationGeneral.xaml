@@ -65,8 +65,8 @@
     <StringProperty Name="BaseIntermediateOutputPath" />
     <EnumProperty Name="OutputType">
         <EnumValue Name="Library" DisplayName="Class Library" />
-        <EnumValue Name="exe" DisplayName="Console Application" />
-        <EnumValue Name="winexe" DisplayName="Windows Application" />
+        <EnumValue Name="Exe" DisplayName="Console Application" />
+        <EnumValue Name="WinExe" DisplayName="Windows Application" />
         <EnumValue Name="AppContainerExe" DisplayName="Windows Store app" />
         <EnumValue Name="WinMDObj" DisplayName="WinMD" />
     </EnumProperty>

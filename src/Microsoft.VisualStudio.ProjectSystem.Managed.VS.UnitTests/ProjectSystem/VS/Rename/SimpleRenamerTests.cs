@@ -39,7 +39,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         [InlineData("struct Foo { decimal price; string title; string author;}", "Foo.cs", "Bar.cs")]
         [InlineData("enum Foo { None, enum1, enum2, enum3, enum4 };", "Foo.cs", "Bar.cs")]
         [InlineData("namespace n1 {class Foo{}} namespace n2 {class Foo{}}", "Foo.cs", "Bar.cs")]
-        [InlineData("namespace n1 {class Foo{}} namespace n2 {class Foo{}}", "Foo.cs", "Bar.cs")]
         [InlineData("class Strasse{}", "Strasse.cs", "Straße.cs")]
         [InlineData("class Foo{}", "Foo.cs", "foo.cs")]
         [InlineData("class Foo{}", "Foo.cs", "Folder1\\foo.cs")]

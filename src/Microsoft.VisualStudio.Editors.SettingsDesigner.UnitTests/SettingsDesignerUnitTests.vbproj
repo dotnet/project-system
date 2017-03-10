@@ -1,0 +1,78 @@
+﻿<Project>
+  <Import Project="..\..\build\Targets\VSL.Settings.targets" />
+  <PropertyGroup Label="Dependencies">
+    <EnableDefaultItems>false</EnableDefaultItems> <!-- Excludes all the test files -->
+    <UsingPartitionEnv>true</UsingPartitionEnv>
+    <UsingProjectEnvCommonIDE>true</UsingProjectEnvCommonIDE>
+    <UsingPartitionUnitTest>true</UsingPartitionUnitTest>
+    <UsingProjectUnitTestUnitTestFramework>true</UsingProjectUnitTestUnitTestFramework>
+    <UsingPartitionVSCommon>true</UsingPartitionVSCommon>
+    <UsingProjectVSCommonEnvDte>true</UsingProjectVSCommonEnvDte>
+    <UsingProjectVSCommonEnvDte80>true</UsingProjectVSCommonEnvDte80>
+    <UsingProjectVSCommonMsVsOleInterop>true</UsingProjectVSCommonMsVsOleInterop>
+    <UsingProjectVSCommonMsVsShellInterop>true</UsingProjectVSCommonMsVsShellInterop>
+    <UsingProjectVSCommonMsVsShellInterop100>true</UsingProjectVSCommonMsVsShellInterop100>
+    <UsingProjectVSCommonMsVsTextManagerInterop>true</UsingProjectVSCommonMsVsTextManagerInterop>
+    <UsingProjectVSCommonMsVsVSHelp>true</UsingProjectVSCommonMsVsVSHelp>
+    <UsingProjectVSCommonVslangproj>true</UsingProjectVSCommonVslangproj>
+    <UsingProjectVSCommonVslangproj2>true</UsingProjectVSCommonVslangproj2>
+    <UsingProjectVSCommonVslangproj80>true</UsingProjectVSCommonVslangproj80>
+    <UsingPartitionVsdata>true</UsingPartitionVsdata>
+    <UsingProjectVsdataMicrosoftVisualstudioData>true</UsingProjectVsdataMicrosoftVisualstudioData>
+    <UsingProjectVsdataMicrosoftVisualstudioDataInterop>true</UsingProjectVsdataMicrosoftVisualstudioDataInterop>
+    <UsingPartitionVsip>true</UsingPartitionVsip>
+    <UsingProjectVsipMicrosoftVisualStudioShellDesign>true</UsingProjectVsipMicrosoftVisualStudioShellDesign>
+    <UsingPartitionWizard>true</UsingPartitionWizard>
+    <UsingProjectWizardMicrosoftVSDesigner>true</UsingProjectWizardMicrosoftVSDesigner>
+  </PropertyGroup>
+  <PropertyGroup>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DocumentationFile>SettingsDesignerUnitTests.xml</DocumentationFile>
+    <BinplaceSymbols>false</BinplaceSymbols>
+    <AssemblyAttributeComVisible>true</AssemblyAttributeComVisible>
+    <GenerateAssemblyRefs>true</GenerateAssemblyRefs>
+    <AssemblyAttributeClsCompliant>false</AssemblyAttributeClsCompliant>
+    <NoStdLib>false</NoStdLib>
+    <NoExplicitReferenceToStdLib>true</NoExplicitReferenceToStdLib>
+    <RootNamespace></RootNamespace>
+    <OptionCompare>binary</OptionCompare>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionStrict>On</OptionStrict>
+    <TargetFramework>net46</TargetFramework>
+  </PropertyGroup>
+
+  <!-- 
+  Excluding all references since we get the dependencies from Package References.
+  Todo: Set the appropriate properties to get its corresponding Package references.
+  <ItemGroup>
+    <Reference Include="Accessibility" />
+    <Reference Include="$(ExternalAPIsPath)\Vsip\ref\Microsoft.VisualStudio.Designer.Interfaces.dll" />
+    <Reference Include="$(LegacyMPFRefPath)\Microsoft.VisualStudio.Shell.dll" />
+    <Reference Include="mscorcfg">
+      <HintPath>$(SdkRefPath)\mscorcfg.DLL</HintPath>
+    </Reference>
+    <Reference Include="RequiredPermissions">
+      <HintPath>$(SdkRefPath)\RequiredPermissions.DLL</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Build.Tasks">
+      <HintPath>$(SdkRef20Path)\Microsoft.Build.Tasks.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  -->
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.vbproj" />
+  </ItemGroup>
+  <Import Project="..\..\build\Targets\VSL.Imports.targets" />
+</Project>

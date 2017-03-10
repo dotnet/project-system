@@ -1,0 +1,10 @@
+Prerequisite
+--------------------
+1. The latest version of VisualStudio
+2. The enlistment of DDSuite
+
+Running Test
+--------------------
+1. Open razzle prompt.
+2. Change directory to $(root)\src\ddsuites\src\vs\wizard\vbdesigner\
+3. Type in trun command.
