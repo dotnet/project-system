@@ -59,7 +59,7 @@ build.cmd /no-deploy-extension /${configuration.toLowerCase()}
             // Build roslyn-project-system repo - we also need to set certain environment variables for building the repo with VS15 toolset.
             batchFile("""
 echo *** Build Roslyn Project System ***
-rmdir /S /Q %USERPROFILE%\.nuget\packages\microbuild.plugins.swixbuild
+rmdir /S /Q %USERPROFILE%\\.nuget\\packages\\microbuild.plugins.swixbuild
 SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
 SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
 SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
