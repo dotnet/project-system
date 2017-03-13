@@ -86,11 +86,12 @@ pushd %WORKSPACE%\\roslyn-internal
 git submodule init
 git submodule sync
 git submodule update --init --recursive
+init.cmd
 """)
 
             // Build the SDK and install .NET Core Templates.
             batchFile("""
-echo *** Build the SDK  ***
+echo *** Build the SDK and install .NET Core Templates  ***
 SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
 SET DeveloperCommandPrompt=%VS150COMNTOOLS%\\VsMSBuildCmd.bat
 
@@ -103,6 +104,28 @@ SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\
 pushd %WORKSPACE%\\sdk
 echo *** Build SDK
 call build.cmd -Configuration release -SkipTests || goto :BuildFailed "SDK"
+
+SET VSIXExpInstallerExe=%USERPROFILE%\\.nuget\\packages\\roslyntools.microsoft.vsixexpinstaller\\0.2.4-beta\\tools\\VsixExpInstaller.exe
+
+SET VSIXTarget=%WORKSPACE%\\sdk\\bin\\Release\\Microsoft.VisualStudio.ProjectSystem.CSharp.NetStandard.Templates.vsix
+echo *** Install %VSIXTarget%
+%VSIXExpInstallerExe% /rootsuffix:RoslynDev %VSIXTarget%
+if not "%ERRORLEVEL%"=="0" echo ERROR: %VSIXTarget% did not install successfully
+
+SET VSIXTarget=%WORKSPACE%\\sdk\\bin\\Release\\Microsoft.VisualStudio.ProjectSystem.CSharp.Templates.vsix
+echo *** Install %VSIXTarget%
+%VSIXExpInstallerExe% /rootsuffix:RoslynDev %VSIXTarget%
+if not "%ERRORLEVEL%"=="0" echo ERROR: %VSIXTarget% did not install successfully
+
+SET VSIXTarget=%WORKSPACE%\\sdk\\bin\\Release\\Microsoft.VisualStudio.ProjectSystem.VisualBasic.NetStandard.Templates.vsix
+echo *** Install %VSIXTarget%
+%VSIXExpInstallerExe% /rootsuffix:RoslynDev %VSIXTarget%
+if not "%ERRORLEVEL%"=="0" echo ERROR: %VSIXTarget% did not install successfully
+
+SET VSIXTarget=%WORKSPACE%\\sdk\\bin\\Release\\Microsoft.VisualStudio.ProjectSystem.VisualBasic.Templates.vsix
+echo *** Install %VSIXTarget%
+%VSIXExpInstallerExe% /rootsuffix:RoslynDev %VSIXTarget%
+if not "%ERRORLEVEL%"=="0" echo ERROR: %VSIXTarget% did not install successfully
 
 exit /b 0
 
