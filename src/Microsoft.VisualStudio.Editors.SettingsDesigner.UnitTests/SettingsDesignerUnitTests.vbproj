@@ -1,12 +1,6 @@
 ﻿<Project>
   <Import Project="..\..\build\Targets\VSL.Settings.targets" />
   <PropertyGroup>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-  </PropertyGroup>
-  <PropertyGroup>
     <DocumentationFile>SettingsDesignerUnitTests.xml</DocumentationFile>
     <BinplaceSymbols>false</BinplaceSymbols>
     <AssemblyAttributeComVisible>true</AssemblyAttributeComVisible>

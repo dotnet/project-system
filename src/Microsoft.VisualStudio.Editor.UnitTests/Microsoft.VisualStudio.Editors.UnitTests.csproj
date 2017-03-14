@@ -9,10 +9,6 @@
     <Nonshipping>true</Nonshipping>
     <UseVsVersion>true</UseVsVersion>
     <WarningLevel>4</WarningLevel>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
   </PropertyGroup>
   <!-- 
   Excluding all references since we get the dependencies from Package References.
