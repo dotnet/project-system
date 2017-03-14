@@ -1,7 +1,6 @@
 ﻿<Project>
   <Import Project="..\..\build\Targets\VSL.Settings.targets" />
   <PropertyGroup>
-    <DocumentationFile>SettingsDesignerUnitTests.xml</DocumentationFile>
     <BinplaceSymbols>false</BinplaceSymbols>
     <AssemblyAttributeComVisible>true</AssemblyAttributeComVisible>
     <GenerateAssemblyRefs>true</GenerateAssemblyRefs>
