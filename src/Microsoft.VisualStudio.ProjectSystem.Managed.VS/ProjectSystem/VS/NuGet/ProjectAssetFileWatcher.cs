@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using TPL = System.Threading.Tasks;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
     /// <summary>
     ///     Watches for writes to the project.assets.json, triggering a evaluation if it changes.
