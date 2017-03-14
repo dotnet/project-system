@@ -12,6 +12,9 @@
     <OptionCompare>binary</OptionCompare>
     <OptionExplicit>On</OptionExplicit>
     <OptionStrict>On</OptionStrict>
+    <Nonshipping>true</Nonshipping>
+    <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
+    <OutDir>$(OutDir)Tests\</OutDir>
     <TargetFramework>net46</TargetFramework>
     <ProjectSystemLayer>VisualStudioDesigner</ProjectSystemLayer>
     <ProjectSystemProjectType>Test</ProjectSystemProjectType>

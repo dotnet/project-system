@@ -7,6 +7,8 @@
     <AssemblyAttributeClsCompliant>true</AssemblyAttributeClsCompliant>
     <SignAssemblyAttribute>true</SignAssemblyAttribute>
     <Nonshipping>true</Nonshipping>
+    <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
+    <OutDir>$(OutDir)Tests\</OutDir>
     <UseVsVersion>true</UseVsVersion>
     <WarningLevel>4</WarningLevel>
     <ProjectSystemLayer>VisualStudioDesigner</ProjectSystemLayer>
