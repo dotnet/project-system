@@ -11,6 +11,9 @@ using TPL = System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
+    /// <summary>
+    ///     Watches for writes to the project.assets.json, triggering a evaluation if it changes.
+    /// </summary>
     internal class ProjectAssetFileWatcher : OnceInitializedOnceDisposed, IVsFileChangeEvents
     {
         private readonly IServiceProvider _serviceProvider;
