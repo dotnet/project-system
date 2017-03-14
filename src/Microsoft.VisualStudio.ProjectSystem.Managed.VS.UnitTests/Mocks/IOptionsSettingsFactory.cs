@@ -12,12 +12,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return Mock.Of<IEnvironmentOptions>();
         }
 
-        public static IEnvironmentOptions Implement<T>(Func<string, string, string, T, T> optionsSettingsValue)
+        public static IEnvironmentOptions Implement<T>(Func<string, string, string, T, T> environmentOptionsValue)
         {
             var mock = new Mock<IEnvironmentOptions>();
 
             mock.Setup(h => h.GetPropertiesValue(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<T>()))
-                .Returns(optionsSettingsValue);
+                .Returns(environmentOptionsValue);
 
             return mock.Object;
         }

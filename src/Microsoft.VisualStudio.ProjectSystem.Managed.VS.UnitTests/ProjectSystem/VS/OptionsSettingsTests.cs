@@ -61,14 +61,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var results = Task.Run(async () =>
             {
                 var threadingService = IProjectThreadingServiceFactory.Create();
-                var optionsSettingsFactory = IOptionsSettingsFactory.Implement((string category, string page, string property, bool defaultValue) =>
+                var environmentOptionsFactory = IOptionsSettingsFactory.Implement((string category, string page, string property, bool defaultValue) =>
                 {
                     threadingService.VerifyOnUIThread();
                     return defaultValue;
                 });
 
                 await threadingService.SwitchToUIThread();
-                return optionsSettingsFactory.GetPropertiesValue("foo", "foo", "foo", true);
+                return environmentOptionsFactory.GetPropertiesValue("foo", "foo", "foo", true);
             }).Result;
             Assert.True(results);
         }
@@ -79,13 +79,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var results = Task.Run(async () =>
             {
                 var threadingService = IProjectThreadingServiceFactory.Create();
-                var optionsSettingsFactory = IOptionsSettingsFactory.Implement((string category, string page, string property, bool defaultValue) =>
+                var environmentOptionsFactory = IOptionsSettingsFactory.Implement((string category, string page, string property, bool defaultValue) =>
                 {
                     threadingService.VerifyOnUIThread();
                     return defaultValue;
                 });
                 await threadingService.SwitchToUIThread();
-                return optionsSettingsFactory.GetPropertiesValue("foo", "foo", "foo", false);
+                return environmentOptionsFactory.GetPropertiesValue("foo", "foo", "foo", false);
             }).Result;
 
             Assert.False(results);
@@ -97,14 +97,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var results = Task.Run(async () =>
             {
                 var threadingService = IProjectThreadingServiceFactory.Create();
-                var optionsSettingsFactory = IOptionsSettingsFactory.Implement((string category, string page, string property, bool defaultValue) =>
+                var environmentOptionsFactory = IOptionsSettingsFactory.Implement((string category, string page, string property, bool defaultValue) =>
                 {
                     threadingService.VerifyOnUIThread();
                     return defaultValue;
                 });
 
                 await threadingService.SwitchToUIThread();
-                return optionsSettingsFactory.GetPropertiesValue("foo", "foo", "foo", 5);
+                return environmentOptionsFactory.GetPropertiesValue("foo", "foo", "foo", 5);
             }).Result;
 
             Assert.False(results==5);

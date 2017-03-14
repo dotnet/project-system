@@ -10,15 +10,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
     {
         protected readonly IProjectThreadingService _threadingService;
         protected readonly IUserNotificationServices _userNotificationServices;
-        protected readonly IEnvironmentOptions _optionsSettings;
+        protected readonly IEnvironmentOptions _environmentOptions;
         private bool _userPromptedOnce = false;
         private bool _userConfirmedRename = true;
 
-        public AbstractRenameStrategy(IProjectThreadingService threadingService, IUserNotificationServices userNotificationService, IEnvironmentOptions optionsSettings)
+        public AbstractRenameStrategy(IProjectThreadingService threadingService, IUserNotificationServices userNotificationService, IEnvironmentOptions environmentOptions)
         {
             _threadingService = threadingService;
             _userNotificationServices = userNotificationService;
-            _optionsSettings = optionsSettings;
+            _environmentOptions = environmentOptions;
         }
 
         public abstract bool CanHandleRename(string oldFilePath, string newFilePath, bool isCaseSensitive);
@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             }
 
             await _threadingService.SwitchToUIThread();
-            var userNeedPrompt = _optionsSettings.GetPropertiesValue("Environment", "ProjectsAndSolution", "PromptForRenameSymbol", false);
+            var userNeedPrompt = _environmentOptions.GetPropertiesValue("Environment", "ProjectsAndSolution", "PromptForRenameSymbol", false);
             if (userNeedPrompt)
             {
                 string renamePromptMessage = string.Format(CultureInfo.CurrentCulture, VSResources.RenameSymbolPrompt, oldFileName);
