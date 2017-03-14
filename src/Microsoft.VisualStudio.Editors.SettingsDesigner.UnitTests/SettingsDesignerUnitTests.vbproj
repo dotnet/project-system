@@ -2,10 +2,6 @@
   <Import Project="..\..\build\Targets\VSL.Settings.targets" />
   <PropertyGroup>
     <EnableDefaultItems>false</EnableDefaultItems>    <!-- Excludes all the test files -->
-    <BinplaceSymbols>false</BinplaceSymbols>
-    <AssemblyAttributeComVisible>true</AssemblyAttributeComVisible>
-    <GenerateAssemblyRefs>true</GenerateAssemblyRefs>
-    <AssemblyAttributeClsCompliant>false</AssemblyAttributeClsCompliant>
     <NoStdLib>false</NoStdLib>
     <NoExplicitReferenceToStdLib>true</NoExplicitReferenceToStdLib>
     <RootNamespace></RootNamespace>

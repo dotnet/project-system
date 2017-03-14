@@ -4,7 +4,6 @@
     <EnableDefaultItems>false</EnableDefaultItems> <!-- Excludes all the test files -->
     <RootNamespace></RootNamespace>
     <TargetFramework>net46</TargetFramework>
-    <AssemblyAttributeClsCompliant>true</AssemblyAttributeClsCompliant>
     <SignAssembly>true</SignAssembly>
     <Nonshipping>true</Nonshipping>
     <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
