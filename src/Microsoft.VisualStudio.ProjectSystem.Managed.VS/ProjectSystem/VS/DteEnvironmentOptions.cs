@@ -30,7 +30,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             _threadingService.VerifyOnUIThread();
 
-            DTE dte = _serviceProvider.GetService<DTE, DTE>();
+            DTE dte = _serviceProvider.GetService<DTE>();
+
             var props = dte.Properties[category, page];
             if (props != null)
             {
