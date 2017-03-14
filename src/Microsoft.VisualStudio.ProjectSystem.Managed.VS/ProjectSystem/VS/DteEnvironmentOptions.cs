@@ -7,6 +7,9 @@ using EnvDTE;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
+    /// <summary>
+    ///     Provides an implementation of <see cref="IEnvironmentOptions"/> that calls into <see cref="DTE"/>.
+    /// </summary>
     [Export(typeof(IEnvironmentOptions))]
     internal class DteEnvironmentOptions : IEnvironmentOptions
     {

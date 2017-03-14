@@ -2,6 +2,9 @@
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
+    /// <summary>
+    ///     Provides a method for retrieving options from the host environment.
+    /// </summary>
     internal interface IEnvironmentOptions
     {
         /// <summary>
