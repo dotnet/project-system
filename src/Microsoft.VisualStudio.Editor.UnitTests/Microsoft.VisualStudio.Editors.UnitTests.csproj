@@ -5,7 +5,7 @@
     <RootNamespace></RootNamespace>
     <TargetFramework>net46</TargetFramework>
     <AssemblyAttributeClsCompliant>true</AssemblyAttributeClsCompliant>
-    <SignAssemblyAttribute>true</SignAssemblyAttribute>
+    <SignAssembly>true</SignAssembly>
     <Nonshipping>true</Nonshipping>
     <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
     <OutDir>$(OutDir)Tests\</OutDir>

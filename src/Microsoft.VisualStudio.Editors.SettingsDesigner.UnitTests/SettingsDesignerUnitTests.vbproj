@@ -13,6 +13,7 @@
     <OptionExplicit>On</OptionExplicit>
     <OptionStrict>On</OptionStrict>
     <Nonshipping>true</Nonshipping>
+    <SignAssembly>true</SignAssembly>
     <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
     <OutDir>$(OutDir)Tests\</OutDir>
     <TargetFramework>net46</TargetFramework>
