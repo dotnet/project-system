@@ -1,30 +1,5 @@
 ﻿<Project>
   <Import Project="..\..\build\Targets\VSL.Settings.targets" />
-  <PropertyGroup Label="Dependencies">
-    <EnableDefaultItems>false</EnableDefaultItems> <!-- Excludes all the test files -->
-    <UsingPartitionEnv>true</UsingPartitionEnv>
-    <UsingProjectEnvCommonIDE>true</UsingProjectEnvCommonIDE>
-    <UsingPartitionUnitTest>true</UsingPartitionUnitTest>
-    <UsingProjectUnitTestUnitTestFramework>true</UsingProjectUnitTestUnitTestFramework>
-    <UsingPartitionVSCommon>true</UsingPartitionVSCommon>
-    <UsingProjectVSCommonEnvDte>true</UsingProjectVSCommonEnvDte>
-    <UsingProjectVSCommonEnvDte80>true</UsingProjectVSCommonEnvDte80>
-    <UsingProjectVSCommonMsVsOleInterop>true</UsingProjectVSCommonMsVsOleInterop>
-    <UsingProjectVSCommonMsVsShellInterop>true</UsingProjectVSCommonMsVsShellInterop>
-    <UsingProjectVSCommonMsVsShellInterop100>true</UsingProjectVSCommonMsVsShellInterop100>
-    <UsingProjectVSCommonMsVsTextManagerInterop>true</UsingProjectVSCommonMsVsTextManagerInterop>
-    <UsingProjectVSCommonMsVsVSHelp>true</UsingProjectVSCommonMsVsVSHelp>
-    <UsingProjectVSCommonVslangproj>true</UsingProjectVSCommonVslangproj>
-    <UsingProjectVSCommonVslangproj2>true</UsingProjectVSCommonVslangproj2>
-    <UsingProjectVSCommonVslangproj80>true</UsingProjectVSCommonVslangproj80>
-    <UsingPartitionVsdata>true</UsingPartitionVsdata>
-    <UsingProjectVsdataMicrosoftVisualstudioData>true</UsingProjectVsdataMicrosoftVisualstudioData>
-    <UsingProjectVsdataMicrosoftVisualstudioDataInterop>true</UsingProjectVsdataMicrosoftVisualstudioDataInterop>
-    <UsingPartitionVsip>true</UsingPartitionVsip>
-    <UsingProjectVsipMicrosoftVisualStudioShellDesign>true</UsingProjectVsipMicrosoftVisualStudioShellDesign>
-    <UsingPartitionWizard>true</UsingPartitionWizard>
-    <UsingProjectWizardMicrosoftVSDesigner>true</UsingProjectWizardMicrosoftVSDesigner>
-  </PropertyGroup>
   <PropertyGroup>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

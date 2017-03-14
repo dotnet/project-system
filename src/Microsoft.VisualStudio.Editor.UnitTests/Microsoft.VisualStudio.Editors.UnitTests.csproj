@@ -1,35 +1,5 @@
 ﻿<Project>
   <Import Project="..\..\build\Targets\VSL.Settings.targets" />
-  <PropertyGroup Label="Dependencies">
-    <UsingPartitionEnv>true</UsingPartitionEnv>
-    <UsingProjectEnvCommonIDE>true</UsingProjectEnvCommonIDE>
-    <UsingProjectEnvShell>true</UsingProjectEnvShell>
-    <UsingProjectEnvVstshell>true</UsingProjectEnvVstshell>
-    <UsingPartitionUnitTest>true</UsingPartitionUnitTest>
-    <UsingProjectUnitTestUnitTestFramework>true</UsingProjectUnitTestUnitTestFramework>
-    <UsingPartitionVSCommon>true</UsingPartitionVSCommon>
-    <UsingProjectVSCommonEnvDte>true</UsingProjectVSCommonEnvDte>
-    <UsingProjectVSCommonEnvDte_Private>true</UsingProjectVSCommonEnvDte_Private>
-    <UsingProjectVSCommonEnvDte80>true</UsingProjectVSCommonEnvDte80>
-    <UsingProjectVSCommonMsVsOleInterop>true</UsingProjectVSCommonMsVsOleInterop>
-    <UsingProjectVSCommonMsVsShellInterop>true</UsingProjectVSCommonMsVsShellInterop>
-    <UsingProjectVSCommonMsVsShellInterop100>true</UsingProjectVSCommonMsVsShellInterop100>
-    <UsingProjectVSCommonMsVsShellInterop80>true</UsingProjectVSCommonMsVsShellInterop80>
-    <UsingProjectVSCommonMsVsShellInterop90>true</UsingProjectVSCommonMsVsShellInterop90>
-    <UsingProjectVSCommonMsVsTextManagerInterop>true</UsingProjectVSCommonMsVsTextManagerInterop>
-    <UsingProjectVSCommonMsVsVSHelp>true</UsingProjectVSCommonMsVsVSHelp>
-    <UsingProjectVSCommonVslangproj>true</UsingProjectVSCommonVslangproj>
-    <UsingProjectVSCommonVslangproj2>true</UsingProjectVSCommonVslangproj2>
-    <UsingProjectVSCommonVslangproj80>true</UsingProjectVSCommonVslangproj80>
-    <UsingPartitionVsdata>true</UsingPartitionVsdata>
-    <UsingProjectVsdataMicrosoftVisualstudioData>true</UsingProjectVsdataMicrosoftVisualstudioData>
-    <UsingProjectVsdataMicrosoftVisualstudioDataInterop>true</UsingProjectVsdataMicrosoftVisualstudioDataInterop>
-    <UsingProjectVsdataMicrosoftVisualStudioQualityToolsMockObjectFramework>true</UsingProjectVsdataMicrosoftVisualStudioQualityToolsMockObjectFramework>
-    <UsingPartitionVsip>true</UsingPartitionVsip>
-    <UsingProjectVsipMicrosoftVisualstudioShellDesign>true</UsingProjectVsipMicrosoftVisualstudioShellDesign>
-    <UsingPartitionXmake>true</UsingPartitionXmake>
-    <UsingProjectXmakeXmaketasks>true</UsingProjectXmakeXmaketasks>
-  </PropertyGroup>
   <PropertyGroup>
     <EnableDefaultItems>false</EnableDefaultItems> <!-- Excludes all the test files -->
     <RootNamespace></RootNamespace>
