@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     public class DteEnvironmentOptionsTests
     {
         [Fact]
-        public void OptionsSettings_Constructor_AllNull_ThrowsArgumentNull()
+        public void Constructor_AllNull_ThrowsArgumentNull()
         {
             Assert.Throws<ArgumentNullException>("serviceProvider", () => {
                 new DteEnvironmentOptions(null, null);
@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         [Fact]
-        public void OptionsSettings_Constructor_NullAsSVsServiceProvider_ThrowsArgumentNull()
+        public void Constructor_NullAsSVsServiceProvider_ThrowsArgumentNull()
         {
             Assert.Throws<ArgumentNullException>("serviceProvider", () => {
                 new DteEnvironmentOptions(null, IProjectThreadingServiceFactory.Create());
@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         [Fact]
-        public void OptionsSettings_Constructor_NullAsProjectThreadingService_ThrowsArgumentNull()
+        public void Constructor_NullAsProjectThreadingService_ThrowsArgumentNull()
         {
             Assert.Throws<ArgumentNullException>("threadingService", () => {
                 new DteEnvironmentOptions(SVsServiceProviderFactory.Create(), null);
@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         [Fact]
-        public void OptionsSettings_Constructor_Success()
+        public void Constructor_Success()
         {
             var optionnsSettings = new DteEnvironmentOptions(SVsServiceProviderFactory.Create(), IProjectThreadingServiceFactory.Create());
 
@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         [Fact]
-        public void OptionsSettings_GetPropertiesValue_UIThread_Failure()
+        public void GetPropertiesValue_UIThread_Failure()
         {
             InvalidOperationException exception = Assert.ThrowsAsync<InvalidOperationException>(async () =>
             {
@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         [Fact]
-        public  void OptionsSettings_GetPropertiesValue__UIThread_Success()
+        public  void GetPropertiesValue__UIThread_Success()
         {
             var results = Task.Run(async () =>
             {
@@ -74,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         [Fact]
-        public void OptionsSettings_GetPropertiesValue__FalseValue()
+        public void GetPropertiesValue__FalseValue()
         {
             var results = Task.Run(async () =>
             {
@@ -92,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         [Fact]
-        public void OptionsSettings_GetPropertiesValue__IntValue()
+        public void GetPropertiesValue__IntValue()
         {
             var results = Task.Run(async () =>
             {
