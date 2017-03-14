@@ -2,7 +2,6 @@
 
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Composition;
-using Microsoft.VisualStudio.Shell;
 using EnvDTE;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
@@ -13,30 +12,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     [Export(typeof(IEnvironmentOptions))]
     internal class DteEnvironmentOptions : IEnvironmentOptions
     {
-        private readonly SVsServiceProvider _serviceProvider;
-        private readonly IProjectThreadingService _threadingService;
+        private readonly IDteServices _dteServices;
 
         [ImportingConstructor]
-        public DteEnvironmentOptions(SVsServiceProvider serviceProvider, IProjectThreadingService threadingService)
+        public DteEnvironmentOptions(IDteServices dteServices)
         {
-            Requires.NotNull(serviceProvider, nameof(serviceProvider));
-            Requires.NotNull(threadingService, nameof(threadingService));
+            Requires.NotNull(dteServices, nameof(dteServices));
 
-            _serviceProvider = serviceProvider;
-            _threadingService = threadingService;
+            _dteServices = dteServices;
         }
 
         public T GetOption<T>(string category, string page, string option, T defaultValue)
         {
-            _threadingService.VerifyOnUIThread();
-
-            DTE dte = _serviceProvider.GetService<DTE>();
-
-            var properties = dte.Properties[category, page];
+            var properties = _dteServices.Dte.Properties[category, page];
             if (properties != null)
             {
                 return ((T)properties.Item(option).Value);
             }
+
             return defaultValue;
         }
     }
