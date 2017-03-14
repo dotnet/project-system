@@ -8,13 +8,13 @@ using EnvDTE;
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     [Export(typeof(IEnvironmentOptions))]
-    internal class OptionsSettings : IEnvironmentOptions
+    internal class DteEnvironmentOptions : IEnvironmentOptions
     {
         private readonly SVsServiceProvider _serviceProvider;
         private readonly IProjectThreadingService _threadingService;
 
         [ImportingConstructor]
-        public OptionsSettings(SVsServiceProvider serviceProvider, IProjectThreadingService threadingService)
+        public DteEnvironmentOptions(SVsServiceProvider serviceProvider, IProjectThreadingService threadingService)
         {
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
             Requires.NotNull(threadingService, nameof(threadingService));

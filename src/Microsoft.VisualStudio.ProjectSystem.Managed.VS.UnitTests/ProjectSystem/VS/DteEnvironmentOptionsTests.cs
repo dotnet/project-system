@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     [ProjectSystemTrait]
-    public class OptionsSettingsTests
+    public class DteEnvironmentOptionsTests
     {
         [Fact]
         public void OptionsSettings_Constructor_AllNull_ThrowsArgumentNull()
         {
             Assert.Throws<ArgumentNullException>("serviceProvider", () => {
-                new OptionsSettings(null, null);
+                new DteEnvironmentOptions(null, null);
             });
         }
 
@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public void OptionsSettings_Constructor_NullAsSVsServiceProvider_ThrowsArgumentNull()
         {
             Assert.Throws<ArgumentNullException>("serviceProvider", () => {
-                new OptionsSettings(null, IProjectThreadingServiceFactory.Create());
+                new DteEnvironmentOptions(null, IProjectThreadingServiceFactory.Create());
             });
         }
 
@@ -29,14 +29,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public void OptionsSettings_Constructor_NullAsProjectThreadingService_ThrowsArgumentNull()
         {
             Assert.Throws<ArgumentNullException>("threadingService", () => {
-                new OptionsSettings(SVsServiceProviderFactory.Create(), null);
+                new DteEnvironmentOptions(SVsServiceProviderFactory.Create(), null);
             });
         }
 
         [Fact]
         public void OptionsSettings_Constructor_Success()
         {
-            var optionnsSettings = new OptionsSettings(SVsServiceProviderFactory.Create(), IProjectThreadingServiceFactory.Create());
+            var optionnsSettings = new DteEnvironmentOptions(SVsServiceProviderFactory.Create(), IProjectThreadingServiceFactory.Create());
 
             Assert.True(optionnsSettings != null);
         }
@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             InvalidOperationException exception = Assert.ThrowsAsync<InvalidOperationException>(async () =>
             {
-                var optionnsSettings = new OptionsSettings(SVsServiceProviderFactory.Create(), IProjectThreadingServiceFactory.Create());
+                var optionnsSettings = new DteEnvironmentOptions(SVsServiceProviderFactory.Create(), IProjectThreadingServiceFactory.Create());
                 var task = Task.Run(() =>
                 {
                     optionnsSettings.GetPropertiesValue("foo", "foo", "foo", true);
