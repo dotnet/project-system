@@ -21,6 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
             Requires.NotNull(threadingService, nameof(threadingService));
+
             _serviceProvider = serviceProvider;
             _threadingService = threadingService;
         }
