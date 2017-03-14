@@ -14,6 +14,5 @@
     <ProjectReference Include="..\Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.vbproj" />
     <ProjectReference Include="..\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj" />
   </ItemGroup>
-  <!--Import the targets-->
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
 </Project>
