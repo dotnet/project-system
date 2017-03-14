@@ -1,43 +1,45 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.ComponentModel.Composition;
 using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
 using IOLEServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
-using Task = System.Threading.Tasks.Task;
+using PackageUtilities = Microsoft.VisualStudio.Shell.PackageUtilities;
+using SVsServiceProvider = Microsoft.VisualStudio.Shell.SVsServiceProvider;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
-    internal abstract class VsContainedLanguageComponentsFactoryBase : OnceInitializedOnceDisposedAsync, IVsContainedLanguageComponentsFactory
+    [Export(typeof(IVsContainedLanguageComponentsFactory))]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+    internal class VsContainedLanguageComponentsFactory : OnceInitializedOnceDisposedAsync, IVsContainedLanguageComponentsFactory
     {
-        public VsContainedLanguageComponentsFactoryBase(
+        private readonly SVsServiceProvider _serviceProvider;
+        private readonly IUnconfiguredProjectVsServices _projectVsServices;
+        private readonly IProjectHostProvider _projectHostProvider;
+        private readonly ILanguageServiceHost _languageServiceHost;
+
+        [ImportingConstructor]
+        public VsContainedLanguageComponentsFactory(
             IUnconfiguredProjectCommonServices commonServices,
             SVsServiceProvider serviceProvider,
             IUnconfiguredProjectVsServices projectServices,
             IProjectHostProvider projectHostProvider,
-            ILanguageServiceHost languageServiceHost,
-            Guid languageServiceGuid)
+            ILanguageServiceHost languageServiceHost)
             : base(commonServices.ThreadingService.JoinableTaskContext)
         {
-            ServiceProvider = serviceProvider;
-            ProjectServices = projectServices;
-            LanguageServiceGuid = languageServiceGuid;
-            ProjectHostProvider = projectHostProvider;
-            LanguageServiceHost = languageServiceHost;
+            _serviceProvider = serviceProvider;
+            _projectVsServices = projectServices;
+            _projectHostProvider = projectHostProvider;
+            _languageServiceHost = languageServiceHost;
         }
-
-        private Guid LanguageServiceGuid { get; }
-        private SVsServiceProvider ServiceProvider { get; }
-        private IUnconfiguredProjectVsServices ProjectServices { get; }
-        private IProjectHostProvider ProjectHostProvider { get; }
-        private ILanguageServiceHost LanguageServiceHost { get; }
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            await LanguageServiceHost.InitializeAsync(cancellationToken).ConfigureAwait(false);
+            await _languageServiceHost.InitializeAsync(cancellationToken).ConfigureAwait(false);
         }
 
         protected override Task DisposeCoreAsync(bool initialized)
@@ -63,14 +65,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             IVsHierarchy myHierarchy = null;
             IVsContainedLanguageFactory myContainedLanguageFactory = null;
 
-            ProjectServices.ThreadingService.JoinableTaskFactory.Run(async () =>
+            _projectVsServices.ThreadingService.JoinableTaskFactory.Run(async () =>
             {
                 await InitializeAsync().ConfigureAwait(false);
 
-                await ProjectServices.ThreadingService.JoinableTaskFactory.SwitchToMainThreadAsync();
+                Guid? languageServiceId = await GetLanguageServiceId().ConfigureAwait(false);
+                if (languageServiceId == null)
+                    return;
+
+                await _projectVsServices.ThreadingService.JoinableTaskFactory.SwitchToMainThreadAsync();
 
                 var priority = new VSDOCUMENTPRIORITY[1];
-                HResult result = ProjectServices.VsProject.IsDocumentInProject(filePath, 
+                HResult result = _projectVsServices.VsProject.IsDocumentInProject(filePath, 
                                                                                out int isFound, 
                                                                                priority, 
                                                                                out myItemId);
@@ -79,9 +85,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                     return;
                 }
              
-                myHierarchy = (IVsHierarchy)ProjectHostProvider.UnconfiguredProjectHostObject.ActiveIntellisenseProjectHostObject;
+                myHierarchy = (IVsHierarchy)_projectHostProvider.UnconfiguredProjectHostObject.ActiveIntellisenseProjectHostObject;
 
-                var oleServiceProvider = ServiceProvider.GetService(typeof(IOLEServiceProvider)) as IOLEServiceProvider;
+                var oleServiceProvider = _serviceProvider.GetService(typeof(IOLEServiceProvider)) as IOLEServiceProvider;
                 if (oleServiceProvider == null)
                 {
                     return;
@@ -89,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
                 myContainedLanguageFactory = (IVsContainedLanguageFactory)PackageUtilities.QueryService(
                                                 oleServiceProvider,
-                                                LanguageServiceGuid);
+                                                languageServiceId.Value);
             });
 
             hierarchy = myHierarchy;
@@ -99,6 +105,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             return (myHierarchy == null || containedLanguageFactory == null) 
                 ? VSConstants.E_FAIL 
                 : VSConstants.S_OK;
+        }
+
+        public async Task<Guid?> GetLanguageServiceId()
+        {
+            var properties = await _projectVsServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync()
+                                                                                       .ConfigureAwait(false);
+
+            var languageServiceIdString = (string)await properties.LanguageServiceId.GetValueAsync()
+                                                                                    .ConfigureAwait(false);
+            if (string.IsNullOrEmpty(languageServiceIdString))
+                return null;
+
+            if (!Guid.TryParse(languageServiceIdString, out Guid languageServiceId))
+            {
+                return null;
+            }
+
+            return languageServiceId;
         }
     }
 }
