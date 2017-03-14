@@ -11,7 +11,7 @@ using TPL = System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    internal class ProjectLockFileWatcher : OnceInitializedOnceDisposed, IVsFileChangeEvents
+    internal class ProjectAssetFileWatcher : OnceInitializedOnceDisposed, IVsFileChangeEvents
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly IUnconfiguredProjectCommonServices _projectServices;
@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private string _fileBeingWatched;
 
         [ImportingConstructor]
-        public ProjectLockFileWatcher([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
+        public ProjectAssetFileWatcher([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
                                       [Import(ContractNames.ProjectTreeProviders.FileSystemDirectoryTree)] IProjectTreeProvider fileSystemTreeProvider,
                                       IUnconfiguredProjectCommonServices projectServices,
                                       IProjectLockService projectLockService)

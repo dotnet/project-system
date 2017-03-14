@@ -7,7 +7,7 @@ using Xunit;
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     [ProjectSystemTrait]
-    public class ProjectLockFileWatcherTests
+    public class ProjectAssetFileWatcherTests
     {
         [Theory]
         [InlineData(@"
@@ -27,7 +27,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
 
             var propertyData = CreateBaseIntermediateOutputPathProperty("obj\\");
             var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj");
-            var watcher = new ProjectLockFileWatcher(spMock,
+            var watcher = new ProjectAssetFileWatcher(spMock,
                                                      IProjectTreeProviderFactory.Create(),
                                                      IUnconfiguredProjectCommonServicesFactory.Create(unconfiguredProject,
                                                                                                       projectProperties: ProjectPropertiesFactory.Create(unconfiguredProject, new[] { propertyData })),
@@ -83,7 +83,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
             var propertyData = CreateBaseIntermediateOutputPathProperty("obj\\");
 
             var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj");
-            var watcher = new ProjectLockFileWatcher(spMock,
+            var watcher = new ProjectAssetFileWatcher(spMock,
                                                      IProjectTreeProviderFactory.Create(),
                                                      IUnconfiguredProjectCommonServicesFactory.Create(unconfiguredProject,
                                                                                                       projectProperties: ProjectPropertiesFactory.Create(unconfiguredProject, new[] { propertyData })),
@@ -113,7 +113,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
             var propertyData = CreateBaseIntermediateOutputPathProperty(string.Empty);
 
             var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj");
-            var watcher = new ProjectLockFileWatcher(spMock,
+            var watcher = new ProjectAssetFileWatcher(spMock,
                                                      IProjectTreeProviderFactory.Create(),
                                                      IUnconfiguredProjectCommonServicesFactory.Create(unconfiguredProject,
                                                                                                       projectProperties: ProjectPropertiesFactory.Create(unconfiguredProject, new[] { propertyData })),
