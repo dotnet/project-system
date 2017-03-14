@@ -29,11 +29,11 @@ call :Usage && exit /b 1
 :DoneParsing
 
 if not exist "%VS150COMNTOOLS%" (
-  echo To build this repository, this script needs to be run from a Visual Studio 2017 RC developer command prompt.
+  echo To build this repository, this script needs to be run from a Visual Studio 2017 developer command prompt.
   echo.
   echo If Visual Studio is not installed, visit this page to download:
   echo.
-  echo https://www.visualstudio.com/vs/visual-studio-2017-rc/
+  echo https://www.visualstudio.com/downloads/
   exit /b 1
 )
 
