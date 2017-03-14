@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private readonly Workspace _workspace;
         private readonly IProjectThreadingService _threadingService;
         private readonly IUserNotificationServices _userNotificationServices;
-        private readonly IOptionsSettings _optionsSettings;
+        private readonly IEnvironmentOptions _environmentOptions;
         private readonly IRoslynServices _roslynServices;
         private readonly Project _project;
         private readonly string _newFilePath;
@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         internal Renamer(Workspace workspace,
                          IProjectThreadingService threadingService,
                          IUserNotificationServices userNotificationServices,
-                         IOptionsSettings optionsSettings,
+                         IEnvironmentOptions environmentOptions,
                          IRoslynServices roslynServices,
                          Project project,
                          string oldFilePath,
@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _workspace = workspace;
             _threadingService = threadingService;
             _userNotificationServices = userNotificationServices;
-            _optionsSettings = optionsSettings;
+            _environmentOptions = environmentOptions;
             _roslynServices = roslynServices;
             _project = project;
             _newFilePath = newFilePath;
@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private async Task<IRenameStrategy> GetStrategyAsync(Project project)
         {
             IRenameStrategy[] strategies = new IRenameStrategy[] {
-                new SimpleRenameStrategy(_threadingService, _userNotificationServices, _optionsSettings, _roslynServices)
+                new SimpleRenameStrategy(_threadingService, _userNotificationServices, _environmentOptions, _roslynServices)
             };
 
             var isCaseSensitive = false;

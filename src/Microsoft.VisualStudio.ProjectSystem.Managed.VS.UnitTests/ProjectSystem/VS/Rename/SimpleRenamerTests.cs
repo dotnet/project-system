@@ -104,9 +104,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 Solution solution = ws.AddSolution(InitializeWorkspace(projectId, newFilePath, soureCode,language));
                 Project project = (from d in solution.Projects where d.Id == projectId select d).FirstOrDefault();
 
-                var optionsSettingsFactory = IOptionsSettingsFactory.Implement((string category, string page, string property, bool defaultValue) => { return true; });
+                var environmentOptionsFactory = IEnvironmentOptionsFactory.Implement((string category, string page, string property, bool defaultValue) => { return true; });
 
-                var renamer = new Renamer(ws, IProjectThreadingServiceFactory.Create(), userNotificationServices, optionsSettingsFactory, roslynServices, project, oldFilePath, newFilePath);
+                var renamer = new Renamer(ws, IProjectThreadingServiceFactory.Create(), userNotificationServices, environmentOptionsFactory, roslynServices, project, oldFilePath, newFilePath);
                 await renamer.RenameAsync(project);
             }
         }
