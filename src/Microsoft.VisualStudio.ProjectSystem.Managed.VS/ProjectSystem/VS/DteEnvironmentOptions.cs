@@ -32,10 +32,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             DTE dte = _serviceProvider.GetService<DTE>();
 
-            var props = dte.Properties[category, page];
-            if (props != null)
+            var properties = dte.Properties[category, page];
+            if (properties != null)
             {
-                return ((T)props.Item(option).Value);
+                return ((T)properties.Item(option).Value);
             }
             return defaultValue;
         }
