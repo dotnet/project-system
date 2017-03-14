@@ -1,6 +1,7 @@
 ﻿<Project>
   <Import Project="..\..\build\Targets\VSL.Settings.targets" />
   <PropertyGroup>
+    <EnableDefaultItems>false</EnableDefaultItems>    <!-- Excludes all the test files -->
     <BinplaceSymbols>false</BinplaceSymbols>
     <AssemblyAttributeComVisible>true</AssemblyAttributeComVisible>
     <GenerateAssemblyRefs>true</GenerateAssemblyRefs>
@@ -12,6 +13,8 @@
     <OptionExplicit>On</OptionExplicit>
     <OptionStrict>On</OptionStrict>
     <TargetFramework>net46</TargetFramework>
+    <ProjectSystemLayer>VisualStudioDesigner</ProjectSystemLayer>
+    <ProjectSystemProjectType>Test</ProjectSystemProjectType>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.vbproj" />

@@ -9,6 +9,8 @@
     <Nonshipping>true</Nonshipping>
     <UseVsVersion>true</UseVsVersion>
     <WarningLevel>4</WarningLevel>
+    <ProjectSystemLayer>VisualStudioDesigner</ProjectSystemLayer>
+    <ProjectSystemProjectType>Test</ProjectSystemProjectType>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.vbproj" />
