@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _threadingService = threadingService;
         }
 
-        public T GetPropertiesValue<T>(string category, string page, string property, T defaultValue)
+        public T GetOption<T>(string category, string page, string option, T defaultValue)
         {
             _threadingService.VerifyOnUIThread();
 
@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var props = dte.Properties[category, page];
             if (props != null)
             {
-                return ((T)props.Item(property).Value);
+                return ((T)props.Item(option).Value);
             }
             return defaultValue;
         }

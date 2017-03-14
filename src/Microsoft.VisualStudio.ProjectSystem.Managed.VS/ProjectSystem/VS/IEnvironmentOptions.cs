@@ -10,6 +10,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <summary>
         /// Provides access to Visual Studio Tools - > Options - > Properties Value.
         /// </summary>
-        T GetPropertiesValue<T>(string category, string page, string property, T defaultValue);
+        T GetOption<T>(string category, string page, string option, T defaultValue);
     }
 }

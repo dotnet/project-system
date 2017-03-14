@@ -42,21 +42,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         [Fact]
-        public void GetPropertiesValue_UIThread_Failure()
+        public void GetOption_UIThread_Failure()
         {
             InvalidOperationException exception = Assert.ThrowsAsync<InvalidOperationException>(async () =>
             {
                 var optionnsSettings = new DteEnvironmentOptions(SVsServiceProviderFactory.Create(), IProjectThreadingServiceFactory.Create());
                 var task = Task.Run(() =>
                 {
-                    optionnsSettings.GetPropertiesValue("foo", "foo", "foo", true);
+                    optionnsSettings.GetOption("foo", "foo", "foo", true);
                 });
                 await task;
             }).Result;
         }
 
         [Fact]
-        public  void GetPropertiesValue_UIThread_Success()
+        public  void GetOption_UIThread_Success()
         {
             var results = Task.Run(async () =>
             {
@@ -68,13 +68,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 });
 
                 await threadingService.SwitchToUIThread();
-                return environmentOptionsFactory.GetPropertiesValue("foo", "foo", "foo", true);
+                return environmentOptionsFactory.GetOption("foo", "foo", "foo", true);
             }).Result;
             Assert.True(results);
         }
 
         [Fact]
-        public void GetPropertiesValue_FalseValue()
+        public void GetOption_FalseValue()
         {
             var results = Task.Run(async () =>
             {
@@ -85,14 +85,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     return defaultValue;
                 });
                 await threadingService.SwitchToUIThread();
-                return environmentOptionsFactory.GetPropertiesValue("foo", "foo", "foo", false);
+                return environmentOptionsFactory.GetOption("foo", "foo", "foo", false);
             }).Result;
 
             Assert.False(results);
         }
 
         [Fact]
-        public void GetPropertiesValue_IntValue()
+        public void GetOption_IntValue()
         {
             var results = Task.Run(async () =>
             {
@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 });
 
                 await threadingService.SwitchToUIThread();
-                return environmentOptionsFactory.GetPropertiesValue("foo", "foo", "foo", 5);
+                return environmentOptionsFactory.GetOption("foo", "foo", "foo", 5);
             }).Result;
 
             Assert.False(results==5);
