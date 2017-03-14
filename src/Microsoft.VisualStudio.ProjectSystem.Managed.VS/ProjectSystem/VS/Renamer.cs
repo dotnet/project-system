@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private readonly Workspace _workspace;
         private readonly IProjectThreadingService _threadingService;
         private readonly IUserNotificationServices _userNotificationServices;
-        private readonly IOptionsSettings _optionsSettings;
+        private readonly IEnvironmentOptions _optionsSettings;
         private readonly IRoslynServices _roslynServices;
         private readonly Project _project;
         private readonly string _newFilePath;
@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         internal Renamer(Workspace workspace,
                          IProjectThreadingService threadingService,
                          IUserNotificationServices userNotificationServices,
-                         IOptionsSettings optionsSettings,
+                         IEnvironmentOptions optionsSettings,
                          IRoslynServices roslynServices,
                          Project project,
                          string oldFilePath,

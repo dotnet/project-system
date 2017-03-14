@@ -10,11 +10,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
     {
         protected readonly IProjectThreadingService _threadingService;
         protected readonly IUserNotificationServices _userNotificationServices;
-        protected readonly IOptionsSettings _optionsSettings;
+        protected readonly IEnvironmentOptions _optionsSettings;
         private bool _userPromptedOnce = false;
         private bool _userConfirmedRename = true;
 
-        public AbstractRenameStrategy(IProjectThreadingService threadingService, IUserNotificationServices userNotificationService, IOptionsSettings optionsSettings)
+        public AbstractRenameStrategy(IProjectThreadingService threadingService, IUserNotificationServices userNotificationService, IEnvironmentOptions optionsSettings)
         {
             _threadingService = threadingService;
             _userNotificationServices = userNotificationService;

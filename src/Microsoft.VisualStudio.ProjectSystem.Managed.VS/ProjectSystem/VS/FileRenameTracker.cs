@@ -25,12 +25,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     {
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly VisualStudioWorkspace _visualStudioWorkspace;
-        private readonly IOptionsSettings _optionsSettings;
+        private readonly IEnvironmentOptions _optionsSettings;
         private readonly IUserNotificationServices _userNotificationServices;
         private readonly IRoslynServices _roslynServices;
 
         [ImportingConstructor]
-        public FileRenameTracker(IUnconfiguredProjectVsServices projectVsServices, VisualStudioWorkspace visualStudioWorkspace, IOptionsSettings optionsSettings,  IUserNotificationServices userNotificationServices, IRoslynServices roslynServices)
+        public FileRenameTracker(IUnconfiguredProjectVsServices projectVsServices, VisualStudioWorkspace visualStudioWorkspace, IEnvironmentOptions optionsSettings,  IUserNotificationServices userNotificationServices, IRoslynServices roslynServices)
         {
             Requires.NotNull(projectVsServices, nameof(projectVsServices));
             Requires.NotNull(visualStudioWorkspace, nameof(visualStudioWorkspace));

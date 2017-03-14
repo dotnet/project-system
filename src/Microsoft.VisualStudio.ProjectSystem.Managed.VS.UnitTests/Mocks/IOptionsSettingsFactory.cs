@@ -7,14 +7,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IOptionsSettingsFactory
     {
-        public static IOptionsSettings Create()
+        public static IEnvironmentOptions Create()
         {
-            return Mock.Of<IOptionsSettings>();
+            return Mock.Of<IEnvironmentOptions>();
         }
 
-        public static IOptionsSettings Implement<T>(Func<string, string, string, T, T> optionsSettingsValue)
+        public static IEnvironmentOptions Implement<T>(Func<string, string, string, T, T> optionsSettingsValue)
         {
-            var mock = new Mock<IOptionsSettings>();
+            var mock = new Mock<IEnvironmentOptions>();
 
             mock.Setup(h => h.GetPropertiesValue(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<T>()))
                 .Returns(optionsSettingsValue);

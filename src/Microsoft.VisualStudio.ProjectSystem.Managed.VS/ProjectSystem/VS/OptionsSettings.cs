@@ -7,8 +7,8 @@ using EnvDTE;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    [Export(typeof(IOptionsSettings))]
-    internal class OptionsSettings : IOptionsSettings
+    [Export(typeof(IEnvironmentOptions))]
+    internal class OptionsSettings : IEnvironmentOptions
     {
         private readonly SVsServiceProvider _serviceProvider;
         private readonly IProjectThreadingService _threadingService;

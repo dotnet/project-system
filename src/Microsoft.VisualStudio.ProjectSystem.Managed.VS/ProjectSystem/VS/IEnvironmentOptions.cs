@@ -2,7 +2,7 @@
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    internal interface IOptionsSettings
+    internal interface IEnvironmentOptions
     {
         /// <summary>
         /// Provides access to Visual Studio Tools - > Options - > Properties Value.

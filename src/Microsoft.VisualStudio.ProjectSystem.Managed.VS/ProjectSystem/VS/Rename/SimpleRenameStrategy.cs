@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
     {
         private readonly IRoslynServices _roslynServices;
 
-        public SimpleRenameStrategy(IProjectThreadingService threadingService, IUserNotificationServices userNotificationService, IOptionsSettings optionsSettings, IRoslynServices roslynServices)
+        public SimpleRenameStrategy(IProjectThreadingService threadingService, IUserNotificationServices userNotificationService, IEnvironmentOptions optionsSettings, IRoslynServices roslynServices)
             : base(threadingService, userNotificationService, optionsSettings)
         {
             _roslynServices = roslynServices;
