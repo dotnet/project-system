@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         [Fact]
-        public  void GetPropertiesValue__UIThread_Success()
+        public  void GetPropertiesValue_UIThread_Success()
         {
             var results = Task.Run(async () =>
             {
@@ -74,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         [Fact]
-        public void GetPropertiesValue__FalseValue()
+        public void GetPropertiesValue_FalseValue()
         {
             var results = Task.Run(async () =>
             {
@@ -92,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         [Fact]
-        public void GetPropertiesValue__IntValue()
+        public void GetPropertiesValue_IntValue()
         {
             var results = Task.Run(async () =>
             {
