@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var results = Task.Run(async () =>
             {
                 var threadingService = IProjectThreadingServiceFactory.Create();
-                var environmentOptionsFactory = IOptionsSettingsFactory.Implement((string category, string page, string property, bool defaultValue) =>
+                var environmentOptionsFactory = IEnvironmentOptionsFactory.Implement((string category, string page, string property, bool defaultValue) =>
                 {
                     threadingService.VerifyOnUIThread();
                     return defaultValue;
@@ -79,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var results = Task.Run(async () =>
             {
                 var threadingService = IProjectThreadingServiceFactory.Create();
-                var environmentOptionsFactory = IOptionsSettingsFactory.Implement((string category, string page, string property, bool defaultValue) =>
+                var environmentOptionsFactory = IEnvironmentOptionsFactory.Implement((string category, string page, string property, bool defaultValue) =>
                 {
                     threadingService.VerifyOnUIThread();
                     return defaultValue;
@@ -97,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var results = Task.Run(async () =>
             {
                 var threadingService = IProjectThreadingServiceFactory.Create();
-                var environmentOptionsFactory = IOptionsSettingsFactory.Implement((string category, string page, string property, bool defaultValue) =>
+                var environmentOptionsFactory = IEnvironmentOptionsFactory.Implement((string category, string page, string property, bool defaultValue) =>
                 {
                     threadingService.VerifyOnUIThread();
                     return defaultValue;

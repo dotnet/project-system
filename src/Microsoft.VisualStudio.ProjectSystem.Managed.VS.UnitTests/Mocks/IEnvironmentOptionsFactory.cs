@@ -5,7 +5,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
-    internal static class IOptionsSettingsFactory
+    internal static class IEnvironmentOptionsFactory
     {
         public static IEnvironmentOptions Create()
         {
