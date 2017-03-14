@@ -10,49 +10,9 @@
     <UseVsVersion>true</UseVsVersion>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <!-- 
-  Excluding all references since we get the dependencies from Package References.
-  Todo: Set the appropriate properties to get its corresponding Package references.
-  <ItemGroup>
-    <Reference Include="Accessibility" />
-    <Reference Include="CustomMarshalers" />
-    <Reference Include="microsoft.visualbasic" />
-    <Reference Include="$(ExternalAPIsPath)\Vsip\ref\Microsoft.VisualStudio.Designer.Interfaces.dll" />
-    <Reference Include="$(ExternalAPIsPath)\sdk\ref\v2.0\Microsoft.VisualStudio.ManagedInterfaces.dll" />
-    <Reference Include="Microsoft.VisualStudio.TemplateWizardInterface">
-      <HintPath>$(ExternalAPIsPath)\Whidbey\NetRedist\Microsoft.VisualStudio.TemplateWizardInterface.dll</HintPath>
-    </Reference>
-    <Reference Include="mscorcfg" />
-    <Reference Include="RequiredPermissions" />
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Design" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Security" />
-    <Reference Include="System.ServiceModel">
-      <HintPath>$(WinFxExternalRefPath)\System.ServiceModel.DLL</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.Serialization">
-      <HintPath>$(WinFxExternalRefPath)\System.Runtime.Serialization.DLL</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Services" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="VJSharpCodeProvider" />
-    <Reference Include="$(VenusRefV2Path)\VsWebSite.Interop.dll" />
-  </ItemGroup>
-  -->
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.vbproj" />
     <ProjectReference Include="..\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj" />
-    <!--
-    <ProjectReference Include="..\..\vsdesigner\designer\Microsoft.VSDesigner.csproj">
-      <Project>{DD3E93B7-041D-4ECD-A359-11A7DB0CD8C8}</Project>
-    </ProjectReference>
-    -->
   </ItemGroup>
   <!--Import the targets-->
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
