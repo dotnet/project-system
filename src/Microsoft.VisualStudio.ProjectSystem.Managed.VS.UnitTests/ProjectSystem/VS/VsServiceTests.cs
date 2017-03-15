@@ -71,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             });
 
-            var service = CreateInstance<object, string>(serviceProvider: serviceProvider, threadingService: threadingService);
+            var service = CreateInstance<string, object>(serviceProvider: serviceProvider, threadingService: threadingService);
 
             var result = service.Value;
 
@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 return new object();
             });
 
-            var service = CreateInstance<object, string>(serviceProvider: serviceProvider, threadingService: threadingService);
+            var service = CreateInstance<string, object>(serviceProvider: serviceProvider, threadingService: threadingService);
 
             var result1 = service.Value;
             var result2 = service.Value;
@@ -95,12 +95,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Assert.NotSame(result1, result2);
         }
 
-        private VsService<TInterface, TService> CreateInstance<TInterface, TService>(IServiceProvider serviceProvider = null, IProjectThreadingService threadingService = null)
+        private VsService<TService, TInterface> CreateInstance<TService, TInterface>(IServiceProvider serviceProvider = null, IProjectThreadingService threadingService = null)
         {
             serviceProvider = serviceProvider ?? SVsServiceProviderFactory.Create();
             threadingService = threadingService ?? IProjectThreadingServiceFactory.Create();
 
-            return new VsService<TInterface, TService>(serviceProvider, threadingService);
+            return new VsService<TService, TInterface>(serviceProvider, threadingService);
         }
     }
 }

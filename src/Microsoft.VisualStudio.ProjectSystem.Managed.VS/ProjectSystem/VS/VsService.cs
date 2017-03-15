@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     ///     Provides an implementation of <see cref="IVsService{TInterfaceType, TServiceType}"/> that calls into Visual Studio's <see cref="SVsServiceProvider"/>.
     /// </summary>
     [Export(typeof(IVsService<,>))]
-    internal class VsService<TInterface, TService> : VsService<TInterface>, IVsService<TInterface, TService>
+    internal class VsService<TService, TInterface> : VsService<TInterface>, IVsService<TService, TInterface>
     {
         [ImportingConstructor]
         public VsService([Import(typeof(SVsServiceProvider))]IServiceProvider serviceProvider, IProjectThreadingService threadingService)
