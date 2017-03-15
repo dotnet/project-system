@@ -22,6 +22,7 @@ if /I "%1" == "/rebuild" set MSBuildBuildTarget=Rebuild&&shift&& goto :ParseArgu
 if /I "%1" == "/copy-artifacts" set CopyOutputArtifacts=true&&shift&& goto :ParseArguments
 if /I "%1" == "/debug" set BuildConfiguration=Debug&&shift&& goto :ParseArguments
 if /I "%1" == "/release" set BuildConfiguration=Release&&shift&& goto :ParseArguments
+if /I "%1" == "/signbuild" set ShouldSignBuild=true&&shift&& goto :ParseArguments
 if /I "%1" == "/skiptests" set RunTests=false&&shift&& goto :ParseArguments
 if /I "%1" == "/no-deploy-extension" set DeployVsixExtension=false&&shift&& goto :ParseArguments
 if /I "%1" == "/no-node-reuse" set NodeReuse=false&&shift&& goto :ParseArguments
@@ -67,7 +68,7 @@ for %%T IN (Restore %MSBuildBuildTarget%, BuildModernVsixPackages) do (
     set ConsoleLoggerVerbosity=minimal
   )
 
-  set BuildCommand=msbuild /nologo /warnaserror /nodeReuse:%NodeReuse% /consoleloggerparameters:Verbosity=!ConsoleLoggerVerbosity! /fileLogger /fileloggerparameters:LogFile="!LogFile!";verbosity=%FileLoggerVerbosity% /t:"%%T" /p:Configuration="%BuildConfiguration%" /p:RunTests="%RunTests%" /p:DeployVsixExtension="%DeployVsixExtension%" "%Root%build\build.proj" %MSBuildAdditionalArguments%
+  set BuildCommand=msbuild /nologo /warnaserror /nodeReuse:%NodeReuse% /consoleloggerparameters:Verbosity=!ConsoleLoggerVerbosity! /fileLogger /fileloggerparameters:LogFile="!LogFile!";verbosity=%FileLoggerVerbosity% /t:"%%T" /p:Configuration="%BuildConfiguration%" /p:RunTests="%RunTests%" /p:ShouldSignBuild="%ShouldSignBuild%" /p:DeployVsixExtension="%DeployVsixExtension%" "%Root%build\build.proj" %MSBuildAdditionalArguments%
   if "%FileLoggerVerbosity%" == "diagnostic" (
     echo !BuildCommand!
   )
@@ -107,6 +108,7 @@ echo     /diagnostic             Turns on diagnostic logging and turns off multi
 echo     /no-node-reuse          Prevents MSBuild from reusing existing MSBuild instances,
 echo                             useful for avoiding unexpected behavior on build machines
 echo     /no-deploy-extension    Does not deploy the VSIX extension when building the solution
+echo     /signbuild              Produce signed build
 echo     /skiptests              Does not run unit tests
 goto :eof
 
