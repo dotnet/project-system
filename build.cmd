@@ -80,6 +80,13 @@ for %%T IN (Restore %MSBuildBuildTarget%, BuildModernVsixPackages) do (
   )
 )
 
+REM Run copy as a final step after all the product components are built
+ if /I "%RunningInMicroBuild%" == "true" (
+   if /I "%SignType%" == "Real" (
+     call build\Scripts\CopyOutput.cmd
+   )
+ )
+
 echo.
 call :PrintColor Green "Build completed successfully, for full logs see %LogFiles%"
 exit /b 0
