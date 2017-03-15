@@ -87,16 +87,23 @@ You can force Visual Studio to show the results of a design-time build using the
 5. Open the solution
 6. Under %TEMP%, look for [RANDOMGUID].designtime.log files, these will contain the results of the design-time build. If running Visual Studio 2015 Update 2 or higher, the name of the project and design-time target that is being called will also be included in the file name.
 
-#### Visual Studio "15"
+#### Visual Studio 2017
 
-In Visual Studio "15" there are two C# and Visual Basic project systems. By default, at the time of writing, the majority of projects continue to open in the same project system as previous versions of Visual Studio, and hence the instructions are the same as above.
+In Visual Studio 2017 there are two C# and Visual Basic project systems. By default the majority of projects (.NET Framework, UWP, etc) continue to open in the same project system as previous versions of Visual Studio, and hence the instructions are the same as above. 
 
-If, however, you know that your project opens in the new [project system](http://github.com/dotnet/roslyn-project-system), you can use the following steps to see the results of design-time builds:
+The new .NET Core and .NET Standard project types, however, open in the new [project system](http://github.com/dotnet/roslyn-project-system), you can use the following steps to see the results of design-time builds:
 
-1. Under `HKEY_CURRENT_USER\SOFTWARE\Microsoft\VisualStudio\15.0\CPS`
-create a new DWORD (32-bit) value `Design-time Build Logging` and set it to `1`. If running inside other hives of Visual Studio, replace `15.0` with `15.0[Hive]`, where `[Hive]` is the name of the hive.
-
-2. Open the solution
+1. Close all instances of Visual Studio
+2. In Explorer, open `%ProgramData%\Microsoft\VisualStudio\Packages\_Instances` and remember the name of the folder under there, this is called an "instance id"
+3. In Start, enter `regedit.exe` and press __ENTER__
+4. Select HKEY_LOCAL_MACHINE and choose __File__ -> __Load Hive__
+5. Browse to `%LOCALAPPDATA%\Microsoft\VisualStudio\15.0_[instance id]`, where _instance id_ is the value you gathered in step 1
+6. Select privateregistry.bin and choose Open
+7. Enter `VS` as the key name and click OK
+8. Expand the newly added keys to `VS\Software\Microsoft\VisualStudio\15.0_[instance id]` and add a new key called `CPS`
+9. Create a new DWORD (32-bit) value `Design-time Build Logging` under `CPS` and set it to `1`.
+10. __Important:__ Select the root `VS` key and choose __File__ -> __Unload Hive__. Visual Studio will fail to start if you do not do this step.
+11. Open the solution in Visual Studio
 
 The results of the design time build will appear in a new category called __Build - Design-time__ in the __Output__ window. The verbosity of the category respects the same settings under __Tools__ -> __Options__ -> __Project and Solutions__ -> __Build and Run__ as normal builds.
 
