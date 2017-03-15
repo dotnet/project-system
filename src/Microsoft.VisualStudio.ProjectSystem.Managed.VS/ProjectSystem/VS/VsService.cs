@@ -9,8 +9,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     /// <summary>
     ///     Provides an implementation of <see cref="IVsService{T}"/> that calls into Visual Studio's <see cref="SVsServiceProvider"/>.
     /// </summary>
-    [Export(typeof(IVsService<,>))]
-    internal class VsService<TInterfaceType, TServiceType> : IVsService<TInterfaceType, TServiceType>
+    [Export(typeof(IVsService<>))]
+    internal class VsService<T> : IVsService<T>
     {
         private readonly IProjectThreadingService _threadingService;
         private readonly IServiceProvider _serviceProvider;
@@ -25,28 +25,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _threadingService = threadingService;
         }
 
-        public TInterfaceType Value
+        public T Value
         {
             get
             {
                 _threadingService.VerifyOnUIThread();
 
-                TInterfaceType service = (TInterfaceType)_serviceProvider.GetService(typeof(TServiceType));
+                T service = (T)_serviceProvider.GetService(GetServiceType());
 
                 Assumes.Present(service);
 
                 return service;
             }
         }
+
+        protected virtual Type GetServiceType()
+        {
+            return typeof(T);
+        }
     }
 
-    [Export(typeof(IVsService<>))]
-    internal class VsService<T> : VsService<T, T>
+    /// <summary>
+    ///     Provides an implementation of <see cref="IVsService{TInterfaceType, TServiceType}"/> that calls into Visual Studio's <see cref="SVsServiceProvider"/>.
+    /// </summary>
+    [Export(typeof(IVsService<,>))]
+    internal class VsService<TInterfaceType, TServiceType> : VsService<TInterfaceType>, IVsService<TInterfaceType, TServiceType>
     {
         [ImportingConstructor]
         public VsService([Import(typeof(SVsServiceProvider))]IServiceProvider serviceProvider, IProjectThreadingService threadingService)
             : base(serviceProvider, threadingService)
         {
+        }
+
+        protected override Type GetServiceType()
+        {
+            return typeof(TServiceType);
         }
     }
 }

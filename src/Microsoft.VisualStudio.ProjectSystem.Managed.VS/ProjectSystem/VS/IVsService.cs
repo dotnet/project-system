@@ -8,32 +8,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     ///     Provides access to a Visual Studio proffored service.
     /// </summary>
     /// <typeparam name="T">
-    ///     The type of the service to retrieve and return from <see cref="IVsService{TInterfaceType, TServiceType}.Value"/>.
+    ///     The type of the service to retrieve and return from <see cref="Value"/>.
     /// </typeparam>
-    internal interface IVsService<T> : IVsService<T, T>
+    internal interface IVsService<T>
     {
+        /// <summary>
+        ///     Gets the service object of associated with <typeparamref name="T"/>.
+        /// </summary>
+        ///<exception cref="COMException">
+        ///     This property was not accessed from the UI thread.
+        /// </exception>
+        T Value
+        {
+            get;
+        }
     }
 
     /// <summary>
     ///     Provides access to a Visual Studio proffored service.
     /// </summary>
     /// <typeparam name="TInterfaceType">
-    ///     The type of the service to return from <see cref="Value"/>
+    ///     The type of the service to return from <see cref="IVsService{T}.Value"/>
     /// </typeparam>
     /// <typeparam name="TServiceType">
     ///     The type of the service to retrieve.
     /// </typeparam>
-    internal interface IVsService<TInterfaceType, TServiceType>
+    internal interface IVsService<TInterfaceType, TServiceType> : IVsService<TInterfaceType>
     {
-        /// <summary>
-        ///     Gets the service object of type <typeparamref name="TInterfaceType"/>, associated with <typeparamref name="TServiceType"/>.
-        /// </summary>
-        ///<exception cref="COMException">
-        ///     This property was not accessed from the UI thread.
-        /// </exception>
-        TInterfaceType Value
-        {
-            get;
-        }
     }
 }
