@@ -5,7 +5,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem.VS.Extensibility;
-using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
@@ -19,15 +18,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     {
         [ImportingConstructor]
         public DependenciesGraphProjectContextProvider(IProjectExportProvider projectExportProvider, 
-                                                       SVsServiceProvider serviceProvider)
+                                                       IProjectServiceAccessor projectServiceAccessor)
         {
-            ServiceProvider = serviceProvider;
+            ProjectServiceAccessor = projectServiceAccessor;
             ProjectExportProvider = projectExportProvider;
         }
 
         private IProjectExportProvider ProjectExportProvider { get; }
 
-        private SVsServiceProvider ServiceProvider { get; }
+        private IProjectServiceAccessor ProjectServiceAccessor { get; }
 
         private ConcurrentDictionary<string, IDependenciesGraphProjectContext> ProjectContexts { get; }
                             = new ConcurrentDictionary<string, IDependenciesGraphProjectContext>
@@ -101,18 +100,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         public IEnumerable<IDependenciesGraphProjectContext> GetProjectContexts()
         {
-            var projectService = ServiceProvider.GetProjectService();
-            if (projectService == null)
-            {
-                return null;
-            }
+            var projectService = ProjectServiceAccessor.GetProjectService();
 
-            return GetProjectContextsInternal(projectService);
-        }
-
-        internal IEnumerable<IDependenciesGraphProjectContext> GetProjectContextsInternal(
-                    IProjectService projectService)
-        {
             var projects = projectService.LoadedUnconfiguredProjects;
             foreach (var project in projects)
             {
