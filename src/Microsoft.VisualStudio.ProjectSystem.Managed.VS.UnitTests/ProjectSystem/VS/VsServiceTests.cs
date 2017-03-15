@@ -95,12 +95,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Assert.NotSame(result1, result2);
         }
 
-        private VsService<TInterfaceType, TServiceType> CreateInstance<TInterfaceType, TServiceType>(IServiceProvider serviceProvider = null, IProjectThreadingService threadingService = null)
+        private VsService<TInterface, TService> CreateInstance<TInterface, TService>(IServiceProvider serviceProvider = null, IProjectThreadingService threadingService = null)
         {
             serviceProvider = serviceProvider ?? SVsServiceProviderFactory.Create();
             threadingService = threadingService ?? IProjectThreadingServiceFactory.Create();
 
-            return new VsService<TInterfaceType, TServiceType>(serviceProvider, threadingService);
+            return new VsService<TInterface, TService>(serviceProvider, threadingService);
         }
     }
 }

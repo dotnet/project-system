@@ -27,13 +27,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     /// <summary>
     ///     Provides access to a Visual Studio proffored service.
     /// </summary>
-    /// <typeparam name="TInterfaceType">
+    /// <typeparam name="TInterface">
     ///     The type of the service to return from <see cref="IVsService{T}.Value"/>
     /// </typeparam>
-    /// <typeparam name="TServiceType">
+    /// <typeparam name="TService">
     ///     The type of the service to retrieve.
     /// </typeparam>
-    internal interface IVsService<TInterfaceType, TServiceType> : IVsService<TInterfaceType>
+    internal interface IVsService<TInterface, TService> : IVsService<TInterface>
     {
     }
 }
