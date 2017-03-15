@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
-    ///     Provides access to a Visual Studio proffored service.
+    ///     Provides access to a Visual Studio proffered service.
     /// </summary>
     /// <typeparam name="T">
     ///     The type of the service to retrieve and return from <see cref="Value"/>.
@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     }
 
     /// <summary>
-    ///     Provides access to a Visual Studio proffored service.
+    ///     Provides access to a Visual Studio proffered service.
     /// </summary>
     /// <typeparam name="TService">
     ///     The type of the service to retrieve.
