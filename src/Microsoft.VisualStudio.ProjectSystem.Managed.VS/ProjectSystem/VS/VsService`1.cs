@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
         }
 
-        protected VsService([Import(typeof(SVsServiceProvider))]IServiceProvider serviceProvider, IProjectThreadingService threadingService, Type serviceType)
+        protected VsService(IServiceProvider serviceProvider, IProjectThreadingService threadingService, Type serviceType)
         {
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
             Requires.NotNull(threadingService, nameof(threadingService));
