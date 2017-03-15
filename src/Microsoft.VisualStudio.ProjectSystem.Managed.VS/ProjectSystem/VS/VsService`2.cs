@@ -14,13 +14,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     {
         [ImportingConstructor]
         public VsService([Import(typeof(SVsServiceProvider))]IServiceProvider serviceProvider, IProjectThreadingService threadingService)
-            : base(serviceProvider, threadingService)
+            : base(serviceProvider, threadingService, typeof(TService))
         {
-        }
-
-        protected override Type GetServiceType()
-        {
-            return typeof(TService);
         }
     }
 }

@@ -14,15 +14,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     {
         private readonly IProjectThreadingService _threadingService;
         private readonly IServiceProvider _serviceProvider;
+        private readonly Type _serviceType;
 
         [ImportingConstructor]
         public VsService([Import(typeof(SVsServiceProvider))]IServiceProvider serviceProvider, IProjectThreadingService threadingService)
+            : this(serviceProvider, threadingService, typeof(T))
+        {
+        }
+
+        protected VsService([Import(typeof(SVsServiceProvider))]IServiceProvider serviceProvider, IProjectThreadingService threadingService, Type serviceType)
         {
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
             Requires.NotNull(threadingService, nameof(threadingService));
+            Requires.NotNull(serviceType, nameof(serviceType));
 
             _serviceProvider = serviceProvider;
             _threadingService = threadingService;
+            _serviceType = serviceType;
         }
 
         public T Value
@@ -31,17 +39,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             {
                 _threadingService.VerifyOnUIThread();
 
-                T service = (T)_serviceProvider.GetService(GetServiceType());
+                T service = (T)_serviceProvider.GetService(_serviceType);
 
                 Assumes.Present(service);
 
                 return service;
             }
-        }
-
-        protected virtual Type GetServiceType()
-        {
-            return typeof(T);
         }
     }
 }
