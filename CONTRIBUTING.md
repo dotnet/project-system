@@ -6,9 +6,9 @@ If you want to submit a feature or a substantial code contribution, please discu
 
 For additional information, see the following:
 
-- [Getting Started](docs/repo/Getting Started.md)
-- [Coding Guidelines](docs/repo/Coding Conventions.md)
-- [Debugging Tips](docs/repo/Debugging Tips.md)
+- [Getting Started](docs/repo/Getting%20Started.md)
+- [Coding Guidelines](docs/repo/Coding%20Conventions.md)
+- [Debugging Tips](docs/repo/Debugging%20Tips.md)
 - [Features](docs/repo/Features.md)
 - [Architecture](docs/repo/Architecture.md)
 - [Common Project System (CPS) Documention](https://github.com/microsoft/vsprojectsystem)
