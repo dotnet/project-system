@@ -89,7 +89,7 @@
     <When Condition="'$(IncludeCPSReferences)' == 'true'">
       <ItemGroup>
 
-        <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.SDK" Version="15.0.737" PrivateAssets="None" />
+        <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.SDK" Version="15.3.5-pre-g4382fbdb8f" PrivateAssets="None" />
 
       </ItemGroup>
     </When>
