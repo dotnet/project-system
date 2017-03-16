@@ -308,7 +308,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Equal(moqFS.LastFileWriteTime(provider.LaunchSettingsFile), provider.LastSettingsFileSyncTimeTest);
 
             // Check disk contents
-            Assert.Equal(JsonStringWithWebSettings, moqFS.ReadAllText(provider.LaunchSettingsFile));
+            Assert.Equal(JsonStringWithWebSettings, moqFS.ReadAllText(provider.LaunchSettingsFile), ignoreLineEndingDifferences:true);
         }
 
         [Fact]
@@ -427,7 +427,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             await provider.UpdateAndSaveSettingsAsync(testSettings.Object).ConfigureAwait(true);
 
             // Check disk contents
-            Assert.Equal(JsonStringWithWebSettings, moqFS.ReadAllText(provider.LaunchSettingsFile));
+            Assert.Equal(JsonStringWithWebSettings, moqFS.ReadAllText(provider.LaunchSettingsFile), ignoreLineEndingDifferences:true);
 
             // Check snapshot
             Assert.Equal(2, provider.CurrentSnapshot.Profiles.Count);
