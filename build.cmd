@@ -84,7 +84,10 @@ for %%T IN (Restore %MSBuildBuildTarget%, BuildModernVsixPackages) do (
 
 REM Run copy as a final step after all the product components are built
 if /I "%CopyOutputArtifacts%" == "true" (
-  call %ROOT%build\Scripts\CopyOutput.cmd || goto :BuildFailed
+  call %ROOT%build\Scripts\CopyOutput.cmd
+
+  REM Robocopy has a return code 0 - 7 on success
+  if %ERRORLEVEL% gtr 7 goto BuildFailed
 )
 
 echo.
