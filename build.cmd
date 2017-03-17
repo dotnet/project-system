@@ -54,7 +54,7 @@ REM We build Restore, Build and BuildModernVsixPackages in different MSBuild pro
 REM Restore because we want to control the verbosity due to https://github.com/NuGet/Home/issues/4695.
 REM BuildModernVsixPackages because under MicroBuild, it has a dependency on a dll with the same 
 REM version but different contents than the legacy VSIX projects.
-for %%T IN (Restore %MSBuildBuildTarget%, BuildModernVsixPackages) do (
+for %%T IN (Restore, %MSBuildBuildTarget%, %MSBuildBuildTarget%NuGetPackages, BuildModernVsixPackages, Test) do (
   
   set LogFile=%BinariesDirectory%%%T.log
   set LogFiles=!LogFiles!!LogFile! 
