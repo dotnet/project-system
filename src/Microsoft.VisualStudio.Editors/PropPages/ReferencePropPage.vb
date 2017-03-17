@@ -253,7 +253,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End Select
 
                 If processedDelayRefreshMessage Then
-                    Internal.Performance.CodeMarkers.Instance.CodeMarker(Internal.Performance.CodeMarkerEvent.perfMSVSEditorsReferencePagePostponedUIRefreshDone)
+                    Internal.Performance.CodeMarkers.Instance.CodeMarker(Internal.Performance.RoslynCodeMarkerEvent.perfMSVSEditorsReferencePagePostponedUIRefreshDone)
                 End If
             Catch ex As COMException
                 ' The message pump in the background compiler could process our pending message, and when the compiler is running, we would get E_PENDING failure
@@ -1142,7 +1142,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         PopulateReferenceList()
                         PopulateImportsList(True)
 
-                        Internal.Performance.CodeMarkers.Instance.CodeMarker(Internal.Performance.CodeMarkerEvent.perfMSVSEditorsReferencePageWCFAdded)
+                        Internal.Performance.CodeMarkers.Instance.CodeMarker(Internal.Performance.RoslynCodeMarkerEvent.perfMSVSEditorsReferencePageWCFAdded)
                     End If
                 Catch ex As Exception When ReportWithoutCrash(ex, NameOf(serviceReferenceToolStripMenuItem_Click), NameOf(ReferencePropPage))
                     If Not IsCheckoutCanceledException(ex) Then

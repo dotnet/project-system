@@ -19,8 +19,10 @@ if "%1" == "" goto :DoneParsing
 if /I "%1" == "/?" call :Usage && exit /b 1
 if /I "%1" == "/build" set MSBuildBuildTarget=Build&&shift&& goto :ParseArguments
 if /I "%1" == "/rebuild" set MSBuildBuildTarget=Rebuild&&shift&& goto :ParseArguments
+if /I "%1" == "/copy-artifacts" set CopyOutputArtifacts=true&&shift&& goto :ParseArguments
 if /I "%1" == "/debug" set BuildConfiguration=Debug&&shift&& goto :ParseArguments
 if /I "%1" == "/release" set BuildConfiguration=Release&&shift&& goto :ParseArguments
+if /I "%1" == "/signbuild" set ShouldSignBuild=true&&shift&& goto :ParseArguments
 if /I "%1" == "/skiptests" set RunTests=false&&shift&& goto :ParseArguments
 if /I "%1" == "/no-deploy-extension" set DeployVsixExtension=false&&shift&& goto :ParseArguments
 if /I "%1" == "/no-node-reuse" set NodeReuse=false&&shift&& goto :ParseArguments
@@ -66,7 +68,7 @@ for %%T IN (Restore %MSBuildBuildTarget%, BuildModernVsixPackages) do (
     set ConsoleLoggerVerbosity=minimal
   )
 
-  set BuildCommand=msbuild /nologo /warnaserror /nodeReuse:%NodeReuse% /consoleloggerparameters:Verbosity=!ConsoleLoggerVerbosity! /fileLogger /fileloggerparameters:LogFile="!LogFile!";verbosity=%FileLoggerVerbosity% /t:"%%T" /p:Configuration="%BuildConfiguration%" /p:RunTests="%RunTests%" /p:DeployVsixExtension="%DeployVsixExtension%" "%Root%build\build.proj" %MSBuildAdditionalArguments%
+  set BuildCommand=msbuild /nologo /warnaserror /nodeReuse:%NodeReuse% /consoleloggerparameters:Verbosity=!ConsoleLoggerVerbosity! /fileLogger /fileloggerparameters:LogFile="!LogFile!";verbosity=%FileLoggerVerbosity% /t:"%%T" /p:Configuration="%BuildConfiguration%" /p:RunTests="%RunTests%" /p:ShouldSignBuild="%ShouldSignBuild%" /p:DeployVsixExtension="%DeployVsixExtension%" "%Root%build\build.proj" %MSBuildAdditionalArguments%
   if "%FileLoggerVerbosity%" == "diagnostic" (
     echo !BuildCommand!
   )
@@ -78,6 +80,14 @@ for %%T IN (Restore %MSBuildBuildTarget%, BuildModernVsixPackages) do (
     call :PrintColor Red "Build failed, for full log see !LogFile!."
     exit /b 1
   )
+)
+
+REM Run copy as a final step after all the product components are built
+if /I "%CopyOutputArtifacts%" == "true" (
+  call %ROOT%build\Scripts\CopyOutput.cmd
+
+  REM Robocopy has a return code 0 - 7 on success
+  if %ERRORLEVEL% gtr 7 goto BuildFailed
 )
 
 echo.
@@ -96,10 +106,12 @@ echo     /debug                  Perform debug build (default)
 echo     /release                Perform release build
 echo.
 echo   Build options:
+echo     /copy-artifacts         Copy the nugets to CoreXT Nuget share and VS manifests to separate folder to enable vsdrop upload
 echo     /diagnostic             Turns on diagnostic logging and turns off multi-proc build, useful for diagnosing build logs
 echo     /no-node-reuse          Prevents MSBuild from reusing existing MSBuild instances,
 echo                             useful for avoiding unexpected behavior on build machines
 echo     /no-deploy-extension    Does not deploy the VSIX extension when building the solution
+echo     /signbuild              Produce signed build
 echo     /skiptests              Does not run unit tests
 goto :eof
 
