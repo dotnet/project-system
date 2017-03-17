@@ -1026,7 +1026,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Common.Switches.TracePDPerfBegin("ApplicationDesignerView.ShowTab")
                 Common.Switches.TracePDFocus(TraceLevel.Error, "CodeMarker: perfMSVSEditorsShowTabBegin")
                 Common.Switches.TracePDPerf("CodeMarker: perfMSVSEditorsShowTabBegin")
-                CodeMarkers.Instance.CodeMarker(CodeMarkerEvent.perfMSVSEditorsShowTabBegin)
+                CodeMarkers.Instance.CodeMarker(RoslynCodeMarkerEvent.perfMSVSEditorsShowTabBegin)
 
                 Dim NewCurrentPanel As ApplicationDesignerPanel = _designerPanels(Index)
                 Dim ErrorMessage As String = Nothing
@@ -1155,7 +1155,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 'We may have opened a new page, need to verify all dirty states
                 DelayRefreshDirtyIndicators()
 
-                CodeMarkers.Instance.CodeMarker(CodeMarkerEvent.perfMSVSEditorsShowTabEnd)
+                CodeMarkers.Instance.CodeMarker(RoslynCodeMarkerEvent.perfMSVSEditorsShowTabEnd)
                 Common.Switches.TracePDFocus(TraceLevel.Error, "CodeMarker: perfMSVSEditorsShowTabEnd")
                 Common.Switches.TracePDPerf("CodeMarker: perfMSVSEditorsShowTabEnd")
                 Common.Switches.TracePDPerfEnd("ApplicationDesignerView.ShowTab")
