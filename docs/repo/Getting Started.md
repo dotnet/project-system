@@ -60,7 +60,7 @@ Both the new project system and the existing project system use the features bui
 You can collect code coverage within Visual Studio, to do so, do the following:
 
 1. __Test__ -> __Test Settings__ -> __Select Test Settings File__
-2. In __Open Settings Files__, browse to and select _src\ProjectSystem.runsettings_. This will exclude files from the coverage run that are not part of the product.
+2. In __Open Settings Files__, browse to and select _src\CodeCoverage.runsettings_. This will exclude files from the coverage run that are not part of the product.
 3. Choose __Test__ -> __Analyze Code Coverage__ -> __All Tests__
 
 NOTE: In Visual Studio "15", there is currently a known issue with code coverage turned on that results in tests failing with:
