@@ -24,7 +24,7 @@ By default when you build inside Visual Studio or the command-line, the project 
 To start debugging:
 
 1. Open __src\ProjectSystem.sln__
-2. Right-click on the __ProjectSystemDogfoodSetup__ project, and choose __Set As Startup Project__
+2. Right-click on the __ProjectSystemSetup__ project, and choose __Set As Startup Project__
 3. Press _F5_
 
 If this is your first launch of the project system, or _RoslynDev_ experimental instance, press _CTRL+F5_ to pre-prime and avoid a _long_ start up time.
