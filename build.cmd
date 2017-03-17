@@ -56,7 +56,7 @@ REM BuildModernVsixPackages because under MicroBuild, it has a dependency on a d
 REM version but different contents than the legacy VSIX projects.
 for %%T IN (Restore, %MSBuildBuildTarget%, %MSBuildBuildTarget%NuGetPackages, BuildModernVsixPackages, Test) do (
   
-  set LogFile=%BinariesDirectory%%%T.log
+  set LogFile=%BinariesDirectory%Build_%%T.log
   set LogFiles=!LogFiles!!LogFile! 
   
   echo.
