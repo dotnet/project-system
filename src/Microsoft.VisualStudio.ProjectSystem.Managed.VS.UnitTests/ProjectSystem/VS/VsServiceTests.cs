@@ -5,6 +5,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
+    [ProjectSystemTrait]
     public class VsServiceTests
     {
         [Fact]
