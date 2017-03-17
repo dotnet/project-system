@@ -59,6 +59,8 @@ for %%T IN (Restore, %MSBuildBuildTarget%, %MSBuildBuildTarget%NuGetPackages, Bu
   set LogFile=%BinariesDirectory%%%T.log
   set LogFiles=!LogFiles!!LogFile! 
   
+  echo.
+
   if "%%T" == "Restore" (
     set ConsoleLoggerVerbosity=quiet
     echo   Restoring packages for ProjectSystem (this may take some time^)
