@@ -1,11 +1,10 @@
-The first release of the project system will be heavily focused focused on [feature parity](https://github.com/dotnet/roslyn-project-system/issues?q=is%3Aopen+label%3A%22Parity%22) with the old project systems in csproj.dll and msvbprj.dll. This ensures there's a seamless upgrade when customers open existing projects in the new project system, things should feel extremely familiar with zero conversions or project "upgrades".
-
-Heading towards the end of the first release, we'll start looking at picking off some [new features](https://github.com/dotnet/roslyn/labels/Project%20System-New%20Feature).
-
 ### Roadmap
-|Release|Features|At end of this milestone|
-|-------|--------|--------|
-|1.0 (Preview 3)|[Setup, Localization, AppDesigner, Debugging, New Language Service Host, Add Service/Web Reference, Analyzer Dependencies](https://github.com/dotnet/roslyn-project-system/issues?q=is%3Aopen+is%3Aissue+milestone%3A%221.0+%28Preview+3%29%22)|Off by default for all projects, with ability to opt-in|
-|1.0 (Preview 4)|[WPF Flavor replacement, ClickOnce, Simplified Add Item, Up-to-date checks](https://github.com/dotnet/roslyn-project-system/issues?q=is%3Aopen+is%3Aissue+milestone%3A%221.0+%28Preview+4%29%22)|On for all console, library and Windows Forms projects|
-|1.0 (RC)|[NuGet Dependencies, Retargeting](https://github.com/dotnet/roslyn-project-system/issues?q=is%3Aopen+is%3Aissue+milestone%3A%221.0+%28RC%29%22)|On for all console, library, Windows Forms and WPF projects|
 
+The first release of the project system ("15.0") was heavily focused on support .NET Core scenarios and parity with VS 2015 project.json tooling. This will continue through the Visual Studio 15.x updates and releases. In 16.0, we'll start focusing on [feature parity](https://github.com/dotnet/roslyn-project-system/labels/Parity-VSLangProj) with the legacy project systems in csproj.dll and msvbprj.dll. This will ensure a seamless upgrade when customers open existing projects in the new project system and things should feel extremely familiar for existing projects with zero conversions or project upgrades.
+
+|Release|Branches|Description|
+|-------|--------|--------|
+|[15.0](https://github.com/dotnet/roslyn-project-system/milestone/4)|[15.0.1](https://github.com/dotnet/roslyn-project-system/tree/dev15.0.x)|Impactful bugs that block major scenarios.
+|[15.1](https://github.com/dotnet/roslyn-project-system/milestone/13)|[15.1.x](https://github.com/dotnet/roslyn-project-system/tree/dev15.1.x)|Impactful bugs that block minor scenarios.
+|[15.3](https://github.com/dotnet/roslyn-project-system/milestone/7)|[master](https://github.com/dotnet/roslyn-project-system/tree/master)|Support for .NET Core 2.0, .NET Standard 2.0, and other bugs fixes related to .NET Core tooling that do not make above releases.
+|[16.0](https://github.com/dotnet/roslyn-project-system/milestone/12)|none|Feature parity with the legacy project system.
