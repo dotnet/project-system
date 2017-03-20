@@ -38,8 +38,8 @@
    <Target Name="Build" Inputs="@(NuSpec);@(PackageAssets)" Outputs="@(NuSpec->'%(NuPkgOutput)')" DependsOnTargets="LogOutput">
 
      <MakeDir Directories="$(NuGetOutDir)" />
+     <Exec Command="$(NuGetToolPath) Pack &quot;$(MSBuildProjectDirectory)\%(NuSpec.Identity)&quot; -verbosity quiet -BasePath &quot;$(OutDir.TrimEnd('\'))&quot; -OutputDirectory &quot;$(NuGetOutDir.TrimEnd('\'))&quot; -prop projectsystemsdkversion=$(ProjectSystemSDKVersion) %(NuSpec.NuGetArguments)" />
 
-     <Exec Command="$(NuGetToolPath) Pack &quot;$(MSBuildProjectDirectory)\%(NuSpec.Identity)&quot; -verbosity quiet -BasePath &quot;$(OutDir.TrimEnd('\'))&quot; -OutputDirectory &quot;$(NuGetOutDir.TrimEnd('\'))&quot; %(NuSpec.NuGetArguments)" />
    </Target>
 
    <Target Name="Clean">

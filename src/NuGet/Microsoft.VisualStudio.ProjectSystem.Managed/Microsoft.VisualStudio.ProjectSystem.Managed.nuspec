@@ -15,7 +15,7 @@
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <dependencies>
       <dependency id="System.Collections.Immutable" version="1.1.36" />
-      <dependency id="Microsoft.VisualStudio.ProjectSystem.SDK" version="15.3.5-pre-g4382fbdb8f" />
+      <dependency id="Microsoft.VisualStudio.ProjectSystem.SDK" version="$projectsystemsdkversion$" />
     </dependencies>
   </metadata>
   <files>

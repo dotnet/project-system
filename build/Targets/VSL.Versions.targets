@@ -17,6 +17,10 @@
     <BuildNumberBuildOfTheDayPadded Condition="('$(BuildNumber)' != '') AND ($(BuildNumber.Split('.').Length) == 2)">$(BuildNumber.Split('.')[1].PadLeft(2,'0'))</BuildNumberBuildOfTheDayPadded>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <ProjectSystemSDKVersion>15.3.5-pre-g4382fbdb8f</ProjectSystemSDKVersion>
+  </PropertyGroup>
+
   <Choose>
     <When Condition="'$(BuildVersion)' != ''">
       <!-- The user specified a build version number. In that case, we'll use their version number
@@ -62,7 +66,6 @@
   <!-- NuGet version -->
   <PropertyGroup>
     <VSSemanticVersion>15.3</VSSemanticVersion>
-
     <RoslynNuGetReleaseVersion>$(RoslynSemanticVersion.Substring(0, $(RoslynSemanticVersion.LastIndexOf('.'))))</RoslynNuGetReleaseVersion>
     <RoslynNuGetPerBuildVersion Condition="'$(BuildNumberFiveDigitDateStamp)' != '' AND '$(BuildNumberBuildOfTheDayPadded)' != ''">$(RoslynNuGetReleaseVersion).rc-$(BuildNumberFiveDigitDateStamp.Trim())$(BuildNumberBuildOfTheDayPadded.Trim())</RoslynNuGetPerBuildVersion>
     <RoslynNuGetPerBuildVersion Condition="'$(RoslynNuGetPerBuildVersion)' == ''">1.0.0-rc</RoslynNuGetPerBuildVersion>
