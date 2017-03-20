@@ -12,7 +12,7 @@ The current C# and Visual Basic project systems (csproj.dll and msvbprj.dll), wh
 
 - Native and COM-based
 - Single threaded and bound to the UI thread
-- Hard to extend outside of aggregation via the use of `<ProjectTypeGuids>` and [sub types (flavors)](https://msdn.microsoft.com/en-us/library/bb166488.aspx)
+- Hard to extend outside of aggregation via the use of `<ProjectTypeGuids>` and [sub types (flavors)](https://docs.microsoft.com/en-us/visualstudio/extensibility/internals/project-types)
 - Tied to Visual Studio
 
 The new C# and Visual Basic project system, built on top of CPS, will be:
