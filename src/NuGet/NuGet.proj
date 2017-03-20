@@ -11,20 +11,20 @@
 
    <ItemGroup>
      <NuSpec Include="Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.nuspec">
-       <NuPkgOutput>$(NuGetOutDir)%(FileName).$(VSNuGetPerBuildReleaseVersion).nupkg</NuPkgOutput>
-       <NuGetArguments>-Version "$(VSNuGetPerBuildReleaseVersion)"</NuGetArguments>
+       <NuPkgOutput>$(NuGetOutDir)%(FileName).$(VSNuGetPerBuildVersion).nupkg</NuPkgOutput>
+       <NuGetArguments>-Version "$(VSNuGetPerBuildVersion)"</NuGetArguments>
      </NuSpec>
      <NuSpec Include="Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.nuspec">
-       <NuPkgOutput>$(NuGetOutDir)%(FileName).$(VSNuGetPerBuildReleaseVersion).nupkg</NuPkgOutput>
-       <NuGetArguments>-Version "$(VSNuGetPerBuildReleaseVersion)"</NuGetArguments>
+       <NuPkgOutput>$(NuGetOutDir)%(FileName).$(VSNuGetPerBuildVersion).nupkg</NuPkgOutput>
+       <NuGetArguments>-Version "$(VSNuGetPerBuildVersion)"</NuGetArguments>
      </NuSpec>
      <NuSpec Include="Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.nuspec">
-       <NuPkgOutput>$(NuGetOutDir)%(FileName).$(RoslynNuGetPerBuildReleaseVersion).nupkg</NuPkgOutput>
-       <NuGetArguments>-Version "$(RoslynNuGetPerBuildReleaseVersion)"</NuGetArguments>
+       <NuPkgOutput>$(NuGetOutDir)%(FileName).$(RoslynNuGetPerBuildVersion).nupkg</NuPkgOutput>
+       <NuGetArguments>-Version "$(RoslynNuGetPerBuildVersion)"</NuGetArguments>
      </NuSpec>
       <NuSpec Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS\Microsoft.VisualStudio.ProjectSystem.Managed.VS.nuspec">
-       <NuPkgOutput>$(NuGetOutDir)%(FileName).$(RoslynNuGetPerBuildReleaseVersion).nupkg</NuPkgOutput>
-       <NuGetArguments>-Version "$(RoslynNuGetPerBuildReleaseVersion)"</NuGetArguments>
+       <NuPkgOutput>$(NuGetOutDir)%(FileName).$(RoslynNuGetPerBuildVersion).nupkg</NuPkgOutput>
+       <NuGetArguments>-Version "$(RoslynNuGetPerBuildVersion)"</NuGetArguments>
      </NuSpec>
 
      <!-- Make note, without actually knowing what's included in the NuSpec, 

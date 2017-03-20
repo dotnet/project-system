@@ -61,13 +61,13 @@
 
   <!-- NuGet version -->
   <PropertyGroup>
-    <VSSemanticVersion>15.0</VSSemanticVersion>
+    <VSSemanticVersion>15.3</VSSemanticVersion>
 
     <RoslynNuGetReleaseVersion>$(RoslynSemanticVersion.Substring(0, $(RoslynSemanticVersion.LastIndexOf('.'))))</RoslynNuGetReleaseVersion>
-    <RoslynNuGetPerBuildReleaseVersion Condition="'$(BuildNumberFiveDigitDateStamp)' != '' AND '$(BuildNumberBuildOfTheDayPadded)' != ''">$(RoslynNuGetReleaseVersion).$(BuildNumberFiveDigitDateStamp.Trim())$(BuildNumberBuildOfTheDayPadded.Trim())</RoslynNuGetPerBuildReleaseVersion>
-    <RoslynNuGetPerBuildReleaseVersion Condition="'$(RoslynNuGetPerBuildReleaseVersion)' == ''">1.0.0</RoslynNuGetPerBuildReleaseVersion>
-    <VSNuGetPerBuildReleaseVersion Condition="'$(BuildNumberFiveDigitDateStamp)' != '' AND '$(BuildNumberBuildOfTheDayPadded)' != ''">$(VSSemanticVersion).$(BuildNumberFiveDigitDateStamp.Trim())$(BuildNumberBuildOfTheDayPadded.Trim())</VSNuGetPerBuildReleaseVersion>
-    <VSNuGetPerBuildReleaseVersion Condition="'$(VSNuGetPerBuildReleaseVersion)' == ''">1.0.0</VSNuGetPerBuildReleaseVersion>
+    <RoslynNuGetPerBuildVersion Condition="'$(BuildNumberFiveDigitDateStamp)' != '' AND '$(BuildNumberBuildOfTheDayPadded)' != ''">$(RoslynNuGetReleaseVersion).rc-$(BuildNumberFiveDigitDateStamp.Trim())$(BuildNumberBuildOfTheDayPadded.Trim())</RoslynNuGetPerBuildVersion>
+    <RoslynNuGetPerBuildVersion Condition="'$(RoslynNuGetPerBuildVersion)' == ''">1.0.0-rc</RoslynNuGetPerBuildVersion>
+    <VSNuGetPerBuildVersion Condition="'$(BuildNumberFiveDigitDateStamp)' != '' AND '$(BuildNumberBuildOfTheDayPadded)' != ''">$(VSSemanticVersion).rc-$(BuildNumberFiveDigitDateStamp.Trim())$(BuildNumberBuildOfTheDayPadded.Trim())</VSNuGetPerBuildVersion>
+    <VSNuGetPerBuildVersion Condition="'$(VSNuGetPerBuildVersion)' == ''">1.0.0-rc</VSNuGetPerBuildVersion>
   </PropertyGroup>
   
 </Project>

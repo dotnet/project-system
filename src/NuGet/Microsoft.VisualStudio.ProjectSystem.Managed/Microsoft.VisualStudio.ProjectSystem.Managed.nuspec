@@ -7,7 +7,7 @@
       Microsoft VisualStudio ProjectSystem for Managed languages Projects
     </description>
     <language>en-US</language>
-    <version>2.0.0</version> <!-- This value will be overriden by the Nuget pack call. Having this value to satisfy the schema. -->
+    <version>2.3.0-alpha</version> <!-- This value will be overriden by the Nuget pack call. Having this value to satisfy the schema. -->
     <authors>dotnet</authors>
     <projectUrl>https://github.com/dotnet/roslyn-project-system/</projectUrl>
     <licenseUrl>http://go.microsoft.com/fwlink/?LinkId=529445</licenseUrl>
@@ -15,7 +15,7 @@
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <dependencies>
       <dependency id="System.Collections.Immutable" version="1.1.36" />
-      <dependency id="Microsoft.VisualStudio.ProjectSystem.SDK" version="15.0.737" />
+      <dependency id="Microsoft.VisualStudio.ProjectSystem.SDK" version="15.0.5-pre-g4382fbdb8f" />
     </dependencies>
   </metadata>
   <files>
