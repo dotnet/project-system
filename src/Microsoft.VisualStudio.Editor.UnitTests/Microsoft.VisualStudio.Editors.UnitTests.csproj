@@ -1,0 +1,21 @@
+﻿<Project>
+  <Import Project="..\..\build\Targets\VSL.Settings.targets" />
+  <PropertyGroup>
+    <EnableDefaultItems>false</EnableDefaultItems> <!-- Excludes all the test files -->
+    <RootNamespace></RootNamespace>
+    <TargetFramework>net46</TargetFramework>
+    <SignAssembly>true</SignAssembly>
+    <Nonshipping>true</Nonshipping>
+    <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
+    <OutDir>$(OutDir)Tests\</OutDir>
+    <UseVsVersion>true</UseVsVersion>
+    <WarningLevel>4</WarningLevel>
+    <ProjectSystemLayer>VisualStudioDesigner</ProjectSystemLayer>
+    <ProjectSystemProjectType>Test</ProjectSystemProjectType>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.vbproj" />
+    <ProjectReference Include="..\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj" />
+  </ItemGroup>
+  <Import Project="..\..\build\Targets\VSL.Imports.targets" />
+</Project>

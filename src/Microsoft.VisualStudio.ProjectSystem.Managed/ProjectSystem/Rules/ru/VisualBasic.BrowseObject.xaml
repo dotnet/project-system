@@ -8,6 +8,8 @@
     <Category Name="Advanced" DisplayName="Дополнительно" />
     <Category Name="Misc" DisplayName="Прочее" />
   </Rule.Categories>
+  <StringProperty Name="Generator" Category="Advanced" DisplayName="Custom Tool" Description="Specifies the tool that transforms a file at design time and places the output of that transformation into another file. For example, a dataset (.xsd) file comes with a default custom tool." />
+  <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="Custom Tool Namespace" Description="The namespace into which the output of the custom tool is placed." />
   <DynamicEnumProperty Name="{}{ItemType}" DisplayName="Действие при сборке" Category="Advanced" Description="Как файл связан с процессами сборки и развертывания." EnumProvider="ItemTypes" />
   <EnumProperty Name="CopyToOutputDirectory" DisplayName="Копировать в выходной каталог" Category="Advanced" Description="Указывает, что файл исходного кода будет скопирован в выходной каталог.">
     <EnumValue Name="Never" DisplayName="Не копировать" />

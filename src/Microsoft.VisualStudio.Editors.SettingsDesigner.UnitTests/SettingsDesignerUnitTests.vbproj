@@ -1,0 +1,23 @@
+﻿<Project>
+  <Import Project="..\..\build\Targets\VSL.Settings.targets" />
+  <PropertyGroup>
+    <EnableDefaultItems>false</EnableDefaultItems>    <!-- Excludes all the test files -->
+    <NoStdLib>false</NoStdLib>
+    <NoExplicitReferenceToStdLib>true</NoExplicitReferenceToStdLib>
+    <RootNamespace></RootNamespace>
+    <OptionCompare>binary</OptionCompare>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionStrict>On</OptionStrict>
+    <Nonshipping>true</Nonshipping>
+    <SignAssembly>true</SignAssembly>
+    <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
+    <OutDir>$(OutDir)Tests\</OutDir>
+    <TargetFramework>net46</TargetFramework>
+    <ProjectSystemLayer>VisualStudioDesigner</ProjectSystemLayer>
+    <ProjectSystemProjectType>Test</ProjectSystemProjectType>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.vbproj" />
+  </ItemGroup>
+  <Import Project="..\..\build\Targets\VSL.Imports.targets" />
+</Project>

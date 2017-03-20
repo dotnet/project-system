@@ -40,8 +40,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             IUnconfiguredProjectCommonServices services = IUnconfiguredProjectCommonServicesFactory.Create();
 
+            IActiveDebugFrameworkServices activeDebugFramework = Mock.Of<IActiveDebugFrameworkServices>();
 
-            var replacer = new DebugTokenReplacerUnderTest(IUnconfiguredProjectCommonServicesFactory.Create(), _envHelper.Object);
+            var replacer = new DebugTokenReplacerUnderTest(IUnconfiguredProjectCommonServicesFactory.Create(), _envHelper.Object, activeDebugFramework);
 
             // Tests all the possible replacements. env3 tests that enviroment vars are resolved before msbuild tokens
             var launchProfile = new LaunchProfile()
@@ -85,7 +86,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             IUnconfiguredProjectCommonServices services = IUnconfiguredProjectCommonServicesFactory.Create();
 
-            var replacer = new DebugTokenReplacerUnderTest(IUnconfiguredProjectCommonServicesFactory.Create(), _envHelper.Object);
+            IActiveDebugFrameworkServices activeDebugFramework = Mock.Of<IActiveDebugFrameworkServices>();
+            var replacer = new DebugTokenReplacerUnderTest(IUnconfiguredProjectCommonServicesFactory.Create(), _envHelper.Object, activeDebugFramework);
 
             // Test msbuild vars
             string result = await replacer.ReplaceTokensInStringAsync(input, expandEnvVars);
@@ -95,15 +97,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
     internal class DebugTokenReplacerUnderTest : DebugTokenReplacer
     {
-        public DebugTokenReplacerUnderTest(IUnconfiguredProjectCommonServices commonServices, IEnvironmentHelper envHelper)
-            : base(commonServices, envHelper)
+        public DebugTokenReplacerUnderTest(IUnconfiguredProjectCommonServices commonServices, IEnvironmentHelper envHelper, IActiveDebugFrameworkServices debugFramework)
+            : base(commonServices, envHelper, debugFramework)
         {
 
         }
 
-        protected override IProjectReadAccess AccessProject()
+        protected override Task<IProjectReadAccess> AccessProject()
         {
-            return new TestProjectReadAccessor();
+            return Task.FromResult((IProjectReadAccess)new TestProjectReadAccessor());
         }
 
         class TestProjectReadAccessor : IProjectReadAccess

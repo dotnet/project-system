@@ -134,7 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
                 foreach (Reference3 reference in project.References.OfType<Reference3>())
                 {
                     // We only want resolved assembly references
-                    if (reference.Type == prjReferenceType.prjReferenceTypeAssembly && reference.Resolved)
+                    if (reference.RefType == (uint)__PROJECTREFERENCETYPE.PROJREFTYPE_ASSEMBLY && reference.Resolved)
                     {
                         resolvedReferences[reference.Name] = new ResolvedReference(reference.Path, TryParseVersionOrNull(reference.Version));
                     }

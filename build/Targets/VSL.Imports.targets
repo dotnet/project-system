@@ -1,17 +1,6 @@
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 
-
-  <PropertyGroup>
-    <MicroBuildPackageDirectory>$(NuGetPackageRoot)\MicroBuild.Core\$(MicroBuildVersion)\</MicroBuildPackageDirectory>
-  </PropertyGroup>
-
-  <!-- During Restore the props/targets won't be present-->
-  <ImportGroup Condition="'$(ProjectSystemLayer)' != 'Dependency' AND '$(ProjectSystemLayer)' != 'Toolset' AND '$(NonShipping)' != 'true' AND Exists('$(MicroBuildPackageDirectory)')">
-    <Import Project="$(MicroBuildPackageDirectory)\build\MicroBuild.Core.props" />
-    <Import Project="$(MicroBuildPackageDirectory)\build\MicroBuild.Core.targets" />
-  </ImportGroup>
-
   <!-- With UseCommonOutputDirectory turned on, any copy-local projects/references break
        csproj's up-to-date check because they aren't copied to the output directory. 
        Turn it off. 
@@ -203,44 +192,18 @@
     <ProjectLanguage Condition="'$(MSBuildProjectExtension)' == '.vbproj' OR '$(Language)' == 'VB'">VB</ProjectLanguage>
     <ProjectLanguage Condition="'$(MSBuildProjectExtension)' == '.vcxproj' OR '$(Language)' == 'C++'">C++</ProjectLanguage>
   </PropertyGroup>
-  <Choose>
-    <When Condition="'$(ProjectLanguage)' == 'VB'">
-      <PropertyGroup>
-        <MSBuildTargetsLanguageName>VisualBasic</MSBuildTargetsLanguageName>
-      </PropertyGroup>
-    </When>
-    <When Condition="'$(ProjectLanguage)' == 'CSharp'">
-      <PropertyGroup>
-        <MSBuildTargetsLanguageName>CSharp</MSBuildTargetsLanguageName>
-      </PropertyGroup>
-    </When>
-    <When Condition="'$(ProjectLanguage)' == ''">
-      <PropertyGroup>
-        <MSBuildTargetsLanguageName>CSharp</MSBuildTargetsLanguageName>
-      </PropertyGroup>
-    </When>
-  </Choose>
 
-  <Choose>
-    <When Condition="'$(ProjectLanguage)' == 'C++'">
-      <PropertyGroup>
-        <MSBuildTargetsFilePath>$(VCTargetsPath)\Microsoft.Cpp.targets</MSBuildTargetsFilePath>
-      </PropertyGroup>
-    </When>
-    <When Condition="'$(TargetFrameworkIdentifier)' == '.NETPortable'">
-      <PropertyGroup>
-        <MSBuildTargetsFilePath>$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.$(MSBuildTargetsLanguageName).targets</MSBuildTargetsFilePath>
-      </PropertyGroup>
-    </When>
-    <Otherwise>
-      <PropertyGroup>
-        <MSBuildTargetsFilePath>$(MSBuildToolsPath)\Microsoft.$(MSBuildTargetsLanguageName).targets</MSBuildTargetsFilePath>
-      </PropertyGroup>
-    </Otherwise>
-  </Choose>
+  <!-- VSIX projects generate a temp project file which doesnt have any extension and needs to be built as C# projects. The .NET SDK
+       just imporrts Microsoft.Common.CurrentVersion.targets. So set LanguageTargets to import CSharp.targets if the 
+       extension is unknown -->
+  <PropertyGroup Condition="'$(LanguageTargets)' == ''">
+    <LanguageTargets Condition="'$(MSBuildProjectExtension)' == '.csproj'">$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets>
+    <LanguageTargets Condition="'$(MSBuildProjectExtension)' == '.vbproj'">$(MSBuildToolsPath)\Microsoft.VisualBasic.targets</LanguageTargets>
+    <LanguageTargets Condition="'$(LanguageTargets)' == ''">$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets> 
+  </PropertyGroup>
 
   <Import Project="References.targets" />
-  <Import Project="$(MSBuildTargetsFilePath)" />
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
 
   <!-- On Mono on *nix the NuGet targets aren't imported by default, so we do that here -->
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\NuGet\Microsoft.NuGet.targets"
@@ -299,12 +262,8 @@
         Text="Must specify a build version in order to real sign a build." />
 
     <Error
-        Condition="'$(CheckForOverflowUnderflow)' != '' OR '$(RemoveIntegerChecks)' != ''"
-        Text="The following properties cannot be set by individual projects: CheckForOverflowUnderflow and RemoveIntegerChecks" />
-
-    <PropertyGroup Condition="'$(ProjectLanguage)' == 'CSharp'">
-      <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-    </PropertyGroup>
+        Condition="'$(RemoveIntegerChecks)' != ''"
+        Text="The following properties cannot be set by individual projects: RemoveIntegerChecks" />
 
     <PropertyGroup Condition="'$(ProjectLanguage)' == 'VB'">
       <RemoveIntegerChecks>true</RemoveIntegerChecks>
@@ -417,21 +376,19 @@
 
   <!-- ====================================================================================
 
-         Generation of syntax models, syntax model tests, and bound trees from xml files
-
-       ==================================================================================== -->
-
-  <Import Project="GenerateCompilerInternals.targets" />
-
-  <!-- ====================================================================================
-
          VSSDK
 
        ==================================================================================== -->
 
-  <Import Project="$(VisualStudioBuildToolsNuGetPackagePath)\build\Microsoft.VsSDK.BuildTools.targets" Condition="'$(ImportVSSDKTargets)' == 'true' And Exists('$(VisualStudioBuildToolsNuGetPackagePath)\build\Microsoft.VsSDK.BuildTools.targets')" />  
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(ImportVSSDKTargets)' == 'true' And Exists('$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets')" /> 
 
+  <!-- The VSSDK immplements some targets which are run during design time builds per convention. 
+       If the Project is not a VSIX project and sets $CreateVSIXContainer=false these targets should be 
+       a no-op. However they dont check for that and that's a bug. To workaround, we override them
+       with empty targets and conditionally import these if CreateVSIXContainer is false.
+       Tracked by https://devdiv.visualstudio.com/DevDiv/_workitems?id=365685&fullScreen=false&_a=edit   -->
+  <Import Project="VSSDKDesignTimeBuildWorkaround.targets" Condition="'$(CreateVsixContainer)'=='false'" />
+  
   <!-- ====================================================================================
 
          Support for in-place modification of the compiled binary.

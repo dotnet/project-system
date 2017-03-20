@@ -31,11 +31,11 @@ call :Usage && exit /b 1
 :DoneParsing
 
 if not exist "%VS150COMNTOOLS%" (
-  echo To build this repository, this script needs to be run from a Visual Studio 2017 RC developer command prompt.
+  echo To build this repository, this script needs to be run from a Visual Studio 2017 developer command prompt.
   echo.
   echo If Visual Studio is not installed, visit this page to download:
   echo.
-  echo https://www.visualstudio.com/vs/visual-studio-2017-rc/
+  echo https://www.visualstudio.com/downloads/
   exit /b 1
 )
 
@@ -56,11 +56,13 @@ REM We build Restore, Build and BuildModernVsixPackages in different MSBuild pro
 REM Restore because we want to control the verbosity due to https://github.com/NuGet/Home/issues/4695.
 REM BuildModernVsixPackages because under MicroBuild, it has a dependency on a dll with the same 
 REM version but different contents than the legacy VSIX projects.
-for %%T IN (Restore %MSBuildBuildTarget%, BuildModernVsixPackages) do (
+for %%T IN (Restore, %MSBuildBuildTarget%, %MSBuildBuildTarget%NuGetPackages, BuildModernVsixPackages, Test) do (
   
-  set LogFile=%BinariesDirectory%%%T.log
+  set LogFile=%BinariesDirectory%Build_%%T.log
   set LogFiles=!LogFiles!!LogFile! 
   
+  echo.
+
   if "%%T" == "Restore" (
     set ConsoleLoggerVerbosity=quiet
     echo   Restoring packages for ProjectSystem (this may take some time^)

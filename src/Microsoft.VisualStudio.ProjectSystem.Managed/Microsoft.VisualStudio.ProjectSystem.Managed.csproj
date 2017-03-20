@@ -1,15 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Project>
   <Import Project="..\..\build\Targets\VSL.Settings.targets" />
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6C6A41CE-72C5-4D77-8208-D01693F9BC88}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
-    <AssemblyName>Microsoft.VisualStudio.ProjectSystem.Managed</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFramework>net46</TargetFramework>
     <SignAssembly>true</SignAssembly>
     <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
     <ProjectSystemLayer>HostAgnostic</ProjectSystemLayer>
@@ -31,244 +25,109 @@
   <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Extensions\SemaphoreSlimExtensions.cs" />
-    <Compile Include="Extensions\ProjectConfigurationExtensions.cs" />
-    <Compile Include="ProjectSystem\Build\BuildProperty.cs" />
-    <Compile Include="CommonConstants.cs" />
-    <Compile Include="ProjectSystem\Build\TurnOffUseHostCompilerIfAvailableBuildPropertiesProvider.cs" />
-    <Compile Include="ProjectSystem\Build\CommandLineDesignTimeBuildPropertiesProvider.cs" />
-    <Compile Include="ProjectSystem\Build\GeneratePackageOnBuildDesignTimeBuildPropertyProvider.cs" />
-    <Compile Include="ProjectSystem\Build\GeneratePackageOnBuildPropertyProvider.cs" />
-    <Compile Include="ProjectSystem\Build\TargetFrameworkGlobalBuildPropertyProvider.cs" />
-    <Compile Include="ProjectSystem\ContractNames.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="ProjectSystem\Build\PublishableProjectConfigProvider.cs" />
-    <Compile Include="ProjectSystem\Debug\IDebugTokenReplacer.cs" />
-    <Compile Include="ProjectSystem\Debug\DebugTokenReplacer.cs" />
-    <Compile Include="ProjectSystem\Debug\IJsonSection.cs" />
-    <Compile Include="ProjectSystem\Debug\IWritableLaunchProfile.cs" />
-    <Compile Include="ProjectSystem\Debug\IWritableLaunchSettings.cs" />
-    <Compile Include="ProjectSystem\Debug\ILaunchSettingsUIProvider.cs" />
-    <Compile Include="ProjectSystem\Debug\ILaunchSettingsSerializationProvider.cs" />
-    <Compile Include="ProjectSystem\Debug\WritableLaunchSettings.cs" />
-    <Compile Include="ProjectSystem\Debug\WritableLaunchProfile.cs" />
-    <Compile Include="ProjectSystem\Debug\LaunchProfileData.cs" />
-    <Compile Include="ProjectSystem\Debug\LaunchProfile.cs" />
-    <Compile Include="ProjectSystem\Debug\ILaunchProfile.cs" />
-    <Compile Include="ProjectSystem\Debug\ILaunchSettings.cs" />
-    <Compile Include="ProjectSystem\Debug\ILaunchSettingsProvider.cs" />
-    <Compile Include="ProjectSystem\Debug\LaunchSettings.cs" />
-    <Compile Include="ProjectSystem\Debug\LaunchSettingsData.cs" />
-    <Compile Include="ProjectSystem\Debug\LaunchSettingsProvider.cs" />
-    <Compile Include="ProjectSystem\IPhysicalProjectTreeStorage.cs" />
-    <Compile Include="ProjectSystem\LanguageServices\IConfiguredProjectHostObject.cs" />
-    <Compile Include="ProjectSystem\LanguageServices\ConfiguredProjectReadyToBuild.cs" />
-    <Compile Include="ProjectSystem\LanguageServices\IUnconfiguredProjectHostObject.cs" />
-    <Compile Include="ProjectSystem\DefaultCapabilitiesProvider.cs" />
-    <Compile Include="ProjectSystem\ActiveConfiguredProjectsProvider.cs" />
-    <Compile Include="ProjectSystem\LanguageServices\CommandLineParserService.cs" />
-    <Compile Include="ProjectSystem\LanguageServices\Handlers\AbstractLanguageServiceRuleHandler.cs" />
-    <Compile Include="ProjectSystem\LanguageServices\Handlers\CommandLineItemHandler.cs" />
-    <Compile Include="ProjectSystem\LanguageServices\Handlers\MetadataReferenceItemHandler.cs" />
-    <Compile Include="ProjectSystem\LanguageServices\Handlers\AdditionalFilesItemHandler.cs" />
-    <Compile Include="ProjectSystem\LanguageServices\Handlers\AnalyzerItemHandler.cs" />
-    <Compile Include="ProjectSystem\LanguageServices\Handlers\ProjectPropertiesItemHandler.cs" />
-    <Compile Include="ProjectSystem\LanguageServices\Handlers\SourceItemHandler.cs" />
-    <Compile Include="ProjectSystem\LanguageServices\ICommandLineParserService.cs" />
-    <Compile Include="ProjectSystem\LanguageServices\ILanguageServiceHost.cs" />
-    <Compile Include="ProjectSystem\LanguageServices\AggregateWorkspaceProjectContext.cs" />
-    <Compile Include="ProjectSystem\LanguageServices\IProjectHostProvider.cs" />
-    <Compile Include="ProjectSystem\LanguageServices\IProjectContextProvider.cs" />
-    <Compile Include="ProjectSystem\LanguageServices\ILanguageServiceRuleHandler.cs" />
-    <Compile Include="ProjectSystem\LanguageServices\ILanguageServiceCommandLineHandler.cs" />
-    <Compile Include="ProjectSystem\LanguageServices\ProjectTreeServiceExtensions.cs" />
-    <Compile Include="ProjectSystem\LanguageServices\RuleHandlerType.cs" />
-    <Compile Include="ProjectSystem\LanguageServices\LanguageServiceHost.cs" />
-    <Compile Include="ProjectSystem\LanguageServices\UnconfiguredProjectContextProvider.cs" />
-    <Compile Include="ProjectSystem\PhysicalProjectTreeStorage.cs" />
-    <Compile Include="ProjectSystem\DataflowUtilities.cs" />
-    <Compile Include="ProjectSystem\ProjectTreeProviderExtensions.cs" />
-    <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesProviderBase.cs" />
-    <Compile Include="ProjectSystem\Properties\DelegatedProjectPropertiesBase.cs" />
-    <Compile Include="ProjectSystem\Properties\ImplicitProjectPropertiesProvider.cs" />
-    <Compile Include="ProjectSystem\Properties\ImplicitProjectPropertiesStore.cs" />
-    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\PackagePropertyPage\AssemblyVersionValueProvider.cs" />
-    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\PackagePropertyPage\BaseVersionValueProvider.cs" />
-    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\PackagePropertyPage\FileVersionValueProvider.cs" />
-    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\ApplicationManifestValueProvider.cs" />
-    <Compile Include="ProjectSystem\Properties\RuleExtensions.cs" />
-    <Compile Include="ProjectSystem\Properties\RuleDataSourceTypes.cs" />
-    <Compile Include="ProjectSystem\Properties\AssemblyAttributeProperties\SourceAssemblyAttributePropertyValueProvider.cs" />
-    <Compile Include="ProjectSystem\References\AlwaysAllowValidProjectReferenceChecker.cs" />
-    <Compile Include="ProjectSystem\Reload\ProjectReloadInterceptor.cs" />
-    <Compile Include="ProjectSystem\Reload\IProjectReloadInterceptor.cs" />
-    <Compile Include="ProjectSystem\Reload\ProjectReloadResult.cs" />
-    <Compile Include="ProjectSystem\Rules\AnalyzerReference.xaml.cs">
+    <Compile Update="ProjectSystem\Rules\AnalyzerReference.xaml.cs">
       <DependentUpon>AnalyzerReference.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Rules\AdditionalFiles.cs">
+    <Compile Update="ProjectSystem\Rules\AdditionalFiles.cs">
       <DependentUpon>AdditionalFiles.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Rules\ProjectDebugger.xaml.cs">
+    <Compile Update="ProjectSystem\Rules\ProjectDebugger.xaml.cs">
       <DependentUpon>ProjectDebugger.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Rules\ResolvedAnalyzerReference.xaml.cs">
+    <Compile Update="ProjectSystem\Rules\ResolvedAnalyzerReference.xaml.cs">
       <DependentUpon>ResolvedAnalyzerReference.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Rules\ResolvedPackageReference.cs">
+    <Compile Update="ProjectSystem\Rules\ResolvedPackageReference.cs">
       <DependentUpon>ResolvedPackageReference.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Rules\ResolvedSdkReference.cs">
+    <Compile Update="ProjectSystem\Rules\ResolvedSdkReference.cs">
       <DependentUpon>ResolvedSdkReference.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Rules\SdkReference.xaml.cs">
+    <Compile Update="ProjectSystem\Rules\SdkReference.xaml.cs">
       <DependentUpon>SdkReference.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Rules\PackageReference.cs">
+    <Compile Update="ProjectSystem\Rules\PackageReference.cs">
       <DependentUpon>PackageReference.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\ExportInterceptingPropertyValueProviderAttribute.cs" />
-    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\IInterceptingPropertyValueProviderMetadata.cs" />
-    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\InterceptedProjectPropertiesProviderBase.cs" />
-    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\InterceptingPropertyValueProviderBase.cs" />
-    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\IInterceptingPropertyValueProvider.cs" />
-    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\InterceptedProjectProperties.cs" />
-    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\ProjectFileInterceptedProjectPropertiesProvider.cs" />
-    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\SigningPropertyPage\AssemblyOriginatorKeyFileValueProvider.cs" />
-    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\UserFileInterceptedProjectPropertiesProvider.cs" />
-    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\UserFileWithXamlDefaultsInterceptedProjectPropertiesProvider.cs" />
-    <Compile Include="ProjectSystem\Properties\InterceptedProjectProperties\TargetFrameworkValueProvider.cs" />
-    <Compile Include="ProjectSystem\Properties\OutputTypeEnumProvider.cs" />
-    <Compile Include="ProjectSystem\Properties\AssemblyAttributeProperties\AbstractProjectFileOrAssemblyInfoPropertiesProvider.cs" />
-    <Compile Include="ProjectSystem\Properties\AssemblyAttributeProperties\AssemblyInfoProperties.cs" />
-    <Compile Include="IEnumerableExtensions.cs" />
-    <Compile Include="ProjectSystem\Rules\CompilerCommandLineArgs.cs">
+    <Compile Update="ProjectSystem\Rules\CompilerCommandLineArgs.cs">
       <DependentUpon>CompilerCommandLineArgs.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Configurations\TargetFrameworkProjectConfigurationDimensionProvider.cs" />
-    <Compile Include="Collections\DictionaryEqualityComparer.cs" />
-    <Compile Include="ProjectSystem\SpecialFileProviders\AppDesignerFolderSpecialFileProvider.cs" />
-    <Compile Include="ProjectSystem\SpecialFileProviders\ISpecialFilesManager.cs" />
-    <Compile Include="ProjectSystem\Utilities\EnvironmentHelper.cs" />
-    <Compile Include="ProjectSystem\Utilities\DataFlowExtensions\DataFlowExtensionMethodCaller.cs" />
-    <Compile Include="ProjectSystem\Utilities\DataFlowExtensions\DataFlowExtensionMethodWrapper.cs" />
-    <Compile Include="ProjectSystem\Utilities\DataFlowExtensions\IDataFlowExtensionWrapper.cs" />
-    <Compile Include="IO\Win32FileSystem.cs" />
-    <Compile Include="ProjectSystem\Utilities\IEnvironmentHelper.cs" />
-    <Compile Include="IO\IFileSystem.cs" />
-    <Compile Include="ProjectSystem\Imaging\IProjectImageProvider.cs" />
-    <Compile Include="ProjectSystem\Imaging\ProjectImageKey.cs" />
-    <Compile Include="ProjectSystem\Imaging\ProjectImageProviderAggregator.cs" />
-    <Compile Include="ProjectSystem\IPhysicalProjectTree.cs" />
-    <Compile Include="ProjectSystem\PhysicalProjectTree.cs" />
-    <Compile Include="ProjectSystem\ProjectCapabilitiesService.cs" />
-    <Compile Include="ProjectSystem\IProjectCapabilitiesService.cs" />
-    <Compile Include="ProjectSystem\ProjectRootImageProjectTreePropertiesProvider.cs" />
-    <Compile Include="ProjectSystem\Input\GetCommandStatusResult.cs" />
-    <Compile Include="ProjectSystem\Input\AbstractSingleNodeProjectCommand.cs" />
-    <Compile Include="ProjectSystem\Input\AbstractProjectCommand.cs" />
-    <Compile Include="ProjectSystem\Input\ProjectCommandAttribute.cs" />
-    <Compile Include="ProjectSystem\Properties\IProjectDesignerService.cs" />
-    <Compile Include="ProjectSystem\IUnconfiguredProjectCommonServices.cs" />
-    <Compile Include="ProjectSystem\ProjectCapability.cs" />
-    <Compile Include="ProjectSystem\AppDesignerFolderProjectTreePropertiesProvider.cs" />
-    <Compile Include="ProjectSystem\ProjectTreeFlagsExtensions.cs" />
-    <Compile Include="ProjectSystem\AbstractSpecialFolderProjectTreePropertiesProvider.cs" />
-    <Compile Include="ProjectSystem\Properties\ProjectRuleSnapshotExtensions.cs" />
-    <Compile Include="ProjectSystem\Rules\AppDesigner.xaml.cs">
+    <Compile Update="ProjectSystem\Rules\AppDesigner.xaml.cs">
       <DependentUpon>AppDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Rules\CSharp.cs">
+    <Compile Update="ProjectSystem\Rules\CSharp.cs">
       <DependentUpon>CSharp.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Rules\AssemblyReference.cs">
+    <Compile Update="ProjectSystem\Rules\AssemblyReference.cs">
       <DependentUpon>AssemblyReference.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Rules\COMReference.cs">
+    <Compile Update="ProjectSystem\Rules\COMReference.cs">
       <DependentUpon>COMReference.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Rules\ConfigurationGeneralFile.cs">
+    <Compile Update="ProjectSystem\Rules\ConfigurationGeneralFile.cs">
       <DependentUpon>ConfigurationGeneralFile.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Rules\Content.cs">
+    <Compile Update="ProjectSystem\Rules\Content.cs">
       <DependentUpon>Content.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Rules\DebuggerGeneral.cs">
+    <Compile Update="ProjectSystem\Rules\DebuggerGeneral.cs">
       <DependentUpon>DebuggerGeneral.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Rules\DotNetCliToolReference.cs">
+    <Compile Update="ProjectSystem\Rules\DotNetCliToolReference.cs">
       <DependentUpon>DotNetCliToolReference.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Rules\EmbeddedResource.cs">
+    <Compile Update="ProjectSystem\Rules\EmbeddedResource.cs">
       <DependentUpon>EmbeddedResource.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Rules\Folder.cs">
+    <Compile Update="ProjectSystem\Rules\Folder.cs">
       <DependentUpon>Folder.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Rules\SourceControl.cs">
+    <Compile Update="ProjectSystem\Rules\SourceControl.cs">
       <DependentUpon>SourceControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Rules\SpecialFolder.cs">
+    <Compile Update="ProjectSystem\Rules\SpecialFolder.cs">
       <DependentUpon>SpecialFolder.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Rules\SubProject.cs">
+    <Compile Update="ProjectSystem\Rules\SubProject.cs">
       <DependentUpon>SubProject.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Rules\ConfigurationGeneral.xaml.cs">
+    <Compile Update="ProjectSystem\Rules\ConfigurationGeneral.xaml.cs">
       <DependentUpon>ConfigurationGeneral.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Rules\ProjectProperties.cs" />
-    <Compile Include="ProjectSystem\Rules\ProjectReference.cs">
+    <Compile Update="ProjectSystem\Rules\ProjectReference.cs">
       <DependentUpon>ProjectReference.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Rules\ResolvedAssemblyReference.cs">
+    <Compile Update="ProjectSystem\Rules\ResolvedAssemblyReference.cs">
       <DependentUpon>ResolvedAssemblyReference.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Rules\ResolvedCOMReference.cs">
+    <Compile Update="ProjectSystem\Rules\ResolvedCOMReference.cs">
       <DependentUpon>ResolvedCOMReference.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Rules\ResolvedProjectReference.cs">
+    <Compile Update="ProjectSystem\Rules\ResolvedProjectReference.cs">
       <DependentUpon>ResolvedProjectReference.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Rules\GeneralBrowseObject.cs">
+    <Compile Update="ProjectSystem\Rules\GeneralBrowseObject.cs">
       <DependentUpon>GeneralBrowseObject.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Rules\ConfiguredBrowseObject.cs">
+    <Compile Update="ProjectSystem\Rules\ConfiguredBrowseObject.cs">
       <DependentUpon>GeneralConfiguredBrowseObject.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Rules\None.cs">
+    <Compile Update="ProjectSystem\Rules\None.cs">
       <DependentUpon>None.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Rules\NuGetRestore.cs">
+    <Compile Update="ProjectSystem\Rules\NuGetRestore.cs">
       <DependentUpon>NuGetRestore.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\Rules\VisualBasic.cs">
+    <Compile Update="ProjectSystem\Rules\VisualBasic.cs">
       <DependentUpon>VisualBasic.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectSystem\SpecialFileProviders\AbstractSpecialFileProvider.cs" />
-    <Compile Include="ProjectSystem\SpecialFileProviders\AppConfigFileSpecialFileProvider.cs" />
-    <Compile Include="ProjectSystem\ICreateFileFromTemplateService.cs" />
-    <Compile Include="ProjectSystem\SpecialFileProviders\ResourcesFileSpecialFileProvider.cs" />
-    <Compile Include="ProjectSystem\SpecialFileProviders\SettingsFileSpecialFileProvider.cs" />
-    <Compile Include="ProjectSystem\UnconfiguredProjectCommonServices.cs" />
-    <Compile Include="ProjectSystem\Utilities\ITaskDelayScheduler.cs" />
-    <Compile Include="ProjectSystem\Utilities\SimpleFileWatcher.cs" />
-    <Compile Include="ProjectSystem\Utilities\StringExtensions.cs" />
-    <Compile Include="ProjectSystem\Utilities\TaskDelayScheduler.cs" />
-    <Compile Include="ProjectSystem\Utilities\ProjectErrorUtilities.cs" />
-    <Compile Include="ProjectSystem\Utilities\ResourceUtilities.cs" />
-    <Compile Include="ProjectSystem\Utilities\TraceUtilities.cs" />
-    <Compile Include="Threading\Tasks\TaskExtensions.cs" />
-    <Compile Include="Resources.Designer.cs">
+    <Compile Update="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="StringComparers.cs" />
-    <Compile Include="Threading\Tasks\ITaskScheduler.cs" />
-    <Compile Include="Threading\Tasks\TaskResult.cs" />
-    <Compile Include="Threading\Tasks\TaskSchedulerPriority.cs" />
   </ItemGroup>
   <ItemGroup>
     <XamlPropertyRule Include="ProjectSystem\Rules\CSharp.xaml">
@@ -393,9 +252,6 @@
     </XamlPropertyProjectItemsSchema>
   </ItemGroup>
   <ItemGroup>
-    <None Include="project.json" />
-  </ItemGroup>
-  <ItemGroup>
     <XamlPropertyRule Include="ProjectSystem\Rules\AnalyzerReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
@@ -412,12 +268,12 @@
     </XamlPropertyRule>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources.resx">
+    <EmbeddedResource Update="Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources.*.resx">
+    <EmbeddedResource Update="Resources.*.resx">
       <DependentUpon>Resources.resx</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>

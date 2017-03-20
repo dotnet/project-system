@@ -9,24 +9,11 @@ using Microsoft.VisualStudio.ProjectSystem.Build;
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
-    ///     Provides set of configured projects whose ProjectConfiguration has all dimensions (except the TargetFramework) matching the active VS configuration.
-    ///
-    ///     For example, for a cross-targeting project with TargetFrameworks = "net45;net46" we have:
-    ///     -> All known configurations:
-    ///         Debug | AnyCPU | net45
-    ///         Debug | AnyCPU | net46
-    ///         Release | AnyCPU | net45
-    ///         Release | AnyCPU | net46
-    ///         
-    ///     -> Say, active VS configuration = "Debug | AnyCPU"
-    ///       
-    ///     -> Active configurations returned by this provider:
-    ///         Debug | AnyCPU | net45
-    ///         Debug | AnyCPU | net46
+    ///<see cref="IActiveConfiguredProjectsProvider"/>
     /// </summary>
-    [Export(typeof(ActiveConfiguredProjectsProvider))]
+    [Export(typeof(IActiveConfiguredProjectsProvider))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
-    internal class ActiveConfiguredProjectsProvider
+    internal class ActiveConfiguredProjectsProvider : IActiveConfiguredProjectsProvider
     {
         private readonly IUnconfiguredProjectServices _services;
         private readonly IUnconfiguredProjectCommonServices _commonServices;
@@ -42,10 +29,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         /// <summary>
-        /// Gets all the active configured projects by TargetFramework dimension for the current unconfigured project.
-        /// If the current project is not a cross-targeting project, then it returns a singleton key-value pair with an ignorable key and single active configured project as value.
+        /// <see cref="IActiveConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync"/> 
         /// </summary>
-        /// <returns>Map from TargetFramework dimension to active configured project.</returns>
         public async Task<ImmutableDictionary<string, ConfiguredProject>> GetActiveConfiguredProjectsMapAsync()
         {
             var builder = ImmutableDictionary.CreateBuilder<string, ConfiguredProject>();
@@ -74,9 +59,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         /// <summary>
-        /// Gets all the active configured projects for the current unconfigured project.
+        /// <see cref="IActiveConfiguredProjectsProvider.GetActiveConfiguredProjectsAsync"/> 
         /// </summary>
-        /// <returns>Set of active configured projects.</returns>
         public async Task<ImmutableArray<ConfiguredProject>> GetActiveConfiguredProjectsAsync()
         {
             var projectMap = await GetActiveConfiguredProjectsMapAsync().ConfigureAwait(false);
@@ -84,9 +68,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         /// <summary>
-        /// Gets all the active project configurations for the current unconfigured project.
+        /// <see cref="IActiveConfiguredProjectsProvider.GetActiveProjectConfigurationsAsync"/> 
         /// </summary>
-        /// <returns>Set of active project configurations.</returns>
         public async Task<ImmutableArray<ProjectConfiguration>> GetActiveProjectConfigurationsAsync()
         {
             var projectMap = await GetActiveConfiguredProjectsMapAsync().ConfigureAwait(false);

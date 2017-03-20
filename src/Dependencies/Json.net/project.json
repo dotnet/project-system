@@ -1,9 +1,0 @@
-{
-  "supports": { },
-  "dependencies": {
-     "Newtonsoft.Json": "8.0.3"
-  },
-  "frameworks": {
-    ".NETFramework,Version=v4.6": { }
-  }
-}

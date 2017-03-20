@@ -64,7 +64,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         private List<ImageMoniker> _nodeIcons = new List<ImageMoniker>
         {
-            KnownMonikers.Application
+            KnownMonikers.Application,
+            KnownMonikers.SharedProject
         };
 
         public override IEnumerable<ImageMoniker> Icons

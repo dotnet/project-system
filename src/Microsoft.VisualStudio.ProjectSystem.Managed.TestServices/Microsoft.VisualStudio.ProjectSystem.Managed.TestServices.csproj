@@ -1,15 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Project>
   <Import Project="..\..\build\Targets\VSL.Settings.targets" />
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{23BCBC90-ED65-4EE3-8AF1-DD7CAEFDBEE9}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
-    <AssemblyName>Microsoft.VisualStudio.ProjectSystem.Managed.TestServices</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFramework>net46</TargetFramework>
     <SignAssembly>true</SignAssembly>
     <Nonshipping>true</Nonshipping>
     <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
@@ -26,31 +20,6 @@
     <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic.UnitTests" />
     <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.UnitTests" />
     <InternalsVisibleToMoq Include="DynamicProxyGenAssembly2" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Diagnostics\ThrowingTraceListener.cs" />
-    <Compile Include="FuncWithOut.cs" />
-    <Compile Include="Moq\ReturnsExtensions.cs" />
-    <Compile Include="ProjectSystem\ProjectSystemTraitAttribute.cs" />
-    <Compile Include="ProjectSystem\ProjectSystemTraitDiscover.cs" />
-    <Compile Include="ProjectSystem\ProjectTreeParser\Delimiters.cs" />
-    <Compile Include="ProjectSystem\ProjectTreeParser\ProjectTreeFormatError.cs" />
-    <Compile Include="ProjectSystem\ProjectTreeParser\ProjectTreeFormatException.cs" />
-    <Compile Include="ProjectSystem\ProjectTreeParser\ProjectTreeParser.cs" />
-    <Compile Include="ProjectSystem\ProjectTreeParser\ProjectTreeParser.MutableProjectTree.cs" />
-    <Compile Include="ProjectSystem\ProjectTreeParser\StringReader.cs" />
-    <Compile Include="ProjectSystem\ProjectTreeParser\Tokenizer.cs" />
-    <Compile Include="ProjectSystem\ProjectTreeParser\Tokenizer.IdentifierParseOptions.cs" />
-    <Compile Include="ProjectSystem\ProjectTreeParser\Tokenizer.Token.cs" />
-    <Compile Include="ProjectSystem\ProjectTreeParser\Tokenizer.TokenType.cs" />
-    <Compile Include="ProjectSystem\ProjectTreePropertiesProviderExtensions.cs" />
-    <Compile Include="ProjectSystem\ProjectTreeProvider.cs" />
-    <Compile Include="ProjectSystem\ProjectTreeWriter.cs" />
-    <Compile Include="ProjectSystem\ProjectTreeWriterOptions.cs" />
-    <Compile Include="Workspaces\WorkspaceFactory.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
