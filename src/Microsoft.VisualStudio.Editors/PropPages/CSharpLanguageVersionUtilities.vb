@@ -16,13 +16,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Return New CSharpLanguageVersion() {
                 CSharpLanguageVersion.Default,
+                CSharpLanguageVersion.Latest,
                 CSharpLanguageVersion.ISO1,
                 CSharpLanguageVersion.ISO2,
                 CSharpLanguageVersion.Version3,
                 CSharpLanguageVersion.Version4,
                 CSharpLanguageVersion.Version5,
                 CSharpLanguageVersion.Version6,
-                CSharpLanguageVersion.Version7}
+                CSharpLanguageVersion.Version7,
+                CSharpLanguageVersion.Version7_1}
 
         End Function
 
