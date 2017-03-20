@@ -10,5 +10,5 @@ The following are a set of rules and guidelines that we should follow as we writ
 - New properties and items that are used only for Visual Studio or designer purposes should not be persisted in the project file. This file should be treated as a "user" file and as such, should be readable, easily editable and understandable by the user.
 
 #### Visual Studio
-- Project System differences between languages or project types (WinForms, Web, etc), such as which files to nest or hide by default, should be configurable and persisted in the associated Microsoft.CSharp.Designer.targets or Microsoft.VisualBasic.Designer.targets.
+- Project System behavioral differences between languages (C#, Visual Basic or F#) or project types (WinForms, Web, etc), such as which files to nest or hide by default, should be configurable and persisted in the associated Microsoft.[Language].Designer.targets file.
 
