@@ -31,7 +31,7 @@ If this is your first launch of the project system, or _RoslynDev_ experimental 
 
 #### Command-line
 
-From the command-line, after you've run `build.cmd`, you can launch a Visual Studio instance with your recently built bits by running:
+From the command-line, after you've run `build.cmd`, you can launch a Visual Studio instance with your recently built bits by running the following from a Visual Studio Command Prompt:
 
 ```
 devenv /rootsuffix RoslynDev
