@@ -17,7 +17,6 @@ You can see the active capabilities for a given project, by turning on the `Diag
   <ItemGroup>
     <ProjectCapability Include="DiagnoseCapabilities"/>
   </ItemGroup>
-  
 ```
 
 This will add a node in Solution Expolorer that will list the current 'active' capabilities:
