@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.Packaging
         )]
 
     [ProvideMenuResource("Menus.ctmenu", 1)]
-    internal class ManagedProjectSystemPackage : AsyncPackage
+    internal partial class ManagedProjectSystemPackage : AsyncPackage
     {
         public const string ActivationContextGuid = "E7DF1626-44DD-4E8C-A8A0-92EAB6DDC16E";
         public const string PackageGuid = "A4F9D880-9492-4072-8BF3-2B5EEEDC9E68";
@@ -56,6 +56,10 @@ namespace Microsoft.VisualStudio.Packaging
 
             var debugFrameworksMenuTextUpdater = componentModel.DefaultExportProvider.GetExport<DebugFrameworkPropertyMenuTextUpdater>();
             mcs.AddCommand(debugFrameworksMenuTextUpdater.Value);
+
+#if DEBUG
+            DebuggerTraceListener.RegisterTraceListener();
+#endif
         }
     }
 }
