@@ -114,13 +114,8 @@ Root (flags: {ProjectRoot})
         [Fact]
         public async Task GetCommandStatusAsync_FolderAsNodes_ReturnsHandled()
         {
-
-            var projectProperties = ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(), new[] {
-                    new PropertyPageData { Category = ConfigurationGeneral.SchemaName, PropertyName = ConfigurationGeneral.ProjectGuidProperty, Value = Guid.NewGuid().ToString() }
-                });
-
             var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(""), dlg:
-                IVsAddProjectItemDlgFactory.Create(0), properties: () => projectProperties);
+                IVsAddProjectItemDlgFactory.Create(0));
 
             var tree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
@@ -139,12 +134,8 @@ Root (flags: {ProjectRoot})
         [Fact]
         public async Task TryHandleCommandAsync_FolderAsNodes_ReturnsTrue()
         {
-            var projectProperties = ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(), new[] {
-                    new PropertyPageData { Category = ConfigurationGeneral.SchemaName, PropertyName = ConfigurationGeneral.ProjectGuidProperty, Value = Guid.NewGuid().ToString() }
-                });
-
             var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(""), dlg:
-                IVsAddProjectItemDlgFactory.Create(0), properties: () => projectProperties);
+                IVsAddProjectItemDlgFactory.Create(0));
 
             var tree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
@@ -181,7 +172,7 @@ Root (flags: {ProjectRoot})
                     new PropertyPageData { Category = ConfigurationGeneral.SchemaName, PropertyName = ConfigurationGeneral.ProjectGuidProperty, Value = g.ToString() }
                 });
 
-            var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(folder), dlg: dlg, properties: () => projectProperties);
+            var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(folder), dlg: dlg);
 
             var tree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
@@ -205,7 +196,7 @@ Root (flags: {ProjectRoot})
                 });
 
             var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(""), dlg:
-                IVsAddProjectItemDlgFactory.Create(VSConstants.OLE_E_PROMPTSAVECANCELLED), properties: () => projectProperties);
+                IVsAddProjectItemDlgFactory.Create(VSConstants.OLE_E_PROMPTSAVECANCELLED));
 
             var tree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
@@ -224,10 +215,10 @@ Root (flags: {ProjectRoot})
 
         internal abstract string DirName { get; }
 
-        internal AbstractAddClassProjectCommand CreateInstance(IPhysicalProjectTree projectTree = null, IUnconfiguredProjectVsServices projectVsServices = null, Shell.SVsServiceProvider serviceProvider = null, IProjectTreeProvider provider = null, IVsAddProjectItemDlg dlg = null, Func<ProjectProperties> properties = null)
+        internal AbstractAddClassProjectCommand CreateInstance(IPhysicalProjectTree projectTree = null, IUnconfiguredProjectVsServices projectVsServices = null, Shell.SVsServiceProvider serviceProvider = null, IProjectTreeProvider provider = null, IVsAddProjectItemDlg dlg = null)
         {
             projectTree = projectTree ?? IPhysicalProjectTreeFactory.Create(provider);
-            projectVsServices = projectVsServices ?? IUnconfiguredProjectVsServicesFactory.Implement(projectProperties: properties);
+            projectVsServices = projectVsServices ?? IUnconfiguredProjectVsServicesFactory.Implement(threadingServiceCreator: () => IProjectThreadingServiceFactory.Create());
             serviceProvider = serviceProvider ?? SVsServiceProviderFactory.Create(dlg);
 
             return CreateInstance(projectTree, projectVsServices, serviceProvider);

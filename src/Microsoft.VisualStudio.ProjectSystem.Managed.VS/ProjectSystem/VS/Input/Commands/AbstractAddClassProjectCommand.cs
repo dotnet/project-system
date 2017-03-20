@@ -46,10 +46,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                 return false;
             }
 
-            ConfigurationGeneral projectProperties =
-                            await _projectVsServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
-            Guid guid = new Guid((string)await projectProperties.ProjectGuid.GetValueAsync().ConfigureAwait(false));
-
             __VSADDITEMFLAGS uiFlags = __VSADDITEMFLAGS.VSADDITEM_AddNewItems | __VSADDITEMFLAGS.VSADDITEM_SuggestTemplateName | __VSADDITEMFLAGS.VSADDITEM_AllowHiddenTreeView;
 
             string strBrowseLocations = _projectTree.TreeProvider.GetAddNewItemDirectory(node);
@@ -59,7 +55,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             IVsAddProjectItemDlg addItemDialog = _serviceProvider.GetService<IVsAddProjectItemDlg, SVsAddProjectItemDlg>();
             Assumes.Present(addItemDialog);
-            HResult res = addItemDialog.AddProjectItemDlg(node.GetHierarchyId(), ref guid, _projectVsServices.VsProject, (uint)uiFlags,
+
+            Guid addItemTemplateGuid = Guid.Empty;  // Let the dialog ask the hierarchy itself
+            HResult res = addItemDialog.AddProjectItemDlg(node.GetHierarchyId(), ref addItemTemplateGuid, _projectVsServices.VsProject, (uint)uiFlags,
                 DirName, VSResources.ClassTemplateName, ref strBrowseLocations, ref strFilter, out int iDontShowAgain);
 
             // Return true here regardless of whether or not the user clicked OK or they clicked Cancel. This ensures that some other
