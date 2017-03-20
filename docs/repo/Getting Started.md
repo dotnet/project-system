@@ -44,7 +44,7 @@ For tips, see [Debugging Tips](Debugging Tips.md)
 #### Project System
 While the long term goal is to have all C#/VB projects use this project system, currently only .NET Core, .NET Standard and Shared Projects do. If you want to test other project types, you can manually create a project to test this:
 
-1. __File__ -> __New__ -> __Project__ -> __C#__ -> __Templates__ -> __Visual C#__ -> __Windows__ -> __Console Application__
+1. __File__ -> __New__ -> __Project__ -> __C#__ -> __Templates__ -> __Visual C#__ -> __Windows__ -> __Console App (.NET Framework)__
 2. Right-click on the project and choose __Open in File Explorer__
 3. __File__ -> __Close Solution__
 4. In __File Explorer__, rename project from _[project].csproj_ -> _[project].msbuildproj_
