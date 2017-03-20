@@ -65,7 +65,7 @@
         <Reference Include="System.Xaml" />
 
         <!-- NuGet Dependencies -->
-        <PackageReference Include="System.Collections.Immutable" Version="1.3.1" />
+        <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersion)" />
         <PackageReference Include="System.Reflection.Metadata" Version="1.4.1-beta-24430-01" />
         <PackageReference Include="System.ValueTuple" Version="4.3.0" />
         <PackageReference Include="Microsoft.Composition" Version="1.0.27" />
