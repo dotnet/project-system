@@ -8,7 +8,7 @@
 
 The repository contains the new C# and Visual Basic project system that has been rewritten on top of the [Visual Studio Common Project System (CPS)](https://blogs.msdn.microsoft.com/visualstudio/2015/06/02/introducing-the-project-system-extensibility-preview/). In Visual Studio 2017, this project system is used by default for the Shared Projects, .NET Core and .NET Standard project types, but long term it will be the basis of all C#/VB project types.
 
-The current C# and Visual Basic project systems (csproj.dll and msvbprj.dll), which first shipped back in Visual Studio.net nearly 15 years ago have served us well, but are:
+The current C# and Visual Basic project systems (csproj.dll and msvbprj.dll), which first shipped back in Visual Studio.net nearly 15 years ago, have served us well but are:
 
 - Native and COM-based
 - Single threaded and bound to the UI thread
