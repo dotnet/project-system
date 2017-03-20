@@ -109,7 +109,7 @@ The results of the design time build will appear in a new category called __Buil
 
 ### Diagnosing why a design-time build is failing or taking too long
 
-After following the above instructions, open the resulting build log file or Output window (for the new new project system).
+After following the above instructions, open the resulting build log file or Output window (for the new project system).
 
 #### Failing design-time build
 For a failing build, look for errors at the end of the log:
