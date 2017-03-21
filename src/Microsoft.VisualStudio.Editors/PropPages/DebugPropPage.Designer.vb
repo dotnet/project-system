@@ -241,6 +241,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'DebugPropPage
             '
             resources.ApplyResources(Me, "$this")
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.overarchingTableLayoutPanel)
             Me.Name = "DebugPropPage"
             Me.overarchingTableLayoutPanel.ResumeLayout(False)
