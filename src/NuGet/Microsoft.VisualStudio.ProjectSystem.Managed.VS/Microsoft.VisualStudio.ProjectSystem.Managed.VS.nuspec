@@ -14,7 +14,7 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <dependencies>
-      <dependency id="System.Collections.Immutable" version="1.1.36" />
+      <dependency id="System.Collections.Immutable" version="$systemcollectionsimmutableversion$" />
       <dependency id="Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime" version="14.1.24720" />
       <dependency id="Microsoft.VisualStudio.ProjectSystem.Managed" version="$version$" />
       <dependency id="Microsoft.VisualStudio.ProjectSystem.SDK" version="$projectsystemsdkversion$" />
