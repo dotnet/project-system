@@ -65,7 +65,7 @@
         <Reference Include="System.Xaml" />
 
         <!-- NuGet Dependencies -->
-        <PackageReference Include="System.Collections.Immutable" Version="1.3.1" />
+        <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersion)" />
         <PackageReference Include="System.Reflection.Metadata" Version="1.4.1-beta-24430-01" />
         <PackageReference Include="System.ValueTuple" Version="4.3.0" />
         <PackageReference Include="Microsoft.Composition" Version="1.0.27" />
@@ -89,7 +89,7 @@
     <When Condition="'$(IncludeCPSReferences)' == 'true'">
       <ItemGroup>
 
-        <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.SDK" Version="15.0.737" PrivateAssets="None" />
+        <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.SDK" Version="$(ProjectSystemSDKVersion)" PrivateAssets="None" />
 
       </ItemGroup>
     </When>
@@ -122,22 +122,22 @@
 
         <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="15.0.26124-rc3" />
         <PackageReference Include="Microsoft.VisualStudio.Designer.Interfaces" Version="1.1.4322" />
-        <PackageReference Include="Microsoft.VisualStudio.ManagedInterfaces" Version="8.0.50727" />
+        <PackageReference Include="Microsoft.VisualStudio.ManagedInterfaces" Version="$(MicrosoftVisualStudioManagedInterfaces)" />
         <PackageReference Include="Microsoft.VisualStudio.WCFReference.Interop" Version="9.0.30729" />
         <PackageReference Include="Microsoft.VisualStudio.Data.Core" Version="9.0.21022" />
         <PackageReference Include="Microsoft.VisualStudio.Data.Services" Version="9.0.21022" />
-        <PackageReference Include="Microsoft.VisualStudio.TextManager.Interop.10.0" Version="10.0.30319" />
-        <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.10.0" Version="10.0.30319" />
-        <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.11.0" Version="11.0.61030" />
-        <PackageReference Include="Microsoft.VisualStudio.TextManager.Interop.12.0" Version="12.0.30110" />
+        <PackageReference Include="Microsoft.VisualStudio.TextManager.Interop.10.0" Version="$(MicrosoftVisualStudioTextManagerInterop10Version)" />
+        <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.10.0" Version="$(MicrosoftVisualStudioShellInterop10Version)" />
+        <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.11.0" Version="$(MicrosoftVisualStudioShellInterop11Version)" />
+        <PackageReference Include="Microsoft.VisualStudio.TextManager.Interop.12.0" Version="$(MicrosoftVisualStudioTextManagerInterop12Version)" />
         <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.12.1.DesignTime" Version="12.1.30328" />
         <PackageReference Include="Microsoft.VisualStudio.TextManager.Interop.12.1.DesignTime" Version="12.1.30328" />
         <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.14.0.DesignTime" Version="14.1.24720" />
         <PackageReference Include="Microsoft.VisualStudio.SDK.EmbedInteropTypes" Version="14.1.2" />
         <PackageReference Include="Microsoft.VisualStudio.Editor" Version="15.0.25726-Preview5" />
         <PackageReference Include="Microsoft.VisualStudio.ImageCatalog" Version="15.0.25726-Preview5" />
-        <PackageReference Include="Microsoft.VisualStudio.Shell.Design" Version="15.0.26201" />
-        <PackageReference Include="Microsoft.VisualStudio.Shell.15.0" Version="15.0.26201" />
+        <PackageReference Include="Microsoft.VisualStudio.Shell.Design" Version="$(MicrosoftVisualStudioShellDesign)" />
+        <PackageReference Include="Microsoft.VisualStudio.Shell.15.0" Version="$(MicrosoftVisualStudioShell15Version)" />
         <PackageReference Include="RoslynDependencies.Microsoft.VisualStudio.GraphModel" Version="15.0.25807" />
         <PackageReference Include="Microsoft.VisualStudio.Telemetry" Version="15.0.691-master31907920" ExcludeAssets="Build" />
 
