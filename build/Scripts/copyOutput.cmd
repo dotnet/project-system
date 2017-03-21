@@ -1,3 +1,6 @@
+@echo off
+setlocal enabledelayedexpansion
+
 set BinariesDirectory=%1
 
 echo Copy the Modern Vsixes manifest into VsixV3
