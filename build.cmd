@@ -50,7 +50,8 @@ if "%VisualStudioVersion%" == "" (
 )
 
 set BinariesDirectory=%Root%bin\%BuildConfiguration%\
-if not exist "%BinariesDirectory%" mkdir "%BinariesDirectory%" || goto :BuildFailed
+set LogsDirectory=%BinariesDirectory%Logs\
+if not exist "%LogsDirectory%" mkdir "%LogsDirectory%" || goto :BuildFailed
 
 REM We build Restore, Build and BuildModernVsixPackages in different MSBuild processes.
 REM Restore because we want to control the verbosity due to https://github.com/NuGet/Home/issues/4695.
@@ -58,8 +59,7 @@ REM BuildModernVsixPackages because under MicroBuild, it has a dependency on a d
 REM version but different contents than the legacy VSIX projects.
 for %%T IN (Restore, %MSBuildBuildTarget%, %MSBuildBuildTarget%NuGetPackages, BuildModernVsixPackages, Test) do (
   
-  set LogFile=%BinariesDirectory%Build_%%T.log
-  set LogFiles=!LogFiles!!LogFile! 
+  set LogFile=%LogsDirectory%%%T.log
   
   echo.
 
@@ -93,7 +93,7 @@ if /I "%CopyOutputArtifacts%" == "true" (
 )
 
 echo.
-call :PrintColor Green "Build completed successfully, for full logs see %LogFiles%"
+call :PrintColor Green "Build completed successfully, for full logs see %LogsDirectory%."
 exit /b 0
 
 :Usage
@@ -118,7 +118,7 @@ echo     /skiptests              Does not run unit tests
 goto :eof
 
 :BuildFailed
-call :PrintColor Red "Build failed with ERRORLEVEL %ERRORLEVEL%"
+call :PrintColor Red "Build failed with ERRORLEVEL %ERRORLEVEL%."
 exit /b 1
 
 :PrintColor
