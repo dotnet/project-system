@@ -45,6 +45,7 @@
                    -prop projectsystemsdkversion=$(ProjectSystemSDKVersion) ^
                    -prop systemcollectionsimmutableversion=$(SystemCollectionsImmutableVersion) ^
                    -prop microsoftvisualstudioshellinterop10version=$(MicrosoftVisualStudioShellInterop10Version) ^
+                   -prop microsoftvisualstudioshellinterop11version=$(MicrosoftVisualStudioShellInterop11Version) ^
                    %(NuSpec.NuGetArguments)" />
 
    </Target>
