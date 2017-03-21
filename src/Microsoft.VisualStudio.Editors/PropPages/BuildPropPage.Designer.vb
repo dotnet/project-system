@@ -364,6 +364,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'BuildPropPage
             '
             resources.ApplyResources(Me, "$this")
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.overarchingTableLayoutPanel)
             Me.Name = "BuildPropPage"
             Me.overarchingTableLayoutPanel.ResumeLayout(False)
