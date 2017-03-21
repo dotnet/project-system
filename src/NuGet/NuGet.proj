@@ -44,6 +44,7 @@
                    -OutputDirectory &quot;$(NuGetOutDir.TrimEnd('\'))&quot; ^
                    -prop projectsystemsdkversion=$(ProjectSystemSDKVersion) ^
                    -prop systemcollectionsimmutableversion=$(SystemCollectionsImmutableVersion) ^
+                   -prop microsoftvisualstudioshellinterop10version=$(MicrosoftVisualStudioShellInterop10Version) ^
                    %(NuSpec.NuGetArguments)" />
 
    </Target>
