@@ -19,7 +19,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _isReadOnly As Boolean
 
         Public Sub New(Name As String, PropertyType As Type)
-            MyBase.New(Name, New Attribute() {})
+            MyBase.New(Name, Array.Empty(Of Attribute))
             _propertyType = PropertyType
         End Sub
 

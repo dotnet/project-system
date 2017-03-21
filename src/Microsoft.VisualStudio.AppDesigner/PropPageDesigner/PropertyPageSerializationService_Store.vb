@@ -57,7 +57,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             '	
             Public Overrides ReadOnly Property Errors() As ICollection
                 Get
-                    Return New Object(-1) {}
+                    Return Array.Empty(Of Object)
                 End Get
             End Property
 

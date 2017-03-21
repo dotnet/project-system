@@ -397,7 +397,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             Return s_references_WebControl
                         Case Else
                             Debug.Fail("Unknown application type")
-                            Return New String() {}
+                            Return Array.Empty(Of String)
                     End Select
                 End Get
             End Property

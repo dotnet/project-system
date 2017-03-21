@@ -798,7 +798,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Catch ex As Exception When ReportWithoutCrash(ex, "An exception occurred in GetStartupForms() - using empty list", NameOf(ApplicationPropPageVBWinForms))
             End Try
 
-            Return New String() {}
+            Return Array.Empty(Of String)
         End Function
 
         ''' <summary>
