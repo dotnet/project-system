@@ -126,7 +126,7 @@
         <PackageReference Include="Microsoft.VisualStudio.WCFReference.Interop" Version="9.0.30729" />
         <PackageReference Include="Microsoft.VisualStudio.Data.Core" Version="9.0.21022" />
         <PackageReference Include="Microsoft.VisualStudio.Data.Services" Version="9.0.21022" />
-        <PackageReference Include="Microsoft.VisualStudio.TextManager.Interop.10.0" Version="10.0.30319" />
+        <PackageReference Include="Microsoft.VisualStudio.TextManager.Interop.10.0" Version="$(MicrosoftVisualStudioTextManagerInterop10Version)" />
         <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.10.0" Version="$(MicrosoftVisualStudioShellInterop10Version)" />
         <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.11.0" Version="$(MicrosoftVisualStudioShellInterop11Version)" />
         <PackageReference Include="Microsoft.VisualStudio.TextManager.Interop.12.0" Version="12.0.30110" />

@@ -20,7 +20,7 @@
       <dependency id="Microsoft.VisualStudio.ProjectSystem.SDK" version="$projectsystemsdkversion$" />
       <dependency id="Microsoft.VisualStudio.Shell.Interop.10.0" version="$microsoftvisualstudioshellinterop10version$" />
       <dependency id="Microsoft.VisualStudio.Shell.Interop.11.0" version="$microsoftvisualstudioshellinterop11version$" />
-      <dependency id="Microsoft.VisualStudio.TextManager.Interop.10.0" version="10.0.30319" />
+      <dependency id="Microsoft.VisualStudio.TextManager.Interop.10.0" version="$microsoftvisualstudiotextmanagerinterop10version$" />
       <dependency id="Microsoft.VisualStudio.TextManager.Interop.12.0" version="12.0.30110" />
     </dependencies>
   </metadata>
