@@ -26,6 +26,7 @@
     <MicrosoftVisualStudioTextManagerInterop12Version>12.0.30110</MicrosoftVisualStudioTextManagerInterop12Version>
     <MicrosoftVisualStudioShell15Version>15.0.26201</MicrosoftVisualStudioShell15Version>
     <MicrosoftVisualStudioShellDesign>15.0.26201</MicrosoftVisualStudioShellDesign>
+    <MicrosoftVisualStudioManagedInterfaces>8.0.50727</MicrosoftVisualStudioManagedInterfaces>
   </PropertyGroup>
 
   <Choose>
