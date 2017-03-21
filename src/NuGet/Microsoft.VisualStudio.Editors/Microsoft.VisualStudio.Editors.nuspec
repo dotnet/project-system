@@ -15,7 +15,7 @@
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <dependencies>
       <dependency id="Microsoft.VisualStudio.AppDesigner" version="$version$" />
-      <dependency id="Microsoft.VisualStudio.Shell.15.0" version="15.0.26201" />
+      <dependency id="Microsoft.VisualStudio.Shell.15.0" version="$microsoftvisualstudioshell15version$" />
       <dependency id="Microsoft.VisualStudio.Shell.Interop.10.0" version="$microsoftvisualstudioshellinterop10version$" />
       <dependency id="Microsoft.VisualStudio.Shell.Interop.11.0" version="$microsoftvisualstudioshellinterop11version$" />
     </dependencies>
