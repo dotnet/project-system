@@ -49,6 +49,7 @@
                    -prop microsoftvisualstudiotextmanagerinterop10version=$(MicrosoftVisualStudioTextManagerInterop10Version) ^
                    -prop microsoftvisualstudiotextmanagerinterop12version=$(MicrosoftVisualStudioTextManagerInterop12Version) ^
                    -prop microsoftvisualstudioshell15version=$(MicrosoftVisualStudioShell15Version) ^
+                   -prop microsoftvisualstudioshelldesign=$(MicrosoftVisualStudioShellDesign) ^
                    %(NuSpec.NuGetArguments)" />
 
    </Target>
