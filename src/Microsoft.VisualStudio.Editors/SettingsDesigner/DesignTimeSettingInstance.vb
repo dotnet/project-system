@@ -125,7 +125,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Function
 
         Private Function GetEvents() As EventDescriptorCollection Implements ICustomTypeDescriptor.GetEvents
-            Return New EventDescriptorCollection(New EventDescriptor() {})
+            Return New EventDescriptorCollection(Array.Empty(Of EventDescriptor))
         End Function
 
         Private Function GetEvents(attributes() As Attribute) As EventDescriptorCollection Implements ICustomTypeDescriptor.GetEvents
@@ -178,7 +178,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Private _owner As DesignTimeSettingInstance
 
             Public Sub New(owner As DesignTimeSettingInstance, name As String)
-                MyBase.New(name, New Attribute() {})
+                MyBase.New(name, Array.Empty(Of Attribute))
                 _owner = owner
             End Sub
 

@@ -1210,7 +1210,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
             If MyAppProjectItem Is Nothing Then
                 Debug.Fail("MyAppProjectItem is Nothing")
-                Return New String() {}
+                Return Array.Empty(Of String)
             End If
 
             Dim MyAppFile As String = MyAppFileNameWithPath()

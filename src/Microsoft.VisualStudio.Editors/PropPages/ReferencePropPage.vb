@@ -587,10 +587,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Next
 
                 ' Return empty list if an error occurred
-                Return New String() {}
+                Return Array.Empty(Of String)
             Catch ex As OperationCanceledException
                 ' Return empty list if we canceled
-                Return New String() {}
+                Return Array.Empty(Of String)
             Finally
                 Dim canceled As Integer = 0
                 threadedWaitDialog3.EndWaitDialog(canceled)

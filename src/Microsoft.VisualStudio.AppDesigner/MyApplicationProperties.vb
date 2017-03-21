@@ -10,7 +10,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Overridable Function FilesToCheckOut(CreateIfNotExist As Boolean) As String()
-            Return New String() {}
+            Return Array.Empty(Of String)
         End Function
 
 

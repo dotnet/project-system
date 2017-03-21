@@ -576,7 +576,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 If _cachedRawPropertiesSuperset Is Nothing Then
                     If m_Objects Is Nothing Then
                         Debug.Fail("m_Objects is nothing")
-                        Return New Object() {}
+                        Return Array.Empty(Of Object)
                     End If
                     Dim Superset As New Hashtable(m_Objects.Length)
                     For Each Data As PropertyControlData In ControlData
@@ -1344,7 +1344,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         End If
 #End If
                         If TypeOf m_ExtendedObjects(i) Is ICustomTypeDescriptor Then 'Extenders were found and added, so we need to get the property descriptors for the set of properties including extenders
-                            m_ObjectsPropertyDescriptorsArray(i) = CType(m_ExtendedObjects(i), ICustomTypeDescriptor).GetProperties(New Attribute() {})
+                            m_ObjectsPropertyDescriptorsArray(i) = CType(m_ExtendedObjects(i), ICustomTypeDescriptor).GetProperties(Array.Empty(Of Attribute))
                             Common.Switches.TracePDExtenders(TraceLevel.Info, "*** Properties collection #" & i & " contains extended properties.")
                             TraceTypeDescriptorCollection("*** Extended properties collection for objects #" & i, m_ObjectsPropertyDescriptorsArray(i))
                         Else
@@ -1499,7 +1499,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
         Protected Overridable ReadOnly Property ControlData() As PropertyControlData()
             Get
-                Return New PropertyControlData() {}
+                Return Array.Empty(Of PropertyControlData)
             End Get
         End Property
 
@@ -3997,7 +3997,7 @@ NextControl:
                 For i As Integer = 0 To ExtendedObjects.Length - 1
                     Debug.Assert(ExtendedObjects(i) IsNot Nothing)
                     If TypeOf ExtendedObjects(i) Is ICustomTypeDescriptor Then
-                        ObjectsPropertyDescriptorsArray(i) = CType(ExtendedObjects(i), ICustomTypeDescriptor).GetProperties(New Attribute() {})
+                        ObjectsPropertyDescriptorsArray(i) = CType(ExtendedObjects(i), ICustomTypeDescriptor).GetProperties(Array.Empty(Of Attribute))
                     Else
                         ObjectsPropertyDescriptorsArray(i) = TypeDescriptor.GetProperties(ExtendedObjects(i))
                     End If

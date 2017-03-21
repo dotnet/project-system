@@ -949,7 +949,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     End If
                 End Try
             End If
-            Return New Guid() {}
+            Return Array.Empty(Of Guid)
         End Function
 
         Private Sub SetSite(serviceProvider As IServiceProvider)

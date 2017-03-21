@@ -1458,7 +1458,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
 
             'Never return Nothing
-            Return New Resource() {}
+            Return Array.Empty(Of Resource)
         End Function
 
 
