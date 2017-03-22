@@ -1,4 +1,4 @@
-@echo off
+@if not defined _echo @echo off
 setlocal enabledelayedexpansion
 
 set BinariesDirectory=%1
