@@ -23,6 +23,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     [AppliesTo("HandlesOwnReload")]
     internal class ReloadableProject : OnceInitializedOnceDisposedAsync, IReloadableProject
     {
+        private const string ReloadResultOperationPath = "projectreload/reload-result";
+        private const string ReloadFailedNFWPath = "projectreload/reload-failure";
+
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IProjectReloadManager _reloadManager;
         private readonly ITelemetryService _telemetryService;
@@ -100,6 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 if (msbuildProject.HasUnsavedChanges)
                 {
                     // For now force a solution reload.
+                    _telemetryService.PostOperation(ReloadResultOperationPath, TelemetryResult.Failure, "Project Dirty");
                     return ProjectReloadResult.ReloadFailedProjectDirty;
                 }
                 else
@@ -121,6 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                 var reloadResult = projectReloadInterceptor.Value.InterceptProjectReload(oldProjectProperties, newProjectProperties);
                                 if (reloadResult != ProjectReloadResult.NoAction)
                                 {
+                                    _telemetryService.PostOperation(ReloadResultOperationPath, TelemetryResult.Failure, "Reload interceptor rejected reload");
                                     return reloadResult;
                                 }
                             }
@@ -134,7 +139,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     catch (Microsoft.Build.Exceptions.InvalidProjectFileException ex)
                     {
                         // Indicate we weren't able to complete the action. We want to do a normal reload
-                        _telemetryService.Report("projectreload/reload-failed", "Project Reload Failure due to invalid project file", ex);
+                        var correlationEvent = _telemetryService.Report(ReloadFailedNFWPath, "Project Reload Failure due to invalid project file", ex);
+                        _telemetryService.PostOperation(
+                                                    ReloadResultOperationPath,
+                                                    TelemetryResult.Failure,
+                                                    "Project Reload Failure due to invalid project file",
+                                                    new[] { correlationEvent });
                         return ProjectReloadResult.ReloadFailed;
                     }
                     catch (Exception ex)
@@ -143,7 +153,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         // The only safe thing to do at this point is to reload the project in the solution
                         // TODO: should we have an additional return value here to indicate that the existing project could be in a bad
                         // state and the reload needs to happen without the user being able to block it?
-                        _telemetryService.Report("projectreload/reload-failed", "Project Reload Failure due to general fault", ex);
+                        var correlationEvent = _telemetryService.Report(ReloadFailedNFWPath, "Project Reload Failure due to general fault", ex);
+                        _telemetryService.PostOperation(
+                                                    ReloadResultOperationPath,
+                                                    TelemetryResult.Failure,
+                                                    "Project Reload Failure due to general fault",
+                                                    new[] { correlationEvent });
+
                         System.Diagnostics.Debug.Assert(false, "Replace xml failed with: " + ex.Message);
                         return ProjectReloadResult.ReloadFailed;
                     }
