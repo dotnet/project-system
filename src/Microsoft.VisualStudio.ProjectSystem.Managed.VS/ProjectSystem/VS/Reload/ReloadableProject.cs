@@ -135,6 +135,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         // to a StringWriter.
                         var tw = new StringWriter();
                         msbuildProject.Save(tw);
+                        _telemetryService.PostOperation(ReloadResultOperationPath, TelemetryResult.Success);
                     }
                     catch (Microsoft.Build.Exceptions.InvalidProjectFileException ex)
                     {
