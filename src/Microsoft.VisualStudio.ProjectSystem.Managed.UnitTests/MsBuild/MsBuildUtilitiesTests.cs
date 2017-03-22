@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Linq;
 using Xunit;
 
@@ -296,7 +297,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             using (var project = new MsBuildProjectFile())
             {
-                MsBuildUtilities.RemovePropertyValue(project.Project, "", "MyProperty", "1");
+                Assert.Throws<ArgumentException>("valueToRemove", () => MsBuildUtilities.RemovePropertyValue(project.Project, "", "MyProperty", "1"));
                 var property = MsBuildUtilities.GetProperty(project.Project, "MyProperty");
                 Assert.NotNull(property);
                 Assert.Equal(string.Empty, property.Value);
@@ -358,7 +359,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             using (var project = new MsBuildProjectFile())
             {
-                MsBuildUtilities.RenamePropertyValue(project.Project, "", "MyProperty", "1", "2");
+                Assert.Throws<ArgumentException>("oldValue", () => MsBuildUtilities.RenamePropertyValue(project.Project, "", "MyProperty", "1", "2"));
                 var property = MsBuildUtilities.GetProperty(project.Project, "MyProperty");
                 Assert.NotNull(property);
                 Assert.Equal(string.Empty, property.Value);

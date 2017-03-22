@@ -9,7 +9,7 @@ using Microsoft.Build.Construction;
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
-    /// Utitlies class to manipulate MsBuild projects.
+    /// Utility class to manipulate MsBuild projects.
     /// </summary>
     internal abstract class MsBuildUtilities
     {
@@ -97,6 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             var property = GetOrAddProperty(project, propertyName);
             StringBuilder newValue = new StringBuilder();
+            bool valueFound = false;
             foreach (string value in GetPropertyValues(evaluatedPropertyValue, delimiter))
             {
                 if (string.Compare(value, valueToRemove, StringComparison.Ordinal) != 0)
@@ -104,9 +105,18 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     newValue.Append(value);
                     newValue.Append(delimiter);
                 }
+                else
+                {
+                    valueFound = true;
+                }
             }
 
             property.Value = newValue.ToString().TrimEnd(delimiter);
+
+            if (!valueFound)
+            {
+                throw new ArgumentException(string.Format(Resources.MsBuildMissingValueToRemove, valueToRemove, propertyName), nameof(valueToRemove));
+            }
         }
 
         /// <summary>
@@ -130,13 +140,28 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             var property = GetOrAddProperty(project, propertyName);
             StringBuilder value = new StringBuilder();
+            bool valueFound = false;
             foreach (string propertyValue in GetPropertyValues(evaluatedPropertyValue, delimiter))
             {
-                value.Append(string.Compare(propertyValue, oldValue, StringComparison.Ordinal) == 0 ? newValue : propertyValue);
+                if (string.Compare(propertyValue, oldValue, StringComparison.Ordinal) == 0)
+                {
+                    value.Append(newValue);
+                    valueFound = true;
+                }
+                else
+                {
+                    value.Append(propertyValue);
+                }
+
                 value.Append(delimiter);
             }
 
             property.Value = value.ToString().TrimEnd(delimiter);
+
+            if (!valueFound)
+            {
+                throw new ArgumentException(string.Format(Resources.MsBuildMissingValueToRename, oldValue, propertyName), nameof(oldValue));
+            }
         }
 
         /// <summary>

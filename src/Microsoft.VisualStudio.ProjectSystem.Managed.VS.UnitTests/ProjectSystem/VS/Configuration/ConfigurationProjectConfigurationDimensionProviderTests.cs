@@ -3,6 +3,7 @@
 using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.VS.Editor;
 using Xunit;
+using System;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
 {
@@ -150,6 +151,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         }
 
         [Fact]
+        public async void ConfigurationProjectConfigurationDimensionProvider_OnDimensionValueChanged_Remove_MissingValue()
+        {
+            using (var projectFile = new MsBuildProjectFile(projectXml))
+            {
+                IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
+                var provider = new ConfigurationProjectConfigurationDimensionProvider(_projectXmlAccessor);
+                var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
+
+                ProjectConfigurationDimensionValueChangedEventArgs args = new ProjectConfigurationDimensionValueChangedEventArgs(
+                    unconfiguredProject,
+                    ConfigurationDimensionChange.Delete,
+                    ChangeEventStage.Before,
+                    ConfigurationGeneral.ConfigurationProperty,
+                    "NonExistantConfiguration");
+                await Assert.ThrowsAsync<ArgumentException>(() => provider.OnDimensionValueChangedAsync(args));
+                var property = MsBuildUtilities.GetProperty(projectFile.Project, Configurations);
+                Assert.NotNull(property);
+                Assert.Equal("Debug;Release;CustomConfiguration", property.Value);
+            }
+        }
+
+        [Fact]
         public async void ConfigurationProjectConfigurationDimensionProvider_OnDimensionValueChanged_Rename()
         {
             using (var projectFile = new MsBuildProjectFile(projectXml))
@@ -183,6 +206,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
                 property = MsBuildUtilities.GetProperty(projectFile.Project, Configurations);
                 Assert.NotNull(property);
                 Assert.Equal("Debug;Release;RenamedConfiguration", property.Value);
+            }
+        }
+
+        [Fact]
+        public async void ConfigurationProjectConfigurationDimensionProvider_OnDimensionValueChanged_Rename_MissingValue()
+        {
+            using (var projectFile = new MsBuildProjectFile(projectXml))
+            {
+                IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
+                var provider = new ConfigurationProjectConfigurationDimensionProvider(_projectXmlAccessor);
+                var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
+
+                ProjectConfigurationDimensionValueChangedEventArgs args = new ProjectConfigurationDimensionValueChangedEventArgs(
+                    unconfiguredProject,
+                    ConfigurationDimensionChange.Rename,
+                    ChangeEventStage.After,
+                    ConfigurationGeneral.ConfigurationProperty,
+                    "RenamedConfiguration",
+                    "NonExistantConfiguration");
+                await Assert.ThrowsAsync<ArgumentException>(() => provider.OnDimensionValueChangedAsync(args));
+                var property = MsBuildUtilities.GetProperty(projectFile.Project, Configurations);
+                Assert.NotNull(property);
+                Assert.Equal("Debug;Release;CustomConfiguration", property.Value);
             }
         }
     }
