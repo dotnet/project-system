@@ -28,7 +28,7 @@
              />
   </Target>
 
-  <Target Name="BuildSolution">
+  <Target Name="Build">
 
     <Message Text="Building %(SolutionFile.Filename) [$(Configuration)]" Importance="high" />
 
@@ -38,7 +38,7 @@
              />
   </Target>
 
-  <Target Name="RebuildSolution">
+  <Target Name="Rebuild">
 
     <Message Text="Rebuilding %(SolutionFile.Filename) [$(Configuration)]" Importance="high" />
 
@@ -101,7 +101,4 @@
 
   </Target>
  
-  <Target Name="Build" DependsOnTargets="BuildSolution;BuildNuGetPackages;Test" />
-  <Target Name="Rebuild" DependsOnTargets="RebuildSolution;RebuildNuGetPackages;Test" />
-
 </Project>

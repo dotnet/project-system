@@ -9,9 +9,12 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using TPL = System.Threading.Tasks;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
-    internal class ProjectLockFileWatcher : OnceInitializedOnceDisposed, IVsFileChangeEvents
+    /// <summary>
+    ///     Watches for writes to the project.assets.json, triggering a evaluation if it changes.
+    /// </summary>
+    internal class ProjectAssetFileWatcher : OnceInitializedOnceDisposed, IVsFileChangeEvents
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly IUnconfiguredProjectCommonServices _projectServices;
@@ -23,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private string _fileBeingWatched;
 
         [ImportingConstructor]
-        public ProjectLockFileWatcher([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
+        public ProjectAssetFileWatcher([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
                                       [Import(ContractNames.ProjectTreeProviders.FileSystemDirectoryTree)] IProjectTreeProvider fileSystemTreeProvider,
                                       IUnconfiguredProjectCommonServices projectServices,
                                       IProjectLockService projectLockService)

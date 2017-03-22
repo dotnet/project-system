@@ -9,6 +9,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 {
+    [ProjectSystemTrait]
     public class DesignTimeAssemblyResolutionTests
     {
         [Fact]

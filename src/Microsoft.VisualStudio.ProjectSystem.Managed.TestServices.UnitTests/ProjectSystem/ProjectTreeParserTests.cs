@@ -406,7 +406,7 @@ Root
 
             string result = writer.WriteToString();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, result, ignoreLineEndingDifferences: true);
         }
 
         private void AssertThrows(string input, ProjectTreeFormatError error)

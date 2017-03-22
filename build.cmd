@@ -19,8 +19,10 @@ if "%1" == "" goto :DoneParsing
 if /I "%1" == "/?" call :Usage && exit /b 1
 if /I "%1" == "/build" set MSBuildBuildTarget=Build&&shift&& goto :ParseArguments
 if /I "%1" == "/rebuild" set MSBuildBuildTarget=Rebuild&&shift&& goto :ParseArguments
+if /I "%1" == "/copy-artifacts" set CopyOutputArtifacts=true&&shift&& goto :ParseArguments
 if /I "%1" == "/debug" set BuildConfiguration=Debug&&shift&& goto :ParseArguments
 if /I "%1" == "/release" set BuildConfiguration=Release&&shift&& goto :ParseArguments
+if /I "%1" == "/signbuild" set ShouldSignBuild=true&&shift&& goto :ParseArguments
 if /I "%1" == "/skiptests" set RunTests=false&&shift&& goto :ParseArguments
 if /I "%1" == "/no-deploy-extension" set DeployVsixExtension=false&&shift&& goto :ParseArguments
 if /I "%1" == "/no-node-reuse" set NodeReuse=false&&shift&& goto :ParseArguments
@@ -29,11 +31,11 @@ call :Usage && exit /b 1
 :DoneParsing
 
 if not exist "%VS150COMNTOOLS%" (
-  echo To build this repository, this script needs to be run from a Visual Studio 2017 RC developer command prompt.
+  echo To build this repository, this script needs to be run from a Visual Studio 2017 developer command prompt.
   echo.
   echo If Visual Studio is not installed, visit this page to download:
   echo.
-  echo https://www.visualstudio.com/vs/visual-studio-2017-rc/
+  echo https://www.visualstudio.com/downloads/
   exit /b 1
 )
 
@@ -48,17 +50,19 @@ if "%VisualStudioVersion%" == "" (
 )
 
 set BinariesDirectory=%Root%bin\%BuildConfiguration%\
-if not exist "%BinariesDirectory%" mkdir "%BinariesDirectory%" || goto :BuildFailed
+set LogsDirectory=%BinariesDirectory%Logs\
+if not exist "%LogsDirectory%" mkdir "%LogsDirectory%" || goto :BuildFailed
 
 REM We build Restore, Build and BuildModernVsixPackages in different MSBuild processes.
 REM Restore because we want to control the verbosity due to https://github.com/NuGet/Home/issues/4695.
 REM BuildModernVsixPackages because under MicroBuild, it has a dependency on a dll with the same 
 REM version but different contents than the legacy VSIX projects.
-for %%T IN (Restore %MSBuildBuildTarget%, BuildModernVsixPackages) do (
+for %%T IN (Restore, %MSBuildBuildTarget%, %MSBuildBuildTarget%NuGetPackages, BuildModernVsixPackages, Test) do (
   
-  set LogFile=%BinariesDirectory%%%T.log
-  set LogFiles=!LogFiles!!LogFile! 
+  set LogFile=%LogsDirectory%%%T.log
   
+  echo.
+
   if "%%T" == "Restore" (
     set ConsoleLoggerVerbosity=quiet
     echo   Restoring packages for ProjectSystem (this may take some time^)
@@ -66,7 +70,7 @@ for %%T IN (Restore %MSBuildBuildTarget%, BuildModernVsixPackages) do (
     set ConsoleLoggerVerbosity=minimal
   )
 
-  set BuildCommand=msbuild /nologo /warnaserror /nodeReuse:%NodeReuse% /consoleloggerparameters:Verbosity=!ConsoleLoggerVerbosity! /fileLogger /fileloggerparameters:LogFile="!LogFile!";verbosity=%FileLoggerVerbosity% /t:"%%T" /p:Configuration="%BuildConfiguration%" /p:RunTests="%RunTests%" /p:DeployVsixExtension="%DeployVsixExtension%" "%Root%build\build.proj" %MSBuildAdditionalArguments%
+  set BuildCommand=msbuild /nologo /warnaserror /nodeReuse:%NodeReuse% /consoleloggerparameters:Verbosity=!ConsoleLoggerVerbosity! /fileLogger /fileloggerparameters:LogFile="!LogFile!";verbosity=%FileLoggerVerbosity% /t:"%%T" /p:Configuration="%BuildConfiguration%" /p:RunTests="%RunTests%" /p:ShouldSignBuild="%ShouldSignBuild%" /p:DeployVsixExtension="%DeployVsixExtension%" "%Root%build\build.proj" %MSBuildAdditionalArguments%
   if "%FileLoggerVerbosity%" == "diagnostic" (
     echo !BuildCommand!
   )
@@ -80,8 +84,16 @@ for %%T IN (Restore %MSBuildBuildTarget%, BuildModernVsixPackages) do (
   )
 )
 
+REM Run copy as a final step after all the product components are built
+if /I "%CopyOutputArtifacts%" == "true" (
+  call %ROOT%build\Scripts\CopyOutput.cmd %BinariesDirectory%
+
+  REM Robocopy has a return code 0 - 7 on success
+  if %ERRORLEVEL% gtr 7 goto BuildFailed
+)
+
 echo.
-call :PrintColor Green "Build completed successfully, for full logs see %LogFiles%"
+call :PrintColor Green "Build completed successfully, for full logs see %LogsDirectory%."
 exit /b 0
 
 :Usage
@@ -96,15 +108,17 @@ echo     /debug                  Perform debug build (default)
 echo     /release                Perform release build
 echo.
 echo   Build options:
+echo     /copy-artifacts         Copy the nugets to CoreXT Nuget share and VS manifests to separate folder to enable vsdrop upload
 echo     /diagnostic             Turns on diagnostic logging and turns off multi-proc build, useful for diagnosing build logs
 echo     /no-node-reuse          Prevents MSBuild from reusing existing MSBuild instances,
 echo                             useful for avoiding unexpected behavior on build machines
 echo     /no-deploy-extension    Does not deploy the VSIX extension when building the solution
+echo     /signbuild              Produce signed build
 echo     /skiptests              Does not run unit tests
 goto :eof
 
 :BuildFailed
-call :PrintColor Red "Build failed with ERRORLEVEL %ERRORLEVEL%"
+call :PrintColor Red "Build failed with ERRORLEVEL %ERRORLEVEL%."
 exit /b 1
 
 :PrintColor
