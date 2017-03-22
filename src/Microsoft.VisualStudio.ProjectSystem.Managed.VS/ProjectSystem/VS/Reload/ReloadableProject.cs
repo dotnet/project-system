@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -100,70 +101,83 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             {
                 await writeAccess.CheckoutAsync(_projectVsServices.Project.FullPath).ConfigureAwait(true);
                 var msbuildProject = await writeAccess.GetProjectXmlAsync(_projectVsServices.Project.FullPath, CancellationToken.None).ConfigureAwait(true);
-                if (msbuildProject.HasUnsavedChanges)
+                TelemetryResult operationResult = (TelemetryResult)(-1);
+                string resultSummary = null;
+                Exception exception = null;
+                try
                 {
-                    // For now force a solution reload.
-                    _telemetryService.PostOperation(ReloadResultOperationPath, TelemetryResult.Failure, "Project Dirty");
-                    return ProjectReloadResult.ReloadFailedProjectDirty;
-                }
-                else
-                {
-                    try
+                    if (msbuildProject.HasUnsavedChanges)
                     {
-                        var oldProjectProperties = msbuildProject.Properties.ToImmutableArray();
-
-                        // This reloads the project off disk and handles if the new XML is invalid
-                        msbuildProject.Reload();
-
-                        // Handle project reload interception.
-                        if (ProjectReloadInterceptors.Count > 0)
+                        // For now force a solution reload.
+                        operationResult = TelemetryResult.Failure;
+                        resultSummary = "Project Dirty";
+                        return ProjectReloadResult.ReloadFailedProjectDirty;
+                    }
+                    else
+                    {
+                        try
                         {
-                            var newProjectProperties = msbuildProject.Properties.ToImmutableArray();
+                            var oldProjectProperties = msbuildProject.Properties.ToImmutableArray();
 
-                            foreach (var projectReloadInterceptor in ProjectReloadInterceptors)
+                            // This reloads the project off disk and handles if the new XML is invalid
+                            msbuildProject.Reload();
+
+                            // Handle project reload interception.
+                            if (ProjectReloadInterceptors.Count > 0)
                             {
-                                var reloadResult = projectReloadInterceptor.Value.InterceptProjectReload(oldProjectProperties, newProjectProperties);
-                                if (reloadResult != ProjectReloadResult.NoAction)
+                                var newProjectProperties = msbuildProject.Properties.ToImmutableArray();
+
+                                foreach (var projectReloadInterceptor in ProjectReloadInterceptors)
                                 {
-                                    _telemetryService.PostOperation(ReloadResultOperationPath, TelemetryResult.Failure, "Reload interceptor rejected reload");
-                                    return reloadResult;
+                                    var reloadResult = projectReloadInterceptor.Value.InterceptProjectReload(oldProjectProperties, newProjectProperties);
+                                    if (reloadResult != ProjectReloadResult.NoAction)
+                                    {
+                                        operationResult = TelemetryResult.Failure;
+                                        resultSummary = "Reload interceptor rejected reload";
+                                        return reloadResult;
+                                    }
                                 }
                             }
+
+                            // There isn't a way to clear the dirty flag on the project xml, so to work around that the project is saved
+                            // to a StringWriter.
+                            var tw = new StringWriter();
+                            msbuildProject.Save(tw);
+                            operationResult = TelemetryResult.Success;
+                            resultSummary = null;
                         }
-
-                        // There isn't a way to clear the dirty flag on the project xml, so to work around that the project is saved
-                        // to a StringWriter.
-                        var tw = new StringWriter();
-                        msbuildProject.Save(tw);
-                        _telemetryService.PostOperation(ReloadResultOperationPath, TelemetryResult.Success);
+                        catch (Microsoft.Build.Exceptions.InvalidProjectFileException ex)
+                        {
+                            // Indicate we weren't able to complete the action. We want to do a normal reload
+                            exception = ex;
+                            operationResult = TelemetryResult.Failure;
+                            resultSummary = "Project Reload Failure due to invalid project file";
+                            return ProjectReloadResult.ReloadFailed;
+                        }
+                        catch (Exception ex)
+                        {
+                            // Any other exception likely mean the msbuildProject is not in a good state. Example, DeepCopyFrom failed.
+                            // The only safe thing to do at this point is to reload the project in the solution
+                            // TODO: should we have an additional return value here to indicate that the existing project could be in a bad
+                            // state and the reload needs to happen without the user being able to block it?
+                            operationResult = TelemetryResult.Failure;
+                            resultSummary = "Project Reload Failure due to general fault";
+                            exception = ex;
+                            System.Diagnostics.Debug.Assert(false, "Replace xml failed with: " + ex.Message);
+                            return ProjectReloadResult.ReloadFailed;
+                        }
                     }
-                    catch (Microsoft.Build.Exceptions.InvalidProjectFileException ex)
+                }
+                finally
+                {
+                    Contract.Requires((int)operationResult != -1);
+                    TelemetryEventCorrelation[] correlations = null;
+                    if (exception != null)
                     {
-                        // Indicate we weren't able to complete the action. We want to do a normal reload
-                        var correlationEvent = _telemetryService.Report(ReloadFailedNFWPath, "Project Reload Failure due to invalid project file", ex);
-                        _telemetryService.PostOperation(
-                                                    ReloadResultOperationPath,
-                                                    TelemetryResult.Failure,
-                                                    "Project Reload Failure due to invalid project file",
-                                                    new[] { correlationEvent });
-                        return ProjectReloadResult.ReloadFailed;
+                        var correlation = _telemetryService.Report(ReloadFailedNFWPath, resultSummary, exception);
+                        correlations = new[] { correlation };
                     }
-                    catch (Exception ex)
-                    {
-                        // Any other exception likely mean the msbuildProject is not in a good state. Example, DeepCopyFrom failed.
-                        // The only safe thing to do at this point is to reload the project in the solution
-                        // TODO: should we have an additional return value here to indicate that the existing project could be in a bad
-                        // state and the reload needs to happen without the user being able to block it?
-                        var correlationEvent = _telemetryService.Report(ReloadFailedNFWPath, "Project Reload Failure due to general fault", ex);
-                        _telemetryService.PostOperation(
-                                                    ReloadResultOperationPath,
-                                                    TelemetryResult.Failure,
-                                                    "Project Reload Failure due to general fault",
-                                                    new[] { correlationEvent });
-
-                        System.Diagnostics.Debug.Assert(false, "Replace xml failed with: " + ex.Message);
-                        return ProjectReloadResult.ReloadFailed;
-                    }
+                    _telemetryService.PostOperation(ReloadResultOperationPath, operationResult, resultSummary, correlations);
                 }
             }
 
