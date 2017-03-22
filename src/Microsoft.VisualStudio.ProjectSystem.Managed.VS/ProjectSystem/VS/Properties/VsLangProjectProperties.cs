@@ -1,6 +1,9 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
+using System.Threading.Tasks;
 using EnvDTE;
+using Microsoft.VisualStudio.Shell;
 using VSLangProj;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
@@ -17,6 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             _vsProject = vsProject;
             _projectProperties = projectProperties;
         }
+
 
         // Implementation of VSProject to redirect the call to the actual VSProject object
         public ProjectItem CreateWebReferencesFolder()
@@ -73,72 +77,130 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         public VSProjectEvents Events => _vsProject.Events;
 
         // Implementation of VsLangProj.ProjectProperties
-        public string __id => throw new System.NotImplementedException();
+        public string __id => throw new NotImplementedException();
 
-        public object __project => throw new System.NotImplementedException();
+        public object __project => throw new NotImplementedException();
 
-        public string StartupObject { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public prjOutputType OutputType { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public string RootNamespace { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public string AssemblyName { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public string AssemblyOriginatorKeyFile { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public string AssemblyKeyContainerName { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public prjOriginatorKeyMode AssemblyOriginatorKeyMode { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public bool DelaySign { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public string StartupObject { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public prjOutputType OutputType
+        {
+            get
+            {
+                var configurationGeneralProperties = RunFuncTaskTSynchronously(_projectProperties.GetConfigurationGeneralPropertiesAsync);
+                var value = RunFuncTaskTSynchronously(configurationGeneralProperties.OutputType.GetEvaluatedValueAtEndAsync);
+                return (prjOutputType)int.Parse(value);
+            }
 
-        public string WebServer => throw new System.NotImplementedException();
+            set
+            {
+                var configurationGeneralProperties = RunFuncTaskTSynchronously(_projectProperties.GetConfigurationGeneralPropertiesAsync);
+                RunFuncTaskSynchronously(configurationGeneralProperties.OutputType.SetValueAsync, (object)value);
+            }
+        }
 
-        public string WebServerVersion => throw new System.NotImplementedException();
+        private T RunFuncTaskTSynchronously<T>(Func<Task<T>> asyncFuncTaskT)
+        {
+            T t = default(T);
+            ThreadHelper.JoinableTaskFactory.Run(
+                async () =>
+                {
+                    t = await asyncFuncTaskT().ConfigureAwait(false);
+                });
 
-        public string ServerExtensionsVersion => throw new System.NotImplementedException();
+            return t;
+        }
 
-        public bool LinkRepair { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
-        public string OfflineURL => throw new System.NotImplementedException();
+        private void RunFuncTaskSynchronously<T>(Func<T, System.Threading.Tasks.Task> asyncActionT, T value)
+        {
+            ThreadHelper.JoinableTaskFactory.Run(
+                async () =>
+                {
+                    await asyncActionT(value).ConfigureAwait(false);
+                });
+        }
 
-        public string FileSharePath { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
-        public string ActiveFileSharePath => throw new System.NotImplementedException();
+        public string RootNamespace { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string AssemblyName
+        {
+            get
+            {
+                var configurationGeneralProperties = RunFuncTaskTSynchronously(_projectProperties.GetConfigurationGeneralPropertiesAsync);
+                return RunFuncTaskTSynchronously(configurationGeneralProperties.AssemblyName.GetEvaluatedValueAtEndAsync);
+            }
 
-        public prjWebAccessMethod WebAccessMethod { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+            set
+            {
+                var configurationGeneralProperties = RunFuncTaskTSynchronously(_projectProperties.GetConfigurationGeneralPropertiesAsync);
+                RunFuncTaskSynchronously(configurationGeneralProperties.AssemblyName.SetValueAsync, (object)value);
+            }
+        }
+        public string AssemblyOriginatorKeyFile { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string AssemblyKeyContainerName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public prjOriginatorKeyMode AssemblyOriginatorKeyMode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool DelaySign { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public prjWebAccessMethod ActiveWebAccessMethod => throw new System.NotImplementedException();
+        public string WebServer => throw new NotImplementedException();
 
-        public prjScriptLanguage DefaultClientScript { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public prjTargetSchema DefaultTargetSchema { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public prjHTMLPageLayout DefaultHTMLPageLayout { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public string FileName { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public string WebServerVersion => throw new NotImplementedException();
 
-        public string FullPath => throw new System.NotImplementedException();
+        public string ServerExtensionsVersion => throw new NotImplementedException();
 
-        public string LocalPath => throw new System.NotImplementedException();
+        public bool LinkRepair { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public string URL => throw new System.NotImplementedException();
+        public string OfflineURL => throw new NotImplementedException();
 
-        public ProjectConfigurationProperties ActiveConfigurationSettings => throw new System.NotImplementedException();
+        public string FileSharePath { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public string ActiveFileSharePath => throw new NotImplementedException();
+
+        public prjWebAccessMethod WebAccessMethod { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public prjWebAccessMethod ActiveWebAccessMethod => throw new NotImplementedException();
+
+        public prjScriptLanguage DefaultClientScript { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public prjTargetSchema DefaultTargetSchema { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public prjHTMLPageLayout DefaultHTMLPageLayout { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string FileName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public string FullPath
+        {
+            get
+            {
+                var configurationGeneralProperties = RunFuncTaskTSynchronously(_projectProperties.GetConfigurationGeneralPropertiesAsync);
+                return RunFuncTaskTSynchronously(configurationGeneralProperties.TargetPath.GetEvaluatedValueAtEndAsync);
+            }
+        }
+
+        public string LocalPath => throw new NotImplementedException();
+
+        public string URL => throw new NotImplementedException();
+
+        public ProjectConfigurationProperties ActiveConfigurationSettings => throw new NotImplementedException();
 
         public object get_Extender(string ExtenderName)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        public object ExtenderNames => throw new System.NotImplementedException();
+        public object ExtenderNames => throw new NotImplementedException();
 
-        public string ExtenderCATID => throw new System.NotImplementedException();
+        public string ExtenderCATID => throw new NotImplementedException();
 
-        public string ApplicationIcon { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public prjOptionStrict OptionStrict { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public string ReferencePath { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public string ApplicationIcon { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public prjOptionStrict OptionStrict { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string ReferencePath { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public string OutputFileName => throw new System.NotImplementedException();
+        public string OutputFileName => throw new NotImplementedException();
 
-        public string AbsoluteProjectDirectory => throw new System.NotImplementedException();
+        public string AbsoluteProjectDirectory => throw new NotImplementedException();
 
-        public prjOptionExplicit OptionExplicit { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public prjCompare OptionCompare { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public prjOptionExplicit OptionExplicit { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public prjCompare OptionCompare { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public prjProjectType ProjectType => throw new System.NotImplementedException();
+        public prjProjectType ProjectType => throw new NotImplementedException();
 
-        public string DefaultNamespace { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public string DefaultNamespace { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 }

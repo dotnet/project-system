@@ -21,9 +21,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             _projectProperties = projectProperties;
         }
 
-        [Export("Microsoft.VisualStudio.ProjectSystem.VSLangProj.VSProject", typeof(VSProject))]
-        [ExportVsProfferedProjectService(typeof(VSProject))]
-        [AppliesTo(ProjectCapabilities.Cps)]
+        [Export(ExportContractNames.VsTypes.VSProject, typeof(VSProject))]
+        [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
         public VSProject VSProject
         {
             get
