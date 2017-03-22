@@ -37,6 +37,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         /// </summary>
         /// <param name="unconfiguredProject">Unconfigured project.</param>
         /// <returns>Collection of values for the dimension.</returns>
+        /// <remarks>
+        /// From <see cref="IProjectConfigurationDimensionsProvider"/>.
+        /// </remarks>
         protected virtual async Task<ImmutableArray<string>> GetOrderedPropertyValuesAsync(UnconfiguredProject unconfiguredProject)
         {
             Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
@@ -57,6 +60,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         /// </summary>
         /// <param name="unconfiguredProject">Unconfigured project.</param>
         /// <returns>Collection of key/value pairs for the defaults values for the configuration dimensions of this provider for given project.</returns>
+        /// <remarks>
+        /// From <see cref="IProjectConfigurationDimensionsProvider"/>.
+        /// The interface expectes a collection of key/value pairs containing one or more dimensions along with a single values for each
+        /// dimension. In this implementation each provider is representing a single dimension.
+        /// </remarks>
         public virtual async Task<IEnumerable<KeyValuePair<string, string>>> GetDefaultValuesForDimensionsAsync(UnconfiguredProject unconfiguredProject)
         {
             Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
@@ -76,10 +84,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         }
 
         /// <summary>
-        /// Gets the project configuration dimensions for the given unconfigured project.
+        /// Gets the project configuration dimension and values represented by this provider for the given unconfigured project.
         /// </summary>
         /// <param name="unconfiguredProject">Unconfigured project.</param>
         /// <returns>Collection of key/value pairs for the current values for the configuration dimensions of this provider for given project.</returns>
+        /// <remarks>
+        /// From <see cref="IProjectConfigurationDimensionsProvider"/>.
+        /// The interface expectes a collection of key/value pairs containing one or more dimensions along with the values for each
+        /// dimension. In this implementation each provider is representing a single dimension with one or more values.
+        /// </remarks>
         public virtual async Task<IEnumerable<KeyValuePair<string, IEnumerable<string>>>> GetProjectConfigurationDimensionsAsync(UnconfiguredProject unconfiguredProject)
         {
             Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
@@ -102,6 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         /// </summary>
         /// <param name="args">Information about the configuration dimension value change.</param>
         /// <returns>A task for the async operation.</returns>
+        /// From <see cref="IProjectConfigurationDimensionsProvider2"/>.
         public abstract Task OnDimensionValueChangedAsync(ProjectConfigurationDimensionValueChangedEventArgs args);
 
         /// <summary>

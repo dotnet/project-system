@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.VS.Editor;
@@ -27,23 +28,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         }
 
         /// <summary>
-        /// Modifies the project when there's a configuration change.
+        /// Modifies the project when there's a platform change.
         /// </summary>
         /// <param name="args">Information about the configuration dimension value change.</param>
         /// <returns>A task for the async operation.</returns>
         public override async Task OnDimensionValueChangedAsync(ProjectConfigurationDimensionValueChangedEventArgs args)
         {
-            if (args.DimensionName == _dimensionName)
+            if (string.Compare(args.DimensionName, _dimensionName, StringComparison.Ordinal) == 0)
             {
                 if (args.Stage == ChangeEventStage.Before)
                 {
                     switch (args.Change)
                     {
                         case ConfigurationDimensionChange.Add:
-                            await OnPlatformAdded(args.Project, args.DimensionValue).ConfigureAwait(false);
+                            await OnPlatformAddedAsync(args.Project, args.DimensionValue).ConfigureAwait(false);
                             break;
                         case ConfigurationDimensionChange.Delete:
-                            await OnPlatformDeleted(args.Project, args.DimensionValue).ConfigureAwait(false);
+                            await OnPlatformDeletedAsync(args.Project, args.DimensionValue).ConfigureAwait(false);
                             break;
                         case ConfigurationDimensionChange.Rename:
                             // Platform doesn't currently supports rename, this should never be called.
@@ -58,8 +59,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         /// </summary>
         /// <param name="unconfiguredProject">Unconfigured project for which the configuration change.</param>
         /// <param name="platformName">Name of the new platform.</param>
-        /// <returns>If the method succeeds, it returns S_OK. If it fails, it returns an error code.</returns>
-        private async Task OnPlatformAdded(UnconfiguredProject unconfiguredProject, string platformName)
+        /// <returns>A task for the async operation.</returns>
+        private async Task OnPlatformAddedAsync(UnconfiguredProject unconfiguredProject, string platformName)
         {
             string evaluatedPropertyValue = await GetPropertyValue(unconfiguredProject).ConfigureAwait(false);
             await _projectXmlAccessor.ExecuteInWriteLock(msbuildProject =>
@@ -73,8 +74,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         /// </summary>
         /// <param name="unconfiguredProject">Unconfigured project for which the configuration change.</param>
         /// <param name="platformName">Name of the deleted platform.</param>
-        /// <returns>If the method succeeds, it returns S_OK. If it fails, it returns an error code.</returns>
-        private async Task OnPlatformDeleted(UnconfiguredProject unconfiguredProject, string platformName)
+        /// <returns>A task for the async operation.</returns>
+        private async Task OnPlatformDeletedAsync(UnconfiguredProject unconfiguredProject, string platformName)
         {
             string evaluatedPropertyValue = await GetPropertyValue(unconfiguredProject).ConfigureAwait(false);
             await _projectXmlAccessor.ExecuteInWriteLock(msbuildProject =>

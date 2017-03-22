@@ -7,7 +7,7 @@ using Xunit;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
 {
     [ProjectSystemTrait]
-    public class PlatformProjectConfigurationDimensionProviderTest
+    public class PlatformProjectConfigurationDimensionProviderTests
     {
         const string Platforms = nameof(Platforms);
 
@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         [Fact]
         public async void PlatformProjectConfigurationDimensionProvider_GetDefaultValuesForDimensionsAsync()
         {
-            using (var projectFile = new MsBuildTempProjectFile(projectXml))
+            using (var projectFile = new MsBuildProjectFile(projectXml))
             {
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
                 var provider = new PlatformProjectConfigurationDimensionProvider(_projectXmlAccessor);
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         [Fact]
         public async void PlatformProjectConfigurationDimensionProvider_GetProjectConfigurationDimensionsAsync()
         {
-            using (var projectFile = new MsBuildTempProjectFile(projectXml))
+            using (var projectFile = new MsBuildProjectFile(projectXml))
             {
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
                 var provider = new PlatformProjectConfigurationDimensionProvider(_projectXmlAccessor);
@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         [Fact]
         public async void PlatformProjectConfigurationDimensionProvider_OnDimensionValueChanged_Add()
         {
-            using (var projectFile = new MsBuildTempProjectFile(projectXml))
+            using (var projectFile = new MsBuildProjectFile(projectXml))
             {
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
                 var provider = new PlatformProjectConfigurationDimensionProvider(_projectXmlAccessor);
@@ -92,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         [Fact]
         public async void PlatformProjectConfigurationDimensionProvider_OnDimensionValueChanged_Remove()
         {
-            using (var projectFile = new MsBuildTempProjectFile(projectXml))
+            using (var projectFile = new MsBuildProjectFile(projectXml))
             {
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
                 var provider = new PlatformProjectConfigurationDimensionProvider(_projectXmlAccessor);
@@ -127,7 +127,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         [Fact]
         public async void PlatformProjectConfigurationDimensionProvider_OnDimensionValueChanged_Rename()
         {
-            using (var projectFile = new MsBuildTempProjectFile(projectXml))
+            using (var projectFile = new MsBuildProjectFile(projectXml))
             {
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
                 var provider = new PlatformProjectConfigurationDimensionProvider(_projectXmlAccessor);

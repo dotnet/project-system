@@ -6,13 +6,13 @@ using Microsoft.Build.Construction;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    public class MsBuildTempProjectFile : IDisposable
+    public class MsBuildProjectFile : IDisposable
     {
         public string Filename { get; }
 
         public ProjectRootElement Project { get; }
 
-        public MsBuildTempProjectFile(string xml = "<Project/>")
+        public MsBuildProjectFile(string xml = "<Project/>")
         {
             Filename = Path.GetTempFileName();
             using (var file = File.CreateText(Filename))

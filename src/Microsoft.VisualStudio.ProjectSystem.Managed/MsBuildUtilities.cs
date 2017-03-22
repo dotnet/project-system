@@ -57,23 +57,23 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <param name="project">Xml representation of the MsBuild project.</param>
         /// <param name="evaluatedPropertyValue">Original evaluated value of the property.</param>
         /// <param name="propertyName">Property name.</param>
-        /// <param name="propertyValue">Value to add to the property.</param>
+        /// <param name="valueToAppend">Value to add to the property.</param>
         /// <param name="delimiter">Character used to delimit the property values.</param>
-        public static void AppendPropertyValue(ProjectRootElement project, string evaluatedPropertyValue, string propertyName, string propertyValue, char delimiter = ';')
+        public static void AppendPropertyValue(ProjectRootElement project, string evaluatedPropertyValue, string propertyName, string valueToAppend, char delimiter = ';')
         {
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(evaluatedPropertyValue, nameof(evaluatedPropertyValue));
             Requires.NotNullOrEmpty(propertyName, nameof(propertyName));
 
-            var property = GetOrAddProperty(project, propertyName);
+            ProjectPropertyElement property = GetOrAddProperty(project, propertyName);
             StringBuilder newValue = new StringBuilder();
-            foreach (string value in GetPropertyValues(evaluatedPropertyValue, delimiter))
+            foreach (var value in GetPropertyValues(evaluatedPropertyValue, delimiter))
             {
                 newValue.Append(value);
                 newValue.Append(delimiter);
             }
 
-            newValue.Append(propertyValue);
+            newValue.Append(valueToAppend);
             property.Value = newValue.ToString();
         }
 
@@ -83,13 +83,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <param name="project">Xml representation of the MsBuild project.</param>
         /// <param name="evaluatedPropertyValue">Original evaluated value of the property.</param>
         /// <param name="propertyName">Property name.</param>
-        /// <param name="propertyValue">Value to remove from the property.</param>
+        /// <param name="valueToRemove">Value to remove from the property.</param>
         /// <param name="delimiter">Character used to delimit the property values.</param>
         /// <remarks>
         /// If the property is not present it will be added. This means that the evaluated property
         /// value came from one of the project imports.
         /// </remarks>
-        public static void RemovePropertyValue(ProjectRootElement project, string evaluatedPropertyValue, string propertyName, string propertyValue, char delimiter = ';')
+        public static void RemovePropertyValue(ProjectRootElement project, string evaluatedPropertyValue, string propertyName, string valueToRemove, char delimiter = ';')
         {
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(evaluatedPropertyValue, nameof(evaluatedPropertyValue));
@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             StringBuilder newValue = new StringBuilder();
             foreach (string value in GetPropertyValues(evaluatedPropertyValue, delimiter))
             {
-                if (value != propertyValue)
+                if (string.Compare(value, valueToRemove, StringComparison.Ordinal) != 0)
                 {
                     newValue.Append(value);
                     newValue.Append(delimiter);
@@ -132,7 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             StringBuilder value = new StringBuilder();
             foreach (string propertyValue in GetPropertyValues(evaluatedPropertyValue, delimiter))
             {
-                value.Append(propertyValue == oldValue ? newValue : propertyValue);
+                value.Append(string.Compare(propertyValue, oldValue, StringComparison.Ordinal) == 0 ? newValue : propertyValue);
                 value.Append(delimiter);
             }
 

@@ -7,7 +7,7 @@ using Xunit;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
 {
     [ProjectSystemTrait]
-    public class ConfigurationProjectConfigurationDimensionProviderTest
+    public class ConfigurationProjectConfigurationDimensionProviderTests
     {
         const string Configurations = nameof(Configurations);
 
@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         [Fact]
         public async void ConfigurationProjectConfigurationDimensionProvider_GetDefaultValuesForDimensionsAsync()
         {
-            using (var projectFile = new MsBuildTempProjectFile(projectXml))
+            using (var projectFile = new MsBuildProjectFile(projectXml))
             {
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
                 var provider = new ConfigurationProjectConfigurationDimensionProvider(_projectXmlAccessor);
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         [Fact]
         public async void ConfigurationProjectConfigurationDimensionProvider_GetDefaultValuesForDimensionsAsync_NoPropertyValue()
         {
-            using (var projectFile = new MsBuildTempProjectFile())
+            using (var projectFile = new MsBuildProjectFile())
             {
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
                 var provider = new ConfigurationProjectConfigurationDimensionProvider(_projectXmlAccessor);
@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         [Fact]
         public async void ConfigurationProjectConfigurationDimensionProvider_GetProjectConfigurationDimensionsAsync()
         {
-            using (var projectFile = new MsBuildTempProjectFile(projectXml))
+            using (var projectFile = new MsBuildProjectFile(projectXml))
             {
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
                 var provider = new ConfigurationProjectConfigurationDimensionProvider(_projectXmlAccessor);
@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
 
         public async void ConfigurationProjectConfigurationDimensionProvider_GetProjectConfigurationDimensionsAsync_NoPropertyValue()
         {
-            using (var projectFile = new MsBuildTempProjectFile())
+            using (var projectFile = new MsBuildProjectFile())
             {
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
                 var provider = new ConfigurationProjectConfigurationDimensionProvider(_projectXmlAccessor);
@@ -82,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         [Fact]
         public async void ConfigurationProjectConfigurationDimensionProvider_OnDimensionValueChanged_Add()
         {
-            using (var projectFile = new MsBuildTempProjectFile(projectXml))
+            using (var projectFile = new MsBuildProjectFile(projectXml))
             {
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
                 var provider = new ConfigurationProjectConfigurationDimensionProvider(_projectXmlAccessor);
@@ -117,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         [Fact]
         public async void ConfigurationProjectConfigurationDimensionProvider_OnDimensionValueChanged_Remove()
         {
-            using (var projectFile = new MsBuildTempProjectFile(projectXml))
+            using (var projectFile = new MsBuildProjectFile(projectXml))
             {
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
                 var provider = new ConfigurationProjectConfigurationDimensionProvider(_projectXmlAccessor);
@@ -152,7 +152,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         [Fact]
         public async void ConfigurationProjectConfigurationDimensionProvider_OnDimensionValueChanged_Rename()
         {
-            using (var projectFile = new MsBuildTempProjectFile(projectXml))
+            using (var projectFile = new MsBuildProjectFile(projectXml))
             {
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
                 var provider = new ConfigurationProjectConfigurationDimensionProvider(_projectXmlAccessor);

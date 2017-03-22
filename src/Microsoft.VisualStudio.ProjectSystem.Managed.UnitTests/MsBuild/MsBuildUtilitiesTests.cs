@@ -6,7 +6,7 @@ using Xunit;
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     [ProjectSystemTrait]
-    public class MsBuildUtilitiesTest
+    public class MsBuildUtilitiesTests
     {
         [Fact]
         public void MsBuildUtilities_GetProperty_MissingProperty()
@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
   </PropertyGroup>
 </Project>";
 
-            using (var project = new MsBuildTempProjectFile(projectXml))
+            using (var project = new MsBuildProjectFile(projectXml))
             {
                 var property = MsBuildUtilities.GetProperty(project.Project, "NonExistantProperty");
                 Assert.Null(property);
@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
   </PropertyGroup>
 </Project>";
 
-            using (var project = new MsBuildTempProjectFile(projectXml))
+            using (var project = new MsBuildProjectFile(projectXml))
             {
                 var property = MsBuildUtilities.GetProperty(project.Project, "MyProperty");
                 Assert.NotNull(property);
@@ -80,13 +80,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [Fact]
         public void MsBuildUtilities_GetOrAddProperty_NoGroups()
         {
-            using (var project = new MsBuildTempProjectFile())
+            using (var project = new MsBuildProjectFile())
             {
                 MsBuildUtilities.GetOrAddProperty(project.Project, "MyProperty");
                 Assert.Equal(1, project.Project.Properties.Count);
                 Assert.Equal(1, project.Project.PropertyGroups.Count);
+
                 var group = project.Project.PropertyGroups.First();
                 Assert.Equal(1, group.Properties.Count);
+
                 var property = group.Properties.First();
                 Assert.Equal(string.Empty, property.Value);
             }
@@ -101,13 +103,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
   <PropertyGroup/>
 </Project>";
 
-            using (var project = new MsBuildTempProjectFile(projectXml))
+            using (var project = new MsBuildProjectFile(projectXml))
             {
                 MsBuildUtilities.GetOrAddProperty(project.Project, "MyProperty");
                 Assert.Equal(1, project.Project.Properties.Count);
                 Assert.Equal(2, project.Project.PropertyGroups.Count);
+
                 var group = project.Project.PropertyGroups.First();
                 Assert.Equal(1, group.Properties.Count);
+
                 var property = group.Properties.First();
                 Assert.Equal(string.Empty, property.Value);
             }
@@ -123,13 +127,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
   </PropertyGroup>
 </Project>";
 
-            using (var project = new MsBuildTempProjectFile(projectXml))
+            using (var project = new MsBuildProjectFile(projectXml))
             {
                 MsBuildUtilities.GetOrAddProperty(project.Project, "MyProperty");
                 Assert.Equal(1, project.Project.Properties.Count);
                 Assert.Equal(1, project.Project.PropertyGroups.Count);
+
                 var group = project.Project.PropertyGroups.First();
                 Assert.Equal(1, group.Properties.Count);
+
                 var property = group.Properties.First();
                 Assert.Equal("1", property.Value);
             }
@@ -145,7 +151,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
   </PropertyGroup>
 </Project>";
 
-            using (var project = new MsBuildTempProjectFile(projectXml))
+            using (var project = new MsBuildProjectFile(projectXml))
             {
                 MsBuildUtilities.AppendPropertyValue(project.Project, "1;2", "MyProperty", "3");
                 var property = MsBuildUtilities.GetProperty(project.Project, "MyProperty");
@@ -164,7 +170,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
   </PropertyGroup>
 </Project>";
 
-            using (var project = new MsBuildTempProjectFile(projectXml))
+            using (var project = new MsBuildProjectFile(projectXml))
             {
                 MsBuildUtilities.AppendPropertyValue(project.Project, "", "MyProperty", "1");
                 var property = MsBuildUtilities.GetProperty(project.Project, "MyProperty");
@@ -176,7 +182,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [Fact]
         public void MsBuildUtilities_AppendPropertyValue_InheritedValue()
         {
-            using (var project = new MsBuildTempProjectFile())
+            using (var project = new MsBuildProjectFile())
             {
                 MsBuildUtilities.AppendPropertyValue(project.Project, "1;2", "MyProperty", "3");
                 var property = MsBuildUtilities.GetProperty(project.Project, "MyProperty");
@@ -188,7 +194,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [Fact]
         public void MsBuildUtilities_AppendPropertyValue_MissingProperty()
         {
-            using (var project = new MsBuildTempProjectFile())
+            using (var project = new MsBuildProjectFile())
             {
                 MsBuildUtilities.AppendPropertyValue(project.Project, "", "MyProperty", "1");
                 var property = MsBuildUtilities.GetProperty(project.Project, "MyProperty");
@@ -207,7 +213,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
   </PropertyGroup>
 </Project>";
 
-            using (var project = new MsBuildTempProjectFile(projectXml))
+            using (var project = new MsBuildProjectFile(projectXml))
             {
                 MsBuildUtilities.AppendPropertyValue(project.Project, "1", "MyProperty", "2", '|');
                 var property = MsBuildUtilities.GetProperty(project.Project, "MyProperty");
@@ -226,7 +232,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
   </PropertyGroup>
 </Project>";
 
-            using (var project = new MsBuildTempProjectFile(projectXml))
+            using (var project = new MsBuildProjectFile(projectXml))
             {
                 MsBuildUtilities.RemovePropertyValue(project.Project, "1;2", "MyProperty", "2");
                 var property = MsBuildUtilities.GetProperty(project.Project, "MyProperty");
@@ -245,7 +251,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
   </PropertyGroup>
 </Project>";
 
-            using (var project = new MsBuildTempProjectFile(projectXml))
+            using (var project = new MsBuildProjectFile(projectXml))
             {
                 MsBuildUtilities.RemovePropertyValue(project.Project, "1|2|3", "MyProperty", "2", '|');
                 var property = MsBuildUtilities.GetProperty(project.Project, "MyProperty");
@@ -264,7 +270,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
   </PropertyGroup>
 </Project>";
 
-            using (var project = new MsBuildTempProjectFile(projectXml))
+            using (var project = new MsBuildProjectFile(projectXml))
             {
                 MsBuildUtilities.RemovePropertyValue(project.Project, "1", "MyProperty", "1");
                 var property = MsBuildUtilities.GetProperty(project.Project, "MyProperty");
@@ -276,7 +282,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [Fact]
         public void MsBuildUtilities_RemovePropertyValue_InheritedValue()
         {
-            using (var project = new MsBuildTempProjectFile())
+            using (var project = new MsBuildProjectFile())
             {
                 MsBuildUtilities.RemovePropertyValue(project.Project, "1;2", "MyProperty", "1");
                 var property = MsBuildUtilities.GetProperty(project.Project, "MyProperty");
@@ -288,7 +294,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [Fact]
         public void MsBuildUtilities_RemovePropertyValue_MissingProperty()
         {
-            using (var project = new MsBuildTempProjectFile())
+            using (var project = new MsBuildProjectFile())
             {
                 MsBuildUtilities.RemovePropertyValue(project.Project, "", "MyProperty", "1");
                 var property = MsBuildUtilities.GetProperty(project.Project, "MyProperty");
@@ -307,7 +313,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
   </PropertyGroup>
 </Project>";
 
-            using (var project = new MsBuildTempProjectFile(projectXml))
+            using (var project = new MsBuildProjectFile(projectXml))
             {
                 MsBuildUtilities.RenamePropertyValue(project.Project, "1;2", "MyProperty", "2", "5");
                 var property = MsBuildUtilities.GetProperty(project.Project, "MyProperty");
@@ -326,7 +332,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
   </PropertyGroup>
 </Project>";
 
-            using (var project = new MsBuildTempProjectFile(projectXml))
+            using (var project = new MsBuildProjectFile(projectXml))
             {
                 MsBuildUtilities.RenamePropertyValue(project.Project, "1|2|3", "MyProperty", "2", "5", '|');
                 var property = MsBuildUtilities.GetProperty(project.Project, "MyProperty");
@@ -338,7 +344,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [Fact]
         public void MsBuildUtilities_RenamePropertyValue_InheritedValue()
         {
-            using (var project = new MsBuildTempProjectFile())
+            using (var project = new MsBuildProjectFile())
             {
                 MsBuildUtilities.RenamePropertyValue(project.Project, "1;2", "MyProperty", "1", "3");
                 var property = MsBuildUtilities.GetProperty(project.Project, "MyProperty");
@@ -350,7 +356,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [Fact]
         public void MsBuildUtilities_RenamePropertyValue_MissingProperty()
         {
-            using (var project = new MsBuildTempProjectFile())
+            using (var project = new MsBuildProjectFile())
             {
                 MsBuildUtilities.RenamePropertyValue(project.Project, "", "MyProperty", "1", "2");
                 var property = MsBuildUtilities.GetProperty(project.Project, "MyProperty");
