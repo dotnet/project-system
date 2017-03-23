@@ -15,7 +15,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     {
         private const long CommandId = VisualStudioStandard2kCommandId.EditProjectFile;
         private const string Extension = "proj";
-        private static readonly Guid XmlEditorFactoryGuid = new Guid("{fa3cd31e-987b-443a-9b81-186104e8dac1}");
 
         [Fact]
         public void EditProjectFileCommand_NullProject_Throws()

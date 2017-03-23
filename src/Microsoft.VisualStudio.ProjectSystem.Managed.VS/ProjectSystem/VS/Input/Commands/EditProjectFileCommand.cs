@@ -15,7 +15,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     [AppliesTo(ProjectCapability.OpenProjectFile)]
     internal class EditProjectFileCommand : AbstractProjectCommand
     {
-        private static readonly Guid XmlEditorFactoryGuid = new Guid("{fa3cd31e-987b-443a-9b81-186104e8dac1}");
         private readonly UnconfiguredProject _unconfiguredProject;
         private readonly Lazy<IProjectFileEditorPresenter> _editorState;
 
