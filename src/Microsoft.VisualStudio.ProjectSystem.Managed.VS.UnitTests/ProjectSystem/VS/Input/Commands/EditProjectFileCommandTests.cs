@@ -14,7 +14,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     public class EditProjectFileCommandTests
     {
         private const long CommandId = VisualStudioStandard2kCommandId.EditProjectFile;
-        private const string Extension = "proj";
 
         [Fact]
         public void EditProjectFileCommand_NullAsUnconfiguredProject_Throws()
@@ -44,7 +43,7 @@ Root (flags: {ProjectRoot})
             var result = await command.GetCommandStatusAsync(nodes, CommandId, true, "", 0);
             Assert.True(result.Handled);
             Assert.Equal(CommandStatus.Enabled | CommandStatus.Supported, result.Status);
-            Assert.Equal(string.Format(VSResources.EditProjectFileCommand, $"Root.{Extension}"), result.CommandText);
+            Assert.Equal(string.Format(VSResources.EditProjectFileCommand, $"Root.proj"), result.CommandText);
         }
 
         [Fact]
@@ -64,7 +63,7 @@ Root (flags: {ProjectRoot})
             var result = await command.GetCommandStatusAsync(nodes, CommandId, true, "", 0);
             Assert.True(result.Handled);
             Assert.Equal(CommandStatus.Enabled | CommandStatus.Supported, result.Status);
-            Assert.Equal(string.Format(VSResources.EditProjectFileCommand, $"Root.{Extension}"), result.CommandText);
+            Assert.Equal(string.Format(VSResources.EditProjectFileCommand, $"Root.proj"), result.CommandText);
         }
 
         [Fact]
@@ -84,7 +83,7 @@ Root (flags: {ProjectRoot})
             var result = await command.GetCommandStatusAsync(nodes, CommandId, true, "", 0);
             Assert.True(result.Handled);
             Assert.Equal(CommandStatus.Enabled | CommandStatus.Supported, result.Status);
-            Assert.Equal(string.Format(VSResources.EditProjectFileCommand, $"Root.{Extension}"), result.CommandText);
+            Assert.Equal(string.Format(VSResources.EditProjectFileCommand, $"Root.proj"), result.CommandText);
         }
 
         [Fact]
