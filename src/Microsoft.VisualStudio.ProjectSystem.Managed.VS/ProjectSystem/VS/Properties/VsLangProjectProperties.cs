@@ -5,17 +5,19 @@ using System.Threading.Tasks;
 using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 using VSLangProj;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
+using VSLangProj110;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
     internal class VsLangProjectProperties : VSProject, VSLangProj.ProjectProperties
     {
         private readonly VSProject _vsProject;
-        private readonly ProjectProperties _projectProperties;
+        private readonly ActiveConfiguredProject<ProjectProperties> _projectProperties;
 
         public VsLangProjectProperties(
             VSProject vsProject,
-            ProjectProperties projectProperties)
+            ActiveConfiguredProject<ProjectProperties> projectProperties)
         {
             _vsProject = vsProject;
             _projectProperties = projectProperties;
@@ -86,15 +88,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         {
             get
             {
-                var configurationGeneralProperties = RunFuncTaskTSynchronously(_projectProperties.GetConfigurationGeneralPropertiesAsync);
-                var value = RunFuncTaskTSynchronously(configurationGeneralProperties.OutputType.GetEvaluatedValueAtEndAsync);
-                return (prjOutputType)int.Parse(value);
+                var configurationGeneralBrowseObjectProperties = RunFuncTaskTSynchronously(_projectProperties.Value.GetConfigurationGeneralBrowseObjectPropertiesAsync);
+                var value = (IEnumValue)RunFuncTaskTSynchronously(configurationGeneralBrowseObjectProperties.OutputType.GetValueAsync);
+                return (prjOutputType)Convert.ToInt32(value.DisplayName);
             }
 
             set
             {
-                var configurationGeneralProperties = RunFuncTaskTSynchronously(_projectProperties.GetConfigurationGeneralPropertiesAsync);
-                RunFuncTaskSynchronously(configurationGeneralProperties.OutputType.SetValueAsync, (object)value);
+                var configurationGeneralBrowseObjectProperties = RunFuncTaskTSynchronously(_projectProperties.Value.GetConfigurationGeneralBrowseObjectPropertiesAsync);
+                RunFuncTaskSynchronously(configurationGeneralBrowseObjectProperties.OutputType.SetValueAsync, (object)value);
             }
         }
 
@@ -126,13 +128,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         {
             get
             {
-                var configurationGeneralProperties = RunFuncTaskTSynchronously(_projectProperties.GetConfigurationGeneralPropertiesAsync);
+                var configurationGeneralProperties = RunFuncTaskTSynchronously(_projectProperties.Value.GetConfigurationGeneralPropertiesAsync);
                 return RunFuncTaskTSynchronously(configurationGeneralProperties.AssemblyName.GetEvaluatedValueAtEndAsync);
             }
 
             set
             {
-                var configurationGeneralProperties = RunFuncTaskTSynchronously(_projectProperties.GetConfigurationGeneralPropertiesAsync);
+                var configurationGeneralProperties = RunFuncTaskTSynchronously(_projectProperties.Value.GetConfigurationGeneralPropertiesAsync);
                 RunFuncTaskSynchronously(configurationGeneralProperties.AssemblyName.SetValueAsync, (object)value);
             }
         }
@@ -168,7 +170,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         {
             get
             {
-                var configurationGeneralProperties = RunFuncTaskTSynchronously(_projectProperties.GetConfigurationGeneralPropertiesAsync);
+                var configurationGeneralProperties = RunFuncTaskTSynchronously(_projectProperties.Value.GetConfigurationGeneralPropertiesAsync);
                 return RunFuncTaskTSynchronously(configurationGeneralProperties.TargetPath.GetEvaluatedValueAtEndAsync);
             }
         }
@@ -186,7 +188,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
         public object ExtenderNames => throw new NotImplementedException();
 
-        public string ExtenderCATID => throw new NotImplementedException();
+        public string ExtenderCATID => null;
 
         public string ApplicationIcon { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public prjOptionStrict OptionStrict { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
@@ -194,7 +196,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
         public string OutputFileName => throw new NotImplementedException();
 
-        public string AbsoluteProjectDirectory => throw new NotImplementedException();
+        public string AbsoluteProjectDirectory
+        {
+            get
+            {
+                var configurationGeneralBrowseObjectProperties = RunFuncTaskTSynchronously(_projectProperties.Value.GetConfigurationGeneralBrowseObjectPropertiesAsync);
+                return RunFuncTaskTSynchronously(configurationGeneralBrowseObjectProperties.FullPath.GetEvaluatedValueAtEndAsync);
+            }
+        }
 
         public prjOptionExplicit OptionExplicit { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public prjCompare OptionCompare { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
@@ -202,5 +211,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         public prjProjectType ProjectType => throw new NotImplementedException();
 
         public string DefaultNamespace { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public prjOutputTypeEx OutputTypeEx
+        {
+            get
+            {
+                var configurationGeneralBrowseObjectProperties = RunFuncTaskTSynchronously(_projectProperties.Value.GetConfigurationGeneralBrowseObjectPropertiesAsync);
+                var value = (IEnumValue)RunFuncTaskTSynchronously(configurationGeneralBrowseObjectProperties.OutputTypeEx.GetValueAsync);
+                return (prjOutputTypeEx)Convert.ToInt32(value.DisplayName);
+            }
+
+            set
+            {
+                var configurationGeneralBrowseObjectProperties = RunFuncTaskTSynchronously(_projectProperties.Value.GetConfigurationGeneralBrowseObjectPropertiesAsync);
+                RunFuncTaskSynchronously(configurationGeneralBrowseObjectProperties.OutputTypeEx.SetValueAsync, (object)value);
+            }
+        }
     }
 }

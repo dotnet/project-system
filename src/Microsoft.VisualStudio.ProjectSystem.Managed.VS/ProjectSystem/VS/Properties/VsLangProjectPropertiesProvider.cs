@@ -5,17 +5,15 @@ using VSLangProj;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
-    internal class VsLangProjectPropertiesProvider : OnceInitializedOnceDisposed
+    internal class VsLangProjectPropertiesProvider
     {
         private readonly VSProject _vsProject;
-        private readonly ProjectProperties _projectProperties;
-
-        private VSProject _vsLangProjectProperties;
+        private readonly ActiveConfiguredProject<ProjectProperties> _projectProperties;
 
         [ImportingConstructor]
         public VsLangProjectPropertiesProvider(
             [Import(ExportContractNames.VsTypes.CpsVSProject)] VSProject vsProject,
-            ProjectProperties projectProperties)
+            ActiveConfiguredProject<ProjectProperties> projectProperties)
         {
             _vsProject = vsProject;
             _projectProperties = projectProperties;
@@ -23,22 +21,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
         [Export(ExportContractNames.VsTypes.VSProject, typeof(VSProject))]
         [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+        [Order(10)]
         public VSProject VSProject
         {
             get
             {
-                EnsureInitialized();
-                return _vsLangProjectProperties;
+                return new VsLangProjectProperties(_vsProject, _projectProperties);
             }
-        }
-
-        protected override void Initialize()
-        {
-            _vsLangProjectProperties = new VsLangProjectProperties(_vsProject, _projectProperties);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
         }
     }
 }
