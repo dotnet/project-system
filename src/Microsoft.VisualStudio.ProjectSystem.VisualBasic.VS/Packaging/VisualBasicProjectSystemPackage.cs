@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.Shell;
 using System.Runtime.InteropServices;
 
 // We register ourselves as a new CPS "project type", as well as setting ourselves as the prefered project type for the legacy VB project type.
-[assembly: ProjectTypeRegistration(projectTypeGuid: VisualBasicProjectSystemPackage.ProjectTypeGuid, displayName: "#1", displayProjectFileExtensions: "#2", defaultProjectExtension: "vbproj", language: "VisualBasic", resourcePackageGuid: VisualBasicProjectSystemPackage.PackageGuid, Capabilities = ManagedProjectSystemPackage.DefaultCapabilities)]
+[assembly: ProjectTypeRegistration(projectTypeGuid: VisualBasicProjectSystemPackage.ProjectTypeGuid, displayName: "#1", displayProjectFileExtensions: "#2", defaultProjectExtension: "vbproj", language: "VisualBasic", resourcePackageGuid: VisualBasicProjectSystemPackage.PackageGuid, Capabilities = ManagedProjectSystemPackage.DefaultCapabilities, DisableAsynchronousProjectTreeLoad = true)]
 
 namespace Microsoft.VisualStudio.Packaging
 {
