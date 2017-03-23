@@ -18,13 +18,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         [Fact]
         public void EditProjectFileCommand_NullAsUnconfiguredProject_Throws()
         {
-            Assert.Throws<ArgumentNullException>("unconfiguredProject", () => new EditProjectFileCommand(null, IProjectFileEditorPresenterFactory.CreateLazy()));
+            var editorPresenter = IProjectFileEditorPresenterFactory.CreateLazy();
+
+            Assert.Throws<ArgumentNullException>("unconfiguredProject", () => new EditProjectFileCommand(null, editorPresenter));
         }
 
         [Fact]
         public void EditProjectFileCommand_NullAsPresenter_Throws()
         {
-            Assert.Throws<ArgumentNullException>("editorPresenter", () => new EditProjectFileCommand(UnconfiguredProjectFactory.Create(), null));
+            var unconfiguredProject = UnconfiguredProjectFactory.Create();
+
+            Assert.Throws<ArgumentNullException>("editorPresenter", () => new EditProjectFileCommand(unconfiguredProject, null));
         }
 
         [Fact]
