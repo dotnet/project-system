@@ -17,15 +17,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         private const string Extension = "proj";
 
         [Fact]
-        public void EditProjectFileCommand_NullProject_Throws()
+        public void EditProjectFileCommand_NullAsUnconfiguredProject_Throws()
         {
             Assert.Throws<ArgumentNullException>("unconfiguredProject", () => new EditProjectFileCommand(null, IProjectFileEditorPresenterFactory.CreateLazy()));
         }
 
         [Fact]
-        public void EditProjectFileCommand_NullModel_Throws()
+        public void EditProjectFileCommand_NullAsPresenter_Throws()
         {
-            Assert.Throws<ArgumentNullException>("editorState", () => new EditProjectFileCommand(UnconfiguredProjectFactory.Create(), null));
+            Assert.Throws<ArgumentNullException>("editorPresenter", () => new EditProjectFileCommand(UnconfiguredProjectFactory.Create(), null));
         }
 
         [Fact]

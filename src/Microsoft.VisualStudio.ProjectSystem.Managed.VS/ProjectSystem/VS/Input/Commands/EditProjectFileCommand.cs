@@ -16,16 +16,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     internal class EditProjectFileCommand : AbstractProjectCommand
     {
         private readonly UnconfiguredProject _unconfiguredProject;
-        private readonly Lazy<IProjectFileEditorPresenter> _editorState;
+        private readonly Lazy<IProjectFileEditorPresenter> _editorPresenter;
 
         [ImportingConstructor]
-        public EditProjectFileCommand(UnconfiguredProject unconfiguredProject, Lazy<IProjectFileEditorPresenter> editorState)
+        public EditProjectFileCommand(UnconfiguredProject unconfiguredProject, Lazy<IProjectFileEditorPresenter> editorPresenter)
         {
             Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
-            Requires.NotNull(editorState, nameof(editorState));
+            Requires.NotNull(editorPresenter, nameof(editorPresenter));
 
             _unconfiguredProject = unconfiguredProject;
-            _editorState = editorState;
+            _editorPresenter = editorPresenter;
         }
 
         protected override Task<CommandStatusResult> GetCommandStatusAsync(IImmutableSet<IProjectTree> nodes, bool focused, string commandText, CommandStatus progressiveStatus)
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
         protected override async Task<bool> TryHandleCommandAsync(IImmutableSet<IProjectTree> nodes, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
         {
-            await _editorState.Value.OpenEditorAsync().ConfigureAwait(false);
+            await _editorPresenter.Value.OpenEditorAsync().ConfigureAwait(false);
             return true;
         }
 
