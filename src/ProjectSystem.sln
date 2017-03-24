@@ -54,8 +54,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Targets", "Targets", "{573B
 		Targets\Microsoft.VisualBasic.DesignTime.targets = Targets\Microsoft.VisualBasic.DesignTime.targets
 	EndProjectSection
 EndProject
-Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "SettingsDesignerUnitTests", "Microsoft.VisualStudio.Editors.SettingsDesigner.UnitTests\SettingsDesignerUnitTests.vbproj", "{A03E115A-9193-455D-A70A-CFEB943D0319}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.VisualStudio.Editors.UnitTests", "Microsoft.VisualStudio.Editor.UnitTests\Microsoft.VisualStudio.Editors.UnitTests.csproj", "{991DBD0C-6DB5-48B8-B41E-E1092445240D}"
 EndProject
 Global
@@ -141,10 +139,6 @@ Global
 		{369DCA0F-A079-4D0C-8B32-53879199B681}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{369DCA0F-A079-4D0C-8B32-53879199B681}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{369DCA0F-A079-4D0C-8B32-53879199B681}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A03E115A-9193-455D-A70A-CFEB943D0319}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A03E115A-9193-455D-A70A-CFEB943D0319}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A03E115A-9193-455D-A70A-CFEB943D0319}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A03E115A-9193-455D-A70A-CFEB943D0319}.Release|Any CPU.Build.0 = Release|Any CPU
 		{991DBD0C-6DB5-48B8-B41E-E1092445240D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{991DBD0C-6DB5-48B8-B41E-E1092445240D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{991DBD0C-6DB5-48B8-B41E-E1092445240D}.Release|Any CPU.ActiveCfg = Release|Any CPU
