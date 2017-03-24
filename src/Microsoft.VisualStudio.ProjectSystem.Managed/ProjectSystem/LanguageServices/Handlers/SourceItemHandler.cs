@@ -145,8 +145,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             if (parentFolder == null)
                 parentFolder = GetParentFolder(filePath);
 
-            // We now have a folder in the form of `Folder1\Folder2` relative to the project directory 
-            // split it up and break it up into individual path components
+            // We now have a folder in the form of `Folder1\Folder2` relative to the
+            // project directory  split it up into individual path components
             if (parentFolder.Length > 0)
             {
                 return parentFolder.Split(FileItemServices.PathSeparatorCharacters);
