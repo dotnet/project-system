@@ -1,14 +1,14 @@
-### Assembly Architecture
+# Architecture
 
 ![image](https://cloud.githubusercontent.com/assets/1103906/14921086/248166fa-0de5-11e6-86fa-e96240b7fd07.png)
 
-#### Laying Rules:
+## Laying Rules:
 
 1. Assemblies cannot depend on the layer above it
 2. Assemblies below the Visual Studio layer cannot depend on the Visual Studio SDK (no dependency on IVsXXX) nor any CPS-VS assembly. This layer and below should be hostable and usable outside of Visual Studio.
 3. C# assemblies cannot depend on any VB assemblies and vice versa.
 
-##### Host-Agnostic Layer
+### Host-Agnostic Layer
 
 |Assembly|Description|
 |:-------|:----------|
@@ -16,7 +16,7 @@
 |__Microsoft.VisualStudio.ProjectSystem.VisualBasic__| Contains components to enable the opening and editing of VB projects agnostic of host.|
 |__Microsoft.VisualStudio.ProjectSystem.Managed__| Contains components that are shared between C# and VB projects agnostic of host.|
 
-##### Visual Studio Layer
+### Visual Studio Layer
 
 |Assembly|Description|
 |:-------|:----------|
@@ -24,7 +24,7 @@
 |__Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS__| Contains components to enable the opening and editing of VB projects within Visual Studio.|
 |__Microsoft.VisualStudio.ProjectSystem.Managed.VS__| Contains components that are shared between C# and VB projects. Make note that eventually the expectation is that F# if it moves to CPS will eventually share much of its code with C#/VB.|
 
-##### Visual Studio Designer Layer
+### Visual Studio Designer Layer
 
 |Assembly|Description|
 |:-------|:----------|
