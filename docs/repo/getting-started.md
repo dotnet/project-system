@@ -2,11 +2,6 @@
 
 ## Code
 
-### Visual Studio
-From within [Visual Studio 2017](https://www.visualstudio.com/downloads/), simply open _src\ProjectSystem.sln_.
-
-Inside Visual Studio, you can build, deploy and run tests.
-
 ### Command-line
 
 From within a [Visual Studio Developer Prompt](https://msdn.microsoft.com/en-us/library/ms229859(v=vs.150).aspx), from the repo root, run:
@@ -17,9 +12,25 @@ build.cmd
 
 This builds, deploys and run tests.
 
+### Visual Studio
+From within [Visual Studio 2017](https://www.visualstudio.com/downloads/), simply open _src\ProjectSystem.sln_.
+
+Inside Visual Studio, you can build, deploy and run tests.
+
+__NOTE:__ To workaround a bug preventing Visual Studio from restoring this repro, run `build.cmd` once from a Visual Studio Developer Prompt, as called out above.
+
+
 ## Debugging/Deploying
 
 By default when you build inside Visual Studio or the command-line, the project system and other binaries gets deployed to the _RoslynDev_ experimental instance of Visual Studio. They are setup so that they _override_ any binaries that come with Visual Studio.
+
+### Command-line
+
+From the command-line, after you've run `build.cmd`, you can launch a Visual Studio instance with your recently built bits by running the following from a Visual Studio Command Prompt:
+
+```
+devenv /rootsuffix RoslynDev
+```
 
 ### Visual Studio
 
@@ -30,14 +41,6 @@ To start debugging:
 3. Press _F5_
 
 If this is your first launch of the project system, or _RoslynDev_ experimental instance, press _CTRL+F5_ to pre-prime and avoid a _long_ start up time.
-
-### Command-line
-
-From the command-line, after you've run `build.cmd`, you can launch a Visual Studio instance with your recently built bits by running the following from a Visual Studio Command Prompt:
-
-```
-devenv /rootsuffix RoslynDev
-```
 
 For tips, see [Debugging Tips](debugging-tips.md)
 
