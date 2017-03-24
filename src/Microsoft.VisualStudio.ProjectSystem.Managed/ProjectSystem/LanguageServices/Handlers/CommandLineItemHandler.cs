@@ -44,9 +44,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         // Broken design time builds generates updates with no changes.
         public override bool ReceiveUpdatesWithEmptyProjectChange => true;
 
-        public override void Handle(IProjectVersionedValue<IProjectSubscriptionUpdate> e, IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
+        public override void Handle(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
         {
-            Requires.NotNull(e, nameof(e));
             Requires.NotNull(projectChange, nameof(projectChange));
 
             if (!ProcessDesignTimeBuildFailure(projectChange, context))

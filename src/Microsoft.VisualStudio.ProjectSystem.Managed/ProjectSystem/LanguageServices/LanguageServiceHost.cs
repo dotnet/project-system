@@ -312,7 +312,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     IProjectChangeDescription projectChange = update.Value.ProjectChanges[handler.RuleName];
                     if (handler.ReceiveUpdatesWithEmptyProjectChange || projectChange.Difference.AnyChanges)
                     {
-                        handler.Handle(update, projectChange, projectContextToUpdate, isActiveContext);
+                        handler.Handle(projectChange, projectContextToUpdate, isActiveContext);
                     }
                 }
             });

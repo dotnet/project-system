@@ -64,9 +64,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             }
         }
 
-        public override void Handle(IProjectVersionedValue<IProjectSubscriptionUpdate> e, IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
+        public override void Handle(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
         {
-            Requires.NotNull(e, nameof(e));
             Requires.NotNull(projectChange, nameof(projectChange));
 
             IProjectChangeDiff diff = projectChange.Difference;
