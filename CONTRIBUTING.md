@@ -11,6 +11,6 @@ For additional information, see the following:
 - [Debugging Tips](docs/repo/debugging-tips.md)
 - [Features](docs/repo/features.md)
 - [Architecture](docs/repo/architecture.md)
-- [Common Project System (CPS) Documention](https://github.com/microsoft/vsprojectsystem)
 - [Rules of the Project System](docs/repo/rules-of-the-project-system.md)
+- [Common Project System (CPS) Documention](https://github.com/microsoft/vsprojectsystem)
 - [Code of Conduct](https://github.com/dotnet/home/blob/master/guidance/be-nice.md)
