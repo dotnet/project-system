@@ -1,6 +1,6 @@
-### Coding Conventions
+# Coding Conventions
 
-#### Code
+## Code
 
 We use the same coding style conventions as outlined in [.NET Framework Coding Styles](https://github.com/dotnet/corefx/blob/master/Documentation/coding-guidelines/coding-style.md), with the following additions:
 
@@ -8,7 +8,7 @@ We use the same coding style conventions as outlined in [.NET Framework Coding S
 - We do not use regions.
 - We sort members in classes in the following order; fields, constructors, events, properties and then methods.
 
-#### MEF
+## MEF
 
 - For MEF parts/components, we favor constructor injection over property/field injection.
 - We flavor `IVsService<T>` and `IVsService<TService, TInterface>` over usage of `SVsServiceProvider`.
