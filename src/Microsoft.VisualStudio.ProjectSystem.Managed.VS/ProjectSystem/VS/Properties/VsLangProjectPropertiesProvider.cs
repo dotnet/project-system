@@ -5,6 +5,12 @@ using VSLangProj;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
+    /// <summary>
+    /// This provider imports <see cref="VSLangProj.VSProject"/> provided by CPS
+    /// and wraps it into an object that implements both <see cref="VSLangProj.VSProject"/> and 
+    /// <see cref="VSLangProj.ProjectProperties"/>. This enables us to provide
+    /// ProjectProperties to the Project Property Pages and maintain Backward Compatibility.
+    /// </summary>
     internal class VsLangProjectPropertiesProvider
     {
         private readonly VSProject _vsProject;
