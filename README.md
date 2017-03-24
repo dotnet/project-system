@@ -1,4 +1,4 @@
-## Welcome to the new C# and Visual Basic project system
+# Welcome to the new C# and Visual Basic project system
 
 |Branch|Debug|Release|
 |---|:--:|:--:|
