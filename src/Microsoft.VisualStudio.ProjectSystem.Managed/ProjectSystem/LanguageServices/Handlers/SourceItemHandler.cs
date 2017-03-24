@@ -75,25 +75,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 RemoveSourceFile(filePath, context);
             }
 
-            if (diff.AddedItems.Count > 0 || diff.RenamedItems.Count > 0 || diff.ChangedItems.Count > 0)
+            foreach (string filePath in diff.AddedItems)
             {
-                foreach (string filePath in diff.AddedItems)
-                {
-                    AddSourceFile(filePath, GetFolders(filePath, projectChange), context, isActiveContext);
-                }
+                AddSourceFile(filePath, GetFolders(filePath, projectChange), context, isActiveContext);
+            }
 
-                foreach (KeyValuePair<string, string> filePaths in diff.RenamedItems)
-                {
-                    RemoveSourceFile(filePaths.Key, context);
-                    AddSourceFile(filePaths.Value, GetFolders(filePaths.Value, projectChange), context, isActiveContext);
-                }
+            foreach (KeyValuePair<string, string> filePaths in diff.RenamedItems)
+            {
+                RemoveSourceFile(filePaths.Key, context);
+                AddSourceFile(filePaths.Value, GetFolders(filePaths.Value, projectChange), context, isActiveContext);
+            }
 
-                foreach (string filePath in diff.ChangedItems)
-                {
-                    // We add and then remove ChangedItems to handle Linked metadata changes
-                    RemoveSourceFile(filePath, context);
-                    AddSourceFile(filePath, GetFolders(filePath, projectChange), context, isActiveContext);
-                }
+            foreach (string filePath in diff.ChangedItems)
+            {
+                // We add and then remove ChangedItems to handle Linked metadata changes
+                RemoveSourceFile(filePath, context);
+                AddSourceFile(filePath, GetFolders(filePath, projectChange), context, isActiveContext);
             }
         }
 
