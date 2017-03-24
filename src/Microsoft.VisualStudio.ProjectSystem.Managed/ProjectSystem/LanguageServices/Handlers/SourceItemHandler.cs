@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
@@ -135,7 +136,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             // on disk is. It uses these folders for things that create files alongside others, such as extract
             // interface.
 
+            // First we check for a linked item, and we use its effective folder in 
+            // the tree, otherwise, we just use the parent folder of the file itself
+            string parentFolder = GetLinkedParentFolder(filePath, projectChange);
+            if (parentFolder == null)
+                parentFolder = GetParentFolder(filePath);
+
+            // We now have a folder in the form of `Folder1\Folder2` relative to the project directory 
+            // split it up and break it up into individual path components
+            if (parentFolder.Length > 0)
+            {
+                return parentFolder.Split(FileItemServices.PathSeparatorCharacters);
+            }
+
             return null;
+        }
+
+        private string GetLinkedParentFolder(string filePath, IProjectChangeDescription projectChange)
+        {
+            var metadata = projectChange.After.Items[filePath];
+
+            string linkFilePath = FileItemServices.GetLinkFilePath(metadata);
+            if (linkFilePath != null)
+                return Path.GetDirectoryName(linkFilePath);
+
+            return null;
+        }
+
+        private string GetParentFolder(string filePath)
+        {
+            return Path.GetDirectoryName(_project.MakeRelative(filePath));
         }
     }
 }
