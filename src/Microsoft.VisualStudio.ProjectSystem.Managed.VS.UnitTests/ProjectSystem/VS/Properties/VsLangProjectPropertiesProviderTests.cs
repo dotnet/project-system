@@ -33,22 +33,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         {
             Assert.Throws<ArgumentNullException>("projectProperties", () =>
             {
-                GetVsLangProjectPropertiesProvider(Mock.Of<VSProject>(), Mock.Of<IUnconfiguredProjectVsServices>());
+                GetVsLangProjectPropertiesProvider(Mock.Of<VSProject>(), Mock.Of<IProjectThreadingService>());
             });
         }
 
         [Fact]
         public void VsLangProjectPropertiesProvider_VsProject_NotNull()
         {
-            var provider = GetVsLangProjectPropertiesProvider(Mock.Of<VSProject>(), Mock.Of<IUnconfiguredProjectVsServices>(), Mock.Of<ActiveConfiguredProject<ProjectProperties>>());
+            var provider = GetVsLangProjectPropertiesProvider(Mock.Of<VSProject>(), Mock.Of<IProjectThreadingService>(), Mock.Of<ActiveConfiguredProject<ProjectProperties>>());
             Assert.NotNull(provider);
             Assert.NotNull(provider.VSProject);
         }
 
         private static VsLangProjectPropertiesProvider GetVsLangProjectPropertiesProvider(
-            VSProject vsproject = null, IUnconfiguredProjectVsServices projectVsServices = null, ActiveConfiguredProject<ProjectProperties> projectProperties = null)
+            VSProject vsproject = null, IProjectThreadingService threadingService = null, ActiveConfiguredProject<ProjectProperties> projectProperties = null)
         {
-            return new VsLangProjectPropertiesProvider(vsproject, projectVsServices, projectProperties);
+            return new VsLangProjectPropertiesProvider(vsproject, threadingService, projectProperties);
         }
     }
 }

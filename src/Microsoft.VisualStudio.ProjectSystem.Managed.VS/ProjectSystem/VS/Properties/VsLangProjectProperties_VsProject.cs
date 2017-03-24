@@ -9,6 +9,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     /// </summary>
     internal partial class VsLangProjectProperties : VSProject
     {
+        public VSLangProj.References References => _vsProject.References;
+
+        public BuildManager BuildManager => _vsProject.BuildManager;
+
+        public DTE DTE => _vsProject.DTE;
+
+        public Project Project => _vsProject.Project;
+
+        public ProjectItem WebReferencesFolder => _vsProject.WebReferencesFolder;
+
+        public string TemplatePath => _vsProject.TemplatePath;
+
+        public bool WorkOffline { get => _vsProject.WorkOffline; set => _vsProject.WorkOffline = value; }
+
+        public Imports Imports => _vsProject.Imports;
+
+        public VSProjectEvents Events => _vsProject.Events;
+
         // Implementation of VSProject to redirect the call to the actual VSProject object
         public ProjectItem CreateWebReferencesFolder()
         {
@@ -44,23 +62,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         {
             return _vsProject.GetUniqueFilename(pDispatch, bstrRoot, bstrDesiredExt);
         }
-
-        public VSLangProj.References References => _vsProject.References;
-
-        public BuildManager BuildManager => _vsProject.BuildManager;
-
-        public DTE DTE => _vsProject.DTE;
-
-        public Project Project => _vsProject.Project;
-
-        public ProjectItem WebReferencesFolder => _vsProject.WebReferencesFolder;
-
-        public string TemplatePath => _vsProject.TemplatePath;
-
-        public bool WorkOffline { get => _vsProject.WorkOffline; set => _vsProject.WorkOffline = value; }
-
-        public Imports Imports => _vsProject.Imports;
-
-        public VSProjectEvents Events => _vsProject.Events;
     }
 }

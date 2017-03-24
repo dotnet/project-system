@@ -14,21 +14,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     internal class VsLangProjectPropertiesProvider
     {
         private readonly VSProject _vsProject;
-        private readonly IUnconfiguredProjectVsServices _projectVsServices;
+        private readonly IProjectThreadingService _threadingService;
         private readonly ActiveConfiguredProject<ProjectProperties> _projectProperties;
 
         [ImportingConstructor]
         public VsLangProjectPropertiesProvider(
             [Import(ExportContractNames.VsTypes.CpsVSProject)] VSProject vsProject,
-            IUnconfiguredProjectVsServices projectVsServices,
+            IProjectThreadingService threadingService,
             ActiveConfiguredProject<ProjectProperties> projectProperties)
         {
             Requires.NotNull(vsProject, nameof(vsProject));
-            Requires.NotNull(projectVsServices, nameof(projectVsServices));
+            Requires.NotNull(threadingService, nameof(threadingService));
             Requires.NotNull(projectProperties, nameof(projectProperties));
 
             _vsProject = vsProject;
-            _projectVsServices = projectVsServices;
+            _threadingService = threadingService;
             _projectProperties = projectProperties;
         }
 
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         {
             get
             {
-                return new VsLangProjectProperties(_vsProject, _projectVsServices, _projectProperties);
+                return new VsLangProjectProperties(_vsProject, _threadingService, _projectProperties);
             }
         }
     }

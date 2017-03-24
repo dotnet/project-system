@@ -3,6 +3,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.Threading;
 using VSLangProj;
 using VSLangProj110;
 
@@ -14,26 +15,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     internal partial class VsLangProjectProperties : VSLangProj.ProjectProperties
     {
         private readonly VSProject _vsProject;
-        private readonly IUnconfiguredProjectVsServices _projectVsServices;
+        private readonly IProjectThreadingService _threadingService;
         private readonly ActiveConfiguredProject<ProjectProperties> _projectProperties;
 
         public VsLangProjectProperties(
             VSProject vsProject,
-            IUnconfiguredProjectVsServices projectVsServices,
+            IProjectThreadingService threadingService,
             ActiveConfiguredProject<ProjectProperties> projectProperties)
         {
             Requires.NotNull(vsProject, nameof(vsProject));
-            Requires.NotNull(projectVsServices, nameof(projectVsServices));
+            Requires.NotNull(threadingService, nameof(threadingService));
             Requires.NotNull(projectProperties, nameof(projectProperties));
 
             _vsProject = vsProject;
-            _projectVsServices = projectVsServices;
+            _threadingService = threadingService;
             _projectProperties = projectProperties;
+        }
+
+        private ProjectProperties ProjectProperties
+        {
+            get { return _projectProperties.Value; }
+        }
+
+        private JoinableTaskFactory JoinableTaskFactory
+        {
+            get { return _threadingService.JoinableTaskFactory; }
         }
 
         private void RunFuncTaskSynchronously<T>(Func<T, Task> asyncActionT, T value)
         {
-            _projectVsServices.ThreadingService.JoinableTaskFactory.Run(
+            JoinableTaskFactory.Run(
                 async () =>
                 {
                     await asyncActionT(value).ConfigureAwait(false);
@@ -44,31 +55,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         {
             get
             {
-                var configurationGeneralBrowseObjectProperties = _projectVsServices.ThreadingService.JoinableTaskFactory.Run(_projectProperties.Value.GetConfigurationGeneralBrowseObjectPropertiesAsync);
-                var value = (IEnumValue)_projectVsServices.ThreadingService.JoinableTaskFactory.Run(configurationGeneralBrowseObjectProperties.OutputTypeEx.GetValueAsync);
+                var configurationGeneralBrowseObjectProperties = JoinableTaskFactory.Run(ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync);
+                var value = (IEnumValue)JoinableTaskFactory.Run(configurationGeneralBrowseObjectProperties.OutputTypeEx.GetValueAsync);
                 return (prjOutputTypeEx)Convert.ToInt32(value.DisplayName);
             }
 
             set
             {
-                var configurationGeneralBrowseObjectProperties = _projectVsServices.ThreadingService.JoinableTaskFactory.Run(_projectProperties.Value.GetConfigurationGeneralBrowseObjectPropertiesAsync);
+                var configurationGeneralBrowseObjectProperties = JoinableTaskFactory.Run(ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync);
                 RunFuncTaskSynchronously(configurationGeneralBrowseObjectProperties.OutputTypeEx.SetValueAsync, (object)value);
             }
         }
+
 
         // Implementation of VsLangProj.ProjectProperties
         public prjOutputType OutputType
         {
             get
             {
-                var configurationGeneralBrowseObjectProperties = _projectVsServices.ThreadingService.JoinableTaskFactory.Run(_projectProperties.Value.GetConfigurationGeneralBrowseObjectPropertiesAsync);
-                var value = (IEnumValue)_projectVsServices.ThreadingService.JoinableTaskFactory.Run(configurationGeneralBrowseObjectProperties.OutputType.GetValueAsync);
+                var configurationGeneralBrowseObjectProperties = JoinableTaskFactory.Run(ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync);
+                var value = (IEnumValue)JoinableTaskFactory.Run(configurationGeneralBrowseObjectProperties.OutputType.GetValueAsync);
                 return (prjOutputType)Convert.ToInt32(value.DisplayName);
             }
 
             set
             {
-                var configurationGeneralBrowseObjectProperties = _projectVsServices.ThreadingService.JoinableTaskFactory.Run(_projectProperties.Value.GetConfigurationGeneralBrowseObjectPropertiesAsync);
+                var configurationGeneralBrowseObjectProperties = JoinableTaskFactory.Run(ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync);
                 RunFuncTaskSynchronously(configurationGeneralBrowseObjectProperties.OutputType.SetValueAsync, (object)value);
             }
         }
@@ -77,13 +89,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         {
             get
             {
-                var configurationGeneralProperties = _projectVsServices.ThreadingService.JoinableTaskFactory.Run(_projectProperties.Value.GetConfigurationGeneralPropertiesAsync);
-                return _projectVsServices.ThreadingService.JoinableTaskFactory.Run(configurationGeneralProperties.AssemblyName.GetEvaluatedValueAtEndAsync);
+                var configurationGeneralProperties = JoinableTaskFactory.Run(ProjectProperties.GetConfigurationGeneralPropertiesAsync);
+                return JoinableTaskFactory.Run(configurationGeneralProperties.AssemblyName.GetEvaluatedValueAtEndAsync);
             }
 
             set
             {
-                var configurationGeneralProperties = _projectVsServices.ThreadingService.JoinableTaskFactory.Run(_projectProperties.Value.GetConfigurationGeneralPropertiesAsync);
+                var configurationGeneralProperties = JoinableTaskFactory.Run(ProjectProperties.GetConfigurationGeneralPropertiesAsync);
                 RunFuncTaskSynchronously(configurationGeneralProperties.AssemblyName.SetValueAsync, (object)value);
             }
         }
@@ -92,8 +104,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         {
             get
             {
-                var configurationGeneralProperties = _projectVsServices.ThreadingService.JoinableTaskFactory.Run(_projectProperties.Value.GetConfigurationGeneralPropertiesAsync);
-                return _projectVsServices.ThreadingService.JoinableTaskFactory.Run(configurationGeneralProperties.TargetPath.GetEvaluatedValueAtEndAsync);
+                var configurationGeneralProperties = JoinableTaskFactory.Run(ProjectProperties.GetConfigurationGeneralPropertiesAsync);
+                return JoinableTaskFactory.Run(configurationGeneralProperties.TargetPath.GetEvaluatedValueAtEndAsync);
             }
         }
 
@@ -103,8 +115,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         {
             get
             {
-                var configurationGeneralBrowseObjectProperties = _projectVsServices.ThreadingService.JoinableTaskFactory.Run(_projectProperties.Value.GetConfigurationGeneralBrowseObjectPropertiesAsync);
-                return _projectVsServices.ThreadingService.JoinableTaskFactory.Run(configurationGeneralBrowseObjectProperties.FullPath.GetEvaluatedValueAtEndAsync);
+                var configurationGeneralBrowseObjectProperties = JoinableTaskFactory.Run(ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync);
+                return JoinableTaskFactory.Run(configurationGeneralBrowseObjectProperties.FullPath.GetEvaluatedValueAtEndAsync);
             }
         }
 
@@ -156,11 +168,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
         public ProjectConfigurationProperties ActiveConfigurationSettings => throw new NotImplementedException();
 
-        public object get_Extender(string ExtenderName)
-        {
-            throw new NotImplementedException();
-        }
-
         public object ExtenderNames => throw new NotImplementedException();
 
         public string ApplicationIcon { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
@@ -178,5 +185,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         public prjProjectType ProjectType => throw new NotImplementedException();
 
         public string DefaultNamespace { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public object get_Extender(string ExtenderName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
