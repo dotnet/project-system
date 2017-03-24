@@ -83,8 +83,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             foreach (KeyValuePair<string, string> filePaths in diff.RenamedItems)
             {
-                RemoveSourceFile(filePaths.Key, context);
-                AddSourceFile(filePaths.Value, GetFolders(filePaths.Value, projectChange), context, isActiveContext);
+                string removeFilePath = filePaths.Key;
+                string addFilePath = filePaths.Value;
+
+                RemoveSourceFile(removeFilePath, context);
+                AddSourceFile(addFilePath, GetFolders(addFilePath, projectChange), context, isActiveContext);
             }
 
             foreach (string filePath in diff.ChangedItems)
