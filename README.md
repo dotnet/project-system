@@ -28,7 +28,7 @@ A project system sits between a project file on disk (for example, .csproj and .
 
 The C# and Visual Basic project system adds C# and Visual Basic language support to CPS via [Roslyn](https://github.com/dotnet/roslyn).
 
-![image](https://cloud.githubusercontent.com/assets/1103906/14901076/73454a6a-0d48-11e6-8478-472474d55824.png)
+![image](https://cloud.githubusercontent.com/assets/1103906/24277768/6988e096-1093-11e7-96b3-83334194fba2.png)
 
 ## How do I engage and contribute?
 We welcome you to try things out, [file issues](https://github.com/dotnet/roslyn-project-system/issues), make feature requests and join us in design conversations. If you are looking for something to work on, take a look at our [up-for-grabs issues](https://github.com/dotnet/roslyn-project-system/issues?q=is%3Aopen+is%3Aissue+label%3A%22Up+for+Grabs%22) for a great place to start. Also be sure to check out our [contributing guide](CONTRIBUTING.md).
