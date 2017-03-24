@@ -7,7 +7,7 @@ If you want to submit a feature or a substantial code contribution, please discu
 For additional information, see the following:
 
 - [Getting Started](docs/repo/getting-started.md)
-- [Coding Guidelines](docs/repo/coding-conventions.md)
+- [Coding Conventions](docs/repo/coding-conventions.md)
 - [Debugging Tips](docs/repo/debugging-tips.md)
 - [Features](docs/repo/features.md)
 - [Architecture](docs/repo/architecture.md)
