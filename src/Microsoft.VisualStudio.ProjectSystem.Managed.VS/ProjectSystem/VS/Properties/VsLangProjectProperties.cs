@@ -22,6 +22,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             IUnconfiguredProjectVsServices projectVsServices,
             ActiveConfiguredProject<ProjectProperties> projectProperties)
         {
+            Requires.NotNull(vsProject, nameof(vsProject));
+            Requires.NotNull(projectVsServices, nameof(projectVsServices));
+            Requires.NotNull(projectProperties, nameof(projectProperties));
+
             _vsProject = vsProject;
             _projectVsServices = projectVsServices;
             _projectProperties = projectProperties;
