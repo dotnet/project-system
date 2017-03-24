@@ -1,9 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
@@ -62,11 +60,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             foreach (CommandLineSourceFile sourceFile in added.SourceFiles)
             {
-                AddSourceFile(sourceFile.Path, context, isActiveContext);
+                AddSourceFile(sourceFile.Path, null, context, isActiveContext);
             }
         }
 
-        public override async Task HandleAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
+        public override Task HandleAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
         {
             Requires.NotNull(e, nameof(e));
             Requires.NotNull(projectChange, nameof(projectChange));
@@ -80,30 +78,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             if (diff.AddedItems.Count > 0 || diff.RenamedItems.Count > 0 || diff.ChangedItems.Count > 0)
             {
-                // Make sure the tree matches the same version of the evaluation that we're handling for active project context.
-                // If we are dealing with non- active project context, then just use the latest published tree.
-                IProjectTreeServiceState treeState = isActiveContext ?
-                    await PublishTreeAsync(e).ConfigureAwait(true) :    // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
-                    await _projectTree.TreeService.PublishLatestTreeAsync(blockDuringLoadingTree: true).ConfigureAwait(true);
-
                 foreach (string filePath in diff.AddedItems)
                 {
-                    AddSourceFile(filePath, context, isActiveContext, treeState);
+                    AddSourceFile(filePath, GetFolders(filePath, projectChange), context, isActiveContext);
                 }
 
                 foreach (KeyValuePair<string, string> filePaths in diff.RenamedItems)
                 {
                     RemoveSourceFile(filePaths.Key, context);
-                    AddSourceFile(filePaths.Value, context, isActiveContext, treeState);
+                    AddSourceFile(filePaths.Value, GetFolders(filePaths.Value, projectChange), context, isActiveContext);
                 }
 
                 foreach (string filePath in diff.ChangedItems)
                 {
                     // We add and then remove ChangedItems to handle Linked metadata changes
                     RemoveSourceFile(filePath, context);
-                    AddSourceFile(filePath, context, isActiveContext);
+                    AddSourceFile(filePath, GetFolders(filePath, projectChange), context, isActiveContext);
                 }
             }
+
+            return Task.CompletedTask;
         }
 
         public override Task OnContextReleasedAsync(IWorkspaceProjectContext context)
@@ -122,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             }
         }
 
-        private void AddSourceFile(string filePath, IWorkspaceProjectContext context, bool isActiveContext, IProjectTreeServiceState state = null)
+        private void AddSourceFile(string filePath, string[] folderNames, IWorkspaceProjectContext context, bool isActiveContext)
         {
             string fullPath = _project.MakeRooted(filePath);
 
@@ -136,54 +130,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 return;
             }
 
-            string[] folderNames = Array.Empty<string>();
-            if (state != null)  // We're looking at a generated file, which doesn't appear in a tree.
-            {
-                folderNames = GetFolders(fullPath, state).ToArray();
-            }
-
             sourceFiles.Add(fullPath);
             context.AddSourceFile(fullPath, folderNames: folderNames, isInCurrentContext: isActiveContext);
         }
 
-        private IEnumerable<string> GetFolders(string fullPath, IProjectTreeServiceState state)
+        private string[] GetFolders(string filePath, IProjectChangeDescription projectChange)
         {
             // Roslyn wants the effective set of folders from the source up to, but not including the project 
             // root to handle the cases where linked files have a different path in the tree than what its path 
             // on disk is. It uses these folders for things that create files alongside others, such as extract
             // interface.
 
-            IProjectTree tree = state.TreeProvider.FindByPath(state.Tree, fullPath);
-            if (tree == null)
-                yield break;    // We got a tree that is out-of-date than what our evaluation is based on
-
-            IProjectTree parent = tree;
-
-            do
-            {
-                // Source files can be nested under other files
-                if (parent.IsFolder)
-                    yield return parent.Caption;
-
-                parent = parent.Parent;
-
-            } while (!parent.IsRoot());
-        }
-
-        private Task<IProjectTreeServiceState> PublishTreeAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
-        {
-            try
-            {
-                // Make sure the tree matches the same version of the evaluation that we're handling
-                return _projectTree.TreeService.PublishTreeAsync(e.ToRequirements(), blockDuringLoadingTree: true);
-            }
-            catch (ActiveProjectConfigurationChangedException)
-            {
-                // Project configuration changed while we blocked waiting for the tree, instead of trying to match
-                // exactly the same version, just give up and publish the latest tree. Note, don't need to handle
-                // ActiveProjectConfigurationChangedException as it will retry if the configuration changed.
-                return _projectTree.TreeService.PublishLatestTreeAsync(blockDuringLoadingTree: true);
-            }
+            return null;
         }
     }
 }
