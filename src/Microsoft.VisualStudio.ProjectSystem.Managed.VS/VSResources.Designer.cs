@@ -139,6 +139,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Framework ({0}).
+        /// </summary>
+        internal static string DebugFrameworkMenuText {
+            get {
+                return ResourceManager.GetString("DebugFrameworkMenuText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to  (Loading...).
         /// </summary>
         internal static string DependenciesLoadingPostfix {

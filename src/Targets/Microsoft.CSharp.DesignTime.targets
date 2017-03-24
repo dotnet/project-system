@@ -14,6 +14,7 @@
     <AppDesignerFolder Condition="'$(AppDesignerFolder)' == ''">Properties</AppDesignerFolder>
     <AppDesignerFolderContentsVisibleOnlyInShowAllFiles Condition="'$(AppDesignerFolderContentsVisibleOnlyInShowAllFiles)' == ''">false</AppDesignerFolderContentsVisibleOnlyInShowAllFiles>
     <LanguageServiceName Condition="'$(LanguageServiceName)' == ''">C#</LanguageServiceName>
+    <LanguageServiceId Condition="'$(LanguageServiceId)'==''">{694DD9B6-B865-4C5B-AD85-86356E9C88DC}</LanguageServiceId>
     <TemplateLanguage Condition="'$(TemplateLanguage)' == ''">CSharp</TemplateLanguage>
     <AddItemTemplatesGuid Condition="'$(AddItemTemplatesGuid)' == ''">{FAE04EC0-301F-11d3-BF4B-00C04F79EFBC}</AddItemTemplatesGuid>
   </PropertyGroup>

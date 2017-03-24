@@ -43,12 +43,27 @@
   </Commands>
 
   <Commands package="PackageGuidString">
+    <Menus>
+      <!-- Debugging Framework menu added to debug controller -->
+      <Menu guid="guidManagedProjectSystemCommandSet" id="DebugTargetMenuDebugFrameworkMenu" priority="0x00F1" type="Menu">
+        <Parent guid="guidDebugTargetHandlerPackage" id="DebugTargetMenuControllerFooterGroup"/>
+        <CommandFlag>TextChanges</CommandFlag>
+        <Strings>
+            <ButtonText>Framework</ButtonText>
+        </Strings>
+      </Menu>
+    </Menus>
+
     <Groups>
       <Group guid="guidSHLMainMenu" id="IDG_VS_CTXT_PROJECT_EDITFILE" priority="0x0180">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_PROJNODE"/>
       </Group>
       <Group guid="guidSHLMainMenu" id="IDG_VS_CTXT_PROJECT_EDITFILE" priority="0x0180">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_PROJECT"/>
+      </Group>
+      <!-- Group added to the Debugging Framework Type menu on the debug controller -->
+      <Group guid="guidManagedProjectSystemCommandSet" id="DebugTargetMenuDebugFrameworkGroup" priority="0x0100">
+        <Parent guid="guidManagedProjectSystemCommandSet" id="DebugTargetMenuDebugFrameworkMenu"/>
       </Group>
     </Groups>
 
@@ -78,6 +93,18 @@
           <CommandName>GenerateNuGetPackageTopLevelBuild</CommandName>
         </Strings>
       </Button>
+
+      <Button guid="guidManagedProjectSystemCommandSet" id="cmdidDebugFrameworks" priority="0x0100" type="Button">
+        <Parent guid="guidManagedProjectSystemCommandSet" id="DebugTargetMenuDebugFrameworkGroup"/>
+        <CommandFlag>TextChanges</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DefaultDisabled</CommandFlag>
+        <CommandFlag>DynamicItemStart</CommandFlag>
+        <Strings>
+          <ButtonText>Framework</ButtonText>
+        </Strings>
+      </Button>
     </Buttons>
   </Commands>
 
@@ -88,6 +115,7 @@
     <GuidSymbol name="guidDebugTargetHandlerPackage" value="{6e87cfad-6c05-4adf-9cd7-3b7943875b7c}">
       <IDSymbol name="DebugTargetMenuControllerGroup" value="0x1000" />
       <IDSymbol name="DebugTargetMenuControllerFooterGroup" value="0x2000" />
+
     </GuidSymbol>
 
     <GuidSymbol name="guidManagedProjectSystemCommandSet" value="{568ABDF7-D522-474D-9EED-34B5E5095BA5}">
@@ -95,6 +123,9 @@
       <IDSymbol name="cmdidProjectDebugger" value="0x0100" />
       <IDSymbol name="cmdidGenerateNuGetPackageProjectContextMenu" value="0x2000" />
       <IDSymbol name="cmdidGenerateNuGetPackageTopLevelBuild" value="0x2001" />
+      <IDSymbol name="DebugTargetMenuDebugFrameworkMenu" value="0x3000" />
+      <IDSymbol name="DebugTargetMenuDebugFrameworkGroup" value="0x3001" />
+      <IDSymbol name="cmdidDebugFrameworks" value="0x3050" />        <!--needs space to grow-->
     </GuidSymbol>
   </Symbols>
 

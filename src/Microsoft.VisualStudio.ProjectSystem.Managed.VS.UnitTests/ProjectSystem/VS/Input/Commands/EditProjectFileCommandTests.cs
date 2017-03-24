@@ -14,23 +14,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     public class EditProjectFileCommandTests
     {
         private const long CommandId = VisualStudioStandard2kCommandId.EditProjectFile;
-        private const string Extension = "proj";
-        private static readonly Guid XmlEditorFactoryGuid = new Guid("{fa3cd31e-987b-443a-9b81-186104e8dac1}");
 
         [Fact]
-        public void EditProjectFileCommand_NullProject_Throws()
+        public void EditProjectFileCommand_NullAsUnconfiguredProject_Throws()
         {
-            Assert.Throws<ArgumentNullException>("unconfiguredProject", () => new EditProjectFileCommand(null, IProjectFileEditorPresenterFactory.CreateLazy()));
+            var editorPresenter = IProjectFileEditorPresenterFactory.CreateLazy();
+
+            Assert.Throws<ArgumentNullException>("unconfiguredProject", () => new EditProjectFileCommand(null, editorPresenter));
         }
 
         [Fact]
-        public void EditProjectFileCommand_NullModel_Throws()
+        public void EditProjectFileCommand_NullAsPresenter_Throws()
         {
-            Assert.Throws<ArgumentNullException>("editorState", () => new EditProjectFileCommand(UnconfiguredProjectFactory.Create(), null));
+            var unconfiguredProject = UnconfiguredProjectFactory.Create();
+
+            Assert.Throws<ArgumentNullException>("editorPresenter", () => new EditProjectFileCommand(unconfiguredProject, null));
         }
 
         [Fact]
-        public async Task EditProjectFileCommand_ValidNode_ShouldHandle()
+        public async Task EditProjectFileCommand_RootNode_ShouldHandle()
         {
             var tree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
@@ -45,11 +47,11 @@ Root (flags: {ProjectRoot})
             var result = await command.GetCommandStatusAsync(nodes, CommandId, true, "", 0);
             Assert.True(result.Handled);
             Assert.Equal(CommandStatus.Enabled | CommandStatus.Supported, result.Status);
-            Assert.Equal(string.Format(VSResources.EditProjectFileCommand, $"Root.{Extension}"), result.CommandText);
+            Assert.Equal(string.Format(VSResources.EditProjectFileCommand, $"Root.proj"), result.CommandText);
         }
 
         [Fact]
-        public async Task EditProjectFileCommand_NonRootNode_ShouldntHandle()
+        public async Task EditProjectFileCommand_NonRootNode_ShouldHandle()
         {
             var tree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
@@ -63,12 +65,33 @@ Root (flags: {ProjectRoot})
             var command = new EditProjectFileCommand(unconfiguredProject, IProjectFileEditorPresenterFactory.CreateLazy());
 
             var result = await command.GetCommandStatusAsync(nodes, CommandId, true, "", 0);
-            Assert.False(result.Handled);
-            Assert.Equal(CommandStatus.NotSupported, result.Status);
+            Assert.True(result.Handled);
+            Assert.Equal(CommandStatus.Enabled | CommandStatus.Supported, result.Status);
+            Assert.Equal(string.Format(VSResources.EditProjectFileCommand, $"Root.proj"), result.CommandText);
         }
 
         [Fact]
-        public async Task EditProjectFileCommand_CorrectNode_CallsOpenAsync()
+        public async Task EditProjectFileCommand_MultipleNodes_ShouldHandle()
+        {
+            var tree = ProjectTreeParser.Parse(@"
+Root (flags: {ProjectRoot})
+    Properties ()
+");
+
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\Temp\Root\Root.proj");
+
+            var nodes = ImmutableHashSet.Create(tree, tree.Children[0]);
+
+            var command = new EditProjectFileCommand(unconfiguredProject, IProjectFileEditorPresenterFactory.CreateLazy());
+
+            var result = await command.GetCommandStatusAsync(nodes, CommandId, true, "", 0);
+            Assert.True(result.Handled);
+            Assert.Equal(CommandStatus.Enabled | CommandStatus.Supported, result.Status);
+            Assert.Equal(string.Format(VSResources.EditProjectFileCommand, $"Root.proj"), result.CommandText);
+        }
+
+        [Fact]
+        public async Task EditProjectFileCommand_RootNode_CallsOpenAsync()
         {
             var tree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
@@ -87,7 +110,7 @@ Root (flags: {ProjectRoot})
         }
 
         [Fact]
-        public async Task EditProjectFileCommand_NotRootNode_DoesNotCallOpen()
+        public async Task EditProjectFileCommand_NonRootNode_CallsOpenAsync()
         {
             var tree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
@@ -103,8 +126,29 @@ Root (flags: {ProjectRoot})
             var command = new EditProjectFileCommand(unconfiguredProject, new Lazy<IProjectFileEditorPresenter>(() => editorStateModel));
 
             var result = await command.TryHandleCommandAsync(nodes, CommandId, true, 0, IntPtr.Zero, IntPtr.Zero);
-            Assert.False(result);
-            Mock.Get(editorStateModel).Verify(e => e.OpenEditorAsync(), Times.Never);
+            Assert.True(result);
+            Mock.Get(editorStateModel).Verify(e => e.OpenEditorAsync(), Times.Once);
+        }
+
+        [Fact]
+        public async Task EditProjectFileCommand_MultipleNodes_CallsOpenAsync()
+        {
+            var tree = ProjectTreeParser.Parse(@"
+Root (flags: {ProjectRoot})
+    Properties ()
+");
+
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\Temp\Root\Root.proj");
+
+            var nodes = ImmutableHashSet.Create(tree, tree.Children[0]);
+
+            var editorStateModel = IProjectFileEditorPresenterFactory.Create();
+
+            var command = new EditProjectFileCommand(unconfiguredProject, new Lazy<IProjectFileEditorPresenter>(() => editorStateModel));
+
+            var result = await command.TryHandleCommandAsync(nodes, CommandId, true, 0, IntPtr.Zero, IntPtr.Zero);
+            Assert.True(result);
+            Mock.Get(editorStateModel).Verify(e => e.OpenEditorAsync(), Times.Once);
         }
     }
 }

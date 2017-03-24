@@ -11,9 +11,9 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
+    [ProjectSystemTrait]
     public class DebugPageViewModelTests
     {
-        [ProjectSystemTrait]
         private class ViewModelData
         {
             public TestUnconfiguredPropertyProvider UnconfiguredProvider { get; set; }

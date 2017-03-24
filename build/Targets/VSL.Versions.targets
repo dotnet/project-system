@@ -1,7 +1,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <RoslynSemanticVersion Condition="'$(RoslynSemanticVersion)' == '' AND '$(UseVisualStudioVersion)' == 'true'">15.0.1</RoslynSemanticVersion>
-    <RoslynSemanticVersion Condition="'$(RoslynSemanticVersion)' == ''">2.0.1</RoslynSemanticVersion>
+    <RoslynSemanticVersion Condition="'$(RoslynSemanticVersion)' == '' AND '$(UseVisualStudioVersion)' == 'true'">15.3.0</RoslynSemanticVersion>
+    <RoslynSemanticVersion Condition="'$(RoslynSemanticVersion)' == ''">2.3.0</RoslynSemanticVersion>
     <MicroBuildVersion>0.2.0</MicroBuildVersion>
     <BuildNumber Condition="'$(BuildNumber)' == ''">$(BUILD_BUILDNUMBER)</BuildNumber>
 
@@ -15,6 +15,18 @@
          we will continue the month counting instead: the build after 61231 is 61301. -->
     <BuildNumberFiveDigitDateStamp Condition="'$(BuildNumber)' != ''">$([MSBuild]::Subtract($(BuildNumber.Split('.')[0].Substring(3).Trim()), 8800))</BuildNumberFiveDigitDateStamp>
     <BuildNumberBuildOfTheDayPadded Condition="('$(BuildNumber)' != '') AND ($(BuildNumber.Split('.').Length) == 2)">$(BuildNumber.Split('.')[1].PadLeft(2,'0'))</BuildNumberBuildOfTheDayPadded>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <ProjectSystemSDKVersion>15.3.5-pre-g4382fbdb8f</ProjectSystemSDKVersion>
+    <SystemCollectionsImmutableVersion>1.3.1</SystemCollectionsImmutableVersion>
+    <MicrosoftVisualStudioShellInterop10Version>10.0.30319</MicrosoftVisualStudioShellInterop10Version>
+    <MicrosoftVisualStudioShellInterop11Version>11.0.61030</MicrosoftVisualStudioShellInterop11Version>
+    <MicrosoftVisualStudioTextManagerInterop10Version>10.0.30319</MicrosoftVisualStudioTextManagerInterop10Version>
+    <MicrosoftVisualStudioTextManagerInterop12Version>12.0.30110</MicrosoftVisualStudioTextManagerInterop12Version>
+    <MicrosoftVisualStudioShell15Version>15.0.26201</MicrosoftVisualStudioShell15Version>
+    <MicrosoftVisualStudioShellDesign>15.0.26201</MicrosoftVisualStudioShellDesign>
+    <MicrosoftVisualStudioManagedInterfaces>8.0.50727</MicrosoftVisualStudioManagedInterfaces>
   </PropertyGroup>
 
   <Choose>
@@ -61,13 +73,12 @@
 
   <!-- NuGet version -->
   <PropertyGroup>
-    <VSSemanticVersion>15.0</VSSemanticVersion>
-
+    <VSSemanticVersion>15.3</VSSemanticVersion>
     <RoslynNuGetReleaseVersion>$(RoslynSemanticVersion.Substring(0, $(RoslynSemanticVersion.LastIndexOf('.'))))</RoslynNuGetReleaseVersion>
-    <RoslynNuGetPerBuildReleaseVersion Condition="'$(BuildNumberFiveDigitDateStamp)' != '' AND '$(BuildNumberBuildOfTheDayPadded)' != ''">$(RoslynNuGetReleaseVersion).$(BuildNumberFiveDigitDateStamp.Trim())$(BuildNumberBuildOfTheDayPadded.Trim())</RoslynNuGetPerBuildReleaseVersion>
-    <RoslynNuGetPerBuildReleaseVersion Condition="'$(RoslynNuGetPerBuildReleaseVersion)' == ''">1.0.0</RoslynNuGetPerBuildReleaseVersion>
-    <VSNuGetPerBuildReleaseVersion Condition="'$(BuildNumberFiveDigitDateStamp)' != '' AND '$(BuildNumberBuildOfTheDayPadded)' != ''">$(VSSemanticVersion).$(BuildNumberFiveDigitDateStamp.Trim())$(BuildNumberBuildOfTheDayPadded.Trim())</VSNuGetPerBuildReleaseVersion>
-    <VSNuGetPerBuildReleaseVersion Condition="'$(VSNuGetPerBuildReleaseVersion)' == ''">1.0.0</VSNuGetPerBuildReleaseVersion>
+    <RoslynNuGetPerBuildVersion Condition="'$(BuildNumberFiveDigitDateStamp)' != '' AND '$(BuildNumberBuildOfTheDayPadded)' != ''">$(RoslynNuGetReleaseVersion).0-rc-$(BuildNumberFiveDigitDateStamp.Trim())$(BuildNumberBuildOfTheDayPadded.Trim())</RoslynNuGetPerBuildVersion>
+    <RoslynNuGetPerBuildVersion Condition="'$(RoslynNuGetPerBuildVersion)' == ''">1.0.0-rc</RoslynNuGetPerBuildVersion>
+    <VSNuGetPerBuildVersion Condition="'$(BuildNumberFiveDigitDateStamp)' != '' AND '$(BuildNumberBuildOfTheDayPadded)' != ''">$(VSSemanticVersion).0-rc-$(BuildNumberFiveDigitDateStamp.Trim())$(BuildNumberBuildOfTheDayPadded.Trim())</VSNuGetPerBuildVersion>
+    <VSNuGetPerBuildVersion Condition="'$(VSNuGetPerBuildVersion)' == ''">1.0.0-rc</VSNuGetPerBuildVersion>
   </PropertyGroup>
   
 </Project>

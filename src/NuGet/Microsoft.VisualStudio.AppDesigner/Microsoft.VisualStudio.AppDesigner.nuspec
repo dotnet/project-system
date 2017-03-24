@@ -14,13 +14,13 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <dependencies>
-      <dependency id="Microsoft.VisualStudio.ManagedInterfaces" version="8.0.50727" />
-      <dependency id="Microsoft.VisualStudio.TextManager.Interop.10.0" version="10.0.30319" />
-      <dependency id="Microsoft.VisualStudio.TextManager.Interop.12.0" version="12.0.30110" />
-      <dependency id="Microsoft.VisualStudio.Shell.15.0" version="15.0.26201" />
-      <dependency id="Microsoft.VisualStudio.Shell.Design" version="15.0.26201" />
-      <dependency id="Microsoft.VisualStudio.Shell.Interop.10.0" version="10.0.30319" />
-      <dependency id="Microsoft.VisualStudio.Shell.Interop.11.0" version="11.0.61030" />
+      <dependency id="Microsoft.VisualStudio.ManagedInterfaces" version="$microsoftvisualstudiomanagedinterfaces$" />
+      <dependency id="Microsoft.VisualStudio.TextManager.Interop.10.0" version="$microsoftvisualstudiotextmanagerinterop10version$" />
+      <dependency id="Microsoft.VisualStudio.TextManager.Interop.12.0" version="$microsoftvisualstudiotextmanagerinterop12version$" />
+      <dependency id="Microsoft.VisualStudio.Shell.15.0" version="$microsoftvisualstudioshell15version$" />
+      <dependency id="Microsoft.VisualStudio.Shell.Design" version="$microsoftvisualstudioshelldesign$" />
+      <dependency id="Microsoft.VisualStudio.Shell.Interop.10.0" version="$microsoftvisualstudioshellinterop10version$" />
+      <dependency id="Microsoft.VisualStudio.Shell.Interop.11.0" version="$microsoftvisualstudioshellinterop11version$" />
     </dependencies>
   </metadata>
   <files>

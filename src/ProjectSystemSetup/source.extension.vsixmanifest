@@ -28,6 +28,7 @@
     <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS" Path="|Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS|" />
     <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Microsoft.VisualStudio.ProjectSystem.Managed" Path="|Microsoft.VisualStudio.ProjectSystem.Managed|" />
     <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Microsoft.VisualStudio.ProjectSystem.Managed.VS" Path="|Microsoft.VisualStudio.ProjectSystem.Managed.VS|" />
+    <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="File" Path="ProjectSelectors.pkgdef" />
     <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
     <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="Microsoft.VisualStudio.ProjectSystem.CSharp.VS" Path="|Microsoft.VisualStudio.ProjectSystem.CSharp.VS;PkgdefProjectOutputGroup|" />
     <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS" Path="|Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS;PkgdefProjectOutputGroup|" />

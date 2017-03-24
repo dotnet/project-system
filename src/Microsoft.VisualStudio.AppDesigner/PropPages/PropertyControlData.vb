@@ -2291,7 +2291,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
             End If
 
-            Return New String() {}
+            Return Array.Empty(Of String)
         End Function
 
 

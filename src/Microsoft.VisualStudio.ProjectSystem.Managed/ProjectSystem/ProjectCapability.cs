@@ -17,7 +17,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string CSharpLanguageService = ProjectCapabilities.CSharp + " & " + ProjectCapabilities.LanguageService;
         public const string CSharpOrVisualBasic = "(" + ProjectCapabilities.CSharp + " | " + ProjectCapabilities.VB + ")";
         public const string CSharpOrVisualBasicLanguageService = CSharpOrVisualBasic +" & " + ProjectCapabilities.LanguageService;
-        public const string CSharpOrVisualBasicOpenProjectFile = CSharpOrVisualBasic + " & " + OpenProjectFile;
         public const string AppDesigner = nameof(AppDesigner);
         public const string AppSettings = nameof(AppSettings);
         public const string DependenciesTree = nameof(DependenciesTree);

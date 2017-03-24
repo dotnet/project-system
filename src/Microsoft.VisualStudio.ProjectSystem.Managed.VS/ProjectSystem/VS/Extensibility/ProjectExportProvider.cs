@@ -4,7 +4,6 @@ using System;
 using System.ComponentModel.Composition;
 using System.Linq;
 using Microsoft.VisualStudio.Composition;
-using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Extensibility
 {
@@ -15,12 +14,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Extensibility
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
     internal class ProjectExportProvider : IProjectExportProvider
     {
-        private SVsServiceProvider ServiceProvider { get; set; }
+        private IProjectServiceAccessor ProjectServiceAccesspr { get; }
 
         [ImportingConstructor]
-        public ProjectExportProvider(SVsServiceProvider serviceProvider)
+        public ProjectExportProvider(IProjectServiceAccessor serviceAccessor)
         {
-            ServiceProvider = serviceProvider;
+            ProjectServiceAccesspr = serviceAccessor;
         }
 
         /// <summary>
@@ -35,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Extensibility
                 throw new ArgumentNullException(nameof(projectFilePath));
             }
 
-            var projectService = ServiceProvider.GetProjectService();
+            var projectService = ProjectServiceAccesspr.GetProjectService();
             if (projectService == null)
             {
                 return null;

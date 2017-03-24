@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     // registers itself with the IProjectReloadManager which is the component which monitors for file changes and calls back on the this object to perform
     // the actual reload operation. 
     [Export(typeof(ReloadableProject))]
-    [AppliesTo("HandlesOwnReload")]
+    [AppliesTo(ProjectCapability.HandlesOwnReload)]
     internal class ReloadableProject : OnceInitializedOnceDisposedAsync, IReloadableProject
     {
         private readonly IUnconfiguredProjectVsServices _projectVsServices;

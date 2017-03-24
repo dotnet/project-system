@@ -3,7 +3,6 @@
 using System;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Utilities.DataFlowExtensions;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Moq;
 using Xunit;
@@ -20,16 +19,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var projectGuid = Guid.NewGuid();
 
             var mockIVsStartupProjectsListService = IVsStartupProjectsListServiceFactory.CreateMockInstance(projectGuid);
-            var iVsStartupProjectsListService = mockIVsStartupProjectsListService.Object;
-
-            var serviceProvider = SVsServiceProviderFactory.Create(iVsStartupProjectsListService);
+            var iVsStartupProjectsListService = IVsServiceFactory.Create<SVsStartupProjectsListService, IVsStartupProjectsListService>(mockIVsStartupProjectsListService.Object);
 
             var debuggerLaunchProvider = CreateDebuggerLaunchProviderInstance();
             debuggerLaunchProvider.Debuggers.Add(GetLazyDebugLaunchProvider(debugs: false));
             var activeConfiguredProjectWithLaunchProviders = ActiveConfiguredProjectFactory.ImplementValue(() => debuggerLaunchProvider);
 
             var startupProjectRegistrar = CreateInstance(
-                serviceProvider,
+                iVsStartupProjectsListService,
                 activeConfiguredProjectWithLaunchProviders);
 
             var testWrapperMethod = new DataFlowExtensionMethodCaller(new DataFlowExtensionMethodWrapperMock());
@@ -79,16 +76,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var projectGuid = Guid.NewGuid();
 
             var mockIVsStartupProjectsListService = IVsStartupProjectsListServiceFactory.CreateMockInstance(projectGuid);
-            var iVsStartupProjectsListService = mockIVsStartupProjectsListService.Object;
 
-            var serviceProvider = SVsServiceProviderFactory.Create(iVsStartupProjectsListService);
+            var iVsStartupProjectsListService = IVsServiceFactory.Create<SVsStartupProjectsListService, IVsStartupProjectsListService>(mockIVsStartupProjectsListService.Object);
 
             var debuggerLaunchProvider = CreateDebuggerLaunchProviderInstance();
             debuggerLaunchProvider.Debuggers.Add(GetLazyDebugLaunchProvider(debugs: true));
             var activeConfiguredProjectWithLaunchProviders = ActiveConfiguredProjectFactory.ImplementValue(() => debuggerLaunchProvider);
 
             var startupProjectRegistrar = CreateInstance(
-                serviceProvider,
+                iVsStartupProjectsListService,
                 activeConfiguredProjectWithLaunchProviders);
 
             var testWrapperMethod = new DataFlowExtensionMethodCaller(new DataFlowExtensionMethodWrapperMock());
@@ -124,9 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var projectGuid = Guid.NewGuid();
 
             var mockIVsStartupProjectsListService = IVsStartupProjectsListServiceFactory.CreateMockInstance(projectGuid);
-            var iVsStartupProjectsListService = mockIVsStartupProjectsListService.Object;
-
-            var serviceProvider = SVsServiceProviderFactory.Create(iVsStartupProjectsListService);
+            var iVsStartupProjectsListService = IVsServiceFactory.Create<SVsStartupProjectsListService, IVsStartupProjectsListService>(mockIVsStartupProjectsListService.Object);
 
             var debuggerLaunchProvider = CreateDebuggerLaunchProviderInstance();
             debuggerLaunchProvider.Debuggers.Add(GetLazyDebugLaunchProvider(debugs: false));
@@ -134,7 +128,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var activeConfiguredProjectWithLaunchProviders = ActiveConfiguredProjectFactory.ImplementValue(() => debuggerLaunchProvider);
 
             var startupProjectRegistrar = CreateInstance(
-                serviceProvider,
+                iVsStartupProjectsListService,
                 activeConfiguredProjectWithLaunchProviders);
 
             var testWrapperMethod = new DataFlowExtensionMethodCaller(new DataFlowExtensionMethodWrapperMock());
@@ -170,7 +164,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var projectGuid = Guid.NewGuid();
 
             var mockIVsStartupProjectsListService = IVsStartupProjectsListServiceFactory.CreateMockInstance(projectGuid);
-            var iVsStartupProjectsListService = mockIVsStartupProjectsListService.Object;
+            var iVsStartupProjectsListService = IVsServiceFactory.Create<SVsStartupProjectsListService, IVsStartupProjectsListService>(mockIVsStartupProjectsListService.Object);
 
             var serviceProvider = SVsServiceProviderFactory.Create(iVsStartupProjectsListService);
 
@@ -179,7 +173,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var activeConfiguredProjectWithLaunchProviders = ActiveConfiguredProjectFactory.ImplementValue(() => debuggerLaunchProvider);
 
             var startupProjectRegistrar = CreateInstance(
-                serviceProvider,
+                iVsStartupProjectsListService,
                 activeConfiguredProjectWithLaunchProviders);
 
             var testWrapperMethod = new DataFlowExtensionMethodCaller(new DataFlowExtensionMethodWrapperMock());
@@ -233,16 +227,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var projectGuid = Guid.NewGuid();
 
             var mockIVsStartupProjectsListService = IVsStartupProjectsListServiceFactory.CreateMockInstance(projectGuid);
-            var iVsStartupProjectsListService = mockIVsStartupProjectsListService.Object;
 
-            var serviceProvider = SVsServiceProviderFactory.Create(iVsStartupProjectsListService);
+            var iVsStartupProjectsListService = IVsServiceFactory.Create<SVsStartupProjectsListService, IVsStartupProjectsListService>(mockIVsStartupProjectsListService.Object);
 
             var debuggerLaunchProvider = CreateDebuggerLaunchProviderInstance();
             debuggerLaunchProvider.Debuggers.Add(GetLazyDebugLaunchProvider(debugs: false));
             var activeConfiguredProjectWithLaunchProviders = ActiveConfiguredProjectFactory.ImplementValue(() => debuggerLaunchProvider);
 
             var startupProjectRegistrar = CreateInstance(
-                serviceProvider,
+                iVsStartupProjectsListService,
                 activeConfiguredProjectWithLaunchProviders);
 
             var testWrapperMethod = new DataFlowExtensionMethodCaller(new DataFlowExtensionMethodWrapperMock());
@@ -303,11 +296,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         private StartupProjectRegistrar CreateInstance(
-            SVsServiceProvider serviceProvider,
+            IVsService<SVsStartupProjectsListService, IVsStartupProjectsListService> startupProjectsListService,
             ActiveConfiguredProject<StartupProjectRegistrar.DebuggerLaunchProviders> launchProviders)
         {
             return new StartupProjectRegistrar(
-                serviceProvider,
+                startupProjectsListService,
                 IProjectThreadingServiceFactory.Create(),
                 IActiveConfiguredProjectSubscriptionServiceFactory.CreateInstance(),
                 launchProviders);

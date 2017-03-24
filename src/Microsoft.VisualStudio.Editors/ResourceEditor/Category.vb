@@ -82,7 +82,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If AssociatedResourceTypeEditors IsNot Nothing Then
                 _associatedResourceTypeEditors = AssociatedResourceTypeEditors
             Else
-                _associatedResourceTypeEditors = New ResourceTypeEditor() {}
+                _associatedResourceTypeEditors = Array.Empty(Of ResourceTypeEditor)
             End If
         End Sub
 
