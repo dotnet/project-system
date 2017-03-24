@@ -20,9 +20,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public void Constructor_NullAsProjectVsServices_ThrowsArgumentNull()
+        public void Constructor_NullAsThreadingService_ThrowsArgumentNull()
         {
-            Assert.Throws<ArgumentNullException>("projectVsServices", () =>
+            Assert.Throws<ArgumentNullException>("threadingService", () =>
             {
                 GetVsLangProjectPropertiesProvider(Mock.Of<VSProject>());
             });
