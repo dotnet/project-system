@@ -112,9 +112,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             return Task.CompletedTask;
         }
 
-        private void RemoveSourceFile(string fullPath, IWorkspaceProjectContext context)
+        private void RemoveSourceFile(string filePath, IWorkspaceProjectContext context)
         {
-            fullPath = _project.MakeRooted(fullPath);
+            string fullPath = _project.MakeRooted(filePath);
 
             if (_sourceFilesByContext.TryGetValue(context, out HashSet<string> sourceFiles) && sourceFiles.Remove(fullPath))
             {
@@ -122,9 +122,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             }
         }
 
-        private void AddSourceFile(string fullPath, IWorkspaceProjectContext context, bool isActiveContext, IProjectTreeServiceState state = null)
+        private void AddSourceFile(string filePath, IWorkspaceProjectContext context, bool isActiveContext, IProjectTreeServiceState state = null)
         {
-            fullPath = _project.MakeRooted(fullPath);
+            string fullPath = _project.MakeRooted(filePath);
 
             if (!_sourceFilesByContext.TryGetValue(context, out HashSet<string> sourceFiles))
             {
