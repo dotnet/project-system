@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.ProjectSystem.Build;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
@@ -40,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             if(!string.IsNullOrWhiteSpace(targetFrameworks))
             {
-                return TargetFrameworkProjectConfigurationDimensionProvider.ParseTargetFrameworks(targetFrameworks).ToList();
+                return MsBuildUtilities.GetPropertyValues(targetFrameworks).ToList();
             }
             return null;
         }

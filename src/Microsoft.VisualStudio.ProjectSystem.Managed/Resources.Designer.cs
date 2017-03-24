@@ -97,6 +97,24 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The specified value to remove &apos;{0}&apos; was not present in the property &apos;{1}&apos;.
+        /// </summary>
+        internal static string MsBuildMissingValueToRemove {
+            get {
+                return ResourceManager.GetString("MsBuildMissingValueToRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The specified value to rename &apos;{0}&apos; was not present in the property &apos;{1}&apos;.
+        /// </summary>
+        internal static string MsBuildMissingValueToRename {
+            get {
+                return ResourceManager.GetString("MsBuildMissingValueToRename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start.
         /// </summary>
         internal static string NoActionProfileName {
