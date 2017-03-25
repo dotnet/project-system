@@ -14,7 +14,7 @@ using SVsServiceProvider = Microsoft.VisualStudio.Shell.SVsServiceProvider;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
     [Export(typeof(IVsContainedLanguageComponentsFactory))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     internal class VsContainedLanguageComponentsFactory : OnceInitializedOnceDisposedAsync, IVsContainedLanguageComponentsFactory
     {
         private readonly SVsServiceProvider _serviceProvider;

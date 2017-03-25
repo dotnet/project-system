@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     ///     Handles changes to the  &lt;AdditionalFiles/&gt; item during design-time builds.
     /// </summary>
     [Export(typeof(ILanguageServiceCommandLineHandler))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
     internal class AdditionalFilesItemHandler : ILanguageServiceCommandLineHandler
     {
         [ImportingConstructor]

@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// be shared by all configured projects, each of which will get its own <see cref="ImplicitProjectPropertiesProvider"/>.
     /// </summary>
     [Export(typeof(ImplicitProjectPropertiesStore<,>))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     internal class ImplicitProjectPropertiesStore<T1, T2> : ConcurrentDictionary<T1, T2>
     {
         // We import UnconfiguredProject here to ensure that we're loaded into the UnconfiguredProject scope.

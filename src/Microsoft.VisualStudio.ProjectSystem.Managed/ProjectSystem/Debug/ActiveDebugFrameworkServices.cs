@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// Providers a wrapper around the what is considered the active debugging framework.
     /// </summary>
     [Export(typeof(IActiveDebugFrameworkServices))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     internal class ActiveDebugFrameworkServices : IActiveDebugFrameworkServices
     {
         const int MaxFrameworks = 20;

@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         }
 
         [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
-        [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+        [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
         internal Task OnProjectFactoryCompletedAsync()
         {
             // set up a subscription to listen for target framework changes

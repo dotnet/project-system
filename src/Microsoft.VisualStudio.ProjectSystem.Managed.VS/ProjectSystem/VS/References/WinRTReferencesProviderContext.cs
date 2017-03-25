@@ -5,7 +5,7 @@ using System.ComponentModel.Composition;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 {
     [ExportIVsReferenceManagerUserAsync(VSConstants.PlatformReferenceProvider_string, ReferencePriority.Platform)]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     [Order(OverrideCPSProvider)]
     internal class WinRTReferencesProviderContext : BaseReferenceContextProvider
     {

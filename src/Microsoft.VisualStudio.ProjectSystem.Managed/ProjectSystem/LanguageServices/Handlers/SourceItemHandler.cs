@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     /// </summary>
     [Export(typeof(ILanguageServiceCommandLineHandler))]
     [Export(typeof(ILanguageServiceRuleHandler))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
     internal class SourceItemHandler : AbstractLanguageServiceRuleHandler, ILanguageServiceCommandLineHandler
     {
         // When a source file has been added/removed from a project, we'll receive notifications for it twice; once

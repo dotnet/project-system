@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
     ///     <see cref="IProjectImageProvider"/>.
     /// </summary>
     [Export]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     internal class ProjectImageProviderAggregator : IProjectImageProvider
     {
         [ImportingConstructor]

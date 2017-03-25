@@ -28,9 +28,6 @@
     </PropertyPageSchema>
 
     <ProjectCapability Include="FSharp;Managed"/>
-    <!--HACK: Adding the C# capability as a big hack to make all the components light up. This should be removed and all components need to be audited to see which of them will
-        apply to F# -->
-    <ProjectCapability Include="CSharp"/>
   </ItemGroup>
 
   <!-- Targets -->
