@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.VS.Editor;
+using Microsoft.VisualStudio.ProjectSystem.VS.Telemetry;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
 {
@@ -16,20 +17,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         protected readonly string _dimensionName;
         protected readonly string _propertyName;
         protected readonly IProjectXmlAccessor _projectXmlAccessor;
+        protected readonly ITelemetryService _telemetryService;
+        protected readonly bool _valueContainsPii;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseProjectConfigurationDimensionProvider"/> class.
         /// </summary>
         /// <param name="projectXmlAccessor">Lock service for the project file.</param>
+        /// <param name="telemetryService">Telemetry service.</param>
         /// <param name="dimensionName">Name of the dimension.</param>
         /// <param name="propertyName">Name of the project property containing the dimension values.</param>
-        public BaseProjectConfigurationDimensionProvider(IProjectXmlAccessor projectXmlAccessor, string dimensionName, string propertyName)
+        /// <param name="valueContainsPii">Value indicating wherther the dimension values contain pii and should be hashed for telemetry.</param>
+        public BaseProjectConfigurationDimensionProvider(IProjectXmlAccessor projectXmlAccessor, ITelemetryService telemetryService, string dimensionName, string propertyName, bool valueContainsPii)
         {
             Requires.NotNull(projectXmlAccessor, nameof(projectXmlAccessor));
             _projectXmlAccessor = projectXmlAccessor;
 
+            Requires.NotNull(projectXmlAccessor, nameof(telemetryService));
+            _telemetryService = telemetryService;
+
             _dimensionName = dimensionName;
             _propertyName = propertyName;
+            _valueContainsPii = valueContainsPii;
         }
 
         /// <summary>
@@ -129,6 +138,70 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         protected async Task<string> GetPropertyValue(UnconfiguredProject unconfiguredProject)
         {
             return await _projectXmlAccessor.GetEvaluatedPropertyValue(unconfiguredProject, _propertyName).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Adds a dimension value to the project.
+        /// </summary>
+        /// <param name="unconfiguredProject">Unconfigured project for which the configuration change.</param>
+        /// <param name="dimensionValue">Name of the new dimension value.</param>
+        /// <returns>A task for the async operation.</returns>
+        protected async Task OnDimensionValueAddedAsync(UnconfiguredProject unconfiguredProject, string dimensionValue)
+        {
+            string evaluatedPropertyValue = await GetPropertyValue(unconfiguredProject).ConfigureAwait(false);
+            await _projectXmlAccessor.ExecuteInWriteLock(msbuildProject =>
+            {
+                MsBuildUtilities.AppendPropertyValue(msbuildProject, evaluatedPropertyValue, _propertyName, dimensionValue);
+            }).ConfigureAwait(false);
+
+            _telemetryService.PostProperty($"DimensionChanged/{_dimensionName}/Add", "Value", HashValueIfNeeded(dimensionValue), unconfiguredProject);
+        }
+
+        /// <summary>
+        /// Removes a dimension value from the project.
+        /// </summary>
+        /// <param name="unconfiguredProject">Unconfigured project for which the configuration change.</param>
+        /// <param name="dimensionValue">Name of the deleted dimension value.</param>
+        /// <returns>A task for the async operation.</returns>
+        protected async Task OnDimensionValueRemovedAsync(UnconfiguredProject unconfiguredProject, string dimensionValue)
+        {
+            string evaluatedPropertyValue = await GetPropertyValue(unconfiguredProject).ConfigureAwait(false);
+            await _projectXmlAccessor.ExecuteInWriteLock(msbuildProject =>
+            {
+                MsBuildUtilities.RemovePropertyValue(msbuildProject, evaluatedPropertyValue, _propertyName, dimensionValue);
+            }).ConfigureAwait(false);
+
+            _telemetryService.PostProperty($"DimensionChanged/{_dimensionName}/Remove", "Value", HashValueIfNeeded(dimensionValue), unconfiguredProject);
+        }
+
+
+        /// <summary>
+        /// Renames an existing dimension value in the project.
+        /// </summary>
+        /// <param name="unconfiguredProject">Unconfigured project for which the configuration change.</param>
+        /// <param name="oldName">Original name of the dimension value.</param>
+        /// <param name="newName">New name of the dimension value.</param>
+        /// <returns>A task for the async operation.</returns>
+        protected async Task OnDimensionValueRenamedAsync(UnconfiguredProject unconfiguredProject, string oldName, string newName)
+        {
+            string evaluatedPropertyValue = await GetPropertyValue(unconfiguredProject).ConfigureAwait(false);
+            await _projectXmlAccessor.ExecuteInWriteLock(msbuildProject =>
+            {
+                MsBuildUtilities.RenamePropertyValue(msbuildProject, evaluatedPropertyValue, _propertyName, oldName, newName);
+            }).ConfigureAwait(false);
+
+            List<(string propertyName, string propertyValue)> properties = new List<(string propertyName, string propertyValue)>()
+            {
+                ("OldValue", HashValueIfNeeded(oldName)),
+                ("NewValue", HashValueIfNeeded(newName)),
+            };
+
+            _telemetryService.PostProperties($"DimensionChanged/{_dimensionName}/Rename", properties, unconfiguredProject);
+        }
+
+        private string HashValueIfNeeded(string value)
+        {
+            return _valueContainsPii ? _telemetryService.HashValue(value) : value;
         }
     }
 }
