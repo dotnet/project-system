@@ -5,7 +5,7 @@ The following is a list of known compability issues and behavioral differences b
 ## Builds
 
 ### Design-time builds are run out-of-process.
-Similar to normal builds, the new project system runs [Design-time builds](design-time-builds.md) in a separate process instead of within the Visual Studio process. This means that tasks and assemblies adhere to the same binding policy regardless of whether they loaded in a design-time build or a normal build.
+Similar to normal builds, the new project system runs [design-time builds](design-time-builds.md) in a separate process instead of within the Visual Studio process. This means that tasks and assemblies adhere to the same binding policy regardless of whether they loaded in a design-time build or a normal build.
 
 
 ### Design-time builds are asynchronous.
