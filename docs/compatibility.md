@@ -17,5 +17,5 @@ In the new project system design-time builds are asynchronous, and are not guara
 Design-time build errors and warnings appear in the Error List alongside a normal build's errors and warnings. This might result in warnings and errors showing up that we're previously hidden by the legacy project system.
 
 ### Design-time builds might run targets in the same build
-For performance reasons, the new project system will group and run multiple targets together in the same build which might result in different behavior for targets that incomplete or inaccurate target dependencies.
+For performance reasons, the new project system will group and run multiple targets together in the same build which might result in different behavior for targets that have incomplete or inaccurate target dependencies.
 
