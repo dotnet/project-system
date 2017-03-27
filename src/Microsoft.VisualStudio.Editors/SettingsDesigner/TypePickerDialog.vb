@@ -295,7 +295,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub m_OkButton_Click(sender As Object, e As EventArgs) Handles m_OkButton.Click
+        Private Sub OnOkButtonClick(sender As Object, e As EventArgs) Handles m_OkButton.Click
             If QueryClose() Then
                 DialogResult = DialogResult.OK
                 Hide()

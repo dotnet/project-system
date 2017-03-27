@@ -654,7 +654,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' We use this to know when the user has moved off of the designer.  When this happens,
         '''   we know it's time to commit pending changes on that designer.
         ''' </remarks>
-        Private Sub m_WindowEvents_WindowActivated(GotFocus As EnvDTE.Window, LostFocus As EnvDTE.Window) Handles m_WindowEvents.WindowActivated
+        Private Sub OnWindowEventsWindowActivated(GotFocus As EnvDTE.Window, LostFocus As EnvDTE.Window) Handles m_WindowEvents.WindowActivated
             Dim ThisProjectItem As EnvDTE.ProjectItem
 
             Try
@@ -687,7 +687,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Dim GotFocusProjectItem As EnvDTE.ProjectItem = Nothing
                 Try
                     GotFocusProjectItem = GotFocus.ProjectItem
-                Catch ex As Exception When ReportWithoutCrash(ex, NameOf(m_WindowEvents_WindowActivated), NameOf(BaseDesignerLoader))
+                Catch ex As Exception When ReportWithoutCrash(ex, NameOf(OnWindowEventsWindowActivated), NameOf(BaseDesignerLoader))
                 End Try
 
                 If GotFocusProjectItem Is ThisProjectItem Then

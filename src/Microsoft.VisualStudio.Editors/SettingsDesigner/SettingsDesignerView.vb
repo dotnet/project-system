@@ -958,7 +958,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Get
         End Property
 
-        Private Sub m_SettingsGridView_CellStateChanged(sender As Object, e As DataGridViewCellStateChangedEventArgs) Handles m_SettingsGridView.CellStateChanged
+        Private Sub OnSettingsGridViewCellStateChanged(sender As Object, e As DataGridViewCellStateChangedEventArgs) Handles m_SettingsGridView.CellStateChanged
             If SelectionService IsNot Nothing Then
                 Dim SelectedComponents As New Hashtable()
                 For Each cell As DataGridViewCell In m_SettingsGridView.SelectedCells
@@ -972,7 +972,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
         End Sub
 
-        Private Sub m_SettingsGridView_RowStateChanged(sender As Object, e As DataGridViewRowStateChangedEventArgs) Handles m_SettingsGridView.RowStateChanged
+        Private Sub OnSettingsGridViewRowStateChanged(sender As Object, e As DataGridViewRowStateChangedEventArgs) Handles m_SettingsGridView.RowStateChanged
             If SelectionService IsNot Nothing Then
                 Dim SelectedComponents As New Hashtable()
 
@@ -997,7 +997,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub m_SettingsGridView_UserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs) Handles m_SettingsGridView.UserDeletingRow
+        Private Sub OnSettingsGridViewUserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs) Handles m_SettingsGridView.UserDeletingRow
             If m_SettingsGridView.SelectedRows.Count = 0 AndAlso e.Row.IsNewRow Then
                 ' The user cancelled an edit of the new row - we should not prevent the 
                 ' datagridview from doing its magic and delete the new row...
@@ -1026,7 +1026,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub m_SettingsGridView_UserDeletedRow(sender As Object, e As DataGridViewRowEventArgs) Handles m_SettingsGridView.UserDeletedRow
+        Private Sub OnSettingsGridViewUserDeletedRow(sender As Object, e As DataGridViewRowEventArgs) Handles m_SettingsGridView.UserDeletedRow
             Dim InstanceToDelete As DesignTimeSettingInstance = CType(e.Row.Tag, DesignTimeSettingInstance)
             If InstanceToDelete IsNot Nothing Then
                 Settings.Remove(InstanceToDelete)
@@ -1065,7 +1065,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub m_SettingsGridView_CellValidating(sender As Object, e As DataGridViewCellValidatingEventArgs) Handles m_SettingsGridView.CellValidating
+        Private Sub OnSettingsGridViewCellValidating(sender As Object, e As DataGridViewCellValidatingEventArgs) Handles m_SettingsGridView.CellValidating
             ' We can get into this when delay-disposing due to project reloads...
             If Disposing Then Return
 
@@ -1115,7 +1115,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub m_SettingsGridView_CellValidated(sender As Object, e As DataGridViewCellEventArgs) Handles m_SettingsGridView.CellValidated
+        Private Sub OnSettingsGridViewCellValidated(sender As Object, e As DataGridViewCellEventArgs) Handles m_SettingsGridView.CellValidated
             If Disposing Then
                 Return
             End If
@@ -1207,7 +1207,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Try
         End Sub
 
-        Private Sub m_SettingsGridView_CellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs) Handles m_SettingsGridView.CellFormatting
+        Private Sub OnSettingsGridViewCellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs) Handles m_SettingsGridView.CellFormatting
             ' If the column is the Scope column, check the
             ' value.
             If e.ColumnIndex = s_scopeColumnNo Then
@@ -1220,7 +1220,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
         End Sub
 
-        Private Sub m_SettingsGridView_OnEditingControlShowing(sender As Object, e As DataGridViewEditingControlShowingEventArgs) Handles m_SettingsGridView.EditingControlShowing
+        Private Sub OnSettingsGridViewOnEditingControlShowing(sender As Object, e As DataGridViewEditingControlShowingEventArgs) Handles m_SettingsGridView.EditingControlShowing
             ' Work-around for VsWhidbey 228617
             Dim tb As TextBox = TryCast(e.Control, TextBox)
             If tb IsNot Nothing Then
@@ -1235,7 +1235,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub m_SettingsGridView_OnCellClickBeginEdit(sender As Object, e As CancelEventArgs) Handles m_SettingsGridView.CellClickBeginEdit
+        Private Sub OnSettingsGridViewOnCellClickBeginEdit(sender As Object, e As CancelEventArgs) Handles m_SettingsGridView.CellClickBeginEdit
             If DesignerLoader IsNot Nothing Then
                 e.Cancel = Not DesignerLoader.OkToEdit()
             End If
@@ -1249,7 +1249,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub m_SettingsGridView_CellBeginEdit(sender As Object, e As DataGridViewCellCancelEventArgs) Handles m_SettingsGridView.CellBeginEdit
+        Private Sub OnSettingsGridViewCellBeginEdit(sender As Object, e As DataGridViewCellCancelEventArgs) Handles m_SettingsGridView.CellBeginEdit
             ' Check out , but we can't check out if resource file is readonly
             If (Not InDesignMode()) OrElse (DesignerLoader.IsReadOnly) OrElse (Not EnsureCheckedOut()) Then
                 e.Cancel = True
@@ -1323,7 +1323,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks>Shouldn't have to do this, but it seems that the tag property of the new row is copied from the previous row</remarks>
-        Private Sub m_SettingsGridView_UserAddedRow(sender As Object, e As DataGridViewRowEventArgs) Handles m_SettingsGridView.UserAddedRow
+        Private Sub OnSettingsGridViewUserAddedRow(sender As Object, e As DataGridViewRowEventArgs) Handles m_SettingsGridView.UserAddedRow
             e.Row.Tag = Nothing
         End Sub
 
@@ -1333,7 +1333,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub m_SettingsGridView_DefaultValuesNeeded(sender As Object, e As DataGridViewRowEventArgs) Handles m_SettingsGridView.DefaultValuesNeeded
+        Private Sub OnSettingsGridViewDefaultValuesNeeded(sender As Object, e As DataGridViewRowEventArgs) Handles m_SettingsGridView.DefaultValuesNeeded
             Dim SampleInstance As New DesignTimeSettingInstance()
             If Not _projectSystemSupportsUserScope Then
                 SampleInstance.SetScope(DesignTimeSettingInstance.SettingScope.Application)
@@ -1426,7 +1426,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks>Kind of hacky...</remarks>
-        Private Sub m_SettingsGridView_CurrentCellDirtyStateChanged(sender As Object, e As EventArgs) Handles m_SettingsGridView.CurrentCellDirtyStateChanged
+        Private Sub OnSettingsGridViewCurrentCellDirtyStateChanged(sender As Object, e As EventArgs) Handles m_SettingsGridView.CurrentCellDirtyStateChanged
             If m_SettingsGridView.CurrentCellAddress.X = s_typeColumnNo Then
                 Dim cell As DataGridViewCell = m_SettingsGridView.CurrentCell
                 If cell IsNot Nothing Then
@@ -1455,7 +1455,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        Private Sub m_SettingsGridView_OnDataError(sender As Object, e As DataGridViewDataErrorEventArgs) Handles m_SettingsGridView.DataError
+        Private Sub OnSettingsGridViewOnDataError(sender As Object, e As DataGridViewDataErrorEventArgs) Handles m_SettingsGridView.DataError
             If Not _suppressValidationUI Then
                 Select Case e.ColumnIndex
                     Case s_valueColumnNo
@@ -2117,7 +2117,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' We are digging up the editedformattedvalue from the cell rather than serialize
         ''' the value that we get passed in every for perf. reasons...
         ''' </remarks>
-        Private Sub m_SettingsGridView_SortCompare(sender As Object, e As DataGridViewSortCompareEventArgs) Handles m_SettingsGridView.SortCompare
+        Private Sub OnSettingsGridViewSortCompare(sender As Object, e As DataGridViewSortCompareEventArgs) Handles m_SettingsGridView.SortCompare
             If e.Column.Index = s_valueColumnNo OrElse e.Column.Index = s_scopeColumnNo Then
                 Dim strVal1 As String = TryCast(m_SettingsGridView.Rows(e.RowIndex1).Cells(e.Column.Index).EditedFormattedValue, String)
                 Dim strVal2 As String = TryCast(m_SettingsGridView.Rows(e.RowIndex2).Cells(e.Column.Index).EditedFormattedValue, String)
