@@ -3,6 +3,7 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Build;
 using Microsoft.VisualStudio.ProjectSystem.VS.Editor;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
@@ -65,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
             string evaluatedPropertyValue = await GetPropertyValue(unconfiguredProject).ConfigureAwait(false);
             await _projectXmlAccessor.ExecuteInWriteLock(msbuildProject =>
             {
-                MsBuildUtilities.AppendPropertyValue(msbuildProject, evaluatedPropertyValue, _propertyName, platformName);
+                BuildUtilities.AppendPropertyValue(msbuildProject, evaluatedPropertyValue, _propertyName, platformName);
             }).ConfigureAwait(false);
         }
 
@@ -80,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
             string evaluatedPropertyValue = await GetPropertyValue(unconfiguredProject).ConfigureAwait(false);
             await _projectXmlAccessor.ExecuteInWriteLock(msbuildProject =>
             {
-                MsBuildUtilities.RemovePropertyValue(msbuildProject, evaluatedPropertyValue, _propertyName, platformName);
+                BuildUtilities.RemovePropertyValue(msbuildProject, evaluatedPropertyValue, _propertyName, platformName);
             }).ConfigureAwait(false);
         }
     }
