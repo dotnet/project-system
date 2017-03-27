@@ -4,7 +4,7 @@ using System.ComponentModel.Composition;
 using EnvDTE;
 using VSLangProj;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
     /// <summary>
     /// <see cref="VSProject"/> imports <see cref="VSLangProj.VSProject"/> provided by CPS

@@ -7,7 +7,7 @@ using VSLangProj;
 using VSLangProj110;
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
     [ProjectSystemTrait]
     public class VSProject_VSLangProjectPropertiesTests

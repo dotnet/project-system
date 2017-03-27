@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.Threading;
 using VSLangProj;
 using VSLangProj110;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
     internal partial class VSProject : VSLangProj.ProjectProperties
     {
