@@ -6,7 +6,6 @@ using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.Threading.Tasks
 {
-
     internal interface ITaskDelayScheduler : IDisposable
     {
         /// <summary>
