@@ -3,7 +3,7 @@
 using System;
 using System.IO;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Utilities
+namespace Microsoft.VisualStudio.IO
 {
     /// <summary>
     /// Simple wrapper around the FilesystemWatcher.
