@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
                     ConfigurationGeneral.PlatformProperty,
                     "ARM");
                 await provider.OnDimensionValueChangedAsync(args);
-                var property = MsBuildUtilities.GetProperty(projectFile.Project, Platforms);
+                var property = BuildUtilities.GetProperty(projectFile.Project, Platforms);
                 Assert.NotNull(property);
                 Assert.Equal("AnyCPU;x64;x86", property.Value);
 
@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
                     ConfigurationGeneral.PlatformProperty,
                     "ARM");
                 await provider.OnDimensionValueChangedAsync(args);
-                property = MsBuildUtilities.GetProperty(projectFile.Project, Platforms);
+                property = BuildUtilities.GetProperty(projectFile.Project, Platforms);
                 Assert.NotNull(property);
                 Assert.Equal("AnyCPU;x64;x86;ARM", property.Value);
             }
@@ -107,7 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
                     ConfigurationGeneral.PlatformProperty,
                     "x86");
                 await provider.OnDimensionValueChangedAsync(args);
-                var property = MsBuildUtilities.GetProperty(projectFile.Project, Platforms);
+                var property = BuildUtilities.GetProperty(projectFile.Project, Platforms);
                 Assert.NotNull(property);
                 Assert.Equal("AnyCPU;x64;x86", property.Value);
 
@@ -119,7 +119,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
                     ConfigurationGeneral.PlatformProperty,
                     "x86");
                 await provider.OnDimensionValueChangedAsync(args);
-                property = MsBuildUtilities.GetProperty(projectFile.Project, Platforms);
+                property = BuildUtilities.GetProperty(projectFile.Project, Platforms);
                 Assert.NotNull(property);
                 Assert.Equal("AnyCPU;x64", property.Value);
             }
@@ -143,7 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
                     "RenamedPlatform",
                     "x86");
                 await provider.OnDimensionValueChangedAsync(args);
-                var property = MsBuildUtilities.GetProperty(projectFile.Project, Platforms);
+                var property = BuildUtilities.GetProperty(projectFile.Project, Platforms);
                 Assert.NotNull(property);
                 Assert.Equal("AnyCPU;x64;x86", property.Value);
 
@@ -156,7 +156,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
                     "RenamedPlatform",
                     "x86");
                 await provider.OnDimensionValueChangedAsync(args);
-                property = MsBuildUtilities.GetProperty(projectFile.Project, Platforms);
+                property = BuildUtilities.GetProperty(projectFile.Project, Platforms);
                 Assert.NotNull(property);
                 Assert.Equal("AnyCPU;x64;x86", property.Value);
             }

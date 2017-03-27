@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.Build
     /// <summary>
     /// Utility class to manipulate MsBuild projects.
     /// </summary>
-    internal static class MsBuildUtilities
+    internal static class BuildUtilities
     {
         /// <summary>
         /// Gets a project property.

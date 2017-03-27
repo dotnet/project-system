@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             if(!string.IsNullOrWhiteSpace(targetFrameworks))
             {
-                return MsBuildUtilities.GetPropertyValues(targetFrameworks).ToList();
+                return BuildUtilities.GetPropertyValues(targetFrameworks).ToList();
             }
             return null;
         }

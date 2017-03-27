@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             Requires.NotNull(targetFrameworksProperty, nameof(targetFrameworksProperty));
             Requires.Range(IsCrossTargeting, nameof(targetFrameworksProperty), "This method should only be invoked for Cross targeting projects");
 
-            ImmutableArray<string> parsedTargetFrameworks = MsBuildUtilities.GetPropertyValues(targetFrameworksProperty);
+            ImmutableArray<string> parsedTargetFrameworks = BuildUtilities.GetPropertyValues(targetFrameworksProperty);
             if (parsedTargetFrameworks.Length != _configuredProjectContextsByTargetFramework.Count)
             {
                 // Different number of target frameworks.
