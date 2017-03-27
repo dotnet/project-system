@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.Composition
 {
-    internal static class IEnumerableExtensions
+    internal static class EnumerableExtensions
     {
         /// <summary>
         /// Enumerates a sequence of extensions, omitting any extensions that throw MEF exceptions.
