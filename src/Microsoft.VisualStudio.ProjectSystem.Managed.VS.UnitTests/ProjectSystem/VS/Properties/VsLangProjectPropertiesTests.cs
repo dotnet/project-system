@@ -12,149 +12,145 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     [ProjectSystemTrait]
     public class VsLangProjectPropertiesTests
     {
-        [ProjectSystemTrait]
-        public class VsLangProjectPropertiesProviderTests
+        [Fact]
+        public void Constructor_NullAsVsProject_ThrowsArgumentNull()
         {
-            [Fact]
-            public void Constructor_NullAsVsProject_ThrowsArgumentNull()
+            Assert.Throws<ArgumentNullException>("vsProject", () =>
             {
-                Assert.Throws<ArgumentNullException>("vsProject", () =>
-                {
-                    GetVsLangProjectProperties();
-                });
-            }
+                GetVsLangProjectProperties();
+            });
+        }
 
-            [Fact]
-            public void Constructor_NullAsThreadingService_ThrowsArgumentNull()
+        [Fact]
+        public void Constructor_NullAsThreadingService_ThrowsArgumentNull()
+        {
+            Assert.Throws<ArgumentNullException>("threadingService", () =>
             {
-                Assert.Throws<ArgumentNullException>("threadingService", () =>
-                {
-                    GetVsLangProjectProperties(Mock.Of<VSProject>());
-                });
-            }
+                GetVsLangProjectProperties(Mock.Of<VSProject>());
+            });
+        }
 
-            [Fact]
-            public void Constructor_NullAsProjectProperties_ThrowsArgumentNull()
+        [Fact]
+        public void Constructor_NullAsProjectProperties_ThrowsArgumentNull()
+        {
+            Assert.Throws<ArgumentNullException>("projectProperties", () =>
             {
-                Assert.Throws<ArgumentNullException>("projectProperties", () =>
-                {
-                    GetVsLangProjectProperties(Mock.Of<VSProject>(), Mock.Of<IProjectThreadingService>());
-                });
-            }
+                GetVsLangProjectProperties(Mock.Of<VSProject>(), Mock.Of<IProjectThreadingService>());
+            });
+        }
 
-            [Fact]
-            public void VsLangProjectProperties_NotNull()
+        [Fact]
+        public void VsLangProjectProperties_NotNull()
+        {
+            var properties = GetVsLangProjectProperties(Mock.Of<VSProject>(), Mock.Of<IProjectThreadingService>(), Mock.Of<ActiveConfiguredProject<ProjectProperties>>());
+            Assert.NotNull(properties);
+        }
+
+        [Fact]
+        public void VsLangProjectProperties_OutputTypeEx_Get()
+        {
+            var project = UnconfiguredProjectFactory.Create();
+            var enumValue = new Mock<IEnumValue>();
+            enumValue.Setup(s => s.DisplayName).Returns("2");
+            var data = new PropertyPageData()
             {
-                var provider = GetVsLangProjectProperties(Mock.Of<VSProject>(), Mock.Of<IProjectThreadingService>(), Mock.Of<ActiveConfiguredProject<ProjectProperties>>());
-                Assert.NotNull(provider);
-            }
+                Category = ConfigurationGeneralBrowseObject.SchemaName,
+                PropertyName = ConfigurationGeneralBrowseObject.OutputTypeExProperty,
+                Value = enumValue.Object,
+            };
 
-            [Fact]
-            public void VsLangProjectProperties_OutputTypeEx_Get()
+            var projectProperties = ProjectPropertiesFactory.Create(project, data);
+            var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
+
+            var vsLangProjectProperties = new VsLangProjectProperties(Mock.Of<VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
+            Assert.Equal(vsLangProjectProperties.OutputTypeEx, prjOutputTypeEx.prjOutputTypeEx_Library);
+        }
+
+        [Fact]
+        public void VsLangProjectProperties_OutputType_Get()
+        {
+            var project = UnconfiguredProjectFactory.Create();
+            var enumValue = new Mock<IEnumValue>();
+            enumValue.Setup(s => s.DisplayName).Returns("2");
+            var data = new PropertyPageData()
             {
-                var project = UnconfiguredProjectFactory.Create();
-                var enumValue = new Mock<IEnumValue>();
-                enumValue.Setup(s => s.DisplayName).Returns("2");
-                var data = new PropertyPageData()
-                {
-                    Category = ConfigurationGeneralBrowseObject.SchemaName,
-                    PropertyName = ConfigurationGeneralBrowseObject.OutputTypeExProperty,
-                    Value = enumValue.Object,
-                };
+                Category = ConfigurationGeneralBrowseObject.SchemaName,
+                PropertyName = ConfigurationGeneralBrowseObject.OutputTypeProperty,
+                Value = enumValue.Object,
+            };
 
-                var projectProperties = ProjectPropertiesFactory.Create(project, data);
-                var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
+            var projectProperties = ProjectPropertiesFactory.Create(project, data);
+            var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
-                var vsLangProjectProperties = new VsLangProjectProperties(Mock.Of<VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
-                Assert.Equal(vsLangProjectProperties.OutputTypeEx, prjOutputTypeEx.prjOutputTypeEx_Library);
-            }
+            var vsLangProjectProperties = new VsLangProjectProperties(Mock.Of<VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
+            Assert.Equal(vsLangProjectProperties.OutputType, prjOutputType.prjOutputTypeLibrary);
+        }
 
-            [Fact]
-            public void VsLangProjectProperties_OutputType_Get()
+        [Fact]
+        public void VsLangProjectProperties_AssemblyName_Get()
+        {
+            var project = UnconfiguredProjectFactory.Create();
+            var data = new PropertyPageData()
             {
-                var project = UnconfiguredProjectFactory.Create();
-                var enumValue = new Mock<IEnumValue>();
-                enumValue.Setup(s => s.DisplayName).Returns("2");
-                var data = new PropertyPageData()
-                {
-                    Category = ConfigurationGeneralBrowseObject.SchemaName,
-                    PropertyName = ConfigurationGeneralBrowseObject.OutputTypeProperty,
-                    Value = enumValue.Object,
-                };
+                Category = ConfigurationGeneral.SchemaName,
+                PropertyName = ConfigurationGeneral.AssemblyNameProperty,
+                Value = "Blah",
+            };
 
-                var projectProperties = ProjectPropertiesFactory.Create(project, data);
-                var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
+            var projectProperties = ProjectPropertiesFactory.Create(project, data);
+            var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
-                var vsLangProjectProperties = new VsLangProjectProperties(Mock.Of<VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
-                Assert.Equal(vsLangProjectProperties.OutputType, prjOutputType.prjOutputTypeLibrary);
-            }
+            var vsLangProjectProperties = new VsLangProjectProperties(Mock.Of<VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
+            Assert.Equal(vsLangProjectProperties.AssemblyName, "Blah");
+        }
 
-            [Fact]
-            public void VsLangProjectProperties_AssemblyName_Get()
+        [Fact]
+        public void VsLangProjectProperties_FullPath()
+        {
+            var project = UnconfiguredProjectFactory.Create();
+            var data = new PropertyPageData()
             {
-                var project = UnconfiguredProjectFactory.Create();
-                var data = new PropertyPageData()
-                {
-                    Category = ConfigurationGeneral.SchemaName,
-                    PropertyName = ConfigurationGeneral.AssemblyNameProperty,
-                    Value = "Blah",
-                };
+                Category = ConfigurationGeneral.SchemaName,
+                PropertyName = ConfigurationGeneral.TargetPathProperty,
+                Value = "somepath",
+            };
 
-                var projectProperties = ProjectPropertiesFactory.Create(project, data);
-                var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
+            var projectProperties = ProjectPropertiesFactory.Create(project, data);
+            var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
-                var vsLangProjectProperties = new VsLangProjectProperties(Mock.Of<VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
-                Assert.Equal(vsLangProjectProperties.AssemblyName, "Blah");
-            }
+            var vsLangProjectProperties = new VsLangProjectProperties(Mock.Of<VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
+            Assert.Equal(vsLangProjectProperties.FullPath, "somepath");
+        }
 
-            [Fact]
-            public void VsLangProjectProperties_FullPath()
+        [Fact]
+        public void VsLangProjectProperties_AbsoluteProjectDirectory()
+        {
+            var project = UnconfiguredProjectFactory.Create();
+            var data = new PropertyPageData()
             {
-                var project = UnconfiguredProjectFactory.Create();
-                var data = new PropertyPageData()
-                {
-                    Category = ConfigurationGeneral.SchemaName,
-                    PropertyName = ConfigurationGeneral.TargetPathProperty,
-                    Value = "somepath",
-                };
+                Category = ConfigurationGeneralBrowseObject.SchemaName,
+                PropertyName = ConfigurationGeneralBrowseObject.FullPathProperty,
+                Value = "testvalue",
+            };
 
-                var projectProperties = ProjectPropertiesFactory.Create(project, data);
-                var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
+            var projectProperties = ProjectPropertiesFactory.Create(project, data);
+            var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
-                var vsLangProjectProperties = new VsLangProjectProperties(Mock.Of<VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
-                Assert.Equal(vsLangProjectProperties.FullPath , "somepath");
-            }
+            var vsLangProjectProperties = new VsLangProjectProperties(Mock.Of<VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
+            Assert.Equal(vsLangProjectProperties.AbsoluteProjectDirectory, "testvalue");
+        }
 
-            [Fact]
-            public void VsLangProjectProperties_AbsoluteProjectDirectory()
-            {
-                var project = UnconfiguredProjectFactory.Create();
-                var data = new PropertyPageData()
-                {
-                    Category = ConfigurationGeneralBrowseObject.SchemaName,
-                    PropertyName = ConfigurationGeneralBrowseObject.FullPathProperty,
-                    Value = "testvalue",
-                };
+        [Fact]
+        public void VsLangProjectProperties_ExtenderCATID()
+        {
+            var vsLangProjectProperties = GetVsLangProjectProperties(Mock.Of<VSProject>(), Mock.Of<IProjectThreadingService>(), Mock.Of<ActiveConfiguredProject<ProjectProperties>>());
+            Assert.Null(vsLangProjectProperties.ExtenderCATID);
+        }
 
-                var projectProperties = ProjectPropertiesFactory.Create(project, data);
-                var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
-
-                var vsLangProjectProperties = new VsLangProjectProperties(Mock.Of<VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
-                Assert.Equal(vsLangProjectProperties.AbsoluteProjectDirectory, "testvalue");
-            }
-
-            [Fact]
-            public void VsLangProjectProperties_ExtenderCATID()
-            {
-                var vsLangProjectProperties = GetVsLangProjectProperties(Mock.Of<VSProject>(), Mock.Of<IProjectThreadingService>(), Mock.Of<ActiveConfiguredProject<ProjectProperties>>());
-                Assert.Null(vsLangProjectProperties.ExtenderCATID);
-            }
-
-            private static VsLangProjectProperties GetVsLangProjectProperties(
-                VSProject vsproject = null, IProjectThreadingService threadingService = null, ActiveConfiguredProject<ProjectProperties> projectProperties = null)
-            {
-                return new VsLangProjectProperties(vsproject, threadingService, projectProperties);
-            }
+        private static VsLangProjectProperties GetVsLangProjectProperties(
+            VSProject vsproject = null, IProjectThreadingService threadingService = null, ActiveConfiguredProject<ProjectProperties> projectProperties = null)
+        {
+            return new VsLangProjectProperties(vsproject, threadingService, projectProperties);
         }
     }
 }
