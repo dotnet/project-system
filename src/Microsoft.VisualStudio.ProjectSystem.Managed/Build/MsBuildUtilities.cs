@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Build.Construction;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.Build
 {
     /// <summary>
     /// Utility class to manipulate MsBuild projects.

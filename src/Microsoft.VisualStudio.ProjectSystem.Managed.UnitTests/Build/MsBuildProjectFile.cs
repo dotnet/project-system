@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using Microsoft.Build.Construction;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.Build
 {
     public class MsBuildProjectFile : IDisposable
     {

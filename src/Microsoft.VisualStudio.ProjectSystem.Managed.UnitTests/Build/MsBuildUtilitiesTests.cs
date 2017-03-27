@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.Build
 {
     [ProjectSystemTrait]
     public class MsBuildUtilitiesTests
