@@ -2,7 +2,7 @@
 
 using Moq;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Telemetry
+namespace Microsoft.VisualStudio.Telemetry
 {
     internal static class ITelemetryServiceFactory
     {
