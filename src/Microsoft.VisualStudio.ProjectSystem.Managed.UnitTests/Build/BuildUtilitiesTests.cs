@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.Build
     public class BuildUtilitiesTests
     {
         [Fact]
-        public void MsBuildUtilities_GetProperty_MissingProperty()
+        public void GetProperty_MissingProperty()
         {
             string projectXml =
 @"<Project>
@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.Build
         }
 
         [Fact]
-        public void MsBuildUtilities_GetProperty_ExistentProperty()
+        public void GetProperty_ExistentProperty()
         {
             string projectXml =
 @"<Project>
@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.Build
         }
 
         [Fact]
-        public void MsBuildUtilities_GetPropertyValues_SingleValue()
+        public void GetPropertyValues_SingleValue()
         {
             var values = BuildUtilities.GetPropertyValues("MyPropertyValue");
             Assert.Equal(1, values.Length);
@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.Build
         }
 
         [Fact]
-        public void MsBuildUtilities_GetPropertyValues_MultipleValues()
+        public void GetPropertyValues_MultipleValues()
         {
             var values = BuildUtilities.GetPropertyValues("1;2");
             Assert.Equal(2, values.Length);
@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.Build
         }
 
         [Fact]
-        public void MsBuildUtilities_GetPropertyValues_NonDefaultDelimiter()
+        public void GetPropertyValues_NonDefaultDelimiter()
         {
             var values = BuildUtilities.GetPropertyValues("1|2", '|');
             Assert.Equal(2, values.Length);
@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.Build
         }
 
         [Fact]
-        public void MsBuildUtilities_GetPropertyValues_EmptyValues()
+        public void GetPropertyValues_EmptyValues()
         {
             var values = BuildUtilities.GetPropertyValues("1;   ;;;2");
             Assert.Equal(2, values.Length);
@@ -79,7 +79,7 @@ namespace Microsoft.VisualStudio.Build
         }
 
         [Fact]
-        public void MsBuildUtilities_GetOrAddProperty_NoGroups()
+        public void GetOrAddProperty_NoGroups()
         {
             using (var project = new MsBuildProjectFile())
             {
@@ -96,7 +96,7 @@ namespace Microsoft.VisualStudio.Build
         }
 
         [Fact]
-        public void MsBuildUtilities_GetOrAddProperty_FirstGroup()
+        public void GetOrAddProperty_FirstGroup()
         {
             string projectXml =
 @"<Project>
@@ -119,7 +119,7 @@ namespace Microsoft.VisualStudio.Build
         }
 
         [Fact]
-        public void MsBuildUtilities_GetOrAddProperty_ExistingProperty()
+        public void GetOrAddProperty_ExistingProperty()
         {
             string projectXml =
 @"<Project>
@@ -143,7 +143,7 @@ namespace Microsoft.VisualStudio.Build
         }
 
         [Fact]
-        public void MsBuildUtilities_AppendPropertyValue_DefaultDelimiter()
+        public void AppendPropertyValue_DefaultDelimiter()
         {
             string projectXml =
 @"<Project>
@@ -162,7 +162,7 @@ namespace Microsoft.VisualStudio.Build
         }
 
         [Fact]
-        public void MsBuildUtilities_AppendPropertyValue_EmptyProperty()
+        public void AppendPropertyValue_EmptyProperty()
         {
             string projectXml =
 @"<Project>
@@ -181,7 +181,7 @@ namespace Microsoft.VisualStudio.Build
         }
 
         [Fact]
-        public void MsBuildUtilities_AppendPropertyValue_InheritedValue()
+        public void AppendPropertyValue_InheritedValue()
         {
             using (var project = new MsBuildProjectFile())
             {
@@ -193,7 +193,7 @@ namespace Microsoft.VisualStudio.Build
         }
 
         [Fact]
-        public void MsBuildUtilities_AppendPropertyValue_MissingProperty()
+        public void AppendPropertyValue_MissingProperty()
         {
             using (var project = new MsBuildProjectFile())
             {
@@ -205,7 +205,7 @@ namespace Microsoft.VisualStudio.Build
         }
 
         [Fact]
-        public void MsBuildUtilities_AppendPropertyValue_NonDefaultDelimiter()
+        public void AppendPropertyValue_NonDefaultDelimiter()
         {
             string projectXml =
 @"<Project>
@@ -224,7 +224,7 @@ namespace Microsoft.VisualStudio.Build
         }
 
         [Fact]
-        public void MsBuildUtilities_RemovePropertyValue_DefaultDelimiter()
+        public void RemovePropertyValue_DefaultDelimiter()
         {
             string projectXml =
 @"<Project>
@@ -243,7 +243,7 @@ namespace Microsoft.VisualStudio.Build
         }
 
         [Fact]
-        public void MsBuildUtilities_RemovePropertyValue_NonDefaultDelimiter()
+        public void RemovePropertyValue_NonDefaultDelimiter()
         {
             string projectXml =
 @"<Project>
@@ -262,7 +262,7 @@ namespace Microsoft.VisualStudio.Build
         }
 
         [Fact]
-        public void MsBuildUtilities_RemovePropertyValue_EmptyAfterRemove()
+        public void RemovePropertyValue_EmptyAfterRemove()
         {
             string projectXml =
 @"<Project>
@@ -281,7 +281,7 @@ namespace Microsoft.VisualStudio.Build
         }
 
         [Fact]
-        public void MsBuildUtilities_RemovePropertyValue_InheritedValue()
+        public void RemovePropertyValue_InheritedValue()
         {
             using (var project = new MsBuildProjectFile())
             {
@@ -293,7 +293,7 @@ namespace Microsoft.VisualStudio.Build
         }
 
         [Fact]
-        public void MsBuildUtilities_RemovePropertyValue_MissingProperty()
+        public void RemovePropertyValue_MissingProperty()
         {
             using (var project = new MsBuildProjectFile())
             {
@@ -305,7 +305,7 @@ namespace Microsoft.VisualStudio.Build
         }
 
         [Fact]
-        public void MsBuildUtilities_RenamePropertyValue_DefaultDelimiter()
+        public void RenamePropertyValue_DefaultDelimiter()
         {
             string projectXml =
 @"<Project>
@@ -324,7 +324,7 @@ namespace Microsoft.VisualStudio.Build
         }
 
         [Fact]
-        public void MsBuildUtilities_RenamePropertyValue_NonDefaultDelimiter()
+        public void RenamePropertyValue_NonDefaultDelimiter()
         {
             string projectXml =
 @"<Project>
@@ -343,7 +343,7 @@ namespace Microsoft.VisualStudio.Build
         }
 
         [Fact]
-        public void MsBuildUtilities_RenamePropertyValue_InheritedValue()
+        public void RenamePropertyValue_InheritedValue()
         {
             using (var project = new MsBuildProjectFile())
             {
@@ -355,7 +355,7 @@ namespace Microsoft.VisualStudio.Build
         }
 
         [Fact]
-        public void MsBuildUtilities_RenamePropertyValue_MissingProperty()
+        public void RenamePropertyValue_MissingProperty()
         {
             using (var project = new MsBuildProjectFile())
             {
