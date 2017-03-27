@@ -12,3 +12,9 @@ We use the same coding style conventions as outlined in [.NET Framework Coding S
 
 - For MEF parts/components, we favor constructor injection over property/field injection.
 - We flavor `IVsService<T>` and `IVsService<TService, TInterface>` over usage of `SVsServiceProvider`.
+
+## Tests
+
+- We favor a single Assert per unit test.
+- We use the `Method_Setup_Behavior` naming style for unit tests, for example, `GetProperty_NullAsName_ThrowsArgument` or `CalculateValues_WhenDisposed_ReturnsNull`
+
