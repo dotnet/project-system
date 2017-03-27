@@ -3,6 +3,7 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Build;
 using Microsoft.VisualStudio.ProjectSystem.VS.Editor;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
@@ -74,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
             string evaluatedPropertyValue = await GetPropertyValue(unconfiguredProject).ConfigureAwait(false);
             await _projectXmlAccessor.ExecuteInWriteLock(msbuildProject =>
             {
-                MsBuildUtilities.AppendPropertyValue(msbuildProject, evaluatedPropertyValue, _propertyName, configurationName);
+                BuildUtilities.AppendPropertyValue(msbuildProject, evaluatedPropertyValue, _propertyName, configurationName);
             }).ConfigureAwait(false);
         }
 
@@ -89,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
             string evaluatedPropertyValue = await GetPropertyValue(unconfiguredProject).ConfigureAwait(false);
             await _projectXmlAccessor.ExecuteInWriteLock(msbuildProject =>
             {
-                MsBuildUtilities.RemovePropertyValue(msbuildProject, evaluatedPropertyValue, _propertyName, configurationName);
+                BuildUtilities.RemovePropertyValue(msbuildProject, evaluatedPropertyValue, _propertyName, configurationName);
             }).ConfigureAwait(false);
         }
 
@@ -105,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
             string evaluatedPropertyValue = await GetPropertyValue(unconfiguredProject).ConfigureAwait(false);
             await _projectXmlAccessor.ExecuteInWriteLock(msbuildProject =>
             {
-                MsBuildUtilities.RenamePropertyValue(msbuildProject, evaluatedPropertyValue, _propertyName, oldName, newName);
+                BuildUtilities.RenamePropertyValue(msbuildProject, evaluatedPropertyValue, _propertyName, oldName, newName);
             }).ConfigureAwait(false);
         }
     }

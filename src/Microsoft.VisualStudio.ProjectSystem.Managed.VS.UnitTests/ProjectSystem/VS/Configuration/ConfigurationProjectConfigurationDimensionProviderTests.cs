@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Linq;
+using Microsoft.VisualStudio.Build;
 using Microsoft.VisualStudio.ProjectSystem.VS.Editor;
 using Xunit;
-using System;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
 {
@@ -97,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
                     ConfigurationGeneral.ConfigurationProperty,
                     "CustomConfig");
                 await provider.OnDimensionValueChangedAsync(args);
-                var property = MsBuildUtilities.GetProperty(projectFile.Project, Configurations);
+                var property = BuildUtilities.GetProperty(projectFile.Project, Configurations);
                 Assert.NotNull(property);
                 Assert.Equal("Debug;Release;CustomConfiguration", property.Value);
 
@@ -109,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
                     ConfigurationGeneral.ConfigurationProperty,
                     "CustomConfig");
                 await provider.OnDimensionValueChangedAsync(args);
-                property = MsBuildUtilities.GetProperty(projectFile.Project, Configurations);
+                property = BuildUtilities.GetProperty(projectFile.Project, Configurations);
                 Assert.NotNull(property);
                 Assert.Equal("Debug;Release;CustomConfiguration;CustomConfig", property.Value);
             }
@@ -132,7 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
                     ConfigurationGeneral.ConfigurationProperty,
                     "CustomConfiguration");
                 await provider.OnDimensionValueChangedAsync(args);
-                var property = MsBuildUtilities.GetProperty(projectFile.Project, Configurations);
+                var property = BuildUtilities.GetProperty(projectFile.Project, Configurations);
                 Assert.NotNull(property);
                 Assert.Equal("Debug;Release;CustomConfiguration", property.Value);
 
@@ -144,7 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
                     ConfigurationGeneral.ConfigurationProperty,
                     "CustomConfiguration");
                 await provider.OnDimensionValueChangedAsync(args);
-                property = MsBuildUtilities.GetProperty(projectFile.Project, Configurations);
+                property = BuildUtilities.GetProperty(projectFile.Project, Configurations);
                 Assert.NotNull(property);
                 Assert.Equal("Debug;Release", property.Value);
             }
@@ -166,7 +167,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
                     ConfigurationGeneral.ConfigurationProperty,
                     "NonExistantConfiguration");
                 await Assert.ThrowsAsync<ArgumentException>(() => provider.OnDimensionValueChangedAsync(args));
-                var property = MsBuildUtilities.GetProperty(projectFile.Project, Configurations);
+                var property = BuildUtilities.GetProperty(projectFile.Project, Configurations);
                 Assert.NotNull(property);
                 Assert.Equal("Debug;Release;CustomConfiguration", property.Value);
             }
@@ -190,7 +191,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
                     "RenamedConfiguration",
                     "CustomConfiguration");
                 await provider.OnDimensionValueChangedAsync(args);
-                var property = MsBuildUtilities.GetProperty(projectFile.Project, Configurations);
+                var property = BuildUtilities.GetProperty(projectFile.Project, Configurations);
                 Assert.NotNull(property);
                 Assert.Equal("Debug;Release;CustomConfiguration", property.Value);
 
@@ -203,7 +204,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
                     "RenamedConfiguration",
                     "CustomConfiguration");
                 await provider.OnDimensionValueChangedAsync(args);
-                property = MsBuildUtilities.GetProperty(projectFile.Project, Configurations);
+                property = BuildUtilities.GetProperty(projectFile.Project, Configurations);
                 Assert.NotNull(property);
                 Assert.Equal("Debug;Release;RenamedConfiguration", property.Value);
             }
@@ -226,7 +227,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
                     "RenamedConfiguration",
                     "NonExistantConfiguration");
                 await Assert.ThrowsAsync<ArgumentException>(() => provider.OnDimensionValueChangedAsync(args));
-                var property = MsBuildUtilities.GetProperty(projectFile.Project, Configurations);
+                var property = BuildUtilities.GetProperty(projectFile.Project, Configurations);
                 Assert.NotNull(property);
                 Assert.Equal("Debug;Release;CustomConfiguration", property.Value);
             }

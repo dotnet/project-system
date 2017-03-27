@@ -3,6 +3,7 @@
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Build;
 using Microsoft.VisualStudio.ProjectSystem.VS.Editor;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
@@ -40,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
             else
             {
                 string targetFrameworksProperty = await _projectXmlAccessor.GetEvaluatedPropertyValue(project, ConfigurationGeneral.TargetFrameworksProperty).ConfigureAwait(true);
-                return MsBuildUtilities.GetPropertyValues(targetFrameworksProperty);
+                return BuildUtilities.GetPropertyValues(targetFrameworksProperty);
             }
         }
 

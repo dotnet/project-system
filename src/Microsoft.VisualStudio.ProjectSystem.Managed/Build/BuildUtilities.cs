@@ -6,12 +6,12 @@ using System.Linq;
 using System.Text;
 using Microsoft.Build.Construction;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.Build
 {
     /// <summary>
     /// Utility class to manipulate MsBuild projects.
     /// </summary>
-    internal abstract class MsBuildUtilities
+    internal static class BuildUtilities
     {
         /// <summary>
         /// Gets a project property.

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Linq;
+using Microsoft.VisualStudio.Build;
 using Microsoft.VisualStudio.ProjectSystem.VS.Editor;
 using Xunit;
 
@@ -99,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
                 var provider = new TargetFrameworkProjectConfigurationDimensionProvider(_projectXmlAccessor);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
-                var property = MsBuildUtilities.GetProperty(projectFile.Project, ConfigurationGeneral.TargetFrameworksProperty);
+                var property = BuildUtilities.GetProperty(projectFile.Project, ConfigurationGeneral.TargetFrameworksProperty);
                 string expectedTFMs = property.Value;
 
                 ProjectConfigurationDimensionValueChangedEventArgs args = new ProjectConfigurationDimensionValueChangedEventArgs(
