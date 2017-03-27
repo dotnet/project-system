@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.VS.Editor;
+using Microsoft.VisualStudio.ProjectSystem.VS.Telemetry;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
 {
@@ -22,8 +23,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
     internal class TargetFrameworkProjectConfigurationDimensionProvider : BaseProjectConfigurationDimensionProvider
     {
         [ImportingConstructor]
-        public TargetFrameworkProjectConfigurationDimensionProvider(IProjectXmlAccessor projectXmlAccessor)
-            : base(projectXmlAccessor, ConfigurationGeneral.TargetFrameworkProperty, ConfigurationGeneral.TargetFrameworksProperty)
+        public TargetFrameworkProjectConfigurationDimensionProvider(IProjectXmlAccessor projectXmlAccessor, ITelemetryService telemetryService)
+            : base(projectXmlAccessor, telemetryService, ConfigurationGeneral.TargetFrameworkProperty, ConfigurationGeneral.TargetFrameworksProperty, valueContainsPii: false)
         {
         }
 

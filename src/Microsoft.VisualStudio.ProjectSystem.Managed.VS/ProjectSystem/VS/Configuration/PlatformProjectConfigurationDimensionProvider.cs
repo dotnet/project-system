@@ -4,6 +4,7 @@ using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.VS.Editor;
+using Microsoft.VisualStudio.ProjectSystem.VS.Telemetry;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
 {
@@ -22,8 +23,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
     internal class PlatformProjectConfigurationDimensionProvider : BaseProjectConfigurationDimensionProvider
     {
         [ImportingConstructor]
-        public PlatformProjectConfigurationDimensionProvider(IProjectXmlAccessor projectXmlAccessor)
-            : base(projectXmlAccessor, ConfigurationGeneral.PlatformProperty, "Platforms")
+        public PlatformProjectConfigurationDimensionProvider(IProjectXmlAccessor projectXmlAccessor, ITelemetryService telemetryService)
+            : base(projectXmlAccessor, telemetryService, ConfigurationGeneral.PlatformProperty, "Platforms", valueContainsPii: false)
         {
         }
 
@@ -41,10 +42,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
                     switch (args.Change)
                     {
                         case ConfigurationDimensionChange.Add:
-                            await OnPlatformAddedAsync(args.Project, args.DimensionValue).ConfigureAwait(false);
+                            await OnDimensionValueAddedAsync(args.Project, args.DimensionValue).ConfigureAwait(false);
                             break;
                         case ConfigurationDimensionChange.Delete:
-                            await OnPlatformDeletedAsync(args.Project, args.DimensionValue).ConfigureAwait(false);
+                            await OnDimensionValueRemovedAsync(args.Project, args.DimensionValue).ConfigureAwait(false);
                             break;
                         case ConfigurationDimensionChange.Rename:
                             // Platform doesn't currently supports rename, this should never be called.
@@ -52,36 +53,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Adds a platform to the project.
-        /// </summary>
-        /// <param name="unconfiguredProject">Unconfigured project for which the configuration change.</param>
-        /// <param name="platformName">Name of the new platform.</param>
-        /// <returns>A task for the async operation.</returns>
-        private async Task OnPlatformAddedAsync(UnconfiguredProject unconfiguredProject, string platformName)
-        {
-            string evaluatedPropertyValue = await GetPropertyValue(unconfiguredProject).ConfigureAwait(false);
-            await _projectXmlAccessor.ExecuteInWriteLock(msbuildProject =>
-            {
-                MsBuildUtilities.AppendPropertyValue(msbuildProject, evaluatedPropertyValue, _propertyName, platformName);
-            }).ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Removes a platform from the project.
-        /// </summary>
-        /// <param name="unconfiguredProject">Unconfigured project for which the configuration change.</param>
-        /// <param name="platformName">Name of the deleted platform.</param>
-        /// <returns>A task for the async operation.</returns>
-        private async Task OnPlatformDeletedAsync(UnconfiguredProject unconfiguredProject, string platformName)
-        {
-            string evaluatedPropertyValue = await GetPropertyValue(unconfiguredProject).ConfigureAwait(false);
-            await _projectXmlAccessor.ExecuteInWriteLock(msbuildProject =>
-            {
-                MsBuildUtilities.RemovePropertyValue(msbuildProject, evaluatedPropertyValue, _propertyName, platformName);
-            }).ConfigureAwait(false);
         }
     }
 }

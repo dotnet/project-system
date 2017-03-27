@@ -2,6 +2,7 @@
 
 using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.VS.Editor;
+using Microsoft.VisualStudio.ProjectSystem.VS.Telemetry;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
@@ -24,7 +25,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
             using (var projectFile = new MsBuildProjectFile(projectXml))
             {
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
-                var provider = new PlatformProjectConfigurationDimensionProvider(_projectXmlAccessor);
+                ITelemetryService _telemetryService = ITelemetryServiceFactory.Create();
+                var provider = new PlatformProjectConfigurationDimensionProvider(_projectXmlAccessor, _telemetryService);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
                 var values = await provider.GetDefaultValuesForDimensionsAsync(unconfiguredProject);
                 Assert.Equal(1, values.Count());
@@ -40,7 +42,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
             using (var projectFile = new MsBuildProjectFile(projectXml))
             {
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
-                var provider = new PlatformProjectConfigurationDimensionProvider(_projectXmlAccessor);
+                ITelemetryService _telemetryService = ITelemetryServiceFactory.Create();
+                var provider = new PlatformProjectConfigurationDimensionProvider(_projectXmlAccessor, _telemetryService);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
                 var values = await provider.GetProjectConfigurationDimensionsAsync(unconfiguredProject);
                 Assert.Equal(1, values.Count());
@@ -60,7 +63,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
             using (var projectFile = new MsBuildProjectFile(projectXml))
             {
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
-                var provider = new PlatformProjectConfigurationDimensionProvider(_projectXmlAccessor);
+                ITelemetryService _telemetryService = ITelemetryServiceFactory.Create();
+                var provider = new PlatformProjectConfigurationDimensionProvider(_projectXmlAccessor, _telemetryService);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
 
                 // On ChangeEventStage.After nothing should be changed
@@ -95,7 +99,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
             using (var projectFile = new MsBuildProjectFile(projectXml))
             {
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
-                var provider = new PlatformProjectConfigurationDimensionProvider(_projectXmlAccessor);
+                ITelemetryService _telemetryService = ITelemetryServiceFactory.Create();
+                var provider = new PlatformProjectConfigurationDimensionProvider(_projectXmlAccessor, _telemetryService);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
 
                 // On ChangeEventStage.After nothing should be changed
@@ -130,7 +135,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
             using (var projectFile = new MsBuildProjectFile(projectXml))
             {
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
-                var provider = new PlatformProjectConfigurationDimensionProvider(_projectXmlAccessor);
+                ITelemetryService _telemetryService = ITelemetryServiceFactory.Create();
+                var provider = new PlatformProjectConfigurationDimensionProvider(_projectXmlAccessor, _telemetryService);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
 
                 // Nothing should happen on platform rename as it's unsupported
