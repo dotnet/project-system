@@ -2,12 +2,11 @@
 
 using System;
 using System.Threading;
-using Microsoft.VisualStudio.Threading;
+using Microsoft.VisualStudio.ProjectSystem;
 using Task = System.Threading.Tasks.Task;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Utilities
+namespace Microsoft.VisualStudio.Threading.Tasks
 {
-
     /// <summary>
     /// TaskDelayScheduler
     ///
@@ -65,8 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
                 var token = PendingUpdateTokenSource.Token;
 
                 // We want to return a joinable task so wrap the function
-                LatestScheduledTask = _threadingService.JoinableTaskFactory.RunAsync(async () =>
-                {
+                LatestScheduledTask = _threadingService.JoinableTaskFactory.RunAsync(async () => {
                     await ThrottleAsync(asyncFnctionToCall, token).ConfigureAwait(false);
                 });
                 return LatestScheduledTask;
