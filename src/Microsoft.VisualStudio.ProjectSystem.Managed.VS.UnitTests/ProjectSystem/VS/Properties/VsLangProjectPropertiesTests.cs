@@ -10,7 +10,7 @@ using Xunit;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
     [ProjectSystemTrait]
-    public class VsLangProjectPropertiesTests
+    public class VSProject_VSLangProjectPropertiesTests
     {
         [Fact]
         public void Constructor_NullAsVsProject_ThrowsArgumentNull()
@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         {
             Assert.Throws<ArgumentNullException>("threadingService", () =>
             {
-                GetVsLangProjectProperties(Mock.Of<VSProject>());
+                GetVsLangProjectProperties(Mock.Of<VSLangProj.VSProject>());
             });
         }
 
@@ -35,14 +35,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         {
             Assert.Throws<ArgumentNullException>("projectProperties", () =>
             {
-                GetVsLangProjectProperties(Mock.Of<VSProject>(), Mock.Of<IProjectThreadingService>());
+                GetVsLangProjectProperties(Mock.Of<VSLangProj.VSProject>(), Mock.Of<IProjectThreadingService>());
             });
         }
 
         [Fact]
         public void VsLangProjectProperties_NotNull()
         {
-            var properties = GetVsLangProjectProperties(Mock.Of<VSProject>(), Mock.Of<IProjectThreadingService>(), Mock.Of<ActiveConfiguredProject<ProjectProperties>>());
+            var properties = GetVsLangProjectProperties(Mock.Of<VSLangProj.VSProject>(), Mock.Of<IProjectThreadingService>(), Mock.Of<ActiveConfiguredProject<ProjectProperties>>());
             Assert.NotNull(properties);
         }
 
@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             var projectProperties = ProjectPropertiesFactory.Create(project, data);
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
-            var vsLangProjectProperties = new VsLangProjectProperties(Mock.Of<VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
+            var vsLangProjectProperties = new VSProject(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
             Assert.Equal(vsLangProjectProperties.OutputTypeEx, prjOutputTypeEx.prjOutputTypeEx_Library);
         }
 
@@ -82,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             var projectProperties = ProjectPropertiesFactory.Create(project, data);
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
-            var vsLangProjectProperties = new VsLangProjectProperties(Mock.Of<VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
+            var vsLangProjectProperties = new VSProject(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
             Assert.Equal(vsLangProjectProperties.OutputType, prjOutputType.prjOutputTypeLibrary);
         }
 
@@ -100,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             var projectProperties = ProjectPropertiesFactory.Create(project, data);
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
-            var vsLangProjectProperties = new VsLangProjectProperties(Mock.Of<VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
+            var vsLangProjectProperties = new VSProject(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
             Assert.Equal(vsLangProjectProperties.AssemblyName, "Blah");
         }
 
@@ -118,7 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             var projectProperties = ProjectPropertiesFactory.Create(project, data);
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
-            var vsLangProjectProperties = new VsLangProjectProperties(Mock.Of<VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
+            var vsLangProjectProperties = new VSProject(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
             Assert.Equal(vsLangProjectProperties.FullPath, "somepath");
         }
 
@@ -136,21 +136,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             var projectProperties = ProjectPropertiesFactory.Create(project, data);
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
-            var vsLangProjectProperties = new VsLangProjectProperties(Mock.Of<VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
+            var vsLangProjectProperties = new VSProject(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
             Assert.Equal(vsLangProjectProperties.AbsoluteProjectDirectory, "testvalue");
         }
 
         [Fact]
         public void VsLangProjectProperties_ExtenderCATID()
         {
-            var vsLangProjectProperties = GetVsLangProjectProperties(Mock.Of<VSProject>(), Mock.Of<IProjectThreadingService>(), Mock.Of<ActiveConfiguredProject<ProjectProperties>>());
+            var vsLangProjectProperties = GetVsLangProjectProperties(Mock.Of<VSLangProj.VSProject>(), Mock.Of<IProjectThreadingService>(), Mock.Of<ActiveConfiguredProject<ProjectProperties>>());
             Assert.Null(vsLangProjectProperties.ExtenderCATID);
         }
 
-        private static VsLangProjectProperties GetVsLangProjectProperties(
-            VSProject vsproject = null, IProjectThreadingService threadingService = null, ActiveConfiguredProject<ProjectProperties> projectProperties = null)
+        private static VSProject GetVsLangProjectProperties(
+            VSLangProj.VSProject vsproject = null, IProjectThreadingService threadingService = null, ActiveConfiguredProject<ProjectProperties> projectProperties = null)
         {
-            return new VsLangProjectProperties(vsproject, threadingService, projectProperties);
+            return new VSProject(vsproject, threadingService, projectProperties);
         }
     }
 }
