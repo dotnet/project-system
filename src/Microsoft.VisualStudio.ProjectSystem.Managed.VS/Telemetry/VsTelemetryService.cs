@@ -2,9 +2,8 @@
 
 using System;
 using System.ComponentModel.Composition;
-using Microsoft.VisualStudio.Telemetry;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Telemetry
+namespace Microsoft.VisualStudio.Telemetry
 {
     [Export(typeof(ITelemetryService))]
     internal class VsTelemetryService : ITelemetryService

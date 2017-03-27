@@ -1,9 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using Microsoft.VisualStudio.Telemetry;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Telemetry
+namespace Microsoft.VisualStudio.Telemetry
 {
     /// <summary>
     /// Internal as we don't want anyone who depends on us to post events to our eventId.

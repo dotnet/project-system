@@ -7,7 +7,6 @@ using System.Diagnostics.Contracts;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.ProjectSystem.VS.Telemetry;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Telemetry;
 using Task = System.Threading.Tasks.Task;
@@ -24,9 +23,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     [AppliesTo("HandlesOwnReload")]
     internal class ReloadableProject : OnceInitializedOnceDisposedAsync, IReloadableProject
     {
-        private const string ReloadResultOperationPath = "projectreload/reload-result";
-        private const string ReloadFailedNFWPath = "projectreload/reload-failure";
-
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IProjectReloadManager _reloadManager;
         private readonly ITelemetryService _telemetryService;
@@ -174,10 +170,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     TelemetryEventCorrelation[] correlations = null;
                     if (exception != null)
                     {
-                        var correlation = _telemetryService.Report(ReloadFailedNFWPath, resultSummary, exception);
+                        var correlation = _telemetryService.Report(TelemetryEvents.ReloadFailedNFWPath, resultSummary, exception);
                         correlations = new[] { correlation };
                     }
-                    _telemetryService.PostOperation(ReloadResultOperationPath, operationResult, resultSummary, correlations);
+                    _telemetryService.PostOperation(TelemetryEvents.ReloadResultOperationPath, operationResult, resultSummary, correlations);
                 }
             }
 
