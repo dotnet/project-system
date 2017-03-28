@@ -32,7 +32,7 @@
 
   <!-- Targets -->
 
-  <!-- Returns Csc command-line arguments for the language service -->
+  <!-- Returns Fsc command-line arguments for the language service -->
   <Target Name="CompileDesignTime"
           Returns="@(_CompilerCommandLineArgs)"
           DependsOnTargets="_CheckCompileDesignTimePrerequisite;Compile"
