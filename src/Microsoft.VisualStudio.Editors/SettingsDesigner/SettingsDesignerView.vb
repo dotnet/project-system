@@ -97,19 +97,19 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 #End Region
 
         ' The "actual" grid containing all settings
-        Friend WithEvents m_SettingsGridView As SettingsGridView
+        Private WithEvents _settingsGridView As SettingsGridView
 
         ' Padding used to calculate width of comboboxes to avoid getting the text
         ' truncated...
         Private Const s_internalComboBoxPadding As Integer = 10
 
-        Friend WithEvents DataGridViewTextBoxColumn1 As DataGridViewTextBoxColumn
-        Friend WithEvents DataGridViewComboBoxColumn1 As DataGridViewComboBoxColumn
-        Friend WithEvents DataGridViewComboBoxColumn2 As DataGridViewComboBoxColumn
-        Friend WithEvents DescriptionLinkLabel As VSThemedLinkLabel
+        Private WithEvents _dataGridViewTextBoxColumn1 As DataGridViewTextBoxColumn
+        Private WithEvents _dataGridViewComboBoxColumn1 As DataGridViewComboBoxColumn
+        Private WithEvents _dataGridViewComboBoxColumn2 As DataGridViewComboBoxColumn
+        Private WithEvents _descriptionLinkLabel As VSThemedLinkLabel
 
         Private _suppressValidationUI As Boolean
-        Friend WithEvents SettingsTableLayoutPanel As TableLayoutPanel
+        Private WithEvents _settingsTableLayoutPanel As TableLayoutPanel
         Private _isReportingError As Boolean
         Private _isShowingTypePicker As Boolean
         Private _toolbarPanel As DesignerToolbarPanel
@@ -157,14 +157,14 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             'This call is required by the Windows Form Designer.
             InitializeComponent()
 
-            SettingsTableLayoutPanel.SuspendLayout()
+            _settingsTableLayoutPanel.SuspendLayout()
 
-            m_SettingsGridView.Columns(s_nameColumnNo).HeaderText = My.Resources.Designer.SD_GridViewNameColumnHeaderText
-            m_SettingsGridView.Columns(s_nameColumnNo).CellTemplate = New DesignerDataGridView.EditOnClickDataGridViewTextBoxCell()
-            m_SettingsGridView.Columns(s_typeColumnNo).HeaderText = My.Resources.Designer.SD_GridViewTypeColumnHeaderText
-            m_SettingsGridView.Columns(s_typeColumnNo).CellTemplate = New DesignerDataGridView.EditOnClickDataGridViewComboBoxCell()
-            m_SettingsGridView.Columns(s_scopeColumnNo).HeaderText = My.Resources.Designer.SD_GridViewScopeColumnHeaderText
-            m_SettingsGridView.Columns(s_scopeColumnNo).CellTemplate = New DesignerDataGridView.EditOnClickDataGridViewComboBoxCell()
+            _settingsGridView.Columns(s_nameColumnNo).HeaderText = My.Resources.Designer.SD_GridViewNameColumnHeaderText
+            _settingsGridView.Columns(s_nameColumnNo).CellTemplate = New DesignerDataGridView.EditOnClickDataGridViewTextBoxCell()
+            _settingsGridView.Columns(s_typeColumnNo).HeaderText = My.Resources.Designer.SD_GridViewTypeColumnHeaderText
+            _settingsGridView.Columns(s_typeColumnNo).CellTemplate = New DesignerDataGridView.EditOnClickDataGridViewComboBoxCell()
+            _settingsGridView.Columns(s_scopeColumnNo).HeaderText = My.Resources.Designer.SD_GridViewScopeColumnHeaderText
+            _settingsGridView.Columns(s_scopeColumnNo).CellTemplate = New DesignerDataGridView.EditOnClickDataGridViewComboBoxCell()
 
             Dim TypeEditorCol As New DataGridViewUITypeEditorColumn
             TypeEditorCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
@@ -174,24 +174,24 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             TypeEditorCol.Resizable = DataGridViewTriState.True
             TypeEditorCol.SortMode = DataGridViewColumnSortMode.Automatic
             TypeEditorCol.Width = DpiHelper.LogicalToDeviceUnitsX(200)
-            m_SettingsGridView.Columns.Add(TypeEditorCol)
+            _settingsGridView.Columns.Add(TypeEditorCol)
 
 
-            m_SettingsGridView.EditMode = DataGridViewEditMode.EditOnKeystrokeOrF2
-            m_SettingsGridView.Text = "m_SettingsGridView"
-            m_SettingsGridView.DefaultCellStyle.NullValue = ""
+            _settingsGridView.EditMode = DataGridViewEditMode.EditOnKeystrokeOrF2
+            _settingsGridView.Text = "m_SettingsGridView"
+            _settingsGridView.DefaultCellStyle.NullValue = ""
 
             ScopeColumn.Items.Add(DesignTimeSettingInstance.SettingScope.Application)
             ScopeColumn.Items.Add(DesignTimeSettingInstance.SettingScope.User)
 
             SetLinkLabelText()
 
-            m_SettingsGridView.ColumnHeadersHeight = m_SettingsGridView.Rows(0).GetPreferredHeight(0, DataGridViewAutoSizeRowMode.AllCells, False)
+            _settingsGridView.ColumnHeadersHeight = _settingsGridView.Rows(0).GetPreferredHeight(0, DataGridViewAutoSizeRowMode.AllCells, False)
             _toolbarPanel = New DesignerToolbarPanel
             _toolbarPanel.Name = "ToolbarPanel"
             _toolbarPanel.Text = "ToolbarPanel"
-            SettingsTableLayoutPanel.Controls.Add(_toolbarPanel, 0, 0)
-            SettingsTableLayoutPanel.ResumeLayout()
+            _settingsTableLayoutPanel.Controls.Add(_toolbarPanel, 0, 0)
+            _settingsTableLayoutPanel.ResumeLayout()
             ResumeLayout()
         End Sub
 
@@ -236,91 +236,91 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         'Do not modify it using the code editor.
         Private Sub InitializeComponent()
             Dim resources As ComponentResourceManager = New ComponentResourceManager(GetType(SettingsDesignerView))
-            m_SettingsGridView = New SettingsGridView
+            _settingsGridView = New SettingsGridView
             BackColor = ShellUtil.GetVSColor(__VSSYSCOLOREX3.VSCOLOR_THREEDFACE, Drawing.SystemColors.ButtonFace, UseVSTheme:=False)
-            DescriptionLinkLabel = New VSThemedLinkLabel
-            DataGridViewTextBoxColumn1 = New DataGridViewTextBoxColumn
-            DataGridViewComboBoxColumn1 = New DataGridViewComboBoxColumn
-            DataGridViewComboBoxColumn2 = New DataGridViewComboBoxColumn
-            SettingsTableLayoutPanel = New TableLayoutPanel
-            CType(m_SettingsGridView, ISupportInitialize).BeginInit()
-            SettingsTableLayoutPanel.SuspendLayout()
+            _descriptionLinkLabel = New VSThemedLinkLabel
+            _dataGridViewTextBoxColumn1 = New DataGridViewTextBoxColumn
+            _dataGridViewComboBoxColumn1 = New DataGridViewComboBoxColumn
+            _dataGridViewComboBoxColumn2 = New DataGridViewComboBoxColumn
+            _settingsTableLayoutPanel = New TableLayoutPanel
+            CType(_settingsGridView, ISupportInitialize).BeginInit()
+            _settingsTableLayoutPanel.SuspendLayout()
             SuspendLayout()
             '
             'm_SettingsGridView
             '
-            resources.ApplyResources(m_SettingsGridView, "m_SettingsGridView")
-            m_SettingsGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None
-            m_SettingsGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None
-            m_SettingsGridView.BackgroundColor = ShellUtil.GetVSColor(__VSSYSCOLOREX3.VSCOLOR_THREEDFACE, Drawing.SystemColors.ButtonFace, UseVSTheme:=False)
-            m_SettingsGridView.ClipboardCopyMode = DataGridViewClipboardCopyMode.Disable
-            m_SettingsGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
-            m_SettingsGridView.Columns.Add(DataGridViewTextBoxColumn1)
-            m_SettingsGridView.Columns.Add(DataGridViewComboBoxColumn1)
-            m_SettingsGridView.Columns.Add(DataGridViewComboBoxColumn2)
-            resources.ApplyResources(m_SettingsGridView, "m_SettingsGridView")
-            m_SettingsGridView.Margin = New Padding(14)
-            m_SettingsGridView.Name = "m_SettingsGridView"
+            resources.ApplyResources(_settingsGridView, "m_SettingsGridView")
+            _settingsGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None
+            _settingsGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None
+            _settingsGridView.BackgroundColor = ShellUtil.GetVSColor(__VSSYSCOLOREX3.VSCOLOR_THREEDFACE, Drawing.SystemColors.ButtonFace, UseVSTheme:=False)
+            _settingsGridView.ClipboardCopyMode = DataGridViewClipboardCopyMode.Disable
+            _settingsGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
+            _settingsGridView.Columns.Add(_dataGridViewTextBoxColumn1)
+            _settingsGridView.Columns.Add(_dataGridViewComboBoxColumn1)
+            _settingsGridView.Columns.Add(_dataGridViewComboBoxColumn2)
+            resources.ApplyResources(_settingsGridView, "m_SettingsGridView")
+            _settingsGridView.Margin = New Padding(14)
+            _settingsGridView.Name = "m_SettingsGridView"
             '
             'DataGridViewTextBoxColumn1
             '
-            resources.ApplyResources(DataGridViewTextBoxColumn1, "DataGridViewTextBoxColumn1")
-            DataGridViewTextBoxColumn1.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
-            DataGridViewTextBoxColumn1.MinimumWidth = DpiHelper.LogicalToDeviceUnitsX(100)
-            DataGridViewTextBoxColumn1.Name = "GridViewNameTextBoxColumn"
-            DataGridViewComboBoxColumn1.Width = DpiHelper.LogicalToDeviceUnitsX(100)
+            resources.ApplyResources(_dataGridViewTextBoxColumn1, "DataGridViewTextBoxColumn1")
+            _dataGridViewTextBoxColumn1.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
+            _dataGridViewTextBoxColumn1.MinimumWidth = DpiHelper.LogicalToDeviceUnitsX(100)
+            _dataGridViewTextBoxColumn1.Name = "GridViewNameTextBoxColumn"
+            _dataGridViewComboBoxColumn1.Width = DpiHelper.LogicalToDeviceUnitsX(100)
             '
             'DataGridViewComboBoxColumn1
             '
-            resources.ApplyResources(DataGridViewComboBoxColumn1, "DataGridViewComboBoxColumn1")
-            DataGridViewComboBoxColumn1.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
-            DataGridViewComboBoxColumn1.MinimumWidth = DpiHelper.LogicalToDeviceUnitsX(100)
-            DataGridViewComboBoxColumn1.Name = "GridViewTypeComboBoxColumn"
-            DataGridViewComboBoxColumn1.SortMode = DataGridViewColumnSortMode.Automatic
-            DataGridViewComboBoxColumn1.Width = DpiHelper.LogicalToDeviceUnitsX(100)
+            resources.ApplyResources(_dataGridViewComboBoxColumn1, "DataGridViewComboBoxColumn1")
+            _dataGridViewComboBoxColumn1.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
+            _dataGridViewComboBoxColumn1.MinimumWidth = DpiHelper.LogicalToDeviceUnitsX(100)
+            _dataGridViewComboBoxColumn1.Name = "GridViewTypeComboBoxColumn"
+            _dataGridViewComboBoxColumn1.SortMode = DataGridViewColumnSortMode.Automatic
+            _dataGridViewComboBoxColumn1.Width = DpiHelper.LogicalToDeviceUnitsX(100)
             '
             'DataGridViewComboBoxColumn2
             '
-            DataGridViewComboBoxColumn2.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
-            resources.ApplyResources(DataGridViewComboBoxColumn2, "DataGridViewComboBoxColumn2")
-            DataGridViewComboBoxColumn2.MaxDropDownItems = 2
-            DataGridViewComboBoxColumn2.MinimumWidth = DpiHelper.LogicalToDeviceUnitsX(100)
-            DataGridViewComboBoxColumn2.Name = "GridViewScopeComboBoxColumn"
-            DataGridViewComboBoxColumn2.SortMode = DataGridViewColumnSortMode.Automatic
-            DataGridViewComboBoxColumn2.ValueType = GetType(DesignTimeSettingInstance.SettingScope)
-            DataGridViewComboBoxColumn2.Width = DpiHelper.LogicalToDeviceUnitsX(100)
+            _dataGridViewComboBoxColumn2.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
+            resources.ApplyResources(_dataGridViewComboBoxColumn2, "DataGridViewComboBoxColumn2")
+            _dataGridViewComboBoxColumn2.MaxDropDownItems = 2
+            _dataGridViewComboBoxColumn2.MinimumWidth = DpiHelper.LogicalToDeviceUnitsX(100)
+            _dataGridViewComboBoxColumn2.Name = "GridViewScopeComboBoxColumn"
+            _dataGridViewComboBoxColumn2.SortMode = DataGridViewColumnSortMode.Automatic
+            _dataGridViewComboBoxColumn2.ValueType = GetType(DesignTimeSettingInstance.SettingScope)
+            _dataGridViewComboBoxColumn2.Width = DpiHelper.LogicalToDeviceUnitsX(100)
             '
             'DescriptionLinkLabel
             '
-            resources.ApplyResources(DescriptionLinkLabel, "DescriptionLinkLabel")
-            DescriptionLinkLabel.Margin = New Padding(14, 23, 14, 9)
-            DescriptionLinkLabel.Name = "DescriptionLinkLabel"
-            DescriptionLinkLabel.TabStop = True
+            resources.ApplyResources(_descriptionLinkLabel, "DescriptionLinkLabel")
+            _descriptionLinkLabel.Margin = New Padding(14, 23, 14, 9)
+            _descriptionLinkLabel.Name = "DescriptionLinkLabel"
+            _descriptionLinkLabel.TabStop = True
             '
             'SettingsTableLayoutPanel
             '
-            SettingsTableLayoutPanel.ColumnCount = 1
-            SettingsTableLayoutPanel.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100.0!))
-            SettingsTableLayoutPanel.Controls.Add(m_SettingsGridView, 0, 2)
-            SettingsTableLayoutPanel.Controls.Add(DescriptionLinkLabel, 0, 1)
-            resources.ApplyResources(SettingsTableLayoutPanel, "SettingsTableLayoutPanel")
-            SettingsTableLayoutPanel.Margin = New Padding(0)
-            SettingsTableLayoutPanel.Name = "SettingsTableLayoutPanel"
-            SettingsTableLayoutPanel.RowCount = 3
-            SettingsTableLayoutPanel.RowStyles.Add(New RowStyle)
-            SettingsTableLayoutPanel.RowStyles.Add(New RowStyle)
-            SettingsTableLayoutPanel.RowStyles.Add(New RowStyle(SizeType.Percent, 100.0!))
+            _settingsTableLayoutPanel.ColumnCount = 1
+            _settingsTableLayoutPanel.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100.0!))
+            _settingsTableLayoutPanel.Controls.Add(_settingsGridView, 0, 2)
+            _settingsTableLayoutPanel.Controls.Add(_descriptionLinkLabel, 0, 1)
+            resources.ApplyResources(_settingsTableLayoutPanel, "SettingsTableLayoutPanel")
+            _settingsTableLayoutPanel.Margin = New Padding(0)
+            _settingsTableLayoutPanel.Name = "SettingsTableLayoutPanel"
+            _settingsTableLayoutPanel.RowCount = 3
+            _settingsTableLayoutPanel.RowStyles.Add(New RowStyle)
+            _settingsTableLayoutPanel.RowStyles.Add(New RowStyle)
+            _settingsTableLayoutPanel.RowStyles.Add(New RowStyle(SizeType.Percent, 100.0!))
             '
             'SettingsDesignerView
             '
-            Controls.Add(SettingsTableLayoutPanel)
+            Controls.Add(_settingsTableLayoutPanel)
             AutoScaleMode = AutoScaleMode.Font
             Margin = New Padding(0)
             Name = "SettingsDesignerView"
             Padding = New Padding(0)
             resources.ApplyResources(Me, "$this")
-            CType(m_SettingsGridView, ISupportInitialize).EndInit()
-            SettingsTableLayoutPanel.ResumeLayout(False)
+            CType(_settingsGridView, ISupportInitialize).EndInit()
+            _settingsTableLayoutPanel.ResumeLayout(False)
             ResumeLayout(False)
 
         End Sub
@@ -435,7 +435,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             _toolbarPanel.SetToolbar(VsUIShell, Constants.MenuConstants.GUID_SETTINGSDESIGNER_MenuGroup, Constants.MenuConstants.IDM_VS_TOOLBAR_Settings)
             _toolbarPanel.BringToFront()
 
-            DescriptionLinkLabel.SetThemedColor(TryCast(VsUIShell, IVsUIShell5))
+            _descriptionLinkLabel.SetThemedColor(TryCast(VsUIShell, IVsUIShell5))
 
         End Sub
 
@@ -464,20 +464,20 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Dim linkText As String = My.Resources.Designer.SD_LinkPartOfDescriptionText
 
             ' Adding two spaces and including the first space in the link due to VsWhidbey 482875
-            DescriptionLinkLabel.Text = fullText & "  " & linkText
+            _descriptionLinkLabel.Text = fullText & "  " & linkText
 
-            DescriptionLinkLabel.Links.Clear()
+            _descriptionLinkLabel.Links.Clear()
 
             ' Adding one to the length of the linkText 'cause we have included one of the two leading spaces
             ' in the link (see above)
-            DescriptionLinkLabel.Links.Add(fullText.Length() + 1, linkText.Length + 1)
+            _descriptionLinkLabel.Links.Add(fullText.Length() + 1, linkText.Length + 1)
         End Sub
 
         ''' <summary>
         ''' Pop up the appropriate help context when the user clicks on the description link
         ''' </summary>
         ''' <remarks></remarks>
-        Private Sub DescriptionLinkLabel_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles DescriptionLinkLabel.LinkClicked
+        Private Sub DescriptionLinkLabel_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles _descriptionLinkLabel.LinkClicked
             DesignUtil.DisplayTopicFromF1Keyword(_rootDesigner, HelpIDs.SettingsDesignerDescription)
         End Sub
 
@@ -517,7 +517,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         ' We want to give the name column a reasonable start width. If we did this by using auto fill/fill weight, 
                         ' changing the value column would change the size of the name column, which looks weird. We'll just default the
                         ' size to 1/3 of the value column's width and leave it at that (the user can resize if (s)he wants to)
-                        m_SettingsGridView.Columns(s_nameColumnNo).Width = CInt(TypeColumn.Width / 2)
+                        _settingsGridView.Columns(s_nameColumnNo).Width = CInt(TypeColumn.Width / 2)
                     End If
                 End If
             End Set
@@ -608,17 +608,17 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 ' remove it from the grid
                 Dim Row As DataGridViewRow = RowFromComponent(DirectCast(e.Component, DesignTimeSettingInstance))
                 If Row IsNot Nothing Then
-                    If Row.Index = m_SettingsGridView.RowCount - 1 Then
+                    If Row.Index = _settingsGridView.RowCount - 1 Then
                         'This is the "new row" - it can't be removed 
                         Row.Tag = Nothing
                     Else
                         ' If we are currently editing something while the row is removed,
                         ' then we should cancel the edit. 
                         ' If not, we may run into issues like described in DevDiv 85344
-                        If m_SettingsGridView.IsCurrentCellInEditMode Then
-                            m_SettingsGridView.CancelEdit()
+                        If _settingsGridView.IsCurrentCellInEditMode Then
+                            _settingsGridView.CancelEdit()
                         End If
-                        m_SettingsGridView.Rows.Remove(Row)
+                        _settingsGridView.Rows.Remove(Row)
                     End If
                 End If
             Else
@@ -643,14 +643,14 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     Return
                 Else
                     ' No row corresponding to this settings - we better add one!
-                    Debug.Assert(m_SettingsGridView.RowCount >= 1)
+                    Debug.Assert(_settingsGridView.RowCount >= 1)
                     ' We'll have to create a new row!
                     Dim NewRowIndex As Integer
-                    NewRowIndex = m_SettingsGridView.Rows.Add()
+                    NewRowIndex = _settingsGridView.Rows.Add()
                     ' Now, we don't want the last row, since that is the special "New row"
                     ' Let's grab the second last row...
-                    Row = m_SettingsGridView.Rows(NewRowIndex)
-                    Debug.Assert(NewRowIndex = m_SettingsGridView.RowCount - 2, "Why wasn't the new row added last?")
+                    Row = _settingsGridView.Rows(NewRowIndex)
+                    Debug.Assert(NewRowIndex = _settingsGridView.RowCount - 2, "Why wasn't the new row added last?")
                     Row.Tag = e.Component
                 End If
                 SetUIRowValues(Row, DirectCast(e.Component, DesignTimeSettingInstance))
@@ -667,7 +667,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <returns></returns>
         ''' <remarks>O(n) running time</remarks>
         Private Function RowFromComponent(Instance As DesignTimeSettingInstance) As DataGridViewRow
-            For Each Row As DataGridViewRow In m_SettingsGridView.Rows
+            For Each Row As DataGridViewRow In _settingsGridView.Rows
                 If Row.Tag Is Instance Then
                     Return Row
                 End If
@@ -708,11 +708,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <remarks></remarks>
         Private ReadOnly Property AllowCommitPendingChanges() As Boolean
             Get
-                If _isReportingError OrElse _isShowingTypePicker OrElse _inCellValidated OrElse m_SettingsGridView.CommittingChanges Then
+                If _isReportingError OrElse _isShowingTypePicker OrElse _inCellValidated OrElse _settingsGridView.CommittingChanges Then
                     Return False
                 End If
 
-                Dim ctrl As DataGridViewUITypeEditorEditingControl = TryCast(m_SettingsGridView.EditingControl, DataGridViewUITypeEditorEditingControl)
+                Dim ctrl As DataGridViewUITypeEditorEditingControl = TryCast(_settingsGridView.EditingControl, DataGridViewUITypeEditorEditingControl)
                 If ctrl IsNot Nothing AndAlso ctrl.IsShowingUITypeEditor Then
                     Return False
                 End If
@@ -741,21 +741,21 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Dim succeeded As Boolean = False
             Try
                 _suppressValidationUI = suppressValidationUI
-                If m_SettingsGridView.IsCurrentCellInEditMode Then
-                    Debug.Assert(m_SettingsGridView.CurrentCell IsNot Nothing, "Grid in editing mode with no current cell???")
+                If _settingsGridView.IsCurrentCellInEditMode Then
+                    Debug.Assert(_settingsGridView.CurrentCell IsNot Nothing, "Grid in editing mode with no current cell???")
                     Try
                         If Not AllowCommitPendingChanges Then
                             succeeded = False
-                        ElseIf ValidateCell(m_SettingsGridView.CurrentCell.EditedFormattedValue, m_SettingsGridView.CurrentCell.RowIndex, m_SettingsGridView.CurrentCell.ColumnIndex) Then
-                            Dim oldSelectedCell As DataGridViewCell = m_SettingsGridView.CurrentCell
-                            m_SettingsGridView.CurrentCell = Nothing
+                        ElseIf ValidateCell(_settingsGridView.CurrentCell.EditedFormattedValue, _settingsGridView.CurrentCell.RowIndex, _settingsGridView.CurrentCell.ColumnIndex) Then
+                            Dim oldSelectedCell As DataGridViewCell = _settingsGridView.CurrentCell
+                            _settingsGridView.CurrentCell = Nothing
                             If oldSelectedCell IsNot Nothing Then
                                 oldSelectedCell.Selected = True
                             End If
                             succeeded = True
                         Else
                             If cancelOnValidationFailure Then
-                                m_SettingsGridView.CancelEdit()
+                                _settingsGridView.CancelEdit()
                             End If
                         End If
                     Catch Ex As Exception
@@ -793,7 +793,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <remarks></remarks>
         Private ReadOnly Property TypeColumn() As DataGridViewComboBoxColumn
             Get
-                Return DirectCast(m_SettingsGridView.Columns(s_typeColumnNo), DataGridViewComboBoxColumn)
+                Return DirectCast(_settingsGridView.Columns(s_typeColumnNo), DataGridViewComboBoxColumn)
             End Get
         End Property
 
@@ -804,7 +804,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <remarks></remarks>
         Private ReadOnly Property ScopeColumn() As DataGridViewComboBoxColumn
             Get
-                Return DirectCast(m_SettingsGridView.Columns(s_scopeColumnNo), DataGridViewComboBoxColumn)
+                Return DirectCast(_settingsGridView.Columns(s_scopeColumnNo), DataGridViewComboBoxColumn)
             End Get
         End Property
 
@@ -819,8 +819,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub RefreshGrid()
-            If m_SettingsGridView.RowCount() > 0 Then
-                m_SettingsGridView.Rows.Clear()
+            If _settingsGridView.RowCount() > 0 Then
+                _settingsGridView.Rows.Clear()
             End If
 
             For Each Instance As DesignTimeSettingInstance In Settings
@@ -834,12 +834,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="Instance"></param>
         ''' <remarks></remarks>
         Private Sub AddRow(Instance As DesignTimeSettingInstance)
-            If Not m_SettingsGridView.IsHandleCreated Then
-                m_SettingsGridView.CreateControl()
+            If Not _settingsGridView.IsHandleCreated Then
+                _settingsGridView.CreateControl()
             End If
-            Debug.Assert(m_SettingsGridView.IsHandleCreated)
-            Dim NewRowNo As Integer = m_SettingsGridView.Rows.Add()
-            Dim NewRow As DataGridViewRow = m_SettingsGridView.Rows(NewRowNo)
+            Debug.Assert(_settingsGridView.IsHandleCreated)
+            Dim NewRowNo As Integer = _settingsGridView.Rows.Add()
+            Dim NewRow As DataGridViewRow = _settingsGridView.Rows(NewRowNo)
             NewRow.Tag = Instance
             SetUIRowValues(NewRow, Instance)
         End Sub
@@ -897,7 +897,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Cell.ValueType = GetType(String)
                 Cell.Value = ""
             End If
-            m_SettingsGridView.InvalidateCell(Cell)
+            _settingsGridView.InvalidateCell(Cell)
         End Sub
 
         ''' <summary>
@@ -906,7 +906,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="CellToUpdate"></param>
         ''' <remarks>The editing control isn't correctly updated if the cell changes "under" it</remarks>
         Private Sub UpdateComboBoxCell(CellToUpdate As DataGridViewComboBoxCell)
-            If CellToUpdate Is m_SettingsGridView.CurrentCell AndAlso m_SettingsGridView.EditingControl IsNot Nothing Then
+            If CellToUpdate Is _settingsGridView.CurrentCell AndAlso _settingsGridView.EditingControl IsNot Nothing Then
                 If Not DBNull.Value.Equals(CellToUpdate.Value) Then
                     CellToUpdate.InitializeEditingControl(CellToUpdate.RowIndex, CellToUpdate.Value, CellToUpdate.Style)
                 End If
@@ -958,11 +958,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Get
         End Property
 
-        Private Sub OnSettingsGridViewCellStateChanged(sender As Object, e As DataGridViewCellStateChangedEventArgs) Handles m_SettingsGridView.CellStateChanged
+        Private Sub OnSettingsGridViewCellStateChanged(sender As Object, e As DataGridViewCellStateChangedEventArgs) Handles _settingsGridView.CellStateChanged
             If SelectionService IsNot Nothing Then
                 Dim SelectedComponents As New Hashtable()
-                For Each cell As DataGridViewCell In m_SettingsGridView.SelectedCells
-                    Dim Row As DataGridViewRow = m_SettingsGridView.Rows(cell.RowIndex)
+                For Each cell As DataGridViewCell In _settingsGridView.SelectedCells
+                    Dim Row As DataGridViewRow = _settingsGridView.Rows(cell.RowIndex)
                     If Row.Tag IsNot Nothing Then
                         SelectedComponents(Row.Tag) = True
                     End If
@@ -972,11 +972,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
         End Sub
 
-        Private Sub OnSettingsGridViewRowStateChanged(sender As Object, e As DataGridViewRowStateChangedEventArgs) Handles m_SettingsGridView.RowStateChanged
+        Private Sub OnSettingsGridViewRowStateChanged(sender As Object, e As DataGridViewRowStateChangedEventArgs) Handles _settingsGridView.RowStateChanged
             If SelectionService IsNot Nothing Then
                 Dim SelectedComponents As New Hashtable()
 
-                For Each Row As DataGridViewRow In m_SettingsGridView.SelectedRows
+                For Each Row As DataGridViewRow In _settingsGridView.SelectedRows
                     If Row.Tag IsNot Nothing Then
                         SelectedComponents(Row.Tag) = True
                     End If
@@ -997,8 +997,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub OnSettingsGridViewUserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs) Handles m_SettingsGridView.UserDeletingRow
-            If m_SettingsGridView.SelectedRows.Count = 0 AndAlso e.Row.IsNewRow Then
+        Private Sub OnSettingsGridViewUserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs) Handles _settingsGridView.UserDeletingRow
+            If _settingsGridView.SelectedRows.Count = 0 AndAlso e.Row.IsNewRow Then
                 ' The user cancelled an edit of the new row - we should not prevent the 
                 ' datagridview from doing its magic and delete the new row...
                 Return
@@ -1011,7 +1011,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
 
             ' We handle the delete explicitly here
-            RemoveRows(m_SettingsGridView.SelectedRows)
+            RemoveRows(_settingsGridView.SelectedRows)
 
             ' And cancel the "automatic" delete that is about to happen. The RemoveRows call should have 
             ' already taken care of this :)
@@ -1026,7 +1026,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub OnSettingsGridViewUserDeletedRow(sender As Object, e As DataGridViewRowEventArgs) Handles m_SettingsGridView.UserDeletedRow
+        Private Sub OnSettingsGridViewUserDeletedRow(sender As Object, e As DataGridViewRowEventArgs) Handles _settingsGridView.UserDeletedRow
             Dim InstanceToDelete As DesignTimeSettingInstance = CType(e.Row.Tag, DesignTimeSettingInstance)
             If InstanceToDelete IsNot Nothing Then
                 Settings.Remove(InstanceToDelete)
@@ -1043,7 +1043,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="ColumnIndex"></param>
         ''' <remarks></remarks>
         Private Function ValidateCell(FormattedValue As Object, RowIndex As Integer, ColumnIndex As Integer) As Boolean
-            Dim Instance As DesignTimeSettingInstance = TryCast(m_SettingsGridView.Rows(RowIndex).Tag, DesignTimeSettingInstance)
+            Dim Instance As DesignTimeSettingInstance = TryCast(_settingsGridView.Rows(RowIndex).Tag, DesignTimeSettingInstance)
             Select Case ColumnIndex
                 Case s_nameColumnNo
                     Debug.Assert(TypeOf FormattedValue Is String, "Unknown type of formatted value for name")
@@ -1065,11 +1065,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub OnSettingsGridViewCellValidating(sender As Object, e As DataGridViewCellValidatingEventArgs) Handles m_SettingsGridView.CellValidating
+        Private Sub OnSettingsGridViewCellValidating(sender As Object, e As DataGridViewCellValidatingEventArgs) Handles _settingsGridView.CellValidating
             ' We can get into this when delay-disposing due to project reloads...
             If Disposing Then Return
 
-            If e.RowIndex = m_SettingsGridView.NewRowIndex Then
+            If e.RowIndex = _settingsGridView.NewRowIndex Then
                 ' Don't validate the new row...
                 Return
             End If
@@ -1115,7 +1115,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub OnSettingsGridViewCellValidated(sender As Object, e As DataGridViewCellEventArgs) Handles m_SettingsGridView.CellValidated
+        Private Sub OnSettingsGridViewCellValidated(sender As Object, e As DataGridViewCellEventArgs) Handles _settingsGridView.CellValidated
             If Disposing Then
                 Return
             End If
@@ -1125,12 +1125,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
             Try
                 _inCellValidated = True
-                Dim Row As DataGridViewRow = m_SettingsGridView.Rows(e.RowIndex)
+                Dim Row As DataGridViewRow = _settingsGridView.Rows(e.RowIndex)
 
                 Dim cell As DataGridViewCell = Row.Cells(e.ColumnIndex)
                 Debug.Assert(cell IsNot Nothing, "Couldn't get current cell?")
 
-                If Not m_SettingsGridView.IsCurrentRowDirty Then
+                If Not _settingsGridView.IsCurrentRowDirty Then
                     ' This suxz, but since it seems that we get a validated event when 
                     ' the *current selected cell* changes, and not after *end edit*, we
                     ' check if the grid view thinks the current row is dirty!
@@ -1207,12 +1207,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Try
         End Sub
 
-        Private Sub OnSettingsGridViewCellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs) Handles m_SettingsGridView.CellFormatting
+        Private Sub OnSettingsGridViewCellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs) Handles _settingsGridView.CellFormatting
             ' If the column is the Scope column, check the
             ' value.
             If e.ColumnIndex = s_scopeColumnNo Then
                 If Not DBNull.Value.Equals(e.Value) AndAlso e.Value IsNot Nothing Then
-                    Dim row As DataGridViewRow = m_SettingsGridView.Rows(e.RowIndex)
+                    Dim row As DataGridViewRow = _settingsGridView.Rows(e.RowIndex)
                     Dim instance As DesignTimeSettingInstance = TryCast(row.Tag, DesignTimeSettingInstance)
                     e.Value = DesignTimeSettingInstance.ScopeConverter.ConvertToLocalizedString(instance, CType(e.Value, DesignTimeSettingInstance.SettingScope))
                     e.FormattingApplied = True
@@ -1220,7 +1220,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
         End Sub
 
-        Private Sub OnSettingsGridViewOnEditingControlShowing(sender As Object, e As DataGridViewEditingControlShowingEventArgs) Handles m_SettingsGridView.EditingControlShowing
+        Private Sub OnSettingsGridViewOnEditingControlShowing(sender As Object, e As DataGridViewEditingControlShowingEventArgs) Handles _settingsGridView.EditingControlShowing
             ' Work-around for VsWhidbey 228617
             Dim tb As TextBox = TryCast(e.Control, TextBox)
             If tb IsNot Nothing Then
@@ -1235,7 +1235,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub OnSettingsGridViewOnCellClickBeginEdit(sender As Object, e As CancelEventArgs) Handles m_SettingsGridView.CellClickBeginEdit
+        Private Sub OnSettingsGridViewOnCellClickBeginEdit(sender As Object, e As CancelEventArgs) Handles _settingsGridView.CellClickBeginEdit
             If DesignerLoader IsNot Nothing Then
                 e.Cancel = Not DesignerLoader.OkToEdit()
             End If
@@ -1249,7 +1249,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub OnSettingsGridViewCellBeginEdit(sender As Object, e As DataGridViewCellCancelEventArgs) Handles m_SettingsGridView.CellBeginEdit
+        Private Sub OnSettingsGridViewCellBeginEdit(sender As Object, e As DataGridViewCellCancelEventArgs) Handles _settingsGridView.CellBeginEdit
             ' Check out , but we can't check out if resource file is readonly
             If (Not InDesignMode()) OrElse (DesignerLoader.IsReadOnly) OrElse (Not EnsureCheckedOut()) Then
                 e.Cancel = True
@@ -1260,8 +1260,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         ' If this is the name of a web reference setting, we need to check out the project file since the name of
                         ' the setting that contains the web service URL is stored in the project file.
                         ' In a perfect world, the disco code generator (or even the IVsRefactorNotify 
-                        If e.RowIndex <> m_SettingsGridView.NewRowIndex Then
-                            Dim instance As DesignTimeSettingInstance = ComponentFromRow(m_SettingsGridView.Rows(e.RowIndex))
+                        If e.RowIndex <> _settingsGridView.NewRowIndex Then
+                            Dim instance As DesignTimeSettingInstance = ComponentFromRow(_settingsGridView.Rows(e.RowIndex))
                             If instance IsNot Nothing AndAlso instance.SettingTypeName.Equals(SettingsSerializer.CultureInvariantVirtualTypeNameWebReference, StringComparison.Ordinal) Then
                                 If DesignerLoader IsNot Nothing _
                                     AndAlso DesignerLoader.ProjectItem IsNot Nothing _
@@ -1280,7 +1280,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         End If
                     Case s_valueColumnNo
                         Dim cell As DataGridViewUITypeEditorCell = TryCast(
-                                        m_SettingsGridView.Rows(e.RowIndex).Cells(e.ColumnIndex),
+                                        _settingsGridView.Rows(e.RowIndex).Cells(e.ColumnIndex),
                                         DataGridViewUITypeEditorCell)
 
                         ' If the type has been invalidated, we need to make sure that we treat it as a string...
@@ -1323,7 +1323,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks>Shouldn't have to do this, but it seems that the tag property of the new row is copied from the previous row</remarks>
-        Private Sub OnSettingsGridViewUserAddedRow(sender As Object, e As DataGridViewRowEventArgs) Handles m_SettingsGridView.UserAddedRow
+        Private Sub OnSettingsGridViewUserAddedRow(sender As Object, e As DataGridViewRowEventArgs) Handles _settingsGridView.UserAddedRow
             e.Row.Tag = Nothing
         End Sub
 
@@ -1333,7 +1333,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub OnSettingsGridViewDefaultValuesNeeded(sender As Object, e As DataGridViewRowEventArgs) Handles m_SettingsGridView.DefaultValuesNeeded
+        Private Sub OnSettingsGridViewDefaultValuesNeeded(sender As Object, e As DataGridViewRowEventArgs) Handles _settingsGridView.DefaultValuesNeeded
             Dim SampleInstance As New DesignTimeSettingInstance()
             If Not _projectSystemSupportsUserScope Then
                 SampleInstance.SetScope(DesignTimeSettingInstance.SettingScope.Application)
@@ -1426,24 +1426,24 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks>Kind of hacky...</remarks>
-        Private Sub OnSettingsGridViewCurrentCellDirtyStateChanged(sender As Object, e As EventArgs) Handles m_SettingsGridView.CurrentCellDirtyStateChanged
-            If m_SettingsGridView.CurrentCellAddress.X = s_typeColumnNo Then
-                Dim cell As DataGridViewCell = m_SettingsGridView.CurrentCell
+        Private Sub OnSettingsGridViewCurrentCellDirtyStateChanged(sender As Object, e As EventArgs) Handles _settingsGridView.CurrentCellDirtyStateChanged
+            If _settingsGridView.CurrentCellAddress.X = s_typeColumnNo Then
+                Dim cell As DataGridViewCell = _settingsGridView.CurrentCell
                 If cell IsNot Nothing Then
                     If My.Resources.Designer.SD_ComboBoxItem_BrowseType.Equals(cell.EditedFormattedValue) Then
                         TypeComboBoxSelectedIndexChanged()
                     ElseIf TryCast(cell.EditedFormattedValue, String) = "" Then
-                        m_SettingsGridView.CancelEdit()
+                        _settingsGridView.CancelEdit()
                     Else
                         ' If we don't have a setting associated with the current row, we force create one
                         ' by getting the component from the row (if we don't do this, there won't be an undo
                         ' unit for this - the settings won't be created until we leave the cell)
-                        Dim row As DataGridViewRow = m_SettingsGridView.Rows(m_SettingsGridView.CurrentCellAddress.Y)
+                        Dim row As DataGridViewRow = _settingsGridView.Rows(_settingsGridView.CurrentCellAddress.Y)
                         If row IsNot Nothing Then
                             ComponentFromRow(row)
                         End If
 
-                        m_SettingsGridView.CommitEdit(DataGridViewDataErrorContexts.Commit)
+                        _settingsGridView.CommitEdit(DataGridViewDataErrorContexts.Commit)
                     End If
                 End If
             End If
@@ -1455,13 +1455,13 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        Private Sub OnSettingsGridViewOnDataError(sender As Object, e As DataGridViewDataErrorEventArgs) Handles m_SettingsGridView.DataError
+        Private Sub OnSettingsGridViewOnDataError(sender As Object, e As DataGridViewDataErrorEventArgs) Handles _settingsGridView.DataError
             If Not _suppressValidationUI Then
                 Select Case e.ColumnIndex
                     Case s_valueColumnNo
-                        ReportError(My.Resources.Designer.GetString(My.Resources.Designer.SD_ERR_InvalidValue_2Arg, m_SettingsGridView.CurrentCell.GetEditedFormattedValue(e.RowIndex, DataGridViewDataErrorContexts.Display), m_SettingsGridView.Rows(m_SettingsGridView.CurrentCell.RowIndex).Cells(s_typeColumnNo).FormattedValue), HelpIDs.Err_FormatValue)
+                        ReportError(My.Resources.Designer.GetString(My.Resources.Designer.SD_ERR_InvalidValue_2Arg, _settingsGridView.CurrentCell.GetEditedFormattedValue(e.RowIndex, DataGridViewDataErrorContexts.Display), _settingsGridView.Rows(_settingsGridView.CurrentCell.RowIndex).Cells(s_typeColumnNo).FormattedValue), HelpIDs.Err_FormatValue)
                     Case s_nameColumnNo
-                        ReportError(My.Resources.Designer.GetString(My.Resources.Designer.SD_ERR_InvalidIdentifier_1Arg, m_SettingsGridView.CurrentCell.GetEditedFormattedValue(e.RowIndex, DataGridViewDataErrorContexts.Display)), HelpIDs.Err_InvalidName)
+                        ReportError(My.Resources.Designer.GetString(My.Resources.Designer.SD_ERR_InvalidIdentifier_1Arg, _settingsGridView.CurrentCell.GetEditedFormattedValue(e.RowIndex, DataGridViewDataErrorContexts.Display)), HelpIDs.Err_InvalidName)
                     Case Else
                         ' For some reason, we get data errors when we don't have a value for a specific row 
                         ' (i.e. not set type or scope). We'll just ignore these for now...
@@ -1541,7 +1541,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="Designer"></param>
         ''' <remarks></remarks>
         Private Sub UnregisterMenuCommands(Designer As SettingsDesigner)
-            RemoveHandler m_SettingsGridView.ContextMenuShow, AddressOf Designer.ShowContextMenu
+            RemoveHandler _settingsGridView.ContextMenuShow, AddressOf Designer.ShowContextMenu
         End Sub
 
         ''' <summary>
@@ -1589,7 +1589,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
                 Designer.RegisterMenuCommands(_menuCommands)
 
-                AddHandler m_SettingsGridView.ContextMenuShow, AddressOf Designer.ShowContextMenu
+                AddHandler _settingsGridView.ContextMenuShow, AddressOf Designer.ShowContextMenu
             Finally
                 InThisMethod = False
             End Try
@@ -1644,12 +1644,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             ' If we are currently in edit mode, we can't allow users to remove rows, since that may
             ' prove problematic if the current row is invalid (we don't 
-            If m_SettingsGridView.IsCurrentCellInEditMode Then
+            If _settingsGridView.IsCurrentCellInEditMode Then
                 Return False
             End If
 
-            For Each cell As DataGridViewCell In m_SettingsGridView.SelectedCells
-                If cell.RowIndex <> m_SettingsGridView.NewRowIndex Then
+            For Each cell As DataGridViewCell In _settingsGridView.SelectedCells
+                If cell.RowIndex <> _settingsGridView.NewRowIndex Then
                     Return True
                 End If
             Next
@@ -1664,7 +1664,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <returns></returns>
         ''' <remarks></remarks>
         Private Function MenuEditCellEnableHandler(MenuCommand As DesignerMenuCommand) As Boolean
-            Return m_SettingsGridView.CurrentCell IsNot Nothing AndAlso Not m_SettingsGridView.IsCurrentCellInEditMode AndAlso InDesignMode() AndAlso Not m_SettingsGridView.CurrentCell.ReadOnly AndAlso Not DesignerLoader.IsReadOnly
+            Return _settingsGridView.CurrentCell IsNot Nothing AndAlso Not _settingsGridView.IsCurrentCellInEditMode AndAlso InDesignMode() AndAlso Not _settingsGridView.CurrentCell.ReadOnly AndAlso Not DesignerLoader.IsReadOnly
         End Function
 
         ''' <summary>
@@ -1980,9 +1980,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="e"></param>
         ''' <remarks></remarks>
         Private Sub MenuAddSetting(sender As Object, e As EventArgs)
-            m_SettingsGridView.CurrentCell = m_SettingsGridView.Rows(m_SettingsGridView.Rows.Count - 1).Cells(s_nameColumnNo)
-            Debug.Assert(m_SettingsGridView.CurrentRow.Tag Is Nothing, "Adding a new setting failed - there is already a setting associated with the new row!?")
-            m_SettingsGridView.BeginEdit(True)
+            _settingsGridView.CurrentCell = _settingsGridView.Rows(_settingsGridView.Rows.Count - 1).Cells(s_nameColumnNo)
+            Debug.Assert(_settingsGridView.CurrentRow.Tag Is Nothing, "Adding a new setting failed - there is already a setting associated with the new row!?")
+            _settingsGridView.BeginEdit(True)
         End Sub
 
         ''' <summary>
@@ -1993,9 +1993,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <remarks></remarks>
         Private Sub MenuEditCell(sender As Object, e As EventArgs)
             If InDesignMode() Then
-                If m_SettingsGridView.CurrentCell IsNot Nothing AndAlso Not m_SettingsGridView.IsCurrentCellInEditMode Then
+                If _settingsGridView.CurrentCell IsNot Nothing AndAlso Not _settingsGridView.IsCurrentCellInEditMode Then
                     If EnsureCheckedOut() Then
-                        m_SettingsGridView.BeginEdit(False)
+                        _settingsGridView.BeginEdit(False)
                     End If
                 End If
             End If
@@ -2016,8 +2016,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Dim rowsToDelete As New Dictionary(Of DataGridViewRow, Boolean)
 
             ' Find all rows with containing a selected cell
-            For Each cell As DataGridViewCell In m_SettingsGridView.SelectedCells
-                rowsToDelete(m_SettingsGridView.Rows(cell.RowIndex)) = True
+            For Each cell As DataGridViewCell In _settingsGridView.SelectedCells
+                rowsToDelete(_settingsGridView.Rows(cell.RowIndex)) = True
             Next
 
             RemoveRows(rowsToDelete.Keys)
@@ -2076,7 +2076,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub TypeComboBoxSelectedIndexChanged()
-            Dim ptCurrent As Drawing.Point = m_SettingsGridView.CurrentCellAddress
+            Dim ptCurrent As Drawing.Point = _settingsGridView.CurrentCellAddress
 
             If ptCurrent.X <> s_typeColumnNo Then
                 Debug.Fail("We shouldn't browse for a type when the current cell isn't the type cell!")
@@ -2088,16 +2088,16 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             Try
                 _isShowingTypePicker = True
-                If Not DBNull.Value.Equals(m_SettingsGridView.CurrentCell.Value) Then
+                If Not DBNull.Value.Equals(_settingsGridView.CurrentCell.Value) Then
                     Dim TypePickerDlg As New TypePickerDialog(Settings.Site, DesignerLoader.VsHierarchy, DesignerLoader.ProjectItemid)
 
                     TypePickerDlg.SetProjectReferencedAssemblies()
 
                     If UIService.ShowDialog(TypePickerDlg) = DialogResult.OK Then
-                        ChangeSettingType(m_SettingsGridView.Rows(ptCurrent.Y), TypePickerDlg.TypeName)
+                        ChangeSettingType(_settingsGridView.Rows(ptCurrent.Y), TypePickerDlg.TypeName)
                     Else
                         ' The user clicked cancel in the dialog - let's cancel this edit
-                        m_SettingsGridView.CancelEdit()
+                        _settingsGridView.CancelEdit()
                     End If
                 End If
             Finally
@@ -2117,10 +2117,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' We are digging up the editedformattedvalue from the cell rather than serialize
         ''' the value that we get passed in every for perf. reasons...
         ''' </remarks>
-        Private Sub OnSettingsGridViewSortCompare(sender As Object, e As DataGridViewSortCompareEventArgs) Handles m_SettingsGridView.SortCompare
+        Private Sub OnSettingsGridViewSortCompare(sender As Object, e As DataGridViewSortCompareEventArgs) Handles _settingsGridView.SortCompare
             If e.Column.Index = s_valueColumnNo OrElse e.Column.Index = s_scopeColumnNo Then
-                Dim strVal1 As String = TryCast(m_SettingsGridView.Rows(e.RowIndex1).Cells(e.Column.Index).EditedFormattedValue, String)
-                Dim strVal2 As String = TryCast(m_SettingsGridView.Rows(e.RowIndex2).Cells(e.Column.Index).EditedFormattedValue, String)
+                Dim strVal1 As String = TryCast(_settingsGridView.Rows(e.RowIndex1).Cells(e.Column.Index).EditedFormattedValue, String)
+                Dim strVal2 As String = TryCast(_settingsGridView.Rows(e.RowIndex2).Cells(e.Column.Index).EditedFormattedValue, String)
                 If strVal1 Is Nothing Then strVal1 = ""
                 If strVal2 Is Nothing Then strVal2 = ""
                 e.SortResult = StringComparer.CurrentCulture().Compare(strVal1, strVal2)
@@ -2169,8 +2169,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub OnRowAdded(sender As Object, e As DataGridViewRowsAddedEventArgs) Handles m_SettingsGridView.RowsAdded
-            Dim newRow As DataGridViewRow = m_SettingsGridView.Rows(e.RowIndex)
+        Private Sub OnRowAdded(sender As Object, e As DataGridViewRowsAddedEventArgs) Handles _settingsGridView.RowsAdded
+            Dim newRow As DataGridViewRow = _settingsGridView.Rows(e.RowIndex)
             newRow.Height = newRow.GetPreferredHeight(e.RowIndex, DataGridViewAutoSizeRowMode.AllCells, True)
         End Sub
 
@@ -2181,7 +2181,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <remarks></remarks>
         Protected Overrides Sub OnFontChanged(e As EventArgs)
             MyBase.OnFontChanged(e)
-            m_SettingsGridView.AutoResizeRows(DataGridViewAutoSizeRowsMode.AllCells)
+            _settingsGridView.AutoResizeRows(DataGridViewAutoSizeRowsMode.AllCells)
         End Sub
 
         Protected Overrides Sub OnLayout(levent As LayoutEventArgs)

@@ -27,7 +27,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _getUnusedRefsTimer As Timer
 
         ' The host dialog...
-        Friend WithEvents m_HostDialog As PropPageHostDialog
+        Private WithEvents _hostDialog As PropPageHostDialog
 
         ' helper object to sort the reference list
         Private _referenceSorter As ListViewComparer
@@ -87,9 +87,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <remarks>Called by ApplyPageChanges so project is in batch edit mode.</remarks>
         Protected Overrides Sub OnParentChanged(e As EventArgs)
-            m_HostDialog = TryCast(ParentForm, PropPageHostDialog)
-            If m_HostDialog IsNot Nothing Then
-                With m_HostDialog
+            _hostDialog = TryCast(ParentForm, PropPageHostDialog)
+            If _hostDialog IsNot Nothing Then
+                With _hostDialog
                     AddHandler .FormClosed, AddressOf dialog_Close
                 End With
             End If
@@ -521,7 +521,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </Summary>
         ''' <param name="sender">Event args</param>
         ''' <param name="e">Event args</param>
-        Private Sub dialog_Shown(sender As Object, e As EventArgs) Handles m_HostDialog.Shown
+        Private Sub dialog_Shown(sender As Object, e As EventArgs) Handles _hostDialog.Shown
 
             With CType(sender, PropPageHostDialog)
                 ' Set dialog appearance
