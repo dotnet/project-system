@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
@@ -10,10 +11,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     public class SourceItemHandlerTests
     {
         [Fact]
-        public void Constructor()
+        public void Constructor_NullAsProject_ThrowsArgumentNull()
         {
-            Assert.Throws<ArgumentNullException>(() => new SourceItemHandler(null));
-            new SourceItemHandler(UnconfiguredProjectFactory.Create());
+            Assert.Throws<ArgumentNullException>("project", () => {
+                new SourceItemHandler((UnconfiguredProject)null);
+            });
+        }
+
+        [Fact]
+        public void Handle_NullAsProjectChange_ThrowsArgumentNull()
+        {
+            var handler = CreateInstance();
+            var context = IWorkspaceProjectContextFactory.Create();
+
+            Assert.Throws<ArgumentNullException>("projectChange", () => {
+                handler.Handle((IProjectChangeDescription)null, context, true);
+            });
+        }
+
+
+        [Fact]
+        public void Handle_NullAsContext_ThrowsArgumentNull()
+        {
+            var handler = CreateInstance();
+            var projectChange = IProjectChangeDescriptionFactory.Create();
+
+            Assert.Throws<ArgumentNullException>("context", () => {
+                handler.Handle(projectChange, (IWorkspaceProjectContext)null, true);
+            });
+        }
+
+        [Fact]
+        public void OnContextReleasedAsync_NullAsContext_ThrowsArgumentNull()
+        {
+            var handler = CreateInstance();
+            var context = IProjectChangeDescriptionFactory.Create();
+
+            Assert.Throws<ArgumentNullException>("context", () => {
+                handler.OnContextReleasedAsync((IWorkspaceProjectContext)null);
+            });
         }
 
         [Fact]
@@ -63,6 +99,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Equal(1, sourceFilesPushedToWorkspace.Count);
             Assert.Contains(@"C:\ProjectFolder\file1.cs", sourceFilesPushedToWorkspace);
+        }
+
+        private SourceItemHandler CreateInstance(UnconfiguredProject project = null)
+        {
+            project = project ?? UnconfiguredProjectFactory.Create();
+
+            return new SourceItemHandler(project);
         }
     }
 }

@@ -65,6 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         public override void Handle(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
         {
             Requires.NotNull(projectChange, nameof(projectChange));
+            Requires.NotNull(context, nameof(context));
 
             IProjectChangeDiff diff = projectChange.Difference;
 
@@ -97,6 +98,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         public override Task OnContextReleasedAsync(IWorkspaceProjectContext context)
         {
+            Requires.NotNull(context, nameof(context));
+
             _sourceFilesByContext.Remove(context);
             return Task.CompletedTask;
         }
