@@ -90,7 +90,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             _hostDialog = TryCast(ParentForm, PropPageHostDialog)
             If _hostDialog IsNot Nothing Then
                 With _hostDialog
-                    AddHandler .FormClosed, AddressOf dialog_Close
+                    AddHandler .FormClosed, AddressOf OnHostDialogFormClosed
                 End With
             End If
 
@@ -315,7 +315,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ' Get a new timer
             _getUnusedRefsTimer = New Timer
             _getUnusedRefsTimer.Interval = s_pollingRate
-            AddHandler _getUnusedRefsTimer.Tick, AddressOf GetUnusedRefsTimer_Tick
+            AddHandler _getUnusedRefsTimer.Tick, AddressOf OnGetUnusedRefsTimerTick
 
             _lastStatus = ReferenceUsageResult.ReferenceUsageUnknown
 
@@ -491,7 +491,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #Region "Event Handlers "
 
-        Private Sub UnusedReferenceList_ItemCheck(sender As Object, e As ItemCheckEventArgs) Handles UnusedReferenceList.ItemCheck
+        Private Sub OnUnusedReferenceListItemCheck(sender As Object, e As ItemCheckEventArgs) Handles UnusedReferenceList.ItemCheck
 
             ' Since CheckIndicies is updated after this event, we enable remove button if
             ' there are more than one check references or there are none and one is being checked
@@ -504,11 +504,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </Summary>
         ''' <param name="sender">Event args</param>
         ''' <param name="e">Event args</param>
-        Private Sub UnusedRerenceList_ColumnClick(sender As Object, e As ColumnClickEventArgs) Handles UnusedReferenceList.ColumnClick
+        Private Sub OnUnusedRerenceListColumnClick(sender As Object, e As ColumnClickEventArgs) Handles UnusedReferenceList.ColumnClick
             ListViewComparer.HandleColumnClick(UnusedReferenceList, _referenceSorter, e)
         End Sub
 
-        Private Sub GetUnusedRefsTimer_Tick(sender As Object, e As EventArgs)
+        Private Sub OnGetUnusedRefsTimerTick(sender As Object, e As EventArgs)
 
             ' Poll compiler
             GetUnusedRefs()
@@ -521,7 +521,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </Summary>
         ''' <param name="sender">Event args</param>
         ''' <param name="e">Event args</param>
-        Private Sub dialog_Shown(sender As Object, e As EventArgs) Handles _hostDialog.Shown
+        Private Sub OnHostDialogShown(sender As Object, e As EventArgs) Handles _hostDialog.Shown
 
             With CType(sender, PropPageHostDialog)
                 ' Set dialog appearance
@@ -541,7 +541,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         End Sub
 
-        Private Sub dialog_Close(sender As Object, e As FormClosedEventArgs)
+        Private Sub OnHostDialogFormClosed(sender As Object, e As FormClosedEventArgs)
 
             ' Stop getting unused references list
             Abort()
