@@ -19,9 +19,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         private CancellationTokenSource DisposedCancelTokenSource = new CancellationTokenSource();
 
         /// <summary>
+        /// Deadlocks will occur if a task returned from ExecuteTask , awaits a task which also calls ExcecuteTask. The 2nd one will never get started since
+        /// it will be backed up behind the first one completing. The AysncLocal is used to detect when a task is being executed, and if a downstream one gets 
+        /// added, it will be executed directly, rather than get queued
+        /// </summary>
+        private AsyncLocal<bool> _executingTask = new AsyncLocal<bool>();
+
+        /// <summary>
         /// Adds a new task to the continuation chain and returns it so that it can be awaited. 
-        /// Note that deadlocks will occur if a task returned from this function, awaits a task which also calls this function as that task will not 
-        /// start until this one ccompletes. 
         /// </summary>
         public Task ExecuteTask(Func<Task> asyncFunction)
         {
@@ -32,10 +37,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
 
             lock(SyncObject)
             {
+                if (_executingTask.Value)
+                {
+                    return asyncFunction();
+                }
+
                 TaskAdded = TaskAdded.ContinueWith(async (t) => 
                 { 
                     DisposedCancelTokenSource.Token.ThrowIfCancellationRequested();
-                    await asyncFunction().ConfigureAwait(false);
+                    try
+                    {
+                        _executingTask.Value = true;
+                        await asyncFunction().ConfigureAwait(false);
+                    }
+                    finally
+                    {
+                        _executingTask.Value = false;
+                    }
                 },TaskScheduler.Default).Unwrap();
             }
             return TaskAdded;
