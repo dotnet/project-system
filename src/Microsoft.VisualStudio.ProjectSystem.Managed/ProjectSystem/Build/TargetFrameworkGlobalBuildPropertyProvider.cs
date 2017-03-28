@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
             {
                 // For a cross targeting project, we want to build for all the targeted frameworks.
                 // Clear out the TargetFramework property from the configuration.
-                properties = properties.Add(TargetFrameworkProjectConfigurationDimensionProvider.TargetFrameworkPropertyName, string.Empty);
+                properties = properties.Add(ConfigurationGeneral.TargetFrameworkProperty, string.Empty);
             }
 
             return Task.FromResult(properties);

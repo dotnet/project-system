@@ -4,7 +4,6 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.ProjectSystem.Build;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -45,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     if (configuration.EqualIgnoringTargetFramework(activeConfiguration))
                     {
                         var configuredProject = await _commonServices.Project.LoadConfiguredProjectAsync(configuration).ConfigureAwait(true);
-                        var targetFramework = configuration.Dimensions[TargetFrameworkProjectConfigurationDimensionProvider.TargetFrameworkPropertyName];
+                        var targetFramework = configuration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty];
                         builder.Add(targetFramework, configuredProject);
                     }
                 }

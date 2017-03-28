@@ -2,12 +2,10 @@
 
 using System;
 using System.Threading;
-using Microsoft.VisualStudio.Threading;
 using Task = System.Threading.Tasks.Task;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Utilities
+namespace Microsoft.VisualStudio.Threading.Tasks
 {
-
     internal interface ITaskDelayScheduler : IDisposable
     {
         /// <summary>

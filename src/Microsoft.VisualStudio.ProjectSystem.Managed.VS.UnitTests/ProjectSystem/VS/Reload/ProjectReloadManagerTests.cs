@@ -3,9 +3,9 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS.UI;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Threading.Tasks;
 using Moq;
 using Xunit;
 

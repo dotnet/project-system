@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Moq;
 
@@ -50,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 catalog.Add(category.Key, 
                             CreateRule(
-                                    category.Select(property => CreateProperty(property.PropertyName, property.Value))));
+                                    category.Select(property => CreateProperty(property.PropertyName, property.Value, property.SetValues))));
             }
 
             return catalog;
@@ -95,7 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return rule.Object;
         }
 
-        private static IProperty CreateProperty(string name, object value)
+        private static IProperty CreateProperty(string name, object value, List<object> setValues = null)
         {
             var property = new Mock<IProperty>();
             property.SetupGet(o => o.Name)
@@ -106,6 +107,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             property.As<IEvaluatedProperty>().Setup(p => p.GetEvaluatedValueAtEndAsync()).ReturnsAsync(value.ToString());
             property.As<IEvaluatedProperty>().Setup(p => p.GetEvaluatedValueAsync()).ReturnsAsync(value.ToString());
+
+            if (setValues != null)
+            {
+                property.Setup(p => p.SetValueAsync(It.IsAny<object>()))
+                        .Callback<object>(obj => setValues.Add(obj))
+                        .ReturnsAsync(() => { });
+            }
 
             return property.Object;
         }

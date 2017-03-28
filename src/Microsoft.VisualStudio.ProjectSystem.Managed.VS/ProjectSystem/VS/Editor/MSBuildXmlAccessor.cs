@@ -1,9 +1,11 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.IO;
+using Microsoft.Build.Construction;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
 {
@@ -52,6 +54,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
                 projectRoot.Save(stringWriter);
                 var encoding = await _unconfiguredProject.GetFileEncodingAsync().ConfigureAwait(false);
                 _fileSystem.WriteAllText(_unconfiguredProject.FullPath, toSave, encoding);
+            }
+        }
+        public async Task<string> GetEvaluatedPropertyValue(UnconfiguredProject unconfiguredProject, string propertyName)
+        {
+            using (var access = await _projectLockService.ReadLockAsync())
+            {
+                var configuredProject = await unconfiguredProject.GetSuggestedConfiguredProjectAsync().ConfigureAwait(false);
+                var evaluatedProject = await access.GetProjectAsync(configuredProject).ConfigureAwait(false);
+                return evaluatedProject.GetProperty(propertyName)?.EvaluatedValue;
+            }
+        }
+
+        public async Task ExecuteInWriteLock(Action<ProjectRootElement> action)
+        {
+            using (var access = await _projectLockService.WriteLockAsync())
+            {
+                await access.CheckoutAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
+                var msbuildProject = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath).ConfigureAwait(false);
+                action.Invoke(msbuildProject);
             }
         }
     }
