@@ -12,9 +12,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         [Fact]
         public void Constructor()
         {
-            Assert.Throws<ArgumentNullException>(() => new SourceItemHandler(UnconfiguredProjectFactory.Create(), null));
-            Assert.Throws<ArgumentNullException>(() => new SourceItemHandler(null, IPhysicalProjectTreeFactory.Create()));
-            new SourceItemHandler(UnconfiguredProjectFactory.Create(), IPhysicalProjectTreeFactory.Create());
+            Assert.Throws<ArgumentNullException>(() => new SourceItemHandler(null));
+            new SourceItemHandler(UnconfiguredProjectFactory.Create());
         }
 
         [Fact]
@@ -27,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var project = UnconfiguredProjectFactory.Create(filePath: @"C:\Myproject.csproj");
             var context = IWorkspaceProjectContextFactory.CreateForSourceFiles(project, onSourceFileAdded, onSourceFileRemoved);
 
-            var handler = new SourceItemHandler(project, IPhysicalProjectTreeFactory.Create());
+            var handler = new SourceItemHandler(project);
             var projectDir = Path.GetDirectoryName(project.FullPath);
             var added = CSharpCommandLineParser.Default.Parse(args: new[] { @"C:\file1.cs", @"C:\file2.cs", @"C:\file1.cs" }, baseDirectory: projectDir, sdkDirectory: null);
             var empty = CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null);
@@ -55,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var project = UnconfiguredProjectFactory.Create(filePath: @"C:\ProjectFolder\Myproject.csproj");
             var context = IWorkspaceProjectContextFactory.CreateForSourceFiles(project, onSourceFileAdded, onSourceFileRemoved);
 
-            var handler = new SourceItemHandler(project, IPhysicalProjectTreeFactory.Create());
+            var handler = new SourceItemHandler(project);
             var projectDir = Path.GetDirectoryName(project.FullPath);
             var added = CSharpCommandLineParser.Default.Parse(args: new[] { @"file1.cs", @"..\ProjectFolder\file1.cs" }, baseDirectory: projectDir, sdkDirectory: null);
             var removed = CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null);

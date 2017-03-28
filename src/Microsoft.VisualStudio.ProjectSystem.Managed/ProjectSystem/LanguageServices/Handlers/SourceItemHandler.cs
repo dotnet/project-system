@@ -27,16 +27,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         // IntelliSense.
         private readonly UnconfiguredProject _project;
         private readonly Dictionary<IWorkspaceProjectContext, HashSet<string>> _sourceFilesByContext = new Dictionary<IWorkspaceProjectContext, HashSet<string>>();
-        private readonly IPhysicalProjectTree _projectTree;
 
         [ImportingConstructor]
-        public SourceItemHandler(UnconfiguredProject project, IPhysicalProjectTree projectTree)
+        public SourceItemHandler(UnconfiguredProject project)
         {
             Requires.NotNull(project, nameof(project));
-            Requires.NotNull(projectTree, nameof(projectTree));
 
             _project = project;
-            _projectTree = projectTree;
         }
 
         public override string RuleName
