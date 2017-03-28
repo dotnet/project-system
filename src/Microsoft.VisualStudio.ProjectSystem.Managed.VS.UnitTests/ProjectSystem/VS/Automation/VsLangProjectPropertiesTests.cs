@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Moq;
 using VSLangProj;
@@ -47,8 +49,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         }
 
         [Fact]
-        public void VsLangProjectProperties_OutputTypeEx_Get()
+        public void VsLangProjectProperties_OutputTypeEx()
         {
+            var setValues = new List<object>();
             var project = UnconfiguredProjectFactory.Create();
             var enumValue = new Mock<IEnumValue>();
             enumValue.Setup(s => s.DisplayName).Returns("2");
@@ -57,6 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                 Category = ConfigurationGeneralBrowseObject.SchemaName,
                 PropertyName = ConfigurationGeneralBrowseObject.OutputTypeExProperty,
                 Value = enumValue.Object,
+                SetValues = setValues
             };
 
             var projectProperties = ProjectPropertiesFactory.Create(project, data);
@@ -64,11 +68,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 
             var vsLangProjectProperties = new VSProject(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
             Assert.Equal(vsLangProjectProperties.OutputTypeEx, prjOutputTypeEx.prjOutputTypeEx_Library);
+
+            var testValue = prjOutputTypeEx.prjOutputTypeEx_WinExe;
+            vsLangProjectProperties.OutputTypeEx = testValue;
+            Assert.Equal((VSLangProj110.prjOutputTypeEx)setValues.Single(), testValue);
         }
 
         [Fact]
-        public void VsLangProjectProperties_OutputType_Get()
+        public void VsLangProjectProperties_OutputType()
         {
+            var setValues = new List<object>();
             var project = UnconfiguredProjectFactory.Create();
             var enumValue = new Mock<IEnumValue>();
             enumValue.Setup(s => s.DisplayName).Returns("2");
@@ -77,6 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                 Category = ConfigurationGeneralBrowseObject.SchemaName,
                 PropertyName = ConfigurationGeneralBrowseObject.OutputTypeProperty,
                 Value = enumValue.Object,
+                SetValues = setValues
             };
 
             var projectProperties = ProjectPropertiesFactory.Create(project, data);
@@ -84,17 +94,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 
             var vsLangProjectProperties = new VSProject(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
             Assert.Equal(vsLangProjectProperties.OutputType, prjOutputType.prjOutputTypeLibrary);
+
+            var testValue = prjOutputType.prjOutputTypeExe;
+            vsLangProjectProperties.OutputType = testValue;
+            Assert.Equal(setValues.Single(), testValue);
         }
 
         [Fact]
-        public void VsLangProjectProperties_AssemblyName_Get()
+        public void VsLangProjectProperties_AssemblyName()
         {
+            var setValues = new List<object>();
             var project = UnconfiguredProjectFactory.Create();
             var data = new PropertyPageData()
             {
                 Category = ConfigurationGeneral.SchemaName,
                 PropertyName = ConfigurationGeneral.AssemblyNameProperty,
                 Value = "Blah",
+                SetValues = setValues
             };
 
             var projectProperties = ProjectPropertiesFactory.Create(project, data);
@@ -102,6 +118,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 
             var vsLangProjectProperties = new VSProject(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
             Assert.Equal(vsLangProjectProperties.AssemblyName, "Blah");
+
+            var testValue = "Testing";
+            vsLangProjectProperties.AssemblyName = testValue;
+            Assert.Equal(setValues.Single(), testValue);
         }
 
         [Fact]
