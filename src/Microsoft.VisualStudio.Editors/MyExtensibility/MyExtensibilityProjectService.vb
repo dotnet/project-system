@@ -510,7 +510,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         ''' <summary>
         ''' Forward the ExtensionChanged event.
         ''' </summary>
-        Private Sub m_ProjectSettings_ExtensionChanged() Handles _projectSettings.ExtensionChanged
+        Private Sub OnProjectSettingsExtensionChanged() Handles _projectSettings.ExtensionChanged
             RaiseEvent ExtensionChanged()
         End Sub
 #End Region

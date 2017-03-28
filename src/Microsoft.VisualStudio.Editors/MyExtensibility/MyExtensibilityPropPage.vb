@@ -133,13 +133,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             EnableButtonRemove()
         End Sub
 
-        Private Sub m_ProjectService_ExtensionChanged() Handles _projectService.ExtensionChanged
+        Private Sub OnProjectServiceExtensionChanged() Handles _projectService.ExtensionChanged
             RefreshExtensionsList()
         End Sub
 
-        Private Sub linklabelHelp_LinkClicked( _
-                sender As Object, e As LinkLabelLinkClickedEventArgs) _
-                Handles linkLabelHelp.LinkClicked
+        Private Sub OnLinkLabelHelpLinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles linkLabelHelp.LinkClicked
             DesignUtil.DisplayTopicFromF1Keyword(ServiceProvider, HelpIDs.Dlg_AddMyNamespaceExtensions)
         End Sub
 #End Region
