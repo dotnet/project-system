@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.CodeAnalysis.CSharp;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
@@ -63,9 +64,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             var handler = new SourceItemHandler(project);
             var projectDir = Path.GetDirectoryName(project.FullPath);
-            var csharpParser = new CSharpParseCommandLineArguments();
-            var added = csharpParser.Parse(args: new[] { @"C:\file1.cs", @"C:\file2.cs", @"C:\file1.cs" }, baseDirectory: projectDir);
-            var empty = csharpParser.Parse(args: new string[] { }, baseDirectory: projectDir);
+            var added = CommandLineArguments.FromCommonCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"C:\file1.cs", @"C:\file2.cs", @"C:\file1.cs" }, baseDirectory: projectDir, sdkDirectory: null));
+            var empty = CommandLineArguments.FromCommonCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
 
             handler.Handle(added: added, removed: empty, context: context, isActiveContext: true);
 
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Assert.Contains(@"C:\file1.cs", sourceFilesPushedToWorkspace);
             Assert.Contains(@"C:\file2.cs", sourceFilesPushedToWorkspace);
 
-            var removed = csharpParser.Parse(args: new[] { @"C:\file1.cs", @"C:\file1.cs" }, baseDirectory: projectDir);
+            var removed = CommandLineArguments.FromCommonCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"C:\file1.cs", @"C:\file1.cs" }, baseDirectory: projectDir, sdkDirectory: null));
             handler.Handle(added: empty, removed: removed, context: context, isActiveContext: true);
 
             Assert.Equal(1, sourceFilesPushedToWorkspace.Count);
@@ -92,9 +92,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             var handler = new SourceItemHandler(project);
             var projectDir = Path.GetDirectoryName(project.FullPath);
-            var csharpParser = new CSharpParseCommandLineArguments();
-            var added = csharpParser.Parse(args: new[] { @"file1.cs", @"..\ProjectFolder\file1.cs" }, baseDirectory: projectDir);
-            var removed = csharpParser.Parse(args: new string[] { }, baseDirectory: projectDir);
+            var added = CommandLineArguments.FromCommonCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"file1.cs", @"..\ProjectFolder\file1.cs" }, baseDirectory: projectDir, sdkDirectory: null));
+            var removed = CommandLineArguments.FromCommonCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
 
             handler.Handle(added: added, removed: removed, context: context, isActiveContext: true);
 
