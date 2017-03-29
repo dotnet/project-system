@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
     [Order(Order)]
     internal class UnsupportedProjectsSnapshotFilter : DependenciesSnapshotFilterBase
     {
-        public const int Order = 100;
+        public const int Order = 120;
 
         [ImportingConstructor]
         public UnsupportedProjectsSnapshotFilter(
@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 {
                     var unresolvedFlags = dependency.Flags.Union(DependencyTreeFlags.UnresolvedFlags)
                                                           .Except(DependencyTreeFlags.ResolvedFlags);
-                    resultDependency = resultDependency.SetProperties(resolved: false, flags:unresolvedFlags);
+                    resultDependency = resultDependency.SetProperties(resolved: false, flags: unresolvedFlags);
                 }
             }
 

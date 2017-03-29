@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
+using System;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
@@ -114,6 +115,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             _targets = builder.ToImmutableDictionary();
 
             return anyChanges;
+        }
+
+        public bool Equals(IDependenciesSnapshot other)
+        {
+            if (other != null && other.ProjectPath.Equals(ProjectPath, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public static DependenciesSnapshot CreateEmpty(string projectPath)

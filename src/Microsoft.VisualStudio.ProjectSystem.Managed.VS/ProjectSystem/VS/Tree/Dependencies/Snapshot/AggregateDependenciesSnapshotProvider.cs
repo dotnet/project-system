@@ -5,7 +5,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem.VS.Extensibility;
-using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
@@ -17,27 +16,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal class AggregateDependenciesSnapshotProvider : IAggregateDependenciesSnapshotProvider
     {
+        private object _snapshotProvidersLock = new object();
+
         [ImportingConstructor]
-        public AggregateDependenciesSnapshotProvider(IProjectExportProvider projectExportProvider,
-                                                     IProjectServiceAccessor projectServiceAccessor)
+        public AggregateDependenciesSnapshotProvider(IProjectExportProvider projectExportProvider)
         {
-            ProjectServiceAccessor = projectServiceAccessor;
             ProjectExportProvider = projectExportProvider;
         }
 
         private IProjectExportProvider ProjectExportProvider { get; }
 
-        private IProjectServiceAccessor ProjectServiceAccessor { get; }
-
         private ConcurrentDictionary<string, IDependenciesSnapshotProvider> SnapshotProviders { get; }
-                            = new ConcurrentDictionary<string, IDependenciesSnapshotProvider>
-                                        (StringComparer.OrdinalIgnoreCase);
+            = new ConcurrentDictionary<string, IDependenciesSnapshotProvider>(StringComparer.OrdinalIgnoreCase);
 
         public event EventHandler<SnapshotChangedEventArgs> SnapshotChanged;
 
         public event EventHandler<SnapshotProviderUnloadingEventArgs> SnapshotProviderUnloading;
 
-        internal void OnSnapshotChanged(object sender, SnapshotChangedEventArgs e)
+        public void RegisterSnapshotProvider(IDependenciesSnapshotProvider snapshotProvider)
+        {
+            if (snapshotProvider == null)
+            {
+                return;
+            }
+
+            lock(_snapshotProvidersLock)
+            {
+                SnapshotProviders[snapshotProvider.ProjectFilePath] = snapshotProvider;
+                snapshotProvider.SnapshotChanged += OnSnapshotChanged;
+                snapshotProvider.SnapshotProviderUnloading += OnSnapshotProviderUnloading;
+            }
+        }
+
+        private void OnSnapshotChanged(object sender, SnapshotChangedEventArgs e)
         {
             SnapshotChanged?.Invoke(this, e);
         }
@@ -55,11 +66,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             SnapshotProviderUnloading?.Invoke(this, e);
 
-            // Remove context for the unloaded project from the cache
-            SnapshotProviders.TryRemove(snapshotProvider.ProjectFilePath, out IDependenciesSnapshotProvider provider);
-
-            snapshotProvider.SnapshotChanged -= OnSnapshotChanged;
-            snapshotProvider.SnapshotProviderUnloading -= OnSnapshotProviderUnloading;
+            lock(_snapshotProvidersLock)
+            {
+                SnapshotProviders.TryRemove(snapshotProvider.ProjectFilePath, out IDependenciesSnapshotProvider provider);
+                snapshotProvider.SnapshotChanged -= OnSnapshotChanged;
+                snapshotProvider.SnapshotProviderUnloading -= OnSnapshotProviderUnloading;
+            }
         }
 
         public IDependenciesSnapshotProvider GetSnapshotProvider(string projectFilePath)
@@ -69,46 +81,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 throw new ArgumentException(nameof(projectFilePath));
             }
 
-            if (SnapshotProviders.TryGetValue(projectFilePath, out IDependenciesSnapshotProvider context))
+            lock(_snapshotProvidersLock)
             {
-                return context;
+                if (SnapshotProviders.TryGetValue(projectFilePath, out IDependenciesSnapshotProvider snapshotProvider))
+                {
+                    return snapshotProvider;
+                }
+
+                snapshotProvider = ProjectExportProvider.GetExport<IDependenciesSnapshotProvider>(projectFilePath);
+                if (snapshotProvider != null)
+                {
+                    RegisterSnapshotProvider(snapshotProvider);
+                }
+
+                return snapshotProvider;
             }
-
-            context = ProjectExportProvider.GetExport<IDependenciesSnapshotProvider>(projectFilePath);
-            if (context == null)
-            {
-                return null;
-            }
-
-            SnapshotProviders[projectFilePath] = context;
-            context.SnapshotChanged += OnSnapshotChanged;
-            context.SnapshotProviderUnloading += OnSnapshotProviderUnloading;
-
-            return context;
         }
 
         public IEnumerable<IDependenciesSnapshotProvider> GetSnapshotProviders()
         {
-            var projectService = ProjectServiceAccessor.GetProjectService();
-            if (projectService == null)
+            lock(_snapshotProvidersLock)
             {
-                return null;
-            }
-
-            return GetSnapshotProvidersInternal(projectService);
-        }
-
-        internal IEnumerable<IDependenciesSnapshotProvider> GetSnapshotProvidersInternal(
-                    IProjectService projectService)
-        {
-            var projects = projectService.LoadedUnconfiguredProjects;
-            foreach (var project in projects)
-            {
-                var context = GetSnapshotProvider(project.FullPath);
-                if (context != null)
-                {
-                    yield return context;
-                }
+                return SnapshotProviders.Values;
             }
         }
     }

@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
     [Order(Order)]
     internal class DuplicatedDependenciesSnapshotFilter : DependenciesSnapshotFilterBase
     {
-        public const int Order = 100;
+        public const int Order = 101;
 
         public override IDependency BeforeAdd(
             string projectPath,

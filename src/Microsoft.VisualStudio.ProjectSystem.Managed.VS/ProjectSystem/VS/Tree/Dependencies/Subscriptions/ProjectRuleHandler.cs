@@ -79,21 +79,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             OnOtherProjectDependenciesChanged(e.SnapshotProvider.CurrentSnapshot, shouldBeResolved: false);
         }
 
-        private void OnOtherProjectDependenciesChanged(IDependenciesSnapshot snapshot, bool shouldBeResolved)
-        { 
-            if (snapshot == null)
+        /// <summary>
+        /// When some other project's snapshot changed we need to check if our snapshot has a top level
+        /// dependency on changed project. If it does we need to refresh those top level dependencies to 
+        /// reflect changes.
+        /// </summary>
+        /// <param name="otherProjectSnapshot"></param>
+        /// <param name="shouldBeResolved">
+        /// Specifies if top-level project depencies resolved status. When other project just had it's dependencies
+        /// changed, it is resolved=true (we check target's support when we add projec dependencies). However when 
+        /// other project is unloaded, we should mark top-level dependencies as unresolved.
+        /// </param>
+        private void OnOtherProjectDependenciesChanged(IDependenciesSnapshot otherProjectSnapshot, bool shouldBeResolved)
+        {
+            var projectSnapshot = SnapshotProvider.CurrentSnapshot;
+
+            if (otherProjectSnapshot == null || projectSnapshot == null || projectSnapshot.Equals(otherProjectSnapshot))
             {
+                // if any of the snapshots is not provided or this is the same project - skip
                 return;
             }
 
+            var otherProjectPath = otherProjectSnapshot.ProjectPath;
             var projectPath = CommonServices.Project.FullPath;
 
             var dependencyThatNeedChange = new List<IDependency>();
-            foreach(var target in snapshot.Targets)
+            foreach(var target in projectSnapshot.Targets)
             {
                 foreach (var dependency in target.Value.TopLevelDependencies)
                 {
-                    if (snapshot.ProjectPath.Equals(dependency.GetActualPath(projectPath)))
+                    if (otherProjectPath.Equals(dependency.GetActualPath(projectPath)))
                     {
                         dependencyThatNeedChange.Add(dependency);
                         break;
@@ -103,7 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             if (dependencyThatNeedChange.Count == 0)
             {
-                // we don't have dependencies for updated project
+                // we don't have dependency on updated project
                 return;
             }
 

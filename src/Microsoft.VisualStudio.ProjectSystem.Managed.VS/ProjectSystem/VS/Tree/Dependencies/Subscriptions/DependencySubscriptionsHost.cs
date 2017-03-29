@@ -30,7 +30,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService,
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
             IActiveProjectConfigurationRefreshService activeProjectConfigurationRefreshService,
-            ITargetFrameworkProvider targetFrameworkProvider)
+            ITargetFrameworkProvider targetFrameworkProvider,
+            IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider)
             : base(commonServices,
                    contextProvider,
                    tasksService,
@@ -54,6 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 tasksService.UnloadCancellationToken);
 
             TargetFrameworkProvider = targetFrameworkProvider;
+            AggregateSnapshotProvider = aggregateSnapshotProvider;
             ProjectFilePath = CommonServices.Project.FullPath;
 
             CommonServices.Project.ProjectUnloading += OnUnconfiguredProjectUnloading;
@@ -87,6 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         #endregion
 
+        private IAggregateDependenciesSnapshotProvider AggregateSnapshotProvider { get; }
         private ITargetFrameworkProvider TargetFrameworkProvider { get; }
         private IUnconfiguredProjectCommonServices CommonServices { get; }
         private ITaskDelayScheduler DependenciesUpdateScheduler { get; }
@@ -136,6 +139,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             {
                 provider.Value.DependenciesChanged += OnSubtreeProviderDependenciesChanged;
             }
+
+            AggregateSnapshotProvider.RegisterSnapshotProvider(this);
         }
 
         protected override void OnAggregateContextChanged(AggregateCrossTargetProjectContext oldContext,

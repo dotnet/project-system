@@ -22,7 +22,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
     {
         private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
         private readonly List<IDisposable> _subscriptionLinks;
-        private AggregateCrossTargetProjectContext _currentAggregateProjectContext;
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IDependenciesSnapshotProvider _dependenciesSnapshotProvider;
         private ICrossTargetSubscriptionsHost _host;
@@ -49,7 +48,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         public void AddSubscriptions(AggregateCrossTargetProjectContext newProjectContext)
         {
             Requires.NotNull(newProjectContext, nameof(newProjectContext));
-            _currentAggregateProjectContext = newProjectContext;
 
             foreach (var configuredProject in newProjectContext.InnerConfiguredProjects)
             {
@@ -155,7 +153,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 }
 
                 var dependencyChangeContext = new DependenciesRuleChangeContext(
-                    _currentAggregateProjectContext.ActiveProjectContext.TargetFramework, catalogs);
+                        currentAggregaceContext.ActiveProjectContext.TargetFramework, catalogs);
 
                 ProcessSharedProjectsUpdates(sharedProjectsUpdate, projectContextToUpdate, dependencyChangeContext);
 

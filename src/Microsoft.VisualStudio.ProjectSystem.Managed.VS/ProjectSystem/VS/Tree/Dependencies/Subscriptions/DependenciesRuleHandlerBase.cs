@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
@@ -94,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         {
             foreach (var removedItem in projectChange.Difference.RemovedItems)
             {
-                var model = CreateDependencyModelForRule(removedItem, resolved, projectChange, context.TargetFramework);
+                var model = CreateDependencyModelForRule(removedItem, resolved, projectChange.Before, context.TargetFramework);
                 if (shouldProcess(model))
                 {
                     ruleChangeContext.IncludeRemovedChange(context.TargetFramework, model);
@@ -103,17 +102,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             foreach (var changedItem in projectChange.Difference.ChangedItems)
             {
-                var model = CreateDependencyModelForRule(changedItem, resolved, projectChange, context.TargetFramework);
+                var model = CreateDependencyModelForRule(changedItem, resolved, projectChange.After, context.TargetFramework);
                 if (shouldProcess(model))
                 {
-                    ruleChangeContext.IncludeRemovedChange(context.TargetFramework, model);
+                    // For changes we try to add new dependency. If it is a resolved dependency, it would just override
+                    // old one with new properties. If it is unresolved dependency, it would be added only when there no
+                    // resolved version in the snapshot.
                     ruleChangeContext.IncludeAddedChange(context.TargetFramework, model);
                 }
             }
 
             foreach (var addedItem in projectChange.Difference.AddedItems)
             {
-                var model = CreateDependencyModelForRule(addedItem, resolved, projectChange, context.TargetFramework);
+                var model = CreateDependencyModelForRule(addedItem, resolved, projectChange.After, context.TargetFramework);
                 if (shouldProcess(model))
                 {
                     ruleChangeContext.IncludeAddedChange(context.TargetFramework, model);
@@ -129,10 +130,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         private IDependencyModel CreateDependencyModelForRule(
             string itemSpec,
             bool resolved,
-            IProjectChangeDescription projectChange,
+            IProjectRuleSnapshot projectRuleSnapshot,
             ITargetFramework targetFramework)
         {
-            var properties = GetProjectItemProperties(projectChange.After, itemSpec);
+            var properties = GetProjectItemProperties(projectRuleSnapshot, itemSpec);
             var originalItemSpec = itemSpec;
             if (resolved)
             {

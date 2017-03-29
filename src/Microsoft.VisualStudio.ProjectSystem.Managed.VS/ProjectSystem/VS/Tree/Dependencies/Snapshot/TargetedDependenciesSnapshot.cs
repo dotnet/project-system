@@ -134,7 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             foreach (var added in changes.AddedNodes)
             {
                 IDependency newDependency = new Dependency(added, this);
-
+                
                 newDependency = snapshotFilters.Aggregate(
                     newDependency, (newAdded, filter) => filter.BeforeAdd(ProjectPath, TargetFramework, newAdded, worldBuilder, topLevelBuilder));
                 if (newDependency == null)
