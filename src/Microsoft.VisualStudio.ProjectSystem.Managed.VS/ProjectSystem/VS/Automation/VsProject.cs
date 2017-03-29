@@ -16,6 +16,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
     /// This implementation of VSProject just redirects the VSProject call to the contained
     /// VSProject object imported from CPS
     /// </remarks>
+    [Export(ExportContractNames.VsTypes.VSProject, typeof(VSLangProj.VSProject))]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+    [Order(10)]
     internal partial class VSProject : VSLangProj.VSProject
     {
         private readonly VSLangProj.VSProject _vsProject;
@@ -35,17 +38,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             _vsProject = vsProject;
             _threadingService = threadingService;
             _projectProperties = projectProperties;
-        }
-
-        [Export(ExportContractNames.VsTypes.VSProject, typeof(VSLangProj.VSProject))]
-        [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
-        [Order(10)]
-        public VSProject VSProjectImpl
-        {
-            get
-            {
-                return this;
-            }
         }
 
         public VSLangProj.References References => _vsProject.References;
