@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         ///     Gets the top-level object in the Visual Studio automation object model.
         /// </summary>
         /// <exception cref="COMException">
-        ///     This property was not access from the UI thread.
+        ///     This property was not accessed from the UI thread.
         /// </exception>
         DTE2 Dte
         {
@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         ///     Gets the current solution.
         /// </summary>
         /// <exception cref="COMException">
-        ///     This property was not access from the UI thread.
+        ///     This property was not accessed from the UI thread.
         /// </exception>
         Solution2 Solution
         {
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         ///     Gets the current project.
         /// </summary>
         /// <exception cref="COMException">
-        ///     This property was not access from the UI thread.
+        ///     This property was not accessed from the UI thread.
         /// </exception>
         Project Project
         {

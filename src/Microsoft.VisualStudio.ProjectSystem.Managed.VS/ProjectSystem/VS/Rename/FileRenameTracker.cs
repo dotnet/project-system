@@ -16,7 +16,7 @@ using System.Linq;
 using Task = System.Threading.Tasks.Task;
 using Microsoft.VisualStudio.LanguageServices;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 {
     [Export(typeof(IProjectChangeHintReceiver))]
     [ProjectChangeHintKind(ProjectChangeFileSystemEntityRenameHint.RenamedFileAsString)]
