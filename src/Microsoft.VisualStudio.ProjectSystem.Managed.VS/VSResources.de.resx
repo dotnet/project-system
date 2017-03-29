@@ -276,4 +276,7 @@ Um das Projekt zu debuggen, fügen Sie dieser Projektmappe ein ausführbares Pro
   <data name="XprojMigrationGeneralFailure" xml:space="preserve">
     <value>Fehler beim Migrieren des XProj-Projekts {0}. "{1}" wurde mit dem Fehlercode {2} beendet.</value>
   </data>
+  <data name="DebugFrameworkMenuText" xml:space="preserve">
+    <value>Framework ({0})</value>
+  </data>
 </root>

@@ -58,8 +58,8 @@
   <StringProperty Name="BaseIntermediateOutputPath" />
   <EnumProperty Name="OutputType">
     <EnumValue Name="Library" DisplayName="Knihovna tříd" />
-    <EnumValue Name="exe" DisplayName="Konzolová aplikace" />
-    <EnumValue Name="winexe" DisplayName="Aplikace pro systém Windows" />
+    <EnumValue Name="Exe" DisplayName="Console Application" />
+    <EnumValue Name="WinExe" DisplayName="Windows Application" />
     <EnumValue Name="AppContainerExe" DisplayName="Aplikace pro Windows Store" />
     <EnumValue Name="WinMDObj" DisplayName="WinMD" />
   </EnumProperty>
@@ -116,5 +116,6 @@
   <StringProperty Name="SharedProjectAppliesTo" Visible="False" Description="Výraz pro porovnání schopností, který přinejmenším testuje jazyk sdíleného projektu. Používá se k filtrování možností pro přidání odkazu na sdílený projekt." />
   <BoolProperty Name="AlwaysUseNumericalSuffixInItemNames" Visible="False" Description="Určuje, jestli se mají za názvy nově přidaných položek vždycky připojovat čísla." />
   <StringProperty Name="LanguageServiceName" ReadOnly="True" Visible="False" Description="Představuje hodnotu LanguageName předávanou kompilátoru Roslyn" />
+  <StringProperty Name="LanguageServiceId" ReadOnly="True" Visible="False" Description="Represents the GUID of object that implements the language service for the project." />
   <StringProperty Name="TemplateLanguage" ReadOnly="True" Visible="False" Description="Představuje jazyk, který přetrvává v položkách a šablonách projektu" />
 </Rule>

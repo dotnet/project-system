@@ -272,6 +272,11 @@ In order to debug this project, add an executable project to this solution which
         <target state="translated">XProj プロジェクト {0} の移行に失敗しました。'{1}' はエラー コード {2} で終了しました。</target>
         <note />
       </trans-unit>
+      <trans-unit id="DebugFrameworkMenuText">
+        <source>Framework ({0})</source>
+        <target state="new">Framework ({0})</target>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

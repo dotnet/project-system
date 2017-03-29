@@ -272,6 +272,11 @@ In order to debug this project, add an executable project to this solution which
         <target state="translated">無法移轉 XProj 檔案 {0}。'{1}' 已結束，出現錯誤碼 {2}。</target>
         <note />
       </trans-unit>
+      <trans-unit id="DebugFrameworkMenuText">
+        <source>Framework ({0})</source>
+        <target state="new">Framework ({0})</target>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -58,8 +58,8 @@
   <StringProperty Name="BaseIntermediateOutputPath" />
   <EnumProperty Name="OutputType">
     <EnumValue Name="Library" DisplayName="Sınıf Kitaplığı" />
-    <EnumValue Name="exe" DisplayName="Konsol Uygulaması" />
-    <EnumValue Name="winexe" DisplayName="Windows Uygulaması" />
+    <EnumValue Name="Exe" DisplayName="Console Application" />
+    <EnumValue Name="WinExe" DisplayName="Windows Application" />
     <EnumValue Name="AppContainerExe" DisplayName="Windows Mağazası Uygulaması" />
     <EnumValue Name="WinMDObj" DisplayName="WinMD" />
   </EnumProperty>
@@ -116,5 +116,6 @@
   <StringProperty Name="SharedProjectAppliesTo" Visible="False" Description="Paylaşılan Proje'nin en azından dilini test etmeye yönelik yetenek eşleştirme ifadesi; Paylaşılan Proje Başvurusu Ekle seçimlerini filtrelemek için kullanılır." />
   <BoolProperty Name="AlwaysUseNumericalSuffixInItemNames" Visible="False" Description="Yeni eklenen öğelerin adlarına her zaman son ek olarak sayı eklenmesi gerekip gerekmediğini gösterir." />
   <StringProperty Name="LanguageServiceName" ReadOnly="True" Visible="False" Description="Roslyn’e geçirilen LanguageName öğesini temsil eder" />
+  <StringProperty Name="LanguageServiceId" ReadOnly="True" Visible="False" Description="Represents the GUID of object that implements the language service for the project." />
   <StringProperty Name="TemplateLanguage" ReadOnly="True" Visible="False" Description="Öğelerde ve proje şablonlarında kalıcı olan dili temsil eder" />
 </Rule>

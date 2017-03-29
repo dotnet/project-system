@@ -73,16 +73,6 @@
         <target state="translated">Biblioteca de clases</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|OutputType.exe|DisplayName">
-        <source>Console Application</source>
-        <target state="translated">Aplicación de consola</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|OutputType.winexe|DisplayName">
-        <source>Windows Application</source>
-        <target state="translated">Aplicación Windows</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EnumValue|OutputType.AppContainerExe|DisplayName">
         <source>Windows Store app</source>
         <target state="translated">Aplicación de la Tienda Windows</target>
@@ -137,6 +127,21 @@
         <source>Represent the language that is persisted in items and project templates</source>
         <target state="translated">Representa el lenguaje que se mantiene en los elementos y las plantillas de proyecto</target>
         <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputType.Exe|DisplayName">
+        <source>Console Application</source>
+        <target state="new">Console Application</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputType.WinExe|DisplayName">
+        <source>Windows Application</source>
+        <target state="new">Windows Application</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|LanguageServiceId|Description">
+        <source>Represents the GUID of object that implements the language service for the project.</source>
+        <target state="new">Represents the GUID of object that implements the language service for the project.</target>
+        <note></note>
       </trans-unit>
     </body>
   </file>

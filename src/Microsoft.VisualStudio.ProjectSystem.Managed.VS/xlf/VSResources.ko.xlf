@@ -272,6 +272,11 @@ In order to debug this project, add an executable project to this solution which
         <target state="translated">XProj 프로젝트 {0}을(를) 마이그레이션하지 못했습니다. {2} 오류 코드와 함께 '{1}'이(가) 종료되었습니다.</target>
         <note />
       </trans-unit>
+      <trans-unit id="DebugFrameworkMenuText">
+        <source>Framework ({0})</source>
+        <target state="new">Framework ({0})</target>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

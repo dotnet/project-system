@@ -135,4 +135,10 @@
   <data name="JsonErrorNeedToBeCorrected" xml:space="preserve">
     <value>必須先修正 '{0}' 中的錯誤，才能套用變更。</value>
   </data>
+  <data name="MsBuildMissingValueToRemove" xml:space="preserve">
+    <value>The specified value to remove '{0}' was not present in the property '{1}'</value>
+  </data>
+  <data name="MsBuildMissingValueToRename" xml:space="preserve">
+    <value>The specified value to rename '{0}' was not present in the property '{1}'</value>
+  </data>
 </root>
