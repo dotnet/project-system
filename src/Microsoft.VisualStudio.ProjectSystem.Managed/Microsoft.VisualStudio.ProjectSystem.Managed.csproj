@@ -37,9 +37,6 @@
     <Compile Update="ProjectSystem\Rules\AdditionalFiles.cs">
       <DependentUpon>AdditionalFiles.xaml</DependentUpon>
     </Compile>
-    <Compile Update="ProjectSystem\Rules\FSharp.cs">
-      <DependentUpon>FSharp.xaml</DependentUpon>
-    </Compile>
     <Compile Update="ProjectSystem\Rules\ProjectDebugger.xaml.cs">
       <DependentUpon>ProjectDebugger.xaml</DependentUpon>
     </Compile>
@@ -64,8 +61,8 @@
     <Compile Update="ProjectSystem\Rules\AppDesigner.xaml.cs">
       <DependentUpon>AppDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Update="ProjectSystem\Rules\CSharp.cs">
-      <DependentUpon>CSharp.xaml</DependentUpon>
+    <Compile Update="ProjectSystem\Rules\Compile.cs">
+      <DependentUpon>Compile.xaml</DependentUpon>
     </Compile>
     <Compile Update="ProjectSystem\Rules\AssemblyReference.cs">
       <DependentUpon>AssemblyReference.xaml</DependentUpon>
@@ -127,9 +124,6 @@
     <Compile Update="ProjectSystem\Rules\NuGetRestore.cs">
       <DependentUpon>NuGetRestore.xaml</DependentUpon>
     </Compile>
-    <Compile Update="ProjectSystem\Rules\VisualBasic.cs">
-      <DependentUpon>VisualBasic.xaml</DependentUpon>
-    </Compile>
     <Compile Update="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -137,11 +131,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <XamlPropertyRule Include="ProjectSystem\Rules\FSharp.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-    </XamlPropertyRule>
-    <XamlPropertyRule Include="ProjectSystem\Rules\CSharp.xaml">
+    <XamlPropertyRule Include="ProjectSystem\Rules\Compile.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
@@ -244,10 +234,6 @@
       <SubType>Designer</SubType>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\ResolvedPackageReference.xaml">
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
-    </XamlPropertyRule>
-    <XamlPropertyRule Include="ProjectSystem\Rules\VisualBasic.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>

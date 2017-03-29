@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         public override string RuleName
         {
-            get { return CSharp.SchemaName; }
+            get { return Compile.SchemaName; }
         }
 
         public override RuleHandlerType HandlerType

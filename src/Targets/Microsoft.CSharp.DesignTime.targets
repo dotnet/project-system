@@ -21,12 +21,6 @@
 
     <ItemGroup>
      <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)CSharp.ProjectItemsSchema.xaml;"/>
-     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)CSharp.xaml;">
-      <Context>File</Context>
-     </PropertyPageSchema>
-     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)CSharp.BrowseObject.xaml;">
-      <Context>BrowseObject</Context>
-     </PropertyPageSchema>
 
      <ProjectCapability Include="CSharp;Managed"/>
     </ItemGroup>

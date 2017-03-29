@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--Copyright, Microsoft Corporation, All rights reserved.-->
 <Rule
-  Name="VisualBasic"
+  Name="Compile"
   DisplayName="File Properties"
   PageTemplate="generic"
   Description="File Properties"
@@ -77,22 +77,23 @@
     </StringProperty.DataSource>
   </StringProperty>
 
-  <BoolProperty Name="Visible" Visible="false" />
-  <StringProperty Name="DependentUpon" Visible="false">
-    <StringProperty.Metadata>
-      <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />
-    </StringProperty.Metadata>
-  </StringProperty>
-  <StringProperty Name="Link" Visible="false">
+  <StringProperty Name="URL" ReadOnly="true" Visible="false">
     <StringProperty.DataSource>
-      <DataSource PersistenceStyle="Attribute" SourceOfDefaultValue="AfterContext" />
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
-    <StringProperty.Metadata>
-      <NameValuePair Name="DoNotCopyAcrossProjects" Value="true" />
-    </StringProperty.Metadata>
   </StringProperty>
-  <StringProperty Name="SubType" Visible="false" />
-  <StringProperty Name="LastGenOutput" Visible="false" Description="The filename of the last file generated as a result of the SFG." />
-  <BoolProperty Name="DesignTime" Visible="false" Description="A value indicating whether this file has a designer." />
-  <BoolProperty Name="AutoGen" Visible="false" Description="A value indicating whether this is a generated file." />
+
+  <EnumProperty Name="SubType" Visible="false">
+    <EnumValue Name="Designer" />
+    <EnumValue Name="Component" />
+    <EnumValue Name="Control" />
+    <EnumValue Name="Form" />
+    <EnumValue Name="Code" />
+  </EnumProperty>
+
+  <StringProperty Name="Extension" Visible="False" ReadOnly="true">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="Extension" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 </Rule>
