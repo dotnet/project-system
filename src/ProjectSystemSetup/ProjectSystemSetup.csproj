@@ -44,6 +44,20 @@
       <ForceIncludeInVSIX>true</ForceIncludeInVSIX>
       <Private>True</Private>
     </ProjectReference>
+    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.FSharp.VS\Microsoft.VisualStudio.ProjectSystem.FSharp.VS.csproj">
+      <Name>Microsoft.VisualStudio.ProjectSystem.FSharp.VS</Name>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroupWithFinalOutputPath%3bPkgdefProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
+      <ForceIncludeInVSIX>true</ForceIncludeInVSIX>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.FSharp\Microsoft.VisualStudio.ProjectSystem.FSharp.csproj">
+      <Name>Microsoft.VisualStudio.ProjectSystem.FSharp</Name>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bSatelliteDllsProjectOutputGroupWithFinalOutputPath%3b</IncludeOutputGroupsInVSIX>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
+      <ForceIncludeInVSIX>true</ForceIncludeInVSIX>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.VS\Microsoft.VisualStudio.ProjectSystem.Managed.VS.csproj">
       <Name>Microsoft.VisualStudio.ProjectSystem.Managed.VS</Name>
       <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>

@@ -79,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
 
         [ProjectAutoLoad(ProjectLoadCheckpoint.ProjectFactoryCompleted)]
-        [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
+        [AppliesTo(ProjectCapability.ManagedLanguageService)]
         private Task OnProjectFactoryCompletedAsync()
         {
             return InitializeAsync();

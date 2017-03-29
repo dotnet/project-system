@@ -5,7 +5,7 @@ using System.ComponentModel.Composition;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 {
     [ExportIVsReferenceManagerUserAsync(VSConstants.ComReferenceProvider_string, ReferencePriority.Com)]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+    [AppliesTo(ProjectCapability.Managed)]
     [Order(OverrideCPSProvider)]
     internal class ComReferencesProviderContext : BaseReferenceContextProvider
     {

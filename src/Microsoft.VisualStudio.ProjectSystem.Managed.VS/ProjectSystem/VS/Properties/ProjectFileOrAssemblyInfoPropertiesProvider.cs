@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     [Export("ProjectFileOrAssemblyInfo", typeof(IProjectPropertiesProvider))]
     [Export(typeof(IProjectPropertiesProvider))]
     [ExportMetadata("Name", "ProjectFileOrAssemblyInfo")]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+    [AppliesTo(ProjectCapability.Managed)]
     internal class ProjectFileOrAssemblyInfoPropertiesProvider : AbstractProjectFileOrAssemblyInfoPropertiesProvider
     {
         [ImportingConstructor]

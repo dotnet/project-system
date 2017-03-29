@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// Winmdobj and appcontainerexe need to be mapped to dll and exe respectively for the OutputTypeproperty.
     /// </summary>
     [ExportDynamicEnumValuesProvider("OutputTypeEnumProvider")]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+    [AppliesTo(ProjectCapability.Managed)]
     internal class OutputTypeEnumProvider : IDynamicEnumValuesProvider
     {
         public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair> options)
