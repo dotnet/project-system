@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.IO;
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
     [ExportSpecialFileProvider(SpecialFiles.AssemblyResource)]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
+    [AppliesTo(ProjectCapability.Managed)]
     internal class ResourcesFileSpecialFileProvider : AbstractSpecialFileProvider
     {
         [ImportingConstructor]

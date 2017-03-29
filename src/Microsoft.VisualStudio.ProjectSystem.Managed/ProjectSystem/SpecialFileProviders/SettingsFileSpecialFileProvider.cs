@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.IO;
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
     [ExportSpecialFileProvider(SpecialFiles.AppSettings)]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp + " & " + ProjectCapability.AppSettings)]
+    [AppliesTo(ProjectCapability.Managed + " & " + ProjectCapability.AppSettings)]
     internal class SettingsFileSpecialFileProvider : AbstractSpecialFileProvider
     {
         [ImportingConstructor]

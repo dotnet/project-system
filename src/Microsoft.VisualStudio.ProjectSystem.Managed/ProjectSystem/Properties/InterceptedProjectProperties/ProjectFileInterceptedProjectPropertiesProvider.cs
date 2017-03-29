@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     [Export("ProjectFileWithInterception", typeof(IProjectInstancePropertiesProvider))]
     [Export(typeof(IProjectInstancePropertiesProvider))]
     [ExportMetadata("Name", "ProjectFileWithInterception")]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
+    [AppliesTo(ProjectCapability.Managed)]
     internal sealed class ProjectFileInterceptedProjectPropertiesProvider : InterceptedProjectPropertiesProviderBase
     {
         [ImportingConstructor]

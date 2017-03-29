@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     /// C#/VB specific project reload interceptor.
     /// </summary>
     [Export(typeof(IProjectReloadInterceptor))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
+    [AppliesTo(ProjectCapability.Managed)]
     internal sealed class ProjectReloadInterceptor : IProjectReloadInterceptor
     {
         [ImportingConstructor]

@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
     /// can be retrieved from this servcie. 
     /// </summary>
     [Export(typeof(IDialogServices))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
+    [AppliesTo(ProjectCapability.Managed)]
     internal class DialogServices : IDialogServices
     {
         [ImportingConstructor]

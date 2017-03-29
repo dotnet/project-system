@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     [Export(typeof(IConfiguredProjectReadyToBuild))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
+    [AppliesTo(ProjectCapability.ManagedLanguageService)]
     [Order(int.MaxValue)]
     internal sealed class ConfiguredProjectReadyToBuild : IConfiguredProjectReadyToBuild, IDisposable
     {
