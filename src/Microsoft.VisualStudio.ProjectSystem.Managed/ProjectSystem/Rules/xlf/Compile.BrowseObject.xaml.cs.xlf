@@ -3,16 +3,6 @@
   <file datatype="xml" source-language="en" target-language="cs" original="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/CSharp.BrowseObject.xaml">
     <body>
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/CSharp.BrowseObject.xaml" />
-      <trans-unit id="Rule|CSharp|DisplayName">
-        <source>File Properties</source>
-        <target state="translated">Vlastnosti souboru</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Rule|CSharp|Description">
-        <source>File Properties</source>
-        <target state="translated">Vlastnosti souboru</target>
-        <note />
-      </trans-unit>
       <trans-unit id="Category|Advanced|DisplayName">
         <source>Advanced</source>
         <target state="translated">Upřesnit</target>
@@ -101,6 +91,16 @@
       <trans-unit id="StringProperty|CustomToolNamespace|Description">
         <source>The namespace into which the output of the custom tool is placed.</source>
         <target state="new">The namespace into which the output of the custom tool is placed.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Rule|Compile|DisplayName">
+        <source>File Properties</source>
+        <target state="new">File Properties</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Rule|Compile|Description">
+        <source>File Properties</source>
+        <target state="new">File Properties</target>
         <note></note>
       </trans-unit>
     </body>

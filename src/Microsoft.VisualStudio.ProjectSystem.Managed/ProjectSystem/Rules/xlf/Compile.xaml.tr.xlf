@@ -3,16 +3,6 @@
   <file datatype="xml" source-language="en" target-language="tr" original="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/CSharp.xaml">
     <body>
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/CSharp.xaml" />
-      <trans-unit id="Rule|CSharp|DisplayName">
-        <source>C#</source>
-        <target state="translated">C#</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Rule|CSharp|Description">
-        <source>C# source file</source>
-        <target state="translated">C# kaynak dosyası</target>
-        <note />
-      </trans-unit>
       <trans-unit id="Category|Advanced|DisplayName">
         <source>Advanced</source>
         <target state="translated">Gelişmiş</target>
@@ -97,6 +87,16 @@
         <source>A value indicating whether this is a generated file.</source>
         <target state="translated">Bunun oluşturulmuş bir dosya olup olmadığını gösteren değer.</target>
         <note />
+      </trans-unit>
+      <trans-unit id="Rule|Compile|DisplayName">
+        <source>File Properties</source>
+        <target state="new">File Properties</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Rule|Compile|Description">
+        <source>File Properties</source>
+        <target state="new">File Properties</target>
+        <note></note>
       </trans-unit>
     </body>
   </file>

@@ -3,14 +3,6 @@
   <file datatype="xml" source-language="en" original="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/CSharp.BrowseObject.xaml">
     <body>
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/CSharp.BrowseObject.xaml" />
-      <trans-unit id="Rule|CSharp|DisplayName">
-        <source>File Properties</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="Rule|CSharp|Description">
-        <source>File Properties</source>
-        <note />
-      </trans-unit>
       <trans-unit id="Category|Advanced|DisplayName">
         <source>Advanced</source>
         <note />
@@ -81,6 +73,14 @@
       </trans-unit>
       <trans-unit id="StringProperty|CustomToolNamespace|Description">
         <source>The namespace into which the output of the custom tool is placed.</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Rule|Compile|DisplayName">
+        <source>File Properties</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Rule|Compile|Description">
+        <source>File Properties</source>
         <note></note>
       </trans-unit>
     </body>

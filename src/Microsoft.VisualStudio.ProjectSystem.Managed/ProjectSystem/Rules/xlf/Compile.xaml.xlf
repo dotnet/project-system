@@ -3,14 +3,6 @@
   <file datatype="xml" source-language="en" original="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/CSharp.xaml">
     <body>
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/CSharp.xaml" />
-      <trans-unit id="Rule|CSharp|DisplayName">
-        <source>C#</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="Rule|CSharp|Description">
-        <source>C# source file</source>
-        <note />
-      </trans-unit>
       <trans-unit id="Category|Advanced|DisplayName">
         <source>Advanced</source>
         <note />
@@ -78,6 +70,14 @@
       <trans-unit id="BoolProperty|AutoGen|Description">
         <source>A value indicating whether this is a generated file.</source>
         <note />
+      </trans-unit>
+      <trans-unit id="Rule|Compile|DisplayName">
+        <source>File Properties</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Rule|Compile|Description">
+        <source>File Properties</source>
+        <note></note>
       </trans-unit>
     </body>
   </file>
