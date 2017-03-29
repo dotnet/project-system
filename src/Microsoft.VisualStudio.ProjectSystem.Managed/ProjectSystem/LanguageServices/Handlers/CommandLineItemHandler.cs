@@ -53,8 +53,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             if (!ProcessDesignTimeBuildFailure(projectChange, context))
             {
                 ProcessOptions(projectChange, context);
-                ProcessItems(projectChange, context, isActiveContext);
             }
+
+            // We need to process items even from failed design time builds, as we might be removing some items.
+            ProcessItems(projectChange, context, isActiveContext);
 
             return Task.CompletedTask;
         }
