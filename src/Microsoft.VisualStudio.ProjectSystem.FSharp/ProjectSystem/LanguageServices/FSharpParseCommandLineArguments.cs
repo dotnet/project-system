@@ -6,22 +6,15 @@ using Microsoft.CodeAnalysis.CSharp;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
-    public class FSharpParseCommandLineArguments : IParseCommandLineArguments
+    [Export(typeof(IParseCommandLineArguments))]
+    [AppliesTo(ProjectCapability.FSharp)]
+    internal class FSharpParseCommandLineArguments : IParseCommandLineArguments
     {
-        [ImportingConstructor]
-        public FSharpParseCommandLineArguments()
-        {
-        }
-
         public CommandLineArguments Parse(IEnumerable<string> args, string baseDirectory)
         {
             // TODO: replace with F# command line parser
             return CommandLineArguments.FromCommonCommandLineArguments(
                 CSharpCommandLineParser.Default.Parse(args, baseDirectory, sdkDirectory: null, additionalReferenceDirectories: null));
         }
-
-        [Export(typeof(IParseCommandLineArguments))]
-        [AppliesTo(ProjectCapability.FSharp)]
-        public IParseCommandLineArguments Parser => this;
     }
 }
