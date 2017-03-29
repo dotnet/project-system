@@ -37,7 +37,9 @@ namespace Microsoft.VisualStudio.Packaging
                                                   ProjectCapability.EditAndContinue + "; " +
                                                   ProjectCapability.HandlesOwnReload + "; " +
                                                   ProjectCapability.OpenProjectFile + "; " +
-                                                  ProjectCapability.PreserveFormatting;
+                                                  ProjectCapability.PreserveFormatting + "; " +
+                                                  ProjectCapability.ProjectConfigurationsDeclaredDimensions + "; " +
+                                                  ProjectCapability.LanguageService;
 
         public ManagedProjectSystemPackage()
         {
