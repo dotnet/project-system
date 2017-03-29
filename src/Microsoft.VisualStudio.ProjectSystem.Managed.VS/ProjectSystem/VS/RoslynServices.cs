@@ -20,10 +20,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _threadingService = threadingService;
         }
 
-        public async Task<Solution> RenameSymbolAsync(Solution solution, ISymbol symbol, string newName)
+        public Task<Solution> RenameSymbolAsync(Solution solution, ISymbol symbol, string newName)
         {
-            var optionSet = solution.Workspace.Options;
-            return await RoslynRenamer.Renamer.RenameSymbolAsync(solution, symbol, newName, optionSet).ConfigureAwait(false);
+            return RoslynRenamer.Renamer.RenameSymbolAsync(solution, symbol, newName, solution.Workspace.Options);
         }
         
         public bool ApplyChangesToSolution(Workspace ws, Solution renamedSolution)
