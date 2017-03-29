@@ -36,7 +36,6 @@ namespace Microsoft.VisualStudio.Packaging
     {
         public const string ProjectTypeGuid = "9A19103F-16F7-4668-BE54-9A1E7A4F7556";
         public const string LegacyProjectTypeGuid = "FAE04EC0-301F-11d3-BF4B-00C04F79EFBC";
-        public const string XprojTypeGuid = "8bb2217d-0f2d-49d1-97bc-3654ed321f3b";
         public const string PackageGuid = "860A27C0-B665-47F3-BC12-637E16A1050A";
         private const string ProjectTypeGuidFormatted = "{" + ProjectTypeGuid + "}";
 
