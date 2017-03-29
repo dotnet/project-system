@@ -73,16 +73,6 @@
         <target state="translated">類別庫</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|OutputType.exe|DisplayName">
-        <source>Console Application</source>
-        <target state="translated">主控台應用程式</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|OutputType.winexe|DisplayName">
-        <source>Windows Application</source>
-        <target state="translated">Windows 應用程式</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EnumValue|OutputType.AppContainerExe|DisplayName">
         <source>Windows Store app</source>
         <target state="translated">Windows 市集應用程式</target>
@@ -137,6 +127,21 @@
         <source>Represent the language that is persisted in items and project templates</source>
         <target state="translated">代表保存在項目和專案範本中的語言</target>
         <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputType.Exe|DisplayName">
+        <source>Console Application</source>
+        <target state="new">Console Application</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputType.WinExe|DisplayName">
+        <source>Windows Application</source>
+        <target state="new">Windows Application</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|LanguageServiceId|Description">
+        <source>Represents the GUID of object that implements the language service for the project.</source>
+        <target state="new">Represents the GUID of object that implements the language service for the project.</target>
+        <note></note>
       </trans-unit>
     </body>
   </file>

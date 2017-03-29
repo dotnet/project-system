@@ -276,4 +276,7 @@ Pokud chcete projekt ladit, přidejte do řešení spustitelný projekt, který 
   <data name="XprojMigrationGeneralFailure" xml:space="preserve">
     <value>Nepovedlo se migrovat projekt XProj {0}. {1} se ukončil s kódem chyby {2}.</value>
   </data>
+  <data name="DebugFrameworkMenuText" xml:space="preserve">
+    <value>Framework ({0})</value>
+  </data>
 </root>

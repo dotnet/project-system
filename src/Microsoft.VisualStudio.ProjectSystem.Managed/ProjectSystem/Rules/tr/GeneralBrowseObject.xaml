@@ -34,11 +34,11 @@
   <StringProperty Name="OutputName" Visible="False" />
   <DynamicEnumProperty Name="OutputType" DisplayName="Çıkış Türü" EnumProvider="OutputTypeEnumProvider" Visible="False" />
   <EnumProperty Name="OutputTypeEx" DisplayName="Çıkış Türü" Visible="False">
-    <EnumValue Name="winexe" DisplayName="0" />
-    <EnumValue Name="exe" DisplayName="1" />
-    <EnumValue Name="library" DisplayName="2" />
-    <EnumValue Name="appcontainerexe" DisplayName="3" />
-    <EnumValue Name="winmdobj" DisplayName="4" />
+    <EnumValue Name="WinExe" DisplayName="0" />
+    <EnumValue Name="Exe" DisplayName="1" />
+    <EnumValue Name="Library" DisplayName="2" />
+    <EnumValue Name="AppContainerExe" DisplayName="3" />
+    <EnumValue Name="WinMDObj" DisplayName="4" />
     <EnumProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception" PersistedName="OutputTypeEx" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </EnumProperty.DataSource>

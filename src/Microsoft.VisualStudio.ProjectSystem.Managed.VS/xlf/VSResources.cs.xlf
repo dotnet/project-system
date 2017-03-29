@@ -272,6 +272,11 @@ Pokud chcete projekt ladit, přidejte do řešení spustitelný projekt, který 
         <target state="translated">Nepovedlo se migrovat projekt XProj {0}. {1} se ukončil s kódem chyby {2}.</target>
         <note />
       </trans-unit>
+      <trans-unit id="DebugFrameworkMenuText">
+        <source>Framework ({0})</source>
+        <target state="new">Framework ({0})</target>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

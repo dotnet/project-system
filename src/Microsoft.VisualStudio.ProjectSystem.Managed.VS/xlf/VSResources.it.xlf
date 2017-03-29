@@ -272,6 +272,11 @@ Per eseguire il debug del progetto, aggiungere a questa soluzione un progetto es
         <target state="translated">Non è stato possibile eseguire la migrazione del progetto XProj {0}. '{1}' è stato terminato con il codice errore {2}.</target>
         <note />
       </trans-unit>
+      <trans-unit id="DebugFrameworkMenuText">
+        <source>Framework ({0})</source>
+        <target state="new">Framework ({0})</target>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

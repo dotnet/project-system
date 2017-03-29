@@ -58,8 +58,8 @@
   <StringProperty Name="BaseIntermediateOutputPath" />
   <EnumProperty Name="OutputType">
     <EnumValue Name="Library" DisplayName="Biblioteca de Classes" />
-    <EnumValue Name="exe" DisplayName="Aplicativo do Console" />
-    <EnumValue Name="winexe" DisplayName="Aplicativo do Windows" />
+    <EnumValue Name="Exe" DisplayName="Console Application" />
+    <EnumValue Name="WinExe" DisplayName="Windows Application" />
     <EnumValue Name="AppContainerExe" DisplayName="Aplicativo da Windows Store" />
     <EnumValue Name="WinMDObj" DisplayName="WinMD" />
   </EnumProperty>
@@ -116,5 +116,6 @@
   <StringProperty Name="SharedProjectAppliesTo" Visible="False" Description="Expressão de correspondência de capacidade que, no mínimo, testa o idioma do Projeto Compartilhado; usado para filtrar opções de Adicionar Referência de Projeto Compartilhado." />
   <BoolProperty Name="AlwaysUseNumericalSuffixInItemNames" Visible="False" Description="Indica se os nomes dos itens recém-adicionados devem sempre ser sufixados com um número." />
   <StringProperty Name="LanguageServiceName" ReadOnly="True" Visible="False" Description="Representa o LanguageName passado para a Roslyn" />
+  <StringProperty Name="LanguageServiceId" ReadOnly="True" Visible="False" Description="Represents the GUID of object that implements the language service for the project." />
   <StringProperty Name="TemplateLanguage" ReadOnly="True" Visible="False" Description="Representa o idioma persistido em modelos de projeto e itens" />
 </Rule>

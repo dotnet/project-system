@@ -33,6 +33,16 @@
         <target state="translated">必須先修正 '{0}' 中的錯誤，才能套用變更。</target>
         <note />
       </trans-unit>
+      <trans-unit id="MsBuildMissingValueToRemove">
+        <source>The specified value to remove '{0}' was not present in the property '{1}'</source>
+        <target state="new">The specified value to remove '{0}' was not present in the property '{1}'</target>
+        <note>{0} will be a specific property value such as "Debug", {1} will be an MsBuild property name such as "Configurations". Neither of those values will be localized.</note>
+      </trans-unit>
+      <trans-unit id="MsBuildMissingValueToRename">
+        <source>The specified value to rename '{0}' was not present in the property '{1}'</source>
+        <target state="new">The specified value to rename '{0}' was not present in the property '{1}'</target>
+        <note>{0} will be a specific property value such as "Debug", {1} will be an MsBuild property name such as "Configurations". Neither of those values will be localized.</note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

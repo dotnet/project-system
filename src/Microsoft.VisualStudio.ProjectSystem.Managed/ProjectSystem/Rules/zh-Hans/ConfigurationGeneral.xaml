@@ -58,8 +58,8 @@
   <StringProperty Name="BaseIntermediateOutputPath" />
   <EnumProperty Name="OutputType">
     <EnumValue Name="Library" DisplayName="类库" />
-    <EnumValue Name="exe" DisplayName="控制台应用程序" />
-    <EnumValue Name="winexe" DisplayName="Windows 应用程序" />
+    <EnumValue Name="Exe" DisplayName="Console Application" />
+    <EnumValue Name="WinExe" DisplayName="Windows Application" />
     <EnumValue Name="AppContainerExe" DisplayName="Windows 应用商店应用" />
     <EnumValue Name="WinMDObj" DisplayName="WinMD" />
   </EnumProperty>
@@ -116,5 +116,6 @@
   <StringProperty Name="SharedProjectAppliesTo" Visible="False" Description="至少会对共享项目的语言进行测试的功能匹配表达式；用于筛选“添加共享项目引用”选项。" />
   <BoolProperty Name="AlwaysUseNumericalSuffixInItemNames" Visible="False" Description="指示新添加的项目名称是否应该始终使用数字作后缀。" />
   <StringProperty Name="LanguageServiceName" ReadOnly="True" Visible="False" Description="表示传递给 Roslyn 的 LanguageName" />
+  <StringProperty Name="LanguageServiceId" ReadOnly="True" Visible="False" Description="Represents the GUID of object that implements the language service for the project." />
   <StringProperty Name="TemplateLanguage" ReadOnly="True" Visible="False" Description="表示项和项目模板中保留的语言" />
 </Rule>

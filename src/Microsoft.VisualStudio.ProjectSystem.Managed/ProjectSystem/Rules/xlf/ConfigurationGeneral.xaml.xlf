@@ -59,14 +59,6 @@
         <source>Class Library</source>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|OutputType.exe|DisplayName">
-        <source>Console Application</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|OutputType.winexe|DisplayName">
-        <source>Windows Application</source>
-        <note />
-      </trans-unit>
       <trans-unit id="EnumValue|OutputType.AppContainerExe|DisplayName">
         <source>Windows Store app</source>
         <note />
@@ -110,6 +102,18 @@
       <trans-unit id="StringProperty|TemplateLanguage|Description">
         <source>Represent the language that is persisted in items and project templates</source>
         <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputType.Exe|DisplayName">
+        <source>Console Application</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputType.WinExe|DisplayName">
+        <source>Windows Application</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|LanguageServiceId|Description">
+        <source>Represents the GUID of object that implements the language service for the project.</source>
+        <note></note>
       </trans-unit>
     </body>
   </file>

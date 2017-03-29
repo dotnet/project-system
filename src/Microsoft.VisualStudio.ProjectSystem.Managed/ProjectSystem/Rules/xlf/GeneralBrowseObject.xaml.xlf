@@ -51,26 +51,6 @@
         <source>Output Type</source>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|OutputTypeEx.winexe|DisplayName">
-        <source>0</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|OutputTypeEx.exe|DisplayName">
-        <source>1</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|OutputTypeEx.library|DisplayName">
-        <source>2</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|OutputTypeEx.appcontainerexe|DisplayName">
-        <source>3</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|OutputTypeEx.winmdobj|DisplayName">
-        <source>4</source>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|StartupObject|DisplayName">
         <source>Type that contains the entry point</source>
         <note />
@@ -206,6 +186,26 @@
       <trans-unit id="StringProperty|NeutralLanguage|DisplayName">
         <source>Neutral Resources Language</source>
         <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputTypeEx.WinExe|DisplayName">
+        <source>0</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputTypeEx.Exe|DisplayName">
+        <source>1</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputTypeEx.Library|DisplayName">
+        <source>2</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputTypeEx.AppContainerExe|DisplayName">
+        <source>3</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputTypeEx.WinMDObj|DisplayName">
+        <source>4</source>
+        <note></note>
       </trans-unit>
     </body>
   </file>

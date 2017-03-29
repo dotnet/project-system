@@ -272,6 +272,11 @@ Bu projede hata ayıklamak için bu çözüme, kitaplık projesine başvuran bir
         <target state="translated">{0} XProj projesinin geçişi sağlanamadı. '{1}', {2} hata koduyla çıkış yaptı.</target>
         <note />
       </trans-unit>
+      <trans-unit id="DebugFrameworkMenuText">
+        <source>Framework ({0})</source>
+        <target state="new">Framework ({0})</target>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>
