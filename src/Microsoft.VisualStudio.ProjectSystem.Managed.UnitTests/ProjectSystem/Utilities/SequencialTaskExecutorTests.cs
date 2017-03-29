@@ -94,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 {
                     Func<Task> func = async () =>
                     {
-                        await Task.Delay(2000).ConfigureAwait(false);
+                        await Task.Delay(100).ConfigureAwait(false);
                     };
                     await func().ConfigureAwait(false);
                 }));
@@ -108,10 +108,23 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
             catch (OperationCanceledException)
             {
+                bool mustBeCancelled = false;
                 for (int i = 0; i < NumberOfTasks; i++)
                 {
-                    Assert.True(tasks[i].IsCanceled);
+                    // The first task or two may already be running. So we skip completed tasks until we find 
+                    // one that is is cancelled
+                    if (mustBeCancelled)
+                    {
+                        Assert.True(tasks[i].IsCanceled);
+                    }
+                    else
+                    {
+                        // All remaining tasks should be cancelled
+                        mustBeCancelled = tasks[i].IsCanceled;
+                    }
                 }
+
+                Assert.True(mustBeCancelled);
             }
         }
     }
