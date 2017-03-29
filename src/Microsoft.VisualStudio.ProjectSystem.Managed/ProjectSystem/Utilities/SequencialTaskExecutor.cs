@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
 {
     /// <summary>
     /// Runs tasks in the sequence they are added. This is done by starting with a completed task, and leveraging ContinueWith\Unwrap to 
-    /// "schedule" subsequent tasks to start after the previous one is completed. The Task continaing the callers function is returned so that
+    /// "schedule" subsequent tasks to start after the previous one is completed. The Task containing the callers function is returned so that
     /// the caller can await for their specific task to complete. When disposed unprocessed tasks are cancelled.
     /// </summary>
     internal class SequencialTaskExecutor : IDisposable 
@@ -37,6 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
 
             lock(SyncObject)
             {
+                // If we are on the same exceution chain, run the task directly
                 if (_executingTask.Value)
                 {
                     return asyncFunction();
