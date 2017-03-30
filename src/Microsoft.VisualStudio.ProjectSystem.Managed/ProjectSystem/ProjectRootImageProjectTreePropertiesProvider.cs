@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     ///     Modifies the Solution Explorer tree image for the project root.
     /// </summary>
     [Export(typeof(IProjectTreePropertiesProvider))]
-    [AppliesTo(ProjectCapability.Managed)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     internal class ProjectRootImageProjectTreePropertiesProvider : IProjectTreePropertiesProvider
     {
         private readonly IProjectCapabilitiesService _capabilities;

@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [ProjectAutoLoad(startAfter:ProjectLoadCheckpoint.ProjectFactoryCompleted)]
-        [AppliesTo(ProjectCapability.Managed)]
+        [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
         internal Task Load()
         {
             EnsureInitialized();

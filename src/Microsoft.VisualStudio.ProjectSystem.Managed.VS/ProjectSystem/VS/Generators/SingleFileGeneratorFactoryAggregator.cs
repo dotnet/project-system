@@ -7,7 +7,7 @@ using System.ComponentModel.Composition;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 {
     [ExportProjectNodeComService(typeof(IVsSingleFileGeneratorFactory))]
-    [AppliesTo(ProjectCapability.Managed)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     internal class SingleFileGeneratorFactoryAggregator : IVsSingleFileGeneratorFactory
     {
         // Constants for the generator information registry keys
