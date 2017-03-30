@@ -14,8 +14,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         // These priorities are for graph nodes only and are used to group graph nodes 
         // appropriatelly in order groups predefined order instead of alphabetically.
         // Order is not changed for top dependency nodes only for grpah hierarchies.
-        public const int DiagnosticsErrorNodePriority = 100; // for any error nodes
-        public const int DiagnosticsWarningNodePriority = 101; // for any warning nodes
+        public const int DiagnosticsErrorNodePriority = 100;
+        public const int DiagnosticsWarningNodePriority = 101;
         public const int UnresolvedReferenceNodePriority = 110;
         public const int ProjectNodePriority = 120;
         public const int PackageNodePriority = 130;
@@ -27,8 +27,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         public Dependency(IDependencyModel dependencyModel, ITargetedDependenciesSnapshot snapshot)
         {
-            Requires.NotNull(snapshot, nameof(snapshot));
             Requires.NotNull(dependencyModel, nameof(dependencyModel));
+            Requires.NotNull(snapshot, nameof(snapshot));
             Requires.NotNullOrEmpty(dependencyModel.ProviderType, nameof(dependencyModel.ProviderType));
             Requires.NotNullOrEmpty(dependencyModel.Id, nameof(dependencyModel.Id));
 
@@ -50,7 +50,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Flags = dependencyModel.Flags;
 
             // Just in case custom providers don't do it, add corresponding flags for Resolved state.
-            // This is needed for tree update logic.
+            // This is needed for tree update logic to track if tree node changing state from unresolved 
+            // to resolved or vice-versa (it helps to decide if we need to remove it or update in-place
+            // in the tree to avoid flicks).
             if (Resolved)
             {
                 Flags = Flags.Union(DependencyTreeFlags.ResolvedFlags);
@@ -65,9 +67,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             UnresolvedIcon = dependencyModel.UnresolvedIcon;
             UnresolvedExpandedIcon = dependencyModel.UnresolvedExpandedIcon;
             Properties = dependencyModel.Properties ??
-                        ImmutableDictionary<string, string>.Empty
-                                                           .Add(Folder.IdentityProperty, Caption)
-                                                           .Add(Folder.FullPathProperty, string.Empty);
+                            ImmutableDictionary<string, string>.Empty
+                                                               .Add(Folder.IdentityProperty, Caption)
+                                                               .Add(Folder.FullPathProperty, string.Empty);
             DependencyIDs = dependencyModel.DependencyIDs == null
                 ? ImmutableList<string>.Empty
                 : ImmutableList.CreateRange(dependencyModel.DependencyIDs);
@@ -96,9 +98,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                     // we need to replace .. in model id with something else, since IProjectItemTree 
                     // alters it using Uri and .. symbols are gone (it tries to get full path). However
                     // we do need ids to stay original and unique.
-                    
-                    _id = (Snapshot == null 
-                                ? _modelId.Replace('.', '_').Replace('/', '\\')
+                    _id = (Snapshot.TargetFramework == null
+                                ? Normalize(_modelId)
                                 : GetID(Snapshot.TargetFramework, ProviderType, _modelId));
 
                 }
@@ -157,6 +158,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             {
                 if (_hasUnresolvedDependency == null)
                 {
+                    // CheckForUnresolvedDependencies does dependency tree traversal efficiently,
+                    // call it instead of going reqursively through Dependencies property.
                     _hasUnresolvedDependency = Snapshot.CheckForUnresolvedDependencies(this);
                 }
 
@@ -174,7 +177,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                     var dependencies = new List<IDependency>();
                     foreach(var id in DependencyIDs)
                     {
-                        var normalizedId = id.Replace('.', '_').Replace('/', '\\');
+                        var normalizedId = Normalize(id);
                         if (Snapshot.DependenciesWorld.TryGetValue(id, out IDependency child))
                         {
                             dependencies.Add(child);
@@ -278,12 +281,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             return StringComparer.OrdinalIgnoreCase.Compare(Id, other.Id);
         }
 
-        public static string GetID(IDependencyModel metadata, ITargetFramework targetFramework)
+        private static string Normalize(string id)
         {
-            Requires.NotNull(metadata, nameof(metadata));
-            Requires.NotNull(targetFramework, nameof(targetFramework));
-
-            return GetID(targetFramework, metadata.ProviderType, metadata.Id);
+            return id.Replace('.', '_').Replace('/', '\\');
         }
 
         public static string GetID(ITargetFramework targetFramework, string providerType, string modelId)

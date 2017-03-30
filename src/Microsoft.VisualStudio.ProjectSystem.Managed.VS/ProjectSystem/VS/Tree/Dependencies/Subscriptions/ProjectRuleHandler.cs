@@ -1,8 +1,10 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
@@ -34,6 +36,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             // TODO unsubscribe
             AggregateSnapshotProvider.SnapshotChanged += OnSnapshotChanged;
             AggregateSnapshotProvider.SnapshotProviderUnloading += OnSnapshotProviderUnloading;
+
+            CommonServices.Project.ProjectUnloading += OnUnconfiguredProjectUnloading;
         }
 
         private IUnconfiguredProjectCommonServices CommonServices { get; }
@@ -67,7 +71,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 isImplicit,
                 properties);
         }
-
         
         private void OnSnapshotChanged(object sender, SnapshotChangedEventArgs e)
         {
@@ -144,6 +147,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         catalogs:null, 
                         dataSourceVersions:null));
             }
+        }
+
+        private Task OnUnconfiguredProjectUnloading(object sender, EventArgs args)
+        {
+            CommonServices.Project.ProjectUnloading -= OnUnconfiguredProjectUnloading;
+            AggregateSnapshotProvider.SnapshotChanged -= OnSnapshotChanged;
+            AggregateSnapshotProvider.SnapshotProviderUnloading -= OnSnapshotProviderUnloading;
+
+            return Task.CompletedTask;
         }
     }
 }

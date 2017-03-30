@@ -5,6 +5,9 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
 {
+    /// <summary>
+    /// Base class for all snapshot filters.
+    /// </summary>
     internal class DependenciesSnapshotFilterBase : IDependenciesSnapshotFilter
     {
         public virtual IDependency BeforeAdd(
