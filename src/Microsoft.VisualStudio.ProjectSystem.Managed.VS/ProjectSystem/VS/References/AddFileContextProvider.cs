@@ -5,7 +5,7 @@ using System.ComponentModel.Composition;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 {
     [ExportIVsReferenceManagerUserAsync(VSConstants.FileReferenceProvider_string, ReferencePriority.File)]
-    [AppliesTo(ProjectCapability.Managed)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     [Order(OverrideCPSProvider)]
     internal class AddFileContextProvider : BaseReferenceContextProvider
     {

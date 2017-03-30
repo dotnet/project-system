@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     ///<see cref="IActiveConfiguredProjectsProvider"/>
     /// </summary>
     [Export(typeof(IActiveConfiguredProjectsProvider))]
-    [AppliesTo(ProjectCapability.Managed)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     internal class ActiveConfiguredProjectsProvider : IActiveConfiguredProjectsProvider
     {
         private readonly IUnconfiguredProjectServices _services;
