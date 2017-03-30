@@ -21,12 +21,6 @@
 
     <ItemGroup>
      <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)VisualBasic.ProjectItemsSchema.xaml;"/>
-     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)VisualBasic.xaml;">
-      <Context>File</Context>
-     </PropertyPageSchema>
-     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)VisualBasic.BrowseObject.xaml;">
-      <Context>BrowseObject</Context>
-     </PropertyPageSchema>
 
      <ProjectCapability Include="VB;Managed"/>
     </ItemGroup>

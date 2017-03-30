@@ -20,12 +20,6 @@
 
   <ItemGroup>
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)FSharp.ProjectItemsSchema.xaml;"/>
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)FSharp.xaml;">
-      <Context>File</Context>
-    </PropertyPageSchema>
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)FSharp.BrowseObject.xaml;">
-      <Context>BrowseObject</Context>
-    </PropertyPageSchema>
 
     <ProjectCapability Include="FSharp;Managed"/>
   </ItemGroup>
