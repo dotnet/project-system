@@ -25,10 +25,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         private readonly VSLangProj.VSProject _vsProject;
         private readonly IProjectThreadingService _threadingService;
         private readonly ActiveConfiguredProject<ProjectProperties> _projectProperties;
+        private readonly VSLangProj.VSProjectEvents _projectEvents;
+        private readonly Imports _imports;
 
         [ImportingConstructor]
         internal VSProject(
             [Import(ExportContractNames.VsTypes.CpsVSProject)] VSLangProj.VSProject vsProject,
+            [Import(AllowDefault = true)] VSLangProj.VSProjectEvents projectEvents,
+            [Import(AllowDefault = true)] Imports imports,
             IProjectThreadingService threadingService,
             ActiveConfiguredProject<ProjectProperties> projectProperties)
         {
@@ -37,6 +41,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             Requires.NotNull(projectProperties, nameof(projectProperties));
 
             _vsProject = vsProject;
+            _projectEvents = projectEvents;
+            _imports = imports;
             _threadingService = threadingService;
             _projectProperties = projectProperties;
         }
@@ -55,9 +61,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 
         public bool WorkOffline { get => _vsProject.WorkOffline; set => _vsProject.WorkOffline = value; }
 
-        public Imports Imports => _vsProject.Imports;
+        public Imports Imports => _imports ?? _vsProject.Imports;
 
-        public VSProjectEvents Events => _vsProject.Events;
+        public VSLangProj.VSProjectEvents Events => _projectEvents ?? _vsProject.Events;
 
         public ProjectItem CreateWebReferencesFolder()
         {

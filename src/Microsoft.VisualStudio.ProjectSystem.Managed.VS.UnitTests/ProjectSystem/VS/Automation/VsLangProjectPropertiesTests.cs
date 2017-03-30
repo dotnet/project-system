@@ -71,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 
             var testValue = prjOutputTypeEx.prjOutputTypeEx_WinExe;
             vsLangProjectProperties.OutputTypeEx = testValue;
-            Assert.Equal((VSLangProj110.prjOutputTypeEx)setValues.Single(), testValue);
+            Assert.Equal((prjOutputTypeEx)setValues.Single(), testValue);
         }
 
         [Fact]

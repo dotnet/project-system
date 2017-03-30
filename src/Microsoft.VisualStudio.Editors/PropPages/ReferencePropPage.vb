@@ -556,10 +556,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Dim visualStudioWorkspace = componentModel.GetService(Of VisualStudioWorkspace)
                 Dim solution = visualStudioWorkspace.CurrentSolution
 
-                For Each projectId In solution.ProjectIds
+                For Each project In solution.Projects
                     ' We need to find the project that matches by IVsHierarchy
-                    If visualStudioWorkspace.GetHierarchy(projectId) Is ProjectHierarchy Then
-                        Dim compilationTask = solution.GetProject(projectId).GetCompilationAsync(cancellationTokenSource.Token)
+                    If project.FilePath IsNot Nothing AndAlso String.Compare(project.FilePath, DTEProject.FullName, ignoreCase:=True) = 0 Then
+                        Dim compilationTask = project.GetCompilationAsync(cancellationTokenSource.Token)
                         compilationTask.Wait(cancellationTokenSource.Token)
                         Dim compilation = compilationTask.Result
 
@@ -792,10 +792,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Dim solution = visualStudioWorkspace.CurrentSolution
                 Dim CurrentImportNames As New List(Of String)
 
-                For Each projectId In solution.ProjectIds
+                For Each project In solution.Projects
+
                     ' We need to find the project that matches by IVsHierarchy
-                    If visualStudioWorkspace.GetHierarchy(projectId) Is ProjectHierarchy Then
-                        Dim compilationTask = solution.GetProject(projectId).GetCompilationAsync(cancellationTokenSource.Token)
+                    If project.FilePath IsNot Nothing AndAlso String.Compare(project.FilePath, DTEProject.FullName, ignoreCase:=True) = 0 Then
+                        Dim compilationTask = project.GetCompilationAsync(cancellationTokenSource.Token)
                         compilationTask.Wait(cancellationTokenSource.Token)
                         Dim compilation = compilationTask.Result
                         Dim compilationOptions = CType(compilation.Options, VisualBasicCompilationOptions)
