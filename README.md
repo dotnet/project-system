@@ -1,4 +1,4 @@
-# C#, F# and Visual Basic Project System
+# C#, F# and Visual Basic project system
 
 |Branch|Debug|Release|
 |---|:--:|:--:|
@@ -16,7 +16,7 @@ The existing C# and Visual Basic project systems (csproj.dll and msvbprj.dll), w
 - Hard to extend outside of aggregation via the use of `<ProjectTypeGuids>` and [sub types (flavors)](https://docs.microsoft.com/en-us/visualstudio/extensibility/internals/project-types)
 - Tied to Visual Studio
 
-The new .NET project system is:
+The new C#, F# and Visual Basic project system is:
 
 - Managed and managed-interface based
 - Multi-threaded, scalable, and responsive
