@@ -26,7 +26,13 @@ The new C# and Visual Basic project system, built on top of CPS, will be:
 ## What is a project system?
 A project system sits between a project file on disk (for example, .csproj and .vbproj) and various Visual Studio features including, but not limited to, Solution Explorer, designers, the debugger, language services, build and deployment. Almost all interaction that occurs with files contained in a project file, happens through the project system.
 
-The C# and Visual Basic project system adds C# and Visual Basic language support to CPS via [Roslyn](https://github.com/dotnet/roslyn).
+There are many technologies that come together to make up the C# and Visual Basic project system:
+
+- [MSBuild](https://github.com/microsoft/msbuild) provides the build engine and file format.
+- [SDK](https://github.com/dotnet/sdk) provides the MSBuild tasks and targets needed to build .NET projects.
+- [Common Project System](https://github.com/microsoft/vsprojectsystem) provides the base building blocks for the project system including (but not limited to) project tree, build and debugger coordination and Visual Studio integration.
+- [Roslyn](https://github.com/dotnet/roslyn) provides C# and Visual Basic language support including compilers, IntelliSense, refactorings, analyzers and code fixes.
+- [CLI](https://github.com/dotnet/cli) is the .NET command-line interface for building, running and interacting with .NET projects.
 
 ![image](https://cloud.githubusercontent.com/assets/1103906/24277819/d1e48eba-1093-11e7-811f-ae5debcc1e6c.png)
 
