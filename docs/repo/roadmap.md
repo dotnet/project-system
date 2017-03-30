@@ -1,6 +1,6 @@
 ### Roadmap
 
-The first release of the project system ("15.0") was heavily focused on support .NET Core scenarios and parity with [VS 2015 project.json tooling](https://github.com/dotnet/roslyn-project-system/issues?utf8=%E2%9C%93&q=label%3AParity-XProj%20). This will continue through the Visual Studio 15.x.x updates and releases. In 16.0, we'll start focusing on [feature parity](https://github.com/dotnet/roslyn-project-system/labels/Parity-VSLangProj) with the legacy project systems in csproj.dll and msvbprj.dll. This will ensure a seamless upgrade when customers open existing projects in the new project system and things should feel extremely familiar for existing projects with zero conversions or project upgrades.
+The first release of the project system ("15.0") was heavily focused on support .NET Core scenarios and parity with [VS 2015 project.json tooling](https://github.com/dotnet/roslyn-project-system/issues?utf8=%E2%9C%93&q=label%3AParity-XProj%20). This will continue through the Visual Studio 15.x.x updates and releases. In 16.0, we'll start focusing on [feature parity](https://github.com/dotnet/roslyn-project-system/labels/Parity-VSLangProj) with the legacy project systems in csproj.dll and msvbprj.dll. Our aim will be too allow a seamless open of existing projects with zero conversions or upgrades.
 
 |Release|Branches|Description|
 |-------|--------|--------|
