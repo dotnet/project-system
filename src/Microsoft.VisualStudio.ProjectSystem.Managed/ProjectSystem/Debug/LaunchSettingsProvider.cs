@@ -10,14 +10,12 @@ using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
-
     /// <summary>
     /// Manages the set of Debug profiles and web server settings and provides these as a dataflow source. Note 
     /// that many of the methods are protected so that unit tests can derive from this class and poke them as
