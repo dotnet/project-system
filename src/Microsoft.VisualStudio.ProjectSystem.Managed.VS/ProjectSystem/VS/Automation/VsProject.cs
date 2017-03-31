@@ -25,13 +25,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         private readonly VSLangProj.VSProject _vsProject;
         private readonly IProjectThreadingService _threadingService;
         private readonly ActiveConfiguredProject<ProjectProperties> _projectProperties;
-        private readonly VSLangProj.VSProjectEvents _projectEvents;
+        private readonly VSProjectEvents _projectEvents;
         private readonly Imports _imports;
 
         [ImportingConstructor]
         internal VSProject(
             [Import(ExportContractNames.VsTypes.CpsVSProject)] VSLangProj.VSProject vsProject,
-            [Import(AllowDefault = true)] VSLangProj.VSProjectEvents projectEvents,
+            [Import(AllowDefault = true)] VSProjectEvents projectEvents,
             [Import(AllowDefault = true)] Imports imports,
             IProjectThreadingService threadingService,
             ActiveConfiguredProject<ProjectProperties> projectProperties)
@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 
         public Imports Imports => _imports ?? _vsProject.Imports;
 
-        public VSLangProj.VSProjectEvents Events => _projectEvents ?? _vsProject.Events;
+        public VSProjectEvents Events => _projectEvents ?? _vsProject.Events;
 
         public ProjectItem CreateWebReferencesFolder()
         {

@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -12,45 +11,8 @@ using Xunit;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
     [ProjectSystemTrait]
-    public class VSProject_VSLangProjectPropertiesTests
+    internal class VSProject_VSLangProjectPropertiesTests : VsProjectTests
     {
-        [Fact]
-        public void Constructor_NullAsVsProject_ThrowsArgumentNull()
-        {
-            Assert.Throws<ArgumentNullException>("vsProject", () =>
-            {
-                GetVsLangProjectProperties();
-            });
-        }
-
-        [Fact]
-        public void Constructor_NullAsThreadingService_ThrowsArgumentNull()
-        {
-            Assert.Throws<ArgumentNullException>("threadingService", () =>
-            {
-                GetVsLangProjectProperties(Mock.Of<VSLangProj.VSProject>());
-            });
-        }
-
-        [Fact]
-        public void Constructor_NullAsProjectProperties_ThrowsArgumentNull()
-        {
-            Assert.Throws<ArgumentNullException>("projectProperties", () =>
-            {
-                GetVsLangProjectProperties(Mock.Of<VSLangProj.VSProject>(), threadingService: Mock.Of<IProjectThreadingService>());
-            });
-        }
-
-        [Fact]
-        public void VsLangProjectProperties_NotNull()
-        {
-            var properties = GetVsLangProjectProperties(
-                Mock.Of<VSLangProj.VSProject>(),
-                threadingService: Mock.Of<IProjectThreadingService>(),
-                projectProperties: Mock.Of<ActiveConfiguredProject<ProjectProperties>>());
-            Assert.NotNull(properties);
-        }
-
         [Fact]
         public void VsLangProjectProperties_OutputTypeEx()
         {
@@ -166,21 +128,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         [Fact]
         public void VsLangProjectProperties_ExtenderCATID()
         {
-            var vsLangProjectProperties = GetVsLangProjectProperties(
+            var vsproject = GetVSProject(
                 Mock.Of<VSLangProj.VSProject>(),
                 threadingService: Mock.Of<IProjectThreadingService>(),
                 projectProperties: Mock.Of<ActiveConfiguredProject<ProjectProperties>>());
-            Assert.Null(vsLangProjectProperties.ExtenderCATID);
-        }
-
-        private static VSProject GetVsLangProjectProperties(
-            VSLangProj.VSProject vsproject = null,
-            VSLangProj.VSProjectEvents projectEvents = null,
-            Imports imports = null,
-            IProjectThreadingService threadingService = null,
-            ActiveConfiguredProject<ProjectProperties> projectProperties = null)
-        {
-            return new VSProject(vsproject, projectEvents, imports, threadingService, projectProperties);
+            Assert.Null(vsproject.ExtenderCATID);
         }
     }
 }

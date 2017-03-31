@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.Composition;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System.ComponentModel.Composition;
 using VSLangProj;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
@@ -15,6 +17,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             [Import(ExportContractNames.VsTypes.CpsVSProject)] VSLangProj.VSProject vsProject,
             ImportsEvents importsEvents)
         {
+            Requires.NotNull(vsProject, nameof(vsProject));
+            Requires.NotNull(importsEvents, nameof(importsEvents));
+
             _vsProject = vsProject;
             _importsEvents = importsEvents;
         }

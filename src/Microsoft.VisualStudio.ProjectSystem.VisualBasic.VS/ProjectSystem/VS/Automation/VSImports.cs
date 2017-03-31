@@ -32,16 +32,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         public VSImports(
             [Import(ExportContractNames.VsTypes.CpsVSProject)] VSLangProj.VSProject vsProject,
             IProjectThreadingService threadingService,
-            ActiveConfiguredProject<ConfiguredProject> configuredProject,
+            ActiveConfiguredProject<ConfiguredProject> activeConfiguredProject,
             IProjectLockService lockService)
         {
+            Requires.NotNull(vsProject, nameof(vsProject));
+            Requires.NotNull(activeConfiguredProject, nameof(activeConfiguredProject));
+            Requires.NotNull(lockService, nameof(lockService));
+            Requires.NotNull(threadingService, nameof(threadingService));
+
             _vsProject = vsProject;
-            _activeConfiguredProject = configuredProject;
+            _activeConfiguredProject = activeConfiguredProject;
             _lockService = lockService;
             _threadingService = threadingService;
 
             AddEventSource(this);
         }
+
+        private ConfiguredProject ConfiguredProject => _activeConfiguredProject.Value;
 
         internal virtual void OnImportAdded(string importNamespace)
         {
@@ -67,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             {
                 using (var access = await _lockService.ReadLockAsync())
                 {
-                    var project = await access.GetProjectAsync(_activeConfiguredProject.Value).ConfigureAwait(true);
+                    var project = await access.GetProjectAsync(ConfiguredProject).ConfigureAwait(true);
                     var importsList = project.GetItems(importItemTypeName)
                                              .Select(p => p.EvaluatedInclude)
                                              .ToList();
@@ -82,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             {
                 using (var access = await _lockService.WriteLockAsync())
                 {
-                    var project = await access.GetProjectAsync(_activeConfiguredProject.Value).ConfigureAwait(true);
+                    var project = await access.GetProjectAsync(ConfiguredProject).ConfigureAwait(true);
                     await access.CheckoutAsync(project.Xml.ContainingProject.FullPath).ConfigureAwait(true);
                     project.AddItem(importItemTypeName, bstrImport);
                 }
@@ -95,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             {
                 using (var access = await _lockService.WriteLockAsync())
                 {
-                    var project = await access.GetProjectAsync(_activeConfiguredProject.Value).ConfigureAwait(true);
+                    var project = await access.GetProjectAsync(ConfiguredProject).ConfigureAwait(true);
                     await access.CheckoutAsync(project.Xml.ContainingProject.FullPath).ConfigureAwait(true);
                     var importProjectItem = project.GetItems(importItemTypeName)
                                                    .ElementAt(((int)index - 1));
@@ -110,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             {
                 using (var access = await _lockService.ReadLockAsync())
                 {
-                    var project = await access.GetProjectAsync(_activeConfiguredProject.Value).ConfigureAwait(true);
+                    var project = await access.GetProjectAsync(ConfiguredProject).ConfigureAwait(true);
                     return project.GetItems(importItemTypeName)
                                   .Select(p => p.EvaluatedInclude)
                                   .GetEnumerator();
@@ -130,7 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                 {
                     using (var access = await _lockService.ReadLockAsync())
                     {
-                        var project = await access.GetProjectAsync(_activeConfiguredProject.Value).ConfigureAwait(true);
+                        var project = await access.GetProjectAsync(ConfiguredProject).ConfigureAwait(true);
                         return project.GetItems(importItemTypeName).Count;
                     }
                 });
