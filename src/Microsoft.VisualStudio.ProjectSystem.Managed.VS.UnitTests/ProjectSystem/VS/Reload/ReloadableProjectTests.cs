@@ -2,6 +2,7 @@
 
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Telemetry;
 using Moq;
 using Xunit;
 
@@ -20,10 +21,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var rlmMock = new Mock<IProjectReloadManager>(MockBehavior.Strict);
             rlmMock.Setup(x => x.RegisterProjectAsync(It.IsAny<IReloadableProject>())).Returns(Task.CompletedTask);
 
-            var project = new ReloadableProject(IUnconfiguredProjectVsServicesFactory.Implement(), rlmMock.Object);
-            
+            var project = new ReloadableProject(IUnconfiguredProjectVsServicesFactory.Implement(), rlmMock.Object, ITelemetryServiceFactory.Create());
+
             await project.Initialize();
-                
+
             rlmMock.VerifyAll();
         }
 
@@ -37,10 +38,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var rlmMock = new Mock<IProjectReloadManager>(MockBehavior.Strict);
             rlmMock.Setup(x => x.UnregisterProjectAsync(It.IsAny<IReloadableProject>())).Returns(Task.CompletedTask);
 
-            var project = new ReloadableProject(IUnconfiguredProjectVsServicesFactory.Implement(), rlmMock.Object);
-            
+            var project = new ReloadableProject(IUnconfiguredProjectVsServicesFactory.Implement(), rlmMock.Object, ITelemetryServiceFactory.Create());
+
             await project.DisposeAsync();
-                
+
             rlmMock.VerifyAll();
         }
 
