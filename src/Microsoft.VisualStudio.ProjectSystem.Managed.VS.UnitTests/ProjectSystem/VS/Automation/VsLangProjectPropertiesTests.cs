@@ -37,14 +37,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             Assert.Throws<ArgumentNullException>("projectProperties", () =>
             {
-                GetVsLangProjectProperties(Mock.Of<VSLangProj.VSProject>(), Mock.Of<IProjectThreadingService>());
+                GetVsLangProjectProperties(Mock.Of<VSLangProj.VSProject>(), threadingService: Mock.Of<IProjectThreadingService>());
             });
         }
 
         [Fact]
         public void VsLangProjectProperties_NotNull()
         {
-            var properties = GetVsLangProjectProperties(Mock.Of<VSLangProj.VSProject>(), Mock.Of<IProjectThreadingService>(), Mock.Of<ActiveConfiguredProject<ProjectProperties>>());
+            var properties = GetVsLangProjectProperties(
+                Mock.Of<VSLangProj.VSProject>(),
+                threadingService: Mock.Of<IProjectThreadingService>(),
+                projectProperties: Mock.Of<ActiveConfiguredProject<ProjectProperties>>());
             Assert.NotNull(properties);
         }
 
@@ -66,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             var projectProperties = ProjectPropertiesFactory.Create(project, data);
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
-            var vsLangProjectProperties = new VSProject(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
+            var vsLangProjectProperties = new VSProject(Mock.Of<VSLangProj.VSProject>(), null, null, IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
             Assert.Equal(vsLangProjectProperties.OutputTypeEx, prjOutputTypeEx.prjOutputTypeEx_Library);
 
             var testValue = prjOutputTypeEx.prjOutputTypeEx_WinExe;
@@ -92,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             var projectProperties = ProjectPropertiesFactory.Create(project, data);
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
-            var vsLangProjectProperties = new VSProject(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
+            var vsLangProjectProperties = new VSProject(Mock.Of<VSLangProj.VSProject>(), null, null, IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
             Assert.Equal(vsLangProjectProperties.OutputType, prjOutputType.prjOutputTypeLibrary);
 
             var testValue = prjOutputType.prjOutputTypeExe;
@@ -116,7 +119,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             var projectProperties = ProjectPropertiesFactory.Create(project, data);
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
-            var vsLangProjectProperties = new VSProject(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
+            var vsLangProjectProperties = new VSProject(Mock.Of<VSLangProj.VSProject>(), null, null, IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
             Assert.Equal(vsLangProjectProperties.AssemblyName, "Blah");
 
             var testValue = "Testing";
@@ -138,7 +141,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             var projectProperties = ProjectPropertiesFactory.Create(project, data);
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
-            var vsLangProjectProperties = new VSProject(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
+            var vsLangProjectProperties = new VSProject(Mock.Of<VSLangProj.VSProject>(), null, null, IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
             Assert.Equal(vsLangProjectProperties.FullPath, "somepath");
         }
 
@@ -156,21 +159,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             var projectProperties = ProjectPropertiesFactory.Create(project, data);
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
-            var vsLangProjectProperties = new VSProject(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
+            var vsLangProjectProperties = new VSProject(Mock.Of<VSLangProj.VSProject>(), null, null, IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
             Assert.Equal(vsLangProjectProperties.AbsoluteProjectDirectory, "testvalue");
         }
 
         [Fact]
         public void VsLangProjectProperties_ExtenderCATID()
         {
-            var vsLangProjectProperties = GetVsLangProjectProperties(Mock.Of<VSLangProj.VSProject>(), Mock.Of<IProjectThreadingService>(), Mock.Of<ActiveConfiguredProject<ProjectProperties>>());
+            var vsLangProjectProperties = GetVsLangProjectProperties(
+                Mock.Of<VSLangProj.VSProject>(),
+                threadingService: Mock.Of<IProjectThreadingService>(),
+                projectProperties: Mock.Of<ActiveConfiguredProject<ProjectProperties>>());
             Assert.Null(vsLangProjectProperties.ExtenderCATID);
         }
 
         private static VSProject GetVsLangProjectProperties(
-            VSLangProj.VSProject vsproject = null, IProjectThreadingService threadingService = null, ActiveConfiguredProject<ProjectProperties> projectProperties = null)
+            VSLangProj.VSProject vsproject = null,
+            VSLangProj.VSProjectEvents projectEvents = null,
+            Imports imports = null,
+            IProjectThreadingService threadingService = null,
+            ActiveConfiguredProject<ProjectProperties> projectProperties = null)
         {
-            return new VSProject(vsproject, threadingService, projectProperties);
+            return new VSProject(vsproject, projectEvents, imports, threadingService, projectProperties);
         }
     }
 }
