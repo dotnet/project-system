@@ -1,36 +1,26 @@
-﻿using System;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.OLE.Interop;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
+namespace Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint
 {
+    /// <summary>
+    /// This implementation is a copy from CPS
+    /// </summary>
     internal class ConnectionPoint<SinkType> : IConnectionPoint
             where SinkType : class
     {
-        /// <summary>
-        /// Undocumented.
-        /// </summary>
         private Dictionary<uint, SinkType> sinks;
 
-        /// <summary>
-        /// Undocumented.
-        /// </summary>
         private uint nextCookie;
 
-        /// <summary>
-        /// Undocumented.
-        /// </summary>
         private ConnectionPointContainer container;
 
-        /// <summary>
-        /// Undocumented.
-        /// </summary>
         private IEventSource<SinkType> source;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ConnectionPoint{SinkType}"/> class.
-        /// </summary>
         internal ConnectionPoint(ConnectionPointContainer container, IEventSource<SinkType> source)
         {
             Requires.NotNull(container, nameof(container));
@@ -42,11 +32,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             nextCookie = 1;
         }
 
-        #region IConnectionPoint Members
-
-        /// <summary>
-        /// Undocumented.
-        /// </summary>
         public void Advise(object pUnkSink, out uint pdwCookie)
         {
             SinkType sink = pUnkSink as SinkType;
@@ -61,33 +46,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             nextCookie += 1;
         }
 
-        /// <summary>
-        /// Undocumented.
-        /// </summary>
         public void EnumConnections(out IEnumConnections ppEnum)
         {
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Undocumented.
-        /// </summary>
         public void GetConnectionInterface(out Guid pIID)
         {
             pIID = typeof(SinkType).GUID;
         }
 
-        /// <summary>
-        /// Undocumented.
-        /// </summary>
         public void GetConnectionPointContainer(out IConnectionPointContainer ppCPC)
         {
             ppCPC = container;
         }
 
-        /// <summary>
-        /// Undocumented.
-        /// </summary>
         public void Unadvise(uint dwCookie)
         {
             // This will throw if the cookie is not in the list.
@@ -95,7 +68,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             sinks.Remove(dwCookie);
             source.OnSinkRemoved(sink);
         }
-
-        #endregion
     }
 }

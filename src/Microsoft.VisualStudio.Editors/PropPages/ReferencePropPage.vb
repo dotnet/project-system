@@ -557,7 +557,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Dim solution = visualStudioWorkspace.CurrentSolution
 
                 For Each project In solution.Projects
-                    ' We need to find the project that matches by IVsHierarchy
+
+                    ' We need to find the project that matches by project file path
                     If project.FilePath IsNot Nothing AndAlso String.Compare(project.FilePath, DTEProject.FullName, ignoreCase:=True) = 0 Then
                         Dim compilationTask = project.GetCompilationAsync(cancellationTokenSource.Token)
                         compilationTask.Wait(cancellationTokenSource.Token)
@@ -794,7 +795,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 For Each project In solution.Projects
 
-                    ' We need to find the project that matches by IVsHierarchy
+                    ' We need to find the project that matches by project file path
                     If project.FilePath IsNot Nothing AndAlso String.Compare(project.FilePath, DTEProject.FullName, ignoreCase:=True) = 0 Then
                         Dim compilationTask = project.GetCompilationAsync(cancellationTokenSource.Token)
                         compilationTask.Wait(cancellationTokenSource.Token)
