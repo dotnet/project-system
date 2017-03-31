@@ -17,19 +17,18 @@
     <VsManProjectFile Include="$(RepositoryRootDirectory)src\VsixV3\ProjectSystemPackage\Microsoft.VisualStudio.ProjectSystem.Managed.vsmanproj" />
   </ItemGroup>
 
-  <PropertyGroup>
-    <!-- NuGet will not automatically find the correct version of MSBuild. We need to specify the path. -->
-    <NugetArguments>-verbosity quiet -msbuildpath &quot;$(DevenvDir)\..\..\MSBuild\15.0\bin&quot;</NugetArguments>
-  </PropertyGroup>
-
   <Target Name="Restore">
 
     <Message Text="Restoring packages for %(SolutionFile.Filename) (this may take some time)" Importance="high" />
 
-    <Exec Command="&quot;$(RepositoryRootDirectory)build\bin\NuGet.exe&quot; restore $(NugetArguments) &quot;@(SolutionFile)&quot;" />
+    <MSBuild BuildInParallel="true"
+             Projects="@(SolutionFile)"
+             Targets="restore"
+             Properties="$(CommonMSBuildGlobalProperties)"
+             />
   </Target>
 
-  <Target Name="BuildSolution">
+  <Target Name="Build">
 
     <Message Text="Building %(SolutionFile.Filename) [$(Configuration)]" Importance="high" />
 
@@ -39,7 +38,7 @@
              />
   </Target>
 
-  <Target Name="RebuildSolution">
+  <Target Name="Rebuild">
 
     <Message Text="Rebuilding %(SolutionFile.Filename) [$(Configuration)]" Importance="high" />
 
@@ -97,11 +96,9 @@
       <Output TaskParameter="ExitCode" PropertyName="ExitCode" />
     </Exec>
 
+    <Message Text="All tests passed, for full log see %(HtmlTestFile.FullPath)" Condition="$(ExitCode) == 0" Importance="high" />
     <Error Text="There were test failures, for full log see %(HtmlTestFile.FullPath)" Condition="$(ExitCode) != 0" />
 
   </Target>
  
-  <Target Name="Build" DependsOnTargets="BuildSolution;BuildNuGetPackages;Test" />
-  <Target Name="Rebuild" DependsOnTargets="RebuildSolution;RebuildNuGetPackages;Test" />
-
 </Project>

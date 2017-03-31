@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     /// </summary>
     [Export(typeof(ILanguageServiceCommandLineHandler))]
     [Export(typeof(ILanguageServiceRuleHandler))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
     internal class SourceItemHandler : AbstractLanguageServiceRuleHandler, ILanguageServiceCommandLineHandler
     {
         // When a source file has been added/removed from a project, we'll receive notifications for it twice; once
@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         public override string RuleName
         {
-            get { return CSharp.SchemaName; }
+            get { return Compile.SchemaName; }
         }
 
         public override RuleHandlerType HandlerType
@@ -80,8 +80,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             if (diff.AddedItems.Count > 0 || diff.RenamedItems.Count > 0 || diff.ChangedItems.Count > 0)
             {
-                // Make sure the tree matches the same version of the evaluation that we're handling
-                IProjectTreeServiceState treeState = await PublishTreeAsync(e).ConfigureAwait(true); // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
+                // Make sure the tree matches the same version of the evaluation that we're handling for active project context.
+                // If we are dealing with non- active project context, then just use the latest published tree.
+                IProjectTreeServiceState treeState = isActiveContext ?
+                    await PublishTreeAsync(e).ConfigureAwait(true) :    // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
+                    await _projectTree.TreeService.PublishLatestTreeAsync(blockDuringLoadingTree: true).ConfigureAwait(true);
 
                 foreach (string filePath in diff.AddedItems)
                 {

@@ -18,14 +18,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     {
 
         [ImportingConstructor]
-        public DebugTokenReplacer(IUnconfiguredProjectCommonServices unconnfiguredServices, IEnvironmentHelper environmentHelper)
+        public DebugTokenReplacer(IUnconfiguredProjectCommonServices unconnfiguredServices, IEnvironmentHelper environmentHelper,
+                                  IActiveDebugFrameworkServices activeDebugFrameworkService)
         {
             UnconfiguredServices = unconnfiguredServices;
             EnvironmentHelper = environmentHelper;
+            ActiveDebugFrameworkService = activeDebugFrameworkService;
         }
 
         private IUnconfiguredProjectCommonServices UnconfiguredServices { get; }
         private IEnvironmentHelper EnvironmentHelper { get; }
+        private IActiveDebugFrameworkServices ActiveDebugFrameworkService { get; }
 
         // Regular expression string to extract $(sometoken) elements from a string
         private static Regex MatchTokenRegex = new Regex(@"(\$\((?<token>[^\)]+)\))", RegexOptions.IgnoreCase);
@@ -99,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var matches = MatchTokenRegex.Matches(updatedString);
             if(matches.Count > 0)
             {
-                using (var access = AccessProject())
+                using (var access = await AccessProject().ConfigureAwait(true))
                 {
                     var project = await access.GetProjectAsync().ConfigureAwait(true);
 
@@ -118,9 +121,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// This is here to support unit tests which can derive from this class and return their own 
         /// instance of IProjectReadAccess
         /// </summary>
-        protected virtual IProjectReadAccess AccessProject()
+        protected virtual async Task<IProjectReadAccess> AccessProject()
         {
-            return new ProjectReadAccessor(UnconfiguredServices.ProjectLockService, UnconfiguredServices.ActiveConfiguredProject);
+            var activeDebuggingConfiguredProject = await ActiveDebugFrameworkService.GetConfiguredProjectForActiveFrameworkAsync().ConfigureAwait(true);
+
+            return new ProjectReadAccessor(UnconfiguredServices.ProjectLockService, activeDebuggingConfiguredProject);
         }
     }
 

@@ -14,18 +14,13 @@
     <AppDesignerFolder Condition="'$(AppDesignerFolder)' == ''">My Project</AppDesignerFolder>
     <AppDesignerFolderContentsVisibleOnlyInShowAllFiles Condition="'$(AppDesignerFolderContentsVisibleOnlyInShowAllFiles)' == ''">true</AppDesignerFolderContentsVisibleOnlyInShowAllFiles>
     <LanguageServiceName Condition="'$(LanguageServiceName)' == ''">Visual Basic</LanguageServiceName>
+    <LanguageServiceId Condition="'$(LanguageServiceId)'==''">{E34ACDC0-BAAE-11D0-88BF-00A0C9110049}</LanguageServiceId>
     <TemplateLanguage Condition="'$(TemplateLanguage)' == ''">VisualBasic</TemplateLanguage>
     <AddItemTemplatesGuid Condition="'$(AddItemTemplatesGuid)' == ''">{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</AddItemTemplatesGuid>
   </PropertyGroup>
 
     <ItemGroup>
      <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)VisualBasic.ProjectItemsSchema.xaml;"/>
-     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)VisualBasic.xaml;">
-      <Context>File</Context>
-     </PropertyPageSchema>
-     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)VisualBasic.BrowseObject.xaml;">
-      <Context>BrowseObject</Context>
-     </PropertyPageSchema>
 
      <ProjectCapability Include="VB;Managed"/>
     </ItemGroup>

@@ -51,7 +51,6 @@
 
   <!-- Project Capabilities -->
   <ItemGroup Condition="'$(DefineCommonManagedCapabilities)' == 'true'">
-    <ProjectCapability Include="ManagedLang"/> <!-- Temporary: See https://github.com/dotnet/roslyn-project-system/issues/47 -->
     <ProjectCapability Include="UseFileGlobs"/>
 
     <!-- DependenciesTree capability lights up a Dependencies tree node and it's sub node providers-->
@@ -77,7 +76,6 @@
                           UserSourceItems;" />
 
     <ProjectCapability Include="LanguageService" />
-    <ProjectCapability Include="ProjectConfigurationsInferredFromUsage" />
 
     <!-- Reference Manager capabilities -->
     <ProjectCapability Include="ReferenceManagerAssemblies" />
@@ -93,6 +91,13 @@
 
   <!-- Common Project System rules that override rules defined in msbuild. These are exact copy of the rules defined in msbuild. -->
   <ItemGroup Condition="'$(DefineCommonManagedItemSchemas)' == 'true'">
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Compile.xaml;">
+      <Context>File</Context>
+    </PropertyPageSchema>
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Compile.BrowseObject.xaml;">
+      <Context>BrowseObject</Context>
+    </PropertyPageSchema>
+
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)DebuggerGeneral.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
@@ -223,6 +228,17 @@
       <Context>ProjectSubscriptionService;BrowseObject</Context>
     </PropertyPageSchema>
   </ItemGroup>
+
+  <!-- Workaround: https://github.com/Microsoft/msbuild/pull/1879 -->
+  <ItemGroup>
+    <ProjectCapability Remove="ProjectConfigurationsInferredFromUsage" />
+  </ItemGroup>
+
+  <!-- Workaround: Need to remove this once an insertion containing this changes goes in https://github.com/dotnet/sdk/pull/949 -->
+  <PropertyGroup>
+    <Configurations Condition=" '$(Configurations)' == '' ">Debug;Release</Configurations>
+    <Platforms Condition=" '$(Platforms)' == '' ">AnyCPU</Platforms>
+  </PropertyGroup>
 
   <!-- Targets -->
 

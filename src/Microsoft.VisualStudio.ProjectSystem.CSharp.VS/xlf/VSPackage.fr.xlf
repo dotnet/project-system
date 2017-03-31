@@ -59,9 +59,9 @@
         <note />
       </trans-unit>
       <trans-unit id="12">
-        <source>A project that contains xunit tests that can run on .NET Core on Windows, Linux and MacOS</source>
-        <target state="translated">Projet qui contient les tests xunit pouvant être exécutés sur .NET Core dans Windows, Linux et MacOS</target>
-        <note />
+        <source>A project that contains xUnit.net tests that can run on .NET Core on Windows, Linux and MacOS.</source>
+        <target state="needs-review-translation">Projet qui contient les tests xunit pouvant être exécutés sur .NET Core dans Windows, Linux et MacOS</target>
+        <note></note>
       </trans-unit>
     </body>
   </file>

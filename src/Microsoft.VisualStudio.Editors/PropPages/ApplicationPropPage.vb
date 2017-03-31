@@ -83,8 +83,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             New Control() {TargetFrameworkLabel})
 
                     'StartupObject must be kept at the end of the list because it depends on the initialization of "OutputType" values
-                    'm_ControlData = New PropertyControlData()
-                    m_ControlData = New PropertyControlData() {}
                     Dim datalist As List(Of PropertyControlData) = New List(Of PropertyControlData)
                     Dim data As PropertyControlData = New PropertyControlData(VsProjPropId.VBPROJPROPID_AssemblyName, "AssemblyName", AssemblyName, New Control() {AssemblyNameLabel})
                     data.DisplayPropertyName = My.Resources.Designer.PPG_Property_AssemblyName

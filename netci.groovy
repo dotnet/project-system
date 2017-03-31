@@ -59,6 +59,7 @@ build.cmd /no-deploy-extension /${configuration.toLowerCase()}
             // Build roslyn-project-system repo - we also need to set certain environment variables for building the repo with VS15 toolset.
             batchFile("""
 echo *** Build Roslyn Project System ***
+rmdir /S /Q %USERPROFILE%\\.nuget\\packages\\microbuild.plugins.swixbuild
 SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
 SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
 SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
@@ -145,8 +146,6 @@ set TEMP=%WORKSPACE%\\roslyn-internal\\Open\\Binaries\\Temp
 mkdir %TEMP%
 set TMP=%TEMP%
 
-set EchoOn=true
-
 BuildAndTest.cmd -build:true -clean:false -deployExtensions:true -trackFileAccess:false -officialBuild:false -realSignBuild:false -parallel:true -release:true -delaySignBuild:true -samples:false -unit:false -eta:false -vs:true -cibuild:true -x64:false -netcoretestrun
 """)
 
@@ -221,7 +220,7 @@ static void addVsiMultiScm(def myJob, def project, def isPR) {
                     relativeTargetDirectory('sdk')
                 }
                 // pull in a specific LKG commit from master.
-                branch('72754c921d6a205eddab7c37b991666ada7aa3dc')
+                branch('8da08465436bfe805afb91c6ddf8654a078d0249')
             }
             git {
                 remote {
@@ -233,7 +232,7 @@ static void addVsiMultiScm(def myJob, def project, def isPR) {
                 }
                 // roslyn-internal - pull in a specific LKG commit from master.
                 // In future, '*/master' can be placed here to pull latest sources.
-                branch('701bf9e9bcb896b12364b413231666182b7aa78a')
+                branch('00cf61f29f0b79b8bc5cf9f5a534c61fdce7c2fb')
             }
         }
     }

@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
     /// </summary>
     [Export]
     [ExportVsProfferedProjectService(typeof(SVsDesignTimeAssemblyResolution))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     [Order(1)] // Before CPS's version
     internal partial class DesignTimeAssemblyResolution : IVsDesignTimeAssemblyResolution
     {
@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         // BUG (https://devdiv.visualstudio.com/DevDiv/_workitems?id=367916): VS MEF rejects a part marked 
         // with two Export/Metadata attributes where one is AllowMultiple=false
         [ExportProjectNodeComService(typeof(IVsDesignTimeAssemblyResolution))]  // Need to override CPS's version, which it implements on the project node as IVsDesignTimeAssemblyResolution
-        [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+        [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
         [Order(1)] // Before CPS's version
         public IVsDesignTimeAssemblyResolution ComService
         {
@@ -134,7 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
                 foreach (Reference3 reference in project.References.OfType<Reference3>())
                 {
                     // We only want resolved assembly references
-                    if (reference.Type == prjReferenceType.prjReferenceTypeAssembly && reference.Resolved)
+                    if (reference.RefType == (uint)__PROJECTREFERENCETYPE.PROJREFTYPE_ASSEMBLY && reference.Resolved)
                     {
                         resolvedReferences[reference.Name] = new ResolvedReference(reference.Path, TryParseVersionOrNull(reference.Version));
                     }

@@ -1309,7 +1309,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End Select
             End If
 
-            Return New Resource() {}
+            Return Array.Empty(Of Resource)
         End Function
 
 
@@ -1541,7 +1541,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub PropertyGridUnselectAll()
-            PropertyGridSelect(New Resource() {})
+            PropertyGridSelect(Array.Empty(Of Resource))
         End Sub
 
         ''' <summary>
@@ -1653,7 +1653,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks>Caller must catch and display exceptions</remarks>
         Public Function AddOrUpdateResourcesFromFiles(SourceFileNames() As String, CopyFileIfExists As Boolean, Optional AlwaysAddNew As Boolean = True, Optional AddToProject As Boolean = True, Optional FixInvalidIdentifiers As Boolean = False) As Resource()
             If SourceFileNames Is Nothing OrElse SourceFileNames.Length = 0 Then
-                Return New Resource() {}
+                Return Array.Empty(Of Resource)
             End If
 
             Using New WaitCursor
@@ -1729,7 +1729,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                         HelpIDs.Err_CantFindResourceFile) _
                                         = DialogResult.No Then
                                     'User canceled - cancel entire add operation for all files.
-                                    Return New Resource() {}
+                                    Return Array.Empty(Of Resource)
                                 End If
                                 ResourcesReadyToAdd.Add(Resource)
                             End If

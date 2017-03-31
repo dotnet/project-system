@@ -56,6 +56,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             supportedFrameworksList.Add(".NETCoreApp,Version=v1.0")
             supportedFrameworksList.Add(".NETCoreApp,Version=v1.1")
+            supportedFrameworksList.Add(".NETCoreApp,Version=v2.0")
             supportedFrameworksList.Add(".NETStandard,Version=v1.0")
             supportedFrameworksList.Add(".NETStandard,Version=v1.1")
             supportedFrameworksList.Add(".NETStandard,Version=v1.2")
@@ -63,9 +64,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             supportedFrameworksList.Add(".NETStandard,Version=v1.4")
             supportedFrameworksList.Add(".NETStandard,Version=v1.5")
             supportedFrameworksList.Add(".NETStandard,Version=v1.6")
+            supportedFrameworksList.Add(".NETStandard,Version=v2.0")
             Return supportedFrameworksList.ToArray
 
         End Function
+
         ''' <summary>
         ''' Gets the supported target framework monikers from DTAR
         ''' </summary>
@@ -124,7 +127,13 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                         ' Use DTAR to get the display name corresponding to the moniker
                         Dim displayName As String = ""
-                        VSErrorHandler.ThrowOnFailure(vsFrameworkMultiTargeting.GetDisplayNameForTargetFx(moniker, displayName))
+                        If String.Compare(frameworkName.Identifier, ".NETStandard", StringComparison.Ordinal) = 0 Then
+                            displayName = $".NET Standard {frameworkName.Version}"
+                        Else If String.Compare(frameworkName.Identifier, ".NETCoreApp", StringComparison.Ordinal) = 0 Then
+                            displayName = $".NET Core {frameworkName.Version}"
+                        Else
+                            VSErrorHandler.ThrowOnFailure(vsFrameworkMultiTargeting.GetDisplayNameForTargetFx(moniker, displayName))
+                        End If
 
                         supportedTargetFrameworkMonikers.Add(New TargetFrameworkMoniker(moniker, displayName))
 

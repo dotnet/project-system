@@ -15,7 +15,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 {
-    [Guid(CSharpProjectSystemPackage.XprojTypeGuid)]
+    [Guid("8bb2217d-0f2d-49d1-97bc-3654ed321f3b")]
     internal sealed class MigrateXprojProjectFactory : FlavoredProjectFactoryBase, IVsProjectUpgradeViaFactory, IVsProjectUpgradeViaFactory4
     {
         private readonly ProcessRunner _runner;
@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             var backupResult = BackupAndDeleteGlobalJson(solutionDirectory, solution, backupDirectory, xprojLocation, projectName, logger);
             if (!backupResult.Succeeded)
             {
-                migratedProjectGuid = Guid.Parse(CSharpProjectSystemPackage.XprojTypeGuid);
+                migratedProjectGuid = GetType().GUID;
                 migratedProjectFileLocation = xprojLocation;
                 return backupResult;
             }
@@ -76,14 +76,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             }
             else
             {
-                migratedProjectGuid = Guid.Parse(CSharpProjectSystemPackage.XprojTypeGuid);
+                migratedProjectGuid = GetType().GUID;
                 migratedProjectFileLocation = null;
             }
 
             if (string.IsNullOrEmpty(migratedProjectFileLocation))
             {
                 // If we weren't able to find a new csproj, something went very wrong, and dotnet migrate is doing something that we don't expect.
-                migratedProjectGuid = Guid.Parse(CSharpProjectSystemPackage.XprojTypeGuid);
+                migratedProjectGuid = GetType().GUID;
                 Assumes.NotNullOrEmpty(migratedProjectFileLocation);
                 migratedProjectFileLocation = xprojLocation;
                 success = false;
@@ -312,12 +312,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
             if (isXproj)
             {
-                migratedProjectFactory = new Guid($"{{{CSharpProjectSystemPackage.ProjectTypeGuid}}}");
+                migratedProjectFactory = new Guid(CSharpProjectSystemPackage.ProjectTypeGuid);
                 upgradeProjectCapabilityFlags = (uint)(__VSPPROJECTUPGRADEVIAFACTORYFLAGS.PUVFF_BACKUPSUPPORTED | __VSPPROJECTUPGRADEVIAFACTORYFLAGS.PUVFF_COPYBACKUP);
             }
             else
             {
-                migratedProjectFactory = new Guid(CSharpProjectSystemPackage.XprojTypeGuid);
+                migratedProjectFactory = GetType().GUID;
                 upgradeProjectCapabilityFlags = 0;
             }
 
@@ -325,7 +325,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         }
 
         private string GetDotnetArguments(string xprojLocation, string projectDirectory, string logFile) =>
-            $"migrate --skip-backup -s -x \"{xprojLocation}\" \"{projectDirectory}\" -r \"{logFile}\" --format-report-file-json";
+            $"migrate --skip-backup -s -x \"{xprojLocation}\" \"{projectDirectory}\\project.json\" -r \"{logFile}\" --format-report-file-json";
 
         private string GetDotnetGeneralErrorString(string projectName, string xprojLocation, string projectDirectory, string logFile, int exitCode) =>
             string.Format(VSResources.XprojMigrationGeneralFailure,

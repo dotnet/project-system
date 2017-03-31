@@ -7,7 +7,6 @@ using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Utilities.DataFlowExtensions;
 using Microsoft.VisualStudio.Shell.Interop;
-using SVsServiceProvider = Microsoft.VisualStudio.Shell.SVsServiceProvider;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
@@ -17,12 +16,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     /// </summary>
     internal class StartupProjectRegistrar : OnceInitializedOnceDisposed
     {
-        private readonly SVsServiceProvider _serviceProvider;
         private readonly IProjectThreadingService _threadingService;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly ActiveConfiguredProject<DebuggerLaunchProviders> _launchProviders;
-
-        private IVsStartupProjectsListService _startupProjectsListService;
+        private readonly IVsService<IVsStartupProjectsListService> _startupProjectsListService;
         private Guid _guid = Guid.Empty;
         private IDisposable _evaluationSubscriptionLink;
         private bool _isDebuggable;
@@ -31,17 +28,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         [ImportingConstructor]
         public StartupProjectRegistrar(
-            SVsServiceProvider serviceProvider,
+            IVsService<SVsStartupProjectsListService, IVsStartupProjectsListService> startupProjectsListService,
             IProjectThreadingService threadingService,
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
             ActiveConfiguredProject<DebuggerLaunchProviders> launchProviders)
         {
-            Requires.NotNull(serviceProvider, nameof(serviceProvider));
+            Requires.NotNull(startupProjectsListService, nameof(startupProjectsListService));
             Requires.NotNull(threadingService, nameof(threadingService));
             Requires.NotNull(activeConfiguredProjectSubscriptionService, nameof(activeConfiguredProjectSubscriptionService));
             Requires.NotNull(launchProviders, nameof(launchProviders));
 
-            _serviceProvider = serviceProvider;
+            _startupProjectsListService = startupProjectsListService;
             _threadingService = threadingService;
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
             _launchProviders = launchProviders;
@@ -50,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [ProjectAutoLoad(startAfter:ProjectLoadCheckpoint.ProjectFactoryCompleted)]
-        [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+        [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
         internal Task Load()
         {
             EnsureInitialized();
@@ -115,17 +112,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             bool isDebuggable = await IsDebuggableAsync().ConfigureAwait(false);
             await _threadingService.SwitchToUIThread();
 
-            _startupProjectsListService = _startupProjectsListService ?? _serviceProvider.GetService<IVsStartupProjectsListService, SVsStartupProjectsListService>();
             if (initialize || isDebuggable != _isDebuggable)
             {
                 _isDebuggable = isDebuggable;
                 if (isDebuggable)
                 {
-                    _startupProjectsListService.AddProject(ref _guid);
+                    _startupProjectsListService.Value.AddProject(ref _guid);
                 }
                 else
                 {
-                    _startupProjectsListService.RemoveProject(ref _guid);
+                    _startupProjectsListService.Value.RemoveProject(ref _guid);
                 }
             }
         }

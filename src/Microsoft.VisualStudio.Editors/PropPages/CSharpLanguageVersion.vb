@@ -7,7 +7,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     ''' </summary>
     Friend Class CSharpLanguageVersion
 
+        Private Shared ReadOnly _resources As ComponentModel.ComponentResourceManager = New ComponentModel.ComponentResourceManager(GetType(AdvBuildSettingsPropPage))
+
         Private Const s_languageVersion_Default As String = "default"
+        Private Const s_languageVersion_Latest As String = "latest"
         Private Const s_languageVersion_ISO1 As String = "ISO-1"
         Private Const s_languageVersion_ISO2 As String = "ISO-2"
         Private Const s_languageVersion_3 As String = "3"
@@ -20,6 +23,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Const s_languageVersion_DisplayNameFor6 As String = "C# 6.0"
         Private Const s_languageVersion_7 As String = "7"
         Private Const s_languageVersion_DisplayNameFor7 As String = "C# 7.0"
+        Private Const s_languageVersion_7_1 As String = "7.1"
+        Private Const s_languageVersion_DisplayNameFor7_1 As String = "C# 7.1"
 
         ''' <summary>
         ''' Stores the property value corresponding to the language version
@@ -62,7 +67,17 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         Public Shared ReadOnly Property [Default]() As CSharpLanguageVersion
             Get
-                Static value As New CSharpLanguageVersion(s_languageVersion_Default, s_languageVersion_Default)
+                Static value As New CSharpLanguageVersion(s_languageVersion_Default, _resources.GetString("CSharpLanguageVerison.Default"))
+                Return value
+            End Get
+        End Property
+
+        ''' <summary>
+        ''' Return the 'latest' language version object
+        ''' </summary>
+        Public Shared ReadOnly Property Latest() As CSharpLanguageVersion
+            Get
+                Static value As New CSharpLanguageVersion(s_languageVersion_Latest, _resources.GetString("CSharpLanguageVerison.Latest"))
                 Return value
             End Get
         End Property
@@ -133,6 +148,16 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public Shared ReadOnly Property Version7() As CSharpLanguageVersion
             Get
                 Static value As New CSharpLanguageVersion(s_languageVersion_7, s_languageVersion_DisplayNameFor7)
+                Return value
+            End Get
+        End Property
+
+        ''' <summary>
+        ''' Return the C# 7.1 language version object
+        ''' </summary>
+        Public Shared ReadOnly Property Version7_1() As CSharpLanguageVersion
+            Get
+                Static value As New CSharpLanguageVersion(s_languageVersion_7_1, s_languageVersion_DisplayNameFor7_1)
                 Return value
             End Get
         End Property

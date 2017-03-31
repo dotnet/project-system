@@ -6,7 +6,6 @@ Imports System.ComponentModel
 Imports System.IO
 Imports System.Windows.Forms
 Imports Microsoft.VisualStudio.Editors.Common
-Imports Microsoft.VisualStudio.PlatformUI
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports VSLangProj80
 Imports VSLangProj110
@@ -39,12 +38,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'This call is required by the Windows Form Designer.
             InitializeComponent()
 
-            'Scale horizontally
-            cboPlatformTarget.Width = DpiHelper.LogicalToDeviceUnitsX(cboPlatformTarget.Width)
-            overarchingTableLayoutPanel.Width = DpiHelper.LogicalToDeviceUnitsX(overarchingTableLayoutPanel.Width)
-
             'Add any initialization after the InitializeComponent() call
             AddChangeHandlers()
+
+            'Opt out of page scaling since we're using AutoScaleMode
+            PageRequiresScaling = False
         End Sub
 
 

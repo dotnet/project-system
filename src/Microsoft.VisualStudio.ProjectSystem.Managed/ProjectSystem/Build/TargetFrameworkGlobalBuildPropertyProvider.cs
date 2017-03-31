@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
     /// </summary>
     /// <remarks>We specify attribute 'Order(Int32.MaxValue)` to ensure that this is the most preferred build properties provider, so it overrides target framework setting from prior providers.</remarks>
     [ExportBuildGlobalPropertiesProvider(designTimeBuildProperties: false)]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     [Order(int.MaxValue)]
     internal class TargetFrameworkGlobalBuildPropertyProvider : StaticGlobalPropertiesProviderBase
     {
@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
             {
                 // For a cross targeting project, we want to build for all the targeted frameworks.
                 // Clear out the TargetFramework property from the configuration.
-                properties = properties.Add(TargetFrameworkProjectConfigurationDimensionProvider.TargetFrameworkPropertyName, string.Empty);
+                properties = properties.Add(ConfigurationGeneral.TargetFrameworkProperty, string.Empty);
             }
 
             return Task.FromResult(properties);

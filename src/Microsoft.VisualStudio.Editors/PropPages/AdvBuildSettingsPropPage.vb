@@ -173,7 +173,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 Dim iBaseAddress As UInteger
 
-                If (TypeOf (value) Is UInteger) Then
+                Dim throwAwayObject As Decimal = Nothing
+                If (TypeOf (value) Is UInteger OrElse
+                    (CpsPropertyDescriptorWrapper.IsAnyCpsComponent(m_Objects) AndAlso Decimal.TryParse(DirectCast(value, String), throwAwayObject))) Then
                     iBaseAddress = CUInt(value)
                 Else
                     '// Since it's bogus just use the default for DLLs

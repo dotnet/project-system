@@ -129,4 +129,10 @@
   <data name="UseCustomConnectionStringCheckBox.Text" xml:space="preserve">
     <value>사용자 지정 연결 문자열 사용(&amp;U):</value>
   </data>
+  <data name="TimeUnitComboBox.AccessibleName" xml:space="preserve">
+    <value>Role service cache timeout units</value>
+  </data>
+  <data name="CustomConnectionString.AccessibleName" xml:space="preserve">
+    <value>Custom connection string</value>
+  </data>
 </root>

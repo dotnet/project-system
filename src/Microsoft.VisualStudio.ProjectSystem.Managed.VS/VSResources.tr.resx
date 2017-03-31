@@ -276,4 +276,7 @@ Bu projede hata ayıklamak için bu çözüme, kitaplık projesine başvuran bir
   <data name="XprojMigrationGeneralFailure" xml:space="preserve">
     <value>{0} XProj projesinin geçişi sağlanamadı. '{1}', {2} hata koduyla çıkış yaptı.</value>
   </data>
+  <data name="DebugFrameworkMenuText" xml:space="preserve">
+    <value>Framework ({0})</value>
+  </data>
 </root>

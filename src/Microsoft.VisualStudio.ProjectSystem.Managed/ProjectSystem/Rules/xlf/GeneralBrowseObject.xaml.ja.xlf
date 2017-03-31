@@ -63,31 +63,6 @@
         <target state="translated">出力の種類</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|OutputTypeEx.winexe|DisplayName">
-        <source>0</source>
-        <target state="translated">0</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|OutputTypeEx.exe|DisplayName">
-        <source>1</source>
-        <target state="translated">1</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|OutputTypeEx.library|DisplayName">
-        <source>2</source>
-        <target state="translated">2</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|OutputTypeEx.appcontainerexe|DisplayName">
-        <source>3</source>
-        <target state="translated">3</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|OutputTypeEx.winmdobj|DisplayName">
-        <source>4</source>
-        <target state="translated">4</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|StartupObject|DisplayName">
         <source>Type that contains the entry point</source>
         <target state="translated">エントリ ポイントを含む型</target>
@@ -257,6 +232,31 @@
         <source>Neutral Resources Language</source>
         <target state="translated">ニュートラル リソース言語</target>
         <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputTypeEx.WinExe|DisplayName">
+        <source>0</source>
+        <target state="new">0</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputTypeEx.Exe|DisplayName">
+        <source>1</source>
+        <target state="new">1</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputTypeEx.Library|DisplayName">
+        <source>2</source>
+        <target state="new">2</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputTypeEx.AppContainerExe|DisplayName">
+        <source>3</source>
+        <target state="new">3</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputTypeEx.WinMDObj|DisplayName">
+        <source>4</source>
+        <target state="new">4</target>
+        <note></note>
       </trans-unit>
     </body>
   </file>

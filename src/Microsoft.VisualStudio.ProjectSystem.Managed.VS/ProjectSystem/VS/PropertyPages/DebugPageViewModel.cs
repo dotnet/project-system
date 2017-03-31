@@ -603,6 +603,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     LaunchProfiles.Add(profile);
                 }
 
+                // When loading new profiles we need to clear the launch type. This is so the external changes cause the current 
+                // active provider to be refreshed
+                _selectedLaunchType = null;
                 NotifyProfileCollectionChanged();
 
                 // If we have a selection, we want to leave it as is

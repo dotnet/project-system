@@ -31,6 +31,14 @@
         <source>GenerateNuGetPackageTopLevelBuild</source>
         <note />
       </trans-unit>
+      <trans-unit id="DebugTargetMenuDebugFrameworkMenu|ButtonText">
+        <source>Framework</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="cmdidDebugFrameworks|ButtonText">
+        <source>Framework</source>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

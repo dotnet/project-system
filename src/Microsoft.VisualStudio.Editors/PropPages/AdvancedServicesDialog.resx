@@ -135,7 +135,7 @@
     <value>139, 21</value>
   </data>
   <data name="RoleServiceCacheTimeoutLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="RoleServiceCacheTimeoutLabel.Text" xml:space="preserve">
     <value>Role service cache &amp;timeout:</value>
@@ -178,6 +178,9 @@
   </data>
   <data name="&gt;&gt;TimeQuantity.ZOrder" xml:space="preserve">
     <value>3</value>
+  </data>
+  <data name="TimeUnitComboBox.AccessibleName" xml:space="preserve">
+    <value>Role service cache timeout units</value>
   </data>
   <data name="TimeUnitComboBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>354, 49</value>
@@ -225,7 +228,7 @@
     <value>275, 17</value>
   </data>
   <data name="SavePasswordHashLocallyCheckbox.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="SavePasswordHashLocallyCheckbox.Text" xml:space="preserve">
     <value>&amp;Save password hash locally to enable offline login</value>
@@ -258,7 +261,7 @@
     <value>185, 17</value>
   </data>
   <data name="HonorServerCookieExpirationCheckbox.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="HonorServerCookieExpirationCheckbox.Text" xml:space="preserve">
     <value>&amp;Require users to log on again whenever the server cookie expires</value>
@@ -291,7 +294,7 @@
     <value>184, 17</value>
   </data>
   <data name="UseCustomConnectionStringCheckBox.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="UseCustomConnectionStringCheckBox.Text" xml:space="preserve">
     <value>&amp;Use custom connection string:</value>
@@ -338,6 +341,9 @@
   <data name="TableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="SavePasswordHashLocallyCheckbox" Row="0" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="HonorServerCookieExpirationCheckbox" Row="1" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="RoleServiceCacheTimeoutLabel" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="TimeQuantity" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="TimeUnitComboBox" Row="2" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="UseCustomConnectionStringCheckBox" Row="3" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="CustomConnectionString" Row="4" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Absolute,70,Absolute,150" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
+  <data name="CustomConnectionString.AccessibleName" xml:space="preserve">
+    <value>Custom connection string</value>
+  </data>
   <data name="CustomConnectionString.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
   </data>
@@ -360,7 +366,7 @@
     <value>476, 60</value>
   </data>
   <data name="CustomConnectionString.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="&gt;&gt;CustomConnectionString.Name" xml:space="preserve">
     <value>CustomConnectionString</value>

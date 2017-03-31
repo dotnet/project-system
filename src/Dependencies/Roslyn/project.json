@@ -1,9 +1,0 @@
-{
-  "supports": {},
-  "dependencies": {
-    "Microsoft.VisualStudio.LanguageServices": "2.0.0-rc2"
-  },
-  "frameworks": {
-    ".NETFramework,Version=v4.6": { }
-  }
-}

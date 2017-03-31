@@ -1028,7 +1028,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim result As New List(Of Integer)
             If completeSet IsNot Nothing Then
                 If itemsToRemove Is Nothing Then
-                    itemsToRemove = New Integer() {}
+                    itemsToRemove = Array.Empty(Of Integer)
                 End If
 
                 Do While indexCompleteSet < completeSet.Length AndAlso indexItemsToRemove < itemsToRemove.Length
@@ -1191,14 +1191,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             ' from before...
                             If _noWarn Is Nothing Then
                                 Debug.Fail("Why did we try to update properties from current set with an empty noWarn?")
-                                _noWarn = New Integer() {}
+                                _noWarn = Array.Empty(Of Integer)
                             End If
                             For Each err As Integer In Intersect(_errorInfos(Index).ErrList, _noWarn)
                                 NoNotifyList.Add(err)
                             Next
                             If _specWarnAsError Is Nothing Then
                                 Debug.Fail("Why did we try to update properties from current set with an empty specWarnAsError?")
-                                _specWarnAsError = New Integer() {}
+                                _specWarnAsError = Array.Empty(Of Integer)
                             End If
                             For Each err As Integer In Intersect(_errorInfos(Index).ErrList, _specWarnAsError)
                                 ErrorsList.Add(err)
@@ -1414,7 +1414,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 'Prompt user for resetting settings...
                 If DesignerFramework.DesignUtil.ShowMessage(ServiceProvider, My.Resources.Designer.PPG_Compile_ResetIndeterminateWarningLevels, DesignerFramework.DesignUtil.GetDefaultCaption(ServiceProvider), MessageBoxButtons.OKCancel, MessageBoxIcon.Question) = DialogResult.OK Then
                     _noWarn = _optionStrictIDs
-                    _specWarnAsError = New Integer() {}
+                    _specWarnAsError = Array.Empty(Of Integer)
                     UpdateWarningList()
                 Else
                     e.Cancel = True
