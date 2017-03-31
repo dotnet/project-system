@@ -6,6 +6,12 @@ using System.ComponentModel.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
 {
+    /// <summary>
+    /// Changes resolved top level project dependencies to unresolved if:
+    ///     - dependent project does not have targets supporting given target framework in current project
+    ///     - dependent project has any unresolved dependencies in a snapshot for given target framework
+    /// This helps to bubble up error status (yellow icon) for project dependencies.
+    /// </summary>
     [Export(typeof(IDependenciesSnapshotFilter))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(Order)]
@@ -34,7 +40,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         {
             IDependency resultDependency = dependency;
 
-            if (resultDependency.Resolved && resultDependency.TopLevel 
+            if (resultDependency.Resolved 
+                && resultDependency.TopLevel 
                 && resultDependency.Flags.Contains(DependencyTreeFlags.ProjectNodeFlags)
                 && !resultDependency.Flags.Contains(DependencyTreeFlags.SharedProjectFlags))
             {

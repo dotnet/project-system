@@ -7,6 +7,13 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
 {
+    /// <summary>
+    /// Sdk nodes are actually packages and their hierarchy of dependencies is resolved from
+    /// NuGet's assets json file. However Sdk them selves are brought by DesignTime build for rules
+    /// SdkReference. This filter matches Sdk to their corresponding NuGet package and sets  
+    /// of top level sdk dependencies from the package. Packages are in visible to avoid visual
+    /// duplication and confusion.
+    /// </summary>
     [Export(typeof(IDependenciesSnapshotFilter))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(Order)]
@@ -44,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 var sdkModelId = dependency.Name;
                 var sdkId = Dependency.GetID(targetFramework, SdkRuleHandler.ProviderTypeString, sdkModelId);
 
-                if (worldBuilder.TryGetValue(sdkId, out IDependency sdk))
+                if (worldBuilder.TryGetValue(sdkId, out IDependency sdk) && sdk.Resolved)
                 {
                     sdk = sdk.SetProperties(dependencyIDs:dependency.DependencyIDs);
                     worldBuilder[sdk.Id] = sdk;
@@ -74,7 +81,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
 
                 if (worldBuilder.TryGetValue(sdkId, out IDependency sdk))
                 {
-                    sdk = sdk.SetProperties(dependencyIDs:dependency.DependencyIDs);
+                    // clean up sdk when corresponding package is removing
+                    sdk = sdk.SetProperties(dependencyIDs:ImmutableList<string>.Empty);
                     worldBuilder[sdk.Id] = sdk;
                 }
             }

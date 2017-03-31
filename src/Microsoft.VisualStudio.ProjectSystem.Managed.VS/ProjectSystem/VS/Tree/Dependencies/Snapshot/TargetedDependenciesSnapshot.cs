@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     internal class TargetedDependenciesSnapshot : ITargetedDependenciesSnapshot
     {
-        private TargetedDependenciesSnapshot(string projectPath, 
+        protected TargetedDependenciesSnapshot(string projectPath, 
                                              ITargetFramework targetFramework,
                                              ITargetedDependenciesSnapshot previousSnapshot = null,
                                              IProjectCatalogSnapshot catalogs = null)

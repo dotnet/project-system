@@ -8,8 +8,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
 {
     /// <summary>
-    /// Filter does not allow unresolved dependency to override resolved one in the snapshot. 
-    /// When project changes and old resolved dependency can not be resolved anymore only removed
+    /// Filter does not allow unresolved dependency rule to override resolved one in the snapshot. 
+    /// When project changes and old resolved dependency cannot be resolved anymore, only removed
     /// resolved dependency rule can delete old dependency (not unresolved rule).
     /// </summary>
     [Export(typeof(IDependenciesSnapshotFilter))]

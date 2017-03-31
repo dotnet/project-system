@@ -9,6 +9,11 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
 {
+    /// <summary>
+    /// If there are several top level dependencies with same captions and same provider type,
+    /// we need to change their captions, to avoid collision. To de-dupe captions we change captions 
+    /// for all such nodes to Alias which is "Caption (OriginalItemSpec)".
+    /// </summary>
     [Export(typeof(IDependenciesSnapshotFilter))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(Order)]
@@ -29,13 +34,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 x => !x.Id.Equals(dependency.Id, StringComparison.OrdinalIgnoreCase)
                      && x.ProviderType.Equals(dependency.ProviderType, StringComparison.OrdinalIgnoreCase) 
                      && x.Caption.Equals(dependency.Caption, StringComparison.OrdinalIgnoreCase));
+            
+            // if found node with same caption, or if there were nodes with same caption but with Alias already applied
             var shouldApplyAlias = (matchingDependency == null)
                 ? topLevelBuilder.Any(
                     x => !x.Id.Equals(dependency.Id)
                          && x.ProviderType.Equals(dependency.ProviderType, StringComparison.OrdinalIgnoreCase)
                          && x.Caption.Equals(
                              string.Format(CultureInfo.CurrentCulture, "{0} ({1})", dependency.Caption, x.OriginalItemSpec),
-                             StringComparison.OrdinalIgnoreCase))
+                                StringComparison.OrdinalIgnoreCase))
                 : true;
 
             if (shouldApplyAlias)
