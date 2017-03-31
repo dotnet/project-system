@@ -20,6 +20,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         protected readonly ITelemetryService _telemetryService;
         protected readonly bool _valueContainsPii;
 
+        private const string TelemetryEventName = "DimensionChanged";
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseProjectConfigurationDimensionProvider"/> class.
         /// </summary>
@@ -154,7 +156,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
                 MsBuildUtilities.AppendPropertyValue(msbuildProject, evaluatedPropertyValue, _propertyName, dimensionValue);
             }).ConfigureAwait(false);
 
-            _telemetryService.PostProperty($"DimensionChanged/{_dimensionName}/Add", "Value", HashValueIfNeeded(dimensionValue), unconfiguredProject);
+            _telemetryService.PostProperty($"{TelemetryEventName}/{_dimensionName}/Add", "Value", HashValueIfNeeded(dimensionValue), unconfiguredProject);
         }
 
         /// <summary>
@@ -171,7 +173,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
                 MsBuildUtilities.RemovePropertyValue(msbuildProject, evaluatedPropertyValue, _propertyName, dimensionValue);
             }).ConfigureAwait(false);
 
-            _telemetryService.PostProperty($"DimensionChanged/{_dimensionName}/Remove", "Value", HashValueIfNeeded(dimensionValue), unconfiguredProject);
+            _telemetryService.PostProperty($"{TelemetryEventName}/{_dimensionName}/Remove", "Value", HashValueIfNeeded(dimensionValue), unconfiguredProject);
         }
 
 
@@ -196,7 +198,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
                 ("NewValue", HashValueIfNeeded(newName)),
             };
 
-            _telemetryService.PostProperties($"DimensionChanged/{_dimensionName}/Rename", properties, unconfiguredProject);
+            _telemetryService.PostProperties($"{TelemetryEventName}/{_dimensionName}/Rename", properties, unconfiguredProject);
         }
 
         private string HashValueIfNeeded(string value)

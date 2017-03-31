@@ -5,20 +5,28 @@ using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Telemetry;
 using System.Collections.Generic;
 using System.Security.Cryptography;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Telemetry
 {
     [Export(typeof(ITelemetryService))]
-    [SuppressMessage("Microsoft.Cryptographic.Standard", "CA5350:MD5CannotBeUsed", Justification = "MD5 hash is not being used for security")]
     internal class VsTelemetryService : ITelemetryService
     {
         /// <summary>
         /// Prefix for events.
         /// </summary>
         private const string EventPrefix = "vs/projectsystem/managed/";
+
+        /// <summary>
+        /// Prefix for properties.
+        /// </summary>
+        private const string PropertyPrefix = "VS.ProjectSystem.Managed.";
+
+        /// <summary>
+        /// Event name for a project asset.
+        /// </summary>
+        private const string ProjectAssetName = "Project";
 
         /// <summary>
         /// Dictionary of known project assets.
@@ -30,6 +38,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Telemetry
         /// </summary>
         private readonly IProjectLockService _projectLockService;
 
+        /// <summary>
+        /// Visual Studio unconfigured project services.
+        /// </summary>
         private readonly IUnconfiguredProjectVsServices _projectVsService;
 
         /// <summary>
@@ -48,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Telemetry
         [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
         internal async Task OnProjectFactoryCompletedAsync()
         {
-            await CreateProjectAsset(_projectVsService.Project).ConfigureAwait(false);
+            await CreateProjectAssetAsync(_projectVsService.Project).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -134,9 +145,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Telemetry
         /// <returns>Hashed value.</returns>
         public string HashValue(string value)
         {
-            using (var md5 = MD5.Create())
+            using (var crypto = SHA256.Create())
             {
-                byte[] hash = md5.ComputeHash(Encoding.UTF8.GetBytes(value));
+                byte[] hash = crypto.ComputeHash(Encoding.UTF8.GetBytes(value));
                 return BitConverter.ToString(hash);
             }
         }
@@ -146,13 +157,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Telemetry
         /// </summary>
         /// <param name="unconfiguredProject">Project to create the asset from.</param>
         /// <returns>Telemetry event representing the project asset.</returns>
-        public async Task CreateProjectAsset(UnconfiguredProject unconfiguredProject)
+        public async Task CreateProjectAssetAsync(UnconfiguredProject unconfiguredProject)
         {
+            // TODO: We could also reuse this function as an "update" function
+            // and refresh the asset if it's already in the dictionary
             string assetId = GetProjectId(unconfiguredProject);
             if (!projectAssets.ContainsKey(assetId))
             {
                 Dictionary<string, object> projectProperties = new Dictionary<string, object>();
-                string eventName = "Project";
+                string eventName = ProjectAssetName;
 
                 using (var access = await _projectLockService.ReadLockAsync())
                 {
@@ -199,7 +212,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Telemetry
         /// </remarks>
         private string BuildPropertyName(string eventName, string propertyName)
         {
-            string name = "VS.ProjectSystem.Managed." + eventName.Replace('/', '.');
+            string name = PropertyPrefix + eventName.Replace('/', '.');
 
             if (!name.EndsWith("."))
             {
@@ -218,7 +231,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Telemetry
         /// <param name="telemetryEvent">Telemetry event to correlate the asset to.</param>
         private void TryCorrelateProject(UnconfiguredProject unconfiguredProject, TelemetryEvent telemetryEvent)
         {
-            if (unconfiguredProject != null && projectAssets.TryGetValue(GetProjectId(unconfiguredProject), out TelemetryEventCorrelation projectAsset))
+            if (unconfiguredProject != null &&
+                projectAssets.TryGetValue(GetProjectId(unconfiguredProject), out TelemetryEventCorrelation projectAsset))
             {
                 telemetryEvent.Correlate(projectAsset);
             }
