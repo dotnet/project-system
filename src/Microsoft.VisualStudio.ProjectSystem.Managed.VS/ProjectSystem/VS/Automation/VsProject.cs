@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
     /// </remarks>
     [Export(ExportContractNames.VsTypes.VSProject, typeof(VSLangProj.VSProject))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
-    [Order(10)]
+    [Order(Order.Default)]
     internal partial class VSProject : VSLangProj.VSProject
     {
         private readonly VSLangProj.VSProject _vsProject;

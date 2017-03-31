@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
     [Export]
     [ExportVsProfferedProjectService(typeof(SVsDesignTimeAssemblyResolution))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
-    [Order(1)] // Before CPS's version
+    [Order(Order.Default)] // Before CPS's version
     internal partial class DesignTimeAssemblyResolution : IVsDesignTimeAssemblyResolution
     {
         // NOTE: Unlike the legacy project system, this implementation does resolve only "framework" assemblies. In .NET Core and other project types, framework assemblies
@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         // with two Export/Metadata attributes where one is AllowMultiple=false
         [ExportProjectNodeComService(typeof(IVsDesignTimeAssemblyResolution))]  // Need to override CPS's version, which it implements on the project node as IVsDesignTimeAssemblyResolution
         [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
-        [Order(1)] // Before CPS's version
+        [Order(Order.Default)] // Before CPS's version
         public IVsDesignTimeAssemblyResolution ComService
         {
             get { return this; }

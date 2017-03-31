@@ -11,7 +11,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging
     /// </summary>
     [Export(typeof(IProjectImageProvider))]
     [AppliesTo(ProjectCapability.FSharp)]
-    [Order(2)]
     internal class FSharpProjectImageProvider : IProjectImageProvider
     {
         [ImportingConstructor]

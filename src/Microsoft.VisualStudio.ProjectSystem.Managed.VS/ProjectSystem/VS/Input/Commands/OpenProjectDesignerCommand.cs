@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     // Opens the Project Designer ("Property Pages") when selecting the Open menu item on the AppDesigner folder
     [ProjectCommand(CommandGroup.VisualStudioStandard97, VisualStudioStandard97CommandId.Open)]
     [AppliesTo(ProjectCapability.AppDesigner)]
-    [Order(1000)] 
+    [Order(Order.Default)] 
     internal class OpenProjectDesignerCommand : AbstractOpenProjectDesignerCommand
     {
         [ImportingConstructor]
