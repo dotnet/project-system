@@ -91,7 +91,7 @@ You can force Visual Studio to show the results of a design-time build using the
 
 In Visual Studio 2017 there are two C# and Visual Basic project systems. By default the majority of projects (.NET Framework, UWP, etc) continue to open in the same project system as previous versions of Visual Studio, and hence the instructions are the same as above. 
 
-The new .NET Core and .NET Standard project types, however, open in the new [project system](http://github.com/dotnet/roslyn-project-system), you can use the following steps to see the results of design-time builds:
+The new .NET Core and .NET Standard project types, however, open in the new [project system](http://github.com/dotnet/roslyn-project-system) and you can use the following steps to see the results of design-time builds:
 
 1. Close all instances of Visual Studio
 2. In Explorer, open `%ProgramData%\Microsoft\VisualStudio\Packages\_Instances` and remember the name of the folder under there, this is called an "instance id"
