@@ -12,7 +12,7 @@ using Xunit;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
     [ProjectSystemTrait]
-    public class VSProject_VSLangProjectPropertiesTests : VsProjectTests
+    public class VSProject_VSLangProjectPropertiesTests
     {
         [Fact]
         public void Constructor_NullAsVsProject_ThrowsArgumentNull()
