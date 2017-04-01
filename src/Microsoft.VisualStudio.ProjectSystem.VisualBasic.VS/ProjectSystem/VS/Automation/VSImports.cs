@@ -36,9 +36,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             IProjectLockService lockService)
         {
             Requires.NotNull(vsProject, nameof(vsProject));
+            Requires.NotNull(threadingService, nameof(threadingService));
             Requires.NotNull(activeConfiguredProject, nameof(activeConfiguredProject));
             Requires.NotNull(lockService, nameof(lockService));
-            Requires.NotNull(threadingService, nameof(threadingService));
 
             _vsProject = vsProject;
             _activeConfiguredProject = activeConfiguredProject;
@@ -49,24 +49,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         }
 
         private ConfiguredProject ConfiguredProject => _activeConfiguredProject.Value;
-
-        internal virtual void OnImportAdded(string importNamespace)
-        {
-            var importAdded = ImportAdded;
-            if (importAdded != null)
-            {
-                importAdded(importNamespace);
-            }
-        }
-
-        internal virtual void OnImportRemoved(string importNamespace)
-        {
-            var importRemoved = ImportRemoved;
-            if (importRemoved != null)
-            {
-                importRemoved(importNamespace);
-            }
-        }
 
         public string Item(int lIndex)
         {
@@ -145,6 +127,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         }
 
         public object Parent => throw new NotImplementedException();
+
+        internal virtual void OnImportAdded(string importNamespace)
+        {
+            var importAdded = ImportAdded;
+            if (importAdded != null)
+            {
+                importAdded(importNamespace);
+            }
+        }
+
+        internal virtual void OnImportRemoved(string importNamespace)
+        {
+            var importRemoved = ImportRemoved;
+            if (importRemoved != null)
+            {
+                importRemoved(importNamespace);
+            }
+        }
 
         public void OnSinkAdded(_dispImportsEvents sink)
         {

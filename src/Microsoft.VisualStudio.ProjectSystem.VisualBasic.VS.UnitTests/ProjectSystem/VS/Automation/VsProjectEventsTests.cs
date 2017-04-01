@@ -8,7 +8,7 @@ using Xunit;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
     [ProjectSystemTrait]
-    internal class VsProjectEventsTests
+    public class VsProjectEventsTests
     {
         [Fact]
         public void Constructor_VSProjectAsNull_ThrowsException()

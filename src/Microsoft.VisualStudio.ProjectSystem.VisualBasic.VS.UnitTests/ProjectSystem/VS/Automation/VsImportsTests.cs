@@ -5,7 +5,7 @@ using Xunit;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
     [ProjectSystemTrait]
-    internal class VsImportsTests
+    public class VsImportsTests
     {
         [Fact]
         public void Constructor_NullAsVsProject_ThrowsArgumentNull()
