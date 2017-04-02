@@ -1,9 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Linq;
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
@@ -28,16 +27,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         // IntelliSense.
         private readonly UnconfiguredProject _project;
         private readonly Dictionary<IWorkspaceProjectContext, HashSet<string>> _sourceFilesByContext = new Dictionary<IWorkspaceProjectContext, HashSet<string>>();
-        private readonly IPhysicalProjectTree _projectTree;
 
         [ImportingConstructor]
-        public SourceItemHandler(UnconfiguredProject project, IPhysicalProjectTree projectTree)
+        public SourceItemHandler(UnconfiguredProject project)
         {
             Requires.NotNull(project, nameof(project));
-            Requires.NotNull(projectTree, nameof(projectTree));
 
             _project = project;
-            _projectTree = projectTree;
         }
 
         public override string RuleName
@@ -62,14 +58,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             foreach (CommandLineSourceFile sourceFile in added.SourceFiles)
             {
-                AddSourceFile(sourceFile.Path, context, isActiveContext);
+                AddSourceFile(sourceFile.Path, null, context, isActiveContext);
             }
         }
 
-        public override async Task HandleAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
+        public override void Handle(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
         {
-            Requires.NotNull(e, nameof(e));
             Requires.NotNull(projectChange, nameof(projectChange));
+            Requires.NotNull(context, nameof(context));
 
             IProjectChangeDiff diff = projectChange.Difference;
 
@@ -78,43 +74,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 RemoveSourceFile(filePath, context);
             }
 
-            if (diff.AddedItems.Count > 0 || diff.RenamedItems.Count > 0 || diff.ChangedItems.Count > 0)
+            foreach (string filePath in diff.AddedItems)
             {
-                // Make sure the tree matches the same version of the evaluation that we're handling for active project context.
-                // If we are dealing with non- active project context, then just use the latest published tree.
-                IProjectTreeServiceState treeState = isActiveContext ?
-                    await PublishTreeAsync(e).ConfigureAwait(true) :    // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
-                    await _projectTree.TreeService.PublishLatestTreeAsync(blockDuringLoadingTree: true).ConfigureAwait(true);
+                AddSourceFile(filePath, GetFolders(filePath, projectChange), context, isActiveContext);
+            }
 
-                foreach (string filePath in diff.AddedItems)
-                {
-                    AddSourceFile(filePath, context, isActiveContext, treeState);
-                }
+            foreach (KeyValuePair<string, string> filePaths in diff.RenamedItems)
+            {
+                string removeFilePath = filePaths.Key;
+                string addFilePath = filePaths.Value;
 
-                foreach (KeyValuePair<string, string> filePaths in diff.RenamedItems)
-                {
-                    RemoveSourceFile(filePaths.Key, context);
-                    AddSourceFile(filePaths.Value, context, isActiveContext, treeState);
-                }
+                RemoveSourceFile(removeFilePath, context);
+                AddSourceFile(addFilePath, GetFolders(addFilePath, projectChange), context, isActiveContext);
+            }
 
-                foreach (string filePath in diff.ChangedItems)
-                {
-                    // We add and then remove ChangedItems to handle Linked metadata changes
-                    RemoveSourceFile(filePath, context);
-                    AddSourceFile(filePath, context, isActiveContext);
-                }
+            foreach (string filePath in diff.ChangedItems)
+            {
+                // We add and then remove ChangedItems to handle Linked metadata changes
+                RemoveSourceFile(filePath, context);
+                AddSourceFile(filePath, GetFolders(filePath, projectChange), context, isActiveContext);
             }
         }
 
         public override Task OnContextReleasedAsync(IWorkspaceProjectContext context)
         {
+            Requires.NotNull(context, nameof(context));
+
             _sourceFilesByContext.Remove(context);
             return Task.CompletedTask;
         }
 
-        private void RemoveSourceFile(string fullPath, IWorkspaceProjectContext context)
+        private void RemoveSourceFile(string filePath, IWorkspaceProjectContext context)
         {
-            fullPath = _project.MakeRooted(fullPath);
+            string fullPath = _project.MakeRooted(filePath);
 
             if (_sourceFilesByContext.TryGetValue(context, out HashSet<string> sourceFiles) && sourceFiles.Remove(fullPath))
             {
@@ -122,9 +114,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             }
         }
 
-        private void AddSourceFile(string fullPath, IWorkspaceProjectContext context, bool isActiveContext, IProjectTreeServiceState state = null)
+        private void AddSourceFile(string filePath, string[] folderNames, IWorkspaceProjectContext context, bool isActiveContext)
         {
-            fullPath = _project.MakeRooted(fullPath);
+            string fullPath = _project.MakeRooted(filePath);
 
             if (!_sourceFilesByContext.TryGetValue(context, out HashSet<string> sourceFiles))
             {
@@ -136,54 +128,47 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 return;
             }
 
-            string[] folderNames = Array.Empty<string>();
-            if (state != null)  // We're looking at a generated file, which doesn't appear in a tree.
-            {
-                folderNames = GetFolders(fullPath, state).ToArray();
-            }
-
             sourceFiles.Add(fullPath);
             context.AddSourceFile(fullPath, folderNames: folderNames, isInCurrentContext: isActiveContext);
         }
 
-        private IEnumerable<string> GetFolders(string fullPath, IProjectTreeServiceState state)
+        private string[] GetFolders(string filePath, IProjectChangeDescription projectChange)
         {
             // Roslyn wants the effective set of folders from the source up to, but not including the project 
             // root to handle the cases where linked files have a different path in the tree than what its path 
             // on disk is. It uses these folders for things that create files alongside others, such as extract
             // interface.
 
-            IProjectTree tree = state.TreeProvider.FindByPath(state.Tree, fullPath);
-            if (tree == null)
-                yield break;    // We got a tree that is out-of-date than what our evaluation is based on
+            // First we check for a linked item, and we use its effective folder in 
+            // the tree, otherwise, we just use the parent folder of the file itself
+            string parentFolder = GetLinkedParentFolder(filePath, projectChange);
+            if (parentFolder == null)
+                parentFolder = GetParentFolder(filePath);
 
-            IProjectTree parent = tree;
-
-            do
+            // We now have a folder in the form of `Folder1\Folder2` relative to the
+            // project directory  split it up into individual path components
+            if (parentFolder.Length > 0)
             {
-                // Source files can be nested under other files
-                if (parent.IsFolder)
-                    yield return parent.Caption;
+                return parentFolder.Split(FileItemServices.PathSeparatorCharacters);
+            }
 
-                parent = parent.Parent;
-
-            } while (!parent.IsRoot());
+            return null;
         }
 
-        private Task<IProjectTreeServiceState> PublishTreeAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
+        private string GetLinkedParentFolder(string filePath, IProjectChangeDescription projectChange)
         {
-            try
-            {
-                // Make sure the tree matches the same version of the evaluation that we're handling
-                return _projectTree.TreeService.PublishTreeAsync(e.ToRequirements(), blockDuringLoadingTree: true);
-            }
-            catch (ActiveProjectConfigurationChangedException)
-            {
-                // Project configuration changed while we blocked waiting for the tree, instead of trying to match
-                // exactly the same version, just give up and publish the latest tree. Note, don't need to handle
-                // ActiveProjectConfigurationChangedException as it will retry if the configuration changed.
-                return _projectTree.TreeService.PublishLatestTreeAsync(blockDuringLoadingTree: true);
-            }
+            var metadata = projectChange.After.Items[filePath];
+
+            string linkFilePath = FileItemServices.GetLinkFilePath(metadata);
+            if (linkFilePath != null)
+                return Path.GetDirectoryName(linkFilePath);
+
+            return null;
+        }
+
+        private string GetParentFolder(string filePath)
+        {
+            return Path.GetDirectoryName(_project.MakeRelative(filePath));
         }
     }
 }
