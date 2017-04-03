@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Build;
@@ -34,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         /// <returns>A task for the async operation.</returns>
         public override async Task OnDimensionValueChangedAsync(ProjectConfigurationDimensionValueChangedEventArgs args)
         {
-            if (string.Compare(args.DimensionName, _dimensionName, StringComparison.Ordinal) == 0)
+            if (StringComparers.ConfigurationDimensionNames.Equals(args.DimensionName, _dimensionName))
             {
                 if (args.Stage == ChangeEventStage.Before)
                 {

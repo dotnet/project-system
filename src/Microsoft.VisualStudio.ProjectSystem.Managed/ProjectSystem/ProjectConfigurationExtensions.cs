@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 var dimensionValue = dimensionKvp.Value;
 
                 // Ignore the TargetFramework.
-                if (string.Equals(dimensionName, ConfigurationGeneral.TargetFrameworkProperty, StringComparison.OrdinalIgnoreCase))
+                if (StringComparers.ConfigurationDimensionNames.Equals(dimensionName, ConfigurationGeneral.TargetFrameworkProperty))
                 {
                     continue;
                 }

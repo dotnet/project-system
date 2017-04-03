@@ -24,5 +24,10 @@ namespace Microsoft.VisualStudio
         {
             get { return StringComparer.OrdinalIgnoreCase; }
         }
+
+        public static IEqualityComparer<string> ConfigurationDimensionNames
+        {
+            get { return StringComparer.Ordinal; }
+        }
     }
 }
