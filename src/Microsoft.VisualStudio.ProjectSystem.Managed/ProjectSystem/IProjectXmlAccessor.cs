@@ -4,7 +4,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.Build.Construction;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
+namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
     /// Utility class for allowing for testing of code that needs to access the msbuild lock, and also be testable.

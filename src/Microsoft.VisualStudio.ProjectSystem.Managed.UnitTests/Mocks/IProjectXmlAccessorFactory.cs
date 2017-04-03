@@ -7,7 +7,7 @@ using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 using Moq;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
+namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IProjectXmlAccessorFactory
     {

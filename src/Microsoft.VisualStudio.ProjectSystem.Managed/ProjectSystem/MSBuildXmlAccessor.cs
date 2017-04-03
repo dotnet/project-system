@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.IO;
 using Microsoft.Build.Construction;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
+namespace Microsoft.VisualStudio.ProjectSystem
 {
     [Export(typeof(IProjectXmlAccessor))]
     internal class MSBuildXmlAccessor : IProjectXmlAccessor
