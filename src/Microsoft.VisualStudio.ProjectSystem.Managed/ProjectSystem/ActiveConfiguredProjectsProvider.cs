@@ -7,9 +7,6 @@ using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    /// <summary>
-    ///<see cref="IActiveConfiguredProjectsProvider"/>
-    /// </summary>
     [Export(typeof(IActiveConfiguredProjectsProvider))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     internal class ActiveConfiguredProjectsProvider : IActiveConfiguredProjectsProvider
@@ -27,9 +24,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _commonServices = commonServices;
         }
 
-        /// <summary>
-        /// <see cref="IActiveConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync"/> 
-        /// </summary>
         public async Task<ImmutableDictionary<string, ConfiguredProject>> GetActiveConfiguredProjectsMapAsync()
         {
             var builder = ImmutableDictionary.CreateBuilder<string, ConfiguredProject>();
@@ -57,18 +51,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return builder.ToImmutableDictionary();
         }
 
-        /// <summary>
-        /// <see cref="IActiveConfiguredProjectsProvider.GetActiveConfiguredProjectsAsync"/> 
-        /// </summary>
         public async Task<ImmutableArray<ConfiguredProject>> GetActiveConfiguredProjectsAsync()
         {
             var projectMap = await GetActiveConfiguredProjectsMapAsync().ConfigureAwait(false);
             return projectMap.Values.ToImmutableArray();
         }
 
-        /// <summary>
-        /// <see cref="IActiveConfiguredProjectsProvider.GetActiveProjectConfigurationsAsync"/> 
-        /// </summary>
         public async Task<ImmutableArray<ProjectConfiguration>> GetActiveProjectConfigurationsAsync()
         {
             var projectMap = await GetActiveConfiguredProjectsMapAsync().ConfigureAwait(false);
