@@ -3,7 +3,6 @@
 using System;
 using System.Linq;
 using Microsoft.VisualStudio.Build;
-using Microsoft.VisualStudio.ProjectSystem.VS.Editor;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration

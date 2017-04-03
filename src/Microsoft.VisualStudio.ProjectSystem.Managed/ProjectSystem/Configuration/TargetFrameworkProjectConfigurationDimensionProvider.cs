@@ -4,7 +4,6 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Build;
-using Microsoft.VisualStudio.ProjectSystem.VS.Editor;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
 {
