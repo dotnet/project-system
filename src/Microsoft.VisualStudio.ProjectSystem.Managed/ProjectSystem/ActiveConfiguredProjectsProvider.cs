@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     [Export(typeof(IActiveConfiguredProjectsProvider))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     internal class ActiveConfiguredProjectsProvider : IActiveConfiguredProjectsProvider
     {
         private readonly IUnconfiguredProjectServices _services;
