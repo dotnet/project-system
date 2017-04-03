@@ -58,8 +58,30 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public async Task<ImmutableArray<ProjectConfiguration>> GetActiveProjectConfigurationsAsync()
         {
-            var projectMap = await GetActiveConfiguredProjectsMapAsync().ConfigureAwait(false);
-            return projectMap.Values.Select(p => p.ProjectConfiguration).ToImmutableArray();
+            ProjectConfiguration activeConfiguration = _services.ActiveConfiguredProjectProvider.ActiveProjectConfiguration;
+            if (activeConfiguration == null)
+                return ImmutableArray<ProjectConfiguration>.Empty;
+
+            var builder = ImmutableArray.CreateBuilder<ProjectConfiguration>();
+
+            IImmutableSet<ProjectConfiguration> configurations = await _services.ProjectConfigurationsService.GetKnownProjectConfigurationsAsync()
+                                                                                                             .ConfigureAwait(false);
+
+            foreach (ProjectConfiguration configuration in configurations)
+            {
+                if (IsActiveConfigurationCandidate(activeConfiguration, configuration))
+                { 
+                    builder.Add(configuration);
+                }
+            }
+
+            Assumes.True(builder.Count > 0, "We have an active configuration that isn't one of the known configurations");
+            return builder.ToImmutable();
+        }
+
+        private static bool IsActiveConfigurationCandidate(ProjectConfiguration activeConfiguration, ProjectConfiguration configuration)
+        {
+            return configuration.EqualIgnoringTargetFramework(activeConfiguration);
         }
     }
 }
