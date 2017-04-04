@@ -26,28 +26,24 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public async Task<ImmutableDictionary<string, ConfiguredProject>> GetActiveConfiguredProjectsMapAsync()
         {
             var builder = ImmutableDictionary.CreateBuilder<string, ConfiguredProject>();
-            var knownConfigurations = await _services.ProjectConfigurationsService.GetKnownProjectConfigurationsAsync().ConfigureAwait(true);
-            var isCrossTarging = knownConfigurations.All(c => c.IsCrossTargeting());
-            if (isCrossTarging)
+
+            ImmutableArray<ConfiguredProject> projects = await GetActiveConfiguredProjectsAsync().ConfigureAwait(false);
+
+            var isCrossTargeting = projects.All(project => project.ProjectConfiguration.IsCrossTargeting());
+            if (isCrossTargeting)
             {
-                // Get all the project configurations with all dimensions (ignoring the TargetFramework) matching the active configuration.
-                var activeConfiguration = _services.ActiveConfiguredProjectProvider.ActiveProjectConfiguration;
-                foreach (var configuration in knownConfigurations)
+                foreach (ConfiguredProject project in projects)
                 {
-                    if (configuration.EqualIgnoringTargetFramework(activeConfiguration))
-                    {
-                        var configuredProject = await _commonServices.Project.LoadConfiguredProjectAsync(configuration).ConfigureAwait(true);
-                        var targetFramework = configuration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty];
-                        builder.Add(targetFramework, configuredProject);
-                    }
+                    var targetFramework = project.ProjectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty];
+                    builder.Add(targetFramework, project);
                 }
             }
             else
             {
-                builder.Add(string.Empty, _services.ActiveConfiguredProjectProvider.ActiveConfiguredProject);
+                builder.Add(string.Empty, projects.First());
             }
 
-            return builder.ToImmutableDictionary();
+            return builder.ToImmutable();
         }
 
         public async Task<ImmutableArray<ConfiguredProject>> GetActiveConfiguredProjectsAsync()
