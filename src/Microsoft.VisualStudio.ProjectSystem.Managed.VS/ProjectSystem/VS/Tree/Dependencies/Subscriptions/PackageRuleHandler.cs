@@ -198,7 +198,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         metadata.Name,
                         DependencyTreeFlags.NuGetSubTreeNodeFlags,
                         resolved,
-                        metadata.IsImplicitlyDefined,
                         properties,
                         dependencyIDs);
                     break;
@@ -210,7 +209,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         metadata.Name,
                         DependencyTreeFlags.NuGetSubTreeNodeFlags,
                         resolved,
-                        metadata.IsImplicitlyDefined,
                         properties,
                         dependencyIDs);
                     break;
@@ -233,7 +231,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         metadata.Name,
                         DependencyTreeFlags.NuGetSubTreeNodeFlags,
                         resolved,
-                        metadata.IsImplicitlyDefined,
                         properties,
                         dependencyIDs);
                     break;

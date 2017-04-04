@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         private UnconfiguredProject Project { get; }
 
         [ImportMany]
-        public OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider> SubTreeProviders { get; }
+        protected OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider> SubTreeProviders { get; set; }
 
         public IDependencyViewModel CreateTargetViewModel(ITargetedDependenciesSnapshot snapshot)
         {

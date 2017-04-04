@@ -17,10 +17,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             string name,
             ProjectTreeFlags flags,
             bool resolved,
-            bool isImplicit,
             IImmutableDictionary<string, string> properties,
             IEnumerable<string> dependenciesIDs)
-            : base(providerType, path, originalItemSpec, flags, resolved, isImplicit, properties)
+            : base(providerType, path, originalItemSpec, flags, resolved, isImplicit:false, properties:properties)
         {
             Requires.NotNullOrEmpty(name, nameof(name));
 
