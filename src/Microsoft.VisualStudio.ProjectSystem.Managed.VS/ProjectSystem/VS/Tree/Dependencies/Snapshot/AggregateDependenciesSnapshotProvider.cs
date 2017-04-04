@@ -43,8 +43,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             lock(_snapshotProvidersLock)
             {
                 SnapshotProviders[snapshotProvider.ProjectFilePath] = snapshotProvider;
+                snapshotProvider.SnapshotRenamed += OnSnapshotRenamed;
                 snapshotProvider.SnapshotChanged += OnSnapshotChanged;
                 snapshotProvider.SnapshotProviderUnloading += OnSnapshotProviderUnloading;
+            }
+        }
+
+        private void OnSnapshotRenamed(object sender, ProjectRenamedEventArgs e)
+        {
+            lock (_snapshotProvidersLock)
+            {
+                // remove and re-add provider with new project path
+                if (!string.IsNullOrEmpty(e.OldFullPath)
+                    && SnapshotProviders.TryRemove(e.OldFullPath, out IDependenciesSnapshotProvider provider)
+                    && provider!= null
+                    && !string.IsNullOrEmpty(e.NewFullPath))
+                {
+                    SnapshotProviders[e.NewFullPath] = provider;
+                }
             }
         }
 
@@ -69,6 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             lock(_snapshotProvidersLock)
             {
                 SnapshotProviders.TryRemove(snapshotProvider.ProjectFilePath, out IDependenciesSnapshotProvider provider);
+                snapshotProvider.SnapshotRenamed -= OnSnapshotRenamed;
                 snapshotProvider.SnapshotChanged -= OnSnapshotChanged;
                 snapshotProvider.SnapshotProviderUnloading -= OnSnapshotProviderUnloading;
             }

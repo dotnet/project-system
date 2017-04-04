@@ -59,6 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             ProjectFilePath = CommonServices.Project.FullPath;
 
             CommonServices.Project.ProjectUnloading += OnUnconfiguredProjectUnloading;
+            CommonServices.Project.ProjectRenamed += OnUnconfiguredProjectRenamed;
         }
 
         private readonly object _snapshotLock = new object();
@@ -84,6 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public string ProjectFilePath { get; }
 
+        public event EventHandler<ProjectRenamedEventArgs> SnapshotRenamed;
         public event EventHandler<SnapshotChangedEventArgs> SnapshotChanged;
         public event EventHandler<SnapshotProviderUnloadingEventArgs> SnapshotProviderUnloading;
 
@@ -194,6 +196,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             {
                 provider.Value.DependenciesChanged -= OnSubtreeProviderDependenciesChanged;
             }
+
+            return Task.CompletedTask;
+        }
+
+        private Task OnUnconfiguredProjectRenamed(object sender, ProjectRenamedEventArgs e)
+        {
+            SnapshotRenamed?.Invoke(this, e);
 
             return Task.CompletedTask;
         }

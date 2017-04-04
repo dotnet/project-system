@@ -20,6 +20,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         string ProjectFilePath { get; }
 
         /// <summary>
+        /// Triggered when snapshot's project was renamed.
+        /// </summary>
+        event EventHandler<ProjectRenamedEventArgs> SnapshotRenamed;
+
+        /// <summary>
         /// Triggered when snapshot was changed.
         /// </summary>
         event EventHandler<SnapshotChangedEventArgs> SnapshotChanged;
