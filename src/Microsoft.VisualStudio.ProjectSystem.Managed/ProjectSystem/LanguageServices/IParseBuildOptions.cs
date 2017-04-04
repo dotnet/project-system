@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
-    public interface IParseCommandLineArguments
+    public interface IParseBuildOptions
     {
-        CommandLineArguments Parse(IEnumerable<string> args, string baseDirectory);
+        BuildOptions Parse(IEnumerable<string> args, string baseDirectory);
     }
 }

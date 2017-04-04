@@ -16,10 +16,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     them to the given <see cref="IWorkspaceProjectContext"/>.
         /// </summary>
         /// <param name="added">
-        ///     A <see cref="CommandLineArguments"/> representing the added arguments.
+        ///     A <see cref="BuildOptions"/> representing the added arguments.
         /// </param>
         /// <param name="removed">
-        ///     A <see cref="CommandLineArguments"/> representing the removed arguments.
+        ///     A <see cref="BuildOptions"/> representing the removed arguments.
         /// </param>
         /// <param name="context">
         ///     A <see cref="IWorkspaceProjectContext"/> to update.
@@ -34,6 +34,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     </para>
         ///     <paramref name="removed"/> is <see langword="null"/>.
         /// </exception>
-        void Handle(CommandLineArguments added, CommandLineArguments removed, IWorkspaceProjectContext context, bool isActiveContext);
+        void Handle(BuildOptions added, BuildOptions removed, IWorkspaceProjectContext context, bool isActiveContext);
     }
 }

@@ -18,20 +18,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             Requires.NotNull(project, nameof(project));
 
             _project = project;
-            CommandLineParsers = new OrderPrecedenceImportCollection<IParseCommandLineArguments>(projectCapabilityCheckProvider: project);
+            CommandLineParsers = new OrderPrecedenceImportCollection<IParseBuildOptions>(projectCapabilityCheckProvider: project);
         }
 
         [ImportMany]
-        public OrderPrecedenceImportCollection<IParseCommandLineArguments> CommandLineParsers
+        public OrderPrecedenceImportCollection<IParseBuildOptions> CommandLineParsers
         {
             get;
         }
 
-        public CommandLineArguments Parse(IEnumerable<string> arguments)
+        public BuildOptions Parse(IEnumerable<string> arguments)
         {
             Requires.NotNull(arguments, nameof(arguments));
 
-            Lazy<IParseCommandLineArguments> parser = CommandLineParsers.FirstOrDefault();
+            Lazy<IParseBuildOptions> parser = CommandLineParsers.FirstOrDefault();
             if (parser == null)
                 throw new InvalidOperationException();
 

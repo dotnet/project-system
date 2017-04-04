@@ -5,14 +5,14 @@ using Microsoft.CodeAnalysis;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
-    public class CommandLineArguments
+    public class BuildOptions
     {
         public IEnumerable<CommandLineSourceFile> SourceFiles { get; }
         public IEnumerable<CommandLineSourceFile> AdditionalFiles { get; }
         public IEnumerable<CommandLineReference> MetadataReferences { get; }
         public IEnumerable<CommandLineAnalyzerReference> AnalyzerReferences { get; }
 
-        public CommandLineArguments(IEnumerable<CommandLineSourceFile> sourceFiles, IEnumerable<CommandLineSourceFile> additionalFiles, IEnumerable<CommandLineReference> metadataReferences, IEnumerable<CommandLineAnalyzerReference> analyzerReferences)
+        public BuildOptions(IEnumerable<CommandLineSourceFile> sourceFiles, IEnumerable<CommandLineSourceFile> additionalFiles, IEnumerable<CommandLineReference> metadataReferences, IEnumerable<CommandLineAnalyzerReference> analyzerReferences)
         {
             Requires.NotNull(sourceFiles, nameof(sourceFiles));
             Requires.NotNull(additionalFiles, nameof(additionalFiles));
@@ -25,11 +25,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             AnalyzerReferences = analyzerReferences;
         }
 
-        public static CommandLineArguments FromCommonCommandLineArguments(CodeAnalysis.CommandLineArguments commonCommandLineArguments)
+        public static BuildOptions FromCommonCommandLineArguments(CommandLineArguments commonCommandLineArguments)
         {
             Requires.NotNull(commonCommandLineArguments, nameof(commonCommandLineArguments));
 
-            return new CommandLineArguments(
+            return new BuildOptions(
                 commonCommandLineArguments.SourceFiles,
                 commonCommandLineArguments.AdditionalFiles,
                 commonCommandLineArguments.MetadataReferences,

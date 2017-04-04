@@ -6,13 +6,13 @@ using Microsoft.CodeAnalysis.CSharp;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
-    [Export(typeof(IParseCommandLineArguments))]
+    [Export(typeof(IParseBuildOptions))]
     [AppliesTo(ProjectCapability.CSharp)]
-    internal class CSharpParseCommandLineArguments : IParseCommandLineArguments
+    internal class CSharpParseBuildOptions : IParseBuildOptions
     {
-        public CommandLineArguments Parse(IEnumerable<string> args, string baseDirectory)
+        public BuildOptions Parse(IEnumerable<string> args, string baseDirectory)
         {
-            return CommandLineArguments.FromCommonCommandLineArguments(
+            return BuildOptions.FromCommonCommandLineArguments(
                 CSharpCommandLineParser.Default.Parse(args, baseDirectory, sdkDirectory: null, additionalReferenceDirectories: null));
         }
     }
