@@ -52,8 +52,17 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public async Task<ImmutableArray<ConfiguredProject>> GetActiveConfiguredProjectsAsync()
         {
-            var projectMap = await GetActiveConfiguredProjectsMapAsync().ConfigureAwait(false);
-            return projectMap.Values.ToImmutableArray();
+            var builder = ImmutableArray.CreateBuilder<ConfiguredProject>();
+
+            foreach (ProjectConfiguration configuration in await GetActiveProjectConfigurationsAsync())
+            {
+                var project = await _commonServices.Project.LoadConfiguredProjectAsync(configuration)
+                                                           .ConfigureAwait(false);
+
+                builder.Add(project);
+            }
+
+            return builder.ToImmutable();
         }
 
         public async Task<ImmutableArray<ProjectConfiguration>> GetActiveProjectConfigurationsAsync()

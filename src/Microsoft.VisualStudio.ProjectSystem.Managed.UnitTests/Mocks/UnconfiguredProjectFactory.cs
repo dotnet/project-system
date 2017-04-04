@@ -55,5 +55,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
             mock.Setup(u => u.GetFileEncodingAsync()).Returns(encoding);
             return mock.Object;
         }
+
+        public static UnconfiguredProject ImplementLoadConfiguredProjectAsync(Func<ProjectConfiguration, Task<ConfiguredProject>> action)
+        {
+            var mock = new Mock<UnconfiguredProject>();
+            mock.Setup(p => p.LoadConfiguredProjectAsync(It.IsAny<ProjectConfiguration>()))
+                .Returns(action);
+
+            return mock.Object;
+        }
     }
 }
