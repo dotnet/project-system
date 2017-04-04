@@ -146,7 +146,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void Dependency_Id(string modelId, string expectedId)
         {
             var mockModel = IDependencyModelFactory.Implement(providerType: "providerType", id: modelId);
-            var mockTargetFramework = ITargetFrameworkFactory.Implement(shortName:"tfm");
+            var mockTargetFramework = ITargetFrameworkFactory.Implement(moniker:"tfm");
             var mockSnapshot = ITargetedDependenciesSnapshotFactory.Implement(targetFramework: mockTargetFramework);
 
             var dependency = new Dependency(mockModel, mockSnapshot);
@@ -168,7 +168,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 originalItemSpec: originalItemSpec,
                 path: path,
                 caption:caption);
-            var mockTargetFramework = ITargetFrameworkFactory.Implement(shortName: "tfm");
+            var mockTargetFramework = ITargetFrameworkFactory.Implement(moniker: "tfm");
             var mockSnapshot = ITargetedDependenciesSnapshotFactory.Implement(targetFramework: mockTargetFramework);
 
             var dependency = new Dependency(mockModel, mockSnapshot);

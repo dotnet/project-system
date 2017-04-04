@@ -40,8 +40,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         {
             IDependency resultDependency = dependency;
 
-            if (resultDependency.Resolved 
-                && resultDependency.TopLevel 
+            if (resultDependency.TopLevel
+                && resultDependency.Resolved                
                 && resultDependency.Flags.Contains(DependencyTreeFlags.ProjectNodeFlags)
                 && !resultDependency.Flags.Contains(DependencyTreeFlags.SharedProjectFlags))
             {

@@ -13,18 +13,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         public static ITargetFramework Implement(
-            string shortName = null,
+            string moniker = null,
             MockBehavior? mockBehavior = null)
         {
-            var behavior = mockBehavior ?? MockBehavior.Default;
-            var mock = new Mock<ITargetFramework>(behavior);            
-
-            if (shortName != null)
-            {
-                mock.Setup(x => x.ShortName).Returns(shortName);
-            }
-
-            return mock.Object;
+            return new TargetFramework(moniker);
         }
     }
 }

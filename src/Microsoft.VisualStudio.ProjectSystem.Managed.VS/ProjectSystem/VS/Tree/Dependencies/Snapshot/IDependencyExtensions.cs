@@ -2,12 +2,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
-using System.IO;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
@@ -22,6 +22,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             return !self.Resolved || self.HasUnresolvedDependency;
         }
 
+        /// <summary>
+        /// Returns a IDependencyViewModel for given dependency.
+        /// </summary>
         public static IDependencyViewModel ToViewModel(this IDependency self)
         {
             return new DependencyViewModel
@@ -38,6 +41,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             };
         }
 
+        /// <summary>
+        /// Returns all icons specified for given dependency.
+        /// </summary>
         public static IEnumerable<ImageMoniker> GetIcons(this IDependency self)
         {
             yield return self.Icon;
@@ -46,22 +52,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             yield return self.UnresolvedExpandedIcon;
         }
 
+        /// <summary>
+        /// Returns true if given dependency is a nuget package.
+        /// </summary>
         public static bool IsPackage(this IDependency self)
         {
             return self.ProviderType.Equals(PackageRuleHandler.ProviderTypeString, StringComparison.OrdinalIgnoreCase);
         }
 
+        /// <summary>
+        /// Returns true if given dependency is a project.
+        /// </summary>
         public static bool IsProject(this IDependency self)
         {
             return self.ProviderType.Equals(ProjectRuleHandler.ProviderTypeString, StringComparison.OrdinalIgnoreCase);
         }
 
+        /// <summary>
+        /// Returns true if given dependencies belong to the same targeted snapshot, i.e. have same target.
+        /// </summary>
         public static bool HasSameTarget(this IDependency self, IDependency other)
         {
             Requires.NotNull(other, nameof(other));
             return self.Snapshot.TargetFramework.Equals(other.Snapshot.TargetFramework);
         }
 
+        /// <summary>
+        /// Returns true if "other dependency" is a child of given dpendency at any level.
+        /// </summary>
         public static bool Contains(this IDependency self, IDependency other)
         {
             return ContainsDependency(self, other);
@@ -87,6 +105,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             return result;
         }
 
+        /// <summary>
+        /// Tries to convert OriginalItemSpec to absolute path for given dependency. If OriginalItemSpec is 
+        /// absolute path, just returns OriginalItemSpec. If OriginalItemSpec is not absoulte, tries to make
+        /// OriginalItemSpec rooted to current project folder.
+        /// </summary>
         public static string GetActualPath(this IDependency dependency, string containingProjectPath)
         {
             var dependencyProjectPath = dependency.OriginalItemSpec;

@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.Composition;
-using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.References;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;

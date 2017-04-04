@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var dependencyIDs = new List<string> { "id1", "id2" }.ToImmutableList();
 
-            var mockTargetFramework = ITargetFrameworkFactory.Implement(shortName: "tfm");
+            var mockTargetFramework = ITargetFrameworkFactory.Implement(moniker: "tfm");
 
             var dependency = IDependencyFactory.Implement(
                 flags: DependencyTreeFlags.SdkSubTreeNodeFlags,
@@ -94,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var dependencyIDs = new List<string> { "id1", "id2" }.ToImmutableList();
 
-            var mockTargetFramework = ITargetFrameworkFactory.Implement(shortName: "tfm");
+            var mockTargetFramework = ITargetFrameworkFactory.Implement(moniker: "tfm");
 
             var dependency = IDependencyFactory.Implement(
                 flags: DependencyTreeFlags.SdkSubTreeNodeFlags,
@@ -131,7 +131,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var dependencyIDs = new List<string> { "id1", "id2" }.ToImmutableList();
 
-            var mockTargetFramework = ITargetFrameworkFactory.Implement(shortName: "tfm");
+            var mockTargetFramework = ITargetFrameworkFactory.Implement(moniker: "tfm");
 
             var dependency = IDependencyFactory.Implement(
                 flags: DependencyTreeFlags.PackageNodeFlags,
@@ -171,7 +171,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var dependencyIDs = new List<string> { "id1", "id2" }.ToImmutableList();
 
-            var mockTargetFramework = ITargetFrameworkFactory.Implement(shortName: "tfm");
+            var mockTargetFramework = ITargetFrameworkFactory.Implement(moniker: "tfm");
 
             var dependency = IDependencyFactory.Implement(
                 flags: DependencyTreeFlags.PackageNodeFlags,
@@ -208,7 +208,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var dependencyIDs = ImmutableList<string>.Empty;
 
-            var mockTargetFramework = ITargetFrameworkFactory.Implement(shortName: "tfm");
+            var mockTargetFramework = ITargetFrameworkFactory.Implement(moniker: "tfm");
 
             var dependency = IDependencyFactory.Implement(
                 id: "mydependency1id",
