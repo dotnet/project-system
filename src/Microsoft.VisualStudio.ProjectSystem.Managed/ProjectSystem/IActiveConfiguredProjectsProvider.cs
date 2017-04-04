@@ -31,15 +31,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
         Task<ImmutableDictionary<string, ConfiguredProject>> GetActiveConfiguredProjectsMapAsync();
 
         /// <summary>
-        ///     Returns the ordered list of configured projects that are active for the current project, 
+        ///     Returns the ordered list of configured projects that are active for the current project,
         ///     loading them if needed.
         /// </summary>
         /// <returns>
-        ///     An <see cref="ImmutableArray{T}"/> containing ordered set of <see cref="ConfiguredProject"/> 
+        ///     An <see cref="ImmutableArray{T}"/> containing ordered set of <see cref="ConfiguredProject"/>
         ///     objects, or empty if there are no active configured projects.
         /// </returns>
         /// <remarks>
-        ///     The order in the returned <see cref="ImmutableArray{T}"/> matches the declared ordered within 
+        ///     The order in the returned <see cref="ImmutableArray{T}"/> matches the declared ordered within
         ///     the project file.
         /// </remarks>
         Task<ImmutableArray<ConfiguredProject>> GetActiveConfiguredProjectsAsync();
@@ -48,11 +48,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     Returns the ordered list of project configurations that are active for the current project.
         /// </summary>
         /// <returns>
-        ///     An <see cref="ImmutableArray{T}"/> containing ordered set of <see cref="ProjectConfiguration"/> 
+        ///     An <see cref="ImmutableArray{T}"/> containing ordered set of <see cref="ProjectConfiguration"/>
         ///     objects, or empty if there are no active project configurations.
         /// </returns>
         /// <remarks>
-        ///     The order in the returned <see cref="ImmutableArray{T}"/> matches the declared ordered within 
+        ///     The order in the returned <see cref="ImmutableArray{T}"/> matches the declared ordered within
         ///     the project file.
         /// </remarks>
         Task<ImmutableArray<ProjectConfiguration>> GetActiveProjectConfigurationsAsync();
