@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         /// <returns>A task for the async operation.</returns>
         public override async Task OnDimensionValueChangedAsync(ProjectConfigurationDimensionValueChangedEventArgs args)
         {
-            if (StringComparers.ConfigurationDimensionNames.Equals(args.DimensionName, _dimensionName))
+            if (StringComparers.ConfigurationDimensionNames.Equals(args.DimensionName, DimensionName))
             {
                 if (args.Stage == ChangeEventStage.Before)
                 {
@@ -71,9 +71,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         private async Task OnConfigurationAddedAsync(UnconfiguredProject unconfiguredProject, string configurationName)
         {
             string evaluatedPropertyValue = await GetPropertyValue(unconfiguredProject).ConfigureAwait(false);
-            await _projectXmlAccessor.ExecuteInWriteLock(msbuildProject =>
+            await ProjectXmlAccessor.ExecuteInWriteLock(msbuildProject =>
             {
-                BuildUtilities.AppendPropertyValue(msbuildProject, evaluatedPropertyValue, _propertyName, configurationName);
+                BuildUtilities.AppendPropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, configurationName);
             }).ConfigureAwait(false);
         }
 
@@ -86,9 +86,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         private async Task OnConfigurationRemovedAsync(UnconfiguredProject unconfiguredProject, string configurationName)
         {
             string evaluatedPropertyValue = await GetPropertyValue(unconfiguredProject).ConfigureAwait(false);
-            await _projectXmlAccessor.ExecuteInWriteLock(msbuildProject =>
+            await ProjectXmlAccessor.ExecuteInWriteLock(msbuildProject =>
             {
-                BuildUtilities.RemovePropertyValue(msbuildProject, evaluatedPropertyValue, _propertyName, configurationName);
+                BuildUtilities.RemovePropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, configurationName);
             }).ConfigureAwait(false);
         }
 
@@ -102,9 +102,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         private async Task OnConfigurationRenamedAsync(UnconfiguredProject unconfiguredProject, string oldName, string newName)
         {
             string evaluatedPropertyValue = await GetPropertyValue(unconfiguredProject).ConfigureAwait(false);
-            await _projectXmlAccessor.ExecuteInWriteLock(msbuildProject =>
+            await ProjectXmlAccessor.ExecuteInWriteLock(msbuildProject =>
             {
-                BuildUtilities.RenamePropertyValue(msbuildProject, evaluatedPropertyValue, _propertyName, oldName, newName);
+                BuildUtilities.RenamePropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, oldName, newName);
             }).ConfigureAwait(false);
         }
     }

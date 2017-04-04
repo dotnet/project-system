@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         /// <returns>A task for the async operation.</returns>
         public override async Task OnDimensionValueChangedAsync(ProjectConfigurationDimensionValueChangedEventArgs args)
         {
-            if (StringComparers.ConfigurationDimensionNames.Equals(args.DimensionName, _dimensionName))
+            if (StringComparers.ConfigurationDimensionNames.Equals(args.DimensionName, DimensionName))
             {
                 if (args.Stage == ChangeEventStage.Before)
                 {
@@ -62,9 +62,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         private async Task OnPlatformAddedAsync(UnconfiguredProject unconfiguredProject, string platformName)
         {
             string evaluatedPropertyValue = await GetPropertyValue(unconfiguredProject).ConfigureAwait(false);
-            await _projectXmlAccessor.ExecuteInWriteLock(msbuildProject =>
+            await ProjectXmlAccessor.ExecuteInWriteLock(msbuildProject =>
             {
-                BuildUtilities.AppendPropertyValue(msbuildProject, evaluatedPropertyValue, _propertyName, platformName);
+                BuildUtilities.AppendPropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, platformName);
             }).ConfigureAwait(false);
         }
 
@@ -77,9 +77,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         private async Task OnPlatformDeletedAsync(UnconfiguredProject unconfiguredProject, string platformName)
         {
             string evaluatedPropertyValue = await GetPropertyValue(unconfiguredProject).ConfigureAwait(false);
-            await _projectXmlAccessor.ExecuteInWriteLock(msbuildProject =>
+            await ProjectXmlAccessor.ExecuteInWriteLock(msbuildProject =>
             {
-                BuildUtilities.RemovePropertyValue(msbuildProject, evaluatedPropertyValue, _propertyName, platformName);
+                BuildUtilities.RemovePropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, platformName);
             }).ConfigureAwait(false);
         }
     }
