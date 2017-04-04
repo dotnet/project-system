@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
-using Microsoft.CodeAnalysis;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
@@ -19,24 +18,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             Requires.NotNull(project, nameof(project));
 
             _project = project;
-            CommandLineParsers = new OrderPrecedenceImportCollection<CommandLineParser>(projectCapabilityCheckProvider: project);
+            CommandLineParsers = new OrderPrecedenceImportCollection<IParseBuildOptions>(projectCapabilityCheckProvider: project);
         }
 
         [ImportMany]
-        public OrderPrecedenceImportCollection<CommandLineParser> CommandLineParsers
+        public OrderPrecedenceImportCollection<IParseBuildOptions> CommandLineParsers
         {
             get;
         }
 
-        public CommandLineArguments Parse(IEnumerable<string> arguments)
+        public BuildOptions Parse(IEnumerable<string> arguments)
         {
             Requires.NotNull(arguments, nameof(arguments));
 
-            Lazy<CommandLineParser> parser = CommandLineParsers.FirstOrDefault();
+            Lazy<IParseBuildOptions> parser = CommandLineParsers.FirstOrDefault();
             if (parser == null)
                 throw new InvalidOperationException();
 
-            return parser.Value.Parse(arguments, Path.GetDirectoryName(_project.FullPath), sdkDirectory: null, additionalReferenceDirectories: null);
+            return parser.Value.Parse(arguments, Path.GetDirectoryName(_project.FullPath));
         }
     }
 }

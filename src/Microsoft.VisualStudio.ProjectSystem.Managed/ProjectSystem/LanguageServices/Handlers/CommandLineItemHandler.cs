@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
@@ -75,8 +74,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         private void ProcessItems(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
         {
-            CommandLineArguments addedItems = _commandLineParser.Parse(projectChange.Difference.AddedItems);
-            CommandLineArguments removedItems = _commandLineParser.Parse(projectChange.Difference.RemovedItems);
+            BuildOptions addedItems = _commandLineParser.Parse(projectChange.Difference.AddedItems);
+            BuildOptions removedItems = _commandLineParser.Parse(projectChange.Difference.RemovedItems);
 
             foreach (var handler in Handlers)
             {
