@@ -5,7 +5,7 @@ using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Build;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
+namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 {
     /// <summary>
     /// Provides "TargetFramework" project configuration dimension and values.

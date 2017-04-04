@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Build;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
+namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 {
     /// <summary>
     /// Base project configuration dimension provider
