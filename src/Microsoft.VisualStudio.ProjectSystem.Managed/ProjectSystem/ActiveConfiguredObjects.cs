@@ -28,9 +28,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="dimensionNames"/> is <see langword="null"/>.
         /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     <paramref name="objects"/> is empty.
+        /// </exception>
         public ActiveConfiguredObjects(ImmutableArray<T> objects, IImmutableSet<string> dimensionNames)
         {
             Requires.NotNull(dimensionNames, nameof(dimensionNames));
+            if (objects.Length == 0)
+                throw new ArgumentException(null, nameof(objects));
 
             Objects = objects;
             DimensionNames = dimensionNames;
@@ -40,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     Gets the active configured objects.
         /// </summary>
         /// <value>
-        ///     An <see cref="ImmutableArray{T}"/> of the active configured objects, or empty if there are no active configued objects.
+        ///     An <see cref="ImmutableArray{T}"/> of the active configured objects.
         /// </value>
         public ImmutableArray<T> Objects
         {
