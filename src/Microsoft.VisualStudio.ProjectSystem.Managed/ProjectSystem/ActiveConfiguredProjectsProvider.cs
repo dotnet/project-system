@@ -7,11 +7,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    /// <summary>
-    ///<see cref="IActiveConfiguredProjectsProvider"/>
-    /// </summary>
     [Export(typeof(IActiveConfiguredProjectsProvider))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     internal class ActiveConfiguredProjectsProvider : IActiveConfiguredProjectsProvider
     {
         private readonly IUnconfiguredProjectServices _services;
@@ -27,52 +23,71 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _commonServices = commonServices;
         }
 
-        /// <summary>
-        /// <see cref="IActiveConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync"/> 
-        /// </summary>
         public async Task<ImmutableDictionary<string, ConfiguredProject>> GetActiveConfiguredProjectsMapAsync()
         {
             var builder = ImmutableDictionary.CreateBuilder<string, ConfiguredProject>();
-            var knownConfigurations = await _services.ProjectConfigurationsService.GetKnownProjectConfigurationsAsync().ConfigureAwait(true);
-            var isCrossTarging = knownConfigurations.All(c => c.IsCrossTargeting());
-            if (isCrossTarging)
+
+            ImmutableArray<ConfiguredProject> projects = await GetActiveConfiguredProjectsAsync().ConfigureAwait(false);
+
+            var isCrossTargeting = projects.All(project => project.ProjectConfiguration.IsCrossTargeting());
+            if (isCrossTargeting)
             {
-                // Get all the project configurations with all dimensions (ignoring the TargetFramework) matching the active configuration.
-                var activeConfiguration = _services.ActiveConfiguredProjectProvider.ActiveProjectConfiguration;
-                foreach (var configuration in knownConfigurations)
+                foreach (ConfiguredProject project in projects)
                 {
-                    if (configuration.EqualIgnoringTargetFramework(activeConfiguration))
-                    {
-                        var configuredProject = await _commonServices.Project.LoadConfiguredProjectAsync(configuration).ConfigureAwait(true);
-                        var targetFramework = configuration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty];
-                        builder.Add(targetFramework, configuredProject);
-                    }
+                    var targetFramework = project.ProjectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty];
+                    builder.Add(targetFramework, project);
                 }
             }
             else
             {
-                builder.Add(string.Empty, _services.ActiveConfiguredProjectProvider.ActiveConfiguredProject);
+                builder.Add(string.Empty, projects.First());
             }
 
-            return builder.ToImmutableDictionary();
+            return builder.ToImmutable();
         }
 
-        /// <summary>
-        /// <see cref="IActiveConfiguredProjectsProvider.GetActiveConfiguredProjectsAsync"/> 
-        /// </summary>
         public async Task<ImmutableArray<ConfiguredProject>> GetActiveConfiguredProjectsAsync()
         {
-            var projectMap = await GetActiveConfiguredProjectsMapAsync().ConfigureAwait(false);
-            return projectMap.Values.ToImmutableArray();
+            var builder = ImmutableArray.CreateBuilder<ConfiguredProject>();
+
+            ImmutableArray<ProjectConfiguration> configurations = await GetActiveProjectConfigurationsAsync().ConfigureAwait(false);
+            foreach (ProjectConfiguration configuration in configurations)
+            {
+                var project = await _commonServices.Project.LoadConfiguredProjectAsync(configuration)
+                                                           .ConfigureAwait(false);
+
+                builder.Add(project);
+            }
+
+            return builder.ToImmutable();
         }
 
-        /// <summary>
-        /// <see cref="IActiveConfiguredProjectsProvider.GetActiveProjectConfigurationsAsync"/> 
-        /// </summary>
         public async Task<ImmutableArray<ProjectConfiguration>> GetActiveProjectConfigurationsAsync()
         {
-            var projectMap = await GetActiveConfiguredProjectsMapAsync().ConfigureAwait(false);
-            return projectMap.Values.Select(p => p.ProjectConfiguration).ToImmutableArray();
+            ProjectConfiguration activeConfiguration = _services.ActiveConfiguredProjectProvider.ActiveProjectConfiguration;
+            if (activeConfiguration == null)
+                return ImmutableArray<ProjectConfiguration>.Empty;
+
+            var builder = ImmutableArray.CreateBuilder<ProjectConfiguration>();
+
+            IImmutableSet<ProjectConfiguration> configurations = await _services.ProjectConfigurationsService.GetKnownProjectConfigurationsAsync()
+                                                                                                             .ConfigureAwait(false);
+
+            foreach (ProjectConfiguration configuration in configurations)
+            {
+                if (IsActiveConfigurationCandidate(activeConfiguration, configuration))
+                { 
+                    builder.Add(configuration);
+                }
+            }
+
+            Assumes.True(builder.Count > 0, "We have an active configuration that isn't one of the known configurations");
+            return builder.ToImmutable();
+        }
+
+        private static bool IsActiveConfigurationCandidate(ProjectConfiguration activeConfiguration, ProjectConfiguration configuration)
+        {
+            return configuration.EqualIgnoringTargetFramework(activeConfiguration);
         }
     }
 }

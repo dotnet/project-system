@@ -14,5 +14,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
             mock.Setup(c => c.Services).Returns(services);
             return mock.Object;
         }
+
+        public static ConfiguredProject ImplementProjectConfiguration(ProjectConfiguration projectConfiguration)
+        {
+            return Create(projectConfiguration: projectConfiguration);
+        }
     }
 }
