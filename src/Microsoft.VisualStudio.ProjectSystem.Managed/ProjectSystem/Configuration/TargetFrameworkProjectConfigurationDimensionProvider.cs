@@ -17,9 +17,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     /// below these 3 providers.
     /// </remarks>
     [Export(typeof(IProjectConfigurationDimensionsProvider))]
+    [Export(typeof(IActiveConfiguredProjectsDimensionProvider))]
     [AppliesTo(ProjectCapabilities.ProjectConfigurationsDeclaredDimensions)]
     [Order(int.MaxValue -2)]
-    internal class TargetFrameworkProjectConfigurationDimensionProvider : BaseProjectConfigurationDimensionProvider
+    internal class TargetFrameworkProjectConfigurationDimensionProvider : BaseProjectConfigurationDimensionProvider, IActiveConfiguredProjectsDimensionProvider
     {
         [ImportingConstructor]
         public TargetFrameworkProjectConfigurationDimensionProvider(IProjectXmlAccessor projectXmlAccessor)
