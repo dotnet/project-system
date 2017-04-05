@@ -33,9 +33,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         protected abstract OrderPrecedenceImportCollection<ICrossTargetRuleHandler<T>> Handlers { get; }
 
-        public void Initialize(ICrossTargetSubscriptionsHost host, IProjectSubscriptionService subscriptionService)
+        public async Task InitializeSubscriberAsync(ICrossTargetSubscriptionsHost host, IProjectSubscriptionService subscriptionService)
         {
             _host = host;
+
+            await InitializeAsync().ConfigureAwait(false);
 
             var watchedEvaluationRules = GetWatchedRules(RuleHandlerType.Evaluation);
             var watchedDesignTimeBuildRules = GetWatchedRules(RuleHandlerType.DesignTimeBuild);
@@ -44,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 subscriptionService, watchedEvaluationRules, watchedDesignTimeBuildRules);
         }
 
-        public void AddSubscriptions(AggregateCrossTargetProjectContext newProjectContext)
+        public Task AddSubscriptionsAsync(AggregateCrossTargetProjectContext newProjectContext)
         {
             Requires.NotNull(newProjectContext, nameof(newProjectContext));
 
@@ -56,6 +58,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 SubscribeToConfiguredProject(
                     configuredProject.Services.ProjectSubscription, watchedEvaluationRules, watchedDesignTimeBuildRules);
             }
+
+            return Task.CompletedTask;
         }
 
         public Task ReleaseSubscriptionsAsync()
@@ -163,8 +167,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             {
                 return;
             }
-
-            await InitializeAsync().ConfigureAwait(false);
 
             await _tasksService.LoadedProjectAsync(async () =>
             {

@@ -6,8 +6,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
     internal interface ICrossTargetSubscriber
     {
-        void Initialize(ICrossTargetSubscriptionsHost host, IProjectSubscriptionService subscriptionService);
-        void AddSubscriptions(AggregateCrossTargetProjectContext newProjectContext);
+        Task InitializeSubscriberAsync(ICrossTargetSubscriptionsHost host, IProjectSubscriptionService subscriptionService);
+        Task AddSubscriptionsAsync(AggregateCrossTargetProjectContext newProjectContext);
         Task ReleaseSubscriptionsAsync();
         Task OnContextReleasedAsync(ITargetedProjectContext innerContext);
     }

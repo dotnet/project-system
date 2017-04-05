@@ -20,7 +20,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             UnresolvedExpandedIcon = UnresolvedIcon;
             Flags = flags.Union(DependencyTreeFlags.DependencyFlags)
                          .Union(DependencyTreeFlags.SubTreeRootNodeFlags)
-                         .Except(DependencyTreeFlags.SupportsRuleProperties);
+                         .Except(DependencyTreeFlags.SupportsRuleProperties)
+                         .Except(DependencyTreeFlags.SupportsRemove);
         }
     }
 }

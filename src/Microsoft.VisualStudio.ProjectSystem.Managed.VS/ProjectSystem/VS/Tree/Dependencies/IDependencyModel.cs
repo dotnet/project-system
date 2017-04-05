@@ -5,6 +5,9 @@ using Microsoft.VisualStudio.Imaging.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
+    /// <summary>
+    /// A public model used to update dependencies in the snapshot.
+    /// </summary>
     public interface IDependencyModel
     {
         /// <summary>

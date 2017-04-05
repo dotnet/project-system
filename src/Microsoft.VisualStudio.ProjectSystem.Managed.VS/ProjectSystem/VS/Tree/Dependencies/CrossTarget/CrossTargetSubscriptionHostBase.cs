@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             });
         }
 
-        protected Task AddInitialSubscriptionsAsync()
+        protected async Task AddInitialSubscriptionsAsync()
         {
             using (_tasksService.LoadedProject())
             {
@@ -85,11 +85,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
                 foreach (var subscriber in Subscribers)
                 {
-                    subscriber.Value.Initialize(this, _activeConfiguredProjectSubscriptionService);
+                    await subscriber.Value.InitializeSubscriberAsync(this, _activeConfiguredProjectSubscriptionService)
+                                          .ConfigureAwait(false);
                 }
             }
-
-            return Task.CompletedTask;
         }
 
         protected virtual void OnAggregateContextChanged(AggregateCrossTargetProjectContext oldContext,
@@ -262,7 +261,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
                     foreach (var subscriber in Subscribers)
                     {
-                        subscriber.Value.AddSubscriptions(newProjectContext);
+                        subscriber.Value.AddSubscriptionsAsync(newProjectContext);
                     }
                 }
             }

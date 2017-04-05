@@ -40,40 +40,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         public override IProjectTree BuildTree(IProjectTree dependenciesTree, IDependenciesSnapshot snapshot)
         {
-            if (snapshot.Targets.Count == 1)
+            var currentTopLevelNodes = new List<IProjectTree>();
+            Func<IProjectTree, IEnumerable<IProjectTree>, IProjectTree> rememberNewNodes = (rootNode, currentNodes) =>
             {
-                dependenciesTree = BuildSubTrees(
-                    dependenciesTree,
-                    snapshot.ActiveTarget,
-                    snapshot.Targets.First().Value, 
-                    snapshot.Targets.First().Value.Catalogs, 
-                    CleanupOldNodes);
+                if (currentNodes != null)
+                {
+                    currentTopLevelNodes.AddRange(currentNodes);
+                }
+
+                return rootNode;
+            };
+
+            if (snapshot.Targets.Where(x => !x.Key.Equals(TargetFramework.Any)).Count() == 1)
+            {
+                foreach (var target in snapshot.Targets)
+                {
+                    dependenciesTree = BuildSubTrees(
+                        dependenciesTree,
+                        snapshot.ActiveTarget,
+                        target.Value,
+                        target.Value.Catalogs,
+                        rememberNewNodes);
+                }
             }
             else
             {
-                var currentTopLevelNodes = new List<IProjectTree>();
-                Func<IProjectTree, IEnumerable<IProjectTree>, IProjectTree> rememberNewNodes = (rootNode, currentNodes) =>
-                {
-                    if (currentNodes != null)
-                    {
-                        currentTopLevelNodes.AddRange(currentNodes);
-                    }
-
-                    return rootNode;
-                };
-
                 foreach (var target in snapshot.Targets)
                 {
-                    IProjectTree node = null;
-                    var shouldAddTargetNode = false;
                     if (target.Key.Equals(TargetFramework.Any))
                     {
-                        dependenciesTree = BuildSubTrees(dependenciesTree, snapshot.ActiveTarget, target.Value, target.Value.Catalogs, rememberNewNodes);
+                        dependenciesTree = BuildSubTrees(dependenciesTree, 
+                                                         snapshot.ActiveTarget, 
+                                                         target.Value, 
+                                                         target.Value.Catalogs, 
+                                                         rememberNewNodes);
                     }
                     else
                     {
-                        node = dependenciesTree.FindNodeByCaption(target.Key.FriendlyName);
-                        shouldAddTargetNode = node == null;
+                        var node = dependenciesTree.FindNodeByCaption(target.Key.FriendlyName);
+                        var shouldAddTargetNode = node == null;
                         var targetViewModel = ViewModelFactory.CreateTargetViewModel(target.Value);
 
                         node = CreateOrUpdateNode(node, 
@@ -95,9 +100,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         currentTopLevelNodes.Add(node);
                     }
                 }
-                
-                dependenciesTree = CleanupOldNodes(dependenciesTree, currentTopLevelNodes);
             }
+
+            dependenciesTree = CleanupOldNodes(dependenciesTree, currentTopLevelNodes);
 
             // now update root Dependencies node status
             var rootIcon = ViewModelFactory.GetDependenciesRootIcon(snapshot.HasUnresolvedDependency).ToProjectSystemType();
@@ -181,6 +186,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 if (!dependency.Visible)
                 {
+                    if (dependency.Flags.Contains(DependencyTreeFlags.ShowEmptyProviderRootNode))
+                    {
+                        // if provider sends special invisible node with flag ShowEmptyProviderRootNode, we 
+                        // need to show provider node even if it does not have any dependencies.
+                        grouppedByProviderType.Add(dependency.ProviderType, new List<IDependency>());
+                    }
+
                     continue;
                 }
 
@@ -201,7 +213,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 var subTreeNode = rootNode.FindNodeByCaption(subTreeViewModel.Caption);
                 var isNewSubTreeNode = subTreeNode == null;
 
-                subTreeNode = CreateOrUpdateNode(subTreeNode, subTreeViewModel, rule:null, isProjectItem:false);
+                var excludedFlags = ProjectTreeFlags.Empty;
+                if (targetedSnapshot.TargetFramework.Equals(TargetFramework.Any))
+                {
+                    excludedFlags = ProjectTreeFlags.Create(ProjectTreeFlags.Common.BubbleUp);
+                }
+
+                subTreeNode = CreateOrUpdateNode(subTreeNode, subTreeViewModel, rule:null, isProjectItem:false, excludedFlags: excludedFlags);
                 subTreeNode = BuildSubTree(subTreeNode, dependencyGroup.Value, catalogs, isActiveTarget, shouldCleanup:!isNewSubTreeNode);
                 
                 currentNodes.Add(subTreeNode);
@@ -291,7 +309,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IDependency dependency,
             IProjectCatalogSnapshot catalogs,
             bool isProjectItem,
-            ProjectTreeFlags? additionalFlags = null)
+            ProjectTreeFlags? additionalFlags = null,
+            ProjectTreeFlags? excludedFlags = null)
         {
             IRule rule = null;
             if (dependency.Flags.Contains(DependencyTreeFlags.SupportsRuleProperties))
@@ -299,7 +318,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 rule = TreeServices.GetRule(dependency, catalogs);
             }
 
-            return CreateOrUpdateNode(node, dependency.ToViewModel(), rule, isProjectItem, additionalFlags);
+            return CreateOrUpdateNode(node, dependency.ToViewModel(), rule, isProjectItem, additionalFlags, excludedFlags);
         }
 
         /// <summary>
@@ -310,11 +329,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IDependencyViewModel viewModel,
             IRule rule,
             bool isProjectItem,
-            ProjectTreeFlags? additionalFlags = null)
+            ProjectTreeFlags? additionalFlags = null,
+            ProjectTreeFlags? excludedFlags = null)
         {
             return isProjectItem
-                ? CreateOrUpdateProjectItemTreeNode(node, viewModel, rule, additionalFlags)
-                : CreateOrUpdateProjectTreeNode(node, viewModel, rule, additionalFlags);
+                ? CreateOrUpdateProjectItemTreeNode(node, viewModel, rule, additionalFlags, excludedFlags)
+                : CreateOrUpdateProjectTreeNode(node, viewModel, rule, additionalFlags, excludedFlags);
         }
 
         /// <summary>
@@ -324,18 +344,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IProjectTree node,
             IDependencyViewModel viewModel,
             IRule rule,
-            ProjectTreeFlags? additionalFlags = null)
+            ProjectTreeFlags? additionalFlags = null,
+            ProjectTreeFlags? excludedFlags = null)
         {
             if (node == null)
             {
                 // For IProjectTree remove ProjectTreeFlags.Common.Reference flag, otherwise CPS would fail to 
                 // map this node to graph node and GraphProvider would be never called. 
                 // Only IProjectItemTree can have this flag
-                var flags = viewModel.Flags.Except(DependencyTreeFlags.BaseReferenceFlags);
-                if (additionalFlags != null && additionalFlags.HasValue)
-                {
-                    flags = flags.Union(additionalFlags.Value);
-                }
+                var flags = FilterFlags(viewModel.Flags.Except(DependencyTreeFlags.BaseReferenceFlags),
+                                        additionalFlags,
+                                        excludedFlags);
 
                 node = TreeServices.CreateTree(
                     caption: viewModel.Caption,
@@ -361,15 +380,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IProjectTree node,
             IDependencyViewModel viewModel,
             IRule rule,
-            ProjectTreeFlags? additionalFlags = null)
+            ProjectTreeFlags? additionalFlags = null,
+            ProjectTreeFlags? excludedFlags = null)
         {
             if (node == null)
             {
-                var flags = viewModel.Flags;
-                if (additionalFlags != null && additionalFlags.HasValue)
-                {
-                    flags = flags.Union(additionalFlags.Value);
-                }
+                var flags = FilterFlags(viewModel.Flags, additionalFlags, excludedFlags);
 
                 var itemContext = ProjectPropertiesContext.GetContext(
                     CommonServices.Project,
@@ -416,6 +432,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     browseObjectProperties: rule,
                     icon: viewModel.Icon.ToProjectSystemType(),
                     expandedIcon: viewModel.ExpandedIcon.ToProjectSystemType());
+        }
+
+        private ProjectTreeFlags FilterFlags(
+            ProjectTreeFlags flags,
+            ProjectTreeFlags? additionalFlags,
+            ProjectTreeFlags? excludedFlags)
+        {
+            if (additionalFlags != null && additionalFlags.HasValue)
+            {
+                flags = flags.Union(additionalFlags.Value);
+            }
+
+            if (excludedFlags != null && excludedFlags.HasValue)
+            {
+                flags = flags.Except(excludedFlags.Value);
+            }
+
+            return flags;
         }
     }
 }

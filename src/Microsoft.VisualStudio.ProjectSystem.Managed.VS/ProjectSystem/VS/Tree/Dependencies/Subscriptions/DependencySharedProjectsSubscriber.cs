@@ -38,14 +38,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             _subscriptionLinks = new List<IDisposable>();
         }
 
-        public void Initialize(ICrossTargetSubscriptionsHost host, IProjectSubscriptionService subscriptionService)
+        public Task InitializeSubscriberAsync(ICrossTargetSubscriptionsHost host, IProjectSubscriptionService subscriptionService)
         {
             _host = host;
 
             SubscribeToConfiguredProject(subscriptionService);
+
+            return Task.CompletedTask;
         }
 
-        public void AddSubscriptions(AggregateCrossTargetProjectContext newProjectContext)
+        public Task AddSubscriptionsAsync(AggregateCrossTargetProjectContext newProjectContext)
         {
             Requires.NotNull(newProjectContext, nameof(newProjectContext));
 
@@ -53,6 +55,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             {
                 SubscribeToConfiguredProject(configuredProject.Services.ProjectSubscription);
             }
+
+            return Task.CompletedTask;
         }
 
         public Task ReleaseSubscriptionsAsync()

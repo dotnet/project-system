@@ -179,16 +179,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public abstract string ProviderType { get; }
 
-        /// <summary>
-        /// Allows provider's root node when it is empty
-        /// </summary>
-        public bool ShouldBeVisibleWhenEmpty { get; } = false;
-
         public abstract IDependencyModel CreateRootDependencyNode();
 
-        /// <summary>
-        /// Handlers update snapshot directly and don't need this event.
-        /// </summary>
         public event EventHandler<DependenciesChangedEventArgs> DependenciesChanged;
 
         protected void FireDependenciesChanged(DependenciesChangedEventArgs args)

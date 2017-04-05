@@ -402,7 +402,142 @@ Caption=DependencyExisting, FilePath=tfm1\yyy\dependencyExisting, IconHash=32524
         }
 
         [Fact]
-        public void GrouppedByTargetTreeViewProvider_WhenMultipleTargetSnapshotWithExistingDependencies_ShouldApplyChanges()
+        public void GrouppedByTargetTreeViewProvider_WheEmptySnapshotAndVisibilityMarkerProvided_ShouldDisplaySubTreeRoot()
+        {
+            var dependencyRootYyy = IDependencyFactory.FromJson(@"
+{
+    ""ProviderType"": ""Yyy"",
+    ""Id"": ""YyyDependencyRoot"",
+    ""Name"":""YyyDependencyRoot"",
+    ""Caption"":""YyyDependencyRoot"",
+    ""Resolved"":""true""
+}");
+            var dependencyVisibilityMarker = IDependencyFactory.FromJson(@"
+{
+    ""ProviderType"": ""Yyy"",
+    ""Id"": ""someid"",
+    ""Name"":""someid"",
+    ""Caption"":""someid"",
+    ""Resolved"":""false"",
+    ""Visible"":""false""
+}", flags: DependencyTreeFlags.ShowEmptyProviderRootNode);
+
+            var dependencies = new List<IDependency>
+            {
+                dependencyVisibilityMarker
+            };
+
+            var dependencyRootYyyTree = new TestProjectTree
+            {
+                Caption = "YyyDependencyRoot",
+                FilePath = "YyyDependencyRoot"
+            };
+
+            var dependenciesRoot = new TestProjectTree
+            {
+                Caption = "MyDependencies",
+                FilePath = ""
+            };
+
+            dependenciesRoot.Add(dependencyRootYyyTree);
+
+            var treeViewModelFactory = IMockDependenciesViewModelFactory.Implement(
+                getDependenciesRootIcon: KnownMonikers.AboutBox,
+                createRootViewModel: new[] { dependencyRootYyy });
+
+            var testData = new Dictionary<ITargetFramework, List<IDependency>>
+            {
+                { ITargetFrameworkFactory.Implement(moniker: "tfm1"), dependencies }
+            };
+
+            var project = UnconfiguredProjectFactory.Create(filePath: @"c:\somefodler\someproject.csproj");
+            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
+
+            var provider = new GroupedByTargetTreeViewProvider(
+                new MockIDependenciesTreeServices(),
+                treeViewModelFactory,
+                commonServices);
+
+            // Act
+            var resultTree = provider.BuildTree(dependenciesRoot, GetSnapshot(testData));
+
+            // Assert            
+            var expectedFlatHierarchy =
+@"Caption=MyDependencies, FilePath=, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=
+Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
+";
+            Assert.Equal(expectedFlatHierarchy, ((TestProjectTree)resultTree).FlatHierarchy);
+        }
+
+        [Fact]
+        public void GrouppedByTargetTreeViewProvider_WheEmptySnapshotAndVisibilityMarkerNotProvided_ShouldHideSubTreeRoot()
+        {
+            var dependencyRootYyy = IDependencyFactory.FromJson(@"
+{
+    ""ProviderType"": ""Yyy"",
+    ""Id"": ""YyyDependencyRoot"",
+    ""Name"":""YyyDependencyRoot"",
+    ""Caption"":""YyyDependencyRoot"",
+    ""Resolved"":""true""
+}");
+            var dependencyVisibilityMarker = IDependencyFactory.FromJson(@"
+{
+    ""ProviderType"": ""Yyy"",
+    ""Id"": ""someid"",
+    ""Name"":""someid"",
+    ""Caption"":""someid"",
+    ""Resolved"":""false"",
+    ""Visible"":""false""
+}");
+
+            var dependencies = new List<IDependency>
+            {
+                dependencyVisibilityMarker
+            };
+
+            var dependencyRootYyyTree = new TestProjectTree
+            {
+                Caption = "YyyDependencyRoot",
+                FilePath = "YyyDependencyRoot"
+            };
+
+            var dependenciesRoot = new TestProjectTree
+            {
+                Caption = "MyDependencies",
+                FilePath = ""
+            };
+
+            dependenciesRoot.Add(dependencyRootYyyTree);
+
+            var treeViewModelFactory = IMockDependenciesViewModelFactory.Implement(
+                getDependenciesRootIcon: KnownMonikers.AboutBox,
+                createRootViewModel: new[] { dependencyRootYyy });
+
+            var testData = new Dictionary<ITargetFramework, List<IDependency>>
+            {
+                { ITargetFrameworkFactory.Implement(moniker: "tfm1"), dependencies }
+            };
+
+            var project = UnconfiguredProjectFactory.Create(filePath: @"c:\somefodler\someproject.csproj");
+            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
+
+            var provider = new GroupedByTargetTreeViewProvider(
+                new MockIDependenciesTreeServices(),
+                treeViewModelFactory,
+                commonServices);
+
+            // Act
+            var resultTree = provider.BuildTree(dependenciesRoot, GetSnapshot(testData));
+
+            // Assert            
+            var expectedFlatHierarchy =
+@"Caption=MyDependencies, FilePath=, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=
+";
+            Assert.Equal(expectedFlatHierarchy, ((TestProjectTree)resultTree).FlatHierarchy);
+        }
+
+        [Fact]
+        public void GrouppedByTargetTreeViewProvider_WhenMultipleTargetSnapshotsWithExistingDependencies_ShouldApplyChanges()
         {
             var dependencyRootXxx = IDependencyFactory.FromJson(@"
 {
@@ -458,13 +593,13 @@ Caption=DependencyExisting, FilePath=tfm1\yyy\dependencyExisting, IconHash=32524
     ""Name"":""ZzzDependencyRoot"",
     ""Caption"":""ZzzDependencyRoot"",
     ""Resolved"":""true""
-}");
+}", flags: ProjectTreeFlags.Create(ProjectTreeFlags.Common.BubbleUp));
             var dependencyAny1 = IDependencyFactory.FromJson(@"
 {
     ""ProviderType"": ""Zzz"",
-    ""Id"": ""ZzzDependencyRoot"",
-    ""Name"":""ZzzDependencyRoot"",
-    ""Caption"":""ZzzDependencyRoot""
+    ""Id"": ""ZzzDependencyAny1"",
+    ""Name"":""ZzzDependencyAny1"",
+    ""Caption"":""ZzzDependencyAny1""
 }");
 
             var dependencies = new List<IDependency>
@@ -559,7 +694,7 @@ Caption=DependencyExisting, FilePath=yyy\dependencyExisting, IconHash=325249260,
 Caption=XxxDependencyRoot, FilePath=XxxDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
 Caption=Dependency1, FilePath=xxx\dependency1, IconHash=325249260, ExpandedIconHash=325249260, Rule=, IsProjectItem=False, CustomTag=
 Caption=ZzzDependencyRoot, FilePath=ZzzDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
-Caption=ZzzDependencyRoot, FilePath=ZzzDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
+Caption=ZzzDependencyAny1, FilePath=ZzzDependencyAny1, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
 Caption=tfm1, FilePath=tfm1, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=, BubbleUpFlag=True
 Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
 Caption=Dependency1, FilePath=yyy\dependency1, IconHash=325249260, ExpandedIconHash=325249260, Rule=, IsProjectItem=True, CustomTag=

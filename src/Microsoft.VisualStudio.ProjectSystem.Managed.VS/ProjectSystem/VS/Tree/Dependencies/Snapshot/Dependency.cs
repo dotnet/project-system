@@ -69,10 +69,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Properties = dependencyModel.Properties ??
                             ImmutableDictionary<string, string>.Empty
                                                                .Add(Folder.IdentityProperty, Caption)
-                                                               .Add(Folder.FullPathProperty, string.Empty);
-            DependencyIDs = dependencyModel.DependencyIDs == null
-                ? ImmutableList<string>.Empty
-                : ImmutableList.CreateRange(dependencyModel.DependencyIDs);
+                                                               .Add(Folder.FullPathProperty, Path);
+            if (dependencyModel.DependencyIDs == null)
+            {
+                DependencyIDs = ImmutableList<string>.Empty;
+            }
+            else
+            {
+                var normalizedDependencyIDs = new List<string>();
+                foreach (var id in dependencyModel.DependencyIDs)
+                {
+                    normalizedDependencyIDs.Add(GetID(Snapshot.TargetFramework, ProviderType, id));
+                }
+
+                DependencyIDs = ImmutableList.CreateRange(normalizedDependencyIDs);
+            }
         }
 
         private Dependency(IDependency model, string modelId)
@@ -177,11 +188,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                     var dependencies = new List<IDependency>();
                     foreach(var id in DependencyIDs)
                     {
-                        var normalizedId = Normalize(id);
                         if (Snapshot.DependenciesWorld.TryGetValue(id, out IDependency child))
                         {
                             dependencies.Add(child);
-                        }
+                        }                        
                     }
 
                     _dependencies = dependencies;

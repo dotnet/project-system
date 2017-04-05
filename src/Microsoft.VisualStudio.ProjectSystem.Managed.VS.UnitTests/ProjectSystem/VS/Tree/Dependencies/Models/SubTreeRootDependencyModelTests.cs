@@ -28,7 +28,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(KnownMonikers.AboutBox, model.ExpandedIcon);
             Assert.Equal(KnownMonikers.AbsolutePosition, model.UnresolvedIcon);
             Assert.Equal(KnownMonikers.AbsolutePosition, model.UnresolvedExpandedIcon);
-            Assert.True(model.Flags.Contains(DependencyTreeFlags.DependencyFlags.Except(DependencyTreeFlags.SupportsRuleProperties)));
+            Assert.True(model.Flags.Contains(DependencyTreeFlags.DependencyFlags
+                                                .Except(DependencyTreeFlags.SupportsRuleProperties)
+                                                .Except(DependencyTreeFlags.SupportsRemove)));
             Assert.True(model.Flags.Contains(DependencyTreeFlags.SubTreeRootNodeFlags));
             Assert.False(model.Flags.Contains(DependencyTreeFlags.SupportsRuleProperties));
             Assert.True(model.Flags.Contains(flag));

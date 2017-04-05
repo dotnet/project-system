@@ -19,11 +19,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         string ProviderType { get; }
 
         /// <summary>
-        /// Allows provider's root node when it is empty
-        /// </summary>
-        bool ShouldBeVisibleWhenEmpty { get; }
-
-        /// <summary>
         /// Returns a node metadata for given nodeId.
         /// </summary>
         IDependencyModel CreateRootDependencyNode();

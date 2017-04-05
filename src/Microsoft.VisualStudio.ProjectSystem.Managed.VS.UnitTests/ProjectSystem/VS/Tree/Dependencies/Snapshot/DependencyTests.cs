@@ -100,7 +100,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 properties: new Dictionary<string, string>() { { "prop1","val1" } },
                 dependenciesIds: new[] { "otherid"});
 
-            var mockSnapshot = ITargetedDependenciesSnapshotFactory.Create();
+            var targetFramework = ITargetFrameworkFactory.Implement("Tfm1");
+            var mockSnapshot = ITargetedDependenciesSnapshotFactory.Implement(targetFramework:targetFramework);
 
             var dependency = new Dependency(mockModel, mockSnapshot);
 
@@ -120,6 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.True(dependency.Properties.Count == 1);
             Assert.True(dependency.Properties.ContainsKey("prop1"));
             Assert.True(dependency.DependencyIDs.Count == 1);
+            Assert.Equal("Tfm1\\xxx\\otherid", dependency.DependencyIDs[0]);
             Assert.True(dependency.Flags.Contains(DependencyTreeFlags.ResolvedFlags));
             Assert.True(dependency.Flags.Contains(DependencyTreeFlags.DependencyFlags));
         }
@@ -237,7 +239,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 providerType: "providerType",
                 id: "someId_other");
 
-            var mockSnapshot = ITargetedDependenciesSnapshotFactory.ImplementMock();
+            var targetFramework = ITargetFrameworkFactory.Implement("Tfm1");
+            var mockSnapshot = ITargetedDependenciesSnapshotFactory.ImplementMock(targetFramework:targetFramework);
 
             var dependency1 = new Dependency(mockModel1, mockSnapshot.Object);
             var dependency2 = new Dependency(mockModel2, mockSnapshot.Object);

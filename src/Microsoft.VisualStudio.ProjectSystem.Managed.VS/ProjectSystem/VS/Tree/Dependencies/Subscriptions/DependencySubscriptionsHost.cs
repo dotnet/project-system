@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
     internal class DependencySubscriptionsHost : CrossTargetSubscriptionHostBase, IDependenciesSnapshotProvider
     {
         public const string DependencySubscriptionsHostContract = "DependencySubscriptionsHostContract";
-        private readonly TimeSpan _dependenciesUpdateThrottleInterval = TimeSpan.FromMilliseconds(500);
+        private readonly TimeSpan _dependenciesUpdateThrottleInterval = TimeSpan.FromMilliseconds(250);
 
         [ImportingConstructor]
         public DependencySubscriptionsHost(
@@ -135,14 +135,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         protected async override Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            await base.InitializeCoreAsync(cancellationToken).ConfigureAwait(false);
+            AggregateSnapshotProvider.RegisterSnapshotProvider(this);
 
             foreach (var provider in SubTreeProviders)
             {
                 provider.Value.DependenciesChanged += OnSubtreeProviderDependenciesChanged;
             }
 
-            AggregateSnapshotProvider.RegisterSnapshotProvider(this);
+            await base.InitializeCoreAsync(cancellationToken).ConfigureAwait(false);
         }
 
         protected override void OnAggregateContextChanged(AggregateCrossTargetProjectContext oldContext,
@@ -218,13 +218,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         }
 
         private void OnSubtreeProviderDependenciesChanged(object sender, DependenciesChangedEventArgs e)
-        {
+        {           
             if (!e.Changes.AnyChanges())
             {
                 return;
             }
 
-            var targetFramework = TargetFrameworkProvider.GetTargetFramework(e.TargetShortOrFullName);
+            ITargetFramework targetFramework = 
+                string.IsNullOrEmpty(e.TargetShortOrFullName) || TargetFramework.Any.Equals(e.TargetShortOrFullName)
+                    ? TargetFramework.Any
+                    : TargetFrameworkProvider.GetTargetFramework(e.TargetShortOrFullName);
             if (targetFramework == null)
             {
                 targetFramework = TargetFramework.Any;

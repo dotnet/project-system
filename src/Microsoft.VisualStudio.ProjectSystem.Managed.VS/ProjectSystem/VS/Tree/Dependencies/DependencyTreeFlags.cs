@@ -40,6 +40,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         public static readonly ProjectTreeFlags SupportsHierarchy = ProjectTreeFlags.Create("SupportsHierarchy");
 
+        public static readonly ProjectTreeFlags ShowEmptyProviderRootNode = ProjectTreeFlags.Create("ShowEmptyProviderRootNode");
+
         /// <summary>
         /// These public flags below are to be used with all nodes: default project item
         /// nodes and all custom nodes provided by third party IProjectDependenciesSubTreeProvider

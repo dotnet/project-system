@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
@@ -165,12 +164,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 originalItemSpec = metadata.Name;
             }
 
-            var dependencyIDs = new List<string>();
-            foreach(var id in metadata.DependenciesItemSpecs)
-            {
-                dependencyIDs.Add(Dependency.GetID(targetFramework, ProviderType, id));
-            }
-
             IDependencyModel dependencyModel = null;
             switch(metadata.DependencyType)
             {
@@ -187,7 +180,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         isTopLevel,
                         !metadata.IsImplicitlyDefined /*visible*/,
                         properties,
-                        dependencyIDs);
+                        metadata.DependenciesItemSpecs);
                     break;
                 case DependencyType.Assembly:
                 case DependencyType.FrameworkAssembly:
@@ -199,7 +192,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         DependencyTreeFlags.NuGetSubTreeNodeFlags,
                         resolved,
                         properties,
-                        dependencyIDs);
+                        metadata.DependenciesItemSpecs);
                     break;
                 case DependencyType.AnalyzerAssembly:
                     dependencyModel = new PackageAnalyzerAssemblyDependencyModel(
@@ -210,7 +203,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         DependencyTreeFlags.NuGetSubTreeNodeFlags,
                         resolved,
                         properties,
-                        dependencyIDs);
+                        metadata.DependenciesItemSpecs);
                     break;
                 case DependencyType.Diagnostic:
                     dependencyModel = new DiagnosticDependencyModel(
@@ -232,7 +225,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         DependencyTreeFlags.NuGetSubTreeNodeFlags,
                         resolved,
                         properties,
-                        dependencyIDs);
+                        metadata.DependenciesItemSpecs);
                     break;
             }
 
