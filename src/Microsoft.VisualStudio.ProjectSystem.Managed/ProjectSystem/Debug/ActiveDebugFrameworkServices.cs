@@ -15,15 +15,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     internal class ActiveDebugFrameworkServices : IActiveDebugFrameworkServices
     {
-        [ImportingConstructor]
-        public ActiveDebugFrameworkServices(IActiveConfiguredProjectsProvider configuredProjectsProvider, IUnconfiguredProjectCommonServices commonProjectServices)
-        {
-            ActiveConfiguredProjectsProvider = configuredProjectsProvider;
-            CommonProjectServices = commonProjectServices;
-        }
+        private readonly IActiveConfiguredProjectsProvider _activeConfiguredProjectsProvider;
+        private readonly IUnconfiguredProjectCommonServices _commonProjectServices;
 
-        IActiveConfiguredProjectsProvider ActiveConfiguredProjectsProvider { get; }
-        IUnconfiguredProjectCommonServices CommonProjectServices { get; }
+        [ImportingConstructor]
+        public ActiveDebugFrameworkServices(IActiveConfiguredProjectsProvider activeConfiguredProjectsProvider, IUnconfiguredProjectCommonServices commonProjectServices)
+        {
+            _activeConfiguredProjectsProvider = activeConfiguredProjectsProvider;
+            _commonProjectServices = commonProjectServices;
+        }
 
         /// <summary>
         /// <see cref="IActiveDebugFrameworkServices.GetProjectFrameworksAsync"/>
@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             // It is important that we return the frameworks in the order they are specified in the project to ensure the default is set
             // correctly. 
-            var props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
+            var props = await _commonProjectServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
 
             var targetFrameworks = (string)await props.TargetFrameworks.GetValueAsync().ConfigureAwait(false);
 
@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public async Task SetActiveDebuggingFrameworkPropertyAsync(string activeFramework)
         {
-            var props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync().ConfigureAwait(false);
+            var props = await _commonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync().ConfigureAwait(false);
             await props.ActiveDebugFramework.SetValueAsync(activeFramework).ConfigureAwait(true);
         }
 
@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public async Task<string> GetActiveDebuggingFrameworkPropertyAsync()
         {
-            var props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync().ConfigureAwait(false);
+            var props = await _commonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync().ConfigureAwait(false);
             var activeValue = await props.ActiveDebugFramework.GetValueAsync().ConfigureAwait(true) as string;
             return activeValue;
         }
@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public async Task<ConfiguredProject> GetConfiguredProjectForActiveFrameworkAsync()
         {
-            var configProjects = await ActiveConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync().ConfigureAwait(false);
+            var configProjects = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync().ConfigureAwait(false);
 
             // If there is only one we are done
             if (configProjects.Count == 1)
