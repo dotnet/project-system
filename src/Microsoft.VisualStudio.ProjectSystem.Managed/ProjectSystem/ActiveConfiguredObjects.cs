@@ -6,11 +6,11 @@ using System.Collections.Immutable;
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
-    ///     Represents a set of ordered active objects, such as a <see cref="ConfiguredProject"/> object or a <see cref="ProjectConfiguration"/> 
-    ///     object, and the names of the configuration dimensions that participated in the calculation.
+    ///     Represents a set of ordered active configured objects, such as <see cref="ConfiguredProject"/> objects or <see cref="ProjectConfiguration"/> 
+    ///     objects, and the names of the configuration dimensions that participated in the calculation of the active configured objects.
     /// </summary>
     /// <typeparam name="T">
-    ///     The type of the active configued objects.
+    ///     The type of the active configured objects.
     /// </typeparam>
     internal class ActiveConfiguredObjects<T>
     {
