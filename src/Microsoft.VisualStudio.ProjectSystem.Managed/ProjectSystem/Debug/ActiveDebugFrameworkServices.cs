@@ -15,8 +15,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     internal class ActiveDebugFrameworkServices : IActiveDebugFrameworkServices
     {
-        const int MaxFrameworks = 20;
-
         [ImportingConstructor]
         public ActiveDebugFrameworkServices(IActiveConfiguredProjectsProvider configuredProjectsProvider, IUnconfiguredProjectCommonServices commonProjectServices)
         {
