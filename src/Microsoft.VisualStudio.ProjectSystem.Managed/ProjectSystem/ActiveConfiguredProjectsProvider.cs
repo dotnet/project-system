@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 builder.Add(project);
             }
 
-            return builder.ToImmutable();
+            return builder.MoveToImmutable();
         }
 
         public async Task<ImmutableArray<ProjectConfiguration>> GetActiveProjectConfigurationsAsync()
