@@ -58,5 +58,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             return context.Object;
         }
+
+        public static IWorkspaceProjectContext CreateForCommandLineArguments(UnconfiguredProject project, Action<string> setOptions = null, Action<string> setRuleSetFile = null)
+        {
+            var context = new Mock<IWorkspaceProjectContext>();
+
+            context.SetupGet(c => c.ProjectFilePath)
+                .Returns(project.FullPath);
+
+            if (setOptions != null)
+            {
+                context.Setup(c => c.SetOptions(It.IsAny<string>()))
+                    .Callback<string>(p1 => setOptions(p1));
+            }
+
+            if (setRuleSetFile != null)
+            {
+                context.Setup(c => c.SetRuleSetFile(It.IsAny<string>()))
+                    .Callback<string>(p1 => setRuleSetFile(p1));
+            }
+
+            return context.Object;
+        }
     }
 }

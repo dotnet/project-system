@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Linq;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
@@ -13,13 +14,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
     internal class CommandLineItemHandler : AbstractLanguageServiceRuleHandler
     {
+        private readonly UnconfiguredProject _project;
         private readonly ICommandLineParserService _commandLineParser;
         
         [ImportingConstructor]
         public CommandLineItemHandler(UnconfiguredProject project, ICommandLineParserService commandLineParser)
         {
+            Requires.NotNull(project, nameof(project));
             Requires.NotNull(commandLineParser, nameof(commandLineParser));
 
+            _project = project;
             _commandLineParser = commandLineParser;
             Handlers = new OrderPrecedenceImportCollection<ILanguageServiceCommandLineHandler>(projectCapabilityCheckProvider: project);
         }
@@ -65,11 +69,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             return designTimeBuildFailed;
         }
 
-        private static void ProcessOptions(IProjectChangeDescription projectChange, IWorkspaceProjectContext context)
+        private void ProcessOptions(IProjectChangeDescription projectChange, IWorkspaceProjectContext context)
         {
             // We don't pass differences to Roslyn for options, we just pass them all
             IEnumerable<string> commandlineArguments = projectChange.After.Items.Keys;
             context.SetOptions(string.Join(" ", commandlineArguments));
+
+            // The rule set file is specified as an option in the command line arguments, but it is reduced
+            // down to a map from diagnostic ID to severity as part of processing those options.
+            // The language service also needs to know about the file, separate from the options, so that it
+            // can watch it for changes.
+            string ruleSetOption = projectChange.After.Items.Keys.SingleOrDefault(option => option.StartsWith("/ruleset:"));
+            if (ruleSetOption != null)
+            {
+                string ruleSetPath = ruleSetOption.Substring("/ruleset:".Length);
+                string rootedRuleSetPath = _project.MakeRooted(ruleSetPath);
+                context.SetRuleSetFile(rootedRuleSetPath);
+            }
+            else
+            {
+                context.SetRuleSetFile(string.Empty);
+            }
         }
 
         private void ProcessItems(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)

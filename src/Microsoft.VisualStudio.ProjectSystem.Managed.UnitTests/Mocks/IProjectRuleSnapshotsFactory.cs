@@ -14,11 +14,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             if (!snapshots.TryGetValue(ruleName, out IProjectRuleSnapshot snapshot))
             {
-                snapshot = IProjectRuleSnapshotFactory.Create(ruleName, propertyName, propertyValue);
+                snapshot = IProjectRuleSnapshotFactory.Create(ruleName)
+                    .AddProperty(propertyName, propertyValue);
                 return snapshots.Add(ruleName, snapshot);
             }
 
-            return snapshots.SetItem(ruleName, snapshot.Add(propertyName, propertyValue));
+            return snapshots.SetItem(ruleName, snapshot.AddProperty(propertyName, propertyValue));
         }
     }
 }
