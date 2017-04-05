@@ -100,32 +100,13 @@ call "%DeveloperCommandPrompt%" || goto :BuildFailed "VsMSBuildCmd.bat"
 
 SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
 SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
+SET MSBUILDEXE=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\15.0\\Bin\\MSBuild.exe
 
 pushd %WORKSPACE%\\sdk
 echo *** Build SDK
 call build.cmd -Configuration release -SkipTests || goto :BuildFailed "SDK"
 
-SET VSIXExpInstallerExe=%USERPROFILE%\\.nuget\\packages\\roslyntools.microsoft.vsixexpinstaller\\0.2.4-beta\\tools\\VsixExpInstaller.exe
-
-SET VSIXTarget=%WORKSPACE%\\sdk\\bin\\Release\\Microsoft.VisualStudio.ProjectSystem.CSharp.NetStandard.Templates.vsix
-echo *** Install %VSIXTarget%
-%VSIXExpInstallerExe% /rootsuffix:RoslynDev %VSIXTarget%
-if not "%ERRORLEVEL%"=="0" echo ERROR: %VSIXTarget% did not install successfully
-
-SET VSIXTarget=%WORKSPACE%\\sdk\\bin\\Release\\Microsoft.VisualStudio.ProjectSystem.CSharp.Templates.vsix
-echo *** Install %VSIXTarget%
-%VSIXExpInstallerExe% /rootsuffix:RoslynDev %VSIXTarget%
-if not "%ERRORLEVEL%"=="0" echo ERROR: %VSIXTarget% did not install successfully
-
-SET VSIXTarget=%WORKSPACE%\\sdk\\bin\\Release\\Microsoft.VisualStudio.ProjectSystem.VisualBasic.NetStandard.Templates.vsix
-echo *** Install %VSIXTarget%
-%VSIXExpInstallerExe% /rootsuffix:RoslynDev %VSIXTarget%
-if not "%ERRORLEVEL%"=="0" echo ERROR: %VSIXTarget% did not install successfully
-
-SET VSIXTarget=%WORKSPACE%\\sdk\\bin\\Release\\Microsoft.VisualStudio.ProjectSystem.VisualBasic.Templates.vsix
-echo *** Install %VSIXTarget%
-%VSIXExpInstallerExe% /rootsuffix:RoslynDev %VSIXTarget%
-if not "%ERRORLEVEL%"=="0" echo ERROR: %VSIXTarget% did not install successfully
+"%MSBUILDEXE%" /m /v:m /p:DeployExtension=True;VSSDKTargetPlatformRegRootSuffix=RoslynDev;Configuration=Release sdk-templates.sln
 
 exit /b 0
 
@@ -146,7 +127,7 @@ set TEMP=%WORKSPACE%\\roslyn-internal\\Open\\Binaries\\Temp
 mkdir %TEMP%
 set TMP=%TEMP%
 
-Open\\build\\scripts\\cibuild.cmd /release /testVsi
+Open\\build\\scripts\\cibuild.cmd /release /testVsiNetCore 
 """)
 
             // Revert patched targets and rules from backup.
