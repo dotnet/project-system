@@ -58,9 +58,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
         public async Task<string> GetEvaluatedPropertyValue(UnconfiguredProject unconfiguredProject, string propertyName)
         {
+            var configuredProject = await unconfiguredProject.GetSuggestedConfiguredProjectAsync().ConfigureAwait(false);
             using (var access = await _projectLockService.ReadLockAsync())
             {
-                var configuredProject = await unconfiguredProject.GetSuggestedConfiguredProjectAsync().ConfigureAwait(false);
                 var evaluatedProject = await access.GetProjectAsync(configuredProject).ConfigureAwait(false);
                 return evaluatedProject.GetProperty(propertyName)?.EvaluatedValue;
             }
