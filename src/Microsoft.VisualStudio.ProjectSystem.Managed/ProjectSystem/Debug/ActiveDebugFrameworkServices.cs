@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             var targetFrameworks = (string)await props.TargetFrameworks.GetValueAsync().ConfigureAwait(false);
 
-            if(!string.IsNullOrWhiteSpace(targetFrameworks))
+            if (!string.IsNullOrWhiteSpace(targetFrameworks))
             {
                 return BuildUtilities.GetPropertyValues(targetFrameworks).ToList();
             }
@@ -72,15 +72,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var configProjects = await ActiveConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync().ConfigureAwait(false);
 
             // If there is only one we are done
-            if(configProjects.Count == 1)
+            if (configProjects.Count == 1)
             {
                 return configProjects.First().Value;
             }
-            
+
             var activeFramework = await GetActiveDebuggingFrameworkPropertyAsync().ConfigureAwait(false);
-            if(!string.IsNullOrWhiteSpace(activeFramework))
+            if (!string.IsNullOrWhiteSpace(activeFramework))
             {
-                if(configProjects.TryGetValue(activeFramework, out ConfiguredProject configuredProject))
+                if (configProjects.TryGetValue(activeFramework, out ConfiguredProject configuredProject))
                 {
                     return configuredProject;
                 }
@@ -89,9 +89,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // We can't just select the first one. If activeFramework is not set we must pick the first one as defined by the 
             // targetFrameworks property. So we need the order as returned by GetProjectFrameworks()
             var frameworks = await GetProjectFrameworksAsync().ConfigureAwait(false);
-            if(frameworks != null &&  frameworks.Count > 0)
+            if (frameworks != null && frameworks.Count > 0)
             {
-                if(configProjects.TryGetValue(frameworks[0], out ConfiguredProject configuredProject))
+                if (configProjects.TryGetValue(frameworks[0], out ConfiguredProject configuredProject))
                 {
                     return configuredProject;
                 }
@@ -100,5 +100,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // All that is left is to return the first one.
             return configProjects.First().Value;
         }
-   }
+    }
 }
