@@ -58,6 +58,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         [Theory] // ActiveConfiguration                 Configurations
         [InlineData("Debug|AnyCPU",                     "Debug|AnyCPU")]
+        [InlineData("Debug|AnyCPU|net46",               "Debug|AnyCPU|net46")]
+        [InlineData("Debug|AnyCPU|net46",               "Debug|AnyCPU|net46;Release|AnyCPU|net46")]
         [InlineData("Debug|AnyCPU",                     "Debug|AnyCPU;Release|AnyCPU")]
         [InlineData("Debug|AnyCPU",                     "Release|AnyCPU;Debug|AnyCPU")]
         [InlineData("Debug|AnyCPU",                     "Debug|AnyCPU;Release|AnyCPU;Debug|x86")]
@@ -83,6 +85,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [InlineData("Debug|AnyCPU|net45",               "Debug|AnyCPU|net45;Release|AnyCPU|net45",                "Debug|AnyCPU|net45")]
         [InlineData("Debug|AnyCPU|net45",               "Debug|AnyCPU|net45;Debug|AnyCPU|net46",                  "Debug|AnyCPU|net45;Debug|AnyCPU|net46")]
         [InlineData("Debug|AnyCPU|net46",               "Debug|AnyCPU|net45;Debug|AnyCPU|net46",                  "Debug|AnyCPU|net45;Debug|AnyCPU|net46")]
+        [InlineData("Debug|AnyCPU",                     "Debug|AnyCPU|net45",                                     "Debug|AnyCPU|net45")]
+        [InlineData("Debug|AnyCPU",                     "Debug|AnyCPU|net45;Release|AnyCPU|net45",                "Debug|AnyCPU|net45")]
+        [InlineData("Debug|AnyCPU",                     "Debug|AnyCPU|net45;Debug|AnyCPU|net46",                  "Debug|AnyCPU|net45;Debug|AnyCPU|net46")]
+        [InlineData("Debug|AnyCPU",                     "Debug|AnyCPU|net45;Debug|AnyCPU|net46",                  "Debug|AnyCPU|net45;Debug|AnyCPU|net46")]
         public async Task GetActiveProjectConfigurationsAsync_ConfigurationsWithTargetFrameworkDimensionProvider_ReturnsConfigsThatMatchConfigurationAndPlatformFromActiveConfiguration(string activeConfiguration, string configurations, string expected)
         {
             var provider = CreateInstance(activeConfiguration, configurations, "TargetFramework");
@@ -96,6 +102,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         [Theory] // ActiveConfiguration                 Configurations
         [InlineData("Debug|AnyCPU",                     "Debug|AnyCPU")]
+        [InlineData("Debug|AnyCPU|net46",               "Debug|AnyCPU|net46")]
+        [InlineData("Debug|AnyCPU|net46",               "Debug|AnyCPU|net46;Release|AnyCPU|net46")]
         [InlineData("Debug|AnyCPU",                     "Debug|AnyCPU;Release|AnyCPU")]
         [InlineData("Debug|AnyCPU",                     "Release|AnyCPU;Debug|AnyCPU")]
         [InlineData("Debug|AnyCPU",                     "Debug|AnyCPU;Release|AnyCPU;Debug|x86")]
