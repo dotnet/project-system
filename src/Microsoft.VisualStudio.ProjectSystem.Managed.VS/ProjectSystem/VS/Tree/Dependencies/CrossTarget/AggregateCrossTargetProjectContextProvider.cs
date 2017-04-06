@@ -55,7 +55,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
             var context = await CreateProjectContextAsyncCore().ConfigureAwait(false);
             if (context == null)
+            {
                 return null;
+            }
 
             lock (_gate)
             {
@@ -199,13 +201,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         private async Task<AggregateCrossTargetProjectContext> CreateProjectContextAsyncCore()
         {           
-            // TODO - no UI thread switching
-            string targetPath = await GetTargetPathAsync().ConfigureAwait(false);
-            if (string.IsNullOrEmpty(targetPath))
-            {
-                return null;
-            }
-
             // Don't initialize until the project has been loaded into the IDE and available in Solution Explorer
             await _asyncLoadDashboard.ProjectLoadedInHost.ConfigureAwait(false);
 
@@ -229,7 +224,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     if (!TryGetConfiguredProjectState(configuredProject, out ITargetedProjectContext targetedProjectContext))
                     {
                         // Get the target path for the configured project.
-                        targetPath = (string)await configurationGeneralProperties.TargetPath.GetValueAsync().ConfigureAwait(true);
+                        var targetPath = (string)await configurationGeneralProperties.TargetPath.GetValueAsync().ConfigureAwait(true);
                         var displayName = GetDisplayName(configuredProject, projectData, targetFramework.Moniker);
 
                         targetedProjectContext = new TargetedProjectContext(targetFramework, projectData.FullPath, displayName, targetPath)
