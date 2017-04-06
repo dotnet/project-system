@@ -81,7 +81,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override int GetHashCode()
         {
-            return unchecked(Id.ToLowerInvariant().GetHashCode());
+            return unchecked(Id.ToLowerInvariant().GetHashCode() 
+                             + ProviderType.ToLowerInvariant().GetHashCode());
         }
 
         public override bool Equals(object obj)
@@ -96,12 +97,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public bool Equals(IDependencyModel other)
         {
-            if (other != null && other.Id.Equals(Id, StringComparison.OrdinalIgnoreCase))
+            if (other != null 
+                && other.Id.Equals(Id, StringComparison.OrdinalIgnoreCase)
+                && other.ProviderType.Equals(ProviderType, StringComparison.OrdinalIgnoreCase))
             {
                 return true;
             }
 
             return false;
+        }
+
+        public override string ToString()
+        {
+            return Id;
         }
     }
 }

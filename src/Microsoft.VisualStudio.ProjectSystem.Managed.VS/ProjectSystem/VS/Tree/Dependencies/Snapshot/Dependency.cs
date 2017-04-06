@@ -291,6 +291,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             return StringComparer.OrdinalIgnoreCase.Compare(Id, other.Id);
         }
 
+        public override string ToString()
+        {
+            return Id;
+        }
+
         private static string Normalize(string id)
         {
             return id.Replace('.', '_').Replace('/', '\\');

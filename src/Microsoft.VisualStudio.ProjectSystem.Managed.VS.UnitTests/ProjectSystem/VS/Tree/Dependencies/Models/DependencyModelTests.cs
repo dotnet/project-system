@@ -148,7 +148,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             Assert.Equal(model1, model2);
             Assert.NotEqual(model1, model3);
-            Assert.Equal("someitemspec1\\versio1".GetHashCode(), model1.GetHashCode());
+            Assert.Equal("someitemspec1\\versio1".GetHashCode() + "somprovider".GetHashCode(), model1.GetHashCode());
         }
 
         private class TestableDependencyModel : DependencyModel

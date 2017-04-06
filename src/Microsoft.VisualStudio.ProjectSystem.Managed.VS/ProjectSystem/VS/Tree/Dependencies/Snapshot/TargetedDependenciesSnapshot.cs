@@ -123,7 +123,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                     continue;
                 }
 
-                snapshotFilters.ForEach(filter => filter.BeforeRemove(ProjectPath, TargetFramework, dependency, worldBuilder, topLevelBuilder));
+                snapshotFilters.ForEach(
+                    filter => filter.BeforeRemove(ProjectPath, TargetFramework, dependency, worldBuilder, topLevelBuilder));
 
                 anyChanges = true;
 
@@ -135,8 +136,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             {
                 IDependency newDependency = new Dependency(added, this);
                 
-                newDependency = snapshotFilters.Aggregate(
-                    newDependency, (newAdded, filter) => filter.BeforeAdd(ProjectPath, TargetFramework, newAdded, worldBuilder, topLevelBuilder));
+                foreach(var filter in snapshotFilters)
+                {
+                    newDependency = filter.BeforeAdd(ProjectPath, TargetFramework, newDependency, worldBuilder, topLevelBuilder);
+                    if (newDependency == null)
+                    {
+                        break;
+                    }
+                }
+
                 if (newDependency == null)
                 {
                     continue;
