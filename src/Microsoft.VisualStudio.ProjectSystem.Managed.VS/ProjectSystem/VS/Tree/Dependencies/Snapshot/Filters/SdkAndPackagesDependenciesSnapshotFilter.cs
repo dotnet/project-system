@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             ImmutableHashSet<IDependency>.Builder topLevelBuilder)
         {
             IDependency resultDependency = dependency;
-            if (!dependency.TopLevel || !dependency.Resolved)
+            if (!dependency.TopLevel)
             {
                 return resultDependency;
             }
@@ -42,18 +42,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
 
                 if (worldBuilder.TryGetValue(packageId, out IDependency package) && package.Resolved)
                 {
-                    resultDependency = dependency.SetProperties(dependencyIDs:package.DependencyIDs);
+                    resultDependency = dependency.SetProperties(dependencyIDs:package.DependencyIDs, resolved:true);
                 }
             }
-            else if (dependency.Flags.Contains(DependencyTreeFlags.PackageNodeFlags))
+            else if (dependency.Flags.Contains(DependencyTreeFlags.PackageNodeFlags) && dependency.Resolved)
             {
                 // find sdk with the same name
                 var sdkModelId = dependency.Name;
                 var sdkId = Dependency.GetID(targetFramework, SdkRuleHandler.ProviderTypeString, sdkModelId);
 
-                if (worldBuilder.TryGetValue(sdkId, out IDependency sdk) && sdk.Resolved)
+                if (worldBuilder.TryGetValue(sdkId, out IDependency sdk))
                 {
-                    sdk = sdk.SetProperties(dependencyIDs:dependency.DependencyIDs);
+                    sdk = sdk.SetProperties(dependencyIDs:dependency.DependencyIDs, resolved:true);
                     worldBuilder[sdk.Id] = sdk;
                 }
             }
@@ -82,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 if (worldBuilder.TryGetValue(sdkId, out IDependency sdk))
                 {
                     // clean up sdk when corresponding package is removing
-                    sdk = sdk.SetProperties(dependencyIDs:ImmutableList<string>.Empty);
+                    sdk = sdk.SetProperties(dependencyIDs:ImmutableList<string>.Empty, resolved:false);
                     worldBuilder[sdk.Id] = sdk;
                 }
             }

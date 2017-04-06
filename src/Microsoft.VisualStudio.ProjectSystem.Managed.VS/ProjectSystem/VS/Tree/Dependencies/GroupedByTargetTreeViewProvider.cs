@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Threading;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.References;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
@@ -38,8 +39,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <summary>
         /// Builds Dependencies tree for given dependencies snapshot
         /// </summary>
-        public override IProjectTree BuildTree(IProjectTree dependenciesTree, IDependenciesSnapshot snapshot)
+        public override IProjectTree BuildTree(
+            IProjectTree dependenciesTree, 
+            IDependenciesSnapshot snapshot, 
+            CancellationToken cancellationToken = default(CancellationToken))
         {
+            var originalTree = dependenciesTree;
             var currentTopLevelNodes = new List<IProjectTree>();
             Func<IProjectTree, IEnumerable<IProjectTree>, IProjectTree> rememberNewNodes = (rootNode, currentNodes) =>
             {
@@ -55,6 +60,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 foreach (var target in snapshot.Targets)
                 {
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        return originalTree;
+                    }
+
                     dependenciesTree = BuildSubTrees(
                         dependenciesTree,
                         snapshot.ActiveTarget,
@@ -67,6 +77,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 foreach (var target in snapshot.Targets)
                 {
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        return originalTree;
+                    }
+
                     if (target.Key.Equals(TargetFramework.Any))
                     {
                         dependenciesTree = BuildSubTrees(dependenciesTree, 

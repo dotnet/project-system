@@ -19,15 +19,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 id: "mydependency1",
                 topLevel: false);
 
-            var otherDependency = IDependencyFactory.Implement(
-                    id: "mydependency2",
-                    topLevel:true,
-                    resolved:false);
-
             var worldBuilder = new Dictionary<string, IDependency>()
             {
                 { dependency.Object.Id, dependency.Object },
-                { otherDependency.Object.Id, otherDependency.Object }
             }.ToImmutableDictionary().ToBuilder();
             
             var filter = new SdkAndPackagesDependenciesSnapshotFilter();
@@ -39,15 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 worldBuilder: worldBuilder,
                 topLevelBuilder: null);
 
-            resultDependency = filter.BeforeAdd(
-                projectPath: null,
-                targetFramework: null,
-                dependency: otherDependency.Object,
-                worldBuilder: worldBuilder,
-                topLevelBuilder: null);
-
             dependency.VerifyAll();
-            otherDependency.VerifyAll();
         }
 
         [Fact]
@@ -62,8 +48,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 id: "mydependency1id",
                 name: "mydependency1",
                 topLevel: true,
-                resolved:true,
-                setPropertiesDependencyIDs: dependencyIDs);
+                setPropertiesDependencyIDs: dependencyIDs,
+                setPropertiesResolved:true);
 
             var otherDependency = IDependencyFactory.Implement(
                     id: $"tfm\\{PackageRuleHandler.ProviderTypeString}\\mydependency1",
@@ -100,8 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 flags: DependencyTreeFlags.SdkSubTreeNodeFlags,
                 id: "mydependency1id",
                 name: "mydependency1",
-                topLevel: true,
-                resolved: true);
+                topLevel: true);
 
             var otherDependency = IDependencyFactory.Implement(
                     id: $"tfm\\{PackageRuleHandler.ProviderTypeString}\\mydependency1",
@@ -143,7 +128,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             var otherDependency = IDependencyFactory.Implement(
                     id: $"tfm\\{SdkRuleHandler.ProviderTypeString}\\mydependency1",
-                    resolved: true,
+                    setPropertiesResolved:true,
                     setPropertiesDependencyIDs: dependencyIDs,
                     equals:true);
 
@@ -178,11 +163,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 id: "mydependency1id",
                 name: "mydependency1",
                 topLevel: true,
-                resolved: true);
+                resolved: true,
+                dependencyIDs: dependencyIDs);
 
             var otherDependency = IDependencyFactory.Implement(
                     id: $"tfm\\{SdkRuleHandler.ProviderTypeString}\\mydependency1",
-                    resolved: false);
+                    setPropertiesResolved: true,
+                    setPropertiesDependencyIDs: dependencyIDs,
+                    equals: true);
 
             var worldBuilder = new Dictionary<string, IDependency>()
             {
@@ -220,6 +208,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var otherDependency = IDependencyFactory.Implement(
                     id: $"tfm\\{SdkRuleHandler.ProviderTypeString}\\mydependency1",
                     setPropertiesDependencyIDs: dependencyIDs,
+                    setPropertiesResolved: false,
                     equals: true);
 
             var worldBuilder = new Dictionary<string, IDependency>()

@@ -44,7 +44,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             UnconfiguredProject unconfiguredProject,
             IDependenciesSnapshotProvider dependenciesSnapshotProvider,
             [Import(DependencySubscriptionsHost.DependencySubscriptionsHostContract)]
-            ICrossTargetSubscriptionsHost dependenciesHost)
+            ICrossTargetSubscriptionsHost dependenciesHost,
+            [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService)
             : base(threadingService, unconfiguredProject)
         {
             ProjectTreePropertiesProviders = new OrderPrecedenceImportCollection<IProjectTreePropertiesProvider>(
@@ -57,6 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             DependenciesSnapshotProvider = dependenciesSnapshotProvider;
             DependenciesHost = dependenciesHost;
+            TasksService = tasksService;
 
             unconfiguredProject.ProjectUnloading += OnUnconfiguredProjectUnloading;
         }
@@ -74,6 +76,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private ICrossTargetSubscriptionsHost DependenciesHost { get; }
 
         private IDependenciesSnapshotProvider DependenciesSnapshotProvider { get; }
+
+        private IProjectAsynchronousTasksService TasksService { get; }
 
         /// <summary>
         /// Keeps latest updated snapshot of all rules schema catalogs
@@ -325,13 +329,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 return;
             }
-
+            
             lock (_treeUpdateLock)
             {
                 if (_treeUpdateQueueTask == null || _treeUpdateQueueTask.IsCompleted)
                 {
                     _treeUpdateQueueTask = ThreadingService.JoinableTaskFactory.RunAsync(async () =>
                     {
+                        if (TasksService.UnloadCancellationToken.IsCancellationRequested)
+                        {
+                            return;
+                        }
+
                         await BuildTreeForSnapshotAsync(snapshot).ConfigureAwait(false);
                     }).Task;
                 }
@@ -354,9 +363,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var nowait = SubmitTreeUpdateAsync(
                 (treeSnapshot, configuredProjectExports, cancellationToken) =>
                 {
-                    // Note: when we have a command switching between view providers, make sure 
-                    // that we wait until current provider finishes pending updates.
-                    var dependenciesNode = viewProvider.Value.BuildTree(treeSnapshot.Value.Tree, snapshot);
+                    var dependenciesNode = treeSnapshot.Value.Tree;
+                    if (!cancellationToken.IsCancellationRequested)
+                    {
+                        dependenciesNode = viewProvider.Value.BuildTree(dependenciesNode, snapshot, cancellationToken);
+                    }
 
                     // TODO We still are getting mismatched data sources and need to figure out better 
                     // way of merging, mute them for now and get to it in U1

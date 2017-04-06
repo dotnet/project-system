@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.Threading;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.References;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
@@ -25,7 +26,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private OrderPrecedenceImportCollection<IProjectTreePropertiesProvider> ProjectTreePropertiesProviders { get; set; }
 
 
-        public abstract IProjectTree BuildTree(IProjectTree dependenciesTree, IDependenciesSnapshot snapshot);
+        public abstract IProjectTree BuildTree(
+            IProjectTree dependenciesTree, 
+            IDependenciesSnapshot snapshot, 
+            CancellationToken cancellationToken = default(CancellationToken));
+
         public abstract IProjectTree FindByPath(IProjectTree root, string path);
 
         protected ProjectTreeCustomizablePropertyContext GetCustomPropertyContext(IProjectTree parent)
