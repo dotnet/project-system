@@ -66,6 +66,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         ""Resolved"":""true"",
                         ""Dependencies"":""""
                     },
+                    ""tfm2/package1/1.0.2.0"": {
+                        ""Name"": ""package"",
+                        ""Version"": ""1.0.2.0"",
+                        ""Type"":""Package"",
+                        ""Path"":""SomePath"",
+                        ""Resolved"":""true"",
+                        ""Dependencies"":""""
+                    },
                     ""tfm1/PackageToRemove/1.0.0"": {
                         ""Name"": ""PackageToRemove"",
                         ""Version"": ""1.0.0"",
@@ -83,10 +91,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         ""Dependencies"":""""
                     },
                     ""tfm2"": {
-                        ""RuntimeIdentifier"": ""net45"",
+                        ""RuntimeIdentifier"": ""net46"",
                         ""TargetFrameworkMoniker"": "".NetFramework,Version=v4.5"",
-                        ""FrameworkName"": ""net45"",
-                        ""FrameworkVersion"": ""4.5"",
+                        ""FrameworkName"": ""net46"",
+                        ""FrameworkVersion"": ""4.6"",
                         ""Dependencies"":""package1/1.0.2.0;ExistingUnresolvedPackage/2.0.0""
                     },
                     ""tfm1/package2/1.0.2.0"": {
@@ -117,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 ""RuleName"": ""ResolvedPackageReference""
             },
             ""Difference"": {
-                ""AddedItems"": [ ""tfm1"", ""tfm1/package1/1.0.2.0"", ""tfm2"", ""tfm1/package2/1.0.2.0"", 
+                ""AddedItems"": [ ""tfm1"", ""tfm1/package1/1.0.2.0"", ""tfm2"", ""tfm1/package2/1.0.2.0"", ""tfm2/package1/1.0.2.0"",
                                   ""tfm1/ToBeOverridenByResolvedPackage/1.0.0"", ""tfm2/ExistingUnresolvedPackage/2.0.0"" ],
                 ""ChangedItems"": [ ""tfm1/PackageToChange/2.0.0"", ""tfm1/PackageToChange2/2.0.0"" ],
                 ""RemovedItems"": [ ""tfm1/PackageToRemove/1.0.0"" ],
@@ -259,6 +267,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     Assert.True(currentSnapshot.Any(x => x.Equals(addedNode.Id.ItemSpec, StringComparison.OrdinalIgnoreCase)));
                 }
             }
+
+            var node = provider.TestCreateDependencyNode("tfm1/package1/1.0.2.0");
+            Assert.Equal("net45 4.5;net46 4.6", node.Properties["TargetFramework"]);
         }
 
         [Theory]
@@ -1206,6 +1217,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 }
 
                 node.AddChild(childNode);
+            }
+
+            public IDependencyNode TestCreateDependencyNode(string itemSpec)
+            {
+                CurrentSnapshot.DependenciesWorld.TryGetValue(itemSpec, out DependencyMetadata dependencyMetadata);
+                return CreateDependencyNode(dependencyMetadata);
             }
 
             private class SnapshotModel

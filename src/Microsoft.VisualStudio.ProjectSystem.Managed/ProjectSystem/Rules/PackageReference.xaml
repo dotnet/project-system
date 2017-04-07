@@ -64,7 +64,7 @@
                     ReadOnly="True" />
 
     <StringProperty Name="TargetFramework" 
-                    Visible="False" 
+                    Visible="True" 
                     ReadOnly="True" />
 
     <StringProperty Name="FrameworkName" 
