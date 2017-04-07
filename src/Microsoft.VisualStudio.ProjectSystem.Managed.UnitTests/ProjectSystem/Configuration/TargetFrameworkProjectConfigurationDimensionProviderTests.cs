@@ -9,24 +9,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
     [ProjectSystemTrait]
     public class TargetFrameworkProjectConfigurationDimensionProviderTests
     {
-        private string projectXmlTFM =
+        private const string ProjectXmlTFM =
 @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <TargetFramework>netcoreapp1.0</TargetFramework>
   </PropertyGroup>
 </Project>";
 
-        private string projectXmlTFMs =
+        private const string ProjectXmlTFMs =
 @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <TargetFrameworks>netcoreapp1.0;net45</TargetFrameworks>
   </PropertyGroup>
 </Project>";
 
+        private const string ProjectXmlTFMAndTFMs =
+@"<Project Sdk=""Microsoft.NET.Sdk"">
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp1.0;net45</TargetFrameworks>
+    <TargetFramework>netcoreapp1.0</TargetFramework>
+  </PropertyGroup>
+</Project>";
+
         [Fact]
         public async void TargetFrameworkProjectConfigurationDimensionProvider_GetDefaultValuesForDimensionsAsync_TFM()
         {
-            using (var projectFile = new MsBuildProjectFile(projectXmlTFM))
+            using (var projectFile = new MsBuildProjectFile(ProjectXmlTFM))
             {
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
                 var provider = new TargetFrameworkProjectConfigurationDimensionProvider(_projectXmlAccessor);
@@ -36,10 +44,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
             }
         }
 
-        [Fact]
-        public async void TargetFrameworkProjectConfigurationDimensionProvider_GetDefaultValuesForDimensionsAsync_TFMs()
+        [Theory]
+        [InlineData(ProjectXmlTFMs)]
+        [InlineData(ProjectXmlTFMAndTFMs)]
+        public async void TargetFrameworkProjectConfigurationDimensionProvider_GetDefaultValuesForDimensionsAsync_TFMs(string projectXml)
         {
-            using (var projectFile = new MsBuildProjectFile(projectXmlTFMs))
+            using (var projectFile = new MsBuildProjectFile(projectXml))
             {
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
                 var provider = new TargetFrameworkProjectConfigurationDimensionProvider(_projectXmlAccessor);
@@ -55,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         [Fact]
         public async void TargetFrameworkProjectConfigurationDimensionProvider_GetProjectConfigurationDimensionsAsync_TFM()
         {
-            using (var projectFile = new MsBuildProjectFile(projectXmlTFM))
+            using (var projectFile = new MsBuildProjectFile(ProjectXmlTFM))
             {
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
                 var provider = new TargetFrameworkProjectConfigurationDimensionProvider(_projectXmlAccessor);
@@ -65,10 +75,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
             }
         }
 
-        [Fact]
-        public async void TargetFrameworkProjectConfigurationDimensionProvider_GetProjectConfigurationDimensionsAsync_TFMs()
+        [Theory]
+        [InlineData(ProjectXmlTFMs)]
+        [InlineData(ProjectXmlTFMAndTFMs)]
+        public async void TargetFrameworkProjectConfigurationDimensionProvider_GetProjectConfigurationDimensionsAsync_TFMs(string projectXml)
         {
-            using (var projectFile = new MsBuildProjectFile(projectXmlTFMs))
+            using (var projectFile = new MsBuildProjectFile(projectXml))
             {
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
                 var provider = new TargetFrameworkProjectConfigurationDimensionProvider(_projectXmlAccessor);
@@ -94,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         public async void TargetFrameworkProjectConfigurationDimensionProvider_OnDimensionValueChanged(ConfigurationDimensionChange change, ChangeEventStage stage)
         {
             // No changes should happen for TFM so verify that the property is the same before and after
-            using (var projectFile = new MsBuildProjectFile(projectXmlTFMs))
+            using (var projectFile = new MsBuildProjectFile(ProjectXmlTFMs))
             {
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
                 var provider = new TargetFrameworkProjectConfigurationDimensionProvider(_projectXmlAccessor);
