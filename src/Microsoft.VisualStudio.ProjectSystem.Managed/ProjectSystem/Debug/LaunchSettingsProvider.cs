@@ -10,14 +10,12 @@ using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
-
     /// <summary>
     /// Manages the set of Debug profiles and web server settings and provides these as a dataflow source. Note 
     /// that many of the methods are protected so that unit tests can derive from this class and poke them as
@@ -96,6 +94,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         private TaskCompletionSource<bool> _firstSnapshotCompletionSource = new TaskCompletionSource<bool>();
 
         protected IDisposable ProjectRuleSubscriptionLink { get; set; }
+
+        private SequencialTaskExecutor _sequentialTaskQueue = new SequencialTaskExecutor();
 
         /// <summary>
         /// Returns the full path to the launch settings file
@@ -229,7 +229,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 var snapshot = CurrentSnapshot;
                 if (snapshot == null || !LaunchProfile.IsSameProfileName(activeProfile, snapshot.ActiveProfile?.Name))
                 {
-                    await UpdateActiveProfileInSnapshotAsync(activeProfile).ConfigureAwait(false);
+                    // Updates need to be sequenced
+                    await _sequentialTaskQueue.ExecuteTask(async () =>
+                                    {
+                                        await UpdateActiveProfileInSnapshotAsync(activeProfile).ConfigureAwait(false);
+                                    }).ConfigureAwait(false);
                 }
             }
         }
@@ -578,8 +582,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                         {
                             return;
                         }
-
-                        await UpdateProfilesAsync(null).ConfigureAwait(false);
+                        
+                        // Updates need to be sequenced
+                        await _sequentialTaskQueue.ExecuteTask(async () =>
+                                        {
+                                            await UpdateProfilesAsync(null).ConfigureAwait(false);
+                                        }).ConfigureAwait(false);
                     });
                 }
             }
@@ -646,6 +654,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     FileChangeScheduler = null;
                 }
 
+                if(_sequentialTaskQueue != null)
+                {
+                    _sequentialTaskQueue.Dispose();
+                    _sequentialTaskQueue = null;
+                }
+
                 if (_broadcastBlock != null)
                 {
                     _broadcastBlock.Complete();
@@ -667,13 +681,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public async Task UpdateAndSaveSettingsAsync(ILaunchSettings newSettings)
         {
+            // Updates need to be sequenced. Do not call this version from within an ExecuteTask as it
+            // will deadlock
+            await _sequentialTaskQueue.ExecuteTask(async () =>
+            {
+                await UpdateAndSaveSettingsInternalAsync(newSettings).ConfigureAwait(false);
+            }).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Replaces the current set of profiles with the contents of profiles. If changes were
+        /// made, the file will be checked out and saved. Note it ignores the value of the active profile
+        /// as this setting is controlled by a user property.
+        /// </summary>
+        private async Task UpdateAndSaveSettingsInternalAsync(ILaunchSettings newSettings)
+        {
+            await CheckoutSettingsFileAsync().ConfigureAwait(false);
+
             // Make sure the profiles are copied. We don't want them to mutate.
             var activeProfileName = ActiveProfile?.Name;
 
             ILaunchSettings newSnapshot = new LaunchSettings(newSettings.Profiles, newSettings.GlobalSettings, activeProfileName);
-
-            await CheckoutSettingsFileAsync().ConfigureAwait(false);
-
             SaveSettingsToDisk(newSettings);
 
             FinishUpdate(newSnapshot);
@@ -703,42 +731,46 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public async Task AddOrUpdateProfileAsync(ILaunchProfile profile, bool addToFront)
         {
-            var currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
-            ILaunchProfile existingProfile = null;
-            int insertionIndex = 0;
-            foreach (var p in currentSettings.Profiles)
+            // Updates need to be sequenced
+            await _sequentialTaskQueue.ExecuteTask(async () =>
             {
-                if (LaunchProfile.IsSameProfileName(p.Name, profile.Name))
+                var currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
+                ILaunchProfile existingProfile = null;
+                int insertionIndex = 0;
+                foreach (var p in currentSettings.Profiles)
                 {
-                    existingProfile = p;
-                    break;
+                    if (LaunchProfile.IsSameProfileName(p.Name, profile.Name))
+                    {
+                        existingProfile = p;
+                        break;
+                    }
+                    insertionIndex++;
                 }
-                insertionIndex++;
-            }
 
-            ImmutableList<ILaunchProfile> profiles;
-            if (existingProfile != null)
-            {
-                profiles = currentSettings.Profiles.Remove(existingProfile);
-            }
-            else
-            {
-                profiles = currentSettings.Profiles;
-            }
+                ImmutableList<ILaunchProfile> profiles;
+                if (existingProfile != null)
+                {
+                    profiles = currentSettings.Profiles.Remove(existingProfile);
+                }
+                else
+                {
+                    profiles = currentSettings.Profiles;
+                }
 
-            if (addToFront)
-            {
-                profiles = profiles.Insert(0, new LaunchProfile(profile));
-            }
-            else
-            {
-                // Insertion index will be set to the current count (end of list) if an existing item was not found otherwise
-                // it will point to where the previous one was found
-                profiles = profiles.Insert(insertionIndex, new LaunchProfile(profile));
-            }
+                if (addToFront)
+                {
+                    profiles = profiles.Insert(0, new LaunchProfile(profile));
+                }
+                else
+                {
+                    // Insertion index will be set to the current count (end of list) if an existing item was not found otherwise
+                    // it will point to where the previous one was found
+                    profiles = profiles.Insert(insertionIndex, new LaunchProfile(profile));
+                }
 
-            var newSnapshot = new LaunchSettings(profiles, currentSettings?.GlobalSettings, currentSettings?.ActiveProfile?.Name);
-            await UpdateAndSaveSettingsAsync(newSnapshot).ConfigureAwait(false);
+                var newSnapshot = new LaunchSettings(profiles, currentSettings?.GlobalSettings, currentSettings?.ActiveProfile?.Name);
+                await UpdateAndSaveSettingsInternalAsync(newSnapshot).ConfigureAwait(false);
+            }).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -746,14 +778,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public async Task RemoveProfileAsync(string profileName)
         {
-            var currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
-            var existingProfile = currentSettings.Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, profileName));
-            if (existingProfile != null)
+            // Updates need to be sequenced
+            await _sequentialTaskQueue.ExecuteTask(async () =>
             {
-                var profiles = currentSettings.Profiles.Remove(existingProfile);
-                var newSnapshot = new LaunchSettings(profiles, currentSettings.GlobalSettings, currentSettings.ActiveProfile?.Name);
-                await UpdateAndSaveSettingsAsync(newSnapshot).ConfigureAwait(false);
-            }
+                var currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
+                var existingProfile = currentSettings.Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, profileName));
+                if (existingProfile != null)
+                {
+                    var profiles = currentSettings.Profiles.Remove(existingProfile);
+                    var newSnapshot = new LaunchSettings(profiles, currentSettings.GlobalSettings, currentSettings.ActiveProfile?.Name);
+                    await UpdateAndSaveSettingsInternalAsync(newSnapshot).ConfigureAwait(false);
+                }
+            }).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -762,19 +798,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public async Task AddOrUpdateGlobalSettingAsync(string settingName, object settingContent)
         {
-            var currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
-            ImmutableDictionary<string, object> globalSettings = ImmutableDictionary<string, object>.Empty;
-            if (currentSettings.GlobalSettings.TryGetValue(settingName, out object currentValue))
+            // Updates need to be sequenced
+            await _sequentialTaskQueue.ExecuteTask(async () =>
             {
-                globalSettings = currentSettings.GlobalSettings.Remove(settingName);
-            }
-            else
-            {
-                globalSettings = currentSettings.GlobalSettings;
-            }
+                var currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
+                ImmutableDictionary<string, object> globalSettings = ImmutableDictionary<string, object>.Empty;
+                if (currentSettings.GlobalSettings.TryGetValue(settingName, out object currentValue))
+                {
+                    globalSettings = currentSettings.GlobalSettings.Remove(settingName);
+                }
+                else
+                {
+                    globalSettings = currentSettings.GlobalSettings;
+                }
 
-            var newSnapshot = new LaunchSettings(currentSettings.Profiles, globalSettings.Add(settingName, settingContent), currentSettings.ActiveProfile?.Name);
-            await UpdateAndSaveSettingsAsync(newSnapshot).ConfigureAwait(false);
+                var newSnapshot = new LaunchSettings(currentSettings.Profiles, globalSettings.Add(settingName, settingContent), currentSettings.ActiveProfile?.Name);
+                await UpdateAndSaveSettingsInternalAsync(newSnapshot).ConfigureAwait(false);
+            }).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -782,13 +822,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public async Task RemoveGlobalSettingAsync(string settingName)
         {
-            var currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
-            if (currentSettings.GlobalSettings.TryGetValue(settingName, out object currentValue))
+            // Updates need to be sequenced
+            await _sequentialTaskQueue.ExecuteTask(async () =>
             {
-                var globalSettings = currentSettings.GlobalSettings.Remove(settingName);
-                var newSnapshot = new LaunchSettings(currentSettings.Profiles, globalSettings, currentSettings.ActiveProfile?.Name);
-                await UpdateAndSaveSettingsAsync(newSnapshot).ConfigureAwait(false);
-            }
+                var currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
+                if (currentSettings.GlobalSettings.TryGetValue(settingName, out object currentValue))
+                {
+                    var globalSettings = currentSettings.GlobalSettings.Remove(settingName);
+                    var newSnapshot = new LaunchSettings(currentSettings.Profiles, globalSettings, currentSettings.ActiveProfile?.Name);
+                    await UpdateAndSaveSettingsInternalAsync(newSnapshot).ConfigureAwait(false);
+                }
+            }).ConfigureAwait(false);
         }
 
         /// <summary>

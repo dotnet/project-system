@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.ComponentModel.Composition;
+using System.Runtime.InteropServices;
 using EnvDTE;
 using VSLangProj;
 
@@ -19,14 +20,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
     [Export(ExportContractNames.VsTypes.VSProject, typeof(VSLangProj.VSProject))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
     [Order(Order.Default)]
-    internal partial class VSProject : VSLangProj.VSProject
+    public partial class VSProject : VSLangProj.VSProject
     {
         private readonly VSLangProj.VSProject _vsProject;
         private readonly IProjectThreadingService _threadingService;
         private readonly ActiveConfiguredProject<ProjectProperties> _projectProperties;
 
         [ImportingConstructor]
-        public VSProject(
+        internal VSProject(
             [Import(ExportContractNames.VsTypes.CpsVSProject)] VSLangProj.VSProject vsProject,
             IProjectThreadingService threadingService,
             ActiveConfiguredProject<ProjectProperties> projectProperties)
