@@ -4,7 +4,7 @@ using System.Linq;
 using Microsoft.VisualStudio.Build;
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
+namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 {
     [ProjectSystemTrait]
     public class PlatformProjectConfigurationDimensionProviderTests

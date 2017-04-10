@@ -1,6 +1,9 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.ProjectSystem.Configuration;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -8,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     public class ActiveConfiguredProjectsProviderTests
     {
         [Fact]
-        public async Task GetActiveProjectConfigurationsAsync_WhenNoActiveConfiguration_ReturnsEmpty()
+        public async Task GetActiveProjectConfigurationsAsync_WhenNoActiveConfiguration_ReturnsNull()
         {
             var activeConfiguredProjectProvider = IActiveConfiguredProjectProviderFactory.ImplementActiveProjectConfiguration(() => null);
             var services = IUnconfiguredProjectServicesFactory.Create(activeConfiguredProjectProvider: activeConfiguredProjectProvider);
@@ -17,11 +20,46 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             var result = await provider.GetActiveProjectConfigurationsAsync();
 
-            Assert.Empty(result);
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public async Task GetActiveConfiguredProjectAsync_WhenNoActiveConfiguration_ReturnsNull()
+        {
+            var activeConfiguredProjectProvider = IActiveConfiguredProjectProviderFactory.ImplementActiveProjectConfiguration(() => null);
+            var services = IUnconfiguredProjectServicesFactory.Create(activeConfiguredProjectProvider: activeConfiguredProjectProvider);
+
+            var provider = CreateInstance(services: services);
+
+            var result = await provider.GetActiveConfiguredProjectsAsync();
+
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public async Task GetActiveProjectConfigurationsAsync_WhenNoDimensionProviders_ReturnsNoDimensionNames()
+        {
+            var provider = CreateInstance("Debug|AnyCPU", "Debug|AnyCPU");
+
+            var result = await provider.GetActiveProjectConfigurationsAsync();
+
+            Assert.Empty(result.DimensionNames);
+        }
+
+        [Fact]
+        public async Task GetActiveConfiguredProjectAsync_WhenNoDimensionProviders_ReturnsNoDimensionNames()
+        {
+            var provider = CreateInstance("Debug|AnyCPU", "Debug|AnyCPU");
+
+            var result = await provider.GetActiveConfiguredProjectsAsync();
+
+            Assert.Empty(result.DimensionNames);
         }
 
         [Theory] // ActiveConfiguration                 Configurations
         [InlineData("Debug|AnyCPU",                     "Debug|AnyCPU")]
+        [InlineData("Debug|AnyCPU|net46",               "Debug|AnyCPU|net46")]
+        [InlineData("Debug|AnyCPU|net46",               "Debug|AnyCPU|net46;Release|AnyCPU|net46")]
         [InlineData("Debug|AnyCPU",                     "Debug|AnyCPU;Release|AnyCPU")]
         [InlineData("Debug|AnyCPU",                     "Release|AnyCPU;Debug|AnyCPU")]
         [InlineData("Debug|AnyCPU",                     "Debug|AnyCPU;Release|AnyCPU;Debug|x86")]
@@ -32,20 +70,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [InlineData("Debug|x86",                        "Debug|AnyCPU;Release|AnyCPU;Debug|x86")]
         [InlineData("Release|x86",                      "Debug|AnyCPU;Release|AnyCPU;Debug|x86;Release|x86")]
         [InlineData("Release|x86",                      "Release|AnyCPU;Debug|x86;Release|x86;Debug|AnyCPU")]
-        public async Task GetActiveProjectConfigurationsAsync_ConfigurationsWithNoTargetFramework_ReturnsActiveProjectConfiguration(string activeConfiguration, string configurations)
+        public async Task GetActiveProjectConfigurationsAsync_WhenNoDimensionProviders_ReturnsActiveProjectConfiguration(string activeConfiguration, string configurations)
         {
-            var activeConfig = ProjectConfigurationFactory.Create(activeConfiguration);
-            var configs = ProjectConfigurationFactory.CreateMany(configurations.Split(';'));
-            var configurationsService = IProjectConfigurationsServiceFactory.ImplementGetKnownProjectConfigurationsAsync(configs);
-            var activeConfiguredProjectProvider = IActiveConfiguredProjectProviderFactory.ImplementActiveProjectConfiguration(() => activeConfig);
-            var services = IUnconfiguredProjectServicesFactory.Create(activeConfiguredProjectProvider: activeConfiguredProjectProvider, projectConfigurationsService: configurationsService);
-
-            var provider = CreateInstance(services: services);
+            var provider = CreateInstance(activeConfiguration, configurations);
 
             var result = await provider.GetActiveProjectConfigurationsAsync();
 
-            Assert.Equal(1, result.Length);
-            Assert.Equal(activeConfiguration, result[0].Name);
+            Assert.Equal(1, result.Objects.Length);
+            Assert.Equal(activeConfiguration, result.Objects[0].Name);
         }
 
         [Theory] // ActiveConfiguration                 Configurations                                            Expected Active Configurations
@@ -53,24 +85,25 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [InlineData("Debug|AnyCPU|net45",               "Debug|AnyCPU|net45;Release|AnyCPU|net45",                "Debug|AnyCPU|net45")]
         [InlineData("Debug|AnyCPU|net45",               "Debug|AnyCPU|net45;Debug|AnyCPU|net46",                  "Debug|AnyCPU|net45;Debug|AnyCPU|net46")]
         [InlineData("Debug|AnyCPU|net46",               "Debug|AnyCPU|net45;Debug|AnyCPU|net46",                  "Debug|AnyCPU|net45;Debug|AnyCPU|net46")]
-        public async Task GetActiveProjectConfigurationsAsync_ConfigurationsWithTargetFramework_ReturnsConfigsThatMatchConfigurationAndPlatformFromActiveConfiguration(string activeConfiguration, string configurations, string expected)
+        [InlineData("Debug|AnyCPU",                     "Debug|AnyCPU|net45",                                     "Debug|AnyCPU|net45")]
+        [InlineData("Debug|AnyCPU",                     "Debug|AnyCPU|net45;Release|AnyCPU|net45",                "Debug|AnyCPU|net45")]
+        [InlineData("Debug|AnyCPU",                     "Debug|AnyCPU|net45;Debug|AnyCPU|net46",                  "Debug|AnyCPU|net45;Debug|AnyCPU|net46")]
+        [InlineData("Debug|AnyCPU",                     "Debug|AnyCPU|net45;Debug|AnyCPU|net46",                  "Debug|AnyCPU|net45;Debug|AnyCPU|net46")]
+        public async Task GetActiveProjectConfigurationsAsync_ConfigurationsWithTargetFrameworkDimensionProvider_ReturnsConfigsThatMatchConfigurationAndPlatformFromActiveConfiguration(string activeConfiguration, string configurations, string expected)
         {
-            var activeConfig = ProjectConfigurationFactory.Create(activeConfiguration);
-            var configs = ProjectConfigurationFactory.CreateMany(configurations.Split(';'));
-            var configurationsService = IProjectConfigurationsServiceFactory.ImplementGetKnownProjectConfigurationsAsync(configs);
-            var activeConfiguredProjectProvider = IActiveConfiguredProjectProviderFactory.ImplementActiveProjectConfiguration(() => activeConfig);
-            var services = IUnconfiguredProjectServicesFactory.Create(activeConfiguredProjectProvider: activeConfiguredProjectProvider, projectConfigurationsService: configurationsService);
-
-            var provider = CreateInstance(services: services);
+            var provider = CreateInstance(activeConfiguration, configurations, "TargetFramework");
 
             var result = await provider.GetActiveProjectConfigurationsAsync();
 
             var activeConfigs = ProjectConfigurationFactory.CreateMany(expected.Split(';'));
-            Assert.Equal(activeConfigs, result);
+            Assert.Equal(activeConfigs, result.Objects);
+            Assert.Equal(new[] { "TargetFramework" }, result.DimensionNames);
         }
 
         [Theory] // ActiveConfiguration                 Configurations
         [InlineData("Debug|AnyCPU",                     "Debug|AnyCPU")]
+        [InlineData("Debug|AnyCPU|net46",               "Debug|AnyCPU|net46")]
+        [InlineData("Debug|AnyCPU|net46",               "Debug|AnyCPU|net46;Release|AnyCPU|net46")]
         [InlineData("Debug|AnyCPU",                     "Debug|AnyCPU;Release|AnyCPU")]
         [InlineData("Debug|AnyCPU",                     "Release|AnyCPU;Debug|AnyCPU")]
         [InlineData("Debug|AnyCPU",                     "Debug|AnyCPU;Release|AnyCPU;Debug|x86")]
@@ -81,7 +114,18 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [InlineData("Debug|x86",                        "Debug|AnyCPU;Release|AnyCPU;Debug|x86")]
         [InlineData("Release|x86",                      "Debug|AnyCPU;Release|AnyCPU;Debug|x86;Release|x86")]
         [InlineData("Release|x86",                      "Release|AnyCPU;Debug|x86;Release|x86;Debug|AnyCPU")]
-        public async Task GetActiveConfiguredProjects_LoadsAndReturnsConfiguredProject(string activeConfiguration, string configurations)
+        public async Task GetActiveConfiguredProjects__WhenNoDimensionProviders_LoadsAndReturnsConfiguredProject(string activeConfiguration, string configurations)
+        {
+            var provider = CreateInstance(activeConfiguration, configurations);
+            
+            var result = await provider.GetActiveConfiguredProjectsAsync();
+
+            Assert.Equal(1, result.Objects.Length);
+            Assert.Equal(activeConfiguration, result.Objects[0].ProjectConfiguration.Name);
+            Assert.Empty(result.DimensionNames);
+        }
+
+        private ActiveConfiguredProjectsProvider CreateInstance(string activeConfiguration, string configurations, params string[] dimensionNames)
         {
             var activeConfig = ProjectConfigurationFactory.Create(activeConfiguration);
             var configs = ProjectConfigurationFactory.CreateMany(configurations.Split(';'));
@@ -92,22 +136,29 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return Task.FromResult(ConfiguredProjectFactory.ImplementProjectConfiguration(projectConfiguration));
             });
 
+            var dimensionProviders = dimensionNames.Select(name => IActiveConfiguredProjectsDimensionProviderFactory.ImplementDimensionName(name));
+
             var commonServices = IUnconfiguredProjectCommonServicesFactory.ImplementProject(configuredProject);
 
-            var provider = CreateInstance(services: services, commonServices:commonServices);
-
-            var result = await provider.GetActiveConfiguredProjectsAsync();
-
-            Assert.Equal(1, result.Length);
-            Assert.Equal(activeConfiguration, result[0].ProjectConfiguration.Name);
+            return CreateInstance(services: services, commonServices: commonServices, dimensionProviders: dimensionProviders);
         }
 
-        private ActiveConfiguredProjectsProvider CreateInstance(IUnconfiguredProjectServices services = null, IUnconfiguredProjectCommonServices commonServices = null)
+        private ActiveConfiguredProjectsProvider CreateInstance(IUnconfiguredProjectServices services = null, IUnconfiguredProjectCommonServices commonServices = null, IEnumerable<IActiveConfiguredProjectsDimensionProvider> dimensionProviders = null)
         {
             services = services ?? IUnconfiguredProjectServicesFactory.Create();
             commonServices = commonServices ?? IUnconfiguredProjectCommonServicesFactory.Create();
 
-            return new ActiveConfiguredProjectsProvider(services, commonServices);
+            var provider = new ActiveConfiguredProjectsProvider(services, commonServices);
+
+            if (dimensionProviders != null)
+            {
+                foreach (var dimensionProvider in dimensionProviders)
+                {
+                    provider.DimensionProviders.Add(dimensionProvider, appliesTo: ProjectCapability.AlwaysAvailable);
+                }
+            }
+
+            return provider;
         }
     }
 }

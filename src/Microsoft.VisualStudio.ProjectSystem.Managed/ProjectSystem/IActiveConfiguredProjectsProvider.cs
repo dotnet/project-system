@@ -31,30 +31,33 @@ namespace Microsoft.VisualStudio.ProjectSystem
         Task<ImmutableDictionary<string, ConfiguredProject>> GetActiveConfiguredProjectsMapAsync();
 
         /// <summary>
-        ///     Returns the ordered list of configured projects that are active for the current project,
-        ///     loading them if needed.
+        ///     Returns the ordered list of configured projects that are active for the current project, loading them if needed.
         /// </summary>
         /// <returns>
-        ///     An <see cref="ImmutableArray{T}"/> containing ordered set of <see cref="ConfiguredProject"/>
-        ///     objects, or empty if there are no active configured projects.
+        ///     An <see cref="ActiveConfiguredObjects{T}"/> containing the ordered set of <see cref="ConfiguredProject"/> objects 
+        ///     with the names of the configuration dimensions that participated in the calculation of the active 
+        ///     <see cref="ConfiguredProject"/> objects, or <see langword="null"/> if there are no active <see cref="ConfiguredProject"/>
+        ///     objects.
         /// </returns>
         /// <remarks>
-        ///     The order in the returned <see cref="ImmutableArray{T}"/> matches the declared ordered within
+        ///     The order in the returned <see cref="ActiveConfiguredObjects{T}"/> matches the declared ordered within
         ///     the project file.
         /// </remarks>
-        Task<ImmutableArray<ConfiguredProject>> GetActiveConfiguredProjectsAsync();
+        Task<ActiveConfiguredObjects<ConfiguredProject>> GetActiveConfiguredProjectsAsync();
 
         /// <summary>
         ///     Returns the ordered list of project configurations that are active for the current project.
         /// </summary>
         /// <returns>
-        ///     An <see cref="ImmutableArray{T}"/> containing ordered set of <see cref="ProjectConfiguration"/>
-        ///     objects, or empty if there are no active project configurations.
+        ///     An <see cref="ActiveConfiguredObjects{T}"/> containing the ordered set of <see cref="ProjectConfiguration"/> objects 
+        ///     with the names of the configuration dimensions that participated in the calculation of the active 
+        ///     <see cref="ProjectConfiguration"/> objects, or <see langword="null"/> if there are no active 
+        ///     <see cref="ProjectConfiguration"/> objects.
         /// </returns>
         /// <remarks>
-        ///     The order in the returned <see cref="ImmutableArray{T}"/> matches the declared ordered within
+        ///     The order in the returned <see cref="ActiveConfiguredObjects{T}"/> matches the declared ordered within
         ///     the project file.
         /// </remarks>
-        Task<ImmutableArray<ProjectConfiguration>> GetActiveProjectConfigurationsAsync();
+        Task<ActiveConfiguredObjects<ProjectConfiguration>> GetActiveProjectConfigurationsAsync();
     }
 }

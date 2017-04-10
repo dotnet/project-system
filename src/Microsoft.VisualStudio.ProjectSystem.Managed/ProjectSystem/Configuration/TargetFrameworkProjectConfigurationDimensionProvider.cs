@@ -5,7 +5,7 @@ using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Build;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
+namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 {
     /// <summary>
     /// Provides "TargetFramework" project configuration dimension and values.
@@ -17,6 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
     /// below these 3 providers.
     /// </remarks>
     [Export(typeof(IProjectConfigurationDimensionsProvider))]
+    [Export(typeof(IActiveConfiguredProjectsDimensionProvider))]
     [AppliesTo(ProjectCapabilities.ProjectConfigurationsDeclaredDimensions)]
     [Order(DimensionProviderOrder.TargetFramework)]
     internal class TargetFrameworkProjectConfigurationDimensionProvider : BaseProjectConfigurationDimensionProvider
@@ -31,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         {
             Requires.NotNull(project, nameof(project));
 
-            string targetFrameworksProperty = await _projectXmlAccessor.GetEvaluatedPropertyValue(project, ConfigurationGeneral.TargetFrameworksProperty).ConfigureAwait(true);
+            string targetFrameworksProperty = await ProjectXmlAccessor.GetEvaluatedPropertyValue(project, ConfigurationGeneral.TargetFrameworksProperty).ConfigureAwait(true);
             if (targetFrameworksProperty != null)
             {
                 return BuildUtilities.GetPropertyValues(targetFrameworksProperty);

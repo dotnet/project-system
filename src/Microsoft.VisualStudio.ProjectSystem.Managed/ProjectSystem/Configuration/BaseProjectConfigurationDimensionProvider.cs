@@ -6,17 +6,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Build;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
+namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 {
     /// <summary>
     /// Base project configuration dimension provider
     /// </summary>
     internal abstract class BaseProjectConfigurationDimensionProvider : IProjectConfigurationDimensionsProvider2
     {
-        protected readonly string _dimensionName;
-        protected readonly string _propertyName;
-        protected readonly IProjectXmlAccessor _projectXmlAccessor;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseProjectConfigurationDimensionProvider"/> class.
         /// </summary>
@@ -26,10 +22,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         public BaseProjectConfigurationDimensionProvider(IProjectXmlAccessor projectXmlAccessor, string dimensionName, string propertyName)
         {
             Requires.NotNull(projectXmlAccessor, nameof(projectXmlAccessor));
-            _projectXmlAccessor = projectXmlAccessor;
 
-            _dimensionName = dimensionName;
-            _propertyName = propertyName;
+            ProjectXmlAccessor = projectXmlAccessor;
+            DimensionName = dimensionName;
+            PropertyName = propertyName;
+        }
+
+        public string DimensionName
+        {
+            get;
+        }
+
+        public string PropertyName
+        {
+            get;
+        }
+
+        public IProjectXmlAccessor ProjectXmlAccessor
+        {
+            get;
         }
 
         /// <summary>
@@ -78,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
             {
                 // First value is the default one.
                 var defaultValues = ImmutableArray.CreateBuilder<KeyValuePair<string, string>>();
-                defaultValues.Add(new KeyValuePair<string, string>(_dimensionName, values.First()));
+                defaultValues.Add(new KeyValuePair<string, string>(DimensionName, values.First()));
                 return defaultValues.ToImmutable();
             }
         }
@@ -105,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
             else
             {
                 var dimensionValues = ImmutableArray.CreateBuilder<KeyValuePair<string, IEnumerable<string>>>();
-                dimensionValues.Add(new KeyValuePair<string, IEnumerable<string>>(_dimensionName, values));
+                dimensionValues.Add(new KeyValuePair<string, IEnumerable<string>>(DimensionName, values));
                 return dimensionValues.ToImmutable();
             }
         }
@@ -128,7 +139,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Configuration
         /// </remarks>
         protected async Task<string> GetPropertyValue(UnconfiguredProject unconfiguredProject)
         {
-            return await _projectXmlAccessor.GetEvaluatedPropertyValue(unconfiguredProject, _propertyName).ConfigureAwait(false);
+            return await ProjectXmlAccessor.GetEvaluatedPropertyValue(unconfiguredProject, PropertyName).ConfigureAwait(false);
         }
     }
 }
