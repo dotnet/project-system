@@ -24,6 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         private readonly IProjectThreadingService _threadingService;
         private readonly IProjectLockService _lockService;
         private readonly VSLangProj.VSProject _vsProject;
+        private readonly IUnconfiguredProjectVsServices _unconfiguredProjectVSServices;
 
         public event _dispImportsEvents_ImportAddedEventHandler ImportAdded;
         public event _dispImportsEvents_ImportRemovedEventHandler ImportRemoved;
@@ -33,17 +34,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             [Import(ExportContractNames.VsTypes.CpsVSProject)] VSLangProj.VSProject vsProject,
             IProjectThreadingService threadingService,
             ActiveConfiguredProject<ConfiguredProject> activeConfiguredProject,
-            IProjectLockService lockService)
+            IProjectLockService lockService,
+            IUnconfiguredProjectVsServices unconfiguredProjectVSServices)
         {
             Requires.NotNull(vsProject, nameof(vsProject));
             Requires.NotNull(threadingService, nameof(threadingService));
             Requires.NotNull(activeConfiguredProject, nameof(activeConfiguredProject));
             Requires.NotNull(lockService, nameof(lockService));
+            Requires.NotNull(unconfiguredProjectVSServices, nameof(unconfiguredProjectVSServices));
 
             _vsProject = vsProject;
             _activeConfiguredProject = activeConfiguredProject;
             _lockService = lockService;
             _threadingService = threadingService;
+            _unconfiguredProjectVSServices = unconfiguredProjectVSServices;
 
             AddEventSource(this);
         }
@@ -76,21 +80,47 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                     project.AddItem(importItemTypeName, bstrImport);
                 }
             });
+
+            OnImportAdded(bstrImport);
         }
 
         public void Remove(object index)
         {
+            string importRemoved = null;
             _threadingService.ExecuteSynchronously(async () =>
             {
                 using (var access = await _lockService.WriteLockAsync())
                 {
+                    Microsoft.Build.Evaluation.ProjectItem importProjectItem = null;
                     var project = await access.GetProjectAsync(ConfiguredProject).ConfigureAwait(true);
                     await access.CheckoutAsync(project.Xml.ContainingProject.FullPath).ConfigureAwait(true);
-                    var importProjectItem = project.GetItems(importItemTypeName)
-                                                   .ElementAt(((int)index - 1));
+                    if (index is int indexInt)
+                    {
+                        importProjectItem = project.GetItems(importItemTypeName)
+                                                   .ElementAt((indexInt - 1));
+                    }
+                    else if (index is string removeImport)
+                    {
+                        importProjectItem = project.GetItems(importItemTypeName)
+                                                   .First(i => string.Compare(removeImport, i.EvaluatedInclude, StringComparison.OrdinalIgnoreCase) == 0);
+                    }
+                    else
+                    {
+                        System.Diagnostics.Debug.Assert(false, $"Parameter {nameof(index)} is niether an int nor a string");
+                        return;
+                    }
+
+                    if (importProjectItem.IsImported)
+                    {
+                        throw new ArgumentException(string.Format(VSPackage.ImportParamNotFound, index.ToString()), nameof(index));
+                    }
+
+                    importRemoved = importProjectItem.EvaluatedInclude;
                     project.RemoveItem(importProjectItem);
                 }
             });
+
+            OnImportRemoved(importRemoved);
         }
 
         public IEnumerator GetEnumerator()
@@ -126,7 +156,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             }
         }
 
-        public object Parent => throw new NotImplementedException();
+        public object Parent => _unconfiguredProjectVSServices.VsHierarchy;
 
         internal virtual void OnImportAdded(string importNamespace)
         {

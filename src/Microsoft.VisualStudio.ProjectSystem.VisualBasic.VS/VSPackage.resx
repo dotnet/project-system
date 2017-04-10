@@ -123,4 +123,7 @@
   <data name="#2" xml:space="preserve">
     <value>Visual Basic Project Files (*.vbproj);*.vbproj</value>
   </data>
+  <data name="ImportParamNotFound" xml:space="preserve">
+    <value>{0} is an imported import, which is not part of the project file.</value>
+  </data>
 </root>

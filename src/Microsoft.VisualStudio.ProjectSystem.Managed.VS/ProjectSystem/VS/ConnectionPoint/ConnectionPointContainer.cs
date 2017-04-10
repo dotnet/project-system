@@ -13,20 +13,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint
     [ComVisible(true)]
     public class ConnectionPointContainer : IConnectionPointContainer
     {
-        private Dictionary<Guid, IConnectionPoint> connectionPoints;
+        private readonly Dictionary<Guid, IConnectionPoint> _connectionPoints = new Dictionary<Guid, IConnectionPoint>();
 
         internal ConnectionPointContainer()
         {
-            connectionPoints = new Dictionary<Guid, IConnectionPoint>();
         }
 
         internal void AddEventSource<SinkType>(IEventSource<SinkType> source)
             where SinkType : class
         {
             Requires.NotNull(source, nameof(source));
-            Verify.Operation(!connectionPoints.ContainsKey(typeof(SinkType).GUID), "EventSource guid already added to the list of connection points");
+            Verify.Operation(!_connectionPoints.ContainsKey(typeof(SinkType).GUID), "EventSource guid already added to the list of connection points");
 
-            connectionPoints.Add(typeof(SinkType).GUID, new ConnectionPoint<SinkType>(this, source));
+            _connectionPoints.Add(typeof(SinkType).GUID, new ConnectionPoint<SinkType>(this, source));
         }
 
         void IConnectionPointContainer.EnumConnectionPoints(out IEnumConnectionPoints ppEnum)
@@ -36,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint
 
         void IConnectionPointContainer.FindConnectionPoint(ref Guid riid, out IConnectionPoint ppCP)
         {
-            ppCP = connectionPoints[riid];
+            ppCP = _connectionPoints[riid];
         }
     }
 }

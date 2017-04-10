@@ -8,11 +8,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint
     /// This implementation is a copy from CPS
     /// </summary>
     [ComVisible(false)]
-    internal interface IEventSource<SinkType>
-        where SinkType : class
+    internal interface IEventSource<TSinkType>
+        where TSinkType : class
     {
-        void OnSinkAdded(SinkType sink);
+        void OnSinkAdded(TSinkType sink);
 
-        void OnSinkRemoved(SinkType sink);
+        void OnSinkRemoved(TSinkType sink);
     }
 }

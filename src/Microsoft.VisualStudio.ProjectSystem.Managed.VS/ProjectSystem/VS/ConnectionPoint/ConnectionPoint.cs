@@ -10,39 +10,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint
     /// <summary>
     /// This implementation is a copy from CPS
     /// </summary>
-    internal class ConnectionPoint<SinkType> : IConnectionPoint
-            where SinkType : class
+    internal class ConnectionPoint<TSinkType> : IConnectionPoint
+            where TSinkType : class
     {
-        private Dictionary<uint, SinkType> sinks;
+        private readonly Dictionary<uint, TSinkType> _sinks = new Dictionary<uint, TSinkType>();
+        private readonly ConnectionPointContainer _container;
+        private readonly IEventSource<TSinkType> _source;
 
         private uint nextCookie;
 
-        private ConnectionPointContainer container;
-
-        private IEventSource<SinkType> source;
-
-        internal ConnectionPoint(ConnectionPointContainer container, IEventSource<SinkType> source)
+        internal ConnectionPoint(ConnectionPointContainer container, IEventSource<TSinkType> source)
         {
             Requires.NotNull(container, nameof(container));
             Requires.NotNull(source, nameof(source));
 
-            this.container = container;
-            this.source = source;
-            sinks = new Dictionary<uint, SinkType>();
+            _container = container;
+            _source = source;
             nextCookie = 1;
         }
 
         public void Advise(object pUnkSink, out uint pdwCookie)
         {
-            SinkType sink = pUnkSink as SinkType;
+            TSinkType sink = pUnkSink as TSinkType;
             if (null == sink)
             {
                 Marshal.ThrowExceptionForHR(VSConstants.E_NOINTERFACE);
             }
 
-            sinks.Add(nextCookie, sink);
+            _sinks.Add(nextCookie, sink);
             pdwCookie = nextCookie;
-            source.OnSinkAdded(sink);
+            _source.OnSinkAdded(sink);
             nextCookie += 1;
         }
 
@@ -53,20 +50,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint
 
         public void GetConnectionInterface(out Guid pIID)
         {
-            pIID = typeof(SinkType).GUID;
+            pIID = typeof(TSinkType).GUID;
         }
 
         public void GetConnectionPointContainer(out IConnectionPointContainer ppCPC)
         {
-            ppCPC = container;
+            ppCPC = _container;
         }
 
         public void Unadvise(uint dwCookie)
         {
             // This will throw if the cookie is not in the list.
-            SinkType sink = sinks[dwCookie];
-            sinks.Remove(dwCookie);
-            source.OnSinkRemoved(sink);
+            TSinkType sink = _sinks[dwCookie];
+            _sinks.Remove(dwCookie);
+            _source.OnSinkRemoved(sink);
         }
     }
 }

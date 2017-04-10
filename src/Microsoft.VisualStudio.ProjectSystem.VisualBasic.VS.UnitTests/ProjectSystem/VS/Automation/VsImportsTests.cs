@@ -51,13 +51,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         }
 
         [Fact]
+        public void Constructor_NullAsIUnconfiguredProjectVsServices_ThrowsArgumentNull()
+        {
+            Assert.Throws<ArgumentNullException>("unconfiguredProjectVSServices", () =>
+            {
+                GetVSImports(
+                    Mock.Of<VSLangProj.VSProject>(),
+                    Mock.Of<IProjectThreadingService>(),
+                    Mock.Of<ActiveConfiguredProject<ConfiguredProject>>(),
+                    Mock.Of<IProjectLockService>());
+            });
+        }
+
+        [Fact]
         public void Constructor_NotNull()
         {
             var vsimports = GetVSImports(
                                 Mock.Of<VSLangProj.VSProject>(),
                                 Mock.Of<IProjectThreadingService>(),
                                 Mock.Of<ActiveConfiguredProject<ConfiguredProject>>(),
-                                Mock.Of<IProjectLockService>());
+                                Mock.Of<IProjectLockService>(),
+                                Mock.Of<IUnconfiguredProjectVsServices>());
 
             Assert.NotNull(vsimports);
         }
@@ -120,9 +134,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             VSLangProj.VSProject vsProject = null,
             IProjectThreadingService threadingService = null,
             ActiveConfiguredProject<ConfiguredProject> activeConfiguredProject = null,
-            IProjectLockService lockService = null)
+            IProjectLockService lockService = null,
+            IUnconfiguredProjectVsServices vsServices = null)
         {
-            return new VSImports(vsProject, threadingService, activeConfiguredProject, lockService);
+            return new VSImports(vsProject, threadingService, activeConfiguredProject, lockService, vsServices);
         }
     }
 }
