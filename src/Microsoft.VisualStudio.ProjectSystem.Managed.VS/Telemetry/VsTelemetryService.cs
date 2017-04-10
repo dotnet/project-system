@@ -8,26 +8,24 @@ namespace Microsoft.VisualStudio.Telemetry
     [Export(typeof(ITelemetryService))]
     internal class VsTelemetryService : ITelemetryService
     {
-        const string EventPrefix = "vs/projectsystem/";
-
-        public void PostEvent(string telemetryEvent)
+        public void PostEvent(string eventName)
         {
-            TelemetryService.DefaultSession.PostEvent($"{EventPrefix}{telemetryEvent}");
+            TelemetryService.DefaultSession.PostEvent(eventName);
         }
 
-        public TelemetryEventCorrelation PostOperation(string operationPath, TelemetryResult result, string resultSummary = null, TelemetryEventCorrelation[] correlatedWith = null)
+        public TelemetryEventCorrelation PostOperation(string eventName, TelemetryResult result, string resultSummary = null, TelemetryEventCorrelation[] correlatedWith = null)
         {
             return TelemetryService.DefaultSession.PostOperation(
-                eventName: $"{EventPrefix}{operationPath}",
+                eventName: eventName,
                 result: result,
                 resultSummary: resultSummary,
                 correlatedWith: correlatedWith);
         }
 
-        public TelemetryEventCorrelation Report(string eventPostfix, string description, Exception exception, Func<IFaultUtility, int> callback = null)
+        public TelemetryEventCorrelation Report(string eventName, string description, Exception exception, Func<IFaultUtility, int> callback = null)
         {
             return TelemetryService.DefaultSession.PostFault(
-                eventName: $"{EventPrefix}{eventPostfix}",
+                eventName: eventName,
                 description: description,
                 exceptionObject: exception,
                 gatherEventDetails: callback);
