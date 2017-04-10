@@ -79,14 +79,11 @@ xcopy /SIY .\\src\\Targets\\*.targets "%VS_MSBUILD_MANAGED%"
 xcopy /SIY .\\bin\\Release\\Rules\\*.xaml "%VS_MSBUILD_MANAGED%"
 """)
 
-            // Pull down the Open submodule of roslyn-internal as the 'Open' sources are not present until this step is executed
+            // Restore roslyn nuget packages
             batchFile("""
-echo *** Pull down the Open submodule for Roslyn-Internal ***
-pushd %WORKSPACE%\\roslyn-internal
-git submodule init
-git submodule sync
-git submodule update --init --recursive
-init.cmd
+echo *** Restore Roslyn ***
+pushd %WORKSPACE%\\roslyn
+Restore.cmd
 """)
 
             // Build the SDK and install .NET Core Templates.
@@ -115,19 +112,19 @@ echo %1 - Build failed with ERRORLEVEL %ERRORLEVEL%
 exit /b 1
 """)
 
-            // Build roslyn-internal and run netcore VSI tao tests.
+            // Build roslyn and run netcore VSI tests.
             batchFile("""
 echo *** Build Roslyn Internal and Test Roslyn Project System ***
 SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
 SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
 SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
 
-pushd %WORKSPACE%\\roslyn-internal
-set TEMP=%WORKSPACE%\\roslyn-internal\\Open\\Binaries\\Temp
+pushd %WORKSPACE%\\roslyn\\build\\scripts\\
+set TEMP=%WORKSPACE%\\roslyn\\Binaries\\Temp
 mkdir %TEMP%
 set TMP=%TEMP%
 
-Open\\build\\scripts\\cibuild.cmd /release /testVsiNetCore 
+cibuild.cmd /release /testVsiNetCore 
 """)
 
             // Revert patched targets and rules from backup.
@@ -205,15 +202,12 @@ static void addVsiMultiScm(def myJob, def project, def isPR) {
             }
             git {
                 remote {
-                    url('https://github.com/dotnet/roslyn-internal')
-                    credentials('dotnet-bot-private-repo-token')
+                    url('https://github.com/dotnet/roslyn')
                 }
                 extensions {
-                    relativeTargetDirectory('roslyn-internal')
+                    relativeTargetDirectory('roslyn')
                 }
-                // roslyn-internal - pull in a specific LKG commit from master.
-                // In future, '*/master' can be placed here to pull latest sources.
-                branch('00cf61f29f0b79b8bc5cf9f5a534c61fdce7c2fb')
+                branch('*/master')
             }
         }
     }
