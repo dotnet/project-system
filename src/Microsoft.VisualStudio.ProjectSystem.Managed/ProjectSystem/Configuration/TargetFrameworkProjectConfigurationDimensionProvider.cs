@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         {
             Requires.NotNull(project, nameof(project));
 
-            string targetFrameworksProperty = await _projectXmlAccessor.GetEvaluatedPropertyValue(project, ConfigurationGeneral.TargetFrameworksProperty).ConfigureAwait(true);
+            string targetFrameworksProperty = await ProjectXmlAccessor.GetEvaluatedPropertyValue(project, ConfigurationGeneral.TargetFrameworksProperty).ConfigureAwait(true);
             if (targetFrameworksProperty != null)
             {
                 return BuildUtilities.GetPropertyValues(targetFrameworksProperty);
