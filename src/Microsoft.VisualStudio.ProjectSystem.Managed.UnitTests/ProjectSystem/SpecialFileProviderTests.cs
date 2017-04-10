@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders;
 using Xunit;
+using System.IO;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -334,6 +335,59 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
             var specialFilesManager = ISpecialFilesManagerFactory.Create();
 
             var provider = new SettingsFileSpecialFileProvider(projectTree, sourceItemsProvider, templateProvider, fileSystem, specialFilesManager);
+            var filePath = await provider.GetFileAsync(SpecialFiles.AppSettings, SpecialFileFlags.CreateIfNotExist);
+
+            Assert.Equal(expectedFilePath, filePath);
+        }
+
+
+        [Theory]
+        // Property specified and not in the tree
+        [InlineData(@"
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
+    Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
+    myapp.manifest, FilePath: ""C:\Foo\myapp.manifest""
+", @"C:\Foo\myapp.manifest", @"C:\Foo\myapp.manifest")]
+        // Property specified but not in the tree
+        [InlineData(@"
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
+    Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
+", @"C:\Foo\myapp.manifest", @"C:\Foo\Properties\app.manifest")]
+        [InlineData(@"
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
+    Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
+    myapp.manifest, FilePath: ""C:\Foo\myapp.manifest""
+", "", @"C:\Foo\Properties\app.manifest")]
+        [InlineData(@"
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
+    Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
+    myapp.manifest, FilePath: ""C:\Foo\myapp.manifest""
+", "Default", @"C:\Foo\Properties\app.manifest")]
+        [InlineData(@"
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
+    Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
+    myapp.manifest, FilePath: ""C:\Foo\myapp.manifest""
+", "NoManifest", @"C:\Foo\Properties\app.manifest")]
+        public async Task AppManifestSpecialFileProvider_Test(string input, string appManifestPropertyValue, string expectedFilePath)
+        {
+            var inputTree = ProjectTreeParser.Parse(input);
+
+            var projectTreeProvider = IProjectTreeProviderFactory.Create(@"C:\Foo\Properties", (root, path) =>
+                                                                                                         {
+                                                                                                             root.TryFindImmediateChild(Path.GetFileName(path), out var node);
+                                                                                                             return node;
+                                                                                                         });
+            var projectTree = IPhysicalProjectTreeFactory.Create(currentTree: inputTree, provider: projectTreeProvider);
+            var sourceItemsProvider = IProjectItemProviderFactory.Create();
+            var fileSystem = IFileSystemFactory.Create(path => true);
+            var specialFilesManager = ISpecialFilesManagerFactory.Create();
+
+            var properties = ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(), new PropertyPageData {
+                                                                                                                          Category = ConfigurationGeneralBrowseObject.SchemaName,
+                                                                                                                          PropertyName = ConfigurationGeneralBrowseObject.ApplicationManifestProperty,
+                                                                                                                          Value = appManifestPropertyValue
+                                                                                                                       });
+            var provider = new AppManifestSpecialFileProvider(projectTree, sourceItemsProvider, null, fileSystem, specialFilesManager, properties);
             var filePath = await provider.GetFileAsync(SpecialFiles.AppSettings, SpecialFileFlags.CreateIfNotExist);
 
             Assert.Equal(expectedFilePath, filePath);
