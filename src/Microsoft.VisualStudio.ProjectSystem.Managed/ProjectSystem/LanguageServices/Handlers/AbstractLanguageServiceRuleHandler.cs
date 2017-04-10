@@ -13,9 +13,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         public virtual bool ReceiveUpdatesWithEmptyProjectChange => false;
 
-        public virtual Task HandleAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
+        public virtual void Handle(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
         {
-            return Task.CompletedTask;
         }
 
         public virtual Task OnContextReleasedAsync(IWorkspaceProjectContext context)

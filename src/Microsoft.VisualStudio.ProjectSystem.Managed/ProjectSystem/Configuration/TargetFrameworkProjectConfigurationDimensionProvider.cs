@@ -32,16 +32,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         {
             Requires.NotNull(project, nameof(project));
 
-            string targetFrameworkProperty = await ProjectXmlAccessor.GetEvaluatedPropertyValue(project, ConfigurationGeneral.TargetFrameworkProperty).ConfigureAwait(true);
-            if (targetFrameworkProperty != null)
+            string targetFrameworksProperty = await _projectXmlAccessor.GetEvaluatedPropertyValue(project, ConfigurationGeneral.TargetFrameworksProperty).ConfigureAwait(true);
+            if (targetFrameworksProperty != null)
             {
-                // If the project already defines a specific "TargetFramework" to target, then this is not a cross-targeting project and we don't need a target framework dimension.
-                return ImmutableArray<string>.Empty;
+                return BuildUtilities.GetPropertyValues(targetFrameworksProperty);
             }
             else
             {
-                string targetFrameworksProperty = await ProjectXmlAccessor.GetEvaluatedPropertyValue(project, ConfigurationGeneral.TargetFrameworksProperty).ConfigureAwait(true);
-                return BuildUtilities.GetPropertyValues(targetFrameworksProperty);
+                // If the project doesn't have a "TargetFrameworks" property, then this is not a cross-targeting project and we don't need a target framework dimension.
+                return ImmutableArray<string>.Empty;
             }
         }
 

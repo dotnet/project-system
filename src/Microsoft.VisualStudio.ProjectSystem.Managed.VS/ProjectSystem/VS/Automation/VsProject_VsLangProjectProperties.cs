@@ -5,7 +5,7 @@ using VSLangProj110;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
-    internal partial class VSProject : VSLangProj.ProjectProperties
+    public partial class VSProject : VSLangProj.ProjectProperties
     {
 
         private ProjectProperties ProjectProperties
