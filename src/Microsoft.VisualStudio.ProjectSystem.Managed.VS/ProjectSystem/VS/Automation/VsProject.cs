@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.ComponentModel.Composition;
-using System.Runtime.InteropServices;
 using EnvDTE;
 using VSLangProj;
 
@@ -25,27 +24,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         private readonly VSLangProj.VSProject _vsProject;
         private readonly IProjectThreadingService _threadingService;
         private readonly ActiveConfiguredProject<ProjectProperties> _projectProperties;
-        private readonly VSProjectEvents _projectEvents;
-        private readonly Imports _imports;
 
         [ImportingConstructor]
         internal VSProject(
             [Import(ExportContractNames.VsTypes.CpsVSProject)] VSLangProj.VSProject vsProject,
-            [Import(AllowDefault = true)] VSProjectEvents projectEvents,
-            [Import(AllowDefault = true)] Imports imports,
             IProjectThreadingService threadingService,
-            ActiveConfiguredProject<ProjectProperties> projectProperties)
+            ActiveConfiguredProject<ProjectProperties> projectProperties,
+            UnconfiguredProject project)
         {
             Requires.NotNull(vsProject, nameof(vsProject));
             Requires.NotNull(threadingService, nameof(threadingService));
             Requires.NotNull(projectProperties, nameof(projectProperties));
 
             _vsProject = vsProject;
-            _projectEvents = projectEvents;
-            _imports = imports;
             _threadingService = threadingService;
             _projectProperties = projectProperties;
+
+            ImportsImpl = new OrderPrecedenceImportCollection<Imports>(projectCapabilityCheckProvider: project);
+            VSProjectEventsImpl = new OrderPrecedenceImportCollection<VSProjectEvents>(projectCapabilityCheckProvider: project);
         }
+
+        [ImportMany]
+        public OrderPrecedenceImportCollection<Imports> ImportsImpl { get; }
+
+        [ImportMany]
+        public OrderPrecedenceImportCollection<VSProjectEvents> VSProjectEventsImpl { get; }
 
         public VSLangProj.References References => _vsProject.References;
 
@@ -61,9 +64,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 
         public bool WorkOffline { get => _vsProject.WorkOffline; set => _vsProject.WorkOffline = value; }
 
-        public Imports Imports => _imports ?? _vsProject.Imports;
+        public Imports Imports => ImportsImpl.FirstOrDefault()?.Value ?? _vsProject.Imports;
 
-        public VSProjectEvents Events => _projectEvents ?? _vsProject.Events;
+        public VSProjectEvents Events => VSProjectEventsImpl.FirstOrDefault()?.Value ?? _vsProject.Events;
 
         public ProjectItem CreateWebReferencesFolder()
         {

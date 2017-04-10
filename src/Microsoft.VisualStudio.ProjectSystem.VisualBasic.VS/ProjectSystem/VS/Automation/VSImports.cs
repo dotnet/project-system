@@ -13,6 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
     [Export(typeof(Imports))]
     [Export(typeof(ImportsEvents))]
     [AppliesTo(ProjectCapability.VisualBasic)]
+    [Order(10)]
     internal class VSImports : ConnectionPointContainer,
                                IEventSource<_dispImportsEvents>,
                                Imports,
