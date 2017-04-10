@@ -205,23 +205,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                         {
                             return _currentAggregateProjectContext;
                         }
-
-                        previousContextToDispose = _currentAggregateProjectContext;
                     }
+
+                    previousContextToDispose = _currentAggregateProjectContext;
                 }
 
                 // Force refresh the CPS active project configuration (needs UI thread).
                 await _commonServices.ThreadingService.SwitchToUIThread();
                 await _activeProjectConfigurationRefreshService.RefreshActiveProjectConfigurationAsync().ConfigureAwait(false);
 
-                // Create new project context.
-                _currentAggregateProjectContext = await _contextProvider.Value.CreateProjectContextAsync().ConfigureAwait(false);
-
                 // Dispose the old project context, if one exists.
                 if (previousContextToDispose != null)
                 {
                     await DisposeAggregateProjectContextAsync(previousContextToDispose).ConfigureAwait(false);
                 }
+
+                // Create new project context.
+                _currentAggregateProjectContext = await _contextProvider.Value.CreateProjectContextAsync().ConfigureAwait(false);
 
                 OnAggregateContextChanged(previousContextToDispose, _currentAggregateProjectContext);
 

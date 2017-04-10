@@ -119,4 +119,5 @@
     <StringProperty Name="FusionName" Visible="False" ReadOnly="True" Description="The full fusion name of the resolved assembly." />
     <StringProperty Name="ResolvedFrom" Visible="False" ReadOnly="True" Description="{}What repository held the reference that was used to resolve this.  (&quot;{GAC}&quot; if it was in the GAC)." />
     <StringProperty Name="FrameworkFile" Visible="False" ReadOnly="True" Description="Is this file a framework file. Ie Found in the target framework directory or in the redist list." />
+    <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
 </Rule>
