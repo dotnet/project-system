@@ -92,7 +92,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                                 vsProjectMock.Object,
                                 Mock.Of<IProjectThreadingService>(),
                                 Mock.Of<ActiveConfiguredProject<ConfiguredProject>>(),
-                                Mock.Of<IProjectLockService>());
+                                Mock.Of<IProjectLockService>(),
+                                Mock.Of<IUnconfiguredProjectVsServices>());
 
             Assert.Equal(dte, vsimports.DTE);
             Assert.Equal(project, vsimports.ContainingProject);
@@ -112,7 +113,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                     Mock.Of<VSLangProj.VSProject>(),
                     Mock.Of<IProjectThreadingService>(),
                     Mock.Of<ActiveConfiguredProject<ConfiguredProject>>(),
-                    Mock.Of<IProjectLockService>());
+                    Mock.Of<IProjectLockService>(),
+                    Mock.Of<IUnconfiguredProjectVsServices>());
 
             vsimports.OnSinkAdded(dispImportsEventsMock.Object);
 
