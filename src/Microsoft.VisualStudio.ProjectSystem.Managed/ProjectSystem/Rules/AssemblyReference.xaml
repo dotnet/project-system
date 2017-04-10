@@ -44,4 +44,5 @@
                     Description="The CLR runtime version targeted by this assembly."
                     Visible="False"
                     ReadOnly="True" />
+    <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
 </Rule>

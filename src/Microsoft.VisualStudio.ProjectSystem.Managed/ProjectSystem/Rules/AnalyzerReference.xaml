@@ -9,4 +9,5 @@
     <Rule.DataSource>
         <DataSource Persistence="ProjectFile" ItemType="Analyzer" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </Rule.DataSource>
+    <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
 </Rule>
