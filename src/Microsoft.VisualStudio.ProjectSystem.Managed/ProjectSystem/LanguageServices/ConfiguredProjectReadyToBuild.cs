@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     [Export(typeof(IConfiguredProjectReadyToBuild))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
-    [Order(int.MaxValue)]
+    [Order(Order.Default)]
     internal sealed class ConfiguredProjectReadyToBuild : IConfiguredProjectReadyToBuild, IDisposable
     {
         private readonly ConfiguredProject _configuredProject;

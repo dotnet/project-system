@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     /// </remarks>
     [Export(typeof(IProjectConfigurationDimensionsProvider))]
     [AppliesTo(ProjectCapabilities.ProjectConfigurationsDeclaredDimensions)]
-    [Order(int.MaxValue)]
+    [Order(DimensionProviderOrder.Configuration)]
     internal class ConfigurationProjectConfigurationDimensionProvider : BaseProjectConfigurationDimensionProvider
     {
         [ImportingConstructor]

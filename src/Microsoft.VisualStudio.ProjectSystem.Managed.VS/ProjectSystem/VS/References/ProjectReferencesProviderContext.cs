@@ -6,7 +6,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 {
     [ExportIVsReferenceManagerUserAsync(VSConstants.ProjectReferenceProvider_string, ReferencePriority.Project)]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
-    [Order(OverrideCPSProvider)]
+    [Order(Order.Default)]
     internal class ProjectReferencesProviderContext : BaseReferenceContextProvider
     {
         /// <summary>

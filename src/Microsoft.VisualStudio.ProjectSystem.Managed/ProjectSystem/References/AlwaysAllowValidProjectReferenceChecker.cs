@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.References
     /// </remarks>
     [Export(typeof(IValidProjectReferenceChecker))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
-    [Order(1)] // Before the default checker, which delegates onto normal P-2-P rules
+    [Order(Order.Default)] // Before the default checker, which delegates onto normal P-2-P rules
     internal class AlwaysAllowValidProjectReferenceChecker : IValidProjectReferenceChecker
     {
         private static readonly Task<SupportedCheckResult> Supported = Task.FromResult(SupportedCheckResult.Supported);

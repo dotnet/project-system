@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     /// </summary>
     [Export( typeof(ILaunchSettingsUIProvider))]
     [AppliesTo(ProjectCapability.LaunchProfiles)]
-    [Order(0)]              // Lowest priority to llow this to be overridden
+    [Order(Order.Lowest)]              // Lowest priority to allow this to be overridden
     internal class ExecutableLaunchSettingsUIProvider : ILaunchSettingsUIProvider
     {
         /// <summary>

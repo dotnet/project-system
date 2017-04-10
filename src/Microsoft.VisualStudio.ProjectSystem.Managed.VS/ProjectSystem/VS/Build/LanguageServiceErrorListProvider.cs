@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
     /// </summary>
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
     [Export(typeof(IVsErrorListProvider))]
-    [Order(1)] // One less than the CPS version of this class, until they've removed it
+    [Order(Order.Default)]
     internal partial class LanguageServiceErrorListProvider : IVsErrorListProvider
     {
         private readonly static Task<AddMessageResult> HandledAndStopProcessing = Task.FromResult(AddMessageResult.HandledAndStopProcessing);

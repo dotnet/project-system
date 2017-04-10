@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
     /// <remarks>We specify attribute 'Order(Int32.MaxValue)` to ensure that this is the most preferred build properties provider, so it overrides target framework setting from prior providers.</remarks>
     [ExportBuildGlobalPropertiesProvider(designTimeBuildProperties: false)]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
-    [Order(int.MaxValue)]
+    [Order(Order.Default)]
     internal class TargetFrameworkGlobalBuildPropertyProvider : StaticGlobalPropertiesProviderBase
     {
         private readonly ConfiguredProject _configuredProject;

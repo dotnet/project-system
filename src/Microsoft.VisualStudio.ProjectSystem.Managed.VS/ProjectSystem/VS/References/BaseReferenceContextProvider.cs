@@ -16,11 +16,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
     internal class BaseReferenceContextProvider : IVsReferenceManagerUserAsync
     {
         /// <summary>
-        /// Value used to override the CPS provider
-        /// </summary>
-        protected const int OverrideCPSProvider = 1;
-
-        /// <summary>
         /// Lazy instance of the next handler in the chain.
         /// </summary>
         private Lazy<Lazy<IVsReferenceManagerUserAsync, IVsReferenceManagerUserComponentMetadataView>> nextHandler;
