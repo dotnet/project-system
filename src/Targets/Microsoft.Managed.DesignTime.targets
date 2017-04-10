@@ -18,6 +18,9 @@
     <DefineCommonManagedReferenceSchemas Condition=" '$(DefineCommonManagedReferenceSchemas)' == '' ">true</DefineCommonManagedReferenceSchemas>
 
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+
+    <!--This property sets the default output types supported by the project system.-->
+    <SupportedOutputTypes Condition="'$(SupportedOutputTypes)' == ''">Exe;WinExe;Library</SupportedOutputTypes>
   </PropertyGroup>
 
   <!--
