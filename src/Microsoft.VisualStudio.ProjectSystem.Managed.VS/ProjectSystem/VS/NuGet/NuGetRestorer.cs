@@ -100,9 +100,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             _designTimeBuildSubscriptionLink?.Dispose();
 
-            var currentProjects = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsAsync().ConfigureAwait(false);
+            var currentProjects = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsAsync()
+                                                                         .ConfigureAwait(false);
 
-            if (currentProjects.Any())
+            if (currentProjects != null)
             {
                 var sourceLinkOptions = new StandardRuleDataflowLinkOptions
                 {
@@ -110,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     PropagateCompletion = true
                 };
 
-                var sourceBlocks = currentProjects.Select(
+                var sourceBlocks = currentProjects.Objects.Select(
                     cp => cp.Services.ProjectSubscription.JointRuleSource.SourceBlock.SyncLinkOptions<IProjectValueVersions>(sourceLinkOptions));
 
                 var target = new ActionBlock<Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary>>(ProjectPropertyChangedAsync);

@@ -28,14 +28,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             return this;
         }
 
-        public IActiveConfiguredProjectsProviderFactory ImplementGetActiveConfiguredProjectsAsync(ImmutableArray<ConfiguredProject> configuredProjects) 
+        public IActiveConfiguredProjectsProviderFactory ImplementGetActiveConfiguredProjectsAsync(ActiveConfiguredObjects<ConfiguredProject> configuredProjects) 
         {
             _mock.Setup(x => x.GetActiveConfiguredProjectsAsync())
                               .Returns(Task.FromResult(configuredProjects));
             return this;
         }
 
-        public IActiveConfiguredProjectsProviderFactory ImplementGetProjectFrameworksAsync(ImmutableArray<ProjectConfiguration> projectConfigurations) 
+        public IActiveConfiguredProjectsProviderFactory ImplementGetProjectFrameworksAsync(ActiveConfiguredObjects<ProjectConfiguration> projectConfigurations) 
         {
             _mock.Setup(x => x.GetActiveProjectConfigurationsAsync())
                               .Returns(Task.FromResult(projectConfigurations));
