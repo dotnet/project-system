@@ -153,20 +153,20 @@ rmdir /S /Q backup
         Utilities.addGithubPushTrigger(newVsiJob)
     }
 
-    Utilities.addHtmlPublisher(newVsiJob, "roslyn-internal/Open/Binaries/Release/Exes/EditorTestApp/VSIntegrationTestLogs", 'VS Integration Test Logs', '*.html')
+    Utilities.addXUnitDotNETResults(newVsiJob, '**/xUnitResults/*.xml')
 }
 
 // Archive VSI artifacts.
 static void addVsiArchive(def myJob) {
   def archiveSettings = new ArchivalSettings()
-  archiveSettings.addFiles('roslyn-internal/Open/Binaries/**/*.pdb')
-  archiveSettings.addFiles('roslyn-internal/Open/Binaries/**/*.xml')
-  archiveSettings.addFiles('roslyn-internal/Open/Binaries/**/*.log')
-  archiveSettings.addFiles('roslyn-internal/Open/Binaries/**/*.zip')
-  archiveSettings.addFiles('roslyn-internal/Open/Binaries/**/*.png')
-  archiveSettings.addFiles('roslyn-internal/Open/Binaries/**/*.xml')
-  archiveSettings.excludeFiles('roslyn-internal/Open/Binaries/Obj/**')
-  archiveSettings.excludeFiles('roslyn-internal/Open/Binaries/Bootstrap/**')
+  archiveSettings.addFiles('roslyn/Binaries/**/*.pdb')
+  archiveSettings.addFiles('roslyn/Binaries/**/*.xml')
+  archiveSettings.addFiles('roslyn/Binaries/**/*.log')
+  archiveSettings.addFiles('roslyn/Binaries/**/*.zip')
+  archiveSettings.addFiles('roslyn/Binaries/**/*.png')
+  archiveSettings.addFiles('roslyn/Binaries/**/*.xml')
+  archiveSettings.excludeFiles('roslyn/Binaries/Obj/**')
+  archiveSettings.excludeFiles('roslyn/Binaries/Bootstrap/**')
 
   archiveSettings.setArchiveOnFailure()
   archiveSettings.setFailIfNothingArchived()
@@ -198,7 +198,7 @@ static void addVsiMultiScm(def myJob, def project, def isPR) {
                     relativeTargetDirectory('sdk')
                 }
                 // pull in a specific LKG commit from master.
-                branch('8da08465436bfe805afb91c6ddf8654a078d0249')
+                branch('*/master')
             }
             git {
                 remote {
