@@ -16,17 +16,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     {
         public const string SelectorGuid = "E720DAD0-1854-47FC-93AF-E719B54B84E6";
         public const string AssemblyQualifiedSelectorTypeName = "Microsoft.VisualStudio.ProjectSystem.VS.FSharpProjectSelector, Microsoft.VisualStudio.ProjectSystem.FSharp.VS";
+        private const string MSBuildXmlNamespace = "http://schemas.microsoft.com/developer/msbuild/2003";
 
         public void GetProjectFactoryGuid(Guid guidProjectType, string pszFilename, out Guid guidProjectFactory)
         {
             XDocument doc = XDocument.Load(pszFilename);
+            GetProjectFactoryGuid(doc, out guidProjectFactory);
+        }
+
+        internal static void GetProjectFactoryGuid(XDocument doc, out Guid guidProjectFactory)
+        {
             XmlNamespaceManager nsm = new XmlNamespaceManager(new NameTable());
-            nsm.AddNamespace("msb", "http://schemas.microsoft.com/developer/msbuild/2003");
+            nsm.AddNamespace("msb", MSBuildXmlNamespace);
 
             // If the project has either a Project-level SDK attribute or an Import-level SDK attribute, we'll open it with the new project system.
-            // Make sure to check for both namespace-qualified and without for projects that get rid of the xmlns attribute.
+            // Check both namespace-qualified and unqualified forms to include projects with and without the xmlns attribute.
             var hasProjectElementWithSdkAttribute = doc.XPathSelectElement("/msb:Project[@Sdk]", nsm) != null || doc.XPathSelectElement("/Project[@Sdk]") != null;
-            var hasImportElementWithSdkAttribute = doc.XPathSelectElement("msb:Import[@Sdk]", nsm) != null || doc.XPathSelectElement("Import[@Sdk]") != null;
+            var hasImportElementWithSdkAttribute = doc.XPathSelectElement("/*/msb:Import[@Sdk]", nsm) != null || doc.XPathSelectElement("/*/Import[@Sdk]") != null;
 
             if (hasProjectElementWithSdkAttribute || hasImportElementWithSdkAttribute)
             {
