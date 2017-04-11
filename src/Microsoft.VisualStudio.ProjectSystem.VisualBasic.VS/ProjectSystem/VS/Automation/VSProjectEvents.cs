@@ -18,13 +18,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             UnconfiguredProject project)
         {
             Requires.NotNull(vsProject, nameof(vsProject));
+            Requires.NotNull(project, nameof(project));
 
             _vsProject = vsProject;
             ImportsEventsImpl = new OrderPrecedenceImportCollection<ImportsEvents>(projectCapabilityCheckProvider: project);
         }
 
         [ImportMany]
-        public OrderPrecedenceImportCollection<ImportsEvents> ImportsEventsImpl { get; }
+        protected OrderPrecedenceImportCollection<ImportsEvents> ImportsEventsImpl { get; set; }
 
         public ReferencesEvents ReferencesEvents => _vsProject.Events.ReferencesEvents;
 

@@ -35,6 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             Requires.NotNull(vsProject, nameof(vsProject));
             Requires.NotNull(threadingService, nameof(threadingService));
             Requires.NotNull(projectProperties, nameof(projectProperties));
+            Requires.NotNull(project, nameof(project));
 
             _vsProject = vsProject;
             _threadingService = threadingService;
@@ -45,10 +46,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         }
 
         [ImportMany]
-        public OrderPrecedenceImportCollection<Imports> ImportsImpl { get; }
+        internal OrderPrecedenceImportCollection<Imports> ImportsImpl { get; set; }
 
         [ImportMany]
-        public OrderPrecedenceImportCollection<VSProjectEvents> VSProjectEventsImpl { get; }
+        internal OrderPrecedenceImportCollection<VSProjectEvents> VSProjectEventsImpl { get; set; }
 
         public VSLangProj.References References => _vsProject.References;
 

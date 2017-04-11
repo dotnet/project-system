@@ -20,9 +20,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         }
 
         [Fact]
-        public void Constructor_ImportsEventsAsNull_ThrowsException()
+        public void Constructor_UnconfiguredProjectAsNull_ThrowsException()
         {
-            Assert.Throws<ArgumentNullException>("importsEvents", () =>
+            Assert.Throws<ArgumentNullException>("project", () =>
             {
                 GetVSProjectEvents(Mock.Of<VSLangProj.VSProject>());
             });
@@ -33,7 +33,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             var referenceEvents = Mock.Of<ReferencesEvents>();
             var buildManagerEvents = Mock.Of<BuildManagerEvents>();
-            var importEvents = Mock.Of<ImportsEvents>();
 
             var projectEventsMock = new Mock<VSLangProj.VSProjectEvents>();
             projectEventsMock.Setup(e => e.ReferencesEvents)
@@ -45,7 +44,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             innerVSProjectMock.Setup(p => p.Events)
                               .Returns(projectEventsMock.Object);
 
-            var vsProjectEvents = GetVSProjectEvents(innerVSProjectMock.Object, importEvents);
+            var unconfiguredProjectMock = new Mock<UnconfiguredProject>();
+            unconfiguredProjectMock.Setup(p => p.Capabilities)
+                                   .Returns((IProjectCapabilitiesScope)null);
+
+            var importEvents = Mock.Of<ImportsEvents>();
+            var importsEventsImpl = new OrderPrecedenceImportCollection<ImportsEvents>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, (UnconfiguredProject)null)
+            {
+                new Lazy<ImportsEvents, IOrderPrecedenceMetadataView>(() => importEvents, IOrderPrecedenceMetadataViewFactory.Create("VisualBasic"))
+            };
+            var vsProjectEvents = GetVSProjectEvents(innerVSProjectMock.Object, unconfiguredProjectMock.Object);
+
+            vsProjectEvents.SetImportsEventsImpl(importsEventsImpl);
 
             Assert.NotNull(vsProjectEvents);
             Assert.Equal(referenceEvents, vsProjectEvents.ReferencesEvents);
@@ -53,11 +63,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             Assert.Equal(importEvents, vsProjectEvents.ImportsEvents);
         }
 
-        private VSProjectEvents GetVSProjectEvents(
+        private VSProjectEventsTestImpl GetVSProjectEvents(
             VSLangProj.VSProject vsproject = null,
-            ImportsEvents events = null)
+            UnconfiguredProject project = null)
         {
-            return new VSProjectEvents(vsproject, events);
+            return new VSProjectEventsTestImpl(vsproject, project);
+        }
+
+        internal class VSProjectEventsTestImpl : VSProjectEvents
+        {
+            public VSProjectEventsTestImpl(VSLangProj.VSProject vsProject, UnconfiguredProject project)
+                : base(vsProject, project)
+            {
+            }
+
+            internal void SetImportsEventsImpl(OrderPrecedenceImportCollection<ImportsEvents> importsEventsImpl)
+            {
+                ImportsEventsImpl = importsEventsImpl;
+            }
         }
     }
 }
