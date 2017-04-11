@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
     [ExportSpecialFileProvider(SpecialFiles.AppManifest)]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
-    class AppManifestSpecialFileProvider : AbstractSpecialFileProvider
+    internal class AppManifestSpecialFileProvider : AbstractSpecialFileProvider
     {
         private readonly ProjectProperties _projectProperties;
         private const string NoManifestValue = "NoManifest";
@@ -24,6 +24,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
                                               ProjectProperties projectProperties) 
             : base(projectTree, sourceItemsProvider, templateFileCreationService, fileSystem, specialFilesManager)
         {
+            Requires.NotNull(projectProperties, nameof(projectProperties));
+
             _projectProperties = projectProperties;
         }
 
@@ -35,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         {
             // If the ApplicationManifest property is defined then we should just use that - otherwise fall back to the default logic to find app.manifest.
             var configurationGeneral = await _projectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync().ConfigureAwait(false);
-            var appManifestProperty = await configurationGeneral.ApplicationManifest.GetValueAsync().ConfigureAwait(false) as string;
+            var appManifestProperty = await configurationGeneral.ApplicationManifest.GetEvaluatedValueAtEndAsync().ConfigureAwait(false) as string;
 
             if (!string.IsNullOrEmpty(appManifestProperty) && 
                 !appManifestProperty.Equals(DefaultManifestValue, StringComparison.InvariantCultureIgnoreCase) && 

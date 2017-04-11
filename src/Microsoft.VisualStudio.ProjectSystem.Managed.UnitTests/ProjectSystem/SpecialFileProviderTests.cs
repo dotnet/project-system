@@ -342,7 +342,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
 
 
         [Theory]
-        // Property specified and not in the tree
+        // Property specified and in the tree
         [InlineData(@"
 Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
     Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
@@ -362,7 +362,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
 Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
     Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
     myapp.manifest, FilePath: ""C:\Foo\myapp.manifest""
-", "Default", @"C:\Foo\Properties\app.manifest")]
+", "DefaultManifest", @"C:\Foo\Properties\app.manifest")]
         [InlineData(@"
 Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
     Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
