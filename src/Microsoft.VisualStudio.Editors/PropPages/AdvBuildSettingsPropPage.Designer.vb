@@ -79,7 +79,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             resources.ApplyResources(Me.cboReportCompilerErrors, "cboReportCompilerErrors")
             Me.cboReportCompilerErrors.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.cboReportCompilerErrors.FormattingEnabled = True
-            Me.cboReportCompilerErrors.Items.AddRange(New Object() {resources.GetString("cboReportCompilerErrors.Items"), resources.GetString("cboReportCompilerErrors.Items1"), resources.GetString("cboReportCompilerErrors.Items2"), resources.GetString("cboReportCompilerErrors.Items3")})
+            Me.cboReportCompilerErrors.Items.AddRange(New Object() {New ComboItem("none", resources.GetString("cboReportCompilerErrors.Items")), New ComboItem("prompt", resources.GetString("cboReportCompilerErrors.Items1")), New ComboItem("send", resources.GetString("cboReportCompilerErrors.Items2")), New ComboItem("queue", resources.GetString("cboReportCompilerErrors.Items3"))})
             Me.cboReportCompilerErrors.Name = "cboReportCompilerErrors"
             '
             'lblDebugInfo
@@ -92,7 +92,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             resources.ApplyResources(Me.cboDebugInfo, "cboDebugInfo")
             Me.cboDebugInfo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.cboDebugInfo.FormattingEnabled = True
-            Me.cboDebugInfo.Items.AddRange(New Object() {resources.GetString("cboDebugInfo.Items"), resources.GetString("cboDebugInfo.Items1"), resources.GetString("cboDebugInfo.Items2"), resources.GetString("cboDebugInfo.Items3"), resources.GetString("cboDebugInfo.Items4")})
+            Me.cboDebugInfo.Items.AddRange(New Object() {New ComboItem("none", resources.GetString("cboDebugInfo.Items")), New ComboItem("full", resources.GetString("cboDebugInfo.Items1")), New ComboItem("pdbonly", resources.GetString("cboDebugInfo.Items2")), New ComboItem("portable", resources.GetString("cboDebugInfo.Items3")), New ComboItem("embedded", resources.GetString("cboDebugInfo.Items4")) })
             Me.cboDebugInfo.Name = "cboDebugInfo"
             '
             'lblFileAlignment

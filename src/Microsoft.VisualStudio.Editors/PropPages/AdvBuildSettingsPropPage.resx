@@ -217,19 +217,19 @@
     <value>Left, Right</value>
   </data>
   <data name="cboReportCompilerErrors.Items" xml:space="preserve">
-    <value>none</value>
+    <value>None</value>
     <comment>{Locked}</comment>
   </data>
   <data name="cboReportCompilerErrors.Items1" xml:space="preserve">
-    <value>prompt</value>
+    <value>Prompt</value>
     <comment>{Locked}</comment>
   </data>
   <data name="cboReportCompilerErrors.Items2" xml:space="preserve">
-    <value>send</value>
+    <value>Send</value>
     <comment>{Locked}</comment>
   </data>
   <data name="cboReportCompilerErrors.Items3" xml:space="preserve">
-    <value>queue</value>
+    <value>Queue</value>
     <comment>{Locked}</comment>
   </data>
   <data name="cboReportCompilerErrors.Location" type="System.Drawing.Point, System.Drawing">
@@ -293,23 +293,23 @@
     <value>Left, Right</value>
   </data>
   <data name="cboDebugInfo.Items" xml:space="preserve">
-    <value>none</value>
+    <value>None</value>
     <comment>{Locked}</comment>
   </data>
   <data name="cboDebugInfo.Items1" xml:space="preserve">
-    <value>full</value>
+    <value>Full</value>
     <comment>{Locked}</comment>
   </data>
   <data name="cboDebugInfo.Items2" xml:space="preserve">
-    <value>pdb-only</value>
+    <value>Pdb-only</value>
     <comment>{Locked}</comment>
   </data>
   <data name="cboDebugInfo.Items3" xml:space="preserve">
-    <value>portable</value>
+    <value>Portable</value>
     <comment>{Locked}</comment>
   </data>
   <data name="cboDebugInfo.Items4" xml:space="preserve">
-    <value>embedded</value>
+    <value>Embedded</value>
     <comment>{Locked}</comment>
   </data>
   <data name="cboDebugInfo.Location" type="System.Drawing.Point, System.Drawing">
