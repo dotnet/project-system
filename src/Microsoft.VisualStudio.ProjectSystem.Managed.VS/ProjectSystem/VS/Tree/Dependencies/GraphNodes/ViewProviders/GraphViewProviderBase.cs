@@ -76,6 +76,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
 
             foreach (var nodeToAdd in nodesToAdd)
             {
+                if (!nodeToAdd.Visible)
+                {
+                    continue;
+                }
+
                 Builder.AddGraphNode(graphContext, projectPath, dependencyGraphNode, nodeToAdd);
             }
 

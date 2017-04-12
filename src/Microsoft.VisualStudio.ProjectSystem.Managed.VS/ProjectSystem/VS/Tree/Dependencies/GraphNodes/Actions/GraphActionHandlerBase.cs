@@ -60,7 +60,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             var id = dependency?.Id;
             if (id == null)
             {
-                // now check node file path if it is a DependencyNodeId 
                 id = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.File);
                 if (id.StartsWith(projectFolder, StringComparison.OrdinalIgnoreCase))
                 {
