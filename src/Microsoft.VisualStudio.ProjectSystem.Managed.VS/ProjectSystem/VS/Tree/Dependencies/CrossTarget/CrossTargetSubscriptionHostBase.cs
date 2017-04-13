@@ -152,7 +152,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         private async Task UpdateProjectContextAndSubscriptionsAsync()
         {
-            var previousProjectContext = _currentAggregateProjectContext;
+            var previousProjectContext = await ExecuteWithinLockAsync(() =>
+            {
+                return Task.FromResult(_currentAggregateProjectContext);
+            });
+
             var newProjectContext = await UpdateProjectContextAsync().ConfigureAwait(false);
             if (previousProjectContext != newProjectContext)
             {
@@ -189,9 +193,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                         {
                             return _currentAggregateProjectContext;
                         }
-
-                        // Dispose the old workspace project context for the previous target framework.
-                        await DisposeAggregateProjectContextAsync(_currentAggregateProjectContext).ConfigureAwait(false);
                     }
                     else
                     {
