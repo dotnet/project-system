@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
             {
                 
                 childKey.SetValue("Assembly", _classType.Assembly.FullName);
-                childKey.SetValue("Class", _classInfo);
+                childKey.SetValue("Class", _classType.FullName);
                 childKey.SetValue("InprocServer32", "$System$\\mscoree.dll");
                 childKey.SetValue("ThreadingModel", "Both");
             }
