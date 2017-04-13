@@ -58,8 +58,8 @@
   <StringProperty Name="BaseIntermediateOutputPath" />
   <EnumProperty Name="OutputType">
     <EnumValue Name="Library" DisplayName="Библиотека классов" />
-    <EnumValue Name="exe" DisplayName="Консольное приложение" />
-    <EnumValue Name="winexe" DisplayName="Приложение Windows" />
+    <EnumValue Name="Exe" DisplayName="Console Application" />
+    <EnumValue Name="WinExe" DisplayName="Windows Application" />
     <EnumValue Name="AppContainerExe" DisplayName="Приложение Магазина Windows" />
     <EnumValue Name="WinMDObj" DisplayName="WinMD" />
   </EnumProperty>
@@ -116,5 +116,6 @@
   <StringProperty Name="SharedProjectAppliesTo" Visible="False" Description="Выражение сопоставления возможностей, которое по минимуму тестирует язык общедоступного проекта; используется для фильтрации выбранных элементов &quot;Добавление ссылок общедоступного проекта&quot;." />
   <BoolProperty Name="AlwaysUseNumericalSuffixInItemNames" Visible="False" Description="Указывает, должны ли имена новых добавленных элементов заканчиваться суффиксом в виде числа." />
   <StringProperty Name="LanguageServiceName" ReadOnly="True" Visible="False" Description="Представляет атрибут LanguageName, передаваемый в Roslyn" />
+  <StringProperty Name="LanguageServiceId" ReadOnly="True" Visible="False" Description="Represents the GUID of object that implements the language service for the project." />
   <StringProperty Name="TemplateLanguage" ReadOnly="True" Visible="False" Description="Представляет язык, который сохраняется в элементах и шаблонах проектов" />
 </Rule>

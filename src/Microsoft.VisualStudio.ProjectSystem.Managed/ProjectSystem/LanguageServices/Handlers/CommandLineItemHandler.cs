@@ -2,8 +2,6 @@
 
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
@@ -12,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     ///     Handles changes to the command-line arguments that are passed to the compiler during design-time builds.
     /// </summary>
     [Export(typeof(ILanguageServiceRuleHandler))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
     internal class CommandLineItemHandler : AbstractLanguageServiceRuleHandler
     {
         private readonly ICommandLineParserService _commandLineParser;
@@ -45,9 +43,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         // Broken design time builds generates updates with no changes.
         public override bool ReceiveUpdatesWithEmptyProjectChange => true;
 
-        public override Task HandleAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
+        public override void Handle(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
         {
-            Requires.NotNull(e, nameof(e));
             Requires.NotNull(projectChange, nameof(projectChange));
 
             if (!ProcessDesignTimeBuildFailure(projectChange, context))
@@ -55,8 +52,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 ProcessOptions(projectChange, context);
                 ProcessItems(projectChange, context, isActiveContext);
             }
-
-            return Task.CompletedTask;
         }
 
         private static bool ProcessDesignTimeBuildFailure(IProjectChangeDescription projectChange, IWorkspaceProjectContext context)
@@ -79,8 +74,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         private void ProcessItems(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
         {
-            CommandLineArguments addedItems = _commandLineParser.Parse(projectChange.Difference.AddedItems);
-            CommandLineArguments removedItems = _commandLineParser.Parse(projectChange.Difference.RemovedItems);
+            BuildOptions addedItems = _commandLineParser.Parse(projectChange.Difference.AddedItems);
+            BuildOptions removedItems = _commandLineParser.Parse(projectChange.Difference.RemovedItems);
 
             foreach (var handler in Handlers)
             {

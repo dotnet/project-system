@@ -981,9 +981,9 @@
   <data name="&gt;&gt;EnableUnmanagedDebugging.ZOrder" xml:space="preserve">
     <value>14</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <data name="$this.Localizable" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
+  </data>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
   </data>
@@ -1010,5 +1010,8 @@
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase, Microsoft.VisualStudio.AppDesigner, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="StartArguments.AccessibleName" xml:space="preserve">
+    <value>Command line arguments</value>
   </data>
 </root>

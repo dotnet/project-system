@@ -121,4 +121,5 @@
     <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="The evaluated item name of the original reference item whose resolution resulted in this resolved reference item." />
     <StringProperty Name="FusionName" Visible="False" ReadOnly="True" />
     <StringProperty Name="Name" Visible="false" ReadOnly="True" />
+    <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
 </Rule>

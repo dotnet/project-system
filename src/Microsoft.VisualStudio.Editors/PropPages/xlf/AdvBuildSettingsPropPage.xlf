@@ -55,6 +55,14 @@
         <source>Chec&amp;k for arithmetic overflow/underflow</source>
         <note />
       </trans-unit>
+      <trans-unit id="CSharpLanguageVerison.Default">
+        <source>C# latest major version (default)</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="CSharpLanguageVerison.Latest">
+        <source>C# latest minor version (latest)</source>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

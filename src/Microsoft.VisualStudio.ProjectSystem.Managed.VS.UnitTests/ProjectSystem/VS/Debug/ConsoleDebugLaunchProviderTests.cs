@@ -69,11 +69,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
                 o.Services == configuredProjectServices);
             _mockTokenReplace.Setup(s => s.ReplaceTokensInProfileAsync(It.IsAny<ILaunchProfile>())).Returns<ILaunchProfile>(p => Task.FromResult(p));
 
+            IActiveDebugFrameworkServices activeDebugFramework = Mock.Of<IActiveDebugFrameworkServices>( o =>
+                o.GetConfiguredProjectForActiveFrameworkAsync() == Task.FromResult(configuredProject));
             var debugProvider = new ConsoleDebugTargetsProvider(
                                             configuredProject,
                                            _mockTokenReplace.Object,
                                            _mockFS,
                                            _mockEnvironment.Object,
+                                           activeDebugFramework,
                                            projectProperties);
             return debugProvider;
         }

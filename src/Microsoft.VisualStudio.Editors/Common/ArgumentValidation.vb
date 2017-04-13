@@ -5,31 +5,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
     Friend Module ArgumentValidation
 
         ''' <summary>
-        ''' Throws ArgumentNullException if the argument is Nothing
-        ''' </summary>
-        ''' <param name="argument"></param>
-        ''' <param name="parameter"></param>
-        ''' <remarks></remarks>
-        Public Sub ValidateArgumentNotNothing(argument As Object, parameter As String)
-            If argument Is Nothing Then
-                Throw New ArgumentNullException(parameter)
-            End If
-        End Sub
-
-        ''' <summary>
-        ''' Throws ArgumentException if the argument is Nothing or empty string
-        ''' </summary>
-        ''' <param name="argument"></param>
-        ''' <param name="parameter"></param>
-        ''' <remarks></remarks>
-        Public Sub ValidateArgumentNotNothingOrEmptyString(argument As String, parameter As String)
-            If argument Is Nothing OrElse argument.Length = 0 Then
-                Throw CreateArgumentException(parameter)
-            End If
-        End Sub
-
-
-        ''' <summary>
         ''' Creates an ArgumentException based on the name of the argument that is invalid.
         ''' </summary>
         ''' <param name="argumentName"></param>

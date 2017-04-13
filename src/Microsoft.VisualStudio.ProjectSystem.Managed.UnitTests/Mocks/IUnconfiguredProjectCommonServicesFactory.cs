@@ -45,5 +45,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             return mock.Object;
         }
+
+        public static IUnconfiguredProjectCommonServices ImplementProject(UnconfiguredProject project)
+        {
+            return Create(project: project);
+        }
     }
 }

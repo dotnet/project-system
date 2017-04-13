@@ -38,6 +38,16 @@
         <target state="translated">GenerateNuGetPackageTopLevelBuild</target>
         <note />
       </trans-unit>
+      <trans-unit id="DebugTargetMenuDebugFrameworkMenu|ButtonText">
+        <source>Framework</source>
+        <target state="new">Framework</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="cmdidDebugFrameworks|ButtonText">
+        <source>Framework</source>
+        <target state="new">Framework</target>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

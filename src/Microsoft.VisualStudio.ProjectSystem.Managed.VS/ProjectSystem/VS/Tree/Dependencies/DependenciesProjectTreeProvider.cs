@@ -4,18 +4,17 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
-using System.Diagnostics.Contracts;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.Build.Framework.XamlTypes;
-using Microsoft.VisualStudio.Imaging;
+using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.References;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
-using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
 using Task = System.Threading.Tasks.Task;
@@ -26,62 +25,64 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     /// Provides the special "Dependencies" folder to project trees.
     /// </summary>
     [Export(ExportContractNames.ProjectTreeProviders.PhysicalViewRootGraft, typeof(IProjectTreeProvider))]
-    [Export(typeof(IDependenciesGraphProjectContext))]
+    [Export(typeof(IDependenciesTreeServices))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal class DependenciesProjectTreeProvider : ProjectTreeProviderBase,
-                                                     IProjectTreeProvider,
-                                                     IDependenciesGraphProjectContext
+    internal class DependenciesProjectTreeProvider :
+        ProjectTreeProviderBase,
+        IProjectTreeProvider,
+        IDependenciesTreeServices
     {
-        private static readonly ProjectTreeFlags DependenciesRootNodeFlags
-                = ProjectTreeFlags.Create(ProjectTreeFlags.Common.BubbleUp
-                                          | ProjectTreeFlags.Common.ReferencesFolder
-                                          | ProjectTreeFlags.Common.VirtualFolder)
-                                  .Add("DependenciesRootNode");
-
-        /// <summary>
-        /// Keeps latest updated snapshot of all rules schema catalogs
-        /// </summary>
-        private IImmutableDictionary<string, IPropertyPagesCatalog> NamedCatalogs { get; set; }
-
-        /// <summary>
-        /// Gets the collection of <see cref="IProjectTreePropertiesProvider"/> imports 
-        /// that apply to the references tree.
-        /// </summary>
-        [ImportMany(ReferencesProjectTreeCustomizablePropertyValues.ContractName)]
-        private OrderPrecedenceImportCollection<IProjectTreePropertiesProvider> ProjectTreePropertiesProviders { get; set; }
-
-        /// <summary>
-        /// Provides a way to extend Dependencies node by consuming sub tree providers that represent
-        /// a particular dependency type and are responsible for Dependencies\[TypeNode] and it's contents.
-        /// </summary>
-        [ImportMany]
-        public OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider> SubTreeProviders { get; }
-
-        /// <summary>
-        /// Keeps latest data source versions sent from each subtree provider. Is needed for merging and 
-        /// posting consistent data source versions after we process tree updates.
-        /// </summary>
-        private Dictionary<string, IImmutableDictionary<NamedIdentity, IComparable>> _latestDataSourcesVersions =
-            new Dictionary<string, IImmutableDictionary<NamedIdentity, IComparable>>(StringComparer.OrdinalIgnoreCase);
+        private readonly object _treeUpdateLock = new object();
+        private Task _treeUpdateQueueTask = null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DependenciesProjectTreeProvider"/> class.
         /// </summary>
         [ImportingConstructor]
-        public DependenciesProjectTreeProvider(IProjectThreadingService threadingService,
-                                               UnconfiguredProject unconfiguredProject)
+        public DependenciesProjectTreeProvider(
+            IProjectThreadingService threadingService,
+            UnconfiguredProject unconfiguredProject,
+            IDependenciesSnapshotProvider dependenciesSnapshotProvider,
+            [Import(DependencySubscriptionsHost.DependencySubscriptionsHostContract)]
+            ICrossTargetSubscriptionsHost dependenciesHost,
+            [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService)
             : base(threadingService, unconfiguredProject)
         {
             ProjectTreePropertiesProviders = new OrderPrecedenceImportCollection<IProjectTreePropertiesProvider>(
                 ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast,
                 projectCapabilityCheckProvider: unconfiguredProject);
 
-            SubTreeProviders = new OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider>(
-                                    ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast,
+            ViewProviders = new OrderPrecedenceImportCollection<IDependenciesTreeViewProvider>(
+                                    ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst,
                                     projectCapabilityCheckProvider: unconfiguredProject);
+
+            DependenciesSnapshotProvider = dependenciesSnapshotProvider;
+            DependenciesHost = dependenciesHost;
+            TasksService = tasksService;
 
             unconfiguredProject.ProjectUnloading += OnUnconfiguredProjectUnloading;
         }
+
+        /// <summary>
+        /// Gets the collection of <see cref="IProjectTreePropertiesProvider"/> imports 
+        /// that apply to the references tree.
+        /// </summary>
+        [ImportMany(ReferencesProjectTreeCustomizablePropertyValues.ContractName)]
+        private OrderPrecedenceImportCollection<IProjectTreePropertiesProvider> ProjectTreePropertiesProviders { get; }
+
+        [ImportMany]
+        private OrderPrecedenceImportCollection<IDependenciesTreeViewProvider> ViewProviders { get; }
+
+        private ICrossTargetSubscriptionsHost DependenciesHost { get; }
+
+        private IDependenciesSnapshotProvider DependenciesSnapshotProvider { get; }
+
+        private IProjectAsynchronousTasksService TasksService { get; }
+
+        /// <summary>
+        /// Keeps latest updated snapshot of all rules schema catalogs
+        /// </summary>
+        private IImmutableDictionary<string, IPropertyPagesCatalog> NamedCatalogs { get; set; }
 
         /// <summary>
         /// See <see cref="IProjectTreeProvider"/>
@@ -135,9 +136,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return false;
             }
 
-            return nodes.All(node => (node.Flags.Contains(DependencyNode.GenericDependencyFlags)
-                                        && node.BrowseObjectProperties != null
-                                        && !node.Flags.Contains(DependencyNode.DoesNotSupportRemove)));
+            return nodes.All(node => node.Flags.Contains(DependencyTreeFlags.SupportsRemove));
         }
 
         /// <summary>
@@ -165,7 +164,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             // Get the list of shared import nodes.
             IEnumerable<IProjectTree> sharedImportNodes = nodes.Where(node =>
-                    node.Flags.Contains(ProjectTreeFlags.Common.SharedProjectImportReference));
+                    node.Flags.Contains(DependencyTreeFlags.SharedProjectFlags));
 
             // Get the list of normal reference Item Nodes (this excludes any shared import nodes).
             IEnumerable<IProjectTree> referenceItemNodes = nodes.Except(sharedImportNodes);
@@ -203,17 +202,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     }
                 }
 
+                var snapshot = DependenciesSnapshotProvider.CurrentSnapshot;
+                Requires.NotNull(snapshot, nameof(snapshot));
+                if (snapshot == null)
+                {
+                    return;
+                }
+
                 // Handle the removal of shared import nodes.
                 var projectXml = await access.GetProjectXmlAsync(UnconfiguredProject.FullPath)
                                              .ConfigureAwait(true);
                 foreach (var sharedImportNode in sharedImportNodes)
                 {
+                    var sharedFilePath = UnconfiguredProject.GetRelativePath(sharedImportNode.FilePath);
+                    if (string.IsNullOrEmpty(sharedFilePath))
+                    {
+                        continue;
+                    }
+
+                    var sharedProjectDependency = snapshot.FindDependency(sharedFilePath);
+                    if (sharedProjectDependency != null)
+                    {
+                        sharedFilePath = sharedProjectDependency.Path;
+                    }
+
                     // Find the import that is included in the evaluation of the specified ConfiguredProject that
                     // imports the project file whose full path matches the specified one.
                     var matchingImports = from import in project.Imports
                                           where import.ImportingElement.ContainingProject == projectXml
-                                          where PathHelper.IsSamePath(import.ImportedProject.FullPath,
-                                                                      sharedImportNode.FilePath)
+                                          where PathHelper.IsSamePath(import.ImportedProject.FullPath, sharedFilePath)
                                           select import;
                     foreach (var importToRemove in matchingImports)
                     {
@@ -242,27 +259,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         public override IProjectTree FindByPath(IProjectTree root, string path)
         {
-            var dependenciesNode = GetSubTreeRootNode(root, DependenciesRootNodeFlags);
-            if (dependenciesNode == null)
-            {
-                return null;
-            }
-
-            var node = dependenciesNode.FindNodeByPath(path);
-            if (node == null)
-            {
-                foreach (var child in dependenciesNode.Children)
-                {
-                    node = child.FindNodeByPath(path);
-
-                    if (node != null)
-                    {
-                        break;
-                    }
-                }
-            }
-
-            return node;
+            return ViewProviders.FirstOrDefault()?.Value.FindByPath(root, path);
         }
 
         /// <summary>
@@ -296,18 +293,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                         lock (SyncObject)
                         {
-                            foreach (var provider in SubTreeProviders)
-                            {
-                                provider.Value.DependenciesChanged += OnDependenciesChanged;
-                            }
+                            DependenciesSnapshotProvider.SnapshotChanged += OnDependenciesSnapshotChanged;
 
                             Verify.NotDisposed(this);
                             var nowait = SubmitTreeUpdateAsync(
                                 (treeSnapshot, configuredProjectExports, cancellationToken) =>
                                 {
                                     var dependenciesNode = CreateDependenciesFolder(null);
-                                    dependenciesNode = CreateOrUpdateSubTreeProviderNodes(dependenciesNode,
-                                                                                          cancellationToken);
+
+                                    // TODO create providers nodes that can be visible when empty
+                                    //dependenciesNode = CreateOrUpdateSubTreeProviderNodes(dependenciesNode, 
+                                    //                                                      cancellationToken);
 
                                     return Task.FromResult(new TreeUpdateResult(dependenciesNode, true));
                                 });
@@ -318,84 +314,67 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
         }
 
-        /// <summary>
-        /// Disposes this instance.
-        /// </summary>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                ProjectContextUnloaded?.Invoke(this, new ProjectContextEventArgs(this));
-            }
-
-            base.Dispose(disposing);
-        }
-
         private Task OnUnconfiguredProjectUnloading(object sender, EventArgs args)
         {
             UnconfiguredProject.ProjectUnloading -= OnUnconfiguredProjectUnloading;
-
-            foreach (var provider in SubTreeProviders)
-            {
-                provider.Value.DependenciesChanged -= OnDependenciesChanged;
-            }
+            DependenciesSnapshotProvider.SnapshotChanged -= OnDependenciesSnapshotChanged;
 
             return Task.CompletedTask;
         }
 
-        private void OnDependenciesChanged(object sender, DependenciesChangedEventArgs e)
+        private void OnDependenciesSnapshotChanged(object sender, SnapshotChangedEventArgs e)
         {
-            if (IsDisposing || IsDisposed)
+            var snapshot = e.Snapshot;
+            if (snapshot == null)
             {
                 return;
+            }
+            
+            lock (_treeUpdateLock)
+            {
+                if (_treeUpdateQueueTask == null || _treeUpdateQueueTask.IsCompleted)
+                {
+                    _treeUpdateQueueTask = ThreadingService.JoinableTaskFactory.RunAsync(async () =>
+                    {
+                        if (TasksService.UnloadCancellationToken.IsCancellationRequested)
+                        {
+                            return;
+                        }
+
+                        await BuildTreeForSnapshotAsync(snapshot).ConfigureAwait(false);
+                    }).Task;
+                }
+                else
+                {
+                    _treeUpdateQueueTask = _treeUpdateQueueTask.ContinueWith(
+                        t => BuildTreeForSnapshotAsync(snapshot), TaskScheduler.Default);
+                }
+            }
+        }
+
+        private Task BuildTreeForSnapshotAsync(IDependenciesSnapshot snapshot)
+        {
+            var viewProvider = ViewProviders.FirstOrDefault();
+            if (viewProvider == null)
+            {
+                return Task.CompletedTask;
             }
 
             var nowait = SubmitTreeUpdateAsync(
                 (treeSnapshot, configuredProjectExports, cancellationToken) =>
                 {
                     var dependenciesNode = treeSnapshot.Value.Tree;
-                    dependenciesNode = CreateOrUpdateSubTreeProviderNode(dependenciesNode,
-                                                                         e.Provider,
-                                                                         changes: e.Changes,
-                                                                         cancellationToken: cancellationToken,
-                                                                         catalogs: e.Catalogs);
-
-                    ProjectContextChanged?.Invoke(this, new ProjectContextEventArgs(this, e.Changes));
+                    if (!cancellationToken.IsCancellationRequested)
+                    {
+                        dependenciesNode = viewProvider.Value.BuildTree(dependenciesNode, snapshot, cancellationToken);
+                    }
 
                     // TODO We still are getting mismatched data sources and need to figure out better 
                     // way of merging, mute them for now and get to it in U1
-                    return Task.FromResult(new TreeUpdateResult(dependenciesNode,
-                                                                false,
-                                                                null /*GetMergedDataSourceVersions(e)*/));
+                    return Task.FromResult(new TreeUpdateResult(dependenciesNode, false, null));
                 });
-        }
 
-        /// <summary>
-        /// Note: this is important to merge data source versions correctly here, since 
-        /// and different providers sending this event might have different processing time 
-        /// and we might end up in later data source versions coming before earlier ones. If 
-        /// we post greater versions before lower ones there will be exception and data flow 
-        /// might be broken after that. 
-        /// Another reason post data source versions here is that there could be other 
-        /// components waiting for Dependencies tree changes and if we don't post versions,
-        /// they could not track our changes.
-        /// </summary>
-        private IImmutableDictionary<NamedIdentity, IComparable> GetMergedDataSourceVersions(
-                    DependenciesChangedEventArgs e)
-        {
-            IImmutableDictionary<NamedIdentity, IComparable> mergedDataSourcesVersions = null;
-            lock (_latestDataSourcesVersions)
-            {
-                if (!string.IsNullOrEmpty(e.Provider.ProviderType) && e.DataSourceVersions != null)
-                {
-                    _latestDataSourcesVersions[e.Provider.ProviderType] = e.DataSourceVersions;
-                }
-
-                mergedDataSourcesVersions =
-                    ProjectDataSources.MergeDataSourceVersions(_latestDataSourcesVersions.Values);
-            }
-
-            return mergedDataSourcesVersions;
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -409,9 +388,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 var values = new ReferencesProjectTreeCustomizablePropertyValues
                 {
                     Caption = VSResources.DependenciesNodeName,
-                    Icon = KnownMonikers.Reference.ToProjectSystemType(),
-                    ExpandedIcon = KnownMonikers.Reference.ToProjectSystemType(),
-                    Flags = DependenciesRootNodeFlags
+                    Icon = ManagedImageMonikers.ReferenceGroup.ToProjectSystemType(),
+                    ExpandedIcon = ManagedImageMonikers.ReferenceGroup.ToProjectSystemType(),
+                    Flags = DependencyTreeFlags.DependenciesRootNodeFlags
                 };
 
                 ApplyProjectTreePropertiesCustomization(null, values);
@@ -426,347 +405,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 return oldNode;
             }
-        }
-
-        private IProjectItemTree CreateProjectItemTreeNode(IProjectTree providerRootTreeNode,
-                                                           IDependencyNode nodeInfo,
-                                                           IProjectCatalogSnapshot catalogs)
-        {
-            var isGenericNodeType = nodeInfo.Flags.Contains(DependencyNode.GenericDependencyFlags);
-            var properties = nodeInfo.Properties ??
-                    ImmutableDictionary<string, string>.Empty
-                                                       .Add(Folder.IdentityProperty, nodeInfo.Caption)
-                                                       .Add(Folder.FullPathProperty, string.Empty);
-
-            // For generic node types we do set correct, known item types, however for custom nodes
-            // provided by third party extensions we can not guarantee that item type will be known. 
-            // Thus always set predefined itemType for all custom nodes.
-            // TODO: generate specific xaml rule for generic Dependency nodes
-            // tracking issue: https://github.com/dotnet/roslyn-project-system/issues/1102
-            var itemType = isGenericNodeType ? nodeInfo.Id.ItemType : Folder.SchemaName;
-
-            // when itemSpec is not in valid absolute path format, property page does not show 
-            // item name correctly. Use real Name for the node here instead of caption, since caption
-            // can have other info like version in it.
-            var itemSpec = nodeInfo.Flags.Contains(DependencyNode.CustomItemSpec)
-                    ? nodeInfo.Name
-                    : nodeInfo.Id.ItemSpec;
-            var itemContext = ProjectPropertiesContext.GetContext(UnconfiguredProject, itemType, itemSpec);
-            var configuredProjectExports = GetActiveConfiguredProjectExports(ActiveConfiguredProject);
-
-            IRule rule = null;
-            if (nodeInfo.Resolved || !isGenericNodeType)
-            {
-                rule = GetRuleForResolvableReference(
-                            itemContext,
-                            new KeyValuePair<string, IImmutableDictionary<string, string>>(
-                                itemSpec, properties),
-                            catalogs,
-                            configuredProjectExports,
-                            isGenericNodeType);
-            }
-            else
-            {
-                rule = GetRuleForUnresolvableReference(
-                            itemContext,
-                            catalogs,
-                            configuredProjectExports);
-            }
-
-            // Notify about tree changes to customization context
-            var customTreePropertyContext = GetCustomPropertyContext(providerRootTreeNode);
-            var customTreePropertyValues = new ReferencesProjectTreeCustomizablePropertyValues
-            {
-                Caption = nodeInfo.Caption,
-                Flags = nodeInfo.Flags,
-                Icon = nodeInfo.Icon.ToProjectSystemType()
-            };
-
-            ApplyProjectTreePropertiesCustomization(customTreePropertyContext, customTreePropertyValues);
-
-            var treeItemNode = NewTree(caption: nodeInfo.Caption,
-                                item: itemContext,
-                                propertySheet: null,
-                                visible: true,
-                                browseObjectProperties: rule,
-                                flags: nodeInfo.Flags,
-                                icon: nodeInfo.Icon.ToProjectSystemType(),
-                                expandedIcon: nodeInfo.ExpandedIcon.ToProjectSystemType());
-
-            return treeItemNode;
-        }
-
-        /// <summary>
-        /// Creates or updates nodes for all known IProjectDependenciesSubTreeProvider implementations.
-        /// </summary>
-        /// <param name="dependenciesNode"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns>IProjectTree for root Dependencies node</returns>
-        private IProjectTree CreateOrUpdateSubTreeProviderNodes(IProjectTree dependenciesNode,
-                                                                CancellationToken cancellationToken)
-        {
-            Requires.NotNull(dependenciesNode, nameof(dependenciesNode));
-
-            foreach (var subTreeProvider in SubTreeProviders)
-            {
-                if (cancellationToken.IsCancellationRequested)
-                {
-                    break;
-                }
-
-                var providerRootTreeNode = GetSubTreeRootNode(dependenciesNode,
-                                                              subTreeProvider.Value.RootNode.Flags);
-                // since this method only creates dependencies providers sub tree nodes
-                // at initialization time, changes and catalogs could be null.
-                dependenciesNode = CreateOrUpdateSubTreeProviderNode(dependenciesNode,
-                                                                     subTreeProvider.Value,
-                                                                     changes: null,
-                                                                     catalogs: null,
-                                                                     cancellationToken: cancellationToken);
-            }
-
-            return dependenciesNode;
-        }
-
-        /// <summary>
-        /// Creates or updates a project tree for a given IProjectDependenciesSubTreeProvider
-        /// </summary>
-        /// <param name="dependenciesNode"></param>
-        /// <param name="subTreeProvider"></param>
-        /// <param name="changes"></param>
-        /// <param name="catalogs">Can be null if sub tree provider does not use design time build</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns>IProjectTree for root Dependencies node</returns>
-        private IProjectTree CreateOrUpdateSubTreeProviderNode(IProjectTree dependenciesNode,
-                                                               IProjectDependenciesSubTreeProvider subTreeProvider,
-                                                               IDependenciesChangeDiff changes,
-                                                               IProjectCatalogSnapshot catalogs,
-                                                               CancellationToken cancellationToken)
-        {
-            Requires.NotNull(dependenciesNode, nameof(dependenciesNode));
-            Requires.NotNull(subTreeProvider, nameof(subTreeProvider));
-            Requires.NotNull(subTreeProvider.RootNode, nameof(subTreeProvider.RootNode));
-            Requires.NotNullOrEmpty(subTreeProvider.RootNode.Caption, nameof(subTreeProvider.RootNode.Caption));
-            Requires.NotNullOrEmpty(subTreeProvider.ProviderType, nameof(subTreeProvider.ProviderType));
-
-            var projectFolder = Path.GetDirectoryName(UnconfiguredProject.FullPath);
-            var providerRootTreeNode = GetSubTreeRootNode(dependenciesNode,
-                                                          subTreeProvider.RootNode.Flags);
-            if (subTreeProvider.RootNode.HasChildren || subTreeProvider.ShouldBeVisibleWhenEmpty)
-            {
-                bool newNode = false;
-                if (providerRootTreeNode == null)
-                {
-                    providerRootTreeNode = NewTree(
-                        caption: subTreeProvider.RootNode.Caption,
-                        visible: true,
-                        filePath: subTreeProvider.RootNode.Id.ToString(),
-                        browseObjectProperties: null,
-                        flags: subTreeProvider.RootNode.Flags,
-                        icon: subTreeProvider.RootNode.Icon.ToProjectSystemType(),
-                        expandedIcon: subTreeProvider.RootNode.ExpandedIcon.ToProjectSystemType());
-
-                    newNode = true;
-                }
-
-                if (changes != null)
-                {
-                    foreach (var removedItem in changes.RemovedNodes)
-                    {
-                        if (cancellationToken.IsCancellationRequested)
-                        {
-                            return dependenciesNode;
-                        }
-
-                        var treeNode = FindProjectTreeNode(providerRootTreeNode, removedItem, projectFolder);
-                        if (treeNode != null)
-                        {
-                            providerRootTreeNode = treeNode.Remove();
-                        }
-                    }
-
-                    foreach (var updatedItem in changes.UpdatedNodes)
-                    {
-                        if (cancellationToken.IsCancellationRequested)
-                        {
-                            return dependenciesNode;
-                        }
-
-                        var treeNode = FindProjectTreeNode(providerRootTreeNode, updatedItem, projectFolder);
-                        if (treeNode != null)
-                        {
-
-                            var updatedNodeParentContext = GetCustomPropertyContext(treeNode.Parent);
-                            var updatedValues = new ReferencesProjectTreeCustomizablePropertyValues
-                            {
-                                Caption = updatedItem.Caption,
-                                Flags = updatedItem.Flags,
-                                Icon = updatedItem.Icon.ToProjectSystemType(),
-                                ExpandedIcon = updatedItem.ExpandedIcon.ToProjectSystemType()
-                            };
-
-                            ApplyProjectTreePropertiesCustomization(updatedNodeParentContext, updatedValues);
-
-                            // update existing tree node properties
-                            treeNode = treeNode.SetProperties(
-                                caption: updatedItem.Caption,
-                                flags: updatedItem.Flags,
-                                icon: updatedItem.Icon.ToProjectSystemType(),
-                                expandedIcon: updatedItem.ExpandedIcon.ToProjectSystemType());
-
-                            providerRootTreeNode = treeNode.Parent;
-                        }
-                    }
-
-                    foreach (var addedItem in changes.AddedNodes)
-                    {
-                        if (cancellationToken.IsCancellationRequested)
-                        {
-                            return dependenciesNode;
-                        }
-
-                        var treeNode = FindProjectTreeNode(providerRootTreeNode, addedItem, projectFolder);
-                        if (treeNode == null)
-                        {
-                            treeNode = CreateProjectItemTreeNode(providerRootTreeNode, addedItem, catalogs);
-
-                            providerRootTreeNode = providerRootTreeNode.Add(treeNode).Parent;
-                        }
-                    }
-                }
-
-                if (newNode)
-                {
-                    dependenciesNode = dependenciesNode.Add(providerRootTreeNode).Parent;
-                }
-                else
-                {
-                    dependenciesNode = providerRootTreeNode.Parent;
-                }
-            }
-            else
-            {
-                if (providerRootTreeNode != null)
-                {
-                    dependenciesNode = dependenciesNode.Remove(providerRootTreeNode);
-                }
-            }
-
-            return dependenciesNode;
-        }
-
-        /// <summary>
-        /// Finds IProjectTree node in the top level children of a given parent IProjectTree node.
-        /// Depending on the type of IDependencyNode search method is different:
-        ///     - if dependency node has custom ItemSpec, we only can find it by caption.
-        ///     - if dependency node has normal ItemSpec, we first try to find it by path and then
-        ///       by caption if path was not found (since unresolved and resolved items can have 
-        ///       different items specs).
-        /// </summary>
-        private IProjectTree FindProjectTreeNode(IProjectTree parentNode,
-                                                 IDependencyNode nodeInfo,
-                                                 string projectFolder)
-        {
-            IProjectTree treeNode = null;
-            if (nodeInfo.Flags.Contains(DependencyNode.CustomItemSpec))
-            {
-                treeNode = parentNode.FindNodeByCaption(nodeInfo.Caption);
-            }
-            else
-            {
-                var itemSpec = nodeInfo.Id.ItemSpec;
-                if (!ManagedPathHelper.IsRooted(itemSpec))
-                {
-                    itemSpec = ManagedPathHelper.TryMakeRooted(projectFolder, itemSpec);
-                }
-
-                if (!string.IsNullOrEmpty(itemSpec))
-                {
-                    treeNode = parentNode.FindNodeByPath(itemSpec);
-                }
-
-                if (treeNode == null)
-                {
-                    treeNode = parentNode.FindNodeByCaption(nodeInfo.Caption);
-                }
-            }
-
-            return treeNode;
-        }
-
-        /// <summary>
-        /// Finds the resolved reference item for a given unresolved reference.
-        /// </summary>
-        /// <param name="allResolvedReferences">The collection of resolved references to search.</param>
-        /// <param name="unresolvedItemType">The unresolved reference item type.</param>
-        /// <param name="unresolvedItemSpec">The unresolved reference item name.</param>
-        /// <returns>The key is item name and the value is the metadata dictionary.</returns>
-        private static KeyValuePair<string, IImmutableDictionary<string, string>>? GetResolvedReference(
-                        IProjectRuleSnapshot[] allResolvedReferences,
-                        string unresolvedItemType,
-                        string unresolvedItemSpec)
-        {
-            Contract.Requires(allResolvedReferences != null);
-            Contract.Requires(Contract.ForAll(0, allResolvedReferences.Length, i => allResolvedReferences[i] != null));
-            Contract.Requires(!string.IsNullOrEmpty(unresolvedItemType));
-            Contract.Requires(!string.IsNullOrEmpty(unresolvedItemSpec));
-
-            foreach (var resolvedReferences in allResolvedReferences)
-            {
-                foreach (var referencePath in resolvedReferences.Items)
-                {
-                    if (referencePath.Value.TryGetValue(ResolvedAssemblyReference.OriginalItemSpecProperty,
-                                                        out string originalItemSpec)
-                        && !string.IsNullOrEmpty(originalItemSpec))
-                    {
-                        if (string.Equals(originalItemSpec, unresolvedItemSpec, StringComparison.OrdinalIgnoreCase))
-                        {
-                            return referencePath;
-                        }
-                    }
-                }
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Finds an existing tree node that represents a given reference item.
-        /// </summary>
-        /// <param name="tree">The reference folder to search.</param>
-        /// <param name="itemType">The item type of the unresolved reference.</param>
-        /// <param name="itemName">The item name of the unresolved reference.</param>
-        /// <returns>The matching tree node, or <c>null</c> if none was found.</returns>
-        private static IProjectItemTree FindReferenceNode(IProjectTree tree, string itemType, string itemName)
-        {
-            Contract.Requires(tree != null);
-            Contract.Requires(!string.IsNullOrEmpty(itemType));
-            Contract.Requires(!string.IsNullOrEmpty(itemName));
-
-            return tree.Children.OfType<IProjectItemTree>()
-                       .FirstOrDefault(child => string.Equals(itemType, child.Item.ItemType,
-                                                           StringComparison.OrdinalIgnoreCase)
-                                                && string.Equals(itemName, child.Item.ItemName,
-                                                              StringComparison.OrdinalIgnoreCase));
-        }
-
-        /// <summary>
-        /// Finds a tree node by it's flags. If there many nodes that sattisfy flags, returns first.
-        /// </summary>
-        /// <param name="parentNode"></param>
-        /// <param name="flags"></param>
-        /// <returns></returns>
-        private static IProjectTree GetSubTreeRootNode(IProjectTree parentNode, ProjectTreeFlags flags)
-        {
-            foreach (IProjectTree child in parentNode.Children)
-            {
-                if (child.Flags.Contains(flags))
-                {
-                    return child;
-                }
-            }
-
-            return null;
         }
 
         private IImmutableDictionary<string, IPropertyPagesCatalog> GetNamedCatalogs(IProjectCatalogSnapshot catalogs)
@@ -821,6 +459,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             // dependencies. However now we have custom logic for collecting unresolved dependencies too and use 
             // DesignTime build results there too. Thats why we swicthed to check for persistence).
             var browseObjectCatalog = namedCatalogs[PropertyPageContexts.BrowseObject];
+            var schemas = browseObjectCatalog.GetPropertyPagesSchemas(itemType);
+
             return from schemaName in browseObjectCatalog.GetPropertyPagesSchemas(itemType)
                    let schema = browseObjectCatalog.GetSchema(schemaName)
                    where schema.DataSource != null
@@ -829,94 +469,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                        RuleDataSourceTypes.PersistenceResolvedReference,
                                                        StringComparison.OrdinalIgnoreCase))
                    select schema;
-        }
-
-        /// <summary>
-        /// Gets an IRule to attach to a project item so that browse object properties will be displayed.
-        /// </summary>
-        private IRule GetRuleForResolvableReference(
-                        IProjectPropertiesContext unresolvedContext,
-                        KeyValuePair<string, IImmutableDictionary<string, string>> resolvedReference,
-                        IProjectCatalogSnapshot catalogs,
-                        ConfiguredProjectExports configuredProjectExports,
-                        bool isGenericDependency = true)
-        {
-            Requires.NotNull(unresolvedContext, nameof(unresolvedContext));
-
-            var namedCatalogs = GetNamedCatalogs(catalogs);
-            var schemas = GetSchemaForReference(unresolvedContext.ItemType, isGenericDependency, namedCatalogs).ToList();
-            if (schemas.Count == 1)
-            {
-                IRule rule = configuredProjectExports.RuleFactory.CreateResolvedReferencePageRule(
-                                schemas[0],
-                                unresolvedContext,
-                                resolvedReference.Key,
-                                resolvedReference.Value);
-                return rule;
-            }
-            else
-            {
-                if (schemas.Count > 1)
-                {
-                    TraceUtilities.TraceWarning(
-                        "Too many rule schemas ({0}) in the BrowseObject context were found.  Only 1 is allowed.",
-                        schemas.Count);
-                }
-
-                // Since we have no browse object, we still need to create *something* so that standard property 
-                // pages can pop up.
-                var emptyRule = RuleExtensions.SynthesizeEmptyRule(unresolvedContext.ItemType);
-                return configuredProjectExports.PropertyPagesDataModelProvider.GetRule(
-                            emptyRule,
-                            unresolvedContext.File,
-                            unresolvedContext.ItemType,
-                            unresolvedContext.ItemName);
-            }
-        }
-
-        /// <summary>
-        /// Gets an IRule to attach to a project item so that browse object properties will be displayed.
-        /// </summary>
-        private IRule GetRuleForUnresolvableReference(IProjectPropertiesContext unresolvedContext,
-                                                      IProjectCatalogSnapshot catalogs,
-                                                      ConfiguredProjectExports configuredProjectExports)
-        {
-            Requires.NotNull(unresolvedContext, nameof(unresolvedContext));
-            Requires.NotNull(configuredProjectExports, nameof(configuredProjectExports));
-
-            var namedCatalogs = GetNamedCatalogs(catalogs);
-            var schemas = GetSchemaForReference(unresolvedContext.ItemType, false, namedCatalogs).ToList();
-            if (schemas.Count == 1)
-            {
-                Requires.NotNull(namedCatalogs, nameof(namedCatalogs));
-                var browseObjectCatalog = namedCatalogs[PropertyPageContexts.BrowseObject];
-                return browseObjectCatalog.BindToContext(schemas[0].Name, unresolvedContext);
-            }
-
-            if (schemas.Count > 1)
-            {
-                TraceUtilities.TraceWarning(
-                    "Too many rule schemas ({0}) in the BrowseObject context were found. Only 1 is allowed.",
-                    schemas.Count);
-            }
-
-            // Since we have no browse object, we still need to create *something* so that standard property 
-            // pages can pop up.
-            var emptyRule = RuleExtensions.SynthesizeEmptyRule(unresolvedContext.ItemType);
-            return configuredProjectExports.PropertyPagesDataModelProvider.GetRule(
-                        emptyRule,
-                        unresolvedContext.File,
-                        unresolvedContext.ItemType,
-                        unresolvedContext.ItemName);
-        }
-
-        private ProjectTreeCustomizablePropertyContext GetCustomPropertyContext(IProjectTree parent)
-        {
-            return new ProjectTreeCustomizablePropertyContext
-            {
-                ExistsOnDisk = false,
-                ParentNodeFlags = parent?.Flags ?? default(ProjectTreeFlags)
-            };
         }
 
         private void ApplyProjectTreePropertiesCustomization(
@@ -940,60 +492,108 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             return GetActiveConfiguredProjectExports<MyConfiguredProjectExports>(newActiveConfiguredProject);
         }
 
-        #region IDependenciesGraphProjectContext
+        #region IDependencyTreeServices
 
-        /// <summary>
-        /// Returns a dependencies node sub tree provider for given dependency provider type.
-        /// </summary>
-        /// <param name="providerType">
-        /// Type of the dependnecy. It is expected to be a unique string associated with a provider. 
-        /// </param>
-        /// <returns>
-        /// Instance of <see cref="IProjectDependenciesSubTreeProvider"/> or null if there no provider 
-        /// for given type.
-        /// </returns>
-        IProjectDependenciesSubTreeProvider IDependenciesGraphProjectContext.GetProvider(string providerType)
+        public IProjectTree CreateTree(
+            string caption,
+            IProjectPropertiesContext itemContext,
+            IPropertySheet propertySheet = null,
+            IRule browseObjectProperties = null,
+            ProjectImageMoniker icon = null,
+            ProjectImageMoniker expandedIcon = null,
+            bool visible = true,
+            ProjectTreeFlags? flags = default(ProjectTreeFlags?))
         {
-            if (string.IsNullOrEmpty(providerType))
-            {
-                return null;
-            }
-
-            var lazyProvider = SubTreeProviders.FirstOrDefault(x => providerType.Equals(x.Value.ProviderType,
-                                                                            StringComparison.OrdinalIgnoreCase));
-            if (lazyProvider == null)
-            {
-                return null;
-            }
-
-            return lazyProvider.Value;
+            return NewTree(
+                caption: caption,
+                item: itemContext,
+                propertySheet: propertySheet,
+                browseObjectProperties: browseObjectProperties,
+                icon: icon,
+                expandedIcon: expandedIcon,
+                visible: visible,
+                flags: flags);
         }
 
-        IEnumerable<IProjectDependenciesSubTreeProvider> IDependenciesGraphProjectContext.GetProviders()
+        public IProjectTree CreateTree(
+            string caption,
+            string filePath,
+            IRule browseObjectProperties = null,
+            ProjectImageMoniker icon = null,
+            ProjectImageMoniker expandedIcon = null,
+            bool visible = true,
+            ProjectTreeFlags? flags = default(ProjectTreeFlags?))
         {
-            return SubTreeProviders.Select(x => x.Value).ToList();
+            return NewTree(
+                caption: caption,
+                filePath: filePath,
+                browseObjectProperties: browseObjectProperties,
+                icon: icon,
+                expandedIcon: expandedIcon,
+                visible: visible,
+                flags: flags);
         }
 
-        /// <summary>
-        /// Path to project file
-        /// </summary>
-        string IDependenciesGraphProjectContext.ProjectFilePath
+        public IRule GetRule(IDependency dependency, IProjectCatalogSnapshot catalogs)
         {
-            get
+            Requires.NotNull(dependency, nameof(dependency));
+
+            ConfiguredProject project = null;
+            if (dependency.Snapshot.TargetFramework.Equals(TargetFramework.Any))
             {
-                return UnconfiguredProject.FullPath;
+                project = ActiveConfiguredProject;
             }
+            else
+            {
+                ThreadHelper.JoinableTaskFactory.Run(async () =>
+                {
+                    project = await DependenciesHost.GetConfiguredProject(dependency.Snapshot.TargetFramework)
+                                                    .ConfigureAwait(false) ?? ActiveConfiguredProject;
+                });
+            }
+
+            var configuredProjectExports = GetActiveConfiguredProjectExports(project);
+            var namedCatalogs = GetNamedCatalogs(catalogs);
+            Requires.NotNull(namedCatalogs, nameof(namedCatalogs));
+
+            var browseObjectsCatalog = namedCatalogs[PropertyPageContexts.BrowseObject];
+            var schema = browseObjectsCatalog.GetSchema(dependency.SchemaName);
+            var itemSpec = string.IsNullOrEmpty(dependency.OriginalItemSpec) ? dependency.Path : dependency.OriginalItemSpec;
+            var context = ProjectPropertiesContext.GetContext(UnconfiguredProject,
+                file: itemSpec,
+                itemType: dependency.SchemaItemType,
+                itemName: itemSpec);
+
+            IRule rule = null;
+            if (schema != null)
+            {
+                if (dependency.Resolved)
+                {
+                    rule = configuredProjectExports.RuleFactory.CreateResolvedReferencePageRule(
+                                schema,
+                                context,
+                                dependency.Name,
+                                dependency.Properties);
+                }
+                else
+                {
+                    rule = browseObjectsCatalog.BindToContext(schema.Name, context);
+                }
+            }
+            else
+            {
+                // Since we have no browse object, we still need to create *something* so
+                // that standard property pages can pop up.
+                var emptyRule = RuleExtensions.SynthesizeEmptyRule(context.ItemType);
+                return configuredProjectExports.PropertyPagesDataModelProvider.GetRule(
+                            emptyRule,
+                            context.File,
+                            context.ItemType,
+                            context.ItemName);
+            }
+
+            return rule;
         }
-
-        /// <summary>
-        /// Gets called when dependencies change
-        /// </summary>
-        public event EventHandler<ProjectContextEventArgs> ProjectContextChanged;
-
-        /// <summary>
-        /// Gets called when project is unloading and dependencies subtree is disposing
-        /// </summary>
-        public event EventHandler<ProjectContextEventArgs> ProjectContextUnloaded;
 
         #endregion
 
@@ -1011,40 +611,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 : base(configuredProject)
             {
             }
-        }
-
-        /// <summary>
-        /// A private implementation of <see cref="IProjectTreeCustomizablePropertyContext"/>.
-        /// </summary>
-        private class ProjectTreeCustomizablePropertyContext : IProjectTreeCustomizablePropertyContext
-        {
-            public string ItemName { get; set; }
-
-            public string ItemType { get; set; }
-
-            public IImmutableDictionary<string, string> Metadata { get; set; }
-
-            public ProjectTreeFlags ParentNodeFlags { get; set; }
-
-            public bool ExistsOnDisk { get; set; }
-
-            public bool IsFolder
-            {
-                get
-                {
-                    return false;
-                }
-            }
-
-            public bool IsNonFileSystemProjectItem
-            {
-                get
-                {
-                    return true;
-                }
-            }
-
-            public IImmutableDictionary<string, string> ProjectTreeSettings { get; set; }
         }
     }
 }

@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ImageManifest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                           xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                           xmlns="http://schemas.microsoft.com/VisualStudio/ImageManifestSchema/2014">
+  <Symbols>
+    <String Name="Resources" Value="/Microsoft.VisualStudio.ProjectSystem.Managed.VS;Component/Resources" />
+    <Guid Name="ManagedImagesGuid" Value="{259567C1-AA6B-46BF-811C-C145DD9F3B48}" />
+    <ID Name="ApplicationPrivate" Value="0" />
+    <ID Name="ApplicationWarning" Value="1" />
+    <ID Name="CodeInformationPrivate" Value="2" />
+    <ID Name="CodeInformationWarning" Value="3" />
+    <ID Name="Component" Value="4" />
+    <ID Name="ComponentPrivate" Value="5" />
+    <ID Name="ComponentWarning" Value="6" />
+    <ID Name="ErrorSmall" Value="7" />
+    <ID Name="LibraryWarning" Value="8" />
+    <ID Name="NuGetGrey" Value="9" />
+    <ID Name="NuGetGreyPrivate" Value="10" />
+    <ID Name="NuGetGreyWarning" Value="11" />
+    <ID Name="ReferenceGroup" Value="12" />
+    <ID Name="ReferenceGroupWarning" Value="13" />
+    <ID Name="ReferencePrivate" Value="14" />
+    <ID Name="Sdk" Value="15" />
+    <ID Name="SdkPrivate" Value="16" />
+    <ID Name="SdkWarning" Value="17" />
+    <ID Name="SharedProject" Value="18" />
+    <ID Name="SharedProjectPrivate" Value="19" />
+    <ID Name="SharedProjectWarning" Value="20" />
+    <ID Name="WarningSmall" Value="21" />
+  </Symbols>
+  <Images>
+    <Image Guid="$(ManagedImagesGuid)" ID="$(ApplicationPrivate)">
+      <Source Uri="$(Resources)/Icons/ApplicationPrivate_16x.xaml" />
+      <Source Uri="$(Resources)/Icons/ApplicationPrivate_16x.png" >
+        <Size Value="16" />
+      </Source>
+    </Image>
+    <Image Guid="$(ManagedImagesGuid)" ID="$(ApplicationWarning)">
+      <Source Uri="$(Resources)/Icons/ApplicationWarning_16x.xaml" />
+      <Source Uri="$(Resources)/Icons/ApplicationWarning_16x.png" >
+        <Size Value="16" />
+      </Source>
+    </Image>
+    <Image Guid="$(ManagedImagesGuid)" ID="$(CodeInformationPrivate)">
+      <Source Uri="$(Resources)/Icons/CodeInformationPrivate_16x.xaml" />
+      <Source Uri="$(Resources)/Icons/CodeInformationPrivate_16x.png" >
+        <Size Value="16" />
+      </Source>
+    </Image>
+    <Image Guid="$(ManagedImagesGuid)" ID="$(CodeInformationWarning)">
+      <Source Uri="$(Resources)/Icons/CodeInformationWarning_16x.xaml" />
+      <Source Uri="$(Resources)/Icons/CodeInformationWarning_16x.png" >
+        <Size Value="16" />
+      </Source>
+    </Image>
+    <Image Guid="$(ManagedImagesGuid)" ID="$(Component)">
+      <Source Uri="$(Resources)/Icons/Component_16x.xaml" />
+      <Source Uri="$(Resources)/Icons/Component_16x.png" >
+        <Size Value="16" />
+      </Source>
+    </Image>
+    <Image Guid="$(ManagedImagesGuid)" ID="$(ComponentPrivate)">
+      <Source Uri="$(Resources)/Icons/ComponentPrivate_16x.xaml" />
+      <Source Uri="$(Resources)/Icons/ComponentPrivate_16x.png" >
+        <Size Value="16" />
+      </Source>
+    </Image>
+    <Image Guid="$(ManagedImagesGuid)" ID="$(ComponentWarning)">
+      <Source Uri="$(Resources)/Icons/ComponentWarning_16x.xaml" />
+      <Source Uri="$(Resources)/Icons/ComponentWarning_16x.png" >
+        <Size Value="16" />
+      </Source>
+    </Image>
+    <Image Guid="$(ManagedImagesGuid)" ID="$(ErrorSmall)">
+      <Source Uri="$(Resources)/Icons/ErrorSmall_16x.xaml" />
+      <Source Uri="$(Resources)/Icons/ErrorSmall_16x.png" >
+        <Size Value="16" />
+      </Source>
+    </Image>
+    <Image Guid="$(ManagedImagesGuid)" ID="$(LibraryWarning)">
+      <Source Uri="$(Resources)/Icons/LibraryWarning_16x.xaml" />
+      <Source Uri="$(Resources)/Icons/LibraryWarning_16x.png" >
+        <Size Value="16" />
+      </Source>
+    </Image>
+    <Image Guid="$(ManagedImagesGuid)" ID="$(NuGetGrey)">
+      <Source Uri="$(Resources)/Icons/NuGetGrey_16x.xaml" />
+      <Source Uri="$(Resources)/Icons/NuGetGrey_16x.png" >
+        <Size Value="16" />
+      </Source>
+    </Image>
+    <Image Guid="$(ManagedImagesGuid)" ID="$(NuGetGreyPrivate)">
+      <Source Uri="$(Resources)/Icons/NuGetGreyPrivate_16x.xaml" />
+      <Source Uri="$(Resources)/Icons/NuGetGreyPrivate_16x.png" >
+        <Size Value="16" />
+      </Source>
+    </Image>
+    <Image Guid="$(ManagedImagesGuid)" ID="$(NuGetGreyWarning)">
+      <Source Uri="$(Resources)/Icons/NuGetGreyWarning_16x.xaml" />
+      <Source Uri="$(Resources)/Icons/NuGetGreyWarning_16x.png" >
+        <Size Value="16" />
+      </Source>
+    </Image>
+    <Image Guid="$(ManagedImagesGuid)" ID="$(ReferenceGroup)">
+      <Source Uri="$(Resources)/Icons/ReferenceGroup_16x.xaml" />
+      <Source Uri="$(Resources)/Icons/ReferenceGroup_16x.png" >
+        <Size Value="16" />
+      </Source>
+    </Image>
+    <Image Guid="$(ManagedImagesGuid)" ID="$(ReferenceGroupWarning)">
+      <Source Uri="$(Resources)/Icons/ReferenceGroupWarning_16x.xaml" />
+      <Source Uri="$(Resources)/Icons/ReferenceGroupWarning_16x.png" >
+        <Size Value="16" />
+      </Source>
+    </Image>
+    <Image Guid="$(ManagedImagesGuid)" ID="$(ReferencePrivate)">
+      <Source Uri="$(Resources)/Icons/ReferencePrivate_16x.xaml" />
+      <Source Uri="$(Resources)/Icons/ReferencePrivate_16x.png" >
+        <Size Value="16" />
+      </Source>
+    </Image>
+    <Image Guid="$(ManagedImagesGuid)" ID="$(Sdk)">
+      <Source Uri="$(Resources)/Icons/Sdk_16x.xaml" />
+      <Source Uri="$(Resources)/Icons/Sdk_16x.png" >
+        <Size Value="16" />
+      </Source>
+    </Image>
+    <Image Guid="$(ManagedImagesGuid)" ID="$(SdkPrivate)">
+      <Source Uri="$(Resources)/Icons/SdkPrivate_16x.xaml" />
+      <Source Uri="$(Resources)/Icons/SdkPrivate_16x.png" >
+        <Size Value="16" />
+      </Source>
+    </Image>
+    <Image Guid="$(ManagedImagesGuid)" ID="$(SdkWarning)">
+      <Source Uri="$(Resources)/Icons/SdkWarning_16x.xaml" />
+      <Source Uri="$(Resources)/Icons/SdkWarning_16x.png" >
+        <Size Value="16" />
+      </Source>
+    </Image>
+    <Image Guid="$(ManagedImagesGuid)" ID="$(SharedProject)">
+      <Source Uri="$(Resources)/Icons/SharedProject_16x.xaml" />
+      <Source Uri="$(Resources)/Icons/SharedProject_16x.png" >
+        <Size Value="16" />
+      </Source>
+    </Image>
+    <Image Guid="$(ManagedImagesGuid)" ID="$(SharedProjectPrivate)">
+      <Source Uri="$(Resources)/Icons/SharedProjectPrivate_16x.xaml" />
+      <Source Uri="$(Resources)/Icons/SharedProjectPrivate_16x.png" >
+        <Size Value="16" />
+      </Source>
+    </Image>
+    <Image Guid="$(ManagedImagesGuid)" ID="$(SharedProjectWarning)">
+      <Source Uri="$(Resources)/Icons/SharedProjectWarning_16x.xaml" />
+      <Source Uri="$(Resources)/Icons/SharedProjectWarning_16x.png" >
+        <Size Value="16" />
+      </Source>
+    </Image>    
+    <Image Guid="$(ManagedImagesGuid)" ID="$(WarningSmall)">
+      <Source Uri="$(Resources)/Icons/WarningSmall_16x.xaml" />
+      <Source Uri="$(Resources)/Icons/WarningSmall_16x.png" >
+        <Size Value="16" />
+      </Source>
+    </Image>
+  </Images>
+  <ImageLists />
+</ImageManifest>

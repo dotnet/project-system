@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         private readonly ITaskScheduler _taskScheduler;
         private readonly List<AggregateWorkspaceProjectContext> _contexts = new List<AggregateWorkspaceProjectContext>();
         private readonly IProjectHostProvider _projectHostProvider;
-        private readonly ActiveConfiguredProjectsProvider _activeConfiguredProjectsProvider;
+        private readonly IActiveConfiguredProjectsProvider _activeConfiguredProjectsProvider;
         private readonly IUnconfiguredProjectHostObject _unconfiguredProjectHostObject;
         private readonly Dictionary<ConfiguredProject, IWorkspaceProjectContext> _configuredProjectContextsMap = new Dictionary<ConfiguredProject, IWorkspaceProjectContext>();
         private readonly Dictionary<ConfiguredProject, IConfiguredProjectHostObject> _configuredProjectHostObjectsMap = new Dictionary<ConfiguredProject, IConfiguredProjectHostObject>();
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                                                  IProjectAsyncLoadDashboard asyncLoadDashboard,
                                                  ITaskScheduler taskScheduler,
                                                  IProjectHostProvider projectHostProvider,
-                                                 ActiveConfiguredProjectsProvider activeConfiguredProjectsProvider)
+                                                 IActiveConfiguredProjectsProvider activeConfiguredProjectsProvider)
         {
             Requires.NotNull(commonServices, nameof(commonServices));
             Requires.NotNull(contextFactory, nameof(contextFactory));
@@ -267,7 +267,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
                         // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
                         await _commonServices.ThreadingService.SwitchToUIThread();
-                        workspaceProjectContext = _contextFactory.Value.CreateProjectContext(languageName, displayName, projectData.FullPath, projectGuid, configuredProjectHostObject, targetPath);
+
+                        // HACK HACK: Roslyn's CreateProjectContext only supports C# and VB and for F#, a new overload was added. Instead, that should be removed and the main overload should just take an optional error prefix.
+                        if (languageName == "F#")
+                        {
+                            workspaceProjectContext = _contextFactory.Value.CreateProjectContext(languageName, displayName, projectData.FullPath, projectGuid, configuredProjectHostObject, targetPath, null);
+                        }
+                        else
+                        {
+                            workspaceProjectContext = _contextFactory.Value.CreateProjectContext(languageName, displayName, projectData.FullPath, projectGuid, configuredProjectHostObject, targetPath);
+                        }
 
                         // By default, set "LastDesignTimeBuildSucceeded = false" to turn off diagnostics until first design time build succeeds for this project.
                         workspaceProjectContext.LastDesignTimeBuildSucceeded = false;

@@ -272,6 +272,11 @@ Pour déboguer ce projet, ajoutez à cette solution un projet exécutable qui fa
         <target state="translated">Échec de la migration du projet XProj {0}. '{1}' a quitté avec le code d'erreur {2}.</target>
         <note />
       </trans-unit>
+      <trans-unit id="DebugFrameworkMenuText">
+        <source>Framework ({0})</source>
+        <target state="new">Framework ({0})</target>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -58,8 +58,8 @@
   <StringProperty Name="BaseIntermediateOutputPath" />
   <EnumProperty Name="OutputType">
     <EnumValue Name="Library" DisplayName="클래스 라이브러리" />
-    <EnumValue Name="exe" DisplayName="콘솔 응용 프로그램" />
-    <EnumValue Name="winexe" DisplayName="Windows 응용 프로그램" />
+    <EnumValue Name="Exe" DisplayName="Console Application" />
+    <EnumValue Name="WinExe" DisplayName="Windows Application" />
     <EnumValue Name="AppContainerExe" DisplayName="Windows 스토어 앱" />
     <EnumValue Name="WinMDObj" DisplayName="WinMD" />
   </EnumProperty>
@@ -116,5 +116,6 @@
   <StringProperty Name="SharedProjectAppliesTo" Visible="False" Description="공유 프로젝트의 언어에 대해 최소한으로 테스트하는 기능 일치 식으로, [공유 프로젝트 참조 추가] 선택을 필터링하는 데 사용됩니다." />
   <BoolProperty Name="AlwaysUseNumericalSuffixInItemNames" Visible="False" Description="새로 추가된 항목 이름에 항상 숫자 접미사를 사용해야 하는지 여부를 나타냅니다." />
   <StringProperty Name="LanguageServiceName" ReadOnly="True" Visible="False" Description="Roslyn에 전달된 LanguageName을 나타냅니다." />
+  <StringProperty Name="LanguageServiceId" ReadOnly="True" Visible="False" Description="Represents the GUID of object that implements the language service for the project." />
   <StringProperty Name="TemplateLanguage" ReadOnly="True" Visible="False" Description="항목 및 프로젝트 템플릿에 있는 언어를 나타냅니다." />
 </Rule>

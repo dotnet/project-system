@@ -13,9 +13,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
     ///     An implementation of <see cref="IVsErrorListProvider"/> that delegates onto the language
     ///     service so that it de-dup warnings and errors between IntelliSense and build.
     /// </summary>
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
     [Export(typeof(IVsErrorListProvider))]
-    [Order(1)] // One less than the CPS version of this class, until they've removed it
+    [Order(Order.Default)]
     internal partial class LanguageServiceErrorListProvider : IVsErrorListProvider
     {
         private readonly static Task<AddMessageResult> HandledAndStopProcessing = Task.FromResult(AddMessageResult.HandledAndStopProcessing);

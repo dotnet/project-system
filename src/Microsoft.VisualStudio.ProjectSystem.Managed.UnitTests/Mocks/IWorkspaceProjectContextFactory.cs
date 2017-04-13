@@ -10,6 +10,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     internal static class IWorkspaceProjectContextFactory
     {
+        public static IWorkspaceProjectContext Create()
+        {
+            return Mock.Of<IWorkspaceProjectContext>();
+        }
+
         public static IWorkspaceProjectContext CreateForSourceFiles(UnconfiguredProject project, Action<string> addSourceFile = null, Action<string> removeSourceFile = null)
         {
             var context = new Mock<IWorkspaceProjectContext>();

@@ -276,4 +276,7 @@ Pour déboguer ce projet, ajoutez à cette solution un projet exécutable qui fa
   <data name="XprojMigrationGeneralFailure" xml:space="preserve">
     <value>Échec de la migration du projet XProj {0}. '{1}' a quitté avec le code d'erreur {2}.</value>
   </data>
+  <data name="DebugFrameworkMenuText" xml:space="preserve">
+    <value>Framework ({0})</value>
+  </data>
 </root>

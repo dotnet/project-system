@@ -59,6 +59,7 @@ build.cmd /no-deploy-extension /${configuration.toLowerCase()}
             // Build roslyn-project-system repo - we also need to set certain environment variables for building the repo with VS15 toolset.
             batchFile("""
 echo *** Build Roslyn Project System ***
+rmdir /S /Q %USERPROFILE%\\.nuget\\packages\\microbuild.plugins.swixbuild
 SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
 SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
 SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
@@ -78,14 +79,11 @@ xcopy /SIY .\\src\\Targets\\*.targets "%VS_MSBUILD_MANAGED%"
 xcopy /SIY .\\bin\\Release\\Rules\\*.xaml "%VS_MSBUILD_MANAGED%"
 """)
 
-            // Pull down the Open submodule of roslyn-internal as the 'Open' sources are not present until this step is executed
+            // Restore roslyn nuget packages
             batchFile("""
-echo *** Pull down the Open submodule for Roslyn-Internal ***
-pushd %WORKSPACE%\\roslyn-internal
-git submodule init
-git submodule sync
-git submodule update --init --recursive
-init.cmd
+echo *** Restore Roslyn ***
+pushd %WORKSPACE%\\roslyn
+Restore.cmd
 """)
 
             // Build the SDK and install .NET Core Templates.
@@ -99,32 +97,13 @@ call "%DeveloperCommandPrompt%" || goto :BuildFailed "VsMSBuildCmd.bat"
 
 SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
 SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
+SET MSBUILDEXE=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\15.0\\Bin\\MSBuild.exe
 
 pushd %WORKSPACE%\\sdk
 echo *** Build SDK
 call build.cmd -Configuration release -SkipTests || goto :BuildFailed "SDK"
 
-SET VSIXExpInstallerExe=%USERPROFILE%\\.nuget\\packages\\roslyntools.microsoft.vsixexpinstaller\\0.2.4-beta\\tools\\VsixExpInstaller.exe
-
-SET VSIXTarget=%WORKSPACE%\\sdk\\bin\\Release\\Microsoft.VisualStudio.ProjectSystem.CSharp.NetStandard.Templates.vsix
-echo *** Install %VSIXTarget%
-%VSIXExpInstallerExe% /rootsuffix:RoslynDev %VSIXTarget%
-if not "%ERRORLEVEL%"=="0" echo ERROR: %VSIXTarget% did not install successfully
-
-SET VSIXTarget=%WORKSPACE%\\sdk\\bin\\Release\\Microsoft.VisualStudio.ProjectSystem.CSharp.Templates.vsix
-echo *** Install %VSIXTarget%
-%VSIXExpInstallerExe% /rootsuffix:RoslynDev %VSIXTarget%
-if not "%ERRORLEVEL%"=="0" echo ERROR: %VSIXTarget% did not install successfully
-
-SET VSIXTarget=%WORKSPACE%\\sdk\\bin\\Release\\Microsoft.VisualStudio.ProjectSystem.VisualBasic.NetStandard.Templates.vsix
-echo *** Install %VSIXTarget%
-%VSIXExpInstallerExe% /rootsuffix:RoslynDev %VSIXTarget%
-if not "%ERRORLEVEL%"=="0" echo ERROR: %VSIXTarget% did not install successfully
-
-SET VSIXTarget=%WORKSPACE%\\sdk\\bin\\Release\\Microsoft.VisualStudio.ProjectSystem.VisualBasic.Templates.vsix
-echo *** Install %VSIXTarget%
-%VSIXExpInstallerExe% /rootsuffix:RoslynDev %VSIXTarget%
-if not "%ERRORLEVEL%"=="0" echo ERROR: %VSIXTarget% did not install successfully
+"%MSBUILDEXE%" /m /v:m /p:DeployExtension=True;VSSDKTargetPlatformRegRootSuffix=RoslynDev;Configuration=Release sdk-templates.sln
 
 exit /b 0
 
@@ -133,21 +112,19 @@ echo %1 - Build failed with ERRORLEVEL %ERRORLEVEL%
 exit /b 1
 """)
 
-            // Build roslyn-internal and run netcore VSI tao tests.
+            // Build roslyn and run netcore VSI tests.
             batchFile("""
 echo *** Build Roslyn Internal and Test Roslyn Project System ***
 SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
 SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
 SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
 
-pushd %WORKSPACE%\\roslyn-internal
-set TEMP=%WORKSPACE%\\roslyn-internal\\Open\\Binaries\\Temp
+pushd %WORKSPACE%\\roslyn\\build\\scripts\\
+set TEMP=%WORKSPACE%\\roslyn\\Binaries\\Temp
 mkdir %TEMP%
 set TMP=%TEMP%
 
-set EchoOn=true
-
-BuildAndTest.cmd -build:true -clean:false -deployExtensions:true -trackFileAccess:false -officialBuild:false -realSignBuild:false -parallel:true -release:true -delaySignBuild:true -samples:false -unit:false -eta:false -vs:true -cibuild:true -x64:false -netcoretestrun
+cibuild.cmd /release /testVsiNetCore 
 """)
 
             // Revert patched targets and rules from backup.
@@ -176,20 +153,20 @@ rmdir /S /Q backup
         Utilities.addGithubPushTrigger(newVsiJob)
     }
 
-    Utilities.addHtmlPublisher(newVsiJob, "roslyn-internal/Open/Binaries/Release/Exes/EditorTestApp/VSIntegrationTestLogs", 'VS Integration Test Logs', '*.html')
+    Utilities.addXUnitDotNETResults(newVsiJob, '**/xUnitResults/*.xml')
 }
 
 // Archive VSI artifacts.
 static void addVsiArchive(def myJob) {
   def archiveSettings = new ArchivalSettings()
-  archiveSettings.addFiles('roslyn-internal/Open/Binaries/**/*.pdb')
-  archiveSettings.addFiles('roslyn-internal/Open/Binaries/**/*.xml')
-  archiveSettings.addFiles('roslyn-internal/Open/Binaries/**/*.log')
-  archiveSettings.addFiles('roslyn-internal/Open/Binaries/**/*.zip')
-  archiveSettings.addFiles('roslyn-internal/Open/Binaries/**/*.png')
-  archiveSettings.addFiles('roslyn-internal/Open/Binaries/**/*.xml')
-  archiveSettings.excludeFiles('roslyn-internal/Open/Binaries/Obj/**')
-  archiveSettings.excludeFiles('roslyn-internal/Open/Binaries/Bootstrap/**')
+  archiveSettings.addFiles('roslyn/Binaries/**/*.pdb')
+  archiveSettings.addFiles('roslyn/Binaries/**/*.xml')
+  archiveSettings.addFiles('roslyn/Binaries/**/*.log')
+  archiveSettings.addFiles('roslyn/Binaries/**/*.zip')
+  archiveSettings.addFiles('roslyn/Binaries/**/*.png')
+  archiveSettings.addFiles('roslyn/Binaries/**/*.xml')
+  archiveSettings.excludeFiles('roslyn/Binaries/Obj/**')
+  archiveSettings.excludeFiles('roslyn/Binaries/Bootstrap/**')
 
   archiveSettings.setArchiveOnFailure()
   archiveSettings.setFailIfNothingArchived()
@@ -221,19 +198,16 @@ static void addVsiMultiScm(def myJob, def project, def isPR) {
                     relativeTargetDirectory('sdk')
                 }
                 // pull in a specific LKG commit from master.
-                branch('72754c921d6a205eddab7c37b991666ada7aa3dc')
+                branch('*/master')
             }
             git {
                 remote {
-                    url('https://github.com/dotnet/roslyn-internal')
-                    credentials('dotnet-bot-private-repo-token')
+                    url('https://github.com/dotnet/roslyn')
                 }
                 extensions {
-                    relativeTargetDirectory('roslyn-internal')
+                    relativeTargetDirectory('roslyn')
                 }
-                // roslyn-internal - pull in a specific LKG commit from master.
-                // In future, '*/master' can be placed here to pull latest sources.
-                branch('701bf9e9bcb896b12364b413231666182b7aa78a')
+                branch('*/master')
             }
         }
     }

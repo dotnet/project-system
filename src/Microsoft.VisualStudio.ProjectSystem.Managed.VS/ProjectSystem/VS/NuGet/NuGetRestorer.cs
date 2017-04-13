@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     {
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IVsSolutionRestoreService _solutionRestoreService;
-        private readonly ActiveConfiguredProjectsProvider _activeConfiguredProjectsProvider;
+        private readonly IActiveConfiguredProjectsProvider _activeConfiguredProjectsProvider;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IActiveProjectConfigurationRefreshService _activeProjectConfigurationRefreshService;
         private IDisposable _designTimeBuildSubscriptionLink;
@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             IVsSolutionRestoreService solutionRestoreService,
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
             IActiveProjectConfigurationRefreshService activeProjectConfigurationRefreshService,
-            ActiveConfiguredProjectsProvider activeConfiguredProjectsProvider) 
+            IActiveConfiguredProjectsProvider activeConfiguredProjectsProvider) 
             : base(projectVsServices.ThreadingService.JoinableTaskContext)
         {
             _projectVsServices = projectVsServices;
@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         }
 
         [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
-        [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+        [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
         internal Task OnProjectFactoryCompletedAsync()
         {
             // set up a subscription to listen for target framework changes
@@ -100,9 +100,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             _designTimeBuildSubscriptionLink?.Dispose();
 
-            var currentProjects = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsAsync().ConfigureAwait(false);
+            var currentProjects = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsAsync()
+                                                                         .ConfigureAwait(false);
 
-            if (currentProjects.Any())
+            if (currentProjects != null)
             {
                 var sourceLinkOptions = new StandardRuleDataflowLinkOptions
                 {
@@ -110,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     PropagateCompletion = true
                 };
 
-                var sourceBlocks = currentProjects.Select(
+                var sourceBlocks = currentProjects.Objects.Select(
                     cp => cp.Services.ProjectSubscription.JointRuleSource.SourceBlock.SyncLinkOptions<IProjectValueVersions>(sourceLinkOptions));
 
                 var target = new ActionBlock<Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary>>(ProjectPropertyChangedAsync);

@@ -1,4 +1,4 @@
-@echo off
+@if not defined _echo @echo off
 setlocal enabledelayedexpansion
 
 set BatchFile=%0
@@ -31,11 +31,11 @@ call :Usage && exit /b 1
 :DoneParsing
 
 if not exist "%VS150COMNTOOLS%" (
-  echo To build this repository, this script needs to be run from a Visual Studio 2017 RC developer command prompt.
+  echo To build this repository, this script needs to be run from a Visual Studio 2017 developer command prompt.
   echo.
   echo If Visual Studio is not installed, visit this page to download:
   echo.
-  echo https://www.visualstudio.com/vs/visual-studio-2017-rc/
+  echo https://www.visualstudio.com/downloads/
   exit /b 1
 )
 
@@ -50,17 +50,19 @@ if "%VisualStudioVersion%" == "" (
 )
 
 set BinariesDirectory=%Root%bin\%BuildConfiguration%\
-if not exist "%BinariesDirectory%" mkdir "%BinariesDirectory%" || goto :BuildFailed
+set LogsDirectory=%BinariesDirectory%Logs\
+if not exist "%LogsDirectory%" mkdir "%LogsDirectory%" || goto :BuildFailed
 
 REM We build Restore, Build and BuildModernVsixPackages in different MSBuild processes.
 REM Restore because we want to control the verbosity due to https://github.com/NuGet/Home/issues/4695.
 REM BuildModernVsixPackages because under MicroBuild, it has a dependency on a dll with the same 
 REM version but different contents than the legacy VSIX projects.
-for %%T IN (Restore %MSBuildBuildTarget%, BuildModernVsixPackages) do (
+for %%T IN (Restore, %MSBuildBuildTarget%, %MSBuildBuildTarget%NuGetPackages, BuildModernVsixPackages, Test) do (
   
-  set LogFile=%BinariesDirectory%%%T.log
-  set LogFiles=!LogFiles!!LogFile! 
+  set LogFile=%LogsDirectory%%%T.log
   
+  echo.
+
   if "%%T" == "Restore" (
     set ConsoleLoggerVerbosity=quiet
     echo   Restoring packages for ProjectSystem (this may take some time^)
@@ -84,14 +86,14 @@ for %%T IN (Restore %MSBuildBuildTarget%, BuildModernVsixPackages) do (
 
 REM Run copy as a final step after all the product components are built
 if /I "%CopyOutputArtifacts%" == "true" (
-  call %ROOT%build\Scripts\CopyOutput.cmd
+  call %ROOT%build\Scripts\CopyOutput.cmd %BinariesDirectory%
 
   REM Robocopy has a return code 0 - 7 on success
   if %ERRORLEVEL% gtr 7 goto BuildFailed
 )
 
 echo.
-call :PrintColor Green "Build completed successfully, for full logs see %LogFiles%"
+call :PrintColor Green "Build completed successfully, for full logs see %LogsDirectory%."
 exit /b 0
 
 :Usage
@@ -116,7 +118,7 @@ echo     /skiptests              Does not run unit tests
 goto :eof
 
 :BuildFailed
-call :PrintColor Red "Build failed with ERRORLEVEL %ERRORLEVEL%"
+call :PrintColor Red "Build failed with ERRORLEVEL %ERRORLEVEL%."
 exit /b 1
 
 :PrintColor

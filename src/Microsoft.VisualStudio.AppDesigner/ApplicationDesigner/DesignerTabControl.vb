@@ -563,7 +563,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="wparam"></param>
         ''' <param name="lparam"></param>
         ''' <remarks></remarks>
-        Private Sub m_BroadcastMessageEventsHelper_BroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr) Handles _broadcastMessageEventsHelper.BroadcastMessage
+        Private Sub OnBroadcastMessageEventsHelperBroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr) Handles _broadcastMessageEventsHelper.BroadcastMessage
             Select Case msg
                 Case AppDesInterop.win.WM_PALETTECHANGED, AppDesInterop.win.WM_SYSCOLORCHANGE, AppDesInterop.win.WM_THEMECHANGED
                     _renderer.CreateGDIObjects(True)

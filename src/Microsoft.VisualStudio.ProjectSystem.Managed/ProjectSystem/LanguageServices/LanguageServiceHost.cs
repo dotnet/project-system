@@ -79,30 +79,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
 
         [ProjectAutoLoad(ProjectLoadCheckpoint.ProjectFactoryCompleted)]
-        [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
+        [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
         private Task OnProjectFactoryCompletedAsync()
         {
-            using (_tasksService.LoadedProject())
-            {
-                var watchedEvaluationRules = GetWatchedRules(RuleHandlerType.Evaluation);
-                var watchedDesignTimeBuildRules = GetWatchedRules(RuleHandlerType.DesignTimeBuild);
-
-                _designTimeBuildSubscriptionLinks.Add(_activeConfiguredProjectSubscriptionService.JointRuleSource.SourceBlock.LinkTo(
-                  new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedAsync(e, RuleHandlerType.DesignTimeBuild)),
-                  ruleNames: watchedDesignTimeBuildRules.Union(watchedEvaluationRules), suppressVersionOnlyUpdates: true));
-
-                _evaluationSubscriptionLinks.Add(_activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
-                    new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedAsync(e, RuleHandlerType.Evaluation)),
-                    ruleNames: watchedEvaluationRules, suppressVersionOnlyUpdates: true));
-
-                _projectConfigurationsWithSubscriptions.Add(_commonServices.ActiveConfiguredProject.ProjectConfiguration);
-            }
-
-            return Task.CompletedTask;
+            return InitializeAsync();
         }
 
         protected async override Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
+            if (IsDisposing || IsDisposed)
+                return;
+
             // Don't initialize if we're unloading
             _tasksService.UnloadCancellationToken.ThrowIfCancellationRequested();
 
@@ -115,18 +102,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return InitializeAsync(cancellationToken);
         }
 
-        private async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, RuleHandlerType handlerType)
+        private async Task OnProjectChangedCoreAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, RuleHandlerType handlerType)
         {
             if (IsDisposing || IsDisposed)
                 return;
 
-            await InitializeAsync().ConfigureAwait(false);
-
-            await OnProjectChangedCoreAsync(e, handlerType).ConfigureAwait(false);
-        }
-
-        private async Task OnProjectChangedCoreAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, RuleHandlerType handlerType)
-        {
             await _tasksService.LoadedProjectAsync(async () =>
             {
                 await HandleAsync(e, handlerType).ConfigureAwait(false);
@@ -332,7 +312,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     IProjectChangeDescription projectChange = update.Value.ProjectChanges[handler.RuleName];
                     if (handler.ReceiveUpdatesWithEmptyProjectChange || projectChange.Difference.AnyChanges)
                     {
-                        await handler.HandleAsync(update, projectChange, projectContextToUpdate, isActiveContext).ConfigureAwait(true);
+                        handler.Handle(projectChange, projectContextToUpdate, isActiveContext);
                     }
                 }
             });

@@ -484,7 +484,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub m_UndoEngine_Undone(sender As Object, e As EventArgs) Handles _undoEngine.Undone
+        Private Sub OnUndoEngineUndone(sender As Object, e As EventArgs) Handles _undoEngine.Undone
             'Tell the project designer it needs to refresh its dirty status
             If _loadedPageSite IsNot Nothing Then
                 Dim AppDesignerView As ApplicationDesignerView = TryCast(_loadedPageSite.GetService(GetType(ApplicationDesignerView)), ApplicationDesignerView)
@@ -503,7 +503,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub m_DesignerHost_TransactionClosed(sender As Object, e As DesignerTransactionCloseEventArgs) Handles _designerHost.TransactionClosed
+        Private Sub OnDesignerHostTransactionClosed(sender As Object, e As DesignerTransactionCloseEventArgs) Handles _designerHost.TransactionClosed
             If _loadedPageSite IsNot Nothing Then
                 Dim AppDesignerView As ApplicationDesignerView = TryCast(_loadedPageSite.GetService(GetType(ApplicationDesignerView)), ApplicationDesignerView)
                 If AppDesignerView IsNot Nothing Then

@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     /// Implements the <see cref="IVsBuildMacroInfo"/> interface to be consumed by project properties.
     /// </summary>
     [ExportProjectNodeComService((typeof(IVsBuildMacroInfo)))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     internal class BuildMacroInfo : IVsBuildMacroInfo
     {
         /// <summary>

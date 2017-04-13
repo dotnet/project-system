@@ -29,11 +29,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         }
 
         [Theory]
-        [InlineData("winexe", "0")]
-        [InlineData("exe", "1")]
-        [InlineData("library", "2")]
-        [InlineData("appcontainerexe", "1")]
-        [InlineData("winmdobj", "2")]
+        [InlineData("WinExe", "0")]
+        [InlineData("Exe", "1")]
+        [InlineData("Library", "2")]
+        [InlineData("AppContainerExe", "1")]
+        [InlineData("WinMDObj", "2")]
         public async Task TryCreateEnumValue(string input, string expected)
         {
             var provider = new OutputTypeEnumProvider();
