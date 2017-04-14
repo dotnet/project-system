@@ -89,6 +89,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                 {
                     foreach (var topLevelDependency in allTopLevelDependencies)
                     {
+                        var targetedSnapshot = snapshot.Targets[topLevelDependency.TargetFramework];
+
                         if (!cachedDependencyToMatchingResultsMap
                                 .TryGetValue(topLevelDependency.Id, out HashSet<IDependency> topLevelDependencyMatches))
                         {
@@ -113,6 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
 
                                 topLevelDependencyMatches = GetMatchingResultsForDependency(
                                     topLevelDependency,
+                                    targetedSnapshot,
                                     matchedDependencies,
                                     cachedDependencyToMatchingResultsMap);
                             }
@@ -127,13 +130,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
 
                         var topLevelNode = Builder.AddTopLevelGraphNode(graphContext,
                                                                 snapshotProvider.ProjectFilePath,
-                                                                dependency: topLevelDependency);
+                                                                topLevelDependency.ToViewModel(targetedSnapshot));
                         foreach (var matchedDependency in topLevelDependencyMatches)
                         {
                             var matchedDependencyNode = Builder.AddGraphNode(graphContext,
                                                                     snapshotProvider.ProjectFilePath,
                                                                     topLevelNode,
-                                                                    matchedDependency);
+                                                                    matchedDependency.ToViewModel(targetedSnapshot));
 
                             graphContext.Graph.Links.GetOrCreate(topLevelNode,
                                                                  matchedDependencyNode,
@@ -171,7 +174,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             {
                 foreach (var dependency in targetedSnapshot.Value.DependenciesWorld)
                 {
-                    if (dependency.Value.Caption.ToLowerInvariant().Contains(searchTerm))
+                    if (dependency.Value.Visible && dependency.Value.Caption.ToLowerInvariant().Contains(searchTerm))
                     {
                         matchedDependencies.Add(dependency.Value);
                     }
@@ -183,13 +186,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
 
         private HashSet<IDependency> GetMatchingResultsForDependency(
             IDependency rootDependency,
+            ITargetedDependenciesSnapshot snapshot,
             HashSet<IDependency> flatMatchingDependencies,
             Dictionary<string, HashSet<IDependency>> cachedPositiveResults)
         {
             var matchingNodes = new HashSet<IDependency>();
             foreach (var childDependency in rootDependency.DependencyIDs)
             {
-                if (!rootDependency.Snapshot.DependenciesWorld
+                if (!snapshot.DependenciesWorld
                         .TryGetValue(childDependency, out IDependency childDependencyMetadata))
                 {
                     continue;
@@ -206,7 +210,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                     continue;
                 }
 
-                var children = GetMatchingResultsForDependency(childDependencyMetadata, flatMatchingDependencies, cachedPositiveResults);
+                var children = GetMatchingResultsForDependency(
+                    childDependencyMetadata, 
+                    snapshot, 
+                    flatMatchingDependencies, 
+                    cachedPositiveResults);
+
                 cachedPositiveResults[childDependency] = children;
 
                 if (children.Count > 0)

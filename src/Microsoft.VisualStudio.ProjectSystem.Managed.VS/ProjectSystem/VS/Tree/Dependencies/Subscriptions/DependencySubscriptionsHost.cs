@@ -43,8 +43,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 projectCapabilityCheckProvider: commonServices.Project);
 
             SnapshotFilters = new OrderPrecedenceImportCollection<IDependenciesSnapshotFilter>(
-                projectCapabilityCheckProvider: commonServices.Project, 
-                orderingStyle:ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast);
+                projectCapabilityCheckProvider: commonServices.Project,
+                orderingStyle: ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast);
 
             SubTreeProviders = new OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider>(
                 ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast,
@@ -58,9 +58,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             TargetFrameworkProvider = targetFrameworkProvider;
             AggregateSnapshotProvider = aggregateSnapshotProvider;
             ProjectFilePath = CommonServices.Project.FullPath;
-
-            CommonServices.Project.ProjectUnloading += OnUnconfiguredProjectUnloading;
-            CommonServices.Project.ProjectRenamed += OnUnconfiguredProjectRenamed;
         }
 
         private readonly object _snapshotLock = new object();
@@ -136,14 +133,52 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         protected async override Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
+            await base.InitializeCoreAsync(cancellationToken).ConfigureAwait(false);
+
+            CommonServices.Project.ProjectUnloading += OnUnconfiguredProjectUnloading;
+            CommonServices.Project.ProjectRenamed += OnUnconfiguredProjectRenamed;
+
             AggregateSnapshotProvider.RegisterSnapshotProvider(this);
 
             foreach (var provider in SubTreeProviders)
             {
                 provider.Value.DependenciesChanged += OnSubtreeProviderDependenciesChanged;
             }
+        }
 
-            await base.InitializeCoreAsync(cancellationToken).ConfigureAwait(false);
+        protected override async Task DisposeCoreAsync(bool initialized)
+        {
+            CommonServices.Project.ProjectUnloading -= OnUnconfiguredProjectUnloading;
+            CommonServices.Project.ProjectRenamed -= OnUnconfiguredProjectRenamed;
+
+            await base.DisposeCoreAsync(initialized).ConfigureAwait(false);
+        }
+
+        private Task OnUnconfiguredProjectUnloading(object sender, EventArgs args)
+        {
+            CommonServices.Project.ProjectUnloading -= OnUnconfiguredProjectUnloading;
+            CommonServices.Project.ProjectRenamed -= OnUnconfiguredProjectRenamed;
+
+            SnapshotProviderUnloading?.Invoke(this, new SnapshotProviderUnloadingEventArgs(this));
+
+            foreach (var subscriber in DependencySubscribers)
+            {
+                subscriber.Value.DependenciesChanged -= OnSubscriberDependenciesChanged;
+            }
+
+            foreach (var provider in SubTreeProviders)
+            {
+                provider.Value.DependenciesChanged -= OnSubtreeProviderDependenciesChanged;
+            }
+
+            return Task.CompletedTask;
+        }
+
+        private Task OnUnconfiguredProjectRenamed(object sender, ProjectRenamedEventArgs e)
+        {
+            SnapshotRenamed?.Invoke(this, e);
+
+            return Task.CompletedTask;
         }
 
         protected override void OnAggregateContextChanged(AggregateCrossTargetProjectContext oldContext,
@@ -182,34 +217,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             ScheduleDependenciesUpdate();
         }
 
-        private Task OnUnconfiguredProjectUnloading(object sender, EventArgs args)
-        {
-            CommonServices.Project.ProjectUnloading -= OnUnconfiguredProjectUnloading;
-
-            SnapshotProviderUnloading?.Invoke(this, new SnapshotProviderUnloadingEventArgs(this));
-
-            foreach (var subscriber in DependencySubscribers)
-            {
-                subscriber.Value.DependenciesChanged -= OnSubscriberDependenciesChanged;
-            }
-
-            foreach (var provider in SubTreeProviders)
-            {
-                provider.Value.DependenciesChanged -= OnSubtreeProviderDependenciesChanged;
-            }
-
-            return Task.CompletedTask;
-        }
-
-        private Task OnUnconfiguredProjectRenamed(object sender, ProjectRenamedEventArgs e)
-        {
-            SnapshotRenamed?.Invoke(this, e);
-
-            return Task.CompletedTask;
-        }
-
         private void OnSubscriberDependenciesChanged(object sender, DependencySubscriptionChangedEventArgs e)
         {
+            if (IsDisposing || IsDisposed)
+            {
+                return;
+            }
+
             if (!e.Context.AnyChanges)
             {
                 return;
@@ -219,13 +233,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         }
 
         private void OnSubtreeProviderDependenciesChanged(object sender, DependenciesChangedEventArgs e)
-        {           
+        {
+            if (IsDisposing || IsDisposed)
+            {
+                return;
+            }
+
             if (!e.Changes.AnyChanges())
             {
                 return;
             }
 
-            ITargetFramework targetFramework = 
+            ITargetFramework targetFramework =
                 string.IsNullOrEmpty(e.TargetShortOrFullName) || TargetFramework.Any.Equals(e.TargetShortOrFullName)
                     ? TargetFramework.Any
                     : TargetFrameworkProvider.GetTargetFramework(e.TargetShortOrFullName);
@@ -258,7 +277,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             {
                 newSnapshot = DependenciesSnapshot.FromChanges(
                     CommonServices.Project.FullPath,
-                    _currentSnapshot, 
+                    _currentSnapshot,
                     changes,
                     catalogs,
                     activeTargetFramework,
@@ -278,7 +297,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         {
             DependenciesUpdateScheduler.ScheduleAsyncTask((token) =>
             {
-                if (token.IsCancellationRequested)
+                if (token.IsCancellationRequested || IsDisposing || IsDisposed)
                 {
                     return Task.FromCanceled(token);
                 }
@@ -293,6 +312,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                 return Task.CompletedTask;
             });
-        }       
+        }
     }
 }

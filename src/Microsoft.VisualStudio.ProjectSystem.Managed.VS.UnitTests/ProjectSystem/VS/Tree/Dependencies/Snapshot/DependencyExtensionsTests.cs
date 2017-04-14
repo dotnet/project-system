@@ -19,9 +19,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     ""Id"": ""tfm1\\yyy\\dependencyExisting"",
     ""Name"":""dependencyExisting"",
     ""Caption"":""DependencyExisting"",
-    ""HasUnresolvedDependency"":""false"",
     ""Resolved"":""false""
 }");
+            var mockSnapshot = ITargetedDependenciesSnapshotFactory.Implement();
+
+            Assert.True(dependency1.IsOrHasUnresolvedDependency(mockSnapshot));
 
             var dependency2 = IDependencyFactory.FromJson(@"
 {
@@ -29,9 +31,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     ""Id"": ""tfm1\\yyy\\dependencyExisting"",
     ""Name"":""dependencyExisting"",
     ""Caption"":""DependencyExisting"",
-    ""HasUnresolvedDependency"":""true"",
     ""Resolved"":""true""
 }");
+
+            mockSnapshot = ITargetedDependenciesSnapshotFactory.ImplementHasUnresolvedDependency("tfm1\\yyy\\dependencyExisting", true);
+
+            Assert.True(dependency1.IsOrHasUnresolvedDependency(mockSnapshot));
 
             var dependency3 = IDependencyFactory.FromJson(@"
 {
@@ -39,13 +44,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     ""Id"": ""tfm1\\yyy\\dependencyExisting"",
     ""Name"":""dependencyExisting"",
     ""Caption"":""DependencyExisting"",
-    ""HasUnresolvedDependency"":""false"",
     ""Resolved"":""true""
 }");
 
-            Assert.True(dependency1.IsOrHasUnresolvedDependency());
-            Assert.True(dependency2.IsOrHasUnresolvedDependency());
-            Assert.False(dependency3.IsOrHasUnresolvedDependency());
+            mockSnapshot = ITargetedDependenciesSnapshotFactory.ImplementHasUnresolvedDependency("tfm1\\yyy\\dependencyExisting", false);
+
+            Assert.False(dependency3.IsOrHasUnresolvedDependency(mockSnapshot));
         }
 
         [Fact]
@@ -62,9 +66,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     ""SchemaItemType"":""MySchemaItemType"",
     ""Priority"":""1"",
     ""Resolved"":""true""
-}", icon: KnownMonikers.Uninstall, 
-    expandedIcon: KnownMonikers.AbsolutePosition, 
-    unresolvedIcon:KnownMonikers.AboutBox, 
+}", icon: KnownMonikers.Uninstall,
+    expandedIcon: KnownMonikers.AbsolutePosition,
+    unresolvedIcon: KnownMonikers.AboutBox,
     unresolvedExpandedIcon: KnownMonikers.Abbreviation);
 
             var dependencyUnresolved = IDependencyFactory.FromJson(@"
@@ -83,7 +87,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     unresolvedIcon: KnownMonikers.AboutBox,
     unresolvedExpandedIcon: KnownMonikers.Abbreviation);
 
-            var viewModelResolved = dependencyResolved.ToViewModel();
+            var mockSnapshot = ITargetedDependenciesSnapshotFactory.ImplementHasUnresolvedDependency("someId1", true);
+
+            var viewModelResolved = dependencyResolved.ToViewModel(mockSnapshot);
 
             Assert.Equal(dependencyResolved.Caption, viewModelResolved.Caption);
             Assert.Equal(dependencyResolved.Flags, viewModelResolved.Flags);
@@ -95,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(dependencyResolved.ExpandedIcon, viewModelResolved.ExpandedIcon);
             Assert.Equal(dependencyResolved.Properties, viewModelResolved.Properties);
 
-            var viewModelUnresolved = dependencyUnresolved.ToViewModel();
+            var viewModelUnresolved = dependencyUnresolved.ToViewModel(mockSnapshot);
 
             Assert.Equal(dependencyUnresolved.Caption, viewModelUnresolved.Caption);
             Assert.Equal(dependencyUnresolved.Flags, viewModelUnresolved.Flags);
@@ -175,43 +181,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void DependencyExtensionsTests_HasSameTarget()
         {
-            var targetedSnapshot1 = ITargetedDependenciesSnapshotFactory.Implement(
-                targetFramework: ITargetFrameworkFactory.Implement("tfm1"));
+            var targetFramework1 = ITargetFrameworkFactory.Implement("tfm1");
+            var targetFramework2 = ITargetFrameworkFactory.Implement("tfm2");
 
-            var targetedSnapshot2 = ITargetedDependenciesSnapshotFactory.Implement(
-                targetFramework: ITargetFrameworkFactory.Implement("tfm2"));
-
-            var dependency1 = IDependencyFactory.Implement(snapshot: targetedSnapshot1).Object;
-            var dependency2 = IDependencyFactory.Implement(snapshot: targetedSnapshot1).Object;
-            var dependency3 = IDependencyFactory.Implement(snapshot: targetedSnapshot2).Object;
+            var dependency1 = IDependencyFactory.Implement(targetFramework: targetFramework1).Object;
+            var dependency2 = IDependencyFactory.Implement(targetFramework: targetFramework1).Object;
+            var dependency3 = IDependencyFactory.Implement(targetFramework: targetFramework2).Object;
 
 
             Assert.True(dependency1.HasSameTarget(dependency2));
             Assert.False(dependency1.HasSameTarget(dependency3));
-        }
-
-        [Fact]
-        public void DependencyExtensionsTests_Contains()
-        {
-            var dependency3 = IDependencyFactory.FromJson(@"
-{
-    ""Id"":""id3"",
-    ""ProviderType"": ""ProjectDependency""
-}", dependenciesIds: new string[] { });
-
-            var dependency2 = IDependencyFactory.FromJson(@"
-{
-    ""Id"":""id2"",
-    ""ProviderType"": ""ProjectDependency""
-}", dependenciesIds: new[] { "id3" }, dependencies: new[] { dependency3 });
-
-            var dependency1 = IDependencyFactory.FromJson(@"
-{
-    ""Id"":""id1"",
-    ""ProviderType"": ""ProjectDependency""
-}", dependenciesIds: new[] { "id2" }, dependencies: new[] { dependency2 });
-
-            Assert.True(dependency1.Contains(dependency3));
         }
 
         [Fact]

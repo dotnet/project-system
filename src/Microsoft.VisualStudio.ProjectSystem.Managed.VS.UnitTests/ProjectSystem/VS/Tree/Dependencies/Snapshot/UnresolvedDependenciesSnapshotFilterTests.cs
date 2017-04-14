@@ -29,11 +29,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var filter = new UnresolvedDependenciesSnapshotFilter();
 
             var resultDependency = filter.BeforeAdd(
-                projectPath: null,
-                targetFramework: null,
-                dependency: dependency.Object,
-                worldBuilder: worldBuilder,
-                topLevelBuilder: null);
+                null,
+                null,
+                dependency.Object,
+                worldBuilder,
+                null,
+                out bool filterAnyChanges);
 
             Assert.Null(resultDependency);
 
@@ -55,11 +56,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var filter = new UnresolvedDependenciesSnapshotFilter();
 
             var resultDependency = filter.BeforeAdd(
-                projectPath: null,
-                targetFramework: null,
-                dependency: dependency.Object,
-                worldBuilder: worldBuilder,
-                topLevelBuilder: null);
+                null,
+                null,
+                dependency.Object,
+                worldBuilder,
+                null,
+                out bool filterAnyChanges);
 
             Assert.NotNull(resultDependency);
             Assert.Equal("mydependency2", resultDependency.Id);
@@ -77,11 +79,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var filter = new UnresolvedDependenciesSnapshotFilter();
 
             var resultDependency = filter.BeforeAdd(
-                projectPath: null,
-                targetFramework: null,
-                dependency: dependency.Object,
-                worldBuilder: null,
-                topLevelBuilder: null);
+                null,
+                null,
+                dependency.Object,
+                null,
+                null,
+                out bool filterAnyChanges);
 
             Assert.NotNull(resultDependency);
             Assert.Equal("mydependency2", resultDependency.Id);

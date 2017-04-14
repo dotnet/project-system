@@ -24,8 +24,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             ITargetFramework targetFramework,
             IDependency dependency, 
             ImmutableDictionary<string, IDependency>.Builder worldBuilder,
-            ImmutableHashSet<IDependency>.Builder topLevelBuilder)
+            ImmutableHashSet<IDependency>.Builder topLevelBuilder,
+            out bool filterAnyChanges)
         {
+            filterAnyChanges = false;
+
             if (dependency.Resolved == false && worldBuilder.Keys.Contains(dependency.Id))
             {
                 return null;

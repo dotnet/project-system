@@ -25,14 +25,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public const int ComNodePriority = 170;
         public const int SdkNodePriority = 180;
 
-        public Dependency(IDependencyModel dependencyModel, ITargetedDependenciesSnapshot snapshot)
+        public Dependency(IDependencyModel dependencyModel, ITargetFramework targetFramework)
         {
             Requires.NotNull(dependencyModel, nameof(dependencyModel));
-            Requires.NotNull(snapshot, nameof(snapshot));
             Requires.NotNullOrEmpty(dependencyModel.ProviderType, nameof(dependencyModel.ProviderType));
             Requires.NotNullOrEmpty(dependencyModel.Id, nameof(dependencyModel.Id));
+            Requires.NotNull(targetFramework, nameof(targetFramework));
 
-            Snapshot = snapshot;
+            TargetFramework = targetFramework;
+
             _modelId = dependencyModel.Id;
             ProviderType = dependencyModel.ProviderType;
             Name = dependencyModel.Name ?? string.Empty;
@@ -79,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 var normalizedDependencyIDs = new List<string>();
                 foreach (var id in dependencyModel.DependencyIDs)
                 {
-                    normalizedDependencyIDs.Add(GetID(Snapshot.TargetFramework, ProviderType, id));
+                    normalizedDependencyIDs.Add(GetID(TargetFramework, ProviderType, id));
                 }
 
                 DependencyIDs = ImmutableList.CreateRange(normalizedDependencyIDs);
@@ -87,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         private Dependency(IDependency model, string modelId)
-            : this(model, model.Snapshot)
+            : this(model, model.TargetFramework)
         {
             _modelId = modelId;
         }
@@ -99,6 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// to get a unique id for the whole snapshot.
         /// </summary>
         private string _modelId;
+
         private string _id;
         public string Id
         {
@@ -106,13 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             {
                 if (_id == null)
                 {
-                    // we need to replace .. in model id with something else, since IProjectItemTree 
-                    // alters it using Uri and .. symbols are gone (it tries to get full path). However
-                    // we do need ids to stay original and unique.
-                    _id = (Snapshot.TargetFramework == null
-                                ? Normalize(_modelId)
-                                : GetID(Snapshot.TargetFramework, ProviderType, _modelId));
-
+                    _id = GetID(TargetFramework, ProviderType, _modelId);
                 }
 
                 return _id;
@@ -162,68 +158,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         #endregion
 
-        private bool? _hasUnresolvedDependency;
-        public bool HasUnresolvedDependency
-        {
-            get
-            {
-                if (_hasUnresolvedDependency == null)
-                {
-                    // CheckForUnresolvedDependencies does dependency tree traversal efficiently,
-                    // call it instead of going reqursively through Dependencies property.
-                    _hasUnresolvedDependency = Snapshot.CheckForUnresolvedDependencies(this);
-                }
+        public ITargetFramework TargetFramework { get; }
 
-                return _hasUnresolvedDependency.Value;
-            }
-        }
-
-        private IEnumerable<IDependency> _dependencies;
-        public IEnumerable<IDependency> Dependencies
-        {
-            get
-            {
-                if (_dependencies == null)
-                {
-                    var dependencies = new List<IDependency>();
-                    foreach(var id in DependencyIDs)
-                    {
-                        if (Snapshot.DependenciesWorld.TryGetValue(id, out IDependency child))
-                        {
-                            dependencies.Add(child);
-                        }                        
-                    }
-
-                    _dependencies = dependencies;
-                }
-
-                return _dependencies;
-            }
-        }
-
-        public ITargetedDependenciesSnapshot Snapshot { get; }
-
-        private string _alias = string.Empty;
-        public string Alias
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(_alias))
-                {
-                    var path = OriginalItemSpec ?? Path;
-                    if (string.IsNullOrEmpty(path) || path.Equals(Caption, StringComparison.OrdinalIgnoreCase))
-                    {
-                        _alias = Caption;
-                    }
-                    else
-                    {
-                        _alias = string.Format(CultureInfo.CurrentCulture, "{0} ({1})", Caption, path);
-                    }
-                }
-
-                return _alias;
-            }
-        }
+        public string Alias => GetAlias(this);
 
         public IDependency SetProperties(
             string caption = null, 
@@ -296,6 +233,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             return Id;
         }
 
+        private static string GetAlias(IDependency dependency)
+        {
+            var path = dependency.OriginalItemSpec ?? dependency.Path;
+            if (string.IsNullOrEmpty(path) || path.Equals(dependency.Caption, StringComparison.OrdinalIgnoreCase))
+            {
+                return dependency.Caption;
+            }
+            else
+            {
+                return string.Format(CultureInfo.CurrentCulture, "{0} ({1})", dependency.Caption, path);
+            }
+        }
+
         private static string Normalize(string id)
         {
             return id.Replace('.', '_').Replace('/', '\\');
@@ -303,7 +253,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         public static string GetID(ITargetFramework targetFramework, string providerType, string modelId)
         {
+            Requires.NotNull(targetFramework, nameof(targetFramework));
             Requires.NotNullOrEmpty(providerType, nameof(providerType));
+            Requires.NotNullOrEmpty(modelId, nameof(modelId));
 
             var normalizedModelId = modelId.Replace('.', '_');
             return $"{targetFramework.ShortName}/{providerType}/{normalizedModelId}".TrimEnd('/').Replace('/', '\\');

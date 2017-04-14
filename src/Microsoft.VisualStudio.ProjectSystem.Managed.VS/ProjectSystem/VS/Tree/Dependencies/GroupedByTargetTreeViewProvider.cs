@@ -234,8 +234,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     excludedFlags = ProjectTreeFlags.Create(ProjectTreeFlags.Common.BubbleUp);
                 }
 
-                subTreeNode = CreateOrUpdateNode(subTreeNode, subTreeViewModel, rule:null, isProjectItem:false, excludedFlags: excludedFlags);
-                subTreeNode = BuildSubTree(subTreeNode, dependencyGroup.Value, catalogs, isActiveTarget, shouldCleanup:!isNewSubTreeNode);
+                subTreeNode = CreateOrUpdateNode(
+                    subTreeNode, 
+                    subTreeViewModel, 
+                    rule:null, 
+                    isProjectItem:false, 
+                    excludedFlags:excludedFlags);
+
+                subTreeNode = BuildSubTree(
+                    subTreeNode, 
+                    targetedSnapshot, 
+                    dependencyGroup.Value, 
+                    catalogs, 
+                    isActiveTarget, 
+                    shouldCleanup:!isNewSubTreeNode);
                 
                 currentNodes.Add(subTreeNode);
 
@@ -257,6 +269,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         private IProjectTree BuildSubTree(
             IProjectTree rootNode,
+            ITargetedDependenciesSnapshot targetedSnapshot,
             IEnumerable<IDependency> dependencies,
             IProjectCatalogSnapshot catalogs,
             bool isActiveTarget,
@@ -282,7 +295,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     }
                 }
 
-                dependencyNode = CreateOrUpdateNode(dependencyNode, dependency, catalogs, isActiveTarget);
+                dependencyNode = CreateOrUpdateNode(dependencyNode, dependency, targetedSnapshot, catalogs, isActiveTarget);
                 currentNodes.Add(dependencyNode);
 
                 if (isNewDependencyNode)
@@ -322,6 +335,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private IProjectTree CreateOrUpdateNode(
             IProjectTree node,
             IDependency dependency,
+            ITargetedDependenciesSnapshot targetedSnapshot,
             IProjectCatalogSnapshot catalogs,
             bool isProjectItem,
             ProjectTreeFlags? additionalFlags = null,
@@ -333,7 +347,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 rule = TreeServices.GetRule(dependency, catalogs);
             }
 
-            return CreateOrUpdateNode(node, dependency.ToViewModel(), rule, isProjectItem, additionalFlags, excludedFlags);
+            return CreateOrUpdateNode(
+                node, 
+                dependency.ToViewModel(targetedSnapshot), 
+                rule, 
+                isProjectItem, 
+                additionalFlags, 
+                excludedFlags);
         }
 
         /// <summary>

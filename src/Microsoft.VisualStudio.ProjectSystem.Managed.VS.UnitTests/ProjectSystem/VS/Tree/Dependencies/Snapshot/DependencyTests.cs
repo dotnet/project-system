@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Xunit;
@@ -21,24 +20,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 new Dependency(null, null);
             });
 
-            Assert.Throws<ArgumentNullException>("snapshot", () =>
+            Assert.Throws<ArgumentNullException>("ProviderType", () =>
             {
                 var mockModel = IDependencyModelFactory.Create();
                 new Dependency(mockModel, null);
             });
 
-            Assert.Throws<ArgumentNullException>("ProviderType", () =>
-            {
-                var mockModel = IDependencyModelFactory.Create();
-                var mockSnapshot = ITargetedDependenciesSnapshotFactory.Create();
-                new Dependency(mockModel, mockSnapshot);
-            });
-
             Assert.Throws<ArgumentNullException>("Id", () =>
             {
-                var mockModel = IDependencyModelFactory.Implement(providerType:"someprovider");
-                var mockSnapshot = ITargetedDependenciesSnapshotFactory.Create();
-                new Dependency(mockModel, mockSnapshot);
+                var mockModel = IDependencyModelFactory.Implement(providerType: "someprovider");
+                new Dependency(mockModel, null);
+            });
+
+            Assert.Throws<ArgumentNullException>("targetFramework", () =>
+            {
+                var mockModel = IDependencyModelFactory.Implement(providerType: "someprovider", id: "id");
+                new Dependency(mockModel, null);
             });
         }
 
@@ -51,9 +48,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     ""Id"": ""mymodel""
 }";
             var mockModel = IDependencyModelFactory.FromJson(jsonModel);
-            var mockSnapshot = ITargetedDependenciesSnapshotFactory.Create();
 
-            var dependency = new Dependency(mockModel, mockSnapshot);
+            var dependency = new Dependency(mockModel, ITargetFrameworkFactory.Implement("tfm1"));
 
             Assert.Equal(mockModel.ProviderType, dependency.ProviderType);
             Assert.Equal(string.Empty, dependency.Name);
@@ -97,13 +93,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 expandedIcon: KnownMonikers.PathIcon,
                 unresolvedIcon: KnownMonikers.PathListBox,
                 unresolvedExpandedIcon: KnownMonikers.PathListBoxItem,
-                properties: new Dictionary<string, string>() { { "prop1","val1" } },
-                dependenciesIds: new[] { "otherid"});
+                properties: new Dictionary<string, string>() { { "prop1", "val1" } },
+                dependenciesIds: new[] { "otherid" });
 
             var targetFramework = ITargetFrameworkFactory.Implement("Tfm1");
-            var mockSnapshot = ITargetedDependenciesSnapshotFactory.Implement(targetFramework:targetFramework);
 
-            var dependency = new Dependency(mockModel, mockSnapshot);
+            var dependency = new Dependency(mockModel, targetFramework);
 
             Assert.Equal(mockModel.ProviderType, dependency.ProviderType);
             Assert.Equal(mockModel.Name, dependency.Name);
@@ -127,15 +122,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Theory]
-        [InlineData(@"../../somepath", @"__\__\somepath")]
-        [InlineData(@"__\somepath..\", @"__\somepath__\")]
-        [InlineData(@"somepath", @"somepath")]
+        [InlineData(@"../../somepath", @"tfm1\xxx\__\__\somepath")]
+        [InlineData(@"__\somepath..\", @"tfm1\xxx\__\somepath__\")]
+        [InlineData(@"somepath", @"tfm1\xxx\somepath")]
         public void Dependency_Id_NoSnapsotTargetFramework(string modelId, string expectedId)
         {
-            var mockModel = IDependencyModelFactory.Implement(providerType:"xxx", id: modelId);
+            var mockModel = IDependencyModelFactory.Implement(providerType: "xxx", id: modelId);
             var mockSnapshot = ITargetedDependenciesSnapshotFactory.Create();
 
-            var dependency = new Dependency(mockModel, mockSnapshot);
+            var dependency = new Dependency(mockModel, ITargetFrameworkFactory.Implement("tfm1"));
 
             Assert.Equal(mockModel.ProviderType, dependency.ProviderType);
             Assert.Equal(expectedId, dependency.Id);
@@ -148,10 +143,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void Dependency_Id(string modelId, string expectedId)
         {
             var mockModel = IDependencyModelFactory.Implement(providerType: "providerType", id: modelId);
-            var mockTargetFramework = ITargetFrameworkFactory.Implement(moniker:"tfm");
-            var mockSnapshot = ITargetedDependenciesSnapshotFactory.Implement(targetFramework: mockTargetFramework);
+            var mockTargetFramework = ITargetFrameworkFactory.Implement(moniker: "tfm");
 
-            var dependency = new Dependency(mockModel, mockSnapshot);
+            var dependency = new Dependency(mockModel, mockTargetFramework);
 
             Assert.Equal(mockModel.ProviderType, dependency.ProviderType);
             Assert.Equal(expectedId, dependency.Id);
@@ -165,15 +159,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void Dependency_Alias(string originalItemSpec, string path, string caption, string expectedAlias)
         {
             var mockModel = IDependencyModelFactory.Implement(
-                providerType: "providerType", 
+                providerType: "providerType",
                 id: "someId",
                 originalItemSpec: originalItemSpec,
                 path: path,
-                caption:caption);
+                caption: caption);
             var mockTargetFramework = ITargetFrameworkFactory.Implement(moniker: "tfm");
-            var mockSnapshot = ITargetedDependenciesSnapshotFactory.Implement(targetFramework: mockTargetFramework);
 
-            var dependency = new Dependency(mockModel, mockSnapshot);
+            var dependency = new Dependency(mockModel, mockTargetFramework);
 
             Assert.Equal(expectedAlias, dependency.Alias);
         }
@@ -191,15 +184,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 providerType: "providerType",
                 id: "someId_other");
 
-            var mockSnapshot = ITargetedDependenciesSnapshotFactory.Implement();
-
-            var dependency1 = new Dependency(mockModel1, mockSnapshot);
-            var dependency2 = new Dependency(mockModel2, mockSnapshot);
-            var dependency3 = new Dependency(mockModel3, mockSnapshot);
+            var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
+            var dependency1 = new Dependency(mockModel1, targetFramework);
+            var dependency2 = new Dependency(mockModel2, targetFramework);
+            var dependency3 = new Dependency(mockModel3, targetFramework);
 
             Assert.Equal(dependency1, dependency2);
             Assert.NotEqual(dependency1, dependency3);
-            Assert.Equal("someid1".GetHashCode(), dependency1.GetHashCode());
+            Assert.Equal(@"tfm1\providertype\someid1".GetHashCode(), dependency1.GetHashCode());
         }
 
         [Fact]
@@ -208,9 +200,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var mockModel = IDependencyModelFactory.Implement(
                 providerType: "providerType",
                 id: "someId");
-            var mockSnapshot = ITargetedDependenciesSnapshotFactory.Implement();
 
-            var dependency = new Dependency(mockModel, mockSnapshot);
+            var dependency = new Dependency(mockModel, ITargetFrameworkFactory.Implement("tfm1"));
 
             var newDependency = dependency.SetProperties(
                 caption: "newcaption",
@@ -224,41 +215,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.True(newDependency.DependencyIDs.Count == 1);
         }
 
-        [Fact]
-        public void Dependency_DependenciesProperty()
-        {
-            var mockModel1 = IDependencyModelFactory.Implement(
-                providerType: "providerType",
-                id: "someId1", 
-                dependencyIDs: new[] { "someId2", "someId_other" });
+        //[Fact]
+        //public void Dependency_DependenciesProperty()
+        //{
+        //    var mockModel1 = IDependencyModelFactory.Implement(
+        //        providerType: "providerType",
+        //        id: "someId1",
+        //        dependencyIDs: new[] { "someId2", "someId_other" });
 
-            var mockModel2 = IDependencyModelFactory.Implement(
-                providerType: "providerType",
-                id: "someId2");
-            var mockModel3 = IDependencyModelFactory.Implement(
-                providerType: "providerType",
-                id: "someId_other");
+        //    var mockModel2 = IDependencyModelFactory.Implement(
+        //        providerType: "providerType",
+        //        id: "someId2");
+        //    var mockModel3 = IDependencyModelFactory.Implement(
+        //        providerType: "providerType",
+        //        id: "someId_other");
 
-            var targetFramework = ITargetFrameworkFactory.Implement("Tfm1");
-            var mockSnapshot = ITargetedDependenciesSnapshotFactory.ImplementMock(targetFramework:targetFramework);
+        //    var targetFramework = ITargetFrameworkFactory.Implement("Tfm1");
+        //    var mockSnapshot = ITargetedDependenciesSnapshotFactory.ImplementMock(targetFramework: targetFramework);
 
-            var dependency1 = new Dependency(mockModel1, mockSnapshot.Object);
-            var dependency2 = new Dependency(mockModel2, mockSnapshot.Object);
-            var dependency3 = new Dependency(mockModel3, mockSnapshot.Object);
+        //    var dependency1 = new Dependency(mockModel1, targetFramework);
+        //    var dependency2 = new Dependency(mockModel2, targetFramework);
+        //    var dependency3 = new Dependency(mockModel3, targetFramework);
 
-            var children = new Dictionary<string, IDependency>()
-            {
-                { dependency2.Id, dependency2 },
-                { dependency3.Id, dependency3 },
-            };
+        //    var children = new Dictionary<string, IDependency>()
+        //    {
+        //        { dependency2.Id, dependency2 },
+        //        { dependency3.Id, dependency3 },
+        //    };
 
-            mockSnapshot.Setup(x => x.DependenciesWorld).Returns(
-                ImmutableDictionary<string, IDependency>.Empty.AddRange(children));
+        //    mockSnapshot.Setup(x => x.DependenciesWorld).Returns(
+        //        ImmutableDictionary<string, IDependency>.Empty.AddRange(children));
 
-            Assert.True(dependency1.Dependencies.Count() == 2);
-            Assert.True(dependency1.Dependencies.Any(x => x.Equals(dependency2)));
-            Assert.True(dependency1.Dependencies.Any(x => x.Equals(dependency3)));
-        }
+        //    Assert.True(dependency1.Dependencies.Count() == 2);
+        //    Assert.True(dependency1.Dependencies.Any(x => x.Equals(dependency2)));
+        //    Assert.True(dependency1.Dependencies.Any(x => x.Equals(dependency3)));
+        //}
 
         [Fact]
         public void Dependency_HasUnresolvedDependency()
@@ -268,12 +259,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 id: "someId1",
                 resolved: true);
 
-            var mockSnapshot = ITargetedDependenciesSnapshotFactory.ImplementHasUnresolvedDependency("someId1", true);
+            var mockSnapshot = ITargetedDependenciesSnapshotFactory.ImplementHasUnresolvedDependency(@"tfm1\providerType\someid1", true);
 
-            var dependency = new Dependency(mockModel1, mockSnapshot);
+            var dependency = new Dependency(mockModel1, ITargetFrameworkFactory.Implement("tfm1"));
 
-            Assert.True(dependency.HasUnresolvedDependency);
-            Assert.True(dependency.IsOrHasUnresolvedDependency());
+            Assert.True(dependency.HasUnresolvedDependency(mockSnapshot));
+            Assert.True(dependency.IsOrHasUnresolvedDependency(mockSnapshot));
         }
     }
 }

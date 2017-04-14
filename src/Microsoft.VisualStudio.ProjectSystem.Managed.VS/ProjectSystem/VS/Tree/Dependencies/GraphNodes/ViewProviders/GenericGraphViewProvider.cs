@@ -19,22 +19,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         {
         }
 
-        public override void BuildGraph(IGraphContext graphContext,
-                                           string projectPath,
-                                           IDependency dependency,
-                                           GraphNode dependencyGraphNode)
+        public override void BuildGraph(
+            IGraphContext graphContext,
+            string projectPath,
+            IDependency dependency,
+            GraphNode dependencyGraphNode,
+            ITargetedDependenciesSnapshot targetedSnapshot)
         {
-            // store refreshed dependency
-            dependencyGraphNode.SetValue(DependenciesGraphSchema.DependencyProperty, dependency);
+            // store refreshed dependency info
+            dependencyGraphNode.SetValue(DependenciesGraphSchema.DependencyIdProperty, dependency.Id);
+            dependencyGraphNode.SetValue(DependenciesGraphSchema.ResolvedProperty, dependency.Resolved);
 
-            foreach (var childDependency in dependency.Dependencies)
+            var children = targetedSnapshot.GetDependencyChildren(dependency);
+            if (children == null)
+            {
+                return;
+            }
+
+            foreach (var childDependency in children)
             {
                 if (!childDependency.Visible)
                 {
                     continue;
                 }
 
-                Builder.AddGraphNode(graphContext, projectPath, dependencyGraphNode, childDependency);
+                Builder.AddGraphNode(
+                    graphContext, 
+                    projectPath, 
+                    dependencyGraphNode, 
+                    childDependency.ToViewModel(targetedSnapshot));
             }
         }
     }

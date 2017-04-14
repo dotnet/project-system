@@ -26,8 +26,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             ITargetFramework targetFramework,
             IDependency dependency, 
             ImmutableDictionary<string, IDependency>.Builder worldBuilder,
-            ImmutableHashSet<IDependency>.Builder topLevelBuilder)
+            ImmutableHashSet<IDependency>.Builder topLevelBuilder,
+            out bool filterAnyChanges)
         {
+            filterAnyChanges = false;
             IDependency resultDependency = dependency;
 
             var matchingDependency = topLevelBuilder.FirstOrDefault(
@@ -47,11 +49,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
 
             if (shouldApplyAlias)
             {
+                filterAnyChanges = true;
                 if (matchingDependency != null)
                 {
                     matchingDependency = matchingDependency.SetProperties(caption: matchingDependency.Alias);
+                    worldBuilder.Remove(matchingDependency.Id);
+                    worldBuilder.Add(matchingDependency.Id, matchingDependency);
+                    topLevelBuilder.Remove(matchingDependency);
                     topLevelBuilder.Add(matchingDependency);
-                    worldBuilder[matchingDependency.Id] = matchingDependency;
                 }
 
                 resultDependency = resultDependency.SetProperties(caption: dependency.Alias);

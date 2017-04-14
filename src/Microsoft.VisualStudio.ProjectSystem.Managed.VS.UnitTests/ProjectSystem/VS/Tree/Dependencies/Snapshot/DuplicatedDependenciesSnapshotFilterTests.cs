@@ -38,11 +38,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var filter = new DuplicatedDependenciesSnapshotFilter();
 
             var resultDependency = filter.BeforeAdd(
-                projectPath: null,
-                targetFramework: null,
-                dependency: dependency.Object,
-                worldBuilder: worldBuilder,
-                topLevelBuilder: topLevelBuilder);
+                null,
+                null,
+                dependency.Object,
+                worldBuilder,
+                topLevelBuilder,
+                out bool filterAnyChanges);
 
             Assert.False(worldBuilder.ContainsKey(otherDependency.Object.Id));
 
@@ -81,11 +82,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var filter = new DuplicatedDependenciesSnapshotFilter();
 
             var resultDependency = filter.BeforeAdd(
-                projectPath: null,
-                targetFramework: null,
-                dependency: dependency.Object,
-                worldBuilder: worldBuilder,
-                topLevelBuilder: topLevelBuilder);
+                null,
+                null,
+                dependency.Object,
+                worldBuilder,
+                topLevelBuilder,
+                out bool filterAnyChanges);
 
             Assert.True(worldBuilder.ContainsKey(otherDependency.Object.Id));
 
@@ -122,11 +124,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var filter = new DuplicatedDependenciesSnapshotFilter();
 
             var resultDependency = filter.BeforeAdd(
-                projectPath: null,
-                targetFramework: null,
-                dependency: dependency.Object,
-                worldBuilder: worldBuilder,
-                topLevelBuilder: topLevelBuilder);
+                null,
+                null,
+                dependency.Object,
+                worldBuilder,
+                topLevelBuilder,
+                out bool filterAnyChanges);
 
             Assert.False(worldBuilder.ContainsKey(otherDependency.Object.Id));
 

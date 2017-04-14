@@ -28,11 +28,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var filter = new SdkAndPackagesDependenciesSnapshotFilter();
 
             var resultDependency = filter.BeforeAdd(
-                projectPath: null,
-                targetFramework: null,
-                dependency: dependency.Object,
-                worldBuilder: worldBuilder,
-                topLevelBuilder: null);
+                null,
+                null,
+                dependency.Object,
+                worldBuilder,
+                null,
+                out bool filterAnyChanges);
 
             dependency.VerifyAll();
         }
@@ -71,11 +72,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var filter = new SdkAndPackagesDependenciesSnapshotFilter();
 
             var resultDependency = filter.BeforeAdd(
-                projectPath: null,
-                targetFramework: mockTargetFramework,
-                dependency: sdkDependency.Object,
-                worldBuilder: worldBuilder,
-                topLevelBuilder: topLevelBuilder);
+                null,
+                mockTargetFramework,
+                sdkDependency.Object,
+                worldBuilder,
+                topLevelBuilder,
+                out bool filterAnyChanges);
 
             sdkDependency.VerifyAll();
             otherDependency.VerifyAll();
@@ -107,11 +109,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var filter = new SdkAndPackagesDependenciesSnapshotFilter();
 
             var resultDependency = filter.BeforeAdd(
-                projectPath: null,
-                targetFramework: mockTargetFramework,
-                dependency: dependency.Object,
-                worldBuilder: worldBuilder,
-                topLevelBuilder: null);
+                null,
+                mockTargetFramework,
+                dependency.Object,
+                worldBuilder,
+                null,
+                out bool filterAnyChanges);
 
             dependency.VerifyAll();
             otherDependency.VerifyAll();
@@ -152,11 +155,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var filter = new SdkAndPackagesDependenciesSnapshotFilter();
 
             var resultDependency = filter.BeforeAdd(
-                projectPath: null,
-                targetFramework: mockTargetFramework,
-                dependency: dependency.Object,
-                worldBuilder: worldBuilder,
-                topLevelBuilder: topLevelBuilder);
+                null,
+                mockTargetFramework,
+                dependency.Object,
+                worldBuilder,
+                topLevelBuilder,
+                out bool filterAnyChanges);
 
             dependency.VerifyAll();
             sdkDependency.VerifyAll();
@@ -199,11 +203,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var filter = new SdkAndPackagesDependenciesSnapshotFilter();
 
             filter.BeforeRemove(
-                projectPath: null,
-                targetFramework: mockTargetFramework,
-                dependency: dependency.Object,
-                worldBuilder: worldBuilder,
-                topLevelBuilder: topLevelBuilder);
+                null,
+                mockTargetFramework,
+                dependency.Object,
+                worldBuilder,
+                topLevelBuilder,
+                out bool filterAnyChanges);
 
             dependency.VerifyAll();
             sdkDependency.VerifyAll();

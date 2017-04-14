@@ -16,16 +16,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             IGraphContext graphContext, 
             string projectPath, 
             IDependency dependency, 
-            GraphNode dependencyGraphNode);
+            GraphNode dependencyGraphNode,
+            ITargetedDependenciesSnapshot targetedSnapshot);
 
         bool ShouldTrackChanges(string projectPath, string updatedProjectPath, IDependency dependency);
 
         bool TrackChanges(
             IGraphContext graphContext,
             string projectPath,
-            IDependency existingDependency,
             IDependency updatedDependency,
-            GraphNode dependencyGraphNode);
+            GraphNode dependencyGraphNode,
+            ITargetedDependenciesSnapshot targetedSnapshot);
 
         bool MatchSearchResults(
             string projectPath,
