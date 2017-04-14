@@ -20,12 +20,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         ///     Returns original or modified dependency depending on filter's logic. 
         ///     If returns null, snapshot does not do any updates for this dependency.
         /// </returns>
+        /// <param name="projectPath">Path to current project.</param>
+        /// <param name="targetFramework">Target framework for which dependency was resolved.</param>
+        /// <param name="dependency">The dependency to which filter should be applied.</param>
+        /// <param name="worldBuilder">Builder for immutable world dictionary of updating snapshot.</param>
+        /// <param name="topLevelBuilder">Top level dependencies list builder of updating snapshot.</param>
+        /// <param name="filterAnyChanges">True if filter did any changes in the snapshot</param>
+        /// <returns>Dependency to be added if addition is approved, null if dependency should not be added to snapshot</returns>
         IDependency BeforeAdd(
             string projectPath,
             ITargetFramework targetFramework,
             IDependency dependency, 
             ImmutableDictionary<string, IDependency>.Builder worldBuilder,
-            ImmutableHashSet<IDependency>.Builder topLevelBuilder);
+            ImmutableHashSet<IDependency>.Builder topLevelBuilder,
+            out bool filterAnyChanges);
 
         /// <summary>
         /// Is called before removing a given dependecy.
@@ -35,11 +43,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         /// <param name="dependency">The dependency to which filter should be applied.</param>
         /// <param name="worldBuilder">Builder for immutable world dictionary of updating snapshot.</param>
         /// <param name="topLevelBuilder">Top level dependencies list builder of updating snapshot.</param>
-        void BeforeRemove(
+        /// <param name="filterAnyChanges">True if filter did any changes in the snapshot</param>
+        /// <returns>Dependency itself if removal is approved, null if dependency should not be removed</returns>
+        IDependency BeforeRemove(
             string projectPath,
             ITargetFramework targetFramework,
             IDependency dependency, 
             ImmutableDictionary<string, IDependency>.Builder worldBuilder,
-            ImmutableHashSet<IDependency>.Builder topLevelBuilder);
+            ImmutableHashSet<IDependency>.Builder topLevelBuilder,
+            out bool filterAnyChanges);
     }
 }

@@ -44,8 +44,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                     continue;
                 }
 
-                var dependency = GetDependency(graphContext, inputGraphNode);
-                if (dependency == null)
+                var dependency = GetDependency(graphContext, inputGraphNode, out IDependenciesSnapshot snapshot);
+                if (dependency == null || snapshot == null)
                 {
                     continue;
                 }
@@ -56,14 +56,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                     continue;
                 }
 
-                if (dependency.Flags.Contains(DependencyTreeFlags.SupportsHierarchy))
-                {
-                    trackChanges = true;
-                }
-
                 using (var scope = new GraphTransactionScope())
                 {
-                    inputGraphNode.SetValue(DependenciesGraphSchema.DependencyProperty, dependency);
+                    inputGraphNode.SetValue(DependenciesGraphSchema.DependencyIdProperty, dependency.Id);
+                    inputGraphNode.SetValue(DependenciesGraphSchema.ResolvedProperty, dependency.Resolved);
 
                     if (viewProvider.Value.HasChildren(projectPath, dependency))
                     {

@@ -43,8 +43,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                     continue;
                 }
 
-                var dependency = GetDependency(graphContext, inputGraphNode);
-                if (dependency == null)
+                var dependency = GetDependency(graphContext, inputGraphNode, out IDependenciesSnapshot snapshot);
+                if (dependency == null || snapshot == null)
                 {
                     continue;
                 }
@@ -62,7 +62,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
 
                 using (var scope = new GraphTransactionScope())
                 {
-                    viewProvider.Value.BuildGraph(graphContext, projectPath, dependency, inputGraphNode);
+                    viewProvider.Value.BuildGraph(
+                        graphContext, 
+                        projectPath, 
+                        dependency, 
+                        inputGraphNode, 
+                        snapshot.Targets[dependency.TargetFramework]);
 
                     scope.Complete();
                 }

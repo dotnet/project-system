@@ -148,7 +148,138 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void TargetedDependenciesSnapshot_FromChanges_NoChangesAfterFilterDeclinedChange()
+        public void TargetedDependenciesSnapshot_FromChanges_NoChangesAfterBeforeRemoveFilterDeclinedChange()
+        {
+            const string projectPath = @"c:\somefolder\someproject\a.csproj";
+            var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
+
+            var dependencyModelTop1 = IDependencyFactory.FromJson(@"
+{
+    ""ProviderType"": ""Xxx"",
+    ""Id"": ""tfm1\\xxx\\topdependency1"",
+    ""Name"":""TopDependency1"",
+    ""Caption"":""TopDependency1"",
+    ""SchemaItemType"":""Xxx"",
+    ""Resolved"":""true""
+}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+
+            var dependencyModelChild1 = IDependencyFactory.FromJson(@"
+{
+    ""ProviderType"": ""Xxx"",
+    ""Id"": ""tfm1\\xxx\\childdependency1"",
+    ""Name"":""ChildDependency1"",
+    ""Caption"":""ChildDependency1"",
+    ""SchemaItemType"":""Xxx"",
+    ""Resolved"":""true""
+}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+
+            var previousSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
+                dependenciesWorld: new Dictionary<string, IDependency>()
+                {
+                    { dependencyModelTop1.Id, dependencyModelTop1 },
+                    { dependencyModelChild1.Id, dependencyModelChild1 },
+                },
+                topLevelDependencies: new List<IDependency>() { dependencyModelTop1 });
+
+            var addedNodes = new List<IDependencyModel>();
+            var removedNodes = new List<IDependencyModel> { dependencyModelTop1 };
+            var changes = IDependenciesChangesFactory.Implement(addedNodes: addedNodes, removedNodes: removedNodes);
+
+            var snapshotFilter = new TestDependenciesSnapshotFilter()
+                    .ImplementBeforeRemoveResult(FilterAction.Cancel, @"tfm1\xxx\newdependency1", null);
+
+            var catalogs = IProjectCatalogSnapshotFactory.Create();
+            var snapshot = TargetedDependenciesSnapshot.FromChanges(
+                projectPath,
+                targetFramework,
+                previousSnapshot,
+                changes,
+                catalogs,
+                new[] { snapshotFilter },
+                out bool anyChanges);
+
+            Assert.NotNull(snapshot.TargetFramework);
+            Assert.Equal("tfm1", snapshot.TargetFramework.Moniker);
+            Assert.Equal(projectPath, snapshot.ProjectPath);
+            Assert.Equal(catalogs, snapshot.Catalogs);
+            Assert.False(anyChanges);
+            Assert.Equal(1, snapshot.TopLevelDependencies.Count);
+            Assert.Equal(2, snapshot.DependenciesWorld.Count);
+        }
+
+        [Fact]
+        public void TargetedDependenciesSnapshot_FromChanges_ReportedChangesAfterBeforeRemoveFilterDeclinedChange()
+        {
+            const string projectPath = @"c:\somefolder\someproject\a.csproj";
+            var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
+
+            var dependencyModelTop1 = IDependencyFactory.FromJson(@"
+{
+    ""ProviderType"": ""Xxx"",
+    ""Id"": ""tfm1\\xxx\\topdependency1"",
+    ""Name"":""TopDependency1"",
+    ""Caption"":""TopDependency1"",
+    ""SchemaItemType"":""Xxx"",
+    ""Resolved"":""true""
+}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+
+            var dependencyModelChild1 = IDependencyFactory.FromJson(@"
+{
+    ""ProviderType"": ""Xxx"",
+    ""Id"": ""tfm1\\xxx\\childdependency1"",
+    ""Name"":""ChildDependency1"",
+    ""Caption"":""ChildDependency1"",
+    ""SchemaItemType"":""Xxx"",
+    ""Resolved"":""true""
+}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+
+            var dependencyModelTop1Removed = IDependencyFactory.FromJson(@"
+{
+    ""ProviderType"": ""Xxx"",
+    ""Id"": ""topdependency1"",
+    ""Name"":""TopDependency1"",
+    ""Caption"":""TopDependency1"",
+    ""SchemaItemType"":""Xxx"",
+    ""Resolved"":""true""
+}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+
+            var previousSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
+                dependenciesWorld: new Dictionary<string, IDependency>(StringComparer.OrdinalIgnoreCase)
+                {
+                    { dependencyModelTop1.Id, dependencyModelTop1 },
+                    { dependencyModelChild1.Id, dependencyModelChild1 },
+                },
+                topLevelDependencies: new List<IDependency>() { dependencyModelTop1 });
+
+            var addedNodes = new List<IDependencyModel>();
+            var removedNodes = new List<IDependencyModel> { dependencyModelTop1Removed };
+            var changes = IDependenciesChangesFactory.Implement(addedNodes: addedNodes, removedNodes: removedNodes);
+
+            var snapshotFilter = new TestDependenciesSnapshotFilter()
+                    .ImplementBeforeRemoveResult(FilterAction.Cancel, @"tfm1\xxx\topdependency1", null)
+                    .ImplementFilterAnyChanges(true);
+
+            var catalogs = IProjectCatalogSnapshotFactory.Create();
+            var snapshot = TargetedDependenciesSnapshot.FromChanges(
+                projectPath,
+                targetFramework,
+                previousSnapshot,
+                changes,
+                catalogs,
+                new[] { snapshotFilter },
+                out bool anyChanges);
+
+            Assert.NotNull(snapshot.TargetFramework);
+            Assert.Equal("tfm1", snapshot.TargetFramework.Moniker);
+            Assert.Equal(projectPath, snapshot.ProjectPath);
+            Assert.Equal(catalogs, snapshot.Catalogs);
+            Assert.True(anyChanges);
+            Assert.Equal(1, snapshot.TopLevelDependencies.Count);
+            Assert.Equal(2, snapshot.DependenciesWorld.Count);
+        }
+
+        [Fact]
+        public void TargetedDependenciesSnapshot_FromChanges_NoChangesAfterBeforeAddFilterDeclinedChange()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
@@ -195,7 +326,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var changes = IDependenciesChangesFactory.Implement(addedNodes: addedNodes, removedNodes: removedNodes);
 
             var snapshotFilter = new TestDependenciesSnapshotFilter()
-                    .ImplementBeforeAddResult(@"tfm1\xxx\newdependency1", null);
+                    .ImplementBeforeAddResult(FilterAction.Cancel, @"tfm1\xxx\newdependency1", null);
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
@@ -212,6 +343,76 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(projectPath, snapshot.ProjectPath);
             Assert.Equal(catalogs, snapshot.Catalogs);
             Assert.False(anyChanges);
+            Assert.Equal(1, snapshot.TopLevelDependencies.Count);
+            Assert.Equal(2, snapshot.DependenciesWorld.Count);
+        }
+
+        [Fact]
+        public void TargetedDependenciesSnapshot_FromChanges_ReportedChangesAfterBeforeAddFilterDeclinedChange()
+        {
+            const string projectPath = @"c:\somefolder\someproject\a.csproj";
+            var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
+
+            var dependencyModelTop1 = IDependencyFactory.FromJson(@"
+{
+    ""ProviderType"": ""Xxx"",
+    ""Id"": ""tfm1\\xxx\\topdependency1"",
+    ""Name"":""TopDependency1"",
+    ""Caption"":""TopDependency1"",
+    ""SchemaItemType"":""Xxx"",
+    ""Resolved"":""true""
+}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+
+            var dependencyModelChild1 = IDependencyFactory.FromJson(@"
+{
+    ""ProviderType"": ""Xxx"",
+    ""Id"": ""tfm1\\xxx\\childdependency1"",
+    ""Name"":""ChildDependency1"",
+    ""Caption"":""ChildDependency1"",
+    ""SchemaItemType"":""Xxx"",
+    ""Resolved"":""true""
+}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+
+            var dependencyModelNew1 = IDependencyFactory.FromJson(@"
+{
+    ""ProviderType"": ""Xxx"",
+    ""Id"": ""newdependency1"",
+    ""Name"":""NewDependency1"",
+    ""Caption"":""NewDependency1"",
+    ""SchemaItemType"":""Xxx"",
+    ""Resolved"":""true""
+}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+            var previousSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
+                dependenciesWorld: new Dictionary<string, IDependency>()
+                {
+                    { dependencyModelTop1.Id, dependencyModelTop1 },
+                    { dependencyModelChild1.Id, dependencyModelChild1 },
+                },
+                topLevelDependencies: new List<IDependency>() { dependencyModelTop1 });
+
+            var addedNodes = new List<IDependencyModel> { dependencyModelNew1 };
+            var removedNodes = new List<IDependencyModel>();
+            var changes = IDependenciesChangesFactory.Implement(addedNodes: addedNodes, removedNodes: removedNodes);
+
+            var snapshotFilter = new TestDependenciesSnapshotFilter()
+                    .ImplementBeforeAddResult(FilterAction.Cancel, @"tfm1\xxx\newdependency1", null)
+                    .ImplementFilterAnyChanges(true);
+
+            var catalogs = IProjectCatalogSnapshotFactory.Create();
+            var snapshot = TargetedDependenciesSnapshot.FromChanges(
+                projectPath,
+                targetFramework,
+                previousSnapshot,
+                changes,
+                catalogs,
+                new[] { snapshotFilter },
+                out bool anyChanges);
+
+            Assert.NotNull(snapshot.TargetFramework);
+            Assert.Equal("tfm1", snapshot.TargetFramework.Moniker);
+            Assert.Equal(projectPath, snapshot.ProjectPath);
+            Assert.Equal(catalogs, snapshot.Catalogs);
+            Assert.True(anyChanges);
             Assert.Equal(1, snapshot.TopLevelDependencies.Count);
             Assert.Equal(2, snapshot.DependenciesWorld.Count);
         }
@@ -327,9 +528,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var changes = IDependenciesChangesFactory.Implement(addedNodes: addedNodes, removedNodes: removedNodes);
 
             var snapshotFilter = new TestDependenciesSnapshotFilter()
-                                        .ImplementBeforeAddResult(@"tfm1\xxx\addeddependency1", null)
-                                        .ImplementBeforeAddResult(@"tfm1\xxx\addeddependency2", dependencyAdded2Changed)
-                                        .ImplementBeforeRemoveResult(@"tfm1\xxx\Removeddependency1", dependencyInsteadRemoved1);
+                                        .ImplementBeforeAddResult(FilterAction.Cancel, @"tfm1\xxx\addeddependency1", null)
+                                        .ImplementBeforeAddResult(FilterAction.ShouldBeAdded, @"tfm1\xxx\addeddependency2", dependencyAdded2Changed)
+                                        .ImplementBeforeRemoveResult(FilterAction.ShouldBeAdded, @"tfm1\xxx\Removeddependency1", dependencyInsteadRemoved1);
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
@@ -346,9 +547,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(projectPath, snapshot.ProjectPath);
             Assert.Equal(catalogs, snapshot.Catalogs);
             Assert.True(anyChanges);
-            Assert.Equal(3, snapshot.TopLevelDependencies.Count);
+            Assert.Equal(2, snapshot.TopLevelDependencies.Count);
             Assert.True(snapshot.TopLevelDependencies.Any(x => x.Id.Equals(@"topdependency1")));
-            Assert.True(snapshot.TopLevelDependencies.Any(x => x.Id.Equals(@"tfm1\xxx\InsteadRemoveddependency1")));
             Assert.True(snapshot.TopLevelDependencies.Any(x => x.Id.Equals(@"tfm1\xxx\addeddependency2") && x.Caption.Equals("AddedDependency2Changed")));
             Assert.Equal(5, snapshot.DependenciesWorld.Count);
             Assert.True(snapshot.DependenciesWorld.ContainsKey(@"tfm1\xxx\topdependency1"));
@@ -370,55 +570,104 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
         }
 
+        internal enum FilterAction
+        {
+            Cancel,
+            ShouldBeRemoved,
+            ShouldBeAdded            
+        }
+
         internal class TestDependenciesSnapshotFilter : IDependenciesSnapshotFilter
         {
-            public TestDependenciesSnapshotFilter ImplementBeforeAddResult(string id, IDependency dependency)
+            private bool _filterAnyChanges;
+            public TestDependenciesSnapshotFilter ImplementFilterAnyChanges(bool any)
             {
-                _beforeAdd.Add(id, dependency);
+                _filterAnyChanges = any;
 
                 return this;
             }
 
-            private Dictionary<string, IDependency> _beforeAdd 
-                = new Dictionary<string, IDependency>(StringComparer.OrdinalIgnoreCase);
-
-            public TestDependenciesSnapshotFilter ImplementBeforeRemoveResult(string id, IDependency dependency)
+            public TestDependenciesSnapshotFilter ImplementBeforeAddResult(FilterAction action, string id, IDependency dependency)
             {
-                _beforeRemove.Add(id, dependency);
+                _beforeAdd.Add(id, Tuple.Create(dependency, action));
 
                 return this;
             }
 
-            private Dictionary<string, IDependency> _beforeRemove
-                = new Dictionary<string, IDependency>(StringComparer.OrdinalIgnoreCase);
+            private Dictionary<string, Tuple<IDependency, FilterAction>> _beforeAdd 
+                = new Dictionary<string, Tuple<IDependency, FilterAction>>(StringComparer.OrdinalIgnoreCase);
+
+            public TestDependenciesSnapshotFilter ImplementBeforeRemoveResult(FilterAction action, string id, IDependency dependency)
+            {
+                _beforeRemove.Add(id, Tuple.Create(dependency, action));
+
+                return this;
+            }
+
+            private Dictionary<string, Tuple<IDependency, FilterAction>> _beforeRemove
+                = new Dictionary<string, Tuple<IDependency, FilterAction>>(StringComparer.OrdinalIgnoreCase);
 
             public IDependency BeforeAdd(
                 string projectPath,
                 ITargetFramework targetFramework,
                 IDependency dependency,
                 ImmutableDictionary<string, IDependency>.Builder worldBuilder,
-                ImmutableHashSet<IDependency>.Builder topLevelBuilder)
+                ImmutableHashSet<IDependency>.Builder topLevelBuilder,
+                out bool filterAnyChanges)
             {
-                if (_beforeAdd.TryGetValue(dependency.Id, out IDependency newDependency))
+                filterAnyChanges = _filterAnyChanges;
+
+                if (_beforeAdd.TryGetValue(dependency.Id, out Tuple<IDependency, FilterAction> info))
                 {
-                    return newDependency;
+                    if (info.Item2 == FilterAction.Cancel)
+                    {
+                        return null;
+                    }
+                    else if (info.Item2 == FilterAction.ShouldBeAdded)
+                    {
+                        worldBuilder.Remove(info.Item1.Id);
+                        worldBuilder.Add(info.Item1.Id, info.Item1);
+                        return info.Item1;
+                    }
+                    else
+                    {
+                        worldBuilder.Remove(dependency.Id);
+                        topLevelBuilder.Remove(dependency);
+                    }
                 }
 
                 return dependency;
             }
 
-            public void BeforeRemove(
+            public IDependency BeforeRemove(
                 string projectPath,
                 ITargetFramework targetFramework,
                 IDependency dependency,
                 ImmutableDictionary<string, IDependency>.Builder worldBuilder,
-                ImmutableHashSet<IDependency>.Builder topLevelBuilder)
+                ImmutableHashSet<IDependency>.Builder topLevelBuilder,
+                out bool filterAnyChanges)
             {
-                if (_beforeRemove.TryGetValue(dependency.Id, out IDependency newDependency))
+                filterAnyChanges = _filterAnyChanges;
+
+                if (_beforeRemove.TryGetValue(dependency.Id, out Tuple<IDependency, FilterAction> info))
                 {
-                    worldBuilder[newDependency.Id] = newDependency;
-                    topLevelBuilder.Add(newDependency);
+                    if (info.Item2 == FilterAction.Cancel)
+                    {
+                        return null;
+                    }
+                    else if (info.Item2 == FilterAction.ShouldBeAdded)
+                    {
+                        worldBuilder.Remove(info.Item1.Id);
+                        worldBuilder.Add(info.Item1.Id, info.Item1);
+                    }
+                    else
+                    {
+                        worldBuilder.Remove(dependency.Id);
+                        topLevelBuilder.Remove(dependency);
+                    }
                 }
+
+                return dependency;
             }
         }
     }

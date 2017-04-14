@@ -26,8 +26,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             ITargetFramework targetFramework,
             IDependency dependency, 
             ImmutableDictionary<string, IDependency>.Builder worldBuilder,
-            ImmutableHashSet<IDependency>.Builder topLevelBuilder)
+            ImmutableHashSet<IDependency>.Builder topLevelBuilder,
+            out bool filterAnyChanges)
         {
+            filterAnyChanges = false;
+
             IDependency resultDependency = dependency;
             if (!dependency.TopLevel)
             {
@@ -42,6 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
 
                 if (worldBuilder.TryGetValue(packageId, out IDependency package) && package.Resolved)
                 {
+                    filterAnyChanges = true;
                     resultDependency = dependency.SetProperties(
                         dependencyIDs:package.DependencyIDs, 
                         resolved:true,
@@ -57,6 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
 
                 if (worldBuilder.TryGetValue(sdkId, out IDependency sdk))
                 {
+                    filterAnyChanges = true;
                     sdk = sdk.SetProperties(
                         dependencyIDs:dependency.DependencyIDs, 
                         resolved:true,
@@ -73,16 +78,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             return resultDependency;
         }
 
-        public override void BeforeRemove(
+        public override IDependency BeforeRemove(
             string projectPath,
             ITargetFramework targetFramework,
             IDependency dependency, 
             ImmutableDictionary<string, IDependency>.Builder worldBuilder,
-            ImmutableHashSet<IDependency>.Builder topLevelBuilder)
+            ImmutableHashSet<IDependency>.Builder topLevelBuilder,
+            out bool filterAnyChanges)
         {
+            filterAnyChanges = false;
             if (!dependency.TopLevel || !dependency.Resolved)
             {
-                return;
+                return dependency;
             }
 
             if (dependency.Flags.Contains(DependencyTreeFlags.PackageNodeFlags))
@@ -93,6 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
 
                 if (worldBuilder.TryGetValue(sdkId, out IDependency sdk))
                 {
+                    filterAnyChanges = true;
                     // clean up sdk when corresponding package is removing
                     sdk = sdk.SetProperties(
                         dependencyIDs:ImmutableList<string>.Empty, 
@@ -106,6 +114,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                     topLevelBuilder.Add(sdk);
                 }
             }
+
+            return dependency;
         }
     }
 }

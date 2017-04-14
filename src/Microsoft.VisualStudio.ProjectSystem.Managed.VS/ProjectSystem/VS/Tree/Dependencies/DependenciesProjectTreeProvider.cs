@@ -539,7 +539,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Requires.NotNull(dependency, nameof(dependency));
 
             ConfiguredProject project = null;
-            if (dependency.Snapshot.TargetFramework.Equals(TargetFramework.Any))
+            if (dependency.TargetFramework.Equals(TargetFramework.Any))
             {
                 project = ActiveConfiguredProject;
             }
@@ -547,7 +547,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 ThreadHelper.JoinableTaskFactory.Run(async () =>
                 {
-                    project = await DependenciesHost.GetConfiguredProject(dependency.Snapshot.TargetFramework)
+                    project = await DependenciesHost.GetConfiguredProject(dependency.TargetFramework)
                                                     .ConfigureAwait(false) ?? ActiveConfiguredProject;
                 });
             }

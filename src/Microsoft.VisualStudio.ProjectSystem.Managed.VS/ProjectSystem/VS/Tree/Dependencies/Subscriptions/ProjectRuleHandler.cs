@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
@@ -34,7 +33,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             SnapshotProvider = snapshotProvider;
             CommonServices = commonServices;
 
-            // TODO unsubscribe
             AggregateSnapshotProvider.SnapshotChanged += OnSnapshotChanged;
             AggregateSnapshotProvider.SnapshotProviderUnloading += OnSnapshotProviderUnloading;
 
@@ -150,7 +148,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 FireDependenciesChanged(
                     new DependenciesChangedEventArgs(
                         this, 
-                        dependency.Snapshot.TargetFramework.Moniker, 
+                        dependency.TargetFramework.Moniker, 
                         changes, 
                         catalogs:null, 
                         dataSourceVersions:null));

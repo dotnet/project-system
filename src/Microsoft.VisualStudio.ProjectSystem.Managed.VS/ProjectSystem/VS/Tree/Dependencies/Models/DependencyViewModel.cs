@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging.Interop;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
@@ -16,5 +17,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         public ImageMoniker ExpandedIcon { get; set; }
         public IImmutableDictionary<string, string> Properties { get; set; }
         public ProjectTreeFlags Flags { get; set; }
+        public IDependency OriginalModel { get; set; }
     }
 }
