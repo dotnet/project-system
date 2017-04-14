@@ -43,7 +43,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 projectCapabilityCheckProvider: commonServices.Project);
 
             SnapshotFilters = new OrderPrecedenceImportCollection<IDependenciesSnapshotFilter>(
-                projectCapabilityCheckProvider: commonServices.Project);
+                projectCapabilityCheckProvider: commonServices.Project, 
+                orderingStyle:ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast);
 
             SubTreeProviders = new OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider>(
                 ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast,

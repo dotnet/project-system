@@ -20,6 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         private readonly List<IDisposable> _designTimeBuildSubscriptionLinks;
         private readonly IProjectAsynchronousTasksService _tasksService;
         private ICrossTargetSubscriptionsHost _host;
+        private AggregateCrossTargetProjectContext _currentProjectContext;
 
         public CrossTargetRuleSubscriberBase(
             IUnconfiguredProjectCommonServices commonServices,
@@ -50,6 +51,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         {
             Requires.NotNull(newProjectContext, nameof(newProjectContext));
 
+            _currentProjectContext = newProjectContext;
+
             var watchedEvaluationRules = GetWatchedRules(RuleHandlerType.Evaluation);
             var watchedDesignTimeBuildRules = GetWatchedRules(RuleHandlerType.DesignTimeBuild);
 
@@ -64,6 +67,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         public Task ReleaseSubscriptionsAsync()
         {
+            _currentProjectContext = null;
+
             foreach (var link in _evaluationSubscriptionLinks.Concat(_designTimeBuildSubscriptionLinks))
             {
                 link.Dispose();
@@ -184,7 +189,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     RuleHandlerType handlerType)
         {
             var currentAggregaceContext = await _host.GetCurrentAggregateProjectContext().ConfigureAwait(false);
-            if (currentAggregaceContext == null)
+            if (currentAggregaceContext == null|| _currentProjectContext != currentAggregaceContext)
             {
                 return;
             }

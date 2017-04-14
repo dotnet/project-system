@@ -8,26 +8,33 @@ namespace Microsoft.VisualStudio.Telemetry
     [Export(typeof(ITelemetryService))]
     internal class VsTelemetryService : ITelemetryService
     {
-        const string EventPrefix = "vs/projectsystem/";
-
-        public void PostEvent(string telemetryEvent)
+        public void PostEvent(string eventName)
         {
-            TelemetryService.DefaultSession.PostEvent($"{EventPrefix}{telemetryEvent}");
+            Requires.NotNullOrEmpty(eventName, nameof(eventName));
+
+            TelemetryService.DefaultSession.PostEvent(eventName);
         }
 
-        public TelemetryEventCorrelation PostOperation(string operationPath, TelemetryResult result, string resultSummary = null, TelemetryEventCorrelation[] correlatedWith = null)
+        public TelemetryEventCorrelation PostOperation(string eventName, TelemetryResult result, string resultSummary = null, TelemetryEventCorrelation[] correlatedWith = null)
         {
+            Requires.NotNullOrEmpty(eventName, nameof(eventName));
+            if (result == TelemetryResult.None)
+                throw new ArgumentException(null, nameof(result));
+
             return TelemetryService.DefaultSession.PostOperation(
-                eventName: $"{EventPrefix}{operationPath}",
+                eventName: eventName,
                 result: result,
                 resultSummary: resultSummary,
                 correlatedWith: correlatedWith);
         }
 
-        public TelemetryEventCorrelation Report(string eventPostfix, string description, Exception exception, Func<IFaultUtility, int> callback = null)
+        public TelemetryEventCorrelation Report(string eventName, string description, Exception exception, Func<IFaultUtility, int> callback = null)
         {
+            Requires.NotNullOrEmpty(eventName, nameof(eventName));
+            Requires.NotNull(exception, nameof(exception));
+
             return TelemetryService.DefaultSession.PostFault(
-                eventName: $"{EventPrefix}{eventPostfix}",
+                eventName: eventName,
                 description: description,
                 exceptionObject: exception,
                 gatherEventDetails: callback);

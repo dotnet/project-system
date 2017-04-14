@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
@@ -89,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         /// </summary>
         /// <param name="otherProjectSnapshot"></param>
         /// <param name="shouldBeResolved">
-        /// Specifies if top-level project depencies resolved status. When other project just had it's dependencies
+        /// Specifies if top-level project dependencies resolved status. When other project just had it's dependencies
         /// changed, it is resolved=true (we check target's support when we add projec dependencies). However when 
         /// other project is unloaded, we should mark top-level dependencies as unresolved.
         /// </param>
@@ -136,7 +137,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                                 dependency.Properties);
 
                 var changes = new DependenciesChanges();
-                changes.IncludeRemovedChange(model);
+
+                // avoid unnecessary removing since, add would upgrade dependency in snapshot anyway,
+                // but remove would require removing item from the tree instead of in-place upgrade.
+                if (!shouldBeResolved)
+                {
+                    changes.IncludeRemovedChange(model);
+                }
+
                 changes.IncludeAddedChange(model);
 
                 FireDependenciesChanged(
