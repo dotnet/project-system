@@ -22,7 +22,6 @@
   <BoolProperty Name="Prefer32Bit" DisplayName="Prefer 32Bit" Visible="False"/>
   <BoolProperty Name="AllowUnsafeBlocks"  Default="False"  DisplayName="Allow unsafe code" Visible="False"/>
   <StringProperty Name="Optimize" DisplayName="Optimize" Visible="False"/>
-  <EnumProperty Name="WarningLevel" DisplayName="Warning Level" Visible="False"/>
   <StringProperty Name="NoWarn" DisplayName="Supress Warning" Visible="False"/>
   <BoolProperty Name="TreatWarningsAsErrors"  Default="False" Description="Treat warnings as errors" Visible="False"/>
   <StringProperty Name="TreatSpecificWarningsAsErrors"  Description="Treat specific warnings as errors" Visible="False" />
@@ -62,4 +61,32 @@
       <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
+  
+  <DynamicEnumProperty Name="WarningLevel" DisplayName="Warning Level" EnumProvider="WarningLevelEnumProvider" Visible="False">
+    <DynamicEnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" HasConfigurationCondition="True" SourceOfDefaultValue="AfterContext" />
+    </DynamicEnumProperty.DataSource>
+  </DynamicEnumProperty>
+  
+  <!-- VB Compile Page Properties-->
+  <DynamicEnumProperty Name="OptionExplicit" DisplayName="Option Explicit" EnumProvider="OptionExplicitEnumProvider" Visible="False">
+    <DynamicEnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </DynamicEnumProperty.DataSource>
+  </DynamicEnumProperty>
+  <DynamicEnumProperty Name="OptionStrict" DisplayName="Option Strict" EnumProvider="OptionStrictEnumProvider" Visible="False">
+    <DynamicEnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </DynamicEnumProperty.DataSource>
+  </DynamicEnumProperty>
+  <DynamicEnumProperty Name="OptionInfer" DisplayName="Option Infer" EnumProvider="OptionInferEnumProvider" Visible="False">
+    <DynamicEnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </DynamicEnumProperty.DataSource>
+  </DynamicEnumProperty>
+  <DynamicEnumProperty Name="OptionCompare" DisplayName="Option Compare" EnumProvider="OptionCompareEnumProvider" Visible="False">
+    <DynamicEnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </DynamicEnumProperty.DataSource>
+  </DynamicEnumProperty>
 </Rule>

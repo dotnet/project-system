@@ -459,7 +459,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
                     If TypeOf Member Is PropertyDescriptor Then
                         Dim Prop As PropertyDescriptor = DirectCast(Member, PropertyDescriptor)
-                        Debug.Assert(Prop.PropertyType.IsSerializable)
                         PropertiesToSerialize.Add(Prop)
                     Else
                         Debug.Fail("Member should have been a property")
