@@ -255,6 +255,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             Requires.NotNull(targetFramework, nameof(targetFramework));
             Requires.NotNullOrEmpty(providerType, nameof(providerType));
+            Requires.NotNullOrEmpty(modelId, nameof(modelId));
 
             var normalizedModelId = modelId.Replace('.', '_');
             return $"{targetFramework.ShortName}/{providerType}/{normalizedModelId}".TrimEnd('/').Replace('/', '\\');

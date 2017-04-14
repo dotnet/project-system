@@ -30,12 +30,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
 
         public override bool HandleRequest(IGraphContext graphContext)
         {
-            var trackChanges = false;
             foreach (var inputGraphNode in graphContext.InputNodes)
             {
                 if (graphContext.CancelToken.IsCancellationRequested)
                 {
-                    return trackChanges;
+                    return false;
                 }
 
                 var projectPath = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.Assembly);
@@ -70,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                 }
             }
 
-            return trackChanges;
+            return false;
         }
     }
 }
