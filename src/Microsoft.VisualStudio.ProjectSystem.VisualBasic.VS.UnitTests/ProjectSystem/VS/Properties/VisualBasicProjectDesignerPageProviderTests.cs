@@ -22,10 +22,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             var provider = CreateInstance();
             var pages = await provider.GetPagesAsync();
 
-            Assert.Equal(pages.Count(), 3);
+            Assert.Equal(pages.Count(), 4);
             Assert.Same(pages.ElementAt(0), VisualBasicProjectDesignerPage.Application);
-            Assert.Same(pages.ElementAt(1), VisualBasicProjectDesignerPage.References);
-            Assert.Same(pages.ElementAt(2), VisualBasicProjectDesignerPage.Debug);
+            Assert.Same(pages.ElementAt(1), VisualBasicProjectDesignerPage.Compile);
+            Assert.Same(pages.ElementAt(2), VisualBasicProjectDesignerPage.References);
+            Assert.Same(pages.ElementAt(3), VisualBasicProjectDesignerPage.Debug);
         }
 
         [Fact]
@@ -34,11 +35,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             var provider = CreateInstance(ProjectCapability.Pack);
             var pages = await provider.GetPagesAsync();
 
-            Assert.Equal(pages.Count(), 4);
+            Assert.Equal(pages.Count(), 5);
             Assert.Same(pages.ElementAt(0), VisualBasicProjectDesignerPage.Application);
-            Assert.Same(pages.ElementAt(1), VisualBasicProjectDesignerPage.Package);
-            Assert.Same(pages.ElementAt(2), VisualBasicProjectDesignerPage.References);
-            Assert.Same(pages.ElementAt(3), VisualBasicProjectDesignerPage.Debug);
+            Assert.Same(pages.ElementAt(1), VisualBasicProjectDesignerPage.Compile);
+            Assert.Same(pages.ElementAt(2), VisualBasicProjectDesignerPage.Package);
+            Assert.Same(pages.ElementAt(3), VisualBasicProjectDesignerPage.References);
+            Assert.Same(pages.ElementAt(4), VisualBasicProjectDesignerPage.Debug);
         }
 
         private static VisualBasicProjectDesignerPageProvider CreateInstance(params string[] capabilities)
