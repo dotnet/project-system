@@ -41,12 +41,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
         public Task<IEnumValue> TryCreateEnumValueAsync(string userSuppliedValue)
         {
-            if (_setValueMap != null && _setValueMap.TryGetValue(userSuppliedValue, out IEnumValue value))
+            if (_setValueMap != null)
             {
-                return Task.FromResult(value);
+                if (_setValueMap.TryGetValue(userSuppliedValue, out IEnumValue value))
+                {
+                    return Task.FromResult(value);
+                }
             }
-
-            if (_getValueMap.TryGetValue(userSuppliedValue, out IEnumValue valueGet))
+            else if (_getValueMap.TryGetValue(userSuppliedValue, out IEnumValue valueGet))
             {
                 return Task.FromResult(valueGet);
             }
