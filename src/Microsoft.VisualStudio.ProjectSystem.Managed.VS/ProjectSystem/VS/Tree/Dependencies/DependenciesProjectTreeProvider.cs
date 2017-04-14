@@ -560,7 +560,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var schema = browseObjectsCatalog.GetSchema(dependency.SchemaName);
             var itemSpec = string.IsNullOrEmpty(dependency.OriginalItemSpec) ? dependency.Path : dependency.OriginalItemSpec;
             var context = ProjectPropertiesContext.GetContext(UnconfiguredProject,
-                file: itemSpec,
                 itemType: dependency.SchemaItemType,
                 itemName: itemSpec);
 
