@@ -3,6 +3,7 @@
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
 {
@@ -51,9 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 if (snapshot == null || snapshot.HasUnresolvedDependency)
                 {
                     filterAnyChanges = true;
-                    var unresolvedFlags = dependency.Flags.Union(DependencyTreeFlags.UnresolvedFlags)
-                                                          .Except(DependencyTreeFlags.ResolvedFlags);
-                    resultDependency = resultDependency.SetProperties(resolved: false, flags: unresolvedFlags);
+                    resultDependency = resultDependency.ToUnresolved(ProjectReference.SchemaName);
                 }
             }
 

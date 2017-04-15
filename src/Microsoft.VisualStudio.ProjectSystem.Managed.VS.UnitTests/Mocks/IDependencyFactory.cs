@@ -34,6 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                             ProjectTreeFlags? setPropertiesFlags = null,
                                             bool? equals = null,
                                             IImmutableList<string> setPropertiesDependencyIDs = null,
+                                            string setPropertiesSchemaName = null,
                                             ITargetFramework targetFramework = null,
                                             MockBehavior? mockBehavior = null)
         {
@@ -105,7 +106,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 || setPropertiesResolved != null
                 || setPropertiesFlags != null)
             {
-                mock.Setup(x => x.SetProperties(setPropertiesCaption, setPropertiesResolved, setPropertiesFlags, setPropertiesDependencyIDs))
+                mock.Setup(x => x.SetProperties(
+                            setPropertiesCaption, 
+                            setPropertiesResolved, 
+                            setPropertiesFlags,
+                            setPropertiesSchemaName, 
+                            setPropertiesDependencyIDs))
                     .Returns(mock.Object);
             }
 

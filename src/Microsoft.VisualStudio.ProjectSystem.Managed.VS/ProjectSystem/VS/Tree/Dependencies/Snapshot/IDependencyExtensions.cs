@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
@@ -106,6 +107,40 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
 
             return dependencyProjectPath;
+        }
+        
+        public static IDependency ToResolved(this IDependency dependency,
+                                             string schemaName = null,
+                                             IImmutableList<string> dependencyIDs = null)
+        {
+            return dependency.SetProperties(
+                resolved: true,
+                flags: dependency.GetResolvedFlags(),
+                schemaName: schemaName,
+                dependencyIDs:dependencyIDs);
+        }
+
+        public static IDependency ToUnresolved(this IDependency dependency,
+                                               string schemaName = null,
+                                               IImmutableList<string> dependencyIDs = null)
+        {
+            return dependency.SetProperties(
+                resolved: false,
+                flags: dependency.GetUnresolvedFlags(),
+                schemaName: schemaName,
+                dependencyIDs: dependencyIDs);
+        }
+
+        public static ProjectTreeFlags GetResolvedFlags(this IDependency dependency)
+        {
+            return dependency.Flags.Union(DependencyTreeFlags.ResolvedFlags)
+                                   .Except(DependencyTreeFlags.UnresolvedFlags);
+        }
+
+        public static ProjectTreeFlags GetUnresolvedFlags(this IDependency dependency)
+        {
+            return dependency.Flags.Union(DependencyTreeFlags.UnresolvedFlags)
+                                   .Except(DependencyTreeFlags.ResolvedFlags);
         }
     }
 }
