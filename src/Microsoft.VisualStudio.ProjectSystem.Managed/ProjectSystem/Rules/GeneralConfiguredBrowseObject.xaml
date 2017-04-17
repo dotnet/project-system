@@ -100,4 +100,23 @@
   <BoolProperty Name="DefineDebug" DisplayName="Define Debug" Visible="False" />
   <BoolProperty Name="DefineTrace" DisplayName="Define Trace" Visible="False" />
 
+  <!-- VB Compile Build Event Page-->
+  <StringProperty Name="PreBuildEvent" DisplayName="Pre Build Event" Visible="False">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="PostBuildEvent" DisplayName="Post Build Event" Visible="False">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <EnumProperty Name="RunPostBuildEvent" DisplayName="Run Post-Build Event" Visible="False">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="RunPostBuildEvent" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="Always" DisplayName="Always" />
+    <EnumValue Name="OnBuildSuccess" DisplayName="On successful build"  IsDefault="True"/>
+    <EnumValue Name="OnOutputUpdated" DisplayName="When the build updates the project output" />
+  </EnumProperty>
 </Rule>
