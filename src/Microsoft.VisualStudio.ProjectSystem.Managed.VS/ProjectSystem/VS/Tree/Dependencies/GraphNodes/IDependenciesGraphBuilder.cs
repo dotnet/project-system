@@ -2,7 +2,6 @@
 
 using Microsoft.VisualStudio.GraphModel;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 {
@@ -12,23 +11,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             IGraphContext graphContext, 
             string projectPath, 
             GraphNode parentNode, 
-            IDependency dependency);
-
-        GraphNode AddGraphNode(
-            IGraphContext graphContext, 
-            string projectPath, 
-            GraphNode parentNode, 
             IDependencyViewModel viewModel);
 
         GraphNode AddTopLevelGraphNode(
             IGraphContext graphContext,
             string projectPath,
-            IDependency dependency);
+            IDependencyViewModel viewModel);
 
         void RemoveGraphNode(
             IGraphContext graphContext,
             string projectPath,
-            IDependency dependency,
+            string modelId,
             GraphNode parentNode);
     }
 }

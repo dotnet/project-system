@@ -169,7 +169,7 @@
   <ItemGroup Condition="'$(DefineCommonManagedReferenceSchemas)' == 'true'">
     <!-- Assembly references -->
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)AssemblyReference.xaml">
-      <Context>;BrowseObject</Context>
+      <Context>Project;BrowseObject</Context>
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedAssemblyReference.xaml">
@@ -178,7 +178,7 @@
 
     <!-- COM references -->
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)COMReference.xaml">
-      <Context>;BrowseObject</Context>
+      <Context>Project;BrowseObject</Context>
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedCOMReference.xaml">
@@ -187,7 +187,7 @@
 
     <!-- Project references -->
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectReference.xaml">
-      <Context>;BrowseObject</Context>
+      <Context>Project;BrowseObject</Context>
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedProjectReference.xaml">

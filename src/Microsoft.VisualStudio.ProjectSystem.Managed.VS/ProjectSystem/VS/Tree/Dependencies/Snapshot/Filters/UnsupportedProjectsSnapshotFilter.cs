@@ -36,8 +36,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             ITargetFramework targetFramework,
             IDependency dependency, 
             ImmutableDictionary<string, IDependency>.Builder worldBuilder,
-            ImmutableHashSet<IDependency>.Builder topLevelBuilder)
+            ImmutableHashSet<IDependency>.Builder topLevelBuilder,
+            out bool filterAnyChanges)
         {
+            filterAnyChanges = false;
             IDependency resultDependency = dependency;
 
             if (resultDependency.TopLevel
@@ -48,6 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 var snapshot = GetSnapshot(projectPath, resultDependency, out string dependencyProjectPath);
                 if (snapshot == null || snapshot.HasUnresolvedDependency)
                 {
+                    filterAnyChanges = true;
                     var unresolvedFlags = dependency.Flags.Union(DependencyTreeFlags.UnresolvedFlags)
                                                           .Except(DependencyTreeFlags.ResolvedFlags);
                     resultDependency = resultDependency.SetProperties(resolved: false, flags: unresolvedFlags);
@@ -57,7 +60,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             return resultDependency;
         }
 
-        private ITargetedDependenciesSnapshot GetSnapshot(string projectPath, IDependency dependency, out string dependencyProjectPath)
+        private ITargetedDependenciesSnapshot GetSnapshot(
+            string projectPath, 
+            IDependency dependency, 
+            out string dependencyProjectPath)
         {
             dependencyProjectPath = dependency.GetActualPath(projectPath);
 
@@ -74,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             }
 
             var targetFramework = TargetFrameworkProvider.GetNearestFramework(
-                                    dependency.Snapshot.TargetFramework, snapshot.Targets.Keys);
+                                    dependency.TargetFramework, snapshot.Targets.Keys);
             if (targetFramework == null)
             {
                 return null;

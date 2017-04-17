@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
@@ -14,18 +13,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
     internal static class IDependencyExtensions
     {
         /// <summary>
+        /// Specifies if there is unresolved child somwhere in the dependency graph
+        /// </summary>
+        public static bool HasUnresolvedDependency(this IDependency self, ITargetedDependenciesSnapshot snapshot)
+        {
+            return snapshot.CheckForUnresolvedDependencies(self);
+        }
+
+
+        /// <summary>
         /// Returns true if this reference itself is unresolved or it has at least 
         /// one unresolved reference somewhere in the dependency chain.
         /// </summary>
-        public static bool IsOrHasUnresolvedDependency(this IDependency self)
+        public static bool IsOrHasUnresolvedDependency(this IDependency self, ITargetedDependenciesSnapshot snapshot)
         {
-            return !self.Resolved || self.HasUnresolvedDependency;
+            return !self.Resolved || self.HasUnresolvedDependency(snapshot);
         }
 
         /// <summary>
         /// Returns a IDependencyViewModel for given dependency.
         /// </summary>
-        public static IDependencyViewModel ToViewModel(this IDependency self)
+        public static IDependencyViewModel ToViewModel(this IDependency self, ITargetedDependenciesSnapshot snapshot)
         {
             return new DependencyViewModel
             {
@@ -34,10 +42,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 SchemaName = self.SchemaName,
                 SchemaItemType = self.SchemaItemType,
                 Priority = self.Priority,
-                Icon = self.IsOrHasUnresolvedDependency() ? self.UnresolvedIcon : self.Icon,
-                ExpandedIcon = self.IsOrHasUnresolvedDependency() ? self.UnresolvedExpandedIcon : self.ExpandedIcon,
+                Icon = self.IsOrHasUnresolvedDependency(snapshot) ? self.UnresolvedIcon : self.Icon,
+                ExpandedIcon = self.IsOrHasUnresolvedDependency(snapshot) ? self.UnresolvedExpandedIcon : self.ExpandedIcon,
                 Properties = self.Properties,
-                Flags = self.Flags
+                Flags = self.Flags,
+                OriginalModel = self
             };
         }
 
@@ -74,35 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public static bool HasSameTarget(this IDependency self, IDependency other)
         {
             Requires.NotNull(other, nameof(other));
-            return self.Snapshot.TargetFramework.Equals(other.Snapshot.TargetFramework);
-        }
-
-        /// <summary>
-        /// Returns true if "other dependency" is a child of given dpendency at any level.
-        /// </summary>
-        public static bool Contains(this IDependency self, IDependency other)
-        {
-            return ContainsDependency(self, other);
-        }
-
-        private static bool ContainsDependency(this IDependency self, IDependency other)
-        {
-            var result = self.DependencyIDs.Any(x => x.Equals(other.Id, StringComparison.OrdinalIgnoreCase));
-            if (result)
-            {
-                return true;
-            }
-
-            foreach(var dependency in self.Dependencies)
-            {
-                result = ContainsDependency(dependency, other);
-                if (result)
-                {
-                    break;
-                }
-            }
-
-            return result;
+            return self.TargetFramework.Equals(other.TargetFramework);
         }
 
         /// <summary>

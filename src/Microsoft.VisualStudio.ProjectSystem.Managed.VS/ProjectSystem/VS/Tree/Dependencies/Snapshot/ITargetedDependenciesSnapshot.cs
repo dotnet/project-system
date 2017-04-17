@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
@@ -56,5 +57,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <param name="providerType">Provider type to check</param>
         /// <returns>Returns true if there is at least one unresolved dependency with given providerType.</returns>
         bool CheckForUnresolvedDependencies(string providerType);
+
+        /// <summary>
+        /// Returns a list of direct child nodes for given dependency
+        /// </summary>
+        /// <param name="dependency"></param>
+        /// <returns></returns>
+        IEnumerable<IDependency> GetDependencyChildren(IDependency dependency);
     }
 }

@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
@@ -13,19 +13,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
     internal interface IDependency : IEquatable<IDependency>, IComparable<IDependency>, IDependencyModel
     {
         /// <summary>
-        /// Specifies if there is unresolved child somwhere in the dependency graph
+        /// Target framework of the snapshot dependency belongs to
         /// </summary>
-        bool HasUnresolvedDependency { get; }
-
-        /// <summary>
-        /// A list of direct child dependencies
-        /// </summary>
-        IEnumerable<IDependency> Dependencies { get; }
-
-        /// <summary>
-        /// Targeted snapshot dependnecy belong to.
-        /// </summary>
-        ITargetedDependenciesSnapshot Snapshot { get; }
+        ITargetFramework TargetFramework { get; }
 
         /// <summary>
         /// Alias is used to de-dupe tree nodes in the CPS tree. If there are seberal nodes in the same
