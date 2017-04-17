@@ -163,9 +163,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public string Alias => GetAlias(this);
 
         public IDependency SetProperties(
-            string caption = null, 
+            string caption = null,
             bool? resolved = null,
             ProjectTreeFlags? flags = null,
+            string schemaName = null,
             IImmutableList<string> dependencyIDs = null)
         {
             var clone = new Dependency(this, _modelId);
@@ -183,6 +184,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             if (flags != null)
             {
                 clone.Flags = flags.Value;
+            }
+
+            if (schemaName != null)
+            {
+                clone.SchemaName = schemaName;
             }
 
             if (dependencyIDs != null)

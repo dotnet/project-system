@@ -32,6 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             string caption = null,
             bool? resolved = null,
             ProjectTreeFlags? flags = null,
+            string schemaName = null,
             IImmutableList<string> dependencyIDs = null);
     }
 }
