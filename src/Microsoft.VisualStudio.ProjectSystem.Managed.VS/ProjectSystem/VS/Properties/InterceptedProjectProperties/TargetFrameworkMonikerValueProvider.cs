@@ -14,11 +14,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     [ExportInterceptingPropertyValueProvider("TargetFrameworkMoniker", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     internal sealed class TargetFrameworkMonikerValueProvider : InterceptingPropertyValueProviderBase
     {
-        private IUnconfiguredProjectVsServices _unconfiguredProjectVsServices;
+        private readonly IUnconfiguredProjectVsServices _unconfiguredProjectVsServices;
         private readonly ProjectProperties _properties;
         private readonly IVsFrameworkParser _frameworkParser;
         private const string _targetFrameworkProperty = "TargetFramework";
-        private const string _targetFrameworksProperty = "TargetFrameworks";
 
         [ImportingConstructor]
         public TargetFrameworkMonikerValueProvider(IUnconfiguredProjectVsServices unconfiguredProjectVsServices, ProjectProperties properties, IVsFrameworkParser frameworkParser)
