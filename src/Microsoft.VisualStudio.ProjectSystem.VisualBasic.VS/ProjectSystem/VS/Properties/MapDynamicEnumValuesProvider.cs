@@ -8,25 +8,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
     /// <summary>
     /// This Dynamic Enum Value Provider maps enum based msbuild property value
-    /// to values that we want to display in the UI and also map the value,
-    /// if different from mapped value, we obtain from the UI to msbuild values
-    /// for persistence
+    /// to values that we want to display in the UI and also map the value,we 
+    /// obtain from the UI to msbuild complaint values for persistence
     /// </summary>
     internal class MapDynamicEnumValuesProvider : IDynamicEnumValuesGenerator
     {
         private readonly IDictionary<string, IEnumValue> _getValueMap;
-
-        /// <summary>
-        /// This is optional persistence map . It is required only when the UI provides value,
-        /// which is not listed in <see cref="_getValueMap"/>.
-        /// </summary>
         private readonly IDictionary<string, IEnumValue> _setValueMap;
 
         public MapDynamicEnumValuesProvider(
             IDictionary<string, IEnumValue> getValueMap,
-            IDictionary<string, IEnumValue> setValueMap = null)
+            IDictionary<string, IEnumValue> setValueMap)
         {
             Requires.NotNull(getValueMap, nameof(getValueMap));
+            Requires.NotNull(setValueMap, nameof(setValueMap));
 
             _getValueMap = getValueMap;
             _setValueMap = setValueMap;
@@ -47,10 +42,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
                 {
                     return Task.FromResult(value);
                 }
-            }
-            else if (_getValueMap.TryGetValue(userSuppliedValue, out IEnumValue valueGet))
-            {
-                return Task.FromResult(valueGet);
             }
 
             return Task.FromResult<IEnumValue>(null);

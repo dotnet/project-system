@@ -6,6 +6,7 @@ using Xunit;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using VSLangProj;
+using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
@@ -17,71 +18,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         {
             Assert.Throws<ArgumentNullException>("getValueMap", () =>
             {
-                new MapDynamicEnumValuesProvider(null);
+                new MapDynamicEnumValuesProvider(null, null);
             });
-        }
 
-        [Fact]
-        public async void OptionCompareEnumProviderTest()
-        {
-            var dynamicEnumValuesGenerator = await new OptionCompareEnumProvider().GetProviderAsync(null);
-            var values = await dynamicEnumValuesGenerator.GetListedValuesAsync();
-
-            var pageEnumRawValues = new List<Tuple<string, string, bool>>
+            Assert.Throws<ArgumentNullException>("setValueMap", () =>
             {
-                Tuple.Create("Binary", "Binary", true),
-                Tuple.Create("Text", "Text", false)
-            };
-            var pageEnumValues = CreateEnumValueInstances(pageEnumRawValues);
-
-            VerifySameValue(values, pageEnumValues);
-
-            var keys = new List<string>() { "Binary", "Text" };
-            var persistencePageEnumMap = CreateEnumValueMap(keys, pageEnumValues);
-
-            await VerifySameValueOnQueryAsync(dynamicEnumValuesGenerator, persistencePageEnumMap);
-        }
-
-        [Fact]
-        public async void OptionExplicitEnumProviderTest()
-        {
-            var dynamicEnumValuesGenerator = await new OptionExplicitEnumProvider().GetProviderAsync(null);
-            var values = await dynamicEnumValuesGenerator.GetListedValuesAsync();
-
-            var pageEnumRawValues = new List<Tuple<string, string, bool>>
-            {
-                Tuple.Create("Off", "Off", false),
-                Tuple.Create("On", "On", true)
-            };
-            var pageEnumValues = CreateEnumValueInstances(pageEnumRawValues);
-
-            VerifySameValue(values, pageEnumValues);
-
-            var keys = new List<string>() { "Off", "On" };
-            var persistencePageEnumMap = CreateEnumValueMap(keys, pageEnumValues);
-
-            await VerifySameValueOnQueryAsync(dynamicEnumValuesGenerator, persistencePageEnumMap);
-        }
-
-        [Fact]
-        public async void OptionInferEnumProviderTest()
-        {
-            var dynamicEnumValuesGenerator = await new OptionInferEnumProvider().GetProviderAsync(null);
-            var values = await dynamicEnumValuesGenerator.GetListedValuesAsync();
-
-            var pageEnumRawValues = new List<Tuple<string, string, bool>>
-            {
-                Tuple.Create("Off", "Off", false),
-                Tuple.Create("On", "On", true)
-            };
-            var pageEnumValues = CreateEnumValueInstances(pageEnumRawValues);
-
-            VerifySameValue(values, pageEnumValues);
-
-            var keys = new List<string>() { "Off", "On" };
-            var persistencePageEnumMap = CreateEnumValueMap(keys, pageEnumValues);
-
-            await VerifySameValueOnQueryAsync(dynamicEnumValuesGenerator, persistencePageEnumMap);
+                new MapDynamicEnumValuesProvider(Mock.Of<Dictionary<string, IEnumValue>>(), null);
+            });
         }
 
         [Fact]
