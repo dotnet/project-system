@@ -329,7 +329,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 return;
             }
-            
+
             lock (_treeUpdateLock)
             {
                 if (_treeUpdateQueueTask == null || _treeUpdateQueueTask.IsCompleted)

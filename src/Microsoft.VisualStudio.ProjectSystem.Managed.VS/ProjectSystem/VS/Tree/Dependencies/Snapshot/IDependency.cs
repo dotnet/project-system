@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
@@ -33,6 +34,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             bool? resolved = null,
             ProjectTreeFlags? flags = null,
             string schemaName = null,
-            IImmutableList<string> dependencyIDs = null);
+            IImmutableList<string> dependencyIDs = null,
+            ImageMoniker icon = new ImageMoniker(),
+            bool? isImplicit = null);
     }
 }

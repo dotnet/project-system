@@ -33,6 +33,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 dependency.Object,
                 worldBuilder,
                 null,
+                null,
+                null,
                 out bool filterAnyChanges);
 
             dependency.VerifyAll();
@@ -78,6 +80,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 sdkDependency.Object,
                 worldBuilder,
                 topLevelBuilder,
+                null,
+                null,
                 out bool filterAnyChanges);
 
             sdkDependency.VerifyAll();
@@ -114,6 +118,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 mockTargetFramework,
                 dependency.Object,
                 worldBuilder,
+                null,
+                null,
                 null,
                 out bool filterAnyChanges);
 
@@ -163,6 +169,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 dependency.Object,
                 worldBuilder,
                 topLevelBuilder,
+                null,
+                null,
                 out bool filterAnyChanges);
 
             dependency.VerifyAll();

@@ -152,7 +152,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         private bool MergeChanges(
             IDependenciesChanges changes, 
-            IEnumerable<IDependenciesSnapshotFilter> snapshotFilters)
+            IEnumerable<IDependenciesSnapshotFilter> snapshotFilters,
+            IEnumerable<IProjectDependenciesSubTreeProvider> subTreeProviders,
+            HashSet<string> projectItemSpecs)
         {
             var worldBuilder = ImmutableDictionary.CreateBuilder<string, IDependency>(
                                     StringComparer.OrdinalIgnoreCase);
@@ -197,6 +199,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 topLevelBuilder.Remove(dependency);
             }
 
+            var subTreeProvidersMap = GetSubTreeProviderMap(subTreeProviders);
+
             foreach (var added in changes.AddedNodes)
             {
                 IDependency newDependency = new Dependency(added, TargetFramework);
@@ -206,7 +210,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                     foreach (var filter in snapshotFilters)
                     {
                         newDependency = filter.BeforeAdd(
-                            ProjectPath, TargetFramework, newDependency, worldBuilder, topLevelBuilder, out bool filterAnyChanges);
+                            ProjectPath, 
+                            TargetFramework, 
+                            newDependency, 
+                            worldBuilder, 
+                            topLevelBuilder,
+                            subTreeProvidersMap,
+                            projectItemSpecs,
+                            out bool filterAnyChanges);
 
                         anyChanges |= filterAnyChanges;
 
@@ -253,7 +264,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 }
             }
         }
-
+        
         public static TargetedDependenciesSnapshot FromChanges(
             string projectPath,
             ITargetFramework targetFramework,
@@ -261,11 +272,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             IDependenciesChanges changes,
             IProjectCatalogSnapshot catalogs,
             IEnumerable<IDependenciesSnapshotFilter> snapshotFilters,
+            IEnumerable<IProjectDependenciesSubTreeProvider> subTreeProviders,
+            HashSet<string> projectItemSpecs,
             out bool anyChanges)
         {
             var newSnapshot = new TargetedDependenciesSnapshot(projectPath, targetFramework, previousSnapshot, catalogs);
-            anyChanges = newSnapshot.MergeChanges(changes, snapshotFilters);
+            anyChanges = newSnapshot.MergeChanges(changes, snapshotFilters, subTreeProviders, projectItemSpecs);
             return newSnapshot;
+        }
+
+        private static Dictionary<string, IProjectDependenciesSubTreeProvider> GetSubTreeProviderMap(
+            IEnumerable<IProjectDependenciesSubTreeProvider> subTreeProviders)
+        {
+            var subTreeProvidersMap = new Dictionary<string, IProjectDependenciesSubTreeProvider>(
+                StringComparer.OrdinalIgnoreCase);
+            if (subTreeProviders != null)
+            {
+                foreach (var provider in subTreeProviders)
+                {
+                    subTreeProvidersMap[provider.ProviderType] = provider;
+                }
+            }
+
+            return subTreeProvidersMap;
         }
     }
 }
