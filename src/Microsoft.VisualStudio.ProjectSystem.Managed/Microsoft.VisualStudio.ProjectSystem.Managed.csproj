@@ -124,6 +124,9 @@
     <Compile Update="ProjectSystem\Rules\NuGetRestore.cs">
       <DependentUpon>NuGetRestore.xaml</DependentUpon>
     </Compile>
+    <Compile Update="ProjectSystem\Rules\VisualBasic.NamespaceImport.cs">
+      <DependentUpon>VisualBasic.NamespaceImport.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -200,6 +203,10 @@
       <SubType>Designer</SubType>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\ProjectReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\VisualBasic.NamespaceImport.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>

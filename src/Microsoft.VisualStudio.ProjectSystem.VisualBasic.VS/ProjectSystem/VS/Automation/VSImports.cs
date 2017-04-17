@@ -26,6 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         private readonly IProjectLockService _lockService;
         private readonly VSLangProj.VSProject _vsProject;
         private readonly IUnconfiguredProjectVsServices _unconfiguredProjectVSServices;
+        private readonly VisualBasicImportsList _importsList;
 
         public event _dispImportsEvents_ImportAddedEventHandler ImportAdded;
         public event _dispImportsEvents_ImportRemovedEventHandler ImportRemoved;
@@ -36,19 +37,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             IProjectThreadingService threadingService,
             ActiveConfiguredProject<ConfiguredProject> activeConfiguredProject,
             IProjectLockService lockService,
-            IUnconfiguredProjectVsServices unconfiguredProjectVSServices)
+            IUnconfiguredProjectVsServices unconfiguredProjectVSServices,
+            VisualBasicImportsList importsList)
         {
             Requires.NotNull(vsProject, nameof(vsProject));
             Requires.NotNull(threadingService, nameof(threadingService));
             Requires.NotNull(activeConfiguredProject, nameof(activeConfiguredProject));
             Requires.NotNull(lockService, nameof(lockService));
             Requires.NotNull(unconfiguredProjectVSServices, nameof(unconfiguredProjectVSServices));
+            Requires.NotNull(importsList, nameof(importsList));
 
             _vsProject = vsProject;
             _activeConfiguredProject = activeConfiguredProject;
             _lockService = lockService;
             _threadingService = threadingService;
             _unconfiguredProjectVSServices = unconfiguredProjectVSServices;
+            _importsList = importsList;
 
             AddEventSource(this);
         }
@@ -57,105 +61,89 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 
         public string Item(int lIndex)
         {
-            return _threadingService.ExecuteSynchronously(async () =>
-            {
-                using (var access = await _lockService.ReadLockAsync())
-                {
-                    var project = await access.GetProjectAsync(ConfiguredProject).ConfigureAwait(true);
-                    var importsList = project.GetItems(importItemTypeName)
-                                             .Select(p => p.EvaluatedInclude)
-                                             .ToList();
-                    return importsList.ElementAt(lIndex - 1);
-                }
-            });
+            return _importsList.Item(lIndex);
         }
 
         public void Add(string bstrImport)
         {
-            _threadingService.ExecuteSynchronously(async () =>
+            if (!_importsList.IsPresent(bstrImport))
             {
-                using (var access = await _lockService.WriteLockAsync())
+                _threadingService.ExecuteSynchronously(async () =>
                 {
-                    var project = await access.GetProjectAsync(ConfiguredProject).ConfigureAwait(true);
-                    await access.CheckoutAsync(project.Xml.ContainingProject.FullPath).ConfigureAwait(true);
-                    project.AddItem(importItemTypeName, bstrImport);
-                }
-            });
+                    using (var access = await _lockService.WriteLockAsync())
+                    {
+                        var project = await access.GetProjectAsync(ConfiguredProject).ConfigureAwait(true);
+                        await access.CheckoutAsync(project.Xml.ContainingProject.FullPath).ConfigureAwait(true);
+                        project.AddItem(importItemTypeName, bstrImport);
+                    }
+                });
 
-            OnImportAdded(bstrImport);
+                OnImportAdded(bstrImport);
+            }
+            else
+            {
+                throw new ArgumentException(string.Format("{0} - Namespace is already imported", bstrImport), nameof(bstrImport));
+            }
         }
 
         public void Remove(object index)
         {
-            string importRemoved = null;
-            _threadingService.ExecuteSynchronously(async () =>
+            if (index is int indexInt && _importsList.IsPresent(indexInt) ||
+                index is string removeImport && _importsList.IsPresent(removeImport))
             {
-                using (var access = await _lockService.WriteLockAsync())
+                string importRemoved = null;
+                _threadingService.ExecuteSynchronously(async () =>
                 {
-                    Microsoft.Build.Evaluation.ProjectItem importProjectItem = null;
-                    var project = await access.GetProjectAsync(ConfiguredProject).ConfigureAwait(true);
-                    await access.CheckoutAsync(project.Xml.ContainingProject.FullPath).ConfigureAwait(true);
-                    if (index is int indexInt)
+                    using (var access = await _lockService.WriteLockAsync())
                     {
-                        importProjectItem = project.GetItems(importItemTypeName)
-                                                   .ElementAt((indexInt - 1));
-                    }
-                    else if (index is string removeImport)
-                    {
-                        importProjectItem = project.GetItems(importItemTypeName)
-                                                   .First(i => string.Compare(removeImport, i.EvaluatedInclude, StringComparison.OrdinalIgnoreCase) == 0);
-                    }
-                    else
-                    {
-                        System.Diagnostics.Debug.Assert(false, $"Parameter {nameof(index)} is niether an int nor a string");
-                        return;
-                    }
+                        Microsoft.Build.Evaluation.ProjectItem importProjectItem = null;
+                        var project = await access.GetProjectAsync(ConfiguredProject).ConfigureAwait(true);
+                        await access.CheckoutAsync(project.Xml.ContainingProject.FullPath).ConfigureAwait(true);
+                        if (index is string removeImport1)
+                        {
+                            importProjectItem = project.GetItems(importItemTypeName)
+                                                       .First(i => string.Compare(removeImport1, i.EvaluatedInclude, StringComparison.OrdinalIgnoreCase) == 0);
+                        }
+                        else if (index is int indexInt1)
+                        {
+                            importProjectItem = project.GetItems(importItemTypeName)
+                                                       .OrderBy(i => i.EvaluatedInclude)
+                                                       .ElementAt((indexInt1 - 1));
+                        }
+                        else
+                        {
+                            System.Diagnostics.Debug.Assert(false, $"Parameter {nameof(index)} is niether an int nor a string");
+                            return;
+                        }
 
-                    if (importProjectItem.IsImported)
-                    {
-                        throw new ArgumentException(string.Format(VSPackage.ImportParamNotFound, index.ToString()), nameof(index));
+                        if (importProjectItem.IsImported)
+                        {
+                            throw new ArgumentException(string.Format(VSPackage.ImportParamNotFound, index.ToString()), nameof(index));
+                        }
+
+                        importRemoved = importProjectItem.EvaluatedInclude;
+                        project.RemoveItem(importProjectItem);
                     }
+                });
 
-                    importRemoved = importProjectItem.EvaluatedInclude;
-                    project.RemoveItem(importProjectItem);
-                }
-            });
-
-            OnImportRemoved(importRemoved);
+                OnImportRemoved(importRemoved);
+            }
+            else
+            {
+                throw new ArgumentException(string.Format("{0} - Namespace is not present or index is out of bounds", index), nameof(index));
+            }
         }
 
         public IEnumerator GetEnumerator()
         {
-            return _threadingService.ExecuteSynchronously(async () =>
-            {
-                using (var access = await _lockService.ReadLockAsync())
-                {
-                    var project = await access.GetProjectAsync(ConfiguredProject).ConfigureAwait(true);
-                    return project.GetItems(importItemTypeName)
-                                  .Select(p => p.EvaluatedInclude)
-                                  .GetEnumerator();
-                }
-            });
+            return _importsList.GetEnumerator();
         }
 
         public DTE DTE => _vsProject.DTE;
 
         public Project ContainingProject => _vsProject.Project;
 
-        public int Count
-        {
-            get
-            {
-                return _threadingService.ExecuteSynchronously(async () =>
-                {
-                    using (var access = await _lockService.ReadLockAsync())
-                    {
-                        var project = await access.GetProjectAsync(ConfiguredProject).ConfigureAwait(true);
-                        return project.GetItems(importItemTypeName).Count;
-                    }
-                });
-            }
-        }
+        public int Count => _importsList.Count;
 
         public object Parent => _unconfiguredProjectVSServices.VsHierarchy;
 
