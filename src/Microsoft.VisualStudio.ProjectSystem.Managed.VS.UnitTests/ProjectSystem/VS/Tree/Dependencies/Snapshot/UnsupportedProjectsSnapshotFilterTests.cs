@@ -108,6 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     flags: DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.ResolvedFlags),
                     originalItemSpec:@"c:\myproject2\project.csproj",
                     setPropertiesResolved:false,
+                    setPropertiesSchemaName:ProjectReference.SchemaName,
                     setPropertiesFlags: DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.UnresolvedFlags));
 
             var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider, targetFrameworkProvider);
@@ -136,6 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     flags: DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.ResolvedFlags),
                     originalItemSpec: @"c:\myproject2\project.csproj",
                     setPropertiesResolved: false,
+                    setPropertiesSchemaName: ProjectReference.SchemaName,
                     setPropertiesFlags: DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.UnresolvedFlags));
 
             var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider, null);
@@ -173,6 +175,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     originalItemSpec: @"c:\myproject2\project.csproj",
                     targetFramework: targetFramework,
                     setPropertiesResolved: false,
+                    setPropertiesSchemaName: ProjectReference.SchemaName,
                     setPropertiesFlags: DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.UnresolvedFlags));
 
             var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider, targetFrameworkProvider);

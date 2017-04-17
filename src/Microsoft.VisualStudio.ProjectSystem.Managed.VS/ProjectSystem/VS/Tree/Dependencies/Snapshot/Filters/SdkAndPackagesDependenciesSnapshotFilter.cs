@@ -46,11 +46,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 if (worldBuilder.TryGetValue(packageId, out IDependency package) && package.Resolved)
                 {
                     filterAnyChanges = true;
-                    resultDependency = dependency.SetProperties(
-                        dependencyIDs:package.DependencyIDs, 
-                        resolved:true,
-                        flags:dependency.Flags.Union(DependencyTreeFlags.ResolvedFlags)
-                                              .Except(DependencyTreeFlags.UnresolvedFlags));
+                    resultDependency = dependency.ToResolved(
+                        schemaName: ResolvedSdkReference.SchemaName,
+                        dependencyIDs:package.DependencyIDs);
                 }
             }
             else if (dependency.Flags.Contains(DependencyTreeFlags.PackageNodeFlags) && dependency.Resolved)
@@ -62,11 +60,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 if (worldBuilder.TryGetValue(sdkId, out IDependency sdk))
                 {
                     filterAnyChanges = true;
-                    sdk = sdk.SetProperties(
-                        dependencyIDs:dependency.DependencyIDs, 
-                        resolved:true,
-                        flags: dependency.Flags.Union(DependencyTreeFlags.ResolvedFlags)
-                                               .Except(DependencyTreeFlags.UnresolvedFlags));
+                    sdk = sdk.ToResolved(
+                        schemaName: ResolvedSdkReference.SchemaName,
+                        dependencyIDs: dependency.DependencyIDs);
 
                     worldBuilder.Remove(sdk.Id);
                     worldBuilder.Add(sdk.Id, sdk);
@@ -102,12 +98,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 {
                     filterAnyChanges = true;
                     // clean up sdk when corresponding package is removing
-                    sdk = sdk.SetProperties(
-                        dependencyIDs:ImmutableList<string>.Empty, 
-                        resolved:false,
-                        flags: DependencyTreeFlags.SdkSubTreeNodeFlags
-                                                  .Union(DependencyTreeFlags.UnresolvedFlags)
-                                                  .Except(DependencyTreeFlags.ResolvedFlags));
+                    sdk = sdk.ToUnresolved(
+                        schemaName: SdkReference.SchemaName,
+                        dependencyIDs:ImmutableList<string>.Empty);
+
                     worldBuilder.Remove(sdk.Id);
                     worldBuilder.Add(sdk.Id, sdk);
                     topLevelBuilder.Remove(sdk);
