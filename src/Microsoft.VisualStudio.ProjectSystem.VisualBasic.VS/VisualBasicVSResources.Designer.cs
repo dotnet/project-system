@@ -22,14 +22,14 @@ namespace Microsoft.VisualStudio {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class VSPackage {
+    internal class VisualBasicVSResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal VSPackage() {
+        internal VisualBasicVSResources() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Microsoft.VisualStudio.VSPackage", typeof(VSPackage).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Microsoft.VisualStudio.VisualBasicVSResources", typeof(VisualBasicVSResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,29 +61,11 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Visual Basic.
+        ///   Looks up a localized string similar to {0} - Import comes fom target file. This import cannot be removed..
         /// </summary>
-        internal static string _1 {
+        internal static string ImportsFromTargetCannotBeDeleted {
             get {
-                return ResourceManager.GetString("#1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Visual Basic Project Files (*.vbproj);*.vbproj.
-        /// </summary>
-        internal static string _2 {
-            get {
-                return ResourceManager.GetString("#2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The import trying to be deleted not found.
-        /// </summary>
-        internal static string ImportParamNotFound {
-            get {
-                return ResourceManager.GetString("ImportParamNotFound", resourceCulture);
+                return ResourceManager.GetString("ImportsFromTargetCannotBeDeleted", resourceCulture);
             }
         }
     }

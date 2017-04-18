@@ -5,15 +5,15 @@ using VSLangProj;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
-    [Export(typeof(VSLangProj.VSProjectEvents))]
+    [Export(typeof(VSProjectEvents))]
     [AppliesTo(ProjectCapability.VisualBasic)]
-    [Order(10)]
-    internal class VSProjectEvents : VSLangProj.VSProjectEvents
+    [Order(Order.Default)]
+    internal class VisualBasicVSProjectEvents : VSProjectEvents
     {
         private readonly VSLangProj.VSProject _vsProject;
 
         [ImportingConstructor]
-        public VSProjectEvents(
+        public VisualBasicVSProjectEvents(
             [Import(ExportContractNames.VsTypes.CpsVSProject)] VSLangProj.VSProject vsProject,
             UnconfiguredProject project)
         {

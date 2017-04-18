@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             Assert.Throws<ArgumentNullException>("vsProject", () =>
             {
-                GetVSImports();
+                CreateInstance();
             });
         }
 
@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             Assert.Throws<ArgumentNullException>("threadingService", () =>
             {
-                GetVSImports(Mock.Of<VSLangProj.VSProject>());
+                CreateInstance(Mock.Of<VSLangProj.VSProject>());
             });
         }
 
@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             Assert.Throws<ArgumentNullException>("activeConfiguredProject", () =>
             {
-                GetVSImports(
+                CreateInstance(
                     Mock.Of<VSLangProj.VSProject>(),
                     Mock.Of<IProjectThreadingService>());
             });
@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             Assert.Throws<ArgumentNullException>("lockService", () =>
             {
-                GetVSImports(
+                CreateInstance(
                     Mock.Of<VSLangProj.VSProject>(),
                     Mock.Of<IProjectThreadingService>(),
                     Mock.Of<ActiveConfiguredProject<ConfiguredProject>>());
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             Assert.Throws<ArgumentNullException>("unconfiguredProjectVSServices", () =>
             {
-                GetVSImports(
+                CreateInstance(
                     Mock.Of<VSLangProj.VSProject>(),
                     Mock.Of<IProjectThreadingService>(),
                     Mock.Of<ActiveConfiguredProject<ConfiguredProject>>(),
@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         [Fact]
         public void Constructor_NotNull()
         {
-            var vsimports = GetVSImports(
+            var vsimports = CreateInstance(
                                 Mock.Of<VSLangProj.VSProject>(),
                                 Mock.Of<IProjectThreadingService>(),
                                 Mock.Of<ActiveConfiguredProject<ConfiguredProject>>(),
@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             vsProjectMock.Setup(p => p.Project)
                          .Returns(project);
 
-            var vsimports = GetVSImports(
+            var vsimports = CreateInstance(
                                 vsProjectMock.Object,
                                 Mock.Of<IProjectThreadingService>(),
                                 Mock.Of<ActiveConfiguredProject<ConfiguredProject>>(),
@@ -109,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             dispImportsEventsMock.Setup(d => d.ImportRemoved(It.Is<string>(s => s == importName)))
                                  .Verifiable();
 
-            var vsimports = GetVSImports(
+            var vsimports = CreateInstance(
                     Mock.Of<VSLangProj.VSProject>(),
                     Mock.Of<IProjectThreadingService>(),
                     Mock.Of<ActiveConfiguredProject<ConfiguredProject>>(),
@@ -132,14 +132,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             dispImportsEventsMock.Verify(d => d.ImportRemoved(It.IsAny<string>()), Times.Once);
         }
 
-        private VSImports GetVSImports(
+        private VisualBasicVSImports CreateInstance(
             VSLangProj.VSProject vsProject = null,
             IProjectThreadingService threadingService = null,
             ActiveConfiguredProject<ConfiguredProject> activeConfiguredProject = null,
             IProjectLockService lockService = null,
             IUnconfiguredProjectVsServices vsServices = null)
         {
-            return new VSImports(vsProject, threadingService, activeConfiguredProject, lockService, vsServices);
+            return new VisualBasicVSImports(vsProject, threadingService, activeConfiguredProject, lockService, vsServices);
         }
     }
 }

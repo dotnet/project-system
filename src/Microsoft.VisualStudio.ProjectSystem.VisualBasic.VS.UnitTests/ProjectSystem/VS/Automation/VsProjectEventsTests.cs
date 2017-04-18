@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             return new VSProjectEventsTestImpl(vsproject, project);
         }
 
-        internal class VSProjectEventsTestImpl : VSProjectEvents
+        internal class VSProjectEventsTestImpl : VisualBasicVSProjectEvents
         {
             public VSProjectEventsTestImpl(VSLangProj.VSProject vsProject, UnconfiguredProject project)
                 : base(vsProject, project)

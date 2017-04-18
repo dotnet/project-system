@@ -13,8 +13,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
     [Export(typeof(Imports))]
     [Export(typeof(ImportsEvents))]
     [AppliesTo(ProjectCapability.VisualBasic)]
-    [Order(10)]
-    internal class VSImports : ConnectionPointContainer,
+    [Order(Order.Default)]
+    internal class VisualBasicVSImports : ConnectionPointContainer,
                                IEventSource<_dispImportsEvents>,
                                Imports,
                                ImportsEvents
@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         public event _dispImportsEvents_ImportRemovedEventHandler ImportRemoved;
 
         [ImportingConstructor]
-        public VSImports(
+        public VisualBasicVSImports(
             [Import(ExportContractNames.VsTypes.CpsVSProject)] VSLangProj.VSProject vsProject,
             IProjectThreadingService threadingService,
             ActiveConfiguredProject<ConfiguredProject> activeConfiguredProject,
@@ -113,12 +113,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                         else
                         {
                             System.Diagnostics.Debug.Assert(false, $"Parameter {nameof(index)} is niether an int nor a string");
-                            return;
+                            throw new ArgumentException(string.Format("Parameter {0} is niether an int nor a string", index), nameof(index));
                         }
 
                         if (importProjectItem.IsImported)
                         {
-                            throw new ArgumentException(string.Format(VSPackage.ImportParamNotFound, index.ToString()), nameof(index));
+                            throw new ArgumentException(string.Format(VisualBasicVSResources.ImportsFromTargetCannotBeDeleted, index.ToString()), nameof(index));
                         }
 
                         importRemoved = importProjectItem.EvaluatedInclude;
