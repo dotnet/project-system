@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -10,30 +11,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
     [ExportInterceptingPropertyValueProvider("TargetFrameworkMonikers", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     internal sealed class TargetFrameworkMonikersValueProvider : InterceptingPropertyValueProviderBase
     {
-        private readonly ProjectProperties _properties;
+        private readonly ActiveConfiguredProjectsProvider _projectProvider;
 
         [ImportingConstructor]
-        public TargetFrameworkMonikersValueProvider(ProjectProperties properties)
+        public TargetFrameworkMonikersValueProvider(ActiveConfiguredProjectsProvider projectProvider)
         {
-            _properties = properties;
+            _projectProvider = projectProvider;
         }
 
         public override async Task<string> OnGetEvaluatedPropertyValueAsync(string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
-            var configuration = await _properties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
-            var currentTargetFramework = (string)await configuration.TargetFramework.GetValueAsync().ConfigureAwait(true);
-            var currentTargetFrameworks = (string)await configuration.TargetFrameworks.GetValueAsync().ConfigureAwait(true);
-            if (!string.IsNullOrEmpty(currentTargetFrameworks))
+            var activeProjectConfigurations = await _projectProvider.GetActiveProjectConfigurationsAsync().ConfigureAwait(false);
+            var builder = ImmutableArray.CreateBuilder<string>();
+            foreach (var activeProjectConfiguration in activeProjectConfigurations)
             {
-                // sorting the target frameworks so projects that specify the same set of frameworks return the same string
-                return string.Join(";", ParseTargetFrameworks(currentTargetFrameworks).Sort());
-            }
-            else if (!string.IsNullOrEmpty(currentTargetFramework))
-            {
-                return currentTargetFramework;
+                if(activeProjectConfiguration.Dimensions.TryGetValue(TargetFrameworkPropertyName, out var tfm))
+                {
+                    builder.Add(tfm);
+                }
             }
 
-            return string.Empty;
+            builder.Sort();
+            return string.Join(";", builder.ToArray());
         }
     }
 }
