@@ -12,15 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     [AppliesTo(ProjectCapability.VisualBasic)]
     internal class WarningLevelEnumProvider : IDynamicEnumValuesProvider
     {
-        private readonly Dictionary<string, IEnumValue> _listedWarningLevelEnumValues = new Dictionary<string, IEnumValue>
-            {
-                { "0",  new PageEnumValue(new EnumValue {Name = "0" }) },
-                { "1",  new PageEnumValue(new EnumValue {Name = "1" }) },
-                { "2",  new PageEnumValue(new EnumValue {Name = "2" }) },
-                { "3",  new PageEnumValue(new EnumValue {Name = "3" }) },
-                { "4",  new PageEnumValue(new EnumValue {Name = "4" }) },
-            };
-
         private readonly Dictionary<string, IEnumValue> _persistWarningLevelEnumValues = new Dictionary<string, IEnumValue>
             {
                 { nameof(prjWarningLevel.prjWarningLevel0), new PageEnumValue(new EnumValue {Name = "0" }) },
@@ -32,8 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
         public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair> options)
         {
-            return Task.FromResult<IDynamicEnumValuesGenerator>(
-                new MapDynamicEnumValuesProvider(_listedWarningLevelEnumValues, _persistWarningLevelEnumValues));
+            return Task.FromResult<IDynamicEnumValuesGenerator>(new MapDynamicEnumValuesProvider(_persistWarningLevelEnumValues));
         }
     }
 }

@@ -7,38 +7,37 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
     /// <summary>
-    /// This Dynamic Enum Value Provider maps enum based msbuild property value
-    /// to values that we want to display in the UI and also map the value,we 
-    /// obtain from the UI to msbuild complaint values for persistence
+    /// This Dynamic Enum Value Provider provides enum based msbuild property
+    /// value to display in the UI and also map the value, we obtain from the
+    /// UI to msbuild complaint values for persistence
     /// </summary>
     internal class MapDynamicEnumValuesProvider : IDynamicEnumValuesGenerator
     {
-        private readonly IDictionary<string, IEnumValue> _getValueMap;
-        private readonly IDictionary<string, IEnumValue> _setValueMap;
+        private readonly IDictionary<string, IEnumValue> _valueMap;
+        private readonly ICollection<IEnumValue> _getValues;
 
         public MapDynamicEnumValuesProvider(
-            IDictionary<string, IEnumValue> getValueMap,
-            IDictionary<string, IEnumValue> setValueMap)
+            IDictionary<string, IEnumValue> valueMap,
+            ICollection<IEnumValue> getValues = null)
         {
-            Requires.NotNull(getValueMap, nameof(getValueMap));
-            Requires.NotNull(setValueMap, nameof(setValueMap));
+            Requires.NotNull(valueMap, nameof(valueMap));
 
-            _getValueMap = getValueMap;
-            _setValueMap = setValueMap;
+            _valueMap = valueMap;
+            _getValues = getValues;
         }
 
         public bool AllowCustomValues => false;
 
         public Task<ICollection<IEnumValue>> GetListedValuesAsync()
         {
-            return Task.FromResult(_getValueMap.Values);
+            return Task.FromResult(_getValues ?? _valueMap.Values);
         }
 
         public Task<IEnumValue> TryCreateEnumValueAsync(string userSuppliedValue)
         {
-            if (_setValueMap != null)
+            if (_valueMap != null)
             {
-                if (_setValueMap.TryGetValue(userSuppliedValue, out IEnumValue value))
+                if (_valueMap.TryGetValue(userSuppliedValue, out IEnumValue value))
                 {
                     return Task.FromResult(value);
                 }

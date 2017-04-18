@@ -11,10 +11,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     [AppliesTo(ProjectCapability.VisualBasic)]
     internal class OptionStrictEnumProvider : IDynamicEnumValuesProvider
     {
-        private readonly Dictionary<string, IEnumValue> _listedOptionStrictEnumValues = new Dictionary<string, IEnumValue>
+        private readonly ICollection<IEnumValue> _listedOptionStrictEnumValues = new List<IEnumValue>
             {
-                { "Off",    new PageEnumValue(new EnumValue {Name = "0",    DisplayName = "Off", IsDefault = true }) },
-                { "On",     new PageEnumValue(new EnumValue {Name = "1",    DisplayName = "On" }) },
+                new PageEnumValue(new EnumValue {Name = "0",    DisplayName = "Off", IsDefault = true }),
+                new PageEnumValue(new EnumValue {Name = "1",    DisplayName = "On" })
             };
 
         private readonly Dictionary<string, IEnumValue> _persistOptionStrictEnumValues = new Dictionary<string, IEnumValue>
@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair> options)
         {
             return Task.FromResult<IDynamicEnumValuesGenerator>(
-                new MapDynamicEnumValuesProvider(_listedOptionStrictEnumValues, _persistOptionStrictEnumValues));
+                new MapDynamicEnumValuesProvider(_persistOptionStrictEnumValues, _listedOptionStrictEnumValues));
         }
     }
 }

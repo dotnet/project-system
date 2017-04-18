@@ -6,7 +6,6 @@ using Xunit;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using VSLangProj;
-using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
@@ -16,14 +15,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public void MapDynamicEnumValuesProvider_AssertNull()
         {
-            Assert.Throws<ArgumentNullException>("getValueMap", () =>
+            Assert.Throws<ArgumentNullException>("valueMap", () =>
             {
-                new MapDynamicEnumValuesProvider(null, null);
-            });
-
-            Assert.Throws<ArgumentNullException>("setValueMap", () =>
-            {
-                new MapDynamicEnumValuesProvider(Mock.Of<Dictionary<string, IEnumValue>>(), null);
+                new MapDynamicEnumValuesProvider(null);
             });
         }
 
