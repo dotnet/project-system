@@ -382,6 +382,19 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The project &apos;{0}&apos; needs to be reloaded as certain critical properties have changed.
+        ///
+        ///Press Reload to load the updated project.
+        ///Press Ignore to ignore the project changes. The changes will be used the next time you open the project.
+        ///    .
+        /// </summary>
+        internal static string ProjectForceReloadPrompt {
+            get {
+                return ResourceManager.GetString("ProjectForceReloadPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Project Modification Detected.
         /// </summary>
         internal static string ProjectModificationDlgTitle {

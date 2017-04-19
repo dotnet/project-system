@@ -127,6 +127,13 @@ Press Reload to load the updated project from disk.
 Press Ignore to ignore the external changes. The changes will be used the next time you open the project.
     </value>
   </data>
+  <data name="ProjectForceReloadPrompt" xml:space="preserve">
+    <value>The project '{0}' needs to be reloaded as certain critical properties have changed.
+
+Press Reload to load the updated project.
+Press Ignore to ignore the project changes. The changes will be used the next time you open the project.
+    </value>
+  </data>
   <data name="ConflictingModificationsPrompt" xml:space="preserve">
     <value>The project '{0}' has been modified outside the environment, and there are unsaved changes to the project.
 

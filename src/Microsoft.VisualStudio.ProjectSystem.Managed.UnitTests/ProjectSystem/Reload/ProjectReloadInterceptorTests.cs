@@ -31,6 +31,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [InlineData(null, "invalid target frameworks", null, null)]
         [InlineData(null, null, "netcoreapp1.0", "net45;netcoreapp1.0")]
         [InlineData("netcoreapp1.0", "net45;netcoreapp1.0", null, null)]
+        // User edits the value of current TF/TFs.
+        [InlineData("net45", null, "net46", null)]
+        [InlineData(null, "net45;netcoreapp1.0", null, "net45")]
+        [InlineData(null, "net45", null, "net45;netcoreapp1.0")]
+        [InlineData("invalid;target;framework", null, "net46", null)]
+        [InlineData(null, "invalid target frameworks", null, "net45;netcoreapp1.0")]
         public void Test_ProjectNeedsReload(string oldTargetFramework, string oldTargetFrameworks, string newTargetFramework, string newTargetFrameworks)
         {
             var oldProperties = CreatePropertiesCollection(oldTargetFramework, oldTargetFrameworks);
@@ -45,12 +51,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [InlineData(null, null, null, null)]
         [InlineData(null, "net45", null, "net45")]
         [InlineData(null, "net45;netcoreapp1.0", null, "net45;netcoreapp1.0")]
-        // User edits the value of current TF/TFs.
-        [InlineData("net45", null, "net46", null)]
-        [InlineData(null, "net45;netcoreapp1.0", null, "net45")]
-        [InlineData(null, "net45", null, "net45;netcoreapp1.0")]
-        [InlineData("invalid;target;framework", null, "net46", null)]
-        [InlineData(null, "invalid target frameworks", null, "net45;netcoreapp1.0")]
+        // Change only in case of TF/TFs.
+        [InlineData(null, "net45", null, "NET45")]
+        [InlineData(null, "net45;netcoreapp1.0", null, "Net45;NetCoreApp1.0")]
         public void Test_ProjectDoesntNeedReload(string oldTargetFramework, string oldTargetFrameworks, string newTargetFramework, string newTargetFrameworks)
         {
             var oldProperties = CreatePropertiesCollection(oldTargetFramework, oldTargetFrameworks);
