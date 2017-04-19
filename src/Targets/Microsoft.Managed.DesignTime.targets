@@ -7,7 +7,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
-  <!-- Turn off capabilities from Microsoft.Common.CurrentVersions.targets and explicitly include the ones we want. The list below
+    <!-- Turn off capabilities from Microsoft.Common.CurrentVersions.targets and explicitly include the ones we want. The list below
        currently matches what is in common targets, but removes BuildWindowsDesktopTarget -->
     <DefineCommonItemSchemas>false</DefineCommonItemSchemas>
     <DefineCommonCapabilities>false</DefineCommonCapabilities>
@@ -90,7 +90,7 @@
 
     <!-- Settings page capability -->
     <ProjectCapability Include="AppSettings" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'"/>
- </ItemGroup>
+  </ItemGroup>
 
   <!-- Common Project System rules that override rules defined in msbuild. These are exact copy of the rules defined in msbuild. -->
   <ItemGroup Condition="'$(DefineCommonManagedItemSchemas)' == 'true'">
@@ -264,5 +264,8 @@
            />
 
   </Target>
+
+  <!-- This target collects all Analyzers in the project. -->
+  <Target Name="CollectAnalyzersDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(Analyzer)" />
 
 </Project>
