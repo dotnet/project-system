@@ -13,7 +13,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
     {
         private readonly IRoslynServices _roslynServices;
 
-        public SimpleRenameStrategy(IProjectThreadingService threadingService, IUserNotificationServices userNotificationService, IEnvironmentOptions environmentOptions, IRoslynServices roslynServices)
+        public SimpleRenameStrategy(
+            IProjectThreadingService threadingService,
+            IUserNotificationServices userNotificationService,
+            IEnvironmentOptions environmentOptions,
+            IRoslynServices roslynServices)
             : base(threadingService, userNotificationService, environmentOptions)
         {
             _roslynServices = roslynServices;
@@ -24,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         {
             var oldNameBase = Path.GetFileNameWithoutExtension(oldFileName);
             var newNameBase = Path.GetFileNameWithoutExtension(newFileName);
-            return SyntaxFacts.IsValidIdentifier(oldNameBase) && SyntaxFacts.IsValidIdentifier(newNameBase) && (!string.Equals(Path.GetFileName(oldNameBase), Path.GetFileName(newNameBase), isCaseSensitive?StringComparison.Ordinal:StringComparison.OrdinalIgnoreCase));
+            return _roslynServices.IsValidIdentifier(oldNameBase) && _roslynServices.IsValidIdentifier(newNameBase) && (!string.Equals(Path.GetFileName(oldNameBase), Path.GetFileName(newNameBase), isCaseSensitive?StringComparison.Ordinal:StringComparison.OrdinalIgnoreCase));
         }
 
         public override async Task RenameAsync(Project myNewProject, string oldFileName, string newFileName)

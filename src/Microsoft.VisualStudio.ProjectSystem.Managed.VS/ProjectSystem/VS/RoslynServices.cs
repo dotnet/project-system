@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.Composition;
 using RoslynRenamer = Microsoft.CodeAnalysis.Rename;
+using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -14,11 +15,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private readonly IProjectThreadingService _threadingService;
 
         [ImportingConstructor]
-        public RoslynServices(IProjectThreadingService threadingService)
+        public RoslynServices(
+            IProjectThreadingService threadingService,
+            UnconfiguredProject project)
         {
             Requires.NotNull(threadingService, nameof(threadingService));
+            Requires.NotNull(project, nameof(project));
+
             _threadingService = threadingService;
+            SyntaxFactsServices = new OrderPrecedenceImportCollection<ISyntaxFactsService>(projectCapabilityCheckProvider: project);
         }
+
+        [ImportMany]
+        protected OrderPrecedenceImportCollection<ISyntaxFactsService> SyntaxFactsServices { get; }
 
         public Task<Solution> RenameSymbolAsync(Solution solution, ISymbol symbol, string newName)
         {
@@ -31,6 +40,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             // Always make sure TryApplyChanges is called from an UI thread.
             return ws.TryApplyChanges(renamedSolution);
+        }
+
+        public bool IsValidIdentifier(string identifierName)
+        {
+            var service = SyntaxFactsServices.FirstOrDefault();
+            if (service != null)
+            {
+                return service.Value.IsValidIdentifier(identifierName);
+            }
+
+            return false;
         }
     }
 }
