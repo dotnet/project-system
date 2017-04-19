@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         private readonly IProjectLockService _lockService;
         private readonly VSLangProj.VSProject _vsProject;
         private readonly IUnconfiguredProjectVsServices _unconfiguredProjectVSServices;
-        private readonly VisualBasicImportsList _importsList;
+        private readonly VisualBasicNamespaceImportsList _importsList;
 
         public event _dispImportsEvents_ImportAddedEventHandler ImportAdded;
         public event _dispImportsEvents_ImportRemovedEventHandler ImportRemoved;
@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             ActiveConfiguredProject<ConfiguredProject> activeConfiguredProject,
             IProjectLockService lockService,
             IUnconfiguredProjectVsServices unconfiguredProjectVSServices,
-            VisualBasicImportsList importsList)
+            VisualBasicNamespaceImportsList importsList)
         {
             Requires.NotNull(vsProject, nameof(vsProject));
             Requires.NotNull(threadingService, nameof(threadingService));
@@ -88,8 +88,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 
         public void Remove(object index)
         {
-            if (index is int indexInt && _importsList.IsPresent(indexInt) ||
-                index is string removeImport && _importsList.IsPresent(removeImport))
+            bool intIndexPresent = index is int indexInt && _importsList.IsPresent(indexInt);
+            bool stringIndexPresent = index is string removeImport && _importsList.IsPresent((string)removeImport);
+            if (intIndexPresent || stringIndexPresent)
             {
                 string importRemoved = null;
                 _threadingService.ExecuteSynchronously(async () =>
@@ -112,8 +113,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                         }
                         else
                         {
+                            // Cannot reach this point, since index has to be Int or String
                             System.Diagnostics.Debug.Assert(false, $"Parameter {nameof(index)} is niether an int nor a string");
-                            throw new ArgumentException(string.Format("Parameter {0} is niether an int nor a string", index), nameof(index));
                         }
 
                         if (importProjectItem.IsImported)
@@ -128,9 +129,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 
                 OnImportRemoved(importRemoved);
             }
+            else if (index is string)
+            {
+                throw new ArgumentException(string.Format("{0} - Namespace is not present ", index), nameof(index));
+            }
             else
             {
-                throw new ArgumentException(string.Format("{0} - Namespace is not present or index is out of bounds", index), nameof(index));
+                throw new ArgumentException(string.Format("{0} - index is neither an Int nor a String", index), nameof(index));
             }
         }
 

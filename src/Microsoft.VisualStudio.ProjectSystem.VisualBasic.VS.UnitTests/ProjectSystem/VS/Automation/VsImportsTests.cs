@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System;
 using EnvDTE;
 using Moq;
 using VSLangProj;
@@ -64,6 +66,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         }
 
         [Fact]
+        public void Constructor_NullAsImportsList_ThrowsArgumentNull()
+        {
+            Assert.Throws<ArgumentNullException>("importsList", () =>
+            {
+                CreateInstance(
+                    Mock.Of<VSLangProj.VSProject>(),
+                    Mock.Of<IProjectThreadingService>(),
+                    Mock.Of<ActiveConfiguredProject<ConfiguredProject>>(),
+                    Mock.Of<IProjectLockService>(),
+                    Mock.Of<IUnconfiguredProjectVsServices>());
+            });
+        }
+
+        [Fact]
         public void Constructor_NotNull()
         {
             var vsimports = CreateInstance(
@@ -71,7 +87,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                                 Mock.Of<IProjectThreadingService>(),
                                 Mock.Of<ActiveConfiguredProject<ConfiguredProject>>(),
                                 Mock.Of<IProjectLockService>(),
-                                Mock.Of<IUnconfiguredProjectVsServices>());
+                                Mock.Of<IUnconfiguredProjectVsServices>(),
+                                new VisualBasicNamespaceImportsList());
 
             Assert.NotNull(vsimports);
         }
@@ -93,7 +110,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                                 Mock.Of<IProjectThreadingService>(),
                                 Mock.Of<ActiveConfiguredProject<ConfiguredProject>>(),
                                 Mock.Of<IProjectLockService>(),
-                                Mock.Of<IUnconfiguredProjectVsServices>());
+                                Mock.Of<IUnconfiguredProjectVsServices>(),
+                                Mock.Of<VisualBasicNamespaceImportsList>());
 
             Assert.Equal(dte, vsimports.DTE);
             Assert.Equal(project, vsimports.ContainingProject);
@@ -114,7 +132,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                     Mock.Of<IProjectThreadingService>(),
                     Mock.Of<ActiveConfiguredProject<ConfiguredProject>>(),
                     Mock.Of<IProjectLockService>(),
-                    Mock.Of<IUnconfiguredProjectVsServices>());
+                    Mock.Of<IUnconfiguredProjectVsServices>(),
+                    VisualBasicNamespaceImportsListFactory.CreateInstance("A", "B"));
 
             vsimports.OnSinkAdded(dispImportsEventsMock.Object);
 
@@ -130,6 +149,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 
             dispImportsEventsMock.Verify(d => d.ImportAdded(It.IsAny<string>()), Times.Once);
             dispImportsEventsMock.Verify(d => d.ImportRemoved(It.IsAny<string>()), Times.Once);
+
+            Assert.Equal(vsimports.Count, 2);
         }
 
         private VisualBasicVSImports CreateInstance(
@@ -137,9 +158,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             IProjectThreadingService threadingService = null,
             ActiveConfiguredProject<ConfiguredProject> activeConfiguredProject = null,
             IProjectLockService lockService = null,
-            IUnconfiguredProjectVsServices vsServices = null)
+            IUnconfiguredProjectVsServices vsServices = null,
+            VisualBasicNamespaceImportsList importList = null)
         {
-            return new VisualBasicVSImports(vsProject, threadingService, activeConfiguredProject, lockService, vsServices);
+            return new VisualBasicVSImports(vsProject, threadingService, activeConfiguredProject, lockService, vsServices, importList);
         }
     }
 }
