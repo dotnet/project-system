@@ -5,6 +5,7 @@ using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using static Microsoft.VisualStudio.ProjectSystem.Build.TargetFrameworkProjectConfigurationDimensionProvider;
+using System.Linq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectProperties
 {
@@ -12,27 +13,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
     internal sealed class TargetFrameworkMonikersValueProvider : InterceptingPropertyValueProviderBase
     {
         private readonly ActiveConfiguredProjectsProvider _projectProvider;
+        private readonly ProjectProperties _properties;
 
         [ImportingConstructor]
-        public TargetFrameworkMonikersValueProvider(ActiveConfiguredProjectsProvider projectProvider)
+        public TargetFrameworkMonikersValueProvider(ActiveConfiguredProjectsProvider projectProvider, ProjectProperties properties)
         {
             _projectProvider = projectProvider;
+            _properties = properties;
         }
 
         public override async Task<string> OnGetEvaluatedPropertyValueAsync(string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
             var activeProjectConfigurations = await _projectProvider.GetActiveProjectConfigurationsAsync().ConfigureAwait(false);
-            var builder = ImmutableArray.CreateBuilder<string>();
-            foreach (var activeProjectConfiguration in activeProjectConfigurations)
+            var isCrossTarging = activeProjectConfigurations.All(c => c.IsCrossTargeting());
+            if (isCrossTarging)
             {
-                if(activeProjectConfiguration.Dimensions.TryGetValue(TargetFrameworkPropertyName, out var tfm))
+                var builder = ImmutableArray.CreateBuilder<string>();
+                foreach (var activeProjectConfiguration in activeProjectConfigurations)
                 {
-                    builder.Add(tfm);
+                    if (activeProjectConfiguration.Dimensions.TryGetValue(TargetFrameworkPropertyName, out var tfm))
+                    {
+                        builder.Add(tfm);
+                    }
                 }
-            }
 
-            builder.Sort();
-            return string.Join(";", builder.ToArray());
+                builder.Sort();
+                return string.Join(";", builder.ToArray());
+            }
+            else
+            {
+                var configuration = await _properties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
+                var currentTargetFrameworkMoniker = (string)await configuration.TargetFrameworkMoniker.GetValueAsync().ConfigureAwait(false);
+                return currentTargetFrameworkMoniker;
+            }
         }
     }
 }
