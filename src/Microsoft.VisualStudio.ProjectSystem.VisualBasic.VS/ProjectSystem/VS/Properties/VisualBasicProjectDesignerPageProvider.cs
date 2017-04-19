@@ -26,6 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         {
             var builder = ImmutableArray.CreateBuilder<IPageMetadata>();
             builder.Add(VisualBasicProjectDesignerPage.Application);
+            builder.Add(VisualBasicProjectDesignerPage.Compile);
 
             if (_capabilities.Contains(ProjectCapability.Pack))
             {
