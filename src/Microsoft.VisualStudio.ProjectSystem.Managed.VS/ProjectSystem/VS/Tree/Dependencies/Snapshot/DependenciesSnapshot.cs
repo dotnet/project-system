@@ -79,7 +79,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         private bool MergeChanges(
             ImmutableDictionary<ITargetFramework, IDependenciesChanges> changes,
             IProjectCatalogSnapshot catalogs,
-            IEnumerable<IDependenciesSnapshotFilter> snapshotFilters)
+            IEnumerable<IDependenciesSnapshotFilter> snapshotFilters,
+            IEnumerable<IProjectDependenciesSubTreeProvider> subTreeProviders,
+            HashSet<string> projectItemSpecs)
         {
             var anyChanges = false;
             var builder = _targets.ToBuilder();
@@ -93,6 +95,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                                             change.Value,
                                             catalogs,
                                             snapshotFilters,
+                                            subTreeProviders,
+                                            projectItemSpecs,
                                             out bool anyTfmChanges);
                 builder[change.Key] = newTargetedSnapshot;
 
@@ -139,10 +143,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             IProjectCatalogSnapshot catalogs,
             ITargetFramework activeTargetFramework,
             IEnumerable<IDependenciesSnapshotFilter> snapshotFilters,
+            IEnumerable<IProjectDependenciesSubTreeProvider> subTreeProviders,
+            HashSet<string> projectItemSpecs,
             out bool anyChanges)
         {
             var newSnapshot = new DependenciesSnapshot(projectPath, activeTargetFramework, previousSnapshot);
-            anyChanges = newSnapshot.MergeChanges(changes, catalogs, snapshotFilters);
+            anyChanges = newSnapshot.MergeChanges(changes, catalogs, snapshotFilters, subTreeProviders, projectItemSpecs);
             return newSnapshot;
         }
 

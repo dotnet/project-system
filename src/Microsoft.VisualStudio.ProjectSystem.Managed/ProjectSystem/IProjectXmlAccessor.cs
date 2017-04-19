@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Build.Construction;
 
@@ -38,5 +39,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <param name="action">Operation to execute</param>
         /// <returns>A task for the async operation.</returns>
         Task ExecuteInWriteLock(Action<ProjectRootElement> action);
+
+        /// <summary>
+        /// Returns a hash set of all project items contained in project's xml at given moment
+        /// </summary>
+        /// <returns></returns>
+        Task<HashSet<string>> GetProjectItems();
     }
 }

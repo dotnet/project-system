@@ -43,6 +43,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 dependency.Object,
                 worldBuilder,
                 topLevelBuilder,
+                null,
+                null,
                 out bool filterAnyChanges);
 
             Assert.False(worldBuilder.ContainsKey(otherDependency.Object.Id));
@@ -87,6 +89,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 dependency.Object,
                 worldBuilder,
                 topLevelBuilder,
+                null,
+                null,
                 out bool filterAnyChanges);
 
             Assert.True(worldBuilder.ContainsKey(otherDependency.Object.Id));
@@ -129,6 +133,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 dependency.Object,
                 worldBuilder,
                 topLevelBuilder,
+                null,
+                null,
                 out bool filterAnyChanges);
 
             Assert.False(worldBuilder.ContainsKey(otherDependency.Object.Id));
