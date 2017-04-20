@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             return new DependencyViewModel
             {
                 Caption = self.Caption,
-                FilePath = self.Id,
+                FilePath = self.Path ?? self.Id,
                 SchemaName = self.SchemaName,
                 SchemaItemType = self.SchemaItemType,
                 Priority = self.Priority,
