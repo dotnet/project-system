@@ -26,13 +26,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             }
 
             var moduleBlock = (ModuleBlockSyntax)vbNode;
-            if (!moduleBlock.ModuleStatement.IsMissing &&
-                !moduleBlock.ModuleStatement.Identifier.IsMissing)
+            if (moduleBlock.ModuleStatement.IsMissing ||
+                moduleBlock.ModuleStatement.Identifier.IsMissing)
             {
-                return moduleBlock.ModuleStatement.Identifier.ValueText;
+                return null;
             }
 
-            return null;
+            return moduleBlock.ModuleStatement.Identifier.ValueText;
         }
 
         public bool IsModuleDeclaration(SyntaxNode node)
