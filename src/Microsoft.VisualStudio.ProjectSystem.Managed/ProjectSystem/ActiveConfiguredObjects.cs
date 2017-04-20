@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     /// <typeparam name="T">
     ///     The type of the active configured objects.
     /// </typeparam>
-    internal class ActiveConfiguredObjects<T>
+    public class ActiveConfiguredObjects<T>
     {
         /// <summary>
         ///     Initializes a new instance of <see cref="ActiveConfiguredObjects{T}"/> with the specified objects and configurations 

@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     ///         Debug | AnyCPU | net45
     ///         Debug | AnyCPU | net46
     /// </summary>
-    internal interface IActiveConfiguredProjectsProvider
+    public interface IActiveConfiguredProjectsProvider
     {
         /// <summary>
         /// Gets all the active configured projects by TargetFramework dimension for the current unconfigured project.
