@@ -67,6 +67,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             'Add any initialization after the InitializeComponent() call
 
+            cboReportCompilerErrors.Items.AddRange(New Object() {New ComboItem("none", My.Resources.Designer.PPG_AdvancedBuildSettings_ReportCompilerErrors_None), New ComboItem("prompt", My.Resources.Designer.PPG_AdvancedBuildSettings_ReportCompilerErrors_Prompt), New ComboItem("send", My.Resources.Designer.PPG_AdvancedBuildSettings_ReportCompilerErrors_Send), New ComboItem("queue", My.Resources.Designer.PPG_AdvancedBuildSettings_ReportCompilerErrors_Queue)})
+            cboDebugInfo.Items.AddRange(New Object() {New ComboItem("none", My.Resources.Designer.PPG_AdvancedBuildSettings_DebugInfo_None), New ComboItem("full", My.Resources.Designer.PPG_AdvancedBuildSettings_DebugInfo_Full), New ComboItem("pdbonly", My.Resources.Designer.PPG_AdvancedBuildSettings_DebugInfo_PdbOnly), New ComboItem("portable", My.Resources.Designer.PPG_AdvancedBuildSettings_DebugInfo_Portable), New ComboItem("embedded", My.Resources.Designer.PPG_AdvancedBuildSettings_DebugInfo_Embedded)})
+
             ' Scale the width of the overarching table layout panel
             overarchingTableLayoutPanel.Width = DpiHelper.LogicalToDeviceUnitsX(overarchingTableLayoutPanel.Width)
 
