@@ -43,7 +43,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             bool? resolved = null,
             ProjectTreeFlags? flags = null,
             string schemaName = null,
-            IImmutableList<string> dependencyIDs = null)
+            IImmutableList<string> dependencyIDs = null,
+            ImageMoniker icon = new ImageMoniker(),
+            bool? isImplicit = null)
         {
             return this;
         }

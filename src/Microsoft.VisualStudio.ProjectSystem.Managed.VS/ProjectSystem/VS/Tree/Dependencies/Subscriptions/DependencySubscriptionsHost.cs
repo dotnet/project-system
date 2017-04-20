@@ -31,7 +31,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
             IActiveProjectConfigurationRefreshService activeProjectConfigurationRefreshService,
             ITargetFrameworkProvider targetFrameworkProvider,
-            IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider)
+            IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider,
+            IProjectXmlAccessor projectXmlAccessor)
             : base(commonServices,
                    contextProvider,
                    tasksService,
@@ -57,6 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             TargetFrameworkProvider = targetFrameworkProvider;
             AggregateSnapshotProvider = aggregateSnapshotProvider;
+            ProjectXmlAccessor = projectXmlAccessor;
             ProjectFilePath = CommonServices.Project.FullPath;
         }
 
@@ -89,6 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         #endregion
 
+        private IProjectXmlAccessor ProjectXmlAccessor { get; }
         private IAggregateDependenciesSnapshotProvider AggregateSnapshotProvider { get; }
         private ITargetFrameworkProvider TargetFrameworkProvider { get; }
         private IUnconfiguredProjectCommonServices CommonServices { get; }
@@ -271,6 +274,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             DependenciesSnapshot newSnapshot;
             bool anyChanges = false;
 
+            HashSet<string> projectItemSpecs = null;
+            CommonServices.ThreadingService.JoinableTaskFactory.Run(async () =>
+            {
+                projectItemSpecs = await ProjectXmlAccessor.GetProjectItems().ConfigureAwait(false);
+            });
+
             // Note: we are updating existing snapshot, not receivig a complete new one. Thus we must
             // ensure incremental updates are done in the correct order. This lock ensures that here.
             lock (_snapshotLock)
@@ -282,6 +291,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     catalogs,
                     activeTargetFramework,
                     SnapshotFilters.Select(x => x.Value),
+                    SubTreeProviders.Select(x => x.Value),
+                    projectItemSpecs,
                     out anyChanges);
                 _currentSnapshot = newSnapshot;
             }

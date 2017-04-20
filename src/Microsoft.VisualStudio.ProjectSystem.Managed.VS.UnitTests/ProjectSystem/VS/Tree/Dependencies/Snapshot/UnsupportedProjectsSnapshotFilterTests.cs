@@ -56,6 +56,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 dependency.Object,
                 worldBuilder,
                 null,
+                null,
+                null,
                 out bool filterAnyChanges);
 
             resultDependency = filter.BeforeAdd(
@@ -63,6 +65,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 null,
                 topLevelDependency.Object,
                 worldBuilder,
+                null,
+                null,
                 null,
                 out bool filterAnyChanges2);
 
@@ -72,6 +76,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 topLevelResolvedDependency.Object,
                 worldBuilder,
                 null,
+                null,
+                null,
                 out bool filterAnyChanges3);
 
             resultDependency = filter.BeforeAdd(
@@ -79,6 +85,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 null,
                 topLevelResolvedSharedProjectDependency.Object,
                 worldBuilder,
+                null,
+                null,
                 null,
                 out bool filterAnyChanges4);
 
@@ -119,6 +127,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 dependency.Object,
                 null,
                 null,
+                null,
+                null,
                 out bool filterAnyChanges);            
 
             dependency.VerifyAll();
@@ -146,6 +156,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 null,
                 null,
                 dependency.Object,
+                null,
+                null,
                 null,
                 null,
                 out bool filterAnyChanges);
@@ -186,6 +198,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 dependency.Object,
                 null,
                 null,
+                null,
+                null,
                 out bool filterAnyChanges);
 
             dependency.VerifyAll();
@@ -220,6 +234,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 null,
                 null,
                 dependency.Object,
+                null,
+                null,
                 null,
                 null,
                 out bool filterAnyChanges);

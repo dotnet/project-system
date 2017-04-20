@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
@@ -25,6 +26,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         /// <param name="dependency">The dependency to which filter should be applied.</param>
         /// <param name="worldBuilder">Builder for immutable world dictionary of updating snapshot.</param>
         /// <param name="topLevelBuilder">Top level dependencies list builder of updating snapshot.</param>
+        /// <param name="subTreeProviders">All known subtree providers</param>
+        /// <param name="projectItemSpecs">List of all items contained in project's xml at given moment</param>
         /// <param name="filterAnyChanges">True if filter did any changes in the snapshot</param>
         /// <returns>Dependency to be added if addition is approved, null if dependency should not be added to snapshot</returns>
         IDependency BeforeAdd(
@@ -33,6 +36,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             IDependency dependency, 
             ImmutableDictionary<string, IDependency>.Builder worldBuilder,
             ImmutableHashSet<IDependency>.Builder topLevelBuilder,
+            Dictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviders,
+            HashSet<string> projectItemSpecs,
             out bool filterAnyChanges);
 
         /// <summary>

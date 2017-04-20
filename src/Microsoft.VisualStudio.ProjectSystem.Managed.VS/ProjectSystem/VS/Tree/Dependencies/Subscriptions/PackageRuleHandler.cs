@@ -6,6 +6,7 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
@@ -33,6 +34,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         protected override string UnresolvedRuleName { get; } = PackageReference.SchemaName;
         protected override string ResolvedRuleName { get; } = ResolvedPackageReference.SchemaName;
         public override string ProviderType { get; } = ProviderTypeString;
+
+        public override ImageMoniker GetImplicitIcon()
+        {
+            return ManagedImageMonikers.NuGetGreyPrivate;
+        }
 
         public override Task HandleAsync(
             IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot>> e,

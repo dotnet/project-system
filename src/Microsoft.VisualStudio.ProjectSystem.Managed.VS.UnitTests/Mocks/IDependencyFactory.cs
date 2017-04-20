@@ -28,10 +28,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                             IEnumerable<string> dependencyIDs = null,
                                             bool? resolved = null,
                                             bool? topLevel = null,
+                                            bool? isImplicit = null,
                                             ProjectTreeFlags? flags = null,
                                             string setPropertiesCaption = null,
                                             bool? setPropertiesResolved = null,
                                             ProjectTreeFlags? setPropertiesFlags = null,
+                                            bool? setPropertiesImplicit = null,
                                             bool? equals = null,
                                             IImmutableList<string> setPropertiesDependencyIDs = null,
                                             string setPropertiesSchemaName = null,
@@ -91,6 +93,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 mock.Setup(x => x.TopLevel).Returns(topLevel.Value);
             }
 
+            if (isImplicit != null && isImplicit.HasValue)
+            {
+                mock.Setup(x => x.Implicit).Returns(isImplicit.Value);
+            }
+
             if (flags != null && flags.HasValue)
             {
                 mock.Setup(x => x.Flags).Returns(flags.Value);
@@ -104,14 +111,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             if (setPropertiesCaption != null 
                 || setPropertiesDependencyIDs != null 
                 || setPropertiesResolved != null
-                || setPropertiesFlags != null)
+                || setPropertiesFlags != null
+                || setPropertiesImplicit != null)
             {
                 mock.Setup(x => x.SetProperties(
                             setPropertiesCaption, 
                             setPropertiesResolved, 
                             setPropertiesFlags,
                             setPropertiesSchemaName, 
-                            setPropertiesDependencyIDs))
+                            setPropertiesDependencyIDs,
+                            It.IsAny<ImageMoniker>(),
+                            setPropertiesImplicit))
                     .Returns(mock.Object);
             }
 

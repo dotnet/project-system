@@ -77,6 +77,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 changes,
                 catalogs,
                 snapshotFilters,
+                null,
+                null,
                 out bool anyChanges);
 
             Assert.NotNull(snapshot.TargetFramework);
@@ -136,6 +138,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 changes,
                 catalogs,
                 snapshotFilters,
+                null,
+                null,
                 out bool anyChanges);
 
             Assert.NotNull(snapshot.TargetFramework);
@@ -196,6 +200,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 changes,
                 catalogs,
                 new[] { snapshotFilter },
+                null,
+                null,
                 out bool anyChanges);
 
             Assert.NotNull(snapshot.TargetFramework);
@@ -267,6 +273,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 changes,
                 catalogs,
                 new[] { snapshotFilter },
+                null,
+                null,
                 out bool anyChanges);
 
             Assert.NotNull(snapshot.TargetFramework);
@@ -336,6 +344,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 changes,
                 catalogs,
                 new[] { snapshotFilter },
+                null,
+                null,
                 out bool anyChanges);
 
             Assert.NotNull(snapshot.TargetFramework);
@@ -406,6 +416,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 changes,
                 catalogs,
                 new[] { snapshotFilter },
+                null,
+                null,
                 out bool anyChanges);
 
             Assert.NotNull(snapshot.TargetFramework);
@@ -540,6 +552,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 changes,
                 catalogs,
                 new[] { snapshotFilter },
+                null,
+                null,
                 out bool anyChanges);
 
             Assert.NotNull(snapshot.TargetFramework);
@@ -613,6 +627,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 IDependency dependency,
                 ImmutableDictionary<string, IDependency>.Builder worldBuilder,
                 ImmutableHashSet<IDependency>.Builder topLevelBuilder,
+                Dictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviders,
+                HashSet<string> projectItemSpecs,
                 out bool filterAnyChanges)
             {
                 filterAnyChanges = _filterAnyChanges;
