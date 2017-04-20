@@ -4,6 +4,7 @@ using System;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using Microsoft.Build.Construction;
+using Microsoft.VisualStudio.ProjectSystem.VS;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
