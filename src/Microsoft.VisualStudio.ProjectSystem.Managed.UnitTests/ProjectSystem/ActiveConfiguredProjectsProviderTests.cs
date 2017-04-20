@@ -132,23 +132,21 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var configurationsService = IProjectConfigurationsServiceFactory.ImplementGetKnownProjectConfigurationsAsync(configs);
             var activeConfiguredProjectProvider = IActiveConfiguredProjectProviderFactory.ImplementActiveProjectConfiguration(() => activeConfig);
             var services = IUnconfiguredProjectServicesFactory.Create(activeConfiguredProjectProvider: activeConfiguredProjectProvider, projectConfigurationsService: configurationsService);
-            var configuredProject = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync((projectConfiguration) => {
+            var project = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync((projectConfiguration) => {
                 return Task.FromResult(ConfiguredProjectFactory.ImplementProjectConfiguration(projectConfiguration));
             });
 
             var dimensionProviders = dimensionNames.Select(name => IActiveConfiguredProjectsDimensionProviderFactory.ImplementDimensionName(name));
 
-            var commonServices = IUnconfiguredProjectCommonServicesFactory.ImplementProject(configuredProject);
-
-            return CreateInstance(services: services, commonServices: commonServices, dimensionProviders: dimensionProviders);
+            return CreateInstance(services: services, project: project, dimensionProviders: dimensionProviders);
         }
 
-        private ActiveConfiguredProjectsProvider CreateInstance(IUnconfiguredProjectServices services = null, IUnconfiguredProjectCommonServices commonServices = null, IEnumerable<IActiveConfiguredProjectsDimensionProvider> dimensionProviders = null)
+        private ActiveConfiguredProjectsProvider CreateInstance(IUnconfiguredProjectServices services = null, UnconfiguredProject project = null, IEnumerable<IActiveConfiguredProjectsDimensionProvider> dimensionProviders = null)
         {
             services = services ?? IUnconfiguredProjectServicesFactory.Create();
-            commonServices = commonServices ?? IUnconfiguredProjectCommonServicesFactory.Create();
+            project = project ?? UnconfiguredProjectFactory.Create();
 
-            var provider = new ActiveConfiguredProjectsProvider(services, commonServices);
+            var provider = new ActiveConfiguredProjectsProvider(services, project);
 
             if (dimensionProviders != null)
             {
