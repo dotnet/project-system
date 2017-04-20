@@ -12,10 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
     [ProjectSystemTrait]
     public class CSharpSimpleRenamerTests : SimpleRenamerTestsBase
     {
-        protected override string TempFileName => "temp.cs";
-
-        protected override string DefaultFile => "class temp{}";
-
         protected override string ProjectFileExtension => "csproj";
 
         [Theory]

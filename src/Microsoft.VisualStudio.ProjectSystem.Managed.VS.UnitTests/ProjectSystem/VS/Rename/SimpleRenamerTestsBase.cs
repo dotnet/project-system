@@ -7,26 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 {
     public abstract class SimpleRenamerTestsBase
     {
-        protected abstract string TempFileName { get; }
-        protected abstract string DefaultFile { get; }
-
         protected abstract string ProjectFileExtension { get; }
-
-        protected Solution DummySolution(
-            string tempFileName = null,
-            string defaultFile = null,
-            string language = LanguageNames.CSharp)
-        {
-            using (var ws = new AdhocWorkspace())
-            {
-                return ws.AddSolution(
-                    InitializeWorkspace(
-                        ProjectId.CreateNewId(),
-                        tempFileName ?? TempFileName,
-                        defaultFile ?? DefaultFile,
-                        language));
-            }
-        }
 
         protected SolutionInfo InitializeWorkspace(ProjectId projectId, string fileName, string code, string language)
         {
