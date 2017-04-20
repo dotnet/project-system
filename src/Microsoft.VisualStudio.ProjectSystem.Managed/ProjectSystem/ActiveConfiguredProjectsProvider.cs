@@ -54,18 +54,18 @@ namespace Microsoft.VisualStudio.ProjectSystem
         //                  Debug |   AnyCPU
 
         private readonly IUnconfiguredProjectServices _services;
-        private readonly IUnconfiguredProjectCommonServices _commonServices;
+        private readonly UnconfiguredProject _project;
 
         [ImportingConstructor]
-        public ActiveConfiguredProjectsProvider(IUnconfiguredProjectServices services, IUnconfiguredProjectCommonServices commonServices)
+        public ActiveConfiguredProjectsProvider(IUnconfiguredProjectServices services, UnconfiguredProject project)
         {
             Requires.NotNull(services, nameof(services));
-            Requires.NotNull(commonServices, nameof(commonServices));
+            Requires.NotNull(project, nameof(project));
 
             _services = services;
-            _commonServices = commonServices;
+            _project = project;
 
-            DimensionProviders = new OrderPrecedenceImportCollection<IActiveConfiguredProjectsDimensionProvider>(projectCapabilityCheckProvider: commonServices.Project);
+            DimensionProviders = new OrderPrecedenceImportCollection<IActiveConfiguredProjectsDimensionProvider>(projectCapabilityCheckProvider: project);
         }
 
         [ImportMany]
@@ -107,8 +107,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             foreach (ProjectConfiguration configuration in configurations.Objects)
             {
-                ConfiguredProject project = await _commonServices.Project.LoadConfiguredProjectAsync(configuration)
-                                                                         .ConfigureAwait(false);
+                ConfiguredProject project = await _project.LoadConfiguredProjectAsync(configuration)
+                                                          .ConfigureAwait(false);
 
                 builder.Add(project);
             }
