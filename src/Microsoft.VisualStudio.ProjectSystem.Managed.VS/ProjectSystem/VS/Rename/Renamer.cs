@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 using System.Linq;
-using Microsoft.CodeAnalysis;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 {
@@ -76,24 +76,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
         public async Task RenameAsync(Project project)
         {
-            var renameStrategy = await GetStrategyAsync(project).ConfigureAwait(false);
+            bool isCaseSensitive = await IsCompilationCaseSensitive(project);
+            var renameStrategy = GetStrategy(project, isCaseSensitive);
             if (renameStrategy != null)
-                await renameStrategy.RenameAsync(project, _oldFilePath, _newFilePath).ConfigureAwait(false);
+                await renameStrategy.RenameAsync(project, _oldFilePath, _newFilePath, isCaseSensitive).ConfigureAwait(false);
         }
 
-        private async Task<IRenameStrategy> GetStrategyAsync(Project project)
+        private IRenameStrategy GetStrategy(Project project, bool isCaseSensitive)
         {
             IRenameStrategy[] strategies = new IRenameStrategy[] {
                 new SimpleRenameStrategy(_threadingService, _userNotificationServices, _environmentOptions, _roslynServices)
             };
 
+            return strategies.FirstOrDefault(s => s.CanHandleRename(_oldFilePath, _newFilePath, isCaseSensitive));
+        }
+
+        private static async Task<bool> IsCompilationCaseSensitive(Project project)
+        {
             var isCaseSensitive = false;
             var compilation = await project.GetCompilationAsync().ConfigureAwait(false);
             if (compilation != null)
             {
                 isCaseSensitive = compilation.IsCaseSensitive;
             }
-            return strategies.FirstOrDefault(s => s.CanHandleRename(_oldFilePath, _newFilePath, isCaseSensitive));
+
+            return isCaseSensitive;
         }
     }
 }

@@ -4,8 +4,8 @@ using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.Composition;
-using RoslynRenamer = Microsoft.CodeAnalysis.Rename;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
+using RoslynRenamer = Microsoft.CodeAnalysis.Rename;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -23,11 +23,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Requires.NotNull(project, nameof(project));
 
             _threadingService = threadingService;
-            SyntaxFactsServices = new OrderPrecedenceImportCollection<ISyntaxFactsService>(projectCapabilityCheckProvider: project);
+            SyntaxFactsServicesImpl = new OrderPrecedenceImportCollection<ISyntaxFactsService>(projectCapabilityCheckProvider: project);
         }
 
         [ImportMany]
-        protected OrderPrecedenceImportCollection<ISyntaxFactsService> SyntaxFactsServices { get; }
+        protected OrderPrecedenceImportCollection<ISyntaxFactsService> SyntaxFactsServicesImpl { get; }
+
+        private ISyntaxFactsService SyntaxFactsService
+        {
+            get
+            {
+                return SyntaxFactsServicesImpl.FirstOrDefault()?.Value;
+            }
+        }
 
         public Task<Solution> RenameSymbolAsync(Solution solution, ISymbol symbol, string newName)
         {
@@ -44,13 +52,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public bool IsValidIdentifier(string identifierName)
         {
-            var service = SyntaxFactsServices.FirstOrDefault();
-            if (service != null)
-            {
-                return service.Value.IsValidIdentifier(identifierName);
-            }
+            return SyntaxFactsService?.IsValidIdentifier(identifierName) ?? false;
+        }
 
-            return false;
+        public bool IsModuleDeclaration(SyntaxNode syntaxNode)
+        {
+            return SyntaxFactsService?.IsModuleDeclaration(syntaxNode) ?? false;
+        }
+
+        public string GetModuleName(SyntaxNode syntaxNode)
+        {
+            return SyntaxFactsService?.GetModuleName(syntaxNode) ?? null;
         }
     }
 }

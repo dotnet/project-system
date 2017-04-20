@@ -25,6 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         /// <param name="newProject">The project to rename</param>
         /// <param name="oldFilePath">The path to the old file location</param>
         /// <param name="newFilePath">The path to the new file location</param>
-        Task RenameAsync(Project newProject, string oldFilePath, string newFilePath);
+        /// <param name="isCaseSensitive">Is language case sensitive</param>
+        Task RenameAsync(Project newProject, string oldFilePath, string newFilePath, bool isCaseSensitive);
     }
 }

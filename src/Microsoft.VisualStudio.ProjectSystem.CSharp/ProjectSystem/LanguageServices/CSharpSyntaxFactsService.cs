@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.ComponentModel.Composition;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
@@ -13,6 +14,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         [ImportingConstructor]
         public CSharpSyntaxFactsService(UnconfiguredProject project)
         {
+        }
+
+        public string GetModuleName(SyntaxNode syntaxNode)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool IsModuleDeclaration(SyntaxNode identifierName)
+        {
+            return false;
         }
 
         public bool IsValidIdentifier(string identifierName)

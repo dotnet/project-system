@@ -1,26 +1,22 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 using System;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using System.Globalization;
-using System.IO;
-using Microsoft.CodeAnalysis.CSharp;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 {
     internal sealed class SimpleRenameStrategy : AbstractRenameStrategy
     {
-        private readonly IRoslynServices _roslynServices;
-
         public SimpleRenameStrategy(
             IProjectThreadingService threadingService,
             IUserNotificationServices userNotificationService,
             IEnvironmentOptions environmentOptions,
             IRoslynServices roslynServices)
-            : base(threadingService, userNotificationService, environmentOptions)
+            : base(threadingService, userNotificationService, environmentOptions, roslynServices)
         {
-            _roslynServices = roslynServices;
         }
 
         // For the SimpleRename, it can attempt to handle any situtation
@@ -31,10 +27,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             return _roslynServices.IsValidIdentifier(oldNameBase) && _roslynServices.IsValidIdentifier(newNameBase) && (!string.Equals(Path.GetFileName(oldNameBase), Path.GetFileName(newNameBase), isCaseSensitive?StringComparison.Ordinal:StringComparison.OrdinalIgnoreCase));
         }
 
-        public override async Task RenameAsync(Project myNewProject, string oldFileName, string newFileName)
+        public override async Task RenameAsync(Project myNewProject, string oldFileName, string newFileName, bool isCaseSensitive)
         {
             string oldNameBase = Path.GetFileNameWithoutExtension(oldFileName);
-            Solution renamedSolution = await GetRenamedSolutionAsync(myNewProject, oldNameBase, newFileName).ConfigureAwait(false);
+            Solution renamedSolution = await GetRenamedSolutionAsync(myNewProject, oldNameBase, newFileName, isCaseSensitive).ConfigureAwait(false);
             if (renamedSolution == null)
                 return;
 
@@ -49,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             }
         }
 
-        private async Task<Solution> GetRenamedSolutionAsync(Project myNewProject, string oldNameBase, string newFileName)
+        private async Task<Solution> GetRenamedSolutionAsync(Project myNewProject, string oldNameBase, string newFileName, bool isCaseSensitive)
         {
             var project = myNewProject;
             Solution renamedSolution = null;
@@ -64,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 if (root == null)
                     return renamedSolution;
 
-                var declarations = root.DescendantNodes().Where(n => HasMatchingSyntaxNode(newDocument, n, oldNameBase));
+                var declarations = root.DescendantNodes().Where(n => HasMatchingSyntaxNode(newDocument, n, oldNameBase, isCaseSensitive));
                 var declaration = declarations.FirstOrDefault();
                 if (declaration == null)
                     return renamedSolution;
