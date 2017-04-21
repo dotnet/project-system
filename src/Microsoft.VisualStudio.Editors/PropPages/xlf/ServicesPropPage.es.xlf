@@ -42,7 +42,7 @@
       </trans-unit>
       <trans-unit id="WebSettingsUrlLabel.Text">
         <source>We&amp;b settings service location:</source>
-        <target state="translated">Ubicación del servicio de configuración &amp;web:</target>
+        <target state="translated">Ubicación del &amp;servicio de configuración web:</target>
         <note />
       </trans-unit>
       <trans-unit id="AdvancedSettings.Text">

@@ -10,7 +10,7 @@
       </trans-unit>
       <trans-unit id="WindowsBasedAuth.Text">
         <source>Use &amp;Windows authentication</source>
-        <target state="translated">Użyj uwierzytelniania systemu &amp;Windows</target>
+        <target state="translated">Użyj uwierzytelniania &amp;systemu Windows</target>
         <note />
       </trans-unit>
       <trans-unit id="FormBasedAuth.Text">
