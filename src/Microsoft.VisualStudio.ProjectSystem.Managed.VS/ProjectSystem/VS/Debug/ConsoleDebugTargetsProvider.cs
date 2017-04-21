@@ -59,9 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </summary>
         public bool SupportsProfile(ILaunchProfile profile)
         {
-            return string.IsNullOrWhiteSpace(profile.CommandName) ||
-                profile.CommandName.Equals(LaunchSettingsProvider.RunProjectCommandName, StringComparison.OrdinalIgnoreCase) ||
-                profile.CommandName.Equals(LaunchSettingsProvider.RunExecutableCommandName, StringComparison.OrdinalIgnoreCase);
+            return string.IsNullOrWhiteSpace(profile.CommandName) || IsRunProjectCommand(profile) || IsRunExecutableCommand(profile);
         }
 
         /// <summary>
@@ -152,6 +150,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
         }
 
+        private static bool IsRunExecutableCommand(ILaunchProfile profile)
+        {
+            return string.Equals(profile.CommandName, LaunchSettingsProvider.RunExecutableCommandName, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool IsRunProjectCommand(ILaunchProfile profile)
+        {
+            return string.Equals(profile.CommandName, LaunchSettingsProvider.RunProjectCommandName, StringComparison.OrdinalIgnoreCase);
+        }
+
         /// <summary>
         /// This is called on F5 to return the list of debug targets. What we return depends on the type
         /// of project.
@@ -171,7 +179,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             string defaultWorkingDir = projectFolder;
 
             // Is this profile just running the project? If so we ignore the exe
-            if (string.Equals(resolvedProfile.CommandName, LaunchSettingsProvider.RunProjectCommandName, StringComparison.OrdinalIgnoreCase))
+            if (IsRunProjectCommand(resolvedProfile))
             {
                 // Can't run a class library directly
                 if (await GetIsClassLibraryAsync().ConfigureAwait(false))
