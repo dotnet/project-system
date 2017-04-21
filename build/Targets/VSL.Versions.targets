@@ -73,7 +73,7 @@
 
   <!-- NuGet version -->
   <PropertyGroup>
-    <CommonNuGetMoniker>beta1</CommonNuGetMoniker>
+    <CommonNuGetMoniker>beta2</CommonNuGetMoniker>
     <VSSemanticVersion>15.3</VSSemanticVersion>    
     <RoslynNuGetReleaseVersion>$(RoslynSemanticVersion.Substring(0, $(RoslynSemanticVersion.LastIndexOf('.'))))</RoslynNuGetReleaseVersion>
     <RoslynNuGetPerBuildVersion Condition="'$(BuildNumberFiveDigitDateStamp)' != '' AND '$(BuildNumberBuildOfTheDayPadded)' != ''">$(RoslynNuGetReleaseVersion).0-$(CommonNuGetMoniker)-$(BuildNumberFiveDigitDateStamp.Trim())$(BuildNumberBuildOfTheDayPadded.Trim())</RoslynNuGetPerBuildVersion>
