@@ -23,7 +23,7 @@ SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterpris
 SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VSSDK\\
 SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VSSDK\\
 
-build.cmd /no-deploy-extension /${configuration.toLowerCase()}
+build.cmd /no-node-reuse /no-deploy-extension /${configuration.toLowerCase()}
 """)
             }
         }
@@ -64,7 +64,7 @@ SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterpris
 SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
 SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
 
-build.cmd /release /skiptests
+build.cmd /no-node-reuse /release /skiptests
 """)
 
             // Patch all the MSBuild xaml and targets files from the current roslyn-project-system commit into VS install.
