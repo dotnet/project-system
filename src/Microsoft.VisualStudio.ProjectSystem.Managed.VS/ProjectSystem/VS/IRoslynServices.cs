@@ -10,7 +10,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         Task<Solution> RenameSymbolAsync(Solution solution, ISymbol symbol, string newName);
         bool ApplyChangesToSolution(Workspace ws, Solution renamedSolution);
         bool IsValidIdentifier(string identifierName);
-        bool IsModuleDeclaration(SyntaxNode syntaxNode);
-        string GetModuleName(SyntaxNode syntaxNode);
     }
 }

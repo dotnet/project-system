@@ -1,4 +1,5 @@
-﻿using System;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
@@ -7,20 +8,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     class CSharpSyntaxFactsServiceTests
     {
         private static ISyntaxFactsService s_service = new CSharpSyntaxFactsService(null);
-
-        [Fact]
-        public void TestGetModuleName()
-        {
-            Assert.Throws<NotImplementedException>(() => {
-                s_service.GetModuleName(null);
-            });
-        }
-
-        [Fact]
-        public void TestIsModuleDeclaration()
-        {
-            Assert.False(s_service.IsModuleDeclaration(null));
-        }
 
         [Fact]
         public void TestIsValidIdentifier()

@@ -60,17 +60,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 if (root == null)
                     return renamedSolution;
 
-                var declarations = root.DescendantNodes().Where(n => HasMatchingSyntaxNode(newDocument, n, oldNameBase, isCaseSensitive));
-                var declaration = declarations.FirstOrDefault();
-                if (declaration == null)
-                    return renamedSolution;
-
                 var semanticModel = await newDocument.GetSemanticModelAsync().ConfigureAwait(false);
                 if (semanticModel == null)
                     return renamedSolution;
 
-                var symbol = semanticModel.GetDeclaredSymbol(declaration);
-                if (symbol == null)
+                var declarations = root.DescendantNodes().Where(n => HasMatchingSyntaxNode(semanticModel, n, oldNameBase, isCaseSensitive));
+                var declaration = declarations.FirstOrDefault();
+                if (declaration == null)
                     return renamedSolution;
 
                 bool userConfirmed = await CheckUserConfirmation(oldNameBase).ConfigureAwait(false);
@@ -80,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 string newName = Path.GetFileNameWithoutExtension(newDocument.FilePath);
 
                 // Note that RenameSymbolAsync will return a new snapshot of solution.
-                renamedSolution = await _roslynServices.RenameSymbolAsync(newDocument.Project.Solution, symbol, newName).ConfigureAwait(false);
+                renamedSolution = await _roslynServices.RenameSymbolAsync(newDocument.Project.Solution, semanticModel.GetDeclaredSymbol(declaration), newName).ConfigureAwait(false);
                 project = renamedSolution.Projects.Where(p => StringComparers.Paths.Equals(p.FilePath, myNewProject.FilePath)).FirstOrDefault();
             }
             return null;

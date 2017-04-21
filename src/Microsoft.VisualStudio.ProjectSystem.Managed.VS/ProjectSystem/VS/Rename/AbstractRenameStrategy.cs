@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Editing;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 {
@@ -58,23 +57,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         protected async Task<SyntaxNode> GetRootNode(Document newDocument) =>
             await newDocument.GetSyntaxRootAsync().ConfigureAwait(false);
 
-        protected bool HasMatchingSyntaxNode(Document document, SyntaxNode syntaxNode, string name, bool isCaseSensitive)
+        protected bool HasMatchingSyntaxNode(SemanticModel model, SyntaxNode syntaxNode, string name, bool isCaseSensitive)
         {
-            var generator = SyntaxGenerator.GetGenerator(document);
-            var kind = generator.GetDeclarationKind(syntaxNode);
-
-            if (kind == DeclarationKind.Class ||
-                kind == DeclarationKind.Interface ||
-                kind == DeclarationKind.Delegate ||
-                kind == DeclarationKind.Enum ||
-                kind == DeclarationKind.Struct)
+            if (model.GetDeclaredSymbol(syntaxNode) is INamedTypeSymbol symbol &&
+                (symbol.TypeKind == TypeKind.Class ||
+                 symbol.TypeKind == TypeKind.Interface ||
+                 symbol.TypeKind == TypeKind.Delegate ||
+                 symbol.TypeKind == TypeKind.Enum ||
+                 symbol.TypeKind == TypeKind.Struct ||
+                 symbol.TypeKind == TypeKind.Module))
             {
-                return string.Compare(generator.GetName(syntaxNode), name, !isCaseSensitive) == 0;
-            }
-
-            if (_roslynServices.IsModuleDeclaration(syntaxNode))
-            {
-                return string.Compare(_roslynServices.GetModuleName(syntaxNode), name, !isCaseSensitive) == 0;
+                return string.Compare(symbol.Name, name, !isCaseSensitive) == 0;
             }
 
             return false;

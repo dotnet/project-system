@@ -54,15 +54,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             return SyntaxFactsService?.IsValidIdentifier(identifierName) ?? false;
         }
-
-        public bool IsModuleDeclaration(SyntaxNode syntaxNode)
-        {
-            return SyntaxFactsService?.IsModuleDeclaration(syntaxNode) ?? false;
-        }
-
-        public string GetModuleName(SyntaxNode syntaxNode)
-        {
-            return SyntaxFactsService?.GetModuleName(syntaxNode) ?? null;
-        }
     }
 }
