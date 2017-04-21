@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     internal interface IRoslynServices
     {
         Task<Solution> RenameSymbolAsync(Solution solution, ISymbol symbol, string newName);
-
         bool ApplyChangesToSolution(Workspace ws, Solution renamedSolution);
+        bool IsValidIdentifier(string identifierName);
     }
 }
