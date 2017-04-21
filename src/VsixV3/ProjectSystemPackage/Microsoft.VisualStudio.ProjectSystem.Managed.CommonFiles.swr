@@ -9,10 +9,10 @@ vs.localizedResources
                        description="Microsoft VisualStudio ProjectSystem for C#/VB(Managed) Projects"
 
 folder "InstallDir:MSBuild\Microsoft\VisualStudio\Managed"
-  file source="$(SourcePath)\Targets\Microsoft.CSharp.DesignTime.targets"
-  file source="$(SourcePath)\Targets\Microsoft.VisualBasic.DesignTime.targets"
-  file source="$(SourcePath)\Targets\Microsoft.FSharp.DesignTime.targets"
-  file source="$(SourcePath)\Targets\Microsoft.Managed.DesignTime.targets"
+  file source="$(OutputPath)Rules\Microsoft.CSharp.DesignTime.targets"
+  file source="$(OutputPath)Rules\Microsoft.VisualBasic.DesignTime.targets"
+  file source="$(OutputPath)Rules\Microsoft.FSharp.DesignTime.targets"
+  file source="$(OutputPath)Rules\Microsoft.Managed.DesignTime.targets"
 
 folder "InstallDir:MSBuild\Microsoft\VisualStudio\Managed"
   file source="$(OutputPath)Rules\AdditionalFiles.xaml"
