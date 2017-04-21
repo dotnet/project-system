@@ -306,7 +306,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             //   (a) The display name is used in the editor project context combo box when opening source files that used by more than one inner projects.
             //   (b) Language service requires each active workspace project context in the current workspace to have a unique value for {ProjectFilePath, DisplayName}.
             return configuredProject.ProjectConfiguration.IsCrossTargeting() ?
-                $"{projectData.DisplayName}({targetFramework})" :
+                $"{projectData.DisplayName} ({targetFramework})" :
                 projectData.DisplayName;
         }
 
