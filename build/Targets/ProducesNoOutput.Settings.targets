@@ -3,14 +3,8 @@
 
   <PropertyGroup>
     <GenerateDependencyFile>false</GenerateDependencyFile>
-    <IsDeployment Condition="'$(IsDeployment)' == ''">true</IsDeployment>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(IsDeployment)' == 'false'">
-    <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
-    <OutDir>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\..\bin\obj\Unused\$(Configuration)'))\</OutDir>
-  </PropertyGroup>
-  
   <Import Project="VSL.Settings.targets" />
 
   <PropertyGroup>
