@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <Import Project="..\..\..\build\Targets\VSL.Settings.targets" />
+  <PropertyGroup>
+    <SchemaVersion>2.0</SchemaVersion>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Microsoft.VisualStudio</RootNamespace>
+    <AssemblyName>Microsoft.DotNetCore.VisualBasic.ProjectTemplates.Test</AssemblyName>
+    <GeneratePkgDefFile>false</GeneratePkgDefFile>
+    <VSSDKTargetPlatformRegRootSuffix>RoslynDev</VSSDKTargetPlatformRegRootSuffix>
+    <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
+    <IncludeDebugSymbolsInVSIXContainer>false</IncludeDebugSymbolsInVSIXContainer>
+    <IncludeDebugSymbolsInLocalVSIXDeployment>false</IncludeDebugSymbolsInLocalVSIXDeployment>
+    <CreateVsixContainer>false</CreateVsixContainer>
+    <CopyVsixManifestToOutput>false</CopyVsixManifestToOutput>
+    <ImportVSSDKTargets>true</ImportVSSDKTargets>
+    <DeployVSTemplates>false</DeployVSTemplates>
+    <DeployExtension Condition="'$(DeployVsixExtension)' == 'false'">false</DeployExtension>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFramework>net46</TargetFramework>
+    <CopyBuildOutputToOutputDirectory>false</CopyBuildOutputToOutputDirectory>
+    <CopyOutputSymbolsToOutputDirectory>false</CopyOutputSymbolsToOutputDirectory>
+    <NoDocumentationFile>true</NoDocumentationFile>
+    <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
+    <ProjectSystemLayer>VisualStudio</ProjectSystemLayer>
+    <ProducingSignedVsix>true</ProducingSignedVsix>
+    <IsProductComponent>true</IsProductComponent>
+  </PropertyGroup>
+  <ItemGroup>
+    <VSTemplate Include="MSTest-VB-NetCoreApp.vstemplate" />
+    <VSTemplate Include="XUnitTest-VB-NetCoreApp.vstemplate" />
+  </ItemGroup>
+  <Import Project="..\..\..\build\Targets\VSL.Imports.targets" />
+</Project>
