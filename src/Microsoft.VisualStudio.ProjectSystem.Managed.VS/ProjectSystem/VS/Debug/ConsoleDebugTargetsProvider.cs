@@ -103,8 +103,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             // Resolve the tokens in the profile
             ILaunchProfile resolvedProfile = await TokenReplacer.ReplaceTokensInProfileAsync(activeProfile).ConfigureAwait(true);
 
-            // We want to launch the process via the command shell when not debugging, except when this debug session is being launched for profiling.
-            bool useCmdShell = (launchOptions & (DebugLaunchOptions.NoDebug | DebugLaunchOptions.Profiling)) == DebugLaunchOptions.NoDebug;
+            // For "run project", we want to launch the process via the command shell when not debugging, except when this debug session is being
+            // launched for profiling.
+            bool useCmdShell =
+                    IsRunProjectCommand(resolvedProfile) &&
+                    (launchOptions & (DebugLaunchOptions.NoDebug | DebugLaunchOptions.Profiling)) == DebugLaunchOptions.NoDebug;
+
             var consoleTarget = await GetConsoleTargetForProfile(resolvedProfile, launchOptions, useCmdShell).ConfigureAwait(true);
 
             launchSettings.Add(consoleTarget);
