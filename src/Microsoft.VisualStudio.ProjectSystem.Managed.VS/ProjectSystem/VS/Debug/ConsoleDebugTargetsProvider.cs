@@ -59,9 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </summary>
         public bool SupportsProfile(ILaunchProfile profile)
         {
-            return string.IsNullOrWhiteSpace(profile.CommandName) ||
-                profile.CommandName.Equals(LaunchSettingsProvider.RunProjectCommandName, StringComparison.OrdinalIgnoreCase) ||
-                profile.CommandName.Equals(LaunchSettingsProvider.RunExecutableCommandName, StringComparison.OrdinalIgnoreCase);
+            return string.IsNullOrWhiteSpace(profile.CommandName) || IsRunProjectCommand(profile) || IsRunExecutableCommand(profile);
         }
 
         /// <summary>
@@ -102,13 +100,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             List<DebugLaunchSettings> launchSettings = new List<DebugLaunchSettings>();
 
-            var settings = new DebugLaunchSettings(launchOptions);
-
             // Resolve the tokens in the profile
             ILaunchProfile resolvedProfile = await TokenReplacer.ReplaceTokensInProfileAsync(activeProfile).ConfigureAwait(true);
 
-            // We want to launch the process via the command shell when not debugging, except when this debug session is being launched for profiling.
-            bool useCmdShell = (launchOptions & (DebugLaunchOptions.NoDebug | DebugLaunchOptions.Profiling)) == DebugLaunchOptions.NoDebug;
+            // For "run project", we want to launch the process via the command shell when not debugging, except when this debug session is being
+            // launched for profiling.
+            bool useCmdShell =
+                    IsRunProjectCommand(resolvedProfile) &&
+                    (launchOptions & (DebugLaunchOptions.NoDebug | DebugLaunchOptions.Profiling)) == DebugLaunchOptions.NoDebug;
+
             var consoleTarget = await GetConsoleTargetForProfile(resolvedProfile, launchOptions, useCmdShell).ConfigureAwait(true);
 
             launchSettings.Add(consoleTarget);
@@ -154,6 +154,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
         }
 
+        private static bool IsRunExecutableCommand(ILaunchProfile profile)
+        {
+            return string.Equals(profile.CommandName, LaunchSettingsProvider.RunExecutableCommandName, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool IsRunProjectCommand(ILaunchProfile profile)
+        {
+            return string.Equals(profile.CommandName, LaunchSettingsProvider.RunProjectCommandName, StringComparison.OrdinalIgnoreCase);
+        }
+
         /// <summary>
         /// This is called on F5 to return the list of debug targets. What we return depends on the type
         /// of project.
@@ -164,7 +174,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var settings = new DebugLaunchSettings(launchOptions);
 
             string executable, arguments;
-            string commandLineArguments = resolvedProfile.CommandLineArgs;
 
             string projectFolder = Path.GetDirectoryName(UnconfiguredProject.FullPath);
             var configuredProject = await GetConfiguredProjectForDebugAsync().ConfigureAwait(false);
@@ -174,7 +183,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             string defaultWorkingDir = projectFolder;
 
             // Is this profile just running the project? If so we ignore the exe
-            if (string.Equals(resolvedProfile.CommandName, LaunchSettingsProvider.RunProjectCommandName, StringComparison.OrdinalIgnoreCase))
+            if (IsRunProjectCommand(resolvedProfile))
             {
                 // Can't run a class library directly
                 if (await GetIsClassLibraryAsync().ConfigureAwait(false))

@@ -222,11 +222,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             activeProfile.EnvironmentVariables = new Dictionary<string, string>() { { "var1", "Value1" } }.ToImmutableDictionary();
             var targets = await debugger.QueryDebugTargetsAsync(DebugLaunchOptions.NoDebug, activeProfile);
             Assert.Equal(1, targets.Count);
-            Assert.True(targets[0].Executable.EndsWith(@"\cmd.exe", StringComparison.OrdinalIgnoreCase));
+            Assert.Equal(activeProfile.ExecutablePath, targets[0].Executable);
             Assert.Equal(DebugLaunchOperation.CreateProcess, targets[0].LaunchOperation);
             Assert.Equal((DebugLaunchOptions.NoDebug | DebugLaunchOptions.StopDebuggingOnEnd | DebugLaunchOptions.MergeEnvironment), targets[0].LaunchOptions);
             Assert.Equal(DebuggerEngines.ManagedCoreEngine, targets[0].LaunchDebugEngineGuid);
-            Assert.Equal("/c \"\"" + activeProfile.ExecutablePath + "\" --someArgs & pause\"", targets[0].Arguments);
+            Assert.Equal("--someArgs", targets[0].Arguments);
         }
 
         [Fact]
