@@ -102,8 +102,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             List<DebugLaunchSettings> launchSettings = new List<DebugLaunchSettings>();
 
-            var settings = new DebugLaunchSettings(launchOptions);
-
             // Resolve the tokens in the profile
             ILaunchProfile resolvedProfile = await TokenReplacer.ReplaceTokensInProfileAsync(activeProfile).ConfigureAwait(true);
 
@@ -164,7 +162,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var settings = new DebugLaunchSettings(launchOptions);
 
             string executable, arguments;
-            string commandLineArguments = resolvedProfile.CommandLineArgs;
 
             string projectFolder = Path.GetDirectoryName(UnconfiguredProject.FullPath);
             var configuredProject = await GetConfiguredProjectForDebugAsync().ConfigureAwait(false);
