@@ -3,7 +3,12 @@
     "ProjectSystemSetup": {
       "commandName": "Executable",
       "executablePath": "$(DevEnvDir)devenv.exe",
-      "commandLineArgs": "/rootsuffix RoslynDev /log"
+      "commandLineArgs": "/rootsuffix RoslynDev /log",
+      "environmentVariables": {
+        "VisualBasicDesignTimeTargetsPath": "$(OutDir)Rules\\Microsoft.VisualBasic.DesignTime.targets",
+        "FSharpDesignTimeTargetsPath": "$(OutDir)Rules\\Microsoft.FSharp.DesignTime.targets",
+        "CSharpDesignTimeTargetsPath": "$(OutDir)Rules\\Microsoft.CSharp.DesignTime.targets"
+      }
     }
   }
 }
