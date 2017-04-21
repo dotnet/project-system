@@ -3,7 +3,7 @@
 
   <PropertyGroup>
     <GenerateDependencyFile>false</GenerateDependencyFile>
-    <IsDeployment Condition="'$(IsDeployment)' == ''">false</IsDeployment>
+    <IsDeployment Condition="'$(IsDeployment)' == ''">true</IsDeployment>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(IsDeployment)' == 'false'">
@@ -14,9 +14,8 @@
   <Import Project="VSL.Settings.targets" />
 
   <PropertyGroup>
-    <!-- Return this back when up-to-date bug is fixed (projects are being build everytime) -->
-    <!--<CopyBuildOutputToOutputDirectory>false</CopyBuildOutputToOutputDirectory>
-        <CopyOutputSymbolsToOutputDirectory>false</CopyOutputSymbolsToOutputDirectory>-->
+    <CopyBuildOutputToOutputDirectory>false</CopyBuildOutputToOutputDirectory>
+    <CopyOutputSymbolsToOutputDirectory>false</CopyOutputSymbolsToOutputDirectory>
     <OutputType>Library</OutputType>
   </PropertyGroup>
 </Project>
