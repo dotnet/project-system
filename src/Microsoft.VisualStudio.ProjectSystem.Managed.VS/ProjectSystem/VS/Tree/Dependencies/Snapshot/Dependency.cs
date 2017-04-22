@@ -266,7 +266,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         private static string Normalize(string id)
         {
-            return id.Replace('.', '_').Replace('/', '\\');
+            return id.Replace('/', '\\');
         }
 
         public static string GetID(ITargetFramework targetFramework, string providerType, string modelId)
@@ -275,8 +275,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Requires.NotNullOrEmpty(providerType, nameof(providerType));
             Requires.NotNullOrEmpty(modelId, nameof(modelId));
 
-            var normalizedModelId = modelId.Replace('.', '_');
-            return $"{targetFramework.ShortName}/{providerType}/{normalizedModelId}".TrimEnd('/').Replace('/', '\\');
+            return $"{targetFramework.ShortName}\\{providerType}\\{Normalize(modelId)}".TrimEnd('\\');
         }
     }
 }

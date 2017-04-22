@@ -157,7 +157,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     continue;
                 }
 
-                var dependency = snapshot.FindDependency(filePath);
+                var dependency = snapshot.FindDependency(filePath, topLevel:true);
                 if (dependency == null || dependency.Implicit)
                 {
                     canRemove = false;
@@ -249,7 +249,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         continue;
                     }
 
-                    var sharedProjectDependency = snapshot.FindDependency(sharedFilePath);
+                    var sharedProjectDependency = snapshot.FindDependency(sharedFilePath, topLevel:true);
                     if (sharedProjectDependency != null)
                     {
                         sharedFilePath = sharedProjectDependency.Path;
