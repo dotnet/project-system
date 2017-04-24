@@ -54,4 +54,5 @@
   <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="Der ausgewertete Elementname des ursprünglichen Verweiselements, dessen Auflösung zu diesem aufgelösten Verweiselement geführt hat." />
   <StringProperty Name="FusionName" Visible="False" ReadOnly="True" />
   <StringProperty Name="Name" Visible="false" ReadOnly="True" />
+  <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
 </Rule>

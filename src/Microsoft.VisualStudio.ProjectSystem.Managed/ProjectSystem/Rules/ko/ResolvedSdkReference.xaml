@@ -18,4 +18,5 @@
   <BoolProperty Name="ExpandContent" DisplayName="콘텐츠 확장" ReadOnly="True" />
   <BoolProperty Name="ExpandReferenceAssemblies" DisplayName="참조 어셈블리 확장" ReadOnly="True" />
   <BoolProperty Name="CopyLocalExpandedReferenceAssemblies" DisplayName="확장된 로컬 참조 어셈블리 복사" ReadOnly="True" />
+  <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
 </Rule>

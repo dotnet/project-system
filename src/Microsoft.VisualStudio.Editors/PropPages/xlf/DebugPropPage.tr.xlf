@@ -93,6 +93,11 @@
         <target state="translated">Ye&amp;rel kod hata ayıklamasını etkinleştir</target>
         <note />
       </trans-unit>
+      <trans-unit id="StartArguments.AccessibleName">
+        <source>Command line arguments</source>
+        <target state="new">Command line arguments</target>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

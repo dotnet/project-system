@@ -12,8 +12,7 @@
   <EnumProperty Name="PlatformTarget" DisplayName="Platform Hedefi" Visible="False" />
   <BoolProperty Name="Prefer32Bit" DisplayName="32Bit Tercih Et" Visible="False" />
   <BoolProperty Name="AllowUnsafeBlocks" Default="False" DisplayName="Güvenli olmayan koda izin ver" Visible="False" />
-  <StringProperty Name="Optimize" DisplayName="İyileştir" Visible="False" />
-  <EnumProperty Name="WarningLevel" DisplayName="Uyarı Düzeyi" Visible="False" />
+  <BoolProperty Name="Optimize" DisplayName="Optimize" Visible="False" />
   <StringProperty Name="NoWarn" DisplayName="Uyarıyı Gösterme" Visible="False" />
   <BoolProperty Name="TreatWarningsAsErrors" Default="False" Description="Uyarıları hata olarak değerlendir" Visible="False" />
   <StringProperty Name="TreatSpecificWarningsAsErrors" Description="Belirli uyarıları hata olarak değerlendir" Visible="False" />
@@ -52,4 +51,59 @@
       <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
+  <DynamicEnumProperty Name="WarningLevel" DisplayName="Warning Level" EnumProvider="WarningLevelEnumProvider" Visible="False">
+    <DynamicEnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" HasConfigurationCondition="True" SourceOfDefaultValue="AfterContext" />
+    </DynamicEnumProperty.DataSource>
+  </DynamicEnumProperty>
+  <!-- VB Compile Page Properties-->
+  <EnumProperty Name="OptionExplicit" DisplayName="Option Explicit" Visible="False">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="OptionExplicit" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="Off" DisplayName="Off" />
+    <EnumValue Name="On" DisplayName="On" IsDefault="True" />
+  </EnumProperty>
+  <EnumProperty Name="OptionCompare" DisplayName="Option Compare" Visible="False">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="OptionCompare" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="Binary" DisplayName="Binary" IsDefault="True" />
+    <EnumValue Name="Text" DisplayName="Text" />
+  </EnumProperty>
+  <EnumProperty Name="OptionInfer" DisplayName="Option Compare" Visible="False">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="OptionInfer" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="Off" DisplayName="Off" />
+    <EnumValue Name="On" DisplayName="On" IsDefault="True" />
+  </EnumProperty>
+  <DynamicEnumProperty Name="OptionStrict" DisplayName="Option Strict" EnumProvider="OptionStrictEnumProvider" Visible="False">
+    <DynamicEnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </DynamicEnumProperty.DataSource>
+  </DynamicEnumProperty>
+  <!-- VB Advanced Compile Options-->
+  <BoolProperty Name="RemoveIntegerChecks" DisplayName="Remove Integer Checks" Visible="False" />
+  <BoolProperty Name="DefineDebug" DisplayName="Define Debug" Visible="False" />
+  <BoolProperty Name="DefineTrace" DisplayName="Define Trace" Visible="False" />
+  <!-- VB Compile Build Event Page-->
+  <StringProperty Name="PreBuildEvent" DisplayName="Pre Build Event" Visible="False">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="PostBuildEvent" DisplayName="Post Build Event" Visible="False">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <EnumProperty Name="RunPostBuildEvent" DisplayName="Run Post-Build Event" Visible="False">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="RunPostBuildEvent" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="Always" DisplayName="Always" />
+    <EnumValue Name="OnBuildSuccess" DisplayName="On successful build" IsDefault="True" />
+    <EnumValue Name="OnOutputUpdated" DisplayName="When the build updates the project output" />
+  </EnumProperty>
 </Rule>

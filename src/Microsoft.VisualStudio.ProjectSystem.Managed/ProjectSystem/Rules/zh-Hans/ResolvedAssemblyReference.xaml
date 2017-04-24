@@ -57,4 +57,5 @@
   <StringProperty Name="FusionName" Visible="False" ReadOnly="True" Description="解析的程序集的完整融合名称。" />
   <StringProperty Name="ResolvedFrom" Visible="False" ReadOnly="True" Description="{}用于对此进行解析的引用所在的存储库。(如果在 GAC 中，则为“{GAC}”)。" />
   <StringProperty Name="FrameworkFile" Visible="False" ReadOnly="True" Description="此文件是否为框架文件。即是否位于目标框架目录或重新分发列表中。" />
+  <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
 </Rule>
