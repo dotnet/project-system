@@ -28,8 +28,12 @@
     <IsProductComponent>true</IsProductComponent>
   </PropertyGroup>
   <ItemGroup>
-    <VSTemplate Include="ClassLibrary-FSharp-NetCoreApp.vstemplate" />
-    <VSTemplate Include="ConsoleApplication-FSharp-NetCoreApp.vstemplate" />
+    <VSTemplate Include="ClassLibrary-FSharp-NetCoreApp.vstemplate">
+      <OutputSubPath>.NET Core</OutputSubPath>
+    </VSTemplate>
+    <VSTemplate Include="ConsoleApplication-FSharp-NetCoreApp.vstemplate">
+      <OutputSubPath>.NET Core</OutputSubPath>
+    </VSTemplate>
   </ItemGroup>
   <Import Project="..\..\..\build\Targets\VSL.Imports.targets" />
 </Project>
