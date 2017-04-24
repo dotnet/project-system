@@ -27,6 +27,6 @@ This will add a node in Solution Explorer that will list the current 'active' ca
 
 To get Windows to automatically save a memory dump every time Visual Studio crashes, merge the following registry settings:
 
-[AlwaysSaveDevEnvCrashDumps.reg](/docs/repo/content/AlwaysSaveDevEnvCrashDumps.reg)
+[AlwaysSaveDevEnvCrashDumps.reg](/docs/repo/content/AlwaysSaveDevEnvCrashDumps.reg?raw=true)
 
 Dumps will be saved to C:\Crashdumps.
