@@ -7,7 +7,8 @@
     Description="Resolved Analyzer reference properties"
     xmlns="http://schemas.microsoft.com/build/2009/properties">
     <Rule.DataSource>
-        <DataSource Persistence="ResolvedReference" ItemType="Analyzer" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+        <DataSource Persistence="ResolvedReference" ItemType="Analyzer" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext"
+                    SourceType="TargetResults" MSBuildTarget="CollectAnalyzersDesignTime"/>
     </Rule.DataSource>
 
     <StringProperty Name="OriginalItemSpec" 
