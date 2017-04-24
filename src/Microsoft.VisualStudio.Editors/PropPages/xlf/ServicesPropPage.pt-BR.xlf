@@ -15,7 +15,7 @@
       </trans-unit>
       <trans-unit id="FormBasedAuth.Text">
         <source>Use &amp;Forms authentication</source>
-        <target state="translated">Usar autenticação de &amp;Formulários</target>
+        <target state="translated">&amp;Usar autenticação de Formulários</target>
         <note />
       </trans-unit>
       <trans-unit id="CustomCredentialProviderTypeLabel.Text">
