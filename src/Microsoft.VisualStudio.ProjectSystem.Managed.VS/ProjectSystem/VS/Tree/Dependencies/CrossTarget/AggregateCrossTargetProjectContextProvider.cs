@@ -207,9 +207,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             return await _taskScheduler.RunAsync(TaskSchedulerPriority.UIThreadBackgroundPriority, async () => 
             {
                 var projectData = GetProjectData();
-                
+
                 // Get the set of active configured projects ignoring target framework.
+#pragma warning disable CS0618 // Type or member is obsolete
                 var configuredProjectsMap = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync().ConfigureAwait(true);
+#pragma warning restore CS0618 // Type or member is obsolete
                 var activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
                 var innerProjectContextsBuilder = ImmutableDictionary.CreateBuilder<ITargetFramework, ITargetedProjectContext>();
                 var activeTargetFramework = TargetFramework.Empty;

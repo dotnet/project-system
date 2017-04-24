@@ -67,7 +67,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public async Task<ConfiguredProject> GetConfiguredProjectForActiveFrameworkAsync()
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             var configProjects = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync().ConfigureAwait(false);
+#pragma warning restore CS0618 // Type or member is obsolete
 
             // If there is only one we are done
             if (configProjects.Count == 1)
