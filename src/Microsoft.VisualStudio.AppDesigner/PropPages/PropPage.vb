@@ -112,8 +112,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _objects As Object()
         Private _prevParent As IntPtr
         Private _dispidFocus As Integer
-        Private _hostedInNative As Boolean = False
-        Private _wasSetParentCalled As Boolean
 
         Protected Sub New()
         End Sub
@@ -487,7 +485,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Throw New InvalidOperationException("Form not created")
             End If
 
-            ' if we're in native, show/hide our secret scrolling panel too
+            ' show/hide our secret scrolling panel too
             ' See Create(hWnd) for more info on where that comes from
             If nCmdShow <> s_SW_HIDE Then
                 _propPage.Parent.Show()
