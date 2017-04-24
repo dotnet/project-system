@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26420.2
+VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeployTestDependencies", "DeployTestDependencies\DeployTestDependencies.csproj", "{37BA82E6-9ABD-4ACA-AA26-2DFD39A359A5}"
 EndProject
@@ -61,33 +61,33 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Targets", "Targets\Targets.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{6DE4B49E-AC38-4E35-82CD-D52731503111}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.DotNetCore.CSharp.ProjectTemplates.Test", "Templates\Microsoft.DotNetCore.CSharp.ProjectTemplates.Test\Microsoft.DotNetCore.CSharp.ProjectTemplates.Test.csproj", "{BEEA8A0F-C641-476A-BDA9-1B4AE7740117}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.NetCore.CSharp.ProjectTemplates.Test", "Templates\Microsoft.DotNetCore.CSharp.ProjectTemplates.Test\Microsoft.NetCore.CSharp.ProjectTemplates.Test.csproj", "{BEEA8A0F-C641-476A-BDA9-1B4AE7740117}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.DotNetCore.FSharp.ProjectTemplates.Common", "Templates\Microsoft.DotNetCore.FSharp.ProjectTemplates.Common\Microsoft.DotNetCore.FSharp.ProjectTemplates.Common.csproj", "{A86B5EAD-222F-4F69-9EB0-0B428FBDDE44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.NetCore.FSharp.ProjectTemplates.Common", "Templates\Microsoft.DotNetCore.FSharp.ProjectTemplates.Common\Microsoft.NetCore.FSharp.ProjectTemplates.Common.csproj", "{A86B5EAD-222F-4F69-9EB0-0B428FBDDE44}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.DotNetCore.FSharp.ProjectTemplates.Test", "Templates\Microsoft.DotNetCore.FSharp.ProjectTemplates.Test\Microsoft.DotNetCore.FSharp.ProjectTemplates.Test.csproj", "{366FD062-40BF-4B35-A89B-EB1252FB8BB2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.NetCore.FSharp.ProjectTemplates.Test", "Templates\Microsoft.DotNetCore.FSharp.ProjectTemplates.Test\Microsoft.NetCore.FSharp.ProjectTemplates.Test.csproj", "{366FD062-40BF-4B35-A89B-EB1252FB8BB2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.DotNetCore.CSharp.ProjectTemplates.Common", "Templates\Microsoft.DotNetCore.CSharp.ProjectTemplates.Common\Microsoft.DotNetCore.CSharp.ProjectTemplates.Common.csproj", "{A6128871-7A2F-4A3D-8B5B-6624C9F73D23}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.NetCore.CSharp.ProjectTemplates.Common", "Templates\Microsoft.DotNetCore.CSharp.ProjectTemplates.Common\Microsoft.NetCore.CSharp.ProjectTemplates.Common.csproj", "{A6128871-7A2F-4A3D-8B5B-6624C9F73D23}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.DotNetCore.CSharp.ProjectTemplates.Common.Vsix", "Templates\Microsoft.DotNetCore.CSharp.ProjectTemplates.Common.Vsix\Microsoft.DotNetCore.CSharp.ProjectTemplates.Common.Vsix.csproj", "{4130F166-F848-4AB9-8ADA-041E63DCB37C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.NetCore.CSharp.ProjectTemplates.Common.Vsix", "Templates\Microsoft.DotNetCore.CSharp.ProjectTemplates.Common.Vsix\Microsoft.NetCore.CSharp.ProjectTemplates.Common.Vsix.csproj", "{4130F166-F848-4AB9-8ADA-041E63DCB37C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.DotNetCore.CSharp.ProjectTemplates.Test.Vsix", "Templates\Microsoft.DotNetCore.CSharp.ProjectTemplates.Test.Vsix\Microsoft.DotNetCore.CSharp.ProjectTemplates.Test.Vsix.csproj", "{B0C72859-9A43-4726-99F2-A04560FA1854}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.NetCore.CSharp.ProjectTemplates.Test.Vsix", "Templates\Microsoft.DotNetCore.CSharp.ProjectTemplates.Test.Vsix\Microsoft.NetCore.CSharp.ProjectTemplates.Test.Vsix.csproj", "{B0C72859-9A43-4726-99F2-A04560FA1854}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ProjectTemplates", "ProjectTemplates", "{F5B53C32-1CE4-48D2-B945-6BA8B1A49CF3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Vsix", "Vsix", "{7AC93D71-E528-4BDA-AEEF-47876EC5F5A0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.DotNetCore.FSharp.ProjectTemplates.Common.Vsix", "Templates\Microsoft.DotNetCore.FSharp.ProjectTemplates.Common.Vsix\Microsoft.DotNetCore.FSharp.ProjectTemplates.Common.Vsix.csproj", "{D17B4E5D-BB46-4FF0-B6C3-41EA587D1C66}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.NetCore.FSharp.ProjectTemplates.Common.Vsix", "Templates\Microsoft.DotNetCore.FSharp.ProjectTemplates.Common.Vsix\Microsoft.NetCore.FSharp.ProjectTemplates.Common.Vsix.csproj", "{D17B4E5D-BB46-4FF0-B6C3-41EA587D1C66}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.DotNetCore.FSharp.ProjectTemplates.Test.Vsix", "Templates\Microsoft.DotNetCore.FSharp.ProjectTemplates.Test.Vsix\Microsoft.DotNetCore.FSharp.ProjectTemplates.Test.Vsix.csproj", "{D0829A3F-7396-4784-A453-10EA87872FAC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.NetCore.FSharp.ProjectTemplates.Test.Vsix", "Templates\Microsoft.DotNetCore.FSharp.ProjectTemplates.Test.Vsix\Microsoft.NetCore.FSharp.ProjectTemplates.Test.Vsix.csproj", "{D0829A3F-7396-4784-A453-10EA87872FAC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.DotNetCore.VB.ProjectTemplates.Common", "Templates\Microsoft.DotNetCore.VB.ProjectTemplates.Common\Microsoft.DotNetCore.VB.ProjectTemplates.Common.csproj", "{0AA2D69D-3B1F-4DD8-8809-67222BDFF379}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.NetCore.VB.ProjectTemplates.Common", "Templates\Microsoft.DotNetCore.VB.ProjectTemplates.Common\Microsoft.NetCore.VB.ProjectTemplates.Common.csproj", "{0AA2D69D-3B1F-4DD8-8809-67222BDFF379}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.DotNetCore.VB.ProjectTemplates.Test", "Templates\Microsoft.DotNetCore.VB.ProjectTemplates.Test\Microsoft.DotNetCore.VB.ProjectTemplates.Test.csproj", "{9D6090B0-D59C-40DB-8E92-F1CBA05C4EF7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.NetCore.VB.ProjectTemplates.Test", "Templates\Microsoft.DotNetCore.VB.ProjectTemplates.Test\Microsoft.NetCore.VB.ProjectTemplates.Test.csproj", "{9D6090B0-D59C-40DB-8E92-F1CBA05C4EF7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.DotNetCore.VB.ProjectTemplates.Common.Vsix", "Templates\Microsoft.DotNetCore.VB.ProjectTemplates.Common.Vsix\Microsoft.DotNetCore.VB.ProjectTemplates.Common.Vsix.csproj", "{ECF54AA6-3617-41A8-A2F8-3023D227E8B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.NetCore.VB.ProjectTemplates.Common.Vsix", "Templates\Microsoft.DotNetCore.VB.ProjectTemplates.Common.Vsix\Microsoft.NetCore.VB.ProjectTemplates.Common.Vsix.csproj", "{ECF54AA6-3617-41A8-A2F8-3023D227E8B6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.DotNetCore.VB.ProjectTemplates.Test.Vsix", "Templates\Microsoft.DotNetCore.VB.ProjectTemplates.Test.Vsix\Microsoft.DotNetCore.VB.ProjectTemplates.Test.Vsix.csproj", "{62DE7855-747E-46E9-AEF2-7E29D7ACA1AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.NetCore.VB.ProjectTemplates.Test.Vsix", "Templates\Microsoft.DotNetCore.VB.ProjectTemplates.Test.Vsix\Microsoft.NetCore.VB.ProjectTemplates.Test.Vsix.csproj", "{62DE7855-747E-46E9-AEF2-7E29D7ACA1AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

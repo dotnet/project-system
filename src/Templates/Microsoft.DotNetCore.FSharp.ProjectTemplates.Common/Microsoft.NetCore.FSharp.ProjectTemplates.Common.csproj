@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <OutputType>Library</OutputType>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
-    <AssemblyName>Microsoft.DotNetCore.FSharp.ProjectTemplates.Common</AssemblyName>
+    <AssemblyName>Microsoft.NetCore.FSharp.ProjectTemplates.Common</AssemblyName>
     <GeneratePkgDefFile>false</GeneratePkgDefFile>
     <VSSDKTargetPlatformRegRootSuffix>RoslynDev</VSSDKTargetPlatformRegRootSuffix>
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>

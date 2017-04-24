@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <OutputType>Library</OutputType>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
-    <AssemblyName>Microsoft.DotNetCore.CSharp.ProjectTemplates.Test</AssemblyName>
+    <AssemblyName>Microsoft.NetCore.VisualBasic.ProjectTemplates.Test</AssemblyName>
     <GeneratePkgDefFile>false</GeneratePkgDefFile>
     <VSSDKTargetPlatformRegRootSuffix>RoslynDev</VSSDKTargetPlatformRegRootSuffix>
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
@@ -28,8 +28,12 @@
     <IsProductComponent>true</IsProductComponent>
   </PropertyGroup>
   <ItemGroup>
-    <VSTemplate Include="XUnitTest-CSharp-NetCoreApp.vstemplate" />
-    <VSTemplate Include="MSTest-CSharp-NetCoreApp.vstemplate" />
+    <VSTemplate Include="MSTest-VB-NetCoreApp.vstemplate">
+      <OutputSubPath>.NET Core</OutputSubPath>
+    </VSTemplate>
+    <VSTemplate Include="XUnitTest-VB-NetCoreApp.vstemplate">
+      <OutputSubPath>.NET Core</OutputSubPath>
+    </VSTemplate>
   </ItemGroup>
   <Import Project="..\..\..\build\Targets\VSL.Imports.targets" />
 </Project>

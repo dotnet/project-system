@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project>
   <Import Project="..\..\..\build\Targets\VSL.Settings.targets" />
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>
     <OutputType>Library</OutputType>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
-    <AssemblyName>Microsoft.DotNetCore.FSharp.ProjectTemplates.Test</AssemblyName>
+    <AssemblyName>Microsoft.NetCore.CSharp.ProjectTemplates.Test</AssemblyName>
     <GeneratePkgDefFile>false</GeneratePkgDefFile>
     <VSSDKTargetPlatformRegRootSuffix>RoslynDev</VSSDKTargetPlatformRegRootSuffix>
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
@@ -28,12 +28,7 @@
     <None Include="source.extension.vsixmanifest" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Microsoft.DotNetCore.FSharp.ProjectTemplates.Test\Microsoft.DotNetCore.FSharp.ProjectTemplates.Test.csproj">
-      <Name>Microsoft.DotNetCore.FSharp.ProjectTemplates.Test</Name>
-      <VSIXSubPath>ProjectTemplates</VSIXSubPath>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
-    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.DotNetCore.CSharp.ProjectTemplates.Test\Microsoft.NetCore.CSharp.ProjectTemplates.Test.csproj" />
   </ItemGroup>
   <Import Project="..\..\..\build\Targets\VSL.Imports.targets" />
 </Project>
