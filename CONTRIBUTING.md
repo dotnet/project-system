@@ -1,4 +1,4 @@
-# How to contribute
+# Contributing
 
 We welcome contributions. If you're looking at places to get started, take a look at our [up-for-grabs issues](https://github.com/dotnet/roslyn-project-system/issues?q=is%3Aopen+is%3Aissue+label%3A%22Up+for+Grabs%22).
 
