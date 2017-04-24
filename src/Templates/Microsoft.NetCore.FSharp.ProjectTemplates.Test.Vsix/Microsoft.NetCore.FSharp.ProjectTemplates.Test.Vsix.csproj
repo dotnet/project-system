@@ -27,5 +27,13 @@
   <ItemGroup>
     <None Include="source.extension.vsixmanifest" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.NetCore.FSharp.ProjectTemplates.Test\Microsoft.NetCore.FSharp.ProjectTemplates.Test.csproj">
+      <Name>Microsoft.NetCore.FSharp.ProjectTemplates.Test</Name>
+      <VSIXSubPath>ProjectTemplates</VSIXSubPath>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="..\..\..\build\Targets\VSL.Imports.targets" />
 </Project>

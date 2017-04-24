@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <OutputType>Library</OutputType>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
-    <AssemblyName>Microsoft.NetCore.FSharp.ProjectTemplates.Common</AssemblyName>
+    <AssemblyName>Microsoft.NetCore.VisualBasic.ProjectTemplates.Common</AssemblyName>
     <GeneratePkgDefFile>false</GeneratePkgDefFile>
     <VSSDKTargetPlatformRegRootSuffix>RoslynDev</VSSDKTargetPlatformRegRootSuffix>
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
@@ -28,10 +28,10 @@
     <IsProductComponent>true</IsProductComponent>
   </PropertyGroup>
   <ItemGroup>
-    <VSTemplate Include="ClassLibrary-FSharp-NetCoreApp.vstemplate">
+    <VSTemplate Include="ConsoleApplication-VB-NetCoreApp.vstemplate">
       <OutputSubPath>.NET Core</OutputSubPath>
     </VSTemplate>
-    <VSTemplate Include="ConsoleApplication-FSharp-NetCoreApp.vstemplate">
+    <VSTemplate Include="ClassLibrary-VB-NetCoreApp.vstemplate">
       <OutputSubPath>.NET Core</OutputSubPath>
     </VSTemplate>
   </ItemGroup>

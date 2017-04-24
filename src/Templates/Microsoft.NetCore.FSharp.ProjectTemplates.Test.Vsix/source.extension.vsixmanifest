@@ -12,13 +12,13 @@
     <InstallationTarget Version="[15.0,]" Id="Microsoft.VisualStudio.VSWinExpress" />
   </Installation>
   <Prerequisites>
-    <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,16.0)" DisplayName="Visual Studio core editor" />
+    <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,)" DisplayName="Visual Studio core editor" />
     <Prerequisite Id="Microsoft.VisualStudio.ComponentGroup.WebToolsExtensions.TemplateEngine" Version="[15.0,)" DisplayName="ASP.NET templating engine" />
   </Prerequisites>
   <Dependencies>
     <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
   </Dependencies>
   <Assets>
-    <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="Microsoft.DotNetCore.FSharp.ProjectTemplates.Test" d:TargetPath="|Microsoft.DotNetCore.FSharp.ProjectTemplates.Test;TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" />
+    <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="Microsoft.NetCore.FSharp.ProjectTemplates.Test" d:TargetPath="|Microsoft.NetCore.FSharp.ProjectTemplates.Test;TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" />
   </Assets>
 </PackageManifest>

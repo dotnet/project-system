@@ -4,11 +4,11 @@
     <Name Package="{860A27C0-B665-47F3-BC12-637E16A1050A}" ID="9"/>
     <Description Package="{860A27C0-B665-47F3-BC12-637E16A1050A}" ID="10"/>
     <Icon Package="{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}" ID="4547" />
-    <ProjectType>FSharp</ProjectType>
+    <ProjectType>VisualBasic</ProjectType>
     <RequiredFrameworkVersion>2.0</RequiredFrameworkVersion>
     <SortOrder>14</SortOrder>
     <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
-    <TemplateID>Microsoft.FSharp.NETCore.ClassLibrary</TemplateID>
+    <TemplateID>Microsoft.VisualBasic.NetCore.ClassLibrary</TemplateID>
     <CreateNewFolder>true</CreateNewFolder>
     <CreateInPlace>true</CreateInPlace>
     <DefaultName>ClassLibrary</DefaultName>
@@ -18,9 +18,9 @@
   <TemplateContent>
     <ProjectCollection/>
     <CustomParameters>
-      <CustomParameter Name="$language$" Value="F#" />
+      <CustomParameter Name="$language$" Value="VB" />
       <CustomParameter Name="$uistyle$" Value="none" />
-      <CustomParameter Name="groupid" Value="Microsoft.Common.Library" />
+      <CustomParameter Name="groupid" Value="Microsoft.NetCore.Library" />
     </CustomParameters>
   </TemplateContent>
   <WizardExtension>

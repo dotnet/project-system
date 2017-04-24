@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <OutputType>Library</OutputType>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
-    <AssemblyName>Microsoft.NetCore.VB.ProjectTemplates.Test</AssemblyName>
+    <AssemblyName>Microsoft.NetStandard.FSharp.ProjectTemplates</AssemblyName>
     <GeneratePkgDefFile>false</GeneratePkgDefFile>
     <VSSDKTargetPlatformRegRootSuffix>RoslynDev</VSSDKTargetPlatformRegRootSuffix>
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
@@ -28,8 +28,8 @@
     <None Include="source.extension.vsixmanifest" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Microsoft.NetCore.VB.ProjectTemplates.Test\Microsoft.NetCore.VB.ProjectTemplates.Test.csproj">
-      <Name>Microsoft.NetCore.VB.ProjectTemplates.Test</Name>
+    <ProjectReference Include="..\Microsoft.NetStandard.FSharp.ProjectTemplates\Microsoft.NetStandard.FSharp.ProjectTemplates.csproj">
+      <Name>Microsoft.NetStandard.FSharp.ProjectTemplates</Name>
       <VSIXSubPath>ProjectTemplates</VSIXSubPath>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
