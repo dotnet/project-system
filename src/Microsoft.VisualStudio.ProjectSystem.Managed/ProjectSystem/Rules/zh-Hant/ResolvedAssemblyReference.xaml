@@ -57,4 +57,5 @@
   <StringProperty Name="FusionName" Visible="False" ReadOnly="True" Description="已解析之組件的完整融合名稱。" />
   <StringProperty Name="ResolvedFrom" Visible="False" ReadOnly="True" Description="{}儲存機制為用來解析這一項的參考所保留的內容 (如果它在 GAC 中，即是 &quot;{GAC}&quot;)。" />
   <StringProperty Name="FrameworkFile" Visible="False" ReadOnly="True" Description="此檔案是否為架構檔案;亦即在目標 Framework 目錄中或可轉散發清單中找到的檔案。" />
+  <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
 </Rule>

@@ -78,6 +78,11 @@
         <target state="translated">Ressources</target>
         <note />
       </trans-unit>
+      <trans-unit id="AppIconBrowse.AccessibleName">
+        <source>Browse for icon</source>
+        <target state="new">Browse for icon</target>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

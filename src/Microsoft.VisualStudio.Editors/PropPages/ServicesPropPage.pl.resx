@@ -121,7 +121,7 @@
     <value>Usługi aplikacji klienta w aplikacjach dla systemu Windows pozwalają używać funkcji logowania (uwierzytelniania), ról i usług profili (ustawień) środowiska ASP.NET.  Dowiedz się więcej o usługach aplikacji klienckich…</value>
   </data>
   <data name="WindowsBasedAuth.Text" xml:space="preserve">
-    <value>Użyj uwierzytelniania systemu &amp;Windows</value>
+    <value>Użyj uwierzytelniania &amp;systemu Windows</value>
   </data>
   <data name="FormBasedAuth.Text" xml:space="preserve">
     <value>Użyj uwierzytelniania &amp;formularzy</value>

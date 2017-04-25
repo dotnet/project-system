@@ -162,4 +162,7 @@
   <data name="ResourcesGroupBox.Text" xml:space="preserve">
     <value>Recursos</value>
   </data>
+  <data name="AppIconBrowse.AccessibleName" xml:space="preserve">
+    <value>Browse for icon</value>
+  </data>
 </root>

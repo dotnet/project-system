@@ -124,10 +124,10 @@
     <value>Использовать &amp;проверку подлинности Windows</value>
   </data>
   <data name="FormBasedAuth.Text" xml:space="preserve">
-    <value>Проверка подлинности на &amp;основе форм</value>
+    <value>Проверка подлиннос&amp;ти на основе форм</value>
   </data>
   <data name="CustomCredentialProviderTypeLabel.Text" xml:space="preserve">
-    <value>Дополнительно: П&amp;оставщик учетных данных
+    <value>Дополнит&amp;ельно: Поставщик учетных данных
 (например, MyNamespace.MyLoginClass, MyAssembly):</value>
   </data>
   <data name="AuthenticationServiceUrlLabel.Text" xml:space="preserve">

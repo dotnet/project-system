@@ -21,4 +21,5 @@
   <StringProperty Name="SDKName" Visible="false" />
   <BoolProperty Name="IsWinMDFile" Visible="false" />
   <StringProperty Name="ImageRuntime" DisplayName="Versione runtime" Description="Versione del runtime CLR di destinazione dell'assembly." Visible="False" ReadOnly="True" />
+  <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
 </Rule>

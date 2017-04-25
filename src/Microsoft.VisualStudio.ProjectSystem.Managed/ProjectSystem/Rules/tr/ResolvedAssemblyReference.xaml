@@ -57,4 +57,5 @@
   <StringProperty Name="FusionName" Visible="False" ReadOnly="True" Description="Çözümlenen derlemenin tam füzyon adı." />
   <StringProperty Name="ResolvedFrom" Visible="False" ReadOnly="True" Description="{}Bunu çözümlemek için kullanılan başvuruyu hangi deponun tuttuğu. (GAC'de ise, &quot;{GAC}&quot;)." />
   <StringProperty Name="FrameworkFile" Visible="False" ReadOnly="True" Description="Bunun bir çerçeve dosyası olup olmadığını belirtir. Hedef çerçeve dizininde veya yeniden dağıtım listesinde bulunabilir." />
+  <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
 </Rule>

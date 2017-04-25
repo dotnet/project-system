@@ -63,6 +63,10 @@
         <source>Resources</source>
         <note />
       </trans-unit>
+      <trans-unit id="AppIconBrowse.AccessibleName">
+        <source>Browse for icon</source>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>
