@@ -15,7 +15,7 @@
     <NuGetProjectFile Include="$(RepositoryRootDirectory)src\NuGet\NuGet.proj" />
     <VsManProjectFile Include="$(RepositoryRootDirectory)src\VsixV3\EditorsPackage\Microsoft.VisualStudio.Editors.vsmanproj" />
     <VsManProjectFile Include="$(RepositoryRootDirectory)src\VsixV3\ProjectSystemPackage\Microsoft.VisualStudio.ProjectSystem.Managed.vsmanproj" />
-    <VsManProjectFile Include="$(RepositoryRootDirectory)src\VsixV3\ProjectTemplates\Microsoft.VisualStudio.DotNetCore.ProjectTemplates.vsmanproj" />
+    <VsManProjectFile Include="$(RepositoryRootDirectory)src\VsixV3\ProjectTemplates\Microsoft.VisualStudio.NetCore.ProjectTemplates.vsmanproj" />
   </ItemGroup>
 
   <Target Name="Restore">
