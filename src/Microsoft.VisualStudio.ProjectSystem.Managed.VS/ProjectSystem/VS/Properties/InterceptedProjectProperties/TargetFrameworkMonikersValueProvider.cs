@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
         {
             var configuredProjects = await _projectProvider.GetActiveConfiguredProjectsAsync().ConfigureAwait(true);
             var builder = ImmutableArray.CreateBuilder<string>();
-            foreach (var configuredProject in configuredProjects)
+            foreach (var configuredProject in configuredProjects.Objects)
             {
                 var projectProperties = configuredProject.Services.ExportProvider.GetExportedValue<ProjectProperties>();
                 var configuration = await projectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
