@@ -5,27 +5,15 @@
     <SchemaVersion>2.0</SchemaVersion>
     <OutputType>Library</OutputType>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
-    <AssemblyName>Microsoft.NetCore.FSharp.ProjectTemplates.Common</AssemblyName>
+    <AssemblyName>Microsoft.NetCore.FSharp.ProjectTemplates</AssemblyName>
     <GeneratePkgDefFile>false</GeneratePkgDefFile>
-    <VSSDKTargetPlatformRegRootSuffix>RoslynDev</VSSDKTargetPlatformRegRootSuffix>
-    <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
-    <IncludeDebugSymbolsInVSIXContainer>false</IncludeDebugSymbolsInVSIXContainer>
-    <IncludeDebugSymbolsInLocalVSIXDeployment>false</IncludeDebugSymbolsInLocalVSIXDeployment>
     <CreateVsixContainer>false</CreateVsixContainer>
-    <CopyVsixManifestToOutput>false</CopyVsixManifestToOutput>
     <ImportVSSDKTargets>true</ImportVSSDKTargets>
-    <DeployVSTemplates>false</DeployVSTemplates>
-    <DeployExtension Condition="'$(DeployVsixExtension)' == 'false'">false</DeployExtension>
     <RestorePackages>true</RestorePackages>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <TargetFramework>net46</TargetFramework>
-    <CopyBuildOutputToOutputDirectory>false</CopyBuildOutputToOutputDirectory>
-    <CopyOutputSymbolsToOutputDirectory>false</CopyOutputSymbolsToOutputDirectory>
-    <NoDocumentationFile>true</NoDocumentationFile>
     <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
     <ProjectSystemLayer>VisualStudio</ProjectSystemLayer>
-    <ProducingSignedVsix>true</ProducingSignedVsix>
-    <IsProductComponent>true</IsProductComponent>
   </PropertyGroup>
   <ItemGroup>
     <VSTemplate Include="ConsoleApplication-FSharp-NetCoreApp.vstemplate">
