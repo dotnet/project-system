@@ -16,4 +16,5 @@
   <BoolProperty Name="ExpandContent" DisplayName="Espandi contenuto" ReadOnly="True" />
   <BoolProperty Name="ExpandReferenceAssemblies" DisplayName="Espandi assembly di riferimento" ReadOnly="True" />
   <BoolProperty Name="CopyLocalExpandedReferenceAssemblies" DisplayName="Copia assembly di riferimento espansi locali" ReadOnly="True" />
+  <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
 </Rule>

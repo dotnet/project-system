@@ -121,7 +121,7 @@
     <value>Dank Clientanwendungsdiensten können Ihre Windows-basierten Anwendungen die ASP.NET-Dienste für Anmeldung (Authentifizierung), Rollen und Profile (Einstellungen) nutzen.  Erfahren Sie mehr über Clientanwendungsdienste</value>
   </data>
   <data name="WindowsBasedAuth.Text" xml:space="preserve">
-    <value>&amp;Windows-Authentifizierung verwenden</value>
+    <value>Windows-Authentifizierung &amp;verwenden</value>
   </data>
   <data name="FormBasedAuth.Text" xml:space="preserve">
     <value>&amp;Formularauthentifizierung verwenden</value>

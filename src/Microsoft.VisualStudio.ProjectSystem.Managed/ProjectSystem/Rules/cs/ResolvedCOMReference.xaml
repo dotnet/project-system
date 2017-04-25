@@ -54,4 +54,5 @@
   <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="Vyhodnocený název původní položky odkazu, jejíž překlad vedl ke vzniku tohoto nerozpoznaného odkazu" />
   <StringProperty Name="FusionName" Visible="False" ReadOnly="True" />
   <StringProperty Name="Name" Visible="false" ReadOnly="True" />
+  <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
 </Rule>

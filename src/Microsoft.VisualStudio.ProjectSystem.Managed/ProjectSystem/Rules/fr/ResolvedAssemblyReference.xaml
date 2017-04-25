@@ -57,4 +57,5 @@
   <StringProperty Name="FusionName" Visible="False" ReadOnly="True" Description="Nom de fusion complet de l'assembly résolu." />
   <StringProperty Name="ResolvedFrom" Visible="False" ReadOnly="True" Description="{}Référentiel contenant la référence ayant servi à la résolution. (&quot;{GAC}&quot; si elle se trouvait dans le GAC)." />
   <StringProperty Name="FrameworkFile" Visible="False" ReadOnly="True" Description="Ce fichier est-il un fichier du framework ? À savoir, trouvé dans le répertoire du framework cible ou dans la liste de redistribution." />
+  <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
 </Rule>

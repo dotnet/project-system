@@ -57,4 +57,5 @@
   <StringProperty Name="FusionName" Visible="False" ReadOnly="True" Description="Nombre de fusión completo del ensamblado resuelto." />
   <StringProperty Name="ResolvedFrom" Visible="False" ReadOnly="True" Description="{}Repositorio que contiene la referencia que se usó para resolver este elemento. (&quot;{GAC}&quot; si estaba en la GAC)." />
   <StringProperty Name="FrameworkFile" Visible="False" ReadOnly="True" Description="Indica si este es un archivo de plataforma, es decir, si se encuentra en el directorio de la plataforma de destino o en la lista de redistribución." />
+  <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
 </Rule>

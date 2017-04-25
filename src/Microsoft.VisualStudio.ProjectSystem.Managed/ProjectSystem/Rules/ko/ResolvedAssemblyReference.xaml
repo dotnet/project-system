@@ -57,4 +57,5 @@
   <StringProperty Name="FusionName" Visible="False" ReadOnly="True" Description="확인된 어셈블리의 전체 Fusion 이름입니다." />
   <StringProperty Name="ResolvedFrom" Visible="False" ReadOnly="True" Description="{}이것을 확인하는 데 사용된 참조를 포함하고 있는 리포지토리입니다(GAC에 있었던 경우 &quot;{GAC}&quot;)." />
   <StringProperty Name="FrameworkFile" Visible="False" ReadOnly="True" Description="이 파일이 프레임워크 파일입니까? 즉, 대상 프레임워크 디렉터리 또는 재배포 목록에서 발견되었습니까?" />
+  <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
 </Rule>

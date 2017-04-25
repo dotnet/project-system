@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="RoleServiceCacheTimeoutLabel.Text" xml:space="preserve">
-    <value>Tiempo de &amp;espera de caché del servicio de rol:</value>
+    <value>&amp;Tiempo de espera de caché del servicio de rol:</value>
   </data>
   <data name="SavePasswordHashLocallyCheckbox.Text" xml:space="preserve">
     <value>&amp;Guardar hash de contraseña para permitir el inicio de sesión sin conexión</value>

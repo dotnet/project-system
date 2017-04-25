@@ -33,16 +33,6 @@
         <target state="translated">容許不安全的程式碼</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Optimize|DisplayName">
-        <source>Optimize</source>
-        <target state="translated">最佳化</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|WarningLevel|DisplayName">
-        <source>Warning Level</source>
-        <target state="translated">警告層級</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
         <source>Supress Warning</source>
         <target state="translated">隱藏警告</target>
@@ -136,6 +126,111 @@
       <trans-unit id="StringProperty|FullPath|DisplayName">
         <source>Project Folder</source>
         <target state="new">Project Folder</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|Optimize|DisplayName">
+        <source>Optimize</source>
+        <target state="new">Optimize</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|WarningLevel|DisplayName">
+        <source>Warning Level</source>
+        <target state="new">Warning Level</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumProperty|OptionExplicit|DisplayName">
+        <source>Option Explicit</source>
+        <target state="new">Option Explicit</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumValue|OptionExplicit.Off|DisplayName">
+        <source>Off</source>
+        <target state="new">Off</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumValue|OptionExplicit.On|DisplayName">
+        <source>On</source>
+        <target state="new">On</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumProperty|OptionCompare|DisplayName">
+        <source>Option Compare</source>
+        <target state="new">Option Compare</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumValue|OptionCompare.Binary|DisplayName">
+        <source>Binary</source>
+        <target state="new">Binary</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumValue|OptionCompare.Text|DisplayName">
+        <source>Text</source>
+        <target state="new">Text</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumProperty|OptionInfer|DisplayName">
+        <source>Option Compare</source>
+        <target state="new">Option Compare</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumValue|OptionInfer.Off|DisplayName">
+        <source>Off</source>
+        <target state="new">Off</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumValue|OptionInfer.On|DisplayName">
+        <source>On</source>
+        <target state="new">On</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|OptionStrict|DisplayName">
+        <source>Option Strict</source>
+        <target state="new">Option Strict</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|RemoveIntegerChecks|DisplayName">
+        <source>Remove Integer Checks</source>
+        <target state="new">Remove Integer Checks</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|DefineDebug|DisplayName">
+        <source>Define Debug</source>
+        <target state="new">Define Debug</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|DefineTrace|DisplayName">
+        <source>Define Trace</source>
+        <target state="new">Define Trace</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PreBuildEvent|DisplayName">
+        <source>Pre Build Event</source>
+        <target state="new">Pre Build Event</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PostBuildEvent|DisplayName">
+        <source>Post Build Event</source>
+        <target state="new">Post Build Event</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumProperty|RunPostBuildEvent|DisplayName">
+        <source>Run Post-Build Event</source>
+        <target state="new">Run Post-Build Event</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumValue|RunPostBuildEvent.Always|DisplayName">
+        <source>Always</source>
+        <target state="new">Always</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumValue|RunPostBuildEvent.OnBuildSuccess|DisplayName">
+        <source>On successful build</source>
+        <target state="new">On successful build</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumValue|RunPostBuildEvent.OnOutputUpdated|DisplayName">
+        <source>When the build updates the project output</source>
+        <target state="new">When the build updates the project output</target>
         <note></note>
       </trans-unit>
     </body>

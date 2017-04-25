@@ -57,4 +57,5 @@
   <StringProperty Name="FusionName" Visible="False" ReadOnly="True" Description="Úplný název Fusion rozpoznaného sestavení" />
   <StringProperty Name="ResolvedFrom" Visible="False" ReadOnly="True" Description="{}V jakém úložišti byl uložen odkaz, který byl použit při překladu (&quot;{GAC}&quot;, pokud byl uložen v globální mezipaměti sestavení)" />
   <StringProperty Name="FrameworkFile" Visible="False" ReadOnly="True" Description="Jedná se o soubor platformy. To znamená, že se nachází v adresáři cílové platformy nebo v seznamu redistribuce." />
+  <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
 </Rule>

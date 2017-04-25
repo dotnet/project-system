@@ -54,4 +54,5 @@
   <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="经解析得到此解析的引用项的原始引用项的计算项名称。" />
   <StringProperty Name="FusionName" Visible="False" ReadOnly="True" />
   <StringProperty Name="Name" Visible="false" ReadOnly="True" />
+  <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
 </Rule>

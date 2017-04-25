@@ -57,4 +57,5 @@
   <StringProperty Name="FusionName" Visible="False" ReadOnly="True" Description="Pełna nazwa połączenia rozpoznanego zestawu." />
   <StringProperty Name="ResolvedFrom" Visible="False" ReadOnly="True" Description="{}Które repozytorium przechowuje odwołanie użyte do rozpoznania tego.  („{GAC}”, jeśli było w GAC)." />
   <StringProperty Name="FrameworkFile" Visible="False" ReadOnly="True" Description="Czy ten plik jest plikiem platformy. Czy został znaleziony w docelowym katalogu platformy, czy na liście ponownej dystrybucji." />
+  <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
 </Rule>
