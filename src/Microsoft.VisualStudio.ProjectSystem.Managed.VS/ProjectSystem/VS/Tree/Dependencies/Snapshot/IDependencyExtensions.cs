@@ -52,6 +52,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         /// <summary>
+        /// Returns id having full path instead of OriginalItemSpec
+        /// </summary>
+        public static string GetTopLevelId(this IDependency self)
+        {
+            return string.IsNullOrEmpty(self.Path)
+                ? self.Id
+                : Dependency.GetID(self.TargetFramework, self.ProviderType, self.Path);
+        }
+
+        /// <summary>
         /// Returns all icons specified for given dependency.
         /// </summary>
         public static IEnumerable<ImageMoniker> GetIcons(this IDependency self)

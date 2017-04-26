@@ -390,10 +390,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 var flags = FilterFlags(viewModel.Flags.Except(DependencyTreeFlags.BaseReferenceFlags),
                                         additionalFlags,
                                         excludedFlags);
+                var filePath = (viewModel.OriginalModel != null && viewModel.OriginalModel.TopLevel && viewModel.OriginalModel.Resolved)
+                                ? viewModel.OriginalModel.GetTopLevelId() 
+                                : viewModel.FilePath;
 
                 node = TreeServices.CreateTree(
                     caption: viewModel.Caption,
-                    filePath: viewModel.FilePath,
+                    filePath: filePath,
                     visible: true,
                     browseObjectProperties: rule,
                     flags: flags,
@@ -421,12 +424,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             if (node == null)
             {
                 var flags = FilterFlags(viewModel.Flags, additionalFlags, excludedFlags);
+                var filePath = (viewModel.OriginalModel != null && viewModel.OriginalModel.TopLevel && viewModel.OriginalModel.Resolved) 
+                                    ? viewModel.OriginalModel.GetTopLevelId()
+                                    : viewModel.FilePath;
 
                 var itemContext = ProjectPropertiesContext.GetContext(
                     CommonServices.Project,
-                    file: viewModel.FilePath,
+                    file: filePath,
                     itemType: viewModel.SchemaItemType,
-                    itemName: viewModel.FilePath);
+                    itemName: filePath);
 
                 node = TreeServices.CreateTree(
                     caption: viewModel.Caption,

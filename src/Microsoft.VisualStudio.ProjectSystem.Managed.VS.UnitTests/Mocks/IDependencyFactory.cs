@@ -141,7 +141,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             ImageMoniker? unresolvedIcon = null,
             ImageMoniker? unresolvedExpandedIcon = null,
             Dictionary<string, string> properties = null,
-            IEnumerable<string> dependenciesIds = null)
+            IEnumerable<string> dependenciesIds = null,
+            ITargetFramework targetFramework = null)
         {
             if (string.IsNullOrEmpty(jsonString))
             {
@@ -184,6 +185,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             if (dependenciesIds != null)
             {
                 data.DependencyIDs = ImmutableList<string>.Empty.AddRange(dependenciesIds);
+            }
+
+            if (targetFramework != null)
+            {
+                data.TargetFramework = targetFramework;
             }
 
             return data;

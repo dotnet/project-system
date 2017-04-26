@@ -46,6 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void GrouppedByTargetTreeViewProvider_WhenOneTargetSnapshotWithExistingDependencies_ShouldApplyChanges()
         {
+            var tfm1 = ITargetFrameworkFactory.Implement(moniker: "tfm1");
             var dependencyRootXxx = IDependencyFactory.FromJson(@"
 {
     ""ProviderType"": ""Xxx"",
@@ -60,10 +61,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     ""ProviderType"": ""Xxx"",
     ""Id"": ""tfm1\\xxx\\dependency1"",
     ""Name"":""dependency1"",
+    ""Path"":""dependencyXxxpath"",
     ""Caption"":""Dependency1"",
     ""SchemaItemType"":""Xxx"",
     ""Resolved"":""true""
-}", icon:KnownMonikers.Uninstall, expandedIcon:KnownMonikers.Uninstall);
+}", icon:KnownMonikers.Uninstall, expandedIcon:KnownMonikers.Uninstall, targetFramework: tfm1);
 
             var dependencyRootYyy = IDependencyFactory.FromJson(@"
 {
@@ -78,20 +80,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     ""ProviderType"": ""Yyy"",
     ""Id"": ""tfm1\\yyy\\dependency1"",
     ""Name"":""dependency1"",
+    ""Path"":""dependencyYyypath"",
     ""Caption"":""Dependency1"",
     ""SchemaItemType"":""Yyy"",
     ""Resolved"":""true""
-}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall, targetFramework: tfm1);
 
             var dependencyYyyExisting = IDependencyFactory.FromJson(@"
 {
     ""ProviderType"": ""Yyy"",
     ""Id"": ""tfm1\\yyy\\dependencyExisting"",
     ""Name"":""dependencyExisting"",
+    ""Path"":""dependencyExistingPath"",
     ""Caption"":""DependencyExisting"",
     ""SchemaItemType"":""Yyy"",
     ""Resolved"":""true""
-}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall, targetFramework: tfm1);
 
             var dependencies = new List<IDependency>
             {
@@ -134,7 +138,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             var testData = new Dictionary<ITargetFramework, List<IDependency>>
             {
-                { ITargetFrameworkFactory.Implement(moniker: "tfm1"), dependencies }
+                { tfm1, dependencies }
             };
 
             var project = UnconfiguredProjectFactory.Create(filePath: @"c:\somefodler\someproject.csproj");
@@ -153,9 +157,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 @"Caption=MyDependencies, FilePath=, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=
 Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
 Caption=DependencyExisting, FilePath=tfm1\yyy\dependencyExisting, IconHash=325249260, ExpandedIconHash=325249260, Rule=, IsProjectItem=False, CustomTag=
-Caption=Dependency1, FilePath=tfm1\yyy\dependency1, IconHash=325249260, ExpandedIconHash=325249260, Rule=, IsProjectItem=True, CustomTag=
+Caption=Dependency1, FilePath=tfm1\Yyy\dependencyYyypath, IconHash=325249260, ExpandedIconHash=325249260, Rule=, IsProjectItem=True, CustomTag=
 Caption=XxxDependencyRoot, FilePath=XxxDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
-Caption=Dependency1, FilePath=tfm1\xxx\dependency1, IconHash=325249260, ExpandedIconHash=325249260, Rule=, IsProjectItem=True, CustomTag=
+Caption=Dependency1, FilePath=tfm1\Xxx\dependencyXxxpath, IconHash=325249260, ExpandedIconHash=325249260, Rule=, IsProjectItem=True, CustomTag=
 ";
             Assert.Equal(expectedFlatHierarchy, ((TestProjectTree)resultTree).FlatHierarchy);
         }
@@ -163,6 +167,7 @@ Caption=Dependency1, FilePath=tfm1\xxx\dependency1, IconHash=325249260, Expanded
         [Fact]
         public void GrouppedByTargetTreeViewProvider_WhenOneTargetSnapshotAndDependencySupportsHierarchyAndIsResolved_ShouldReadd()
         {
+            var tfm1 = ITargetFrameworkFactory.Implement(moniker: "tfm1");
             var dependencyRootYyy = IDependencyFactory.FromJson(@"
 {
     ""ProviderType"": ""Yyy"",
@@ -176,12 +181,14 @@ Caption=Dependency1, FilePath=tfm1\xxx\dependency1, IconHash=325249260, Expanded
     ""ProviderType"": ""Yyy"",
     ""Id"": ""tfm1\\yyy\\dependencyExisting"",
     ""Name"":""dependencyExisting"",
+    ""Path"":""dependencyExistingpath"",
     ""Caption"":""DependencyExisting"",
     ""SchemaItemType"":""Yyy"",
     ""Resolved"":""true""
 }", icon: KnownMonikers.Uninstall, 
     expandedIcon: KnownMonikers.Uninstall, 
-    flags: DependencyTreeFlags.SupportsHierarchy);
+    flags: DependencyTreeFlags.SupportsHierarchy,
+    targetFramework: tfm1);
 
             var dependencies = new List<IDependency>
             {
@@ -217,7 +224,7 @@ Caption=Dependency1, FilePath=tfm1\xxx\dependency1, IconHash=325249260, Expanded
 
             var testData = new Dictionary<ITargetFramework, List<IDependency>>
             {
-                { ITargetFrameworkFactory.Implement(moniker: "tfm1"), dependencies }
+                { tfm1, dependencies }
             };
 
             var project = UnconfiguredProjectFactory.Create(filePath: @"c:\somefodler\someproject.csproj");
@@ -235,7 +242,7 @@ Caption=Dependency1, FilePath=tfm1\xxx\dependency1, IconHash=325249260, Expanded
             var expectedFlatHierarchy =
 @"Caption=MyDependencies, FilePath=, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=
 Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
-Caption=DependencyExisting, FilePath=tfm1\yyy\dependencyExisting, IconHash=325249260, ExpandedIconHash=325249260, Rule=, IsProjectItem=True, CustomTag=
+Caption=DependencyExisting, FilePath=tfm1\Yyy\dependencyExistingpath, IconHash=325249260, ExpandedIconHash=325249260, Rule=, IsProjectItem=True, CustomTag=
 ";
             Assert.Equal(expectedFlatHierarchy, ((TestProjectTree)resultTree).FlatHierarchy);
         }
@@ -539,6 +546,10 @@ Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconH
         [Fact]
         public void GrouppedByTargetTreeViewProvider_WhenMultipleTargetSnapshotsWithExistingDependencies_ShouldApplyChanges()
         {
+            var tfm1 = ITargetFrameworkFactory.Implement(moniker: "tfm1");
+            var tfm2 = ITargetFrameworkFactory.Implement(moniker: "tfm2");
+            var tfmAny = ITargetFrameworkFactory.Implement(moniker: "any");
+
             var dependencyRootXxx = IDependencyFactory.FromJson(@"
 {
     ""ProviderType"": ""Xxx"",
@@ -552,11 +563,12 @@ Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconH
 {
     ""ProviderType"": ""Xxx"",
     ""Id"": ""xxx\\dependency1"",
+    ""Path"": ""dependencyxxxpath"",
     ""Name"":""dependency1"",
     ""Caption"":""Dependency1"",
     ""SchemaItemType"":""Xxx"",
     ""Resolved"":""true""
-}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall, targetFramework: tfm1);
 
             var dependencyRootYyy = IDependencyFactory.FromJson(@"
 {
@@ -570,21 +582,23 @@ Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconH
 {
     ""ProviderType"": ""Yyy"",
     ""Id"": ""yyy\\dependency1"",
+    ""Path"": ""dependencyyyypath"",
     ""Name"":""dependency1"",
     ""Caption"":""Dependency1"",
     ""SchemaItemType"":""Yyy"",
     ""Resolved"":""true""
-}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall, targetFramework: tfm1);
 
             var dependencyYyyExisting = IDependencyFactory.FromJson(@"
 {
     ""ProviderType"": ""Yyy"",
     ""Id"": ""yyy\\dependencyExisting"",
+    ""Path"": ""dependencyyyyExistingpath"",
     ""Name"":""dependencyExisting"",
     ""Caption"":""DependencyExisting"",
     ""SchemaItemType"":""Yyy"",
     ""Resolved"":""true""
-}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall, targetFramework: tfm1);
 
             var dependencyRootZzz = IDependencyFactory.FromJson(@"
 {
@@ -598,9 +612,10 @@ Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconH
 {
     ""ProviderType"": ""Zzz"",
     ""Id"": ""ZzzDependencyAny1"",
+    ""Path"": ""ZzzDependencyAny1path"",
     ""Name"":""ZzzDependencyAny1"",
     ""Caption"":""ZzzDependencyAny1""
-}");
+}", targetFramework:tfmAny);
 
             var dependencies = new List<IDependency>
             {
@@ -668,9 +683,9 @@ Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconH
 
             var testData = new Dictionary<ITargetFramework, List<IDependency>>
             {
-                { ITargetFrameworkFactory.Implement(moniker: "tfm1"), dependencies },
-                { ITargetFrameworkFactory.Implement(moniker: "tfm2"), dependencies },
-                { ITargetFrameworkFactory.Implement(moniker: "any"), dependenciesAny }
+                { tfm1, dependencies },
+                { tfm2, dependencies },
+                { tfmAny, dependenciesAny }
             };
 
             var project = UnconfiguredProjectFactory.Create(filePath: @"c:\somefodler\someproject.csproj");
@@ -689,18 +704,18 @@ Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconH
 @"Caption=MyDependencies, FilePath=, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=
 Caption=tfm2, FilePath=tfm2, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=, BubbleUpFlag=True
 Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
-Caption=Dependency1, FilePath=yyy\dependency1, IconHash=325249260, ExpandedIconHash=325249260, Rule=, IsProjectItem=False, CustomTag=
-Caption=DependencyExisting, FilePath=yyy\dependencyExisting, IconHash=325249260, ExpandedIconHash=325249260, Rule=, IsProjectItem=False, CustomTag=
+Caption=Dependency1, FilePath=tfm1\Yyy\dependencyyyypath, IconHash=325249260, ExpandedIconHash=325249260, Rule=, IsProjectItem=False, CustomTag=
+Caption=DependencyExisting, FilePath=tfm1\Yyy\dependencyyyyExistingpath, IconHash=325249260, ExpandedIconHash=325249260, Rule=, IsProjectItem=False, CustomTag=
 Caption=XxxDependencyRoot, FilePath=XxxDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
-Caption=Dependency1, FilePath=xxx\dependency1, IconHash=325249260, ExpandedIconHash=325249260, Rule=, IsProjectItem=False, CustomTag=
+Caption=Dependency1, FilePath=tfm1\Xxx\dependencyxxxpath, IconHash=325249260, ExpandedIconHash=325249260, Rule=, IsProjectItem=False, CustomTag=
 Caption=ZzzDependencyRoot, FilePath=ZzzDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
 Caption=ZzzDependencyAny1, FilePath=ZzzDependencyAny1, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
 Caption=tfm1, FilePath=tfm1, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=, BubbleUpFlag=True
 Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
-Caption=Dependency1, FilePath=yyy\dependency1, IconHash=325249260, ExpandedIconHash=325249260, Rule=, IsProjectItem=True, CustomTag=
-Caption=DependencyExisting, FilePath=yyy\dependencyExisting, IconHash=325249260, ExpandedIconHash=325249260, Rule=, IsProjectItem=True, CustomTag=
+Caption=Dependency1, FilePath=tfm1\Yyy\dependencyyyypath, IconHash=325249260, ExpandedIconHash=325249260, Rule=, IsProjectItem=True, CustomTag=
+Caption=DependencyExisting, FilePath=tfm1\Yyy\dependencyyyyExistingpath, IconHash=325249260, ExpandedIconHash=325249260, Rule=, IsProjectItem=True, CustomTag=
 Caption=XxxDependencyRoot, FilePath=XxxDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
-Caption=Dependency1, FilePath=xxx\dependency1, IconHash=325249260, ExpandedIconHash=325249260, Rule=, IsProjectItem=True, CustomTag=
+Caption=Dependency1, FilePath=tfm1\Xxx\dependencyxxxpath, IconHash=325249260, ExpandedIconHash=325249260, Rule=, IsProjectItem=True, CustomTag=
 ";
             Assert.Equal(expectedFlatHierarchy, ((TestProjectTree)resultTree).FlatHierarchy);
         }

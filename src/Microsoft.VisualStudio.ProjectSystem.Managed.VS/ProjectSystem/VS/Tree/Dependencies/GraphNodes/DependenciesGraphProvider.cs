@@ -321,7 +321,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             string projectPath,
             IDependencyViewModel viewModel)
         {
-            var newNodeId = GetTopLevelGraphNodeId(projectPath, viewModel.OriginalModel.Id);
+            var newNodeId = GetTopLevelGraphNodeId(projectPath, viewModel.OriginalModel.GetTopLevelId());
             return DoAddGraphNode(newNodeId, graphContext, projectPath, parentNode: null, viewModel:viewModel);
         }
 
