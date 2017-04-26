@@ -187,7 +187,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             string filePath = _commonServices.Project.FullPath;
 
-            return new ProjectData() {
+            return new ProjectData()
+            {
                 FullPath = filePath,
                 DisplayName = Path.GetFileNameWithoutExtension(filePath)
             };
@@ -225,7 +226,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             string languageName = await GetLanguageServiceName().ConfigureAwait(false);
             if (string.IsNullOrEmpty(languageName))
                 return null;
-            
+
             Guid projectGuid = await GetProjectGuidAsync().ConfigureAwait(false);
             string targetPath = await GetTargetPathAsync().ConfigureAwait(false);
             if (string.IsNullOrEmpty(targetPath))
@@ -235,12 +236,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             await _asyncLoadDashboard.ProjectLoadedInHost.ConfigureAwait(false);
 
             // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
-            return await _taskScheduler.RunAsync(TaskSchedulerPriority.UIThreadBackgroundPriority, async () => 
+            return await _taskScheduler.RunAsync(TaskSchedulerPriority.UIThreadBackgroundPriority, async () =>
             {
                 await _commonServices.ThreadingService.SwitchToUIThread();
 
                 var projectData = GetProjectData();
-                
+
                 // Get the set of active configured projects ignoring target framework.
                 var configuredProjectsMap = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync().ConfigureAwait(true);
 
@@ -262,8 +263,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                         var projectProperties = configuredProject.Services.ExportProvider.GetExportedValue<ProjectProperties>();
                         var configurationGeneralProperties = await projectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
                         targetPath = (string)await configurationGeneralProperties.TargetPath.GetValueAsync().ConfigureAwait(true);
+                        var targetFrameworkMoniker = (string)await configurationGeneralProperties.TargetFrameworkMoniker.GetValueAsync().ConfigureAwait(true);
                         var displayName = GetDisplayName(configuredProject, projectData, targetFramework);
-                        configuredProjectHostObject = _projectHostProvider.GetConfiguredProjectHostObject(_unconfiguredProjectHostObject, displayName);
+                        configuredProjectHostObject = _projectHostProvider.GetConfiguredProjectHostObject(_unconfiguredProjectHostObject, displayName, targetFrameworkMoniker);
 
                         // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
                         await _commonServices.ThreadingService.SwitchToUIThread();
@@ -281,7 +283,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                         // By default, set "LastDesignTimeBuildSucceeded = false" to turn off diagnostics until first design time build succeeds for this project.
                         workspaceProjectContext.LastDesignTimeBuildSucceeded = false;
 
-                        AddConfiguredProjectState(configuredProject, workspaceProjectContext, configuredProjectHostObject);                        
+                        AddConfiguredProjectState(configuredProject, workspaceProjectContext, configuredProjectHostObject);
                     }
 
                     innerProjectContextsBuilder.Add(targetFramework, workspaceProjectContext);

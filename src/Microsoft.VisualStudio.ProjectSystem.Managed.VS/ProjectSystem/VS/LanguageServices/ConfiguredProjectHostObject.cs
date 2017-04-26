@@ -12,15 +12,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     {
         private readonly UnconfiguredProjectHostObject _unconfiguredProjectHostObject;
         private readonly string _projectDisplayName;
+        private readonly string _targetFrameworkMoniker;
 
-        public ConfiguredProjectHostObject(UnconfiguredProjectHostObject unconfiguredProjectHostObject, string projectDisplayName)
+        public ConfiguredProjectHostObject(UnconfiguredProjectHostObject unconfiguredProjectHostObject, string projectDisplayName, string targetFrameworkMoniker)
             : base (innerHierarchy: unconfiguredProjectHostObject, innerVsProject: unconfiguredProjectHostObject)
         {
             Requires.NotNull(unconfiguredProjectHostObject, nameof(unconfiguredProjectHostObject));
             Requires.NotNullOrEmpty(projectDisplayName, nameof(projectDisplayName));
+            Requires.NotNull(targetFrameworkMoniker, nameof(targetFrameworkMoniker));
 
             _unconfiguredProjectHostObject = unconfiguredProjectHostObject;
             _projectDisplayName = projectDisplayName;
+            _targetFrameworkMoniker = targetFrameworkMoniker;
         }
 
         public string ProjectDisplayName => _projectDisplayName;
@@ -32,6 +35,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             switch (propid)
             {
+                case (int)__VSHPROPID4.VSHPROPID_TargetFrameworkMoniker:
+                    pvar = _targetFrameworkMoniker;
+                    return VSConstants.S_OK;
+
                 case (int)__VSHPROPID7.VSHPROPID_IsSharedItem:
                     // In our world everything is shared
                     pvar = true;
