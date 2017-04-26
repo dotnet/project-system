@@ -25,6 +25,11 @@
     <ItemGroup>
      <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)VisualBasic.ProjectItemsSchema.xaml;"/>
 
+      <!-- Namespace Import List-->
+      <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)VisualBasic.NamespaceImport.xaml">
+        <Context>ProjectSubscriptionService</Context>
+      </PropertyPageSchema>
+
      <ProjectCapability Include="VB;Managed"/>
     </ItemGroup>
 

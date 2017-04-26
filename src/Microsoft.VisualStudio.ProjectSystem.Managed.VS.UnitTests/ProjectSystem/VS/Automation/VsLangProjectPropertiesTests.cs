@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             Assert.Throws<ArgumentNullException>("vsProject", () =>
             {
-                GetVsLangProjectProperties();
+                CreateInstance();
             });
         }
 
@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             Assert.Throws<ArgumentNullException>("threadingService", () =>
             {
-                GetVsLangProjectProperties(Mock.Of<VSLangProj.VSProject>());
+                CreateInstance(Mock.Of<VSLangProj.VSProject>());
             });
         }
 
@@ -37,15 +37,94 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             Assert.Throws<ArgumentNullException>("projectProperties", () =>
             {
-                GetVsLangProjectProperties(Mock.Of<VSLangProj.VSProject>(), Mock.Of<IProjectThreadingService>());
+                CreateInstance(
+                    Mock.Of<VSLangProj.VSProject>(),
+                    threadingService: Mock.Of<IProjectThreadingService>());
+            });
+        }
+
+        [Fact]
+        public void Constructor_NullAsProject_ThrowsArgumentNull()
+        {
+            Assert.Throws<ArgumentNullException>("project", () =>
+            {
+                new VSProject(
+                    Mock.Of<VSLangProj.VSProject>(),
+                    threadingService: Mock.Of<IProjectThreadingService>(),
+                    projectProperties: Mock.Of<ActiveConfiguredProject<ProjectProperties>>(),
+                    project: null);
             });
         }
 
         [Fact]
         public void VsLangProjectProperties_NotNull()
         {
-            var properties = GetVsLangProjectProperties(Mock.Of<VSLangProj.VSProject>(), Mock.Of<IProjectThreadingService>(), Mock.Of<ActiveConfiguredProject<ProjectProperties>>());
-            Assert.NotNull(properties);
+            var unconfiguredProjectMock = new Mock<UnconfiguredProject>();
+            unconfiguredProjectMock.Setup(p => p.Capabilities)
+                                   .Returns((IProjectCapabilitiesScope)null);
+
+            var vsproject = CreateInstance(
+                                Mock.Of<VSLangProj.VSProject>(),
+                                threadingService: Mock.Of<IProjectThreadingService>(),
+                                projectProperties: Mock.Of<ActiveConfiguredProject<ProjectProperties>>());
+            Assert.NotNull(vsproject);
+        }
+
+        [Fact]
+        public void VsLangProjectProperties_ImportsAndEventsAsNull()
+        {
+            var imports = Mock.Of<Imports>();
+            var events = Mock.Of<VSProjectEvents>();
+            var innerVSProjectMock = new Mock<VSLangProj.VSProject>();
+
+            innerVSProjectMock.Setup(p => p.Imports)
+                              .Returns(imports);
+
+            innerVSProjectMock.Setup(p => p.Events)
+                              .Returns(events);
+
+            var vsproject = CreateInstance(
+                                innerVSProjectMock.Object,
+                                threadingService: Mock.Of<IProjectThreadingService>(),
+                                projectProperties: Mock.Of<ActiveConfiguredProject<ProjectProperties>>());
+            Assert.NotNull(vsproject);
+            Assert.True(imports.Equals(vsproject.Imports));
+            Assert.Equal(events, vsproject.Events);
+        }
+
+
+        [Fact]
+        public void VsLangProjectProperties_ImportsAndEventsAsNonNull()
+        {
+            var imports = Mock.Of<Imports>();
+            var importsImpl = new OrderPrecedenceImportCollection<Imports>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, (UnconfiguredProject)null)
+            {
+                new Lazy<Imports, IOrderPrecedenceMetadataView>(() => imports, IOrderPrecedenceMetadataViewFactory.Create("VisualBasic"))
+            };
+            var events = Mock.Of<VSProjectEvents>();
+            var vsProjectEventsImpl = new OrderPrecedenceImportCollection<VSProjectEvents>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, (UnconfiguredProject)null)
+            {
+                new Lazy<VSProjectEvents, IOrderPrecedenceMetadataView>(() => events, IOrderPrecedenceMetadataViewFactory.Create("VisualBasic"))
+            };
+
+            var innerVSProjectMock = new Mock<VSLangProj.VSProject>();
+
+            var unconfiguredProjectMock = new Mock<UnconfiguredProject>();
+            unconfiguredProjectMock.Setup(p => p.Capabilities)
+                                   .Returns((IProjectCapabilitiesScope)null);
+
+            var vsproject = new VSProjectTestImpl(
+                                innerVSProjectMock.Object,
+                                threadingService: Mock.Of<IProjectThreadingService>(),
+                                projectProperties: Mock.Of<ActiveConfiguredProject<ProjectProperties>>(),
+                                project: unconfiguredProjectMock.Object);
+
+            vsproject.SetImportsImpl(importsImpl);
+            vsproject.SetVSProjectEventsImpl(vsProjectEventsImpl);
+
+            Assert.NotNull(vsproject);
+            Assert.True(imports.Equals(vsproject.Imports));
+            Assert.Equal(events, vsproject.Events);
         }
 
         [Fact]
@@ -66,12 +145,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             var projectProperties = ProjectPropertiesFactory.Create(project, data);
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
-            var vsLangProjectProperties = new VSProject(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
+            var vsLangProjectProperties = CreateInstance(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
             Assert.Equal(vsLangProjectProperties.OutputTypeEx, prjOutputTypeEx.prjOutputTypeEx_Library);
 
             var testValue = prjOutputTypeEx.prjOutputTypeEx_WinExe;
             vsLangProjectProperties.OutputTypeEx = testValue;
-            Assert.Equal((VSLangProj110.prjOutputTypeEx)setValues.Single(), testValue);
+            Assert.Equal((prjOutputTypeEx)setValues.Single(), testValue);
         }
 
         [Fact]
@@ -92,7 +171,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             var projectProperties = ProjectPropertiesFactory.Create(project, data);
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
-            var vsLangProjectProperties = new VSProject(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
+            var vsLangProjectProperties = CreateInstance(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
             Assert.Equal(vsLangProjectProperties.OutputType, prjOutputType.prjOutputTypeLibrary);
 
             var testValue = prjOutputType.prjOutputTypeExe;
@@ -116,7 +195,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             var projectProperties = ProjectPropertiesFactory.Create(project, data);
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
-            var vsLangProjectProperties = new VSProject(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
+            var vsLangProjectProperties = CreateInstance(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
             Assert.Equal(vsLangProjectProperties.AssemblyName, "Blah");
 
             var testValue = "Testing";
@@ -138,7 +217,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             var projectProperties = ProjectPropertiesFactory.Create(project, data);
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
-            var vsLangProjectProperties = new VSProject(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
+            var vsLangProjectProperties = CreateInstance(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
             Assert.Equal(vsLangProjectProperties.FullPath, "somepath");
         }
 
@@ -156,21 +235,54 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             var projectProperties = ProjectPropertiesFactory.Create(project, data);
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
-            var vsLangProjectProperties = new VSProject(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
+            var vsLangProjectProperties = CreateInstance(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
             Assert.Equal(vsLangProjectProperties.AbsoluteProjectDirectory, "testvalue");
         }
 
         [Fact]
         public void VsLangProjectProperties_ExtenderCATID()
         {
-            var vsLangProjectProperties = GetVsLangProjectProperties(Mock.Of<VSLangProj.VSProject>(), Mock.Of<IProjectThreadingService>(), Mock.Of<ActiveConfiguredProject<ProjectProperties>>());
-            Assert.Null(vsLangProjectProperties.ExtenderCATID);
+            var vsproject = CreateInstance(
+                Mock.Of<VSLangProj.VSProject>(),
+                threadingService: Mock.Of<IProjectThreadingService>(),
+                projectProperties: Mock.Of<ActiveConfiguredProject<ProjectProperties>>());
+            Assert.Null(vsproject.ExtenderCATID);
         }
 
-        private static VSProject GetVsLangProjectProperties(
-            VSLangProj.VSProject vsproject = null, IProjectThreadingService threadingService = null, ActiveConfiguredProject<ProjectProperties> projectProperties = null)
+        private static VSProject CreateInstance(
+            VSLangProj.VSProject vsproject = null,
+            IProjectThreadingService threadingService = null,
+            ActiveConfiguredProject<ProjectProperties> projectProperties = null,
+            UnconfiguredProject project = null)
         {
-            return new VSProject(vsproject, threadingService, projectProperties);
+            if (project == null)
+            {
+                project = UnconfiguredProjectFactory.Create();
+            }
+
+            return new VSProject(vsproject, threadingService, projectProperties, project);
+        }
+
+        internal class VSProjectTestImpl : VSProject
+        {
+            public VSProjectTestImpl(
+                VSLangProj.VSProject vsProject,
+                IProjectThreadingService threadingService,
+                ActiveConfiguredProject<ProjectProperties> projectProperties,
+                UnconfiguredProject project)
+                : base(vsProject, threadingService, projectProperties, project)
+            {
+            }
+
+            internal void SetImportsImpl(OrderPrecedenceImportCollection<Imports> importsImpl)
+            {
+                ImportsImpl = importsImpl;
+            }
+
+            internal void SetVSProjectEventsImpl(OrderPrecedenceImportCollection<VSProjectEvents> vsProjectEventsImpl)
+            {
+                VSProjectEventsImpl = vsProjectEventsImpl;
+            }
         }
     }
 }
