@@ -28,7 +28,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             builder.Add(FSharpProjectDesignerPage.Application);
             builder.Add(FSharpProjectDesignerPage.Build);
             builder.Add(FSharpProjectDesignerPage.BuildEvents);
-            builder.Add(FSharpProjectDesignerPage.Debug);
+
+            if (_capabilities.Contains(ProjectCapability.LaunchProfiles))
+            {
+                builder.Add(FSharpProjectDesignerPage.Debug);
+            }
 
             if (_capabilities.Contains(ProjectCapability.Pack))
             {
