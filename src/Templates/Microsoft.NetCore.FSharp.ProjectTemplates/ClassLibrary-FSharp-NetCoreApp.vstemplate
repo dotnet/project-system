@@ -20,7 +20,7 @@
     <CustomParameters>
       <CustomParameter Name="$language$" Value="F#" />
       <CustomParameter Name="$uistyle$" Value="none" />
-      <CustomParameter Name="groupid" Value="Microsoft.Common.Library" />
+      <CustomParameter Name="$groupid$" Value="Microsoft.Common.Library" />
       <CustomParameter Name="$set:baseline$" Value="app" />
     </CustomParameters>
   </TemplateContent>
