@@ -19,7 +19,7 @@
     <CustomParameters>
       <CustomParameter Name="$language$" Value="C#" />
       <CustomParameter Name="$uistyle$" Value="none" />
-      <CustomParameter Name="groupid" Value="Microsoft.Test.MSTest" />
+      <CustomParameter Name="$groupid$" Value="Microsoft.Test.MSTest" />
     </CustomParameters>
   </TemplateContent>
   <WizardExtension>

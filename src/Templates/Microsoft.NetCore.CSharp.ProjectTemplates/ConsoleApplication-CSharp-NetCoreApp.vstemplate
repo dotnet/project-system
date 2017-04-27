@@ -20,7 +20,7 @@
     <CustomParameters>
       <CustomParameter Name="$language$" Value="C#" />
       <CustomParameter Name="$uistyle$" Value="none" />
-      <CustomParameter Name="groupid" Value="Microsoft.Common.Console" />
+      <CustomParameter Name="$groupid$" Value="Microsoft.Common.Console" />
     </CustomParameters>
   </TemplateContent>
   <WizardExtension>
