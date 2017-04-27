@@ -18,7 +18,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <ProjectSystemSDKVersion>15.3.5-pre-g4382fbdb8f</ProjectSystemSDKVersion>
+    <ProjectSystemSDKVersion>15.3.91-pre-g03ba82fd3f</ProjectSystemSDKVersion>
     <SystemCollectionsImmutableVersion>1.3.1</SystemCollectionsImmutableVersion>
     <MicrosoftVisualStudioShellInterop10Version>10.0.30319</MicrosoftVisualStudioShellInterop10Version>
     <MicrosoftVisualStudioShellInterop11Version>11.0.61030</MicrosoftVisualStudioShellInterop11Version>
