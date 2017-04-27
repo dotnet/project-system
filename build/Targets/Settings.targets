@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <ProjectDir>$(MSBuildThisFileDirectory)..\..\</ProjectDir>
+    <ProjectTemplateVersion>1.0.0-beta2-20170425-203</ProjectTemplateVersion>
     <NuGetToolPath Condition="">$(ProjectDir)build\bin\nuget.exe</NuGetToolPath>
     <NuGetPackageRoot Condition="'$(NuGetPackageRoot)' == ''">$(NUGET_PACKAGES)</NuGetPackageRoot> <!-- Respect environment variable if set -->
     <NuGetPackageRoot Condition="'$(NuGetPackageRoot)' == '' and
