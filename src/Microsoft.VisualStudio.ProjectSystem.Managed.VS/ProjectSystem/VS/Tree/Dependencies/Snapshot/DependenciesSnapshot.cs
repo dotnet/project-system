@@ -63,8 +63,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
         }
 
-        public IDependency FindDependency(string id)
+        public IDependency FindDependency(string id, bool topLevel = false)
         {
+            if (string.IsNullOrEmpty(id))
+            {
+                return null;
+            }
+
+            if (topLevel)
+            {
+                // if top level first try to find by top level id with full path,
+                // if found - return, if not - try regular Id in the DependenciesWorld
+                foreach (var target in Targets)
+                {
+                    var dependency = target.Value.TopLevelDependencies.FirstOrDefault(
+                        x => x.GetTopLevelId().Equals(id, StringComparison.OrdinalIgnoreCase));
+                    if (dependency != null)
+                    {
+                        return dependency;
+                    }
+                }
+            }
+
             foreach (var target in Targets)
             {
                 if (target.Value.DependenciesWorld.TryGetValue(id, out IDependency dependency))
