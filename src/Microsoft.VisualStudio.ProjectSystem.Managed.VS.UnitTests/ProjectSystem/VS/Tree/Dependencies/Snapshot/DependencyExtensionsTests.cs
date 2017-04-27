@@ -221,5 +221,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             Assert.Equal(@"c:\somepath\someproject\subfolder\xxx", dependency3.GetActualPath(projectPath));
         }
+
+        [Fact]
+        public void DependencyExtensionsTests_GetTopLevelId()
+        {
+            var dependency1 = IDependencyFactory.FromJson(@"
+{
+    ""Id"":""id1"",
+    ""ProviderType"": ""ProjectDependency""
+}");
+
+            Assert.Equal("id1", dependency1.GetTopLevelId());
+
+            var dependency2 = IDependencyFactory.FromJson(@"
+{
+    ""Id"":""id1"",
+    ""Path"":""xxxxxxx"",
+    ""ProviderType"": ""MyProvider""
+}", targetFramework: ITargetFrameworkFactory.Implement("tfm1"));
+
+            Assert.Equal("tfm1\\MyProvider\\xxxxxxx", dependency2.GetTopLevelId());
+        }
     }
 }

@@ -295,8 +295,9 @@
                 SelectionMode="Single">
                 <DataGrid.CellStyle>
                     <Style TargetType="DataGridCell">
-                        <Setter Property="Margin" Value="0,0,-1,0"/>
-                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Margin" Value="0,0,-1,0" />
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="AutomationProperties.Name" Value="{Binding RelativeSource={RelativeSource Self}, Path=Column.Header}" />
                     </Style>
                 </DataGrid.CellStyle>
                 <DataGrid.Columns>
@@ -344,7 +345,6 @@
                             </DataTemplate>
                         </local:EnvironmentDataGridTemplateColumn.CellEditingTemplate>
                     </local:EnvironmentDataGridTemplateColumn>
-
                 </DataGrid.Columns>
             </DataGrid>
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="6,20,0,0" Grid.Row="7" Grid.Column="2" 

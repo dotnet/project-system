@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <Import Project="..\..\..\build\Targets\VSL.Settings.targets" />
+  <PropertyGroup>
+    <SchemaVersion>2.0</SchemaVersion>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Microsoft.VisualStudio</RootNamespace>
+    <AssemblyName>Microsoft.NetStandard.CSharp.ProjectTemplates</AssemblyName>
+    <GeneratePkgDefFile>false</GeneratePkgDefFile>
+    <CreateVsixContainer>false</CreateVsixContainer>
+    <ImportVSSDKTargets>true</ImportVSSDKTargets>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFramework>net46</TargetFramework>
+    <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
+    <ProjectSystemLayer>VisualStudio</ProjectSystemLayer>
+  </PropertyGroup>
+  <ItemGroup>
+    <VSTemplate Include="ClassLibrary-CSharp-NetStandard.vstemplate">
+      <OutputSubPath>.NET Standard</OutputSubPath>
+    </VSTemplate>
+  </ItemGroup>
+  <Import Project="..\..\..\build\Targets\VSL.Imports.targets" />
+</Project>

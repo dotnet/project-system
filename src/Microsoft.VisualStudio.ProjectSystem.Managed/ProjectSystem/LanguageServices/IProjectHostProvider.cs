@@ -12,7 +12,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// </summary>
         /// <param name="unconfiguredProjectHostObject">Host object for the underlying unconfigured project.</param>
         /// <param name="projectDisplayName">Project display name for the configured cross-targeting project.</param>
-        IConfiguredProjectHostObject GetConfiguredProjectHostObject(IUnconfiguredProjectHostObject unconfiguredProjectHostObject, string projectDisplayName);
+        /// <param name="targetFramework">Target framework for the configured cross-targeting project.</param>
+        IConfiguredProjectHostObject GetConfiguredProjectHostObject(IUnconfiguredProjectHostObject unconfiguredProjectHostObject, string projectDisplayName, string targetFramework);
 
         /// <summary>
         /// Gets an <see cref="IUnconfiguredProjectHostObject"/> for the current unconfigured project.

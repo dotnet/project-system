@@ -143,9 +143,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public string Version { get; }
         public bool Resolved { get; private set; }
         public bool TopLevel { get; }
-        public bool Implicit { get; }
+        public bool Implicit { get; private set; }
         public bool Visible { get; }
-        public ImageMoniker Icon { get; }
+        public ImageMoniker Icon { get; private set; }
         public ImageMoniker ExpandedIcon { get; }
         public ImageMoniker UnresolvedIcon { get; }
         public ImageMoniker UnresolvedExpandedIcon { get; }
@@ -167,7 +167,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             bool? resolved = null,
             ProjectTreeFlags? flags = null,
             string schemaName = null,
-            IImmutableList<string> dependencyIDs = null)
+            IImmutableList<string> dependencyIDs = null,
+            ImageMoniker icon = new ImageMoniker(),
+            bool? isImplicit = null)
         {
             var clone = new Dependency(this, _modelId);
 
@@ -194,6 +196,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             if (dependencyIDs != null)
             {
                 clone.DependencyIDs = dependencyIDs;
+            }
+
+            if (icon.Id != 0 && icon.Guid != Guid.Empty)
+            {
+                clone.Icon = icon;
+            }
+
+            if (isImplicit != null)
+            {
+                clone.Implicit = isImplicit.Value;
             }
 
             return clone;
@@ -254,7 +266,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         private static string Normalize(string id)
         {
-            return id.Replace('.', '_').Replace('/', '\\');
+            return id.Replace('/', '\\');
         }
 
         public static string GetID(ITargetFramework targetFramework, string providerType, string modelId)
@@ -263,8 +275,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Requires.NotNullOrEmpty(providerType, nameof(providerType));
             Requires.NotNullOrEmpty(modelId, nameof(modelId));
 
-            var normalizedModelId = modelId.Replace('.', '_');
-            return $"{targetFramework.ShortName}/{providerType}/{normalizedModelId}".TrimEnd('/').Replace('/', '\\');
+            return $"{targetFramework.ShortName}\\{providerType}\\{Normalize(modelId)}".TrimEnd('\\');
         }
     }
 }

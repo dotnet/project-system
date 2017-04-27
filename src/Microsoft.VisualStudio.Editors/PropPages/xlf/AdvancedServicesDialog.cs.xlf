@@ -20,7 +20,7 @@
       </trans-unit>
       <trans-unit id="UseCustomConnectionStringCheckBox.Text">
         <source>&amp;Use custom connection string:</source>
-        <target state="translated">Po&amp;užít vlastní připojovací řetězec:</target>
+        <target state="translated">&amp;Použít vlastní připojovací řetězec:</target>
         <note />
       </trans-unit>
       <trans-unit id="TimeUnitComboBox.AccessibleName">

@@ -75,6 +75,10 @@
         <source>Enable na&amp;tive code debugging</source>
         <note />
       </trans-unit>
+      <trans-unit id="StartArguments.AccessibleName">
+        <source>Command line arguments</source>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

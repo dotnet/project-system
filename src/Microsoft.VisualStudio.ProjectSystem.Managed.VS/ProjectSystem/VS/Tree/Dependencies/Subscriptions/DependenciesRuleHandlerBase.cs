@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
@@ -10,8 +11,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
     internal abstract class DependenciesRuleHandlerBase : 
-        ICrossTargetRuleHandler<DependenciesRuleChangeContext>, 
-        IProjectDependenciesSubTreeProvider
+        ICrossTargetRuleHandler<DependenciesRuleChangeContext>,
+        IProjectDependenciesSubTreeProviderInternal
     {
         #region ICrossTargetRuleHandler
 
@@ -33,6 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         protected abstract string UnresolvedRuleName { get; }
         protected abstract string ResolvedRuleName { get; }
+        public abstract ImageMoniker GetImplicitIcon();
 
         /// <summary>
         /// If any standard provider has different OriginalItemSpec property name, 

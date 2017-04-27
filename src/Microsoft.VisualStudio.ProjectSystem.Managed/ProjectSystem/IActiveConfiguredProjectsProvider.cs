@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 
@@ -28,6 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// If the current project is not a cross-targeting project, then it returns a singleton key-value pair with an ignorable key and single active configured project as value.
         /// </summary>
         /// <returns>Map from TargetFramework dimension to active configured project.</returns>
+        [Obsolete("This method will be removed in a future build.")]
         Task<ImmutableDictionary<string, ConfiguredProject>> GetActiveConfiguredProjectsMapAsync();
 
         /// <summary>

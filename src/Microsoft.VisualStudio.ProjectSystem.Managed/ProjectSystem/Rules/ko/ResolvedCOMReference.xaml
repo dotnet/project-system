@@ -54,4 +54,5 @@
   <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="확인 결과 이 확인된 참조 항목으로 드러난 원래 참조 항목의 평가 항목 이름입니다." />
   <StringProperty Name="FusionName" Visible="False" ReadOnly="True" />
   <StringProperty Name="Name" Visible="false" ReadOnly="True" />
+  <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
 </Rule>

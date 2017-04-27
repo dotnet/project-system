@@ -140,7 +140,7 @@
     <value>&amp;Ubicación del servicio de rol:</value>
   </data>
   <data name="WebSettingsUrlLabel.Text" xml:space="preserve">
-    <value>Ubicación del servicio de configuración &amp;web:</value>
+    <value>Ubicación del &amp;servicio de configuración web:</value>
   </data>
   <data name="AdvancedSettings.Text" xml:space="preserve">
     <value>Avan&amp;zadas...</value>

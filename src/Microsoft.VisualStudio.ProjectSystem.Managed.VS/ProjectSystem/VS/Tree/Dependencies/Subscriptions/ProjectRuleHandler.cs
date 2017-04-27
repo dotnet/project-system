@@ -6,6 +6,7 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Imaging;
+using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
@@ -70,7 +71,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 isImplicit,
                 properties);
         }
-        
+
+        public override ImageMoniker GetImplicitIcon()
+        {
+            return ManagedImageMonikers.ApplicationPrivate;
+        }
+
         private void OnSnapshotChanged(object sender, SnapshotChangedEventArgs e)
         {
             OnOtherProjectDependenciesChanged(e.Snapshot, shouldBeResolved: true);

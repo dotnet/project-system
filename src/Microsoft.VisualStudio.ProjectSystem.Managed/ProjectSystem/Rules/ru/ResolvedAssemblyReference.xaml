@@ -57,4 +57,5 @@
   <StringProperty Name="FusionName" Visible="False" ReadOnly="True" Description="Полное fusion-имя разрешенной сборки." />
   <StringProperty Name="ResolvedFrom" Visible="False" ReadOnly="True" Description="{}Репозиторий, в котором хранилась ссылка, с помощью которой было выполнено данное разрешение. (&quot;{GAC}&quot;, если репозиторием был глобальный кэш сборок)." />
   <StringProperty Name="FrameworkFile" Visible="False" ReadOnly="True" Description="Является ли этот файл файлом платформы. Т. е. находится в каталоге или списке распространения целевой платформы." />
+  <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
 </Rule>

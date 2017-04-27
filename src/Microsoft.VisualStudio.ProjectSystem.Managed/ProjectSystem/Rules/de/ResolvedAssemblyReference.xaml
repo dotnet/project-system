@@ -57,4 +57,5 @@
   <StringProperty Name="FusionName" Visible="False" ReadOnly="True" Description="Der vollständige Fusionsname der aufgelösten Assembly." />
   <StringProperty Name="ResolvedFrom" Visible="False" ReadOnly="True" Description="{}Das Repository, das den Verweis enthielt, der für die Auflösung verwendet wurde. (&quot;{GAC}&quot;, wenn er sich im GAC befand)." />
   <StringProperty Name="FrameworkFile" Visible="False" ReadOnly="True" Description="Gibt an, ob es sich bei der Datei um eine Frameworkdatei handelt. (Also ob sie sich im Zielframeworkverzeichnis oder in der redist-Liste befindet.)" />
+  <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
 </Rule>

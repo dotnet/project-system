@@ -57,4 +57,5 @@
   <StringProperty Name="FusionName" Visible="False" ReadOnly="True" Description="解決済みアセンブリの完全な fusion 名です。" />
   <StringProperty Name="ResolvedFrom" Visible="False" ReadOnly="True" Description="{}これを解決するために参照を保持していたリポジトリを示します (GAC の場合は &quot;{GAC}&quot;)。" />
   <StringProperty Name="FrameworkFile" Visible="False" ReadOnly="True" Description="ファイルが Framework ファイルかどうかを示します。つまり、ファイルが Framework のターゲット ディレクトリと再頒布リストのどちらにあったかを示します。" />
+  <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
 </Rule>

@@ -21,4 +21,5 @@
   <StringProperty Name="SDKName" Visible="false" />
   <BoolProperty Name="IsWinMDFile" Visible="false" />
   <StringProperty Name="ImageRuntime" DisplayName="Версия среды выполнения" Description="Версия среды CLR, для которой предназначена данная сборка." Visible="False" ReadOnly="True" />
+  <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
 </Rule>

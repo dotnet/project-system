@@ -136,7 +136,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return false;
             }
 
-            return nodes.All(node => node.Flags.Contains(DependencyTreeFlags.SupportsRemove));
+            var snapshot = DependenciesSnapshotProvider.CurrentSnapshot;
+            if (snapshot == null)
+            {
+                return false;
+            }
+
+            bool canRemove = true;
+            foreach (var node in nodes)
+            {
+                if (!node.Flags.Contains(DependencyTreeFlags.SupportsRemove))
+                {
+                    canRemove = false;
+                    break;
+                }
+
+                var filePath = UnconfiguredProject.GetRelativePath(node.FilePath);
+                if (string.IsNullOrEmpty(filePath))
+                {
+                    continue;
+                }
+
+                var dependency = snapshot.FindDependency(filePath, topLevel:true);
+                if (dependency == null || dependency.Implicit)
+                {
+                    canRemove = false;
+                    break;
+                }
+            }
+
+            return canRemove;
         }
 
         /// <summary>
@@ -220,7 +249,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         continue;
                     }
 
-                    var sharedProjectDependency = snapshot.FindDependency(sharedFilePath);
+                    var sharedProjectDependency = snapshot.FindDependency(sharedFilePath, topLevel:true);
                     if (sharedProjectDependency != null)
                     {
                         sharedFilePath = sharedProjectDependency.Path;
@@ -329,7 +358,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 return;
             }
-            
+
             lock (_treeUpdateLock)
             {
                 if (_treeUpdateQueueTask == null || _treeUpdateQueueTask.IsCompleted)

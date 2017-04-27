@@ -35,10 +35,22 @@
     <Compile Update="ProjectSystem\VS\LanguageServices\VisualBasicCodeDomProvider.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="VisualBasicVSResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>VisualBasicVSResources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="VSPackage.*.resx">
       <DependentUpon>VSPackage.resx</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="VisualBasicVSResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>VisualBasicVSResources.Designer.cs</LastGenOutput>
+      <MergeWithCTO>true</MergeWithCTO>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
