@@ -22,7 +22,7 @@
     <DefineVisualBasicItemSchemas>false</DefineVisualBasicItemSchemas>
   </PropertyGroup>
 
-    <ItemGroup>
+  <ItemGroup>
      <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)VisualBasic.ProjectItemsSchema.xaml;"/>
 
       <!-- Namespace Import List-->
@@ -31,21 +31,32 @@
       </PropertyPageSchema>
 
      <ProjectCapability Include="VB;Managed"/>
+  </ItemGroup>
+
+  <!-- Targets -->
+
+  <!-- Returns Vbc command-line arguments for the language service -->
+  <Target Name="CompileDesignTime"
+          Returns="@(_CompilerCommandLineArgs)"
+          DependsOnTargets="_CheckCompileDesignTimePrerequisite;Compile"
+          Condition="'$(IsCrossTargetingBuild)' != 'true'"
+        >
+
+    <!-- VB Framework projects needs core library references. In the case of Command line scenario, the vbc injects this reference. -->
+    <PropertyGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+      <MSCorlibPath>$(FrameworkPathOverride)\mscorlib.dll</MSCorlibPath>
+      <MSVBPath>$(FrameworkPathOverride)\Microsoft.VisualBasic.dll</MSVBPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <VbcCommandLineArgs Condition="Exists('$(MSCorlibPath)')" Include="/reference:$(MSCorlibPath)"/>
+      <VbcCommandLineArgs Condition="Exists('$(MSVBPath)')" Include="/reference:$(MSVBPath)"/>
     </ItemGroup>
 
-    <!-- Targets -->
-    
-    <!-- Returns Vbc command-line arguments for the language service -->
-    <Target Name="CompileDesignTime"
-            Returns="@(_CompilerCommandLineArgs)"
-            DependsOnTargets="_CheckCompileDesignTimePrerequisite;Compile"
-            Condition="'$(IsCrossTargetingBuild)' != 'true'"
-          >
+    <ItemGroup>
+      <_CompilerCommandLineArgs Include="@(VbcCommandLineArgs)"/>
+    </ItemGroup>
 
-      <ItemGroup>
-        <_CompilerCommandLineArgs Include="@(VbcCommandLineArgs)"/>
-      </ItemGroup>
-        
   </Target>
 
 </Project>
