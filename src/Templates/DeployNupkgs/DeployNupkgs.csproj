@@ -21,6 +21,10 @@
       <NugetPackagesToCopy Include="$(NuGetPackageRoot)\microsoft.dotnet.common.projecttemplates.1.x\$(ProjectTemplateVersion)\microsoft.dotnet.common.projecttemplates.1.x.$(ProjectTemplateVersion).nupkg" />
       <NugetPackagesToCopy Include="$(NuGetPackageRoot)\microsoft.dotnet.test.projecttemplates.1.x\$(ProjectTemplateVersion)\microsoft.dotnet.test.projecttemplates.1.x.$(ProjectTemplateVersion).nupkg" />
     </ItemGroup>
-    <Copy SourceFiles="@(NugetPackagesToCopy)" DestinationFolder="$(OutputPath)" ContinueOnError="true" />
+    <ItemGroup>
+      <NugetPackagesDestination Include="$(OutputPath)\microsoft.dotnet.common.projecttemplates.1.x.1.0.0.nupkg" />
+      <NugetPackagesDestination Include="$(OutputPath)\microsoft.dotnet.test.projecttemplates.1.x.1.0.0.nupkg" />
+    </ItemGroup>
+    <Copy SourceFiles="@(NugetPackagesToCopy)" DestinationFiles="@(NugetPackagesDestination)" ContinueOnError="true" />
   </Target>
 </Project>
