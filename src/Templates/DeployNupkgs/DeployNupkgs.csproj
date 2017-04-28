@@ -1,0 +1,30 @@
+﻿<Project>
+  <Import Project="..\..\..\build\Targets\VSL.Settings.targets" />
+  <PropertyGroup>
+    <SchemaVersion>2.0</SchemaVersion>
+    <OutputType>Library</OutputType>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFramework>net46</TargetFramework>
+    <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
+    <ProjectSystemLayer>VisualStudio</ProjectSystemLayer>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.DotNet.Common.ProjectTemplates.1.x" Version="$(ProjectTemplateVersion)" />
+    <PackageReference Include="Microsoft.DotNet.Test.ProjectTemplates.1.x" Version="$(ProjectTemplateVersion)" />
+  </ItemGroup>
+
+  <Import Project="..\..\..\build\Targets\VSL.Imports.targets" />
+  <Target Name="AfterBuild">
+    <ItemGroup>
+      <NugetPackagesToCopy Include="$(NuGetPackageRoot)\microsoft.dotnet.common.projecttemplates.1.x\$(ProjectTemplateVersion)\microsoft.dotnet.common.projecttemplates.1.x.$(ProjectTemplateVersion).nupkg" />
+      <NugetPackagesToCopy Include="$(NuGetPackageRoot)\microsoft.dotnet.test.projecttemplates.1.x\$(ProjectTemplateVersion)\microsoft.dotnet.test.projecttemplates.1.x.$(ProjectTemplateVersion).nupkg" />
+    </ItemGroup>
+    <ItemGroup>
+      <NugetPackagesDestination Include="$(OutputPath)\microsoft.dotnet.common.projecttemplates.1.x.1.0.0.nupkg" />
+      <NugetPackagesDestination Include="$(OutputPath)\microsoft.dotnet.test.projecttemplates.1.x.1.0.0.nupkg" />
+    </ItemGroup>
+    <Copy SourceFiles="@(NugetPackagesToCopy)" DestinationFiles="@(NugetPackagesDestination)" ContinueOnError="true" />
+  </Target>
+</Project>

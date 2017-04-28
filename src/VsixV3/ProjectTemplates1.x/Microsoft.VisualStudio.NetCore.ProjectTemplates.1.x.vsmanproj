@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  
+  <PropertyGroup>
+    <UseVisualStudioVersion>true</UseVisualStudioVersion>
+  </PropertyGroup>
+  
+  <Import Project="..\..\..\build\Targets\VSL.Settings.targets" />
+
+  <PropertyGroup>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FinalizeManifest>true</FinalizeManifest>
+    <FinalizeSkipLayout>true</FinalizeSkipLayout>
+    <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
+    <OutputPath>$(OutDir)\VsixV3</OutputPath>
+    <IsPackage>true</IsPackage>
+    <FinalizeValidate>false</FinalizeValidate>
+    <ValidateManifest>false</ValidateManifest>
+  </PropertyGroup>
+
+  <Import Project="$(NuGetPackageRoot)\MicroBuild.Core\$(MicroBuildVersion)\build\MicroBuild.Core.props" />
+  <Import Project="$(NuGetPackageRoot)\MicroBuild.Core\$(MicroBuildVersion)\build\MicroBuild.Core.targets" />
+
+  <Target Name="BeforeBuild">
+    <MSBuild Projects="Microsoft.VisualStudio.NetCore.ProjectTemplates.1.x.swixproj" Targets="Build" />
+  </Target>
+
+  <ItemGroup>
+    <MergeManifest Include="$(OutputPath)\Microsoft.VisualStudio.NetCore.ProjectTemplates.1.x.json" />
+  </ItemGroup>
+
+  <Target Name="ValidateManifest" />
+</Project>

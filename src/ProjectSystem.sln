@@ -101,6 +101,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.NetStandard.FShar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.NetStandard.VB.ProjectTemplates.Vsix", "Templates\Microsoft.NetStandard.VB.ProjectTemplates.Vsix\Microsoft.NetStandard.VB.ProjectTemplates.Vsix.csproj", "{CC1FF91F-C0A9-4729-9863-45A688483F84}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeployNupkgs", "Templates\DeployNupkgs\DeployNupkgs.csproj", "{AE328174-EBB5-49CF-B642-DBF6CEB2EA4B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -280,6 +282,10 @@ Global
 		{CC1FF91F-C0A9-4729-9863-45A688483F84}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC1FF91F-C0A9-4729-9863-45A688483F84}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC1FF91F-C0A9-4729-9863-45A688483F84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE328174-EBB5-49CF-B642-DBF6CEB2EA4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE328174-EBB5-49CF-B642-DBF6CEB2EA4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE328174-EBB5-49CF-B642-DBF6CEB2EA4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE328174-EBB5-49CF-B642-DBF6CEB2EA4B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -305,5 +311,6 @@ Global
 		{E5661DF5-A017-43D8-8874-E4B32E4650A4} = {7AC93D71-E528-4BDA-AEEF-47876EC5F5A0}
 		{8CE6132E-DD84-4137-A09C-0C4660DCC98F} = {7AC93D71-E528-4BDA-AEEF-47876EC5F5A0}
 		{CC1FF91F-C0A9-4729-9863-45A688483F84} = {7AC93D71-E528-4BDA-AEEF-47876EC5F5A0}
+		{AE328174-EBB5-49CF-B642-DBF6CEB2EA4B} = {6DE4B49E-AC38-4E35-82CD-D52731503111}
 	EndGlobalSection
 EndGlobal
