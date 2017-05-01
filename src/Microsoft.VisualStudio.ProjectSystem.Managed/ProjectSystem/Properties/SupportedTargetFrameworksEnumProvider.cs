@@ -2,7 +2,6 @@
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
-using System.Linq;
 using System;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
@@ -17,6 +16,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [ImportingConstructor]
         public SupportedTargetFrameworksEnumProvider(IProjectLockService projectLockService, ConfiguredProject configuredProject)
         {
+            Requires.NotNull(projectLockService, nameof(projectLockService));
+            Requires.NotNull(configuredProject, nameof(configuredProject));
             _projectLockService = projectLockService;
             _configuredProject = configuredProject;
         }
