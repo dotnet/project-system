@@ -81,7 +81,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Dim supportedFrameworksArray As Array = Nothing
             VSErrorHandler.ThrowOnFailure(vsFrameworkMultiTargeting.GetSupportedFrameworks(supportedFrameworksArray))
-            supportedFrameworksArray = AddDotNetCoreFramework(supportedFrameworksArray, supportedTargetFrameworksDescriptor)
+            If supportedTargetFrameworksDescriptor IsNot Nothing Then
+                supportedFrameworksArray = AddDotNetCoreFramework(supportedFrameworksArray, supportedTargetFrameworksDescriptor)
+            End If
 
             Dim targetFrameworkMonikerProperty As [Property] = currentProject.Properties.Item(ApplicationPropPage.Const_TargetFrameworkMoniker)
             Dim currentTargetFrameworkMoniker As String = CStr(targetFrameworkMonikerProperty.Value)
