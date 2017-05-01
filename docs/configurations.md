@@ -30,6 +30,22 @@ We’ve fixed the issues with deleting the configurations in 15.3 by not inferri
 And these are the same defaults that VS 2017 RTM had. If the user now renames the Debug configuration to MyDebug then we would simply write `<Configurations>MyDebug;Release</Configurations>` to the project file and we get to keep the clean project file.
  
 ## Breaking change
+
+### TL;DR
+If you had a project that had configurations like this:
+```xml
+<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MyDebug|AnyCPU' " />
+<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MyDebug|x86' " />
+```
+
+change the project to have two properties like this:
+```xml
+<Configurations>MyDebug;Debug;Release</Configurations>
+<Platforms>AnyCPU;x86</Platforms>
+```
+
+#Details
+
 This is a breaking change because we *only* read configurations from these properties now and don't infer them anymore from conditions on propertygroups. If someone had created a new configuration with RTM tools like this
 ```xml
 <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MyDebug|AnyCPU' ">
