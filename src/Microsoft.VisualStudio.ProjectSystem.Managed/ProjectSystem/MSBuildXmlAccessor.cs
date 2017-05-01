@@ -92,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             using (var access = await _projectLockService.ReadLockAsync())
             {
-                var project = await access.GetProjectAsync(configuredProject);
+                var project = await access.GetProjectAsync(configuredProject).ConfigureAwait(true);
                 return project.GetItems(itemType: itemType).Select(i => (i.EvaluatedInclude, i.GetMetadataValue(metadataName))).ToArray();
             }
         }

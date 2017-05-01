@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             public async Task<ICollection<IEnumValue>> GetListedValuesAsync()
             {
                 var enumValues = new List<IEnumValue>();
-                var items = await _projectXmlAccessor.GetItems(_configuredProject, itemType: SupportedTargetFrameworkItemName, metadataName: DisplayNameMetadataName);
+                var items = await _projectXmlAccessor.GetItems(_configuredProject, itemType: SupportedTargetFrameworkItemName, metadataName: DisplayNameMetadataName).ConfigureAwait(false);
 
                 foreach (var item in items)
                 {
