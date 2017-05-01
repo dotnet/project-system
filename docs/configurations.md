@@ -44,7 +44,7 @@ change the project to have two properties like this:
 <Platforms>AnyCPU;x86</Platforms>
 ```
 
-#Details
+### Details
 
 This is a breaking change because we *only* read configurations from these properties now and don't infer them anymore from conditions on propertygroups. If someone had created a new configuration with RTM tools like this
 ```xml
