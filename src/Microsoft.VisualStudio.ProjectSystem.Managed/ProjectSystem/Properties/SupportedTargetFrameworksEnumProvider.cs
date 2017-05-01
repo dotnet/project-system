@@ -6,25 +6,29 @@ using System;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
+    /// <summary>
+    /// Returns the support target frameworks for a particular project. The values are
+    /// read from the SDK's SupportTargetFramework items.
+    /// </summary>
     [ExportDynamicEnumValuesProvider("SupportedTargetFrameworksEnumProvider")]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     internal class SupportedTargetFrameworksEnumProvider : IDynamicEnumValuesProvider
     {
-        private readonly IProjectLockService _projectLockService;
+        private readonly IProjectXmlAccessor _projectXmlAccessor;
         private readonly ConfiguredProject _configuredProject;
 
         [ImportingConstructor]
-        public SupportedTargetFrameworksEnumProvider(IProjectLockService projectLockService, ConfiguredProject configuredProject)
+        public SupportedTargetFrameworksEnumProvider(IProjectXmlAccessor projectXmlAccessor, ConfiguredProject configuredProject)
         {
-            Requires.NotNull(projectLockService, nameof(projectLockService));
+            Requires.NotNull(projectXmlAccessor, nameof(projectXmlAccessor));
             Requires.NotNull(configuredProject, nameof(configuredProject));
-            _projectLockService = projectLockService;
+            _projectXmlAccessor = projectXmlAccessor;
             _configuredProject = configuredProject;
         }
 
         public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair> options)
         {
-            return Task.FromResult<IDynamicEnumValuesGenerator>(new SupportedTargetFrameworksEnumValuesGenerator(_projectLockService, _configuredProject));
+            return Task.FromResult<IDynamicEnumValuesGenerator>(new SupportedTargetFrameworksEnumValuesGenerator(_projectXmlAccessor, _configuredProject));
         }
 
         internal class SupportedTargetFrameworksEnumValuesGenerator : IDynamicEnumValuesGenerator
@@ -32,12 +36,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             private const string SupportedTargetFrameworkItemName = "SupportedTargetFramework";
             private const string DisplayNameMetadataName = "DisplayName";
 
-            private readonly IProjectLockService _projectLockService;
+            private readonly IProjectXmlAccessor _projectXmlAccessor;
             private readonly ConfiguredProject _configuredProject;
 
-            public SupportedTargetFrameworksEnumValuesGenerator(IProjectLockService projectLockService, ConfiguredProject configuredProject)
+            public SupportedTargetFrameworksEnumValuesGenerator(IProjectXmlAccessor projectXmlAccessor, ConfiguredProject configuredProject)
             {
-                _projectLockService = projectLockService;
+                _projectXmlAccessor = projectXmlAccessor;
                 _configuredProject = configuredProject;
             }
 
@@ -46,21 +50,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             public async Task<ICollection<IEnumValue>> GetListedValuesAsync()
             {
                 var enumValues = new List<IEnumValue>();
-                using (var access = await _projectLockService.ReadLockAsync())
-                {
-                    var project = await access.GetProjectAsync(_configuredProject);
-                    var items = project.GetItems(itemType: SupportedTargetFrameworkItemName);
+                var items = await _projectXmlAccessor.GetItems(_configuredProject, itemType: SupportedTargetFrameworkItemName, metadataName: DisplayNameMetadataName);
 
-                    foreach (var item in items)
-                    {
-                        var val = new PageEnumValue(new EnumValue { Name = item.EvaluatedInclude, DisplayName = item.GetMetadataValue(DisplayNameMetadataName) });
-                        enumValues.Add(val);
-                    }
+                foreach (var item in items)
+                {
+                    var val = new PageEnumValue(new EnumValue { Name = item.evaluatedInclude, DisplayName = item.metadataValue });
+                    enumValues.Add(val);
                 }
 
                 return enumValues;
             }
 
+            /// <summary>
+            /// This property is only used to get the enum values, there is no actual
+            /// persisted value in the project. So this method should never be called.
+            /// </summary>
+            /// <param name="userSuppliedValue"></param>
+            /// <returns></returns>
             public Task<IEnumValue> TryCreateEnumValueAsync(string userSuppliedValue)
             {
                 throw new NotImplementedException();

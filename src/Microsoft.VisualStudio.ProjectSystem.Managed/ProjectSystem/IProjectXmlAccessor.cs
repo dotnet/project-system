@@ -45,5 +45,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// </summary>
         /// <returns></returns>
         Task<HashSet<string>> GetProjectItems();
+
+        /// <summary>
+        /// Returns a collection of items.
+        /// </summary>
+        /// <param name="configuredProject">The configured project.</param>
+        /// <param name="itemType">The type of the items to get.</param>
+        /// <param name="metadataName">The name of the metadata to get.</param>
+        /// <returns></returns>
+        Task<ICollection<(string evaluatedInclude, string metadataValue)>> GetItems(ConfiguredProject configuredProject, string itemType, string metadataName);
     }
 }

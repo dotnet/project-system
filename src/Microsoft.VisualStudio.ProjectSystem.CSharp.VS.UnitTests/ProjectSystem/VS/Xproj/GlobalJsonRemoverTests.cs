@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             UnitTestHelper.IsRunningUnitTests = true;
             var globalJsonPath = Path.Combine(Directory, "global.json");
             var solution = IVsSolutionFactory.CreateWithSolutionDirectory(DirectoryInfoCallback);
-            var projectItem = ProjectItemFactory.Create();
+            var projectItem = EnvDTE.ProjectItemFactory.Create();
             var dteSolution = SolutionFactory.ImplementFindProjectItem(path =>
             {
                 Assert.Equal(globalJsonPath, path);
@@ -108,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             UnitTestHelper.IsRunningUnitTests = true;
             var globalJsonPath = Path.Combine(Directory, "global.json");
             var solution = IVsSolutionFactory.CreateWithSolutionDirectory(DirectoryInfoCallback);
-            var projectItem = ProjectItemFactory.Create();
+            var projectItem = EnvDTE.ProjectItemFactory.Create();
             var dteSolution = SolutionFactory.ImplementFindProjectItem(path =>
             {
                 Assert.Equal(globalJsonPath, path);
