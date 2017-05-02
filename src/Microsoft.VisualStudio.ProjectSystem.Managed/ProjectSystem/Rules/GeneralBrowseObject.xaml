@@ -161,4 +161,6 @@
             <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
+
+    <DynamicEnumProperty Name="SupportedTargetFrameworks" DisplayName="Supported TargetFrameworks" EnumProvider="SupportedTargetFrameworksEnumProvider" Visible="False"/>
 </Rule>
