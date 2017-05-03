@@ -3,7 +3,7 @@
   <TemplateData>
     <Name Package="{860A27C0-B665-47F3-BC12-637E16A1050A}" ID="5"/>
     <Description Package="{860A27C0-B665-47F3-BC12-637E16A1050A}" ID="6"/>
-    <Icon Package="{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}" ID="4547" />
+    <Icon Package="{164B10B9-B200-11D0-8C61-00A0C91E29D5}" ID="4500" />
     <ProjectType>VisualBasic</ProjectType>
     <RequiredFrameworkVersion>2.0</RequiredFrameworkVersion>
     <SortOrder>14</SortOrder>
