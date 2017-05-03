@@ -7,13 +7,13 @@ using Xunit;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
     [ProjectSystemTrait]
-    public class DebugPageGuidProviderTests
+    public class LaunchProfilesDebugPageGuidProviderTests
     {
         [Fact]
-        public async Task ProjectDebuggerProvider_GetDebugEngineForFrameworkTests()
+        public async Task LaunchProfilesDebugPageGuidProvider_CheckGuid()
         {
             var guid = new Guid("{0273C280-1882-4ED0-9308-52914672E3AA}");
-            Assert.True(await new DebugPageGuidProvider().GetDebugPropertyPageGuidAsync() == guid);
+            Assert.True(await new LaunchProfilesDebugPageGuidProvider().GetDebugPropertyPageGuidAsync() == guid);
         }
     }
 }
