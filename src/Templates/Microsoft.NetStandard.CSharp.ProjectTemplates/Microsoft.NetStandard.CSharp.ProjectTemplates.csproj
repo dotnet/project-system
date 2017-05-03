@@ -16,7 +16,7 @@
     <ProjectSystemLayer>VisualStudio</ProjectSystemLayer>
   </PropertyGroup>
   <ItemGroup>
-    <VSTemplate Include="ClassLibrary-CSharp-NetStandard.vstemplate">
+    <VSTemplate Include="ClassLibrary.vstemplate">
       <OutputSubPath>.NET Standard</OutputSubPath>
     </VSTemplate>
   </ItemGroup>

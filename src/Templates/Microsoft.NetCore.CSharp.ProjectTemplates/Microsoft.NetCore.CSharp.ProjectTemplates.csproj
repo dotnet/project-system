@@ -16,10 +16,10 @@
     <ProjectSystemLayer>VisualStudio</ProjectSystemLayer>
   </PropertyGroup>
   <ItemGroup>
-    <VSTemplate Include="ConsoleApplication-CSharp-NetCoreApp.vstemplate">
+    <VSTemplate Include="ConsoleApplication.vstemplate">
       <OutputSubPath>.NET Core</OutputSubPath>
     </VSTemplate>
-    <VSTemplate Include="ClassLibrary-CSharp-NetCoreApp.vstemplate">
+    <VSTemplate Include="ClassLibrary.vstemplate">
       <OutputSubPath>.NET Core</OutputSubPath>
     </VSTemplate>
   </ItemGroup>

@@ -1,25 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
+<VSTemplate Version="3.0.0" Type="ProjectGroup" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
   <TemplateData>
-    <Name Package="{860A27C0-B665-47F3-BC12-637E16A1050A}" ID="11" />
-    <Description Package="{860A27C0-B665-47F3-BC12-637E16A1050A}" ID="12" />
+    <Name Package="{52CBD135-1F97-2580-011F-C7CD052E44DE}" ID="521"/>
+    <Description Package="{52CBD135-1F97-2580-011F-C7CD052E44DE}" ID="522"/>
     <Icon Package="{52CBD135-1F97-2580-011F-C7CD052E44DE}" ID="531"/>
-    <ProjectType>FSharp</ProjectType>
+    <ProjectType>VisualBasic</ProjectType>
     <RequiredFrameworkVersion>2.0</RequiredFrameworkVersion>
-    <SortOrder>16</SortOrder>
-    <TemplateID>Microsoft.FSharp.NETCore.XUnitTest</TemplateID>
+    <SortOrder>15</SortOrder>
+    <TemplateID>Microsoft.VisualBasic.NETCore.UnitTest</TemplateID>
     <CreateNewFolder>true</CreateNewFolder>
     <CreateInPlace>true</CreateInPlace>
-    <DefaultName>XUnitTestProject</DefaultName>
+    <DefaultName>UnitTestProject</DefaultName>
     <ProvideDefaultName>true</ProvideDefaultName>
     <PromptForSaveOnCreation>true</PromptForSaveOnCreation>
   </TemplateData>
   <TemplateContent>
     <ProjectCollection/>
     <CustomParameters>
-      <CustomParameter Name="$language$" Value="F#" />
+      <CustomParameter Name="$language$" Value="VB" />
       <CustomParameter Name="$uistyle$" Value="none" />
-      <CustomParameter Name="$groupid$" Value="Microsoft.Test.xUnit" />
+      <CustomParameter Name="$groupid$" Value="Microsoft.Test.MSTest" />
     </CustomParameters>
   </TemplateContent>
   <WizardExtension>
