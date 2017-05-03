@@ -3,7 +3,7 @@
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
-    ///     Provides access to a required Visual Studio proffered service.
+    ///     Provides access to an optional Visual Studio proffered service.
     /// </summary>
     /// <typeparam name="TService">
     ///     The type of the service to retrieve.
@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     /// <typeparam name="TInterface">
     ///     The type of the service to return from <see cref="IVsService{T}.Value"/>
     /// </typeparam>
-    internal interface IVsService<TService, TInterface> : IVsService<TInterface>
+    internal interface IVsOptionalService<TService, TInterface> : IVsOptionalService<TInterface>
     {
     }
 }
