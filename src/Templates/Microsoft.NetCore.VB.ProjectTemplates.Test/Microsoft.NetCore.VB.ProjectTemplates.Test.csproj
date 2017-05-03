@@ -17,10 +17,10 @@
     <ProjectSystemLayer>VisualStudio</ProjectSystemLayer>
   </PropertyGroup>
   <ItemGroup>
-    <VSTemplate Include="MSTest-VB-NetCoreApp.vstemplate">
+    <VSTemplate Include="MSTest.vstemplate">
       <OutputSubPath>.NET Core</OutputSubPath>
     </VSTemplate>
-    <VSTemplate Include="XUnitTest-VB-NetCoreApp.vstemplate">
+    <VSTemplate Include="XUnitTest.vstemplate">
       <OutputSubPath>.NET Core</OutputSubPath>
     </VSTemplate>
   </ItemGroup>
