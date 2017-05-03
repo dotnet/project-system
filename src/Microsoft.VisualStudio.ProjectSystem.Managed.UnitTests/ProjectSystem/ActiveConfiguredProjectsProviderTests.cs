@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Configuration;
@@ -76,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             var result = await provider.GetActiveProjectConfigurationsAsync();
 
-            Assert.Equal(1, result.Objects.Length);
+            Assert.Equal(1, result.Objects.Count);
             Assert.Equal(activeConfiguration, result.Objects[0].Name);
         }
 
@@ -96,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var result = await provider.GetActiveProjectConfigurationsAsync();
 
             var activeConfigs = ProjectConfigurationFactory.CreateMany(expected.Split(';'));
-            Assert.Equal(activeConfigs, result.Objects);
+            Assert.Equal(activeConfigs.OrderBy(c => c.Name), result.Objects.OrderBy(c => c.Name));
             Assert.Equal(new[] { "TargetFramework" }, result.DimensionNames);
         }
 
@@ -120,7 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             
             var result = await provider.GetActiveConfiguredProjectsAsync();
 
-            Assert.Equal(1, result.Objects.Length);
+            Assert.Equal(1, result.Objects.Count);
             Assert.Equal(activeConfiguration, result.Objects[0].ProjectConfiguration.Name);
             Assert.Empty(result.DimensionNames);
         }
@@ -129,7 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var activeConfig = ProjectConfigurationFactory.Create(activeConfiguration);
             var configs = ProjectConfigurationFactory.CreateMany(configurations.Split(';'));
-            var configurationsService = IProjectConfigurationsServiceFactory.ImplementGetKnownProjectConfigurationsAsync(configs);
+            var configurationsService = IProjectConfigurationsServiceFactory.ImplementGetKnownProjectConfigurationsAsync(configs.ToImmutableHashSet());
             var activeConfiguredProjectProvider = IActiveConfiguredProjectProviderFactory.ImplementActiveProjectConfiguration(() => activeConfig);
             var services = IUnconfiguredProjectServicesFactory.Create(activeConfiguredProjectProvider: activeConfiguredProjectProvider, projectConfigurationsService: configurationsService);
             var project = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync((projectConfiguration) => {

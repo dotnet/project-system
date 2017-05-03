@@ -91,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
             else
             {
-                builder.Add(string.Empty, projects.Objects.First());
+                builder.Add(string.Empty, projects.Objects[0]);
             }
 
             return builder.ToImmutable();
@@ -103,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             if (configurations == null)
                 return null;
 
-            var builder = ImmutableArray.CreateBuilder<ConfiguredProject>(configurations.Objects.Length);
+            var builder = ImmutableArray.CreateBuilder<ConfiguredProject>(configurations.Objects.Count);
 
             foreach (ProjectConfiguration configuration in configurations.Objects)
             {
