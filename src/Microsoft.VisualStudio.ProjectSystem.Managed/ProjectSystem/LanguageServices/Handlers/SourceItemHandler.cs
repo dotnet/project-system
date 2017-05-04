@@ -123,13 +123,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 sourceFiles = new HashSet<string>(StringComparers.Paths);
                 _sourceFilesByContext.Add(context, sourceFiles);
             }
-            else if (sourceFiles.Contains(fullPath))
-            {
-                return;
-            }
 
-            sourceFiles.Add(fullPath);
-            context.AddSourceFile(fullPath, folderNames: folderNames, isInCurrentContext: isActiveContext);
+            if (sourceFiles.Add(fullPath))
+            {
+                context.AddSourceFile(fullPath, folderNames: folderNames, isInCurrentContext: isActiveContext);
+            }
         }
 
         private string[] GetFolders(string filePath, IProjectChangeDescription projectChange)
