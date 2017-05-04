@@ -21,7 +21,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public bool IsProjectOutputPaneEnabled
         {
-            get { return !IsEnabled("PROJECTSYSTEM_PROJECTOUTPUTPANEENABLED"); }
+            get
+            {
+#if DEBUG
+                return true;
+#else
+                return IsEnabled("PROJECTSYSTEM_PROJECTOUTPUTPANEENABLED");
+#endif
+            }
         }
 
         private bool IsEnabled(string variable)
