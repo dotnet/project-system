@@ -15,7 +15,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         /// </summary>
         void WriteLine(string text);
 
-
         /// <summary>
         ///     Writes the text representation of the specified array of objects, 
         ///     followed by the current line terminator, to the log using the 
