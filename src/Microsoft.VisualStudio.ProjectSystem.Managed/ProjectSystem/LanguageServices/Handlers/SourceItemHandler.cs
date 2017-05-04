@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             get { return RuleHandlerType.Evaluation; }
         }
 
-        public void Handle(BuildOptions added, BuildOptions removed, IWorkspaceProjectContext context, bool isActiveContext)
+        public void Handle(IProjectVersionedValue<IProjectSubscriptionUpdate> update, BuildOptions added, BuildOptions removed, IWorkspaceProjectContext context, bool isActiveContext)
         {
             Requires.NotNull(added, nameof(added));
             Requires.NotNull(removed, nameof(removed));
@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             }
         }
 
-        public override void Handle(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
+        public override void Handle(IProjectVersionedValue<IProjectSubscriptionUpdate> update, IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
         {
             Requires.NotNull(projectChange, nameof(projectChange));
             Requires.NotNull(context, nameof(context));

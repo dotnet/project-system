@@ -48,6 +48,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     Handles the specified set of changes to a rule, and applies them
         ///     to the given <see cref="IWorkspaceProjectContext"/>.
         /// </summary>
+        /// <param name="update">
+        ///     A <see cref="IProjectVersionedValue{T}"/> of <see cref="IProjectSubscriptionUpdate"/> 
+        ///     representing the overall set of changes made to the project.
+        /// </param>
         /// <param name="projectChange">
         ///     A <see cref="IProjectChangeDescription"/> representing the set of 
         ///     changes made to the project.
@@ -61,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="projectChange"/> is <see langword="null"/>.
         /// </exception>
-        void Handle(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext);
+        void Handle(IProjectVersionedValue<IProjectSubscriptionUpdate> update, IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext);
 
         /// <summary>
         /// Handles clearing any state specific to the given context being released.

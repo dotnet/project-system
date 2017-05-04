@@ -15,6 +15,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     Handles the specified added and removed command-line arguments, and applies 
         ///     them to the given <see cref="IWorkspaceProjectContext"/>.
         /// </summary>
+        /// <param name="update">
+        ///     A <see cref="IProjectVersionedValue{T}"/> of <see cref="IProjectSubscriptionUpdate"/> 
+        ///     representing the overall set of changes made to the project.
+        /// </param>
         /// <param name="added">
         ///     A <see cref="BuildOptions"/> representing the added arguments.
         /// </param>
@@ -34,6 +38,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     </para>
         ///     <paramref name="removed"/> is <see langword="null"/>.
         /// </exception>
-        void Handle(BuildOptions added, BuildOptions removed, IWorkspaceProjectContext context, bool isActiveContext);
+        void Handle(IProjectVersionedValue<IProjectSubscriptionUpdate> update, BuildOptions added, BuildOptions removed, IWorkspaceProjectContext context, bool isActiveContext);
     }
 }

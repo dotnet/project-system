@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             get { return ConfigurationGeneral.SchemaName; }
         }
 
-        public override void Handle(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
+        public override void Handle(IProjectVersionedValue<IProjectSubscriptionUpdate> update, IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
         {
             Requires.NotNull(projectChange, nameof(projectChange));
 
