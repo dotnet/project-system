@@ -5,7 +5,7 @@ The following is a list of known compability issues and behavioral differences b
 ## Builds
 
 ### Design-time builds are run out-of-process.
-Similar to normal builds, the new project system runs [design-time builds](design-time-builds.md) in a separate process instead of within the Visual Studio process. This means that tasks and assemblies adhere to the binding policy of MSBuild.exe regardless of whether they loaded in a design-time build or a normal build.
+Similar to normal builds, the new project system runs [design-time builds](design-time-builds.md) in a separate process instead of within the Visual Studio process. This means that tasks and assemblies adhere to the binding policy of MSBuild.exe regardless of whether they loaded in a design-time build or a normal build. In the legacy project system, design-time builds use the binding policy of Visual Studio (devenv.exe), whereas, normal builds use the binding policy of MSBuild.exe.
 
 ### Design-time builds are asynchronous.
 The legacy project system used to guarantee that a design-time build had occurred by the time certain changes had been done to the project, such as adding or removing files or switching configurations. While easier for components to reason about, this was to the detriment of user experience because this would be done as a UI blocking call.
