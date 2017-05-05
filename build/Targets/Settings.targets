@@ -78,7 +78,7 @@
 
     <SignAssembly Condition="'$(SignAssembly)' == ''">true</SignAssembly>
 
-    <UseRoslynAnalyzers Condition="'$(UseRoslynAnalyzers)' == ''">true</UseRoslynAnalyzers>
+    <UseRoslynAnalyzers Condition="'$(UseRoslynAnalyzers)' == ''">false</UseRoslynAnalyzers>
 
     <Deterministic>True</Deterministic>
 
