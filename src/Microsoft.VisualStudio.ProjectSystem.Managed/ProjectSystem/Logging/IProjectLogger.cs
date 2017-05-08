@@ -10,6 +10,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
     internal interface IProjectLogger
     {
         /// <summary>
+        ///     Gets a value indicating if the logger is enabled.
+        /// </summary>
+        /// <value>
+        ///     <see langword="true"/> if the <see cref="IProjectLogger"/> is enabled and logging to the log; otherwise, <see langword="false"/>.
+        /// </value>
+        bool IsEnabled
+        {
+            get;
+        }
+
+        /// <summary>
         ///     Writes the specified text, followed by the current line terminator, 
         ///     to the log.
         /// </summary>
