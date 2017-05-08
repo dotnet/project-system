@@ -34,18 +34,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
         {
             get { return _options.IsProjectOutputPaneEnabled; }
         }
-
-        public void WriteLine(string format, params object[] arguments)
-        {
-            if (IsEnabled)
-            {
-                // Only allocate if the pane is actually enabled
-                string text = string.Format(CultureInfo.CurrentCulture, format, arguments);
-
-                WriteLineCore(text);
-            }
-        }
-
         public void WriteLine(string text)
         {
             if (IsEnabled)
@@ -54,19 +42,59 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
             }
         }
 
+        public void WriteLine(string format, object argument)
+        {
+            if (IsEnabled)
+            {
+                // Only allocate if the pane is actually enabled, making sure we call through the non-params array version
+                WriteLineCore(string.Format(CultureInfo.CurrentCulture, format, argument));
+            }
+        }
+
+        public void WriteLine(string format, object argument1, object argument2)
+        {
+            if (IsEnabled)
+            {
+                // Only allocate if the pane is actually enabled, making sure we call through the non-params array version
+                WriteLineCore(string.Format(CultureInfo.CurrentCulture, format, argument1, argument2));
+            }
+        }
+
+        public void WriteLine(string format, object argument1, object argument2, object argument3)
+        {
+            if (IsEnabled)
+            {
+                // Only allocate if the pane is actually enabled, making sure we call through the non-params array version
+                WriteLineCore(string.Format(CultureInfo.CurrentCulture, format, argument1, argument2, argument3));
+            }
+        }
+
+        public void WriteLine(string format, params object[] arguments)
+        {
+            if (IsEnabled)
+            {
+                // Only allocate if the pane is actually enabled
+                WriteLineCore(string.Format(CultureInfo.CurrentCulture, format, arguments));
+            }
+        }
+
         private void WriteLineCore(string text)
         {
-            // Extremely naive implementation of a Windows Pane logger - the assumption here is that text is rarely written,
-            // so transitions to the UI thread are uncommon and are fire and forget. If we start writing to this a lot (such 
-            // as via build), then we'll need to implement a better queueing mechanism.
-            _threadingService.Fork(async () => {
+            if (IsEnabled)
+            {
+                // Extremely naive implementation of a Windows Pane logger - the assumption here is that text is rarely written,
+                // so transitions to the UI thread are uncommon and are fire and forget. If we start writing to this a lot (such 
+                // as via build), then we'll need to implement a better queueing mechanism.
+                _threadingService.Fork(async () =>
+                {
 
-                IVsOutputWindowPane pane = await _outputWindowProvider.GetOutputWindowPaneAsync()
-                                                                      .ConfigureAwait(true);
+                    IVsOutputWindowPane pane = await _outputWindowProvider.GetOutputWindowPaneAsync()
+                                                                          .ConfigureAwait(true);
 
-                pane.OutputStringNoPump(text + Environment.NewLine);
+                    pane.OutputStringNoPump(text + Environment.NewLine);
 
-            }, options: ForkOptions.HideLocks | ForkOptions.StartOnMainThread);
+                }, options: ForkOptions.HideLocks | ForkOptions.StartOnMainThread);
+            }
         }
     }
 }
