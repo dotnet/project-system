@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.CodeAnalysis.CSharp;
 using Xunit;
 using Moq;
+using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
@@ -14,8 +15,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         [Fact]
         public void Constructor_NullAsProject_ThrowsArgumentNull()
         {
+            var logger = IProjectLoggerFactory.Create();
+
             Assert.Throws<ArgumentNullException>("project", () => {
-                new SourceItemHandler((UnconfiguredProject)null);
+                new SourceItemHandler((UnconfiguredProject)null, logger);
             });
         }
 
@@ -69,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var project = UnconfiguredProjectFactory.Create(filePath: @"C:\Myproject.csproj");
             var context = IWorkspaceProjectContextFactory.CreateForSourceFiles(project, onSourceFileAdded, onSourceFileRemoved);
 
-            var handler = new SourceItemHandler(project);
+            var handler = CreateInstance(project);
             var projectDir = Path.GetDirectoryName(project.FullPath);
             var added = BuildOptions.FromCommonCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"C:\file1.cs", @"C:\file2.cs", @"C:\file1.cs" }, baseDirectory: projectDir, sdkDirectory: null));
             var empty = BuildOptions.FromCommonCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
@@ -98,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var project = UnconfiguredProjectFactory.Create(filePath: @"C:\ProjectFolder\Myproject.csproj");
             var context = IWorkspaceProjectContextFactory.CreateForSourceFiles(project, onSourceFileAdded, onSourceFileRemoved);
 
-            var handler = new SourceItemHandler(project);
+            var handler = CreateInstance(project);
             var projectDir = Path.GetDirectoryName(project.FullPath);
             var added = BuildOptions.FromCommonCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"file1.cs", @"..\ProjectFolder\file1.cs" }, baseDirectory: projectDir, sdkDirectory: null));
             var removed = BuildOptions.FromCommonCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
@@ -109,11 +112,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Assert.Contains(@"C:\ProjectFolder\file1.cs", sourceFilesPushedToWorkspace);
         }
 
-        private SourceItemHandler CreateInstance(UnconfiguredProject project = null)
+        private SourceItemHandler CreateInstance(UnconfiguredProject project = null, IProjectLogger logger = null)
         {
             project = project ?? UnconfiguredProjectFactory.Create();
+            logger = logger ?? IProjectLoggerFactory.Create();
 
-            return new SourceItemHandler(project);
+            return new SourceItemHandler(project, logger);
         }
     }
 }
