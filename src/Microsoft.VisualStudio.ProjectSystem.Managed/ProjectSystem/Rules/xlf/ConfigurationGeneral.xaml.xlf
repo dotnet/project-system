@@ -115,6 +115,10 @@
         <source>Represents the GUID of object that implements the language service for the project.</source>
         <note></note>
       </trans-unit>
+      <trans-unit id="StringProperty|TargetFrameworkMonikers|DisplayName">
+        <source>Target Framework Monikers</source>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>
