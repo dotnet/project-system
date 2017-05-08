@@ -277,6 +277,11 @@ Per eseguire il debug del progetto, aggiungere a questa soluzione un progetto es
         <target state="new">Framework ({0})</target>
         <note></note>
       </trans-unit>
+      <trans-unit id="OutputWindowPaneTitle">
+        <source>Project</source>
+        <target state="new">Project</target>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>
