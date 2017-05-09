@@ -32,12 +32,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             foreach (CommandLineReference reference in removed.MetadataReferences)
             {
                 var fullPath = _unconfiguredProject.MakeRooted(reference.Reference);
+
+                loggerContext.WriteLine("Removing reference {0}", fullPath);
+
                 context.RemoveMetadataReference(fullPath);
             }
 
             foreach (CommandLineReference reference in added.MetadataReferences)
             {
                 var fullPath = _unconfiguredProject.MakeRooted(reference.Reference);
+
+                loggerContext.WriteLine("Adding reference {0}", fullPath);
+
                 context.AddMetadataReference(fullPath, reference.Properties);
             }
         }
