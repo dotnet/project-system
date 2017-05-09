@@ -26,11 +26,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             foreach (CommandLineAnalyzerReference analyzer in removed.AnalyzerReferences)
             {
+                loggerContext.WriteLine("Removing analyzer {0}", analyzer.FilePath);
+
                 context.RemoveAnalyzerReference(analyzer.FilePath);
             }
 
             foreach (CommandLineAnalyzerReference analyzer in added.AnalyzerReferences)
             {
+                loggerContext.WriteLine("Adding analyzer {0}", analyzer.FilePath);
+
                 context.AddAnalyzerReference(analyzer.FilePath);
             }
         }
