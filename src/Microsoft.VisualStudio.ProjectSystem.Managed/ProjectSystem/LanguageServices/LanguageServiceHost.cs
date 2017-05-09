@@ -299,6 +299,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     return;
                 }
 
+                _logger.WriteLine("Processing rule changes for {0}", _commonServices.Project.FullPath);
+
                 ProjectLoggerContext loggerContext = BeginLoggingContext(update, handlerType, isActiveContext);
 
                 // Broken design time builds sometimes cause updates with no project changes and sometimes cause updates with a project change that has no difference.
