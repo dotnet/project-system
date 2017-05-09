@@ -299,19 +299,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     return;
                 }
 
+                ProjectLoggerContext loggerContext = BeginLoggingContext(update, handlerType, isActiveContext);
+
                 // Broken design time builds sometimes cause updates with no project changes and sometimes cause updates with a project change that has no difference.
                 // We handle the former case here, and the latter case is handled in the CommandLineItemHandler.
                 if (update.Value.ProjectChanges.Count == 0)
                 {
                     if (handlerType == RuleHandlerType.DesignTimeBuild)
                     {
+                        loggerContext.WriteLine("Setting 'last design time build succeeded' to False because we were sent no project changes from the last design-time build.");
                         projectContextToUpdate.LastDesignTimeBuildSucceeded = false;
                     }
 
                     return;
                 }
-
-                ProjectLoggerContext loggerContext = BeginLoggingContext(update, handlerType, isActiveContext);
 
                 foreach (var handler in handlers)
                 {

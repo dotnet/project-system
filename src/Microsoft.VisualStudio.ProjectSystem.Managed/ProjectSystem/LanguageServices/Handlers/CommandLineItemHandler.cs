@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             if (context.LastDesignTimeBuildSucceeded != designTimeBuildSuceeeded)
             {
-                loggerContext.WriteLine("Setting 'last design time build succeeded' to {0}", designTimeBuildSuceeeded);
+                loggerContext.WriteLine("Setting 'last design time build succeeded' to {0} because we were sent no command-line arguments from the last design-time build.", designTimeBuildSuceeeded);
                 context.LastDesignTimeBuildSucceeded = designTimeBuildSuceeeded;
             }
 
