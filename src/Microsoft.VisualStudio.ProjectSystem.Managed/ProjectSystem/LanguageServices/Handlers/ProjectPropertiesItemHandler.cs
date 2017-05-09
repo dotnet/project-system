@@ -37,6 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             {
                 if (Guid.TryParse(projectChange.After.Properties[ConfigurationGeneral.ProjectGuidProperty], out Guid result))
                 {
+                    loggerContext.WriteLine("Setting project GUID to {0}", result);
                     context.Guid = result;
                 }
             }
@@ -53,6 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 var newBinOutputPath = projectChange.After.Properties[ConfigurationGeneral.TargetPathProperty];
                 if (!string.IsNullOrEmpty(newBinOutputPath))
                 {
+                    loggerContext.WriteLine("Setting 'bin output path' to {0}", newBinOutputPath);
                     context.BinOutputPath = newBinOutputPath;
                 }
             }
