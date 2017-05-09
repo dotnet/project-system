@@ -3,6 +3,7 @@
 using System;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
@@ -58,10 +59,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// <param name="isActiveContext">
         ///     Flag indicating if the given <paramref name="context"/> is the active project context.
         /// </param>
+        /// <param name="loggerContext">
+        ///     The <see cref="ProjectLoggerContext"/> context for logging to the log.
+        /// </param>
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="projectChange"/> is <see langword="null"/>.
         /// </exception>
-        void Handle(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext);
+        void Handle(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext, ProjectLoggerContext loggerContext);
 
         /// <summary>
         /// Handles clearing any state specific to the given context being released.
