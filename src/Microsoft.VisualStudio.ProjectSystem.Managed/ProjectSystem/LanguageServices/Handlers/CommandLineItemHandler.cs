@@ -61,10 +61,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             // Check if the design-time build failed, if we have no arguments, then that is likely the 
             // case and we should ignore the results.
 
-            bool designTimeBuildFailed = projectChange.After.Items.Count == 0;
-            loggerContext.WriteLine("Setting 'last design time build succeeded' to {0}", designTimeBuildFailed);
-            context.LastDesignTimeBuildSucceeded = !designTimeBuildFailed;
-            return designTimeBuildFailed;
+            bool designTimeBuildSuceeeded = projectChange.After.Items.Count != 0;
+            loggerContext.WriteLine("Setting 'last design time build succeeded' to {0}", designTimeBuildSuceeeded);
+            context.LastDesignTimeBuildSucceeded = designTimeBuildSuceeeded;
+            return !designTimeBuildSuceeeded;
         }
 
         private static void ProcessOptions(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, ProjectLoggerContext loggerContext)
@@ -74,9 +74,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             string commandLine = string.Join(" ", commandlineArguments);
 
-            loggerContext.WriteLine("Setting options {0}", commandLine);
+            loggerContext.WriteLine("Setting options to {0}", commandLine);
             context.SetOptions(commandLine);
-        }
+        }   
 
         private void ProcessItems(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext, ProjectLoggerContext loggerContext)
         {
