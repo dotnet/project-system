@@ -62,8 +62,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             // case and we should ignore the results.
 
             bool designTimeBuildSuceeeded = projectChange.After.Items.Count != 0;
-            loggerContext.WriteLine("Setting 'last design time build succeeded' to {0}", designTimeBuildSuceeeded);
-            context.LastDesignTimeBuildSucceeded = designTimeBuildSuceeeded;
+
+            if (context.LastDesignTimeBuildSucceeded != designTimeBuildSuceeeded)
+            {
+                loggerContext.WriteLine("Setting 'last design time build succeeded' to {0}", designTimeBuildSuceeeded);
+                context.LastDesignTimeBuildSucceeded = designTimeBuildSuceeeded;
+            }
+
             return !designTimeBuildSuceeeded;
         }
 
