@@ -329,7 +329,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             string version = GetConfiguredProjectVersion(update);
             string configuration = update.Value.ProjectConfiguration.Name;
 
-            return _logger.BeginContext("[Rule: {0}, Config: {1}, ConfiguredProjectVersion: {2}, IsActiveContext: {3}]", handlerType, configuration, version, isActiveContext);
+            return _logger.BeginContext("[{0}, {1}, Version: {2}, IsActiveContext: {3}]", handlerType, configuration, version, isActiveContext);
         }
 
         private string GetConfiguredProjectVersion(IProjectVersionedValue<IProjectSubscriptionUpdate> update)
