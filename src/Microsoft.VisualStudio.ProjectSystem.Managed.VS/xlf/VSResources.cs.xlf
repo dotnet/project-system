@@ -277,6 +277,11 @@ Pokud chcete projekt ladit, přidejte do řešení spustitelný projekt, který 
         <target state="new">Framework ({0})</target>
         <note></note>
       </trans-unit>
+      <trans-unit id="OutputWindowPaneTitle">
+        <source>Project</source>
+        <target state="new">Project</target>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

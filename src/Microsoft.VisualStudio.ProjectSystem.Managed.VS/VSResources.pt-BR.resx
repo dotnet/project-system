@@ -279,4 +279,7 @@ Para depurar esse projeto, adicione um projeto executável a essa solução que 
   <data name="DebugFrameworkMenuText" xml:space="preserve">
     <value>Framework ({0})</value>
   </data>
+  <data name="OutputWindowPaneTitle" xml:space="preserve">
+    <value>Project</value>
+  </data>
 </root>
