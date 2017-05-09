@@ -48,29 +48,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             Requires.NotNull(projectChange, nameof(projectChange));
 
-            if (!ProcessDesignTimeBuildFailure(projectChange, context))
+            if (!ProcessDesignTimeBuildFailure(projectChange, context, loggerContext))
             {
-                ProcessOptions(projectChange, context);
+                ProcessOptions(projectChange, context, loggerContext);
                 ProcessItems(projectChange, context, isActiveContext, loggerContext);
             }
         }
 
-        private static bool ProcessDesignTimeBuildFailure(IProjectChangeDescription projectChange, IWorkspaceProjectContext context)
+        private static bool ProcessDesignTimeBuildFailure(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, ProjectLoggerContext loggerContext)
         {
             // WORKAROUND: https://github.com/dotnet/roslyn-project-system/issues/478
             // Check if the design-time build failed, if we have no arguments, then that is likely the 
             // case and we should ignore the results.
 
             bool designTimeBuildFailed = projectChange.After.Items.Count == 0;
+            loggerContext.WriteLine("Setting 'last design time build succeeded' to {0}", designTimeBuildFailed);
             context.LastDesignTimeBuildSucceeded = !designTimeBuildFailed;
             return designTimeBuildFailed;
         }
 
-        private static void ProcessOptions(IProjectChangeDescription projectChange, IWorkspaceProjectContext context)
+        private static void ProcessOptions(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, ProjectLoggerContext loggerContext)
         {
             // We don't pass differences to Roslyn for options, we just pass them all
             IEnumerable<string> commandlineArguments = projectChange.After.Items.Keys;
-            context.SetOptions(string.Join(" ", commandlineArguments));
+
+            string commandLine = string.Join(" ", commandlineArguments);
+
+            loggerContext.WriteLine("Setting options {0}", commandLine);
+            context.SetOptions(commandLine);
         }
 
         private void ProcessItems(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext, ProjectLoggerContext loggerContext)
