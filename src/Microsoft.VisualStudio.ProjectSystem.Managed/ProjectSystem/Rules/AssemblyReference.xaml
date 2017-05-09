@@ -4,7 +4,7 @@
     Name="AssemblyReference"
     DisplayName="Assembly Reference"
     PageTemplate="generic"
-    Description="Assembly reference properties"
+    Description="Reference Properties"
     xmlns="http://schemas.microsoft.com/build/2009/properties">
     <Rule.DataSource>
         <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />

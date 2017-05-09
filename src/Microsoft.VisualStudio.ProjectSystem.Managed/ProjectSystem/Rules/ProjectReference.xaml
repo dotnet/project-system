@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Rule
-	Name="ProjectReference"
-	DisplayName="Project Reference"
-	PageTemplate="generic"
-	Description="Project reference properties"
-	xmlns="http://schemas.microsoft.com/build/2009/properties">
+    Name="ProjectReference"
+    DisplayName="Project Reference"
+    PageTemplate="generic"
+    Description="Reference Properties"
+    xmlns="http://schemas.microsoft.com/build/2009/properties">
 
     <Rule.DataSource>
         <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
@@ -13,11 +13,11 @@
 
     <BoolProperty Name="ReferenceOutputAssembly"
                   DisplayName="Reference Output Assembly"
-				  Description="A value indicating whether the compiler should include a reference to the target project's primary output assembly." />
+                  Description="A value indicating whether the compiler should include a reference to the target project's primary output assembly." />
 
     <BoolProperty Name="CopyLocalSatelliteAssemblies"
                   DisplayName="Copy Local Satellite Assemblies"
-				  Description="Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory." />
+                  Description="Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory." />
 
     <BoolProperty Name="LinkLibraryDependencies" Visible="False" />
 
