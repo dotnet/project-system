@@ -2,7 +2,6 @@
 
 using System;
 using System.ComponentModel.Composition;
-using System.Globalization;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -36,49 +35,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
         }
         public void WriteLine(string text)
         {
-            if (IsEnabled)
-            {
-                WriteLineCore(text);
-            }
+            WriteLineCore(new FormatArray(text));
         }
 
         public void WriteLine(string format, object argument)
         {
-            if (IsEnabled)
-            {
-                // Only allocate if the pane is actually enabled, making sure we call through the non-params array version
-                WriteLineCore(string.Format(CultureInfo.CurrentCulture, format, argument));
-            }
+            WriteLineCore(new FormatArray(format, argument));
         }
 
         public void WriteLine(string format, object argument1, object argument2)
         {
-            if (IsEnabled)
-            {
-                // Only allocate if the pane is actually enabled, making sure we call through the non-params array version
-                WriteLineCore(string.Format(CultureInfo.CurrentCulture, format, argument1, argument2));
-            }
+            WriteLineCore(new FormatArray(format, argument1, argument2));
         }
 
         public void WriteLine(string format, object argument1, object argument2, object argument3)
         {
-            if (IsEnabled)
-            {
-                // Only allocate if the pane is actually enabled, making sure we call through the non-params array version
-                WriteLineCore(string.Format(CultureInfo.CurrentCulture, format, argument1, argument2, argument3));
-            }
+            WriteLineCore(new FormatArray(format, argument1, argument2, argument3));
         }
 
         public void WriteLine(string format, params object[] arguments)
         {
-            if (IsEnabled)
-            {
-                // Only allocate if the pane is actually enabled
-                WriteLineCore(string.Format(CultureInfo.CurrentCulture, format, arguments));
-            }
+            WriteLineCore(new FormatArray(format, arguments));
         }
 
-        private void WriteLineCore(string text)
+        private void WriteLineCore(FormatArray formatArray)
         {
             if (IsEnabled)
             {
@@ -91,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
                     IVsOutputWindowPane pane = await _outputWindowProvider.GetOutputWindowPaneAsync()
                                                                           .ConfigureAwait(true);
 
-                    pane.OutputStringNoPump(text + Environment.NewLine);
+                    pane.OutputStringNoPump(formatArray.Text + Environment.NewLine);
 
                 }, options: ForkOptions.HideLocks | ForkOptions.StartOnMainThread);
             }
