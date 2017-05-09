@@ -54,12 +54,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             foreach (CommandLineSourceFile sourceFile in removed.SourceFiles)
             {
-                RemoveSourceFile(sourceFile.Path, context);
+                RemoveSourceFile(sourceFile.Path, context, loggerContext);
             }
 
             foreach (CommandLineSourceFile sourceFile in added.SourceFiles)
             {
-                AddSourceFile(sourceFile.Path, null, context, isActiveContext);
+                AddSourceFile(sourceFile.Path, null, context, isActiveContext, loggerContext);
             }
         }
 
@@ -72,12 +72,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             foreach (string filePath in diff.RemovedItems)
             {
-                RemoveSourceFile(filePath, context);
+                RemoveSourceFile(filePath, context, loggerContext);
             }
 
             foreach (string filePath in diff.AddedItems)
             {
-                AddSourceFile(filePath, GetFolders(filePath, projectChange), context, isActiveContext);
+                AddSourceFile(filePath, GetFolders(filePath, projectChange), context, isActiveContext, loggerContext);
             }
 
             foreach (KeyValuePair<string, string> filePaths in diff.RenamedItems)
@@ -85,15 +85,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 string removeFilePath = filePaths.Key;
                 string addFilePath = filePaths.Value;
 
-                RemoveSourceFile(removeFilePath, context);
-                AddSourceFile(addFilePath, GetFolders(addFilePath, projectChange), context, isActiveContext);
+                RemoveSourceFile(removeFilePath, context, loggerContext);
+                AddSourceFile(addFilePath, GetFolders(addFilePath, projectChange), context, isActiveContext, loggerContext);
             }
 
             foreach (string filePath in diff.ChangedItems)
             {
                 // We add and then remove ChangedItems to handle Linked metadata changes
-                RemoveSourceFile(filePath, context);
-                AddSourceFile(filePath, GetFolders(filePath, projectChange), context, isActiveContext);
+                RemoveSourceFile(filePath, context, loggerContext);
+                AddSourceFile(filePath, GetFolders(filePath, projectChange), context, isActiveContext, loggerContext);
             }
         }
 
@@ -105,17 +105,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             return Task.CompletedTask;
         }
 
-        private void RemoveSourceFile(string filePath, IWorkspaceProjectContext context)
+        private void RemoveSourceFile(string filePath, IWorkspaceProjectContext context, ProjectLoggerContext loggerContext)
         {
             string fullPath = _project.MakeRooted(filePath);
 
             if (_sourceFilesByContext.TryGetValue(context, out HashSet<string> sourceFiles) && sourceFiles.Remove(fullPath))
             {
+                loggerContext.WriteLine("Removing source file {0}", fullPath);
                 context.RemoveSourceFile(fullPath);
             }
         }
 
-        private void AddSourceFile(string filePath, string[] folderNames, IWorkspaceProjectContext context, bool isActiveContext)
+        private void AddSourceFile(string filePath, string[] folderNames, IWorkspaceProjectContext context, bool isActiveContext, ProjectLoggerContext loggerContext)
         {
             string fullPath = _project.MakeRooted(filePath);
 
@@ -129,6 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 return;
             }
 
+            loggerContext.WriteLine("Adding source file {0}", fullPath);
             sourceFiles.Add(fullPath);
             context.AddSourceFile(fullPath, folderNames: folderNames, isInCurrentContext: isActiveContext);
         }
