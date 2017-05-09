@@ -103,8 +103,6 @@ pushd %WORKSPACE%\\sdk
 echo *** Build SDK
 call build.cmd -Configuration release -SkipTests || goto :BuildFailed "SDK"
 
-"%MSBUILDEXE%" /m /v:m /p:DeployExtension=True;VSSDKTargetPlatformRegRootSuffix=RoslynDev;Configuration=Release sdk-templates.sln
-
 exit /b 0
 
 :BuildFailed
