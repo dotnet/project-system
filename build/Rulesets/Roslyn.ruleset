@@ -126,8 +126,8 @@
     <Rule Id="IDE0019WithoutSuggestion" Action="Error" />
     <Rule Id="IDE0020" Action="Error" />                      <!-- Use pattern matching                         if (control is Button)                              if (control is Button button)         -->
     <Rule Id="IDE0020WithoutSuggestion" Action="Error" />
-    <Rule Id="IDE0028" Action="Error" />                      <!-- Use coalesce expression                      string y = x == null ? string.Empty : x;            string y = x ?? string.Empty;         -->
-    <Rule Id="IDE0028WithoutSuggestion" Action="Error" />      
+    <Rule Id="IDE0028" Action="Info" />                       <!-- Collection initialization can be simplified                                                                                            -->
+    <Rule Id="IDE0028WithoutSuggestion" Action="Info" />      
     <Rule Id="IDE0029" Action="Error" />                      <!-- Use coalesce expression (nullable)           int? y = x.HasValue ? x.Value : 0                   int? y = x ?? 0;                      -->
     <Rule Id="IDE0029WithoutSuggestion" Action="Error" />     
     <Rule Id="IDE0030" Action="Error" />                      <!-- Use null propagation                         string y = x == null ? null : x.ToLower()           string y = x?.ToLower();              -->

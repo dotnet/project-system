@@ -1,0 +1,36 @@
+<Project>
+  <Import Project="..\..\build\Targets\VSL.Settings.targets" />
+  <PropertyGroup>
+    <RootNamespace>Microsoft.VisualStudio</RootNamespace>
+    <TargetFramework>net46</TargetFramework>
+    <SignAssembly>true</SignAssembly>
+    <Nonshipping>true</Nonshipping>
+    <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
+    <OutDir>$(OutDir)IntegrationTests\</OutDir>
+    <ProjectSystemLayer>VisualStudio</ProjectSystemLayer>
+    <ProjectSystemProjectType>Test</ProjectSystemProjectType>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="EnvDTE" Version="8.0.1" />
+    <PackageReference Include="EnvDTE80" Version="8.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.IntegrationTest.Utilities" Version="2.3.0-beta2-61711-06" />
+    <PackageReference Include="Microsoft.VisualStudio.LanguageServices" Version="[2.3.0-beta2-61711-06]" />
+    <PackageReference Include="System.Reflection.Metadata" Version="[1.4.2]" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests\Properties\AssemblyAttributes.cs">
+      <Link>Properties\AssemblyAttributes.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Common\Test\App.config">
+      <Link>App.config</Link>
+    </None>
+  </ItemGroup>
+  <Import Project="..\..\build\Targets\VSL.Imports.targets" />
+  <Import Project="..\..\build\Targets\Roslyn.Toolsets.Xunit.targets" />
+</Project>
