@@ -35,30 +35,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
         }
         public void WriteLine(string text)
         {
-            WriteLineCore(new FormatArray(text));
+            WriteLine(new FormatArray(text));
         }
 
         public void WriteLine(string format, object argument)
         {
-            WriteLineCore(new FormatArray(format, argument));
+            WriteLine(new FormatArray(format, argument));
         }
 
         public void WriteLine(string format, object argument1, object argument2)
         {
-            WriteLineCore(new FormatArray(format, argument1, argument2));
+            WriteLine(new FormatArray(format, argument1, argument2));
         }
 
         public void WriteLine(string format, object argument1, object argument2, object argument3)
         {
-            WriteLineCore(new FormatArray(format, argument1, argument2, argument3));
+            WriteLine(new FormatArray(format, argument1, argument2, argument3));
         }
 
         public void WriteLine(string format, params object[] arguments)
         {
-            WriteLineCore(new FormatArray(format, arguments));
+            WriteLine(new FormatArray(format, arguments));
         }
 
-        private void WriteLineCore(FormatArray formatArray)
+        private void WriteLine(FormatArray formatArray)
         {
             if (IsEnabled)
             {

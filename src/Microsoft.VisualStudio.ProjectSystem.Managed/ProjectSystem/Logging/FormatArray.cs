@@ -68,27 +68,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
             _arguments = arguments;
         }
 
-        public int Length
-        {
-            get { return _arguments.Length; }
-        }
-
         public string Text
         {
             get
             {
+                int length = _arguments.Length;
+
                 // Making sure we call through the non-params array version of String.Format 
                 // where possible to avoid "params" array allocation.
-                if (Length == 0)
+                if (length == 0)
                     return _format;
 
-                if (Length == 1)
+                if (length == 1)
                     return string.Format(CultureInfo.CurrentCulture, _format, _argument1);
 
-                if (Length == 2)
+                if (length == 2)
                     return string.Format(CultureInfo.CurrentCulture, _format, _argument1, _argument2);
 
-                if (Length == 3)
+                if (length == 3)
                     return string.Format(CultureInfo.CurrentCulture, _format, _argument1, _argument2, _argument3);
 
                 return string.Format(CultureInfo.CurrentCulture, _format, _arguments);
