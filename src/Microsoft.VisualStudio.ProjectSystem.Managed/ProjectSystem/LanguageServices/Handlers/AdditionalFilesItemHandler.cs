@@ -26,11 +26,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             foreach (CommandLineSourceFile additionalFile in removed.AdditionalFiles)
             {
+                loggerContext.WriteLine("Removing additional file {0}", additionalFile.Path);
+
                 context.RemoveAdditionalFile(additionalFile.Path);
             }
 
             foreach (CommandLineSourceFile additionalFile in added.AdditionalFiles)
             {
+                loggerContext.WriteLine("Adding additional file {0}", additionalFile.Path);
+
                 context.AddAdditionalFile(additionalFile.Path, isInCurrentContext: isActiveContext);
             }
         }
