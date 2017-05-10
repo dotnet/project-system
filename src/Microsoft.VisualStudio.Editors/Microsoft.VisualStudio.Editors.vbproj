@@ -90,11 +90,6 @@
       <DependentUpon>MyExtensibilityPropPage.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Update="Package\EditorToolsOptionsPanel.*.resx">
-      <DependentUpon>EditorToolsOptionsPanel.vb</DependentUpon>
-      <LogicalName>Microsoft.VisualStudio.Editors.Package.EditorToolsOptionsPanel.resources</LogicalName>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Update="PropPages\AdvancedServicesDialog.resx">
       <DependentUpon>AdvancedServicesDialog.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.AdvancedServicesDialog.resources</LogicalName>
