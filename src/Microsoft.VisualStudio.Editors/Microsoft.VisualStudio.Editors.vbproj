@@ -90,11 +90,6 @@
       <DependentUpon>MyExtensibilityPropPage.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Update="Package\EditorToolsOptionsPanel.resx">
-      <DependentUpon>EditorToolsOptionsPanel.vb</DependentUpon>
-      <LogicalName>Microsoft.VisualStudio.Editors.Package.EditorToolsOptionsPanel.resources</LogicalName>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Update="Package\EditorToolsOptionsPanel.*.resx">
       <DependentUpon>EditorToolsOptionsPanel.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.Package.EditorToolsOptionsPanel.resources</LogicalName>
@@ -582,18 +577,6 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Update="MyExtensibility\MyExtensionListView.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="package\EditorToolsOptionsPage.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="package\EditorToolsOptionsPanel.Designer.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="package\EditorToolsOptionsPanel.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="package\ScalingDialogPage.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="PropPages\AdvancedServicesDialog.vb">
