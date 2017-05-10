@@ -4,7 +4,7 @@
     Name="AnalyzerReference"
     DisplayName="Analyzer Reference"
     PageTemplate="generic"
-    Description="Analyzer reference properties"
+    Description="Analyzer Properties"
     xmlns="http://schemas.microsoft.com/build/2009/properties">
     <Rule.DataSource>
         <DataSource Persistence="ProjectFile" ItemType="Analyzer" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext"

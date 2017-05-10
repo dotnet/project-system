@@ -19,3 +19,13 @@ We use the same coding style conventions as outlined in [.NET Framework Coding S
 - We favor a single Assert per unit test.
 - We use the `Method_Setup_Behavior` naming style for unit tests, for example, `GetProperty_NullAsName_ThrowsArgument` or `CalculateValues_WhenDisposed_ReturnsNull`
 
+# Guidelines
+
+## Data
+- DO NOT mix snapshot and "live" project data in the same component. 
+
+For example, listening to data flow blocks from `IProjectSubscriptionService` and then reading properties from `ProjectProperties` within the callback will lead to inconsistent results. The dataflow represents a "snapshot" of the project from changes in the past, whereas ProjectProperties represents the actual live project. These will not always agree. The same applies to consuming other CPS APIs from within a dataflow block, the majority of them use live data to provide results and hence will return results inconsistent with the snapshot that you are reading in the dataflow.
+
+- DO NOT parse or attempt to reason about the values of properties that make up the dimensions for a project configuration; `$(Configuration)`, `$(Platform)` and `$(TargetFramework)`, and their plural counterparts; `$(Configurations)`, `$(Platforms)` and `$(TargetFrameworks)`.
+
+These properties are user "aliases" and should only be used for conditions, display and grouping purposes. Instead, the project system should be using their canonical equivalents; `$(PlatformTarget)` instead of `$(Platform)`, and `$(TargetFrameworkMoniker)` instead of `$(TargetFramework)`.
