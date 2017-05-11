@@ -252,6 +252,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _manualPageScaling As Boolean = False
 
         'Backcolor for all property pages
+        <Obsolete("Colors should be retrieved directly from the theming service")>
         Public Shared ReadOnly PropPageBackColor As Color = SystemColors.Control
 
         Private _activated As Boolean = True
