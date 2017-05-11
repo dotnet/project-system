@@ -98,6 +98,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         'The service provider to use.  May be Nothing
         Private _serviceProvider As IServiceProvider
 
+        Private _UIShellService As IVsUIShell
+        Private _UIShell5Service As IVsUIShell5
+
         'Backs the PreferredButtonInSwitchableSlot property
         Private _preferredButtonForSwitchableSlot As ProjectDesignerTabButton
 
@@ -153,22 +156,40 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Property
 
         ''' <summary>
+        ''' Attempts to obtain the IVsUIShell interface.
+        ''' </summary>
+        ''' <value>The IVsUIShell service if found, otherwise null</value>
+        ''' <remarks>Uses the publicly-obtained ServiceProvider property, if it was set.</remarks>
+        Private ReadOnly Property VsUIShellService() As IVsUIShell
+            Get
+                If (_UIShellService Is Nothing) Then
+                    If Common.VBPackageInstance IsNot Nothing Then
+                        _UIShellService = TryCast(Common.VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
+                    ElseIf ServiceProvider IsNot Nothing Then
+                        _UIShellService = TryCast(ServiceProvider.GetService(GetType(IVsUIShell)), IVsUIShell)
+                    End If
+                End If
+
+                Return _UIShellService
+            End Get
+        End Property
+
+        ''' <summary>
         ''' Attempts to obtain the IVsUIShell5 interface.
         ''' </summary>
         ''' <value>The IVsUIShell5 service if found, otherwise null</value>
         ''' <remarks>Uses the publicly-obtained ServiceProvider property, if it was set.</remarks>
         Private ReadOnly Property VsUIShell5Service() As IVsUIShell5
             Get
-                Dim sp As IServiceProvider = ServiceProvider
-                If sp IsNot Nothing Then
-                    Dim vsUiShell As IVsUIShell = TryCast(sp.GetService(GetType(IVsUIShell)), IVsUIShell)
-                    If vsUiShell IsNot Nothing Then
-                        Dim uIShell2Service As IVsUIShell5 = TryCast(vsUiShell, IVsUIShell5)
-                        Return uIShell2Service
+                If (_UIShell5Service Is Nothing) Then
+                    Dim VsUIShell = VsUIShellService
+
+                    If (VsUIShell IsNot Nothing) Then
+                        _UIShell5Service = TryCast(VsUIShell, IVsUIShell5)
                     End If
                 End If
 
-                Return Nothing
+                Return _UIShell5Service
             End Get
         End Property
 
