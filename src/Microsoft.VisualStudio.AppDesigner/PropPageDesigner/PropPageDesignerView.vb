@@ -553,7 +553,12 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
         Private Sub OnThemeChanged()
             Dim VsUIShell5 = VsUIShell5Service
-            BackColor = ShellUtil.GetProjectDesignerThemeColor(VsUIShell5Service, "Background", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Control)
+            If TypeOf PropPage Is PropPageBase AndAlso CType(PropPage, PropPageBase).SupportsTheming Then
+                BackColor = ShellUtil.GetProjectDesignerThemeColor(VsUIShell5Service, "Background", __THEMEDCOLORTYPE.TCT_Background, SystemColors.ControlLight)
+            Else
+                BackColor = SystemColors.Control
+            End If
+
             ConfigurationPanel.BackColor = BackColor
             PropertyPagePanel.BackColor = BackColor
         End Sub
@@ -625,6 +630,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     End If
 
                     _isPageActivated = True
+                    OnThemeChanged()
 
                     'Is the control hosted natively via SetParent?
                     If PropertyPagePanel.Controls.Count > 0 Then

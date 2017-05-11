@@ -271,6 +271,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Get
         End Property
 
+        Public Overridable ReadOnly Property SupportsTheming() As Boolean
+            Get
+                Return False
+            End Get
+        End Property
+
 
         Private Sub IPropertyPage2_Activate(hWndParent As IntPtr, pRect() As RECT, bModal As Integer) Implements IPropertyPage2.Activate, IPropertyPage.Activate
 

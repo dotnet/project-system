@@ -315,6 +315,16 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Get
         End Property
 
+        ''' <summary>
+        '''  Return a boolean value that indicates whether or not the control supports the color theming service
+        ''' </summary>
+        ''' <returns></returns>
+        Public Overridable ReadOnly Property SupportsTheming() As Boolean
+            Get
+                Return False
+            End Get
+        End Property
+
         Public ReadOnly Property ProjectHierarchy() As IVsHierarchy
             Get
                 Return _projectHierarchy
@@ -3847,8 +3857,12 @@ NextControl:
         End Function
 
         Private Sub OnThemeChanged()
-            Dim VsUIShell5 = VsUIShell5Service
-            BackColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell5, "Background", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Control)
+            If SupportsTheming Then
+                Dim VsUIShell5 = VsUIShell5Service
+                BackColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell5, "Background", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Control)
+            Else
+                BackColor = SystemColors.Control
+            End If
         End Sub
 
         ''' <summary>
