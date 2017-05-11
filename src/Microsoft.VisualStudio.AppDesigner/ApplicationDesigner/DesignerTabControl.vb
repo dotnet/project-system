@@ -44,7 +44,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <remarks></remarks>
         Private WithEvents _broadcastMessageEventsHelper As Common.ShellUtil.BroadcastMessageEventsHelper
 
-
+        Public Event ThemeChanged(sender As Object, args As EventArgs)
 
 #Region " Component Designer generated code "
 
@@ -238,6 +238,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
             'Force the renderer to recreate its GDI objects
             _renderer.CreateGDIObjects(True)
+
+            RaiseEvent ThemeChanged(Me, EventArgs.Empty)
         End Sub
 
 
