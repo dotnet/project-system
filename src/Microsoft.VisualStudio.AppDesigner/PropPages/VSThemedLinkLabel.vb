@@ -21,13 +21,11 @@ Public Class VSThemedLinkLabel
 
     Public Sub SetThemedColor(vsUIShell5 As IVsUIShell5)
 
-        Dim environmentThemeCategory As Guid = New Guid("624ed9c3-bdfd-41fa-96c3-7c824ea32e3d")
-
         ' The default value is the actual value of DiagReportLinkTextHover and DiagReportLinkText defined by Dev11
-        _vsThemedLinkColorHover = ShellUtil.GetDesignerThemeColor(vsUIShell5, environmentThemeCategory, "PanelHyperlinkHover", __THEMEDCOLORTYPE.TCT_Background, Color.FromArgb(&HFF1382CE))
-        _vsThemedLinkColor = ShellUtil.GetDesignerThemeColor(vsUIShell5, environmentThemeCategory, "PanelHyperlink", __THEMEDCOLORTYPE.TCT_Background, Color.FromArgb(&HFF1382CE))
+        _vsThemedLinkColorHover = ShellUtil.GetEnvironmentThemeColor(vsUIShell5, "PanelHyperlinkHover", __THEMEDCOLORTYPE.TCT_Background, Color.FromArgb(&HFF1382CE))
+        _vsThemedLinkColor = ShellUtil.GetEnvironmentThemeColor(vsUIShell5, "PanelHyperlink", __THEMEDCOLORTYPE.TCT_Background, Color.FromArgb(&HFF1382CE))
 
-        ActiveLinkColor = ShellUtil.GetDesignerThemeColor(vsUIShell5, environmentThemeCategory, "PanelHyperlinkPressed", __THEMEDCOLORTYPE.TCT_Background, Color.FromArgb(&HFF1382CE))
+        ActiveLinkColor = ShellUtil.GetEnvironmentThemeColor(vsUIShell5, "PanelHyperlinkPressed", __THEMEDCOLORTYPE.TCT_Background, Color.FromArgb(&HFF1382CE))
         LinkColor = _vsThemedLinkColor
         LinkBehavior = LinkBehavior.HoverUnderline
     End Sub
