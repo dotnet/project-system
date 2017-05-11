@@ -51,8 +51,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
             'Add any initialization after the InitializeComponent() call
 
-            BackColor = PropPageUserControlBase.PropPageBackColor
-
             ' Scale the width of the Configuration/Platform combo boxes
             ConfigurationComboBox.Width = DpiHelper.LogicalToDeviceUnitsX(ConfigurationComboBox.Width)
             PlatformComboBox.Width = DpiHelper.LogicalToDeviceUnitsX(PlatformComboBox.Width)
@@ -228,6 +226,9 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         Private _rootDesigner As PropPageDesignerRootDesigner
         Private _projectHierarchy As IVsHierarchy
 
+        Private _UIShellService As IVsUIShell
+        Private _UIShell5Service As IVsUIShell5
+
         ' The ConfigurationState object from the project designer.  This is shared among all the prop page designers
         '   for this project designer.
         Private _configurationState As ConfigurationState
@@ -249,6 +250,9 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
         'True iff the property page is hosted through native SetParent and not as a Windows Form child control
         Private _isNativeHostedPropertyPage As Boolean
+
+        'Listen for font/color changes from the shell
+        Private WithEvents _broadcastMessageEventsHelper As ShellUtil.BroadcastMessageEventsHelper
 
 #Region "Constructor"
 
@@ -334,6 +338,41 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             Set(Value As Boolean)
                 _isConfigPage = Value
             End Set
+        End Property
+
+        ''' <summary>
+        ''' Retrieves the IVsUIShell service
+        ''' </summary>
+        ''' <remarks></remarks>
+        Private ReadOnly Property VsUIShellService() As IVsUIShell
+            Get
+                If (_UIShellService Is Nothing) Then
+                    If VBPackageInstance IsNot Nothing Then
+                        _UIShellService = TryCast(VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
+                    Else
+                        _UIShellService = TryCast(GetService(GetType(IVsUIShell)), IVsUIShell)
+                    End If
+                End If
+
+                Return _UIShellService
+            End Get
+        End Property
+
+        ''' <summary>
+        ''' Retrieves the IVsUIShell5 service
+        ''' </summary>
+        ''' <remarks></remarks>
+        Private ReadOnly Property VsUIShell5Service() As IVsUIShell5
+            Get
+                If (_UIShell5Service Is Nothing) Then
+                    Dim VsUiShell As IVsUIShell = VsUIShellService
+                    If VsUiShell IsNot Nothing Then
+                        _UIShell5Service = TryCast(VsUiShell, IVsUIShell5)
+                    End If
+                End If
+
+                Return _UIShell5Service
+            End Get
         End Property
 
 
@@ -512,6 +551,27 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             End If
         End Sub
 
+        Private Sub OnThemeChanged()
+            Dim VsUIShell5 = VsUIShell5Service
+            BackColor = ShellUtil.GetProjectDesignerThemeColor(VsUIShell5Service, "Background", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Control)
+            ConfigurationPanel.BackColor = BackColor
+            PropertyPagePanel.BackColor = BackColor
+        End Sub
+
+        ''' <summary>
+        ''' We've gotta tell the renderer whenver the system colors change...
+        ''' </summary>
+        ''' <param name="msg"></param>
+        ''' <param name="wparam"></param>
+        ''' <param name="lparam"></param>
+        ''' <remarks></remarks>
+        Private Sub OnBroadcastMessageEventsHelperBroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr) Handles _broadcastMessageEventsHelper.BroadcastMessage
+            Select Case msg
+                Case win.WM_PALETTECHANGED, win.WM_SYSCOLORCHANGE, win.WM_THEMECHANGED
+                    OnThemeChanged()
+            End Select
+        End Sub
+
         ''' <summary>
         ''' Show the property page 
         ''' </summary>
@@ -673,16 +733,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <remarks></remarks>
         Private Sub SetSite(RootDesigner As PropPageDesignerRootDesigner) 'Implements OLE.Interop.IObjectWithSite.SetSite
             _rootDesigner = RootDesigner
-
-            'We used to use a lighter color than SystemColors.Control (and we would get it from the color service).
-            '  But that causes issues because a) we can't control disabled control colors, b) we have problems when our
-            '  pages are hosted in another property page frame with different colors (e.g., C++), and c) we have problems
-            '  when hosting a native property page over which we have no color control.
-            'So now we simply use SystemColors.Control all the time (constant on PropPageUserControlBase).
-            'Me.BackColor = GetPropertyPageBackColor(System.Drawing.SystemColors.ControlLight)
-
-            ConfigurationPanel.BackColor = BackColor
-            PropertyPagePanel.BackColor = BackColor
+            _broadcastMessageEventsHelper = New ShellUtil.BroadcastMessageEventsHelper(Me)
+            OnThemeChanged()
         End Sub
 
         ''' <summary>
@@ -1408,55 +1460,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         End Sub
 
 #End Region
-
-
-#If 0 Then
-        Protected Function GetPropertyPageBackColor(DefaultColor As Color) As Color
-            Dim bkcolor As Color = DefaultColor
-            Dim VsUIShell2 As IVsUIShell2 = VsUIShell2Service()
-            If VsUIShell2 IsNot Nothing Then
-                Dim agbrValue As UInteger
-                VSErrorHandler.ThrowOnFailure(VsUIShell2.GetVSSysColorEx(VSSYSCOLOREX.VSCOLOR_TOOLBOX_GRADIENTLIGHT, agbrValue))
-                Try
-                    bkcolor = ColorRefToColor(agbrValue)
-                Catch ex As Exception When Not Common.IsUnrecoverable(ex)
-                    'Eat this if the color isn't supported
-                    Debug.Fail(ex.ToString())
-                End Try
-            End If
-            Return bkcolor
-        End Function
-
-        Private Function ColorRefToColor(abgrValue As UInteger) As Color
-            Return Color.FromArgb(CInt(abgrValue And &HFFUI), CInt((abgrValue And &HFF00UI) >> 8), CInt((abgrValue And &HFF0000UI) >> 16))
-        End Function
-
-        'Service for getting color info from the VS Shell
-        Private m_UIShell2Service As IVsUIShell2
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' <value></value>
-        ''' <remarks></remarks>
-        <Browsable(False), _
-        DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)> _
-        Public ReadOnly Property VsUIShell2Service() As IVsUIShell2
-            Get
-                If (m_UIShell2Service Is Nothing) Then
-                    Dim VsUiShell As IVsUIShell
-                    VsUiShell = TryCast(GetService(GetType(IVsUIShell)), IVsUIShell)
-                    If VsUiShell Is Nothing AndAlso VBPackage.Instance IsNot Nothing Then
-                        VsUiShell = TryCast(VBPackage.Instance.GetService(GetType(IVsUIShell)), IVsUIShell)
-                    End If
-                    If VsUiShell IsNot Nothing Then
-                        m_UIShell2Service = TryCast(VsUiShell, IVsUIShell2)
-                    End If
-                End If
-                Return m_UIShell2Service
-            End Get
-        End Property
-#End If
 
 
         ''' <summary>
