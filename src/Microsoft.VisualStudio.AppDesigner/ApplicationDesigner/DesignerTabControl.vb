@@ -229,11 +229,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Protected Overridable Sub OnThemeChanged()
             'Update our themed colors
             Dim VsUIShell5 = VsUIShell5Service
-            _hostingPanel.BackColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell5Service, "Background", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Control)
+            _hostingPanel.BackColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell5Service, "Background", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Window)
 
             'Update our system colors
             Dim VsUIShell2 = VsUIShell2Service
-            OverflowButton.FlatAppearance.BorderColor = Common.ShellUtil.GetColor(VsUIShell2, __VSSYSCOLOREX.VSCOLOR_COMMANDBAR_BORDER, SystemColors.MenuText)
+            OverflowButton.FlatAppearance.BorderColor = Common.ShellUtil.GetColor(VsUIShell2, __VSSYSCOLOREX.VSCOLOR_COMMANDBAR_BORDER, SystemColors.WindowFrame)
             OverflowButton.FlatAppearance.MouseOverBackColor = Common.ShellUtil.GetColor(VsUIShell2, __VSSYSCOLOREX.VSCOLOR_COMMANDBAR_HOVER, SystemColors.Highlight)
 
             'Force the renderer to recreate its GDI objects

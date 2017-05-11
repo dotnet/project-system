@@ -3856,12 +3856,12 @@ NextControl:
             End If
         End Function
 
-        Private Sub OnThemeChanged()
+        Protected Overridable Sub OnThemeChanged()
             If SupportsTheming Then
                 Dim VsUIShell5 = VsUIShell5Service
-                BackColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell5, "Background", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Control)
+                BackColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell5, "Background", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Window)
             Else
-                BackColor = SystemColors.Control
+                BackColor = SystemColors.Window
             End If
         End Sub
 

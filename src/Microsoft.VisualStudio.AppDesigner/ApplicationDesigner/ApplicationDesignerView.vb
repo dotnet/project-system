@@ -1240,7 +1240,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         Protected Overrides Sub OnThemeChanged()
             Dim VsUIShell5 = VsUIShell5Service
-            BackColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell5, "Background", __THEMEDCOLORTYPE.TCT_Background, Drawing.SystemColors.ControlLight)
+            BackColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell5, "Background", __THEMEDCOLORTYPE.TCT_Background, Drawing.SystemColors.Window)
 
             MyBase.OnThemeChanged()
         End Sub

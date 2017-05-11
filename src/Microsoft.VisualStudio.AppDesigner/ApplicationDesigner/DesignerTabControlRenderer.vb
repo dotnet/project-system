@@ -246,10 +246,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 '  do the right thing when not hosted inside Visual Studio, and change according to the theme.
 
 
-                _controlBackgroundColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell, "Background", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Control)
+                _controlBackgroundColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell, "Background", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Window)
 
-                _buttonForegroundColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell, "CategoryTab", __THEMEDCOLORTYPE.TCT_Foreground, SystemColors.ControlText)
-                _buttonBackgroundColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell, "CategoryTab", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Control)
+                _buttonForegroundColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell, "CategoryTab", __THEMEDCOLORTYPE.TCT_Foreground, SystemColors.WindowText)
+                _buttonBackgroundColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell, "CategoryTab", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Window)
 
                 _selectedButtonForegroundColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell, "SelectedCategoryTab", __THEMEDCOLORTYPE.TCT_Foreground, SystemColors.HighlightText)
                 _selectedButtonBackgroundColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell, "SelectedCategoryTab", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Highlight)
