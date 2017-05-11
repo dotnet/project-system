@@ -53,7 +53,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             '
             SuspendLayout()
             AutoScroll = False
-            BackColor = Drawing.SystemColors.ControlLight
             Name = "ApplicationDesignerView"
             ResumeLayout(False)
             PerformLayout()
@@ -1237,6 +1236,13 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             If SelectedIndex <> _activePanelIndex Then
                 SelectedIndex = _activePanelIndex
             End If
+        End Sub
+
+        Protected Overrides Sub OnThemeChanged()
+            Dim VsUIShell5 = VsUIShell5Service
+            BackColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell5, "Background", __THEMEDCOLORTYPE.TCT_Background, Drawing.SystemColors.ControlLight)
+
+            MyBase.OnThemeChanged()
         End Sub
 
 
