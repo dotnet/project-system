@@ -29,14 +29,20 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         'Backs up the ServiceProvider property
         Private _serviceProvider As IServiceProvider
 
+        'Backs up the VsUIShellService property
+        Private _UIShellService As IVsUIShell
+
+        'Backs up the VsUIShell2Service property
+        Private _UIShell2Service As IVsUIShell2
+
+        'Backs up the VsUIShell5Service property
+        Private _UIShell5Service As IVsUIShell5
+
         ''' <summary>
         '''  Listen for font/color changes from the shell
         ''' </summary>
         ''' <remarks></remarks>
         Private WithEvents _broadcastMessageEventsHelper As Common.ShellUtil.BroadcastMessageEventsHelper
-
-        Private ReadOnly _defaultOverflowBorderColor As Color = SystemColors.MenuText
-        Private ReadOnly _defaultOverflowHoverColor As Color = SystemColors.Highlight
 
 
 
@@ -98,7 +104,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <remarks></remarks>
         Private Sub Initialize()
             _hostingPanel = New Panel()
-            _hostingPanel.BackColor = PropertyPages.PropPageUserControlBase.PropPageBackColor
             _hostingPanel.Visible = True
             _hostingPanel.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Bottom Or AnchorStyles.Right
             _hostingPanel.AutoScroll = True
@@ -129,8 +134,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 .Name = "OverflowButton"
                 .Text = ""
                 .AccessibleName = My.Resources.Designer.APPDES_OverflowButton_AccessibilityName
-                .FlatAppearance.BorderColor = _defaultOverflowBorderColor
-                .FlatAppearance.MouseOverBackColor = _defaultOverflowHoverColor
                 .Size = New Size(18, 18)
                 .Visible = False 'Don't show it until we need it
                 _overflowTooltip.SetToolTip(OverflowButton, My.Resources.Designer.APPDES_OverflowButton_Tooltip)
@@ -163,6 +166,48 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End Set
         End Property
 
+        Protected ReadOnly Property VsUIShellService As IVsUIShell
+            Get
+                If (_UIShellService Is Nothing) Then
+                    If Common.VBPackageInstance IsNot Nothing Then
+                        _UIShellService = TryCast(Common.VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
+                    ElseIf ServiceProvider IsNot Nothing Then
+                        _UIShellService = TryCast(ServiceProvider.GetService(GetType(IVsUIShell)), IVsUIShell)
+                    End If
+                End If
+
+                Return _UIShellService
+            End Get
+        End Property
+
+        Protected ReadOnly Property VsUIShell2Service As IVsUIShell2
+            Get
+                If (_UIShell2Service Is Nothing) Then
+                    Dim VsUIShell = VsUIShellService
+
+                    If (VsUIShell IsNot Nothing) Then
+                        _UIShell2Service = TryCast(VsUIShell, IVsUIShell2)
+                    End If
+                End If
+
+                Return _UIShell2Service
+            End Get
+        End Property
+
+        Protected ReadOnly Property VsUIShell5Service As IVsUIShell5
+            Get
+                If (_UIShell5Service Is Nothing) Then
+                    Dim VsUIShell = VsUIShellService
+
+                    If (VsUIShell IsNot Nothing) Then
+                        _UIShell5Service = TryCast(VsUIShell, IVsUIShell5)
+                    End If
+                End If
+
+                Return _UIShell5Service
+            End Get
+        End Property
+
 
         ''' <summary>
         ''' Called when a non-empty service provider is given to the control.
@@ -170,17 +215,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <remarks></remarks>
         Private Sub OnGotServiceProvider()
             'We now should have access to the color provider service
-            Dim vsUiShell As IVsUIShell = Nothing
-            Dim vsUiShell2 As IVsUIShell2 = DirectCast(vsUiShell, IVsUIShell2)
-            If _serviceProvider IsNot Nothing Then
-                vsUiShell = DirectCast(_serviceProvider.GetService(GetType(IVsUIShell)), IVsUIShell)
-                If vsUiShell IsNot Nothing Then
-                    vsUiShell2 = DirectCast(vsUiShell, IVsUIShell2)
-                End If
-            End If
-
-            OverflowButton.FlatAppearance.BorderColor = Common.ShellUtil.GetColor(vsUiShell2, __VSSYSCOLOREX.VSCOLOR_COMMANDBAR_BORDER, _defaultOverflowBorderColor)
-            OverflowButton.FlatAppearance.MouseOverBackColor = Common.ShellUtil.GetColor(vsUiShell2, __VSSYSCOLOREX.VSCOLOR_COMMANDBAR_HOVER, _defaultOverflowHoverColor)
+            OnThemeChanged()
 
             If _broadcastMessageEventsHelper IsNot Nothing Then
                 _broadcastMessageEventsHelper.Dispose()
@@ -189,6 +224,20 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             If _serviceProvider IsNot Nothing Then
                 _broadcastMessageEventsHelper = New Common.ShellUtil.BroadcastMessageEventsHelper(_serviceProvider)
             End If
+        End Sub
+
+        Private Sub OnThemeChanged()
+            'Update our themed colors
+            Dim VsUIShell5 = VsUIShell5Service
+            _hostingPanel.BackColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell5Service, "Background", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Control)
+
+            'Update our system colors
+            Dim VsUIShell2 = VsUIShell2Service
+            OverflowButton.FlatAppearance.BorderColor = Common.ShellUtil.GetColor(VsUIShell2, __VSSYSCOLOREX.VSCOLOR_COMMANDBAR_BORDER, SystemColors.MenuText)
+            OverflowButton.FlatAppearance.MouseOverBackColor = Common.ShellUtil.GetColor(VsUIShell2, __VSSYSCOLOREX.VSCOLOR_COMMANDBAR_HOVER, SystemColors.Highlight)
+
+            'Force the renderer to recreate its GDI objects
+            _renderer.CreateGDIObjects(True)
         End Sub
 
 
@@ -525,8 +574,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             If _overflowMenu.Items.Count > 0 Then
                 'Show the overflow menu
                 Dim OverflowMenuDistanceFromButtonButtonLeft As Size = New Size(-2, 2)
-                _overflowMenu.Show(Me, _
-                    OverflowButton.Left + OverflowMenuDistanceFromButtonButtonLeft.Width, _
+                _overflowMenu.Show(Me,
+                    OverflowButton.Left + OverflowMenuDistanceFromButtonButtonLeft.Width,
                     OverflowButton.Bottom + OverflowMenuDistanceFromButtonButtonLeft.Height)
             Else
                 Debug.Fail("How did the overflow button get clicked if there are no items to show in the overflow area?")
@@ -566,7 +615,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private Sub OnBroadcastMessageEventsHelperBroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr) Handles _broadcastMessageEventsHelper.BroadcastMessage
             Select Case msg
                 Case AppDesInterop.win.WM_PALETTECHANGED, AppDesInterop.win.WM_SYSCOLORCHANGE, AppDesInterop.win.WM_THEMECHANGED
-                    _renderer.CreateGDIObjects(True)
+                    OnThemeChanged()
             End Select
         End Sub
 
