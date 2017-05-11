@@ -51,7 +51,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'This call is required by the Windows Form Designer.
             InitializeComponent()
 
-            BackColor = PropPageBackColor
+            'Ensure we set out colors based on the current theme
+            OnThemeChanged()
 
             'Add any initialization after the InitializeComponent() call
             AddToRunningTable()
@@ -3839,8 +3840,15 @@ NextControl:
                     m_ScalingCompleted = False
                     SetDialogFont(PageRequiresScaling)
                 End If
+            ElseIf msg = Interop.win.WM_PALETTECHANGED OrElse msg = Interop.win.WM_SYSCOLORCHANGE OrElse msg = Interop.win.WM_THEMECHANGED Then
+                OnThemeChanged()
             End If
         End Function
+
+        Private Sub OnThemeChanged()
+            Dim VsUIShell5 = VsUIShell5Service
+            BackColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell5, "Background", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Control)
+        End Sub
 
         ''' <summary>
         ''' Set font and scale page accordingly
