@@ -9,6 +9,7 @@ Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
 Imports Microsoft.VisualStudio.Shell.Design
 Imports System.Windows.Forms
 Imports System.ComponentModel.Design
+Imports System.Drawing
 Imports System.Reflection
 Imports IOleDataObject = Microsoft.VisualStudio.OLE.Interop.IDataObject
 
@@ -26,7 +27,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         Private _host As IDesignerHost
         Private _viewHelper As CmdTargetHelper
+        Private _UIShellService As IVsUIShell
         Private _UIShell2Service As IVsUIShell2
+        Private _UIShell5Service As IVsUIShell5
+
+        Private WithEvents _broadcastMessageEventsHelper As Common.ShellUtil.BroadcastMessageEventsHelper
 
 
         ''' <summary>
@@ -43,9 +48,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             '
             _view = New ApplicationDesignerWindowPaneControl()
             AddHandler _view.GotFocus, AddressOf OnViewFocus
-            _view.BackColor = PropertyPages.PropPageUserControlBase.PropPageBackColor
+            OnThemeChanged()
 
             _host = TryCast(GetService(GetType(IDesignerHost)), IDesignerHost)
+            _broadcastMessageEventsHelper = New Common.ShellUtil.BroadcastMessageEventsHelper(Me)
 
             AddHandler surface.Unloaded, AddressOf OnSurfaceUnloaded
 
@@ -108,6 +114,18 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Else
                 Common.Switches.TracePDFocus(TraceLevel.Warning, "  ... ignoring - m_View currently has no children")
             End If
+        End Sub
+
+        Private Sub OnThemeChanged()
+            Dim VsUIShell5 = VsUIShell5Service
+            _view.BackColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell5Service, "Background", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Window)
+        End Sub
+
+        Private Sub OnBroadcastMessageEventsHelperBroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr) Handles _broadcastMessageEventsHelper.BroadcastMessage
+            Select Case msg
+                Case win.WM_PALETTECHANGED, win.WM_SYSCOLORCHANGE, win.WM_THEMECHANGED
+                    OnThemeChanged()
+            End Select
         End Sub
 
         Public Overrides ReadOnly Property Window() As IWin32Window
@@ -442,6 +460,23 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Return hr
         End Function
 
+        ''' <summary>
+        ''' Retrieves the IVsUIShell service
+        ''' </summary>
+        ''' <remarks></remarks>
+        Public ReadOnly Property VsUIShellService() As IVsUIShell
+            Get
+                If (_UIShellService Is Nothing) Then
+                    If Common.VBPackageInstance IsNot Nothing Then
+                        _UIShellService = TryCast(Common.VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
+                    Else
+                        _UIShellService = TryCast(GetService(GetType(IVsUIShell)), IVsUIShell)
+                    End If
+                End If
+
+                Return _UIShellService
+            End Get
+        End Property
 
         ''' <summary>
         ''' Retrieves the IVsUIShell2 service
@@ -450,15 +485,30 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Public ReadOnly Property VsUIShell2Service() As IVsUIShell2
             Get
                 If (_UIShell2Service Is Nothing) Then
-                    If (Common.VBPackageInstance IsNot Nothing) Then
-                        Dim VsUiShell As IVsUIShell = CType(Common.VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
-                        If VsUiShell IsNot Nothing Then
-                            _UIShell2Service = TryCast(VsUiShell, IVsUIShell2)
-                        End If
+                    Dim VsUiShell As IVsUIShell = VsUIShellService
+                    If VsUiShell IsNot Nothing Then
+                        _UIShell2Service = TryCast(VsUiShell, IVsUIShell2)
                     End If
                 End If
-                Return _UIShell2Service
 
+                Return _UIShell2Service
+            End Get
+        End Property
+
+        ''' <summary>
+        ''' Retrieves the IVsUIShell5 service
+        ''' </summary>
+        ''' <remarks></remarks>
+        Public ReadOnly Property VsUIShell5Service() As IVsUIShell5
+            Get
+                If (_UIShell5Service Is Nothing) Then
+                    Dim VsUiShell As IVsUIShell = VsUIShellService
+                    If VsUiShell IsNot Nothing Then
+                        _UIShell5Service = TryCast(VsUiShell, IVsUIShell5)
+                    End If
+                End If
+
+                Return _UIShell5Service
             End Get
         End Property
 
@@ -529,11 +579,17 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     ' disposedView.  After we're done calling base.Dispose()
                     ' will take care of our own stuff.
                     '
+                    _UIShellService = Nothing
                     _UIShell2Service = Nothing
+                    _UIShell5Service = Nothing
                     _view = Nothing
                     Dim DesSurface As DesignSurface = Surface
                     If (DesSurface IsNot Nothing) Then
                         RemoveHandler DesSurface.Unloaded, AddressOf OnSurfaceUnloaded
+                    End If
+                    If (_broadcastMessageEventsHelper IsNot Nothing) Then
+                        _broadcastMessageEventsHelper.Dispose()
+                        _broadcastMessageEventsHelper = Nothing
                     End If
                 End If
 
