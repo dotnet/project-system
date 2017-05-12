@@ -78,15 +78,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 return;
             }
 
-            // NOTE: Project lock file path may be null
-            var projectLockFilePath = await GetProjectLockFilePathAsync(newTree).ConfigureAwait(false);
-
-            // project.json may have been renamed to {projectName}.project.json or in the case of the project.assets.json, 
-            // the immediate path could have changed. In either case, change the file watcher.
-            if (!PathHelper.IsSamePath(projectLockFilePath, _fileBeingWatched))
+            try
             {
-                UnregisterFileWatcherIfAny();
-                RegisterFileWatcherAsync(projectLockFilePath);
+                await _projectServices.Project.Services.ProjectAsynchronousTasks.LoadedProjectAsync(async () =>
+                {
+                    // NOTE: Project lock file path may be null
+                    var projectLockFilePath = await GetProjectLockFilePathAsync(newTree).ConfigureAwait(false);
+
+                    // project.json may have been renamed to {projectName}.project.json or in the case of the project.assets.json, 
+                    // the immediate path could have changed. In either case, change the file watcher.
+                    if (!PathHelper.IsSamePath(projectLockFilePath, _fileBeingWatched))
+                    {
+                        UnregisterFileWatcherIfAny();
+                        RegisterFileWatcherAsync(projectLockFilePath);
+                    }
+                });
+            }
+            catch (OperationCanceledException)
+            {
+                // Project is already unloaded
             }
         }
 
