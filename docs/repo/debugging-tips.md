@@ -1,9 +1,20 @@
 # Debugging Tips
-## Diagnosing Design-Time Builds
+
+## Design-Time Builds
+### Diagnosing Design-Time Builds
 
 See [Diagnostic Design-Time Builds](/docs/design-time-builds.md#diagnosing-design-time-builds).
 
-## Delaying Design-Time Builds
+### Failing Design-Time Builds
+
+You can artificially fail a design-time build with the following:
+
+``` XML
+  <Target Name="FailDesignTimeBuild" AfterTargets="ResolveAssemblyReferences">
+      <Error Text="Failed design-time build" />
+  </Target>
+```
+### Delaying Design-Time Builds
 
 You can artificially delay a design-time build with the following:
 
