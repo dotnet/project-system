@@ -3,6 +3,30 @@
 
 See [Diagnostic Design-Time Builds](/docs/design-time-builds.md#diagnosing-design-time-builds).
 
+## Delaying Design-Time Builds
+
+You can artificially delay a design-time build with the following:
+
+``` XML
+  <UsingTask TaskName="Sleep" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+  <ParameterGroup>
+    <!-- Delay in milliseconds -->
+    <Delay ParameterType="System.Int32" Required="true" />
+  </ParameterGroup>
+  <Task>
+    <Code Type="Fragment" Language="cs">
+      <![CDATA[
+System.Threading.Thread.Sleep(this.Delay);
+]]>
+    </Code>
+  </Task>
+</UsingTask>
+
+  <Target Name="DelayDesignTimeBuild" AfterTargets="ResolveAssemblyReferences">
+      <Sleep Delay="10000" />
+  </Target>
+```
+
 ## CPS Tracing
 
 When you build the solution either in Visual Studio or via the command-line, a trace listener is hooked up to output CPS tracing to the Debug category of the Output Window under the `RoslynDev` Visual Studio instance. You can use this to diagnose lots of issues, such as failing rules or missing snapshots.
