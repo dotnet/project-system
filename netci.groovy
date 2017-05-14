@@ -49,168 +49,50 @@ build.cmd /no-node-reuse /no-deploy-extension /${configuration.toLowerCase()}
 // Add VSI jobs.
 // Generate the builds for commit and PRJob
 [true, false].each { isPR -> // Defines a closure over true and false, value assigned to isPR
-    def newVsiJobName = Utilities.getFullJobName(project, "vsi", isPR)
+    ['Debug', 'Release'].each { configuration ->
 
-    def newVsiJob = job(newVsiJobName) {
-        description('')
+        def newVsiJobName = Utilities.getFullJobName(project, "windows_integration_${configuration.toLowerCase()}", isPR)
 
-        // This opens the set of build steps that will be run.
-        steps {
-            // Build roslyn-project-system repo - we also need to set certain environment variables for building the repo with VS15 toolset.
-            batchFile("""
+        def newVsiJob = job(newVsiJobName) {
+            // This opens the set of build steps that will be run.
+            steps {
+                // Indicates that a batch script should be run with the build string (see above)
+                // Also available is:
+                // shell (for unix scripting)
+                batchFile("""
+echo *** Installing 2.0 CLI ***
+
+@powershell -NoProfile -ExecutionPolicy Bypass -Command "((New-Object System.Net.WebClient).DownloadFile('https://dotnetcli.blob.core.windows.net/dotnet/Sdk/master/dotnet-dev-win-x64.latest.exe', 'dotnet-dev-win-x64.latest.exe'))"
+dotnet-dev-win-x64.latest.exe /install /quiet /norestart /log cli_install.log
+
 echo *** Build Roslyn Project System ***
-rmdir /S /Q %USERPROFILE%\\.nuget\\packages\\microbuild.plugins.swixbuild
 SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
-SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
-SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
+SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VSSDK\\
+SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VSSDK\\
 
-build.cmd /no-node-reuse /release /skiptests
+build.cmd /no-node-reuse /skiptests /integrationtests /${configuration.toLowerCase()}
 """)
-
-            // Patch all the MSBuild xaml and targets files from the current roslyn-project-system commit into VS install.
-            batchFile("""
-echo *** Patch the MSBuild xaml and targets ***
-SET VS_MSBUILD_MANAGED=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\Managed
-
-mkdir backup
-xcopy /SIY "%VS_MSBUILD_MANAGED%" .\\backup\\Managed
-
-xcopy /SIY .\\src\\Targets\\*.targets "%VS_MSBUILD_MANAGED%"
-xcopy /SIY .\\bin\\Release\\Rules\\*.xaml "%VS_MSBUILD_MANAGED%"
-""")
-
-            // Restore roslyn nuget packages
-            batchFile("""
-echo *** Restore Roslyn ***
-pushd %WORKSPACE%\\roslyn
-Restore.cmd
-""")
-
-            // Build the SDK and install .NET Core Templates.
-            batchFile("""
-echo *** Build the SDK and install .NET Core Templates  ***
-SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
-SET DeveloperCommandPrompt=%VS150COMNTOOLS%\\VsMSBuildCmd.bat
-
-echo  *** Call VsMSBuildCmd.bat
-call "%DeveloperCommandPrompt%" || goto :BuildFailed "VsMSBuildCmd.bat"
-
-SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
-SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
-SET MSBUILDEXE=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\15.0\\Bin\\MSBuild.exe
-
-pushd %WORKSPACE%\\sdk
-echo *** Build SDK
-call build.cmd -Configuration release -SkipTests || goto :BuildFailed "SDK"
-
-exit /b 0
-
-:BuildFailed
-echo %1 - Build failed with ERRORLEVEL %ERRORLEVEL%
-exit /b 1
-""")
-
-            // Build roslyn and run netcore VSI tests.
-            batchFile("""
-echo *** Build Roslyn Internal and Test Roslyn Project System ***
-SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
-SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
-SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\v15.0\\VSSDK\\
-
-pushd %WORKSPACE%\\roslyn\\build\\scripts\\
-set TEMP=%WORKSPACE%\\roslyn\\Binaries\\Temp
-mkdir %TEMP%
-set TMP=%TEMP%
-
-cibuild.cmd /release /testVsiNetCore 
-""")
-
-            // Revert patched targets and rules from backup.
-            batchFile("""
-echo *** Revert the MSBuild xaml and targets ***
-SET VS_MSBUILD_MANAGED=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\Managed
-
-del /SQ "%VS_MSBUILD_MANAGED%\\"
-xcopy /SIY .\\backup\\Managed "%VS_MSBUILD_MANAGED%"
-rmdir /S /Q backup
-""")
-
+            }
         }
-    }
 
-    addVsiArchive(newVsiJob)
-    Utilities.setMachineAffinity(newVsiJob, 'Windows_NT', 'latest-or-auto-dev15-0-internal')
-    Utilities.standardJobSetup(newVsiJob, project, isPR, "*/${branch}")
-    // ISSUE: Temporary until a full builder for source control is available.
-    addVsiMultiScm(newVsiJob, project, isPR)
+        def archiveSettings = new ArchivalSettings()
+        archiveSettings.addFiles("bin/**/*")
+        archiveSettings.excludeFiles("bin/obj/*")
+        archiveSettings.setFailIfNothingArchived()
+        archiveSettings.setArchiveOnFailure()
+        Utilities.addArchival(newVsiJob, archiveSettings)
+        Utilities.setMachineAffinity(newVsiJob, 'Windows_NT', 'latest-dev15-3-preview1')
+        Utilities.standardJobSetup(newVsiJob, project, isPR, "*/${branch}")
+        Utilities.addXUnitDotNETResults(newVsiJob, "**/*TestResults.xml")
 
-    if (isPR) {
-        def triggerPhrase = generateTriggerPhrase(newVsiJobName, "vsi")
-        Utilities.addGithubPRTriggerForBranch(newVsiJob, branch, newVsiJobName, triggerPhrase, /*triggerPhraseOnly*/ true)
-    } else {
-        Utilities.addGithubPushTrigger(newVsiJob)
-    }
-
-    Utilities.addXUnitDotNETResults(newVsiJob, '**/xUnitResults/*.xml')
-}
-
-// Archive VSI artifacts.
-static void addVsiArchive(def myJob) {
-  def archiveSettings = new ArchivalSettings()
-  archiveSettings.addFiles('roslyn/Binaries/**/*.pdb')
-  archiveSettings.addFiles('roslyn/Binaries/**/*.xml')
-  archiveSettings.addFiles('roslyn/Binaries/**/*.log')
-  archiveSettings.addFiles('roslyn/Binaries/**/*.zip')
-  archiveSettings.addFiles('roslyn/Binaries/**/*.png')
-  archiveSettings.addFiles('roslyn/Binaries/**/*.xml')
-  archiveSettings.excludeFiles('roslyn/Binaries/Obj/**')
-  archiveSettings.excludeFiles('roslyn/Binaries/Bootstrap/**')
-
-  archiveSettings.setArchiveOnFailure()
-  archiveSettings.setFailIfNothingArchived()
-  Utilities.addArchival(myJob, archiveSettings)
-}
-
-// ISSUE: Temporary until a full builder for multi-scm source control is available.
-// Replace the scm settings with a multiScm setup.  Note: for PR jobs; explicitly set the refspec
-static void addVsiMultiScm(def myJob, def project, def isPR) {
-    myJob.with {
-        multiscm {
-            git {
-                remote {
-                    // Use the input project
-                    github(project)
-                    if (isPR) {
-                        // Set the refspec
-                        refspec('${GitRefSpec}')
-                    }
-                }
-                // Pull from the desired branch input branch passed as a parameter (set up by standardJobSetup)
-                branch('${GitBranchOrCommit}')
-            }
-            git {
-                remote {
-                    url('https://github.com/dotnet/sdk')
-                }
-                extensions {
-                    relativeTargetDirectory('sdk')
-                }
-                // pull in a specific LKG commit from master.
-                branch('*/master')
-            }
-            git {
-                remote {
-                    url('https://github.com/dotnet/roslyn')
-                }
-                extensions {
-                    relativeTargetDirectory('roslyn')
-                }
-                branch('*/master')
-            }
+        if (isPR) {
+            def triggerPhrase = generateTriggerPhrase(newVsiJobName, "vsi")
+            Utilities.addGithubPRTriggerForBranch(newVsiJob, branch, newVsiJobName)
+        } else {
+            Utilities.addGithubPushTrigger(newVsiJob)
         }
     }
 }
-// END ISSUE
 
 static String generateTriggerPhrase(String jobName, String triggerPhraseExtra) {
     def triggerCore = "all|${jobName}"
