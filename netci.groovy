@@ -60,17 +60,35 @@ build.cmd /no-node-reuse /no-deploy-extension /${configuration.toLowerCase()}
                 // Also available is:
                 // shell (for unix scripting)
                 batchFile("""
-echo *** Installing 2.0 CLI ***
+echo *** Installing 1.0 CLI ***
 
 @powershell -NoProfile -ExecutionPolicy Bypass -Command "((New-Object System.Net.WebClient).DownloadFile('https://download.microsoft.com/download/B/9/F/B9F1AF57-C14A-4670-9973-CDF47209B5BF/dotnet-dev-win-x64.1.0.4.exe', 'dotnet-dev-win-x64.1.0.4.exe'))"
 dotnet-dev-win-x64.1.0.4.exe /install /quiet /norestart /log cli_install.log
 
+echo *** Patch the MSBuild xaml and targets ***
+SET VS_MSBUILD_MANAGED=%ProgramFiles(x86)%\\Microsoft Visual Studio\\Preview\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\Managed
+mkdir backup
+build.cmd /no-node-reuse /skiptests /${configuration.toLowerCase()}
+xcopy /SIY "%VS_MSBUILD_MANAGED%" .\\backup\\Managed
+xcopy /SIY .\\src\\Targets\\*.targets "%VS_MSBUILD_MANAGED%"
+xcopy /SIY .\\bin\\${configuration}\\Rules\\*.xaml "%VS_MSBUILD_MANAGED%"
+
 echo *** Build Roslyn Project System ***
-SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
-SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VSSDK\\
-SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\VSSDK\\
+SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\Preview\\Enterprise\\Common7\\Tools\\
+SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\Preview\\Enterprise\\VSSDK\\
+SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\Preview\\Enterprise\\VSSDK\\
 
 build.cmd /no-node-reuse /skiptests /integrationtests /${configuration.toLowerCase()}
+""")
+
+            // Revert patched targets and rules from backup.
+            batchFile("""
+echo *** Revert the MSBuild xaml and targets ***
+SET VS_MSBUILD_MANAGED=%ProgramFiles(x86)%\\Microsoft Visual Studio\\Preview\\Enterprise\\MSBuild\\Microsoft\\VisualStudio\\Managed
+
+del /SQ "%VS_MSBUILD_MANAGED%\\"
+xcopy /SIY .\\backup\\Managed "%VS_MSBUILD_MANAGED%"
+rmdir /S /Q backup
 """)
             }
         }
