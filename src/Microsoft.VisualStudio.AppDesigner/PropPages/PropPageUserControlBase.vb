@@ -51,7 +51,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'This call is required by the Windows Form Designer.
             InitializeComponent()
 
-            BackColor = PropPageBackColor
+            'Ensure we set out colors based on the current theme
+            OnThemeChanged()
 
             'Add any initialization after the InitializeComponent() call
             AddToRunningTable()
@@ -251,6 +252,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _manualPageScaling As Boolean = False
 
         'Backcolor for all property pages
+        <Obsolete("Colors should be retrieved directly from the theming service")>
         Public Shared ReadOnly PropPageBackColor As Color = SystemColors.Control
 
         Private _activated As Boolean = True
@@ -310,6 +312,16 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Overridable ReadOnly Property ValidationControlGroups() As Control()()
             Get
                 Return Nothing
+            End Get
+        End Property
+
+        ''' <summary>
+        '''  Return a boolean value that indicates whether or not the control supports the color theming service
+        ''' </summary>
+        ''' <returns></returns>
+        Public Overridable ReadOnly Property SupportsTheming() As Boolean
+            Get
+                Return False
             End Get
         End Property
 
@@ -3839,8 +3851,19 @@ NextControl:
                     m_ScalingCompleted = False
                     SetDialogFont(PageRequiresScaling)
                 End If
+            ElseIf msg = Interop.win.WM_PALETTECHANGED OrElse msg = Interop.win.WM_SYSCOLORCHANGE OrElse msg = Interop.win.WM_THEMECHANGED Then
+                OnThemeChanged()
             End If
         End Function
+
+        Protected Overridable Sub OnThemeChanged()
+            If SupportsTheming Then
+                Dim VsUIShell5 = VsUIShell5Service
+                BackColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell5, "Background", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Window)
+            Else
+                BackColor = SystemColors.Window
+            End If
+        End Sub
 
         ''' <summary>
         ''' Set font and scale page accordingly
