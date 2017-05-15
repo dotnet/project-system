@@ -680,6 +680,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If ProjectHierarchy.IsCapabilityMatch(Pack) Then
                 AssemblyInfoButton.Visible = False
             End If
+
+            If IsTargetingDotNetCore(ProjectHierarchy) Then
+                ResourcesGroupBox.Visible = False
+            End If
         End Sub
 
         ''' <summary>
