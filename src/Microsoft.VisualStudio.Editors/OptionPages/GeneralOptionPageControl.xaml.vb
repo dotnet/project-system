@@ -24,6 +24,15 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
 
             Dim bindingExpression = FastUpToDateCheck.SetBinding(CheckBox.IsCheckedProperty, binding)
             AddBinding(bindingExpression)
+
+            binding = New Binding() With {
+                    .Source = _generalOptions,
+                    .Path = New Windows.PropertyPath(NameOf(GeneralOptions.VerboseLogging)),
+                    .UpdateSourceTrigger = UpdateSourceTrigger.Explicit
+                    }
+
+            bindingExpression = VerboseLogging.SetBinding(CheckBox.IsCheckedProperty, binding)
+            AddBinding(bindingExpression)
         End Sub
     End Class
 End Namespace

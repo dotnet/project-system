@@ -72,5 +72,14 @@ Namespace My.Resources
                 Return ResourceManager.GetString("General_FastUpToDateCheck", resourceCulture)
             End Get
         End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Log all up to date checks when verbose logging is on..
+        '''</summary>
+        Public Shared ReadOnly Property General_VerboseLogging() As String
+            Get
+                Return ResourceManager.GetString("General_VerboseLogging", resourceCulture)
+            End Get
+        End Property
     End Class
 End Namespace

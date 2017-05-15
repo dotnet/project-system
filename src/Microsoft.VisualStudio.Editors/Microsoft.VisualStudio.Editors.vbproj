@@ -783,9 +783,6 @@
     <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\Common\" />
-  </ItemGroup>
-  <ItemGroup>
     <Page Include="OptionPages\GeneralOptionPageControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

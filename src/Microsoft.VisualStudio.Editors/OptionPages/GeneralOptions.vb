@@ -1,23 +1,39 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+Imports System.Runtime.InteropServices
 Imports Microsoft.VisualStudio.Settings
-Imports Microsoft.VisualStudio.Shell.Settings
 
-Public NotInheritable Class GeneralOptions
-    Private ReadOnly _settingsManager As SettingsManager
+Namespace Microsoft.VisualStudio.Editors.OptionPages
+    Public NotInheritable Class GeneralOptions
+        <Guid("9B164E40-C3A2-4363-9BC5-EB4039DEF653")>
+        Private Class SVsSettingsPersistenceManager
+        End Class
 
-    Public Property FastUpToDateCheck As Boolean
-        Get
-            Dim settingsStore = _settingsManager.GetReadOnlySettingsStore(SettingsScope.UserSettings)
-            Return settingsStore.GetBoolean("General", "NETCoreFastUpToDateCheck")
-        End Get
-        Set(value As Boolean)
-            Dim settingsStore = _settingsManager.GetWritableSettingsStore(SettingsScope.UserSettings)
-            settingsStore.SetBoolean("General", "NETCoreFastUpToDateCheck", value)
-        End Set
-    End Property
+        Private Const FastUpToDateSettingKey As String = "NETCoreProjectSystem\FastUpToDateCheck"
+        Private Const VerboseLoggingKey As String = "NETCoreProjectSystem\VerboseLogging"
 
-    Public Sub New(serviceProvider As IServiceProvider)
-        _settingsManager = New ShellSettingsManager(serviceProvider)
-    End Sub
-End Class
+        Private ReadOnly _settingsManager As ISettingsManager
+
+        Public Property FastUpToDateCheck As Boolean
+            Get
+                Return If(_settingsManager?.GetValueOrDefault(FastUpToDateSettingKey, False), False)
+            End Get
+            Set
+                _settingsManager.SetValueAsync(FastUpToDateSettingKey, Value, isMachineLocal:=False)
+            End Set
+        End Property
+
+        Public Property VerboseLogging As Boolean
+            Get
+                Return If(_settingsManager?.GetValueOrDefault(VerboseLoggingKey, False), False)
+            End Get
+            Set
+                _settingsManager.SetValueAsync(VerboseLoggingKey, Value, isMachineLocal:=False)
+            End Set
+        End Property
+
+        Public Sub New(serviceProvider As IServiceProvider)
+            _settingsManager = CType(serviceProvider.GetService(GetType(SVsSettingsPersistenceManager)), ISettingsManager)
+        End Sub
+    End Class
+End Namespace
