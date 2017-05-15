@@ -6,6 +6,11 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
 {
+    /// <summary>
+    /// This class has no code, and is never created. Its purpose is simply
+    /// to be the place to apply [CollectionDefinition] and all the
+    /// ICollectionFixture<> interfaces.
+    /// </summary>
     [CollectionDefinition(nameof(SharedIntegrationHostFixture))]
     public sealed class SharedIntegrationHostFixture : ICollectionFixture<VisualStudioInstanceFactory>
     {
@@ -17,9 +22,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
         public const string VsSdkPackageId = "Microsoft.VisualStudio.Component.VSSDK";
 
         public static readonly ImmutableHashSet<string> RequiredPackageIds = ImmutableHashSet.Create(MSBuildPackageId, Net46TargetingPackPackageId, PortableLibraryPackageId, RoslynCompilerPackageId, RoslynLanguageServicesPackageId, VsSdkPackageId);
-
-        // This class has no code, and is never created. Its purpose is simply
-        // to be the place to apply [CollectionDefinition] and all the
-        // ICollectionFixture<> interfaces.
     }
 }
