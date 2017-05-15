@@ -62,8 +62,8 @@ build.cmd /no-node-reuse /no-deploy-extension /${configuration.toLowerCase()}
                 batchFile("""
 echo *** Installing 2.0 CLI ***
 
-@powershell -NoProfile -ExecutionPolicy Bypass -Command "((New-Object System.Net.WebClient).DownloadFile('https://dotnetcli.blob.core.windows.net/dotnet/Sdk/master/dotnet-dev-win-x64.latest.exe', 'dotnet-dev-win-x64.latest.exe'))"
-dotnet-dev-win-x64.latest.exe /install /quiet /norestart /log cli_install.log
+@powershell -NoProfile -ExecutionPolicy Bypass -Command "((New-Object System.Net.WebClient).DownloadFile('https://download.microsoft.com/download/B/9/F/B9F1AF57-C14A-4670-9973-CDF47209B5BF/dotnet-dev-win-x64.1.0.4.exe', 'dotnet-dev-win-x64.1.0.4.exe'))"
+dotnet-dev-win-x64.1.0.4.exe /install /quiet /norestart /log cli_install.log
 
 echo *** Build Roslyn Project System ***
 SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\Tools\\
