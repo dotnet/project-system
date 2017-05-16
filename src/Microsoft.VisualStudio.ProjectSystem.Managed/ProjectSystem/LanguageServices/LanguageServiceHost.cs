@@ -112,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 await HandleAsync(e, handlerType).ConfigureAwait(false);
             });
 
-            // If "TargetFramework" or "TargetFrameworks" property has changed, we need to refresh the project context and subscriptions.
+            // If "TargetFrameworks" property has changed, we need to refresh the project context and subscriptions.
             if (HasTargetFrameworksChanged(e))
             {
                 await UpdateProjectContextAndSubscriptionsAsync().ConfigureAwait(false);
