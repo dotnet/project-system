@@ -7,11 +7,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     internal class BuildOptions
     {
-        public IEnumerable<CommandLineSourceFile> SourceFiles { get; }
-        public IEnumerable<CommandLineSourceFile> AdditionalFiles { get; }
-        public IEnumerable<CommandLineReference> MetadataReferences { get; }
-        public IEnumerable<CommandLineAnalyzerReference> AnalyzerReferences { get; }
-
         public BuildOptions(IEnumerable<CommandLineSourceFile> sourceFiles, IEnumerable<CommandLineSourceFile> additionalFiles, IEnumerable<CommandLineReference> metadataReferences, IEnumerable<CommandLineAnalyzerReference> analyzerReferences)
         {
             Requires.NotNull(sourceFiles, nameof(sourceFiles));
@@ -23,6 +18,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             AdditionalFiles = additionalFiles;
             MetadataReferences = metadataReferences;
             AnalyzerReferences = analyzerReferences;
+        }
+
+        public IEnumerable<CommandLineSourceFile> SourceFiles
+        {
+            get;
+        }
+
+        public IEnumerable<CommandLineSourceFile> AdditionalFiles
+        {
+            get;
+        }
+
+        public IEnumerable<CommandLineReference> MetadataReferences
+        {
+            get;
+        }
+
+        public IEnumerable<CommandLineAnalyzerReference> AnalyzerReferences
+        {
+            get;
         }
 
         public static BuildOptions FromCommonCommandLineArguments(CommandLineArguments commonCommandLineArguments)
