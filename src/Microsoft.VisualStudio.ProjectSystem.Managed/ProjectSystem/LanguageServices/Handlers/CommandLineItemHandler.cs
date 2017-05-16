@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     /// </summary>
     [Export(typeof(IEvaluationHandler))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
-    internal class CommandLineItemHandler : AbstractLanguageServiceRuleHandler
+    internal class CommandLineItemHandler : IEvaluationHandler
     {
         private readonly ICommandLineParserService _commandLineParser;
         
@@ -30,20 +30,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             get;
         }
 
-        public override string EvaluationRuleName
+        public string EvaluationRuleName
         {
             get { return CompilerCommandLineArgs.SchemaName; }
         }
 
-        public override RuleHandlerType HandlerType
+        public RuleHandlerType HandlerType
         {
             get { return RuleHandlerType.DesignTimeBuild; }
         }
 
         // Broken design time builds generates updates with no changes.
-        public override bool ReceiveUpdatesWithEmptyProjectChange => true;
+        public bool ReceiveUpdatesWithEmptyProjectChange => true;
 
-        public override void Handle(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
+        public void Handle(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
         {
             Requires.NotNull(projectChange, nameof(projectChange));
 
@@ -82,6 +82,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             {
                 handler.Value.Handle(addedItems, removedItems, context, isActiveContext);
             }
+        }
+
+        public void OnContextReleasedAsync(IWorkspaceProjectContext context)
+        {
         }
     }
 }

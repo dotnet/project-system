@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     [Export(typeof(ICommandLineHandler))]
     [Export(typeof(IEvaluationHandler))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
-    internal class SourceItemHandler : AbstractLanguageServiceRuleHandler, ICommandLineHandler
+    internal class SourceItemHandler : IEvaluationHandler, ICommandLineHandler
     {
         // When a source file has been added/removed from a project, we'll receive notifications for it twice; once
         // during project evaluation, and once during a design-time build. To prevent us from adding duplicate items 
@@ -35,14 +35,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             _project = project;
         }
 
-        public override string EvaluationRuleName
+        public string EvaluationRuleName
         {
             get { return Compile.SchemaName; }
         }
 
-        public override RuleHandlerType HandlerType
+        public RuleHandlerType HandlerType
         {
             get { return RuleHandlerType.Evaluation; }
+        }
+
+        public bool ReceiveUpdatesWithEmptyProjectChange
+        {
+            get { return false; }
         }
 
         public void Handle(BuildOptions added, BuildOptions removed, IWorkspaceProjectContext context, bool isActiveContext)
@@ -61,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             }
         }
 
-        public override void Handle(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
+        public void Handle(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
         {
             Requires.NotNull(projectChange, nameof(projectChange));
             Requires.NotNull(context, nameof(context));
@@ -95,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             }
         }
 
-        public override void OnContextReleasedAsync(IWorkspaceProjectContext context)
+        public void OnContextReleasedAsync(IWorkspaceProjectContext context)
         {
             Requires.NotNull(context, nameof(context));
 
