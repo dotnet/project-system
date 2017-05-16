@@ -109,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 await HandleAsync(e, handlerType).ConfigureAwait(false);
             });
 
-            // If "TargetFramework" or "TargetFrameworks" property has changed, we need to refresh the project context and subscriptions.
+            // If "TargetFrameworks" property has changed, we need to refresh the project context and subscriptions.
             if (HasTargetFrameworksChanged(e))
             {
                 await UpdateProjectContextAndSubscriptionsAsync().ConfigureAwait(false);
@@ -234,7 +234,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             foreach (var innerContext in projectContext.DisposedInnerProjectContexts)
             {
-                _languageServiceHandlerManager.OnContextReleasedAsync(innerContext);
+                _languageServiceHandlerManager.OnContextReleased(innerContext);
             }
         }
 
@@ -258,7 +258,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                     _designTimeBuildSubscriptionLinks.Add(configuredProject.Services.ProjectSubscription.JointRuleSource.SourceBlock.LinkTo(
                         new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedCoreAsync(e, RuleHandlerType.DesignTimeBuild)),
-                        ruleNames: watchedDesignTimeBuildRules.Union(watchedEvaluationRules), suppressVersionOnlyUpdates: true));
+                        ruleNames: watchedDesignTimeBuildRules, suppressVersionOnlyUpdates: true));
 
                     _evaluationSubscriptionLinks.Add(configuredProject.Services.ProjectSubscription.ProjectRuleSource.SourceBlock.LinkTo(
                         new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedCoreAsync(e, RuleHandlerType.Evaluation)),
