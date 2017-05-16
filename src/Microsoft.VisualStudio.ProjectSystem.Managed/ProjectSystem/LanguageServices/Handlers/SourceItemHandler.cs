@@ -40,11 +40,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             get { return Compile.SchemaName; }
         }
 
-        public bool ReceiveUpdatesWithEmptyProjectChange
-        {
-            get { return false; }
-        }
-
         public void Handle(BuildOptions added, BuildOptions removed, IWorkspaceProjectContext context, bool isActiveContext)
         {
             Requires.NotNull(added, nameof(added));
