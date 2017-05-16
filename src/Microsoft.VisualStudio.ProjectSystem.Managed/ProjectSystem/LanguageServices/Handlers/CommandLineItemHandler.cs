@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     /// <summary>
     ///     Handles changes to the command-line arguments that are passed to the compiler during design-time builds.
     /// </summary>
-    [Export(typeof(ILanguageServiceRuleHandler))]
+    [Export(typeof(IEvaluationHandler))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
     internal class CommandLineItemHandler : AbstractLanguageServiceRuleHandler
     {
@@ -21,16 +21,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Requires.NotNull(commandLineParser, nameof(commandLineParser));
 
             _commandLineParser = commandLineParser;
-            Handlers = new OrderPrecedenceImportCollection<ILanguageServiceCommandLineHandler>(projectCapabilityCheckProvider: project);
+            Handlers = new OrderPrecedenceImportCollection<ICommandLineHandler>(projectCapabilityCheckProvider: project);
         }
 
         [ImportMany]
-        public OrderPrecedenceImportCollection<ILanguageServiceCommandLineHandler> Handlers
+        public OrderPrecedenceImportCollection<ICommandLineHandler> Handlers
         {
             get;
         }
 
-        public override string RuleName
+        public override string EvaluationRuleName
         {
             get { return CompilerCommandLineArgs.SchemaName; }
         }

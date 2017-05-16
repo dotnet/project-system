@@ -2,7 +2,6 @@
 
 using System;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
-using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
@@ -10,16 +9,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     ///     Handles changes to a language service rule,  and applies them to a 
     ///     <see cref="IWorkspaceProjectContext"/> instance.
     /// </summary>
-    internal interface ILanguageServiceRuleHandler
+    internal interface IEvaluationHandler
     {
         /// <summary>
-        ///     Gets the rule this handler handles.
+        ///     Gets the evaluation rule this handler handles.
         /// </summary>
         /// <value>
-        ///     A <see cref="string"/> containing the rule that this <see cref="ILanguageServiceRuleHandler"/> 
+        ///     A <see cref="string"/> containing the evaluation rule that this <see cref="IEvaluationHandler"/> 
         ///     handles.
         /// </value>
-        string RuleName
+        string EvaluationRuleName
         {
             get;
         }
@@ -29,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// </summary>
         /// <value>
         ///     One of the <see cref="RuleHandlerType"/> values indicate the type of change the 
-        ///     <see cref="ILanguageServiceRuleHandler"/> handles.
+        ///     <see cref="IEvaluationHandler"/> handles.
         /// </value>
         RuleHandlerType HandlerType
         {
@@ -69,6 +68,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// <param name="context">
         ///     A <see cref="IWorkspaceProjectContext"/> being released.
         /// </param>
-        Task OnContextReleasedAsync(IWorkspaceProjectContext context);
+        void OnContextReleased(IWorkspaceProjectContext context);
     }
 }

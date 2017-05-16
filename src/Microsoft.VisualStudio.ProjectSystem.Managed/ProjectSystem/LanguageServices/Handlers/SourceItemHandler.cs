@@ -3,7 +3,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
@@ -13,10 +12,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     ///     Handles changes to sources files during project evaluations and changes to source files that are passed
     ///     to the compiler during design-time builds.
     /// </summary>
-    [Export(typeof(ILanguageServiceCommandLineHandler))]
-    [Export(typeof(ILanguageServiceRuleHandler))]
+    [Export(typeof(ICommandLineHandler))]
+    [Export(typeof(IEvaluationHandler))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
-    internal class SourceItemHandler : AbstractLanguageServiceRuleHandler, ILanguageServiceCommandLineHandler
+    internal class SourceItemHandler : AbstractLanguageServiceRuleHandler, ICommandLineHandler
     {
         // When a source file has been added/removed from a project, we'll receive notifications for it twice; once
         // during project evaluation, and once during a design-time build. To prevent us from adding duplicate items 
@@ -36,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             _project = project;
         }
 
-        public override string RuleName
+        public override string EvaluationRuleName
         {
             get { return Compile.SchemaName; }
         }
@@ -96,12 +95,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             }
         }
 
-        public override Task OnContextReleasedAsync(IWorkspaceProjectContext context)
+        public override void OnContextReleased(IWorkspaceProjectContext context)
         {
             Requires.NotNull(context, nameof(context));
 
             _sourceFilesByContext.Remove(context);
-            return Task.CompletedTask;
         }
 
         private void RemoveSourceFile(string filePath, IWorkspaceProjectContext context)

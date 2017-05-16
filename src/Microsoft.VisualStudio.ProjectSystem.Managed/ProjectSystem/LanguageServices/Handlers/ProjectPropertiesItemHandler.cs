@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     /// <summary>
     ///     Handles changes to the project and makes sure the language service is aware of them.
     /// </summary>
-    [Export(typeof(ILanguageServiceRuleHandler))]
+    [Export(typeof(IEvaluationHandler))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
     internal class ProjectPropertiesItemHandler : AbstractLanguageServiceRuleHandler
     {
@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             get { return RuleHandlerType.Evaluation; }
         }
 
-        public override string RuleName
+        public override string EvaluationRuleName
         {
             get { return ConfigurationGeneral.SchemaName; }
         }
