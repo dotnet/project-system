@@ -35,15 +35,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             get;
         }
 
-        public static BuildOptions FromCommonCommandLineArguments(CommandLineArguments commonCommandLineArguments)
+        public static BuildOptions FromCommandLineArguments(CommandLineArguments commandLineArguments)
         {
-            Requires.NotNull(commonCommandLineArguments, nameof(commonCommandLineArguments));
+            Requires.NotNull(commandLineArguments, nameof(commandLineArguments));
 
             return new BuildOptions(
-                commonCommandLineArguments.SourceFiles,
-                commonCommandLineArguments.AdditionalFiles,
-                commonCommandLineArguments.MetadataReferences,
-                commonCommandLineArguments.AnalyzerReferences);
+                commandLineArguments.SourceFiles,
+                commandLineArguments.AdditionalFiles,
+                commandLineArguments.MetadataReferences,
+                commandLineArguments.AnalyzerReferences);
         }
     }
 }
