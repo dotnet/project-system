@@ -1,7 +1,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <RoslynSemanticVersion Condition="'$(RoslynSemanticVersion)' == '' AND '$(UseVisualStudioVersion)' == 'true'">15.3.0</RoslynSemanticVersion>
-    <RoslynSemanticVersion Condition="'$(RoslynSemanticVersion)' == ''">2.3.0</RoslynSemanticVersion>
+    <RoslynSemanticVersion Condition="'$(RoslynSemanticVersion)' == '' AND '$(UseVisualStudioVersion)' == 'true'">15.6.0</RoslynSemanticVersion>
+    <RoslynSemanticVersion Condition="'$(RoslynSemanticVersion)' == ''">2.6.0</RoslynSemanticVersion>
     <MicroBuildVersion>0.2.0</MicroBuildVersion>
     <BuildNumber Condition="'$(BuildNumber)' == ''">$(BUILD_BUILDNUMBER)</BuildNumber>
 
@@ -73,8 +73,8 @@
 
   <!-- NuGet version -->
   <PropertyGroup>
-    <CommonNuGetMoniker>beta2</CommonNuGetMoniker>
-    <VSSemanticVersion>15.3</VSSemanticVersion>    
+    <CommonNuGetMoniker>beta1</CommonNuGetMoniker>
+    <VSSemanticVersion>15.6</VSSemanticVersion>    
     <RoslynNuGetReleaseVersion>$(RoslynSemanticVersion.Substring(0, $(RoslynSemanticVersion.LastIndexOf('.'))))</RoslynNuGetReleaseVersion>
     <RoslynNuGetPerBuildVersion Condition="'$(BuildNumberFiveDigitDateStamp)' != '' AND '$(BuildNumberBuildOfTheDayPadded)' != ''">$(RoslynNuGetReleaseVersion).0-$(CommonNuGetMoniker)-$(BuildNumberFiveDigitDateStamp.Trim())$(BuildNumberBuildOfTheDayPadded.Trim())</RoslynNuGetPerBuildVersion>
     <RoslynNuGetPerBuildVersion Condition="'$(RoslynNuGetPerBuildVersion)' == ''">1.0.0-$(CommonNuGetMoniker)</RoslynNuGetPerBuildVersion>
