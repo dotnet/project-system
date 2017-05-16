@@ -21,11 +21,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Requires.NotNull(commandLineParser, nameof(commandLineParser));
 
             _commandLineParser = commandLineParser;
-            Handlers = new OrderPrecedenceImportCollection<ILanguageServiceCommandLineHandler>(projectCapabilityCheckProvider: project);
+            Handlers = new OrderPrecedenceImportCollection<ICommandLineHandler>(projectCapabilityCheckProvider: project);
         }
 
         [ImportMany]
-        public OrderPrecedenceImportCollection<ILanguageServiceCommandLineHandler> Handlers
+        public OrderPrecedenceImportCollection<ICommandLineHandler> Handlers
         {
             get;
         }

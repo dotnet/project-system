@@ -13,10 +13,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     ///     Handles changes to sources files during project evaluations and changes to source files that are passed
     ///     to the compiler during design-time builds.
     /// </summary>
-    [Export(typeof(ILanguageServiceCommandLineHandler))]
+    [Export(typeof(ICommandLineHandler))]
     [Export(typeof(IEvaluationHandler))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
-    internal class SourceItemHandler : AbstractLanguageServiceRuleHandler, ILanguageServiceCommandLineHandler
+    internal class SourceItemHandler : AbstractLanguageServiceRuleHandler, ICommandLineHandler
     {
         // When a source file has been added/removed from a project, we'll receive notifications for it twice; once
         // during project evaluation, and once during a design-time build. To prevent us from adding duplicate items 

@@ -9,9 +9,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     /// <summary>
     ///     Handles changes to references that are passed to the compiler during design-time builds.
     /// </summary>
-    [Export(typeof(ILanguageServiceCommandLineHandler))]
+    [Export(typeof(ICommandLineHandler))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
-    internal class MetadataReferenceItemHandler : ILanguageServiceCommandLineHandler
+    internal class MetadataReferenceItemHandler : ICommandLineHandler
     {
         private readonly UnconfiguredProject _unconfiguredProject;
 

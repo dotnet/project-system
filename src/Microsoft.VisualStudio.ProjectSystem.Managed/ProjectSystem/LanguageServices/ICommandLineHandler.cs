@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     ///     Handles changes within the command-line, and applies them to a <see cref="IWorkspaceProjectContext"/> 
     ///     instance.
     /// </summary>
-    internal interface ILanguageServiceCommandLineHandler
+    internal interface ICommandLineHandler
     {
         /// <summary>
         ///     Handles the specified added and removed command-line arguments, and applies 
