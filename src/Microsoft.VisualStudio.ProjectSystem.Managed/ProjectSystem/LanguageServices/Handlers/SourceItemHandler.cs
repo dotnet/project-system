@@ -3,7 +3,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
@@ -96,12 +95,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             }
         }
 
-        public override Task OnContextReleasedAsync(IWorkspaceProjectContext context)
+        public override void OnContextReleasedAsync(IWorkspaceProjectContext context)
         {
             Requires.NotNull(context, nameof(context));
 
             _sourceFilesByContext.Remove(context);
-            return Task.CompletedTask;
         }
 
         private void RemoveSourceFile(string filePath, IWorkspaceProjectContext context)

@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
@@ -52,14 +51,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="context"/> is <see langword="null"/>.
         /// </exception>
-        public async Task OnContextReleasedAsync(IWorkspaceProjectContext context)
+        public void OnContextReleasedAsync(IWorkspaceProjectContext context)
         {
             Requires.NotNull(context, nameof(context));
 
             foreach (var handler in Handlers)
             {
-                await handler.Value.OnContextReleasedAsync(context)
-                                   .ConfigureAwait(false);
+                handler.Value.OnContextReleasedAsync(context);
             }
         }
 

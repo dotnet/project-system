@@ -2,7 +2,6 @@
 
 using System;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
-using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
@@ -69,6 +68,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// <param name="context">
         ///     A <see cref="IWorkspaceProjectContext"/> being released.
         /// </param>
-        Task OnContextReleasedAsync(IWorkspaceProjectContext context);
+        void OnContextReleasedAsync(IWorkspaceProjectContext context);
     }
 }
