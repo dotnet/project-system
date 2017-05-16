@@ -66,14 +66,14 @@ echo *** Installing 1.0 CLI ***
 dotnet-dev-win-x64.1.0.4.exe /install /quiet /norestart /log cli_install.log
 
 echo *** Set paths to MSBuild targets ***
-echo setting VB DTT %~dp0$bin\\${configuration}\\Rules\\Microsoft.VisualBasic.DesignTime.targets
-SET VisualBasicDesignTimeTargetsPath=%~dp0$bin\\${configuration}\\Rules\\Microsoft.VisualBasic.DesignTime.targets
+echo setting VB DTT %~dp0\$bin\\${configuration}\\Rules\\Microsoft.VisualBasic.DesignTime.targets
+SET VisualBasicDesignTimeTargetsPath=%~dp0\$bin\\${configuration}\\Rules\\Microsoft.VisualBasic.DesignTime.targets
 
-echo setting F# DTT %~dp0$bin\\${configuration}\\Rules\\Microsoft.FSharp.DesignTime.targets
-SET FSharpDesignTimeTargetsPath=%~dp0$bin\\${configuration}\\Rules\\Microsoft.FSharp.DesignTime.targets
+echo setting F# DTT %~dp0\$bin\\${configuration}\\Rules\\Microsoft.FSharp.DesignTime.targets
+SET FSharpDesignTimeTargetsPath=%~dp0\$bin\\${configuration}\\Rules\\Microsoft.FSharp.DesignTime.targets
 
-echo setting C# DTT %~dp0$bin\\${configuration}\\Rules\\Microsoft.FSharp.DesignTime.targets
-SET CSharpDesignTimeTargetsPath=%~dp0$bin\\${configuration}\\Rules\\Microsoft.FSharp.DesignTime.targets
+echo setting C# DTT %~dp0\$bin\\${configuration}\\Rules\\Microsoft.FSharp.DesignTime.targets
+SET CSharpDesignTimeTargetsPath=%~dp0\$bin\\${configuration}\\Rules\\Microsoft.FSharp.DesignTime.targets
 
 echo *** Build Roslyn Project System ***
 SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\Preview\\Enterprise\\Common7\\Tools\\
