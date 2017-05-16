@@ -18,11 +18,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
         }
 
-        public RuleHandlerType HandlerType
-        {
-            get { return RuleHandlerType.Evaluation; }
-        }
-
         public string EvaluationRuleName
         {
             get { return ConfigurationGeneral.SchemaName; }

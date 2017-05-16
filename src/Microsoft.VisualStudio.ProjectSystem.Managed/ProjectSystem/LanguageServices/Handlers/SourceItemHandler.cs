@@ -40,11 +40,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             get { return Compile.SchemaName; }
         }
 
-        public RuleHandlerType HandlerType
-        {
-            get { return RuleHandlerType.Evaluation; }
-        }
-
         public bool ReceiveUpdatesWithEmptyProjectChange
         {
             get { return false; }

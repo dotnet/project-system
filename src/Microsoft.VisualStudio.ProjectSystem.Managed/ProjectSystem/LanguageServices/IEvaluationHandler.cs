@@ -24,18 +24,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
 
         /// <summary>
-        ///     Gets a value indicating what type of change the handler handlers.
-        /// </summary>
-        /// <value>
-        ///     One of the <see cref="RuleHandlerType"/> values indicate the type of change the 
-        ///     <see cref="IEvaluationHandler"/> handles.
-        /// </value>
-        RuleHandlerType HandlerType
-        {
-            get;
-        }
-
-        /// <summary>
         ///     Gets a value indicating the handler should be invoked even for updates with no underlying project changes (e.g. broken design time builds).
         /// </summary>
         bool ReceiveUpdatesWithEmptyProjectChange
