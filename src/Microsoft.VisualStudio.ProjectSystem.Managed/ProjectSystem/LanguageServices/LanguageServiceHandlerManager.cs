@@ -70,9 +70,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             IProjectChangeDescription projectChange = update.Value.ProjectChanges[CompilerCommandLineArgs.SchemaName];
 
-            ProcessDesignTimeBuildFailure(projectChange, context);
-            ProcessOptions(projectChange, context);
-            ProcessItems(projectChange, context, isActiveContext);
+            // If nothing changed (even another failed design-time build), don't do anything
+            if (projectChange.Difference.AnyChanges)
+            {   
+                ProcessDesignTimeBuildFailure(projectChange, context);
+                ProcessOptions(projectChange, context);
+                ProcessItems(projectChange, context, isActiveContext);
+            }
         }
 
         /// <summary>
