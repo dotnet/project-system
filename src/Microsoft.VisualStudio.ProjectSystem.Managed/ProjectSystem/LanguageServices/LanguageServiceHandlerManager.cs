@@ -51,13 +51,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="context"/> is <see langword="null"/>.
         /// </exception>
-        public void OnContextReleasedAsync(IWorkspaceProjectContext context)
+        public void OnContextReleased(IWorkspaceProjectContext context)
         {
             Requires.NotNull(context, nameof(context));
 
             foreach (var handler in Handlers)
             {
-                handler.Value.OnContextReleasedAsync(context);
+                handler.Value.OnContextReleased(context);
             }
         }
 

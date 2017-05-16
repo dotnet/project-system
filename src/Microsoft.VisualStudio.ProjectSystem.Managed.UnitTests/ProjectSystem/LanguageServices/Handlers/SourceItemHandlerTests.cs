@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var context = IProjectChangeDescriptionFactory.Create();
 
             Assert.Throws<ArgumentNullException>("context", () => {
-                handler.OnContextReleasedAsync((IWorkspaceProjectContext)null);
+                handler.OnContextReleased((IWorkspaceProjectContext)null);
             });
         }
 

@@ -234,7 +234,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             foreach (var innerContext in projectContext.DisposedInnerProjectContexts)
             {
-                _languageServiceHandlerManager.OnContextReleasedAsync(innerContext);
+                _languageServiceHandlerManager.OnContextReleased(innerContext);
             }
         }
 

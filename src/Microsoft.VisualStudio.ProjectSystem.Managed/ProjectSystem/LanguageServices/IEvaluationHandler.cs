@@ -68,6 +68,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// <param name="context">
         ///     A <see cref="IWorkspaceProjectContext"/> being released.
         /// </param>
-        void OnContextReleasedAsync(IWorkspaceProjectContext context);
+        void OnContextReleased(IWorkspaceProjectContext context);
     }
 }

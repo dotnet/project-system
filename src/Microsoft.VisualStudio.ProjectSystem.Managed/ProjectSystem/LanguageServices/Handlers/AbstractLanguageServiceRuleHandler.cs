@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
         }
 
-        public virtual void OnContextReleasedAsync(IWorkspaceProjectContext context)
+        public virtual void OnContextReleased(IWorkspaceProjectContext context)
         {
         }
     }
