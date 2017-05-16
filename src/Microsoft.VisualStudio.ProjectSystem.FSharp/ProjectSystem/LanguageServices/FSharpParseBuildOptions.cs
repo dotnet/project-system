@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         public BuildOptions Parse(IEnumerable<string> args, string baseDirectory)
         {
             // TODO: replace with F# command line parser
-            return BuildOptions.FromCommonCommandLineArguments(
+            return BuildOptions.FromCommandLineArguments(
                 CSharpCommandLineParser.Default.Parse(args, baseDirectory, sdkDirectory: null, additionalReferenceDirectories: null));
         }
     }
