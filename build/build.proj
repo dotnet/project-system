@@ -1,8 +1,11 @@
 <Project DefaultTargets="Build">
 
+  <Import Project="Targets\VSL.Versions.targets" />
+
   <PropertyGroup>
     <RepositoryRootDirectory>$(MSBuildThisFileDirectory)..\</RepositoryRootDirectory>
     <TestsDirectory>$(RepositoryRootDirectory)bin\$(Configuration)\Tests\</TestsDirectory>
+    <IntegrationDirectory>$(RepositoryRootDirectory)bin\$(Configuration)\IntegrationTests\</IntegrationDirectory>
 
     <!-- Make note NUGET_PACKAGES is environment variable respected
          by NuGet.exe, so don't be tempted to change the name.-->
@@ -84,14 +87,14 @@
   <Target Name="Test" Condition="'$(RunTests)' == 'true'">
 
     <ItemGroup>
-      <TestAssembly Include="$(TestsDirectory)*Tests.dll" />
+      <TestAssembly Include="$(TestsDirectory)*UnitTests.dll" />
       <XmlTestFile Include="$(TestsDirectory)TestResults.xml" />   <!-- For Jenkins to read -->
       <HtmlTestFile Include="$(TestsDirectory)TestResults.html" /> <!-- For Humans to read -->
     </ItemGroup>
 
     <Message Text="Running tests for %(SolutionFile.Filename) [$(Configuration)]" Importance="high" />
 
-    <Exec Command="&quot;$(NUGET_PACKAGES)\xunit.runner.console\2.1.0\tools\xunit.console.x86.exe&quot; &quot;@(TestAssembly, '&quot; &quot;')&quot; -quiet -nologo -noshadow -parallel all -xml &quot;@(XmlTestFile)&quot; -html &quot;@(HtmlTestFile)&quot;"
+    <Exec Command="&quot;$(NUGET_PACKAGES)\xunit.runner.console\$(XUnitRunnerConsoleVersion)\tools\xunit.console.x86.exe&quot; &quot;@(TestAssembly, '&quot; &quot;')&quot; -quiet -nologo -noshadow -parallel all -xml &quot;@(XmlTestFile)&quot; -html &quot;@(HtmlTestFile)&quot;"
           LogStandardErrorAsError="true"
           IgnoreExitCode="true"
           >
@@ -103,5 +106,47 @@
     <Error Text="There were test failures, for full log see %(HtmlTestFile.FullPath)" Condition="$(ExitCode) != 0" />
 
   </Target>
- 
+
+  <Target Name="TestIntegration" Condition="'$(RunIntegrationTests)' == 'true'">
+    <PropertyGroup>
+      <DownloadRoslynVsixesExe>$(NUGET_PACKAGES)\roslyntools.downloadroslynvsixes\$(RoslynToolsDownloadRoslynVsixesVersion)\tools\DownloadRoslynVsixes.exe</DownloadRoslynVsixesExe>
+      <DownloadRoslynVsixesArgs>"$([System.IO.Path]::GetFullPath('$(RepositoryRootDirectory)bin\$(Configuration)\IntegrationTests'))"</DownloadRoslynVsixesArgs>
+    </PropertyGroup>
+
+    <PropertyGroup>
+      <VsixExpInstallerExe>$(NUGET_PACKAGES)\roslyntools.microsoft.vsixexpinstaller\$(RoslynToolsMicrosoftVSIXExpInstallerVersion)\tools\VsixExpInstaller.exe</VsixExpInstallerExe>
+      <VsixExpInstallerArgs>-rootSuffix:RoslynDev -vsInstallDir:"$([System.IO.Path]::GetFullPath('$(MSBuildBinPath)\..\..\..'))"</VsixExpInstallerArgs>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <IntegrationTestAssembly Include="$(IntegrationDirectory)*IntegrationTests.dll" />
+      <IntegrationXmlTestFile Include="$(IntegrationDirectory)TestResults.xml" />   <!-- For Jenkins to read -->
+      <IntegrationHtmlTestFile Include="$(IntegrationDirectory)TestResults.html" /> <!-- For Humans to read -->
+    </ItemGroup>
+
+    <Exec Command="&quot;$(DownloadRoslynVsixesExe)&quot; $(DownloadRoslynVsixesArgs)" />
+
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.Compilers.Extension.vsix" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.VisualStudio.Setup.vsix" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.VisualStudio.Setup.Next.vsix" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.VisualStudio.InteractiveComponents.vsix" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\ExpressionEvaluatorPackage.vsix" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.VisualStudio.DiagnosticsWindow.vsix" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Microsoft.VisualStudio.IntegrationTest.Setup.vsix" />
+
+    <Message Text="Running integrations tests for %(SolutionFile.Filename) [$(Configuration)]" Importance="high" />
+
+    <Exec Command="&quot;$(NUGET_PACKAGES)\xunit.runner.console\$(XUnitRunnerConsoleVersion)\tools\xunit.console.x86.exe&quot; &quot;@(IntegrationTestAssembly, '&quot; &quot;')&quot; -quiet -nologo -noshadow -parallel all -xml &quot;@(IntegrationXmlTestFile)&quot; -html &quot;@(IntegrationHtmlTestFile)&quot;"
+          LogStandardErrorAsError="true"
+          IgnoreExitCode="true"
+          >
+
+      <Output TaskParameter="ExitCode" PropertyName="ExitCode" />
+    </Exec>
+
+    <Message Text="All tests passed, for full log see %(HtmlTestFile.FullPath)" Condition="$(ExitCode) == 0" Importance="high" />
+    <Error Text="There were test failures, for full log see %(HtmlTestFile.FullPath)" Condition="$(ExitCode) != 0" />
+
+  </Target>
+
 </Project>
