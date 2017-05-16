@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     /// <summary>
     ///     Handles changes to the command-line arguments that are passed to the compiler during design-time builds.
     /// </summary>
-    [Export(typeof(ILanguageServiceRuleHandler))]
+    [Export(typeof(IEvaluationHandler))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
     internal class CommandLineItemHandler : AbstractLanguageServiceRuleHandler
     {

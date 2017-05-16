@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
             _activeProjectConfigurationRefreshService = activeProjectConfigurationRefreshService;
 
-            Handlers = new OrderPrecedenceImportCollection<ILanguageServiceRuleHandler>(projectCapabilityCheckProvider: commonServices.Project);
+            Handlers = new OrderPrecedenceImportCollection<IEvaluationHandler>(projectCapabilityCheckProvider: commonServices.Project);
             _evaluationSubscriptionLinks = new List<IDisposable>();
             _designTimeBuildSubscriptionLinks = new List<IDisposable>();
             _projectConfigurationsWithSubscriptions = new HashSet<ProjectConfiguration>();
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         public object HostSpecificEditAndContinueService => _currentAggregateProjectContext?.ENCProjectConfig;
 
         [ImportMany]
-        public OrderPrecedenceImportCollection<ILanguageServiceRuleHandler> Handlers
+        public OrderPrecedenceImportCollection<IEvaluationHandler> Handlers
         {
             get;
         }

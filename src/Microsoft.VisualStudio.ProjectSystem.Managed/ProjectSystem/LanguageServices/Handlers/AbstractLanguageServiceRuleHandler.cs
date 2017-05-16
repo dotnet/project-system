@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
-    internal abstract class AbstractLanguageServiceRuleHandler : ILanguageServiceRuleHandler
+    internal abstract class AbstractLanguageServiceRuleHandler : IEvaluationHandler
     {
         public abstract RuleHandlerType HandlerType { get; }
 

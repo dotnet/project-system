@@ -10,13 +10,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     ///     Handles changes to a language service rule,  and applies them to a 
     ///     <see cref="IWorkspaceProjectContext"/> instance.
     /// </summary>
-    internal interface ILanguageServiceRuleHandler
+    internal interface IEvaluationHandler
     {
         /// <summary>
         ///     Gets the rule this handler handles.
         /// </summary>
         /// <value>
-        ///     A <see cref="string"/> containing the rule that this <see cref="ILanguageServiceRuleHandler"/> 
+        ///     A <see cref="string"/> containing the rule that this <see cref="IEvaluationHandler"/> 
         ///     handles.
         /// </value>
         string RuleName
@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// </summary>
         /// <value>
         ///     One of the <see cref="RuleHandlerType"/> values indicate the type of change the 
-        ///     <see cref="ILanguageServiceRuleHandler"/> handles.
+        ///     <see cref="IEvaluationHandler"/> handles.
         /// </value>
         RuleHandlerType HandlerType
         {
