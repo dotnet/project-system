@@ -1,7 +1,42 @@
 # Debugging Tips
-## Diagnosing Design-Time Builds
+
+## Design-Time Builds
+### Diagnosing Design-Time Builds
 
 See [Diagnostic Design-Time Builds](/docs/design-time-builds.md#diagnosing-design-time-builds).
+
+### Failing Design-Time Builds
+
+You can artificially fail a design-time build with the following:
+
+``` XML
+  <Target Name="FailDesignTimeBuild" AfterTargets="ResolveAssemblyReferences">
+      <Error Text="Failed design-time build" />
+  </Target>
+```
+### Delaying Design-Time Builds
+
+You can artificially delay a design-time build with the following:
+
+``` XML
+  <UsingTask TaskName="Sleep" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+  <ParameterGroup>
+    <!-- Delay in milliseconds -->
+    <Delay ParameterType="System.Int32" Required="true" />
+  </ParameterGroup>
+  <Task>
+    <Code Type="Fragment" Language="cs">
+      <![CDATA[
+System.Threading.Thread.Sleep(this.Delay);
+]]>
+    </Code>
+  </Task>
+</UsingTask>
+
+  <Target Name="DelayDesignTimeBuild" AfterTargets="ResolveAssemblyReferences">
+      <Sleep Delay="10000" />
+  </Target>
+```
 
 ## CPS Tracing
 
