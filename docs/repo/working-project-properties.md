@@ -8,19 +8,19 @@ In General, we have 2 ways to get the Project Configuration Properties. One is t
 
 ## Working of the native/legacy project system
 
-[Pic]
+![native](https://cloud.githubusercontent.com/assets/10550513/26130958/0df90f52-3a4c-11e7-8fd9-a3c50198148f.png)
 
 In the legacy project system, both of these mechanisms end up returning the same object, CCSharpProjectConfigProperties, which implements IVsCfgBrowseObject and a bunch of public interfaces like CSharpProjectConfigurationProperties3, CSharpProjectConfigurationProperties4, CSharpProjectConfigurationProperties5, CSharpProjectConfigurationProperties6 and few more. 
 
 ## Working of the new  CPS based project system - Current state
 
-[Pic]
+![current](https://cloud.githubusercontent.com/assets/10550513/26130971/1fdaed76-3a4c-11e7-9e29-d2fb29b7ec69.png)
 
 In the CPS world, the object returned through IVsCfgBrowseObject implementation(ProjectConfig object) and the object returned via Automation(ProjectConfigProperties whose only property is OutputPath) are different. This behavior breaks back-compat because the Automation object no longer implements the public VS interfaces mentioned earlier. Hence, to support back-compat, the Managed project system exports an implementation, CSharpProjectConfigurationProperties, of these interfaces which replaces the default automation object.
 
 ## Future design of the new CPS based project system
 
-[Pic]
+![future](https://cloud.githubusercontent.com/assets/10550513/26130976/294d2df6-3a4c-11e7-9dc4-8144b290abfe.png)
 
 We would like to get to a design, where Managed project system exports an implementation of the public VS interfaces, which gets ComAggregated over ProjectConfig. This ProjectConfig will then be imported by a ProjectConfigWrapper, which then exports the ProjectConfig instance as the Automation Object. With this design, the same instance of the ProjectConfig, which implements the public VS interfaces, will be provided for both the approaches(DTE and IVsCfgBrowseObject). This behavior is similar to the native project system behavior and restores backward compatibility.
 
