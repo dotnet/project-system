@@ -16,11 +16,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             Requires.NotNull(project, nameof(project));
 
-            Handlers = new OrderPrecedenceImportCollection<IEvaluationHandler>(projectCapabilityCheckProvider: project);
+            EvaluationHandlers = new OrderPrecedenceImportCollection<IEvaluationHandler>(projectCapabilityCheckProvider: project);
         }
 
         [ImportMany]
-        public OrderPrecedenceImportCollection<IEvaluationHandler> Handlers
+        public OrderPrecedenceImportCollection<IEvaluationHandler> EvaluationHandlers
         {
             get;
         }
@@ -30,8 +30,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             Requires.NotNull(update, nameof(update));
             Requires.NotNull(context, nameof(context));
 
-            var handlers = Handlers.Select(h => h.Value)
-                                   .Where(h => h.HandlerType == handlerType);
+            var handlers = EvaluationHandlers.Select(h => h.Value)
+                                            .Where(h => h.HandlerType == handlerType);
 
             foreach (var handler in handlers)
             {
@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             Requires.NotNull(context, nameof(context));
 
-            foreach (var handler in Handlers)
+            foreach (var handler in EvaluationHandlers)
             {
                 handler.Value.OnContextReleasedAsync(context);
             }
@@ -64,10 +64,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         public IEnumerable<string> GetWatchedRules(RuleHandlerType handlerType)
         {
-            return Handlers.Where(h => h.Value.HandlerType == handlerType)
-                           .Select(h => h.Value.EvaluationRuleName)
-                           .Distinct(StringComparers.RuleNames)
-                           .ToArray();
+            return EvaluationHandlers.Where(h => h.Value.HandlerType == handlerType)
+                                     .Select(h => h.Value.EvaluationRuleName)
+                                     .Distinct(StringComparers.RuleNames)
+                                     .ToArray();
         }
     }
 }
