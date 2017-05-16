@@ -2,7 +2,7 @@
   xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
-    <XUnitPath>$(NuGetPackageRoot)\xunit.runner.console\2.2.0-beta4-build3444\tools\xunit.console.x86.exe</XUnitPath>
+    <XUnitPath>$(NuGetPackageRoot)\xunit.runner.console\$(XUnitRunnerConsoleVersion)\tools\xunit.console.x86.exe</XUnitPath>
     <XUnitTestResultsDirectory>$(OutDir)\xUnitResults</XUnitTestResultsDirectory>
     <XUnitArguments>"$(OutDir)\$(AssemblyName).dll" -html "$(XUnitTestResultsDirectory)\$(AssemblyName).html" -noshadow</XUnitArguments>
   </PropertyGroup>

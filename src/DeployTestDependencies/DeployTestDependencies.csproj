@@ -26,9 +26,9 @@
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.VisualBasic\Microsoft.VisualStudio.ProjectSystem.VisualBasic.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="xunit.runner.visualstudio" Version="[2.2.0]" />
-    <PackageReference Include="xunit.runner.console" Version="[2.2.0-beta4-build3444]" />
-    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="[$(XUnitRunnerVisualstudioVersion)]" />
+    <PackageReference Include="xunit.runner.console" Version="[$(XUnitRunnerConsoleVersion)]" />
+    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="$(SystemRuntimeInteropServicesRuntimeInformationVersion)" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Readme.txt" />

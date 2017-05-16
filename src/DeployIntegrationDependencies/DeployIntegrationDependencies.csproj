@@ -17,14 +17,14 @@
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.IntegrationTests\Microsoft.VisualStudio.ProjectSystem.IntegrationTests.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.VisualStudio.IntegrationTest.Utilities" Version="[2.3.0-beta2-61711-06]" />
-    <PackageReference Include="Microsoft.VisualStudio.LanguageServices" Version="[2.3.0-beta2-61711-06]" />
-    <PackageReference Include="RoslynTools.DownloadRoslynVsixes" Version="0.3.2-beta" />
-    <PackageReference Include="RoslynTools.Microsoft.VSIXExpInstaller" Version="0.2.4-beta" />
-    <PackageReference Include="System.Reflection.Metadata" Version="[1.4.2]" />
-    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
-    <PackageReference Include="xunit.runner.console" Version="[2.2.0-beta4-build3444]" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="[2.2.0]" />
+    <PackageReference Include="Microsoft.VisualStudio.IntegrationTest.Utilities" Version="[$(MicrosoftVisualStudioIntegrationTestUtilitiesVersion)]" />
+    <PackageReference Include="Microsoft.VisualStudio.LanguageServices" Version="[$(MicrosoftVisualStudioLanguageServicesVersion)]" />
+    <PackageReference Include="RoslynTools.DownloadRoslynVsixes" Version="$(RoslynToolsDownloadRoslynVsixesVersion)" />
+    <PackageReference Include="RoslynTools.Microsoft.VSIXExpInstaller" Version="$(RoslynToolsMicrosoftVSIXExpInstallerVersion)" />
+    <PackageReference Include="System.Reflection.Metadata" Version="[$(SystemReflectionMetadataVersion)]" />
+    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="$(SystemRuntimeInteropServicesRuntimeInformationVersion)" />
+    <PackageReference Include="xunit.runner.console" Version="[$(XUnitRunnerConsoleVersion)]" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="[$(XUnitRunnerVisualstudioVersion)]" />
   </ItemGroup>
   <Import Project="..\..\build\Targets\ProducesNoOutput.Imports.targets" />
 </Project>

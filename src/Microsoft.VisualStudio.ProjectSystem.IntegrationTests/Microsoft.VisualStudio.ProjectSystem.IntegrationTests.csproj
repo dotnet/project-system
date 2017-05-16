@@ -14,9 +14,9 @@
   <ItemGroup>
     <PackageReference Include="EnvDTE" Version="8.0.1" />
     <PackageReference Include="EnvDTE80" Version="8.0.0" />
-    <PackageReference Include="Microsoft.VisualStudio.IntegrationTest.Utilities" Version="2.3.0-beta2-61711-06" />
-    <PackageReference Include="Microsoft.VisualStudio.LanguageServices" Version="[2.3.0-beta2-61711-06]" />
-    <PackageReference Include="System.Reflection.Metadata" Version="[1.4.2]" />
+    <PackageReference Include="Microsoft.VisualStudio.IntegrationTest.Utilities" Version="$(MicrosoftVisualStudioIntegrationTestUtilitiesVersion)" />
+    <PackageReference Include="Microsoft.VisualStudio.LanguageServices" Version="[$(MicrosoftVisualStudioLanguageServicesVersion)]" />
+    <PackageReference Include="System.Reflection.Metadata" Version="[$(SystemReflectionMetadataVersion)]" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests\Properties\AssemblyAttributes.cs">
