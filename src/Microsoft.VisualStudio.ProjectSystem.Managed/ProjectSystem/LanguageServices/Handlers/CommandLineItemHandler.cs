@@ -47,14 +47,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             Requires.NotNull(projectChange, nameof(projectChange));
 
-            if (!ProcessDesignTimeBuildFailure(projectChange, context))
-            {
-                ProcessOptions(projectChange, context);
-                ProcessItems(projectChange, context, isActiveContext);
-            }
+            // When a design-time build fails and the 'CompileDesignTime' target either doesn't succeed or run, CPS sends on a 
+            // IProjectChangeDescription that represents as if CompileDesignTime was run, but returned zero results. It's important 
+            // that we pass on those "removes" of references and source files onto Roslyn because CPS will compare this failed build 
+            // with the next successful build and generate the diff based on that leading to duplicate/incorrect results if we didn't.
+            ProcessDesignTimeBuildFailure(projectChange, context);
+            ProcessOptions(projectChange, context);
+            ProcessItems(projectChange, context, isActiveContext);
         }
 
-        private static bool ProcessDesignTimeBuildFailure(IProjectChangeDescription projectChange, IWorkspaceProjectContext context)
+        private static void ProcessDesignTimeBuildFailure(IProjectChangeDescription projectChange, IWorkspaceProjectContext context)
         {
             // WORKAROUND: https://github.com/dotnet/roslyn-project-system/issues/478
             // Check if the design-time build failed, if we have no arguments, then that is likely the 
@@ -62,7 +64,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             bool designTimeBuildFailed = projectChange.After.Items.Count == 0;
             context.LastDesignTimeBuildSucceeded = !designTimeBuildFailed;
-            return designTimeBuildFailed;
         }
 
         private static void ProcessOptions(IProjectChangeDescription projectChange, IWorkspaceProjectContext context)
