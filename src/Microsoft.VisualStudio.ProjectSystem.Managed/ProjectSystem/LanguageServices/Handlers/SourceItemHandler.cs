@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             _project = project;
         }
 
-        public override string RuleName
+        public override string EvaluationRuleName
         {
             get { return Compile.SchemaName; }
         }

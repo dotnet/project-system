@@ -13,13 +13,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     internal interface IEvaluationHandler
     {
         /// <summary>
-        ///     Gets the rule this handler handles.
+        ///     Gets the evaluation rule this handler handles.
         /// </summary>
         /// <value>
-        ///     A <see cref="string"/> containing the rule that this <see cref="IEvaluationHandler"/> 
+        ///     A <see cref="string"/> containing the evaluation rule that this <see cref="IEvaluationHandler"/> 
         ///     handles.
         /// </value>
-        string RuleName
+        string EvaluationRuleName
         {
             get;
         }

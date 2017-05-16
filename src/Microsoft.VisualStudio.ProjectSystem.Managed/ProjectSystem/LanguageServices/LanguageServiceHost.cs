@@ -309,7 +309,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 foreach (var handler in handlers)
                 {
-                    IProjectChangeDescription projectChange = update.Value.ProjectChanges[handler.RuleName];
+                    IProjectChangeDescription projectChange = update.Value.ProjectChanges[handler.EvaluationRuleName];
                     if (handler.ReceiveUpdatesWithEmptyProjectChange || projectChange.Difference.AnyChanges)
                     {
                         handler.Handle(projectChange, projectContextToUpdate, isActiveContext);
@@ -321,7 +321,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private IEnumerable<string> GetWatchedRules(RuleHandlerType handlerType)
         {
             return Handlers.Where(h => h.Value.HandlerType == handlerType)
-                           .Select(h => h.Value.RuleName)
+                           .Select(h => h.Value.EvaluationRuleName)
                            .Distinct(StringComparers.RuleNames)
                            .ToArray();
         }

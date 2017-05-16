@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             get { return RuleHandlerType.Evaluation; }
         }
 
-        public override string RuleName
+        public override string EvaluationRuleName
         {
             get { return ConfigurationGeneral.SchemaName; }
         }
