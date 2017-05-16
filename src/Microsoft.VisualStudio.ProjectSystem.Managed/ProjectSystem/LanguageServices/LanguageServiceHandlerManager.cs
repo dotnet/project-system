@@ -28,6 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         public void Handle(IProjectVersionedValue<IProjectSubscriptionUpdate> update, RuleHandlerType handlerType, IWorkspaceProjectContext context, bool isActiveContext)
         {
             Requires.NotNull(update, nameof(update));
+            Requires.NotNull(context, nameof(context));
 
             var handlers = Handlers.Select(h => h.Value)
                                    .Where(h => h.HandlerType == handlerType);
