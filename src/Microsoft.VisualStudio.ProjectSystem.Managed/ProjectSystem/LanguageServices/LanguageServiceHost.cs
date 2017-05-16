@@ -286,18 +286,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     return;
                 }
 
-                // Broken design time builds sometimes cause updates with no project changes and sometimes cause updates with a project change that has no difference.
-                // We handle the former case here, and the latter case is handled in the CommandLineItemHandler.
-                if (update.Value.ProjectChanges.Count == 0)
-                {
-                    if (handlerType == RuleHandlerType.DesignTimeBuild)
-                    {
-                        projectContextToUpdate.LastDesignTimeBuildSucceeded = false;
-                    }
-
-                    return;
-                }
-
                 _languageServiceHandlerManager.Handle(update, handlerType, projectContextToUpdate, isActiveContext);
             });
         }
