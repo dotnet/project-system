@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             foreach (var handler in EvaluationHandlers.Select(h => h.Value))
             {
                 IProjectChangeDescription projectChange = update.Value.ProjectChanges[handler.EvaluationRuleName];
-                if (handler.ReceiveUpdatesWithEmptyProjectChange || projectChange.Difference.AnyChanges)
+                if (projectChange.Difference.AnyChanges)
                 {
                     handler.Handle(projectChange, context, isActiveContext);
                 }
