@@ -72,8 +72,8 @@ SET VisualBasicDesignTimeTargetsPath=%~dp0$bin\\${configuration}\\Rules\\Microso
 echo setting F# DTT %~dp0$bin\\${configuration}\\Rules\\Microsoft.FSharp.DesignTime.targets
 SET FSharpDesignTimeTargetsPath=%~dp0$bin\\${configuration}\\Rules\\Microsoft.FSharp.DesignTime.targets
 
-echo setting C# DTT %~dp0$bin\\${configuration}\\Rules\\\Microsoft.FSharp.DesignTime.targets
-SET CSharpDesignTimeTargetsPath=%~dp0$bin\\${configuration}\\Rules\\\Microsoft.FSharp.DesignTime.targets
+echo setting C# DTT %~dp0$bin\\${configuration}\\Rules\\Microsoft.FSharp.DesignTime.targets
+SET CSharpDesignTimeTargetsPath=%~dp0$bin\\${configuration}\\Rules\\Microsoft.FSharp.DesignTime.targets
 
 echo *** Build Roslyn Project System ***
 SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\Preview\\Enterprise\\Common7\\Tools\\
