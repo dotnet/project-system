@@ -23,11 +23,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             get { return ConfigurationGeneral.SchemaName; }
         }
 
-        public bool ReceiveUpdatesWithEmptyProjectChange
-        {
-            get { return false; }
-        }
-
         public void Handle(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
         {
             Requires.NotNull(projectChange, nameof(projectChange));
