@@ -11,24 +11,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     /// </summary>
     [Export(typeof(IEvaluationHandler))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
-    internal class ProjectPropertiesItemHandler : AbstractLanguageServiceRuleHandler
+    internal class ProjectPropertiesItemHandler : IEvaluationHandler
     {
         [ImportingConstructor]
         public ProjectPropertiesItemHandler()
         {
         }
 
-        public override RuleHandlerType HandlerType
-        {
-            get { return RuleHandlerType.Evaluation; }
-        }
-
-        public override string EvaluationRuleName
+        public string EvaluationRuleName
         {
             get { return ConfigurationGeneral.SchemaName; }
         }
 
-        public override void Handle(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
+        public bool ReceiveUpdatesWithEmptyProjectChange
+        {
+            get { return false; }
+        }
+
+        public void Handle(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
         {
             Requires.NotNull(projectChange, nameof(projectChange));
 
@@ -55,6 +55,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                     context.BinOutputPath = newBinOutputPath;
                 }
             }
+        }
+
+        public void OnContextReleasedAsync(IWorkspaceProjectContext context)
+        {
         }
     }
 }
