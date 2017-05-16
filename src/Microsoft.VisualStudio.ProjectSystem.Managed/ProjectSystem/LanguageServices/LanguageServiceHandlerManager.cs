@@ -66,15 +66,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private void HandleDesignTime(IProjectVersionedValue<IProjectSubscriptionUpdate> update, IWorkspaceProjectContext context, bool isActiveContext)
         {
+            Assumes.False(update.Value.ProjectChanges.Count == 0, "CPS should never send us an empty design-time build data.");
+
             IProjectChangeDescription projectChange = update.Value.ProjectChanges[CompilerCommandLineArgs.SchemaName];
 
-            // When a design-time build fails and the 'CompileDesignTime' target either doesn't succeed or run, CPS sends on a 
-            // IProjectChangeDescription that represents as if CompileDesignTime was run, but returned zero results. It's important 
-            // that we pass on those "removes" of references and source files onto Roslyn because CPS will compare this failed build 
-            // with the next successful build and generate the diff based on that leading to duplicate/incorrect results if we didn't.
-            ProcessDesignTimeBuildFailure(projectChange, context);
-            ProcessOptions(projectChange, context);
-            ProcessItems(projectChange, context, isActiveContext);
+            // If nothing changed (even another failed design-time build), don't do anything
+            if (projectChange.Difference.AnyChanges)
+            {   
+                ProcessDesignTimeBuildFailure(projectChange, context);
+                ProcessOptions(projectChange, context);
+                ProcessItems(projectChange, context, isActiveContext);
+            }
         }
 
         /// <summary>
@@ -108,14 +110,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return new string[] { CompilerCommandLineArgs.SchemaName };
         }
 
-        private static void ProcessDesignTimeBuildFailure(IProjectChangeDescription projectChange, IWorkspaceProjectContext context)
+        private void ProcessDesignTimeBuildFailure(IProjectChangeDescription projectChange, IWorkspaceProjectContext context)
         {
-            // WORKAROUND: https://github.com/dotnet/roslyn-project-system/issues/478
-            // Check if the design-time build failed, if we have no arguments, then that is likely the 
-            // case and we should ignore the results.
+            // If 'CompileDesignTime' didn't run due to a preceeding failed target, or a failure in itself, CPS will send us an empty IProjectChangeDescription
+            // that represents as if 'CompileDesignTime' ran but returned zero results.
+            //
+            // We still forward those 'removes' of references, sources, etc onto Roslyn to avoid duplicate/incorrect results when the next
+            // successful build occurs, because it will be diff between it and this failed build.
 
-            bool designTimeBuildFailed = projectChange.After.Items.Count == 0;
-            context.LastDesignTimeBuildSucceeded = !designTimeBuildFailed;
+            context.LastDesignTimeBuildSucceeded = projectChange.After.Items.Count > 0;
         }
 
         private static void ProcessOptions(IProjectChangeDescription projectChange, IWorkspaceProjectContext context)
