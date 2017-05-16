@@ -90,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             }
         }
 
-        public override void OnContextReleased(IWorkspaceProjectContext context)
+        public void OnContextReleased(IWorkspaceProjectContext context)
         {
             Requires.NotNull(context, nameof(context));
 
