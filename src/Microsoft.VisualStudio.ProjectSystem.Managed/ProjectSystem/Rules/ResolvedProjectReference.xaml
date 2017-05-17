@@ -6,6 +6,7 @@
     PageTemplate="generic"
     Description="Reference Properties"
     xmlns="http://schemas.microsoft.com/build/2009/properties">
+
     <Rule.DataSource>
         <DataSource Persistence="ResolvedReference" ItemType="ProjectReference" HasConfigurationCondition="False" 
                     SourceType="TargetResults" MSBuildTarget="ResolveProjectReferencesDesignTime" SourceOfDefaultValue="AfterContext" />
@@ -16,17 +17,32 @@
                         Description="A comma-delimited list of aliases to this reference."
                         Separator=",">
         <StringListProperty.DataSource>
-            <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+            <DataSource Persistence="ProjectFile"
+                        ItemType="ProjectReference"
+                        HasConfigurationCondition="False"
+                        SourceOfDefaultValue="AfterContext" />
         </StringListProperty.DataSource>
     </StringListProperty>
+
+    <BoolProperty Name="ReferenceOutputAssembly"
+                  DisplayName="Reference Output Assembly"
+                  Description="A value indicating whether the compiler should include a reference to the target project's primary output assembly." />
 
     <BoolProperty Name="CopyLocal"
                   DisplayName="Copy Local"
                   Description="Indicates whether the reference will be copied to the output directory.">
         <BoolProperty.DataSource>
-            <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" PersistedName="Private" SourceOfDefaultValue="AfterContext" />
+            <DataSource Persistence="ProjectFile"
+                        ItemType="ProjectReference"
+                        HasConfigurationCondition="False"
+                        PersistedName="Private"
+                        SourceOfDefaultValue="AfterContext" />
         </BoolProperty.DataSource>
     </BoolProperty>
+
+    <BoolProperty Name="CopyLocalSatelliteAssemblies"
+                  DisplayName="Copy Local Satellite Assemblies"
+                  Description="Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory." />
 
     <StringProperty Name="Culture" 
                     ReadOnly="True"
@@ -101,6 +117,21 @@
                     Description="Version of reference.">
     </StringProperty>
 
+    <StringProperty Name="IncludeAssets" 
+                    Visible="True"
+                    DisplayName="IncludeAssets"
+                    Description="Assets to include from this reference" />
+
+    <StringProperty Name="ExcludeAssets" 
+                    Visible="True"
+                    DisplayName="ExcludeAssets"
+                    Description="Assets to exclude from this reference" />
+
+    <StringProperty Name="PrivateAssets" 
+                    Visible="True"
+                    DisplayName="PrivateAssets"
+                    Description="Assets that are private in this reference" />
+    
     <StringProperty Name="RequiredTargetFramework" DisplayName="Required Target Framework" Visible="False" />
     <StringProperty Name="HintPath" Visible="false" />
     <StringProperty Name="SDKIdentity" Visible="false" />

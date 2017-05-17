@@ -11,6 +11,18 @@
         <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </Rule.DataSource>
 
+    <StringListProperty Name="Aliases"
+                        DisplayName="Aliases"
+                        Description="A comma-delimited list of aliases to this reference."
+                        Separator=",">
+        <StringListProperty.DataSource>
+            <DataSource Persistence="ProjectFile"
+                        ItemType="ProjectReference"
+                        HasConfigurationCondition="False"
+                        SourceOfDefaultValue="AfterContext" />
+        </StringListProperty.DataSource>
+    </StringListProperty>
+    
     <BoolProperty Name="ReferenceOutputAssembly"
                   DisplayName="Reference Output Assembly"
                   Description="A value indicating whether the compiler should include a reference to the target project's primary output assembly." />
@@ -40,6 +52,55 @@
                         SourceOfDefaultValue="AfterContext" />
         </BoolProperty.DataSource>
     </BoolProperty>
+
+    <StringProperty Name="Culture" 
+                    ReadOnly="True"
+                    DisplayName="Culture" 
+                    Description="The value of the culture field from the assembly metadata.">
+    </StringProperty>
+
+    <StringProperty Name="Description" 
+                    ReadOnly="True" 
+                    DisplayName="Description" 
+                    Description="The value of the Title field from the assembly metadata.">
+    </StringProperty>
+
+    <BoolProperty Name="EmbedInteropTypes"
+                  DisplayName="Embed Interop Types"
+                  Description="Indicates whether types defined in this assembly will be embedded into the target assembly.">
+        <BoolProperty.DataSource>
+            <DataSource Persistence="ProjectFile"
+                        ItemType="ProjectReference"
+                        HasConfigurationCondition="False"
+                        SourceOfDefaultValue="AfterContext" />
+        </BoolProperty.DataSource>
+    </BoolProperty>
+
+    <StringProperty Name="Identity"
+                    ReadOnly="True"
+                    DisplayName="Identity"
+                    Description="Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).">
+        <StringProperty.DataSource>
+            <DataSource PersistedName="{}{Identity}"
+                        SourceOfDefaultValue="AfterContext" />
+        </StringProperty.DataSource>
+    </StringProperty>
+
+    <StringProperty Name="ResolvedPath"
+                    ReadOnly="True"
+                    DisplayName="Path"
+                    Description="Location of the file being referenced.">
+        <StringProperty.DataSource>
+            <DataSource PersistedName="Identity"
+                        SourceOfDefaultValue="AfterContext" />
+        </StringProperty.DataSource>
+    </StringProperty>
+
+    <StringProperty Name="Version"
+                    ReadOnly="True"
+                    DisplayName="Version"
+                    Description="Version of reference.">
+    </StringProperty>
 
     <StringProperty Name="IncludeAssets" 
                     Visible="True"
