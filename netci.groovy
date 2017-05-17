@@ -97,7 +97,7 @@ build.cmd /no-node-reuse /skiptests /integrationtests /${configuration.toLowerCa
 
         if (isPR) {
             def triggerPhrase = generateTriggerPhrase(newVsiJobName, "vsi")
-            Utilities.addGithubPRTriggerForBranch(newVsiJob, branch, newVsiJobName)
+            Utilities.addGithubPRTriggerForBranch(newVsiJob, branch, newVsiJobName, triggerPhrase, /*triggerPhraseOnly*/ true)
         } else {
             Utilities.addGithubPushTrigger(newVsiJob)
         }
