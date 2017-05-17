@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
 using Microsoft.CodeAnalysis;
@@ -12,11 +13,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     internal class FSharpParseBuildOptions : IParseBuildOptions
     {
         private const string ReferencePrefix = "-r:";
+        private const string LongReferencePrefix = "--reference:";
 
         public BuildOptions Parse(IEnumerable<string> args, string baseDirectory)
         {
             var sourceFiles = new List<CommandLineSourceFile>();
-            var additionalFiles = new List<CommandLineSourceFile>();
             var metadataReferences = new List<CommandLineReference>();
 
             foreach (var arg in args)
@@ -25,6 +26,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 {
                     // e.g., -r:C:\Path\To\FSharp.Core.dll
                     metadataReferences.Add(new CommandLineReference(arg.Substring(ReferencePrefix.Length), MetadataReferenceProperties.Assembly));
+                }
+                else if (arg.StartsWith(LongReferencePrefix))
+                {
+                    // e.g., --reference:C:\Path\To\FSharp.Core.dll
+                    metadataReferences.Add(new CommandLineReference(arg.Substring(LongReferencePrefix.Length), MetadataReferenceProperties.Assembly));
                 }
                 else if (!arg.StartsWith("-"))
                 {
@@ -41,17 +47,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                             sourceFiles.Add(new CommandLineSourceFile(arg, isScript: (extension == ".fsx") || (extension == ".fsscript")));
                             break;
                         default:
-                            additionalFiles.Add(new CommandLineSourceFile(arg, isScript: false));
                             break;
                     }
                 }
             }
 
             return new BuildOptions(
-                sourceFiles,
-                additionalFiles,
-                metadataReferences,
-                new CommandLineAnalyzerReference[0]);
+                sourceFiles: sourceFiles.ToImmutableArray(),
+                additionalFiles: ImmutableArray<CommandLineSourceFile>.Empty,
+                metadataReferences: metadataReferences.ToImmutableArray(),
+                analyzerReferences: ImmutableArray<CommandLineAnalyzerReference>.Empty);
         }
     }
 }
