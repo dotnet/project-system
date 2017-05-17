@@ -44,12 +44,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             ImmutableArray<(IEvaluationHandler Value, string EvaluationRuleName)> handlers = _handlerProvider.GetEvaluationHandlers(context);
 
+            IComparable version = update.DataSourceVersions[ProjectDataSources.ConfiguredProjectVersion];
+
             foreach (var handler in handlers)
             {
                 IProjectChangeDescription projectChange = update.Value.ProjectChanges[handler.EvaluationRuleName];
                 if (projectChange.Difference.AnyChanges)
                 {
-                    handler.Value.Handle(projectChange, isActiveContext);
+                    handler.Value.Handle(version, projectChange, isActiveContext);
                 }
             }
         }
@@ -59,13 +61,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             Assumes.False(update.Value.ProjectChanges.Count == 0, "CPS should never send us an empty design-time build data.");
 
             IProjectChangeDescription projectChange = update.Value.ProjectChanges[CompilerCommandLineArgs.SchemaName];
+            IComparable version = update.DataSourceVersions[ProjectDataSources.ConfiguredProjectVersion];
 
             // If nothing changed (even another failed design-time build), don't do anything
             if (projectChange.Difference.AnyChanges)
             {   
                 ProcessDesignTimeBuildFailure(projectChange, context);
                 ProcessOptions(projectChange, context);
-                ProcessItems(projectChange, context, isActiveContext);
+                ProcessItems(version, projectChange, context, isActiveContext);
             }
         }
 
@@ -113,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             context.SetOptions(string.Join(" ", commandlineArguments));
         }
 
-        private void ProcessItems(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
+        private void ProcessItems(IComparable version, IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
         {
             ImmutableArray<ICommandLineHandler> handlers = _handlerProvider.GetCommandLineHandlers(context);
 
@@ -122,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             foreach (var handler in handlers)
             {
-                handler.Handle(addedItems, removedItems, isActiveContext);
+                handler.Handle(version, addedItems, removedItems, isActiveContext);
             }
         }
     }
