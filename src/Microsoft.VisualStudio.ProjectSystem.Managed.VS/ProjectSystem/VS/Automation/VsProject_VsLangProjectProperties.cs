@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
     public partial class VSProject : VSLangProj.ProjectProperties
     {
-        public readonly Dictionary<string, int> _getOutputTypeExMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+        private readonly Dictionary<string, int> _getOutputTypeExMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
         {
             {"WinExe", 0 },
             {"Exe", 1 },
@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             {"WinMDObj", 4 },
         };
 
-        public readonly Dictionary<int, string> _setOutputTypeExMap = new Dictionary<int, string>
+        private readonly Dictionary<int, string> _setOutputTypeExMap = new Dictionary<int, string>
         {
             {0, "WinExe"},
             {1, "Exe"},
@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         };
 
         /// Provides the value for <see cref="OutputType"/> of enum type <see cref="prjOutputType"/> whose value is only 0, 1 or 2.
-        public readonly Dictionary<string, int> _getOutputTypeMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+        private readonly Dictionary<string, int> _getOutputTypeMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
         {
             {"WinExe", 0 },
             {"Exe", 1 },
