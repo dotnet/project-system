@@ -13,6 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     ///     to the compiler during design-time builds.
     /// </summary>
     [Export(typeof(AbstractContextHandler))]
+    [ExportMetadata("EvaluationRuleName", Compile.SchemaName)]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
     internal class SourceItemHandler : AbstractContextHandler, IEvaluationHandler, ICommandLineHandler
     {
@@ -32,11 +33,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Requires.NotNull(project, nameof(project));
 
             _project = project;
-        }
-
-        public string EvaluationRuleName
-        {
-            get { return Compile.SchemaName; }
         }
 
         public void Handle(BuildOptions added, BuildOptions removed, IWorkspaceProjectContext context, bool isActiveContext)

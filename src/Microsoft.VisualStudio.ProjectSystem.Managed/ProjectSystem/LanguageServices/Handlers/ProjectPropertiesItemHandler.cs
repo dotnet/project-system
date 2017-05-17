@@ -10,17 +10,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     ///     Handles changes to the project and makes sure the language service is aware of them.
     /// </summary>
     [Export(typeof(AbstractContextHandler))]
+    [ExportMetadata("EvaluationRuleName", ConfigurationGeneral.SchemaName)]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
     internal class ProjectPropertiesItemHandler : AbstractContextHandler, IEvaluationHandler
     {
         [ImportingConstructor]
         public ProjectPropertiesItemHandler()
         {
-        }
-
-        public string EvaluationRuleName
-        {
-            get { return ConfigurationGeneral.SchemaName; }
         }
 
         public void Handle(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
