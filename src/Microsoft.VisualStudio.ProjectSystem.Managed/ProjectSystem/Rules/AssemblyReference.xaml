@@ -14,6 +14,8 @@
                     SourceOfDefaultValue="AfterContext" />
     </Rule.DataSource>
 
+    <!-- Visible properties -->
+
     <StringListProperty Name="Aliases"
                         DisplayName="Aliases"
                         Description="A comma-delimited list of aliases to this reference."
@@ -72,18 +74,25 @@
                     Description="Version of reference.">
     </StringProperty>
 
-    <StringProperty Name="RequiredTargetFramework"
-                    DisplayName="Required Target Framework"
-                    Visible="False" />
+    <!-- Hidden properties -->
+
     <StringProperty Name="HintPath" Visible="false" />
-    <StringProperty Name="SDKName" Visible="false" />
-    <BoolProperty Name="IsWinMDFile" Visible="false" />
+
     <StringProperty Name="ImageRuntime"
                     DisplayName="Runtime Version"
                     Description="The CLR runtime version targeted by this assembly."
                     Visible="False"
                     ReadOnly="True" />
+
     <StringProperty Name="IsImplicitlyDefined"
                     Visible="False"
                     ReadOnly="True" />
+
+    <BoolProperty Name="IsWinMDFile" Visible="false" />
+
+    <StringProperty Name="RequiredTargetFramework"
+                    DisplayName="Required Target Framework"
+                    Visible="False" />
+
+    <StringProperty Name="SDKName" Visible="false" />
 </Rule>
