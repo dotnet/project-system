@@ -8,32 +8,30 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
-    /// OutputTypeEx acts as a converter for the MSBuild OutputType value expressed as <see cref="VSLangProj110.prjOutputTypeEx"/>.
-    [ExportInterceptingPropertyValueProvider("OutputTypeEx", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
-    internal sealed class OutputTypeExValueProvider : InterceptingPropertyValueProviderBase
+    /// OutputType acts as a converter for the MSBuild OutputType value expressed as <see cref="VSLangProj.prjOutputType"/>.
+    [ExportInterceptingPropertyValueProvider("OutputType", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
+    internal sealed class OutputTypeValueProvider : InterceptingPropertyValueProviderBase
     {
         private readonly ProjectProperties _properties;
 
-        private readonly Dictionary<string, string> _getOutputTypeExMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        private readonly Dictionary<string, string> _getOutputTypeMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
             {"WinExe",          "0" },
             {"Exe",             "1" },
             {"Library",         "2" },
-            {"AppContainerExe", "3" },
-            {"WinMDObj",        "4" },
+            {"AppContainerExe", "1" },
+            {"WinMDObj",        "2" },
         };
 
-        private readonly Dictionary<string, string> _setOutputTypeExMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        private readonly Dictionary<string, string> _setOutputTypeMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
             {"0", "WinExe" },
             {"1", "Exe" },
             {"2", "Library" },
-            {"3", "AppContainerExe" },
-            {"4", "WinMDObj"},
         };
 
         [ImportingConstructor]
-        public OutputTypeExValueProvider(ProjectProperties properties)
+        public OutputTypeValueProvider(ProjectProperties properties)
         {
             _properties = properties;
         }
@@ -42,17 +40,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         {
             var configuration = await _properties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
             var value = await configuration.OutputType.GetEvaluatedValueAtEndAsync().ConfigureAwait(false);
-            return _getOutputTypeExMap[value];
+            return _getOutputTypeMap[value];
         }
 
         public override async Task<string> OnSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string> dimensionalConditions = null)
         {
-            var value = _setOutputTypeExMap[unevaluatedPropertyValue];
+            var value = _setOutputTypeMap[unevaluatedPropertyValue];
             var configuration = await _properties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
             await configuration.OutputType.SetValueAsync(value).ConfigureAwait(false);
 
-            // We need to return null so we dont persist a value for the MSBuild property 'OutputTypeEx'
+            // The value is set so there is no need to set the value again.
             return null;
         }
     }
 }
+

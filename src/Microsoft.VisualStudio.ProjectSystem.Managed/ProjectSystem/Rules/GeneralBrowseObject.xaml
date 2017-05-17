@@ -46,7 +46,13 @@
         </IntProperty.DataSource>
     </IntProperty>
     <StringProperty Name="OutputName" Visible="False" />
-    <DynamicEnumProperty Name="OutputType" DisplayName="Output Type" EnumProvider="OutputTypeEnumProvider" Visible="False"/>
+    <!-- This property is used to provide the value of OutputType through BrowseObject, which is used by Property pages-->
+    <StringProperty Name="OutputType" DisplayName="Output Type" Visible="False">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFileWithInterception" PersistedName="OutputType" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+        </StringProperty.DataSource>
+    </StringProperty>
+    <!-- This property is used to provide the value of OutputTypeEx through BrowseObject, which is used by Property pages-->
     <StringProperty Name="OutputTypeEx" DisplayName="Output Type Ex" Visible="False">
         <StringProperty.DataSource>
             <DataSource Persistence="ProjectFileWithInterception" PersistedName="OutputTypeEx" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
