@@ -20,6 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private readonly IUnconfiguredProjectCommonServices _projectServices;
         private readonly IProjectLockService _projectLockService;
         private readonly IProjectTreeProvider _fileSystemTreeProvider;
+        private readonly ILoadedProjectContextService _loadedProjectService;
         private IVsFileChangeEx _fileChangeService;
         private IDisposable _treeWatcher;
         private uint _filechangeCookie;
@@ -29,16 +30,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         public ProjectAssetFileWatcher([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
                                       [Import(ContractNames.ProjectTreeProviders.FileSystemDirectoryTree)] IProjectTreeProvider fileSystemTreeProvider,
                                       IUnconfiguredProjectCommonServices projectServices,
+                                      ILoadedProjectContextService loadedProjectService,
                                       IProjectLockService projectLockService)
         {
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
             Requires.NotNull(fileSystemTreeProvider, nameof(fileSystemTreeProvider));
             Requires.NotNull(projectServices, nameof(projectServices));
+            Requires.NotNull(loadedProjectService, nameof(loadedProjectService));
             Requires.NotNull(projectLockService, nameof(projectLockService));
 
             _serviceProvider = serviceProvider;
             _fileSystemTreeProvider = fileSystemTreeProvider;
             _projectServices = projectServices;
+            _loadedProjectService = loadedProjectService;
             _projectLockService = projectLockService;
         }
 
@@ -78,15 +82,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 return;
             }
 
-            // NOTE: Project lock file path may be null
-            var projectLockFilePath = await GetProjectLockFilePathAsync(newTree).ConfigureAwait(false);
-
-            // project.json may have been renamed to {projectName}.project.json or in the case of the project.assets.json, 
-            // the immediate path could have changed. In either case, change the file watcher.
-            if (!PathHelper.IsSamePath(projectLockFilePath, _fileBeingWatched))
+            try
             {
-                UnregisterFileWatcherIfAny();
-                RegisterFileWatcherAsync(projectLockFilePath);
+                // Operations to get project lock file access the Project and hence should be guarded
+                // by LoadedProjectAsync to prevent the project from being unloaded
+                await _loadedProjectService.LoadedProjectAsync(async () =>
+                {
+                    // NOTE: Project lock file path may be null
+                    var projectLockFilePath = await GetProjectLockFilePathAsync(newTree).ConfigureAwait(false);
+
+                    // project.json may have been renamed to {projectName}.project.json or in the case of the project.assets.json, 
+                    // the immediate path could have changed. In either case, change the file watcher.
+                    if (!PathHelper.IsSamePath(projectLockFilePath, _fileBeingWatched))
+                    {
+                        UnregisterFileWatcherIfAny();
+                        RegisterFileWatcherAsync(projectLockFilePath);
+                    }
+                });
+            }
+            catch (OperationCanceledException)
+            {
+                // Project is already unloaded
             }
         }
 
@@ -174,7 +190,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             {
                 try
                 {
-                    await _projectServices.Project.Services.ProjectAsynchronousTasks.LoadedProjectAsync(async () =>
+                    await _loadedProjectService.LoadedProjectAsync(async () =>
                     {
                         using (var access = await _projectLockService.WriteLockAsync())
                         {

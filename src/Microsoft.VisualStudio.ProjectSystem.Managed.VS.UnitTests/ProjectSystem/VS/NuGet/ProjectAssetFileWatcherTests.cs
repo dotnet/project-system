@@ -31,6 +31,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
                                                      IProjectTreeProviderFactory.Create(),
                                                      IUnconfiguredProjectCommonServicesFactory.Create(unconfiguredProject,
                                                                                                       projectProperties: ProjectPropertiesFactory.Create(unconfiguredProject, new[] { propertyData })),
+                                                     ILoadedProjectContextServiceFactory.Create(),
                                                      IProjectLockServiceFactory.Create());
 
             var tree = ProjectTreeParser.Parse(inputTree);
@@ -87,6 +88,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
                                                      IProjectTreeProviderFactory.Create(),
                                                      IUnconfiguredProjectCommonServicesFactory.Create(unconfiguredProject,
                                                                                                       projectProperties: ProjectPropertiesFactory.Create(unconfiguredProject, new[] { propertyData })),
+                                                     ILoadedProjectContextServiceFactory.Create(),
                                                      IProjectLockServiceFactory.Create());
             watcher.Load();
 
@@ -117,6 +119,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
                                                      IProjectTreeProviderFactory.Create(),
                                                      IUnconfiguredProjectCommonServicesFactory.Create(unconfiguredProject,
                                                                                                       projectProperties: ProjectPropertiesFactory.Create(unconfiguredProject, new[] { propertyData })),
+                                                     ILoadedProjectContextServiceFactory.Create(),
                                                      IProjectLockServiceFactory.Create());
 
             var tree = ProjectTreeParser.Parse(@"Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""");
