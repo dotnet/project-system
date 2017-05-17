@@ -9,9 +9,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     /// <summary>
     ///     Handles changes to the  &lt;Analyzer/&gt; item during design-time builds.
     /// </summary>
-    [Export(typeof(ICommandLineHandler))]
+    [Export(typeof(AbstractContextHandler))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
-    internal class AnalyzerItemHandler : ICommandLineHandler
+    internal class AnalyzerItemHandler : AbstractContextHandler, ICommandLineHandler
     {
         [ImportingConstructor]
         public AnalyzerItemHandler(UnconfiguredProject project)

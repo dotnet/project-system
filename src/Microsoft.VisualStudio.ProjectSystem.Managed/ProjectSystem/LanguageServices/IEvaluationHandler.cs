@@ -12,18 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     internal interface IEvaluationHandler
     {
         /// <summary>
-        ///     Gets the evaluation rule this handler handles.
-        /// </summary>
-        /// <value>
-        ///     A <see cref="string"/> containing the evaluation rule that this <see cref="IEvaluationHandler"/> 
-        ///     handles.
-        /// </value>
-        string EvaluationRuleName
-        {
-            get;
-        }
-
-        /// <summary>
         ///     Handles the specified set of changes to a rule, and applies them
         ///     to the given <see cref="IWorkspaceProjectContext"/>.
         /// </summary>

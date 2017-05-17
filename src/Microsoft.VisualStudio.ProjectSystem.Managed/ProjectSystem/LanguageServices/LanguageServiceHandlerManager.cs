@@ -2,8 +2,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
-using System.Linq;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
@@ -12,29 +12,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     internal class LanguageServiceHandlerManager
     {
         private readonly ICommandLineParserService _commandLineParser;
+        private readonly IContextHandlerProvider _handlerProvider;
 
         [ImportingConstructor]
-        public LanguageServiceHandlerManager(UnconfiguredProject project, ICommandLineParserService commandLineParser)
+        public LanguageServiceHandlerManager(UnconfiguredProject project, ICommandLineParserService commandLineParser, IContextHandlerProvider handlerProvider)
         {
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(commandLineParser, nameof(commandLineParser));
+            Requires.NotNull(handlerProvider, nameof(handlerProvider));
 
             _commandLineParser = commandLineParser;
-
-            EvaluationHandlers = new OrderPrecedenceImportCollection<IEvaluationHandler>(projectCapabilityCheckProvider: project);
-            CommandLineHandlers = new OrderPrecedenceImportCollection<ICommandLineHandler>(projectCapabilityCheckProvider: project);
-        }
-
-        [ImportMany]
-        public OrderPrecedenceImportCollection<IEvaluationHandler> EvaluationHandlers
-        {
-            get;
-        }
-
-        [ImportMany]
-        public OrderPrecedenceImportCollection<ICommandLineHandler> CommandLineHandlers
-        {
-            get;
+            _handlerProvider = handlerProvider;
         }
 
         public void Handle(IProjectVersionedValue<IProjectSubscriptionUpdate> update, RuleHandlerType handlerType, IWorkspaceProjectContext context, bool isActiveContext)
@@ -54,12 +42,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private void HandleEvaluation(IProjectVersionedValue<IProjectSubscriptionUpdate> update, IWorkspaceProjectContext context, bool isActiveContext)
         {
-            foreach (var handler in EvaluationHandlers.Select(h => h.Value))
+            ImmutableArray<(IEvaluationHandler Value, string EvaluationRuleName)> handlers = _handlerProvider.GetEvaluationHandlers(context);
+
+            foreach (var handler in handlers)
             {
                 IProjectChangeDescription projectChange = update.Value.ProjectChanges[handler.EvaluationRuleName];
                 if (projectChange.Difference.AnyChanges)
                 {
-                    handler.Handle(projectChange, context, isActiveContext);
+                    handler.Value.Handle(projectChange, context, isActiveContext);
                 }
             }
         }
@@ -92,19 +82,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             Requires.NotNull(context, nameof(context));
 
-            foreach (var handler in EvaluationHandlers)
-            {
-                handler.Value.OnContextReleased(context);
-            }
+            _handlerProvider.ReleaseHandlers(context);
         }
 
         public IEnumerable<string> GetWatchedRules(RuleHandlerType handlerType)
         {
             if (handlerType == RuleHandlerType.Evaluation)
             {
-                return EvaluationHandlers.Select(h => h.Value.EvaluationRuleName)
-                                         .Distinct(StringComparers.RuleNames)
-                                         .ToArray();
+                return _handlerProvider.EvaluationRuleNames;
             }
 
             return new string[] { CompilerCommandLineArgs.SchemaName };
@@ -130,12 +115,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private void ProcessItems(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
         {
+            ImmutableArray<ICommandLineHandler> handlers = _handlerProvider.GetCommandLineHandlers(context);
+
             BuildOptions addedItems = _commandLineParser.Parse(projectChange.Difference.AddedItems);
             BuildOptions removedItems = _commandLineParser.Parse(projectChange.Difference.RemovedItems);
 
-            foreach (var handler in CommandLineHandlers)
+            foreach (var handler in handlers)
             {
-                handler.Value.Handle(addedItems, removedItems, context, isActiveContext);
+                handler.Handle(addedItems, removedItems, context, isActiveContext);
             }
         }
     }

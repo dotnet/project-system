@@ -9,9 +9,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     /// <summary>
     ///     Handles changes to the project and makes sure the language service is aware of them.
     /// </summary>
-    [Export(typeof(IEvaluationHandler))]
+    [Export(typeof(AbstractContextHandler))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
-    internal class ProjectPropertiesItemHandler : IEvaluationHandler
+    internal class ProjectPropertiesItemHandler : AbstractContextHandler, IEvaluationHandler
     {
         [ImportingConstructor]
         public ProjectPropertiesItemHandler()
