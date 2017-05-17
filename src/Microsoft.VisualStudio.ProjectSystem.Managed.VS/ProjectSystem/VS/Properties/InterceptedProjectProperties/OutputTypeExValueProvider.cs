@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
@@ -13,6 +14,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     {
         private readonly ProjectProperties _properties;
 
+        private readonly Dictionary<string, string> _getOutputTypeExMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            {"WinExe",          "0" },
+            {"Exe",             "1" },
+            {"Library",         "2" },
+            {"AppContainerExe", "3" },
+            {"WinMDObj",        "4" },
+        };
+
+        private readonly Dictionary<string, string> _setOutputTypeExMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            {"0", "WinExe" },
+            {"1", "Exe" },
+            {"2", "Library" },
+            {"3", "AppContainerExe" },
+            {"4", "WinMDObj"},
+        };
+
         [ImportingConstructor]
         public OutputTypeExValueProvider(ProjectProperties properties)
         {
@@ -21,54 +40,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
         public override async Task<string> OnGetEvaluatedPropertyValueAsync(string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
-            var configuration = await _properties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
-            var rawValue = await configuration.OutputType.GetValueAsync().ConfigureAwait(true);
-
-            string value = null, outputType = null;
-            if (rawValue is string)
-            {
-                outputType = (string)rawValue;
-            }
-            else if (rawValue is IEnumValue)
-            {
-                outputType = ((IEnumValue)rawValue).Name;
-            }
-
-            if (outputType != null)
-            {
-                switch (outputType)
-                {
-                    case "WinExe":
-                        // prjOutputTypeEx_WinExe
-                        value = "0";
-                        break;
-                    case "Exe":
-                        // prjOutputTypeEx_Exe
-                        value = "1";
-                        break;
-                    case "Library":
-                        // prjOutputTypeEx_Library
-                        value = "2";
-                        break;
-                    case "WinMDObj":
-                        // prjOutputTypeEx_WinMDObj
-                        value = "3";
-                        break;
-                    case "AppContainerExe":
-                        // prjOutputTypeEx_AppContainerExe
-                        value = "4";
-                        break;
-                }
-            }
-
-            return value;
+            var configuration = await _properties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
+            var value = await configuration.OutputType.GetEvaluatedValueAtEndAsync().ConfigureAwait(false);
+            return _getOutputTypeExMap[value];
         }
 
         public override async Task<string> OnSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string> dimensionalConditions = null)
         {
-            var configuration = await _properties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
-            await configuration.OutputType.SetValueAsync(unevaluatedPropertyValue).ConfigureAwait(false);
-            return unevaluatedPropertyValue;
+            var value = _setOutputTypeExMap[unevaluatedPropertyValue];
+            var configuration = await _properties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
+            await configuration.OutputType.SetValueAsync(value).ConfigureAwait(false);
+
+            // We need to return null so we dont persist a value for the Msbuild property 'OutputTypeEx'
+            return null;
         }
     }
 }
