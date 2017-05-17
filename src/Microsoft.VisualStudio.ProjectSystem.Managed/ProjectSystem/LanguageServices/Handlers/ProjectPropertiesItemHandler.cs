@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
@@ -9,21 +8,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     /// <summary>
     ///     Handles changes to the project and makes sure the language service is aware of them.
     /// </summary>
-    [Export(typeof(IEvaluationHandler))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
     internal class ProjectPropertiesItemHandler : IEvaluationHandler
     {
-        [ImportingConstructor]
-        public ProjectPropertiesItemHandler()
+        private readonly IWorkspaceProjectContext _context;
+
+        public ProjectPropertiesItemHandler(IWorkspaceProjectContext context)
         {
+            Requires.NotNull(context, nameof(context));
+
+            _context = context;
         }
 
-        public string EvaluationRuleName
-        {
-            get { return ConfigurationGeneral.SchemaName; }
-        }
-
-        public void Handle(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
+        public void Handle(IProjectChangeDescription projectChange, bool isActiveContext)
         {
             Requires.NotNull(projectChange, nameof(projectChange));
 
@@ -31,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             {
                 if (Guid.TryParse(projectChange.After.Properties[ConfigurationGeneral.ProjectGuidProperty], out Guid result))
                 {
-                    context.Guid = result;
+                    _context.Guid = result;
                 }
             }
 
@@ -47,13 +43,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 var newBinOutputPath = projectChange.After.Properties[ConfigurationGeneral.TargetPathProperty];
                 if (!string.IsNullOrEmpty(newBinOutputPath))
                 {
-                    context.BinOutputPath = newBinOutputPath;
+                    _context.BinOutputPath = newBinOutputPath;
                 }
             }
-        }
-
-        public void OnContextReleased(IWorkspaceProjectContext context)
-        {
         }
     }
 }

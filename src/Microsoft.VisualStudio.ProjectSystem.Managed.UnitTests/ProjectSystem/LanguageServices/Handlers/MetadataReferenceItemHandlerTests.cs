@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
@@ -10,10 +11,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     public class MetadataReferenceItemHandlerTests
     {
         [Fact]
-        public void Constructor()
+        public void Constructor_NullAsProject_ThrowsArgumentNull()
         {
-            Assert.Throws<ArgumentNullException>(() => new MetadataReferenceItemHandler(project: null));
-            new MetadataReferenceItemHandler(UnconfiguredProjectFactory.Create());
+            var context = IWorkspaceProjectContextFactory.Create();
+
+            Assert.Throws<ArgumentNullException>("project", () => {
+                new MetadataReferenceItemHandler((UnconfiguredProject)null, context);
+            });
+        }
+
+        [Fact]
+        public void Constructor_NullAsContext_ThrowsArgumentNull()
+        {
+            var project = UnconfiguredProjectFactory.Create();
+
+            Assert.Throws<ArgumentNullException>("context", () => {
+                new MetadataReferenceItemHandler(project, (IWorkspaceProjectContext)null);
+            });
         }
 
         [Fact]
@@ -26,19 +40,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var project = UnconfiguredProjectFactory.Create(filePath: @"C:\Myproject.csproj");
             var context = IWorkspaceProjectContextFactory.CreateForMetadataReferences(project, onReferenceAdded, onReferenceRemoved);
 
-            var handler = new MetadataReferenceItemHandler(project);
+            var handler = new MetadataReferenceItemHandler(project, context);
             var projectDir = Path.GetDirectoryName(project.FullPath);
             var added = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"/reference:C:\Assembly1.dll", @"/reference:C:\Assembly2.dll", @"/reference:C:\Assembly1.dll" }, baseDirectory: projectDir, sdkDirectory: null));
             var empty = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
 
-            handler.Handle(added: added, removed: empty, context: context, isActiveContext: true);
+            handler.Handle(added: added, removed: empty, isActiveContext: true);
 
             Assert.Equal(2, referencesPushedToWorkspace.Count);
             Assert.Contains(@"C:\Assembly1.dll", referencesPushedToWorkspace);
             Assert.Contains(@"C:\Assembly2.dll", referencesPushedToWorkspace);
 
             var removed = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"/reference:C:\Assembly1.dll", @"/reference:C:\Assembly1.dll" }, baseDirectory: projectDir, sdkDirectory: null));
-            handler.Handle(added: empty, removed: removed, context: context, isActiveContext: true);
+            handler.Handle(added: empty, removed: removed, isActiveContext: true);
 
             Assert.Equal(1, referencesPushedToWorkspace.Count);
             Assert.Contains(@"C:\Assembly2.dll", referencesPushedToWorkspace);
@@ -54,12 +68,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var project = UnconfiguredProjectFactory.Create(filePath: @"C:\ProjectFolder\Myproject.csproj");
             var context = IWorkspaceProjectContextFactory.CreateForMetadataReferences(project, onReferenceAdded, onReferenceRemoved);
 
-            var handler = new MetadataReferenceItemHandler(project);
+            var handler = new MetadataReferenceItemHandler(project, context);
             var projectDir = Path.GetDirectoryName(project.FullPath);
             var added = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"/reference:Assembly1.dll", @"/reference:C:\ProjectFolder\Assembly2.dll", @"/reference:..\ProjectFolder\Assembly3.dll" }, baseDirectory: projectDir, sdkDirectory: null));
             var removed = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
 
-            handler.Handle(added: added, removed: removed, context: context, isActiveContext: true);
+            handler.Handle(added: added, removed: removed, isActiveContext: true);
 
             Assert.Equal(3, referencesPushedToWorkspace.Count);
             Assert.Contains(@"C:\ProjectFolder\Assembly1.dll", referencesPushedToWorkspace);
