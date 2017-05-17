@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.CodeAnalysis;
@@ -33,8 +34,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             _context = context;
         }
 
-        public void Handle(BuildOptions added, BuildOptions removed, bool isActiveContext)
+        public void Handle(IComparable version, BuildOptions added, BuildOptions removed, bool isActiveContext)
         {
+            Requires.NotNull(version, nameof(version));
             Requires.NotNull(added, nameof(added));
             Requires.NotNull(removed, nameof(removed));
 
@@ -49,8 +51,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             }
         }
 
-        public void Handle(IProjectChangeDescription projectChange, bool isActiveContext)
+        public void Handle(IComparable version, IProjectChangeDescription projectChange, bool isActiveContext)
         {
+            Requires.NotNull(version, nameof(version));
             Requires.NotNull(projectChange, nameof(projectChange));
 
             IProjectChangeDiff diff = projectChange.Difference;

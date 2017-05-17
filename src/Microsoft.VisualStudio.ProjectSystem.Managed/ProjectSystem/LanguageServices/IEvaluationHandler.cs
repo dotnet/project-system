@@ -15,6 +15,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     Handles the specified set of changes to a rule, and applies them
         ///     to the underlying <see cref="IWorkspaceProjectContext"/>.
         /// </summary>
+        /// <param name="version">
+        ///     An <see cref="IComparable"/> representing the <see cref="ConfiguredProject.ProjectVersion"/> at
+        ///     the time the <see cref="IProjectChangeDescription"/> was produced.
+        /// </param>
         /// <param name="projectChange">
         ///     A <see cref="IProjectChangeDescription"/> representing the set of 
         ///     changes made to the project.
@@ -26,6 +30,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="projectChange"/> is <see langword="null"/>.
         /// </exception>
-        void Handle(IProjectChangeDescription projectChange, bool isActiveContext);
+        void Handle(IComparable version, IProjectChangeDescription projectChange, bool isActiveContext);
     }
 }

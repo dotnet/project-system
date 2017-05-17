@@ -33,12 +33,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         }
 
         [Fact]
+        public void Handle_NullAsVersion_ThrowsArgumentNull()
+        {
+            var handler = CreateInstance();
+            var projectChange = IProjectChangeDescriptionFactory.Create();
+
+            Assert.Throws<ArgumentNullException>("version", () => {
+                handler.Handle((IComparable)null, projectChange, true);
+            });
+        }
+
+        [Fact]
         public void Handle_NullAsProjectChange_ThrowsArgumentNull()
         {
             var handler = CreateInstance();
 
             Assert.Throws<ArgumentNullException>("projectChange", () => {
-                handler.Handle((IProjectChangeDescription)null, true);
+                handler.Handle(10, (IProjectChangeDescription)null, true);
             });
         }
 
@@ -57,14 +68,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var added = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"C:\file1.cs", @"C:\file2.cs", @"C:\file1.cs" }, baseDirectory: projectDir, sdkDirectory: null));
             var empty = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
 
-            handler.Handle(added: added, removed: empty, isActiveContext: true);
+            handler.Handle(10, added: added, removed: empty, isActiveContext: true);
 
             Assert.Equal(2, sourceFilesPushedToWorkspace.Count);
             Assert.Contains(@"C:\file1.cs", sourceFilesPushedToWorkspace);
             Assert.Contains(@"C:\file2.cs", sourceFilesPushedToWorkspace);
 
             var removed = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"C:\file1.cs", @"C:\file1.cs" }, baseDirectory: projectDir, sdkDirectory: null));
-            handler.Handle(added: empty, removed: removed, isActiveContext: true);
+            handler.Handle(10, added: empty, removed: removed, isActiveContext: true);
 
             Assert.Equal(1, sourceFilesPushedToWorkspace.Count);
             Assert.Contains(@"C:\file2.cs", sourceFilesPushedToWorkspace);
@@ -85,7 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var added = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"file1.cs", @"..\ProjectFolder\file1.cs" }, baseDirectory: projectDir, sdkDirectory: null));
             var removed = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
 
-            handler.Handle(added: added, removed: removed, isActiveContext: true);
+            handler.Handle(10, added: added, removed: removed, isActiveContext: true);
 
             Assert.Equal(1, sourceFilesPushedToWorkspace.Count);
             Assert.Contains(@"C:\ProjectFolder\file1.cs", sourceFilesPushedToWorkspace);

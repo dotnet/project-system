@@ -19,8 +19,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             _context = context;
         }
 
-        public void Handle(IProjectChangeDescription projectChange, bool isActiveContext)
+        public void Handle(IComparable version, IProjectChangeDescription projectChange, bool isActiveContext)
         {
+            Requires.NotNull(version, nameof(version));
             Requires.NotNull(projectChange, nameof(projectChange));
 
             if (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.ProjectGuidProperty))
