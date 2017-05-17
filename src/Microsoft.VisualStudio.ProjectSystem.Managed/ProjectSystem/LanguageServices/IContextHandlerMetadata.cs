@@ -4,7 +4,7 @@ using System.ComponentModel;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
-    internal interface IContextHandlerMetadata : IOrderPrecedenceMetadataView
+    public interface IContextHandlerMetadata : IOrderPrecedenceMetadataView
     {
         /// <summary>
         ///     Gets the evaluation rule this handler handles.
