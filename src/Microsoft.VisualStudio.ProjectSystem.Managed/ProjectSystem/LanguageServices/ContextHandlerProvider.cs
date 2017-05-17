@@ -1,45 +1,40 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     [Export(typeof(IContextHandlerProvider))]
     internal partial class ContextHandlerProvider : IContextHandlerProvider
     {
-        private readonly ConcurrentDictionary<IWorkspaceProjectContext, Lazy<Handlers>> _contextToHandlers = new ConcurrentDictionary<IWorkspaceProjectContext, Lazy<Handlers>>();
-        private readonly Lazy<ImmutableArray<string>> _evalutionRuleNames;
+        private static readonly ImmutableArray<(HandlerFactory Factory, string EvaluationRuleName)> HandlerFactories = CreateHandlerFactories();
+        private static readonly ImmutableArray<string> AllEvaluationRuleNames = GetEvaluationRuleNames();
+        private readonly ConcurrentDictionary<IWorkspaceProjectContext, Handlers> _contextToHandlers = new ConcurrentDictionary<IWorkspaceProjectContext, Handlers>();
+        private readonly UnconfiguredProject _project;
 
         [ImportingConstructor]
         public ContextHandlerProvider(UnconfiguredProject project)
         {
-            _evalutionRuleNames = new Lazy<ImmutableArray<string>>(GetEvaluationRuleNames);
+            Requires.NotNull(project, nameof(project));
 
-            HandlerFactories = new OrderPrecedenceExportFactoryCollection<AbstractContextHandler, IContextHandlerMetadata>();
-        }
-
-        [ImportMany]
-        public OrderPrecedenceExportFactoryCollection<AbstractContextHandler, IContextHandlerMetadata> HandlerFactories
-        {
-            get;
+            _project = project;
         }
 
         public ImmutableArray<string> EvaluationRuleNames
         {
-            get { return _evalutionRuleNames.Value; }
+            get { return AllEvaluationRuleNames; }
         }
 
         public ImmutableArray<(IEvaluationHandler Value, string EvaluationRuleName)> GetEvaluationHandlers(IWorkspaceProjectContext context)
         {
             Requires.NotNull(context, nameof(context));
 
-            Handlers handlers = GetHandlers(context);
+            Handlers handlers = _contextToHandlers.GetOrAdd(context, CreateHandlers);
 
             return handlers.EvaluationHandlers;
         }
@@ -48,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             Requires.NotNull(context, nameof(context));
 
-            Handlers handlers = GetHandlers(context);
+            Handlers handlers = _contextToHandlers.GetOrAdd(context, CreateHandlers);
 
             return handlers.CommandLineHandlers;
         }
@@ -57,60 +52,60 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             Requires.NotNull(context, nameof(context));
 
-            if (_contextToHandlers.TryRemove(context, out Lazy<Handlers> handlers))
-            {
-                foreach (var handler in handlers.Value.All)
-                {
-                    handler.Dispose();
-                }
-            }
+            _contextToHandlers.TryRemove(context, out _);
         }
 
-        private Handlers GetHandlers(IWorkspaceProjectContext context)
+        private Handlers CreateHandlers(IWorkspaceProjectContext context)
         {
-            // We wrap creation in a Lazy<T> to avoid creating two sets of handlers
-            // in a race, one of which would need to be cleaned up to avoid leaking.
-            // The handlers don't actually get created until Value is accessed.
-            Lazy<Handlers> handler = _contextToHandlers.GetOrAdd(context, CreateHandlers);
+            var evaluationHandlers = ImmutableArray.CreateBuilder<(IEvaluationHandler Value, string EvaluationRuleName)>(HandlerFactories.Length);
+            var commandLineHandlers = ImmutableArray.CreateBuilder<ICommandLineHandler>(HandlerFactories.Length);
 
-            return handler.Value;
-        }
-
-        private Lazy<Handlers> CreateHandlers(IWorkspaceProjectContext context)
-        {
-            var handlers = ImmutableArray.CreateBuilder<ExportLifetimeContext<AbstractContextHandler>>(HandlerFactories.Count);
-            var evaluationHandlers = ImmutableArray.CreateBuilder<(IEvaluationHandler Value, string EvaluationRuleName)>(HandlerFactories.Count);
-            var commandLineHandlers = ImmutableArray.CreateBuilder<ICommandLineHandler>(HandlerFactories.Count);
-
-            foreach (ExportFactory<AbstractContextHandler, IContextHandlerMetadata> factory in HandlerFactories)
+            foreach (var factory in HandlerFactories)
             {
-                ExportLifetimeContext<AbstractContextHandler> handlerContext = factory.CreateExport();
-                handlers.Add(handlerContext);
+                object handler = factory.Factory(_project, context);
 
-                // Handlers can be both IEvaluationHandler and ICommandLineHandler
-                if (handlerContext.Value is IEvaluationHandler evaluationHandler)
+                // NOTE: Handlers can be both IEvaluationHandler and ICommandLineHandler
+                if (handler is IEvaluationHandler evaluationHandler)
                 {
-                    evaluationHandlers.Add((evaluationHandler, factory.Metadata.EvaluationRuleName));
+                    evaluationHandlers.Add((evaluationHandler, factory.EvaluationRuleName));
                 }
 
-                if (handlerContext.Value is ICommandLineHandler commandLineHandler)
+                if (handler is ICommandLineHandler commandLineHandler)
                 {
                     commandLineHandlers.Add(commandLineHandler);
                 }
-
-                handlerContext.Value.Initialize(context);
             }
 
-            return new Lazy<Handlers>(() => new Handlers(handlers.MoveToImmutable(), evaluationHandlers.ToImmutable(), commandLineHandlers.ToImmutable()));
+            return new Handlers(evaluationHandlers.ToImmutable(), commandLineHandlers.ToImmutable());
         }
 
-        private ImmutableArray<string> GetEvaluationRuleNames()
+        private static ImmutableArray<(HandlerFactory Factory, string EvaluationRuleName)>  CreateHandlerFactories()
         {
-            IEnumerable<string> evaluationRuleNames = HandlerFactories.Select(factory => factory.Metadata.EvaluationRuleName)
-                                                                      .Where(name => !string.IsNullOrEmpty(name))
-                                                                      .Distinct(StringComparers.RuleNames);
+            return ImmutableArray.Create<(HandlerFactory Factory, string EvaluationRuleName)>(
+            
+            // Factory                                                                      EvalautionRuleName                  Description
 
-            return ImmutableArray.CreateRange(evaluationRuleNames);
+            // Evaluation and Command-line
+            ((project, context) => new SourceItemHandler(project, context),                 Compile.SchemaName),                // <Compile /> item
+
+            // Evaluation only
+            ((project, context) => new ProjectPropertiesItemHandler(context),               ConfigurationGeneral.SchemaName),   // <ProjectGuid>, <TargetPath> properties
+
+            // Command-line only
+            ((project, context) => new MetadataReferenceItemHandler(project, context),      null),                              // <ProjectReference />, <Reference /> items
+            ((project, context) => new AnalyzerItemHandler(context),                        null),                              // <Analyzer /> item
+            ((project, context) => new AdditionalFilesItemHandler(context),                 null)                               // <AdditionalFiles /> item
+            );
         }
+
+        private static ImmutableArray<string> GetEvaluationRuleNames()
+        {
+            return HandlerFactories.Select(e => e.EvaluationRuleName)
+                                   .Where(name => !string.IsNullOrEmpty(name))
+                                   .Distinct(StringComparers.RuleNames)
+                                   .ToImmutableArray();
+        }
+
+        private delegate object HandlerFactory(UnconfiguredProject project, IWorkspaceProjectContext context);
     }
 }

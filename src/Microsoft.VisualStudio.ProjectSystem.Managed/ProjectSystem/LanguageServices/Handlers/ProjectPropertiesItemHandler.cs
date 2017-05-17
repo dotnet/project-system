@@ -1,34 +1,33 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.ComponentModel.Composition;
+using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     /// <summary>
     ///     Handles changes to the project and makes sure the language service is aware of them.
     /// </summary>
-    [Export(typeof(AbstractContextHandler))]
-    [ExportMetadata("EvaluationRuleName", ConfigurationGeneral.SchemaName)]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
-    internal class ProjectPropertiesItemHandler : AbstractContextHandler, IEvaluationHandler
+    internal class ProjectPropertiesItemHandler : IEvaluationHandler
     {
-        [ImportingConstructor]
-        public ProjectPropertiesItemHandler()
+        private readonly IWorkspaceProjectContext _context;
+
+        public ProjectPropertiesItemHandler(IWorkspaceProjectContext context)
         {
+            Requires.NotNull(context, nameof(context));
+
+            _context = context;
         }
 
         public void Handle(IProjectChangeDescription projectChange, bool isActiveContext)
         {
             Requires.NotNull(projectChange, nameof(projectChange));
 
-            EnsureInitialized();
-
             if (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.ProjectGuidProperty))
             {
                 if (Guid.TryParse(projectChange.After.Properties[ConfigurationGeneral.ProjectGuidProperty], out Guid result))
                 {
-                    Context.Guid = result;
+                    _context.Guid = result;
                 }
             }
 
@@ -44,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 var newBinOutputPath = projectChange.After.Properties[ConfigurationGeneral.TargetPathProperty];
                 if (!string.IsNullOrEmpty(newBinOutputPath))
                 {
-                    Context.BinOutputPath = newBinOutputPath;
+                    _context.BinOutputPath = newBinOutputPath;
                 }
             }
         }

@@ -2,19 +2,23 @@
 
 using System.ComponentModel.Composition;
 using Microsoft.CodeAnalysis;
+using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     /// <summary>
     ///     Handles changes to the  &lt;Analyzer/&gt; item during design-time builds.
     /// </summary>
-    [Export(typeof(AbstractContextHandler))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
-    internal class AnalyzerItemHandler : AbstractContextHandler, ICommandLineHandler
+    internal class AnalyzerItemHandler : ICommandLineHandler
     {
+        private readonly IWorkspaceProjectContext _context;
+
         [ImportingConstructor]
-        public AnalyzerItemHandler(UnconfiguredProject project)
+        public AnalyzerItemHandler(IWorkspaceProjectContext context)
         {
+            Requires.NotNull(context, nameof(context));
+
+            _context = context;
         }
 
         public void Handle(BuildOptions added, BuildOptions removed, bool isActiveContext)
@@ -22,16 +26,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Requires.NotNull(added, nameof(added));
             Requires.NotNull(removed, nameof(removed));
 
-            EnsureInitialized();
-
             foreach (CommandLineAnalyzerReference analyzer in removed.AnalyzerReferences)
             {
-                Context.RemoveAnalyzerReference(analyzer.FilePath);
+                _context.RemoveAnalyzerReference(analyzer.FilePath);
             }
 
             foreach (CommandLineAnalyzerReference analyzer in added.AnalyzerReferences)
             {
-                Context.AddAnalyzerReference(analyzer.FilePath);
+                _context.AddAnalyzerReference(analyzer.FilePath);
             }
         }
     }

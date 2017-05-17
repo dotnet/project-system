@@ -1,25 +1,25 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System.ComponentModel.Composition;
 using Microsoft.CodeAnalysis;
+using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     /// <summary>
     ///     Handles changes to references that are passed to the compiler during design-time builds.
     /// </summary>
-    [Export(typeof(AbstractContextHandler))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
-    internal class MetadataReferenceItemHandler : AbstractContextHandler, ICommandLineHandler
+    internal class MetadataReferenceItemHandler : ICommandLineHandler
     {
-        private readonly UnconfiguredProject _unconfiguredProject;
+        private readonly UnconfiguredProject _project;
+        private readonly IWorkspaceProjectContext _context;
 
-        [ImportingConstructor]
-        public MetadataReferenceItemHandler(UnconfiguredProject project)
+        public MetadataReferenceItemHandler(UnconfiguredProject project, IWorkspaceProjectContext context)
         {
             Requires.NotNull(project, nameof(project));
+            Requires.NotNull(context, nameof(context));
 
-            _unconfiguredProject = project;
+            _project = project;
+            _context = context;
         }
 
         public void Handle(BuildOptions added, BuildOptions removed, bool isActiveContext)
@@ -27,18 +27,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Requires.NotNull(added, nameof(added));
             Requires.NotNull(removed, nameof(removed));
 
-            EnsureInitialized();
-
             foreach (CommandLineReference reference in removed.MetadataReferences)
             {
-                var fullPath = _unconfiguredProject.MakeRooted(reference.Reference);
-                Context.RemoveMetadataReference(fullPath);
+                var fullPath = _project.MakeRooted(reference.Reference);
+                _context.RemoveMetadataReference(fullPath);
             }
 
             foreach (CommandLineReference reference in added.MetadataReferences)
             {
-                var fullPath = _unconfiguredProject.MakeRooted(reference.Reference);
-                Context.AddMetadataReference(fullPath, reference.Properties);
+                var fullPath = _project.MakeRooted(reference.Reference);
+                _context.AddMetadataReference(fullPath, reference.Properties);
             }
         }
     }

@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.IO;
 using Microsoft.CodeAnalysis;
+using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
@@ -11,10 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     ///     Handles changes to sources files during project evaluations and changes to source files that are passed
     ///     to the compiler during design-time builds.
     /// </summary>
-    [Export(typeof(AbstractContextHandler))]
-    [ExportMetadata("EvaluationRuleName", Compile.SchemaName)]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
-    internal class SourceItemHandler : AbstractContextHandler, IEvaluationHandler, ICommandLineHandler
+    internal class SourceItemHandler : IEvaluationHandler, ICommandLineHandler
     {
         // When a source file has been added/removed from a project, we'll receive notifications for it twice; once
         // during project evaluation, and once during a design-time build. To prevent us from adding duplicate items 
@@ -24,14 +21,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         // a file is added to the project, we don't need to wait for a slow design-time build just to get useful 
         // IntelliSense.
         private readonly UnconfiguredProject _project;
+        private readonly IWorkspaceProjectContext _context;
         private readonly HashSet<string> _sourceFiles = new HashSet<string>(StringComparers.Paths);
 
-        [ImportingConstructor]
-        public SourceItemHandler(UnconfiguredProject project)
+        public SourceItemHandler(UnconfiguredProject project, IWorkspaceProjectContext context)
         {
             Requires.NotNull(project, nameof(project));
+            Requires.NotNull(context, nameof(context));
 
             _project = project;
+            _context = context;
         }
 
         public void Handle(BuildOptions added, BuildOptions removed, bool isActiveContext)
@@ -53,8 +52,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         public void Handle(IProjectChangeDescription projectChange, bool isActiveContext)
         {
             Requires.NotNull(projectChange, nameof(projectChange));
-
-            EnsureInitialized();
 
             IProjectChangeDiff diff = projectChange.Difference;
 
@@ -91,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             if (_sourceFiles.Remove(fullPath))
             {
-                Context.RemoveSourceFile(fullPath);
+                _context.RemoveSourceFile(fullPath);
             }
         }
 
@@ -101,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             if (_sourceFiles.Add(fullPath))
             {
-                Context.AddSourceFile(fullPath, folderNames: folderNames, isInCurrentContext: isActiveContext);
+                _context.AddSourceFile(fullPath, folderNames: folderNames, isInCurrentContext: isActiveContext);
             }
         }
 
