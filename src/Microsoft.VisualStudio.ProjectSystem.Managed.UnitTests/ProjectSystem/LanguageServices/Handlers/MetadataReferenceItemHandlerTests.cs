@@ -31,14 +31,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var added = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"/reference:C:\Assembly1.dll", @"/reference:C:\Assembly2.dll", @"/reference:C:\Assembly1.dll" }, baseDirectory: projectDir, sdkDirectory: null));
             var empty = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
 
-            handler.Handle(added: added, removed: empty, context: context, isActiveContext: true);
+            handler.Initialize(context);
+            handler.Handle(added: added, removed: empty, isActiveContext: true);
 
             Assert.Equal(2, referencesPushedToWorkspace.Count);
             Assert.Contains(@"C:\Assembly1.dll", referencesPushedToWorkspace);
             Assert.Contains(@"C:\Assembly2.dll", referencesPushedToWorkspace);
 
             var removed = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"/reference:C:\Assembly1.dll", @"/reference:C:\Assembly1.dll" }, baseDirectory: projectDir, sdkDirectory: null));
-            handler.Handle(added: empty, removed: removed, context: context, isActiveContext: true);
+            handler.Handle(added: empty, removed: removed, isActiveContext: true);
 
             Assert.Equal(1, referencesPushedToWorkspace.Count);
             Assert.Contains(@"C:\Assembly2.dll", referencesPushedToWorkspace);
@@ -59,7 +60,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var added = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"/reference:Assembly1.dll", @"/reference:C:\ProjectFolder\Assembly2.dll", @"/reference:..\ProjectFolder\Assembly3.dll" }, baseDirectory: projectDir, sdkDirectory: null));
             var removed = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
 
-            handler.Handle(added: added, removed: removed, context: context, isActiveContext: true);
+            handler.Initialize(context);
+            handler.Handle(added: added, removed: removed, isActiveContext: true);
 
             Assert.Equal(3, referencesPushedToWorkspace.Count);
             Assert.Contains(@"C:\ProjectFolder\Assembly1.dll", referencesPushedToWorkspace);

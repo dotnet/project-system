@@ -2,7 +2,6 @@
 
 using System.ComponentModel.Composition;
 using Microsoft.CodeAnalysis;
-using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
@@ -23,21 +22,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             _unconfiguredProject = project;
         }
 
-        public void Handle(BuildOptions added, BuildOptions removed, IWorkspaceProjectContext context, bool isActiveContext)
+        public void Handle(BuildOptions added, BuildOptions removed, bool isActiveContext)
         {
             Requires.NotNull(added, nameof(added));
             Requires.NotNull(removed, nameof(removed));
 
+            EnsureInitialized();
+
             foreach (CommandLineReference reference in removed.MetadataReferences)
             {
                 var fullPath = _unconfiguredProject.MakeRooted(reference.Reference);
-                context.RemoveMetadataReference(fullPath);
+                Context.RemoveMetadataReference(fullPath);
             }
 
             foreach (CommandLineReference reference in added.MetadataReferences)
             {
                 var fullPath = _unconfiguredProject.MakeRooted(reference.Reference);
-                context.AddMetadataReference(fullPath, reference.Properties);
+                Context.AddMetadataReference(fullPath, reference.Properties);
             }
         }
     }

@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 IProjectChangeDescription projectChange = update.Value.ProjectChanges[handler.EvaluationRuleName];
                 if (projectChange.Difference.AnyChanges)
                 {
-                    handler.Value.Handle(projectChange, context, isActiveContext);
+                    handler.Value.Handle(projectChange, isActiveContext);
                 }
             }
         }
@@ -122,7 +122,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             foreach (var handler in handlers)
             {
-                handler.Handle(addedItems, removedItems, context, isActiveContext);
+                handler.Handle(addedItems, removedItems, isActiveContext);
             }
         }
     }

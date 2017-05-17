@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using Microsoft.CodeAnalysis;
-using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
@@ -25,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         // a file is added to the project, we don't need to wait for a slow design-time build just to get useful 
         // IntelliSense.
         private readonly UnconfiguredProject _project;
-        private readonly Dictionary<IWorkspaceProjectContext, HashSet<string>> _sourceFilesByContext = new Dictionary<IWorkspaceProjectContext, HashSet<string>>();
+        private readonly HashSet<string> _sourceFiles = new HashSet<string>(StringComparers.Paths);
 
         [ImportingConstructor]
         public SourceItemHandler(UnconfiguredProject project)
@@ -35,37 +34,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             _project = project;
         }
 
-        public void Handle(BuildOptions added, BuildOptions removed, IWorkspaceProjectContext context, bool isActiveContext)
+        public void Handle(BuildOptions added, BuildOptions removed, bool isActiveContext)
         {
             Requires.NotNull(added, nameof(added));
             Requires.NotNull(removed, nameof(removed));
 
             foreach (CommandLineSourceFile sourceFile in removed.SourceFiles)
             {
-                RemoveSourceFile(sourceFile.Path, context);
+                RemoveSourceFile(sourceFile.Path);
             }
 
             foreach (CommandLineSourceFile sourceFile in added.SourceFiles)
             {
-                AddSourceFile(sourceFile.Path, null, context, isActiveContext);
+                AddSourceFile(sourceFile.Path, null, isActiveContext);
             }
         }
 
-        public void Handle(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
+        public void Handle(IProjectChangeDescription projectChange, bool isActiveContext)
         {
             Requires.NotNull(projectChange, nameof(projectChange));
-            Requires.NotNull(context, nameof(context));
+
+            EnsureInitialized();
 
             IProjectChangeDiff diff = projectChange.Difference;
 
             foreach (string filePath in diff.RemovedItems)
             {
-                RemoveSourceFile(filePath, context);
+                RemoveSourceFile(filePath);
             }
 
             foreach (string filePath in diff.AddedItems)
             {
-                AddSourceFile(filePath, GetFolders(filePath, projectChange), context, isActiveContext);
+                AddSourceFile(filePath, GetFolders(filePath, projectChange), isActiveContext);
             }
 
             foreach (KeyValuePair<string, string> filePaths in diff.RenamedItems)
@@ -73,51 +73,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 string removeFilePath = filePaths.Key;
                 string addFilePath = filePaths.Value;
 
-                RemoveSourceFile(removeFilePath, context);
-                AddSourceFile(addFilePath, GetFolders(addFilePath, projectChange), context, isActiveContext);
+                RemoveSourceFile(removeFilePath);
+                AddSourceFile(addFilePath, GetFolders(addFilePath, projectChange), isActiveContext);
             }
 
             foreach (string filePath in diff.ChangedItems)
             {
                 // We add and then remove ChangedItems to handle Linked metadata changes
-                RemoveSourceFile(filePath, context);
-                AddSourceFile(filePath, GetFolders(filePath, projectChange), context, isActiveContext);
+                RemoveSourceFile(filePath);
+                AddSourceFile(filePath, GetFolders(filePath, projectChange), isActiveContext);
             }
         }
 
-        public void OnContextReleased(IWorkspaceProjectContext context)
-        {
-            Requires.NotNull(context, nameof(context));
-
-            _sourceFilesByContext.Remove(context);
-        }
-
-        private void RemoveSourceFile(string filePath, IWorkspaceProjectContext context)
+        private void RemoveSourceFile(string filePath)
         {
             string fullPath = _project.MakeRooted(filePath);
 
-            if (_sourceFilesByContext.TryGetValue(context, out HashSet<string> sourceFiles) && sourceFiles.Remove(fullPath))
+            if (_sourceFiles.Remove(fullPath))
             {
-                context.RemoveSourceFile(fullPath);
+                Context.RemoveSourceFile(fullPath);
             }
         }
 
-        private void AddSourceFile(string filePath, string[] folderNames, IWorkspaceProjectContext context, bool isActiveContext)
+        private void AddSourceFile(string filePath, string[] folderNames, bool isActiveContext)
         {
             string fullPath = _project.MakeRooted(filePath);
 
-            if (!_sourceFilesByContext.TryGetValue(context, out HashSet<string> sourceFiles))
+            if (_sourceFiles.Add(fullPath))
             {
-                sourceFiles = new HashSet<string>(StringComparers.Paths);
-                _sourceFilesByContext.Add(context, sourceFiles);
+                Context.AddSourceFile(fullPath, folderNames: folderNames, isInCurrentContext: isActiveContext);
             }
-            else if (sourceFiles.Contains(fullPath))
-            {
-                return;
-            }
-
-            sourceFiles.Add(fullPath);
-            context.AddSourceFile(fullPath, folderNames: folderNames, isInCurrentContext: isActiveContext);
         }
 
         private string[] GetFolders(string filePath, IProjectChangeDescription projectChange)

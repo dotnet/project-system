@@ -2,7 +2,6 @@
 
 using System.ComponentModel.Composition;
 using Microsoft.CodeAnalysis;
-using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
@@ -18,19 +17,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
         }
 
-        public void Handle(BuildOptions added, BuildOptions removed, IWorkspaceProjectContext context, bool isActiveContext)
+        public void Handle(BuildOptions added, BuildOptions removed, bool isActiveContext)
         {
             Requires.NotNull(added, nameof(added));
             Requires.NotNull(removed, nameof(removed));
 
+            EnsureInitialized();
+
             foreach (CommandLineAnalyzerReference analyzer in removed.AnalyzerReferences)
             {
-                context.RemoveAnalyzerReference(analyzer.FilePath);
+                Context.RemoveAnalyzerReference(analyzer.FilePath);
             }
 
             foreach (CommandLineAnalyzerReference analyzer in added.AnalyzerReferences)
             {
-                context.AddAnalyzerReference(analyzer.FilePath);
+                Context.AddAnalyzerReference(analyzer.FilePath);
             }
         }
     }

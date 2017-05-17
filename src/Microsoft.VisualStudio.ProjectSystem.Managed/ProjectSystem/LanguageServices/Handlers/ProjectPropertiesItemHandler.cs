@@ -2,7 +2,6 @@
 
 using System;
 using System.ComponentModel.Composition;
-using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
@@ -19,15 +18,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
         }
 
-        public void Handle(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
+        public void Handle(IProjectChangeDescription projectChange, bool isActiveContext)
         {
             Requires.NotNull(projectChange, nameof(projectChange));
+
+            EnsureInitialized();
 
             if (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.ProjectGuidProperty))
             {
                 if (Guid.TryParse(projectChange.After.Properties[ConfigurationGeneral.ProjectGuidProperty], out Guid result))
                 {
-                    context.Guid = result;
+                    Context.Guid = result;
                 }
             }
 
@@ -43,13 +44,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 var newBinOutputPath = projectChange.After.Properties[ConfigurationGeneral.TargetPathProperty];
                 if (!string.IsNullOrEmpty(newBinOutputPath))
                 {
-                    context.BinOutputPath = newBinOutputPath;
+                    Context.BinOutputPath = newBinOutputPath;
                 }
             }
-        }
-
-        public void OnContextReleased(IWorkspaceProjectContext context)
-        {
         }
     }
 }
