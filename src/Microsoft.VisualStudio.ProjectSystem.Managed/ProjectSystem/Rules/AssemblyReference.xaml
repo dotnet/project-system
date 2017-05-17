@@ -27,6 +27,24 @@
                   DisplayName="Embed Interop Types"
                   Description="Indicates whether types defined in this assembly will be embedded into the target assembly." />
 
+    <StringProperty Name="Identity"
+                    ReadOnly="True"
+                    DisplayName="Identity"
+                    Description="Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).">
+        <StringProperty.DataSource>
+            <DataSource PersistedName="{}{Identity}" SourceOfDefaultValue="AfterContext" />
+        </StringProperty.DataSource>
+    </StringProperty>
+
+    <StringProperty Name="ResolvedPath"
+                    ReadOnly="True"
+                    DisplayName="Path"
+                    Description="Location of the file being referenced.">
+        <StringProperty.DataSource>
+            <DataSource PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
+        </StringProperty.DataSource>
+    </StringProperty>
+    
     <BoolProperty Name="SpecificVersion" 
                   DisplayName="Specific Version"
                   Description="Indicates whether this assembly can be resolved without regard to multi-targeting rules for assembly resolution.">
@@ -34,6 +52,12 @@
             <DataSource Persistence="AssemblyReference" ItemType="Reference" HasConfigurationCondition="False"  SourceOfDefaultValue="AfterContext" />
         </BoolProperty.DataSource>
     </BoolProperty>
+
+    <StringProperty Name="Version"
+                    ReadOnly="True"
+                    DisplayName="Version"
+                    Description="Version of reference.">
+    </StringProperty>
 
     <StringProperty Name="RequiredTargetFramework" DisplayName="Required Target Framework" Visible="False" />
     <StringProperty Name="HintPath" Visible="false" />
