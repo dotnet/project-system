@@ -9,6 +9,7 @@ set NodeReuse=true
 set DeveloperCommandPrompt=%VS150COMNTOOLS%\VsDevCmd.bat
 set MSBuildAdditionalArguments=/m
 set RunTests=true
+set RunIntegrationTests=false
 set DeployVsixExtension=true
 set FileLoggerVerbosity=detailed
 REM Turn on MSBuild async logging to speed up builds
@@ -27,6 +28,7 @@ if /I "%1" == "/skiptests" set RunTests=false&&shift&& goto :ParseArguments
 if /I "%1" == "/no-deploy-extension" set DeployVsixExtension=false&&shift&& goto :ParseArguments
 if /I "%1" == "/no-node-reuse" set NodeReuse=false&&shift&& goto :ParseArguments
 if /I "%1" == "/diagnostic" set FileLoggerVerbosity=diagnostic&&set MSBuildAdditionalArguments=&&shift&& goto :ParseArguments
+if /I "%1" == "/integrationtests" set RunIntegrationTests=true&&shift&& goto :ParseArguments
 call :Usage && exit /b 1
 :DoneParsing
 
@@ -57,7 +59,7 @@ REM We build Restore, Build and BuildModernVsixPackages in different MSBuild pro
 REM Restore because we want to control the verbosity due to https://github.com/NuGet/Home/issues/4695.
 REM BuildModernVsixPackages because under MicroBuild, it has a dependency on a dll with the same 
 REM version but different contents than the legacy VSIX projects.
-for %%T IN (Restore, %MSBuildBuildTarget%, %MSBuildBuildTarget%NuGetPackages, BuildModernVsixPackages, Test) do (
+for %%T IN (Restore, %MSBuildBuildTarget%, %MSBuildBuildTarget%NuGetPackages, BuildModernVsixPackages, Test, TestIntegration) do (
   
   set LogFile=%LogsDirectory%%%T.log
   
@@ -70,7 +72,7 @@ for %%T IN (Restore, %MSBuildBuildTarget%, %MSBuildBuildTarget%NuGetPackages, Bu
     set ConsoleLoggerVerbosity=minimal
   )
 
-  set BuildCommand=msbuild /nologo /warnaserror /nodeReuse:%NodeReuse% /consoleloggerparameters:Verbosity=!ConsoleLoggerVerbosity! /fileLogger /fileloggerparameters:LogFile="!LogFile!";verbosity=%FileLoggerVerbosity% /t:"%%T" /p:Configuration="%BuildConfiguration%" /p:RunTests="%RunTests%" /p:ShouldSignBuild="%ShouldSignBuild%" /p:DeployVsixExtension="%DeployVsixExtension%" "%Root%build\build.proj" %MSBuildAdditionalArguments%
+  set BuildCommand=msbuild /nologo /warnaserror /nodeReuse:%NodeReuse% /consoleloggerparameters:Verbosity=!ConsoleLoggerVerbosity! /fileLogger /fileloggerparameters:LogFile="!LogFile!";verbosity=%FileLoggerVerbosity% /t:"%%T" /p:Configuration="%BuildConfiguration%" /p:RunTests="%RunTests%" /p:RunIntegrationTests="%RunIntegrationTests%" /p:ShouldSignBuild="%ShouldSignBuild%" /p:DeployVsixExtension="%DeployVsixExtension%" "%Root%build\build.proj" %MSBuildAdditionalArguments%
   if "%FileLoggerVerbosity%" == "diagnostic" (
     echo !BuildCommand!
   )
@@ -115,6 +117,7 @@ echo                             useful for avoiding unexpected behavior on buil
 echo     /no-deploy-extension    Does not deploy the VSIX extension when building the solution
 echo     /signbuild              Produce signed build
 echo     /skiptests              Does not run unit tests
+echo     /integrationtests       Runs integration tests
 goto :eof
 
 :BuildFailed
