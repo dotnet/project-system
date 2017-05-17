@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
+using System.Collections.Generic;
 using VSLangProj;
 using VSLangProj110;
 
@@ -9,6 +9,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
     public partial class VSProject : VSLangProj.ProjectProperties
     {
+        public readonly Dictionary<string, int> _getOutputTypeExMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+        {
+            {"WinExe", 0 },
+            {"Exe", 1 },
+            {"Library", 2 },
+            {"AppContainerExe", 3 },
+            {"WinMDObj", 4 },
+        };
+
+        public readonly Dictionary<int, string> _setOutputTypeExMap = new Dictionary<int, string>
+        {
+            {0, "WinExe"},
+            {1, "Exe"},
+            {2, "Library"},
+            {3, "AppContainerExe"},
+            {4, "WinMDObj"},
+        };
+
+        /// Provides the value for <see cref="OutputType"/> of enum type <see cref="prjOutputType"/> whose value is only 0, 1 or 2.
+        public readonly Dictionary<string, int> _getOutputTypeMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+        {
+            {"WinExe", 0 },
+            {"Exe", 1 },
+            {"Library", 2 },
+            {"AppContainerExe", 1 },
+            {"WinMDObj", 2 },
+        };
 
         private ProjectProperties ProjectProperties
         {
@@ -21,9 +48,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             {
                 return _threadingService.ExecuteSynchronously(async () =>
                 {
-                    var browseObjectProperties = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync().ConfigureAwait(true);
-                    var value = (IEnumValue)(await browseObjectProperties.OutputTypeEx.GetValueAsync().ConfigureAwait(true));
-                    return (prjOutputTypeEx)Convert.ToInt32(value.DisplayName);
+                    var configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
+                    var value = await configurationGeneralProperties.OutputType.GetEvaluatedValueAtEndAsync().ConfigureAwait(true);
+                    return (prjOutputTypeEx)_getOutputTypeExMap[value];
                 });
             }
 
@@ -31,8 +58,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             {
                 _threadingService.ExecuteSynchronously(async () =>
                 {
-                    var browseObjectProperties = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync().ConfigureAwait(true);
-                    await browseObjectProperties.OutputTypeEx.SetValueAsync(value).ConfigureAwait(true);
+                    var OutputTypeValue = _setOutputTypeExMap[(int)value];
+                    var configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
+                    await configurationGeneralProperties.OutputType.SetValueAsync(OutputTypeValue).ConfigureAwait(true);
                 });
             }
         }
@@ -45,9 +73,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             {
                 return _threadingService.ExecuteSynchronously(async () =>
                 {
-                    var browseObjectProperties = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync().ConfigureAwait(true);
-                    var value = (IEnumValue)(await browseObjectProperties.OutputType.GetValueAsync().ConfigureAwait(true));
-                    return (prjOutputType)Convert.ToInt32(value.DisplayName);
+                    var configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
+                    var value = await configurationGeneralProperties.OutputType.GetEvaluatedValueAtEndAsync().ConfigureAwait(true);
+                    return (prjOutputType)_getOutputTypeMap[value];
                 });
             }
 
@@ -55,8 +83,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             {
                 _threadingService.ExecuteSynchronously(async () =>
                 {
-                    var browseObjectProperties = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync().ConfigureAwait(true);
-                    await browseObjectProperties.OutputType.SetValueAsync(value).ConfigureAwait(true);
+                    var OutputTypeValue = _setOutputTypeExMap[(int)value];
+                    var configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
+                    await configurationGeneralProperties.OutputType.SetValueAsync(OutputTypeValue).ConfigureAwait(true);
                 });
             }
         }
