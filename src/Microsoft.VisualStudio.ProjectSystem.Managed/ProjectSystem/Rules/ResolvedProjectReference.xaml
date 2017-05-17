@@ -16,6 +16,8 @@
                     SourceOfDefaultValue="AfterContext" />
     </Rule.DataSource>
 
+    <!-- Visible properties -->
+
     <StringListProperty Name="Aliases"
                         DisplayName="Aliases"
                         Description="A comma-delimited list of aliases to this reference."
@@ -27,10 +29,6 @@
                         SourceOfDefaultValue="AfterContext" />
         </StringListProperty.DataSource>
     </StringListProperty>
-
-    <BoolProperty Name="ReferenceOutputAssembly"
-                  DisplayName="Reference Output Assembly"
-                  Description="A value indicating whether the compiler should include a reference to the target project's primary output assembly." />
 
     <BoolProperty Name="CopyLocal"
                   DisplayName="Copy Local"
@@ -71,15 +69,10 @@
         </BoolProperty.DataSource>
     </BoolProperty>
 
-    <EnumProperty Name="FileType"
-                  ReadOnly="True"
-                  Visible="False"
-                  DisplayName="File Type"
-                  Description="The file type of the reference.">
-        <EnumValue Name="Assembly" DisplayName=".NET assembly" />
-        <EnumValue Name="ActiveX" DisplayName="COM type library" />
-        <EnumValue Name="Native Assembly" DisplayName="Native Assembly" />
-    </EnumProperty>
+    <StringProperty Name="ExcludeAssets" 
+                    Visible="True"
+                    DisplayName="ExcludeAssets"
+                    Description="Assets to exclude from this reference" />
 
     <StringProperty Name="Identity"
                     ReadOnly="True"
@@ -91,6 +84,20 @@
         </StringProperty.DataSource>
     </StringProperty>
 
+    <StringProperty Name="IncludeAssets" 
+                    Visible="True"
+                    DisplayName="IncludeAssets"
+                    Description="Assets to include from this reference" />
+
+    <BoolProperty Name="ReferenceOutputAssembly"
+                  DisplayName="Reference Output Assembly"
+                  Description="A value indicating whether the compiler should include a reference to the target project's primary output assembly." />
+
+    <StringProperty Name="PrivateAssets" 
+                    Visible="True"
+                    DisplayName="PrivateAssets"
+                    Description="Assets that are private in this reference" />
+
     <StringProperty Name="ResolvedPath"
                     ReadOnly="True"
                     DisplayName="Path"
@@ -101,12 +108,40 @@
         </StringProperty.DataSource>
     </StringProperty>
 
+    <StringProperty Name="Version"
+                    ReadOnly="True"
+                    DisplayName="Version"
+                    Description="Version of reference.">
+    </StringProperty>
+
+    <!-- Hidden properties -->
+
+    <EnumProperty Name="FileType"
+                  ReadOnly="True"
+                  Visible="False"
+                  DisplayName="File Type"
+                  Description="The file type of the reference.">
+        <EnumValue Name="Assembly" DisplayName=".NET assembly" />
+        <EnumValue Name="ActiveX" DisplayName="COM type library" />
+        <EnumValue Name="Native Assembly" DisplayName="Native Assembly" />
+    </EnumProperty>
+
+    <StringProperty Name="HintPath"
+                    Visible="false" />
+
+    <StringProperty Name="RequiredTargetFramework"
+                    DisplayName="Required Target Framework"
+                    Visible="False" />
+
     <StringProperty Name="RuntimeVersion"
                     ReadOnly="True"
                     Visible="False"
                     DisplayName="Runtime Version"
                     Description="Version of the .NET runtime this assembly was compiled against.">
     </StringProperty>
+
+    <StringProperty Name="SDKIdentity"
+                    Visible="false" />
 
     <BoolProperty Name="SpecificVersion" 
                   DisplayName="Specific Version"
@@ -120,51 +155,32 @@
                   Description="True indicates that the reference has been signed with a key-pair.">
     </BoolProperty>
 
-    <StringProperty Name="Version"
-                    ReadOnly="True"
-                    DisplayName="Version"
-                    Description="Version of reference.">
-    </StringProperty>
-
-    <StringProperty Name="IncludeAssets" 
-                    Visible="True"
-                    DisplayName="IncludeAssets"
-                    Description="Assets to include from this reference" />
-
-    <StringProperty Name="ExcludeAssets" 
-                    Visible="True"
-                    DisplayName="ExcludeAssets"
-                    Description="Assets to exclude from this reference" />
-
-    <StringProperty Name="PrivateAssets" 
-                    Visible="True"
-                    DisplayName="PrivateAssets"
-                    Description="Assets that are private in this reference" />
-
-    <StringProperty Name="RequiredTargetFramework" DisplayName="Required Target Framework" Visible="False" />
-    <StringProperty Name="HintPath" Visible="false" />
-    <StringProperty Name="SDKIdentity" Visible="false" />
-
     <!-- This is the metadata we store on the reference item when we add it. -->
+
     <BoolProperty Name="IsWinMDFile"
                   Visible="false"
                   Description="Indicates whether the project system ascertained that this is a WinMD (as opposed to an assembly)" />
+
     <StringProperty Name="Project" 
                     Visible="False"
                     Description="the Guid the solution tracks an individual project reference target with" />
 
     <!-- These are metadata added to the resolved item by MSBuild that we don't show to the user but use internally. -->
+
     <BoolProperty Name="WinMDFile"
                   Visible="false"
                   ReadOnly="True"
                   Description="Indicates whether the build system ascertained that this is a WinMD (as opposed to an assembly)" />
+
     <StringProperty Name="OriginalItemSpec"
                     Visible="False"
                     ReadOnly="True"
                     Description="The evaluated item name of the original reference item whose resolution resulted in this resolved reference item." />
+
     <StringProperty Name="FusionName"
                     Visible="False"
                     ReadOnly="True" />
+
     <StringProperty Name="Name"
                     Visible="false"
                     ReadOnly="True" />
