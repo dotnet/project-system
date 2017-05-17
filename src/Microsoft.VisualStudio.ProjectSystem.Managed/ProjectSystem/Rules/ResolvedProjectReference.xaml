@@ -8,8 +8,12 @@
     xmlns="http://schemas.microsoft.com/build/2009/properties">
 
     <Rule.DataSource>
-        <DataSource Persistence="ResolvedReference" ItemType="ProjectReference" HasConfigurationCondition="False" 
-                    SourceType="TargetResults" MSBuildTarget="ResolveProjectReferencesDesignTime" SourceOfDefaultValue="AfterContext" />
+        <DataSource Persistence="ResolvedReference"
+                    ItemType="ProjectReference"
+                    HasConfigurationCondition="False" 
+                    SourceType="TargetResults"
+                    MSBuildTarget="ResolveProjectReferencesDesignTime"
+                    SourceOfDefaultValue="AfterContext" />
     </Rule.DataSource>
 
     <StringListProperty Name="Aliases"
@@ -60,7 +64,10 @@
                   DisplayName="Embed Interop Types"
                   Description="Indicates whether types defined in this assembly will be embedded into the target assembly.">
         <BoolProperty.DataSource>
-            <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+            <DataSource Persistence="ProjectFile"
+                        ItemType="ProjectReference"
+                        HasConfigurationCondition="False"
+                        SourceOfDefaultValue="AfterContext" />
         </BoolProperty.DataSource>
     </BoolProperty>
 
@@ -79,7 +86,8 @@
                     DisplayName="Identity"
                     Description="Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).">
         <StringProperty.DataSource>
-            <DataSource PersistedName="{}{Identity}" SourceOfDefaultValue="AfterContext" />
+            <DataSource PersistedName="{}{Identity}"
+                        SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
 
@@ -88,7 +96,8 @@
                     DisplayName="Path"
                     Description="Location of the file being referenced.">
         <StringProperty.DataSource>
-            <DataSource PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
+            <DataSource PersistedName="Identity"
+                        SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
 
@@ -131,20 +140,32 @@
                     Visible="True"
                     DisplayName="PrivateAssets"
                     Description="Assets that are private in this reference" />
-    
+
     <StringProperty Name="RequiredTargetFramework" DisplayName="Required Target Framework" Visible="False" />
     <StringProperty Name="HintPath" Visible="false" />
     <StringProperty Name="SDKIdentity" Visible="false" />
 
     <!-- This is the metadata we store on the reference item when we add it. -->
-    <BoolProperty Name="IsWinMDFile" Visible="false" Description="Indicates whether the project system ascertained that this is a WinMD (as opposed to an assembly)" />
+    <BoolProperty Name="IsWinMDFile"
+                  Visible="false"
+                  Description="Indicates whether the project system ascertained that this is a WinMD (as opposed to an assembly)" />
     <StringProperty Name="Project" 
                     Visible="False"
                     Description="the Guid the solution tracks an individual project reference target with" />
 
     <!-- These are metadata added to the resolved item by MSBuild that we don't show to the user but use internally. -->
-    <BoolProperty Name="WinMDFile" Visible="false" ReadOnly="True" Description="Indicates whether the build system ascertained that this is a WinMD (as opposed to an assembly)" />
-    <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="The evaluated item name of the original reference item whose resolution resulted in this resolved reference item." />
-    <StringProperty Name="FusionName" Visible="False" ReadOnly="True" />
-    <StringProperty Name="Name" Visible="false" ReadOnly="True" />
+    <BoolProperty Name="WinMDFile"
+                  Visible="false"
+                  ReadOnly="True"
+                  Description="Indicates whether the build system ascertained that this is a WinMD (as opposed to an assembly)" />
+    <StringProperty Name="OriginalItemSpec"
+                    Visible="False"
+                    ReadOnly="True"
+                    Description="The evaluated item name of the original reference item whose resolution resulted in this resolved reference item." />
+    <StringProperty Name="FusionName"
+                    Visible="False"
+                    ReadOnly="True" />
+    <StringProperty Name="Name"
+                    Visible="false"
+                    ReadOnly="True" />
 </Rule>

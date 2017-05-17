@@ -8,7 +8,10 @@
     xmlns="http://schemas.microsoft.com/build/2009/properties">
 
     <Rule.DataSource>
-        <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+        <DataSource Persistence="ProjectFile" 
+                    ItemType="ProjectReference" 
+                    HasConfigurationCondition="False" 
+                    SourceOfDefaultValue="AfterContext" />
     </Rule.DataSource>
 
     <StringListProperty Name="Aliases"
@@ -22,7 +25,7 @@
                         SourceOfDefaultValue="AfterContext" />
         </StringListProperty.DataSource>
     </StringListProperty>
-    
+
     <BoolProperty Name="ReferenceOutputAssembly"
                   DisplayName="Reference Output Assembly"
                   Description="A value indicating whether the compiler should include a reference to the target project's primary output assembly." />
@@ -31,15 +34,19 @@
                   DisplayName="Copy Local Satellite Assemblies"
                   Description="Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory." />
 
-    <BoolProperty Name="LinkLibraryDependencies" Visible="False" />
+    <BoolProperty Name="LinkLibraryDependencies"
+                  Visible="False" />
 
-    <BoolProperty Name="UseLibraryDependencyInputs" Visible="False" />
+    <BoolProperty Name="UseLibraryDependencyInputs"
+                  Visible="False" />
 
     <StringProperty Name="Project" 
                     Visible="False"
                     Description="the Guid the solution tracks an individual project reference target with" />
 
-    <StringProperty Name="ReferencedProjectIdentifier" Visible="False" Description="The old (VS2010 beta) way to store the Guid the solution tracks an individual project reference target with" />
+    <StringProperty Name="ReferencedProjectIdentifier"
+                    Visible="False"
+                    Description="The old (VS2010 beta) way to store the Guid the solution tracks an individual project reference target with" />
 
     <BoolProperty Name="CopyLocal"
                   DisplayName="Copy Local"
