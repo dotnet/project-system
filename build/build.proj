@@ -108,6 +108,15 @@
   </Target>
 
   <Target Name="TestIntegration" Condition="'$(RunIntegrationTests)' == 'true'">
+
+    <PropertyGroup>
+      <BinariesDirectory>"$([System.IO.Path]::GetFullPath('$(RepositoryRootDirectory)bin\$(Configuration)\'))"</BinariesDirectory>
+    </PropertyGroup>
+
+    <Exec Command="SET VisualBasicDesignTimeTargetsPath=$(BinariesDirectory)Rules\Microsoft.VisualBasic.DesignTime.targets"/>  
+    <Exec Command="SET FSharpDesignTimeTargetsPath=$(BinariesDirectory)Rules\Microsoft.FSharp.DesignTime.targets"/>  
+    <Exec Command="SET CSharpDesignTimeTargetsPath=$(BinariesDirectory)Rules\Microsoft.FSharp.DesignTime.targets"/>  
+
     <PropertyGroup>
       <DownloadRoslynVsixesExe>$(NUGET_PACKAGES)\roslyntools.downloadroslynvsixes\$(RoslynToolsDownloadRoslynVsixesVersion)\tools\DownloadRoslynVsixes.exe</DownloadRoslynVsixesExe>
       <DownloadRoslynVsixesArgs>"$([System.IO.Path]::GetFullPath('$(RepositoryRootDirectory)bin\$(Configuration)\IntegrationTests'))"</DownloadRoslynVsixesArgs>
@@ -133,6 +142,18 @@
     <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\ExpressionEvaluatorPackage.vsix" />
     <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.VisualStudio.DiagnosticsWindow.vsix" />
     <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Microsoft.VisualStudio.IntegrationTest.Setup.vsix" />
+
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)VisualStudioEditorsSetup.vsix" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)ProjectSystem.vsix" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.Test.vsix" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.vsix" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.FSharp.ProjectTemplates.Test.vsix" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.FSharp.ProjectTemplates.vsix" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.VB.ProjectTemplates.Test.vsix" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.VB.ProjectTemplates.vsix" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetStandard.CSharp.ProjectTemplates.vsix" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetStandard.FSharp.ProjectTemplates.vsix" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetStandard.VB.ProjectTemplates.vsix" />
 
     <Message Text="Running integrations tests for %(SolutionFile.Filename) [$(Configuration)]" Importance="high" />
 
