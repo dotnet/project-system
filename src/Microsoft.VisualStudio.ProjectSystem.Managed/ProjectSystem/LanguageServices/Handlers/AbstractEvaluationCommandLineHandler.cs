@@ -202,6 +202,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             IImmutableSet<string> added = designTimeDifferences.AddedItems.Except(evaluationDifferences.RemovedItems);
             IImmutableSet<string> removed = designTimeDifferences.RemovedItems.Except(evaluationDifferences.AddedItems);
 
+            Assumes.True(designTimeDifferences.ChangedItems.Count == 0, "We should never see ChangedItems during design-time builds.");
+
             return new ProjectChangeDiff(added, removed, designTimeDifferences.ChangedItems);
         }
 
