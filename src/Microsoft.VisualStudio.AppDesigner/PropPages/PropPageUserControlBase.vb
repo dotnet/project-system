@@ -2461,10 +2461,6 @@ NextControl:
         ''' See "About 'common' properties" in PropertyControlData for information on "common" properties.
         ''' </remarks>
         Protected Function GetCommonPropertyValueNative(PropertyName As String) As Object
-            If PropertyName.Equals("FullPath") Then
-                Return GetProjectPath()
-            End If
-
             Return GetCommonPropertyValueNative(GetCommonPropertyDescriptor(PropertyName))
         End Function
 
@@ -3359,19 +3355,7 @@ NextControl:
         ''' <returns></returns>
         ''' <remarks></remarks>
         Protected Function GetProjectPath() As String
-            ' csproj.dll and msbprj.dll implement this Property so first try getting the full path
-            ' through the ProjectProperties. The new CPS based project system doesn't implement this 
-            ' interface. The full path is part of the properties on the BrowseObject and so get it from there.
-            Dim fullPath As String
-            If ProjectProperties IsNot Nothing Then
-                fullPath = ProjectProperties.FullPath
-            Else
-                Dim obj As Object = TryGetNonCommonPropertyValue(GetPropertyDescriptor("FullPath"))
-                fullPath = CType(obj, String)
-            End If
-
-            ' Append a directory separator char as some callsites in Microsoft.VisualStudio.Editors.ClickOnce assume project path ends with it.
-            Return Common.AppendBackslash(fullPath)
+            Return CStr(GetCommonPropertyValueNative("FullPath")) 'CONSIDER: This won't work for all project types, e.g. ASP.NET when project path is a URL
         End Function
 
         ''' <summary>

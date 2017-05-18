@@ -77,6 +77,8 @@
     </EnumProperty>
     <StringListProperty Name="AvailablePlatforms" Separator="," />
     <BoolProperty Name="Optimize" Description="Should compiler optimize output?" />
+    <!-- Same as MSBuildProjectDirectory but has a directory separator '\' appended at the end.-->
+    <StringProperty Name="ProjectDir" Visible="false"/>
     <StringProperty Name="MSBuildProjectDirectory" Visible="false"/>
     <StringProperty Name="MSBuildProjectFullPath" Visible="false" />
     <StringProperty Name="DefaultPlatform" Visible="false" />

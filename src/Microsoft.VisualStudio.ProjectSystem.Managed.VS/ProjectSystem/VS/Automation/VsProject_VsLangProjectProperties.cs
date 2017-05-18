@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                 return _threadingService.ExecuteSynchronously(async () =>
                 {
                     var configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
-                    return await configurationGeneralProperties.TargetPath.GetEvaluatedValueAtEndAsync().ConfigureAwait(true);
+                    return await configurationGeneralProperties.ProjectDir.GetEvaluatedValueAtEndAsync().ConfigureAwait(true);
                 });
             }
         }
