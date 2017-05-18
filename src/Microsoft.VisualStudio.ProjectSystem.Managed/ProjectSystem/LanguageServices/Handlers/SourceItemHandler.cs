@@ -2,30 +2,24 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
-using Microsoft.CodeAnalysis;
+using System.Linq;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     /// <summary>
-    ///     Handles changes to sources files during project evaluations and changes to source files that are passed
+    ///     Handles changes to sources files during project evaluations and sources files that are passed
     ///     to the compiler during design-time builds.
     /// </summary>
-    internal class SourceItemHandler : IEvaluationHandler, ICommandLineHandler
+    internal partial class SourceItemHandler : AbstractEvaluationCommandLineHandler, IEvaluationHandler, ICommandLineHandler
     {
-        // When a source file has been added/removed from a project, we'll receive notifications for it twice; once
-        // during project evaluation, and once during a design-time build. To prevent us from adding duplicate items 
-        // to the language service, we remember what sources files we've already added.
-        //
-        // We listen to both project evaluation and design-time builds ("command-line arguments") so that when
-        // a file is added to the project, we don't need to wait for a slow design-time build just to get useful 
-        // IntelliSense.
         private readonly UnconfiguredProject _project;
         private readonly IWorkspaceProjectContext _context;
-        private readonly HashSet<string> _sourceFiles = new HashSet<string>(StringComparers.Paths);
 
         public SourceItemHandler(UnconfiguredProject project, IWorkspaceProjectContext context)
+            : base(project)
         {
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(context, nameof(context));
@@ -34,89 +28,49 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             _context = context;
         }
 
+        public void Handle(IComparable version, IProjectChangeDescription projectChange, bool isActiveContext)
+        {
+            Requires.NotNull(version, nameof(version));
+            Requires.NotNull(projectChange, nameof(projectChange));
+
+            ApplyEvaluationChanges(version, projectChange.Difference, projectChange.After.Items, isActiveContext);
+        }
+
         public void Handle(IComparable version, BuildOptions added, BuildOptions removed, bool isActiveContext)
         {
             Requires.NotNull(version, nameof(version));
             Requires.NotNull(added, nameof(added));
             Requires.NotNull(removed, nameof(removed));
 
-            foreach (CommandLineSourceFile sourceFile in removed.SourceFiles)
-            {
-                RemoveSourceFile(sourceFile.Path);
-            }
+            IProjectChangeDiff difference = ConvertToProjectDiff(added, removed);
 
-            foreach (CommandLineSourceFile sourceFile in added.SourceFiles)
-            {
-                AddSourceFile(sourceFile.Path, null, isActiveContext);
-            }
+            ApplyDesignTimeChanges(version, difference, isActiveContext);
         }
 
-        public void Handle(IComparable version, IProjectChangeDescription projectChange, bool isActiveContext)
+        protected override void AddToContext(string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext)
         {
-            Requires.NotNull(version, nameof(version));
-            Requires.NotNull(projectChange, nameof(projectChange));
+            string[] folderNames = GetFolderNames(fullPath, metadata);
 
-            IProjectChangeDiff diff = projectChange.Difference;
-
-            foreach (string filePath in diff.RemovedItems)
-            {
-                RemoveSourceFile(filePath);
-            }
-
-            foreach (string filePath in diff.AddedItems)
-            {
-                AddSourceFile(filePath, GetFolders(filePath, projectChange), isActiveContext);
-            }
-
-            foreach (KeyValuePair<string, string> filePaths in diff.RenamedItems)
-            {
-                string removeFilePath = filePaths.Key;
-                string addFilePath = filePaths.Value;
-
-                RemoveSourceFile(removeFilePath);
-                AddSourceFile(addFilePath, GetFolders(addFilePath, projectChange), isActiveContext);
-            }
-
-            foreach (string filePath in diff.ChangedItems)
-            {
-                // We add and then remove ChangedItems to handle Linked metadata changes
-                RemoveSourceFile(filePath);
-                AddSourceFile(filePath, GetFolders(filePath, projectChange), isActiveContext);
-            }
+            _context.AddSourceFile(fullPath, isInCurrentContext: isActiveContext, folderNames: folderNames);
         }
 
-        private void RemoveSourceFile(string filePath)
+        protected override void RemoveFromContext(string fullPath)
         {
-            string fullPath = _project.MakeRooted(filePath);
-
-            if (_sourceFiles.Remove(fullPath))
-            {
-                _context.RemoveSourceFile(fullPath);
-            }
+            _context.RemoveSourceFile(fullPath);
         }
 
-        private void AddSourceFile(string filePath, string[] folderNames, bool isActiveContext)
-        {
-            string fullPath = _project.MakeRooted(filePath);
-
-            if (_sourceFiles.Add(fullPath))
-            {
-                _context.AddSourceFile(fullPath, folderNames: folderNames, isInCurrentContext: isActiveContext);
-            }
-        }
-
-        private string[] GetFolders(string filePath, IProjectChangeDescription projectChange)
+        private string[] GetFolderNames(string fullPath, IImmutableDictionary<string, string> metadata)
         {
             // Roslyn wants the effective set of folders from the source up to, but not including the project 
             // root to handle the cases where linked files have a different path in the tree than what its path 
-            // on disk is. It uses these folders for things that create files alongside others, such as extract
-            // interface.
+            // on disk is. It uses these folders for code actions that create files alongside others, such as 
+            // extract interface.
 
             // First we check for a linked item, and we use its effective folder in 
             // the tree, otherwise, we just use the parent folder of the file itself
-            string parentFolder = GetLinkedParentFolder(filePath, projectChange);
+            string parentFolder = GetLinkedParentFolder(metadata);
             if (parentFolder == null)
-                parentFolder = GetParentFolder(filePath);
+                parentFolder = GetParentFolder(fullPath);
 
             // We now have a folder in the form of `Folder1\Folder2` relative to the
             // project directory  split it up into individual path components
@@ -128,10 +82,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             return null;
         }
 
-        private string GetLinkedParentFolder(string filePath, IProjectChangeDescription projectChange)
+        private string GetLinkedParentFolder(IImmutableDictionary<string, string> metadata)
         {
-            var metadata = projectChange.After.Items[filePath];
-
             string linkFilePath = FileItemServices.GetLinkFilePath(metadata);
             if (linkFilePath != null)
                 return Path.GetDirectoryName(linkFilePath);
@@ -139,9 +91,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             return null;
         }
 
-        private string GetParentFolder(string filePath)
+        private string GetParentFolder(string fullPath)
         {
-            return Path.GetDirectoryName(_project.MakeRelative(filePath));
+            return Path.GetDirectoryName(_project.MakeRelative(fullPath));
+        }
+
+        private IProjectChangeDiff ConvertToProjectDiff(BuildOptions added, BuildOptions removed)
+        {
+            var addedSet = ImmutableHashSet.ToImmutableHashSet(GetFilePaths(added), StringComparers.Paths);
+            var removedSet = ImmutableHashSet.ToImmutableHashSet(GetFilePaths(removed), StringComparers.Paths);
+
+            return new ProjectChangeDiff(addedSet, removedSet);
+        }
+
+        private IEnumerable<string> GetFilePaths(BuildOptions options)
+        {
+            return options.SourceFiles.Select(f => _project.MakeRelative(f.Path));
         }
     }
 }
