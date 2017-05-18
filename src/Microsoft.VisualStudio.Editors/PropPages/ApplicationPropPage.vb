@@ -251,12 +251,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             If Not PropertyControlData.IsSpecialValue(value) Then
 
-                Dim uIntValue As UInteger = 0
-                Try
-                    uIntValue = CUInt(value)
-                Catch ex As Exception
-                End Try
-
+                Dim uIntValue As UInteger = CUInt(value)
                 didSelectItem = SelectItemInOutputTypeComboBox(OutputType, uIntValue)
 
                 If didSelectItem Then
@@ -636,12 +631,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 PopulateStartupObject(True, False)
             Else
                 '(Okay to use OutputTypeControlData.InitialValue because we checked IsMissing above)
-                Dim outputType As UInteger = 0
-                Try
-                    outputType = CUInt(OutputTypeControlData.InitialValue)
-                Catch ex As Exception
-                End Try
-                PopulateControlSet(outputType)
+                PopulateControlSet(CUInt(OutputTypeControlData.InitialValue))
                 EnableControlSet()
                 Return True
             End If
