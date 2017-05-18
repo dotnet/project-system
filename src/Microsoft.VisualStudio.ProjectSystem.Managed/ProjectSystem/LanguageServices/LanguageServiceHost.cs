@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.Threading;
+using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
@@ -24,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IActiveProjectConfigurationRefreshService _activeProjectConfigurationRefreshService;
-
+        private readonly IProjectLogger _logger;
         private readonly List<IDisposable> _evaluationSubscriptionLinks;
         private readonly List<IDisposable> _designTimeBuildSubscriptionLinks;
         private readonly HashSet<ProjectConfiguration> _projectConfigurationsWithSubscriptions;
@@ -46,19 +47,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                    Lazy<IProjectContextProvider> contextProvider,
                                    [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService,
                                    IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
-                                   IActiveProjectConfigurationRefreshService activeProjectConfigurationRefreshService)
+                                   IActiveProjectConfigurationRefreshService activeProjectConfigurationRefreshService,
+                                   IProjectLogger logger)
             : base(commonServices.ThreadingService.JoinableTaskContext)
         {
             Requires.NotNull(contextProvider, nameof(contextProvider));
             Requires.NotNull(tasksService, nameof(tasksService));
             Requires.NotNull(activeConfiguredProjectSubscriptionService, nameof(activeConfiguredProjectSubscriptionService));
             Requires.NotNull(activeProjectConfigurationRefreshService, nameof(activeProjectConfigurationRefreshService));
+            Requires.NotNull(logger, nameof(logger));
 
             _commonServices = commonServices;
             _contextProvider = contextProvider;
             _tasksService = tasksService;
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
             _activeProjectConfigurationRefreshService = activeProjectConfigurationRefreshService;
+            _logger = logger;
 
             Handlers = new OrderPrecedenceImportCollection<ILanguageServiceRuleHandler>(projectCapabilityCheckProvider: commonServices.Project);
             _evaluationSubscriptionLinks = new List<IDisposable>();
@@ -307,15 +311,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     return;
                 }
 
+                ProjectLoggerContext loggerContext = BeginLoggingContext(update, handlerType, isActiveContext);
+
                 foreach (var handler in handlers)
                 {
                     IProjectChangeDescription projectChange = update.Value.ProjectChanges[handler.RuleName];
                     if (handler.ReceiveUpdatesWithEmptyProjectChange || projectChange.Difference.AnyChanges)
                     {
-                        handler.Handle(projectChange, projectContextToUpdate, isActiveContext);
+                        handler.Handle(projectChange, projectContextToUpdate, isActiveContext, loggerContext);
                     }
                 }
             });
+        }
+
+        private ProjectLoggerContext BeginLoggingContext(IProjectVersionedValue<IProjectSubscriptionUpdate> update, RuleHandlerType handlerType, bool isActiveContext)
+        {
+            string version = GetConfiguredProjectVersion(update);
+            string configuration = update.Value.ProjectConfiguration.Name;
+
+            return _logger.BeginContext("[Rule: {0}, Config: {1}, ConfiguredProjectVersion: {2}, IsActiveContext: {3}]", handlerType, configuration, version, isActiveContext);
+        }
+
+        private string GetConfiguredProjectVersion(IProjectVersionedValue<IProjectSubscriptionUpdate> update)
+        {
+            if (update.DataSourceVersions.TryGetValue(ProjectDataSources.ConfiguredProjectVersion, out IComparable value))
+            {
+                return value.ToString();
+            }
+
+            return null;
         }
 
         private IEnumerable<string> GetWatchedRules(RuleHandlerType handlerType)
