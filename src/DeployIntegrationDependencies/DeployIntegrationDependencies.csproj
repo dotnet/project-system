@@ -1,0 +1,30 @@
+﻿<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Project>
+  <Import Project="..\..\build\Targets\ProducesNoOutput.Settings.targets" />
+  <PropertyGroup>
+    <TargetFramework>net46</TargetFramework>
+    <OutDir>$(OutDir)IntegrationTests\</OutDir>
+    <ProjectSystemLayer>VisualStudioDesigner</ProjectSystemLayer>
+    <Nonshipping>true</Nonshipping>
+    <ProjectSystemProjectType>Test</ProjectSystemProjectType>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.IntegrationTests\Microsoft.VisualStudio.ProjectSystem.IntegrationTests.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.IntegrationTest.Utilities" Version="[$(MicrosoftVisualStudioIntegrationTestUtilitiesVersion)]" />
+    <PackageReference Include="Microsoft.VisualStudio.LanguageServices" Version="[$(MicrosoftVisualStudioLanguageServicesVersion)]" />
+    <PackageReference Include="RoslynTools.DownloadRoslynVsixes" Version="$(RoslynToolsDownloadRoslynVsixesVersion)" />
+    <PackageReference Include="RoslynTools.Microsoft.VSIXExpInstaller" Version="$(RoslynToolsMicrosoftVSIXExpInstallerVersion)" />
+    <PackageReference Include="System.Reflection.Metadata" Version="[$(SystemReflectionMetadataVersion)]" />
+    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="$(SystemRuntimeInteropServicesRuntimeInformationVersion)" />
+    <PackageReference Include="xunit.runner.console" Version="[$(XUnitRunnerConsoleVersion)]" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="[$(XUnitRunnerVisualstudioVersion)]" />
+  </ItemGroup>
+  <Import Project="..\..\build\Targets\ProducesNoOutput.Imports.targets" />
+</Project>
