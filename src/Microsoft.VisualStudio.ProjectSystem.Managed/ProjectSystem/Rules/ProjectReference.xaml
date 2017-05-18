@@ -69,7 +69,7 @@
 
     <StringProperty Name="ExcludeAssets" 
                     Visible="True"
-                    DisplayName="ExcludeAssets"
+                    DisplayName="Exclude Assets"
                     Description="Assets to exclude from this reference" />
 
     <StringProperty Name="Identity"
@@ -84,7 +84,7 @@
 
     <StringProperty Name="IncludeAssets" 
                     Visible="True"
-                    DisplayName="IncludeAssets"
+                    DisplayName="Include Assets"
                     Description="Assets to include from this reference" />
 
     <BoolProperty Name="ReferenceOutputAssembly"
@@ -93,7 +93,7 @@
 
     <StringProperty Name="PrivateAssets" 
                     Visible="True"
-                    DisplayName="PrivateAssets"
+                    DisplayName="Private Assets"
                     Description="Assets that are private in this reference" />
 
     <StringProperty Name="ResolvedPath"
