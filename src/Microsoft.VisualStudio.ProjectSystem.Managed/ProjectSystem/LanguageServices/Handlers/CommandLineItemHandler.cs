@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
@@ -43,43 +44,53 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         // Broken design time builds generates updates with no changes.
         public override bool ReceiveUpdatesWithEmptyProjectChange => true;
 
-        public override void Handle(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
+        public override void Handle(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext, ProjectLoggerContext loggerContext)
         {
             Requires.NotNull(projectChange, nameof(projectChange));
 
-            if (!ProcessDesignTimeBuildFailure(projectChange, context))
+            if (!ProcessDesignTimeBuildFailure(projectChange, context, loggerContext))
             {
-                ProcessOptions(projectChange, context);
-                ProcessItems(projectChange, context, isActiveContext);
+                ProcessOptions(projectChange, context, loggerContext);
+                ProcessItems(projectChange, context, isActiveContext, loggerContext);
             }
         }
 
-        private static bool ProcessDesignTimeBuildFailure(IProjectChangeDescription projectChange, IWorkspaceProjectContext context)
+        private static bool ProcessDesignTimeBuildFailure(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, ProjectLoggerContext loggerContext)
         {
             // WORKAROUND: https://github.com/dotnet/roslyn-project-system/issues/478
             // Check if the design-time build failed, if we have no arguments, then that is likely the 
             // case and we should ignore the results.
 
-            bool designTimeBuildFailed = projectChange.After.Items.Count == 0;
-            context.LastDesignTimeBuildSucceeded = !designTimeBuildFailed;
-            return designTimeBuildFailed;
+            bool designTimeBuildSuceeeded = projectChange.After.Items.Count != 0;
+
+            if (context.LastDesignTimeBuildSucceeded != designTimeBuildSuceeeded)
+            {
+                loggerContext.WriteLine("Setting 'last design time build succeeded' to {0}.", designTimeBuildSuceeeded);
+                context.LastDesignTimeBuildSucceeded = designTimeBuildSuceeeded;
+            }
+
+            return !designTimeBuildSuceeeded;
         }
 
-        private static void ProcessOptions(IProjectChangeDescription projectChange, IWorkspaceProjectContext context)
+        private static void ProcessOptions(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, ProjectLoggerContext loggerContext)
         {
             // We don't pass differences to Roslyn for options, we just pass them all
             IEnumerable<string> commandlineArguments = projectChange.After.Items.Keys;
-            context.SetOptions(string.Join(" ", commandlineArguments));
-        }
 
-        private void ProcessItems(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
+            string commandLine = string.Join(" ", commandlineArguments);
+
+            loggerContext.WriteLine("Setting options to {0}", commandLine);
+            context.SetOptions(commandLine);
+        }   
+
+        private void ProcessItems(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext, ProjectLoggerContext loggerContext)
         {
             BuildOptions addedItems = _commandLineParser.Parse(projectChange.Difference.AddedItems);
             BuildOptions removedItems = _commandLineParser.Parse(projectChange.Difference.RemovedItems);
 
             foreach (var handler in Handlers)
             {
-                handler.Value.Handle(addedItems, removedItems, context, isActiveContext);
+                handler.Value.Handle(addedItems, removedItems, context, isActiveContext, loggerContext);
             }
         }
     }

@@ -3,6 +3,7 @@
 using System;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
@@ -28,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             get { return ConfigurationGeneral.SchemaName; }
         }
 
-        public override void Handle(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
+        public override void Handle(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext, ProjectLoggerContext loggerContext)
         {
             Requires.NotNull(projectChange, nameof(projectChange));
 
@@ -36,6 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             {
                 if (Guid.TryParse(projectChange.After.Properties[ConfigurationGeneral.ProjectGuidProperty], out Guid result))
                 {
+                    loggerContext.WriteLine("Setting project GUID to {0}", result);
                     context.Guid = result;
                 }
             }
@@ -52,6 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 var newBinOutputPath = projectChange.After.Properties[ConfigurationGeneral.TargetPathProperty];
                 if (!string.IsNullOrEmpty(newBinOutputPath))
                 {
+                    loggerContext.WriteLine("Setting 'bin output path' to {0}", newBinOutputPath);
                     context.BinOutputPath = newBinOutputPath;
                 }
             }

@@ -2,6 +2,7 @@
 
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
@@ -13,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         public virtual bool ReceiveUpdatesWithEmptyProjectChange => false;
 
-        public virtual void Handle(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
+        public virtual void Handle(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext, ProjectLoggerContext loggerContext)
         {
         }
 

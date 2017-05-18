@@ -3,6 +3,7 @@
 using System.ComponentModel.Composition;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
@@ -23,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             _unconfiguredProject = project;
         }
 
-        public void Handle(BuildOptions added, BuildOptions removed, IWorkspaceProjectContext context, bool isActiveContext)
+        public void Handle(BuildOptions added, BuildOptions removed, IWorkspaceProjectContext context, bool isActiveContext, ProjectLoggerContext loggerContext)
         {
             Requires.NotNull(added, nameof(added));
             Requires.NotNull(removed, nameof(removed));
@@ -31,12 +32,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             foreach (CommandLineReference reference in removed.MetadataReferences)
             {
                 var fullPath = _unconfiguredProject.MakeRooted(reference.Reference);
+
+                loggerContext.WriteLine("Removing reference {0}", fullPath);
+
                 context.RemoveMetadataReference(fullPath);
             }
 
             foreach (CommandLineReference reference in added.MetadataReferences)
             {
                 var fullPath = _unconfiguredProject.MakeRooted(reference.Reference);
+
+                loggerContext.WriteLine("Adding reference {0}", fullPath);
+
                 context.AddMetadataReference(fullPath, reference.Properties);
             }
         }
