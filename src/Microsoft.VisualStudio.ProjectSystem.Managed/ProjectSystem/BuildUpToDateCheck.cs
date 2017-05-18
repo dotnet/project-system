@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.ProjectSystem.Build;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.VisualStudio.ProjectSystem.Logging;
+using Microsoft.VisualStudio.ProjectSystem.References;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -19,117 +19,207 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         private const string DisableFastUpToDateCheckProperty = "DisableFastUpToDateCheck";
 
-        [Import(RequiredCreationPolicy = CreationPolicy.Shared)]
-        private IProjectLockService ProjectLockService { get; set; }
+        private static string[] KnownOutputGroups = { "Symbols", "Built", "ContentFiles", "Documentation", "LocalizedResourceDlls" };
 
-        [Import(RequiredCreationPolicy = CreationPolicy.Shared)]
-        private ConfiguredProject ConfiguredProject { get; set; }
+        private readonly IProjectLockService _projectLockService;
+        private readonly IProjectSystemOptions _projectSystemOptions;
+        private readonly ConfiguredProject _configuredProject;
+        private readonly IProjectLogger _projectLogger;
+        private readonly IProjectItemSchemaService _projectItemsSchema;
+        private readonly Lazy<IFileTimestampCache> _fileTimestampCache;
 
-        [Import(RequiredCreationPolicy = CreationPolicy.Shared, AllowDefault = true)]
-        private IProjectItemSchemaService ProjectItemsSchema { get; set; }
-
-        [Import(AllowDefault = true)]
-        private Lazy<IFileTimestampCache> FileTimestampCache { get; set; }
+        [ImportingConstructor]
+        public BuildUpToDateCheck(
+            IProjectLockService projectLockService,
+            IProjectSystemOptions projectSystemOptions,
+            ConfiguredProject configuredProject,
+            IProjectLogger projectLogger,
+            [Import(AllowDefault = true)] IProjectItemSchemaService projectItemSchema,
+            [Import(AllowDefault = true)] Lazy<IFileTimestampCache> fileTimestampCache)
+        {
+            _projectLockService = projectLockService;
+            _projectSystemOptions = projectSystemOptions;
+            _configuredProject = configuredProject;
+            _projectLogger = projectLogger;
+            _projectItemsSchema = projectItemSchema;
+            _fileTimestampCache = fileTimestampCache;
+        }
 
         public async Task<bool> IsUpToDateAsync(BuildAction buildAction, TextWriter logger, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-
-            var timestampCache = FileTimestampCache != null ? FileTimestampCache.Value.TimestampCache : new Dictionary<string, DateTime>(StringComparer.OrdinalIgnoreCase);
 
             if (buildAction != BuildAction.Build)
             {
                 return false;
             }
 
-            using (var access = await ProjectLockService.ReadLockAsync())
+            using (var access = await _projectLockService.ReadLockAsync())
             {
-                var configuredProject = await access.GetProjectAsync(ConfiguredProject);
+                var project = await access.GetProjectAsync(_configuredProject, cancellationToken);
 
-                if (ProjectItemsSchema == null)
+                void Log(string traceMessage)
                 {
-                    TraceUtilities.TraceVerbose("Project '{0}' up to date check disabled because the '{1}' component could not be found.", configuredProject.FullPath, typeof(IProjectItemSchemaService).FullName);
-                    Report.IfNotPresent(ProjectItemsSchema);
+                    _projectLogger.WriteLine($"FastUpToDate '{project.FullPath}': {traceMessage}");
+                }
+
+                var timestampCache = _fileTimestampCache != null ? _fileTimestampCache.Value.TimestampCache : new Dictionary<string, DateTime>(StringComparer.OrdinalIgnoreCase);
+
+                DateTime GetLatestTimestamp(List<string> paths)
+                {
+                    var latestTime = DateTime.MinValue;
+
+                    foreach (var path in paths)
+                    {
+                        if (!timestampCache.TryGetValue(path, out var time))
+                        {
+                            if (File.Exists(path))
+                            {
+                                time = File.GetLastWriteTimeUtc(path);
+                                timestampCache[path] = time;
+                                Log($"Path '{path}' had live timestamp '{time}'.");
+                            }
+                            else
+                            {
+                                Log($"Path '{path}' did not exist.");
+                            }
+                        }
+                        else
+                        {
+                            Log($"Path '{path}' had cached timestamp '{time}'.");
+                        }
+
+                        if (latestTime < time)
+                        {
+                            latestTime = time;
+                        }
+                    }
+
+                    return latestTime;
+                }
+
+                if (_projectItemsSchema == null)
+                {
+                    Log($"Skipping because '{typeof(IProjectItemSchemaService).FullName}' component could not be found.");
+                    Report.IfNotPresent(_projectItemsSchema);
                     return false;
                 }
 
-                if (!String.IsNullOrEmpty(configuredProject.GetPropertyValue(DisableFastUpToDateCheckProperty)))
+                if (!string.IsNullOrEmpty(project.GetPropertyValue(DisableFastUpToDateCheckProperty)))
                 {
-                    TraceUtilities.TraceVerbose("Project '{0}' up to date check disabled because the '{1}' property is set to a non-empty value.", configuredProject.FullPath, DisableFastUpToDateCheckProperty);
+                    Log($"Disabled because the '{DisableFastUpToDateCheckProperty}' property is set to a non-empty value.");
                     return false;
                 }
 
-                List<string> allInputs = new List<string>();
+                var inputs = new List<string>();
 
                 // add the project file
-                if (!String.IsNullOrEmpty(configuredProject.FullPath))
+                if (!string.IsNullOrEmpty(project.FullPath))
                 {
-                    allInputs.Add(configuredProject.FullPath);
+                    inputs.Add(project.FullPath);
+                    Log($"Adding input project file {project.FullPath}.");
                 }
 
-                // add all imports except .user file - the debugger properties it contains should not affect the build
-                IList<ResolvedImport> imports = configuredProject.Imports;
-                string userFilePath = configuredProject.FullPath + ".user";
+                // add all imports except .user file
+                var userFilePath = project.FullPath + ".user";
+                var imports = project.Imports
+                    .Select(i => i.ImportedProject.FullPath)
+                    .Where(p => !string.IsNullOrEmpty(p) && !string.Equals(p, userFilePath, StringComparison.OrdinalIgnoreCase));
 
-                allInputs.AddRange(imports.Select(i => i.ImportedProject.FullPath).Where(p => !String.IsNullOrEmpty(p) && !String.Equals(p, userFilePath, StringComparison.OrdinalIgnoreCase)));
+                foreach (var import in imports)
+                {
+                    Log($"Adding input project import {import}.");
+                }
 
+                inputs.AddRange(imports);
+            
                 // add all project items (generally items seen in solution explorer) that are not excluded from UpToDate check
                 // Skip items that are marked as excluded from build.
-                var projectItemSchemaValue = (await ProjectItemsSchema.GetSchemaAsync()).Value;
-                allInputs.AddRange(
-                    projectItemSchemaValue
+                var projectItemSchemaValue = (await _projectItemsSchema.GetSchemaAsync(cancellationToken)).Value;
+                var itemTypes = projectItemSchemaValue
                     .GetKnownItemTypes()
                     .Select(name => projectItemSchemaValue.GetItemType(name))
-                    .Where(item => item != null && item.UpToDateCheckInput && !String.Equals(item.Name, "None", StringComparison.OrdinalIgnoreCase))
-                    .SelectMany(item => configuredProject
-                        .GetItems(item.Name)
-                        .Where(f => !String.Equals(f.GetMetadataValue("ExcludedFromBuild"), "true", StringComparison.OrdinalIgnoreCase))
-                        .Select(f => f.GetMetadataValue("FullPath"))));
+                    .Where(item => item != null && item.UpToDateCheckInput && !string.Equals(item.Name, "None", StringComparison.OrdinalIgnoreCase));
 
-                // UpToDateCheckInput is the special item group for customized projects to add explicit inputs
-                allInputs.AddRange(configuredProject.GetItems("UpToDateCheckInput").Select(file => file.GetMetadataValue("FullPath")));
-
-                // ensure no project item has been modified after last successful build finished
-                foreach (string path in allInputs)
+                foreach (var itemType in itemTypes)
                 {
-                    //string pathUpper = path.ToUpperInvariant();
-                    //if (buildInputs.FileIsExcludedFromDependencyCheck(pathUpper))
-                    //{
-                    //    TraceUtilities.TraceVerbose("Project '{0}' file '{1}' ignored since it is in the exclude path list.", configuredProject.FullPath, pathUpper);
-                    //    continue;
-                    //}
+                    Log($"Checking known item type '{itemType.Name}'.");
 
-                    //DateTime lastWriteUtc = buildInputs.GetLastWriteTimeUtc(pathUpper);
+                    var items = project.GetItems(itemType.Name)
+                            .Where(item => !string.Equals(item.GetMetadataValue("ExcludedFromBuild"), "true", StringComparison.OrdinalIgnoreCase))
+                            .Select(item => item.GetMetadataValue("FullPath"));
 
-                    //if (lastWriteUtc == DateTime.MinValue)
-                    //{
-                    //    TraceUtilities.TraceVerbose("Project '{0}' not up to date because build input '{1}' is missing.", configuredProject.FullPath, pathUpper);
-                    //    OutputUpToDateMessage(logger, configuredProject.GetPropertyValue("ProjectName"), Strings.UpToDateMissingInput, path);
-                    //    return false;
-                    //}
-
-                    //if (lastWriteUtc > lastBuildFinishedUtc)
-                    //{
-                    //    TraceUtilities.TraceVerbose(
-                    //        String.Format(
-                    //            CultureInfo.InvariantCulture,
-                    //            "Project '{0}' not up to date because '{1}' was touched on {2}, which is after the last build on {3}.",
-                    //            configuredProject.FullPath,
-                    //            pathUpper,
-                    //            lastWriteUtc.ToLocalTime(),
-                    //            lastBuildFinishedUtc.ToLocalTime()));
-                    //    return false;
-                    //}
+                    foreach (var item in items)
+                    {
+                        Log($"Input item path '{item}'.");
+                        inputs.Add(item);
+                    }
                 }
 
-                // all checks passed so project is up to date
-                return true;
+                async Task CheckReferences<TUnresolvedReference, TResolvedReference>(string name, IResolvableReferencesService<TUnresolvedReference, TResolvedReference> service)
+                    where TUnresolvedReference : IProjectItem, TResolvedReference
+                    where TResolvedReference : class, IReference
+                {
+                    Log($"Checking reference type '{name}'.");
+                    if (service != null)
+                    {
+                        foreach (var resolvedReference in await service.GetResolvedReferencesAsync())
+                        {
+                            var fullPath = await resolvedReference.GetFullPathAsync();
+                            Log($"Adding input reference ${fullPath}");
+                            inputs.Add(fullPath);
+                        }
+                    }
+                }
+
+                await CheckReferences(nameof(_configuredProject.Services.AssemblyReferences), _configuredProject.Services.AssemblyReferences);
+                await CheckReferences(nameof(_configuredProject.Services.ComReferences), _configuredProject.Services.ComReferences);
+                await CheckReferences(nameof(_configuredProject.Services.PackageReferences), _configuredProject.Services.PackageReferences);
+                await CheckReferences(nameof(_configuredProject.Services.ProjectReferences), _configuredProject.Services.ProjectReferences);
+                await CheckReferences(nameof(_configuredProject.Services.SdkReferences), _configuredProject.Services.SdkReferences);
+                await CheckReferences(nameof(_configuredProject.Services.WinRTReferences), _configuredProject.Services.WinRTReferences);
+
+                // UpToDateCheckInput is the special item group for customized projects to add explicit inputs
+                var upToDateCheckInputItems = project.GetItems("UpToDateCheckInput").Select(file => file.GetMetadataValue("FullPath"));
+
+                Log("Checking item type 'UpToDateCheckInput'.");
+                foreach (var upToDateCheckInputItem in upToDateCheckInputItems)
+                {
+                    Log($"Input item path '{upToDateCheckInputItem}'.");
+                    inputs.Add(upToDateCheckInputItem);
+                }
+
+                var latestInput = GetLatestTimestamp(inputs);
+                Log($"Lastest write timestamp on input is {latestInput}.");
+
+                var outputs = new List<string>();
+
+                outputs.AddRange(project.GetItems("UpToDateCheckOutput")
+                    .Select(file => file.GetMetadataValue("FullPath")));
+
+                IOutputGroupsService outputGroupsService = _configuredProject.Services.OutputGroups;
+                foreach (var outputGroup in KnownOutputGroups)
+                {
+                    Log($"Checking known output group {outputGroup}.");
+
+                    foreach (var output in (await outputGroupsService.GetOutputGroupAsync(outputGroup, cancellationToken)).Outputs)
+                    {
+                        Log($"Output path '{output.Key}'.");
+                        outputs.Add(output.Key);
+                    }
+                }
+
+                var latestOutput = GetLatestTimestamp(outputs);
+                Log($"Lastest write timestamp on output is {latestOutput}.");
+
+                var isUpToDate = latestOutput >= latestInput;
+                Log($"Project is{(!isUpToDate ? " not" : "")} up to date.");
+
+                return isUpToDate;
             }
         }
 
-        public Task<bool> IsUpToDateCheckEnabledAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return Task.FromResult(true);
-        }
+        public Task<bool> IsUpToDateCheckEnabledAsync(CancellationToken cancellationToken = default(CancellationToken)) =>
+            Task.FromResult(_projectSystemOptions.IsFastUpToDateCheckEnabled);
     }
 }

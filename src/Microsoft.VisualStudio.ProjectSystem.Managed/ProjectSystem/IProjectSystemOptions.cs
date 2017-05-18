@@ -17,5 +17,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             get;
         }
+
+        /// <summary>
+        ///     Gets a value indicating if the project fast up to date check is enabled.
+        /// </summary>
+        /// <value>
+        ///     <see langword="true"/> if the project fast up to date check is enabled; otherwise, <see langword="false"/>
+        /// </value>
+        bool IsFastUpToDateCheckEnabled
+        {
+            get;
+        }
     }
 }
