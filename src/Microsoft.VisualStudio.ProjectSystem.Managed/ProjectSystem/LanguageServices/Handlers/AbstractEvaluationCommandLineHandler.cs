@@ -14,26 +14,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     /// </summary>
     internal abstract partial class AbstractEvaluationCommandLineHandler
     {
-        // This class is not thread-safe, and the assumption is that the caller will coordinate evaluations and design-time builds so 
-        // that they do not enter this class at the same time.
+        // This class is not thread-safe, and the assumption is that the caller will mkaes sure that evaluations and design-time builds do 
+        // overlap inside the class at the same time.
         //
         // In the ideal world, we would simply wait for a design-time build to get the command-line arguments that would have been passed
-        // to Csc/Vbc and push these onto Rolsyn. This behavior is what the legacy project system did, and when a user added or removed a 
-        // file or changed the project, it performed a blocking wait on the design-time build before it returned control to the user. In 
-        // CPS, design-time builds are not UI blocking, so control can be returned to the user before Roslyn has been told about the file, 
-        // leading to the observable behavior where the source file for a period of time is without "project" IntelliSense. To counteract 
-        // that, we push changes both in design-time builds *and* during evaluations, which gives the user results a lot faster than if we 
-        // just pushed during design-time builds only.
+        // to Csc/Vbc and push these onto Roslyn. This is exactly what the legacy project system did; when a user added or removed a file
+        // or changed the project, it performed a blocking wait on the design-time build before returning control to the user. In CPS,
+        // however, design-time builds are not UI blocking, so control can be returned to the user before Roslyn has been told about the 
+        // file. This leads to the user observable behavior where the source file for a period of time lives in the "Misc" project and is 
+        // without "project" IntelliSense. To counteract that, we push changes both in design-time builds *and* during evaluations, which 
+        // gives the user results a lot faster than if we just pushed during design-time builds only.
         //
         // Typically, adds and removes of files found at evaluation time are also found during a design-time build, with the later also 
-        // including generated files. This causes us to remember files that we've already sent to Roslyn, to avoid sending duplicate adds
+        // including generated files. This forces us to remember what files we've already sent to Roslyn to avoid sending duplicate adds
         // or removes of the same file. Due to design-time builds being significantly slower than evaluations, there are also times where 
-        // many evaluations have occured by the time the design-time build based on a past version of the ConfiguredProject has completed. 
-        // This leads to conflicts.
+        // many evaluations have occured by the time a design-time build based on a past version of the ConfiguredProject has completed.
+        // This can lead to conflicts.
         //
         // A conflict occurs when evaluation or design-time build adds a item that the other removed, or vice versa. 
         // 
-        //   Examples of conflicts include:
+        //  Examples of conflicts include:
         //
         //   - A user removes a item before a design-time build that contains the addition of that item has finished
         //   - A user adds a item before a design-time build that contains the removoal of that item has finished
@@ -56,9 +56,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         // Algorithm for resolving conflicts is as follows:
         //
         // 1. Walk every evaluation since the last design-time build, discarding those from conflict resolution that have a version less 
-        //    than or equal to the current design-time build
+        //    than or equal to the current design-time build. 
         // 2. Walk every design-time build addition, if there's an associated removal in a later evaluation - we throw away the addition
         // 3. Walk every design-time build removal, if there's an associated addition in a later evaluation - we throw away the removal
+        //
+        // We don't resolve conflicts between changes items, because the design-time build doesn't produce them due to the way we represent
+        // command-line arguments as individual item includes, such as <CscCommandLineArguments Include="/reference:Foo.dll"/>, without any 
+        // metadata.
         //
         private readonly HashSet<string> _paths = new HashSet<string>(StringComparers.Paths);
         private readonly Queue<VersionedProjectChangeDiff> _evaluations = new Queue<VersionedProjectChangeDiff>();
