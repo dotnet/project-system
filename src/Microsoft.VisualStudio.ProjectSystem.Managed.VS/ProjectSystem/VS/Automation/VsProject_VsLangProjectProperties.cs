@@ -9,32 +9,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
     public partial class VSProject : VSLangProj.ProjectProperties
     {
-        private readonly Dictionary<string, int> _getOutputTypeExMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+        private static readonly Dictionary<string, int> s_getOutputTypeExMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
         {
-            {"WinExe", 0 },
-            {"Exe", 1 },
-            {"Library", 2 },
-            {"AppContainerExe", 3 },
-            {"WinMDObj", 4 },
+            {"WinExe",          0 },
+            {"Exe",             1 },
+            {"Library",         2 },
+            {"WinMDObj",        3 },
+            {"AppContainerExe", 4 },
         };
 
-        private readonly Dictionary<int, string> _setOutputTypeExMap = new Dictionary<int, string>
+        private static readonly Dictionary<int, string> s_setOutputTypeExMap = new Dictionary<int, string>
         {
             {0, "WinExe"},
             {1, "Exe"},
             {2, "Library"},
-            {3, "AppContainerExe"},
-            {4, "WinMDObj"},
+            {3, "WinMDObj"},
+            {4, "AppContainerExe"},
         };
 
         /// Provides the value for <see cref="OutputType"/> of enum type <see cref="prjOutputType"/> whose value is only 0, 1 or 2.
-        private readonly Dictionary<string, int> _getOutputTypeMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+        private static readonly Dictionary<string, int> s_getOutputTypeMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
         {
-            {"WinExe", 0 },
-            {"Exe", 1 },
-            {"Library", 2 },
+            {"WinExe",          0 },
+            {"Exe",             1 },
+            {"Library",         2 },
+            {"WinMDObj",        2 },
             {"AppContainerExe", 1 },
-            {"WinMDObj", 2 },
+        };
+
+        private static readonly Dictionary<int, string> s_setOutputTypeMap = new Dictionary<int, string>
+        {
+            {0, "WinExe"},
+            {1, "Exe"},
+            {2, "Library"},
         };
 
         private ProjectProperties ProjectProperties
@@ -50,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                 {
                     var configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
                     var value = await configurationGeneralProperties.OutputType.GetEvaluatedValueAtEndAsync().ConfigureAwait(true);
-                    return (prjOutputTypeEx)_getOutputTypeExMap[value];
+                    return (prjOutputTypeEx)s_getOutputTypeExMap[value];
                 });
             }
 
@@ -58,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             {
                 _threadingService.ExecuteSynchronously(async () =>
                 {
-                    var OutputTypeValue = _setOutputTypeExMap[(int)value];
+                    var OutputTypeValue = s_setOutputTypeExMap[(int)value];
                     var configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
                     await configurationGeneralProperties.OutputType.SetValueAsync(OutputTypeValue).ConfigureAwait(true);
                 });
@@ -75,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                 {
                     var configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
                     var value = await configurationGeneralProperties.OutputType.GetEvaluatedValueAtEndAsync().ConfigureAwait(true);
-                    return (prjOutputType)_getOutputTypeMap[value];
+                    return (prjOutputType)s_getOutputTypeMap[value];
                 });
             }
 
@@ -83,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             {
                 _threadingService.ExecuteSynchronously(async () =>
                 {
-                    var OutputTypeValue = _setOutputTypeExMap[(int)value];
+                    var OutputTypeValue = s_setOutputTypeMap[(int)value];
                     var configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
                     await configurationGeneralProperties.OutputType.SetValueAsync(OutputTypeValue).ConfigureAwait(true);
                 });
