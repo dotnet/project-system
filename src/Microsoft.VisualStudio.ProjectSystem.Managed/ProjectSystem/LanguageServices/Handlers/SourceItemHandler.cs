@@ -6,6 +6,8 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Logging;
+using System;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
@@ -26,14 +28,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         // a file is added to the project, we don't need to wait for a slow design-time build just to get useful 
         // IntelliSense.
         private readonly UnconfiguredProject _project;
+        private readonly IProjectLogger _logger;
         private readonly Dictionary<IWorkspaceProjectContext, HashSet<string>> _sourceFilesByContext = new Dictionary<IWorkspaceProjectContext, HashSet<string>>();
 
         [ImportingConstructor]
-        public SourceItemHandler(UnconfiguredProject project)
+        public SourceItemHandler(UnconfiguredProject project, IProjectLogger logger)
         {
             Requires.NotNull(project, nameof(project));
+            Requires.NotNull(logger, nameof(logger));
 
             _project = project;
+            _logger = logger;
         }
 
         public override string RuleName
@@ -46,37 +51,43 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             get { return RuleHandlerType.Evaluation; }
         }
 
-        public void Handle(BuildOptions added, BuildOptions removed, IWorkspaceProjectContext context, bool isActiveContext)
+        public void Handle(IProjectVersionedValue<IProjectSubscriptionUpdate> update, BuildOptions added, BuildOptions removed, IWorkspaceProjectContext context, bool isActiveContext)
         {
             Requires.NotNull(added, nameof(added));
             Requires.NotNull(removed, nameof(removed));
 
+            string version = GetConfiguredProjectVersion(update);
+            string configuration = update.Value.ProjectConfiguration.Name;
+
             foreach (CommandLineSourceFile sourceFile in removed.SourceFiles)
             {
-                RemoveSourceFile(sourceFile.Path, context);
+                RemoveSourceFile(version, configuration, sourceFile.Path, context, evaluation: false);
             }
 
             foreach (CommandLineSourceFile sourceFile in added.SourceFiles)
             {
-                AddSourceFile(sourceFile.Path, null, context, isActiveContext);
+                AddSourceFile(version, configuration, sourceFile.Path, null, context, isActiveContext, evaluation: false);
             }
         }
 
-        public override void Handle(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
+        public override void Handle(IProjectVersionedValue<IProjectSubscriptionUpdate> update, IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
         {
             Requires.NotNull(projectChange, nameof(projectChange));
             Requires.NotNull(context, nameof(context));
+
+            string version = GetConfiguredProjectVersion(update);
+            string configuration = update.Value.ProjectConfiguration.Name;
 
             IProjectChangeDiff diff = projectChange.Difference;
 
             foreach (string filePath in diff.RemovedItems)
             {
-                RemoveSourceFile(filePath, context);
+                RemoveSourceFile(version, configuration, filePath, context, evaluation: true);
             }
 
             foreach (string filePath in diff.AddedItems)
             {
-                AddSourceFile(filePath, GetFolders(filePath, projectChange), context, isActiveContext);
+                AddSourceFile(version, configuration, filePath, GetFolders(filePath, projectChange), context, isActiveContext, evaluation: true);
             }
 
             foreach (KeyValuePair<string, string> filePaths in diff.RenamedItems)
@@ -84,15 +95,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 string removeFilePath = filePaths.Key;
                 string addFilePath = filePaths.Value;
 
-                RemoveSourceFile(removeFilePath, context);
-                AddSourceFile(addFilePath, GetFolders(addFilePath, projectChange), context, isActiveContext);
+                RemoveSourceFile(version, configuration, removeFilePath, context, evaluation: true);
+                AddSourceFile(version, configuration, addFilePath, GetFolders(addFilePath, projectChange), context, isActiveContext, evaluation: true);
             }
 
             foreach (string filePath in diff.ChangedItems)
             {
                 // We add and then remove ChangedItems to handle Linked metadata changes
-                RemoveSourceFile(filePath, context);
-                AddSourceFile(filePath, GetFolders(filePath, projectChange), context, isActiveContext);
+                RemoveSourceFile(version, configuration, filePath, context, evaluation: true);
+                AddSourceFile(version, configuration, filePath, GetFolders(filePath, projectChange), context, isActiveContext, evaluation: true);
             }
         }
 
@@ -104,17 +115,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             return Task.CompletedTask;
         }
 
-        private void RemoveSourceFile(string filePath, IWorkspaceProjectContext context)
+        private void RemoveSourceFile(string version, string configuration, string filePath, IWorkspaceProjectContext context, bool evaluation)
         {
             string fullPath = _project.MakeRooted(filePath);
 
             if (_sourceFilesByContext.TryGetValue(context, out HashSet<string> sourceFiles) && sourceFiles.Remove(fullPath))
             {
+                LogRemove(version, configuration, fullPath, evaluation);
                 context.RemoveSourceFile(fullPath);
             }
         }
 
-        private void AddSourceFile(string filePath, string[] folderNames, IWorkspaceProjectContext context, bool isActiveContext)
+        private void AddSourceFile(string version, string configuration, string filePath, string[] folderNames, IWorkspaceProjectContext context, bool isActiveContext, bool evaluation)
         {
             string fullPath = _project.MakeRooted(filePath);
 
@@ -123,13 +135,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 sourceFiles = new HashSet<string>(StringComparers.Paths);
                 _sourceFilesByContext.Add(context, sourceFiles);
             }
-            else if (sourceFiles.Contains(fullPath))
-            {
-                return;
-            }
 
-            sourceFiles.Add(fullPath);
-            context.AddSourceFile(fullPath, folderNames: folderNames, isInCurrentContext: isActiveContext);
+            if (sourceFiles.Add(fullPath))
+            {
+                LogAdd(version, configuration, fullPath, evaluation, isActiveContext);
+                context.AddSourceFile(fullPath, folderNames: folderNames, isInCurrentContext: isActiveContext);
+            }
         }
 
         private string[] GetFolders(string filePath, IProjectChangeDescription projectChange)
@@ -169,6 +180,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         private string GetParentFolder(string filePath)
         {
             return Path.GetDirectoryName(_project.MakeRelative(filePath));
+        }
+
+        private void LogAdd(string version, string configuration, string fullPath, bool evaluation, bool isActiveContext)
+        {
+            _logger.WriteLine(this, "[Rule: {0}, Config:{1}, Version:{2}] Adding {3} (IsActiveContext: {4})", evaluation ? "Evaluation" : "DesignTime", configuration, version, fullPath, isActiveContext);
+        }
+
+        private void LogRemove(string version, string configuration, string fullPath, bool evaluation)
+        {
+            _logger.WriteLine(this, "[Rule: {0}, Config:{1}, Version:{2}] Removing {3}", evaluation ? "Evaluation" : "DesignTime", configuration, version, fullPath);
+        }
+
+        private string GetConfiguredProjectVersion(IProjectVersionedValue<IProjectSubscriptionUpdate> update)
+        {
+            if (update.DataSourceVersions.TryGetValue(ProjectDataSources.ConfiguredProjectVersion, out IComparable value))
+            {
+                return value.ToString();
+            }
+
+            return null;
         }
     }
 }

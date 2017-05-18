@@ -4,6 +4,8 @@ using System.IO;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.CodeAnalysis.CSharp;
 using Xunit;
+using Moq;
+using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
@@ -13,19 +15,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         [Fact]
         public void Constructor_NullAsProject_ThrowsArgumentNull()
         {
+            var logger = IProjectLoggerFactory.Create();
+
             Assert.Throws<ArgumentNullException>("project", () => {
-                new SourceItemHandler((UnconfiguredProject)null);
+                new SourceItemHandler((UnconfiguredProject)null, logger);
             });
         }
 
         [Fact]
         public void Handle_NullAsProjectChange_ThrowsArgumentNull()
         {
-            var handler = CreateInstance();
+            var update = Mock.Of<IProjectVersionedValue<IProjectSubscriptionUpdate>>();
             var context = IWorkspaceProjectContextFactory.Create();
-
+            
+            var handler = CreateInstance();
+            
             Assert.Throws<ArgumentNullException>("projectChange", () => {
-                handler.Handle((IProjectChangeDescription)null, context, true);
+                handler.Handle(update, (IProjectChangeDescription)null, context, true);
             });
         }
 
@@ -33,11 +39,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         [Fact]
         public void Handle_NullAsContext_ThrowsArgumentNull()
         {
-            var handler = CreateInstance();
+            var update = Mock.Of<IProjectVersionedValue<IProjectSubscriptionUpdate>>();
             var projectChange = IProjectChangeDescriptionFactory.Create();
 
+            var handler = CreateInstance();
+
             Assert.Throws<ArgumentNullException>("context", () => {
-                handler.Handle(projectChange, (IWorkspaceProjectContext)null, true);
+                handler.Handle(update, projectChange, (IWorkspaceProjectContext)null, true);
             });
         }
 
@@ -59,22 +67,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Action<string> onSourceFileAdded = s => Assert.True(sourceFilesPushedToWorkspace.Add(s));
             Action<string> onSourceFileRemoved = s => sourceFilesPushedToWorkspace.Remove(s);
 
+            var update = Mock.Of<IProjectVersionedValue<IProjectSubscriptionUpdate>>();
+
             var project = UnconfiguredProjectFactory.Create(filePath: @"C:\Myproject.csproj");
             var context = IWorkspaceProjectContextFactory.CreateForSourceFiles(project, onSourceFileAdded, onSourceFileRemoved);
 
-            var handler = new SourceItemHandler(project);
+            var handler = CreateInstance(project);
             var projectDir = Path.GetDirectoryName(project.FullPath);
             var added = BuildOptions.FromCommonCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"C:\file1.cs", @"C:\file2.cs", @"C:\file1.cs" }, baseDirectory: projectDir, sdkDirectory: null));
             var empty = BuildOptions.FromCommonCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
 
-            handler.Handle(added: added, removed: empty, context: context, isActiveContext: true);
+            handler.Handle(update, added: added, removed: empty, context: context, isActiveContext: true);
 
             Assert.Equal(2, sourceFilesPushedToWorkspace.Count);
             Assert.Contains(@"C:\file1.cs", sourceFilesPushedToWorkspace);
             Assert.Contains(@"C:\file2.cs", sourceFilesPushedToWorkspace);
 
             var removed = BuildOptions.FromCommonCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"C:\file1.cs", @"C:\file1.cs" }, baseDirectory: projectDir, sdkDirectory: null));
-            handler.Handle(added: empty, removed: removed, context: context, isActiveContext: true);
+            handler.Handle(update, added: empty, removed: removed, context: context, isActiveContext: true);
 
             Assert.Equal(1, sourceFilesPushedToWorkspace.Count);
             Assert.Contains(@"C:\file2.cs", sourceFilesPushedToWorkspace);
@@ -87,25 +97,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Action<string> onSourceFileAdded = s => Assert.True(sourceFilesPushedToWorkspace.Add(s));
             Action<string> onSourceFileRemoved = s => sourceFilesPushedToWorkspace.Remove(s);
 
+            var update = Mock.Of<IProjectVersionedValue<IProjectSubscriptionUpdate>>();
             var project = UnconfiguredProjectFactory.Create(filePath: @"C:\ProjectFolder\Myproject.csproj");
             var context = IWorkspaceProjectContextFactory.CreateForSourceFiles(project, onSourceFileAdded, onSourceFileRemoved);
 
-            var handler = new SourceItemHandler(project);
+            var handler = CreateInstance(project);
             var projectDir = Path.GetDirectoryName(project.FullPath);
             var added = BuildOptions.FromCommonCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"file1.cs", @"..\ProjectFolder\file1.cs" }, baseDirectory: projectDir, sdkDirectory: null));
             var removed = BuildOptions.FromCommonCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
 
-            handler.Handle(added: added, removed: removed, context: context, isActiveContext: true);
+            handler.Handle(update, added: added, removed: removed, context: context, isActiveContext: true);
 
             Assert.Equal(1, sourceFilesPushedToWorkspace.Count);
             Assert.Contains(@"C:\ProjectFolder\file1.cs", sourceFilesPushedToWorkspace);
         }
 
-        private SourceItemHandler CreateInstance(UnconfiguredProject project = null)
+        private SourceItemHandler CreateInstance(UnconfiguredProject project = null, IProjectLogger logger = null)
         {
             project = project ?? UnconfiguredProjectFactory.Create();
+            logger = logger ?? IProjectLoggerFactory.Create();
 
-            return new SourceItemHandler(project);
+            return new SourceItemHandler(project, logger);
         }
     }
 }

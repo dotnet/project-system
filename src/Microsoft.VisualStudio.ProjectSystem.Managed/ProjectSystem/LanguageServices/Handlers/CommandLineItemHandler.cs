@@ -43,14 +43,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         // Broken design time builds generates updates with no changes.
         public override bool ReceiveUpdatesWithEmptyProjectChange => true;
 
-        public override void Handle(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
+        public override void Handle(IProjectVersionedValue<IProjectSubscriptionUpdate> update, IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
         {
             Requires.NotNull(projectChange, nameof(projectChange));
 
             if (!ProcessDesignTimeBuildFailure(projectChange, context))
             {
                 ProcessOptions(projectChange, context);
-                ProcessItems(projectChange, context, isActiveContext);
+                ProcessItems(update, projectChange, context, isActiveContext);
             }
         }
 
@@ -72,14 +72,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             context.SetOptions(string.Join(" ", commandlineArguments));
         }
 
-        private void ProcessItems(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
+        private void ProcessItems(IProjectVersionedValue<IProjectSubscriptionUpdate> update, IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
         {
             BuildOptions addedItems = _commandLineParser.Parse(projectChange.Difference.AddedItems);
             BuildOptions removedItems = _commandLineParser.Parse(projectChange.Difference.RemovedItems);
 
             foreach (var handler in Handlers)
             {
-                handler.Value.Handle(addedItems, removedItems, context, isActiveContext);
+                handler.Value.Handle(update, addedItems, removedItems, context, isActiveContext);
             }
         }
     }

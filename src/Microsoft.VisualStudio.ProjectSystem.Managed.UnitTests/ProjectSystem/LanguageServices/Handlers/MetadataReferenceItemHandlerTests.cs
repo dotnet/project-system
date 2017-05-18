@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.CodeAnalysis.CSharp;
+using Moq;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
@@ -23,6 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Action<string> onReferenceAdded = s => referencesPushedToWorkspace.Add(s);
             Action<string> onReferenceRemoved = s => referencesPushedToWorkspace.Remove(s);
 
+            var update = Mock.Of<IProjectVersionedValue<IProjectSubscriptionUpdate>>();
             var project = UnconfiguredProjectFactory.Create(filePath: @"C:\Myproject.csproj");
             var context = IWorkspaceProjectContextFactory.CreateForMetadataReferences(project, onReferenceAdded, onReferenceRemoved);
 
@@ -31,14 +33,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var added = BuildOptions.FromCommonCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"/reference:C:\Assembly1.dll", @"/reference:C:\Assembly2.dll", @"/reference:C:\Assembly1.dll" }, baseDirectory: projectDir, sdkDirectory: null));
             var empty = BuildOptions.FromCommonCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
 
-            handler.Handle(added: added, removed: empty, context: context, isActiveContext: true);
+            handler.Handle(update, added: added, removed: empty, context: context, isActiveContext: true);
 
             Assert.Equal(2, referencesPushedToWorkspace.Count);
             Assert.Contains(@"C:\Assembly1.dll", referencesPushedToWorkspace);
             Assert.Contains(@"C:\Assembly2.dll", referencesPushedToWorkspace);
 
             var removed = BuildOptions.FromCommonCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"/reference:C:\Assembly1.dll", @"/reference:C:\Assembly1.dll" }, baseDirectory: projectDir, sdkDirectory: null));
-            handler.Handle(added: empty, removed: removed, context: context, isActiveContext: true);
+            handler.Handle(update, added: empty, removed: removed, context: context, isActiveContext: true);
 
             Assert.Equal(1, referencesPushedToWorkspace.Count);
             Assert.Contains(@"C:\Assembly2.dll", referencesPushedToWorkspace);
@@ -51,6 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Action<string> onReferenceAdded = s => referencesPushedToWorkspace.Add(s);
             Action<string> onReferenceRemoved = s => referencesPushedToWorkspace.Remove(s);
 
+            var update = Mock.Of<IProjectVersionedValue<IProjectSubscriptionUpdate>>();
             var project = UnconfiguredProjectFactory.Create(filePath: @"C:\ProjectFolder\Myproject.csproj");
             var context = IWorkspaceProjectContextFactory.CreateForMetadataReferences(project, onReferenceAdded, onReferenceRemoved);
 
@@ -59,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var added = BuildOptions.FromCommonCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"/reference:Assembly1.dll", @"/reference:C:\ProjectFolder\Assembly2.dll", @"/reference:..\ProjectFolder\Assembly3.dll" }, baseDirectory: projectDir, sdkDirectory: null));
             var removed = BuildOptions.FromCommonCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
 
-            handler.Handle(added: added, removed: removed, context: context, isActiveContext: true);
+            handler.Handle(update, added: added, removed: removed, context: context, isActiveContext: true);
 
             Assert.Equal(3, referencesPushedToWorkspace.Count);
             Assert.Contains(@"C:\ProjectFolder\Assembly1.dll", referencesPushedToWorkspace);

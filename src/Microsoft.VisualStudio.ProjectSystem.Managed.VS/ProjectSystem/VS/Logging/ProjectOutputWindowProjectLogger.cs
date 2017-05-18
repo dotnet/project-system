@@ -30,9 +30,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
             _outputWindowProvider = outputWindowProvider;
         }
 
+        public bool IsEnabled
+        {
+            get { return _options.IsProjectOutputPaneEnabled; }
+        }
+
         public void WriteLine(string format, params object[] arguments)
         {
-            if (_options.IsProjectOutputPaneEnabled)
+            if (IsEnabled)
             {
                 // Only allocate if the pane is actually enabled
                 string text = string.Format(CultureInfo.CurrentCulture, format, arguments);
@@ -43,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
 
         public void WriteLine(string text)
         {
-            if (_options.IsProjectOutputPaneEnabled)
+            if (IsEnabled)
             {
                 WriteLineCore(text);
             }
