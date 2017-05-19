@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+VisualStudioVersion = 15.0.26507.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeployTestDependencies", "DeployTestDependencies\DeployTestDependencies.csproj", "{37BA82E6-9ABD-4ACA-AA26-2DFD39A359A5}"
 EndProject
@@ -95,13 +95,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.NetCore.VB.Projec
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.NetCore.VB.ProjectTemplates.Vsix", "Templates\Microsoft.NetCore.VB.ProjectTemplates.Vsix\Microsoft.NetCore.VB.ProjectTemplates.Vsix.csproj", "{BE9F42B3-BCA7-4563-9DDB-79CCC9C99993}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.NetStandard.CSharp.ProjectTemplates.Vsix", "Templates\Microsoft.NetStandard.CSharp.ProjectTemplates.Vsix\Microsoft.NetStandard.CSharp.ProjectTemplates.Vsix.csproj", "{E5661DF5-A017-43D8-8874-E4B32E4650A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.NetStandard.CSharp.ProjectTemplates.Vsix", "Templates\Microsoft.NetStandard.CSharp.ProjectTemplates.Vsix\Microsoft.NetStandard.CSharp.ProjectTemplates.Vsix.csproj", "{E5661DF5-A017-43D8-8874-E4B32E4650A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.NetStandard.FSharp.ProjectTemplates.Vsix", "Templates\Microsoft.NetStandard.FSharp.ProjectTemplates.Vsix\Microsoft.NetStandard.FSharp.ProjectTemplates.Vsix.csproj", "{8CE6132E-DD84-4137-A09C-0C4660DCC98F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.NetStandard.FSharp.ProjectTemplates.Vsix", "Templates\Microsoft.NetStandard.FSharp.ProjectTemplates.Vsix\Microsoft.NetStandard.FSharp.ProjectTemplates.Vsix.csproj", "{8CE6132E-DD84-4137-A09C-0C4660DCC98F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.NetStandard.VB.ProjectTemplates.Vsix", "Templates\Microsoft.NetStandard.VB.ProjectTemplates.Vsix\Microsoft.NetStandard.VB.ProjectTemplates.Vsix.csproj", "{CC1FF91F-C0A9-4729-9863-45A688483F84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.NetStandard.VB.ProjectTemplates.Vsix", "Templates\Microsoft.NetStandard.VB.ProjectTemplates.Vsix\Microsoft.NetStandard.VB.ProjectTemplates.Vsix.csproj", "{CC1FF91F-C0A9-4729-9863-45A688483F84}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeployNupkgs", "Templates\DeployNupkgs\DeployNupkgs.csproj", "{AE328174-EBB5-49CF-B642-DBF6CEB2EA4B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.IntegrationTests", "Microsoft.VisualStudio.ProjectSystem.IntegrationTests\Microsoft.VisualStudio.ProjectSystem.IntegrationTests.csproj", "{FB209C68-77C0-4EE9-BCA9-0B3D5721C436}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeployIntegrationDependencies", "DeployIntegrationDependencies\DeployIntegrationDependencies.csproj", "{EDDE85B3-5ED8-4FD7-A383-013E7972C3F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -286,6 +290,14 @@ Global
 		{AE328174-EBB5-49CF-B642-DBF6CEB2EA4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE328174-EBB5-49CF-B642-DBF6CEB2EA4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE328174-EBB5-49CF-B642-DBF6CEB2EA4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB209C68-77C0-4EE9-BCA9-0B3D5721C436}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB209C68-77C0-4EE9-BCA9-0B3D5721C436}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB209C68-77C0-4EE9-BCA9-0B3D5721C436}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB209C68-77C0-4EE9-BCA9-0B3D5721C436}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDDE85B3-5ED8-4FD7-A383-013E7972C3F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDDE85B3-5ED8-4FD7-A383-013E7972C3F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDDE85B3-5ED8-4FD7-A383-013E7972C3F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDDE85B3-5ED8-4FD7-A383-013E7972C3F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
