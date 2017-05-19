@@ -13,6 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
         protected abstract ImmutableDictionary<string, string> GetMap { get; }
         protected abstract ImmutableDictionary<string, string> SetMap { get; }
+        protected abstract string DefaultGetValue { get; }
 
         public OutputTypeValueProviderBase(ProjectProperties properties)
         {
@@ -23,7 +24,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         {
             var configuration = await _properties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
             var value = await configuration.OutputType.GetEvaluatedValueAtEndAsync().ConfigureAwait(false);
-            return GetMap[value];
+            if (GetMap.TryGetValue(value, out string returnValue))
+            {
+                return returnValue;
+            }
+
+            return DefaultGetValue;
         }
 
 

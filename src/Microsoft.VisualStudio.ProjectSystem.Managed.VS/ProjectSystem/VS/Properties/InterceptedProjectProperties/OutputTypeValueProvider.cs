@@ -36,6 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
         protected override ImmutableDictionary<string, string> GetMap => s_getOutputTypeMap;
         protected override ImmutableDictionary<string, string> SetMap => s_setOutputTypeMap;
+        protected override string DefaultGetValue => "0";
     }
 }
 

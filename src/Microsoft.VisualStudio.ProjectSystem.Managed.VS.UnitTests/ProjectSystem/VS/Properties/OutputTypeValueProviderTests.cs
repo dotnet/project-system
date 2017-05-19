@@ -15,6 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [InlineData("Library", "2")]
         [InlineData("WinMDObj", "2")]
         [InlineData("AppContainerExe", "1")]
+        [InlineData("", "0")]
         public async void GetEvaluatedValue(object outputTypePropertyValue, string expectedMappedValue)
         {
             var properties = ProjectPropertiesFactory.Create(
@@ -29,25 +30,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             var actualPropertyValue = await provider.OnGetEvaluatedPropertyValueAsync(string.Empty, null);
             Assert.Equal(expectedMappedValue, actualPropertyValue);
-        }
-
-        [Fact]
-        public async void GetEvaluatedValue_ThrowsKeyNotFoundException()
-        {
-            var properties = ProjectPropertiesFactory.Create(
-                UnconfiguredProjectFactory.Create(),
-                new PropertyPageData()
-                {
-                    Category = ConfigurationGeneral.SchemaName,
-                    PropertyName = ConfigurationGeneral.OutputTypeProperty,
-                    Value = "InvalidValue"
-                });
-            var provider = new OutputTypeValueProvider(properties);
-
-            await Assert.ThrowsAsync<KeyNotFoundException>(async () =>
-            {
-                await provider.OnGetEvaluatedPropertyValueAsync(string.Empty, null);
-            });
         }
 
         [Theory]
