@@ -222,6 +222,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         public Task<bool> IsUpToDateCheckEnabledAsync(CancellationToken cancellationToken = default(CancellationToken)) =>
-            Task.FromResult(_projectSystemOptions.IsFastUpToDateCheckEnabled);
+            Task.FromResult(!_projectSystemOptions.IsFastUpToDateCheckDisabled);
     }
 }

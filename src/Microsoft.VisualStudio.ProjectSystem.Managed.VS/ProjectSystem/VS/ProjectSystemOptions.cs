@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Guid("9B164E40-C3A2-4363-9BC5-EB4039DEF653")]
         private class SVsSettingsPersistenceManager { }
 
-        private const string FastUpToDateEnabledSettingKey = "NETCoreProjectSystem\\FastUpToDateCheckEnabled";
+        private const string FastUpToDateDisabledSettingKey = "NETCoreProjectSystem\\FastUpToDateCheckDisabled";
         private const string OutputPaneEnabledSettingKey = "NETCoreProjectSystem\\OutputPaneEnabled";
 
         private readonly ISettingsManager _settingsManager;
@@ -44,15 +44,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
         }
 
-        public bool IsFastUpToDateCheckEnabled
+        public bool IsFastUpToDateCheckDisabled
         {
             get
             {
-#if DEBUG
-                return true;
-#else
-                return _settingsManager?.GetValueOrDefault(FastUpToDateEnabledSettingKey, false) ?? false;
-#endif
+                return _settingsManager?.GetValueOrDefault(FastUpToDateDisabledSettingKey, false) ?? false;
             }
         }
 
