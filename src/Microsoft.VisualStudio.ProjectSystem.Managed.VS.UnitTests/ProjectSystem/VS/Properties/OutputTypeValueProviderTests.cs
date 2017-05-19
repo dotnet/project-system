@@ -7,14 +7,14 @@ using Xunit;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
     [ProjectSystemTrait]
-    public class OutputTypeExValueProviderTests
+    public class OutputTypeValueProviderTests
     {
         [Theory]
         [InlineData("WinExe", "0")]
         [InlineData("Exe", "1")]
         [InlineData("Library", "2")]
-        [InlineData("WinMDObj", "3")]
-        [InlineData("AppContainerExe", "4")]
+        [InlineData("WinMDObj", "2")]
+        [InlineData("AppContainerExe", "1")]
         [InlineData("", "0")]
         public async void GetEvaluatedValue(object outputTypePropertyValue, string expectedMappedValue)
         {
@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
                     PropertyName = ConfigurationGeneral.OutputTypeProperty,
                     Value = outputTypePropertyValue
                 });
-            var provider = new OutputTypeExValueProvider(properties);
+            var provider = new OutputTypeValueProvider(properties);
 
             var actualPropertyValue = await provider.OnGetEvaluatedPropertyValueAsync(string.Empty, null);
             Assert.Equal(expectedMappedValue, actualPropertyValue);
@@ -36,8 +36,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [InlineData("0", "WinExe")]
         [InlineData("1", "Exe")]
         [InlineData("2", "Library")]
-        [InlineData("3", "WinMDObj")]
-        [InlineData("4", "AppContainerExe")]
         public async void SetValue(string incomingValue, string expectedOutputTypeValue)
         {
             var setValues = new List<object>();
@@ -50,13 +48,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
                     Value = "InitialValue",
                     SetValues = setValues
                 });
-            var provider = new OutputTypeExValueProvider(properties);
+            var provider = new OutputTypeValueProvider(properties);
 
             var actualPropertyValue = await provider.OnSetPropertyValueAsync(incomingValue, null);
             Assert.Equal(setValues.Single(), expectedOutputTypeValue);
         }
 
-        public async void SetValue_ThrowsKeyNotFoundException()
+        [Theory]
+        [InlineData("3")]
+        [InlineData("InvalidValue")]
+        public async void SetValue_ThrowsKeyNotFoundException(string invalidValue)
         {
             var setValues = new List<object>();
             var properties = ProjectPropertiesFactory.Create(
@@ -68,11 +69,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
                     Value = "InitialValue",
                     SetValues = setValues
                 });
-            var provider = new OutputTypeExValueProvider(properties);
+            var provider = new OutputTypeValueProvider(properties);
 
             await Assert.ThrowsAsync<KeyNotFoundException>(async () =>
             {
-                await provider.OnSetPropertyValueAsync("InvalidValue", null);
+                await provider.OnSetPropertyValueAsync(invalidValue, null);
             });
         }
     }
