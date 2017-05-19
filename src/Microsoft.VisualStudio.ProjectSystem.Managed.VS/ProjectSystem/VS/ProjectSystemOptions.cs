@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
 
             _environment = environment;
-            _settingsManager = (ISettingsManager)serviceProvider.GetService<SVsSettingsPersistenceManager>();
+            _settingsManager = (ISettingsManager)serviceProvider.GetService(typeof(SVsSettingsPersistenceManager));
         }
 
         public bool IsProjectOutputPaneEnabled

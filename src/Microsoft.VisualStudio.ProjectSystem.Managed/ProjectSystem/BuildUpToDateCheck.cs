@@ -60,8 +60,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
                 void Log(string traceMessage)
                 {
-                    _projectLogger.WriteLine($"FastUpToDate '{project.FullPath}': {traceMessage}");
+                    _projectLogger.WriteLine($"FastUpToDate: {traceMessage}");
                 }
+
+                Log($"Starting check for project '{project.FullPath}'.");
 
                 var timestampCache = _fileTimestampCache != null ? _fileTimestampCache.Value.TimestampCache : new Dictionary<string, DateTime>(StringComparer.OrdinalIgnoreCase);
 
