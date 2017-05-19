@@ -9,14 +9,24 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedAnalyzerReference|Description">
-        <source>Resolved Analyzer reference properties</source>
-        <target state="translated">已解析的分析器參考屬性</target>
-        <note />
+        <source>Analyzer Properties</source>
+        <target state="needs-review-translation">已解析的分析器參考屬性</target>
+        <note></note>
       </trans-unit>
       <trans-unit id="StringProperty|OriginalItemSpec|Description">
         <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
         <target state="translated">因解析而產生這個已解析參考項目的原始參考項目的評估項目名稱。</target>
         <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ResolvedPath|DisplayName">
+        <source>Path</source>
+        <target state="new">Path</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|ResolvedPath|Description">
+        <source>Location of the analyzer assembly.</source>
+        <target state="new">Location of the analyzer assembly.</target>
+        <note></note>
       </trans-unit>
     </body>
   </file>

@@ -8,12 +8,20 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedAnalyzerReference|Description">
-        <source>Resolved Analyzer reference properties</source>
-        <note />
+        <source>Analyzer Properties</source>
+        <note></note>
       </trans-unit>
       <trans-unit id="StringProperty|OriginalItemSpec|Description">
         <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
         <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ResolvedPath|DisplayName">
+        <source>Path</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|ResolvedPath|Description">
+        <source>Location of the analyzer assembly.</source>
+        <note></note>
       </trans-unit>
     </body>
   </file>

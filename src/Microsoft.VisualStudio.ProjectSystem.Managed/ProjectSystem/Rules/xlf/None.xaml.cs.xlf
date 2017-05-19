@@ -9,9 +9,9 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|None|Description">
-        <source>Non-build items</source>
-        <target state="translated">Nesestavované položky</target>
-        <note />
+        <source>File Properties</source>
+        <target state="needs-review-translation">Nesestavované položky</target>
+        <note></note>
       </trans-unit>
       <trans-unit id="Category|Advanced|DisplayName">
         <source>Advanced</source>

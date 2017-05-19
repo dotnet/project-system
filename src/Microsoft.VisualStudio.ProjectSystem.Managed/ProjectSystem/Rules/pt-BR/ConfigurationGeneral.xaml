@@ -67,10 +67,16 @@
     <EnumValue Name="WinExe" DisplayName="Windows Application" />
     <EnumValue Name="AppContainerExe" DisplayName="Aplicativo da Windows Store" />
     <EnumValue Name="WinMDObj" DisplayName="WinMD" />
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="OutputType" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </EnumProperty.DataSource>
   </EnumProperty>
   <StringListProperty Name="AvailablePlatforms" Separator="," />
   <BoolProperty Name="Optimize" Description="O compilador deve otimizar o resultado?" />
+  <!-- Same as MSBuildProjectDirectory but has a directory separator '\' appended at the end.-->
+  <StringProperty Name="ProjectDir" Visible="false" />
   <StringProperty Name="MSBuildProjectDirectory" Visible="false" />
+  <StringProperty Name="MSBuildProjectFullPath" Visible="false" />
   <StringProperty Name="DefaultPlatform" Visible="false" />
   <StringProperty Name="PackageAction" Visible="false" Description="O destino do MSBuild a ser usado no empacotemento de um projeto." />
   <StringProperty Name="DefaultContentType" Visible="false" Description="O nome do tipo de conteúdo padrão a ser usado ao adicionar arquivos." />
