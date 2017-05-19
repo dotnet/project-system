@@ -8,7 +8,7 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
     ' This code is based on corresponding functionality in dotnet\roslyn: https:'github.com/dotnet/roslyn/blob/master/src/VisualStudio/Core/Impl/Options/AbstractOptionPage.cs
 
     <DesignerCategory("code")>
-    Public MustInherit Class OptionPage
+    Friend MustInherit Class OptionPage
         Inherits UIElementDialogPage
 
         Private _pageControl As OptionPageControl

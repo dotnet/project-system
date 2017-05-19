@@ -7,7 +7,7 @@ Imports System.Windows.Data
 Namespace Microsoft.VisualStudio.Editors.OptionPages
     ' This code is based on corresponding functionality in dotnet\roslyn: https://github.com/dotnet/roslyn/blob/master/src/VisualStudio/Core/Impl/Options/AbstractOptionPageControl.cs
 
-    Public Class OptionPageControl
+    Friend Class OptionPageControl
         Inherits UserControl
 
         Private ReadOnly _bindingExpressions As New List(Of BindingExpressionBase)()
