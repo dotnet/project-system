@@ -14,15 +14,20 @@ In the legacy project system, both of these mechanisms end up returning the same
 
 ## Working of the new  CPS based project system - Current state
 
-![current](https://cloud.githubusercontent.com/assets/10550513/26130971/1fdaed76-3a4c-11e7-9e29-d2fb29b7ec69.png)
+![current](https://cloud.githubusercontent.com/assets/10550513/26237643/dfc6113a-3c2a-11e7-87cc-c45acb42a6ff.png)
 
-In the CPS world, the object returned through IVsCfgBrowseObject implementation(ProjectConfig object) and the object returned via Automation(ProjectConfigProperties whose only property is OutputPath) are different. This behavior breaks back-compat because the Automation object no longer implements the public VS interfaces mentioned earlier. Hence, to support back-compat, the Managed project system exports an implementation, CSharpProjectConfigurationProperties, of these interfaces which replaces the default automation object.
+In the CPS world, the object returned through IVsCfgBrowseObject implementation(ProjectConfig object) and the object returned via Automation are different. This automation object, CSharpProjectConfigurationProperties, exported by Managed Project System, overrides the default implementation.
 
 ## Future design of the new CPS based project system
 
-![future](https://cloud.githubusercontent.com/assets/10550513/26130976/294d2df6-3a4c-11e7-9dc4-8144b290abfe.png)
+![future](https://cloud.githubusercontent.com/assets/10550513/26237655/ed3cb60c-3c2a-11e7-923f-9908ddc641a4.png)
 
-We would like to get to a design, where Managed project system exports an implementation of the public VS interfaces, which gets ComAggregated over ProjectConfig. This ProjectConfig will then be imported by a ProjectConfigWrapper, which then exports the ProjectConfig instance as the Automation Object. With this design, the same instance of the ProjectConfig, which implements the public VS interfaces, will be provided for both the approaches(DTE and IVsCfgBrowseObject). This behavior is similar to the native project system behavior and restores backward compatibility.
+In the future, we would like to get to a design similar to the native project system, where the browse object and the automation object are both the same.
+
+To achieve this,
+
+1. Managed project system will export an implementation of the public VS interfaces, which gets ComAggregated over ProjectConfig.
+2. This ProjectConfig will then be imported by Some_Wrapper, which then exports the ProjectConfig instance as the Automation Object.
 
 ## Project Properties
 
