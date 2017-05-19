@@ -74,6 +74,9 @@
         <EnumValue Name="WinExe" DisplayName="Windows Application" />
         <EnumValue Name="AppContainerExe" DisplayName="Windows Store app" />
         <EnumValue Name="WinMDObj" DisplayName="WinMD" />
+        <EnumProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="OutputType" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+        </EnumProperty.DataSource>
     </EnumProperty>
     <StringListProperty Name="AvailablePlatforms" Separator="," />
     <BoolProperty Name="Optimize" Description="Should compiler optimize output?" />

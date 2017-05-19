@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Moq;
 using VSLangProj;
 using VSLangProj110;
@@ -132,13 +131,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             var setValues = new List<object>();
             var project = UnconfiguredProjectFactory.Create();
-            var enumValue = new Mock<IEnumValue>();
-            enumValue.Setup(s => s.DisplayName).Returns("2");
             var data = new PropertyPageData()
             {
                 Category = ConfigurationGeneralBrowseObject.SchemaName,
-                PropertyName = ConfigurationGeneralBrowseObject.OutputTypeExProperty,
-                Value = enumValue.Object,
+                PropertyName = ConfigurationGeneralBrowseObject.OutputTypeProperty,
+                Value = 4,
                 SetValues = setValues
             };
 
@@ -146,11 +143,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
             var vsLangProjectProperties = CreateInstance(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
-            Assert.Equal(vsLangProjectProperties.OutputTypeEx, prjOutputTypeEx.prjOutputTypeEx_Library);
+            Assert.Equal(vsLangProjectProperties.OutputTypeEx, prjOutputTypeEx.prjOutputTypeEx_AppContainerExe);
 
-            var testValue = prjOutputTypeEx.prjOutputTypeEx_WinExe;
-            vsLangProjectProperties.OutputTypeEx = testValue;
-            Assert.Equal((prjOutputTypeEx)setValues.Single(), testValue);
+            vsLangProjectProperties.OutputTypeEx = prjOutputTypeEx.prjOutputTypeEx_WinExe;
+            Assert.Equal(setValues.Single().ToString(), prjOutputTypeEx.prjOutputTypeEx_WinExe.ToString());
         }
 
         [Fact]
@@ -158,13 +154,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             var setValues = new List<object>();
             var project = UnconfiguredProjectFactory.Create();
-            var enumValue = new Mock<IEnumValue>();
-            enumValue.Setup(s => s.DisplayName).Returns("2");
             var data = new PropertyPageData()
             {
                 Category = ConfigurationGeneralBrowseObject.SchemaName,
                 PropertyName = ConfigurationGeneralBrowseObject.OutputTypeProperty,
-                Value = enumValue.Object,
+                Value = 1,
                 SetValues = setValues
             };
 
@@ -172,11 +166,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
             var vsLangProjectProperties = CreateInstance(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
-            Assert.Equal(vsLangProjectProperties.OutputType, prjOutputType.prjOutputTypeLibrary);
+            Assert.Equal(vsLangProjectProperties.OutputType, prjOutputType.prjOutputTypeExe);
 
-            var testValue = prjOutputType.prjOutputTypeExe;
-            vsLangProjectProperties.OutputType = testValue;
-            Assert.Equal(setValues.Single(), testValue);
+            vsLangProjectProperties.OutputType = prjOutputType.prjOutputTypeLibrary;
+            Assert.Equal(setValues.Single(), prjOutputType.prjOutputTypeLibrary);
         }
 
         [Fact]
