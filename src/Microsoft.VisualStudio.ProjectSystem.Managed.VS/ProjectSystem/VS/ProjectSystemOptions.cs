@@ -15,10 +15,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Guid("9B164E40-C3A2-4363-9BC5-EB4039DEF653")]
         private class SVsSettingsPersistenceManager { }
 
-        private const string FastUpToDateDisabledSettingKey = "NETCoreProjectSystem\\FastUpToDateCheckDisabled";
-        private const string OutputPaneEnabledSettingKey = "NETCoreProjectSystem\\OutputPaneEnabled";
+        private const string FastUpToDateDisabledSettingKey = @"ManagedProjectSystem\FastUpToDateCheckDisabled";
+        private const string OutputPaneEnabledSettingKey = @"ManagedProjectSystem\OutputPaneEnabled";
 
-        private readonly ISettingsManager _settingsManager;
+        private readonly IServiceProvider _serviceProvider;
         private readonly IEnvironmentHelper _environment;
 
         [ImportingConstructor]
@@ -28,29 +28,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
 
             _environment = environment;
-            _settingsManager = (ISettingsManager)serviceProvider.GetService(typeof(SVsSettingsPersistenceManager));
+            _serviceProvider = serviceProvider;
         }
 
-        public bool IsProjectOutputPaneEnabled
-        {
-            get
-            {
+        private ISettingsManager SettingsManager => (ISettingsManager)_serviceProvider.GetService(typeof(SVsSettingsPersistenceManager));
+
+        public bool IsProjectOutputPaneEnabled =>
 #if DEBUG
-                return true;
+            true;
 #else
-                return _settingsManager?.GetValueOrDefault(FastUpToDateEnabledSettingKey, false) ?? false 
-                        || IsEnabled("PROJECTSYSTEM_PROJECTOUTPUTPANEENABLED");
+            SettingsManager?.GetValueOrDefault(OutputPaneEnabledSettingKey, false) ?? false 
+                    || IsEnabled("PROJECTSYSTEM_PROJECTOUTPUTPANEENABLED");
 #endif
-            }
-        }
 
-        public bool IsFastUpToDateCheckDisabled
-        {
-            get
-            {
-                return _settingsManager?.GetValueOrDefault(FastUpToDateDisabledSettingKey, false) ?? false;
-            }
-        }
+        public bool IsFastUpToDateCheckDisabled => 
+            SettingsManager?.GetValueOrDefault(FastUpToDateDisabledSettingKey, false) ?? false;
 
         private bool IsEnabled(string variable)
         {
