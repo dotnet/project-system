@@ -47,17 +47,17 @@
     </IntProperty>
     <StringProperty Name="OutputName" Visible="False" />
     <!-- This property is used to provide the value of OutputType through BrowseObject, which is used by Property pages-->
-    <StringProperty Name="OutputType" DisplayName="Output Type" Visible="False">
-        <StringProperty.DataSource>
+    <IntProperty Name="OutputType" DisplayName="Output Type" Visible="False">
+        <IntProperty.DataSource>
             <DataSource Persistence="ProjectFileWithInterception" PersistedName="OutputType" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
-        </StringProperty.DataSource>
-    </StringProperty>
+        </IntProperty.DataSource>
+    </IntProperty>
     <!-- This property is used to provide the value of OutputTypeEx through BrowseObject, which is used by Property pages-->
-    <StringProperty Name="OutputTypeEx" DisplayName="Output Type Ex" Visible="False">
-        <StringProperty.DataSource>
+    <IntProperty Name="OutputTypeEx" DisplayName="Output Type Ex" Visible="False">
+        <IntProperty.DataSource>
             <DataSource Persistence="ProjectFileWithInterception" PersistedName="OutputTypeEx" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
-        </StringProperty.DataSource>
-    </StringProperty>
+        </IntProperty.DataSource>
+    </IntProperty>
     <StringProperty Name="StartupObject" DisplayName="Type that contains the entry point" Visible="False"/>
     <StringProperty Name="ApplicationManifest" DisplayName="Application Manifest" Visible="False">
         <StringProperty.DataSource>

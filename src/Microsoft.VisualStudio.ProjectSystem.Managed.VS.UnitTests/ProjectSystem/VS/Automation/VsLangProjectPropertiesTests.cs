@@ -133,9 +133,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             var project = UnconfiguredProjectFactory.Create();
             var data = new PropertyPageData()
             {
-                Category = ConfigurationGeneral.SchemaName,
-                PropertyName = ConfigurationGeneral.OutputTypeProperty,
-                Value = "AppContainerExe",
+                Category = ConfigurationGeneralBrowseObject.SchemaName,
+                PropertyName = ConfigurationGeneralBrowseObject.OutputTypeProperty,
+                Value = 4,
                 SetValues = setValues
             };
 
@@ -146,7 +146,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             Assert.Equal(vsLangProjectProperties.OutputTypeEx, prjOutputTypeEx.prjOutputTypeEx_AppContainerExe);
 
             vsLangProjectProperties.OutputTypeEx = prjOutputTypeEx.prjOutputTypeEx_WinExe;
-            Assert.Equal(setValues.Single(), "WinExe");
+            Assert.Equal(setValues.Single().ToString(), prjOutputTypeEx.prjOutputTypeEx_WinExe.ToString());
         }
 
         [Fact]
@@ -156,9 +156,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             var project = UnconfiguredProjectFactory.Create();
             var data = new PropertyPageData()
             {
-                Category = ConfigurationGeneral.SchemaName,
-                PropertyName = ConfigurationGeneral.OutputTypeProperty,
-                Value = "Exe",
+                Category = ConfigurationGeneralBrowseObject.SchemaName,
+                PropertyName = ConfigurationGeneralBrowseObject.OutputTypeProperty,
+                Value = 1,
                 SetValues = setValues
             };
 
@@ -169,7 +169,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             Assert.Equal(vsLangProjectProperties.OutputType, prjOutputType.prjOutputTypeExe);
 
             vsLangProjectProperties.OutputType = prjOutputType.prjOutputTypeLibrary;
-            Assert.Equal(setValues.Single(), "Library");
+            Assert.Equal(setValues.Single(), prjOutputType.prjOutputTypeLibrary);
         }
 
         [Fact]
