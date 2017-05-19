@@ -1,9 +1,13 @@
 ' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+Imports System.Runtime.InteropServices
 Imports System.ComponentModel.Design
+Imports Microsoft.VisualStudio.Editors.OptionPages
+Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VisualStudio.XmlEditor
-<Assembly: Runtime.InteropServices.Guid("832BFEE6-9036-423E-B90A-EA4C582DA1D2")>
+
+<Assembly: Guid("832BFEE6-9036-423E-B90A-EA4C582DA1D2")>
 
 Namespace Microsoft.VisualStudio.Editors
 
@@ -20,7 +24,8 @@ Namespace Microsoft.VisualStudio.Editors
     '*
     '* In the future, we should consider moving to a RegPkg.exe model
     <
-        System.Runtime.InteropServices.Guid("67909B06-91E9-4F3E-AB50-495046BE9A9A"),
+        Guid("67909B06-91E9-4F3E-AB50-495046BE9A9A"),
+        ProvideOptionPage(GetType(GeneralOptionPage), "Projects and Solutions", ".NET Core", 1400, 1400, True),
         CLSCompliant(False)
     >
     Friend Class VBPackage
