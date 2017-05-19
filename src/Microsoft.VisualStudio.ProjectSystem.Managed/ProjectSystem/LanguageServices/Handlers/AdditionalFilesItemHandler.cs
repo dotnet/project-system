@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
@@ -11,12 +12,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     /// </summary>
     internal class AdditionalFilesItemHandler : ICommandLineHandler
     {
-        private readonly IWorkspaceProjectContext _context;
+        // WORKAROUND: To avoid Roslyn throwing when we add duplicate references, we remember what 
+        // send to them and avoid sending on duplicates.
+        // See: https://github.com/dotnet/project-system/issues/2230
 
-        public AdditionalFilesItemHandler(IWorkspaceProjectContext context)
+        private readonly UnconfiguredProject _project;
+        private readonly IWorkspaceProjectContext _context;
+        private readonly HashSet<string> _paths = new HashSet<string>(StringComparers.Paths);
+
+        public AdditionalFilesItemHandler(UnconfiguredProject project, IWorkspaceProjectContext context)
         {
+            Requires.NotNull(project, nameof(project));
             Requires.NotNull(context, nameof(context));
 
+            _project = project;
+            _project = project;
             _context = context;
         }
 
@@ -28,12 +38,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             foreach (CommandLineSourceFile additionalFile in removed.AdditionalFiles)
             {
-                _context.RemoveAdditionalFile(additionalFile.Path);
+                var fullPath = _project.MakeRooted(additionalFile.Path);
+
+                RemoveFromContextIfPresent(fullPath);
             }
 
             foreach (CommandLineSourceFile additionalFile in added.AdditionalFiles)
             {
-                _context.AddAdditionalFile(additionalFile.Path, isInCurrentContext: isActiveContext);
+                var fullPath = _project.MakeRooted(additionalFile.Path);
+
+                AddToContextIfNotPresent(fullPath, isActiveContext);
+            }
+        }
+
+        private void AddToContextIfNotPresent(string fullPath, bool isActiveContext)
+        {
+            if (!_paths.Contains(fullPath))
+            {
+                _context.AddAdditionalFile(fullPath, isActiveContext);
+                bool added = _paths.Add(fullPath);
+                Assumes.True(added);
+            }
+        }
+
+        private void RemoveFromContextIfPresent(string fullPath)
+        {
+            if (_paths.Contains(fullPath))
+            {
+                _context.RemoveAdditionalFile(fullPath);
+                bool removed = _paths.Remove(fullPath);
+                Assumes.True(removed);
             }
         }
     }
