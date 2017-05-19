@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
@@ -13,6 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     {
         private readonly UnconfiguredProject _project;
         private readonly IWorkspaceProjectContext _context;
+        private readonly HashSet<string> _paths = new HashSet<string>(StringComparers.Paths);
 
         public MetadataReferenceItemHandler(UnconfiguredProject project, IWorkspaceProjectContext context)
         {
@@ -32,13 +34,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             foreach (CommandLineReference reference in removed.MetadataReferences)
             {
                 var fullPath = _project.MakeRooted(reference.Reference);
-                _context.RemoveMetadataReference(fullPath);
+
+                RemoveFromContextIfPresent(fullPath);
             }
 
             foreach (CommandLineReference reference in added.MetadataReferences)
             {
                 var fullPath = _project.MakeRooted(reference.Reference);
-                _context.AddMetadataReference(fullPath, reference.Properties);
+
+                AddToContextIfNotPresent(fullPath, reference.Properties);
+            }
+        }
+
+        private void AddToContextIfNotPresent(string fullPath, MetadataReferenceProperties properties)
+        {
+            if (!_paths.Contains(fullPath))
+            {
+                _context.AddMetadataReference(fullPath, properties);
+                bool added = _paths.Add(fullPath);
+                Assumes.True(added);
+            }
+        }
+
+        private void RemoveFromContextIfPresent(string fullPath)
+        {
+            if (_paths.Contains(fullPath))
+            {
+                _context.RemoveMetadataReference(fullPath);
+                bool removed = _paths.Remove(fullPath);
+                Assumes.True(removed);
             }
         }
     }
