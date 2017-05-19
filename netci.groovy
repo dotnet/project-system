@@ -70,7 +70,7 @@ SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\Preview\\Enterp
 SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\Preview\\Enterprise\\VSSDK\\
 SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\Preview\\Enterprise\\VSSDK\\
 
-build.cmd /no-node-reuse /skiptests /no-deploy-extension /integrationtests /${configuration.toLowerCase()}
+build.cmd /no-node-reuse /skiptests /integrationtests /${configuration.toLowerCase()}
 """)
             }
         }
