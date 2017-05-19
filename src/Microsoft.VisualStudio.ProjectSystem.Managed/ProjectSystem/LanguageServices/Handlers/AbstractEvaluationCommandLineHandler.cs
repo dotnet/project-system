@@ -165,19 +165,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         private void RemoveFromContextIfPresent(string includePath)
         {
             string fullPath = _project.MakeRooted(includePath);
-            if (_paths.Remove(fullPath))
+
+            // Remove from the context first so if Roslyn throws due to a bug 
+            // or other reason, that our state of the world remains consistent
+            if (_paths.Contains(fullPath))
             {
                 RemoveFromContext(fullPath);
+                bool removed = _paths.Remove(fullPath);
+                Assumes.True(removed);
             }
         }
 
         private void AddToContextIfNotPresent(string includePath, IImmutableDictionary<string, IImmutableDictionary<string, string>> metadata, bool isActiveContext)
         {
             string fullPath = _project.MakeRooted(includePath);
-            if (_paths.Add(fullPath))
+
+            // Add to the context first so if Roslyn throws due to a bug or
+            // other reason, that our state of the world remains consistent
+            if (!_paths.Contains(fullPath))
             {
                 var itemMetadata = metadata.GetValueOrDefault(includePath, ImmutableDictionary<string, string>.Empty);
                 AddToContext(fullPath, itemMetadata, isActiveContext);
+                bool added = _paths.Add(fullPath);
+                Assumes.True(added);
             }
         }
 
