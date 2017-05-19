@@ -210,7 +210,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             var data = new PropertyPageData()
             {
                 Category = ConfigurationGeneral.SchemaName,
-                PropertyName = ConfigurationGeneral.TargetPathProperty,
+                PropertyName = ConfigurationGeneral.ProjectDirProperty,
                 Value = "somepath",
             };
 
