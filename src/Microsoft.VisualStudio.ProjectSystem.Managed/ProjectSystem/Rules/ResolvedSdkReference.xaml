@@ -4,7 +4,7 @@
     Name="ResolvedSdkReference"
     DisplayName="Resolved SDK Reference"
     PageTemplate="generic"
-    Description="Resolved SDK reference"
+    Description="SDK Reference Properties"
     xmlns="http://schemas.microsoft.com/build/2009/properties">
     <Rule.DataSource>
         <DataSource Persistence="ResolvedReference" ItemType="SDKReference" HasConfigurationCondition="False"

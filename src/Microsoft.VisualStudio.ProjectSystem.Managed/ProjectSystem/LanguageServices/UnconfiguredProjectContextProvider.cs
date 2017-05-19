@@ -243,7 +243,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                 var projectData = GetProjectData();
 
                 // Get the set of active configured projects ignoring target framework.
+#pragma warning disable CS0618 // Type or member is obsolete
                 var configuredProjectsMap = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync().ConfigureAwait(true);
+#pragma warning restore CS0618 // Type or member is obsolete
 
                 // Get the unconfigured project host object (shared host object).
                 var configuredProjectsToRemove = new HashSet<ConfiguredProject>(_configuredProjectHostObjectsMap.Keys);

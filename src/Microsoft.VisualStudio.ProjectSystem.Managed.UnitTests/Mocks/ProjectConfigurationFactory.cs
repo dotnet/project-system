@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -28,9 +29,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return Create(configuration, dimensionsBuilder.ToImmutable());
         }
 
-        public static IImmutableSet<ProjectConfiguration> CreateMany(params string[] configurations)
+        public static IReadOnlyList<ProjectConfiguration> CreateMany(params string[] configurations)
         {
-            var configurationsBuilder = ImmutableHashSet.CreateBuilder<ProjectConfiguration>();
+            var configurationsBuilder = ImmutableArray.CreateBuilder<ProjectConfiguration>();
 
             foreach (string configuration in configurations)
             {

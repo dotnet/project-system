@@ -22,7 +22,7 @@
     <DefineVisualBasicItemSchemas>false</DefineVisualBasicItemSchemas>
   </PropertyGroup>
 
-    <ItemGroup>
+  <ItemGroup>
      <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)VisualBasic.ProjectItemsSchema.xaml;"/>
 
       <!-- Namespace Import List-->
@@ -31,21 +31,37 @@
       </PropertyPageSchema>
 
      <ProjectCapability Include="VB;Managed"/>
+  </ItemGroup>
+
+  <!-- Targets -->
+
+  <!-- Returns Vbc command-line arguments for the language service -->
+  <Target Name="CompileDesignTime"
+          Returns="@(_CompilerCommandLineArgs)"
+          DependsOnTargets="_CheckCompileDesignTimePrerequisite;Compile"
+          Condition="'$(IsCrossTargetingBuild)' != 'true'"
+        >
+
+    <!-- VB Framework projects needs core library references. In the case of Command line scenario, the vbc injects this reference. -->
+    <PropertyGroup Condition="'$(FrameworkPathOverride)' != ''">
+      <MSCorlibPath Condition=" '$(MSCorlibPath)' == '' ">$(FrameworkPathOverride)\mscorlib.dll</MSCorlibPath>
+      <MSVBRuntimeFileOrPath Condition=" '$(MSVBRuntimeFileOrPath)' == '' And '$(VBRuntimePath)' == '$(VBRuntime)'">$(VBRuntimePath)</MSVBRuntimeFileOrPath>
+      <MSVBRuntimeFileOrPath Condition=" '$(MSVBRuntimeFileOrPath)' == '' And '$(VBRuntime)' == 'DEFAULT'">$(FrameworkPathOverride)\Microsoft.VisualBasic.dll</MSVBRuntimeFileOrPath>
+      <MSVBRuntimeFileOrPath Condition=" '$(MSVBRuntimeFileOrPath)' == '' And '$(VBRuntime)' != '' And'$(VBRuntime)' != 'None' And '$(VBRuntime)' != 'Embed'">$(VBRuntime)</MSVBRuntimeFileOrPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <VbcCommandLineArgs Condition="Exists('$(MSCorlibPath)')" Include="/reference:$(MSCorlibPath)"/>
+
+      <!-- MSVBRuntimeFileOrPath could either be the filename relative to sdkpath or the actual path to the runtime-->
+      <VbcCommandLineArgs Condition="Exists('$(MSVBRuntimeFileOrPath)')" Include="/reference:$(MSVBRuntimeFileOrPath)"/>
+      <VbcCommandLineArgs Condition="'$(MSVBRuntimeFileOrPath)' != '' And Exists('$(FrameworkPathOverride)\$(MSVBRuntimeFileOrPath)')" Include="/reference:$(FrameworkPathOverride)\$(MSVBRuntimeFileOrPath)"/>
     </ItemGroup>
 
-    <!-- Targets -->
-    
-    <!-- Returns Vbc command-line arguments for the language service -->
-    <Target Name="CompileDesignTime"
-            Returns="@(_CompilerCommandLineArgs)"
-            DependsOnTargets="_CheckCompileDesignTimePrerequisite;Compile"
-            Condition="'$(IsCrossTargetingBuild)' != 'true'"
-          >
+    <ItemGroup>
+      <_CompilerCommandLineArgs Include="@(VbcCommandLineArgs)"/>
+    </ItemGroup>
 
-      <ItemGroup>
-        <_CompilerCommandLineArgs Include="@(VbcCommandLineArgs)"/>
-      </ItemGroup>
-        
   </Target>
 
 </Project>

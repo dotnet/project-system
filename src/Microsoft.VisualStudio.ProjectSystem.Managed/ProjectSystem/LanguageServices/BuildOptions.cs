@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
-    public class BuildOptions
+    internal class BuildOptions
     {
         public IEnumerable<CommandLineSourceFile> SourceFiles { get; }
         public IEnumerable<CommandLineSourceFile> AdditionalFiles { get; }

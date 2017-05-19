@@ -34,7 +34,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             }
 
             builder.Add(VisualBasicProjectDesignerPage.References);
-            builder.Add(VisualBasicProjectDesignerPage.Debug);
+
+            if (_capabilities.Contains(ProjectCapability.LaunchProfiles))
+            {
+                builder.Add(VisualBasicProjectDesignerPage.Debug);
+            }
 
             return Task.FromResult<IReadOnlyCollection<IPageMetadata>>(builder.ToImmutable());
         }

@@ -233,29 +233,39 @@
         <target state="translated">Neutralny język zasobów</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|OutputTypeEx.WinExe|DisplayName">
+      <trans-unit id="StringProperty|TargetFrameworkMonikers|DisplayName">
+        <source>Target Framework Monikers</source>
+        <target state="new">Target Framework Monikers</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputTypeEx.winexe|DisplayName">
         <source>0</source>
         <target state="new">0</target>
         <note></note>
       </trans-unit>
-      <trans-unit id="EnumValue|OutputTypeEx.Exe|DisplayName">
+      <trans-unit id="EnumValue|OutputTypeEx.exe|DisplayName">
         <source>1</source>
         <target state="new">1</target>
         <note></note>
       </trans-unit>
-      <trans-unit id="EnumValue|OutputTypeEx.Library|DisplayName">
+      <trans-unit id="EnumValue|OutputTypeEx.library|DisplayName">
         <source>2</source>
         <target state="new">2</target>
         <note></note>
       </trans-unit>
-      <trans-unit id="EnumValue|OutputTypeEx.AppContainerExe|DisplayName">
+      <trans-unit id="EnumValue|OutputTypeEx.appcontainerexe|DisplayName">
         <source>3</source>
         <target state="new">3</target>
         <note></note>
       </trans-unit>
-      <trans-unit id="EnumValue|OutputTypeEx.WinMDObj|DisplayName">
+      <trans-unit id="EnumValue|OutputTypeEx.winmdobj|DisplayName">
         <source>4</source>
         <target state="new">4</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|SupportedTargetFrameworks|DisplayName">
+        <source>Supported TargetFrameworks</source>
+        <target state="new">Supported TargetFrameworks</target>
         <note></note>
       </trans-unit>
     </body>

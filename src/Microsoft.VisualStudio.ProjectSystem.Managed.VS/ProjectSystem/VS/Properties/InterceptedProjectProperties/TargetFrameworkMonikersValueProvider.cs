@@ -10,10 +10,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
     [ExportInterceptingPropertyValueProvider("TargetFrameworkMonikers", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     internal class TargetFrameworkMonikersValueProvider : InterceptingPropertyValueProviderBase
     {
-        private readonly ActiveConfiguredProjectsProvider _projectProvider;
+        private readonly IActiveConfiguredProjectsProvider _projectProvider;
 
         [ImportingConstructor]
-        public TargetFrameworkMonikersValueProvider(ActiveConfiguredProjectsProvider projectProvider)
+        public TargetFrameworkMonikersValueProvider(IActiveConfiguredProjectsProvider projectProvider)
         {
             _projectProvider = projectProvider;
         }

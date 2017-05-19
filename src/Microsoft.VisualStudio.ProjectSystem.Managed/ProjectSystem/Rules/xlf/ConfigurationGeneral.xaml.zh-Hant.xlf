@@ -143,6 +143,11 @@
         <target state="new">Represents the GUID of object that implements the language service for the project.</target>
         <note></note>
       </trans-unit>
+      <trans-unit id="StringProperty|TargetFrameworkMonikers|DisplayName">
+        <source>Target Framework Monikers</source>
+        <target state="new">Target Framework Monikers</target>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

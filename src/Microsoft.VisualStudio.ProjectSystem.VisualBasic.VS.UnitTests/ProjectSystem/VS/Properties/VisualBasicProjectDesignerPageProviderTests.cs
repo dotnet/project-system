@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -17,30 +18,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public async Task GetPagesAsync_ReturnsPagesInOrder()
+        public async Task GetPagesAsync_WhenAllCapabiltiesPresent_ReturnsPagesInOrder()
         {
-            var provider = CreateInstance();
-            var pages = await provider.GetPagesAsync();
+            var provider = CreateInstance(ProjectCapability.LaunchProfiles, ProjectCapability.Pack);
+            var result = await provider.GetPagesAsync();
 
-            Assert.Equal(pages.Count(), 4);
-            Assert.Same(pages.ElementAt(0), VisualBasicProjectDesignerPage.Application);
-            Assert.Same(pages.ElementAt(1), VisualBasicProjectDesignerPage.Compile);
-            Assert.Same(pages.ElementAt(2), VisualBasicProjectDesignerPage.References);
-            Assert.Same(pages.ElementAt(3), VisualBasicProjectDesignerPage.Debug);
+            var expected = ImmutableArray.Create<IPageMetadata>(
+               VisualBasicProjectDesignerPage.Application,
+               VisualBasicProjectDesignerPage.Compile,
+               VisualBasicProjectDesignerPage.Package,
+               VisualBasicProjectDesignerPage.References,
+               VisualBasicProjectDesignerPage.Debug               
+            );
+
+            Assert.Equal(expected, result);
         }
 
         [Fact]
-        public async Task GetPagesAsync_WithPackCapability()
+        public async Task GetPagesAsync_WhenNoLaunchProfilesCapability_DoesNotContainDebugPage()
         {
-            var provider = CreateInstance(ProjectCapability.Pack);
-            var pages = await provider.GetPagesAsync();
+            var provider = CreateInstance();
+            var result = await provider.GetPagesAsync();
 
-            Assert.Equal(pages.Count(), 5);
-            Assert.Same(pages.ElementAt(0), VisualBasicProjectDesignerPage.Application);
-            Assert.Same(pages.ElementAt(1), VisualBasicProjectDesignerPage.Compile);
-            Assert.Same(pages.ElementAt(2), VisualBasicProjectDesignerPage.Package);
-            Assert.Same(pages.ElementAt(3), VisualBasicProjectDesignerPage.References);
-            Assert.Same(pages.ElementAt(4), VisualBasicProjectDesignerPage.Debug);
+            Assert.DoesNotContain(VisualBasicProjectDesignerPage.Debug, result);
+        }
+
+        [Fact]
+        public async Task GetPagesAsync_WhenNoPackCapability_DoesNotContainPackagePage()
+        {
+            var provider = CreateInstance();
+            var result = await provider.GetPagesAsync();
+
+            Assert.DoesNotContain(VisualBasicProjectDesignerPage.Package, result);
         }
 
         private static VisualBasicProjectDesignerPageProvider CreateInstance(params string[] capabilities)
