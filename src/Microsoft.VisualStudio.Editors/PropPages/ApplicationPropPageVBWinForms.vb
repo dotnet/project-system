@@ -877,6 +877,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             .SelectedIndex = .Items.Add(SelectedItemText)
                         End If
 
+                        If .SelectedItem Is Nothing AndAlso SelectedItemText = "" Then
+                            .SelectedIndex = .Items.Add(_noneText)
+                        End If
+
                         If PopulateDropdown Then
                             'If "Sub Main" is not in the list and this isn't a WindowsApplication with My, then add it.
                             Dim SubMainIndex As Integer = .Items.IndexOf(Const_SubMain)
