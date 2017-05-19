@@ -88,7 +88,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             MyBase.PopulateIconList(FindIconsInProject, ApplicationIconCombobox, CurrentIconValue)
 
             'Now add the <browse> entry
-            If OutputTypeProperty <> VSLangProj.prjOutputType.prjOutputTypeLibrary Then
+            If ProjectProperties.OutputType <> VSLangProj.prjOutputType.prjOutputTypeLibrary Then
                 ApplicationIconCombobox.Items.Add(m_IconBrowseText)
             End If
         End Sub
