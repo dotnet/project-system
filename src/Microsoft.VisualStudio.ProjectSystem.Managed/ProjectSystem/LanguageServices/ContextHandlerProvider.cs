@@ -93,8 +93,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             // Command-line only
             ((project, context) => new MetadataReferenceItemHandler(project, context),      null),                              // <ProjectReference />, <Reference /> items
-            ((project, context) => new AnalyzerItemHandler(context),                        null),                              // <Analyzer /> item
-            ((project, context) => new AdditionalFilesItemHandler(context),                 null)                               // <AdditionalFiles /> item
+            ((project, context) => new AnalyzerItemHandler(project, context),               null),                              // <Analyzer /> item
+            ((project, context) => new AdditionalFilesItemHandler(project, context),        null)                               // <AdditionalFiles /> item
             );
         }
 
