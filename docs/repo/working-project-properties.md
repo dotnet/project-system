@@ -1,7 +1,7 @@
 
 # Project Configuration Properties & Project Properties
 
-In the following discussion, I am using C# as a reference but this discussion holds true for VB as well.
+In the following discussion, C# is used as a reference but this discussion holds true for VB as well.
 
 In General, we have 2 ways to get the Project Configuration Properties. One is through the Project IVSHierarchy’s GetProperty using IVsCfgBrowseObject and other is through Automation, via DTE.
 
