@@ -12,8 +12,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     /// </summary>
     internal class AdditionalFilesItemHandler : ICommandLineHandler
     {
-        // WORKAROUND: To avoid Roslyn throwing when we add duplicate references, we remember what 
-        // send to them and avoid sending on duplicates.
+        // WORKAROUND: To avoid Roslyn throwing when we add duplicate additonal files, we remember what 
+        // sent to them and avoid sending on duplicates.
         // See: https://github.com/dotnet/project-system/issues/2230
 
         private readonly UnconfiguredProject _project;
@@ -25,7 +25,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(context, nameof(context));
 
-            _project = project;
             _project = project;
             _context = context;
         }

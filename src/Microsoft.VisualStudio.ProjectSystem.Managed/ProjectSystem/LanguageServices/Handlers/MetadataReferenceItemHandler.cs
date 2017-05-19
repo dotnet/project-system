@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     internal class MetadataReferenceItemHandler : ICommandLineHandler
     {
         // WORKAROUND: To avoid Roslyn throwing when we add duplicate references, we remember what 
-        // send to them and avoid sending on duplicates.
+        // sent to them and avoid sending on duplicates.
         // See: https://github.com/dotnet/project-system/issues/2230
 
         private readonly UnconfiguredProject _project;
