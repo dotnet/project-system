@@ -118,9 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="General_FastUpToDateCheck" xml:space="preserve">
-    <value>Don't call MSBuild if a project is up to date.</value>
+    <value>Always call MSBuild, even if a project appears to be up to date.</value>
   </data>
-  <data name="General_VerboseLogging" xml:space="preserve">
-    <value>Log all up to date checks when verbose logging is on.</value>
+  <data name="General_OutputPane" xml:space="preserve">
+    <value>Log project information to the Output window.</value>
   </data>
 </root>

@@ -18,7 +18,7 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
 
             Dim binding = New Binding() With {
                 .Source = _generalOptions,
-                .Path = New Windows.PropertyPath(NameOf(GeneralOptions.FastUpToDateCheck)),
+                .Path = New Windows.PropertyPath(NameOf(GeneralOptions.FastUpToDateCheckDisabled)),
                 .UpdateSourceTrigger = UpdateSourceTrigger.Explicit
             }
 
@@ -27,11 +27,11 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
 
             binding = New Binding() With {
                     .Source = _generalOptions,
-                    .Path = New Windows.PropertyPath(NameOf(GeneralOptions.VerboseLogging)),
+                    .Path = New Windows.PropertyPath(NameOf(GeneralOptions.OutputPaneEnabled)),
                     .UpdateSourceTrigger = UpdateSourceTrigger.Explicit
                     }
 
-            bindingExpression = VerboseLogging.SetBinding(CheckBox.IsCheckedProperty, binding)
+            bindingExpression = OutputPane.SetBinding(CheckBox.IsCheckedProperty, binding)
             AddBinding(bindingExpression)
         End Sub
     End Class

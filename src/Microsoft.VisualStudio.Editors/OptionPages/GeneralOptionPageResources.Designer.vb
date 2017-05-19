@@ -65,7 +65,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Don&apos;t call MSBuild if a project is up to date..
+        '''  Looks up a localized string similar to Always call MSBuild, even if a project appears to be up to date..
         '''</summary>
         Public Shared ReadOnly Property General_FastUpToDateCheck() As String
             Get
@@ -74,11 +74,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Log all up to date checks when verbose logging is on..
+        '''  Looks up a localized string similar to Log project information to the Output window..
         '''</summary>
-        Public Shared ReadOnly Property General_VerboseLogging() As String
+        Public Shared ReadOnly Property General_OutputPane() As String
             Get
-                Return ResourceManager.GetString("General_VerboseLogging", resourceCulture)
+                Return ResourceManager.GetString("General_OutputPane", resourceCulture)
             End Get
         End Property
     End Class
