@@ -30,14 +30,6 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Tpl.Dataflow" Version="4.5.24" />
-    <PackageReference Include="Microsoft.VisualStudio.Composition" Version="15.0.70" />
-    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem" Version="15.3.93-pre-g57d342093d" />
-    <PackageReference Include="Microsoft.VisualStudio.SDK.VsixSuppression" Version="14.1.32" />
-    <PackageReference Include="Microsoft.VisualStudio.Threading" Version="15.0.240" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="ProjectSystem\Rules\AnalyzerReference.xaml.cs">
       <DependentUpon>AnalyzerReference.xaml</DependentUpon>
     </Compile>
