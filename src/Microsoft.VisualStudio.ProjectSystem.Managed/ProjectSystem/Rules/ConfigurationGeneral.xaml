@@ -78,6 +78,7 @@
     <StringListProperty Name="AvailablePlatforms" Separator="," />
     <BoolProperty Name="Optimize" Description="Should compiler optimize output?" />
     <StringProperty Name="MSBuildProjectDirectory" Visible="false"/>
+    <StringProperty Name="MSBuildProjectFullPath" Visible="false" />
     <StringProperty Name="DefaultPlatform" Visible="false" />
     <StringProperty Name="PackageAction" Visible="false" Description="The MSBuild target to use when packaging a project." />
     <StringProperty Name="DefaultContentType" Visible="false" Description="The default content type name to use when adding files." />
