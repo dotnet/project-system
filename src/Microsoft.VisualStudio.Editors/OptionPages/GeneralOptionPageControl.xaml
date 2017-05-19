@@ -1,0 +1,12 @@
+﻿<local:OptionPageControl x:ClassModifier="Friend" x:Class="Microsoft.VisualStudio.Editors.OptionPages.GeneralOptionPageControl"
+                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                         xmlns:r="clr-namespace:My.Resources"
+                         xmlns:local="clr-namespace:Microsoft.VisualStudio.Editors.OptionPages">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+            <CheckBox x:Name="FastUpToDateCheck" x:Uid="General_FastUpToDateCheck" Content="{x:Static r:GeneralOptionPageResources.General_FastUpToDateCheck}" Margin="0" />
+            <CheckBox x:Name="OutputPane" x:Uid="General_OutputPane" Content="{x:Static r:GeneralOptionPageResources.General_OutputPane}" Margin="0" />
+        </StackPanel>
+    </ScrollViewer>
+</local:OptionPageControl>

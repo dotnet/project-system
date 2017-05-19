@@ -197,8 +197,8 @@
        just imporrts Microsoft.Common.CurrentVersion.targets. So set LanguageTargets to import CSharp.targets if the 
        extension is unknown -->
   <PropertyGroup Condition="'$(LanguageTargets)' == ''">
-    <LanguageTargets Condition="'$(MSBuildProjectExtension)' == '.csproj'">$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets>
-    <LanguageTargets Condition="'$(MSBuildProjectExtension)' == '.vbproj'">$(MSBuildToolsPath)\Microsoft.VisualBasic.targets</LanguageTargets>
+    <LanguageTargets Condition="'$(MSBuildProjectExtension)' == '.csproj' OR '$(Language)' == 'C#'">$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets>
+    <LanguageTargets Condition="'$(MSBuildProjectExtension)' == '.vbproj' OR '$(Language)' == 'VB'">$(MSBuildToolsPath)\Microsoft.VisualBasic.targets</LanguageTargets>
     <LanguageTargets Condition="'$(LanguageTargets)' == ''">$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets> 
   </PropertyGroup>
 
