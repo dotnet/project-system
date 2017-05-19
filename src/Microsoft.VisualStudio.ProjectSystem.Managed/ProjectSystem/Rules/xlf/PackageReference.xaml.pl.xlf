@@ -9,9 +9,9 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|PackageReference|Description">
-        <source>Package</source>
-        <target state="translated">Pakiet</target>
-        <note />
+        <source>Package Properties</source>
+        <target state="needs-review-translation">Pakiet</target>
+        <note></note>
       </trans-unit>
       <trans-unit id="StringProperty|Description|DisplayName">
         <source>Description</source>

@@ -8,8 +8,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|AssemblyReference|Description">
-        <source>Assembly reference properties</source>
-        <note />
+        <source>Reference Properties</source>
+        <note></note>
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">
         <source>Aliases</source>

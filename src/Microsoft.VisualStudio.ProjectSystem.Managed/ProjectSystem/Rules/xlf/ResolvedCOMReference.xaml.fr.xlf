@@ -9,9 +9,9 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedCOMReference|Description">
-        <source>Resolved reference</source>
-        <target state="translated">Référence résolue</target>
-        <note />
+        <source>COM Reference Properties</source>
+        <target state="needs-review-translation">Référence résolue</target>
+        <note></note>
       </trans-unit>
       <trans-unit id="StringProperty|Guid|DisplayName">
         <source>CLSID</source>

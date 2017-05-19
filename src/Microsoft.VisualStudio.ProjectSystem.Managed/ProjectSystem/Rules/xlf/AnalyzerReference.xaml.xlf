@@ -8,8 +8,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|AnalyzerReference|Description">
-        <source>Analyzer reference properties</source>
-        <note />
+        <source>Analyzer Properties</source>
+        <note></note>
       </trans-unit>
     </body>
   </file>

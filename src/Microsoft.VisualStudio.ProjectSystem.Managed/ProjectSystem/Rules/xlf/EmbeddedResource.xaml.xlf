@@ -8,8 +8,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|EmbeddedResource|Description">
-        <source>Embedded resources</source>
-        <note />
+        <source>File Properties</source>
+        <note></note>
       </trans-unit>
       <trans-unit id="Category|Advanced|DisplayName">
         <source>Advanced</source>

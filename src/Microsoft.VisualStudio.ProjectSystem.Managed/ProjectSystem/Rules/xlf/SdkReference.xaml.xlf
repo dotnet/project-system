@@ -8,8 +8,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|SdkReference|Description">
-        <source>SDK reference properties</source>
-        <note />
+        <source>SDK Reference Properties</source>
+        <note></note>
       </trans-unit>
       <trans-unit id="StringProperty|SDKRootFolder|DisplayName">
         <source>SDK Root</source>

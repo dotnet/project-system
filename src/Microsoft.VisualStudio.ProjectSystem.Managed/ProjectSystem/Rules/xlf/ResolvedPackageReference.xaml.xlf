@@ -8,8 +8,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedPackageReference|Description">
-        <source>Package</source>
-        <note />
+        <source>Package Properties</source>
+        <note></note>
       </trans-unit>
       <trans-unit id="StringProperty|Description|DisplayName">
         <source>Description</source>
