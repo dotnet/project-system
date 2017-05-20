@@ -45,6 +45,41 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _fileTimestampCache = fileTimestampCache;
         }
 
+        private void Log(string traceMessage) => _projectLogger.WriteLine($"FastUpToDate: {traceMessage}");
+
+        private DateTime GetLatestTimestamp(List<string> paths, IDictionary<string, DateTime> timestampCache)
+        {
+            var latestTime = DateTime.MinValue;
+
+            foreach (var path in paths)
+            {
+                if (!timestampCache.TryGetValue(path, out var time))
+                {
+                    if (File.Exists(path))
+                    {
+                        time = File.GetLastWriteTimeUtc(path);
+                        timestampCache[path] = time;
+                        Log($"Path '{path}' had live timestamp '{time}'.");
+                    }
+                    else
+                    {
+                        Log($"Path '{path}' did not exist.");
+                    }
+                }
+                else
+                {
+                    Log($"Path '{path}' had cached timestamp '{time}'.");
+                }
+
+                if (latestTime < time)
+                {
+                    latestTime = time;
+                }
+            }
+
+            return latestTime;
+        }
+
         public async Task<bool> IsUpToDateAsync(BuildAction buildAction, TextWriter logger, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -54,51 +89,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return false;
             }
 
-            using (var access = await _projectLockService.ReadLockAsync())
+            using (var access = await _projectLockService.ReadLockAsync(cancellationToken))
             {
                 var project = await access.GetProjectAsync(_configuredProject, cancellationToken);
-
-                void Log(string traceMessage)
-                {
-                    _projectLogger.WriteLine($"FastUpToDate: {traceMessage}");
-                }
 
                 Log($"Starting check for project '{project.FullPath}'.");
 
                 var timestampCache = _fileTimestampCache != null ? _fileTimestampCache.Value.TimestampCache : new Dictionary<string, DateTime>(StringComparer.OrdinalIgnoreCase);
-
-                DateTime GetLatestTimestamp(List<string> paths)
-                {
-                    var latestTime = DateTime.MinValue;
-
-                    foreach (var path in paths)
-                    {
-                        if (!timestampCache.TryGetValue(path, out var time))
-                        {
-                            if (File.Exists(path))
-                            {
-                                time = File.GetLastWriteTimeUtc(path);
-                                timestampCache[path] = time;
-                                Log($"Path '{path}' had live timestamp '{time}'.");
-                            }
-                            else
-                            {
-                                Log($"Path '{path}' did not exist.");
-                            }
-                        }
-                        else
-                        {
-                            Log($"Path '{path}' had cached timestamp '{time}'.");
-                        }
-
-                        if (latestTime < time)
-                        {
-                            latestTime = time;
-                        }
-                    }
-
-                    return latestTime;
-                }
 
                 if (_projectItemsSchema == null)
                 {
@@ -191,7 +188,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     inputs.Add(upToDateCheckInputItem);
                 }
 
-                var latestInput = GetLatestTimestamp(inputs);
+                var latestInput = GetLatestTimestamp(inputs, timestampCache);
                 Log($"Lastest write timestamp on input is {latestInput}.");
 
                 var outputs = new List<string>();
@@ -211,7 +208,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     }
                 }
 
-                var latestOutput = GetLatestTimestamp(outputs);
+                var latestOutput = GetLatestTimestamp(outputs, timestampCache);
                 Log($"Lastest write timestamp on output is {latestOutput}.");
 
                 var isUpToDate = latestOutput >= latestInput;
