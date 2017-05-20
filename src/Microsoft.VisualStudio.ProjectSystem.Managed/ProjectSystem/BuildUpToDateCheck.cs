@@ -17,14 +17,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
     [Export(typeof(IBuildUpToDateCheckProvider))]
     internal class BuildUpToDateCheck : IBuildUpToDateCheckProvider
     {
-        private const string DisableFastUpToDateCheckProperty = "DisableFastUpToDateCheck";
-
         private static string[] KnownOutputGroups = { "Symbols", "Built", "ContentFiles", "Documentation", "LocalizedResourceDlls" };
 
         private readonly IProjectLockService _projectLockService;
         private readonly IProjectSystemOptions _projectSystemOptions;
         private readonly ConfiguredProject _configuredProject;
         private readonly IProjectLogger _projectLogger;
+        private readonly ProjectProperties _projectProperties;
         private readonly IProjectItemSchemaService _projectItemsSchema;
         private readonly Lazy<IFileTimestampCache> _fileTimestampCache;
 
@@ -34,6 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             IProjectSystemOptions projectSystemOptions,
             ConfiguredProject configuredProject,
             IProjectLogger projectLogger,
+            ProjectProperties projectProperties,
             [Import(AllowDefault = true)] IProjectItemSchemaService projectItemSchema,
             [Import(AllowDefault = true)] Lazy<IFileTimestampCache> fileTimestampCache)
         {
@@ -41,6 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _projectSystemOptions = projectSystemOptions;
             _configuredProject = configuredProject;
             _projectLogger = projectLogger;
+            _projectProperties = projectProperties;
             _projectItemsSchema = projectItemSchema;
             _fileTimestampCache = fileTimestampCache;
         }
@@ -80,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return latestTime;
         }
 
-        async Task CheckReferencesAsync<TUnresolvedReference, TResolvedReference>(string name, IResolvableReferencesService<TUnresolvedReference, TResolvedReference> service, List<string> inputs)
+        private async Task CheckReferencesAsync<TUnresolvedReference, TResolvedReference>(string name, IResolvableReferencesService<TUnresolvedReference, TResolvedReference> service, List<string> inputs)
             where TUnresolvedReference : IProjectItem, TResolvedReference
             where TResolvedReference : class, IReference
         {
@@ -120,9 +121,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     return false;
                 }
 
-                if (!string.IsNullOrEmpty(project.GetPropertyValue(DisableFastUpToDateCheckProperty)))
+                ConfigurationGeneral general = await _projectProperties.GetConfigurationGeneralPropertiesAsync();
+
+                if ((bool)await general.DisableFastUpToDateCheck.GetValueAsync())
                 {
-                    Log($"Disabled because the '{DisableFastUpToDateCheckProperty}' property is set to a non-empty value.");
+                    Log($"Disabled because the 'DisableFastUpToDateCheckProperty' property is true.");
                     return false;
                 }
 
@@ -205,7 +208,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
         }
 
-        public Task<bool> IsUpToDateCheckEnabledAsync(CancellationToken cancellationToken = default(CancellationToken)) =>
-            Task.FromResult(!_projectSystemOptions.IsFastUpToDateCheckDisabled);
+        public async Task<bool> IsUpToDateCheckEnabledAsync(CancellationToken cancellationToken = default(CancellationToken)) =>
+            !await _projectSystemOptions.GetIsFastUpToDateCheckDisabledAsync();
     }
 }

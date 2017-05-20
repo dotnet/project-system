@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.Threading.Tasks;
+
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
@@ -13,10 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <value>
         ///     <see langword="true"/> if the project output pane is enabled; otherwise, <see langword="false"/>.
         /// </value>
-        bool IsProjectOutputPaneEnabled
-        {
-            get;
-        }
+        Task<bool> GetIsProjectOutputPaneEnabledAsync();
 
         /// <summary>
         ///     Gets a value indicating if the project fast up to date check is enabled.
@@ -24,9 +23,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <value>
         ///     <see langword="true"/> if the project fast up to date check is enabled; otherwise, <see langword="false"/>
         /// </value>
-        bool IsFastUpToDateCheckDisabled
-        {
-            get;
-        }
+        Task<bool> GetIsFastUpToDateCheckDisabledAsync();
     }
 }

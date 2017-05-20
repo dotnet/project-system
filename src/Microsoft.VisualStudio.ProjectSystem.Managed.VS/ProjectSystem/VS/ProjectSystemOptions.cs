@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Settings;
 using Microsoft.VisualStudio.Shell;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -31,18 +32,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _serviceProvider = serviceProvider;
         }
 
-        private ISettingsManager SettingsManager => (ISettingsManager)_serviceProvider.GetService(typeof(SVsSettingsPersistenceManager));
+        private ISettingsManager SettingsManager => _serviceProvider.GetService<ISettingsManager, SVsSettingsPersistenceManager>();
 
-        public bool IsProjectOutputPaneEnabled =>
-#if DEBUG
-            true;
-#else
-            SettingsManager?.GetValueOrDefault(OutputPaneEnabledSettingKey, false) ?? false 
+        public async Task<bool> GetIsProjectOutputPaneEnabledAsync()
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            return SettingsManager?.GetValueOrDefault(OutputPaneEnabledSettingKey, false) ?? false 
                     || IsEnabled("PROJECTSYSTEM_PROJECTOUTPUTPANEENABLED");
-#endif
+        }
 
-        public bool IsFastUpToDateCheckDisabled => 
-            SettingsManager?.GetValueOrDefault(FastUpToDateDisabledSettingKey, false) ?? false;
+        public async Task<bool> GetIsFastUpToDateCheckDisabledAsync()
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            return SettingsManager?.GetValueOrDefault(FastUpToDateDisabledSettingKey, false) ?? false;
+        }
 
         private bool IsEnabled(string variable)
         {
