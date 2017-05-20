@@ -129,25 +129,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 var inputs = new List<string>();
 
                 // add the project file
-                if (!string.IsNullOrEmpty(project.FullPath))
+                if (!string.IsNullOrEmpty(_configuredProject.UnconfiguredProject.FullPath))
                 {
                     inputs.Add(project.FullPath);
                     Log($"Adding input project file {project.FullPath}.");
                 }
 
-                // add all imports except .user file
-                var userFilePath = project.FullPath + ".user";
-                var imports = project.Imports
-                    .Select(i => i.ImportedProject.FullPath)
-                    .Where(p => !string.IsNullOrEmpty(p) && !string.Equals(p, userFilePath, StringComparison.OrdinalIgnoreCase));
-
-                foreach (var import in imports)
-                {
-                    Log($"Adding input project import {import}.");
-                }
-
-                inputs.AddRange(imports);
-            
                 // add all project items (generally items seen in solution explorer) that are not excluded from UpToDate check
                 // Skip items that are marked as excluded from build.
                 var projectItemSchemaValue = (await _projectItemsSchema.GetSchemaAsync(cancellationToken)).Value;
