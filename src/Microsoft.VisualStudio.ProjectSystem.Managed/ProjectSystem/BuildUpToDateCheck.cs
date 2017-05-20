@@ -24,6 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly ConfiguredProject _configuredProject;
         private readonly IProjectLogger _projectLogger;
         private readonly ProjectProperties _projectProperties;
+        private readonly IProjectItemProvider _projectItemProvider;
         private readonly IProjectItemSchemaService _projectItemsSchema;
         private readonly Lazy<IFileTimestampCache> _fileTimestampCache;
 
@@ -34,6 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             ConfiguredProject configuredProject,
             IProjectLogger projectLogger,
             ProjectProperties projectProperties,
+            [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider projectItemProvider,
             [Import(AllowDefault = true)] IProjectItemSchemaService projectItemSchema,
             [Import(AllowDefault = true)] Lazy<IFileTimestampCache> fileTimestampCache)
         {
@@ -42,6 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _configuredProject = configuredProject;
             _projectLogger = projectLogger;
             _projectProperties = projectProperties;
+            _projectItemProvider = projectItemProvider;
             _projectItemsSchema = projectItemSchema;
             _fileTimestampCache = fileTimestampCache;
         }
@@ -138,26 +141,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     Log($"Adding input project file {project.FullPath}.");
                 }
 
-                // add all project items (generally items seen in solution explorer) that are not excluded from UpToDate check
-                // Skip items that are marked as excluded from build.
                 var projectItemSchemaValue = (await _projectItemsSchema.GetSchemaAsync(cancellationToken)).Value;
-                var itemTypes = projectItemSchemaValue
-                    .GetKnownItemTypes()
-                    .Select(name => projectItemSchemaValue.GetItemType(name))
-                    .Where(item => item != null && item.UpToDateCheckInput && !string.Equals(item.Name, "None", StringComparison.OrdinalIgnoreCase));
 
-                foreach (var itemType in itemTypes)
+                foreach (var item in await _projectItemProvider.GetItemsAsync())
                 {
-                    Log($"Checking known item type '{itemType.Name}'.");
-
-                    var items = project.GetItems(itemType.Name)
-                            .Where(item => !string.Equals(item.GetMetadataValue("ExcludedFromBuild"), "true", StringComparison.OrdinalIgnoreCase))
-                            .Select(item => item.GetMetadataValue("FullPath"));
-
-                    foreach (var item in items)
+                    var itemType = projectItemSchemaValue.GetItemType(item);
+                    if (itemType != null && itemType.UpToDateCheckInput)
                     {
-                        Log($"Input item path '{item}'.");
-                        inputs.Add(item);
+                        var path = item.EvaluatedIncludeAsFullPath;
+                        Log($"Input item type '{itemType.Name}' path '{path}'.");
+                        inputs.Add(path);
                     }
                 }
 
