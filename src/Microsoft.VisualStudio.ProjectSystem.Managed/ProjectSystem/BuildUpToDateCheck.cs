@@ -80,6 +80,22 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return latestTime;
         }
 
+        async Task CheckReferencesAsync<TUnresolvedReference, TResolvedReference>(string name, IResolvableReferencesService<TUnresolvedReference, TResolvedReference> service, List<string> inputs)
+            where TUnresolvedReference : IProjectItem, TResolvedReference
+            where TResolvedReference : class, IReference
+        {
+            Log($"Checking reference type '{name}'.");
+            if (service != null)
+            {
+                foreach (var resolvedReference in await service.GetResolvedReferencesAsync())
+                {
+                    var fullPath = await resolvedReference.GetFullPathAsync();
+                    Log($"Adding input reference ${fullPath}");
+                    inputs.Add(fullPath);
+                }
+            }
+        }
+
         public async Task<bool> IsUpToDateAsync(BuildAction buildAction, TextWriter logger, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -155,28 +171,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     }
                 }
 
-                async Task CheckReferences<TUnresolvedReference, TResolvedReference>(string name, IResolvableReferencesService<TUnresolvedReference, TResolvedReference> service)
-                    where TUnresolvedReference : IProjectItem, TResolvedReference
-                    where TResolvedReference : class, IReference
-                {
-                    Log($"Checking reference type '{name}'.");
-                    if (service != null)
-                    {
-                        foreach (var resolvedReference in await service.GetResolvedReferencesAsync())
-                        {
-                            var fullPath = await resolvedReference.GetFullPathAsync();
-                            Log($"Adding input reference ${fullPath}");
-                            inputs.Add(fullPath);
-                        }
-                    }
-                }
-
-                await CheckReferences(nameof(_configuredProject.Services.AssemblyReferences), _configuredProject.Services.AssemblyReferences);
-                await CheckReferences(nameof(_configuredProject.Services.ComReferences), _configuredProject.Services.ComReferences);
-                await CheckReferences(nameof(_configuredProject.Services.PackageReferences), _configuredProject.Services.PackageReferences);
-                await CheckReferences(nameof(_configuredProject.Services.ProjectReferences), _configuredProject.Services.ProjectReferences);
-                await CheckReferences(nameof(_configuredProject.Services.SdkReferences), _configuredProject.Services.SdkReferences);
-                await CheckReferences(nameof(_configuredProject.Services.WinRTReferences), _configuredProject.Services.WinRTReferences);
+                await CheckReferencesAsync(nameof(_configuredProject.Services.AssemblyReferences), _configuredProject.Services.AssemblyReferences, inputs);
+                await CheckReferencesAsync(nameof(_configuredProject.Services.ComReferences), _configuredProject.Services.ComReferences, inputs);
+                await CheckReferencesAsync(nameof(_configuredProject.Services.PackageReferences), _configuredProject.Services.PackageReferences, inputs);
+                await CheckReferencesAsync(nameof(_configuredProject.Services.ProjectReferences), _configuredProject.Services.ProjectReferences, inputs);
+                await CheckReferencesAsync(nameof(_configuredProject.Services.SdkReferences), _configuredProject.Services.SdkReferences, inputs);
+                await CheckReferencesAsync(nameof(_configuredProject.Services.WinRTReferences), _configuredProject.Services.WinRTReferences, inputs);
 
                 // UpToDateCheckInput is the special item group for customized projects to add explicit inputs
                 var upToDateCheckInputItems = project.GetItems("UpToDateCheckInput").Select(file => file.GetMetadataValue("FullPath"));
