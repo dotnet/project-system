@@ -34,7 +34,7 @@
     <MicrosoftVisualStudioLanguageServicesVersion>2.3.0-beta2-61711-06</MicrosoftVisualStudioLanguageServicesVersion>
     <RoslynToolsDownloadRoslynVsixesVersion>0.3.2-beta</RoslynToolsDownloadRoslynVsixesVersion>
     <RoslynToolsMicrosoftVSIXExpInstallerVersion>0.2.4-beta</RoslynToolsMicrosoftVSIXExpInstallerVersion>
-    <XUnitVersion>2.2.0</XUnitVersion>
+    <XUnitVersion>2.2.0-beta4-build3444</XUnitVersion>
     <XUnitRunnerConsoleVersion>2.2.0</XUnitRunnerConsoleVersion>
     <XUnitRunnerVisualstudioVersion>2.2.0</XUnitRunnerVisualstudioVersion>
   </PropertyGroup>

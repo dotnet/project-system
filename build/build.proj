@@ -115,7 +115,7 @@
 
     <Exec Command="SET VisualBasicDesignTimeTargetsPath=$(BinariesDirectory)Rules\Microsoft.VisualBasic.DesignTime.targets"/>  
     <Exec Command="SET FSharpDesignTimeTargetsPath=$(BinariesDirectory)Rules\Microsoft.FSharp.DesignTime.targets"/>  
-    <Exec Command="SET CSharpDesignTimeTargetsPath=$(BinariesDirectory)Rules\Microsoft.FSharp.DesignTime.targets"/>  
+    <Exec Command="SET CSharpDesignTimeTargetsPath=$(BinariesDirectory)Rules\Microsoft.CSharp.DesignTime.targets"/>  
 
     <PropertyGroup>
       <DownloadRoslynVsixesExe>$(NUGET_PACKAGES)\roslyntools.downloadroslynvsixes\$(RoslynToolsDownloadRoslynVsixesVersion)\tools\DownloadRoslynVsixes.exe</DownloadRoslynVsixesExe>
