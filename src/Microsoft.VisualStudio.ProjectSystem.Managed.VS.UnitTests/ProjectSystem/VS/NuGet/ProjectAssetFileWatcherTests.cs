@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using Microsoft.VisualStudio.Shell.Interop;
 using Moq;
 using Xunit;
@@ -9,6 +10,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     [ProjectSystemTrait]
     public class ProjectAssetFileWatcherTests
     {
+        private const string ProjectCurrentStateJson = @"{
+    ""CurrentState"": {
+        ""ConfigurationGeneral"": {
+            ""Properties"": {
+               ""BaseIntermediateOutputPath"": ""obj\\"",
+               ""MSBuildProjectFullPath"": ""C:\\Foo\\foo.proj""
+            }
+        }
+    }
+}";
+
         [Theory]
         [InlineData(@"
 Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""", @"C:\Foo\obj\project.assets.json")]
@@ -25,17 +37,16 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
             var fileChangeService = IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(adviseCookie);
             spMock.AddService(typeof(IVsFileChangeEx), typeof(SVsFileChangeEx), fileChangeService);
 
-            var propertyData = CreateBaseIntermediateOutputPathProperty("obj\\");
-            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj");
             var watcher = new ProjectAssetFileWatcher(spMock,
                                                      IProjectTreeProviderFactory.Create(),
-                                                     IUnconfiguredProjectCommonServicesFactory.Create(unconfiguredProject,
-                                                                                                      projectProperties: ProjectPropertiesFactory.Create(unconfiguredProject, new[] { propertyData })),
-                                                     IProjectLockServiceFactory.Create());
+                                                     IUnconfiguredProjectCommonServicesFactory.Create(),
+                                                     IProjectLockServiceFactory.Create(),
+                                                     IActiveConfiguredProjectSubscriptionServiceFactory.CreateInstance());
 
             var tree = ProjectTreeParser.Parse(inputTree);
+            var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(ProjectCurrentStateJson);
             watcher.Load();
-            watcher.ProjectTree_ChangedAsync(IProjectVersionedValueFactory<IProjectTreeSnapshot>.Create(IProjectTreeSnapshotFactory.Create(tree)));
+            watcher.DataFlow_Changed(IProjectVersionedValueFactory<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>.Create((Tuple.Create(IProjectTreeSnapshotFactory.Create(tree), projectUpdate))));
 
             // If fileToWatch is null then we expect to not register any filewatcher.
             var times = fileToWatch == null ? Times.Never() : Times.Once();
@@ -80,21 +91,19 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
             var fileChangeService = IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(adviseCookie);
             spMock.AddService(typeof(IVsFileChangeEx), typeof(SVsFileChangeEx), fileChangeService);
 
-            var propertyData = CreateBaseIntermediateOutputPathProperty("obj\\");
-
-            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj");
             var watcher = new ProjectAssetFileWatcher(spMock,
                                                      IProjectTreeProviderFactory.Create(),
-                                                     IUnconfiguredProjectCommonServicesFactory.Create(unconfiguredProject,
-                                                                                                      projectProperties: ProjectPropertiesFactory.Create(unconfiguredProject, new[] { propertyData })),
-                                                     IProjectLockServiceFactory.Create());
+                                                     IUnconfiguredProjectCommonServicesFactory.Create(),
+                                                     IProjectLockServiceFactory.Create(),
+                                                     IActiveConfiguredProjectSubscriptionServiceFactory.CreateInstance());
             watcher.Load();
+            var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(ProjectCurrentStateJson);
 
             var firstTree = ProjectTreeParser.Parse(inputTree);
-            watcher.ProjectTree_ChangedAsync(IProjectVersionedValueFactory<IProjectTreeSnapshot>.Create(IProjectTreeSnapshotFactory.Create(firstTree)));
+            watcher.DataFlow_Changed(IProjectVersionedValueFactory<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>.Create((Tuple.Create(IProjectTreeSnapshotFactory.Create(firstTree), projectUpdate))));
 
             var secondTree = ProjectTreeParser.Parse(changedTree);
-            watcher.ProjectTree_ChangedAsync(IProjectVersionedValueFactory<IProjectTreeSnapshot>.Create(IProjectTreeSnapshotFactory.Create(secondTree)));
+            watcher.DataFlow_Changed(IProjectVersionedValueFactory<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>.Create((Tuple.Create(IProjectTreeSnapshotFactory.Create(secondTree), projectUpdate))));
 
             // If fileToWatch is null then we expect to not register any filewatcher.
             Mock<IVsFileChangeEx> fileChangeServiceMock = Mock.Get(fileChangeService);
@@ -110,18 +119,25 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
             var fileChangeService = IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(100);
             spMock.AddService(typeof(IVsFileChangeEx), typeof(SVsFileChangeEx), fileChangeService);
 
-            var propertyData = CreateBaseIntermediateOutputPathProperty(string.Empty);
-
-            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj");
             var watcher = new ProjectAssetFileWatcher(spMock,
                                                      IProjectTreeProviderFactory.Create(),
-                                                     IUnconfiguredProjectCommonServicesFactory.Create(unconfiguredProject,
-                                                                                                      projectProperties: ProjectPropertiesFactory.Create(unconfiguredProject, new[] { propertyData })),
-                                                     IProjectLockServiceFactory.Create());
+                                                     IUnconfiguredProjectCommonServicesFactory.Create(),
+                                                     IProjectLockServiceFactory.Create(),
+                                                     IActiveConfiguredProjectSubscriptionServiceFactory.CreateInstance());
 
             var tree = ProjectTreeParser.Parse(@"Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""");
+            var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(@"{
+    ""CurrentState"": {
+        ""ConfigurationGeneral"": {
+            ""Properties"": {
+               ""MSBuildProjectFullPath"": ""C:\\Foo\\foo.proj""
+            }
+        }
+    }
+}");
+
             watcher.Load();
-            watcher.ProjectTree_ChangedAsync(IProjectVersionedValueFactory<IProjectTreeSnapshot>.Create(IProjectTreeSnapshotFactory.Create(tree)));
+            watcher.DataFlow_Changed(IProjectVersionedValueFactory<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>.Create((Tuple.Create(IProjectTreeSnapshotFactory.Create(tree), projectUpdate))));
 
             Mock<IVsFileChangeEx> fileChangeServiceMock = Mock.Get(fileChangeService);
             uint cookie;
