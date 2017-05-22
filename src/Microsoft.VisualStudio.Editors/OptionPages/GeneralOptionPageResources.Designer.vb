@@ -74,11 +74,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Log project information to the Output window..
+        '''  Looks up a localized string similar to Log diagnostic information for project up to date checks to the output window..
         '''</summary>
-        Public Shared ReadOnly Property General_OutputPane() As String
+        Public Shared ReadOnly Property General_VerboseFastUpToDateLogging() As String
             Get
-                Return ResourceManager.GetString("General_OutputPane", resourceCulture)
+                Return ResourceManager.GetString("General_VerboseFastUpToDateLogging", resourceCulture)
             End Get
         End Property
     End Class

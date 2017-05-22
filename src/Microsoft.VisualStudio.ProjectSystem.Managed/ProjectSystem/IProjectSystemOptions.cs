@@ -15,7 +15,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <value>
         ///     <see langword="true"/> if the project output pane is enabled; otherwise, <see langword="false"/>.
         /// </value>
-        Task<bool> GetIsProjectOutputPaneEnabledAsync();
+        bool IsProjectOutputPaneEnabled
+        {
+            get;
+        }
 
         /// <summary>
         ///     Gets a value indicating if the project fast up to date check is enabled.
@@ -24,5 +27,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     <see langword="true"/> if the project fast up to date check is enabled; otherwise, <see langword="false"/>
         /// </value>
         Task<bool> GetIsFastUpToDateCheckDisabledAsync();
+
+        /// <summary>
+        ///     Gets a value indicating if fast up to date check logging should be verbose.
+        /// </summary>
+        /// <value>
+        ///     <see langword="true"/> if the project fast up to date logging is verbose; otherwise, <see langword="false"/>
+        /// </value>
+        Task<bool> GetVerboseFastUpToDateLoggingAsync();
     }
 }

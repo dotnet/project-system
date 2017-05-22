@@ -22,7 +22,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly IProjectLockService _projectLockService;
         private readonly IProjectSystemOptions _projectSystemOptions;
         private readonly ConfiguredProject _configuredProject;
-        private readonly IProjectLogger _projectLogger;
         private readonly ProjectProperties _projectProperties;
         private readonly IProjectItemProvider _projectItemProvider;
         private readonly IProjectItemSchemaService _projectItemsSchema;
@@ -33,7 +32,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             IProjectLockService projectLockService,
             IProjectSystemOptions projectSystemOptions,
             ConfiguredProject configuredProject,
-            IProjectLogger projectLogger,
             ProjectProperties projectProperties,
             [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider projectItemProvider,
             [Import(AllowDefault = true)] IProjectItemSchemaService projectItemSchema,
@@ -42,16 +40,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _projectLockService = projectLockService;
             _projectSystemOptions = projectSystemOptions;
             _configuredProject = configuredProject;
-            _projectLogger = projectLogger;
             _projectProperties = projectProperties;
             _projectItemProvider = projectItemProvider;
             _projectItemsSchema = projectItemSchema;
             _fileTimestampCache = fileTimestampCache;
         }
 
-        private void Log(string traceMessage) => _projectLogger.WriteLine($"FastUpToDate: {traceMessage}");
+        private void Log(TextWriter logger, string message, params object[] values) => logger?.WriteLine("FastUpToDate: " + string.Format(message, values));
 
-        private DateTime GetLatestTimestamp(List<string> paths, IDictionary<string, DateTime> timestampCache)
+        private DateTime GetLatestTimestamp(TextWriter logger, List<string> paths, IDictionary<string, DateTime> timestampCache)
         {
             var latestTime = DateTime.MinValue;
 
@@ -63,16 +60,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     {
                         time = File.GetLastWriteTimeUtc(path);
                         timestampCache[path] = time;
-                        Log($"Path '{path}' had live timestamp '{time}'.");
+                        Log(logger, "Path '{0}' had live timestamp '{1}'.", path, time);
                     }
                     else
                     {
-                        Log($"Path '{path}' did not exist.");
+                        Log(logger, "Path '{0}' did not exist.", path);
                     }
                 }
                 else
                 {
-                    Log($"Path '{path}' had cached timestamp '{time}'.");
+                    Log(logger, "Path '{0}' had cached timestamp '{1}'.", path, time);
                 }
 
                 if (latestTime < time)
@@ -84,17 +81,17 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return latestTime;
         }
 
-        private async Task CheckReferencesAsync<TUnresolvedReference, TResolvedReference>(string name, IResolvableReferencesService<TUnresolvedReference, TResolvedReference> service, List<string> inputs)
+        private async Task CheckReferencesAsync<TUnresolvedReference, TResolvedReference>(TextWriter logger, string name, IResolvableReferencesService<TUnresolvedReference, TResolvedReference> service, List<string> inputs)
             where TUnresolvedReference : IProjectItem, TResolvedReference
             where TResolvedReference : class, IReference
         {
-            Log($"Checking reference type '{name}'.");
+            Log(logger, "Checking reference type '{0}'.", name);
             if (service != null)
             {
                 foreach (var resolvedReference in await service.GetResolvedReferencesAsync())
                 {
                     var fullPath = await resolvedReference.GetFullPathAsync();
-                    Log($"Adding input reference ${fullPath}");
+                    Log(logger, "Adding input reference '{0}'.", fullPath);
                     inputs.Add(fullPath);
                 }
             }
@@ -109,26 +106,31 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return false;
             }
 
+            if (!await _projectSystemOptions.GetVerboseFastUpToDateLoggingAsync())
+            {
+                logger = null;
+            }
+
             using (var access = await _projectLockService.ReadLockAsync(cancellationToken))
             {
                 var project = await access.GetProjectAsync(_configuredProject, cancellationToken);
 
-                Log($"Starting check for project '{project.FullPath}'.");
+                Log(logger, "Starting check for project '{0}'.", project.FullPath);
 
                 var timestampCache = _fileTimestampCache != null ? _fileTimestampCache.Value.TimestampCache : new Dictionary<string, DateTime>(StringComparer.OrdinalIgnoreCase);
 
                 if (_projectItemsSchema == null)
                 {
-                    Log($"Skipping because '{typeof(IProjectItemSchemaService).FullName}' component could not be found.");
+                    Log(logger, "Skipping because '{0}' component could not be found.", typeof(IProjectItemSchemaService).FullName);
                     Report.IfNotPresent(_projectItemsSchema);
                     return false;
                 }
 
                 ConfigurationGeneral general = await _projectProperties.GetConfigurationGeneralPropertiesAsync();
 
-                if ((bool)await general.DisableFastUpToDateCheck.GetValueAsync())
+                if ((bool?)await general.DisableFastUpToDateCheck.GetValueAsync() == true)
                 {
-                    Log($"Disabled because the 'DisableFastUpToDateCheckProperty' property is true.");
+                    Log(logger, "Disabled because the 'DisableFastUpToDateCheckProperty' property is true.");
                     return false;
                 }
 
@@ -138,7 +140,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 if (!string.IsNullOrEmpty(_configuredProject.UnconfiguredProject.FullPath))
                 {
                     inputs.Add(project.FullPath);
-                    Log($"Adding input project file {project.FullPath}.");
+                    Log(logger, "Adding input project file {0}.", project.FullPath);
                 }
 
                 var projectItemSchemaValue = (await _projectItemsSchema.GetSchemaAsync(cancellationToken)).Value;
@@ -149,30 +151,30 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     if (itemType != null && itemType.UpToDateCheckInput)
                     {
                         var path = item.EvaluatedIncludeAsFullPath;
-                        Log($"Input item type '{itemType.Name}' path '{path}'.");
+                        Log(logger, "Input item type '{0}' path '{1}'.", itemType.Name, path);
                         inputs.Add(path);
                     }
                 }
 
-                await CheckReferencesAsync(nameof(_configuredProject.Services.AssemblyReferences), _configuredProject.Services.AssemblyReferences, inputs);
-                await CheckReferencesAsync(nameof(_configuredProject.Services.ComReferences), _configuredProject.Services.ComReferences, inputs);
-                await CheckReferencesAsync(nameof(_configuredProject.Services.PackageReferences), _configuredProject.Services.PackageReferences, inputs);
-                await CheckReferencesAsync(nameof(_configuredProject.Services.ProjectReferences), _configuredProject.Services.ProjectReferences, inputs);
-                await CheckReferencesAsync(nameof(_configuredProject.Services.SdkReferences), _configuredProject.Services.SdkReferences, inputs);
-                await CheckReferencesAsync(nameof(_configuredProject.Services.WinRTReferences), _configuredProject.Services.WinRTReferences, inputs);
+                await CheckReferencesAsync(logger, nameof(_configuredProject.Services.AssemblyReferences), _configuredProject.Services.AssemblyReferences, inputs);
+                await CheckReferencesAsync(logger, nameof(_configuredProject.Services.ComReferences), _configuredProject.Services.ComReferences, inputs);
+                await CheckReferencesAsync(logger, nameof(_configuredProject.Services.PackageReferences), _configuredProject.Services.PackageReferences, inputs);
+                await CheckReferencesAsync(logger, nameof(_configuredProject.Services.ProjectReferences), _configuredProject.Services.ProjectReferences, inputs);
+                await CheckReferencesAsync(logger, nameof(_configuredProject.Services.SdkReferences), _configuredProject.Services.SdkReferences, inputs);
+                await CheckReferencesAsync(logger, nameof(_configuredProject.Services.WinRTReferences), _configuredProject.Services.WinRTReferences, inputs);
 
                 // UpToDateCheckInput is the special item group for customized projects to add explicit inputs
                 var upToDateCheckInputItems = project.GetItems("UpToDateCheckInput").Select(file => file.GetMetadataValue("FullPath"));
 
-                Log("Checking item type 'UpToDateCheckInput'.");
+                Log(logger, "Checking item type 'UpToDateCheckInput'.");
                 foreach (var upToDateCheckInputItem in upToDateCheckInputItems)
                 {
-                    Log($"Input item path '{upToDateCheckInputItem}'.");
+                    Log(logger, "Input item path '{0}'.", upToDateCheckInputItem);
                     inputs.Add(upToDateCheckInputItem);
                 }
 
-                var latestInput = GetLatestTimestamp(inputs, timestampCache);
-                Log($"Lastest write timestamp on input is {latestInput}.");
+                var latestInput = GetLatestTimestamp(logger, inputs, timestampCache);
+                Log(logger, "Lastest write timestamp on input is {0}.", latestInput);
 
                 var outputs = new List<string>();
 
@@ -182,20 +184,20 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 IOutputGroupsService outputGroupsService = _configuredProject.Services.OutputGroups;
                 foreach (var outputGroup in KnownOutputGroups)
                 {
-                    Log($"Checking known output group {outputGroup}.");
+                    Log(logger, "Checking known output group {0}.", outputGroup);
 
                     foreach (var output in (await outputGroupsService.GetOutputGroupAsync(outputGroup, cancellationToken)).Outputs)
                     {
-                        Log($"Output path '{output.Key}'.");
+                        Log(logger, "Output path '{0}'.", output.Key);
                         outputs.Add(output.Key);
                     }
                 }
 
-                var latestOutput = GetLatestTimestamp(outputs, timestampCache);
-                Log($"Lastest write timestamp on output is {latestOutput}.");
+                var latestOutput = GetLatestTimestamp(logger, outputs, timestampCache);
+                Log(logger, "Lastest write timestamp on output is {0}.", latestOutput);
 
                 var isUpToDate = latestOutput >= latestInput;
-                Log($"Project is{(!isUpToDate ? " not" : "")} up to date.");
+                Log(logger, "Project is{0} up to date.", (!isUpToDate ? " not" : ""));
 
                 return isUpToDate;
             }
