@@ -9,9 +9,9 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedSdkReference|Description">
-        <source>Resolved SDK reference</source>
-        <target state="translated">Çözümlenen SDK başvurusu</target>
-        <note />
+        <source>SDK Reference Properties</source>
+        <target state="needs-review-translation">Çözümlenen SDK başvurusu</target>
+        <note></note>
       </trans-unit>
       <trans-unit id="StringProperty|AppXLocation|DisplayName">
         <source>App Package Location</source>

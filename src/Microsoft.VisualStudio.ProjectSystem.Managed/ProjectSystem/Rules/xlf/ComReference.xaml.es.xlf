@@ -9,9 +9,9 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|ComReference|Description">
-        <source>COM reference properties</source>
-        <target state="translated">Propiedades de la referencia COM</target>
-        <note />
+        <source>COM Reference Properties</source>
+        <target state="needs-review-translation">Propiedades de la referencia COM</target>
+        <note></note>
       </trans-unit>
       <trans-unit id="StringProperty|Guid|DisplayName">
         <source>CLSID</source>

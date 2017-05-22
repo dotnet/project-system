@@ -37,17 +37,18 @@
     </IntProperty.DataSource>
   </IntProperty>
   <StringProperty Name="OutputName" Visible="False" />
-  <DynamicEnumProperty Name="OutputType" DisplayName="Tipo de resultado" EnumProvider="OutputTypeEnumProvider" Visible="False" />
-  <EnumProperty Name="OutputTypeEx" DisplayName="Tipo de resultado" Visible="False">
-    <EnumValue Name="winexe" DisplayName="0" />
-    <EnumValue Name="exe" DisplayName="1" />
-    <EnumValue Name="library" DisplayName="2" />
-    <EnumValue Name="appcontainerexe" DisplayName="3" />
-    <EnumValue Name="winmdobj" DisplayName="4" />
-    <EnumProperty.DataSource>
+  <!-- This property is used to provide the value of OutputType through BrowseObject, which is used by Property pages-->
+  <IntProperty Name="OutputType" DisplayName="Output Type" Visible="False">
+    <IntProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="OutputType" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </IntProperty.DataSource>
+  </IntProperty>
+  <!-- This property is used to provide the value of OutputTypeEx through BrowseObject, which is used by Property pages-->
+  <IntProperty Name="OutputTypeEx" DisplayName="Output Type Ex" Visible="False">
+    <IntProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception" PersistedName="OutputTypeEx" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
-    </EnumProperty.DataSource>
-  </EnumProperty>
+    </IntProperty.DataSource>
+  </IntProperty>
   <StringProperty Name="StartupObject" DisplayName="Tipo que contiene el punto de entrada" Visible="False" />
   <StringProperty Name="ApplicationManifest" DisplayName="Manifiesto de aplicación" Visible="False">
     <StringProperty.DataSource>

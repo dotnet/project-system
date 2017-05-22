@@ -106,4 +106,7 @@
     <EnumValue Name="OnBuildSuccess" DisplayName="On successful build" IsDefault="True" />
     <EnumValue Name="OnOutputUpdated" DisplayName="When the build updates the project output" />
   </EnumProperty>
+  <!-- CSharp Project Configuration Properties-->
+  <StringProperty Name="LangVersion" DisplayName="CSharp Language Version" Visible="False" />
+  <StringProperty Name="CodeAnalysisRuleSet" DisplayName=" Code Analysis Rule set" Visible="False" />
 </Rule>

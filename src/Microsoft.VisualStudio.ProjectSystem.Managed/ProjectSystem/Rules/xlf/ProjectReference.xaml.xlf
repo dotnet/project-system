@@ -8,8 +8,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|ProjectReference|Description">
-        <source>Project reference properties</source>
-        <note />
+        <source>Reference Properties</source>
+        <note></note>
       </trans-unit>
       <trans-unit id="BoolProperty|ReferenceOutputAssembly|DisplayName">
         <source>Reference Output Assembly</source>
