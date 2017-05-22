@@ -35,6 +35,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
             // wait for restore to complete.
             VisualStudio.WaitForApplicationIdle();
             VisualStudio.WaitForNoErrorsInErrorList();
+
+            VisualStudio.SolutionExplorer.BuildSolution(waitForBuildToFinish: true);
+            var path = VisualStudio.SolutionExplorer.SolutionFileFullPath;
+            VisualStudio.SolutionExplorer.CloseSolution();
+            VisualStudio.SolutionExplorer.OpenSolution(path);
+
+            VisualStudio.WaitForApplicationIdle();
+            VisualStudio.WaitForNoErrorsInErrorList();
         }
 
         public void Dispose() 

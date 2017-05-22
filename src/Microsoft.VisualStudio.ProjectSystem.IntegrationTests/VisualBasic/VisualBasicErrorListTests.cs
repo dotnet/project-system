@@ -52,14 +52,11 @@ End Module
                     line: 9,
                     column: 9)
             };
+            VisualStudio.WaitForApplicationIdle();
             var actualContents = VisualStudio.ErrorList.GetErrorListContents();
             Assert.Equal(expectedContents, actualContents);
             VisualStudio.ErrorList.NavigateToErrorListItem(0);
             VisualStudio.Editor.Verify.CaretPosition(43);
-            VisualStudio.SolutionExplorer.BuildSolution(waitForBuildToFinish: true);
-            VisualStudio.ErrorList.ShowErrorList();
-            actualContents = VisualStudio.ErrorList.GetErrorListContents();
-            Assert.Equal(expectedContents, actualContents);
         }
 
         [Fact, Trait("Integration", "ErrorList")]

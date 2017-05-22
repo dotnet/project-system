@@ -26,15 +26,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
       End Sub
 End Class");
 
-            VisualStudio.Workspace.WaitForAsyncOperations(FeatureAttribute.SolutionCrawler);
-            VisualStudio.Workspace.WaitForAsyncOperations(FeatureAttribute.DiagnosticService);
+            VisualStudio.WaitForApplicationIdle();
             var actualTags = VisualStudio.Editor.GetErrorTags();
             var expectedTags = new[]
             {
                "Microsoft.VisualStudio.Text.Tagging.ErrorTag:'\r'[43-44]",
-               "Microsoft.VisualStudio.Text.Tagging.ErrorTag:'x'[36-37]"
             };
-            Assert.Equal(expectedTags, actualTags);
+
+            expectedTags.ShouldEqualWithDiff(actualTags);
         }
 
         [Fact, Trait("Integration", "Squiggles")]

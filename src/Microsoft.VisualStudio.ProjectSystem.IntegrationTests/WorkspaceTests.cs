@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
             VisualStudio.SolutionExplorer.OpenFile(Project, "Class1.cs");
         }
 
-        [Fact, Trait("Integration", "Workspace")]
+        [Fact(Skip ="Classification doesn't work when files are loaded in misc workspace"), Trait("Integration", "Workspace")]
         public void OpenCSharpThenVBSolution()
         {
             VisualStudio.Editor.SetText(@"using System; class Program { Exception e; }");
@@ -33,7 +33,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
 Class Program
     Private e As Exception
 End Class");
+            var path = VisualStudio.SolutionExplorer.SolutionFileFullPath;
+            VisualStudio.SolutionExplorer.CloseSolution(saveFirst: true);
+            VisualStudio.SolutionExplorer.OpenSolution(path);
+            VisualStudio.SolutionExplorer.OpenFile(testProj, "Class1.vb");
             VisualStudio.Editor.PlaceCaret("Exception");
+            VisualStudio.WaitForApplicationIdle();
             VisualStudio.Editor.Verify.CurrentTokenType(tokenType: "class name");
         }
 

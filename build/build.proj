@@ -129,8 +129,8 @@
 
     <ItemGroup>
       <IntegrationTestAssembly Include="$(IntegrationDirectory)*IntegrationTests.dll" />
-      <IntegrationXmlTestFile Include="$(IntegrationDirectory)TestResults.xml" />   <!-- For Jenkins to read -->
-      <IntegrationHtmlTestFile Include="$(IntegrationDirectory)TestResults.html" /> <!-- For Humans to read -->
+      <IntegrationXmlTestFile Include="$(IntegrationDirectory)xUnitResults\TestResults.xml" />   <!-- For Jenkins to read -->
+      <IntegrationHtmlTestFile Include="$(IntegrationDirectory)xUnitResults\TestResults.html" /> <!-- For Humans to read -->
     </ItemGroup>
 
     <Exec Command="&quot;$(DownloadRoslynVsixesExe)&quot; $(DownloadRoslynVsixesArgs)" />
