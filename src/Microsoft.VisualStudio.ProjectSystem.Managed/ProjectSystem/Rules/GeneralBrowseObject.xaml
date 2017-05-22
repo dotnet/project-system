@@ -58,7 +58,7 @@
             <DataSource Persistence="ProjectFileWithInterception" PersistedName="OutputTypeEx" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </IntProperty.DataSource>
     </IntProperty>
-    <StringProperty Name="StartupObject" DisplayName="Type that contains the entry point" Visible="False"/>
+    <DynamicEnumProperty Name="StartupObject" DisplayName="Type that contains the entry point" EnumProvider="StartupObjectsEnumProvider" Visible="False"/>
     <StringProperty Name="ApplicationManifest" DisplayName="Application Manifest" Visible="False">
         <StringProperty.DataSource>
             <DataSource Persistence="ProjectFileWithInterception" PersistedName="ApplicationManifest" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext" />
