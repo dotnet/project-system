@@ -1,8 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.Build.Framework.XamlTypes;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
@@ -10,27 +9,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     [ProjectSystemTrait]
     public class OutputTypeExValueProviderTests
     {
-        public static IEnumerable<object[]> ExeEnumValue
-        {
-            get
-            {
-                yield return new object[]
-                {
-                    new PageEnumValue(new EnumValue { Name = "Exe", DisplayName = "1" }),
-                    "1"
-                };
-            }
-        }
-
         [Theory]
         [InlineData("WinExe", "0")]
         [InlineData("Exe", "1")]
         [InlineData("Library", "2")]
         [InlineData("WinMDObj", "3")]
         [InlineData("AppContainerExe", "4")]
-        [InlineData("InvalidValue", null)]
-        [MemberData("ExeEnumValue", "1")]
-        public async void GetEvaluatedValue(object propertyValue, string expectedPropertyValue)
+        [InlineData("", "0")]
+        public async void GetEvaluatedValue(object outputTypePropertyValue, string expectedMappedValue)
         {
             var properties = ProjectPropertiesFactory.Create(
                 UnconfiguredProjectFactory.Create(),
@@ -38,30 +24,56 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
                 {
                     Category = ConfigurationGeneral.SchemaName,
                     PropertyName = ConfigurationGeneral.OutputTypeProperty,
-                    Value = propertyValue
+                    Value = outputTypePropertyValue
                 });
             var provider = new OutputTypeExValueProvider(properties);
 
             var actualPropertyValue = await provider.OnGetEvaluatedPropertyValueAsync(string.Empty, null);
-            Assert.Equal(expectedPropertyValue, actualPropertyValue);
+            Assert.Equal(expectedMappedValue, actualPropertyValue);
         }
 
         [Theory]
-        [InlineData("Exe")]
-        public async void SetValue(string propertyValue)
+        [InlineData("0", "WinExe")]
+        [InlineData("1", "Exe")]
+        [InlineData("2", "Library")]
+        [InlineData("3", "WinMDObj")]
+        [InlineData("4", "AppContainerExe")]
+        public async void SetValue(string incomingValue, string expectedOutputTypeValue)
         {
+            var setValues = new List<object>();
             var properties = ProjectPropertiesFactory.Create(
                 UnconfiguredProjectFactory.Create(),
                 new PropertyPageData()
                 {
                     Category = ConfigurationGeneral.SchemaName,
                     PropertyName = ConfigurationGeneral.OutputTypeProperty,
-                    Value = "InitialValue"
+                    Value = "InitialValue",
+                    SetValues = setValues
                 });
             var provider = new OutputTypeExValueProvider(properties);
 
-            var actualPropertyValue = await provider.OnSetPropertyValueAsync(propertyValue, null);
-            Assert.Equal(propertyValue, actualPropertyValue);
+            var actualPropertyValue = await provider.OnSetPropertyValueAsync(incomingValue, null);
+            Assert.Equal(setValues.Single(), expectedOutputTypeValue);
+        }
+
+        public async void SetValue_ThrowsKeyNotFoundException()
+        {
+            var setValues = new List<object>();
+            var properties = ProjectPropertiesFactory.Create(
+                UnconfiguredProjectFactory.Create(),
+                new PropertyPageData()
+                {
+                    Category = ConfigurationGeneral.SchemaName,
+                    PropertyName = ConfigurationGeneral.OutputTypeProperty,
+                    Value = "InitialValue",
+                    SetValues = setValues
+                });
+            var provider = new OutputTypeExValueProvider(properties);
+
+            await Assert.ThrowsAsync<KeyNotFoundException>(async () =>
+            {
+                await provider.OnSetPropertyValueAsync("InvalidValue", null);
+            });
         }
     }
 }

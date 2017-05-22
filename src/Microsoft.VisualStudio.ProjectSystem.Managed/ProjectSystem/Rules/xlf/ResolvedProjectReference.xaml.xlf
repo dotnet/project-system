@@ -8,8 +8,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedProjectReference|Description">
-        <source>Resolved reference</source>
-        <note />
+        <source>Reference Properties</source>
+        <note></note>
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">
         <source>Aliases</source>

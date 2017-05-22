@@ -9,9 +9,9 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|AdditionalFiles|Description">
-        <source>Additional file items</source>
-        <target state="translated">Elementi file aggiuntivi</target>
-        <note />
+        <source>File Properties</source>
+        <target state="needs-review-translation">Elementi file aggiuntivi</target>
+        <note></note>
       </trans-unit>
       <trans-unit id="Category|Advanced|DisplayName">
         <source>Advanced</source>

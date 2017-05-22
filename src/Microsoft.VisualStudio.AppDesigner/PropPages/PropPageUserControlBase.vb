@@ -816,24 +816,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Get
         End Property
 
-        Public ReadOnly Property OutputTypeProperty As VSLangProj.prjOutputType
-            Get
-                ' csproj.dll and msbprj.dll implement this Property so first try getting the output type
-                ' through the ProjectProperties. The new CPS based project system doesn't implement this 
-                ' interface. The output type is part of the properties on the BrowseObject and so get it from there.
-                If ProjectProperties IsNot Nothing Then
-                    Return ProjectProperties.OutputType
-                Else
-                    Dim obj As Object = TryGetNonCommonPropertyValue(GetPropertyDescriptor("OutputTypeEx"))
-                    Try
-                        Return CType(obj, VSLangProj.prjOutputType)
-                    Catch ex As Exception
-                        Return 0
-                    End Try
-                End If
-            End Get
-        End Property
-
         'Enables or disables the given control on the page.  However, if the control is associated with
         '  a property on the page, and that property is hidden or read-only, the enabled state of the control
         '  will not be changed.
@@ -2461,10 +2443,6 @@ NextControl:
         ''' See "About 'common' properties" in PropertyControlData for information on "common" properties.
         ''' </remarks>
         Protected Function GetCommonPropertyValueNative(PropertyName As String) As Object
-            If PropertyName.Equals("FullPath") Then
-                Return GetProjectPath()
-            End If
-
             Return GetCommonPropertyValueNative(GetCommonPropertyDescriptor(PropertyName))
         End Function
 
@@ -3359,19 +3337,7 @@ NextControl:
         ''' <returns></returns>
         ''' <remarks></remarks>
         Protected Function GetProjectPath() As String
-            ' csproj.dll and msbprj.dll implement this Property so first try getting the full path
-            ' through the ProjectProperties. The new CPS based project system doesn't implement this 
-            ' interface. The full path is part of the properties on the BrowseObject and so get it from there.
-            Dim fullPath As String
-            If ProjectProperties IsNot Nothing Then
-                fullPath = ProjectProperties.FullPath
-            Else
-                Dim obj As Object = TryGetNonCommonPropertyValue(GetPropertyDescriptor("FullPath"))
-                fullPath = CType(obj, String)
-            End If
-
-            ' Append a directory separator char as some callsites in Microsoft.VisualStudio.Editors.ClickOnce assume project path ends with it.
-            Return Common.AppendBackslash(fullPath)
+            Return CStr(GetCommonPropertyValueNative("FullPath")) 'CONSIDER: This won't work for all project types, e.g. ASP.NET when project path is a URL
         End Function
 
         ''' <summary>

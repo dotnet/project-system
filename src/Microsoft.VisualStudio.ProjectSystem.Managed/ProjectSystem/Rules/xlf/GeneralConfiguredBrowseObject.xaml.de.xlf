@@ -233,6 +233,16 @@
         <target state="new">When the build updates the project output</target>
         <note></note>
       </trans-unit>
+      <trans-unit id="StringProperty|LangVersion|DisplayName">
+        <source>CSharp Language Version</source>
+        <target state="new">CSharp Language Version</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|CodeAnalysisRuleSet|DisplayName">
+        <source> Code Analysis Rule set</source>
+        <target state="new"> Code Analysis Rule set</target>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>
