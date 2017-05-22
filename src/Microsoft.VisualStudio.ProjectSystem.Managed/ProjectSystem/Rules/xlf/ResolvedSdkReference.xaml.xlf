@@ -8,8 +8,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedSdkReference|Description">
-        <source>Resolved SDK reference</source>
-        <note />
+        <source>SDK Reference Properties</source>
+        <note></note>
       </trans-unit>
       <trans-unit id="StringProperty|AppXLocation|DisplayName">
         <source>App Package Location</source>

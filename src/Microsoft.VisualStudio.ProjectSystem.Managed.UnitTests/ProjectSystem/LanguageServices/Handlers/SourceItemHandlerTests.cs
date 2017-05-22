@@ -1,8 +1,10 @@
-﻿using System;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System;
 using System.Collections.Generic;
 using System.IO;
-using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
@@ -13,8 +15,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         [Fact]
         public void Constructor_NullAsProject_ThrowsArgumentNull()
         {
+            var context = IWorkspaceProjectContextFactory.Create();
+
             Assert.Throws<ArgumentNullException>("project", () => {
-                new SourceItemHandler((UnconfiguredProject)null);
+                new SourceItemHandler((UnconfiguredProject)null, context);
+            });
+        }
+
+        [Fact]
+        public void Constructor_NullAsContext_ThrowsArgumentNull()
+        {
+            var project = UnconfiguredProjectFactory.Create();
+
+            Assert.Throws<ArgumentNullException>("context", () => {
+                new SourceItemHandler(project, (IWorkspaceProjectContext)null);
+            });
+        }
+
+        [Fact]
+        public void Handle_NullAsVersion_ThrowsArgumentNull()
+        {
+            var handler = CreateInstance();
+            var projectChange = IProjectChangeDescriptionFactory.Create();
+
+            Assert.Throws<ArgumentNullException>("version", () => {
+                handler.Handle((IComparable)null, projectChange, true);
             });
         }
 
@@ -22,33 +47,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         public void Handle_NullAsProjectChange_ThrowsArgumentNull()
         {
             var handler = CreateInstance();
-            var context = IWorkspaceProjectContextFactory.Create();
 
             Assert.Throws<ArgumentNullException>("projectChange", () => {
-                handler.Handle((IProjectChangeDescription)null, context, true);
-            });
-        }
-
-
-        [Fact]
-        public void Handle_NullAsContext_ThrowsArgumentNull()
-        {
-            var handler = CreateInstance();
-            var projectChange = IProjectChangeDescriptionFactory.Create();
-
-            Assert.Throws<ArgumentNullException>("context", () => {
-                handler.Handle(projectChange, (IWorkspaceProjectContext)null, true);
-            });
-        }
-
-        [Fact]
-        public void OnContextReleasedAsync_NullAsContext_ThrowsArgumentNull()
-        {
-            var handler = CreateInstance();
-            var context = IProjectChangeDescriptionFactory.Create();
-
-            Assert.Throws<ArgumentNullException>("context", () => {
-                handler.OnContextReleasedAsync((IWorkspaceProjectContext)null);
+                handler.Handle(10, (IProjectChangeDescription)null, true);
             });
         }
 
@@ -62,19 +63,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var project = UnconfiguredProjectFactory.Create(filePath: @"C:\Myproject.csproj");
             var context = IWorkspaceProjectContextFactory.CreateForSourceFiles(project, onSourceFileAdded, onSourceFileRemoved);
 
-            var handler = new SourceItemHandler(project);
+            var handler = new SourceItemHandler(project, context);
             var projectDir = Path.GetDirectoryName(project.FullPath);
-            var added = BuildOptions.FromCommonCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"C:\file1.cs", @"C:\file2.cs", @"C:\file1.cs" }, baseDirectory: projectDir, sdkDirectory: null));
-            var empty = BuildOptions.FromCommonCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
+            var added = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"C:\file1.cs", @"C:\file2.cs", @"C:\file1.cs" }, baseDirectory: projectDir, sdkDirectory: null));
+            var empty = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
 
-            handler.Handle(added: added, removed: empty, context: context, isActiveContext: true);
+            handler.Handle(10, added: added, removed: empty, isActiveContext: true);
 
             Assert.Equal(2, sourceFilesPushedToWorkspace.Count);
             Assert.Contains(@"C:\file1.cs", sourceFilesPushedToWorkspace);
             Assert.Contains(@"C:\file2.cs", sourceFilesPushedToWorkspace);
 
-            var removed = BuildOptions.FromCommonCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"C:\file1.cs", @"C:\file1.cs" }, baseDirectory: projectDir, sdkDirectory: null));
-            handler.Handle(added: empty, removed: removed, context: context, isActiveContext: true);
+            var removed = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"C:\file1.cs", @"C:\file1.cs" }, baseDirectory: projectDir, sdkDirectory: null));
+            handler.Handle(10, added: empty, removed: removed, isActiveContext: true);
 
             Assert.Equal(1, sourceFilesPushedToWorkspace.Count);
             Assert.Contains(@"C:\file2.cs", sourceFilesPushedToWorkspace);
@@ -90,22 +91,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var project = UnconfiguredProjectFactory.Create(filePath: @"C:\ProjectFolder\Myproject.csproj");
             var context = IWorkspaceProjectContextFactory.CreateForSourceFiles(project, onSourceFileAdded, onSourceFileRemoved);
 
-            var handler = new SourceItemHandler(project);
+            var handler = new SourceItemHandler(project, context);
             var projectDir = Path.GetDirectoryName(project.FullPath);
-            var added = BuildOptions.FromCommonCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"file1.cs", @"..\ProjectFolder\file1.cs" }, baseDirectory: projectDir, sdkDirectory: null));
-            var removed = BuildOptions.FromCommonCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
+            var added = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"file1.cs", @"..\ProjectFolder\file1.cs" }, baseDirectory: projectDir, sdkDirectory: null));
+            var removed = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
 
-            handler.Handle(added: added, removed: removed, context: context, isActiveContext: true);
+            handler.Handle(10, added: added, removed: removed, isActiveContext: true);
 
             Assert.Equal(1, sourceFilesPushedToWorkspace.Count);
             Assert.Contains(@"C:\ProjectFolder\file1.cs", sourceFilesPushedToWorkspace);
         }
 
-        private SourceItemHandler CreateInstance(UnconfiguredProject project = null)
+        private SourceItemHandler CreateInstance(UnconfiguredProject project = null, IWorkspaceProjectContext context = null)
         {
             project = project ?? UnconfiguredProjectFactory.Create();
+            context = context ?? IWorkspaceProjectContextFactory.Create();
 
-            return new SourceItemHandler(project);
+            return new SourceItemHandler(project, context);
         }
     }
 }

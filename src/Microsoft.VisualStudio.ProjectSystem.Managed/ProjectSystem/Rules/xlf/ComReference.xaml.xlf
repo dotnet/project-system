@@ -8,8 +8,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|ComReference|Description">
-        <source>COM reference properties</source>
-        <note />
+        <source>COM Reference Properties</source>
+        <note></note>
       </trans-unit>
       <trans-unit id="StringProperty|Guid|DisplayName">
         <source>CLSID</source>
