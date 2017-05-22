@@ -142,7 +142,7 @@
     <value xml:space="preserve">ConfigurationTableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;ConfigurationComboBox.ZOrder">
-    <value xml:space="preserve">0</value>
+    <value xml:space="preserve">1</value>
   </data>
   <data name="PlatformLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -160,7 +160,7 @@
     <value>48, 13</value>
   </data>
   <data name="PlatformLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>0</value>
   </data>
   <data name="PlatformLabel.Text">
     <value xml:space="preserve">Platfor&amp;m:</value>
@@ -190,7 +190,7 @@
     <value>159, 21</value>
   </data>
   <data name="PlatformComboBox.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;PlatformComboBox.Name">
     <value xml:space="preserve">PlatformComboBox</value>
@@ -217,7 +217,7 @@
     <value>863, 1</value>
   </data>
   <data name="ConfigDividerLine.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;ConfigDividerLine.Name">
     <value xml:space="preserve">ConfigDividerLine</value>
@@ -229,7 +229,7 @@
     <value xml:space="preserve">ConfigurationPanel</value>
   </data>
   <data name="&gt;&gt;ConfigDividerLine.ZOrder">
-    <value xml:space="preserve">0</value>
+    <value xml:space="preserve">1</value>
   </data>
   <data name="ConfigurationLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -262,7 +262,7 @@
     <value xml:space="preserve">ConfigurationTableLayoutPanel</value>
   </data>
   <data name="&gt;&gt;ConfigurationLabel.ZOrder">
-    <value xml:space="preserve">1</value>
+    <value xml:space="preserve">0</value>
   </data>
   <data name="PropertyPagePanel.AccessibleName">
     <value xml:space="preserve">Property Page Panel</value>
@@ -283,7 +283,7 @@
     <value>863, 474</value>
   </data>
   <data name="PropertyPagePanel.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="PropertyPagePanel.Text">
     <value xml:space="preserve">PropertyPagePanel</value>
@@ -364,7 +364,7 @@
     <value>216, 27</value>
   </data>
   <data name="PLatformTableLayoutPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;PLatformTableLayoutPanel.Name">
     <value xml:space="preserve">PLatformTableLayoutPanel</value>
@@ -403,7 +403,7 @@
     <value xml:space="preserve">ConfigurationPanel</value>
   </data>
   <data name="&gt;&gt;ConfigurationFlowLayoutPanel.ZOrder">
-    <value xml:space="preserve">1</value>
+    <value xml:space="preserve">0</value>
   </data>
   <data name="ConfigurationPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -421,7 +421,7 @@
     <value>863, 43</value>
   </data>
   <data name="ConfigurationPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;ConfigurationPanel.Name">
     <value xml:space="preserve">ConfigurationPanel</value>
@@ -454,7 +454,7 @@
     <value>891, 568</value>
   </data>
   <data name="PropPageDesignerViewLayoutPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;PropPageDesignerViewLayoutPanel.Name">
     <value xml:space="preserve">PropPageDesignerViewLayoutPanel</value>

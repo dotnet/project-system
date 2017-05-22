@@ -644,6 +644,13 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                         FocusFirstOrLastPropertyPageControl(True)
                     End If
 
+                    ' For configuration pages, we need to ensure the configuration panel recieves focus
+                    ' and not the property page itself. This allows a screen reader to give the page context
+                    ' before reading the values of any properties themselves.
+                    If _isConfigPage Then
+                        SelectNextControl(ConfigurationPanel, forward:=True, tabStopOnly:=True, nested:=True, wrap:=True)
+                    End If
+
                     SetUndoRedoCleanState()
 
                 Catch ex As Exception When ReportWithoutCrash(ex, NameOf(ActivatePage), NameOf(PropPageDesignerView))
