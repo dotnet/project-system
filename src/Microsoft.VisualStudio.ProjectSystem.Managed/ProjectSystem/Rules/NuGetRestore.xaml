@@ -90,4 +90,16 @@
                     Visible="False" 
                     ReadOnly="True" />
 
+    <StringProperty Name="RestoreSources" 
+                    Visible="False" 
+                    ReadOnly="True" />
+
+    <StringProperty Name="RestoreFallbackFolders" 
+                    Visible="False" 
+                    ReadOnly="True" />
+
+    <StringProperty Name="RestorePackagesPath" 
+                    Visible="False" 
+                    ReadOnly="True" />
+
 </Rule>
