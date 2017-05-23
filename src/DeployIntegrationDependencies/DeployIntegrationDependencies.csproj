@@ -20,6 +20,7 @@
     <PackageReference Include="Microsoft.VisualStudio.IntegrationTest.Utilities" Version="[$(MicrosoftVisualStudioIntegrationTestUtilitiesVersion)]" />
     <PackageReference Include="Microsoft.VisualStudio.LanguageServices" Version="[$(MicrosoftVisualStudioLanguageServicesVersion)]" />
     <PackageReference Include="RoslynTools.DownloadRoslynVsixes" Version="$(RoslynToolsDownloadRoslynVsixesVersion)" />
+    <PackageReference Include="RoslynTools.Microsoft.ModifyVsixManifest" Version="$(RoslynToolsMicrosoftModifyVsixManifestVersion)" />
     <PackageReference Include="RoslynTools.Microsoft.VSIXExpInstaller" Version="$(RoslynToolsMicrosoftVSIXExpInstallerVersion)" />
     <PackageReference Include="System.Reflection.Metadata" Version="[$(SystemReflectionMetadataVersion)]" />
     <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="$(SystemRuntimeInteropServicesRuntimeInformationVersion)" />
