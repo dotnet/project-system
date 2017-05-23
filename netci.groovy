@@ -56,6 +56,7 @@ build.cmd /no-node-reuse /no-deploy-extension /${configuration.toLowerCase()}
         def newVsiJob = job(newVsiJobName) {
             // This opens the set of build steps that will be run.
             steps {
+                
                 // Indicates that a batch script should be run with the build string (see above)
                 // Also available is:
                 // shell (for unix scripting)
