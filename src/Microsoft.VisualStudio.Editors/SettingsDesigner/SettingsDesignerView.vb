@@ -435,7 +435,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             _toolbarPanel.SetToolbar(VsUIShell, Constants.MenuConstants.GUID_SETTINGSDESIGNER_MenuGroup, Constants.MenuConstants.IDM_VS_TOOLBAR_Settings)
             _toolbarPanel.BringToFront()
 
-            _descriptionLinkLabel.SetThemedColor(TryCast(VsUIShell, IVsUIShell5))
+            _descriptionLinkLabel.SetThemedColor(TryCast(VsUIShell, IVsUIShell5), supportsTheming:=False)
 
         End Sub
 

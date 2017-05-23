@@ -20,12 +20,20 @@ Public Class VSThemedLinkLabel
     End Sub
 
     Public Sub SetThemedColor(vsUIShell5 As IVsUIShell5)
+        SetThemedColor(vsUIShell5, supportsTheming:=True)
+    End Sub
 
-        ' The default value is the actual value of DiagReportLinkTextHover and DiagReportLinkText defined by Dev11
-        _vsThemedLinkColorHover = ShellUtil.GetEnvironmentThemeColor(vsUIShell5, "PanelHyperlinkHover", __THEMEDCOLORTYPE.TCT_Background, SystemColors.HotTrack)
-        _vsThemedLinkColor = ShellUtil.GetEnvironmentThemeColor(vsUIShell5, "PanelHyperlink", __THEMEDCOLORTYPE.TCT_Background, SystemColors.HotTrack)
+    Public Sub SetThemedColor(vsUIShell5 As IVsUIShell5, supportsTheming As Boolean)
+        If supportsTheming Then
+            _vsThemedLinkColorHover = ShellUtil.GetEnvironmentThemeColor(vsUIShell5, "PanelHyperlinkHover", __THEMEDCOLORTYPE.TCT_Background, SystemColors.HotTrack)
+            _vsThemedLinkColor = ShellUtil.GetEnvironmentThemeColor(vsUIShell5, "PanelHyperlink", __THEMEDCOLORTYPE.TCT_Background, SystemColors.HotTrack)
+            ActiveLinkColor = ShellUtil.GetEnvironmentThemeColor(vsUIShell5, "PanelHyperlinkPressed", __THEMEDCOLORTYPE.TCT_Background, SystemColors.HotTrack)
+        Else
+            _vsThemedLinkColorHover = SystemColors.HotTrack
+            _vsThemedLinkColor = SystemColors.HotTrack
+            ActiveLinkColor = SystemColors.HotTrack
+        End If
 
-        ActiveLinkColor = ShellUtil.GetEnvironmentThemeColor(vsUIShell5, "PanelHyperlinkPressed", __THEMEDCOLORTYPE.TCT_Background, SystemColors.HotTrack)
         LinkColor = _vsThemedLinkColor
         LinkBehavior = LinkBehavior.HoverUnderline
     End Sub
