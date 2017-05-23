@@ -642,12 +642,12 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     If _isNativeHostedPropertyPage Then
                         'Try to set initial focus to the property page, not the configuration panel
                         FocusFirstOrLastPropertyPageControl(True)
-                    End If
-
-                    ' For configuration pages, we need to ensure the configuration panel recieves focus
-                    ' and not the property page itself. This allows a screen reader to give the page context
-                    ' before reading the values of any properties themselves.
-                    If _isConfigPage Then
+                    Else
+                        ' Select the configuration panel to ensure it gains focus. For configuration pages, this
+                        ' ensures that the configuration panel receives focus and allows a screen reader to give
+                        ' the page context before reading the values of any properties themselves. For other pages
+                        ' this ensures that the first control of the page receives focus, which allows tab navigation
+                        ' to work in a reliable and predicable manner for users who can only use the keyboard.
                         SelectNextControl(ConfigurationPanel, forward:=True, tabStopOnly:=True, nested:=True, wrap:=True)
                     End If
 
@@ -1554,8 +1554,12 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     Return True
                 End If
             Else
-                If (SelectNextControl(ActiveControl, forward, True, True, True)) Then
+                If (SelectNextControl(ActiveControl, forward, tabStopOnly:=True, nested:=True, wrap:=False)) Then
                     Return True
+                Else
+                    Dim appDesView As ApplicationDesignerView = CType(_loadedPageSite.Owner, ApplicationDesignerView)
+                    appDesView.SelectedItem.Focus()
+                    appDesView.SelectedItem.FocusedFromKeyboardNav = True
                 End If
             End If
 
