@@ -500,7 +500,13 @@
     <!-- Copy manifests to be picked up by NuGet insertion packages -->
     <Copy SourceFiles="source.extension.vsixmanifest" 
           DestinationFolder="$(OutDir)\Manifests\$(MSBuildProjectName)"
-          Condition="'$(CreateVsixContainer)' == 'true'">
+          SkipUnchangedFiles="$(SkipCopyUnchangedFiles)"
+          OverwriteReadOnlyFiles="$(OverwriteReadOnlyFiles)"
+          Retries="$(CopyRetryCount)"
+          RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)"
+          UseHardlinksIfPossible="$(CreateHardLinksForCopyFilesToOutputDirectoryIfPossible)"
+          Condition="'$(CreateVsixContainer)' == 'true'"
+          >
       
       <Output TaskParameter="DestinationFiles" ItemName="FileWrites"/>
     </Copy>
@@ -514,7 +520,13 @@
 
     <!-- Copy rule files for testing and setup authoring purposes -->
     <Copy SourceFiles="@(_XamlPropertyRuleToCopy)"
-          DestinationFiles="@(_XamlPropertyRuleToCopy->'$(OutDir)\Rules\%(RecursiveDir)%(Filename)%(Extension)')">
+          DestinationFiles="@(_XamlPropertyRuleToCopy->'$(OutDir)\Rules\%(RecursiveDir)%(Filename)%(Extension)')"
+          SkipUnchangedFiles="$(SkipCopyUnchangedFiles)"
+          OverwriteReadOnlyFiles="$(OverwriteReadOnlyFiles)"
+          Retries="$(CopyRetryCount)"
+          RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)"
+          UseHardlinksIfPossible="$(CreateHardLinksForCopyFilesToOutputDirectoryIfPossible)"
+          >
       
       <Output TaskParameter="DestinationFiles" ItemName="FileWrites"/>      
     </Copy>
