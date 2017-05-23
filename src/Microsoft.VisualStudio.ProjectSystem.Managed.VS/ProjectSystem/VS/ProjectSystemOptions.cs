@@ -16,23 +16,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Guid("9B164E40-C3A2-4363-9BC5-EB4039DEF653")]
         private class SVsSettingsPersistenceManager { }
 
-        private const string FastUpToDateDisabledSettingKey = @"ManagedProjectSystem\FastUpToDateCheckDisabled";
+        private const string FastUpToDateEnabledSettingKey = @"ManagedProjectSystem\FastUpToDateCheckEnabled";
         private const string VerboseFastUpToDateLoggingSettingKey = @"ManagedProjectSystem\VerboseFastUpToDateLogging";
 
-        private readonly IServiceProvider _serviceProvider;
+        private readonly IVsOptionalService<SVsSettingsPersistenceManager, ISettingsManager> _settingsManager;
         private readonly IEnvironmentHelper _environment;
 
         [ImportingConstructor]
-        public ProjectSystemOptions(IEnvironmentHelper environment, [Import(typeof(SVsServiceProvider))]IServiceProvider serviceProvider)
+        private ProjectSystemOptions(IEnvironmentHelper environment, IVsOptionalService<SVsSettingsPersistenceManager, ISettingsManager> settingsManager)
         {
             Requires.NotNull(environment, nameof(environment));
-            Requires.NotNull(serviceProvider, nameof(serviceProvider));
 
             _environment = environment;
-            _serviceProvider = serviceProvider;
+            _settingsManager = settingsManager;
         }
-
-        private ISettingsManager SettingsManager => _serviceProvider.GetService<ISettingsManager, SVsSettingsPersistenceManager>();
 
         public bool IsProjectOutputPaneEnabled
         {
@@ -46,16 +43,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
         }
 
-        public async Task<bool> GetIsFastUpToDateCheckDisabledAsync()
+        public async Task<bool> GetIsFastUpToDateCheckEnabledAsync()
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-            return SettingsManager?.GetValueOrDefault(FastUpToDateDisabledSettingKey, false) ?? false;
+            return _settingsManager.Value?.GetValueOrDefault(FastUpToDateEnabledSettingKey, true) ?? true;
         }
 
         public async Task<bool> GetVerboseFastUpToDateLoggingAsync()
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-            return SettingsManager?.GetValueOrDefault(VerboseFastUpToDateLoggingSettingKey, false) ?? false;
+            return _settingsManager.Value?.GetValueOrDefault(VerboseFastUpToDateLoggingSettingKey, false) ?? false;
         }
 
         private bool IsEnabled(string variable)

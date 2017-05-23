@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <value>
         ///     <see langword="true"/> if the project fast up to date check is enabled; otherwise, <see langword="false"/>
         /// </value>
-        Task<bool> GetIsFastUpToDateCheckDisabledAsync();
+        Task<bool> GetIsFastUpToDateCheckEnabledAsync();
 
         /// <summary>
         ///     Gets a value indicating if fast up to date check logging should be verbose.

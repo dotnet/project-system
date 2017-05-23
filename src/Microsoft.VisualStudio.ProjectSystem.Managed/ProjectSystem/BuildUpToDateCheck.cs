@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using Microsoft.VisualStudio.ProjectSystem.Build;
-using Microsoft.VisualStudio.ProjectSystem.Logging;
 using Microsoft.VisualStudio.ProjectSystem.References;
 using System;
 using System.Collections.Generic;
@@ -10,10 +9,12 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Build.Framework;
+using System.Collections.Immutable;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     [Export(typeof(IBuildUpToDateCheckProvider))]
     internal class BuildUpToDateCheck : IBuildUpToDateCheckProvider
     {
@@ -34,8 +35,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             ConfiguredProject configuredProject,
             ProjectProperties projectProperties,
             [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider projectItemProvider,
-            [Import(AllowDefault = true)] IProjectItemSchemaService projectItemSchema,
-            [Import(AllowDefault = true)] Lazy<IFileTimestampCache> fileTimestampCache)
+            IProjectItemSchemaService projectItemSchema,
+            Lazy<IFileTimestampCache> fileTimestampCache)
         {
             _projectLockService = projectLockService;
             _projectSystemOptions = projectSystemOptions;
@@ -48,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private void Log(TextWriter logger, string message, params object[] values) => logger?.WriteLine("FastUpToDate: " + string.Format(message, values));
 
-        private DateTime GetLatestTimestamp(TextWriter logger, List<string> paths, IDictionary<string, DateTime> timestampCache)
+        private DateTime? GetLatestTimestamp(TextWriter logger, IEnumerable<string> paths, IDictionary<string, DateTime> timestampCache)
         {
             var latestTime = DateTime.MinValue;
 
@@ -56,15 +57,17 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 if (!timestampCache.TryGetValue(path, out var time))
                 {
-                    if (File.Exists(path))
+                    var info = new FileInfo(path);
+                    if (info.Exists)
                     {
-                        time = File.GetLastWriteTimeUtc(path);
+                        time = info.LastWriteTimeUtc;
                         timestampCache[path] = time;
                         Log(logger, "Path '{0}' had live timestamp '{1}'.", path, time);
                     }
                     else
                     {
                         Log(logger, "Path '{0}' did not exist.", path);
+                        return null;
                     }
                 }
                 else
@@ -81,13 +84,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return latestTime;
         }
 
-        private async Task CheckReferencesAsync<TUnresolvedReference, TResolvedReference>(TextWriter logger, string name, IResolvableReferencesService<TUnresolvedReference, TResolvedReference> service, List<string> inputs)
+        private async Task CheckReferencesAsync<TUnresolvedReference, TResolvedReference>(TextWriter logger, string name, IResolvableReferencesService<TUnresolvedReference, TResolvedReference> service, HashSet<string> inputs)
             where TUnresolvedReference : IProjectItem, TResolvedReference
             where TResolvedReference : class, IReference
         {
-            Log(logger, "Checking reference type '{0}'.", name);
             if (service != null)
             {
+                Log(logger, "Checking reference type '{0}'.", name);
+
                 foreach (var resolvedReference in await service.GetResolvedReferencesAsync())
                 {
                     var fullPath = await resolvedReference.GetFullPathAsync();
@@ -99,6 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public async Task<bool> IsUpToDateAsync(BuildAction buildAction, TextWriter logger, CancellationToken cancellationToken = default(CancellationToken))
         {
+            EventHandler designTimeBuildNotifier = (sender, e) => { Log(logger, "Design time build started!"); };
             cancellationToken.ThrowIfCancellationRequested();
 
             if (buildAction != BuildAction.Build)
@@ -114,17 +119,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             using (var access = await _projectLockService.ReadLockAsync(cancellationToken))
             {
                 var project = await access.GetProjectAsync(_configuredProject, cancellationToken);
-
-                Log(logger, "Starting check for project '{0}'.", project.FullPath);
-
                 var timestampCache = _fileTimestampCache != null ? _fileTimestampCache.Value.TimestampCache : new Dictionary<string, DateTime>(StringComparer.OrdinalIgnoreCase);
 
-                if (_projectItemsSchema == null)
-                {
-                    Log(logger, "Skipping because '{0}' component could not be found.", typeof(IProjectItemSchemaService).FullName);
-                    Report.IfNotPresent(_projectItemsSchema);
-                    return false;
-                }
+                Log(logger, "Starting check for project '{0}'.", project.FullPath);
 
                 ConfigurationGeneral general = await _projectProperties.GetConfigurationGeneralPropertiesAsync();
 
@@ -134,13 +131,20 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     return false;
                 }
 
-                var inputs = new List<string>();
+                var inputs = new HashSet<string>();
 
                 // add the project file
                 if (!string.IsNullOrEmpty(_configuredProject.UnconfiguredProject.FullPath))
                 {
                     inputs.Add(project.FullPath);
                     Log(logger, "Adding input project file {0}.", project.FullPath);
+                }
+
+                IEnumerable<string> imports = project.Imports.Select(i => i.ImportedProject.FullPath);
+                foreach (var import in imports)
+                {
+                    Log(logger, "Adding input project import {0}.", import);
+                    inputs.Add(import);
                 }
 
                 var projectItemSchemaValue = (await _projectItemsSchema.GetSchemaAsync(cancellationToken)).Value;
@@ -174,9 +178,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 }
 
                 var latestInput = GetLatestTimestamp(logger, inputs, timestampCache);
-                Log(logger, "Lastest write timestamp on input is {0}.", latestInput);
+                if (latestInput != null)
+                {
+                    Log(logger, "Lastest write timestamp on input is {0}.", latestInput.Value);
+                }
 
-                var outputs = new List<string>();
+                var outputs = new HashSet<string>();
 
                 outputs.AddRange(project.GetItems("UpToDateCheckOutput")
                     .Select(file => file.GetMetadataValue("FullPath")));
@@ -194,9 +201,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 }
 
                 var latestOutput = GetLatestTimestamp(logger, outputs, timestampCache);
-                Log(logger, "Lastest write timestamp on output is {0}.", latestOutput);
+                if (latestOutput != null)
+                {
+                    Log(logger, "Lastest write timestamp on output is {0}.", latestOutput.Value);
+                }
 
-                var isUpToDate = latestOutput >= latestInput;
+                var isUpToDate = latestOutput != null && latestInput != null && latestOutput.Value >= latestInput.Value;
                 Log(logger, "Project is{0} up to date.", (!isUpToDate ? " not" : ""));
 
                 return isUpToDate;
@@ -204,6 +214,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         public async Task<bool> IsUpToDateCheckEnabledAsync(CancellationToken cancellationToken = default(CancellationToken)) =>
-            !await _projectSystemOptions.GetIsFastUpToDateCheckDisabledAsync();
+            await _projectSystemOptions.GetIsFastUpToDateCheckEnabledAsync();
     }
 }

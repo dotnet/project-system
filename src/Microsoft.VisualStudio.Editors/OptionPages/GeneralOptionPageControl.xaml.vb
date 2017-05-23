@@ -18,7 +18,7 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
 
             Dim binding = New Binding() With {
                 .Source = _generalOptions,
-                .Path = New Windows.PropertyPath(NameOf(GeneralOptions.FastUpToDateCheckDisabled)),
+                .Path = New Windows.PropertyPath(NameOf(GeneralOptions.FastUpToDateCheckEnabled)),
                 .UpdateSourceTrigger = UpdateSourceTrigger.Explicit
             }
 

@@ -49,23 +49,23 @@ Namespace My.Resources
                 Return resourceMan
             End Get
         End Property
-        
+
         '''<summary>
         '''  Overrides the current thread's CurrentUICulture property for all
         '''  resource lookups using this strongly typed resource class.
         '''</summary>
-        <Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>  _
+        <Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>
         Public Shared Property Culture() As Global.System.Globalization.CultureInfo
             Get
                 Return resourceCulture
             End Get
             Set
-                resourceCulture = value
+                resourceCulture = Value
             End Set
         End Property
-        
+
         '''<summary>
-        '''  Looks up a localized string similar to Always call MSBuild, even if a project appears to be up to date..
+        '''  Looks up a localized string similar to Don&apos;t call MSBuild if a project appears to be up to date..
         '''</summary>
         Public Shared ReadOnly Property General_FastUpToDateCheck() As String
             Get
