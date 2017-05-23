@@ -21,60 +21,73 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         }
 
         /// <summary>
-        ///     Writes the specified text, followed by the current line terminator, 
+        ///     If <see cref="IsEnabled"/> is <see langword="true"/>, writes 
+        ///     the specified text, followed by the current line terminator, 
         ///     to the log.
         /// </summary>
         void WriteLine(string text);
 
         /// <summary>
-        ///     Writes the text representation of the specified object, 
-        ///     followed by the current line terminator, to the log using the 
-        ///     specified format information.
+        ///     If <see cref="IsEnabled"/> is <see langword="true"/>, writes 
+        ///     the text representation of the specified object, followed by 
+        ///     the current line terminator, to the log using the specified 
+        ///     format information.
         /// </summary>
         /// <exception cref="ArgumentNullException">
-        ///     <paramref name="format"/> is <see langword="null"/>.
+        ///      <see cref="IsEnabled"/> is <see langword="true"/> and 
+        ///      <paramref name="format"/> is <see langword="null"/>.
         /// </exception>
         /// <exception cref="FormatException">
-        ///     The format specification in <paramref name="format"/> is invalid.
+        ///     <see cref="IsEnabled"/> is <see langword="true"/> and the format 
+        ///     specification in <paramref name="format"/> is invalid.
         /// </exception>
         void WriteLine(string format, object argument);
 
         /// <summary>
-        ///     Writes the text representation of the specified objects, 
-        ///     followed by the current line terminator, to the log using the 
-        ///     specified format information.
+        ///     If <see cref="IsEnabled"/> is <see langword="true"/>, writes 
+        ///     the text representation of the specified objects, followed by 
+        ///     the current line terminator, to the log using the specified 
+        ///     format information.
         /// </summary>
         /// <exception cref="ArgumentNullException">
-        ///     <paramref name="format"/> is <see langword="null"/>.
+        ///      <see cref="IsEnabled"/> is <see langword="true"/> and 
+        ///      <paramref name="format"/> is <see langword="null"/>.
         /// </exception>
         /// <exception cref="FormatException">
-        ///     The format specification in <paramref name="format"/> is invalid.
+        ///     <see cref="IsEnabled"/> is <see langword="true"/> and the format 
+        ///     specification in <paramref name="format"/> is invalid.
         /// </exception>
         void WriteLine(string format, object argument1, object argument2);
 
         /// <summary>
-        ///     Writes the text representation of the specified objects, 
-        ///     followed by the current line terminator, to the log using the 
-        ///     specified format information.
+        ///     If <see cref="IsEnabled"/> is <see langword="true"/>, writes 
+        ///     the text representation of the specified objects, followed by 
+        ///     the current line terminator, to the log using the specified 
+        ///     format information.
         /// </summary>
         /// <exception cref="ArgumentNullException">
-        ///     <paramref name="format"/> is <see langword="null"/>.
+        ///      <see cref="IsEnabled"/> is <see langword="true"/> and 
+        ///      <paramref name="format"/> is <see langword="null"/>.
         /// </exception>
         /// <exception cref="FormatException">
-        ///     The format specification in <paramref name="format"/> is invalid.
+        ///     <see cref="IsEnabled"/> is <see langword="true"/> and the format 
+        ///     specification in <paramref name="format"/> is invalid.
         /// </exception>
         void WriteLine(string format, object argument1, object argument2, object argument3);
 
         /// <summary>
-        ///     Writes the text representation of the specified array of objects, 
-        ///     followed by the current line terminator, to the log using the 
-        ///     specified format information.
+        ///     If <see cref="IsEnabled"/> is <see langword="true"/>, writes the 
+        ///     text representation of the specified array of objects, followed 
+        ///     by the current line terminator, to the log using the specified 
+        ///     format information.
         /// </summary>
         /// <exception cref="ArgumentNullException">
-        ///     <paramref name="format"/> is <see langword="null"/>.
+        ///      <see cref="IsEnabled"/> is <see langword="true"/> and 
+        ///      <paramref name="format"/> is <see langword="null"/>.
         /// </exception>
         /// <exception cref="FormatException">
-        ///     The format specification in <paramref name="format"/> is invalid.
+        ///     <see cref="IsEnabled"/> is <see langword="true"/> and the format 
+        ///     specification in <paramref name="format"/> is invalid.
         /// </exception>
         void WriteLine(string format, params object[] arguments);
     }

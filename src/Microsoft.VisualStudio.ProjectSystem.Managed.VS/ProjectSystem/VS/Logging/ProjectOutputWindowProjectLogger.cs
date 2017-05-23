@@ -33,6 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
         {
             get { return _options.IsProjectOutputPaneEnabled; }
         }
+
         public void WriteLine(string text)
         {
             WriteLine(new FormatArray(text));
@@ -62,6 +63,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
         {
             if (IsEnabled)
             {
+                string text = formatArray.Text + Environment.NewLine;
+
                 // Extremely naive implementation of a Windows Pane logger - the assumption here is that text is rarely written,
                 // so transitions to the UI thread are uncommon and are fire and forget. If we start writing to this a lot (such 
                 // as via build), then we'll need to implement a better queueing mechanism.
@@ -71,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
                     IVsOutputWindowPane pane = await _outputWindowProvider.GetOutputWindowPaneAsync()
                                                                           .ConfigureAwait(true);
 
-                    pane.OutputStringNoPump(formatArray.Text + Environment.NewLine);
+                    pane.OutputStringNoPump(text);
 
                 }, options: ForkOptions.HideLocks | ForkOptions.StartOnMainThread);
             }
