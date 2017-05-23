@@ -86,4 +86,8 @@
                     Visible="False" 
                     ReadOnly="True" />
 
+    <StringProperty Name="EmitAssetsLogMessages" 
+                    Visible="False" 
+                    ReadOnly="True" />
+
 </Rule>
