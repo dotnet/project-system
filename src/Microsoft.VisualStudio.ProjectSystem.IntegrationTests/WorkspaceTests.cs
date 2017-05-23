@@ -34,9 +34,6 @@ Class Program
     Private e As Exception
 End Class");
             var path = VisualStudio.SolutionExplorer.SolutionFileFullPath;
-            VisualStudio.SolutionExplorer.CloseSolution(saveFirst: true);
-            VisualStudio.SolutionExplorer.OpenSolution(path);
-            VisualStudio.SolutionExplorer.OpenFile(testProj, "Class1.vb");
             VisualStudio.Editor.PlaceCaret("Exception");
             VisualStudio.WaitForApplicationIdle();
             VisualStudio.Editor.Verify.CurrentTokenType(tokenType: "class name");

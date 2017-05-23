@@ -36,6 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
             VisualStudio.WaitForApplicationIdle();
             VisualStudio.WaitForNoErrorsInErrorList();
 
+            // added to work around https://github.com/dotnet/project-system/issues/2256
             VisualStudio.SolutionExplorer.BuildSolution(waitForBuildToFinish: true);
             var path = VisualStudio.SolutionExplorer.SolutionFileFullPath;
             VisualStudio.SolutionExplorer.CloseSolution();
