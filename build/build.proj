@@ -113,9 +113,9 @@
       <BinariesDirectory>$([System.IO.Path]::GetFullPath('$(RepositoryRootDirectory)bin\$(Configuration)\'))</BinariesDirectory>
     </PropertyGroup>
 
-    <Exec Command="SET VisualBasicDesignTimeTargetsPath=$(BinariesDirectory)Rules\Microsoft.VisualBasic.DesignTime.targets"/>  
-    <Exec Command="SET FSharpDesignTimeTargetsPath=$(BinariesDirectory)Rules\Microsoft.FSharp.DesignTime.targets"/>  
-    <Exec Command="SET CSharpDesignTimeTargetsPath=$(BinariesDirectory)Rules\Microsoft.CSharp.DesignTime.targets"/>  
+    <Exec Command="SETX VisualBasicDesignTimeTargetsPath $(BinariesDirectory)Rules\Microsoft.VisualBasic.DesignTime.targets"/>  
+    <Exec Command="SETX FSharpDesignTimeTargetsPath $(BinariesDirectory)Rules\Microsoft.FSharp.DesignTime.targets"/>  
+    <Exec Command="SETX CSharpDesignTimeTargetsPath $(BinariesDirectory)Rules\Microsoft.CSharp.DesignTime.targets"/>  
 
     <PropertyGroup>
       <DownloadRoslynVsixesExe>$(NUGET_PACKAGES)\roslyntools.downloadroslynvsixes\$(RoslynToolsDownloadRoslynVsixesVersion)\tools\DownloadRoslynVsixes.exe</DownloadRoslynVsixesExe>
@@ -126,7 +126,7 @@
       <VsixExpInstallerExe>$(NUGET_PACKAGES)\roslyntools.microsoft.vsixexpinstaller\$(RoslynToolsMicrosoftVSIXExpInstallerVersion)\tools\VsixExpInstaller.exe</VsixExpInstallerExe>
       <VsixExpInstallerArgs>-rootSuffix:ProjectSystem -vsInstallDir:"$([System.IO.Path]::GetFullPath('$(MSBuildBinPath)\..\..\..'))"</VsixExpInstallerArgs>
       <ModifyVsixManifestToolExe>$(NUGET_PACKAGES)\roslyntools.microsoft.modifyvsixmanifest\$(RoslynToolsMicrosoftModifyVsixManifestVersion)\tools\ModifyVsixManifest.exe</ModifyVsixManifestToolExe>
-      <ModifyVsixManifestArgs>--remove=//x:PackageManifest/x:Installation/@SystemComponent --add-attribute=//x:PackageManifest/x:Installation;Experimental;true</ModifyVsixManifestArgs>
+      <ModifyVsixManifestArgs>--add-attribute=//x:PackageManifest/x:Installation;Experimental;true</ModifyVsixManifestArgs>
     </PropertyGroup>
 
     <ItemGroup>
@@ -154,23 +154,11 @@
     <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.Test.vsix $(ModifyVsixManifestArgs)" />
     <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.Test.vsix" />
     
-    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetCore.FSharp.ProjectTemplates.vsix $(ModifyVsixManifestArgs)" />
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.FSharp.ProjectTemplates.vsix" />
-    
-    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetCore.FSharp.ProjectTemplates.Test.vsix $(ModifyVsixManifestArgs)" />
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.FSharp.ProjectTemplates.Test.vsix" />
-
     <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetCore.VB.ProjectTemplates.vsix $(ModifyVsixManifestArgs)" />
     <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.VB.ProjectTemplates.vsix" />
 
-    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetCore.VB.ProjectTemplates.Test.vsix $(ModifyVsixManifestArgs)" />
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.VB.ProjectTemplates.Test.vsix" />
-
     <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetStandard.CSharp.ProjectTemplates.vsix $(ModifyVsixManifestArgs)" />
     <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetStandard.CSharp.ProjectTemplates.vsix" />
-
-    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetStandard.FSharp.ProjectTemplates.vsix $(ModifyVsixManifestArgs)" />
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetStandard.FSharp.ProjectTemplates.vsix" />
 
     <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetStandard.VB.ProjectTemplates.vsix $(ModifyVsixManifestArgs)" />
     <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetStandard.VB.ProjectTemplates.vsix" />

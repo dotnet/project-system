@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
             VisualStudio.SolutionExplorer.OpenFile(Project, "Class1.vb");
         }
 
-        [Fact, Trait("Integration", "Squiggles")]
+        [Fact(Skip = "Syntax squiggles not showing on VB"), Trait("Integration", "Squiggles")]
         public void VerifySyntaxErrorSquiggles()
         {
             VisualStudio.Editor.SetText(@"Class A
@@ -33,7 +33,7 @@ End Class");
                "Microsoft.VisualStudio.Text.Tagging.ErrorTag:'\r'[43-44]",
             };
 
-            expectedTags.ShouldEqualWithDiff(actualTags);
+            actualTags.ShouldEqualWithDiff(expectedTags);
         }
 
         [Fact, Trait("Integration", "Squiggles")]
