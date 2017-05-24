@@ -43,10 +43,6 @@
         <source>Target Frameworks</source>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|StartupObject|DisplayName">
-        <source>Type that contains the entry point</source>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|ApplicationManifest|DisplayName">
         <source>Application Manifest</source>
         <note />
@@ -193,6 +189,10 @@
       </trans-unit>
       <trans-unit id="IntProperty|OutputTypeEx|DisplayName">
         <source>Output Type Ex</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|StartupObject|DisplayName">
+        <source>Type that contains the entry point</source>
         <note></note>
       </trans-unit>
     </body>

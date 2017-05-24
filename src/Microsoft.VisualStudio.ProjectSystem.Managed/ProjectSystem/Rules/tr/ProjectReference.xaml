@@ -4,18 +4,43 @@
   <Rule.DataSource>
     <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
-  <BoolProperty Name="ReferenceOutputAssembly" DisplayName="Başvuru Çıkış Derlemesi" Description="Derleyicinin hedef projenin birincil çıkış derlemesine bir başvuru içermesinin gerekli olup olmadığını gösteren bir değer." />
-  <BoolProperty Name="CopyLocalSatelliteAssemblies" DisplayName="Yerel Uydu Derlemelerini Kopyala" Description="Başvuru hedefinin uydu derlemelerinin bu projenin çıkış dizinine kopyalanmasının gerekli olup olmadığını gösterir." />
-  <BoolProperty Name="LinkLibraryDependencies" Visible="False" />
-  <BoolProperty Name="UseLibraryDependencyInputs" Visible="False" />
-  <StringProperty Name="Project" Visible="False" Description="Çözümün tek bir proje başvuru hedefini birlikte izlediği Guid" />
-  <StringProperty Name="ReferencedProjectIdentifier" Visible="False" Description="Çözümün tek bir proje başvuru hedefini birlikte izlediği Guid'i depolamanın eski (VS2010 beta) yöntemi" />
+  <!-- Visible properties -->
+  <StringListProperty Name="Aliases" DisplayName="Aliases" Description="A comma-delimited list of aliases to this reference." Separator=",">
+    <StringListProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </StringListProperty.DataSource>
+  </StringListProperty>
   <BoolProperty Name="CopyLocal" DisplayName="Yereli Kopyala" Description="Başvurunun çıkış dizinine kopyalanıp kopyalanmayacağını gösterir.">
     <BoolProperty.DataSource>
       <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" PersistedName="Private" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
-  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="IncludeAssets" Description="Bu başvurudan eklenecek varlıklar" />
+  <BoolProperty Name="CopyLocalSatelliteAssemblies" DisplayName="Yerel Uydu Derlemelerini Kopyala" Description="Başvuru hedefinin uydu derlemelerinin bu projenin çıkış dizinine kopyalanmasının gerekli olup olmadığını gösterir." />
+  <StringProperty Name="Culture" ReadOnly="True" DisplayName="Culture" Description="The value of the culture field from the assembly metadata."></StringProperty>
+  <StringProperty Name="Description" ReadOnly="True" DisplayName="Description" Description="The value of the Title field from the assembly metadata."></StringProperty>
+  <BoolProperty Name="EmbedInteropTypes" DisplayName="Embed Interop Types" Description="Indicates whether types defined in this assembly will be embedded into the target assembly.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
   <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="ExcludeAssets" Description="Bu başvurudan dışlanacak varlıklar" />
+  <StringProperty Name="Identity" ReadOnly="True" DisplayName="Identity" Description="Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="{}{Identity}" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="IncludeAssets" Description="Bu başvurudan eklenecek varlıklar" />
+  <BoolProperty Name="ReferenceOutputAssembly" DisplayName="Başvuru Çıkış Derlemesi" Description="Derleyicinin hedef projenin birincil çıkış derlemesine bir başvuru içermesinin gerekli olup olmadığını gösteren bir değer." />
   <StringProperty Name="PrivateAssets" Visible="True" DisplayName="PrivateAssets" Description="Bu başvuruda özel olan varlıklar" />
+  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Path" Description="Location of the file being referenced.">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Version" ReadOnly="True" DisplayName="Version" Description="Version of reference."></StringProperty>
+  <!-- Hidden properties -->
+  <BoolProperty Name="LinkLibraryDependencies" Visible="False" />
+  <StringProperty Name="Project" Visible="False" Description="Çözümün tek bir proje başvuru hedefini birlikte izlediği Guid" />
+  <StringProperty Name="ReferencedProjectIdentifier" Visible="False" Description="Çözümün tek bir proje başvuru hedefini birlikte izlediği Guid'i depolamanın eski (VS2010 beta) yöntemi" />
+  <BoolProperty Name="UseLibraryDependencyInputs" Visible="False" />
 </Rule>

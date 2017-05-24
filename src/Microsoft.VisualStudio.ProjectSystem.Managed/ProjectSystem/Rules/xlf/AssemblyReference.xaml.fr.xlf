@@ -68,6 +68,36 @@
         <target state="translated">Version du runtime CLR ciblée par cet assembly.</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|Identity|DisplayName">
+        <source>Identity</source>
+        <target state="new">Identity</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Identity|Description">
+        <source>Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</source>
+        <target state="new">Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|ResolvedPath|DisplayName">
+        <source>Path</source>
+        <target state="new">Path</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|ResolvedPath|Description">
+        <source>Location of the file being referenced.</source>
+        <target state="new">Location of the file being referenced.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Version|DisplayName">
+        <source>Version</source>
+        <target state="new">Version</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Version|Description">
+        <source>Version of reference.</source>
+        <target state="new">Version of reference.</target>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

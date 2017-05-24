@@ -53,11 +53,6 @@
         <target state="translated">대상 프레임워크</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|StartupObject|DisplayName">
-        <source>Type that contains the entry point</source>
-        <target state="translated">진입점을 포함하는 형식입니다.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|ApplicationManifest|DisplayName">
         <source>Application Manifest</source>
         <target state="translated">응용 프로그램 매니페스트</target>
@@ -241,6 +236,11 @@
       <trans-unit id="IntProperty|OutputTypeEx|DisplayName">
         <source>Output Type Ex</source>
         <target state="new">Output Type Ex</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|StartupObject|DisplayName">
+        <source>Type that contains the entry point</source>
+        <target state="new">Type that contains the entry point</target>
         <note></note>
       </trans-unit>
     </body>
