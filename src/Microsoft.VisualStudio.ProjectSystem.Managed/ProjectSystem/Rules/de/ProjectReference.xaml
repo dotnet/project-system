@@ -4,18 +4,43 @@
   <Rule.DataSource>
     <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
-  <BoolProperty Name="ReferenceOutputAssembly" DisplayName="Verweisausgabeassembly" Description="Ein Wert, der angibt, ob vom Compiler ein Verweis auf die primäre Ausgabeassembly des Zielprojekts eingeschlossen werden soll." />
-  <BoolProperty Name="CopyLocalSatelliteAssemblies" DisplayName="Lokale Satellitenassemblys kopieren" Description="Gibt an, ob die Satellitenassemblys des Verweisziels in das Ausgabeverzeichnis dieses Projekts kopiert werden sollen." />
-  <BoolProperty Name="LinkLibraryDependencies" Visible="False" />
-  <BoolProperty Name="UseLibraryDependencyInputs" Visible="False" />
-  <StringProperty Name="Project" Visible="False" Description="Die GUID, mit der die Lösung ein individuelles Projektverweisziel nachverfolgt" />
-  <StringProperty Name="ReferencedProjectIdentifier" Visible="False" Description="Die alte Methode (VS2010 Beta) zum Speichern der GUID, mit der die Lösung ein individuelles Projektverweisziel nachverfolgt" />
+  <!-- Visible properties -->
+  <StringListProperty Name="Aliases" DisplayName="Aliases" Description="A comma-delimited list of aliases to this reference." Separator=",">
+    <StringListProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </StringListProperty.DataSource>
+  </StringListProperty>
   <BoolProperty Name="CopyLocal" DisplayName="Lokale Kopie" Description="Gibt an, ob der Verweis in das Ausgabeverzeichnis kopiert wird.">
     <BoolProperty.DataSource>
       <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" PersistedName="Private" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
-  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="IncludeAssets" Description="Einzuschließende Ressourcen aus diesem Verweis" />
+  <BoolProperty Name="CopyLocalSatelliteAssemblies" DisplayName="Lokale Satellitenassemblys kopieren" Description="Gibt an, ob die Satellitenassemblys des Verweisziels in das Ausgabeverzeichnis dieses Projekts kopiert werden sollen." />
+  <StringProperty Name="Culture" ReadOnly="True" DisplayName="Culture" Description="The value of the culture field from the assembly metadata."></StringProperty>
+  <StringProperty Name="Description" ReadOnly="True" DisplayName="Description" Description="The value of the Title field from the assembly metadata."></StringProperty>
+  <BoolProperty Name="EmbedInteropTypes" DisplayName="Embed Interop Types" Description="Indicates whether types defined in this assembly will be embedded into the target assembly.">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
   <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="ExcludeAssets" Description="Auszuschließende Ressourcen aus diesem Verweis" />
+  <StringProperty Name="Identity" ReadOnly="True" DisplayName="Identity" Description="Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="{}{Identity}" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="IncludeAssets" Description="Einzuschließende Ressourcen aus diesem Verweis" />
+  <BoolProperty Name="ReferenceOutputAssembly" DisplayName="Verweisausgabeassembly" Description="Ein Wert, der angibt, ob vom Compiler ein Verweis auf die primäre Ausgabeassembly des Zielprojekts eingeschlossen werden soll." />
   <StringProperty Name="PrivateAssets" Visible="True" DisplayName="PrivateAssets" Description="Private Ressourcen in diesem Verweis" />
+  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Path" Description="Location of the file being referenced.">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="Version" ReadOnly="True" DisplayName="Version" Description="Version of reference."></StringProperty>
+  <!-- Hidden properties -->
+  <BoolProperty Name="LinkLibraryDependencies" Visible="False" />
+  <StringProperty Name="Project" Visible="False" Description="Die GUID, mit der die Lösung ein individuelles Projektverweisziel nachverfolgt" />
+  <StringProperty Name="ReferencedProjectIdentifier" Visible="False" Description="Die alte Methode (VS2010 Beta) zum Speichern der GUID, mit der die Lösung ein individuelles Projektverweisziel nachverfolgt" />
+  <BoolProperty Name="UseLibraryDependencyInputs" Visible="False" />
 </Rule>

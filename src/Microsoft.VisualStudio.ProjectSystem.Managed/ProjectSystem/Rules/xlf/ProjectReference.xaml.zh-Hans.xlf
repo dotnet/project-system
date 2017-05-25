@@ -54,9 +54,9 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|DisplayName">
-        <source>IncludeAssets</source>
-        <target state="translated">IncludeAssets</target>
-        <note />
+        <source>Include Assets</source>
+        <target state="needs-review-translation">IncludeAssets</target>
+        <note></note>
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
         <source>Assets to include from this reference</source>
@@ -64,9 +64,9 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
-        <source>ExcludeAssets</source>
-        <target state="translated">ExcludeAssets</target>
-        <note />
+        <source>Exclude Assets</source>
+        <target state="needs-review-translation">ExcludeAssets</target>
+        <note></note>
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
         <source>Assets to exclude from this reference</source>
@@ -74,14 +74,84 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
-        <source>PrivateAssets</source>
-        <target state="translated">PrivateAssets</target>
-        <note />
+        <source>Private Assets</source>
+        <target state="needs-review-translation">PrivateAssets</target>
+        <note></note>
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">
         <source>Assets that are private in this reference</source>
         <target state="translated">此引用中的私有资产</target>
         <note />
+      </trans-unit>
+      <trans-unit id="StringListProperty|Aliases|DisplayName">
+        <source>Aliases</source>
+        <target state="new">Aliases</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringListProperty|Aliases|Description">
+        <source>A comma-delimited list of aliases to this reference.</source>
+        <target state="new">A comma-delimited list of aliases to this reference.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Culture|DisplayName">
+        <source>Culture</source>
+        <target state="new">Culture</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Culture|Description">
+        <source>The value of the culture field from the assembly metadata.</source>
+        <target state="new">The value of the culture field from the assembly metadata.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Description|DisplayName">
+        <source>Description</source>
+        <target state="new">Description</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Description|Description">
+        <source>The value of the Title field from the assembly metadata.</source>
+        <target state="new">The value of the Title field from the assembly metadata.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|EmbedInteropTypes|DisplayName">
+        <source>Embed Interop Types</source>
+        <target state="new">Embed Interop Types</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|EmbedInteropTypes|Description">
+        <source>Indicates whether types defined in this assembly will be embedded into the target assembly.</source>
+        <target state="new">Indicates whether types defined in this assembly will be embedded into the target assembly.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Identity|DisplayName">
+        <source>Identity</source>
+        <target state="new">Identity</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Identity|Description">
+        <source>Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</source>
+        <target state="new">Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|ResolvedPath|DisplayName">
+        <source>Path</source>
+        <target state="new">Path</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|ResolvedPath|Description">
+        <source>Location of the file being referenced.</source>
+        <target state="new">Location of the file being referenced.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Version|DisplayName">
+        <source>Version</source>
+        <target state="new">Version</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Version|Description">
+        <source>Version of reference.</source>
+        <target state="new">Version of reference.</target>
+        <note></note>
       </trans-unit>
     </body>
   </file>
