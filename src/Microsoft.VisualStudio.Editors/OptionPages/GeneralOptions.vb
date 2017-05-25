@@ -9,26 +9,26 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
         Private Class SVsSettingsPersistenceManager
         End Class
 
-        Private Const FastUpToDateSettingKey As String = "ManagedProjectSystem\FastUpToDateCheckDisabled"
-        Private Const OutputPaneSettingKey As String = "ManagedProjectSystem\OutputPaneEnabled"
+        Private Const FastUpToDateEnabledSettingKey As String = "ManagedProjectSystem\FastUpToDateCheckEnabled"
+        Private Const VerboseFastUpToDateLoggingSettingKey As String = "ManagedProjectSystem\VerboseFastUpToDateLogging"
 
         Private ReadOnly _settingsManager As ISettingsManager
 
-        Public Property FastUpToDateCheckDisabled As Boolean
+        Public Property FastUpToDateCheckEnabled As Boolean
             Get
-                Return If(_settingsManager?.GetValueOrDefault(FastUpToDateSettingKey, False), False)
+                Return If(_settingsManager?.GetValueOrDefault(FastUpToDateEnabledSettingKey, True), True)
             End Get
             Set
-                _settingsManager.SetValueAsync(FastUpToDateSettingKey, Value, isMachineLocal:=False)
+                _settingsManager.SetValueAsync(FastUpToDateEnabledSettingKey, Value, isMachineLocal:=False)
             End Set
         End Property
 
-        Public Property OutputPaneEnabled As Boolean
+        Public Property VerboseFastUpToDateLogging As Boolean
             Get
-                Return If(_settingsManager?.GetValueOrDefault(OutputPaneSettingKey, False), False)
+                Return If(_settingsManager?.GetValueOrDefault(VerboseFastUpToDateLoggingSettingKey, False), False)
             End Get
             Set
-                _settingsManager.SetValueAsync(OutputPaneSettingKey, Value, isMachineLocal:=False)
+                _settingsManager.SetValueAsync(VerboseFastUpToDateLoggingSettingKey, Value, isMachineLocal:=False)
             End Set
         End Property
 
