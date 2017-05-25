@@ -91,6 +91,9 @@
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <Private>False</Private>
     </ProjectReference>
+    
+    <PackageReference Include="Microsoft.DotNet.IBCMerge" Version="[$(MicrosoftDotNetIBCMergeVersion)]" />
+    <PackageReference Include="RoslynDependencies.OptimizationData" Version="$(RoslynDependenciesOptimizationDataVersion)" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Common\ProvideBindingRedirectionAttribute.cs">
