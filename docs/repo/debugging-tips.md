@@ -65,3 +65,11 @@ To get Windows to automatically save a memory dump every time Visual Studio cras
 [AlwaysSaveDevEnvCrashDumps.reg](/docs/repo/content/AlwaysSaveDevEnvCrashDumps.reg?raw=true)
 
 Dumps will be saved to C:\Crashdumps.
+
+## UI Delays
+
+To get Windows to automatically send on data about UI delays in Visual Studio, merge the following registry settings:
+
+[AlwaysSendPerfWatsonData.reg](/docs/repo/content/AlwaysSendPerfWatsonData.reg?raw=true)
+
+For more information on these settings, see [Configure Windows telemetry in your organization](https://docs.microsoft.com/en-us/windows/configuration/configure-windows-telemetry-in-your-organization).

@@ -45,4 +45,8 @@
   <StringProperty Name="Version" Visible="False" ReadOnly="True" />
   <StringProperty Name="VersionPrefix" Visible="False" ReadOnly="True" />
   <StringProperty Name="VersionSuffix" Visible="False" ReadOnly="True" />
+  <StringProperty Name="EmitAssetsLogMessages" Visible="False" ReadOnly="True" />
+  <StringProperty Name="RestoreSources" Visible="False" ReadOnly="True" />
+  <StringProperty Name="RestoreFallbackFolders" Visible="False" ReadOnly="True" />
+  <StringProperty Name="RestorePackagesPath" Visible="False" ReadOnly="True" />
 </Rule>

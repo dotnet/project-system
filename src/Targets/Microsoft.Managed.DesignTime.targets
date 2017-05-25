@@ -232,17 +232,6 @@
     </PropertyPageSchema>
   </ItemGroup>
 
-  <!-- Workaround: https://github.com/Microsoft/msbuild/pull/1879 -->
-  <ItemGroup>
-    <ProjectCapability Remove="ProjectConfigurationsInferredFromUsage" />
-  </ItemGroup>
-
-  <!-- Workaround: Need to remove this once an insertion containing this changes goes in https://github.com/dotnet/sdk/pull/949 -->
-  <PropertyGroup>
-    <Configurations Condition=" '$(Configurations)' == '' ">Debug;Release</Configurations>
-    <Platforms Condition=" '$(Platforms)' == '' ">AnyCPU</Platforms>
-  </PropertyGroup>
-
   <!-- Targets -->
 
   <!-- For a newly created project with no packages restored, Design time build complains that there is no ResolvePackageDependenciesDesignTime

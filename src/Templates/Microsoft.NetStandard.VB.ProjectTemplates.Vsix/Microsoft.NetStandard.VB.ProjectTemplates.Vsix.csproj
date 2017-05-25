@@ -7,7 +7,8 @@
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
     <AssemblyName>Microsoft.NetStandard.VB.ProjectTemplates</AssemblyName>
     <GeneratePkgDefFile>false</GeneratePkgDefFile>
-    <VSSDKTargetPlatformRegRootSuffix>RoslynDev</VSSDKTargetPlatformRegRootSuffix>
+    <VSSDKTargetPlatformRegRootSuffix Condition="'$(RunIntegrationTests)' == 'false'">RoslynDev</VSSDKTargetPlatformRegRootSuffix>
+    <VSSDKTargetPlatformRegRootSuffix Condition="'$(RunIntegrationTests)' == 'true'">ProjectSystem</VSSDKTargetPlatformRegRootSuffix>
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
     <IncludeDebugSymbolsInVSIXContainer>false</IncludeDebugSymbolsInVSIXContainer>
     <IncludeDebugSymbolsInLocalVSIXDeployment>false</IncludeDebugSymbolsInLocalVSIXDeployment>
