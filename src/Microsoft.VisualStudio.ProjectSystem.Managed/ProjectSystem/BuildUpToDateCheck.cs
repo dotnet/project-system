@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     [Export(typeof(IBuildUpToDateCheckProvider))]
-    internal sealed class BuildUpToDateCheck : IBuildUpToDateCheckProvider, IDisposable
+    internal sealed class BuildUpToDateCheck : OnceInitializedOnceDisposed, IBuildUpToDateCheckProvider
     {
         private const string TrueValue = "true";
         private const string FullPath = "FullPath";
@@ -71,7 +71,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _projectSystemOptions = projectSystemOptions;
             _configuredProject = configuredProject;
             _fileTimestampCache = fileTimestampCache;
+        }
 
+        protected override void Initialize()
+        {
             _link = ProjectDataSources.SyncLinkTo(
                 _configuredProject.Services.ProjectSubscription.JointRuleSource.SourceBlock.SyncLinkOptions(new StandardRuleDataflowLinkOptions { RuleNames = ProjectPropertiesSchemas }),
                 _configuredProject.Services.ProjectSubscription.ImportTreeSource.SourceBlock.SyncLinkOptions(),
@@ -83,21 +86,19 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private void OnProjectChanged(IProjectSubscriptionUpdate e)
         {
-            if (e.ProjectChanges.TryGetValue(ConfigurationGeneral.SchemaName, out var projectChange))
+            var disableFastUpToDateCheckString = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.DisableFastUpToDateCheckProperty, null);
+            if (disableFastUpToDateCheckString != null)
             {
-                if (projectChange.After.Properties.TryGetValue(ConfigurationGeneral.DisableFastUpToDateCheckProperty, out var disableFastUpToDateCheckString))
-                {
-                    _isDisabled = string.Equals(disableFastUpToDateCheckString, TrueValue, StringComparison.OrdinalIgnoreCase);
-                }
-
-                projectChange.After.Properties.TryGetValue(ConfigurationGeneral.MSBuildProjectFullPathProperty, out _msBuildProjectFullPath);
+                _isDisabled = string.Equals(disableFastUpToDateCheckString, TrueValue, StringComparison.OrdinalIgnoreCase);
             }
+
+            _msBuildProjectFullPath = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, _msBuildProjectFullPath);
 
             foreach (var referenceSchema in ReferenceSchemas)
             {
-                if (e.ProjectChanges.TryGetValue(referenceSchema, out projectChange))
+                if (e.CurrentState.TryGetValue(referenceSchema, out var snapshot))
                 {
-                    _references[referenceSchema] = new HashSet<string>(projectChange.After.Items.Select(item => item.Value[ResolvedPath]));
+                    _references[referenceSchema] = new HashSet<string>(snapshot.Items.Select(item => item.Value[ResolvedPath]));
                 }
             }
         }
@@ -142,41 +143,34 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _lastVersionSeen = e.DataSourceVersions[ProjectDataSources.ConfiguredProjectVersion];
         }
 
-        public void Dispose()
+        protected override void Dispose(bool disposing)
         {
             _link?.Dispose();
         }
 
-        private bool GetTimestamps(TextWriter logger, IEnumerable<string> paths, Action<DateTime> consume, IDictionary<string, DateTime> timestampCache)
+        private DateTime? GetTimestamp(TextWriter logger, string path, IDictionary<string, DateTime> timestampCache)
         {
-            var allPathsExist = true;
-
-            foreach (var path in paths)
+            if (!timestampCache.TryGetValue(path, out var time))
             {
-                if (!timestampCache.TryGetValue(path, out var time))
+                var info = new FileInfo(path);
+                if (info.Exists)
                 {
-                    var info = new FileInfo(path);
-                    if (info.Exists)
-                    {
-                        time = info.LastWriteTimeUtc;
-                        timestampCache[path] = time;
-                        Log(logger, "Path '{0}' had live timestamp '{1}'.", path, time);
-                        consume(time);
-                    }
-                    else
-                    {
-                        Log(logger, "Path '{0}' did not exist.", path);
-                        allPathsExist = false;
-                    }
+                    time = info.LastWriteTimeUtc;
+                    timestampCache[path] = time;
+                    Log(logger, "Path '{0}' had live timestamp '{1}'.", path, time);
+                    return time;
                 }
                 else
                 {
-                    Log(logger, "Path '{0}' had cached timestamp '{1}'.", path, time);
-                    consume(time);
+                    Log(logger, "Path '{0}' did not exist.", path);
+                    return null;
                 }
             }
-
-            return allPathsExist;
+            else
+            {
+                Log(logger, "Path '{0}' had cached timestamp '{1}'.", path, time);
+                return time;
+            }
         }
 
         private void Log(TextWriter logger, string message, params object[] values) =>
@@ -210,18 +204,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
         }
 
-        public async Task<bool> IsUpToDateAsync(BuildAction buildAction, TextWriter logger, CancellationToken cancellationToken = default(CancellationToken))
+        private bool CheckGlobalConditions(BuildAction buildAction, TextWriter logger)
         {
-            cancellationToken.ThrowIfCancellationRequested();
-
             if (buildAction != BuildAction.Build)
             {
                 return false;
-            }
-
-            if (!await _projectSystemOptions.GetVerboseFastUpToDateLoggingAsync().ConfigureAwait(false))
-            {
-                logger = null;
             }
 
             if (_lastVersionSeen == null || _configuredProject.ProjectVersion.CompareTo(_lastVersionSeen) > 0)
@@ -236,59 +223,106 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return false;
             }
 
-            var timestampCache = 
-                _fileTimestampCache != null 
-                    ? _fileTimestampCache.Value.TimestampCache 
-                    : new Dictionary<string, DateTime>(StringComparer.OrdinalIgnoreCase);
+            return true;
+        }
+
+        private HashSet<string> CollectInputs(TextWriter logger)
+        {
             var inputs = new HashSet<string>();
-            var outputs = new HashSet<string>();
 
             AddInput(logger, inputs, _msBuildProjectFullPath, "project file");
             AddInputs(logger, inputs, _imports, "import");
+
             foreach (var pair in _items)
             {
                 AddInputs(logger, inputs, pair.Value, pair.Key);
             }
+
             foreach (var pair in _references)
             {
                 AddInputs(logger, inputs, pair.Value, pair.Key);
             }
+
+            return inputs;
+        }
+
+        private HashSet<string> CollectOutputs(TextWriter logger)
+        {
+            var outputs = new HashSet<string>();
 
             foreach (var pair in _outputGroups)
             {
                 AddOutputs(logger, outputs, pair.Value, pair.Key);
             }
 
-            var latestInput = DateTime.MinValue;
-            var allInputsExist = GetTimestamps(logger, inputs, time =>
-            {
-                if (time > latestInput)
-                {
-                    latestInput = time;
-                }
-            }, timestampCache);
+            return outputs;
+        }
 
-            var earliestOutput = DateTime.MaxValue;
-            var allOutputsExist = GetTimestamps(logger, outputs, time =>
-            {
-                if (time < earliestOutput)
-                {
-                    earliestOutput = time;
-                }
-            }, timestampCache);
+        private DateTime? GetLatestInput(TextWriter logger, HashSet<string> inputs, IDictionary<string, DateTime> timestampCache)
+        {
+            DateTime? latest = DateTime.MinValue;
 
-            if (allInputsExist)
+            foreach (var input in inputs)
             {
-                Log(logger, "Lastest write timestamp on input is {0}.", latestInput);
+                var time = GetTimestamp(logger, input, timestampCache);
+                if (latest != null && (time == null || time > latest))
+                {
+                    latest = time;
+                }
+            }
+
+            return latest;
+        }
+
+        private DateTime? GetEarliestOutput(TextWriter logger, HashSet<string> outputs, IDictionary<string, DateTime> timestampCache)
+        { 
+            DateTime? earliest = DateTime.MaxValue;
+
+            foreach (var output in outputs)
+            {
+                var time = GetTimestamp(logger, output, timestampCache);
+                if (earliest != null && (time == null || time < earliest))
+                {
+                    earliest = time;
+                }
+            }
+
+            return earliest;
+        }
+
+        public async Task<bool> IsUpToDateAsync(BuildAction buildAction, TextWriter logger, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            EnsureInitialized();
+
+            if (!await _projectSystemOptions.GetVerboseFastUpToDateLoggingAsync().ConfigureAwait(false))
+            {
+                logger = null;
+            }
+
+            if (!CheckGlobalConditions(buildAction, logger))
+            {
+                return false;
+            }
+
+            var timestampCache = _fileTimestampCache.Value.TimestampCache ??
+                    new Dictionary<string, DateTime>(StringComparer.OrdinalIgnoreCase);
+            var latestInput = GetLatestInput(logger, CollectInputs(logger), timestampCache);
+            var earliestOutput = GetEarliestOutput(logger, CollectOutputs(logger), timestampCache);
+
+            if (latestInput != null)
+            {
+                Log(logger, "Lastest write timestamp on input is {0}.", latestInput.Value);
             }
             else
             {
                 Log(logger, "One or more inputs do not exist.");
             }
 
-            if (allOutputsExist)
+            if (earliestOutput != null)
             {
-                Log(logger, "Earliest write timestamp on output is {0}.", earliestOutput);
+                Log(logger, "Earliest write timestamp on output is {0}.", earliestOutput.Value);
             }
             else
             {
@@ -296,7 +330,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
 
             // We are up to date if the earliest output write happened before the latest input write
-            var isUpToDate = allInputsExist && allOutputsExist && earliestOutput > latestInput;
+            var isUpToDate = latestInput != null && earliestOutput != null && earliestOutput > latestInput;
             Log(logger, "Project is{0} up to date.", (!isUpToDate ? " not" : ""));
 
             return isUpToDate;
