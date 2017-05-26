@@ -117,34 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="_indentTypeLabel.Text" xml:space="preserve">
-    <value>Typ wcięcia:</value>
+  <data name="General_FastUpToDateCheck" xml:space="preserve">
+    <value>Don't call MSBuild if a project appears to be up to date.</value>
   </data>
-  <data name="_indentTypeNoneRadioButton.Text" xml:space="preserve">
-    <value>&amp;Brak</value>
-  </data>
-  <data name="_indentTypeBlockRadioButton.Text" xml:space="preserve">
-    <value>B&amp;lok</value>
-  </data>
-  <data name="_indentTypeSmartRadioButton.Text" xml:space="preserve">
-    <value>&amp;Inteligentne</value>
-  </data>
-  <data name="_tabSizeLabel.Text" xml:space="preserve">
-    <value>Rozmiar &amp;tabulacji:</value>
-  </data>
-  <data name="_indentSizeLabel.Text" xml:space="preserve">
-    <value>Rozmiar &amp;wcięcia:</value>
-  </data>
-  <data name="_wordWrapCheckBox.Text" xml:space="preserve">
-    <value>&amp;Zawijanie wierszy</value>
-  </data>
-  <data name="_lineNumbersCheckBox.Text" xml:space="preserve">
-    <value>N&amp;umery wierszy</value>
-  </data>
-  <data name="IndentingGroupBox.Text" xml:space="preserve">
-    <value>Wcięcia</value>
-  </data>
-  <data name="InteractionGroupBox.Text" xml:space="preserve">
-    <value>Interakcja</value>
+  <data name="General_VerboseFastUpToDateLogging" xml:space="preserve">
+    <value>Log diagnostic information for project up to date checks to the output window.</value>
   </data>
 </root>
