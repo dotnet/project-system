@@ -1,6 +1,6 @@
 # C#, F# and Visual Basic project system
 
-|Release|Branch|Unit Tests (Debug)|Unit Tests (Release)|Visual Studio Tests (Debug)|Visual Studio Tests (Release)
+|Release|Branch|Unit Tests (Debug)|Unit Tests (Release)|Visual Studio (Debug)|Visual Studio (Release)
 |---|---|:--:|:--:|:--:|:--:|
 |[15.0.x](https://github.com/dotnet/project-system/milestone/4)|[dev15.0.x](docs/repo/roadmap.md)|[![Build Status](https://ci.dot.net/job/dotnet_project-system/job/dev15.0.x/job/windows_debug/badge/icon)](https://ci.dot.net/job/dotnet_project-system/job/dev15.0.x/job/windows_debug/)|[![Build Status](https://ci.dot.net/job/dotnet_project-system/job/dev15.0.x/job/windows_release/badge/icon)](https://ci.dot.net/job/dotnet_project-system/job/dev15.0.x/job/windows_release/)|
 |[15.2](https://github.com/dotnet/project-system/milestone/14)|[dev15.2.x](docs/repo/roadmap.md)|[![Build Status](https://ci.dot.net/job/dotnet_project-system/job/dev15.2.x/job/windows_debug/badge/icon)](https://ci.dot.net/job/dotnet_project-system/job/dev15.2.x/job/windows_debug/)|[![Build Status](https://ci.dot.net/job/dotnet_project-system/job/dev15.2.x/job/windows_release/badge/icon)](https://ci.dot.net/job/dotnet_project-system/job/dev15.2.x/job/windows_release/)|

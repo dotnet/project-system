@@ -3,6 +3,7 @@
 ###############################################################################
 * text=auto encoding=UTF-8
 *.vb linguist-vendored
+*.reg text
 
 ###############################################################################
 # Set default behavior for command prompt diff.
