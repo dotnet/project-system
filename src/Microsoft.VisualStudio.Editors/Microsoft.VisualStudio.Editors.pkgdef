@@ -281,3 +281,12 @@
 [$RootKey$\Services\{B3017D1B-2FF7-4f22-828C-CD74B6A702DC}]
 "Name"="VB Project Reference Changed Service"
 @="{67909B06-91E9-4F3E-AB50-495046BE9A9A}"
+
+[$RootKey$\ToolsOptionsPages]
+
+[$RootKey$\ToolsOptionsPages\Projects]
+
+[$RootKey$\ToolsOptionsPages\Projects\NETCore]
+"Package"="{67909B06-91E9-4F3E-AB50-495046BE9A9A}"
+"Page"="{2E6DB64B-DA09-4B9F-A334-37A86FECDA6A}"
+@="#1500"

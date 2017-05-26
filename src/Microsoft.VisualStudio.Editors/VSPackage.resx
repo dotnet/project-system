@@ -117,34 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="_indentTypeLabel.Text" xml:space="preserve">
-    <value>Einzugstyp:</value>
-  </data>
-  <data name="_indentTypeNoneRadioButton.Text" xml:space="preserve">
-    <value>&amp;Keiner</value>
-  </data>
-  <data name="_indentTypeBlockRadioButton.Text" xml:space="preserve">
-    <value>&amp;Block</value>
-  </data>
-  <data name="_indentTypeSmartRadioButton.Text" xml:space="preserve">
-    <value>&amp;Smart</value>
-  </data>
-  <data name="_tabSizeLabel.Text" xml:space="preserve">
-    <value>&amp;Tabstoppgröße:</value>
-  </data>
-  <data name="_indentSizeLabel.Text" xml:space="preserve">
-    <value>E&amp;inzugsgröße:</value>
-  </data>
-  <data name="_wordWrapCheckBox.Text" xml:space="preserve">
-    <value>&amp;Zeilenumbruch</value>
-  </data>
-  <data name="_lineNumbersCheckBox.Text" xml:space="preserve">
-    <value>Zeilenn&amp;ummern</value>
-  </data>
-  <data name="IndentingGroupBox.Text" xml:space="preserve">
-    <value>Einzug</value>
-  </data>
-  <data name="InteractionGroupBox.Text" xml:space="preserve">
-    <value>Interaktion</value>
+  <data name="1001" xml:space="preserve">
+    <value>.NET Core</value>
   </data>
 </root>
