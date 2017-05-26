@@ -102,4 +102,16 @@
                     Visible="False" 
                     ReadOnly="True" />
 
+    <StringProperty Name="TreatWarningsAsErrors" 
+                    Visible="False" 
+                    ReadOnly="True" />
+
+    <StringProperty Name="TreatSpecificWarningsAsErrors" 
+                    Visible="False" 
+                    ReadOnly="True" />
+
+    <StringProperty Name="NoWarn" 
+                    Visible="False" 
+                    ReadOnly="True" />
+                    
 </Rule>
