@@ -55,6 +55,11 @@
             <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMonikers" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext"/>
         </StringProperty.DataSource>
     </StringProperty>
+    <BoolProperty Name="DisableFastUpToDateCheck" DisplayName="Disable Fast Up To Date Check">
+        <BoolProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="DisableFastUpToDateCheck" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+        </BoolProperty.DataSource>
+    </BoolProperty>
 
     <StringProperty Name="TargetPath" />
     <StringProperty Name="DocumentationFile" DisplayName="XML doc comments file" />

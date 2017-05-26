@@ -6,7 +6,7 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel>
             <CheckBox x:Name="FastUpToDateCheck" x:Uid="General_FastUpToDateCheck" Content="{x:Static r:GeneralOptionPageResources.General_FastUpToDateCheck}" Margin="0" />
-            <CheckBox x:Name="OutputPane" x:Uid="General_OutputPane" Content="{x:Static r:GeneralOptionPageResources.General_OutputPane}" Margin="0" />
+            <CheckBox x:Name="VerboseFastUpToDateLogging" x:Uid="General_VerboseFastUpToDateLogging" Content="{x:Static r:GeneralOptionPageResources.General_VerboseFastUpToDateLogging}" Margin="0" />
         </StackPanel>
     </ScrollViewer>
 </local:OptionPageControl>
