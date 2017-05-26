@@ -73,6 +73,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             Assert.Equal(setValues.Single(), testValue);
         }
 
+        [Fact]
+        public void CSharpProjectConfigurationProperties_OutputPath()
+        {
+            var setValues = new List<object>();
+            var project = UnconfiguredProjectFactory.Create();
+            var data = new PropertyPageData()
+            {
+                Category = ConfiguredBrowseObject.SchemaName,
+                PropertyName = ConfiguredBrowseObject.OutputPathProperty,
+                Value = "OldPath",
+                SetValues = setValues
+            };
+
+            var projectProperties = ProjectPropertiesFactory.Create(project, data);
+
+            var vsLangProjectProperties = CreateInstance(projectProperties, IProjectThreadingServiceFactory.Create());
+            Assert.Equal(vsLangProjectProperties.OutputPath, "OldPath");
+
+            var testValue = "newPath";
+            vsLangProjectProperties.OutputPath = testValue;
+            Assert.Equal(setValues.Single(), testValue);
+        }
+
+
         private CSharpProjectConfigurationProperties CreateInstance(ProjectProperties projectProperties, IProjectThreadingService projectThreadingService)
         {
             return new CSharpProjectConfigurationProperties(projectProperties, projectThreadingService);
