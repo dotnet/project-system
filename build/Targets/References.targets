@@ -117,7 +117,10 @@
 		if it is not provided here, tests fail to load this assembly at runtime.
 	-->
         <Reference Include="Microsoft.VisualStudio.Diagnostics.PerformanceProvider">
-          <HintPath>$(DevEnvDir)\PrivateAssemblies\Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll</HintPath>
+          <HintPath Condition="Exists('$(DevEnvDir)\PrivateAssemblies\Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll')">$(DevEnvDir)\PrivateAssemblies\Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll</HintPath>
+          <HintPath Condition="Exists('C:\Program Files (x86)\Microsoft Visual Studio\Preview\Enterprise\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll')">C:\Program Files (x86)\Microsoft Visual Studio\Preview\Enterprise\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll</HintPath>
+          <HintPath Condition="Exists('C:\Program Files (x86)\Microsoft Visual Studio\Preview\Professional\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll')">C:\Program Files (x86)\Microsoft Visual Studio\Preview\Professional\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll</HintPath>
+          <HintPath Condition="Exists('C:\Program Files (x86)\Microsoft Visual Studio\Preview\Community\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll')">C:\Program Files (x86)\Microsoft Visual Studio\Preview\Community\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll</HintPath>
         </Reference>
 
         <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="15.0.26124-rc3" />
@@ -208,7 +211,10 @@
           <HintPath>$(DevEnvDir)\PublicAssemblies\Microsoft.VisualStudio.VSHelp.dll</HintPath>
         </Reference>
         <Reference Include="Microsoft.VisualStudio.DataDesign.Common">
-          <HintPath>$(DevEnvDir)\Microsoft.VisualStudio.DataDesign.Common.dll</HintPath>
+          <HintPath Condition="Exists('$(DevEnvDir)Microsoft.VisualStudio.DataDesign.Common.dll')">$(DevEnvDir)Microsoft.VisualStudio.DataDesign.Common.dll</HintPath>
+          <HintPath Condition="Exists('C:\Program Files (x86)\Microsoft Visual Studio\Preview\Enterprise\Common7\IDE\Microsoft.VisualStudio.DataDesign.Common.dll')">C:\Program Files (x86)\Microsoft Visual Studio\Preview\Enterprise\Common7\IDE\Microsoft.VisualStudio.DataDesign.Common.dll</HintPath>
+          <HintPath Condition="Exists('C:\Program Files (x86)\Microsoft Visual Studio\Preview\Professional\Common7\IDE\Microsoft.VisualStudio.DataDesign.Common.dll')">C:\Program Files (x86)\Microsoft Visual Studio\Preview\Professional\Common7\IDE\Microsoft.VisualStudio.DataDesign.Common.dll</HintPath>
+          <HintPath Condition="Exists('C:\Program Files (x86)\Microsoft Visual Studio\Preview\Community\Common7\IDE\Microsoft.VisualStudio.DataDesign.Common.dll')">C:\Program Files (x86)\Microsoft Visual Studio\Preview\Community\Common7\IDE\Microsoft.VisualStudio.DataDesign.Common.dll</HintPath>
         </Reference>
         <Reference Include="Microsoft.VisualStudio.DataTools.Interop">
           <HintPath>$(DevEnvDir)\Microsoft.VisualStudio.DataTools.Interop.dll</HintPath>
