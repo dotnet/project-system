@@ -1,14 +1,16 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.VisualStudio.ProjectSystem.Properties;
-using NuGet.SolutionRestoreManager;
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+using Microsoft.Internal.Performance;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
+using NuGet.SolutionRestoreManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
@@ -21,8 +23,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private readonly IActiveConfiguredProjectsProvider _activeConfiguredProjectsProvider;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IActiveProjectConfigurationRefreshService _activeProjectConfigurationRefreshService;
-        private IDisposable _designTimeBuildSubscriptionLink;
         private IDisposable _targetFrameworkSubscriptionLink;
+        private List<IDisposable> _designTimeBuildSubscriptionLinks = new List<IDisposable>();
 
         private const int perfPackageRestoreEnd = 7343;
 
@@ -88,7 +90,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
         protected override Task DisposeCoreAsync(bool initialized)
         {
-            _designTimeBuildSubscriptionLink?.Dispose();
+            foreach (var disposable in _designTimeBuildSubscriptionLinks)
+            {
+                disposable.Dispose();
+            }
+            _designTimeBuildSubscriptionLinks.Clear();
             _targetFrameworkSubscriptionLink?.Dispose();
             return Task.CompletedTask;
         }
@@ -98,7 +104,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             // active configuration should be updated before resetting subscriptions
             await RefreshActiveConfigurationAsync().ConfigureAwait(false);
 
-            _designTimeBuildSubscriptionLink?.Dispose();
+            foreach (var disposable in _designTimeBuildSubscriptionLinks)
+            {
+                disposable.Dispose();
+            }
+            _designTimeBuildSubscriptionLinks.Clear();
 
             var currentProjects = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsAsync()
                                                                          .ConfigureAwait(false);
@@ -111,17 +121,40 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     PropagateCompletion = true
                 };
 
+                // We are taking source blocks from multiple configured projects and creating a SyncLink to combine the sources.
+                // The SyncLink will only publish data when the versions of the sources match. There is a problem with that.
+                // The sources have some version components that will make this impossible to match across TFMs. We introduce a 
+                // intermediate block here that will remove those version components so that the synclink can actually sync versions. 
                 var sourceBlocks = currentProjects.Objects.Select(
-                    cp => cp.Services.ProjectSubscription.JointRuleSource.SourceBlock.SyncLinkOptions<IProjectValueVersions>(sourceLinkOptions));
+                    cp => 
+                    {
+                        var sourceBlock = cp.Services.ProjectSubscription.JointRuleSource.SourceBlock;
+                        var versionDropper = CreateVersionDropperBlock();
+                        _designTimeBuildSubscriptionLinks.Add(sourceBlock.LinkTo(versionDropper, sourceLinkOptions));
+                        return versionDropper.SyncLinkOptions<IProjectValueVersions>(sourceLinkOptions);
+                    });
 
                 var target = new ActionBlock<Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary>>(ProjectPropertyChangedAsync);
 
                 var targetLinkOptions = new DataflowLinkOptions { PropagateCompletion = true };
 
-                _designTimeBuildSubscriptionLink = ProjectDataSources.SyncLinkTo(sourceBlocks.ToImmutableList(), target, targetLinkOptions);
+                _designTimeBuildSubscriptionLinks.Add(ProjectDataSources.SyncLinkTo(sourceBlocks.ToImmutableList(), target, targetLinkOptions));
             }
         }
 
+        private static IPropagatorBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>, IProjectVersionedValue<IProjectSubscriptionUpdate>> CreateVersionDropperBlock()
+        {
+            var transformBlock = new TransformBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>, IProjectVersionedValue<IProjectSubscriptionUpdate>>(data =>
+            {
+                // Remove the ConfiguredProjectIdentity key because it is unique to each configured project - so it won't match across projects by design.
+                // Remove the ConfiguredProjectVersion key because each configuredproject manages it's own version and generally they don't match. 
+                var keysToDrop = ImmutableArray.Create(ProjectDataSources.ConfiguredProjectIdentity, ProjectDataSources.ConfiguredProjectVersion);
+                return new ProjectVersionedValue<IProjectSubscriptionUpdate>(data.Value, data.DataSourceVersions.RemoveRange(keysToDrop));
+            });
+
+            return transformBlock;
+        }
+        
         private async Task RefreshActiveConfigurationAsync()
         {
             // Force refresh the CPS active project configuration (needs UI thread).
@@ -143,7 +176,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                                     _projectVsServices.Project.Services.ProjectAsynchronousTasks.UnloadCancellationToken)
                                .ConfigureAwait(false);
 
-                        Microsoft.Internal.Performance.CodeMarkers.Instance.CodeMarker(perfPackageRestoreEnd);
+                        CodeMarkers.Instance.CodeMarker(perfPackageRestoreEnd);
 
                     }),
                     ProjectCriticalOperation.Build | ProjectCriticalOperation.Unload | ProjectCriticalOperation.Rename,
