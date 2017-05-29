@@ -53,6 +53,11 @@
         <target state="translated">대상 프레임워크</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|StartupObject|DisplayName">
+        <source>Type that contains the entry point</source>
+        <target state="translated">진입점을 포함하는 형식입니다.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|ApplicationManifest|DisplayName">
         <source>Application Manifest</source>
         <target state="translated">응용 프로그램 매니페스트</target>
@@ -220,28 +225,23 @@
       </trans-unit>
       <trans-unit id="StringProperty|TargetFrameworkMonikers|DisplayName">
         <source>Target Framework Monikers</source>
-        <target state="new">Target Framework Monikers</target>
-        <note></note>
+        <target state="translated">대상 프레임워크 모니커</target>
+        <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|SupportedTargetFrameworks|DisplayName">
         <source>Supported TargetFrameworks</source>
-        <target state="new">Supported TargetFrameworks</target>
-        <note></note>
+        <target state="translated">지원되는 대상 프레임워크</target>
+        <note />
       </trans-unit>
       <trans-unit id="IntProperty|OutputType|DisplayName">
         <source>Output Type</source>
-        <target state="new">Output Type</target>
-        <note></note>
+        <target state="translated">출력 형식</target>
+        <note />
       </trans-unit>
       <trans-unit id="IntProperty|OutputTypeEx|DisplayName">
         <source>Output Type Ex</source>
-        <target state="new">Output Type Ex</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|StartupObject|DisplayName">
-        <source>Type that contains the entry point</source>
-        <target state="new">Type that contains the entry point</target>
-        <note></note>
+        <target state="translated">출력 형식 Ex</target>
+        <note />
       </trans-unit>
     </body>
   </file>

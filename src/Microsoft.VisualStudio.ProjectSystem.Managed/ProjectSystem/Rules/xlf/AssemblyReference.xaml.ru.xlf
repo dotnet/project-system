@@ -10,8 +10,8 @@
       </trans-unit>
       <trans-unit id="Rule|AssemblyReference|Description">
         <source>Reference Properties</source>
-        <target state="needs-review-translation">Свойства ссылки на сборку</target>
-        <note></note>
+        <target state="translated">Свойства ссылки</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">
         <source>Aliases</source>
@@ -67,36 +67,6 @@
         <source>The CLR runtime version targeted by this assembly.</source>
         <target state="translated">Версия среды CLR, для которой предназначена данная сборка.</target>
         <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Identity|DisplayName">
-        <source>Identity</source>
-        <target state="new">Identity</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="StringProperty|Identity|Description">
-        <source>Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</source>
-        <target state="new">Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="StringProperty|ResolvedPath|DisplayName">
-        <source>Path</source>
-        <target state="new">Path</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="StringProperty|ResolvedPath|Description">
-        <source>Location of the file being referenced.</source>
-        <target state="new">Location of the file being referenced.</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="StringProperty|Version|DisplayName">
-        <source>Version</source>
-        <target state="new">Version</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="StringProperty|Version|Description">
-        <source>Version of reference.</source>
-        <target state="new">Version of reference.</target>
-        <note></note>
       </trans-unit>
     </body>
   </file>

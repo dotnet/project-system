@@ -130,23 +130,23 @@
       </trans-unit>
       <trans-unit id="EnumValue|OutputType.Exe|DisplayName">
         <source>Console Application</source>
-        <target state="new">Console Application</target>
-        <note></note>
+        <target state="translated">Applicazione console</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|OutputType.WinExe|DisplayName">
         <source>Windows Application</source>
-        <target state="new">Windows Application</target>
-        <note></note>
+        <target state="translated">Applicazione Windows</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|LanguageServiceId|Description">
         <source>Represents the GUID of object that implements the language service for the project.</source>
-        <target state="new">Represents the GUID of object that implements the language service for the project.</target>
-        <note></note>
+        <target state="translated">Rappresenta il GUID dell'oggetto che implementa il servizio di linguaggio per il progetto.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|TargetFrameworkMonikers|DisplayName">
         <source>Target Framework Monikers</source>
-        <target state="new">Target Framework Monikers</target>
-        <note></note>
+        <target state="translated">Moniker framework di destinazione</target>
+        <note />
       </trans-unit>
     </body>
   </file>

@@ -5,7 +5,7 @@
       <group id="src/Microsoft.VisualStudio.Editors/PropPages/AdvancedServicesDialog.resx" />
       <trans-unit id="RoleServiceCacheTimeoutLabel.Text">
         <source>Role service cache &amp;timeout:</source>
-        <target state="translated">&amp;Tiempo de espera de caché del servicio de rol:</target>
+        <target state="translated">Tiempo de &amp;espera de caché del servicio de rol:</target>
         <note />
       </trans-unit>
       <trans-unit id="SavePasswordHashLocallyCheckbox.Text">
@@ -25,13 +25,13 @@
       </trans-unit>
       <trans-unit id="TimeUnitComboBox.AccessibleName">
         <source>Role service cache timeout units</source>
-        <target state="new">Role service cache timeout units</target>
-        <note></note>
+        <target state="translated">Unidades de tiempo de espera de caché del servicio de roles</target>
+        <note />
       </trans-unit>
       <trans-unit id="CustomConnectionString.AccessibleName">
         <source>Custom connection string</source>
-        <target state="new">Custom connection string</target>
-        <note></note>
+        <target state="translated">Cadena de conexión personalizada</target>
+        <note />
       </trans-unit>
     </body>
   </file>

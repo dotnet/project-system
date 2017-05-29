@@ -10,8 +10,8 @@
       </trans-unit>
       <trans-unit id="Rule|ResolvedSdkReference|Description">
         <source>SDK Reference Properties</source>
-        <target state="needs-review-translation">Referência do SDK resolvida</target>
-        <note></note>
+        <target state="translated">Propriedades da Referência do SDK</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|AppXLocation|DisplayName">
         <source>App Package Location</source>
@@ -50,23 +50,23 @@
       </trans-unit>
       <trans-unit id="StringProperty|SDKRootFolder|DisplayName">
         <source>SDK Root</source>
-        <target state="new">SDK Root</target>
-        <note></note>
+        <target state="translated">Raiz do SDK</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Name|DisplayName">
         <source>Name</source>
-        <target state="new">Name</target>
-        <note></note>
+        <target state="translated">Nome</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
-        <target state="new">Version</target>
-        <note></note>
+        <target state="translated">Versão</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|CopyPayloadToSubDirectory|DisplayName">
         <source>Copy Payload to Subdirectory</source>
-        <target state="new">Copy Payload to Subdirectory</target>
-        <note></note>
+        <target state="translated">Copiar Conteúdo para o Subdiretório</target>
+        <note />
       </trans-unit>
     </body>
   </file>

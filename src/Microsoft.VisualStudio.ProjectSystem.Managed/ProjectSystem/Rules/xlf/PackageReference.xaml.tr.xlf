@@ -10,8 +10,8 @@
       </trans-unit>
       <trans-unit id="Rule|PackageReference|Description">
         <source>Package Properties</source>
-        <target state="needs-review-translation">Paket</target>
-        <note></note>
+        <target state="translated">Paket Özellikleri</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|DisplayName">
         <source>Description</source>
