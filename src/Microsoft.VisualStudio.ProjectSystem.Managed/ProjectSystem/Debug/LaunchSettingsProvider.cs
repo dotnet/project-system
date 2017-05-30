@@ -312,7 +312,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         protected Task<bool> SettingsFileHasChangedAsync()
         {
-            bool changed = !FileManager.FileExists(LaunchSettingsFile) || FileManager.LastFileWriteTime(LaunchSettingsFile) != LastSettingsFileSyncTime;
+            string fileName = LaunchSettingsFile;
+
+            bool changed = !FileManager.FileExists(fileName) || FileManager.LastFileWriteTime(fileName) != LastSettingsFileSyncTime;
 
             return Task.FromResult(changed);
         }
@@ -375,11 +377,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         protected Task<LaunchSettingsData> ReadSettingsFileFromDiskAsync()
         {
+            string fileName = LaunchSettingsFile;
+
             // Clear errors
             ClearErrors();
             try
             {
-                string jsonString = FileManager.ReadAllText(LaunchSettingsFile);
+                string jsonString = FileManager.ReadAllText(fileName);
 
                 // Since the sections in the settings file are extensible we iterate through each one and have the appropriate provider
                 // serialize their section. Unfortunately, this means the data is string to object which is messy to deal with
@@ -411,24 +415,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 }
 
                 // Remember the time we are sync'd to
-                LastSettingsFileSyncTime = FileManager.LastFileWriteTime(LaunchSettingsFile);
+                LastSettingsFileSyncTime = FileManager.LastFileWriteTime(fileName);
                 return Task.FromResult(launchSettingsData);
             }
             catch (JsonReaderException readerEx)
             {
                 string err = string.Format(Resources.JsonErrorReadingLaunchSettings, readerEx.Message);
-                LogError(err, LaunchSettingsFile, readerEx.LineNumber, readerEx.LinePosition, false);
+                LogError(err, fileName, readerEx.LineNumber, readerEx.LinePosition, false);
                 throw;
             }
             catch (JsonException jsonEx)
             {
                 string err = string.Format(Resources.JsonErrorReadingLaunchSettings, jsonEx.Message);
-                LogError(err, LaunchSettingsFile, -1, -1, false);
+                LogError(err, fileName, -1, -1, false);
                 throw;
             }
             catch (Exception ex)
             {
-                string err = string.Format(Resources.ErrorReadingLaunchSettings, Path.Combine(LaunchSettingsFileFolder, LaunchSettingsFilename), ex.Message);
+                string err = string.Format(Resources.ErrorReadingLaunchSettings, fileName, ex.Message);
                 LogError(err, false);
                 throw;
             }
@@ -488,6 +492,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Clear stale errors since we are saving
             ClearErrors();
             var serializationData = GetSettingsToSerialize(newSettings);
+            string fileName = LaunchSettingsFile;
+
             try
             {
                 await EnsureSettingsFolderAsync();
@@ -497,14 +503,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 string jsonString = JsonConvert.SerializeObject(serializationData, Formatting.Indented, settings);
 
                 IgnoreFileChanges = true;
-                FileManager.WriteAllText(LaunchSettingsFile, jsonString);
+                FileManager.WriteAllText(fileName, jsonString);
 
                 // Update the last write time
-                LastSettingsFileSyncTime = FileManager.LastFileWriteTime(LaunchSettingsFile);
+                LastSettingsFileSyncTime = FileManager.LastFileWriteTime(fileName);
             }
             catch (Exception ex)
             {
-                string err = string.Format(Resources.ErrorWritingDebugSettings, LaunchSettingsFile, ex.Message);
+                string err = string.Format(Resources.ErrorWritingDebugSettings, fileName, ex.Message);
                 LogError(err, false);
                 throw;
             }
@@ -571,12 +577,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         protected void LaunchSettingsFile_Changed(object sender, FileSystemEventArgs e)
         {
-
             if (!IgnoreFileChanges)
             {
+                string fileName = LaunchSettingsFile;
+
                 // Only do something if the file is truly different than what we synced. Here, we want to 
                 // throttle. 
-                if (!FileManager.FileExists(LaunchSettingsFile) || FileManager.LastFileWriteTime(LaunchSettingsFile) != LastSettingsFileSyncTime)
+                if (!FileManager.FileExists(fileName) || FileManager.LastFileWriteTime(fileName) != LastSettingsFileSyncTime)
                 {
                     FileChangeScheduler.ScheduleAsyncTask(async token => {
 
