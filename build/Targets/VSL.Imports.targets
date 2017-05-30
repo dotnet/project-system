@@ -352,6 +352,7 @@
            or '%(FileName)' == 'Microsoft.VisualStudio.CommandBars'
            or '%(FileName)' == 'NuGet.SolutionRestoreManager.Interop'
            or '%(FileName)' == 'NuGet.VisualStudio'
+           or '%(FileName)' == 'VSLangProj110'
               ">
         <EmbedInteropTypes>true</EmbedInteropTypes>
       </ReferencePath>
