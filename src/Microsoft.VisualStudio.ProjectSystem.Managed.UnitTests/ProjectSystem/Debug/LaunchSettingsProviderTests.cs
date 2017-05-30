@@ -171,18 +171,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Fact]
-        public void LaunchSettingsProvider_SettingsFileHasChangedTests()
+        public async Task LaunchSettingsProvider_SettingsFileHasChangedTests()
         {
             IFileSystemMock moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
 
             // No settings  file
-            Assert.True(provider.SettingsFileHasChangedTest());
+            Assert.True(await provider.SettingsFileHasChangedAsyncTest());
             moqFS.WriteAllText(provider.LaunchSettingsFile, JsonString1);
 
-            Assert.True(provider.SettingsFileHasChangedTest());
+            Assert.True(await provider.SettingsFileHasChangedAsyncTest());
             provider.LastSettingsFileSyncTimeTest = moqFS.LastFileWriteTime(provider.LaunchSettingsFile);
-            Assert.False(provider.SettingsFileHasChangedTest());
+            Assert.False(await provider.SettingsFileHasChangedAsyncTest());
         }
 
 
@@ -797,7 +797,7 @@ string JsonString1 = @"{
         public DateTime LastSettingsFileSyncTimeTest { get { return LastSettingsFileSyncTime; } set { LastSettingsFileSyncTime = value; } }
         public Task UpdateProfilesAsyncTest(string activeProfile) { return UpdateProfilesAsync(activeProfile);}
         public void SetIgnoreFileChanges(bool value) { IgnoreFileChanges = value; }
-        public bool SettingsFileHasChangedTest() { return SettingsFileHasChanged(); }
+        public Task<bool> SettingsFileHasChangedAsyncTest() { return SettingsFileHasChangedAsync(); }
         public void LaunchSettingsFile_ChangedTest(FileSystemEventArgs args)
         {
             LaunchSettingsFile_Changed(null, args);

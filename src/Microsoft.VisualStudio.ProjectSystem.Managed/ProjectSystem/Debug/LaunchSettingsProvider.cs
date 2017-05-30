@@ -245,7 +245,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         protected async Task UpdateActiveProfileInSnapshotAsync(string activeProfile)
         {
             var snapshot = CurrentSnapshot;
-            if (snapshot == null || SettingsFileHasChanged())
+            if (snapshot == null || await SettingsFileHasChangedAsync())
             {
                 await UpdateProfilesAsync(activeProfile).ConfigureAwait(false);
                 return;
@@ -310,9 +310,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// Returns true of the file has changed since we last read it. Note that it returns true if the file
         /// does not exist
         /// </summary>
-        protected bool SettingsFileHasChanged()
+        protected Task<bool> SettingsFileHasChangedAsync()
         {
-            return !FileManager.FileExists(LaunchSettingsFile) || FileManager.LastFileWriteTime(LaunchSettingsFile) != LastSettingsFileSyncTime;
+            bool changed = !FileManager.FileExists(LaunchSettingsFile) || FileManager.LastFileWriteTime(LaunchSettingsFile) != LastSettingsFileSyncTime;
+
+            return Task.FromResult(changed);
         }
 
         /// <summary>
