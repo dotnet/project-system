@@ -7,10 +7,6 @@
         <source>Don't call MSBuild if a project appears to be up to date.</source>
         <note></note>
       </trans-unit>
-      <trans-unit id="General_VerboseFastUpToDateLogging">
-        <source>Log diagnostic information for project up to date checks to the output window.</source>
-        <note></note>
-      </trans-unit>
     </body>
   </file>
 </xliff>

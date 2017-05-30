@@ -120,7 +120,4 @@
   <data name="General_FastUpToDateCheck" xml:space="preserve">
     <value>Don't call MSBuild if a project appears to be up to date.</value>
   </data>
-  <data name="General_VerboseFastUpToDateLogging" xml:space="preserve">
-    <value>Log diagnostic information for project up to date checks to the output window.</value>
-  </data>
 </root>
