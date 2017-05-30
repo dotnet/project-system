@@ -55,6 +55,14 @@
         <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|NoWarn|DisplayName">
+        <source>NoWarn</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|NoWarn|Description">
+        <source>Comma-delimited list of warnings that should be suppressed for this package</source>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>
