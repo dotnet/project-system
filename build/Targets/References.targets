@@ -116,14 +116,9 @@
 		Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll is needed by GraphProvider unit tests.
 		if it is not provided here, tests fail to load this assembly at runtime.
 	-->
-        <Reference Include="Microsoft.VisualStudio.Diagnostics.PerformanceProvider">
-          <HintPath Condition="Exists('$(DevEnvDir)\PrivateAssemblies\Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll')">$(DevEnvDir)\PrivateAssemblies\Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll</HintPath>
-          <HintPath Condition="Exists('C:\Program Files (x86)\Microsoft Visual Studio\Preview\Enterprise\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll')">C:\Program Files (x86)\Microsoft Visual Studio\Preview\Enterprise\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll</HintPath>
-          <HintPath Condition="Exists('C:\Program Files (x86)\Microsoft Visual Studio\Preview\Professional\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll')">C:\Program Files (x86)\Microsoft Visual Studio\Preview\Professional\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll</HintPath>
-          <HintPath Condition="Exists('C:\Program Files (x86)\Microsoft Visual Studio\Preview\Community\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll')">C:\Program Files (x86)\Microsoft Visual Studio\Preview\Community\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll</HintPath>
-        </Reference>
 
         <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="15.0.26124-rc3" />
+        <PackageReference Include="Microsoft.VisualStudio.Diagnostics.PerformanceProvider" Version="15.0.26507-alpha" />
         <PackageReference Include="Microsoft.VisualStudio.Designer.Interfaces" Version="1.1.4322" />
         <PackageReference Include="Microsoft.VisualStudio.ManagedInterfaces" Version="$(MicrosoftVisualStudioManagedInterfaces)" />
         <PackageReference Include="Microsoft.VisualStudio.WCFReference.Interop" Version="9.0.30729" />
@@ -210,15 +205,12 @@
         <Reference Include="Microsoft.VisualStudio.VSHelp">
           <HintPath>$(DevEnvDir)\PublicAssemblies\Microsoft.VisualStudio.VSHelp.dll</HintPath>
         </Reference>
-        <Reference Include="Microsoft.VisualStudio.DataDesign.Common">
-          <HintPath Condition="Exists('$(DevEnvDir)Microsoft.VisualStudio.DataDesign.Common.dll')">$(DevEnvDir)Microsoft.VisualStudio.DataDesign.Common.dll</HintPath>
-          <HintPath Condition="Exists('C:\Program Files (x86)\Microsoft Visual Studio\Preview\Enterprise\Common7\IDE\Microsoft.VisualStudio.DataDesign.Common.dll')">C:\Program Files (x86)\Microsoft Visual Studio\Preview\Enterprise\Common7\IDE\Microsoft.VisualStudio.DataDesign.Common.dll</HintPath>
-          <HintPath Condition="Exists('C:\Program Files (x86)\Microsoft Visual Studio\Preview\Professional\Common7\IDE\Microsoft.VisualStudio.DataDesign.Common.dll')">C:\Program Files (x86)\Microsoft Visual Studio\Preview\Professional\Common7\IDE\Microsoft.VisualStudio.DataDesign.Common.dll</HintPath>
-          <HintPath Condition="Exists('C:\Program Files (x86)\Microsoft Visual Studio\Preview\Community\Common7\IDE\Microsoft.VisualStudio.DataDesign.Common.dll')">C:\Program Files (x86)\Microsoft Visual Studio\Preview\Community\Common7\IDE\Microsoft.VisualStudio.DataDesign.Common.dll</HintPath>
-        </Reference>
         <Reference Include="Microsoft.VisualStudio.DataTools.Interop">
           <HintPath>$(DevEnvDir)\Microsoft.VisualStudio.DataTools.Interop.dll</HintPath>
         </Reference>
+
+        <PackageReference Include="Microsoft.VisualStudio.DataDesign.Common" Version="15.0.26524-alpha" />
+
       </ItemGroup>
     </When>
   </Choose>
