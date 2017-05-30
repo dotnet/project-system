@@ -38,6 +38,12 @@
       DisplayName="Custom Tool Namespace"
       Description="The namespace into which the output of the custom tool is placed." />
 
+    <StringProperty Name="FullPath" Visible="false">
+        <StringProperty.DataSource>
+            <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
+        </StringProperty.DataSource>
+    </StringProperty>
+
     <BoolProperty Name="ExcludedFromBuild" DisplayName="Excluded From Build">
         <BoolProperty.DataSource>
             <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="true" SourceOfDefaultValue="AfterContext" />

@@ -197,8 +197,8 @@
        just imporrts Microsoft.Common.CurrentVersion.targets. So set LanguageTargets to import CSharp.targets if the 
        extension is unknown -->
   <PropertyGroup Condition="'$(LanguageTargets)' == ''">
-    <LanguageTargets Condition="'$(MSBuildProjectExtension)' == '.csproj'">$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets>
-    <LanguageTargets Condition="'$(MSBuildProjectExtension)' == '.vbproj'">$(MSBuildToolsPath)\Microsoft.VisualBasic.targets</LanguageTargets>
+    <LanguageTargets Condition="'$(MSBuildProjectExtension)' == '.csproj' OR '$(Language)' == 'C#'">$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets>
+    <LanguageTargets Condition="'$(MSBuildProjectExtension)' == '.vbproj' OR '$(Language)' == 'VB'">$(MSBuildToolsPath)\Microsoft.VisualBasic.targets</LanguageTargets>
     <LanguageTargets Condition="'$(LanguageTargets)' == ''">$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets> 
   </PropertyGroup>
 
@@ -426,19 +426,26 @@
        ==================================================================================== -->
 
   <PropertyGroup>
-    <OptimizationDataFolderPath>$(MSBuildThisFileDirectory)..\..\..\Closed\OptimizationData</OptimizationDataFolderPath>
+    <OptimizationDataFolderPath>$(NuGetPackageRoot)\RoslynDependencies.OptimizationData\$(RoslynDependenciesOptimizationDataVersion)\content\OptimizationData</OptimizationDataFolderPath>
     <OptimizationDataFile>$([System.IO.Path]::GetFullPath('$(OptimizationDataFolderPath)\$(TargetName).pgo'))</OptimizationDataFile>
-    <IbcMergePath>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\..\..\Closed\Tools\ibcmerge\ibcmerge.exe'))</IbcMergePath>
+    <IbcMergePath>$(NuGetPackageRoot)\Microsoft.DotNet.IBCMerge\$(MicrosoftDotNetIBCMergeVersion)\lib\net45\ibcmerge.exe</IbcMergePath>
   </PropertyGroup>
 
   <Target Name="ApplyOptimizations"
-          Condition="'$(Configuration)' == 'Release' AND '$(NonShipping)' != 'true' AND '$(SkipApplyOptimizations)' != 'true' AND Exists('$(OptimizationDataFile)')"
+          Condition="'$(Configuration)' == 'Release' AND '$(NonShipping)' != 'true' AND '$(ShouldSignBuild)' == 'true' AND Exists('$(OptimizationDataFile)')"
           Inputs="@(IntermediateAssembly)"
           Outputs="@(IntermediateAssembly);$(PostCompileBinaryModificationSentinelFile)">
+    <Message Text="Adding optimization data to @(IntermediateAssembly)" />
 
-    <Message Text="Adding optimization data to @(IntermediateAssembly)"/>
-    <Exec Command="&quot;$(IbcMergePath)&quot; -q -f -partialNGEN -minify -mo &quot;@(IntermediateAssembly)&quot; -incremental &quot;$(OptimizationDataFile)&quot;" />
+    <Error Text="IBCMerge not found at $(IbcMergePath). Local developer builds should pass /p:SkipApplyOptimizations=true to avoid this"
+             Condition="!Exists('$(IbcMergePath)')" />
+    <Exec Command="&quot;$(IbcMergePath)&quot; -q -f -partialNGEN -minify -mo &quot;@(IntermediateAssembly)&quot; -incremental &quot;$(OptimizationDataFile)&quot;"
+            ConsoleToMSBuild="true"
+            Condition="Exists('$(IbcMergePath)')">
+      <Output TaskParameter="ConsoleOutput" PropertyName="IbcMergeOutput" />
+    </Exec>
 
+    <Message Text="$(IbcMergeOutput)" />
   </Target>
 
   <!-- ====================================================================================
