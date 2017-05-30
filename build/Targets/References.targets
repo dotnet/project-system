@@ -118,7 +118,6 @@
 	-->
 
         <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="15.0.26124-rc3" />
-        <PackageReference Include="Microsoft.VisualStudio.DataDesign.Common" Version="15.0.26524-alpha" />
         <PackageReference Include="Microsoft.VisualStudio.Diagnostics.PerformanceProvider" Version="15.0.26507-alpha" />
         <PackageReference Include="Microsoft.VisualStudio.Designer.Interfaces" Version="1.1.4322" />
         <PackageReference Include="Microsoft.VisualStudio.ManagedInterfaces" Version="$(MicrosoftVisualStudioManagedInterfaces)" />
@@ -209,6 +208,9 @@
         <Reference Include="Microsoft.VisualStudio.DataTools.Interop">
           <HintPath>$(DevEnvDir)\Microsoft.VisualStudio.DataTools.Interop.dll</HintPath>
         </Reference>
+
+        <PackageReference Include="Microsoft.VisualStudio.DataDesign.Common" Version="15.0.26524-alpha" />
+
       </ItemGroup>
     </When>
   </Choose>
