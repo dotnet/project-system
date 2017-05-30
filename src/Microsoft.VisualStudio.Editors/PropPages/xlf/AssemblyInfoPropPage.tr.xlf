@@ -35,17 +35,17 @@
       </trans-unit>
       <trans-unit id="ComVisibleCheckBox.Text">
         <source>&amp;Make assembly COM-Visible</source>
-        <target state="translated">Bütünleştirilmiş kodu &amp;COM-Görünür yap</target>
+        <target state="translated">&amp;Bütünleştirilmiş kodu COM-Görünür yap</target>
         <note />
       </trans-unit>
       <trans-unit id="NeutralLanguageLabel.Text">
         <source>&amp;Neutral language:</source>
-        <target state="translated">Bağımsı&amp;z dil:</target>
+        <target state="translated">&amp;Bağımsız dil:</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionLabel.Text">
         <source>&amp;Assembly version:</source>
-        <target state="translated">Bütünleştirilmiş k&amp;od sürümü:</target>
+        <target state="translated">&amp;Bütünleştirilmiş kod sürümü:</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionLabel.Text">

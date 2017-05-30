@@ -4,7 +4,7 @@
   <Rule.DataSource>
     <DataSource Persistence="UserFile" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
-  <StringProperty Name="SymbolsPath" DisplayName="Percorso di ricerca dei simboli" Description="Percorso di ricerca utilizzato dal debugger per individuare i simboli."></StringProperty>
+  <StringProperty Name="SymbolsPath" DisplayName="Percorso di ricerca dei simboli" Description="Percorso di ricerca usato dal debugger per individuare i simboli."></StringProperty>
   <StringProperty Name="DebuggerFlavor" Visible="false" Description="Regola di debug specificata come debugger attivo."></StringProperty>
   <EnumProperty Name="ImageClrType" Visible="false" Description="La proprietà 'hidden' viene passata ai debugger per indicare se il progetto è gestito.">
     <EnumProperty.DataSource>

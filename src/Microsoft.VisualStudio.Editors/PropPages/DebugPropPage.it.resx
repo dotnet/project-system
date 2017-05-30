@@ -172,6 +172,6 @@
     <value>Abilita de&amp;bug codice nativo</value>
   </data>
   <data name="StartArguments.AccessibleName" xml:space="preserve">
-    <value>Command line arguments</value>
+    <value>Argomenti della riga di comando</value>
   </data>
 </root>

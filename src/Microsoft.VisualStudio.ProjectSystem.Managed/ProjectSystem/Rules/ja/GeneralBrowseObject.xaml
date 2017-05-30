@@ -13,7 +13,7 @@
       <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="TargetFrameworkMonikers" DisplayName="Target Framework Monikers" Visible="False" ReadOnly="True">
+  <StringProperty Name="TargetFrameworkMonikers" DisplayName="ターゲット フレームワーク モニカー" Visible="False" ReadOnly="True">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMonikers" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
@@ -38,13 +38,13 @@
   </IntProperty>
   <StringProperty Name="OutputName" Visible="False" />
   <!-- This property is used to provide the value of OutputType through BrowseObject, which is used by Property pages-->
-  <IntProperty Name="OutputType" DisplayName="Output Type" Visible="False">
+  <IntProperty Name="OutputType" DisplayName="出力の種類" Visible="False">
     <IntProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception" PersistedName="OutputType" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </IntProperty.DataSource>
   </IntProperty>
   <!-- This property is used to provide the value of OutputTypeEx through BrowseObject, which is used by Property pages-->
-  <IntProperty Name="OutputTypeEx" DisplayName="Output Type Ex" Visible="False">
+  <IntProperty Name="OutputTypeEx" DisplayName="出力の種類 Ex" Visible="False">
     <IntProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception" PersistedName="OutputTypeEx" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </IntProperty.DataSource>
@@ -151,5 +151,5 @@
       <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <DynamicEnumProperty Name="SupportedTargetFrameworks" DisplayName="Supported TargetFrameworks" EnumProvider="SupportedTargetFrameworksEnumProvider" Visible="False" />
+  <DynamicEnumProperty Name="SupportedTargetFrameworks" DisplayName="サポートされるターゲット フレームワーク" EnumProvider="SupportedTargetFrameworksEnumProvider" Visible="False" />
 </Rule>

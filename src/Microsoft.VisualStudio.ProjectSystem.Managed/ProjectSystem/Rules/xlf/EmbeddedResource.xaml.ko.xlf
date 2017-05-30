@@ -10,8 +10,8 @@
       </trans-unit>
       <trans-unit id="Rule|EmbeddedResource|Description">
         <source>File Properties</source>
-        <target state="needs-review-translation">포함 리소스</target>
-        <note></note>
+        <target state="translated">파일 속성</target>
+        <note />
       </trans-unit>
       <trans-unit id="Category|Advanced|DisplayName">
         <source>Advanced</source>

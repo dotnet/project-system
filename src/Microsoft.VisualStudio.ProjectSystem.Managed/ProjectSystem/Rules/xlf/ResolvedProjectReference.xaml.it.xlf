@@ -10,8 +10,8 @@
       </trans-unit>
       <trans-unit id="Rule|ResolvedProjectReference|Description">
         <source>Reference Properties</source>
-        <target state="needs-review-translation">Riferimento risolto</target>
-        <note></note>
+        <target state="translated">Proprietà del riferimento</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">
         <source>Aliases</source>
@@ -160,7 +160,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|Project|Description">
         <source>the Guid the solution tracks an individual project reference target with</source>
-        <target state="translated">il Guid con cui la soluzione traccia la destinazione del riferimento di un singolo progetto</target>
+        <target state="translated">GUID con cui la soluzione tiene traccia della destinazione del riferimento di un singolo progetto</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|WinMDFile|Description">

@@ -10,8 +10,8 @@
       </trans-unit>
       <trans-unit id="Rule|None|Description">
         <source>File Properties</source>
-        <target state="needs-review-translation">Itens não-compilação</target>
-        <note></note>
+        <target state="translated">Propriedades do Arquivo</target>
+        <note />
       </trans-unit>
       <trans-unit id="Category|Advanced|DisplayName">
         <source>Advanced</source>

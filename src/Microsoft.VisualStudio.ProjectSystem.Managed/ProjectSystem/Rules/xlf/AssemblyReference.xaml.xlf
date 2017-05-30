@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="Rule|AssemblyReference|Description">
         <source>Reference Properties</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">
         <source>Aliases</source>

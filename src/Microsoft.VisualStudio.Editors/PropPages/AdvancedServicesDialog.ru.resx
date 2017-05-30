@@ -130,9 +130,9 @@
     <value>&amp;Использовать настраиваемую строку подключения:</value>
   </data>
   <data name="TimeUnitComboBox.AccessibleName" xml:space="preserve">
-    <value>Role service cache timeout units</value>
+    <value>Единицы для времени ожидания кэша службы роли</value>
   </data>
   <data name="CustomConnectionString.AccessibleName" xml:space="preserve">
-    <value>Custom connection string</value>
+    <value>Пользовательская строка подключения</value>
   </data>
 </root>

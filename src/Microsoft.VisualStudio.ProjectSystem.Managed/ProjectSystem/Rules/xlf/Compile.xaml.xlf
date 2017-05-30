@@ -73,11 +73,11 @@
       </trans-unit>
       <trans-unit id="Rule|Compile|DisplayName">
         <source>File Properties</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|Compile|Description">
         <source>File Properties</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

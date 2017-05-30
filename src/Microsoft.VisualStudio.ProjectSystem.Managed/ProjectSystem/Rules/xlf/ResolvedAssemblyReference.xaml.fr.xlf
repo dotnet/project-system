@@ -10,8 +10,8 @@
       </trans-unit>
       <trans-unit id="Rule|ResolvedAssemblyReference|Description">
         <source>Reference Properties</source>
-        <target state="needs-review-translation">Référence résolue</target>
-        <note></note>
+        <target state="translated">Propriétés de la référence</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">
         <source>Aliases</source>
