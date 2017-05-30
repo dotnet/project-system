@@ -107,7 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {
                 if (_launchSettingsFile == null)
                 {
-                    _launchSettingsFile = Path.Combine(Path.GetDirectoryName(CommonProjectServices.Project.FullPath), LaunchSettingsFileFolder, LaunchSettingsFilename);
+                    _launchSettingsFile = Path.Combine(Path.GetDirectoryName(CommonProjectServices.Project.FullPath), GetLaunchSettingsFileFolder(), LaunchSettingsFilename);
                 }
                 return _launchSettingsFile;
             }
@@ -117,24 +117,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// Queries msbuld for the App designer folder name property. Falls back to Properties if none defined.
         /// </summary>
         private string _launchSettingsFileFolder;
-        private string LaunchSettingsFileFolder
-        {
-            get
-            {
-                if (_launchSettingsFileFolder == null)
-                {
-                    _launchSettingsFileFolder = CommonProjectServices.ThreadingService.ExecuteSynchronously(async () => {
-                        var props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetAppDesignerPropertiesAsync().ConfigureAwait(true);
-                        return await props.FolderName.GetValueAsync().ConfigureAwait(true) as string;
-                    });
 
-                    if (string.IsNullOrEmpty(_launchSettingsFileFolder))
-                    {
-                        _launchSettingsFileFolder = DefaultSettingsFileFolder;
-                    }
+        private string GetLaunchSettingsFileFolder()
+        {
+            if (_launchSettingsFileFolder == null)
+            {
+                _launchSettingsFileFolder = CommonProjectServices.ThreadingService.ExecuteSynchronously(async () => {
+                    var props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetAppDesignerPropertiesAsync().ConfigureAwait(true);
+                    return await props.FolderName.GetValueAsync().ConfigureAwait(true) as string;
+                });
+
+                if (string.IsNullOrEmpty(_launchSettingsFileFolder))
+                {
+                    _launchSettingsFileFolder = DefaultSettingsFileFolder;
                 }
-                return _launchSettingsFileFolder;
             }
+            return _launchSettingsFileFolder;
         }
 
         /// <summary>
@@ -608,7 +606,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         protected Task EnsureSettingsFolderAsync()
         {
-            var launchSettingsFileFolderPath = Path.Combine(Path.GetDirectoryName(CommonProjectServices.Project.FullPath), LaunchSettingsFileFolder);
+            var launchSettingsFileFolderPath = Path.Combine(Path.GetDirectoryName(CommonProjectServices.Project.FullPath), GetLaunchSettingsFileFolder());
             if (!FileManager.DirectoryExists(launchSettingsFileFolderPath))
             {
                 FileManager.CreateDirectory(launchSettingsFileFolderPath);
