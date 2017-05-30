@@ -481,14 +481,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// Saves the launch settings to the launch settings file. Adds an errorstring and throws if an exception. Note
         /// that the caller is responsible for checking out the file
         /// </summary>
-        protected void SaveSettingsToDisk(ILaunchSettings newSettings)
+        protected async Task SaveSettingsToDiskAsync(ILaunchSettings newSettings)
         {
             // Clear stale errors since we are saving
             ClearErrors();
             var serializationData = GetSettingsToSerialize(newSettings);
             try
             {
-                EnsureSettingsFolder();
+                await EnsureSettingsFolderAsync();
 
                 // We don't want to write null values. We want to keep the file as small as possible
                 JsonSerializerSettings settings = new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore };
@@ -597,13 +597,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// Makes sure the settings folder exists on disk. Doesn't add the folder to
         /// the project.
         /// </summary>
-        protected void EnsureSettingsFolder()
+        protected Task EnsureSettingsFolderAsync()
         {
             var launchSettingsFileFolderPath = Path.Combine(Path.GetDirectoryName(CommonProjectServices.Project.FullPath), LaunchSettingsFileFolder);
             if (!FileManager.DirectoryExists(launchSettingsFileFolderPath))
             {
                 FileManager.CreateDirectory(launchSettingsFileFolderPath);
             }
+
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -702,7 +704,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var activeProfileName = ActiveProfile?.Name;
 
             ILaunchSettings newSnapshot = new LaunchSettings(newSettings.Profiles, newSettings.GlobalSettings, activeProfileName);
-            SaveSettingsToDisk(newSettings);
+            await SaveSettingsToDiskAsync(newSettings);
 
             FinishUpdate(newSnapshot);
         }

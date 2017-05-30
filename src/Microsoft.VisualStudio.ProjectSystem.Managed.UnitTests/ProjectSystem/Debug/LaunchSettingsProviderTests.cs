@@ -270,7 +270,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Fact]
-        public void  LaunchSettingsProvider_SaveProfilesToDiskTests()
+        public async Task LaunchSettingsProvider_SaveProfilesToDiskTests()
         {
             IFileSystemMock moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
@@ -302,7 +302,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 return ImmutableDictionary<string, object>.Empty.Add("iisSettings", iisSettings);
             });
 
-            provider.SaveSettingsToDiskTest(testSettings.Object);
+            await provider.SaveSettingsToDiskAsyncTest(testSettings.Object);
 
             // Last Write time should be set
             Assert.Equal(moqFS.LastFileWriteTime(provider.LaunchSettingsFile), provider.LastSettingsFileSyncTimeTest);
@@ -793,7 +793,7 @@ string JsonString1 = @"{
         // Wrappers to call protected members
         public void SetCurrentSnapshot(ILaunchSettings profiles) { CurrentSnapshot = profiles;}
         public Task<LaunchSettingsData> ReadSettingsFileFromDiskTestAsync() { return ReadSettingsFileFromDiskAsync();}
-        public void SaveSettingsToDiskTest(ILaunchSettings curSettings) { SaveSettingsToDisk(curSettings);}
+        public Task SaveSettingsToDiskAsyncTest(ILaunchSettings curSettings) { return SaveSettingsToDiskAsync(curSettings);}
         public DateTime LastSettingsFileSyncTimeTest { get { return LastSettingsFileSyncTime; } set { LastSettingsFileSyncTime = value; } }
         public Task UpdateProfilesAsyncTest(string activeProfile) { return UpdateProfilesAsync(activeProfile);}
         public void SetIgnoreFileChanges(bool value) { IgnoreFileChanges = value; }
