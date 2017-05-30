@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Rule Name="Compile" DisplayName="File Properties" PageTemplate="generic" Description="File Properties" xmlns="http://schemas.microsoft.com/build/2009/properties">
+<Rule Name="Compile" DisplayName="Właściwości pliku" PageTemplate="generic" Description="Właściwości pliku" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
     <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
@@ -16,6 +16,11 @@
   </EnumProperty>
   <StringProperty Name="Generator" Category="Advanced" DisplayName="Narzędzie niestandardowe" Description="Określa narzędzie, które przekształca plik w czasie projektowania i umieszcza wynik przekształcenia w innym pliku. Na przykład plik zestawu danych (xsd) zawiera domyślne narzędzie niestandardowe." />
   <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="Przestrzeń nazw narzędzia niestandardowego" Description="Przestrzeń nazw, w której zostaną umieszczone dane wyjściowe narzędzia niestandardowego." />
+  <StringProperty Name="FullPath" Visible="false">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
   <BoolProperty Name="ExcludedFromBuild" DisplayName="Wykluczone z kompilacji">
     <BoolProperty.DataSource>
       <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="true" SourceOfDefaultValue="AfterContext" />

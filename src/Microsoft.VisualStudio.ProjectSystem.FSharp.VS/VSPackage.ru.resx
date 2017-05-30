@@ -121,6 +121,6 @@
     <value>F#</value>
   </data>
   <data name="2" xml:space="preserve">
-    <value>F# Project Files (*.fsproj);*.fsproj</value>
+    <value>Файлы проекта F# (*.fsproj);*.fsproj</value>
   </data>
 </root>

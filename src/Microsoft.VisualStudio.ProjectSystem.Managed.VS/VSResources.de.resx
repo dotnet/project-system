@@ -280,6 +280,6 @@ Um das Projekt zu debuggen, fügen Sie dieser Projektmappe ein ausführbares Pro
     <value>Framework ({0})</value>
   </data>
   <data name="OutputWindowPaneTitle" xml:space="preserve">
-    <value>Project</value>
+    <value>Projekt</value>
   </data>
 </root>

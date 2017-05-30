@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Rule Name="ResolvedProjectReference" DisplayName="Riferimento a progetto risolto" PageTemplate="generic" Description="Riferimento risolto" xmlns="http://schemas.microsoft.com/build/2009/properties">
+<Rule Name="ResolvedProjectReference" DisplayName="Riferimento a progetto risolto" PageTemplate="generic" Description="Proprietà del riferimento" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
     <DataSource Persistence="ResolvedReference" ItemType="ProjectReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="ResolveProjectReferencesDesignTime" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
@@ -52,7 +52,7 @@
   <BoolProperty Name="StrongName" ReadOnly="True" Visible="False" DisplayName="Nome sicuro" Description="Se ha valore True, significa che il riferimento è stato firmato con una coppia di chiavi."></BoolProperty>
   <!-- This is the metadata we store on the reference item when we add it. -->
   <BoolProperty Name="IsWinMDFile" Visible="false" Description="Indica se il sistema del progetto ha accertato che si tratta di un WinMD (in contrapposizione a un assembly)" />
-  <StringProperty Name="Project" Visible="False" Description="il Guid con cui la soluzione traccia la destinazione del riferimento di un singolo progetto" />
+  <StringProperty Name="Project" Visible="False" Description="GUID con cui la soluzione tiene traccia della destinazione del riferimento di un singolo progetto" />
   <!-- These are metadata added to the resolved item by MSBuild that we don't show to the user but use internally. -->
   <BoolProperty Name="WinMDFile" Visible="false" ReadOnly="True" Description="Indica se il sistema di compilazione ha accertato che si tratta di un WinMD (in contrapposizione a un assembly)" />
   <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="Nome di elemento valutato dell'elemento di riferimento originale la cui risoluzione ha restituito questo elemento di riferimento risolto." />

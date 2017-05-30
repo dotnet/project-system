@@ -277,9 +277,9 @@
     <value>XProj 프로젝트 {0}을(를) 마이그레이션하지 못했습니다. {2} 오류 코드와 함께 '{1}'이(가) 종료되었습니다.</value>
   </data>
   <data name="DebugFrameworkMenuText" xml:space="preserve">
-    <value>Framework ({0})</value>
+    <value>프레임워크({0})</value>
   </data>
   <data name="OutputWindowPaneTitle" xml:space="preserve">
-    <value>Project</value>
+    <value>프로젝트</value>
   </data>
 </root>

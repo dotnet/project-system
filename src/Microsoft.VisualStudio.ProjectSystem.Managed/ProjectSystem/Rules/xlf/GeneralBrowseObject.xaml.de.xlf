@@ -53,11 +53,6 @@
         <target state="translated">Zielframeworks</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|StartupObject|DisplayName">
-        <source>Type that contains the entry point</source>
-        <target state="translated">Typ, der den Einstiegspunkt enthält</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|ApplicationManifest|DisplayName">
         <source>Application Manifest</source>
         <target state="translated">Anwendungsmanifest</target>
@@ -242,6 +237,11 @@
         <source>Output Type Ex</source>
         <target state="translated">Ausgabetypbeispiel</target>
         <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|StartupObject|DisplayName">
+        <source>Type that contains the entry point</source>
+        <target state="new">Type that contains the entry point</target>
+        <note></note>
       </trans-unit>
     </body>
   </file>

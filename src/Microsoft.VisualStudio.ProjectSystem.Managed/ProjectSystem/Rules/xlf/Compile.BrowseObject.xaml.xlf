@@ -61,27 +61,27 @@
       </trans-unit>
       <trans-unit id="StringProperty|Generator|DisplayName">
         <source>Custom Tool</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Generator|Description">
         <source>Specifies the tool that transforms a file at design time and places the output of that transformation into another file. For example, a dataset (.xsd) file comes with a default custom tool.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|CustomToolNamespace|DisplayName">
         <source>Custom Tool Namespace</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|CustomToolNamespace|Description">
         <source>The namespace into which the output of the custom tool is placed.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|Compile|DisplayName">
         <source>File Properties</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|Compile|Description">
         <source>File Properties</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="Rule|PackageReference|Description">
         <source>Package Properties</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|DisplayName">
         <source>Description</source>

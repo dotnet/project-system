@@ -12,7 +12,7 @@
   <EnumProperty Name="PlatformTarget" DisplayName="平台目標" Visible="False" />
   <BoolProperty Name="Prefer32Bit" DisplayName="建議使用 32 位元" Visible="False" />
   <BoolProperty Name="AllowUnsafeBlocks" Default="False" DisplayName="容許不安全的程式碼" Visible="False" />
-  <BoolProperty Name="Optimize" DisplayName="Optimize" Visible="False" />
+  <BoolProperty Name="Optimize" DisplayName="最佳化" Visible="False" />
   <StringProperty Name="NoWarn" DisplayName="隱藏警告" Visible="False" />
   <BoolProperty Name="TreatWarningsAsErrors" Default="False" Description="將警告視為錯誤" Visible="False" />
   <StringProperty Name="TreatSpecificWarningsAsErrors" Description="將特定警告視為錯誤" Visible="False" />
@@ -46,12 +46,12 @@
   <StringProperty Name="DebugSymbols" DisplayName="偵錯符號" Visible="False" />
   <EnumProperty Name="FileAlignment" DisplayName="檔案記憶體對齊" Visible="False" />
   <StringProperty Name="BaseAddress" DisplayName="基底位址" Visible="False" />
-  <StringProperty Name="FullPath" DisplayName="Project Folder" ReadOnly="True">
+  <StringProperty Name="FullPath" DisplayName="專案資料夾" ReadOnly="True">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <DynamicEnumProperty Name="WarningLevel" DisplayName="Warning Level" EnumProvider="WarningLevelEnumProvider" Visible="False">
+  <DynamicEnumProperty Name="WarningLevel" DisplayName="警告層級" EnumProvider="WarningLevelEnumProvider" Visible="False">
     <DynamicEnumProperty.DataSource>
       <DataSource Persistence="ProjectFile" HasConfigurationCondition="True" SourceOfDefaultValue="AfterContext" />
     </DynamicEnumProperty.DataSource>
@@ -61,22 +61,22 @@
     <EnumProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="OptionExplicit" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </EnumProperty.DataSource>
-    <EnumValue Name="Off" DisplayName="Off" />
-    <EnumValue Name="On" DisplayName="On" IsDefault="True" />
+    <EnumValue Name="Off" DisplayName="關閉" />
+    <EnumValue Name="On" DisplayName="開啟" IsDefault="True" />
   </EnumProperty>
   <EnumProperty Name="OptionCompare" DisplayName="Option Compare" Visible="False">
     <EnumProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="OptionCompare" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </EnumProperty.DataSource>
-    <EnumValue Name="Binary" DisplayName="Binary" IsDefault="True" />
-    <EnumValue Name="Text" DisplayName="Text" />
+    <EnumValue Name="Binary" DisplayName="二進位" IsDefault="True" />
+    <EnumValue Name="Text" DisplayName="文字" />
   </EnumProperty>
   <EnumProperty Name="OptionInfer" DisplayName="Option Compare" Visible="False">
     <EnumProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="OptionInfer" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </EnumProperty.DataSource>
-    <EnumValue Name="Off" DisplayName="Off" />
-    <EnumValue Name="On" DisplayName="On" IsDefault="True" />
+    <EnumValue Name="Off" DisplayName="關閉" />
+    <EnumValue Name="On" DisplayName="開啟" IsDefault="True" />
   </EnumProperty>
   <DynamicEnumProperty Name="OptionStrict" DisplayName="Option Strict" EnumProvider="OptionStrictEnumProvider" Visible="False">
     <DynamicEnumProperty.DataSource>
@@ -84,29 +84,29 @@
     </DynamicEnumProperty.DataSource>
   </DynamicEnumProperty>
   <!-- VB Advanced Compile Options-->
-  <BoolProperty Name="RemoveIntegerChecks" DisplayName="Remove Integer Checks" Visible="False" />
-  <BoolProperty Name="DefineDebug" DisplayName="Define Debug" Visible="False" />
-  <BoolProperty Name="DefineTrace" DisplayName="Define Trace" Visible="False" />
+  <BoolProperty Name="RemoveIntegerChecks" DisplayName="移除整數檢查" Visible="False" />
+  <BoolProperty Name="DefineDebug" DisplayName="定義偵錯" Visible="False" />
+  <BoolProperty Name="DefineTrace" DisplayName="定義追蹤" Visible="False" />
   <!-- VB Compile Build Event Page-->
-  <StringProperty Name="PreBuildEvent" DisplayName="Pre Build Event" Visible="False">
+  <StringProperty Name="PreBuildEvent" DisplayName="建置前事件" Visible="False">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="PostBuildEvent" DisplayName="Post Build Event" Visible="False">
+  <StringProperty Name="PostBuildEvent" DisplayName="建置後事件" Visible="False">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <EnumProperty Name="RunPostBuildEvent" DisplayName="Run Post-Build Event" Visible="False">
+  <EnumProperty Name="RunPostBuildEvent" DisplayName="執行建置後事件" Visible="False">
     <EnumProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="RunPostBuildEvent" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </EnumProperty.DataSource>
-    <EnumValue Name="Always" DisplayName="Always" />
-    <EnumValue Name="OnBuildSuccess" DisplayName="On successful build" IsDefault="True" />
-    <EnumValue Name="OnOutputUpdated" DisplayName="When the build updates the project output" />
+    <EnumValue Name="Always" DisplayName="永遠" />
+    <EnumValue Name="OnBuildSuccess" DisplayName="建置成功時" IsDefault="True" />
+    <EnumValue Name="OnOutputUpdated" DisplayName="當組建更新專案輸出時" />
   </EnumProperty>
   <!-- CSharp Project Configuration Properties-->
-  <StringProperty Name="LangVersion" DisplayName="CSharp Language Version" Visible="False" />
-  <StringProperty Name="CodeAnalysisRuleSet" DisplayName=" Code Analysis Rule set" Visible="False" />
+  <StringProperty Name="LangVersion" DisplayName="CSharp 語言版本" Visible="False" />
+  <StringProperty Name="CodeAnalysisRuleSet" DisplayName=" 程式碼分析規則集" Visible="False" />
 </Rule>

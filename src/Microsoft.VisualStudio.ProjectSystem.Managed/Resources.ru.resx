@@ -136,9 +136,9 @@
     <value>Перед применением изменений необходимо исправить ошибки в "{0}".</value>
   </data>
   <data name="MsBuildMissingValueToRemove" xml:space="preserve">
-    <value>The specified value to remove '{0}' was not present in the property '{1}'</value>
+    <value>Указанное для удаления значение "{0}" отсутствовало в свойстве "{1}"</value>
   </data>
   <data name="MsBuildMissingValueToRename" xml:space="preserve">
-    <value>The specified value to rename '{0}' was not present in the property '{1}'</value>
+    <value>Указанное для переименования значение "{0}" отсутствовало в свойстве "{1}"</value>
   </data>
 </root>

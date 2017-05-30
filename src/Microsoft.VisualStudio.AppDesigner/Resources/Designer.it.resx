@@ -118,22 +118,22 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="APPDES_ClickHereCreateResx" xml:space="preserve">
-    <value>Questo progetto non contiene un file di risorse predefinito.  Fare clic qui per crearne uno.</value>
+    <value>Questo progetto non contiene un file di risorse predefinito. Fare clic qui per crearne uno.</value>
   </data>
   <data name="APPDES_ClickHereCreateSettings" xml:space="preserve">
-    <value>Questo progetto non contiene un file di impostazioni predefinito.  Fare clic qui per crearne uno.</value>
+    <value>Questo progetto non contiene un file di impostazioni predefinito. Fare clic qui per crearne uno.</value>
   </data>
   <data name="APPDES_DesignerLoader_NotDeferred" xml:space="preserve">
     <value>Non è possibile visualizzare la finestra di progettazione perché il documento non è mai stato caricato.</value>
   </data>
   <data name="APPDES_EditorAlreadyOpen_1Arg" xml:space="preserve">
-    <value>Il file '{0}' è già aperto in un editor.  Chiudere il file e riprovare.</value>
+    <value>Il file '{0}' è già aperto in un editor. Chiudere il file e riprovare.</value>
   </data>
   <data name="APPDES_ErrorLoadingPropPage" xml:space="preserve">
     <value>Si è verificato un errore durante il caricamento della pagina.</value>
   </data>
   <data name="APPDES_ErrorLoading_Msg" xml:space="preserve">
-    <value>Si è verificato un errore durante il tentativo di caricare la finestra delle proprietà del progetto.  Chiudere la finestra e riprovare.
+    <value>Si è verificato un errore durante il tentativo di caricare la finestra delle proprietà del progetto. Chiudere la finestra e riprovare.
 {0}</value>
   </data>
   <data name="APPDES_FileNotFound_1Arg" xml:space="preserve">
@@ -185,7 +185,7 @@
     <value>L'editor non è riuscito a ottenere IVsTextStream.</value>
   </data>
   <data name="DFX_DesignerReadOnlyCaption" xml:space="preserve">
-    <value>{0} [Sola lettura]</value>
+    <value>{0} [Di sola lettura]</value>
   </data>
   <data name="DFX_EditorNoDesignerService" xml:space="preserve">
     <value>Non è disponibile alcun DesignerService per il file '{0}'.</value>
@@ -215,7 +215,7 @@
     <value>Non è possibile creare il buffer di testo.</value>
   </data>
   <data name="DFX_UnableToCheckout" xml:space="preserve">
-    <value>Non è possibile estrarre il file corrente.  Il file potrebbe essere di sola lettura o bloccato oppure deve essere estratto manualmente.</value>
+    <value>Non è possibile estrarre il file corrente. Il file potrebbe essere di sola lettura o bloccato oppure deve essere estratto manualmente.</value>
   </data>
   <data name="DFX_WindowPane_UnknownError" xml:space="preserve">
     <value>Errore sconosciuto.</value>
@@ -224,7 +224,7 @@
     <value>Argomento '{0}' non valido</value>
   </data>
   <data name="General_MissingService" xml:space="preserve">
-    <value>Il servizio '{0}' non è stato trovato.  Assicurarsi che l'applicazione sia installata correttamente.</value>
+    <value>Il servizio '{0}' non è stato trovato. Assicurarsi che l'applicazione sia installata correttamente.</value>
   </data>
   <data name="PermissionSet_Requires" xml:space="preserve">
     <value>Richiede:</value>

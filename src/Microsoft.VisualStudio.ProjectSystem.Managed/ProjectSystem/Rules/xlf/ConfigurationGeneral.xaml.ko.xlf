@@ -148,6 +148,11 @@
         <target state="translated">대상 프레임워크 모니커</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|DisableFastUpToDateCheck|DisplayName">
+        <source>Disable Fast Up To Date Check</source>
+        <target state="new">Disable Fast Up To Date Check</target>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>
