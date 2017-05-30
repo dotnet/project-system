@@ -10,8 +10,8 @@
       </trans-unit>
       <trans-unit id="Rule|ComReference|Description">
         <source>COM Reference Properties</source>
-        <target state="needs-review-translation">COM 參考屬性</target>
-        <note></note>
+        <target state="translated">COM 參考屬性</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Guid|DisplayName">
         <source>CLSID</source>

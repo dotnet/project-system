@@ -10,8 +10,8 @@
       </trans-unit>
       <trans-unit id="Rule|ResolvedAnalyzerReference|Description">
         <source>Analyzer Properties</source>
-        <target state="needs-review-translation">Vlastnosti vyhodnoceného odkazu na analyzátor</target>
-        <note></note>
+        <target state="translated">Vlastnosti analyzátoru</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|OriginalItemSpec|Description">
         <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
@@ -20,13 +20,13 @@
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|DisplayName">
         <source>Path</source>
-        <target state="new">Path</target>
-        <note></note>
+        <target state="translated">Cesta</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|Description">
         <source>Location of the analyzer assembly.</source>
-        <target state="new">Location of the analyzer assembly.</target>
-        <note></note>
+        <target state="translated">Umístění sestavení analyzátoru</target>
+        <note />
       </trans-unit>
     </body>
   </file>

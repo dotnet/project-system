@@ -53,6 +53,11 @@
         <target state="translated">Estruturas de Destino</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|StartupObject|DisplayName">
+        <source>Type that contains the entry point</source>
+        <target state="translated">Tipo que contém o ponto de entrada</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|ApplicationManifest|DisplayName">
         <source>Application Manifest</source>
         <target state="translated">Manifesto do Aplicativo</target>
@@ -220,28 +225,23 @@
       </trans-unit>
       <trans-unit id="StringProperty|TargetFrameworkMonikers|DisplayName">
         <source>Target Framework Monikers</source>
-        <target state="new">Target Framework Monikers</target>
-        <note></note>
+        <target state="translated">Monikers de Estrutura de Destino</target>
+        <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|SupportedTargetFrameworks|DisplayName">
         <source>Supported TargetFrameworks</source>
-        <target state="new">Supported TargetFrameworks</target>
-        <note></note>
+        <target state="translated">TargetFrameworks com Suporte</target>
+        <note />
       </trans-unit>
       <trans-unit id="IntProperty|OutputType|DisplayName">
         <source>Output Type</source>
-        <target state="new">Output Type</target>
-        <note></note>
+        <target state="translated">Tipo de Saída</target>
+        <note />
       </trans-unit>
       <trans-unit id="IntProperty|OutputTypeEx|DisplayName">
         <source>Output Type Ex</source>
-        <target state="new">Output Type Ex</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|StartupObject|DisplayName">
-        <source>Type that contains the entry point</source>
-        <target state="new">Type that contains the entry point</target>
-        <note></note>
+        <target state="translated">Ex. de Tipo de Saída</target>
+        <note />
       </trans-unit>
     </body>
   </file>

@@ -20,7 +20,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|SymbolsPath|Description">
         <source>The search path used by the debugger to locate symbols.</source>
-        <target state="translated">Percorso di ricerca utilizzato dal debugger per individuare i simboli.</target>
+        <target state="translated">Percorso di ricerca usato dal debugger per individuare i simboli.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DebuggerFlavor|Description">

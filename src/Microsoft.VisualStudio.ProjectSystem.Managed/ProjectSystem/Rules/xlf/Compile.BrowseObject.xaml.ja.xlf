@@ -75,33 +75,33 @@
       </trans-unit>
       <trans-unit id="StringProperty|Generator|DisplayName">
         <source>Custom Tool</source>
-        <target state="new">Custom Tool</target>
-        <note></note>
+        <target state="translated">カスタム ツール</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Generator|Description">
         <source>Specifies the tool that transforms a file at design time and places the output of that transformation into another file. For example, a dataset (.xsd) file comes with a default custom tool.</source>
-        <target state="new">Specifies the tool that transforms a file at design time and places the output of that transformation into another file. For example, a dataset (.xsd) file comes with a default custom tool.</target>
-        <note></note>
+        <target state="translated">設計時にファイルを変換し、その変換結果を別のファイルに出力するツールを指定します。たとえば、データセット (.xsd) ファイルには既定のカスタム ツールが用意されています。</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|CustomToolNamespace|DisplayName">
         <source>Custom Tool Namespace</source>
-        <target state="new">Custom Tool Namespace</target>
-        <note></note>
+        <target state="translated">カスタム ツールの名前空間</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|CustomToolNamespace|Description">
         <source>The namespace into which the output of the custom tool is placed.</source>
-        <target state="new">The namespace into which the output of the custom tool is placed.</target>
-        <note></note>
+        <target state="translated">カスタム ツールの出力を配置する名前空間です。</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|Compile|DisplayName">
         <source>File Properties</source>
-        <target state="new">File Properties</target>
-        <note></note>
+        <target state="translated">ファイルのプロパティ</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|Compile|Description">
         <source>File Properties</source>
-        <target state="new">File Properties</target>
-        <note></note>
+        <target state="translated">ファイルのプロパティ</target>
+        <note />
       </trans-unit>
     </body>
   </file>

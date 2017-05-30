@@ -10,8 +10,8 @@
       </trans-unit>
       <trans-unit id="Rule|SdkReference|Description">
         <source>SDK Reference Properties</source>
-        <target state="needs-review-translation">SDK 引用属性</target>
-        <note></note>
+        <target state="translated">SDK 引用属性</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|SDKRootFolder|DisplayName">
         <source>SDK Root</source>
@@ -55,18 +55,18 @@
       </trans-unit>
       <trans-unit id="StringProperty|DisplayName|DisplayName">
         <source>Display Name</source>
-        <target state="new">Display Name</target>
-        <note></note>
+        <target state="translated">显示名称</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Name|DisplayName">
         <source>Name</source>
-        <target state="new">Name</target>
-        <note></note>
+        <target state="translated">名称</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
-        <target state="new">Version</target>
-        <note></note>
+        <target state="translated">版本</target>
+        <note />
       </trans-unit>
     </body>
   </file>
