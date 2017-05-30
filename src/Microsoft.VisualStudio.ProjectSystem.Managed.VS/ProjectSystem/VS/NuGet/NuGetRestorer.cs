@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IActiveProjectConfigurationRefreshService _activeProjectConfigurationRefreshService;
         private IDisposable _targetFrameworkSubscriptionLink;
-        private List<IDisposable> _designTimeBuildSubscriptionLinks = new List<IDisposable>();
+        private readonly List<IDisposable> _designTimeBuildSubscriptionLinks = new List<IDisposable>();
 
         private const int perfPackageRestoreEnd = 7343;
 
@@ -36,6 +36,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             .Add(ProjectReference.SchemaName)
             .Add(PackageReference.SchemaName)
             .Add(DotNetCliToolReference.SchemaName);
+
+        // Remove the ConfiguredProjectIdentity key because it is unique to each configured project - so it won't match across projects by design.
+        // Remove the ConfiguredProjectVersion key because each configuredproject manages it's own version and generally they don't match. 
+        private readonly static ImmutableArray<NamedIdentity> _keysToDrop = ImmutableArray.Create(ProjectDataSources.ConfiguredProjectIdentity, ProjectDataSources.ConfiguredProjectVersion);
 
         [ImportingConstructor]
         public NuGetRestorer(
@@ -79,13 +83,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             // any new configured projects are picked up
             if (HasTargetFrameworkChanged(update))
             {
-                await ResetSubscriptions().ConfigureAwait(false);
+                await ResetSubscriptionsAsync().ConfigureAwait(false);
             }
         }
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {            
-            await ResetSubscriptions().ConfigureAwait(false);
+            await ResetSubscriptionsAsync().ConfigureAwait(false);
         }
 
         protected override Task DisposeCoreAsync(bool initialized)
@@ -99,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             return Task.CompletedTask;
         }
 
-        private async Task ResetSubscriptions()
+        private async Task ResetSubscriptionsAsync()
         {
             // active configuration should be updated before resetting subscriptions
             await RefreshActiveConfigurationAsync().ConfigureAwait(false);
@@ -146,10 +150,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         {
             var transformBlock = new TransformBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>, IProjectVersionedValue<IProjectSubscriptionUpdate>>(data =>
             {
-                // Remove the ConfiguredProjectIdentity key because it is unique to each configured project - so it won't match across projects by design.
-                // Remove the ConfiguredProjectVersion key because each configuredproject manages it's own version and generally they don't match. 
-                var keysToDrop = ImmutableArray.Create(ProjectDataSources.ConfiguredProjectIdentity, ProjectDataSources.ConfiguredProjectVersion);
-                return new ProjectVersionedValue<IProjectSubscriptionUpdate>(data.Value, data.DataSourceVersions.RemoveRange(keysToDrop));
+                return new ProjectVersionedValue<IProjectSubscriptionUpdate>(data.Value, data.DataSourceVersions.RemoveRange(_keysToDrop));
             });
 
             return transformBlock;
