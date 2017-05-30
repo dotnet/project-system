@@ -187,7 +187,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
 
         [Fact]
-        public void LaunchSettingsProvider_ReadProfilesFromDisk_NoFile()
+        public async Task LaunchSettingsProvider_ReadProfilesFromDisk_NoFile()
         {
 
             IFileSystemMock moqFS = new IFileSystemMock();
@@ -197,7 +197,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             LaunchSettingsData launchSettings;
             try
             {
-                launchSettings = provider.ReadSettingsFileFromDiskTest();
+                launchSettings = await provider.ReadSettingsFileFromDiskTestAsync();
                 Assert.True(false);
             }
             catch
@@ -207,7 +207,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Fact]
-        public void LaunchSettingsProvider_ReadProfilesFromDisk_GoodFile()
+        public async Task LaunchSettingsProvider_ReadProfilesFromDisk_GoodFile()
         {
 
             IFileSystemMock moqFS = new IFileSystemMock();
@@ -216,12 +216,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // write a good file
             moqFS.WriteAllText(provider.LaunchSettingsFile, JsonString1);
 
-            var launchSettings = provider.ReadSettingsFileFromDiskTest();
+            var launchSettings = await provider.ReadSettingsFileFromDiskTestAsync();
             Assert.Equal(4, launchSettings.Profiles.Count);
         }
 
         [Fact]
-        public void LaunchSettingsProvider_ReadProfilesFromDisk_BadJsonFile()
+        public async Task LaunchSettingsProvider_ReadProfilesFromDisk_BadJsonFile()
         {
             IFileSystemMock moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
@@ -229,7 +229,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             moqFS.WriteAllText(provider.LaunchSettingsFile, BadJsonString);
             try
             {
-                var launchSettings = provider.ReadSettingsFileFromDiskTest();
+                var launchSettings = await provider.ReadSettingsFileFromDiskTestAsync();
                 Assert.True(false);
             }
             catch
@@ -238,21 +238,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Fact]
-        public void LaunchSettingsProvider_ReadProfilesFromDisk_JsonWithExtensionsNoProvider()
+        public async Task LaunchSettingsProvider_ReadProfilesFromDisk_JsonWithExtensionsNoProvider()
         {
             IFileSystemMock moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
 
             // Write a json file containing extension settings
             moqFS.WriteAllText(provider.LaunchSettingsFile, JsonStringWithWebSettings);
-            var launchSettings = provider.ReadSettingsFileFromDiskTest();
+            var launchSettings = await provider.ReadSettingsFileFromDiskTestAsync();
             Assert.Equal(2, launchSettings.Profiles.Count);
             Assert.Equal(1, launchSettings.OtherSettings.Count);
             Assert.True(launchSettings.OtherSettings["iisSettings"] is JObject);
         }
 
         [Fact]
-        public void LaunchSettingsProvider_ReadProfilesFromDisk_JsonWithExtensionsWithProvider()
+        public async Task LaunchSettingsProvider_ReadProfilesFromDisk_JsonWithExtensionsWithProvider()
         {
             IFileSystemMock moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
@@ -263,7 +263,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Set the serialization provider
             SetJsonSerializationProviders(provider);
 
-            var launchSettings = provider.ReadSettingsFileFromDiskTest();
+            var launchSettings = await provider.ReadSettingsFileFromDiskTestAsync();
             Assert.Equal(2, launchSettings.Profiles.Count);
             Assert.Equal(1, launchSettings.OtherSettings.Count);
             Assert.True(launchSettings.OtherSettings["iisSettings"] is IISSettingsData);
@@ -792,7 +792,7 @@ string JsonString1 = @"{
 
         // Wrappers to call protected members
         public void SetCurrentSnapshot(ILaunchSettings profiles) { CurrentSnapshot = profiles;}
-        public LaunchSettingsData ReadSettingsFileFromDiskTest() { return ReadSettingsFileFromDisk();}
+        public Task<LaunchSettingsData> ReadSettingsFileFromDiskTestAsync() { return ReadSettingsFileFromDiskAsync();}
         public void SaveSettingsToDiskTest(ILaunchSettings curSettings) { SaveSettingsToDisk(curSettings);}
         public DateTime LastSettingsFileSyncTimeTest { get { return LastSettingsFileSyncTime; } set { LastSettingsFileSyncTime = value; } }
         public Task UpdateProfilesAsyncTest(string activeProfile) { return UpdateProfilesAsync(activeProfile);}

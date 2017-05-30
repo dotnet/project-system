@@ -275,7 +275,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     }
                 }
 
-                var launchSettingData = GetLaunchSettings();
+                var launchSettingData = await GetLaunchSettingsAsync();
 
 
                 // If there are no profiles, we will add a default profile to run the prroject. W/o it our debugger
@@ -343,12 +343,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// <summary>
         /// Creates the intiial set of settings based on the file on disk 
         /// </summary>
-        protected LaunchSettingsData GetLaunchSettings()
+        protected async Task<LaunchSettingsData> GetLaunchSettingsAsync()
         {
             LaunchSettingsData settings;
             if (FileManager.FileExists(LaunchSettingsFile))
             {
-                settings = ReadSettingsFileFromDisk();
+                settings = await ReadSettingsFileFromDiskAsync();
             }
             else
             {
@@ -371,7 +371,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// Reads the data from the launch settings file and returns it in a dictionary of settings section to object. Adds n error list entries
         /// and throws if an exception occurs
         /// </summary>
-        protected LaunchSettingsData ReadSettingsFileFromDisk()
+        protected Task<LaunchSettingsData> ReadSettingsFileFromDiskAsync()
         {
             // Clear errors
             ClearErrors();
@@ -410,7 +410,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
                 // Remember the time we are sync'd to
                 LastSettingsFileSyncTime = FileManager.LastFileWriteTime(LaunchSettingsFile);
-                return launchSettingsData;
+                return Task.FromResult(launchSettingsData);
             }
             catch (JsonReaderException readerEx)
             {
