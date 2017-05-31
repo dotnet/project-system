@@ -10,8 +10,8 @@
       </trans-unit>
       <trans-unit id="Rule|ProjectReference|Description">
         <source>Reference Properties</source>
-        <target state="needs-review-translation">Propriedades de referência de projeto</target>
-        <note></note>
+        <target state="translated">Propriedades de Referência</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ReferenceOutputAssembly|DisplayName">
         <source>Reference Output Assembly</source>

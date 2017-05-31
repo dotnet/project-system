@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="Rule|ResolvedCOMReference|Description">
         <source>COM Reference Properties</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Guid|DisplayName">
         <source>CLSID</source>

@@ -10,8 +10,8 @@
       </trans-unit>
       <trans-unit id="Rule|AdditionalFiles|Description">
         <source>File Properties</source>
-        <target state="needs-review-translation">其他文件项</target>
-        <note></note>
+        <target state="translated">文件属性</target>
+        <note />
       </trans-unit>
       <trans-unit id="Category|Advanced|DisplayName">
         <source>Advanced</source>

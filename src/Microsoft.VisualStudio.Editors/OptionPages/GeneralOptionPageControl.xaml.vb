@@ -9,6 +9,12 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
 
         Private _generalOptions As GeneralOptions
 
+        Public Shared ReadOnly FastUpToDateLogLevelItemSource As String() = {
+            My.Resources.GeneralOptionPageResources.General_FastUpToDateCheck_LogLevel_None,
+            My.Resources.GeneralOptionPageResources.General_FastUpToDateCheck_LogLevel_Info,
+            My.Resources.GeneralOptionPageResources.General_FastUpToDateCheck_LogLevel_Verbose
+        }
+
         Public Sub New(serviceProvider As IServiceProvider)
             MyBase.New()
 
@@ -27,11 +33,12 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
 
             binding = New Binding() With {
                     .Source = _generalOptions,
-                    .Path = New Windows.PropertyPath(NameOf(GeneralOptions.VerboseFastUpToDateLogging)),
-                    .UpdateSourceTrigger = UpdateSourceTrigger.Explicit
+                    .Path = New Windows.PropertyPath(NameOf(GeneralOptions.FastUpToDateLogLevel)),
+                    .UpdateSourceTrigger = UpdateSourceTrigger.Explicit,
+                    .Converter = LoggingLevelToInt32Converter.Instance
                     }
 
-            bindingExpression = VerboseFastUpToDateLogging.SetBinding(CheckBox.IsCheckedProperty, binding)
+            bindingExpression = FastUpToDateLogLevel.SetBinding(ComboBox.SelectedIndexProperty, binding)
             AddBinding(bindingExpression)
         End Sub
     End Class

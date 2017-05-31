@@ -136,9 +136,9 @@
     <value>必須先修正 '{0}' 中的錯誤，才能套用變更。</value>
   </data>
   <data name="MsBuildMissingValueToRemove" xml:space="preserve">
-    <value>The specified value to remove '{0}' was not present in the property '{1}'</value>
+    <value>屬性 '{1}' 中不存在要移除的指定值 '{0}'</value>
   </data>
   <data name="MsBuildMissingValueToRename" xml:space="preserve">
-    <value>The specified value to rename '{0}' was not present in the property '{1}'</value>
+    <value>屬性 '{1}' 中不存在要重新命名的指定值 '{0}'</value>
   </data>
 </root>

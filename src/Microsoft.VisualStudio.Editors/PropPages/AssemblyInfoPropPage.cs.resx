@@ -139,7 +139,7 @@
     <value>Sestavení bude viditelné pro ko&amp;mponenty COM</value>
   </data>
   <data name="NeutralLanguageLabel.Text" xml:space="preserve">
-    <value>Ne&amp;utrální jazyk:</value>
+    <value>&amp;Neutrální jazyk:</value>
   </data>
   <data name="AssemblyVersionLabel.Text" xml:space="preserve">
     <value>Verze sest&amp;avení:</value>

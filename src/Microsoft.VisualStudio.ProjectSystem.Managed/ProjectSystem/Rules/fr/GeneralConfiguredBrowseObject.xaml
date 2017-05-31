@@ -12,7 +12,7 @@
   <EnumProperty Name="PlatformTarget" DisplayName="Plateforme cible" Visible="False" />
   <BoolProperty Name="Prefer32Bit" DisplayName="Préférer 32 bits" Visible="False" />
   <BoolProperty Name="AllowUnsafeBlocks" Default="False" DisplayName="Autoriser le code unsafe" Visible="False" />
-  <BoolProperty Name="Optimize" DisplayName="Optimize" Visible="False" />
+  <BoolProperty Name="Optimize" DisplayName="Optimiser" Visible="False" />
   <StringProperty Name="NoWarn" DisplayName="Supprimer l'avertissement" Visible="False" />
   <BoolProperty Name="TreatWarningsAsErrors" Default="False" Description="Considérer les avertissements comme des erreurs" Visible="False" />
   <StringProperty Name="TreatSpecificWarningsAsErrors" Description="Considérer les avertissements spécifiques comme des erreurs" Visible="False" />
@@ -46,12 +46,12 @@
   <StringProperty Name="DebugSymbols" DisplayName="Symboles de débogage" Visible="False" />
   <EnumProperty Name="FileAlignment" DisplayName="Alignement des fichiers" Visible="False" />
   <StringProperty Name="BaseAddress" DisplayName="Adresse de base" Visible="False" />
-  <StringProperty Name="FullPath" DisplayName="Project Folder" ReadOnly="True">
+  <StringProperty Name="FullPath" DisplayName="Dossier du projet" ReadOnly="True">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <DynamicEnumProperty Name="WarningLevel" DisplayName="Warning Level" EnumProvider="WarningLevelEnumProvider" Visible="False">
+  <DynamicEnumProperty Name="WarningLevel" DisplayName="Niveau d'avertissement" EnumProvider="WarningLevelEnumProvider" Visible="False">
     <DynamicEnumProperty.DataSource>
       <DataSource Persistence="ProjectFile" HasConfigurationCondition="True" SourceOfDefaultValue="AfterContext" />
     </DynamicEnumProperty.DataSource>
@@ -61,22 +61,22 @@
     <EnumProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="OptionExplicit" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </EnumProperty.DataSource>
-    <EnumValue Name="Off" DisplayName="Off" />
-    <EnumValue Name="On" DisplayName="On" IsDefault="True" />
+    <EnumValue Name="Off" DisplayName="Désactivé" />
+    <EnumValue Name="On" DisplayName="Activé" IsDefault="True" />
   </EnumProperty>
   <EnumProperty Name="OptionCompare" DisplayName="Option Compare" Visible="False">
     <EnumProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="OptionCompare" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </EnumProperty.DataSource>
-    <EnumValue Name="Binary" DisplayName="Binary" IsDefault="True" />
-    <EnumValue Name="Text" DisplayName="Text" />
+    <EnumValue Name="Binary" DisplayName="Binaire" IsDefault="True" />
+    <EnumValue Name="Text" DisplayName="Texte" />
   </EnumProperty>
   <EnumProperty Name="OptionInfer" DisplayName="Option Compare" Visible="False">
     <EnumProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="OptionInfer" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </EnumProperty.DataSource>
-    <EnumValue Name="Off" DisplayName="Off" />
-    <EnumValue Name="On" DisplayName="On" IsDefault="True" />
+    <EnumValue Name="Off" DisplayName="Désactivé" />
+    <EnumValue Name="On" DisplayName="Activé" IsDefault="True" />
   </EnumProperty>
   <DynamicEnumProperty Name="OptionStrict" DisplayName="Option Strict" EnumProvider="OptionStrictEnumProvider" Visible="False">
     <DynamicEnumProperty.DataSource>
@@ -84,29 +84,29 @@
     </DynamicEnumProperty.DataSource>
   </DynamicEnumProperty>
   <!-- VB Advanced Compile Options-->
-  <BoolProperty Name="RemoveIntegerChecks" DisplayName="Remove Integer Checks" Visible="False" />
-  <BoolProperty Name="DefineDebug" DisplayName="Define Debug" Visible="False" />
-  <BoolProperty Name="DefineTrace" DisplayName="Define Trace" Visible="False" />
+  <BoolProperty Name="RemoveIntegerChecks" DisplayName="Supprimer les contrôles sur les entiers" Visible="False" />
+  <BoolProperty Name="DefineDebug" DisplayName="Définir Debug" Visible="False" />
+  <BoolProperty Name="DefineTrace" DisplayName="Définir Trace" Visible="False" />
   <!-- VB Compile Build Event Page-->
-  <StringProperty Name="PreBuildEvent" DisplayName="Pre Build Event" Visible="False">
+  <StringProperty Name="PreBuildEvent" DisplayName="Événement pré-build" Visible="False">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="PostBuildEvent" DisplayName="Post Build Event" Visible="False">
+  <StringProperty Name="PostBuildEvent" DisplayName="Événement post-build" Visible="False">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <EnumProperty Name="RunPostBuildEvent" DisplayName="Run Post-Build Event" Visible="False">
+  <EnumProperty Name="RunPostBuildEvent" DisplayName="Exécuter l'événement post-build" Visible="False">
     <EnumProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="RunPostBuildEvent" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </EnumProperty.DataSource>
-    <EnumValue Name="Always" DisplayName="Always" />
-    <EnumValue Name="OnBuildSuccess" DisplayName="On successful build" IsDefault="True" />
-    <EnumValue Name="OnOutputUpdated" DisplayName="When the build updates the project output" />
+    <EnumValue Name="Always" DisplayName="Toujours" />
+    <EnumValue Name="OnBuildSuccess" DisplayName="En cas de build réussie" IsDefault="True" />
+    <EnumValue Name="OnOutputUpdated" DisplayName="Lorsque la build met à jour la sortie du projet" />
   </EnumProperty>
   <!-- CSharp Project Configuration Properties-->
-  <StringProperty Name="LangVersion" DisplayName="CSharp Language Version" Visible="False" />
-  <StringProperty Name="CodeAnalysisRuleSet" DisplayName=" Code Analysis Rule set" Visible="False" />
+  <StringProperty Name="LangVersion" DisplayName="Version du langage CSharp" Visible="False" />
+  <StringProperty Name="CodeAnalysisRuleSet" DisplayName=" Ensemble de règles d'analyse du code" Visible="False" />
 </Rule>

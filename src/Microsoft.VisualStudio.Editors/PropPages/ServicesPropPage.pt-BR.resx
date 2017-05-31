@@ -124,7 +124,7 @@
     <value>Usar autenticação do &amp;Windows</value>
   </data>
   <data name="FormBasedAuth.Text" xml:space="preserve">
-    <value>&amp;Usar autenticação de Formulários</value>
+    <value>Usar autenticação de &amp;Formulários</value>
   </data>
   <data name="CustomCredentialProviderTypeLabel.Text" xml:space="preserve">
     <value>Opcional: &amp;Provedor de credenciais

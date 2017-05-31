@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Rule Name="Compile" DisplayName="File Properties" PageTemplate="generic" Description="File Properties" xmlns="http://schemas.microsoft.com/build/2009/properties">
+<Rule Name="Compile" DisplayName="檔案屬性" PageTemplate="generic" Description="檔案屬性" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
     <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
@@ -16,6 +16,11 @@
   </EnumProperty>
   <StringProperty Name="Generator" Category="Advanced" DisplayName="自訂工具" Description="指定於設計階段轉換檔案並將轉換的輸出放置到其他檔案的工具。例如，資料集 (.xsd) 檔案隨附預設自訂工具。" />
   <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="自訂工具命名空間" Description="自訂工具產生的輸出所放置的命名空間。" />
+  <StringProperty Name="FullPath" Visible="false">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
   <BoolProperty Name="ExcludedFromBuild" DisplayName="從組建排除">
     <BoolProperty.DataSource>
       <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="true" SourceOfDefaultValue="AfterContext" />

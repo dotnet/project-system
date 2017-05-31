@@ -127,12 +127,12 @@
     <value>&amp;Vyžadovat znovu přihlášení uživatele vždy, když vyprší platnost souboru cookie serveru</value>
   </data>
   <data name="UseCustomConnectionStringCheckBox.Text" xml:space="preserve">
-    <value>&amp;Použít vlastní připojovací řetězec:</value>
+    <value>Po&amp;užít vlastní připojovací řetězec:</value>
   </data>
   <data name="TimeUnitComboBox.AccessibleName" xml:space="preserve">
-    <value>Role service cache timeout units</value>
+    <value>Jednotky časového limitu mezipaměti služby rolí</value>
   </data>
   <data name="CustomConnectionString.AccessibleName" xml:space="preserve">
-    <value>Custom connection string</value>
+    <value>Vlastní připojovací řetězec</value>
   </data>
 </root>

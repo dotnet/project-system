@@ -177,19 +177,19 @@
       </trans-unit>
       <trans-unit id="StringProperty|TargetFrameworkMonikers|DisplayName">
         <source>Target Framework Monikers</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|SupportedTargetFrameworks|DisplayName">
         <source>Supported TargetFrameworks</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="IntProperty|OutputType|DisplayName">
         <source>Output Type</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="IntProperty|OutputTypeEx|DisplayName">
         <source>Output Type Ex</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|StartupObject|DisplayName">
         <source>Type that contains the entry point</source>

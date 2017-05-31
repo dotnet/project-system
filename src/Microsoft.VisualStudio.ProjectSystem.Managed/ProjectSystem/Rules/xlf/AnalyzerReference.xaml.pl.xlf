@@ -10,8 +10,8 @@
       </trans-unit>
       <trans-unit id="Rule|AnalyzerReference|Description">
         <source>Analyzer Properties</source>
-        <target state="needs-review-translation">Właściwości odwołania analizatora</target>
-        <note></note>
+        <target state="translated">Właściwości analizatora</target>
+        <note />
       </trans-unit>
     </body>
   </file>

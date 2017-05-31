@@ -5,13 +5,13 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ComReference.xaml" />
       <trans-unit id="Rule|ComReference|DisplayName">
         <source>COM Reference</source>
-        <target state="translated">Odkaz modelu COM</target>
+        <target state="translated">Odkaz na model COM</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ComReference|Description">
         <source>COM Reference Properties</source>
-        <target state="needs-review-translation">Vlastnosti odkazu modelu COM</target>
-        <note></note>
+        <target state="translated">Vlastnosti odkazu na model COM</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Guid|DisplayName">
         <source>CLSID</source>

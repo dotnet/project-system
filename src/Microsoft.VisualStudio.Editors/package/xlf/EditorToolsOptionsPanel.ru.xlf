@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ru" original="src/Microsoft.VisualStudio.Editors/package/EditorToolsOptionsPanel.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/package/EditorToolsOptionsPanel.resx" />
+      <trans-unit id="_indentTypeLabel.Text">
+        <source>Indent type:</source>
+        <target state="translated">Тип отступа:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="_indentTypeNoneRadioButton.Text">
+        <source>&amp;None</source>
+        <target state="translated">&amp;Нет</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="_indentTypeBlockRadioButton.Text">
+        <source>&amp;Block</source>
+        <target state="translated">&amp;Блок</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="_indentTypeSmartRadioButton.Text">
+        <source>&amp;Smart</source>
+        <target state="translated">&amp;Автоматический</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="_tabSizeLabel.Text">
+        <source>&amp;Tab size:</source>
+        <target state="translated">Размер &amp;вкладки:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="_indentSizeLabel.Text">
+        <source>&amp;Indent size:</source>
+        <target state="translated">Размер &amp;отступа:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="_wordWrapCheckBox.Text">
+        <source>&amp;Word wrap</source>
+        <target state="translated">Перенос по &amp;словам</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="_lineNumbersCheckBox.Text">
+        <source>Line n&amp;umbers</source>
+        <target state="translated">Но&amp;мера строк</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IndentingGroupBox.Text">
+        <source>Indenting</source>
+        <target state="translated">Отступы</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InteractionGroupBox.Text">
+        <source>Interaction</source>
+        <target state="translated">Взаимодействие</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

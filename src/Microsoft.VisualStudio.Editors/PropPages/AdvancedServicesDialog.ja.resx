@@ -130,9 +130,9 @@
     <value>カスタム接続文字列の使用(&amp;U):</value>
   </data>
   <data name="TimeUnitComboBox.AccessibleName" xml:space="preserve">
-    <value>Role service cache timeout units</value>
+    <value>ロール サービスのキャッシュのタイムアウトの単位:</value>
   </data>
   <data name="CustomConnectionString.AccessibleName" xml:space="preserve">
-    <value>Custom connection string</value>
+    <value>カスタム接続文字列</value>
   </data>
 </root>

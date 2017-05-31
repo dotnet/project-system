@@ -5,11 +5,11 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.FSharp.VS/VSPackage.resx" />
       <trans-unit id="1">
         <source>F#</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="2">
         <source>F# Project Files (*.fsproj);*.fsproj</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

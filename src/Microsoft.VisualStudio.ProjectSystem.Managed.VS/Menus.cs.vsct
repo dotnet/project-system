@@ -42,7 +42,7 @@
         <Parent guid="guidDebugTargetHandlerPackage" id="DebugTargetMenuControllerFooterGroup" />
         <CommandFlag>TextChanges</CommandFlag>
         <Strings>
-          <ButtonText>Framework</ButtonText>
+          <ButtonText>Architektura</ButtonText>
         </Strings>
       </Menu>
     </Menus>
@@ -91,7 +91,7 @@
         <CommandFlag>DefaultDisabled</CommandFlag>
         <CommandFlag>DynamicItemStart</CommandFlag>
         <Strings>
-          <ButtonText>Framework</ButtonText>
+          <ButtonText>Architektura</ButtonText>
         </Strings>
       </Button>
     </Buttons>

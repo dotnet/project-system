@@ -35,12 +35,12 @@
       </trans-unit>
       <trans-unit id="MsBuildMissingValueToRemove">
         <source>The specified value to remove '{0}' was not present in the property '{1}'</source>
-        <target state="new">The specified value to remove '{0}' was not present in the property '{1}'</target>
+        <target state="translated">'{0}'을(를) 제거하기 위해 지정한 값이 '{1}' 속성에 없습니다.</target>
         <note>{0} will be a specific property value such as "Debug", {1} will be an MsBuild property name such as "Configurations". Neither of those values will be localized.</note>
       </trans-unit>
       <trans-unit id="MsBuildMissingValueToRename">
         <source>The specified value to rename '{0}' was not present in the property '{1}'</source>
-        <target state="new">The specified value to rename '{0}' was not present in the property '{1}'</target>
+        <target state="translated">'{0}'의 이름을 변경하기 위해 지정한 값이 '{1}' 속성에 없습니다.</target>
         <note>{0} will be a specific property value such as "Debug", {1} will be an MsBuild property name such as "Configurations". Neither of those values will be localized.</note>
       </trans-unit>
     </body>

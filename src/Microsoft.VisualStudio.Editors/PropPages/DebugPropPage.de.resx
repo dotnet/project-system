@@ -172,6 +172,6 @@
     <value>Debuggen von nativem Code aktivieren</value>
   </data>
   <data name="StartArguments.AccessibleName" xml:space="preserve">
-    <value>Command line arguments</value>
+    <value>Befehlszeilenargumente</value>
   </data>
 </root>

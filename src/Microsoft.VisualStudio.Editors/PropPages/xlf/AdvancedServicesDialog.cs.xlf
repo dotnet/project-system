@@ -20,18 +20,18 @@
       </trans-unit>
       <trans-unit id="UseCustomConnectionStringCheckBox.Text">
         <source>&amp;Use custom connection string:</source>
-        <target state="translated">&amp;Použít vlastní připojovací řetězec:</target>
+        <target state="translated">Po&amp;užít vlastní připojovací řetězec:</target>
         <note />
       </trans-unit>
       <trans-unit id="TimeUnitComboBox.AccessibleName">
         <source>Role service cache timeout units</source>
-        <target state="new">Role service cache timeout units</target>
-        <note></note>
+        <target state="translated">Jednotky časového limitu mezipaměti služby rolí</target>
+        <note />
       </trans-unit>
       <trans-unit id="CustomConnectionString.AccessibleName">
         <source>Custom connection string</source>
-        <target state="new">Custom connection string</target>
-        <note></note>
+        <target state="translated">Vlastní připojovací řetězec</target>
+        <note />
       </trans-unit>
     </body>
   </file>

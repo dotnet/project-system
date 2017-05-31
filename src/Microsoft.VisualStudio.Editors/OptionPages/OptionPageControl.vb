@@ -22,6 +22,17 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
             checkBoxStyle.Setters.Add(New Setter(ForegroundProperty, New DynamicResourceExtension(SystemColors.WindowTextBrushKey)))
             checkBoxStyle.Setters.Add(New Setter(MarginProperty, New Thickness(left:=0, top:=7, right:=0, bottom:=7)))
             Resources.Add(GetType(CheckBox), checkBoxStyle)
+
+            Dim comboBoxStyle = New Style(GetType(ComboBox))
+            comboBoxStyle.Setters.Add(New Setter(ForegroundProperty, New DynamicResourceExtension(SystemColors.WindowTextBrushKey)))
+            comboBoxStyle.Setters.Add(New Setter(MarginProperty, New Thickness(left:=0, top:=7, right:=0, bottom:=7)))
+            Resources.Add(GetType(ComboBox), comboBoxStyle)
+
+            Dim groupBoxStyle = New Style(GetType(GroupBox))
+            groupBoxStyle.Setters.Add(New Setter(ForegroundProperty, New DynamicResourceExtension(SystemColors.WindowTextBrushKey)))
+            groupBoxStyle.Setters.Add(New Setter(MarginProperty, New Thickness(left:=0, top:=0, right:=0, bottom:=3)))
+            groupBoxStyle.Setters.Add(New Setter(PaddingProperty, New Thickness(left:=7, top:=7, right:=7, bottom:=0)))
+            Resources.Add(GetType(GroupBox), groupBoxStyle)
         End Sub
 
         Protected Sub AddBinding(bindingExpression As BindingExpressionBase)
