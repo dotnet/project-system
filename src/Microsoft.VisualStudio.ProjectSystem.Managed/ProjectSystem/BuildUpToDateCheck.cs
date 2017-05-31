@@ -22,25 +22,24 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             private TextWriter _logger;
             private LogLevel _requestedLogLevel;
-            private string _projectPath;
+            private string _fileName;
 
             public Logger(TextWriter logger, LogLevel requestedLogLevel, string projectPath)
             {
                 _logger = logger;
                 _requestedLogLevel = requestedLogLevel;
-                _projectPath = projectPath;
+                _fileName = Path.GetFileNameWithoutExtension(projectPath);
             }
 
             private void Log(LogLevel level, string message, params object[] values)
             {
                 if (level <= _requestedLogLevel)
                 {
-                    _logger?.WriteLine("FastUpToDate: " + string.Format(message, values) + " (" + Path.GetFileNameWithoutExtension(_projectPath) + ")");
+                    _logger?.WriteLine($"FastUpToDate: {string.Format(message, values)} ({Path.GetFileNameWithoutExtension(_fileName)})");
                 }
             }
 
             public void Info(string message, params object[] values) => Log(LogLevel.Info, message, values);
-
             public void Verbose(string message, params object[] values) => Log(LogLevel.Verbose, message, values);
         }
         private const string TrueValue = "true";
@@ -346,7 +345,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 logger.Info("Output '{0}' does not exist.", earliestOutput.path);
             }
 
-            // We are up to date if the earliest output write happened before the latest input write
+            // We are up to date if the earliest output write happened after the latest input write
             var isUpToDate = latestInput.time != null && earliestOutput.time != null && earliestOutput.time > latestInput.time;
             logger.Info("Project is{0} up to date.", (!isUpToDate ? " not" : ""));
 
