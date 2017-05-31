@@ -49,21 +49,21 @@ Namespace My.Resources
                 Return resourceMan
             End Get
         End Property
-
+        
         '''<summary>
         '''  Overrides the current thread's CurrentUICulture property for all
         '''  resource lookups using this strongly typed resource class.
         '''</summary>
-        <Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>
+        <Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>  _
         Public Shared Property Culture() As Global.System.Globalization.CultureInfo
             Get
                 Return resourceCulture
             End Get
             Set
-                resourceCulture = Value
+                resourceCulture = value
             End Set
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Don&apos;t call MSBuild if a project appears to be up to date..
         '''</summary>
@@ -74,11 +74,47 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Log diagnostic information for project up to date checks to the output window..
+        '''  Looks up a localized string similar to Logging Level:.
         '''</summary>
-        Public Shared ReadOnly Property General_VerboseFastUpToDateLogging() As String
+        Public Shared ReadOnly Property General_FastUpToDateCheck_LogLevel() As String
             Get
-                Return ResourceManager.GetString("General_VerboseFastUpToDateLogging", resourceCulture)
+                Return ResourceManager.GetString("General_FastUpToDateCheck_LogLevel", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Info.
+        '''</summary>
+        Public Shared ReadOnly Property General_FastUpToDateCheck_LogLevel_Info() As String
+            Get
+                Return ResourceManager.GetString("General_FastUpToDateCheck_LogLevel_Info", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to None.
+        '''</summary>
+        Public Shared ReadOnly Property General_FastUpToDateCheck_LogLevel_None() As String
+            Get
+                Return ResourceManager.GetString("General_FastUpToDateCheck_LogLevel_None", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Verbose.
+        '''</summary>
+        Public Shared ReadOnly Property General_FastUpToDateCheck_LogLevel_Verbose() As String
+            Get
+                Return ResourceManager.GetString("General_FastUpToDateCheck_LogLevel_Verbose", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Up to Date Checks.
+        '''</summary>
+        Public Shared ReadOnly Property General_FastUpToDateCheck_Title() As String
+            Get
+                Return ResourceManager.GetString("General_FastUpToDateCheck_Title", resourceCulture)
             End Get
         End Property
     End Class

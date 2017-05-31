@@ -29,11 +29,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         Task<bool> GetIsFastUpToDateCheckEnabledAsync();
 
         /// <summary>
-        ///     Gets a value indicating if fast up to date check logging should be verbose.
+        ///     Gets a value indicating the level of fast up to date check logging.
         /// </summary>
         /// <value>
-        ///     <see langword="true"/> if the project fast up to date logging is verbose; otherwise, <see langword="false"/>
+        ///     The level of fast up to date check logging.
         /// </value>
-        Task<bool> GetVerboseFastUpToDateLoggingAsync();
+        Task<LogLevel> GetFastUpToDateLoggingLevelAsync();
     }
 }
