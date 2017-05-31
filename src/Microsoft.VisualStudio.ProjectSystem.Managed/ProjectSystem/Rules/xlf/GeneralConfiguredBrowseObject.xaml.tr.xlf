@@ -5,7 +5,7 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/GeneralBrowseObject.xaml" />
       <trans-unit id="Category|General|DisplayName">
         <source>General</source>
-        <target state="translated">Общие</target>
+        <target state="translated">Genel</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|Description">
@@ -115,133 +115,133 @@
       </trans-unit>
       <trans-unit id="Rule|ConfiguredBrowseObject|DisplayName">
         <source>General</source>
-        <target state="translated">Общие</target>
-        <note></note>
+        <target state="translated">Genel</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|ConfiguredBrowseObject|Description">
         <source>General</source>
-        <target state="translated">Общие</target>
-        <note></note>
+        <target state="translated">Genel</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">
         <source>Project Folder</source>
-        <target state="new">Project Folder</target>
-        <note></note>
+        <target state="translated">Proje Klasörü</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
         <source>Optimize</source>
-        <target state="new">Optimize</target>
-        <note></note>
+        <target state="translated">İyileştir</target>
+        <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|WarningLevel|DisplayName">
         <source>Warning Level</source>
-        <target state="new">Warning Level</target>
-        <note></note>
+        <target state="translated">Uyarı Düzeyi</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OptionExplicit|DisplayName">
         <source>Option Explicit</source>
-        <target state="new">Option Explicit</target>
-        <note></note>
+        <target state="translated">Option Explicit</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionExplicit.Off|DisplayName">
         <source>Off</source>
-        <target state="new">Off</target>
-        <note></note>
+        <target state="translated">Kapalı</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionExplicit.On|DisplayName">
         <source>On</source>
-        <target state="new">On</target>
-        <note></note>
+        <target state="translated">Açık</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OptionCompare|DisplayName">
         <source>Option Compare</source>
-        <target state="new">Option Compare</target>
-        <note></note>
+        <target state="translated">Option Compare</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionCompare.Binary|DisplayName">
         <source>Binary</source>
-        <target state="new">Binary</target>
-        <note></note>
+        <target state="translated">İkili</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionCompare.Text|DisplayName">
         <source>Text</source>
-        <target state="new">Text</target>
-        <note></note>
+        <target state="translated">Metin</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OptionInfer|DisplayName">
         <source>Option Compare</source>
-        <target state="new">Option Compare</target>
-        <note></note>
+        <target state="translated">Option Compare</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionInfer.Off|DisplayName">
         <source>Off</source>
-        <target state="new">Off</target>
-        <note></note>
+        <target state="translated">Kapalı</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionInfer.On|DisplayName">
         <source>On</source>
-        <target state="new">On</target>
-        <note></note>
+        <target state="translated">Açık</target>
+        <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|OptionStrict|DisplayName">
         <source>Option Strict</source>
-        <target state="new">Option Strict</target>
-        <note></note>
+        <target state="translated">Option Strict</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RemoveIntegerChecks|DisplayName">
         <source>Remove Integer Checks</source>
-        <target state="new">Remove Integer Checks</target>
-        <note></note>
+        <target state="translated">Tamsayı Denetimlerini Kaldır</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|DefineDebug|DisplayName">
         <source>Define Debug</source>
-        <target state="new">Define Debug</target>
-        <note></note>
+        <target state="translated">Hata Ayıklama Tanımla</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|DefineTrace|DisplayName">
         <source>Define Trace</source>
-        <target state="new">Define Trace</target>
-        <note></note>
+        <target state="translated">İzleme Tanımla</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PreBuildEvent|DisplayName">
         <source>Pre Build Event</source>
-        <target state="new">Pre Build Event</target>
-        <note></note>
+        <target state="translated">Derleme Öncesi Olayı</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PostBuildEvent|DisplayName">
         <source>Post Build Event</source>
-        <target state="new">Post Build Event</target>
-        <note></note>
+        <target state="translated">Derleme Sonrası Olayı</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|RunPostBuildEvent|DisplayName">
         <source>Run Post-Build Event</source>
-        <target state="new">Run Post-Build Event</target>
-        <note></note>
+        <target state="translated">Derleme Sonrası Olayı Çalıştır</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.Always|DisplayName">
         <source>Always</source>
-        <target state="new">Always</target>
-        <note></note>
+        <target state="translated">Her Zaman</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.OnBuildSuccess|DisplayName">
         <source>On successful build</source>
-        <target state="new">On successful build</target>
-        <note></note>
+        <target state="translated">Derleme başarılı olduğunda</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.OnOutputUpdated|DisplayName">
         <source>When the build updates the project output</source>
-        <target state="new">When the build updates the project output</target>
-        <note></note>
+        <target state="translated">Oluşturma proje çıkışını güncelleştirdiğinde</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|LangVersion|DisplayName">
         <source>CSharp Language Version</source>
-        <target state="new">CSharp Language Version</target>
-        <note></note>
+        <target state="translated">CSharp Dil Sürümü</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|CodeAnalysisRuleSet|DisplayName">
         <source> Code Analysis Rule set</source>
-        <target state="new"> Code Analysis Rule set</target>
-        <note></note>
+        <target state="translated">Kod Analizi Kural Kümesi</target>
+        <note />
       </trans-unit>
     </body>
   </file>

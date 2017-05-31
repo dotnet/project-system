@@ -80,8 +80,8 @@
       </trans-unit>
       <trans-unit id="AppIconBrowse.AccessibleName">
         <source>Browse for icon</source>
-        <target state="new">Browse for icon</target>
-        <note></note>
+        <target state="translated">アイコンの参照</target>
+        <note />
       </trans-unit>
     </body>
   </file>

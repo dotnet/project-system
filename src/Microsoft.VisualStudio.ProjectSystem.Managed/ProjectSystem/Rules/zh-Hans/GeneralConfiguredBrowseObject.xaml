@@ -12,7 +12,7 @@
   <EnumProperty Name="PlatformTarget" DisplayName="平台目标" Visible="False" />
   <BoolProperty Name="Prefer32Bit" DisplayName="首选 32位" Visible="False" />
   <BoolProperty Name="AllowUnsafeBlocks" Default="False" DisplayName="允许不安全代码" Visible="False" />
-  <BoolProperty Name="Optimize" DisplayName="Optimize" Visible="False" />
+  <BoolProperty Name="Optimize" DisplayName="优化" Visible="False" />
   <StringProperty Name="NoWarn" DisplayName="取消警告" Visible="False" />
   <BoolProperty Name="TreatWarningsAsErrors" Default="False" Description="将警告视为错误" Visible="False" />
   <StringProperty Name="TreatSpecificWarningsAsErrors" Description="将特定的警告视为错误" Visible="False" />
@@ -46,12 +46,12 @@
   <StringProperty Name="DebugSymbols" DisplayName="调试符号" Visible="False" />
   <EnumProperty Name="FileAlignment" DisplayName="文件对齐" Visible="False" />
   <StringProperty Name="BaseAddress" DisplayName="基址" Visible="False" />
-  <StringProperty Name="FullPath" DisplayName="Project Folder" ReadOnly="True">
+  <StringProperty Name="FullPath" DisplayName="项目文件夹" ReadOnly="True">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <DynamicEnumProperty Name="WarningLevel" DisplayName="Warning Level" EnumProvider="WarningLevelEnumProvider" Visible="False">
+  <DynamicEnumProperty Name="WarningLevel" DisplayName="警告等级" EnumProvider="WarningLevelEnumProvider" Visible="False">
     <DynamicEnumProperty.DataSource>
       <DataSource Persistence="ProjectFile" HasConfigurationCondition="True" SourceOfDefaultValue="AfterContext" />
     </DynamicEnumProperty.DataSource>
@@ -61,22 +61,22 @@
     <EnumProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="OptionExplicit" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </EnumProperty.DataSource>
-    <EnumValue Name="Off" DisplayName="Off" />
-    <EnumValue Name="On" DisplayName="On" IsDefault="True" />
+    <EnumValue Name="Off" DisplayName="关" />
+    <EnumValue Name="On" DisplayName="开" IsDefault="True" />
   </EnumProperty>
   <EnumProperty Name="OptionCompare" DisplayName="Option Compare" Visible="False">
     <EnumProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="OptionCompare" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </EnumProperty.DataSource>
-    <EnumValue Name="Binary" DisplayName="Binary" IsDefault="True" />
-    <EnumValue Name="Text" DisplayName="Text" />
+    <EnumValue Name="Binary" DisplayName="二进制" IsDefault="True" />
+    <EnumValue Name="Text" DisplayName="文本" />
   </EnumProperty>
   <EnumProperty Name="OptionInfer" DisplayName="Option Compare" Visible="False">
     <EnumProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="OptionInfer" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </EnumProperty.DataSource>
-    <EnumValue Name="Off" DisplayName="Off" />
-    <EnumValue Name="On" DisplayName="On" IsDefault="True" />
+    <EnumValue Name="Off" DisplayName="关" />
+    <EnumValue Name="On" DisplayName="开" IsDefault="True" />
   </EnumProperty>
   <DynamicEnumProperty Name="OptionStrict" DisplayName="Option Strict" EnumProvider="OptionStrictEnumProvider" Visible="False">
     <DynamicEnumProperty.DataSource>
@@ -84,29 +84,29 @@
     </DynamicEnumProperty.DataSource>
   </DynamicEnumProperty>
   <!-- VB Advanced Compile Options-->
-  <BoolProperty Name="RemoveIntegerChecks" DisplayName="Remove Integer Checks" Visible="False" />
-  <BoolProperty Name="DefineDebug" DisplayName="Define Debug" Visible="False" />
-  <BoolProperty Name="DefineTrace" DisplayName="Define Trace" Visible="False" />
+  <BoolProperty Name="RemoveIntegerChecks" DisplayName="移除整数检查" Visible="False" />
+  <BoolProperty Name="DefineDebug" DisplayName="定义调试" Visible="False" />
+  <BoolProperty Name="DefineTrace" DisplayName="定义跟踪" Visible="False" />
   <!-- VB Compile Build Event Page-->
-  <StringProperty Name="PreBuildEvent" DisplayName="Pre Build Event" Visible="False">
+  <StringProperty Name="PreBuildEvent" DisplayName="预先生成事件" Visible="False">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="PostBuildEvent" DisplayName="Post Build Event" Visible="False">
+  <StringProperty Name="PostBuildEvent" DisplayName="后期生成事件" Visible="False">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <EnumProperty Name="RunPostBuildEvent" DisplayName="Run Post-Build Event" Visible="False">
+  <EnumProperty Name="RunPostBuildEvent" DisplayName="运行后期生成事件" Visible="False">
     <EnumProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="RunPostBuildEvent" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </EnumProperty.DataSource>
-    <EnumValue Name="Always" DisplayName="Always" />
-    <EnumValue Name="OnBuildSuccess" DisplayName="On successful build" IsDefault="True" />
-    <EnumValue Name="OnOutputUpdated" DisplayName="When the build updates the project output" />
+    <EnumValue Name="Always" DisplayName="始终" />
+    <EnumValue Name="OnBuildSuccess" DisplayName="成功生成时" IsDefault="True" />
+    <EnumValue Name="OnOutputUpdated" DisplayName="生成更新项目输出时" />
   </EnumProperty>
   <!-- CSharp Project Configuration Properties-->
-  <StringProperty Name="LangVersion" DisplayName="CSharp Language Version" Visible="False" />
-  <StringProperty Name="CodeAnalysisRuleSet" DisplayName=" Code Analysis Rule set" Visible="False" />
+  <StringProperty Name="LangVersion" DisplayName="CSharp 语言版本" Visible="False" />
+  <StringProperty Name="CodeAnalysisRuleSet" DisplayName="代码分析规则集" Visible="False" />
 </Rule>

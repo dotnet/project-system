@@ -277,9 +277,9 @@
     <value>Не удалось переместить проект XProj "{0}". "{1}" завершено с кодом ошибки {2}.</value>
   </data>
   <data name="DebugFrameworkMenuText" xml:space="preserve">
-    <value>Framework ({0})</value>
+    <value>Платформа ({0})</value>
   </data>
   <data name="OutputWindowPaneTitle" xml:space="preserve">
-    <value>Project</value>
+    <value>Проект</value>
   </data>
 </root>

@@ -100,28 +100,15 @@
       <ItemGroup>
 
         <!-- Visual Studio -->
-        <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-          <HintPath>$(DevEnvDir)\PublicAssemblies\EnvDTE.dll</HintPath>
-        </Reference>
-        <Reference Include="EnvDTE80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-          <HintPath>$(DevEnvDir)\PublicAssemblies\EnvDTE80.dll</HintPath>
-        </Reference>
-        <Reference Include="EnvDTE90, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-          <HintPath>$(DevEnvDir)\PublicAssemblies\EnvDTE90.dll</HintPath>
-        </Reference>
-        <Reference Include="Microsoft.VisualStudio.ComponentModelHost">
-          <HintPath>$(DevEnvDir)\PublicAssemblies\Microsoft.VisualStudio.ComponentModelHost.dll</HintPath>
-        </Reference>
+        <PackageReference Include="EnvDTE" Version="8.0.1" />
+        <PackageReference Include="EnvDTE80" Version="8.0.1" />
+        <PackageReference Include="EnvDTE90" Version="9.0.1" />
+        <PackageReference Include="Microsoft.VisualStudio.ComponentModelHost" Version="15.0.26201"/>
         <!--
 		Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll is needed by GraphProvider unit tests.
 		if it is not provided here, tests fail to load this assembly at runtime.
 	-->
-        <Reference Include="Microsoft.VisualStudio.Diagnostics.PerformanceProvider">
-          <HintPath Condition="Exists('$(DevEnvDir)\PrivateAssemblies\Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll')">$(DevEnvDir)\PrivateAssemblies\Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll</HintPath>
-          <HintPath Condition="Exists('C:\Program Files (x86)\Microsoft Visual Studio\Preview\Enterprise\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll')">C:\Program Files (x86)\Microsoft Visual Studio\Preview\Enterprise\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll</HintPath>
-          <HintPath Condition="Exists('C:\Program Files (x86)\Microsoft Visual Studio\Preview\Professional\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll')">C:\Program Files (x86)\Microsoft Visual Studio\Preview\Professional\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll</HintPath>
-          <HintPath Condition="Exists('C:\Program Files (x86)\Microsoft Visual Studio\Preview\Community\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll')">C:\Program Files (x86)\Microsoft Visual Studio\Preview\Community\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll</HintPath>
-        </Reference>
+        <PackageReference Include="Microsoft.VisualStudio.Diagnostics.PerformanceProvider" Version="15.0.26507-alpha" />
 
         <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="15.0.26124-rc3" />
         <PackageReference Include="Microsoft.VisualStudio.Designer.Interfaces" Version="1.1.4322" />
@@ -154,25 +141,12 @@
     <When Condition="'$(IncludeVisualStudioVsLangProjReferences)' == 'true'">
 
       <ItemGroup>
-        <Reference Include="VSLangProj">
-          <HintPath>$(DevEnvDir)\PublicAssemblies\VSLangProj.dll</HintPath>
-        </Reference>
-        <Reference Include="VSLangProj2">
-          <HintPath>$(DevEnvDir)\PublicAssemblies\VSLangProj2.dll</HintPath>
-        </Reference>
-        <Reference Include="VSLangProj80">
-          <HintPath>$(DevEnvDir)\PublicAssemblies\VSLangProj80.dll</HintPath>
-        </Reference>
-        <Reference Include="VSLangProj90" >
-          <HintPath>$(DevEnvDir)\PublicAssemblies\VSLangProj90.dll</HintPath>
-        </Reference>
-        <Reference Include="VSLangProj100">
-          <HintPath>$(DevEnvDir)\PublicAssemblies\VSLangProj100.dll</HintPath>
-        </Reference>
-        <Reference Include="VSLangProj110">
-          <HintPath>$(DevEnvDir)\PublicAssemblies\VSLangProj110.dll</HintPath>
-          <EmbedInteropTypes>true</EmbedInteropTypes>
-        </Reference>
+        <PackageReference Include="VSLangProj" Version="7.0.3300" />
+        <PackageReference Include="VSLangProj2" Version="7.0.5000" />
+        <PackageReference Include="VSLangProj80" Version="8.0.50727" />
+        <PackageReference Include="VSLangProj90" Version="9.0.30729" />
+        <PackageReference Include="VSLangProj100" Version="10.0.30319" />
+        <PackageReference Include="VSLangProj110" Version="11.0.61030" />
       </ItemGroup>
     </When>
   </Choose>
@@ -210,12 +184,7 @@
         <Reference Include="Microsoft.VisualStudio.VSHelp">
           <HintPath>$(DevEnvDir)\PublicAssemblies\Microsoft.VisualStudio.VSHelp.dll</HintPath>
         </Reference>
-        <Reference Include="Microsoft.VisualStudio.DataDesign.Common">
-          <HintPath Condition="Exists('$(DevEnvDir)Microsoft.VisualStudio.DataDesign.Common.dll')">$(DevEnvDir)Microsoft.VisualStudio.DataDesign.Common.dll</HintPath>
-          <HintPath Condition="Exists('C:\Program Files (x86)\Microsoft Visual Studio\Preview\Enterprise\Common7\IDE\Microsoft.VisualStudio.DataDesign.Common.dll')">C:\Program Files (x86)\Microsoft Visual Studio\Preview\Enterprise\Common7\IDE\Microsoft.VisualStudio.DataDesign.Common.dll</HintPath>
-          <HintPath Condition="Exists('C:\Program Files (x86)\Microsoft Visual Studio\Preview\Professional\Common7\IDE\Microsoft.VisualStudio.DataDesign.Common.dll')">C:\Program Files (x86)\Microsoft Visual Studio\Preview\Professional\Common7\IDE\Microsoft.VisualStudio.DataDesign.Common.dll</HintPath>
-          <HintPath Condition="Exists('C:\Program Files (x86)\Microsoft Visual Studio\Preview\Community\Common7\IDE\Microsoft.VisualStudio.DataDesign.Common.dll')">C:\Program Files (x86)\Microsoft Visual Studio\Preview\Community\Common7\IDE\Microsoft.VisualStudio.DataDesign.Common.dll</HintPath>
-        </Reference>
+        <PackageReference Include="Microsoft.VisualStudio.DataDesign.Common" Version="15.0.26524-alpha"/>
         <Reference Include="Microsoft.VisualStudio.DataTools.Interop">
           <HintPath>$(DevEnvDir)\Microsoft.VisualStudio.DataTools.Interop.dll</HintPath>
         </Reference>

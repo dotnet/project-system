@@ -15,13 +15,13 @@
       </trans-unit>
       <trans-unit id="FormBasedAuth.Text">
         <source>Use &amp;Forms authentication</source>
-        <target state="translated">Проверка подлиннос&amp;ти на основе форм</target>
+        <target state="translated">Проверка подлинности на &amp;основе форм</target>
         <note />
       </trans-unit>
       <trans-unit id="CustomCredentialProviderTypeLabel.Text">
         <source>Optional: Credentials &amp;provider
 (for example: MyNamespace.MyLoginClass, MyAssembly):</source>
-        <target state="translated">Дополнит&amp;ельно: Поставщик учетных данных
+        <target state="translated">Дополнительно: П&amp;оставщик учетных данных
 (например, MyNamespace.MyLoginClass, MyAssembly):</target>
         <note />
       </trans-unit>

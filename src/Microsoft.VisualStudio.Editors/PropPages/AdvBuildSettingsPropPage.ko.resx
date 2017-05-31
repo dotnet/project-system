@@ -157,9 +157,9 @@
     <value>산술 연산 오버플로/언더플로 확인(&amp;K)</value>
   </data>
   <data name="CSharpLanguageVerison.Default" xml:space="preserve">
-    <value>C# latest major version (default)</value>
+    <value>C# 최신 주 버전(기본값)</value>
   </data>
   <data name="CSharpLanguageVerison.Latest" xml:space="preserve">
-    <value>C# latest minor version (latest)</value>
+    <value>C# 최신 부 버전(최신)</value>
   </data>
 </root>

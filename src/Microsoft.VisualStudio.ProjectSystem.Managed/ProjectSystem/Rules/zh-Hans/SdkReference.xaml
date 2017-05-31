@@ -7,9 +7,9 @@
   <StringProperty Name="SDKRootFolder" DisplayName="SDK 根" ReadOnly="True" />
   <StringProperty Name="AppXLocation" DisplayName="应用包位置" ReadOnly="True" />
   <StringProperty Name="FrameworkIdentity" DisplayName="FrameworkIdentity" ReadOnly="True" />
-  <StringProperty Name="DisplayName" DisplayName="Display Name" Visible="False" ReadOnly="True" />
-  <StringProperty Name="Name" DisplayName="Name" ReadOnly="True" />
-  <StringProperty Name="Version" DisplayName="Version" ReadOnly="True" />
+  <StringProperty Name="DisplayName" DisplayName="显示名称" Visible="False" ReadOnly="True" />
+  <StringProperty Name="Name" DisplayName="名称" ReadOnly="True" />
+  <StringProperty Name="Version" DisplayName="版本" ReadOnly="True" />
   <StringProperty Name="SDKPackageItemSpec" Visible="False" ReadOnly="True" />
   <BoolProperty Name="CopyPayload" DisplayName="复制负载" ReadOnly="True" />
   <StringProperty Name="CopyPayloadToSubDirectory" DisplayName="将负载复制到子目录" ReadOnly="True" />

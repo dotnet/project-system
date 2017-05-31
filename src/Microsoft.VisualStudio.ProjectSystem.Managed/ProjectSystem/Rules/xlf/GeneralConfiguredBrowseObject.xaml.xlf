@@ -93,107 +93,107 @@
       </trans-unit>
       <trans-unit id="Rule|ConfiguredBrowseObject|DisplayName">
         <source>General</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|ConfiguredBrowseObject|Description">
         <source>General</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">
         <source>Project Folder</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
         <source>Optimize</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|WarningLevel|DisplayName">
         <source>Warning Level</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OptionExplicit|DisplayName">
         <source>Option Explicit</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionExplicit.Off|DisplayName">
         <source>Off</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionExplicit.On|DisplayName">
         <source>On</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OptionCompare|DisplayName">
         <source>Option Compare</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionCompare.Binary|DisplayName">
         <source>Binary</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionCompare.Text|DisplayName">
         <source>Text</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OptionInfer|DisplayName">
         <source>Option Compare</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionInfer.Off|DisplayName">
         <source>Off</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionInfer.On|DisplayName">
         <source>On</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|OptionStrict|DisplayName">
         <source>Option Strict</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RemoveIntegerChecks|DisplayName">
         <source>Remove Integer Checks</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|DefineDebug|DisplayName">
         <source>Define Debug</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|DefineTrace|DisplayName">
         <source>Define Trace</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PreBuildEvent|DisplayName">
         <source>Pre Build Event</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PostBuildEvent|DisplayName">
         <source>Post Build Event</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumProperty|RunPostBuildEvent|DisplayName">
         <source>Run Post-Build Event</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.Always|DisplayName">
         <source>Always</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.OnBuildSuccess|DisplayName">
         <source>On successful build</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.OnOutputUpdated|DisplayName">
         <source>When the build updates the project output</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|LangVersion|DisplayName">
         <source>CSharp Language Version</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|CodeAnalysisRuleSet|DisplayName">
         <source> Code Analysis Rule set</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

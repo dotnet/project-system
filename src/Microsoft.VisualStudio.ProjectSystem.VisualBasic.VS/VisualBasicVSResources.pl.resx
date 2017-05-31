@@ -118,6 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ImportsFromTargetCannotBeDeleted" xml:space="preserve">
-    <value>{0} - Import comes fom target file. This import cannot be removed.</value>
+    <value>{0} — import pochodzi z pliku docelowego. Nie można usunąć importu.</value>
   </data>
 </root>

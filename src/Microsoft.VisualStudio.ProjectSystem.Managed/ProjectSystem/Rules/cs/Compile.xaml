@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Rule Name="Compile" DisplayName="File Properties" PageTemplate="generic" Description="File Properties" xmlns="http://schemas.microsoft.com/build/2009/properties">
+<Rule Name="Compile" DisplayName="Vlastnosti souboru" PageTemplate="generic" Description="Vlastnosti souboru" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
     <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
@@ -16,6 +16,11 @@
   </EnumProperty>
   <StringProperty Name="Generator" Category="Advanced" DisplayName="Vlastní nástroj" Description="Určuje nástroj, který transformuje soubor v okamžiku návrhu a vloží výstup této transformace do jiného souboru. Například k souboru DataSet (.xsd) se dodává výchozí vlastní nástroj." />
   <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="Obor názvů vlastního nástroje" Description="Obor názvů, do kterého se umístí výstup vlastního nástroje" />
+  <StringProperty Name="FullPath" Visible="false">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
   <BoolProperty Name="ExcludedFromBuild" DisplayName="Vyloučené ze sestavení">
     <BoolProperty.DataSource>
       <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="true" SourceOfDefaultValue="AfterContext" />

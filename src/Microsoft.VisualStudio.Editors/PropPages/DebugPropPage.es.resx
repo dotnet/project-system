@@ -172,6 +172,6 @@
     <value>Habilitar depuración de &amp;código nativo</value>
   </data>
   <data name="StartArguments.AccessibleName" xml:space="preserve">
-    <value>Command line arguments</value>
+    <value>Argumentos de la línea de comandos</value>
   </data>
 </root>

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--Copyright, Microsoft Corporation, All rights reserved.-->
-<Rule Name="Compile" DisplayName="File Properties" PageTemplate="generic" Description="File Properties" xmlns="http://schemas.microsoft.com/build/2009/properties">
+<Rule Name="Compile" DisplayName="Właściwości pliku" PageTemplate="generic" Description="Właściwości pliku" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
     <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
@@ -8,8 +8,8 @@
     <Category Name="Advanced" DisplayName="Zaawansowane" />
     <Category Name="Misc" DisplayName="Różne" />
   </Rule.Categories>
-  <StringProperty Name="Generator" Category="Advanced" DisplayName="Custom Tool" Description="Specifies the tool that transforms a file at design time and places the output of that transformation into another file. For example, a dataset (.xsd) file comes with a default custom tool." />
-  <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="Custom Tool Namespace" Description="The namespace into which the output of the custom tool is placed." />
+  <StringProperty Name="Generator" Category="Advanced" DisplayName="Narzędzie niestandardowe" Description="Określa narzędzie, które przekształca plik w czasie projektowania i umieszcza wynik przekształcenia w innym pliku. Na przykład plik zestawu danych (xsd) zawiera domyślne narzędzie niestandardowe." />
+  <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="Przestrzeń nazw narzędzia niestandardowego" Description="Przestrzeń nazw, w której zostaną umieszczone dane wyjściowe narzędzia niestandardowego." />
   <DynamicEnumProperty Name="{}{ItemType}" DisplayName="Akcja kompilacji" Category="Advanced" Description="Relacja pliku do procesów kompilacji i wdrożenia." EnumProvider="ItemTypes" />
   <EnumProperty Name="CopyToOutputDirectory" DisplayName="Kopiuj do katalogu wyjściowego" Category="Advanced" Description="Określa plik źródłowy, który zostanie skopiowany do katalogu wyjściowego.">
     <EnumValue Name="Never" DisplayName="Nie kopiuj" />

@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private class SVsSettingsPersistenceManager { }
 
         private const string FastUpToDateEnabledSettingKey = @"ManagedProjectSystem\FastUpToDateCheckEnabled";
-        private const string VerboseFastUpToDateLoggingSettingKey = @"ManagedProjectSystem\VerboseFastUpToDateLogging";
+        private const string FastUpToDateLogLevelSettingKey = @"ManagedProjectSystem\FastUpToDateLogLevel";
 
         private readonly IVsOptionalService<SVsSettingsPersistenceManager, ISettingsManager> _settingsManager;
         private readonly IEnvironmentHelper _environment;
@@ -49,10 +49,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return _settingsManager.Value?.GetValueOrDefault(FastUpToDateEnabledSettingKey, true) ?? true;
         }
 
-        public async Task<bool> GetVerboseFastUpToDateLoggingAsync()
+        public async Task<LogLevel> GetFastUpToDateLoggingLevelAsync()
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-            return _settingsManager.Value?.GetValueOrDefault(VerboseFastUpToDateLoggingSettingKey, false) ?? false;
+            return _settingsManager.Value?.GetValueOrDefault(FastUpToDateLogLevelSettingKey, LogLevel.None) ?? LogLevel.None;
         }
 
         private bool IsEnabled(string variable)

@@ -44,11 +44,16 @@
       <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="TargetFrameworkMonikers" DisplayName="Target Framework Monikers" ReadOnly="True">
+  <StringProperty Name="TargetFrameworkMonikers" DisplayName="目標 Framework Moniker" ReadOnly="True">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMonikers" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
+  <BoolProperty Name="DisableFastUpToDateCheck" DisplayName="Disable Fast Up To Date Check">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="DisableFastUpToDateCheck" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
   <StringProperty Name="TargetPath" />
   <StringProperty Name="DocumentationFile" DisplayName="XML 文件註解檔案" />
   <StringProperty Name="AssemblyName" />
@@ -63,8 +68,8 @@
   <StringProperty Name="BaseIntermediateOutputPath" />
   <EnumProperty Name="OutputType">
     <EnumValue Name="Library" DisplayName="類別庫" />
-    <EnumValue Name="Exe" DisplayName="Console Application" />
-    <EnumValue Name="WinExe" DisplayName="Windows Application" />
+    <EnumValue Name="Exe" DisplayName="主控台應用程式" />
+    <EnumValue Name="WinExe" DisplayName="Windows 應用程式" />
     <EnumValue Name="AppContainerExe" DisplayName="Windows 市集應用程式" />
     <EnumValue Name="WinMDObj" DisplayName="WinMD" />
     <EnumProperty.DataSource>
@@ -127,6 +132,6 @@
   <StringProperty Name="SharedProjectAppliesTo" Visible="False" Description="共用專案語言之基本測試的功能比對運算式; 可用於篩選加入共用專案參考選項。" />
   <BoolProperty Name="AlwaysUseNumericalSuffixInItemNames" Visible="False" Description="指出新增項目的名稱是否一律要在字尾附加數字。" />
   <StringProperty Name="LanguageServiceName" ReadOnly="True" Visible="False" Description="代表傳遞至 Roslyn 的 LanguageName" />
-  <StringProperty Name="LanguageServiceId" ReadOnly="True" Visible="False" Description="Represents the GUID of object that implements the language service for the project." />
+  <StringProperty Name="LanguageServiceId" ReadOnly="True" Visible="False" Description="代表實作專案語言服務的物件 GUID。" />
   <StringProperty Name="TemplateLanguage" ReadOnly="True" Visible="False" Description="代表保存在項目和專案範本中的語言" />
 </Rule>

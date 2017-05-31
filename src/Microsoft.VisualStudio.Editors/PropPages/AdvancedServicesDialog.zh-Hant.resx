@@ -130,9 +130,9 @@
     <value>使用自訂連接字串(&amp;U):</value>
   </data>
   <data name="TimeUnitComboBox.AccessibleName" xml:space="preserve">
-    <value>Role service cache timeout units</value>
+    <value>角色服務快取逾時單位</value>
   </data>
   <data name="CustomConnectionString.AccessibleName" xml:space="preserve">
-    <value>Custom connection string</value>
+    <value>自訂連接字串</value>
   </data>
 </root>

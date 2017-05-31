@@ -10,8 +10,8 @@
       </trans-unit>
       <trans-unit id="Rule|AnalyzerReference|Description">
         <source>Analyzer Properties</source>
-        <target state="needs-review-translation">分析器引用属性</target>
-        <note></note>
+        <target state="translated">分析器属性</target>
+        <note />
       </trans-unit>
     </body>
   </file>

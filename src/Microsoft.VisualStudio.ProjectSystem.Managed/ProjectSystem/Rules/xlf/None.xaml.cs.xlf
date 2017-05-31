@@ -10,8 +10,8 @@
       </trans-unit>
       <trans-unit id="Rule|None|Description">
         <source>File Properties</source>
-        <target state="needs-review-translation">Nesestavované položky</target>
-        <note></note>
+        <target state="translated">Vlastnosti souboru</target>
+        <note />
       </trans-unit>
       <trans-unit id="Category|Advanced|DisplayName">
         <source>Advanced</source>

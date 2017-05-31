@@ -10,7 +10,7 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
         End Class
 
         Private Const FastUpToDateEnabledSettingKey As String = "ManagedProjectSystem\FastUpToDateCheckEnabled"
-        Private Const VerboseFastUpToDateLoggingSettingKey As String = "ManagedProjectSystem\VerboseFastUpToDateLogging"
+        Private Const FastUpToDateLogLevelSettingKey As String = "ManagedProjectSystem\FastUpToDateLogLevel"
 
         Private ReadOnly _settingsManager As ISettingsManager
 
@@ -23,12 +23,12 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
             End Set
         End Property
 
-        Public Property VerboseFastUpToDateLogging As Boolean
+        Public Property FastUpToDateLogLevel As LogLevel
             Get
-                Return If(_settingsManager?.GetValueOrDefault(VerboseFastUpToDateLoggingSettingKey, False), False)
+                Return If(_settingsManager?.GetValueOrDefault(FastUpToDateLogLevelSettingKey, LogLevel.None), LogLevel.None)
             End Get
             Set
-                _settingsManager.SetValueAsync(VerboseFastUpToDateLoggingSettingKey, Value, isMachineLocal:=False)
+                _settingsManager.SetValueAsync(FastUpToDateLogLevelSettingKey, Value, isMachineLocal:=False)
             End Set
         End Property
 

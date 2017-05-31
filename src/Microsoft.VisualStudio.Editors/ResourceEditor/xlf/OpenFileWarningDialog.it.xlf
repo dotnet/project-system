@@ -25,7 +25,7 @@
       </trans-unit>
       <trans-unit id="messageLabel2.Text">
         <source>Some files could contain malicious content.  You should only answer Yes if you trust the source of this file.</source>
-        <target state="translated">Alcuni file potrebbero includere contenuto dannoso.  Rispondere Sì solo se si ritiene attendibile l'origine del file.</target>
+        <target state="translated">Alcuni file potrebbero includere contenuto dannoso. Rispondere Sì solo se si ritiene attendibile l'origine del file.</target>
         <note />
       </trans-unit>
       <trans-unit id="$this.Text">

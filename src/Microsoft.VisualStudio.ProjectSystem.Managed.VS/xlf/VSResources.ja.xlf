@@ -274,13 +274,13 @@ In order to debug this project, add an executable project to this solution which
       </trans-unit>
       <trans-unit id="DebugFrameworkMenuText">
         <source>Framework ({0})</source>
-        <target state="new">Framework ({0})</target>
-        <note></note>
+        <target state="translated">フレームワーク ({0})</target>
+        <note />
       </trans-unit>
       <trans-unit id="OutputWindowPaneTitle">
         <source>Project</source>
-        <target state="new">Project</target>
-        <note></note>
+        <target state="translated">プロジェクト</target>
+        <note />
       </trans-unit>
     </body>
   </file>
