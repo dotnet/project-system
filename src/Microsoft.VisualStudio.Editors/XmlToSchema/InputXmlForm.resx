@@ -230,7 +230,7 @@
     <value>75, 23</value>
   </data>
   <data name="_cancelButton.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>1</value>
   </data>
   <data name="_cancelButton.Text" xml:space="preserve">
     <value>Cancel</value>
@@ -290,7 +290,7 @@
     <value>426, 318</value>
   </data>
   <data name="_listView.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;_listView.Name" xml:space="preserve">
     <value>_listView</value>
@@ -326,7 +326,7 @@
     <value>116, 27</value>
   </data>
   <data name="_addAsTextButton.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="_addAsTextButton.Text" xml:space="preserve">
     <value>Type or paste &amp;XML</value>
@@ -362,7 +362,7 @@
     <value>CenterImage</value>
   </data>
   <data name="_picutreBox.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;_picutreBox.Name" xml:space="preserve">
     <value>_picutreBox</value>
@@ -398,7 +398,7 @@
     <value>527, 50</value>
   </data>
   <data name="Label1.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>1</value>
   </data>
   <data name="Label1.Text" xml:space="preserve">
     <value>Specify XML documents to infer XML Schema set</value>
@@ -434,7 +434,7 @@
     <value>116, 27</value>
   </data>
   <data name="_addFromFileButton.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="_addFromFileButton.Text" xml:space="preserve">
     <value>Add from &amp;File</value>
@@ -473,7 +473,7 @@
     <value>116, 27</value>
   </data>
   <data name="_addFromWebButton.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="_addFromWebButton.Text" xml:space="preserve">
     <value>Add from &amp;Web</value>
@@ -515,7 +515,7 @@
     <value>75, 23</value>
   </data>
   <data name="_okButton.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>0</value>
   </data>
   <data name="_okButton.Text" xml:space="preserve">
     <value>OK</value>
@@ -539,7 +539,7 @@
     <value>165, 32</value>
   </data>
   <data name="FlowLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
-    <value>19</value>
+    <value>6</value>
   </data>
   <data name="&gt;&gt;FlowLayoutPanel1.Name" xml:space="preserve">
     <value>FlowLayoutPanel1</value>
@@ -566,7 +566,7 @@
     <value>577, 431</value>
   </data>
   <data name="TableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
-    <value>18</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;TableLayoutPanel1.Name" xml:space="preserve">
     <value>TableLayoutPanel1</value>
