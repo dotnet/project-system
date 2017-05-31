@@ -217,7 +217,7 @@
     <value>2</value>
   </data>
   <data name="btnPreBuildBuilder.Text" xml:space="preserve">
-    <value>Ed&amp;it Pre-build ...</value>
+    <value>Ed&amp;it Pre-build...</value>
   </data>
   <data name="&gt;&gt;btnPreBuildBuilder.Name" xml:space="preserve">
     <value>btnPreBuildBuilder</value>
@@ -328,7 +328,7 @@
     <value>5</value>
   </data>
   <data name="btnPostBuildBuilder.Text" xml:space="preserve">
-    <value>Edit Post-b&amp;uild ...</value>
+    <value>Edit Post-b&amp;uild...</value>
   </data>
   <data name="&gt;&gt;btnPostBuildBuilder.Name" xml:space="preserve">
     <value>btnPostBuildBuilder</value>

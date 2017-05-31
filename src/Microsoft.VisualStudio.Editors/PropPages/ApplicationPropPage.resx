@@ -703,7 +703,7 @@
     <value>5</value>
   </data>
   <data name="AppIconBrowse.Text" xml:space="preserve">
-    <value>...</value>
+    <value>Browse...</value>
   </data>
   <data name="&gt;&gt;AppIconBrowse.Name" xml:space="preserve">
     <value>AppIconBrowse</value>
@@ -898,7 +898,7 @@
     <value>10</value>
   </data>
   <data name="Win32ResourceFileBrowse.Text" xml:space="preserve">
-    <value>...</value>
+    <value>Browse...</value>
   </data>
   <data name="&gt;&gt;Win32ResourceFileBrowse.Name" xml:space="preserve">
     <value>Win32ResourceFileBrowse</value>
