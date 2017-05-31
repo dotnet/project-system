@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
@@ -24,8 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IActiveProjectConfigurationRefreshService _activeProjectConfigurationRefreshService;
         private IDisposable _targetFrameworkSubscriptionLink;
-        private readonly List<IDisposable> _designTimeBuildSubscriptionLinks = new List<IDisposable>();
-
+        private DisposableBag _designTimeBuildSubscriptionLink;
         private const int perfPackageRestoreEnd = 7343;
 
         private static ImmutableHashSet<string> _targetFrameworkWatchedRules = Empty.OrdinalIgnoreCaseStringSet
@@ -88,17 +86,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         }
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
-        {            
+        {
             await ResetSubscriptionsAsync().ConfigureAwait(false);
         }
 
         protected override Task DisposeCoreAsync(bool initialized)
         {
-            foreach (var disposable in _designTimeBuildSubscriptionLinks)
-            {
-                disposable.Dispose();
-            }
-            _designTimeBuildSubscriptionLinks.Clear();
+            _designTimeBuildSubscriptionLink?.Dispose();
             _targetFrameworkSubscriptionLink?.Dispose();
             return Task.CompletedTask;
         }
@@ -108,11 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             // active configuration should be updated before resetting subscriptions
             await RefreshActiveConfigurationAsync().ConfigureAwait(false);
 
-            foreach (var disposable in _designTimeBuildSubscriptionLinks)
-            {
-                disposable.Dispose();
-            }
-            _designTimeBuildSubscriptionLinks.Clear();
+            _designTimeBuildSubscriptionLink?.Dispose();
 
             var currentProjects = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsAsync()
                                                                          .ConfigureAwait(false);
@@ -125,6 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     PropagateCompletion = true
                 };
 
+                var disposableBag = new DisposableBag(CancellationToken.None);
                 // We are taking source blocks from multiple configured projects and creating a SyncLink to combine the sources.
                 // The SyncLink will only publish data when the versions of the sources match. There is a problem with that.
                 // The sources have some version components that will make this impossible to match across TFMs. We introduce a 
@@ -134,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     {
                         var sourceBlock = cp.Services.ProjectSubscription.JointRuleSource.SourceBlock;
                         var versionDropper = CreateVersionDropperBlock();
-                        _designTimeBuildSubscriptionLinks.Add(sourceBlock.LinkTo(versionDropper, sourceLinkOptions));
+                        disposableBag.AddDisposable(sourceBlock.LinkTo(versionDropper, sourceLinkOptions));
                         return versionDropper.SyncLinkOptions<IProjectValueVersions>(sourceLinkOptions);
                     });
 
@@ -142,7 +133,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
                 var targetLinkOptions = new DataflowLinkOptions { PropagateCompletion = true };
 
-                _designTimeBuildSubscriptionLinks.Add(ProjectDataSources.SyncLinkTo(sourceBlocks.ToImmutableList(), target, targetLinkOptions));
+                disposableBag.AddDisposable(ProjectDataSources.SyncLinkTo(sourceBlocks.ToImmutableList(), target, targetLinkOptions));
+
+                _designTimeBuildSubscriptionLink = disposableBag;
             }
         }
 
