@@ -136,7 +136,7 @@
     <value>350, 19</value>
   </data>
   <data name="m_lblImportsAnyways.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;m_lblImportsAnyways.Name" xml:space="preserve">
     <value>m_lblImportsAnyways</value>
@@ -163,7 +163,7 @@
     <value>75, 23</value>
   </data>
   <data name="m_cancelButton.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>6</value>
   </data>
   <data name="m_cancelButton.Text" xml:space="preserve">
     <value>Cancel</value>
@@ -223,7 +223,7 @@
     <value>75, 23</value>
   </data>
   <data name="m_okButton.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>5</value>
   </data>
   <data name="m_okButton.Text" xml:space="preserve">
     <value>OK</value>
@@ -250,7 +250,7 @@
     <value>409, 24</value>
   </data>
   <data name="m_lblMain.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;m_lblMain.Name" xml:space="preserve">
     <value>m_lblMain</value>
@@ -274,7 +274,7 @@
     <value>350, 19</value>
   </data>
   <data name="m_lblQualifyCurrentLine.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>3</value>
   </data>
   <data name="&gt;&gt;m_lblQualifyCurrentLine.Name" xml:space="preserve">
     <value>m_lblQualifyCurrentLine</value>
@@ -304,7 +304,7 @@
     <value>14, 13</value>
   </data>
   <data name="m_rbImportsAnyways.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;m_rbImportsAnyways.Name" xml:space="preserve">
     <value>m_rbImportsAnyways</value>
