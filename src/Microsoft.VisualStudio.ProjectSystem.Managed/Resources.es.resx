@@ -136,9 +136,9 @@
     <value>Los errores de '{0}' deben corregirse antes de aplicar los cambios.</value>
   </data>
   <data name="MsBuildMissingValueToRemove" xml:space="preserve">
-    <value>The specified value to remove '{0}' was not present in the property '{1}'</value>
+    <value>El valor especificado para quitar "{0}" no estaba presente en la propiedad "{1}"</value>
   </data>
   <data name="MsBuildMissingValueToRename" xml:space="preserve">
-    <value>The specified value to rename '{0}' was not present in the property '{1}'</value>
+    <value>El valor especificado para renombrar "{0}" no estaba presente en la propiedad "{1}"</value>
   </data>
 </root>

@@ -16,7 +16,7 @@
                     ReadOnly="True" 
                     Description="The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.">
         <StringProperty.DataSource>
-            <DataSource Persistence="Intrinsic" ItemType="Analyzer" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
+            <DataSource Persistence="Intrinsic" ItemType="Analyzer" PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
     <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />

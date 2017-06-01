@@ -277,9 +277,9 @@ Bu projede hata ayıklamak için bu çözüme, kitaplık projesine başvuran bir
     <value>{0} XProj projesinin geçişi sağlanamadı. '{1}', {2} hata koduyla çıkış yaptı.</value>
   </data>
   <data name="DebugFrameworkMenuText" xml:space="preserve">
-    <value>Framework ({0})</value>
+    <value>Çerçeve ({0})</value>
   </data>
   <data name="OutputWindowPaneTitle" xml:space="preserve">
-    <value>Project</value>
+    <value>Proje</value>
   </data>
 </root>

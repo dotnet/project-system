@@ -7,9 +7,9 @@
   <StringProperty Name="SDKRootFolder" DisplayName="Корень пакета SDK" ReadOnly="True" />
   <StringProperty Name="AppXLocation" DisplayName="Расположение пакета приложения" ReadOnly="True" />
   <StringProperty Name="FrameworkIdentity" DisplayName="FrameworkIdentity" ReadOnly="True" />
-  <StringProperty Name="DisplayName" DisplayName="Display Name" Visible="False" ReadOnly="True" />
-  <StringProperty Name="Name" DisplayName="Name" ReadOnly="True" />
-  <StringProperty Name="Version" DisplayName="Version" ReadOnly="True" />
+  <StringProperty Name="DisplayName" DisplayName="Отображаемое имя" Visible="False" ReadOnly="True" />
+  <StringProperty Name="Name" DisplayName="Имя" ReadOnly="True" />
+  <StringProperty Name="Version" DisplayName="Версия" ReadOnly="True" />
   <StringProperty Name="SDKPackageItemSpec" Visible="False" ReadOnly="True" />
   <BoolProperty Name="CopyPayload" DisplayName="Копировать полезные данные" ReadOnly="True" />
   <StringProperty Name="CopyPayloadToSubDirectory" DisplayName="Копировать полезные данные в подкаталог" ReadOnly="True" />

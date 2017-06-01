@@ -826,7 +826,7 @@
     <value>455, 419</value>
   </data>
   <data name="CompileOptionsGroupBox.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="CompileOptionsGroupBox.Text" xml:space="preserve">
     <value>Compile Options:</value>

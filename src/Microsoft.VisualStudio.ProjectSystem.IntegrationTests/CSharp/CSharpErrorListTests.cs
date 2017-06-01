@@ -52,6 +52,8 @@ class C
                     line: 6,
                     column: 24)
             };
+
+            VisualStudio.WaitForApplicationIdle();
             var actualContents = VisualStudio.ErrorList.GetErrorListContents();
             Assert.Equal(expectedContents, actualContents);
             VisualStudio.ErrorList.NavigateToErrorListItem(0);

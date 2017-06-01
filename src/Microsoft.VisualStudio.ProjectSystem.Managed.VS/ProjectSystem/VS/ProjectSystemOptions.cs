@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public async Task<bool> GetIsFastUpToDateCheckEnabledAsync()
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-            return _settingsManager.Value?.GetValueOrDefault(FastUpToDateEnabledSettingKey, false) ?? false;
+            return _settingsManager.Value?.GetValueOrDefault(FastUpToDateEnabledSettingKey, true) ?? true;
         }
 
         public async Task<LogLevel> GetFastUpToDateLoggingLevelAsync()

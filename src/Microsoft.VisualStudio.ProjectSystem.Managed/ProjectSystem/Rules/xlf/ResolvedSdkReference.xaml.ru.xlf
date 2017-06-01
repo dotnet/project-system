@@ -9,8 +9,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedSdkReference|Description">
-        <source>Resolved SDK reference</source>
-        <target state="translated">Разрешенная ссылка на пакет SDK</target>
+        <source>SDK Reference Properties</source>
+        <target state="translated">Свойства ссылки на пакет SDK</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|AppXLocation|DisplayName">
@@ -50,23 +50,23 @@
       </trans-unit>
       <trans-unit id="StringProperty|SDKRootFolder|DisplayName">
         <source>SDK Root</source>
-        <target state="new">SDK Root</target>
-        <note></note>
+        <target state="translated">Корень пакета SDK</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Name|DisplayName">
         <source>Name</source>
-        <target state="new">Name</target>
-        <note></note>
+        <target state="translated">Имя</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
-        <target state="new">Version</target>
-        <note></note>
+        <target state="translated">Версия</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|CopyPayloadToSubDirectory|DisplayName">
         <source>Copy Payload to Subdirectory</source>
-        <target state="new">Copy Payload to Subdirectory</target>
-        <note></note>
+        <target state="translated">Копировать полезные данные в подкаталог</target>
+        <note />
       </trans-unit>
     </body>
   </file>

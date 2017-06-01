@@ -43,18 +43,6 @@
         <source>Target Frameworks</source>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|OutputType|DisplayName">
-        <source>Output Type</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|OutputTypeEx|DisplayName">
-        <source>Output Type</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|StartupObject|DisplayName">
-        <source>Type that contains the entry point</source>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|ApplicationManifest|DisplayName">
         <source>Application Manifest</source>
         <note />
@@ -189,30 +177,22 @@
       </trans-unit>
       <trans-unit id="StringProperty|TargetFrameworkMonikers|DisplayName">
         <source>Target Framework Monikers</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="EnumValue|OutputTypeEx.winexe|DisplayName">
-        <source>0</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="EnumValue|OutputTypeEx.exe|DisplayName">
-        <source>1</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="EnumValue|OutputTypeEx.library|DisplayName">
-        <source>2</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="EnumValue|OutputTypeEx.appcontainerexe|DisplayName">
-        <source>3</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="EnumValue|OutputTypeEx.winmdobj|DisplayName">
-        <source>4</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|SupportedTargetFrameworks|DisplayName">
         <source>Supported TargetFrameworks</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="IntProperty|OutputType|DisplayName">
+        <source>Output Type</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="IntProperty|OutputTypeEx|DisplayName">
+        <source>Output Type Ex</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|StartupObject|DisplayName">
+        <source>Type that contains the entry point</source>
         <note></note>
       </trans-unit>
     </body>

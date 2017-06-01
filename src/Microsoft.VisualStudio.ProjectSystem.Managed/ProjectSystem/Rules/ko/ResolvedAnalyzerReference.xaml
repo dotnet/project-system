@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Rule Name="ResolvedAnalyzerReference" DisplayName="확인된 분석기 참조" PageTemplate="generic" Description="확인된 분석기 참조 속성" xmlns="http://schemas.microsoft.com/build/2009/properties">
+<Rule Name="ResolvedAnalyzerReference" DisplayName="확인된 분석기 참조" PageTemplate="generic" Description="분석기 속성" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
     <DataSource Persistence="ResolvedReference" ItemType="Analyzer" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" SourceType="TargetResults" MSBuildTarget="CollectAnalyzersDesignTime" />
   </Rule.DataSource>
@@ -10,4 +10,9 @@
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
+  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="경로" Description="분석기 어셈블리의 위치입니다.">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 </Rule>

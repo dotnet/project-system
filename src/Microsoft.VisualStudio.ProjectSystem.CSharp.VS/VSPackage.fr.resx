@@ -151,6 +151,6 @@
     <value>Projet de test xUnit (.NET Core)</value>
   </data>
   <data name="12" xml:space="preserve">
-    <value>Projet qui contient les tests xunit pouvant être exécutés sur .NET Core dans Windows, Linux et MacOS</value>
+    <value>Projet qui contient des tests xUnit.net pouvant s'exécuter sur .NET Core sur Windows, Linux et macOS.</value>
   </data>
 </root>

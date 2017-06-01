@@ -205,7 +205,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Launch URL:.
+        ///   Looks up a localized string similar to Launch browser:.
         /// </summary>
         public static string LaunchURL {
             get {

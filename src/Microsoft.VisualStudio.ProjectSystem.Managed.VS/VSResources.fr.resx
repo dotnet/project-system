@@ -280,6 +280,6 @@ Pour déboguer ce projet, ajoutez à cette solution un projet exécutable qui fa
     <value>Framework ({0})</value>
   </data>
   <data name="OutputWindowPaneTitle" xml:space="preserve">
-    <value>Project</value>
+    <value>Projet</value>
   </data>
 </root>

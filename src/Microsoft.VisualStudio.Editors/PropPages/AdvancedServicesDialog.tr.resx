@@ -130,9 +130,9 @@
     <value>Özel bağlantı dizesi &amp;kullan:</value>
   </data>
   <data name="TimeUnitComboBox.AccessibleName" xml:space="preserve">
-    <value>Role service cache timeout units</value>
+    <value>Rol hizmeti önbellek zaman aşımı birimleri</value>
   </data>
   <data name="CustomConnectionString.AccessibleName" xml:space="preserve">
-    <value>Custom connection string</value>
+    <value>Özel bağlantı dizesi</value>
   </data>
 </root>

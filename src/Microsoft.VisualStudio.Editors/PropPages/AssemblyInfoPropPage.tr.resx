@@ -136,13 +136,13 @@
     <value>&amp;Açıklama:</value>
   </data>
   <data name="ComVisibleCheckBox.Text" xml:space="preserve">
-    <value>Bütünleştirilmiş kodu &amp;COM-Görünür yap</value>
+    <value>&amp;Bütünleştirilmiş kodu COM-Görünür yap</value>
   </data>
   <data name="NeutralLanguageLabel.Text" xml:space="preserve">
-    <value>Bağımsı&amp;z dil:</value>
+    <value>&amp;Bağımsız dil:</value>
   </data>
   <data name="AssemblyVersionLabel.Text" xml:space="preserve">
-    <value>Bütünleştirilmiş k&amp;od sürümü:</value>
+    <value>&amp;Bütünleştirilmiş kod sürümü:</value>
   </data>
   <data name="FileVersionLabel.Text" xml:space="preserve">
     <value>&amp;Dosya sürümü:</value>

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--Copyright, Microsoft Corporation, All rights reserved.-->
-<Rule Name="Compile" DisplayName="File Properties" PageTemplate="generic" Description="File Properties" xmlns="http://schemas.microsoft.com/build/2009/properties">
+<Rule Name="Compile" DisplayName="Propriétés du fichier" PageTemplate="generic" Description="Propriétés du fichier" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
     <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
@@ -8,8 +8,8 @@
     <Category Name="Advanced" DisplayName="Avancé" />
     <Category Name="Misc" DisplayName="Divers" />
   </Rule.Categories>
-  <StringProperty Name="Generator" Category="Advanced" DisplayName="Custom Tool" Description="Specifies the tool that transforms a file at design time and places the output of that transformation into another file. For example, a dataset (.xsd) file comes with a default custom tool." />
-  <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="Custom Tool Namespace" Description="The namespace into which the output of the custom tool is placed." />
+  <StringProperty Name="Generator" Category="Advanced" DisplayName="Outil personnalisé" Description="Spécifie l'outil qui transforme un fichier au moment du design et qui place les résultats de cette transformation dans un autre fichier. Par exemple, un fichier dataset (.xsd) est fourni avec un outil personnalisé par défaut." />
+  <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="Espace de noms de l'outil personnalisé" Description="Espace de noms dans lequel est placé le résultat de l'outil personnalisé." />
   <DynamicEnumProperty Name="{}{ItemType}" DisplayName="Action de génération" Category="Advanced" Description="Description de la relation entre le fichier, la build et les processus de déploiement." EnumProvider="ItemTypes" />
   <EnumProperty Name="CopyToOutputDirectory" DisplayName="Copier dans le répertoire de sortie" Category="Advanced" Description="Spécifie le fichier source qui sera copié dans le répertoire de sortie.">
     <EnumValue Name="Never" DisplayName="Ne pas copier" />

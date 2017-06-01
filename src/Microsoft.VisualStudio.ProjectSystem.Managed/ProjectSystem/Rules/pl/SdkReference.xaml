@@ -7,9 +7,9 @@
   <StringProperty Name="SDKRootFolder" DisplayName="Główny zestaw SDK" ReadOnly="True" />
   <StringProperty Name="AppXLocation" DisplayName="Lokalizacja pakietu aplikacji" ReadOnly="True" />
   <StringProperty Name="FrameworkIdentity" DisplayName="FrameworkIdentity" ReadOnly="True" />
-  <StringProperty Name="DisplayName" DisplayName="Display Name" Visible="False" ReadOnly="True" />
-  <StringProperty Name="Name" DisplayName="Name" ReadOnly="True" />
-  <StringProperty Name="Version" DisplayName="Version" ReadOnly="True" />
+  <StringProperty Name="DisplayName" DisplayName="Wyświetl nazwę" Visible="False" ReadOnly="True" />
+  <StringProperty Name="Name" DisplayName="Nazwa" ReadOnly="True" />
+  <StringProperty Name="Version" DisplayName="Wersja" ReadOnly="True" />
   <StringProperty Name="SDKPackageItemSpec" Visible="False" ReadOnly="True" />
   <BoolProperty Name="CopyPayload" DisplayName="Kopiuj ładunek" ReadOnly="True" />
   <StringProperty Name="CopyPayloadToSubDirectory" DisplayName="Kopiuj ładunek do podkatalogu" ReadOnly="True" />

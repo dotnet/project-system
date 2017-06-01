@@ -9,8 +9,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedCOMReference|Description">
-        <source>Resolved reference</source>
-        <target state="translated">解析的引用</target>
+        <source>COM Reference Properties</source>
+        <target state="translated">COM 引用属性</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Guid|DisplayName">

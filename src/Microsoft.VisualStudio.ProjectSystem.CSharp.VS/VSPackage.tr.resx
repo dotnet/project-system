@@ -151,6 +151,6 @@
     <value>xUnit Test Projesi (.NET Core)</value>
   </data>
   <data name="12" xml:space="preserve">
-    <value>Windows, Linux ve MacOS’ta .NET Core üzerinde çalışabilen xunit testlerini içeren bir proje</value>
+    <value>Windows, Linux ve MacOS’ta .NET Core üzerinde çalıştırılabilen xUnit.net testlerini içeren bir proje.</value>
   </data>
 </root>

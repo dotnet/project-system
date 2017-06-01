@@ -9,8 +9,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|None|Description">
-        <source>Non-build items</source>
-        <target state="translated">非生成项</target>
+        <source>File Properties</source>
+        <target state="translated">文件属性</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Advanced|DisplayName">

@@ -14,7 +14,7 @@
     <EnumValue Name="Always" DisplayName="Copia sempre" />
     <EnumValue Name="PreserveNewest" DisplayName="Copia se più recente" />
   </EnumProperty>
-  <StringProperty Name="Identity" Visible="false" ReadOnly="true" Category="Misc" Description="L'elemento specificato nell'attributo Include.">
+  <StringProperty Name="Identity" Visible="false" ReadOnly="true" Category="Misc" Description="Elemento specificato nell'attributo Include.">
     <StringProperty.DataSource>
       <DataSource Persistence="Intrinsic" ItemType="Content" PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>

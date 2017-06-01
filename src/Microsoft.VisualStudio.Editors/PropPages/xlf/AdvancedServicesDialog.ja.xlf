@@ -25,13 +25,13 @@
       </trans-unit>
       <trans-unit id="TimeUnitComboBox.AccessibleName">
         <source>Role service cache timeout units</source>
-        <target state="new">Role service cache timeout units</target>
-        <note></note>
+        <target state="translated">ロール サービスのキャッシュのタイムアウトの単位:</target>
+        <note />
       </trans-unit>
       <trans-unit id="CustomConnectionString.AccessibleName">
         <source>Custom connection string</source>
-        <target state="new">Custom connection string</target>
-        <note></note>
+        <target state="translated">カスタム接続文字列</target>
+        <note />
       </trans-unit>
     </body>
   </file>

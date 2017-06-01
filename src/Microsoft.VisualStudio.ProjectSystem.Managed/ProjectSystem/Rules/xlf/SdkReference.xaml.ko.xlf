@@ -9,7 +9,7 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|SdkReference|Description">
-        <source>SDK reference properties</source>
+        <source>SDK Reference Properties</source>
         <target state="translated">SDK 참조 속성</target>
         <note />
       </trans-unit>
@@ -55,18 +55,18 @@
       </trans-unit>
       <trans-unit id="StringProperty|DisplayName|DisplayName">
         <source>Display Name</source>
-        <target state="new">Display Name</target>
-        <note></note>
+        <target state="translated">표시 이름</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Name|DisplayName">
         <source>Name</source>
-        <target state="new">Name</target>
-        <note></note>
+        <target state="translated">이름</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
-        <target state="new">Version</target>
-        <note></note>
+        <target state="translated">버전</target>
+        <note />
       </trans-unit>
     </body>
   </file>

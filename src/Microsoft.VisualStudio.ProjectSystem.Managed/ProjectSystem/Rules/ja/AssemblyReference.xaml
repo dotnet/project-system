@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Rule Name="AssemblyReference" DisplayName="アセンブリ参照" PageTemplate="generic" Description="アセンブリ参照のプロパティ" xmlns="http://schemas.microsoft.com/build/2009/properties">
+<Rule Name="AssemblyReference" DisplayName="アセンブリ参照" PageTemplate="generic" Description="参照プロパティ" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
     <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
+  <!-- Visible properties -->
   <StringListProperty Name="Aliases" DisplayName="エイリアス" Description="この参照へのエイリアスのコンマ区切りのリストです。" Separator="," />
   <BoolProperty Name="CopyLocal" DisplayName="ローカルにコピー" Description="参照が出力ディレクトリにコピーされるかどうかを示します。">
     <BoolProperty.DataSource>
@@ -11,15 +12,27 @@
     </BoolProperty.DataSource>
   </BoolProperty>
   <BoolProperty Name="EmbedInteropTypes" DisplayName="相互運用型の埋め込み" Description="このアセンブリ内で定義される型をターゲット アセンブリに埋め込むかどうかを示します。" />
+  <StringProperty Name="Identity" ReadOnly="True" DisplayName="Identity" Description="Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="{}{Identity}" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Path" Description="Location of the file being referenced.">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
   <BoolProperty Name="SpecificVersion" DisplayName="特定バージョン" Description="アセンブリ解像度のマルチターゲット ルールに関係なく、このアセンブリを解決できるかどうかを示します。">
     <BoolProperty.DataSource>
       <DataSource Persistence="AssemblyReference" ItemType="Reference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
-  <StringProperty Name="RequiredTargetFramework" DisplayName="必要なターゲット フレームワーク" Visible="False" />
+  <StringProperty Name="Version" ReadOnly="True" DisplayName="Version" Description="Version of reference."></StringProperty>
+  <!-- Hidden properties -->
   <StringProperty Name="HintPath" Visible="false" />
-  <StringProperty Name="SDKName" Visible="false" />
-  <BoolProperty Name="IsWinMDFile" Visible="false" />
   <StringProperty Name="ImageRuntime" DisplayName="ランタイム バージョン" Description="このアセンブリが対象としている CLR のランタイム バージョンです。" Visible="False" ReadOnly="True" />
   <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
+  <BoolProperty Name="IsWinMDFile" Visible="false" />
+  <StringProperty Name="RequiredTargetFramework" DisplayName="必要なターゲット フレームワーク" Visible="False" />
+  <StringProperty Name="SDKName" Visible="false" />
 </Rule>

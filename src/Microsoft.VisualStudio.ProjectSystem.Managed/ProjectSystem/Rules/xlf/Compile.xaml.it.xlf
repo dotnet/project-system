@@ -90,13 +90,13 @@
       </trans-unit>
       <trans-unit id="Rule|Compile|DisplayName">
         <source>File Properties</source>
-        <target state="new">File Properties</target>
-        <note></note>
+        <target state="translated">Proprietà file</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|Compile|Description">
         <source>File Properties</source>
-        <target state="new">File Properties</target>
-        <note></note>
+        <target state="translated">Proprietà file</target>
+        <note />
       </trans-unit>
     </body>
   </file>

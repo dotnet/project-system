@@ -554,9 +554,9 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         Private Sub OnThemeChanged()
             Dim VsUIShell5 = VsUIShell5Service
             If TypeOf PropPage Is PropPageBase AndAlso CType(PropPage, PropPageBase).SupportsTheming Then
-                BackColor = ShellUtil.GetProjectDesignerThemeColor(VsUIShell5Service, "Background", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Window)
+                BackColor = ShellUtil.GetProjectDesignerThemeColor(VsUIShell5Service, "Background", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Control)
             Else
-                BackColor = SystemColors.Window
+                BackColor = SystemColors.Control
             End If
 
             ConfigurationPanel.BackColor = BackColor
@@ -642,6 +642,13 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     If _isNativeHostedPropertyPage Then
                         'Try to set initial focus to the property page, not the configuration panel
                         FocusFirstOrLastPropertyPageControl(True)
+                    End If
+
+                    ' For configuration pages, we need to ensure the configuration panel recieves focus
+                    ' and not the property page itself. This allows a screen reader to give the page context
+                    ' before reading the values of any properties themselves.
+                    If _isConfigPage Then
+                        SelectNextControl(ConfigurationPanel, forward:=True, tabStopOnly:=True, nested:=True, wrap:=True)
                     End If
 
                     SetUndoRedoCleanState()
