@@ -121,7 +121,7 @@
   
   <!-- Import the global NuGet packages -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.Net.RoslynDiagnostics" Version="2.0.0-beta2" Condition="'$(UseRoslynAnalyzers)' == 'true'" />
+    <PackageReference Include="Microsoft.Net.RoslynDiagnostics" Version="2.3.0-beta1" Condition="'$(UseRoslynAnalyzers)' == 'true'" />
   </ItemGroup>
 
   <!-- Common project settings -->
