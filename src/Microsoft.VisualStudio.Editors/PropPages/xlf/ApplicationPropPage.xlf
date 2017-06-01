@@ -44,8 +44,8 @@
         <note />
       </trans-unit>
       <trans-unit id="AppIconBrowse.Text">
-        <source>...</source>
-        <note />
+        <source>Browse...</source>
+        <note></note>
       </trans-unit>
       <trans-unit id="ApplicationManifestLabel.Text">
         <source>Manifest:</source>
@@ -56,8 +56,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Win32ResourceFileBrowse.Text">
-        <source>...</source>
-        <note />
+        <source>Browse...</source>
+        <note></note>
       </trans-unit>
       <trans-unit id="ResourcesGroupBox.Text">
         <source>Resources</source>
