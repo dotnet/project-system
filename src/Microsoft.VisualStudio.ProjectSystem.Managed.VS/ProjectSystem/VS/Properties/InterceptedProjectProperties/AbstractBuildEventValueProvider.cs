@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             using (var access = await _projectLockService.ReadLockAsync())
             {
                 var projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
-                var result = TryFindExecTaskInTargets(projectXml);
+                var result = FindExecTaskInTargets(projectXml);
 
                 if (result.success == false)
                 {
@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 
                 if (result.execTask.Parameters.TryGetValue(_commandString, out var commandText))
                 {
-                    return commandText;
+                    return UnReplaceMSBuildReservedCharacters(commandText);
                 }
 
                 return string.Empty;
@@ -63,16 +63,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 
                 if (string.IsNullOrWhiteSpace(unevaluatedPropertyValue))
                 {
-                    var targets = projectXml.Targets
-                        .Where(target =>
-                            GetTargetString(target) == BuildEventString &&
-                            target.Children.Count == 1 &&
-                            target.Tasks.Count == 1 &&
-                            target.Tasks.First().Name == _execTaskName)
-                            .ToArray();
-                    if (targets.Length == 1)
+                    var result = FindTargetToRemove(projectXml);
+                    if (result.success)
                     {
-                        projectXml.RemoveChild(targets[0]);
+                        projectXml.RemoveChild(result.target);
                     }
                 }
                 else
@@ -86,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 
         private void SetParameter(ProjectRootElement projectXml, string unevaluatedPropertyValue)
         {
-            var result = TryFindExecTaskInTargets(projectXml);
+            var result = FindExecTaskInTargets(projectXml);
 
             if (result.success == true)
             {
@@ -104,13 +98,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 
         private void SetExecParameter(ProjectTaskElement execTask, string unevaluatedPropertyValue)
         {
-            // TODO: what characters should be escaped and what should remain as is?
-            // 1. newline characters
-            // 2. quotations?
-            execTask.SetParameter(_commandString, unevaluatedPropertyValue);
+            execTask.SetParameter(_commandString, this.ReplaceMSBuildReservedCharacters(unevaluatedPropertyValue));
         }
 
-        private (bool success, ProjectTaskElement execTask) TryFindExecTaskInTargets(ProjectRootElement projectXml)
+        private string ReplaceMSBuildReservedCharacters(string value)
+            => value
+                .Replace("\"", "&quot;")
+                .Replace("'", "&apos;")
+                .Replace("&", "&amp;")
+                .Replace("<", "&lt;")
+                .Replace(">", "&gt;");
+
+        private string UnReplaceMSBuildReservedCharacters(string value)
+            => value
+                .Replace("&quot;", "\"")
+                .Replace("&apos;", "'")
+                .Replace("&amp;", "&")
+                .Replace("&lt;", "<")
+                .Replace("&gt;", ">");
+
+        private (bool success, ProjectTaskElement execTask) FindExecTaskInTargets(ProjectRootElement projectXml)
         {
             var execTask = projectXml.Targets
                                 .Where(target => GetTargetString(target) == BuildEventString)
@@ -118,6 +125,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                                 .Where(task => task.Name == _execTaskName)
                                 .FirstOrDefault();
             return (success: execTask != null, execTask: execTask);
+        }
+
+        private (bool success, ProjectTargetElement target) FindTargetToRemove(ProjectRootElement projectXml)
+        {
+            var targetArray = projectXml.Targets
+                                    .Where(target =>
+                                        GetTargetString(target) == BuildEventString &&
+                                        target.Children.Count == 1 &&
+                                        target.Tasks.Count == 1 &&
+                                        target.Tasks.First().Name == _execTaskName);
+            return (success: targetArray.Count() == 1, target: targetArray.SingleOrDefault());
         }
     }
 }
