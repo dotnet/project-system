@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
         }
 
         protected abstract string GetTargetString(ProjectTargetElement target);
-        protected abstract void SetTargetString(ProjectTargetElement target, string targetName);
+        protected abstract void SetTargetDependencies(ProjectTargetElement target);
         protected abstract string BuildEventString { get; }
         protected abstract string TargetNameString { get; }
 
@@ -40,15 +40,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 
                 if (result.success == false)
                 {
-                    return string.Empty;
+                    return null;
                 }
 
                 if (result.execTask.Parameters.TryGetValue(_commandString, out var commandText))
                 {
-                    return UnReplaceMSBuildReservedCharacters(commandText);
+                    return commandText;
                 }
 
-                return string.Empty;
+                return null;
             }
         }
 
@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                 }
             }
 
-            return string.Empty;
+            return null;
         }
 
         private void SetParameter(ProjectRootElement projectXml, string unevaluatedPropertyValue)
@@ -88,34 +88,43 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             }
             else
             {
-                // TODO: What if there is already a target named "PreBuild" or "PostBuild"?
-                var prebuildTarget = projectXml.AddTarget(TargetNameString);
-                SetTargetString(prebuildTarget, BuildEventString);
-                var execTask = prebuildTarget.AddTask(_execTaskName);
+                var targetName = GetTargetName(projectXml);
+                var target = projectXml.AddTarget(targetName);
+                SetTargetDependencies(target);
+                var execTask = target.AddTask(_execTaskName);
                 SetExecParameter(execTask, unevaluatedPropertyValue);
             }
         }
 
-        private void SetExecParameter(ProjectTaskElement execTask, string unevaluatedPropertyValue)
+        private string GetTargetName(ProjectRootElement projectXml)
         {
-            execTask.SetParameter(_commandString, this.ReplaceMSBuildReservedCharacters(unevaluatedPropertyValue));
+            var targetNames = projectXml.Targets.Select(t => t.Name).ToArray();
+            var targetName = TargetNameString;
+            if (targetNames.Contains(targetName))
+            {
+                targetName = FindNonCollidingName(targetName, targetNames);
+            }
+
+            return targetName;
         }
 
-        private string ReplaceMSBuildReservedCharacters(string value)
-            => value
-                .Replace("\"", "&quot;")
-                .Replace("'", "&apos;")
-                .Replace("&", "&amp;")
-                .Replace("<", "&lt;")
-                .Replace(">", "&gt;");
+        private string FindNonCollidingName(string buildEventString, string[] targetNames)
+        {
+            var initialValue = 1;
+            var newName = buildEventString + initialValue.ToString();
+            while (targetNames.Contains(newName))
+            {
+                initialValue++;
+                newName = buildEventString + initialValue.ToString();
+            }
 
-        private string UnReplaceMSBuildReservedCharacters(string value)
-            => value
-                .Replace("&quot;", "\"")
-                .Replace("&apos;", "'")
-                .Replace("&amp;", "&")
-                .Replace("&lt;", "<")
-                .Replace("&gt;", ">");
+            return newName;
+        }
+
+        private void SetExecParameter(ProjectTaskElement execTask, string unevaluatedPropertyValue)
+        {
+            execTask.SetParameter(_commandString, unevaluatedPropertyValue);
+        }
 
         private (bool success, ProjectTaskElement execTask) FindExecTaskInTargets(ProjectRootElement projectXml)
         {

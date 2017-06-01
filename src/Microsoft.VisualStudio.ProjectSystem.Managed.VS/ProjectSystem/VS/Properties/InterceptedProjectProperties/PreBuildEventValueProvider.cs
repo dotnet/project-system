@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
         protected override string GetTargetString(ProjectTargetElement target)
             => target.BeforeTargets;
 
-        protected override void SetTargetString(ProjectTargetElement target, string targetName)
-            => target.BeforeTargets = targetName;
+        protected override void SetTargetDependencies(ProjectTargetElement target)
+            => target.BeforeTargets = _preBuildEventString;
     }
 }
