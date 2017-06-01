@@ -61,10 +61,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             {
                 var projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
 
-                if (string.IsNullOrEmpty(unevaluatedPropertyValue))
+                if (string.IsNullOrWhiteSpace(unevaluatedPropertyValue))
                 {
-                    // TODO: What if the user only enters whitespace characters?
-
                     var targets = projectXml.Targets
                         .Where(target =>
                             GetTargetString(target) == BuildEventString &&
@@ -96,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             }
             else
             {
-                // What if there is already a target named "PreBuild"?
+                // TODO: What if there is already a target named "PreBuild" or "PostBuild"?
                 var prebuildTarget = projectXml.AddTarget(TargetNameString);
                 SetTargetString(prebuildTarget, BuildEventString);
                 var execTask = prebuildTarget.AddTask(_execTaskName);
@@ -107,6 +105,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
         private void SetExecParameter(ProjectTaskElement execTask, string unevaluatedPropertyValue)
         {
             // TODO: what characters should be escaped and what should remain as is?
+            // 1. newline characters
+            // 2. quotations?
             execTask.SetParameter(_commandString, unevaluatedPropertyValue);
         }
 
