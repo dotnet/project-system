@@ -1,6 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="Common diagnostic rules to run during build for all shipping Roslyn projects" Description="This file contains diagnostic settings used by all Roslyn projects. Projects that need specific settings should have their own rule set files that Include this one, and then make the neceessary adjustments." ToolsVersion="14.0">
+<RuleSet Name="Common diagnostic rules to run during build for all shipping Roslyn projects" Description="This file contains diagnostic settings used by all Roslyn projects. Projects that need specific settings should have their own rule set files that Include this one, and then make the neceessary adjustments." ToolsVersion="15.0">
   <IncludeAll Action="Hidden" />
+  <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
+    <Rule Id="CA1801" Action="None" />
+    <Rule Id="CA1806" Action="None" />
+    <Rule Id="CA1823" Action="None" />
+    <Rule Id="CA1824" Action="None" />
+  </Rules>
   <Rules AnalyzerId="Microsoft.ApiDesignGuidelines.Analyzers" RuleNamespace="Microsoft.ApiDesignGuidelines.Analyzers">
     <Rule Id="CA1000" Action="None" />
     <Rule Id="CA1001" Action="None" />
@@ -135,5 +141,4 @@
     <Rule Id="IDE1006" Action="Error" />                      <!-- Naming styles                                Task Open()                                         Task OpenAsync()                      -->
     <Rule Id="IDE1006WithoutSuggestion" Action="Info" />
   </Rules>
- 
 </RuleSet>
