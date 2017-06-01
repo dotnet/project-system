@@ -15,8 +15,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     [Export(typeof(IStartupProjectHelper))]
     internal class StartupProjectHelper : IStartupProjectHelper
     {
-        const int MaxFrameworks = 20;
-
         [ImportingConstructor]
         public StartupProjectHelper([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider, IProjectExportProvider projectExportProvider)
         {
