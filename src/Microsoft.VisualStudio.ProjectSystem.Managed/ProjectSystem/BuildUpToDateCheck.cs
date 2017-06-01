@@ -35,16 +35,19 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 if (level <= _requestedLogLevel)
                 {
-                    _logger?.WriteLine($"FastUpToDate: {string.Format(message, values)} ({Path.GetFileNameWithoutExtension(_fileName)})");
+                    _logger?.WriteLine($"FastUpToDate: {string.Format(message, values)} ({_fileName})");
                 }
             }
 
             public void Info(string message, params object[] values) => Log(LogLevel.Info, message, values);
             public void Verbose(string message, params object[] values) => Log(LogLevel.Verbose, message, values);
         }
+
         private const string TrueValue = "true";
         private const string FullPath = "FullPath";
         private const string ResolvedPath = "ResolvedPath";
+        private const string CopyToOutputDirectory = "CopyToOutputDirectory";
+        private const string Never = "Never";
 
         private static HashSet<string> KnownOutputGroups = new HashSet<string>
         {
@@ -142,7 +145,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             foreach (var itemType in e.ProjectChanges)
             {
-                _items[itemType.Key] = new HashSet<string>(itemType.Value.After.Items.Select(item => item.Value[FullPath]));
+                var items = itemType.Value
+                    .After.Items
+                    .Where(item => !item.Value.ContainsKey(CopyToOutputDirectory) 
+                        || !string.Equals(item.Value[CopyToOutputDirectory], Never, StringComparison.InvariantCultureIgnoreCase))
+                    .Select(item => item.Value[FullPath]);
+                _items[itemType.Key] = new HashSet<string>(items);
             }
         }
 
@@ -150,7 +158,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             foreach (var outputGroupPair in e.Where(pair => KnownOutputGroups.Contains(pair.Key)))
             {
-                _outputGroups[outputGroupPair.Key] = new HashSet<string>(outputGroupPair.Value.Outputs.Select(output => output.Key));
+                var outputs = outputGroupPair.Value
+                    .Outputs
+                    .Where(output => !output.Value.ContainsKey(CopyToOutputDirectory)
+                        || !string.Equals(output.Value[CopyToOutputDirectory], Never, StringComparison.InvariantCultureIgnoreCase))
+                    .Select(output => output.Key);
+                _outputGroups[outputGroupPair.Key] = new HashSet<string>(outputs);
             }
         }
 
