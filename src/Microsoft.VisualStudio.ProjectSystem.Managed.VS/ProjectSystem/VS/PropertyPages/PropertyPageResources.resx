@@ -202,7 +202,7 @@
     <value>Launch:</value>
   </data>
   <data name="LaunchURL" xml:space="preserve">
-    <value>Launch URL:</value>
+    <value>Launch browser:</value>
   </data>
   <data name="NameHeader" xml:space="preserve">
     <value>Name</value>

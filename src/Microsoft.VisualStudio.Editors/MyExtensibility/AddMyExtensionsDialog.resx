@@ -211,7 +211,7 @@
     <value>159, 23</value>
   </data>
   <data name="tableLayoutOKCancelButtons.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;tableLayoutOKCancelButtons.Name" xml:space="preserve">
     <value>tableLayoutOKCancelButtons</value>
@@ -262,7 +262,7 @@
     <value>528, 294</value>
   </data>
   <data name="listViewExtensions.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;listViewExtensions.Name" xml:space="preserve">
     <value>listViewExtensions</value>

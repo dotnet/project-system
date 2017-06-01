@@ -139,7 +139,7 @@
     <value>61, 13</value>
   </data>
   <data name="StartActionLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="StartActionLabel.Text" xml:space="preserve">
     <value>Start action</value>
@@ -205,7 +205,7 @@
     <value>82, 17</value>
   </data>
   <data name="rbStartProject.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="rbStartProject.Text" xml:space="preserve">
     <value>&amp;Start project</value>
@@ -241,7 +241,7 @@
     <value>131, 17</value>
   </data>
   <data name="rbStartProgram.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="rbStartProgram.Text" xml:space="preserve">
     <value>Start e&amp;xternal program:</value>
@@ -277,7 +277,7 @@
     <value>137, 17</value>
   </data>
   <data name="rbStartURL.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="rbStartURL.Text" xml:space="preserve">
     <value>Start browser with U&amp;RL:</value>
@@ -307,7 +307,7 @@
     <value>292, 20</value>
   </data>
   <data name="StartProgram.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="&gt;&gt;StartProgram.Name" xml:space="preserve">
     <value>StartProgram</value>
@@ -337,7 +337,7 @@
     <value>292, 20</value>
   </data>
   <data name="StartURL.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="&gt;&gt;StartURL.Name" xml:space="preserve">
     <value>StartURL</value>
@@ -373,7 +373,7 @@
     <value>75, 23</value>
   </data>
   <data name="StartProgramBrowse.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="StartProgramBrowse.Text" xml:space="preserve">
     <value>&amp;Browse...</value>
@@ -472,7 +472,7 @@
     <value>128, 13</value>
   </data>
   <data name="CommandLineArgsLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>8</value>
   </data>
   <data name="CommandLineArgsLabel.Text" xml:space="preserve">
     <value>Comma&amp;nd line arguments:</value>
@@ -508,7 +508,7 @@
     <value>93, 13</value>
   </data>
   <data name="WorkingDirLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>10</value>
   </data>
   <data name="WorkingDirLabel.Text" xml:space="preserve">
     <value>Wor&amp;king directory:</value>
@@ -544,7 +544,7 @@
     <value>123, 17</value>
   </data>
   <data name="RemoteDebugEnabled.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>13</value>
   </data>
   <data name="RemoteDebugEnabled.Text" xml:space="preserve">
     <value>Use remote m&amp;achine</value>
@@ -580,7 +580,7 @@
     <value>292, 86</value>
   </data>
   <data name="StartArguments.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>9</value>
   </data>
   <data name="&gt;&gt;StartArguments.Name" xml:space="preserve">
     <value>StartArguments</value>
@@ -604,7 +604,7 @@
     <value>292, 20</value>
   </data>
   <data name="StartWorkingDirectory.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>11</value>
   </data>
   <data name="&gt;&gt;StartWorkingDirectory.Name" xml:space="preserve">
     <value>StartWorkingDirectory</value>
@@ -634,7 +634,7 @@
     <value>292, 20</value>
   </data>
   <data name="RemoteDebugMachine.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>14</value>
   </data>
   <data name="&gt;&gt;RemoteDebugMachine.Name" xml:space="preserve">
     <value>RemoteDebugMachine</value>
@@ -670,7 +670,7 @@
     <value>75, 23</value>
   </data>
   <data name="StartWorkingDirectoryBrowse.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>12</value>
   </data>
   <data name="StartWorkingDirectoryBrowse.Text" xml:space="preserve">
     <value>Bro&amp;wse...</value>
@@ -790,7 +790,7 @@
     <value>539, 13</value>
   </data>
   <data name="startActionTableLayoutPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;startActionTableLayoutPanel.Name" xml:space="preserve">
     <value>startActionTableLayoutPanel</value>
@@ -901,7 +901,7 @@
     <value>170, 17</value>
   </data>
   <data name="EnableSQLServerDebugging.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
+    <value>17</value>
   </data>
   <data name="EnableSQLServerDebugging.Text" xml:space="preserve">
     <value>Enable SQ&amp;L Server debugging</value>
@@ -964,7 +964,7 @@
     <value>171, 17</value>
   </data>
   <data name="EnableUnmanagedDebugging.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
+    <value>16</value>
   </data>
   <data name="EnableUnmanagedDebugging.Text" xml:space="preserve">
     <value>Enable na&amp;tive code debugging</value>
