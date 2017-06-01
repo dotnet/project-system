@@ -27,8 +27,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     '''  - Implements IComponent to be able to push the resource through SelectionService, so that the name of the resource 
     '''      appears on the Property Window's drop down list.
     ''' </remarks>
-    <Serializable()> _
-    <TypeDescriptionProvider(GetType(ResourceTypeDescriptionProvider))> _
+    <Serializable()>
+    <TypeDescriptionProvider(GetType(ResourceTypeDescriptionProvider))>
     Friend NotInheritable Class Resource
         Implements IComponent
         Implements ISerializable 'This allows us to fully control the serialization process
@@ -67,7 +67,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  The persistence mode of the resource to show in PropertyWindow.
         ''' </summary>
         ''' <remarks></remarks>
-        <TypeConverter(GetType(ResourcePersistenceModeEnumConverter))> _
+        <TypeConverter(GetType(ResourcePersistenceModeEnumConverter))>
         Public Enum ResourcePersistenceMode
             'The resource is a link to a file on disk which is read and compiled into the manifest resources at compile time.
             Linked
@@ -1627,9 +1627,15 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Shared Function AdjustAssemblyQualifiedNameForNetStandard(AssemblyQualifiedName As String) As String
             Static MscorlibAssemblyName As AssemblyName
 
-            If AssemblyQualifiedName.Contains("netstandard") Then
-                Dim indexOfFirstComma = AssemblyQualifiedName.IndexOf(",")
-                If indexOfFirstComma <> -1 Then
+            ' If this type definitely isn't from netstandard.dll then bail out before we allocate.
+            If Not AssemblyQualifiedName.Contains("netstandard") Then
+                Return AssemblyQualifiedName
+            End If
+
+            Dim indexOfFirstComma = AssemblyQualifiedName.IndexOf(",")
+            If indexOfFirstComma <> -1 Then
+                Dim assemblyName = New AssemblyName(AssemblyQualifiedName.Substring(indexOfFirstComma + 1))
+                If assemblyName.Name = "netstandard" Then
                     Dim typeName = AssemblyQualifiedName.Substring(startIndex:=0, length:=indexOfFirstComma)
 
                     If MscorlibAssemblyName Is Nothing Then
