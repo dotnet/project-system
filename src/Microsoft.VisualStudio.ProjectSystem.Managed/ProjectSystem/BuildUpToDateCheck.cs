@@ -147,8 +147,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 var items = itemType.Value
                     .After.Items
-                    .Where(item => !item.Value.ContainsKey(CopyToOutputDirectory) 
-                        || !string.Equals(item.Value[CopyToOutputDirectory], Never, StringComparison.InvariantCultureIgnoreCase))
                     .Select(item => item.Value[FullPath]);
                 _items[itemType.Key] = new HashSet<string>(items);
             }
