@@ -34,36 +34,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
             get { return _options.IsProjectOutputPaneEnabled; }
         }
 
-        public void WriteLine(string text)
-        {
-            WriteLine(new FormatArray(text));
-        }
-
-        public void WriteLine(string format, object argument)
-        {
-            WriteLine(new FormatArray(format, argument));
-        }
-
-        public void WriteLine(string format, object argument1, object argument2)
-        {
-            WriteLine(new FormatArray(format, argument1, argument2));
-        }
-
-        public void WriteLine(string format, object argument1, object argument2, object argument3)
-        {
-            WriteLine(new FormatArray(format, argument1, argument2, argument3));
-        }
-
-        public void WriteLine(string format, params object[] arguments)
-        {
-            WriteLine(new FormatArray(format, arguments));
-        }
-
-        private void WriteLine(FormatArray formatArray)
+        public void WriteLine(StringFormat format)
         {
             if (IsEnabled)
             {
-                string text = formatArray.Text + Environment.NewLine;
+                string text = format.Text + Environment.NewLine;
 
                 // Extremely naive implementation of a Windows Pane logger - the assumption here is that text is rarely written,
                 // so transitions to the UI thread are uncommon and are fire and forget. If we start writing to this a lot (such 
@@ -73,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
 
                     IVsOutputWindowPane pane = await _outputWindowProvider.GetOutputWindowPaneAsync()
                                                                           .ConfigureAwait(true);
-
+                                                                          
                     pane.OutputStringNoPump(text);
 
                 }, options: ForkOptions.HideLocks | ForkOptions.StartOnMainThread);
