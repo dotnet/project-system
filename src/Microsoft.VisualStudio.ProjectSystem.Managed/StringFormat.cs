@@ -3,12 +3,12 @@
 using System;
 using System.Globalization;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Logging
+namespace Microsoft
 {
     /// <summary>
     ///     Provides an object that allows a common way to format a set of objects, only allocating if needed.
     /// </summary>
-    internal struct FormatArray
+    internal struct StringFormat
     {
         // Sentinel fixed-length arrays eliminate the need for a "count" field keeping this
         // struct down to just 4 fields. These are only used for their "Length" property,
@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         private readonly object _argument3;
         private readonly object[] _arguments;
 
-        public FormatArray(string text)
+        public StringFormat(string text)
         {
             _format = text;
             _argument1 = null;
@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
             _arguments = ZeroArgumentArray;
         }
 
-        public FormatArray(string format, object argument)
+        public StringFormat(string format, object argument)
         {
             _format = format;
             _argument1 = argument;
@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
             _arguments = OneArgumentArray;
         }
 
-        public FormatArray(string format, object argument1, object argument2)
+        public StringFormat(string format, object argument1, object argument2)
         {
             _format = format;
             _argument1 = argument1;
@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
             _arguments = TwoArgumentArray;
         }
 
-        public FormatArray(string format, object argument1, object argument2, object argument3)
+        public StringFormat(string format, object argument1, object argument2, object argument3)
         {
             _format = format;
             _argument1 = argument1;
@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
             _arguments = ThreeArgumentArray;
         }
 
-        public FormatArray(string format, object[] arguments)
+        public StringFormat(string format, object[] arguments)
         {
             _format = format;
             _argument1 = null;

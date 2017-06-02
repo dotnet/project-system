@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
             get { return _options.IsProjectOutputPaneEnabled; }
         }
 
-        protected override void WriteLine(FormatArray formatArray)
+        protected override void WriteLine(StringFormat format)
         {
             if (IsEnabled)
             {
@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
                     IVsOutputWindowPane pane = await _outputWindowProvider.GetOutputWindowPaneAsync()
                                                                           .ConfigureAwait(true);
 
-                    pane.OutputStringNoPump(formatArray.Text + Environment.NewLine);
+                    pane.OutputStringNoPump(format.Text + Environment.NewLine);
 
                 }, options: ForkOptions.HideLocks | ForkOptions.StartOnMainThread);
             }
