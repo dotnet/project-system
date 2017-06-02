@@ -6,7 +6,7 @@
   </Rule.DataSource>
   <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="Nom d'élément évalué de l'élément de référence d'origine dont la résolution a eu pour résultat cet élément de référence résolu.">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="Analyzer" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
+      <DataSource Persistence="Intrinsic" ItemType="Analyzer" PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
