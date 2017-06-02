@@ -22,5 +22,104 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
 
             return new ProjectLoggerBatch(logger);
         }
+
+        /// <summary>
+        ///     Writes the specified text, followed by the current line terminator, 
+        ///     to the log.
+        /// </summary>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="logger"/> is <see langword="null"/>
+        /// </exception>
+        public static void WriteLine(this IProjectLogger logger, string text)
+        {
+            WriteLine(logger, new StringFormat(text));
+        }
+
+        /// <summary>
+        ///     Writes the text representation of the specified object, 
+        ///     followed by the current line terminator, to the log using the 
+        ///     specified format information.
+        /// </summary>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="logger"/> is <see langword="null"/>
+        ///     <para>
+        ///         -or-
+        ///     </para>
+        ///     <paramref name="format"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="FormatException">
+        ///     The format specification in <paramref name="format"/> is invalid.
+        /// </exception>
+        public static void WriteLine(this IProjectLogger logger, string format, object argument)
+        {
+            WriteLine(logger, new StringFormat(format, argument));
+        }
+
+        /// <summary>
+        ///     Writes the text representation of the specified objects, 
+        ///     followed by the current line terminator, to the log using the 
+        ///     specified format information.
+        /// </summary>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="logger"/> is <see langword="null"/>
+        ///     <para>
+        ///         -or-
+        ///     </para>
+        ///     <paramref name="format"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="FormatException">
+        ///     The format specification in <paramref name="format"/> is invalid.
+        /// </exception>
+        public static void WriteLine(this IProjectLogger logger, string format, object argument1, object argument2)
+        {
+            WriteLine(logger, new StringFormat(format, argument1, argument2));
+        }
+
+        /// <summary>
+        ///     Writes the text representation of the specified objects, 
+        ///     followed by the current line terminator, to the log using the 
+        ///     specified format information.
+        /// </summary>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="logger"/> is <see langword="null"/>
+        ///     <para>
+        ///         -or-
+        ///     </para>
+        ///     <paramref name="format"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="FormatException">
+        ///     The format specification in <paramref name="format"/> is invalid.
+        /// </exception>
+        public static void WriteLine(this IProjectLogger logger, string format, object argument1, object argument2, object argument3)
+        {
+            WriteLine(logger, new StringFormat(format, argument1, argument2, argument3));
+        }
+
+        /// <summary>
+        ///     Writes the text representation of the specified array of objects, 
+        ///     followed by the current line terminator, to the log using the 
+        ///     specified format information.
+        /// </summary>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="logger"/> is <see langword="null"/>
+        ///     <para>
+        ///         -or-
+        ///     </para>
+        ///     <paramref name="format"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="FormatException">
+        ///     The format specification in <paramref name="format"/> is invalid.
+        /// </exception>
+        public static void WriteLine(this IProjectLogger logger, string format, params object[] arguments)
+        {
+            WriteLine(logger, new StringFormat(format, arguments));
+        }
+
+        private static void WriteLine(IProjectLogger logger, StringFormat format)
+        {
+            Requires.NotNull(logger, nameof(logger));
+
+            logger.WriteLine(format);
+        }
     }
 }

@@ -21,61 +21,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         }
 
         /// <summary>
-        ///     Writes the specified text, followed by the current line terminator, 
-        ///     to the log.
+        ///     Writes the text representation of the format, followed by the 
+        ///     current line terminator
         /// </summary>
-        void WriteLine(string text);
-
-        /// <summary>
-        ///     Writes the text representation of the specified object, 
-        ///     followed by the current line terminator, to the log using the 
-        ///     specified format information.
-        /// </summary>
-        /// <exception cref="ArgumentNullException">
-        ///     <paramref name="format"/> is <see langword="null"/>.
-        /// </exception>
         /// <exception cref="FormatException">
         ///     The format specification in <paramref name="format"/> is invalid.
         /// </exception>
-        void WriteLine(string format, object argument);
-
-        /// <summary>
-        ///     Writes the text representation of the specified objects, 
-        ///     followed by the current line terminator, to the log using the 
-        ///     specified format information.
-        /// </summary>
-        /// <exception cref="ArgumentNullException">
-        ///     <paramref name="format"/> is <see langword="null"/>.
-        /// </exception>
-        /// <exception cref="FormatException">
-        ///     The format specification in <paramref name="format"/> is invalid.
-        /// </exception>
-        void WriteLine(string format, object argument1, object argument2);
-
-        /// <summary>
-        ///     Writes the text representation of the specified objects, 
-        ///     followed by the current line terminator, to the log using the 
-        ///     specified format information.
-        /// </summary>
-        /// <exception cref="ArgumentNullException">
-        ///     <paramref name="format"/> is <see langword="null"/>.
-        /// </exception>
-        /// <exception cref="FormatException">
-        ///     The format specification in <paramref name="format"/> is invalid.
-        /// </exception>
-        void WriteLine(string format, object argument1, object argument2, object argument3);
-
-        /// <summary>
-        ///     Writes the text representation of the specified array of objects, 
-        ///     followed by the current line terminator, to the log using the 
-        ///     specified format information.
-        /// </summary>
-        /// <exception cref="ArgumentNullException">
-        ///     <paramref name="format"/> is <see langword="null"/>.
-        /// </exception>
-        /// <exception cref="FormatException">
-        ///     The format specification in <paramref name="format"/> is invalid.
-        /// </exception>
-        void WriteLine(string format, params object[] arguments);
+        void WriteLine(StringFormat format);
     }
 }

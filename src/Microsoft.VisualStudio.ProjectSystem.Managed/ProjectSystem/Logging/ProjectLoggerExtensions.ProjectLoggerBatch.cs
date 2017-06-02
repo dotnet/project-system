@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
 {
     partial class ProjectLoggerExtensions
     {
-        private class ProjectLoggerBatch : AbstractProjectLogger, IProjectLoggerBatch
+        private class ProjectLoggerBatch : IProjectLoggerBatch
         {
             private readonly IProjectLogger _logger;
             private StringBuilder _builder;
@@ -33,12 +33,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
                 }
             }
 
-            public override bool IsEnabled
+            public bool IsEnabled
             {
                 get { return _logger.IsEnabled; }
             }
 
-            protected override void WriteLine(StringFormat format)
+            public void WriteLine(StringFormat format)
             {
                 if (IsEnabled)
                 {
