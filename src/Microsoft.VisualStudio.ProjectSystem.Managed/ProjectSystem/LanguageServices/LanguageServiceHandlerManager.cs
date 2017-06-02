@@ -189,6 +189,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private void WriteFooter(IProjectLoggerBatch logger, IProjectVersionedValue<IProjectSubscriptionUpdate> update)
         {
             logger.IndentLevel--;
+            logger.WriteLine();
             logger.WriteLine("Finished language service changes for '{0}' [{1}]", _project.FullPath, update.Value.ProjectConfiguration.Name);
         }
 
