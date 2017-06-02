@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Requires.NotNull(projectChange, nameof(projectChange));
             Requires.NotNull(logger, nameof(logger));
 
-            ApplyEvaluationChanges(version, projectChange.Difference, projectChange.After.Items, isActiveContext);
+            ApplyEvaluationChanges(version, projectChange.Difference, projectChange.After.Items, isActiveContext, logger);
         }
 
         public void Handle(IComparable version, BuildOptions added, BuildOptions removed, bool isActiveContext, IProjectLogger logger)
@@ -47,18 +47,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             IProjectChangeDiff difference = ConvertToProjectDiff(added, removed);
 
-            ApplyDesignTimeChanges(version, difference, isActiveContext);
+            ApplyDesignTimeChanges(version, difference, isActiveContext, logger);
         }
 
-        protected override void AddToContext(string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext)
+        protected override void AddToContext(string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext, IProjectLogger logger)
         {
             string[] folderNames = GetFolderNames(fullPath, metadata);
 
+            logger.WriteLine("Adding source file '{0}'", fullPath);
             _context.AddSourceFile(fullPath, isInCurrentContext: isActiveContext, folderNames: folderNames);
         }
 
-        protected override void RemoveFromContext(string fullPath)
+        protected override void RemoveFromContext(string fullPath, IProjectLogger logger)
         {
+            logger.WriteLine("Removing source file '{0}'", fullPath);
             _context.RemoveSourceFile(fullPath);
         }
 
