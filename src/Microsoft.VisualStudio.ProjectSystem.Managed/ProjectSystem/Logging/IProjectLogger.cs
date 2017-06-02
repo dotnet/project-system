@@ -13,7 +13,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         ///     Gets a value indicating if the logger is enabled.
         /// </summary>
         /// <value>
-        ///     <see langword="true"/> if the <see cref="IProjectLogger"/> is enabled and logging to the log; otherwise, <see langword="false"/>.
+        ///     <see langword="true"/> if the <see cref="IProjectLogger"/> is 
+        ///     enabled and logging to the log; otherwise, <see langword="false"/>.
         /// </value>
         bool IsEnabled
         {
@@ -21,8 +22,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         }
 
         /// <summary>
-        ///     Writes the text representation of the format, followed by the 
-        ///     current line terminator
+        ///     If <see cref="IsEnabled"/> is <see langword="true"/>, writes
+        ///     the text representation of the format, followed by the current
+        ///     line terminator
         /// </summary>
         /// <exception cref="FormatException">
         ///     <see cref="IsEnabled"/> is <see langword="true"/> and the format 

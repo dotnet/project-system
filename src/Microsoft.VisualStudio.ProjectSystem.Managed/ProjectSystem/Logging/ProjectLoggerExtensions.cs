@@ -24,7 +24,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         }
 
         /// <summary>
-        ///     Writes the specified text, followed by the current line terminator, 
+        ///     If <see cref="IProjectLogger.IsEnabled"/> is <see langword="true"/>,
+        ///     writes the specified text, followed by the current line terminator,
         ///     to the log.
         /// </summary>
         /// <exception cref="ArgumentNullException">
@@ -36,9 +37,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         }
 
         /// <summary>
-        ///     Writes the text representation of the specified object, 
-        ///     followed by the current line terminator, to the log using the 
-        ///     specified format information.
+        ///     If <see cref="IProjectLogger.IsEnabled"/> is <see langword="true"/>,
+        ///     writes the text representation of the specified object, followed 
+        ///     by the current line terminator, to the log using the specified 
+        ///     format information.
         /// </summary>
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="logger"/> is <see langword="null"/>
@@ -56,9 +58,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         }
 
         /// <summary>
-        ///     Writes the text representation of the specified objects, 
-        ///     followed by the current line terminator, to the log using the 
-        ///     specified format information.
+        ///     If <see cref="IProjectLogger.IsEnabled"/> is <see langword="true"/>,
+        ///     writes the text representation of the specified objects, followed 
+        ///     by the current line terminator, to the log using the specified format
+        ///     information.
         /// </summary>
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="logger"/> is <see langword="null"/>
@@ -76,9 +79,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         }
 
         /// <summary>
-        ///     Writes the text representation of the specified objects, 
-        ///     followed by the current line terminator, to the log using the 
-        ///     specified format information.
+        ///     If <see cref="IProjectLogger.IsEnabled"/> is <see langword="true"/>,
+        ///     writes the text representation of the specified objects, followed 
+        ///     by the current line terminator, to the log using the specified 
+        ///     format information.
         /// </summary>
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="logger"/> is <see langword="null"/>
@@ -96,8 +100,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         }
 
         /// <summary>
-        ///     Writes the text representation of the specified array of objects, 
-        ///     followed by the current line terminator, to the log using the 
+        ///     If <see cref="IProjectLogger.IsEnabled"/> is <see langword="true"/>,
+        ///     writes the  text representation of the specified array of objects, 
+        ///     followed  by the current line terminator, to the log using the 
         ///     specified format information.
         /// </summary>
         /// <exception cref="ArgumentNullException">
