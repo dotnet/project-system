@@ -51,7 +51,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
 
             private void Init()
             {
-                _builder = new StringBuilder();
+                if (_builder == null)
+                    _builder = new StringBuilder();
             }
 
             private void WriteNewLineIfNeeded()
