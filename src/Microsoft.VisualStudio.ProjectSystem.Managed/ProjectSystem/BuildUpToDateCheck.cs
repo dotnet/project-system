@@ -120,9 +120,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _msBuildProjectFullPath = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, _msBuildProjectFullPath);
             foreach (var referenceSchema in ReferenceSchemas)
             {
-                if (e.CurrentState.TryGetValue(referenceSchema, out var snapshot))
+                if (e.ProjectChanges.TryGetValue(referenceSchema, out var changes) &&
+                    changes.Difference.AnyChanges)
                 {
-                    _references[referenceSchema] = new HashSet<string>(snapshot.Items.Select(item => item.Value[ResolvedPath]));
+                    _references[referenceSchema] = new HashSet<string>(changes.After.Items.Select(item => item.Value[ResolvedPath]));
                 }
             }
         }
