@@ -43,31 +43,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             {
                 var fullPath = _project.MakeRooted(analyzer.FilePath);
 
-                RemoveFromContextIfPresent(fullPath);
+                RemoveFromContextIfPresent(fullPath, logger);
             }
 
             foreach (CommandLineAnalyzerReference analyzer in added.AnalyzerReferences)
             {
                 var fullPath = _project.MakeRooted(analyzer.FilePath);
 
-                AddToContextIfNotPresent(fullPath);
+                AddToContextIfNotPresent(fullPath, logger);
             }
         }
 
-        private void AddToContextIfNotPresent(string fullPath)
+        private void AddToContextIfNotPresent(string fullPath, IProjectLogger logger)
         {
             if (!_paths.Contains(fullPath))
             {
+                logger.WriteLine("Adding analyzer '{0}'", fullPath);
                 _context.AddAdditionalFile(fullPath);
                 bool added = _paths.Add(fullPath);
                 Assumes.True(added);
             }
         }
 
-        private void RemoveFromContextIfPresent(string fullPath)
+        private void RemoveFromContextIfPresent(string fullPath, IProjectLogger logger)
         {
             if (_paths.Contains(fullPath))
             {
+                logger.WriteLine("Removing analyzer '{0}'", fullPath);
                 _context.RemoveAdditionalFile(fullPath);
                 bool removed = _paths.Remove(fullPath);
                 Assumes.True(removed);

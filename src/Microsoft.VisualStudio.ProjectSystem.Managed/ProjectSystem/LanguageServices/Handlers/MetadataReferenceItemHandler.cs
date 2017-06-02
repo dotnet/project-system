@@ -41,31 +41,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             {
                 var fullPath = _project.MakeRooted(reference.Reference);
 
-                RemoveFromContextIfPresent(fullPath);
+                RemoveFromContextIfPresent(fullPath, logger);
             }
 
             foreach (CommandLineReference reference in added.MetadataReferences)
             {
                 var fullPath = _project.MakeRooted(reference.Reference);
 
-                AddToContextIfNotPresent(fullPath, reference.Properties);
+                AddToContextIfNotPresent(fullPath, reference.Properties, logger);
             }
         }
 
-        private void AddToContextIfNotPresent(string fullPath, MetadataReferenceProperties properties)
+        private void AddToContextIfNotPresent(string fullPath, MetadataReferenceProperties properties, IProjectLogger logger)
         {
             if (!_paths.Contains(fullPath))
             {
+                logger.WriteLine("Adding reference '{0}'", fullPath);
                 _context.AddMetadataReference(fullPath, properties);
                 bool added = _paths.Add(fullPath);
                 Assumes.True(added);
             }
         }
 
-        private void RemoveFromContextIfPresent(string fullPath)
+        private void RemoveFromContextIfPresent(string fullPath, IProjectLogger logger)
         {
             if (_paths.Contains(fullPath))
             {
+                logger.WriteLine("Removing reference '{0}'", fullPath);
                 _context.RemoveMetadataReference(fullPath);
                 bool removed = _paths.Remove(fullPath);
                 Assumes.True(removed);

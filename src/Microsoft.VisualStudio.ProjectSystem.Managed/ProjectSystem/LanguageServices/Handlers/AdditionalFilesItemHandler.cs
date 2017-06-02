@@ -41,31 +41,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             {
                 var fullPath = _project.MakeRooted(additionalFile.Path);
 
-                RemoveFromContextIfPresent(fullPath);
+                RemoveFromContextIfPresent(fullPath, logger);
             }
 
             foreach (CommandLineSourceFile additionalFile in added.AdditionalFiles)
             {
                 var fullPath = _project.MakeRooted(additionalFile.Path);
 
-                AddToContextIfNotPresent(fullPath, isActiveContext);
+                AddToContextIfNotPresent(fullPath, isActiveContext, logger);
             }
         }
 
-        private void AddToContextIfNotPresent(string fullPath, bool isActiveContext)
+        private void AddToContextIfNotPresent(string fullPath, bool isActiveContext, IProjectLogger logger)
         {
             if (!_paths.Contains(fullPath))
             {
+                logger.WriteLine("Adding additional file '{0}'", fullPath);
                 _context.AddAdditionalFile(fullPath, isActiveContext);
                 bool added = _paths.Add(fullPath);
                 Assumes.True(added);
             }
         }
 
-        private void RemoveFromContextIfPresent(string fullPath)
+        private void RemoveFromContextIfPresent(string fullPath, IProjectLogger logger)
         {
             if (_paths.Contains(fullPath))
             {
+                logger.WriteLine("Removing additional file '{0}'", fullPath);
                 _context.RemoveAdditionalFile(fullPath);
                 bool removed = _paths.Remove(fullPath);
                 Assumes.True(removed);
