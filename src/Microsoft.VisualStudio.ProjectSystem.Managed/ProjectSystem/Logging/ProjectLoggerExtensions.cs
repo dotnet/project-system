@@ -33,7 +33,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         /// </exception>
         public static void WriteLine(this IProjectLogger logger, string text)
         {
-            WriteLine(logger, new StringFormat(text));
+            Requires.NotNull(logger, nameof(logger));
+
+            logger.WriteLine(new StringFormat(text));
         }
 
         /// <summary>
@@ -54,7 +56,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         /// </exception>
         public static void WriteLine(this IProjectLogger logger, string format, object argument)
         {
-            WriteLine(logger, new StringFormat(format, argument));
+            Requires.NotNull(logger, nameof(logger));
+
+            logger.WriteLine(new StringFormat(format, argument));
         }
 
         /// <summary>
@@ -75,7 +79,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         /// </exception>
         public static void WriteLine(this IProjectLogger logger, string format, object argument1, object argument2)
         {
-            WriteLine(logger, new StringFormat(format, argument1, argument2));
+            Requires.NotNull(logger, nameof(logger));
+
+            logger.WriteLine(new StringFormat(format, argument1, argument2));
         }
 
         /// <summary>
@@ -96,7 +102,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         /// </exception>
         public static void WriteLine(this IProjectLogger logger, string format, object argument1, object argument2, object argument3)
         {
-            WriteLine(logger, new StringFormat(format, argument1, argument2, argument3));
+            Requires.NotNull(logger, nameof(logger));
+
+            logger.WriteLine(new StringFormat(format, argument1, argument2, argument3));
         }
 
         /// <summary>
@@ -117,14 +125,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         /// </exception>
         public static void WriteLine(this IProjectLogger logger, string format, params object[] arguments)
         {
-            WriteLine(logger, new StringFormat(format, arguments));
-        }
-
-        private static void WriteLine(IProjectLogger logger, StringFormat format)
-        {
             Requires.NotNull(logger, nameof(logger));
 
-            logger.WriteLine(format);
+            logger.WriteLine(new StringFormat(format, arguments));
         }
     }
 }
