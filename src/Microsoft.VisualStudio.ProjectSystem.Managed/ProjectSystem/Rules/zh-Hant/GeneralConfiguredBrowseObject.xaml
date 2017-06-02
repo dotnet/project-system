@@ -15,7 +15,11 @@
   <BoolProperty Name="Optimize" DisplayName="最佳化" Visible="False" />
   <StringProperty Name="NoWarn" DisplayName="隱藏警告" Visible="False" />
   <BoolProperty Name="TreatWarningsAsErrors" Default="False" Description="將警告視為錯誤" Visible="False" />
-  <StringProperty Name="TreatSpecificWarningsAsErrors" Description="將特定警告視為錯誤" Visible="False" />
+  <StringProperty Name="TreatSpecificWarningsAsErrors" Description="將特定警告視為錯誤" Visible="False">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="WarningsAsErrors" />
+    </StringProperty.DataSource>
+  </StringProperty>
   <StringProperty Name="OutputPath" DisplayName="輸出路徑" Visible="False" />
   <StringProperty Name="DocumentationFile" DisplayName="文件檔案" Visible="False" />
   <EnumProperty Name="GenerateSerializationAssemblies" DisplayName="產生序列化組件" Visible="False">
