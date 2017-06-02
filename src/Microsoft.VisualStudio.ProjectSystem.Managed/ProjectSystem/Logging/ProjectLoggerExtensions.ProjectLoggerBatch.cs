@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
                 get { return _indentLevel; }
                 set
                 {
-                    if (_indentLevel < 0)
+                    if (value < 0)
                         throw new ArgumentOutOfRangeException(nameof(value), value, null);
 
                     _indentLevel = value;
