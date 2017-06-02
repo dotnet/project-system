@@ -25,6 +25,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
 
         /// <summary>
         ///     If <see cref="IProjectLogger.IsEnabled"/> is <see langword="true"/>,
+        ///     writes the current line terminator to the log.
+        /// </summary>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="logger"/> is <see langword="null"/>
+        /// </exception>
+        public static void WriteLine(this IProjectLogger logger)
+        {
+            Requires.NotNull(logger, nameof(logger));
+
+            logger.WriteLine(new StringFormat(string.Empty));
+        }
+
+        /// <summary>
+        ///     If <see cref="IProjectLogger.IsEnabled"/> is <see langword="true"/>,
         ///     writes the specified text, followed by the current line terminator,
         ///     to the log.
         /// </summary>
