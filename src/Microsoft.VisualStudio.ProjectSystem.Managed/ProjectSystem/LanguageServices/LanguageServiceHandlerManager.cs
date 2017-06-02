@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
@@ -13,16 +14,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     {
         private readonly ICommandLineParserService _commandLineParser;
         private readonly IContextHandlerProvider _handlerProvider;
+        private readonly IProjectLogger _logger;
 
         [ImportingConstructor]
-        public LanguageServiceHandlerManager(UnconfiguredProject project, ICommandLineParserService commandLineParser, IContextHandlerProvider handlerProvider)
+        public LanguageServiceHandlerManager(UnconfiguredProject project, ICommandLineParserService commandLineParser, IContextHandlerProvider handlerProvider, IProjectLogger logger)
         {
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(commandLineParser, nameof(commandLineParser));
             Requires.NotNull(handlerProvider, nameof(handlerProvider));
+            Requires.NotNull(logger, nameof(logger));
 
             _commandLineParser = commandLineParser;
             _handlerProvider = handlerProvider;
+            _logger = logger;
         }
 
         public void Handle(IProjectVersionedValue<IProjectSubscriptionUpdate> update, RuleHandlerType handlerType, IWorkspaceProjectContext context, bool isActiveContext)
@@ -44,14 +48,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             ImmutableArray<(IEvaluationHandler Value, string EvaluationRuleName)> handlers = _handlerProvider.GetEvaluationHandlers(context);
 
-            IComparable version = update.DataSourceVersions[ProjectDataSources.ConfiguredProjectVersion];
-
-            foreach (var handler in handlers)
+            using (IProjectLoggerBatch logger = _logger.BeginBatch())
             {
-                IProjectChangeDescription projectChange = update.Value.ProjectChanges[handler.EvaluationRuleName];
-                if (projectChange.Difference.AnyChanges)
+                IComparable version = update.DataSourceVersions[ProjectDataSources.ConfiguredProjectVersion];
+
+                foreach (var handler in handlers)
                 {
-                    handler.Value.Handle(version, projectChange, isActiveContext);
+                    IProjectChangeDescription projectChange = update.Value.ProjectChanges[handler.EvaluationRuleName];
+                    if (projectChange.Difference.AnyChanges)
+                    {
+                        handler.Value.Handle(version, projectChange, isActiveContext, logger);
+                    }
                 }
             }
         }
@@ -60,15 +67,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             Assumes.False(update.Value.ProjectChanges.Count == 0, "CPS should never send us an empty design-time build data.");
 
-            IProjectChangeDescription projectChange = update.Value.ProjectChanges[CompilerCommandLineArgs.SchemaName];
-            IComparable version = update.DataSourceVersions[ProjectDataSources.ConfiguredProjectVersion];
+            using (IProjectLoggerBatch logger = _logger.BeginBatch())
+            {
+                IProjectChangeDescription projectChange = update.Value.ProjectChanges[CompilerCommandLineArgs.SchemaName];
+                IComparable version = update.DataSourceVersions[ProjectDataSources.ConfiguredProjectVersion];
 
-            // If nothing changed (even another failed design-time build), don't do anything
-            if (projectChange.Difference.AnyChanges)
-            {   
-                ProcessDesignTimeBuildFailure(projectChange, context);
-                ProcessOptions(projectChange, context);
-                ProcessItems(version, projectChange, context, isActiveContext);
+                // If nothing changed (even another failed design-time build), don't do anything
+                if (projectChange.Difference.AnyChanges)
+                {
+                    ProcessDesignTimeBuildFailure(projectChange, context);
+                    ProcessOptions(projectChange, context);
+                    ProcessItems(version, projectChange, context, isActiveContext, logger);
+                }
             }
         }
 
@@ -116,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             context.SetOptions(string.Join(" ", commandlineArguments));
         }
 
-        private void ProcessItems(IComparable version, IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
+        private void ProcessItems(IComparable version, IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext, IProjectLogger logger)
         {
             ImmutableArray<ICommandLineHandler> handlers = _handlerProvider.GetCommandLineHandlers(context);
 
@@ -125,7 +135,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             foreach (var handler in handlers)
             {
-                handler.Handle(version, addedItems, removedItems, isActiveContext);
+                handler.Handle(version, addedItems, removedItems, isActiveContext, logger);
             }
         }
     }

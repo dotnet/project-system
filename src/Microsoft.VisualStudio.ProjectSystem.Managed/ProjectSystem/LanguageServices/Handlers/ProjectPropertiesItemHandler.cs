@@ -2,6 +2,7 @@
 
 using System;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
@@ -19,10 +20,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             _context = context;
         }
 
-        public void Handle(IComparable version, IProjectChangeDescription projectChange, bool isActiveContext)
+        public void Handle(IComparable version, IProjectChangeDescription projectChange, bool isActiveContext, IProjectLogger logger)
         {
             Requires.NotNull(version, nameof(version));
             Requires.NotNull(projectChange, nameof(projectChange));
+            Requires.NotNull(logger, nameof(logger));
 
             if (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.ProjectGuidProperty))
             {

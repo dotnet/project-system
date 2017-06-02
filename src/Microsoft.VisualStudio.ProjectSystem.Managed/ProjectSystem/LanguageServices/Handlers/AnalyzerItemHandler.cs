@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
@@ -31,11 +32,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             _context = context;
         }
 
-        public void Handle(IComparable version, BuildOptions added, BuildOptions removed, bool isActiveContext)
+        public void Handle(IComparable version, BuildOptions added, BuildOptions removed, bool isActiveContext, IProjectLogger logger)
         {
             Requires.NotNull(version, nameof(version));
             Requires.NotNull(added, nameof(added));
             Requires.NotNull(removed, nameof(removed));
+            Requires.NotNull(logger, nameof(logger));
 
             foreach (CommandLineAnalyzerReference analyzer in removed.AnalyzerReferences)
             {
