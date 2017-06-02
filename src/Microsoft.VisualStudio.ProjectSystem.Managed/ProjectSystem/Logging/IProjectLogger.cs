@@ -25,7 +25,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         ///     current line terminator
         /// </summary>
         /// <exception cref="FormatException">
-        ///     The format specification in <paramref name="format"/> is invalid.
+        ///     <see cref="IsEnabled"/> is <see langword="true"/> and the format 
+        ///     specification in <paramref name="format"/> is invalid.
         /// </exception>
         void WriteLine(StringFormat format);
     }
