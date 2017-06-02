@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
     ///     Provides an implementation of <see cref="IProjectLogger"/> that logs to the Output window.
     /// </summary>
     [Export(typeof(IProjectLogger))]
-    internal class ProjectOutputWindowProjectLogger : IProjectLogger
+    internal class ProjectOutputWindowProjectLogger : AbstractProjectLogger
     {
         private readonly IProjectThreadingService _threadingService;
         private readonly IProjectSystemOptions _options;
@@ -29,36 +29,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
             _outputWindowProvider = outputWindowProvider;
         }
 
-        public bool IsEnabled
+        public override bool IsEnabled
         {
             get { return _options.IsProjectOutputPaneEnabled; }
         }
-        public void WriteLine(string text)
-        {
-            WriteLine(new FormatArray(text));
-        }
 
-        public void WriteLine(string format, object argument)
-        {
-            WriteLine(new FormatArray(format, argument));
-        }
-
-        public void WriteLine(string format, object argument1, object argument2)
-        {
-            WriteLine(new FormatArray(format, argument1, argument2));
-        }
-
-        public void WriteLine(string format, object argument1, object argument2, object argument3)
-        {
-            WriteLine(new FormatArray(format, argument1, argument2, argument3));
-        }
-
-        public void WriteLine(string format, params object[] arguments)
-        {
-            WriteLine(new FormatArray(format, arguments));
-        }
-
-        private void WriteLine(FormatArray formatArray)
+        protected override void WriteLine(FormatArray formatArray)
         {
             if (IsEnabled)
             {
