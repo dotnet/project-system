@@ -3,7 +3,7 @@
 using System;
 using System.Globalization;
 
-namespace Microsoft
+namespace Microsoft.VisualStudio
 {
     /// <summary>
     ///     Provides an object that allows a common way to format a set of objects, only allocating if needed.
@@ -66,6 +66,36 @@ namespace Microsoft
             _argument2 = null;
             _argument3 = null;
             _arguments = arguments;
+        }
+
+        public object Argument1
+        {
+            get { return _argument1; }
+        }
+
+        public object Argument2
+        {
+            get { return _argument2; }
+        }
+
+        public object Argument3
+        {
+            get { return _argument3; }
+        }
+
+        public object[] Arguments
+        {
+            get { return _arguments; }
+        }
+
+        public string Format
+        {
+            get { return _format; }
+        }
+
+        public int Length
+        {
+            get { return _arguments.Length; }
         }
 
         public string Text
