@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.ComponentModel.Composition;
-using Microsoft.Build.Construction;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectProperties
@@ -10,22 +9,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
     internal class PostBuildEventValueProvider : AbstractBuildEventValueProvider
     {
         private const string _postBuildEventString = "PostBuildEvent";
+        private const string _targetNameString = "PostBuild";
 
         [ImportingConstructor]
         public PostBuildEventValueProvider(
             IProjectLockService projectLockService,
             UnconfiguredProject unconfiguredProject)
-            : base(projectLockService, unconfiguredProject)
+            : base(projectLockService,
+                   unconfiguredProject,
+                   new PostBuildEventHelper())
         {}
 
-        protected override string BuildEventString => _postBuildEventString;
-
-        protected override string TargetNameString => "PostBuild";
-
-        protected override string GetTargetString(ProjectTargetElement target)
-            => target.AfterTargets;
-
-        protected override void SetTargetDependencies(ProjectTargetElement target)
-            => target.AfterTargets = _postBuildEventString;
+        internal class PostBuildEventHelper : Helper
+        {
+            internal PostBuildEventHelper()
+                : base(_postBuildEventString,
+                       _targetNameString,
+                       target => target.AfterTargets,
+                       target => { target.AfterTargets = _postBuildEventString; })
+            { }
+        }
     }
 }
