@@ -27,6 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
 End Class");
 
             VisualStudio.WaitForApplicationIdle();
+            VisualStudio.Workspace.WaitForAllAsyncOperations();
             var actualTags = VisualStudio.Editor.GetErrorTags();
             var expectedTags = new[]
             {

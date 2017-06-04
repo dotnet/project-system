@@ -34,6 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
 
             // wait for restore to complete.
             VisualStudio.WaitForApplicationIdle();
+            VisualStudio.ErrorList.ShowErrorList();
             VisualStudio.WaitForNoErrorsInErrorList();
 
             // added to work around https://github.com/dotnet/project-system/issues/2256
@@ -43,6 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
             VisualStudio.SolutionExplorer.OpenSolution(path);
 
             VisualStudio.WaitForApplicationIdle();
+            VisualStudio.ErrorList.ShowErrorList();
             VisualStudio.WaitForNoErrorsInErrorList();
         }
 
