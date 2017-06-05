@@ -9,8 +9,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedSdkReference|Description">
-        <source>Resolved SDK reference</source>
-        <target state="translated">解決された SDK 参照</target>
+        <source>SDK Reference Properties</source>
+        <target state="translated">SDK 参照のプロパティ</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|AppXLocation|DisplayName">
@@ -50,23 +50,23 @@
       </trans-unit>
       <trans-unit id="StringProperty|SDKRootFolder|DisplayName">
         <source>SDK Root</source>
-        <target state="new">SDK Root</target>
-        <note></note>
+        <target state="translated">SDK ルート</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Name|DisplayName">
         <source>Name</source>
-        <target state="new">Name</target>
-        <note></note>
+        <target state="translated">名前</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
-        <target state="new">Version</target>
-        <note></note>
+        <target state="translated">バージョン</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|CopyPayloadToSubDirectory|DisplayName">
         <source>Copy Payload to Subdirectory</source>
-        <target state="new">Copy Payload to Subdirectory</target>
-        <note></note>
+        <target state="translated">サブディレクトリへのペイロードのコピー</target>
+        <note />
       </trans-unit>
     </body>
   </file>

@@ -172,6 +172,6 @@
     <value>Włącz na&amp;tywne debugowanie kodu</value>
   </data>
   <data name="StartArguments.AccessibleName" xml:space="preserve">
-    <value>Command line arguments</value>
+    <value>Argumenty wiersza polecenia</value>
   </data>
 </root>

@@ -228,7 +228,7 @@
     <value>275, 17</value>
   </data>
   <data name="SavePasswordHashLocallyCheckbox.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="SavePasswordHashLocallyCheckbox.Text" xml:space="preserve">
     <value>&amp;Save password hash locally to enable offline login</value>
@@ -261,7 +261,7 @@
     <value>185, 17</value>
   </data>
   <data name="HonorServerCookieExpirationCheckbox.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="HonorServerCookieExpirationCheckbox.Text" xml:space="preserve">
     <value>&amp;Require users to log on again whenever the server cookie expires</value>

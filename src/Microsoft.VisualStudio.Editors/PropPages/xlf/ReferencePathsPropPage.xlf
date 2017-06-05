@@ -24,8 +24,8 @@
         <note />
       </trans-unit>
       <trans-unit id="FolderBrowse.Text">
-        <source>...</source>
-        <note />
+        <source>Browse...</source>
+        <note></note>
       </trans-unit>
       <trans-unit id="MoveUp.AccessibleName">
         <source>Move up</source>

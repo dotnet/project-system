@@ -130,9 +130,9 @@
     <value>사용자 지정 연결 문자열 사용(&amp;U):</value>
   </data>
   <data name="TimeUnitComboBox.AccessibleName" xml:space="preserve">
-    <value>Role service cache timeout units</value>
+    <value>역할 서비스 캐시 제한 시간 단위</value>
   </data>
   <data name="CustomConnectionString.AccessibleName" xml:space="preserve">
-    <value>Custom connection string</value>
+    <value>사용자 지정 연결 문자열</value>
   </data>
 </root>

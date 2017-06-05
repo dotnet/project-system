@@ -139,7 +139,7 @@
     <value>140, 13</value>
   </data>
   <data name="labelDescription.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>0</value>
   </data>
   <data name="labelDescription.Text" xml:space="preserve">
     <value>My Namespace extensions: </value>
@@ -169,7 +169,7 @@
     <value>237, 13</value>
   </data>
   <data name="linkLabelHelp.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>1</value>
   </data>
   <data name="linkLabelHelp.Text" xml:space="preserve">
     <value>Learn more about customizing My Namespace.</value>
@@ -211,7 +211,7 @@
     <value>370, 240</value>
   </data>
   <data name="listViewExtensions.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;listViewExtensions.Name" xml:space="preserve">
     <value>listViewExtensions</value>
@@ -247,7 +247,7 @@
     <value>105, 23</value>
   </data>
   <data name="buttonRemove.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="buttonRemove.Text" xml:space="preserve">
     <value>Remo&amp;ve extension</value>
@@ -277,7 +277,7 @@
     <value>105, 23</value>
   </data>
   <data name="buttonAdd.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>0</value>
   </data>
   <data name="buttonAdd.Text" xml:space="preserve">
     <value>&amp;Add extension...</value>
@@ -307,7 +307,7 @@
     <value>222, 29</value>
   </data>
   <data name="tableLayoutAddRemoveButtons.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>3</value>
   </data>
   <data name="&gt;&gt;tableLayoutAddRemoveButtons.Name" xml:space="preserve">
     <value>tableLayoutAddRemoveButtons</value>

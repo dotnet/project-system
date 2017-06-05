@@ -5,13 +5,13 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/FSharp.ProjectItemsSchema.xaml" />
       <trans-unit id="ContentType|FSharpFile|DisplayName">
         <source>F# file</source>
-        <target state="new">F# file</target>
-        <note></note>
+        <target state="translated">Fichier F#</target>
+        <note />
       </trans-unit>
       <trans-unit id="ItemType|Compile|DisplayName">
         <source>F# compiler</source>
-        <target state="new">F# compiler</target>
-        <note></note>
+        <target state="translated">Compilateur F#</target>
+        <note />
       </trans-unit>
     </body>
   </file>

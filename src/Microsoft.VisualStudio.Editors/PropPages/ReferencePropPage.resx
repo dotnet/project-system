@@ -133,7 +133,7 @@
     <value>62, 13</value>
   </data>
   <data name="ReferenceListLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>0</value>
   </data>
   <data name="ReferenceListLabel.Text">
     <value xml:space="preserve">&amp;References:</value>
@@ -283,7 +283,7 @@
     <value>284, 23</value>
   </data>
   <data name="referenceButtonsTableLayoutPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;referenceButtonsTableLayoutPanel.Name">
     <value xml:space="preserve">referenceButtonsTableLayoutPanel</value>
@@ -322,7 +322,7 @@
     <value>81, 0</value>
   </data>
   <data name="RemoveReference.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>1</value>
   </data>
   <data name="RemoveReference.Text">
     <value xml:space="preserve">Remo&amp;ve</value>
@@ -376,7 +376,7 @@
     <value>0, 0</value>
   </data>
   <data name="addSplitButton.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>0</value>
   </data>
   <data name="addSplitButton.Text">
     <value xml:space="preserve">&amp;Add...</value>
@@ -406,7 +406,7 @@
     <value>158, 23</value>
   </data>
   <data name="UpdateReferences.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>2</value>
   </data>
   <data name="UpdateReferences.Text">
     <value xml:space="preserve">&amp;Update</value>
@@ -433,7 +433,7 @@
     <value>323, 23</value>
   </data>
   <data name="addRemoveButtonsTableLayoutPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="&gt;&gt;addRemoveButtonsTableLayoutPanel.Name">
     <value xml:space="preserve">addRemoveButtonsTableLayoutPanel</value>
@@ -490,7 +490,7 @@
     <value>535, 238</value>
   </data>
   <data name="ReferenceList.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;ReferenceList.Name">
     <value xml:space="preserve">ReferenceList</value>
@@ -529,7 +529,7 @@
     <value>112, 23</value>
   </data>
   <data name="AddUserImportButton.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>3</value>
   </data>
   <data name="AddUserImportButton.Text">
     <value xml:space="preserve">Add User Imp&amp;ort</value>
@@ -559,7 +559,7 @@
     <value>128, 23</value>
   </data>
   <data name="UpdateUserImportButton.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>5</value>
   </data>
   <data name="UpdateUserImportButton.Text">
     <value xml:space="preserve">Up&amp;date User Import</value>
@@ -595,7 +595,7 @@
     <value>401, 128</value>
   </data>
   <data name="ImportList.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>4</value>
   </data>
   <data name="&gt;&gt;ImportList.Name">
     <value xml:space="preserve">ImportList</value>
@@ -622,7 +622,7 @@
     <value>283, 21</value>
   </data>
   <data name="UserImportTextBox.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;UserImportTextBox.Name">
     <value xml:space="preserve">UserImportTextBox</value>
@@ -676,7 +676,7 @@
     <value>113, 13</value>
   </data>
   <data name="ImportsListLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>1</value>
   </data>
   <data name="ImportsListLabel.Text">
     <value xml:space="preserve">&amp;Imported namespaces:</value>
@@ -733,7 +733,7 @@
     <value>299</value>
   </data>
   <data name="ReferencePageSplitContainer.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="ReferencePageSplitContainer.Text">
     <value xml:space="preserve">ReferencePageSplitContainer</value>

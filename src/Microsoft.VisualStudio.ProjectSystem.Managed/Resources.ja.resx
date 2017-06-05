@@ -136,9 +136,9 @@
     <value>'{0}' のエラーは、変更を適用する前に修正する必要があります。</value>
   </data>
   <data name="MsBuildMissingValueToRemove" xml:space="preserve">
-    <value>The specified value to remove '{0}' was not present in the property '{1}'</value>
+    <value>'{0}' を削除するための指定の値は、プロパティ '{1}' に存在しませんでした。</value>
   </data>
   <data name="MsBuildMissingValueToRename" xml:space="preserve">
-    <value>The specified value to rename '{0}' was not present in the property '{1}'</value>
+    <value>'{0}' を名前変更するための指定の値は、プロパティ '{1}' に存在しませんでした。</value>
   </data>
 </root>

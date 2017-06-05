@@ -95,8 +95,8 @@
       </trans-unit>
       <trans-unit id="StartArguments.AccessibleName">
         <source>Command line arguments</source>
-        <target state="new">Command line arguments</target>
-        <note></note>
+        <target state="translated">Argumentos da linha de comando</target>
+        <note />
       </trans-unit>
     </body>
   </file>

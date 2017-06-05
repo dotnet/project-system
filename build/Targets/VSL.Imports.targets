@@ -197,8 +197,8 @@
        just imporrts Microsoft.Common.CurrentVersion.targets. So set LanguageTargets to import CSharp.targets if the 
        extension is unknown -->
   <PropertyGroup Condition="'$(LanguageTargets)' == ''">
-    <LanguageTargets Condition="'$(MSBuildProjectExtension)' == '.csproj'">$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets>
-    <LanguageTargets Condition="'$(MSBuildProjectExtension)' == '.vbproj'">$(MSBuildToolsPath)\Microsoft.VisualBasic.targets</LanguageTargets>
+    <LanguageTargets Condition="'$(MSBuildProjectExtension)' == '.csproj' OR '$(Language)' == 'C#'">$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets>
+    <LanguageTargets Condition="'$(MSBuildProjectExtension)' == '.vbproj' OR '$(Language)' == 'VB'">$(MSBuildToolsPath)\Microsoft.VisualBasic.targets</LanguageTargets>
     <LanguageTargets Condition="'$(LanguageTargets)' == ''">$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets> 
   </PropertyGroup>
 
@@ -337,7 +337,7 @@
   <!-- This is a copy of the Microsoft.VisualStudio.SDK.EmbedInteropTypes NuGet package, but only the list of
        assemblies that we need. The package includes things like EnvDTE which are reasonable for consumers, but
        strange since we actually _implement_ DTE and use it as an exchange type with generics in a few places. -->
-  <Target Name="LinkVSSDKEmbeddableAssemblies" DependsOnTargets="ResolveReferences" AfterTargets="ResolveReferences">
+  <Target Name="LinkVSSDKEmbeddableAssemblies" BeforeTargets="FindReferenceAssembliesForReferences;ResolveReferences">
     <ItemGroup>
       <ReferencePath Condition="
               '%(FileName)' == 'Microsoft.VisualStudio.Shell.Embeddable'
@@ -352,6 +352,7 @@
            or '%(FileName)' == 'Microsoft.VisualStudio.CommandBars'
            or '%(FileName)' == 'NuGet.SolutionRestoreManager.Interop'
            or '%(FileName)' == 'NuGet.VisualStudio'
+           or '%(FileName)' == 'VSLangProj110'
               ">
         <EmbedInteropTypes>true</EmbedInteropTypes>
       </ReferencePath>
@@ -426,19 +427,26 @@
        ==================================================================================== -->
 
   <PropertyGroup>
-    <OptimizationDataFolderPath>$(MSBuildThisFileDirectory)..\..\..\Closed\OptimizationData</OptimizationDataFolderPath>
+    <OptimizationDataFolderPath>$(NuGetPackageRoot)\RoslynDependencies.OptimizationData\$(RoslynDependenciesOptimizationDataVersion)\content\OptimizationData</OptimizationDataFolderPath>
     <OptimizationDataFile>$([System.IO.Path]::GetFullPath('$(OptimizationDataFolderPath)\$(TargetName).pgo'))</OptimizationDataFile>
-    <IbcMergePath>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\..\..\Closed\Tools\ibcmerge\ibcmerge.exe'))</IbcMergePath>
+    <IbcMergePath>$(NuGetPackageRoot)\Microsoft.DotNet.IBCMerge\$(MicrosoftDotNetIBCMergeVersion)\lib\net45\ibcmerge.exe</IbcMergePath>
   </PropertyGroup>
 
   <Target Name="ApplyOptimizations"
-          Condition="'$(Configuration)' == 'Release' AND '$(NonShipping)' != 'true' AND '$(SkipApplyOptimizations)' != 'true' AND Exists('$(OptimizationDataFile)')"
+          Condition="'$(Configuration)' == 'Release' AND '$(NonShipping)' != 'true' AND '$(ShouldSignBuild)' == 'true' AND Exists('$(OptimizationDataFile)')"
           Inputs="@(IntermediateAssembly)"
           Outputs="@(IntermediateAssembly);$(PostCompileBinaryModificationSentinelFile)">
+    <Message Text="Adding optimization data to @(IntermediateAssembly)" />
 
-    <Message Text="Adding optimization data to @(IntermediateAssembly)"/>
-    <Exec Command="&quot;$(IbcMergePath)&quot; -q -f -partialNGEN -minify -mo &quot;@(IntermediateAssembly)&quot; -incremental &quot;$(OptimizationDataFile)&quot;" />
+    <Error Text="IBCMerge not found at $(IbcMergePath). Local developer builds should pass /p:SkipApplyOptimizations=true to avoid this"
+             Condition="!Exists('$(IbcMergePath)')" />
+    <Exec Command="&quot;$(IbcMergePath)&quot; -q -f -partialNGEN -minify -mo &quot;@(IntermediateAssembly)&quot; -incremental &quot;$(OptimizationDataFile)&quot;"
+            ConsoleToMSBuild="true"
+            Condition="Exists('$(IbcMergePath)')">
+      <Output TaskParameter="ConsoleOutput" PropertyName="IbcMergeOutput" />
+    </Exec>
 
+    <Message Text="$(IbcMergeOutput)" />
   </Target>
 
   <!-- ====================================================================================
@@ -500,7 +508,13 @@
     <!-- Copy manifests to be picked up by NuGet insertion packages -->
     <Copy SourceFiles="source.extension.vsixmanifest" 
           DestinationFolder="$(OutDir)\Manifests\$(MSBuildProjectName)"
-          Condition="'$(CreateVsixContainer)' == 'true'">
+          SkipUnchangedFiles="$(SkipCopyUnchangedFiles)"
+          OverwriteReadOnlyFiles="$(OverwriteReadOnlyFiles)"
+          Retries="$(CopyRetryCount)"
+          RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)"
+          UseHardlinksIfPossible="$(CreateHardLinksForCopyFilesToOutputDirectoryIfPossible)"
+          Condition="'$(CreateVsixContainer)' == 'true'"
+          >
       
       <Output TaskParameter="DestinationFiles" ItemName="FileWrites"/>
     </Copy>
@@ -514,7 +528,13 @@
 
     <!-- Copy rule files for testing and setup authoring purposes -->
     <Copy SourceFiles="@(_XamlPropertyRuleToCopy)"
-          DestinationFiles="@(_XamlPropertyRuleToCopy->'$(OutDir)\Rules\%(RecursiveDir)%(Filename)%(Extension)')">
+          DestinationFiles="@(_XamlPropertyRuleToCopy->'$(OutDir)\Rules\%(RecursiveDir)%(Filename)%(Extension)')"
+          SkipUnchangedFiles="$(SkipCopyUnchangedFiles)"
+          OverwriteReadOnlyFiles="$(OverwriteReadOnlyFiles)"
+          Retries="$(CopyRetryCount)"
+          RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)"
+          UseHardlinksIfPossible="$(CreateHardLinksForCopyFilesToOutputDirectoryIfPossible)"
+          >
       
       <Output TaskParameter="DestinationFiles" ItemName="FileWrites"/>      
     </Copy>

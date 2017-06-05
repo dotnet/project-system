@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="HelpLabel.Text" xml:space="preserve">
-    <value>I servizi dell'applicazione client consentono alle applicazioni basate su Windows di usare accesso ASP.NET (autenticazione), ruoli e servizi profili (impostazioni).  Altre informazioni sui servizi dell'applicazione client...</value>
+    <value>I servizi dell'applicazione client consentono alle applicazioni basate su Windows di usare accesso ASP.NET (autenticazione), ruoli e servizi profili (impostazioni). Altre informazioni sui servizi dell'applicazione client...</value>
   </data>
   <data name="WindowsBasedAuth.Text" xml:space="preserve">
     <value>Usa autenticazione di &amp;Windows</value>

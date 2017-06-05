@@ -554,9 +554,9 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         Private Sub OnThemeChanged()
             Dim VsUIShell5 = VsUIShell5Service
             If TypeOf PropPage Is PropPageBase AndAlso CType(PropPage, PropPageBase).SupportsTheming Then
-                BackColor = ShellUtil.GetProjectDesignerThemeColor(VsUIShell5Service, "Background", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Window)
+                BackColor = ShellUtil.GetProjectDesignerThemeColor(VsUIShell5Service, "Background", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Control)
             Else
-                BackColor = SystemColors.Window
+                BackColor = SystemColors.Control
             End If
 
             ConfigurationPanel.BackColor = BackColor
@@ -642,6 +642,13 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     If _isNativeHostedPropertyPage Then
                         'Try to set initial focus to the property page, not the configuration panel
                         FocusFirstOrLastPropertyPageControl(True)
+                    Else
+                        ' Select the configuration panel to ensure it gains focus. For configuration pages, this
+                        ' ensures that the configuration panel receives focus and allows a screen reader to give
+                        ' the page context before reading the values of any properties themselves. For other pages
+                        ' this ensures that the first control of the page receives focus, which allows tab navigation
+                        ' to work in a reliable and predicable manner for users who can only use the keyboard.
+                        SelectNextControl(ConfigurationPanel, forward:=True, tabStopOnly:=True, nested:=True, wrap:=True)
                     End If
 
                     SetUndoRedoCleanState()
@@ -1547,8 +1554,12 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     Return True
                 End If
             Else
-                If (SelectNextControl(ActiveControl, forward, True, True, True)) Then
+                If (SelectNextControl(ActiveControl, forward, tabStopOnly:=True, nested:=True, wrap:=False)) Then
                     Return True
+                Else
+                    Dim appDesView As ApplicationDesignerView = CType(_loadedPageSite.Owner, ApplicationDesignerView)
+                    appDesView.SelectedItem.Focus()
+                    appDesView.SelectedItem.FocusedFromKeyboardNav = True
                 End If
             End If
 

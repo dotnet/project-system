@@ -130,9 +130,9 @@
     <value>&amp;Usar cadeia de conexão personalizada:</value>
   </data>
   <data name="TimeUnitComboBox.AccessibleName" xml:space="preserve">
-    <value>Role service cache timeout units</value>
+    <value>Unidades de tempo limite de cache do serviço de função</value>
   </data>
   <data name="CustomConnectionString.AccessibleName" xml:space="preserve">
-    <value>Custom connection string</value>
+    <value>Cadeia de conexão personalizada</value>
   </data>
 </root>

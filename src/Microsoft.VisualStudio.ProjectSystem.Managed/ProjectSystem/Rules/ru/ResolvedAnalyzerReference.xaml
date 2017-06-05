@@ -1,13 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Rule Name="ResolvedAnalyzerReference" DisplayName="Разрешенная ссылка на анализатор" PageTemplate="generic" Description="Свойства разрешенной ссылки на анализатор" xmlns="http://schemas.microsoft.com/build/2009/properties">
+<Rule Name="ResolvedAnalyzerReference" DisplayName="Разрешенная ссылка на анализатор" PageTemplate="generic" Description="Свойства анализатора" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
     <DataSource Persistence="ResolvedReference" ItemType="Analyzer" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" SourceType="TargetResults" MSBuildTarget="CollectAnalyzersDesignTime" />
   </Rule.DataSource>
   <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="Вычисленное имя исходного ссылочного элемента, в результате разрешения которого был получен данный разрешенный ссылочный элемент.">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="Analyzer" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
+      <DataSource Persistence="Intrinsic" ItemType="Analyzer" PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
+  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Путь" Description="Расположение сборки анализатора.">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 </Rule>

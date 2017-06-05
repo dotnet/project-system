@@ -5,11 +5,11 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/VisualBasic.NamespaceImport.xaml" />
       <trans-unit id="Rule|NamespaceImport|DisplayName">
         <source>NamespaceImport</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|NamespaceImport|Description">
         <source>Visual Basic Namespace Import</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

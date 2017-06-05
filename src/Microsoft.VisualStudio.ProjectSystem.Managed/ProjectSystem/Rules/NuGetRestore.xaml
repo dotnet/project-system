@@ -58,6 +58,10 @@
                     Visible="False" 
                     ReadOnly="True" />
 
+    <StringProperty Name="AssetTargetFallback" 
+                    Visible="False" 
+                    ReadOnly="True" />
+
     <StringProperty Name="RuntimeIdentifier" 
                     Visible="False" 
                     ReadOnly="True" />
@@ -83,6 +87,42 @@
                     ReadOnly="True" />
 
     <StringProperty Name="VersionSuffix" 
+                    Visible="False" 
+                    ReadOnly="True" />
+
+    <StringProperty Name="EmitAssetsLogMessages" 
+                    Visible="False" 
+                    ReadOnly="True" />
+
+    <StringProperty Name="RestoreSources" 
+                    Visible="False" 
+                    ReadOnly="True" />
+
+    <StringProperty Name="RestoreFallbackFolders" 
+                    Visible="False" 
+                    ReadOnly="True" />
+
+    <StringProperty Name="RestorePackagesPath" 
+                    Visible="False" 
+                    ReadOnly="True" />
+
+    <StringProperty Name="RestoreAdditionalProjectSources" 
+                    Visible="False" 
+                    ReadOnly="True" />
+
+    <StringProperty Name="RestoreAdditionalProjectFallbackFolders" 
+                    Visible="False" 
+                    ReadOnly="True" />
+                    
+    <StringProperty Name="TreatWarningsAsErrors" 
+                    Visible="False" 
+                    ReadOnly="True" />
+
+    <StringProperty Name="WarningsAsErrors" 
+                    Visible="False" 
+                    ReadOnly="True" />
+
+    <StringProperty Name="NoWarn" 
                     Visible="False" 
                     ReadOnly="True" />
 

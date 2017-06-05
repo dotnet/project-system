@@ -9,7 +9,7 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|SdkReference|Description">
-        <source>SDK reference properties</source>
+        <source>SDK Reference Properties</source>
         <target state="translated">Właściwości odwołania SDK</target>
         <note />
       </trans-unit>
@@ -55,18 +55,18 @@
       </trans-unit>
       <trans-unit id="StringProperty|DisplayName|DisplayName">
         <source>Display Name</source>
-        <target state="new">Display Name</target>
-        <note></note>
+        <target state="translated">Wyświetl nazwę</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Name|DisplayName">
         <source>Name</source>
-        <target state="new">Name</target>
-        <note></note>
+        <target state="translated">Nazwa</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
-        <target state="new">Version</target>
-        <note></note>
+        <target state="translated">Wersja</target>
+        <note />
       </trans-unit>
     </body>
   </file>

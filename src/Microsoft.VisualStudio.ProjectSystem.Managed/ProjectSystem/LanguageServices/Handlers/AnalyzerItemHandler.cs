@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             if (!_paths.Contains(fullPath))
             {
                 logger.WriteLine("Adding analyzer '{0}'", fullPath);
-                _context.AddAdditionalFile(fullPath);
+                _context.AddAnalyzerReference(fullPath);
                 bool added = _paths.Add(fullPath);
                 Assumes.True(added);
             }
@@ -70,7 +70,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             if (_paths.Contains(fullPath))
             {
                 logger.WriteLine("Removing analyzer '{0}'", fullPath);
-                _context.RemoveAdditionalFile(fullPath);
+                _context.RemoveAnalyzerReference(fullPath);
+
                 bool removed = _paths.Remove(fullPath);
                 Assumes.True(removed);
             }

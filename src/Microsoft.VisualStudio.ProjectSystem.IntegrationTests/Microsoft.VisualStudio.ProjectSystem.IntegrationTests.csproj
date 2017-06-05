@@ -12,11 +12,7 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="EnvDTE" Version="8.0.1" />
-    <PackageReference Include="EnvDTE80" Version="8.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.IntegrationTest.Utilities" Version="$(MicrosoftVisualStudioIntegrationTestUtilitiesVersion)" />
-    <PackageReference Include="Microsoft.VisualStudio.LanguageServices" Version="[$(MicrosoftVisualStudioLanguageServicesVersion)]" />
-    <PackageReference Include="System.Reflection.Metadata" Version="[$(SystemReflectionMetadataVersion)]" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests\Properties\AssemblyAttributes.cs">
@@ -27,7 +23,7 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Common\Test\App.config">
+    <None Include="..\Common\Integration\App.config">
       <Link>App.config</Link>
     </None>
   </ItemGroup>

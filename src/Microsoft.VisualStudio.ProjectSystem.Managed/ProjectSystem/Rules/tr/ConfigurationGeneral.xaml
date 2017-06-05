@@ -44,11 +44,16 @@
       <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="TargetFrameworkMonikers" DisplayName="Target Framework Monikers" ReadOnly="True">
+  <StringProperty Name="TargetFrameworkMonikers" DisplayName="Hedef Çerçeve Bilinen Adları" ReadOnly="True">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMonikers" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
+  <BoolProperty Name="DisableFastUpToDateCheck" DisplayName="Disable Fast Up To Date Check">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="DisableFastUpToDateCheck" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
   <StringProperty Name="TargetPath" />
   <StringProperty Name="DocumentationFile" DisplayName="XML belgesi açıklamalar dosyası" />
   <StringProperty Name="AssemblyName" />
@@ -63,14 +68,20 @@
   <StringProperty Name="BaseIntermediateOutputPath" />
   <EnumProperty Name="OutputType">
     <EnumValue Name="Library" DisplayName="Sınıf Kitaplığı" />
-    <EnumValue Name="Exe" DisplayName="Console Application" />
-    <EnumValue Name="WinExe" DisplayName="Windows Application" />
+    <EnumValue Name="Exe" DisplayName="Konsol Uygulaması" />
+    <EnumValue Name="WinExe" DisplayName="Windows Uygulaması" />
     <EnumValue Name="AppContainerExe" DisplayName="Windows Mağazası Uygulaması" />
     <EnumValue Name="WinMDObj" DisplayName="WinMD" />
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="OutputType" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </EnumProperty.DataSource>
   </EnumProperty>
   <StringListProperty Name="AvailablePlatforms" Separator="," />
   <BoolProperty Name="Optimize" Description="Derleyici çıkışı en iyi duruma getirmeli midir?" />
+  <!-- Same as MSBuildProjectDirectory but has a directory separator '\' appended at the end.-->
+  <StringProperty Name="ProjectDir" Visible="false" />
   <StringProperty Name="MSBuildProjectDirectory" Visible="false" />
+  <StringProperty Name="MSBuildProjectFullPath" Visible="false" />
   <StringProperty Name="DefaultPlatform" Visible="false" />
   <StringProperty Name="PackageAction" Visible="false" Description="Bir proje paketlenirken kullanılacak MSBuild hedefi." />
   <StringProperty Name="DefaultContentType" Visible="false" Description="Dosya eklenirken kullanılacak varsayılan içerik türü adı." />
@@ -121,6 +132,6 @@
   <StringProperty Name="SharedProjectAppliesTo" Visible="False" Description="Paylaşılan Proje'nin en azından dilini test etmeye yönelik yetenek eşleştirme ifadesi; Paylaşılan Proje Başvurusu Ekle seçimlerini filtrelemek için kullanılır." />
   <BoolProperty Name="AlwaysUseNumericalSuffixInItemNames" Visible="False" Description="Yeni eklenen öğelerin adlarına her zaman son ek olarak sayı eklenmesi gerekip gerekmediğini gösterir." />
   <StringProperty Name="LanguageServiceName" ReadOnly="True" Visible="False" Description="Roslyn’e geçirilen LanguageName öğesini temsil eder" />
-  <StringProperty Name="LanguageServiceId" ReadOnly="True" Visible="False" Description="Represents the GUID of object that implements the language service for the project." />
+  <StringProperty Name="LanguageServiceId" ReadOnly="True" Visible="False" Description="Proje için dil hizmetini uygulayan nesnenin GUID’ini temsil eder." />
   <StringProperty Name="TemplateLanguage" ReadOnly="True" Visible="False" Description="Öğelerde ve proje şablonlarında kalıcı olan dili temsil eder" />
 </Rule>

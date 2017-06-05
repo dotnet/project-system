@@ -362,7 +362,7 @@
     <value>473, 141</value>
   </data>
   <data name="TableLayoutPanel2.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;TableLayoutPanel2.Name" xml:space="preserve">
     <value>TableLayoutPanel2</value>
@@ -392,7 +392,7 @@
     <value>491, 174</value>
   </data>
   <data name="AuthenticationProviderGroupBox.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="AuthenticationProviderGroupBox.Text" xml:space="preserve">
     <value>Authentication</value>
@@ -422,7 +422,7 @@
     <value>114, 23</value>
   </data>
   <data name="RolesServiceUrlLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="RolesServiceUrlLabel.Text" xml:space="preserve">
     <value>&amp;Roles service location:</value>
@@ -449,7 +449,7 @@
     <value>491, 20</value>
   </data>
   <data name="RolesServiceUrl.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="&gt;&gt;RolesServiceUrl.Name" xml:space="preserve">
     <value>RolesServiceUrl</value>
@@ -473,7 +473,7 @@
     <value>149, 13</value>
   </data>
   <data name="WebSettingsUrlLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="WebSettingsUrlLabel.Text" xml:space="preserve">
     <value>We&amp;b settings service location:</value>
@@ -500,7 +500,7 @@
     <value>491, 20</value>
   </data>
   <data name="WebSettingsUrl.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="&gt;&gt;WebSettingsUrl.Name" xml:space="preserve">
     <value>WebSettingsUrl</value>
@@ -530,7 +530,7 @@
     <value>75, 23</value>
   </data>
   <data name="AdvancedSettings.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>8</value>
   </data>
   <data name="AdvancedSettings.Text" xml:space="preserve">
     <value>A&amp;dvanced...</value>
@@ -557,7 +557,7 @@
     <value>516, 443</value>
   </data>
   <data name="TableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;TableLayoutPanel1.Name" xml:space="preserve">
     <value>TableLayoutPanel1</value>
@@ -581,7 +581,7 @@
     <value>183, 17</value>
   </data>
   <data name="EnableApplicationServices.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="EnableApplicationServices.Text" xml:space="preserve">
     <value>&amp;Enable client application services</value>

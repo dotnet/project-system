@@ -136,9 +136,9 @@
     <value>변경 내용을 적용하려면 먼저 '{0}'의 오류를 해결해야 합니다.</value>
   </data>
   <data name="MsBuildMissingValueToRemove" xml:space="preserve">
-    <value>The specified value to remove '{0}' was not present in the property '{1}'</value>
+    <value>'{0}'을(를) 제거하기 위해 지정한 값이 '{1}' 속성에 없습니다.</value>
   </data>
   <data name="MsBuildMissingValueToRename" xml:space="preserve">
-    <value>The specified value to rename '{0}' was not present in the property '{1}'</value>
+    <value>'{0}'의 이름을 변경하기 위해 지정한 값이 '{1}' 속성에 없습니다.</value>
   </data>
 </root>

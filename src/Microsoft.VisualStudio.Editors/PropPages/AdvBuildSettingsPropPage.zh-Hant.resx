@@ -157,9 +157,9 @@
     <value>檢查算術溢位/反向溢位(&amp;K)</value>
   </data>
   <data name="CSharpLanguageVerison.Default" xml:space="preserve">
-    <value>C# latest major version (default)</value>
+    <value>C# 最新主要版本 (預設)</value>
   </data>
   <data name="CSharpLanguageVerison.Latest" xml:space="preserve">
-    <value>C# latest minor version (latest)</value>
+    <value>C# 最新次要版本 (最新)</value>
   </data>
 </root>

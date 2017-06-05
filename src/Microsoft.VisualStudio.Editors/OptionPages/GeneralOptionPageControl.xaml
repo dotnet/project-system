@@ -1,0 +1,19 @@
+﻿<local:OptionPageControl x:ClassModifier="Friend" x:Class="Microsoft.VisualStudio.Editors.OptionPages.GeneralOptionPageControl"
+                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                         xmlns:r="clr-namespace:My.Resources"
+                         xmlns:local="clr-namespace:Microsoft.VisualStudio.Editors.OptionPages">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+            <GroupBox x:Uid="FastUpToDateGroupBox" Header="{x:Static r:GeneralOptionPageResources.General_FastUpToDateCheck_Title}">
+                <StackPanel Orientation="Vertical">
+                    <CheckBox x:Name="FastUpToDateCheck" x:Uid="General_FastUpToDateCheck" Content="{x:Static r:GeneralOptionPageResources.General_FastUpToDateCheck}" Margin="0" />
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="{x:Static r:GeneralOptionPageResources.General_FastUpToDateCheck_LogLevel}" Margin="0" />
+                        <ComboBox x:Name="FastUpToDateLogLevel" SelectedIndex="2" ItemsSource="{x:Static local:GeneralOptionPageControl.FastUpToDateLogLevelItemSource}" x:Uid="General_LogLevel" VerticalContentAlignment="Center" Margin="0"/>
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
+    </ScrollViewer>
+</local:OptionPageControl>
