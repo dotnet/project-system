@@ -173,13 +173,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 return;
             }
 
-            await _tasksService.LoadedProjectAsync(async () =>
+            await _tasksService.LoadedProjectAvoidingUnnecessaryWorkAsync(async () =>
             {
-                if (_tasksService.UnloadCancellationToken.IsCancellationRequested)
-                {
-                    return;
-                }
-
                 await HandleAsync(e, handlerType).ConfigureAwait(false);
             });
         }
