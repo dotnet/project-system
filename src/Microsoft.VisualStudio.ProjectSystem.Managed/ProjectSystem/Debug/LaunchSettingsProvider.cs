@@ -476,7 +476,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             try
             {
-                await EnsureSettingsFolderAsync();
+                await EnsureSettingsFolderAsync().ConfigureAwait(false);
 
                 // We don't want to write null values. We want to keep the file as small as possible
                 JsonSerializerSettings settings = new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore };
