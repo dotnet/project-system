@@ -22,10 +22,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         ///     Indicates whether Csc/Vbc tasks should call into the in-proc host compiler.
         /// </summary>
         public static string UseHostCompilerIfAvailable = nameof(UseHostCompilerIfAvailable);
-
-        /// <summary>
-        ///     Indicates whether to bring up dialog when project is out of date.
-        /// </summary>
-        public static string SuppressOutOfDateMessageOnBuild = nameof(SuppressOutOfDateMessageOnBuild);
     }
 }
