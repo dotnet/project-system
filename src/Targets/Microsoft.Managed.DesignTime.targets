@@ -22,7 +22,7 @@
     <!--This property sets the default output types supported by the project system.-->
     <SupportedOutputTypes Condition="'$(SupportedOutputTypes)' == ''">Exe;WinExe;Library</SupportedOutputTypes>
 
-    <SuppressOutOfDateMessageOnBuild>true</SuppressOutOfDateMessageOnBuild>
+    <SuppressOutOfDateMessageOnBuild Condition="'$(SuppressOutOfDateMessageOnBuild)' == ''">true</SuppressOutOfDateMessageOnBuild>
   </PropertyGroup>
 
   <!--
