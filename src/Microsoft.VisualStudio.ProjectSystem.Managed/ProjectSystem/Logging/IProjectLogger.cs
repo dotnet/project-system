@@ -10,22 +10,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
     internal interface IProjectLogger
     {
         /// <summary>
-        ///     Writes the specified text, followed by the current line terminator, 
-        ///     to the log.
+        ///     Gets a value indicating if the logger is enabled.
         /// </summary>
-        void WriteLine(string text);
+        /// <value>
+        ///     <see langword="true"/> if the <see cref="IProjectLogger"/> is 
+        ///     enabled and logging to the log; otherwise, <see langword="false"/>.
+        /// </value>
+        bool IsEnabled
+        {
+            get;
+        }
 
         /// <summary>
-        ///     Writes the text representation of the specified array of objects, 
-        ///     followed by the current line terminator, to the log using the 
-        ///     specified format information.
+        ///     If <see cref="IsEnabled"/> is <see langword="true"/>, writes
+        ///     the text representation of the format, followed by the current
+        ///     line terminator
         /// </summary>
-        /// <exception cref="ArgumentNullException">
-        ///     <paramref name="format"/> is <see langword="null"/>.
-        /// </exception>
         /// <exception cref="FormatException">
-        ///     The format specification in <paramref name="format"/> is invalid.
+        ///     <see cref="IsEnabled"/> is <see langword="true"/> and the format 
+        ///     specification in <paramref name="format"/> is invalid.
         /// </exception>
-        void WriteLine(string format, params object[] arguments);
+        void WriteLine(StringFormat format);
     }
 }

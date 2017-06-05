@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
@@ -29,41 +30,44 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             _context = context;
         }
 
-        public void Handle(IComparable version, BuildOptions added, BuildOptions removed, bool isActiveContext)
+        public void Handle(IComparable version, BuildOptions added, BuildOptions removed, bool isActiveContext, IProjectLogger logger)
         {
             Requires.NotNull(version, nameof(version));
             Requires.NotNull(added, nameof(added));
             Requires.NotNull(removed, nameof(removed));
+            Requires.NotNull(logger, nameof(logger));
 
             foreach (CommandLineReference reference in removed.MetadataReferences)
             {
                 var fullPath = _project.MakeRooted(reference.Reference);
 
-                RemoveFromContextIfPresent(fullPath);
+                RemoveFromContextIfPresent(fullPath, logger);
             }
 
             foreach (CommandLineReference reference in added.MetadataReferences)
             {
                 var fullPath = _project.MakeRooted(reference.Reference);
 
-                AddToContextIfNotPresent(fullPath, reference.Properties);
+                AddToContextIfNotPresent(fullPath, reference.Properties, logger);
             }
         }
 
-        private void AddToContextIfNotPresent(string fullPath, MetadataReferenceProperties properties)
+        private void AddToContextIfNotPresent(string fullPath, MetadataReferenceProperties properties, IProjectLogger logger)
         {
             if (!_paths.Contains(fullPath))
             {
+                logger.WriteLine("Adding reference '{0}'", fullPath);
                 _context.AddMetadataReference(fullPath, properties);
                 bool added = _paths.Add(fullPath);
                 Assumes.True(added);
             }
         }
 
-        private void RemoveFromContextIfPresent(string fullPath)
+        private void RemoveFromContextIfPresent(string fullPath, IProjectLogger logger)
         {
             if (_paths.Contains(fullPath))
             {
+                logger.WriteLine("Removing reference '{0}'", fullPath);
                 _context.RemoveMetadataReference(fullPath);
                 bool removed = _paths.Remove(fullPath);
                 Assumes.True(removed);
