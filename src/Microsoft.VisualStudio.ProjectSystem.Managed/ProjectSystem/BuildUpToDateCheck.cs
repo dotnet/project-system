@@ -83,6 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private IComparable _lastVersionSeen;
 
         private bool _isDisabled = true;
+        private bool _itemsChangedSinceLastCheck = true;
         private string _msBuildProjectFullPath;
         private HashSet<string> _imports = new HashSet<string>();
         private Dictionary<string, HashSet<string>> _items = new Dictionary<string, HashSet<string>>();
@@ -119,9 +120,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _msBuildProjectFullPath = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, _msBuildProjectFullPath);
             foreach (var referenceSchema in ReferenceSchemas)
             {
-                if (e.CurrentState.TryGetValue(referenceSchema, out var snapshot))
+                if (e.ProjectChanges.TryGetValue(referenceSchema, out var changes) &&
+                    changes.Difference.AnyChanges)
                 {
-                    _references[referenceSchema] = new HashSet<string>(snapshot.Items.Select(item => item.Value[ResolvedPath]));
+                    _references[referenceSchema] = new HashSet<string>(changes.After.Items.Select(item => item.Value[ResolvedPath]));
                 }
             }
         }
@@ -143,12 +145,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private void OnSourceItemChanged(IProjectSubscriptionUpdate e)
         {
-            foreach (var itemType in e.ProjectChanges)
+            foreach (var itemType in e.ProjectChanges.Where(changes => changes.Value.Difference.AnyChanges))
             {
                 var items = itemType.Value
                     .After.Items
                     .Select(item => item.Value[FullPath]);
                 _items[itemType.Key] = new HashSet<string>(items);
+                _itemsChangedSinceLastCheck = true;
             }
         }
 
@@ -236,9 +239,18 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return false;
             }
 
+            var itemsChangedSinceLastCheck = _itemsChangedSinceLastCheck;
+            _itemsChangedSinceLastCheck = false;
+
             if (_lastVersionSeen == null || _configuredProject.ProjectVersion.CompareTo(_lastVersionSeen) > 0)
             {
                 logger.Info("Project information is older than current project version, skipping check.");
+                return false;
+            }
+
+            if (itemsChangedSinceLastCheck)
+            {
+                logger.Info("The list of source items has changed since the last build.");
                 return false;
             }
 

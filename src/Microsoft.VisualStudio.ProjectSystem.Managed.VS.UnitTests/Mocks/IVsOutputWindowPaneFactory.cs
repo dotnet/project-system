@@ -13,6 +13,16 @@ namespace Microsoft.VisualStudio.Shell.Interop
             return mock.Object;
         }
 
+        public static IVsOutputWindowPane ImplementOutputStringThreadSafe(Action<string> action)
+        {
+            var mock = new Mock<IVsOutputWindowPane>();
+            mock.Setup(p => p.OutputStringThreadSafe(It.IsAny<string>()))
+                .Callback(action)
+                .Returns(0);
+
+            return mock.Object;
+        }
+
         public static IVsOutputWindowPane ImplementActivate(Func<int> action)
         {
             var mock = new Mock<IVsOutputWindowPane>();

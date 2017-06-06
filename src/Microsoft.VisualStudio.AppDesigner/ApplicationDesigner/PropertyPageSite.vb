@@ -93,6 +93,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End Set
         End Property
 
+        Friend ReadOnly Property Owner() As IPropertyPageSiteOwner
+            Get
+                Return _appDesView
+            End Get
+        End Property
+
 
 #Region " IPropertyPageSite"
         Public Const PROPPAGESTATUS_DIRTY As Integer = 1

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Logging;
+using Moq;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
@@ -39,20 +41,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             var project = UnconfiguredProjectFactory.Create(filePath: @"C:\Myproject.csproj");
             var context = IWorkspaceProjectContextFactory.CreateForMetadataReferences(project, onReferenceAdded, onReferenceRemoved);
+            var logger = Mock.Of<IProjectLogger>();
 
             var handler = new MetadataReferenceItemHandler(project, context);
             var projectDir = Path.GetDirectoryName(project.FullPath);
             var added = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"/reference:C:\Assembly1.dll", @"/reference:C:\Assembly2.dll", @"/reference:C:\Assembly1.dll" }, baseDirectory: projectDir, sdkDirectory: null));
             var empty = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
 
-            handler.Handle(10, added: added, removed: empty, isActiveContext: true);
+            handler.Handle(10, added: added, removed: empty, isActiveContext: true, logger:logger);
 
             Assert.Equal(2, referencesPushedToWorkspace.Count);
             Assert.Contains(@"C:\Assembly1.dll", referencesPushedToWorkspace);
             Assert.Contains(@"C:\Assembly2.dll", referencesPushedToWorkspace);
 
             var removed = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"/reference:C:\Assembly1.dll", @"/reference:C:\Assembly1.dll" }, baseDirectory: projectDir, sdkDirectory: null));
-            handler.Handle(10, added: empty, removed: removed, isActiveContext: true);
+            handler.Handle(10, added: empty, removed: removed, isActiveContext: true, logger: logger);
 
             Assert.Equal(1, referencesPushedToWorkspace.Count);
             Assert.Contains(@"C:\Assembly2.dll", referencesPushedToWorkspace);
@@ -67,13 +70,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             var project = UnconfiguredProjectFactory.Create(filePath: @"C:\ProjectFolder\Myproject.csproj");
             var context = IWorkspaceProjectContextFactory.CreateForMetadataReferences(project, onReferenceAdded, onReferenceRemoved);
+            var logger = Mock.Of<IProjectLogger>();
 
             var handler = new MetadataReferenceItemHandler(project, context);
             var projectDir = Path.GetDirectoryName(project.FullPath);
             var added = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"/reference:Assembly1.dll", @"/reference:C:\ProjectFolder\Assembly2.dll", @"/reference:..\ProjectFolder\Assembly3.dll" }, baseDirectory: projectDir, sdkDirectory: null));
             var removed = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
 
-            handler.Handle(10, added: added, removed: removed, isActiveContext: true);
+            handler.Handle(10, added: added, removed: removed, isActiveContext: true, logger:logger);
 
             Assert.Equal(3, referencesPushedToWorkspace.Count);
             Assert.Contains(@"C:\ProjectFolder\Assembly1.dll", referencesPushedToWorkspace);

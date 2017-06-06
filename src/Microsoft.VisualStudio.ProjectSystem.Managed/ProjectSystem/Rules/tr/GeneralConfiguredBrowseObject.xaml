@@ -15,7 +15,11 @@
   <BoolProperty Name="Optimize" DisplayName="İyileştir" Visible="False" />
   <StringProperty Name="NoWarn" DisplayName="Uyarıyı Gösterme" Visible="False" />
   <BoolProperty Name="TreatWarningsAsErrors" Default="False" Description="Uyarıları hata olarak değerlendir" Visible="False" />
-  <StringProperty Name="TreatSpecificWarningsAsErrors" Description="Belirli uyarıları hata olarak değerlendir" Visible="False" />
+  <StringProperty Name="TreatSpecificWarningsAsErrors" Description="Belirli uyarıları hata olarak değerlendir" Visible="False">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="WarningsAsErrors" />
+    </StringProperty.DataSource>
+  </StringProperty>
   <StringProperty Name="OutputPath" DisplayName="Çıkış Yolu" Visible="False" />
   <StringProperty Name="DocumentationFile" DisplayName="Belge dosyası" Visible="False" />
   <EnumProperty Name="GenerateSerializationAssemblies" DisplayName="Serileştirme bütünleştirilmiş kodları oluştur" Visible="False">

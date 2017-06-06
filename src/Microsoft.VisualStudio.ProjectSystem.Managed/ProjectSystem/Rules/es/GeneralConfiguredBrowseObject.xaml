@@ -15,7 +15,11 @@
   <BoolProperty Name="Optimize" DisplayName="Optimizar" Visible="False" />
   <StringProperty Name="NoWarn" DisplayName="Suprimir advertencia" Visible="False" />
   <BoolProperty Name="TreatWarningsAsErrors" Default="False" Description="Tratar advertencias como errores" Visible="False" />
-  <StringProperty Name="TreatSpecificWarningsAsErrors" Description="Tratar advertencias específicas como errores" Visible="False" />
+  <StringProperty Name="TreatSpecificWarningsAsErrors" Description="Tratar advertencias específicas como errores" Visible="False">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="WarningsAsErrors" />
+    </StringProperty.DataSource>
+  </StringProperty>
   <StringProperty Name="OutputPath" DisplayName="Ruta de acceso de salida" Visible="False" />
   <StringProperty Name="DocumentationFile" DisplayName="Archivo de documentación" Visible="False" />
   <EnumProperty Name="GenerateSerializationAssemblies" DisplayName="Generar ensamblados de serialización" Visible="False">

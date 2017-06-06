@@ -2,6 +2,7 @@
 
 using System;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
@@ -29,13 +30,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     <see langword="true"/> if the underlying <see cref="IWorkspaceProjectContext"/>
         ///     is the active context; otherwise, <see langword="false"/>.
         /// </param>
+        /// <param name="logger">
+        ///     The <see cref="IProjectLogger"/> for logging to the log.
+        /// </param>
         /// <exception cref="ArgumentNullException">
+        ///     <paramref name="version"/> is <see langword="null"/>.
+        ///     <para>
+        ///         -or-
+        ///     </para>
         ///     <paramref name="added"/> is <see langword="null"/>.
         ///     <para>
         ///         -or-
         ///     </para>
         ///     <paramref name="removed"/> is <see langword="null"/>.
+        ///     <para>
+        ///         -or-
+        ///     </para>
+        ///     <paramref name="logger"/> is <see langword="null"/>.
         /// </exception>
-        void Handle(IComparable version, BuildOptions added, BuildOptions removed, bool isActiveContext);
+        void Handle(IComparable version, BuildOptions added, BuildOptions removed, bool isActiveContext, IProjectLogger logger);
     }
 }
