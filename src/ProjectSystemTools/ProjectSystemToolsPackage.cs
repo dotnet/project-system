@@ -6,8 +6,8 @@ using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools
 {
-    [PackageRegistration(UseManagedResourcesOnly = true)]
-    [InstalledProductRegistration(productName: "#110", productDetails: "#112", productId: "1.0", IconResourceID = 400)]
+    [PackageRegistration(AllowsBackgroundLoading = true, UseManagedResourcesOnly = true)]
+    [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)]
     [Guid(PackageGuidString)]
     public sealed class ProjectSystemToolsPackage : Package
     {
