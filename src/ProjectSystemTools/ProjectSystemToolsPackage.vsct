@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <Extern href="stdidcmd.h"/>
+  <Extern href="vsshlids.h"/>
+  <Commands package="PackageGuid">
+    <Buttons>
+      <Button guid="CommandSetGuid" id="BuildLoggingCommandId" priority="0x0100" type="Button">
+        <Parent guid="guidSHLMainMenu" id="IDG_VS_WNDO_OTRWNDWS1"/>
+        <Strings>
+          <ButtonText>Build Logging</ButtonText>
+        </Strings>
+      </Button>
+    </Buttons>
+  </Commands>
+  <Symbols>
+    <GuidSymbol name="PackageGuid" value="{e3bfb509-b8fd-4692-b4c4-4b2f6ed62bc7}" />
+    <GuidSymbol name="CommandSetGuid" value="{cf0c6f43-4716-4419-93d0-2c246c8eb5ee}">
+      <IDSymbol name="BuildLoggingCommandId" value="0x0100" />
+    </GuidSymbol>
+  </Symbols>
+</CommandTable>
