@@ -128,34 +128,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             }
         }
 
-        private JoinableTask<T> ExecuteWithinLockAsync<T>(Func<Task<T>> task)
+        private Task<T> ExecuteWithinLockAsync<T>(Func<Task<T>> task)
         {
-            // We need to request the lock within a joinable task to ensure that if we are blocking the UI
-            // thread (i.e. when CPS is draining critical tasks on the UI thread and is waiting on this task),
-            // and the lock is already held by another task requesting UI thread access, we don't reach a deadlock.
-            return JoinableFactory.RunAsync(async delegate
-            {
-                using (JoinableCollection.Join())
-                using (await _gate.DisposableWaitAsync().ConfigureAwait(false))
-                {
-                    return await task().ConfigureAwait(false);
-                }
-            });
+            return _gate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, task);
         }
 
-        private JoinableTask ExecuteWithinLockAsync(Func<Task> task)
+        private Task ExecuteWithinLockAsync(Func<Task> task)
         {
-            // We need to request the lock within a joinable task to ensure that if we are blocking the UI
-            // thread (i.e. when CPS is draining critical tasks on the UI thread and is waiting on this task),
-            // and the lock is already held by another task requesting UI thread access, we don't reach a deadlock.
-            return JoinableFactory.RunAsync(async delegate
-            {
-                using (JoinableCollection.Join())
-                using (await _gate.DisposableWaitAsync().ConfigureAwait(false))
-                {
-                    await task().ConfigureAwait(false);
-                }
-            });
+            return _gate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, task);
         }
 
         /// <summary>
