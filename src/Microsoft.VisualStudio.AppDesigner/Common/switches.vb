@@ -280,13 +280,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         Public Shared PDCmdTarget As New TraceSwitch("PDCmdTarget", "Trace command routing (CmdTargetHelper, etc.) in the project designer")
 
         ''' <summary>
-        ''' Always use native ::SetParent() instead of setting the WinForms Parent property for property page hosting.
-        ''' This is useful for testing the hosting of pages as it would occur for non-native pages.
-        ''' </summary>
-        ''' <remarks></remarks>
-        Public Shared PDAlwaysUseSetParent As New BooleanSwitch("PDAlwaysUseSetParent", "Always use native ::SetParent() instead of setting the WinForms Parent property for property page hosting")
-
-        ''' <summary>
         ''' Traces message routing in the project designer and its property pages
         ''' </summary>
         ''' <remarks></remarks>

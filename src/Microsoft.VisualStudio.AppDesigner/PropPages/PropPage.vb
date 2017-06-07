@@ -112,8 +112,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _objects As Object()
         Private _prevParent As IntPtr
         Private _dispidFocus As Integer
-        Private _hostedInNative As Boolean = False
-        Private _wasSetParentCalled As Boolean
 
         Protected Sub New()
         End Sub
@@ -346,13 +344,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If Not _propPage Is Nothing Then
 
                 _propPage.SuspendLayout() 'No need for more layouts...
-                If _propPage.Parent IsNot Nothing AndAlso Not _hostedInNative Then
-                    'We sited ourselves by setting the Windows Forms Parent property
-                    _propPage.Parent = Nothing
-                ElseIf _wasSetParentCalled Then
-                    'We sited ourselves via a native SetParent call
-                    NativeMethods.SetParent(_propPage.Handle, _prevParent)
-                End If
+                NativeMethods.SetParent(_propPage.Handle, _prevParent)
 
                 _propPage.Dispose()
                 _propPage = Nothing
@@ -428,7 +420,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ' we need to adjust the size of the page if it's autosize or if we're native (in which
             ' case we're going to adjust the size of our secret usercontrol instead) See the Create
             ' for more info about the panel
-            If _propPage IsNot Nothing AndAlso pRect IsNot Nothing AndAlso pRect.Length <> 0 AndAlso (_propPage.AutoSize OrElse _hostedInNative) Then
+            If _propPage IsNot Nothing AndAlso pRect IsNot Nothing AndAlso pRect.Length <> 0 Then
                 Dim minSize As Drawing.Size = _propPage.MinimumSize
 
                 ' we have to preserve these to set the size of our scrolling panel
@@ -447,11 +439,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
 
                 _propPage.Bounds = New Rectangle(pRect(0).left, pRect(0).top, minRespectingWidth, minRespectingHeight)
-                ' if we're in native, set our scrolling panel to be the exact size that we were
+                ' set our scrolling panel to be the exact size that we were
                 ' passed so if we need scroll bars, they show up properly
-                If _hostedInNative Then
-                    _propPage.Parent.Size = New Drawing.Size(width, height)
-                End If
+                _propPage.Parent.Size = New Drawing.Size(width, height)
 
             End If
 
@@ -501,18 +491,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Throw New InvalidOperationException("Form not created")
             End If
 
-            ' if we're in native, show/hide our secret scrolling panel too
+            ' show/hide our secret scrolling panel too
             ' See Create(hWnd) for more info on where that comes from
             If nCmdShow <> s_SW_HIDE Then
-                If _hostedInNative Then
-                    _propPage.Parent.Show()
-                End If
+                _propPage.Parent.Show()
                 _propPage.Show()
                 SetHelpContext()
             Else
-                If _hostedInNative Then
-                    _propPage.Parent.Hide()
-                End If
+                _propPage.Parent.Hide()
                 _propPage.Hide()
             End If
 
@@ -637,29 +623,18 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 Common.Switches.TracePDPerf("PropPage.Create: Setting the property page's parent")
 
-                Dim ParentControl As Control = Control.FromHandle(hWndParent)
-                Dim AlwaysUseSetParent As Boolean = False
-#If DEBUG Then
-                AlwaysUseSetParent = Common.Switches.PDAlwaysUseSetParent.Enabled
-#End If
-                If ParentControl IsNot Nothing AndAlso Not AlwaysUseSetParent Then
-                    _propPage.Parent = ParentControl
-                    Debug.Assert(_propPage.Parent IsNot Nothing, "Huh?  Deactivate() logic depends on this.")
-                Else
-                    'Not a managed window, use the win32 api method
-                    _hostedInNative = True
-                    ' in order to have scroll bars properly appear in large fonts, wrap
-                    ' the page in a usercontrol (since it supports AutoScroll) that won't
-                    ' scale with fonts. Move(rect) will set the proper size.
-                    Dim sizingParent As New UserControl()
-                    sizingParent.AutoScaleMode = AutoScaleMode.None
-                    sizingParent.AutoScroll = True
-                    sizingParent.Text = "SizingParent" 'For debugging purposes (Spy++)
-                    _propPage.Parent = sizingParent
-                    NativeMethods.SetParent(sizingParent.Handle, hWndParent)
-                    _wasSetParentCalled = True
-                    Debug.Assert(_propPage.Parent Is Nothing OrElse AlwaysUseSetParent, "Huh?  Deactivate() logic depends on this.")
-                End If
+                ' in order to have scroll bars properly appear in large fonts, wrap
+                ' the page in a usercontrol (since it supports AutoScroll) that won't
+                ' scale with fonts. Move(rect) will set the proper size. This is also required
+                ' so existing accessibility keys (such as Alt+Down, for ComboBoxes) continue
+                ' working.
+                Dim sizingParent As New UserControl()
+                sizingParent.AutoScaleMode = AutoScaleMode.None
+                sizingParent.AutoScroll = True
+                sizingParent.Text = "SizingParent" 'For debugging purposes (Spy++)
+                _propPage.Parent = sizingParent
+
+                NativeMethods.SetParent(sizingParent.Handle, hWndParent)
 
                 'Site the undo manager if we have one and the page supports it
                 If (_propPageUndoSite IsNot Nothing) AndAlso (TypeOf _propPage Is IVsProjectDesignerPage) Then
