@@ -15,7 +15,11 @@
   <BoolProperty Name="Optimize" DisplayName="최적화" Visible="False" />
   <StringProperty Name="NoWarn" DisplayName="경고 표시 안 함" Visible="False" />
   <BoolProperty Name="TreatWarningsAsErrors" Default="False" Description="경고를 오류로 처리" Visible="False" />
-  <StringProperty Name="TreatSpecificWarningsAsErrors" Description="특정 경고를 오류로 처리" Visible="False" />
+  <StringProperty Name="TreatSpecificWarningsAsErrors" Description="특정 경고를 오류로 처리" Visible="False">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="WarningsAsErrors" />
+    </StringProperty.DataSource>
+  </StringProperty>
   <StringProperty Name="OutputPath" DisplayName="출력 경로" Visible="False" />
   <StringProperty Name="DocumentationFile" DisplayName="문서 파일" Visible="False" />
   <EnumProperty Name="GenerateSerializationAssemblies" DisplayName="Serialization 어셈블리 생성" Visible="False">

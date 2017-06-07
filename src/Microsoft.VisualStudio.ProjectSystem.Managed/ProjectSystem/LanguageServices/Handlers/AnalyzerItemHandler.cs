@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
@@ -31,42 +32,46 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             _context = context;
         }
 
-        public void Handle(IComparable version, BuildOptions added, BuildOptions removed, bool isActiveContext)
+        public void Handle(IComparable version, BuildOptions added, BuildOptions removed, bool isActiveContext, IProjectLogger logger)
         {
             Requires.NotNull(version, nameof(version));
             Requires.NotNull(added, nameof(added));
             Requires.NotNull(removed, nameof(removed));
+            Requires.NotNull(logger, nameof(logger));
 
             foreach (CommandLineAnalyzerReference analyzer in removed.AnalyzerReferences)
             {
                 var fullPath = _project.MakeRooted(analyzer.FilePath);
 
-                RemoveFromContextIfPresent(fullPath);
+                RemoveFromContextIfPresent(fullPath, logger);
             }
 
             foreach (CommandLineAnalyzerReference analyzer in added.AnalyzerReferences)
             {
                 var fullPath = _project.MakeRooted(analyzer.FilePath);
 
-                AddToContextIfNotPresent(fullPath);
+                AddToContextIfNotPresent(fullPath, logger);
             }
         }
 
-        private void AddToContextIfNotPresent(string fullPath)
+        private void AddToContextIfNotPresent(string fullPath, IProjectLogger logger)
         {
             if (!_paths.Contains(fullPath))
             {
-                _context.AddAdditionalFile(fullPath);
+                logger.WriteLine("Adding analyzer '{0}'", fullPath);
+                _context.AddAnalyzerReference(fullPath);
                 bool added = _paths.Add(fullPath);
                 Assumes.True(added);
             }
         }
 
-        private void RemoveFromContextIfPresent(string fullPath)
+        private void RemoveFromContextIfPresent(string fullPath, IProjectLogger logger)
         {
             if (_paths.Contains(fullPath))
             {
-                _context.RemoveAdditionalFile(fullPath);
+                logger.WriteLine("Removing analyzer '{0}'", fullPath);
+                _context.RemoveAnalyzerReference(fullPath);
+
                 bool removed = _paths.Remove(fullPath);
                 Assumes.True(removed);
             }

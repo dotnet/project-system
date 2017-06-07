@@ -9,9 +9,9 @@
         <note />
       </trans-unit>
       <trans-unit id="btnPreBuildBuilder.Text">
-        <source>Ed&amp;it Pre-build ...</source>
-        <target state="translated">Derleme Öncesini Dü&amp;zenle...</target>
-        <note />
+        <source>Ed&amp;it Pre-build...</source>
+        <target state="needs-review-translation">Derleme Öncesini Dü&amp;zenle...</target>
+        <note></note>
       </trans-unit>
       <trans-unit id="lblPostBuildEventCommandLine.Text">
         <source>P&amp;ost-build event command line:</source>
@@ -19,9 +19,9 @@
         <note />
       </trans-unit>
       <trans-unit id="btnPostBuildBuilder.Text">
-        <source>Edit Post-b&amp;uild ...</source>
-        <target state="translated">Derleme Sonrasını Dü&amp;zenle...</target>
-        <note />
+        <source>Edit Post-b&amp;uild...</source>
+        <target state="needs-review-translation">Derleme Sonrasını Dü&amp;zenle...</target>
+        <note></note>
       </trans-unit>
       <trans-unit id="lblRunPostBuildEvent.Text">
         <source>Ru&amp;n the post-build event:</source>

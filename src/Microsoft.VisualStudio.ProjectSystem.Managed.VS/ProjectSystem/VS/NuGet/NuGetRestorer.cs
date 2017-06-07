@@ -1,7 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.VisualStudio.ProjectSystem.Properties;
-using NuGet.SolutionRestoreManager;
 using System;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
@@ -9,6 +7,10 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+using Microsoft.Internal.Performance;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using NuGet.SolutionRestoreManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
@@ -21,9 +23,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private readonly IActiveConfiguredProjectsProvider _activeConfiguredProjectsProvider;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IActiveProjectConfigurationRefreshService _activeProjectConfigurationRefreshService;
-        private IDisposable _designTimeBuildSubscriptionLink;
         private IDisposable _targetFrameworkSubscriptionLink;
-
+        private DisposableBag _designTimeBuildSubscriptionLink;
         private const int perfPackageRestoreEnd = 7343;
 
         private static ImmutableHashSet<string> _targetFrameworkWatchedRules = Empty.OrdinalIgnoreCaseStringSet
@@ -34,6 +35,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             .Add(ProjectReference.SchemaName)
             .Add(PackageReference.SchemaName)
             .Add(DotNetCliToolReference.SchemaName);
+
+        // Remove the ConfiguredProjectIdentity key because it is unique to each configured project - so it won't match across projects by design.
+        // Remove the ConfiguredProjectVersion key because each configuredproject manages it's own version and generally they don't match. 
+        private readonly static ImmutableArray<NamedIdentity> _keysToDrop = ImmutableArray.Create(ProjectDataSources.ConfiguredProjectIdentity, ProjectDataSources.ConfiguredProjectVersion);
 
         [ImportingConstructor]
         public NuGetRestorer(
@@ -77,13 +82,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             // any new configured projects are picked up
             if (HasTargetFrameworkChanged(update))
             {
-                await ResetSubscriptions().ConfigureAwait(false);
+                await ResetSubscriptionsAsync().ConfigureAwait(false);
             }
         }
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
-        {            
-            await ResetSubscriptions().ConfigureAwait(false);
+        {
+            await ResetSubscriptionsAsync().ConfigureAwait(false);
         }
 
         protected override Task DisposeCoreAsync(bool initialized)
@@ -93,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             return Task.CompletedTask;
         }
 
-        private async Task ResetSubscriptions()
+        private async Task ResetSubscriptionsAsync()
         {
             // active configuration should be updated before resetting subscriptions
             await RefreshActiveConfigurationAsync().ConfigureAwait(false);
@@ -111,17 +116,40 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     PropagateCompletion = true
                 };
 
+                var disposableBag = new DisposableBag(CancellationToken.None);
+                // We are taking source blocks from multiple configured projects and creating a SyncLink to combine the sources.
+                // The SyncLink will only publish data when the versions of the sources match. There is a problem with that.
+                // The sources have some version components that will make this impossible to match across TFMs. We introduce a 
+                // intermediate block here that will remove those version components so that the synclink can actually sync versions. 
                 var sourceBlocks = currentProjects.Objects.Select(
-                    cp => cp.Services.ProjectSubscription.JointRuleSource.SourceBlock.SyncLinkOptions<IProjectValueVersions>(sourceLinkOptions));
+                    cp => 
+                    {
+                        var sourceBlock = cp.Services.ProjectSubscription.JointRuleSource.SourceBlock;
+                        var versionDropper = CreateVersionDropperBlock();
+                        disposableBag.AddDisposable(sourceBlock.LinkTo(versionDropper, sourceLinkOptions));
+                        return versionDropper.SyncLinkOptions<IProjectValueVersions>(sourceLinkOptions);
+                    });
 
                 var target = new ActionBlock<Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary>>(ProjectPropertyChangedAsync);
 
                 var targetLinkOptions = new DataflowLinkOptions { PropagateCompletion = true };
 
-                _designTimeBuildSubscriptionLink = ProjectDataSources.SyncLinkTo(sourceBlocks.ToImmutableList(), target, targetLinkOptions);
+                disposableBag.AddDisposable(ProjectDataSources.SyncLinkTo(sourceBlocks.ToImmutableList(), target, targetLinkOptions));
+
+                _designTimeBuildSubscriptionLink = disposableBag;
             }
         }
 
+        private static IPropagatorBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>, IProjectVersionedValue<IProjectSubscriptionUpdate>> CreateVersionDropperBlock()
+        {
+            var transformBlock = new TransformBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>, IProjectVersionedValue<IProjectSubscriptionUpdate>>(data =>
+            {
+                return new ProjectVersionedValue<IProjectSubscriptionUpdate>(data.Value, data.DataSourceVersions.RemoveRange(_keysToDrop));
+            });
+
+            return transformBlock;
+        }
+        
         private async Task RefreshActiveConfigurationAsync()
         {
             // Force refresh the CPS active project configuration (needs UI thread).
@@ -143,7 +171,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                                     _projectVsServices.Project.Services.ProjectAsynchronousTasks.UnloadCancellationToken)
                                .ConfigureAwait(false);
 
-                        Microsoft.Internal.Performance.CodeMarkers.Instance.CodeMarker(perfPackageRestoreEnd);
+                        CodeMarkers.Instance.CodeMarker(perfPackageRestoreEnd);
 
                     }),
                     ProjectCriticalOperation.Build | ProjectCriticalOperation.Unload | ProjectCriticalOperation.Rename,

@@ -6,7 +6,7 @@
   </Rule.DataSource>
   <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="結果がこの解決済みの参照項目であった元の参照項目の評価済み項目名です。">
     <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="Analyzer" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
+      <DataSource Persistence="Intrinsic" ItemType="Analyzer" PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
