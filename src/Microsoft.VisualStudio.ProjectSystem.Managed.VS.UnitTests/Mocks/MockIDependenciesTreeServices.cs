@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
@@ -54,11 +55,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             };
         }
 
-        public IRule GetRule(IDependency dependency, IProjectCatalogSnapshot catalogs)
+        public Task<IRule> GetRuleAsync(IDependency dependency, IProjectCatalogSnapshot catalogs)
         {
             var mockRule = new Mock<IRule>(MockBehavior.Strict);
             mockRule.Setup(x => x.Name).Returns(dependency.SchemaItemType);
-            return mockRule.Object;
+            return Task.FromResult(mockRule.Object);
         }
     }
 }

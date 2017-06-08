@@ -390,17 +390,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
 
             var nowait = SubmitTreeUpdateAsync(
-                (treeSnapshot, configuredProjectExports, cancellationToken) =>
+                async (treeSnapshot, configuredProjectExports, cancellationToken) =>
                 {
                     var dependenciesNode = treeSnapshot.Value.Tree;
                     if (!cancellationToken.IsCancellationRequested)
                     {
-                        dependenciesNode = viewProvider.Value.BuildTree(dependenciesNode, snapshot, cancellationToken);
+                        dependenciesNode = await viewProvider.Value.BuildTreeAsync(dependenciesNode, snapshot, cancellationToken)
+                                                                   .ConfigureAwait(false);
                     }
 
                     // TODO We still are getting mismatched data sources and need to figure out better 
                     // way of merging, mute them for now and get to it in U1
-                    return Task.FromResult(new TreeUpdateResult(dependenciesNode, false, null));
+                    return new TreeUpdateResult(dependenciesNode, false, null);
                 });
 
             return Task.CompletedTask;
@@ -563,7 +564,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 flags: flags);
         }
 
-        public IRule GetRule(IDependency dependency, IProjectCatalogSnapshot catalogs)
+        public async Task<IRule> GetRuleAsync(IDependency dependency, IProjectCatalogSnapshot catalogs)
         {
             Requires.NotNull(dependency, nameof(dependency));
 
@@ -574,11 +575,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
             else
             {
-                ThreadHelper.JoinableTaskFactory.Run(async () =>
-                {
-                    project = await DependenciesHost.GetConfiguredProject(dependency.TargetFramework)
-                                                    .ConfigureAwait(false) ?? ActiveConfiguredProject;
-                });
+                project = await DependenciesHost.GetConfiguredProject(dependency.TargetFramework)
+                                                .ConfigureAwait(false) ?? ActiveConfiguredProject;
             }
 
             var configuredProjectExports = GetActiveConfiguredProjectExports(project);

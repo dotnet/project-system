@@ -25,8 +25,7 @@ namespace Microsoft.VisualStudio.Shell
         {
             ppvObject = IntPtr.Zero;
 
-            object service;
-            if (!TryGetService(guidService, out service))
+            if (!TryGetService(guidService, out object service))
             {
                 return HResult.NoInterface;
             }

@@ -32,8 +32,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public IDependencyViewModel CreateRootViewModel(string providerType, bool hasUnresolvedDependency)
         {
-            var provider = GetProvider(providerType);
-            return provider.CreateRootDependencyNode().ToViewModel(hasUnresolvedDependency);
+            IProjectDependenciesSubTreeProvider provider = GetProvider(providerType);
+            IDependencyModel dependencyModel = provider.CreateRootDependencyNode();
+            return dependencyModel.ToViewModel(hasUnresolvedDependency);
         }
 
         public ImageMoniker GetDependenciesRootIcon(bool hasUnresolvedDependencies)
