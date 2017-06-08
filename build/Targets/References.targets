@@ -66,9 +66,9 @@
 
         <!-- NuGet Dependencies -->
         <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutableVersion)" />
+        <PackageReference Include="System.Composition" Version="1.0.31" />
         <PackageReference Include="System.Reflection.Metadata" Version="1.4.2" />
         <PackageReference Include="System.ValueTuple" Version="4.3.0" />
-        <PackageReference Include="Microsoft.Composition" Version="1.0.27" />
         <PackageReference Include="Newtonsoft.Json" Version="8.0.3" />
         <PackageReference Include="Microsoft.VisualStudio.LanguageServices" Version="2.3.0-beta3-61808-05" />
         <PackageReference Include="Microsoft.Build" Version="15.1.0-preview-000516-03" />
@@ -103,7 +103,7 @@
         <PackageReference Include="EnvDTE" Version="8.0.1" />
         <PackageReference Include="EnvDTE80" Version="8.0.1" />
         <PackageReference Include="EnvDTE90" Version="9.0.1" />
-        <PackageReference Include="Microsoft.VisualStudio.ComponentModelHost" Version="15.0.26201"/>
+        <PackageReference Include="Microsoft.VisualStudio.ComponentModelHost" Version="15.0.26507-alpha"/>
         <!--
 		Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll is needed by GraphProvider unit tests.
 		if it is not provided here, tests fail to load this assembly at runtime.
@@ -123,14 +123,14 @@
         <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.12.1.DesignTime" Version="12.1.30328" />
         <PackageReference Include="Microsoft.VisualStudio.TextManager.Interop.12.1.DesignTime" Version="12.1.30328" />
         <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.14.0.DesignTime" Version="14.1.24720" />
-        <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.15.0.DesignTime" Version="15.0.26201" />
+        <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.15.0.DesignTime" Version="15.0.26507-alpha" />
         <PackageReference Include="Microsoft.VisualStudio.SDK.EmbedInteropTypes" Version="14.1.2" />
-        <PackageReference Include="Microsoft.VisualStudio.Editor" Version="15.0.25726-Preview5" />
-        <PackageReference Include="Microsoft.VisualStudio.ImageCatalog" Version="15.0.25726-Preview5" />
+        <PackageReference Include="Microsoft.VisualStudio.Editor" Version="15.0.26507-alpha" />
+        <PackageReference Include="Microsoft.VisualStudio.ImageCatalog" Version="15.0.26507-alpha" />
         <PackageReference Include="Microsoft.VisualStudio.Shell.Design" Version="$(MicrosoftVisualStudioShellDesign)" />
         <PackageReference Include="Microsoft.VisualStudio.Shell.15.0" Version="$(MicrosoftVisualStudioShell15Version)" />
-        <PackageReference Include="RoslynDependencies.Microsoft.VisualStudio.GraphModel" Version="15.0.25807" />
-        <PackageReference Include="Microsoft.VisualStudio.Telemetry" Version="15.0.691-master31907920" ExcludeAssets="Build" />
+        <PackageReference Include="Microsoft.VisualStudio.GraphModel" Version="15.0.26507-alpha" />
+        <PackageReference Include="Microsoft.VisualStudio.Telemetry" Version="15.0.26507-alpha" ExcludeAssets="Build" />
 
       </ItemGroup>
 
