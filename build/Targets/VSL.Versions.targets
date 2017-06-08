@@ -31,9 +31,9 @@
     <MicrosoftVisualStudioShell15Version>15.0.26201</MicrosoftVisualStudioShell15Version>
     <MicrosoftVisualStudioShellDesign>15.0.26201</MicrosoftVisualStudioShellDesign>
     <MicrosoftVisualStudioManagedInterfaces>8.0.50727</MicrosoftVisualStudioManagedInterfaces>
-    <MicrosoftVisualStudioIntegrationTestUtilitiesVersion>2.3.0-beta2-61711-06</MicrosoftVisualStudioIntegrationTestUtilitiesVersion>
+    <MicrosoftVisualStudioIntegrationTestUtilitiesVersion>2.3.0-beta3-61808-05</MicrosoftVisualStudioIntegrationTestUtilitiesVersion>
     <MoqVersion>4.2.1402.2112</MoqVersion>
-    <MicrosoftVisualStudioLanguageServicesVersion>2.3.0-beta2-61711-06</MicrosoftVisualStudioLanguageServicesVersion>
+    <MicrosoftVisualStudioLanguageServicesVersion>2.3.0-beta3-61808-05</MicrosoftVisualStudioLanguageServicesVersion>
     <RoslynToolsDownloadRoslynVsixesVersion>0.3.4-beta</RoslynToolsDownloadRoslynVsixesVersion>
     <RoslynToolsMicrosoftModifyVsixManifestVersion>0.2.4-beta</RoslynToolsMicrosoftModifyVsixManifestVersion>
     <RoslynToolsMicrosoftVSIXExpInstallerVersion>0.2.4-beta</RoslynToolsMicrosoftVSIXExpInstallerVersion>
