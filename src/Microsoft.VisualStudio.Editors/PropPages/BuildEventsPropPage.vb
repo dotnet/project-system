@@ -1,6 +1,7 @@
 ' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Windows.Forms
+Imports Microsoft.VisualStudio.Editor
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports VSLangProj80
 
@@ -19,6 +20,22 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             'Add any initialization after the InitializeComponent() call
             AddChangeHandlers()
+
+            Dim Flags As __FCSTORAGEFLAGS = __FCSTORAGEFLAGS.FCSF_READONLY
+
+            Dim FontColorStorage As IVsFontAndColorStorage = TryCast(GetService(GetType(IVsFontAndColorStorage)), IVsFontAndColorStorage)
+            If FontColorStorage IsNot Nothing Then
+                FontColorStorage.OpenCategory(DefGuidList.guidTextEditorFontCategory, CType(Flags, System.UInt32))
+                Dim TextEditorFont As FontInfo() = Nothing
+                FontColorStorage.GetFont(Nothing, TextEditorFont)
+
+                ' Try to set the font..
+                Dim FontDisplayed As System.Drawing.Font
+                FontDisplayed = New System.Drawing.Font(TextEditorFont(0).bstrFaceName, CType(TextEditorFont(0).wPointSize, Single))
+                txtPreBuildEventCommandLine.Font = FontDisplayed
+                txtPostBuildEventCommandLine.Font = FontDisplayed
+
+            End If
         End Sub
 
         Public Enum Tokens
