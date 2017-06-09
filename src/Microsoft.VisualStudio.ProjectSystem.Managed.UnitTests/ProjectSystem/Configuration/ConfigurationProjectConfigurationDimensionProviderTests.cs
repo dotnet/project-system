@@ -2,6 +2,7 @@
 
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.Build;
 using Xunit;
 
@@ -20,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 </Project>";
 
         [Fact]
-        public async void ConfigurationProjectConfigurationDimensionProvider_GetDefaultValuesForDimensionsAsync()
+        public async Task ConfigurationProjectConfigurationDimensionProvider_GetDefaultValuesForDimensionsAsync()
         {
             using (var projectFile = new MsBuildProjectFile(projectXml))
             {
@@ -36,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         }
 
         [Fact]
-        public async void ConfigurationProjectConfigurationDimensionProvider_GetDefaultValuesForDimensionsAsync_NoPropertyValue()
+        public async Task ConfigurationProjectConfigurationDimensionProvider_GetDefaultValuesForDimensionsAsync_NoPropertyValue()
         {
             using (var projectFile = new MsBuildProjectFile())
             {
@@ -49,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         }
 
         [Fact]
-        public async void ConfigurationProjectConfigurationDimensionProvider_GetProjectConfigurationDimensionsAsync()
+        public async Task ConfigurationProjectConfigurationDimensionProvider_GetProjectConfigurationDimensionsAsync()
         {
             using (var projectFile = new MsBuildProjectFile(projectXml))
             {
@@ -68,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             }
         }
 
-        public async void ConfigurationProjectConfigurationDimensionProvider_GetProjectConfigurationDimensionsAsync_NoPropertyValue()
+        public async Task ConfigurationProjectConfigurationDimensionProvider_GetProjectConfigurationDimensionsAsync_NoPropertyValue()
         {
             using (var projectFile = new MsBuildProjectFile())
             {
@@ -81,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         }
 
         [Fact]
-        public async void ConfigurationProjectConfigurationDimensionProvider_OnDimensionValueChanged_Add()
+        public async Task ConfigurationProjectConfigurationDimensionProvider_OnDimensionValueChanged_Add()
         {
             using (var projectFile = new MsBuildProjectFile(projectXml))
             {
@@ -116,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         }
 
         [Fact]
-        public async void ConfigurationProjectConfigurationDimensionProvider_OnDimensionValueChanged_Remove()
+        public async Task ConfigurationProjectConfigurationDimensionProvider_OnDimensionValueChanged_Remove()
         {
             using (var projectFile = new MsBuildProjectFile(projectXml))
             {
@@ -151,7 +152,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         }
 
         [Fact]
-        public async void ConfigurationProjectConfigurationDimensionProvider_OnDimensionValueChanged_Remove_MissingValue()
+        public async Task ConfigurationProjectConfigurationDimensionProvider_OnDimensionValueChanged_Remove_MissingValue()
         {
             using (var projectFile = new MsBuildProjectFile(projectXml))
             {
@@ -173,7 +174,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         }
 
         [Fact]
-        public async void ConfigurationProjectConfigurationDimensionProvider_OnDimensionValueChanged_Rename()
+        public async Task ConfigurationProjectConfigurationDimensionProvider_OnDimensionValueChanged_Rename()
         {
             using (var projectFile = new MsBuildProjectFile(projectXml))
             {
@@ -210,7 +211,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         }
 
         [Fact]
-        public async void ConfigurationProjectConfigurationDimensionProvider_OnDimensionValueChanged_Rename_MissingValue()
+        public async Task ConfigurationProjectConfigurationDimensionProvider_OnDimensionValueChanged_Rename_MissingValue()
         {
             using (var projectFile = new MsBuildProjectFile(projectXml))
             {
