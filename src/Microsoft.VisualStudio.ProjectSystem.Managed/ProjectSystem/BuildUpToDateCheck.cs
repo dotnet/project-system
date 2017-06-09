@@ -47,6 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private const string FullPath = "FullPath";
         private const string ResolvedPath = "ResolvedPath";
         private const string CopyToOutputDirectory = "CopyToOutputDirectory";
+        private const string CopyUpToDateMarker = "CopyUpToDateMarker";
         private const string Never = "Never";
 
         private static HashSet<string> KnownOutputGroups = new HashSet<string>
@@ -60,9 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private static ImmutableHashSet<string> ReferenceSchemas => ImmutableHashSet<string>.Empty
             .Add(ResolvedAnalyzerReference.SchemaName)
-            .Add(ResolvedAssemblyReference.SchemaName)
-            .Add(ResolvedCOMReference.SchemaName)
-            .Add(ResolvedProjectReference.SchemaName);
+            .Add(ResolvedCompilationReference.SchemaName);
 
         private static ImmutableHashSet<string> ItemSchemas => ImmutableHashSet<string>.Empty
             .Add(AdditionalFiles.SchemaName)
@@ -85,9 +84,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private bool _isDisabled = true;
         private bool _itemsChangedSinceLastCheck = true;
         private string _msBuildProjectFullPath;
+        private string _markerFile;
         private HashSet<string> _imports = new HashSet<string>();
         private Dictionary<string, HashSet<string>> _items = new Dictionary<string, HashSet<string>>();
-        private Dictionary<string, HashSet<string>> _references = new Dictionary<string, HashSet<string>>();
+        private HashSet<string> _analyzerReferences = new HashSet<string>();
+        private HashSet<string> _compilationReferences = new HashSet<string>();
+        private HashSet<string> _referenceMarkerFiles = new HashSet<string>();
         private Dictionary<string, HashSet<string>> _outputGroups = new Dictionary<string, HashSet<string>>();
 
         [ImportingConstructor]
@@ -118,12 +120,27 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _isDisabled = disableFastUpToDateCheckString != null && string.Equals(disableFastUpToDateCheckString, TrueValue, StringComparison.OrdinalIgnoreCase);
 
             _msBuildProjectFullPath = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, _msBuildProjectFullPath);
-            foreach (var referenceSchema in ReferenceSchemas)
+            _markerFile = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.CopyUpToDateMarkerProperty, null);
+
+            if (e.ProjectChanges.TryGetValue(ResolvedAnalyzerReference.SchemaName, out var changes) &&
+                changes.Difference.AnyChanges)
             {
-                if (e.ProjectChanges.TryGetValue(referenceSchema, out var changes) &&
-                    changes.Difference.AnyChanges)
+                _analyzerReferences = new HashSet<string>(changes.After.Items.Select(item => item.Value[ResolvedPath]));
+            }
+
+            if (e.ProjectChanges.TryGetValue(ResolvedCompilationReference.SchemaName, out changes) &&
+                changes.Difference.AnyChanges)
+            {
+                _compilationReferences.Clear();
+                _referenceMarkerFiles.Clear();
+
+                foreach (var item in changes.After.Items)
                 {
-                    _references[referenceSchema] = new HashSet<string>(changes.After.Items.Select(item => item.Value[ResolvedPath]));
+                    _compilationReferences.Add(item.Value[ResolvedPath]);
+                    if (!string.IsNullOrWhiteSpace(item.Value[CopyUpToDateMarker]))
+                    {
+                        _referenceMarkerFiles.Add(item.Value[CopyUpToDateMarker]);
+                    }
                 }
             }
         }
@@ -275,10 +292,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 AddInputs(logger, inputs, pair.Value, pair.Key);
             }
 
-            foreach (var pair in _references)
-            {
-                AddInputs(logger, inputs, pair.Value, pair.Key);
-            }
+            AddInputs(logger, inputs, _analyzerReferences, ResolvedAnalyzerReference.SchemaName);
+            AddInputs(logger, inputs, _compilationReferences, ResolvedCompilationReference.SchemaName);
 
             return inputs;
         }
@@ -331,6 +346,43 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return (earliest, earliestPath);
         }
 
+        private bool CheckMarkers(Logger logger, IDictionary<string, DateTime> timestampCache)
+        {
+            if (!string.IsNullOrWhiteSpace(_markerFile) && _referenceMarkerFiles.Any())
+            {
+                foreach (var referenceMarkerFile in _referenceMarkerFiles)
+                {
+                    logger.Verbose("Found input marker '{0}'.", referenceMarkerFile);
+                }
+                logger.Verbose("Found output marker '{0}'.", _markerFile);
+
+                var latestInputMarker = GetLatestInput(_referenceMarkerFiles, timestampCache);
+                var outputMarkerTime = GetTimestamp(_markerFile, timestampCache);
+
+                if (latestInputMarker.time != null)
+                {
+                    logger.Info("Lastest write timestamp on input marker is {0} on '{1}'.", latestInputMarker.time.Value, latestInputMarker.path);
+                }
+                else
+                {
+                    logger.Info("Input marker '{0}' does not exist.", latestInputMarker.path);
+                }
+
+                if (outputMarkerTime != null)
+                {
+                    logger.Info("Write timestamp on output marker is {0} on '{1}'.", outputMarkerTime, _markerFile);
+                }
+                else
+                {
+                    logger.Info("Output marker '{0}' does not exist.", _markerFile);
+                }
+
+                return latestInputMarker.time != null && outputMarkerTime != null && outputMarkerTime > latestInputMarker.time;
+            }
+
+            return true;
+        }
+
         public async Task<bool> IsUpToDateAsync(BuildAction buildAction, TextWriter logWriter, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -369,7 +421,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
 
             // We are up to date if the earliest output write happened after the latest input write
-            var isUpToDate = latestInput.time != null && earliestOutput.time != null && earliestOutput.time > latestInput.time;
+            var markersUpToDate = CheckMarkers(logger, timestampCache);
+            var isUpToDate = 
+                latestInput.time != null 
+                && earliestOutput.time != null 
+                && earliestOutput.time > latestInput.time 
+                && markersUpToDate;
+
             logger.Info("Project is{0} up to date.", (!isUpToDate ? " not" : ""));
 
             return isUpToDate;
