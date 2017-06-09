@@ -7,6 +7,8 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Build.Execution;
+using Microsoft.VisualStudio.Build;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
@@ -31,8 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
             IActiveProjectConfigurationRefreshService activeProjectConfigurationRefreshService,
             ITargetFrameworkProvider targetFrameworkProvider,
-            IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider,
-            IProjectXmlAccessor projectXmlAccessor)
+            IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider)
             : base(commonServices,
                    contextProvider,
                    tasksService,
@@ -58,7 +59,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             TargetFrameworkProvider = targetFrameworkProvider;
             AggregateSnapshotProvider = aggregateSnapshotProvider;
-            ProjectXmlAccessor = projectXmlAccessor;
             ProjectFilePath = CommonServices.Project.FullPath;
         }
 
@@ -91,7 +91,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         #endregion
 
-        private IProjectXmlAccessor ProjectXmlAccessor { get; }
         private IAggregateDependenciesSnapshotProvider AggregateSnapshotProvider { get; }
         private ITargetFrameworkProvider TargetFrameworkProvider { get; }
         private IUnconfiguredProjectCommonServices CommonServices { get; }
@@ -274,11 +273,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             DependenciesSnapshot newSnapshot;
             bool anyChanges = false;
 
-            HashSet<string> projectItemSpecs = null;
-            CommonServices.ThreadingService.JoinableTaskFactory.Run(async () =>
-            {
-                projectItemSpecs = await ProjectXmlAccessor.GetProjectItems().ConfigureAwait(false);
-            });
+            HashSet<string> projectItemSpecs = GetProjectItemSpecsFromSnapshot(catalogs);
 
             // Note: we are updating existing snapshot, not receivig a complete new one. Thus we must
             // ensure incremental updates are done in the correct order. This lock ensures that here.
@@ -302,6 +297,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 // avoid unnecessary tree updates
                 ScheduleDependenciesUpdate();
             }
+        }
+
+        private HashSet<string> GetProjectItemSpecsFromSnapshot(IProjectCatalogSnapshot catalogs)
+        {
+            // We don't have catalog snapshot, we're likely updating because one of our project 
+            // dependencies changed. Just return 'no data'
+            if (catalogs == null)
+                return null;
+
+            var projectItemSpecs = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (ProjectItemInstance item in catalogs.Project.ProjectInstance.Items)
+            {
+                if (item.IsImported())
+                    continue;
+
+                // Returns unescaped evaluated include
+                string itemSpec = item.EvaluatedInclude;
+                if (itemSpec.Length > 0)
+                    projectItemSpecs.Add(itemSpec);
+            }
+
+            return projectItemSpecs;
         }
 
         private void ScheduleDependenciesUpdate()

@@ -44,6 +44,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 return resultDependency;
             }
 
+            if (projectItemSpecs == null)   // No data, so don't update
+                return resultDependency;
+
             if (!projectItemSpecs.Contains(resultDependency.OriginalItemSpec))
             {
                 // it is an implicit dependency

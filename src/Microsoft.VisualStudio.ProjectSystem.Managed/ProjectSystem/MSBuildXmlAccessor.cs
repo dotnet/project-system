@@ -79,15 +79,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
         }
 
-        public async Task<HashSet<string>> GetProjectItems()
-        {
-            using (var access = await _projectLockService.ReadLockAsync())
-            {
-                var projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
-                return new HashSet<string>(projectXml.Items.Select(x => x.Include), StringComparer.OrdinalIgnoreCase);
-            }
-        }
-
         public async Task<ICollection<(string evaluatedInclude, string metadataValue)>> GetItems(ConfiguredProject configuredProject, string itemType, string metadataName)
         {
             using (var access = await _projectLockService.ReadLockAsync())
