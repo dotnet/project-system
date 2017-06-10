@@ -512,7 +512,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
-    <PreBuildEvent>eecho ""post build $(OutDir)""</PreBuildEvent>
+    <PreBuildEvent>echo ""post build $(OutDir)""</PreBuildEvent>
     <PostBuildEvent>echo $(ProjectDir)</PostBuildEvent>
   </PropertyGroup>
 </Project>";
