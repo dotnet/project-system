@@ -2,6 +2,7 @@
 
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Build.Construction;
 
@@ -9,12 +10,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 {
     internal abstract partial class AbstractBuildEventValueProvider
     {
-        public abstract class Helper
+        public abstract class AbstractBuildEventHelper
         {
-            private const string _execTaskName = "Exec";
-            private const string _commandString = "Command";
+            private const string _execTask = "Exec";
+            private const string _command = "Command";
 
-            protected Helper(string buildEventString,
+            protected AbstractBuildEventHelper(string buildEventString,
                    string targetNameString,
                    Func<ProjectTargetElement, string> getTargetString,
                    Action<ProjectTargetElement> setTargetDependencies)
@@ -39,12 +40,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                     return null;
                 }
 
-                if (result.execTask.Parameters.TryGetValue(_commandString, out var commandText))
+                if (result.execTask.Parameters.TryGetValue(_command, out var commandText))
                 {
                     return commandText;
                 }
 
-                return null; //unreachable
+                Environment.FailFast("This location should be unreachable");
+                return null;
             }
 
             public void SetProperty(string unevaluatedPropertyValue, ProjectRootElement projectXml)
@@ -67,22 +69,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             private (bool success, ProjectTaskElement execTask) FindExecTaskInTargets(ProjectRootElement projectXml)
             {
                 var execTask = projectXml.Targets
-                                    .Where(target => GetTargetString(target) == BuildEventString)
+                                    .Where(target => StringComparer.OrdinalIgnoreCase.Compare(GetTargetString(target), BuildEventString) == 0)
                                     .SelectMany(target => target.Tasks)
-                                    .Where(task => task.Name == _execTaskName)
+                                    .Where(task => StringComparer.OrdinalIgnoreCase.Compare(task.Name, _execTask) == 0)
                                     .FirstOrDefault();
                 return (success: execTask != null, execTask: execTask);
             }
 
             private (bool success, ProjectTargetElement target) FindTargetToRemove(ProjectRootElement projectXml)
             {
-                var targetArray = projectXml.Targets
-                                        .Where(target =>
-                                            GetTargetString(target) == BuildEventString &&
-                                            target.Children.Count == 1 &&
-                                            target.Tasks.Count == 1 &&
-                                            target.Tasks.First().Name == _execTaskName);
-                return (success: targetArray.Count() == 1, target: targetArray.SingleOrDefault());
+                var target = projectXml.Targets
+                                        .Where(t =>
+                                            StringComparer.OrdinalIgnoreCase.Compare(GetTargetString(t), BuildEventString) == 0 &&
+                                            t.Children.Count == 1 &&
+                                            t.Tasks.Count == 1 &&
+                                            StringComparer.OrdinalIgnoreCase.Compare(t.Tasks.First().Name, _execTask) == 0)
+                                        .FirstOrDefault();
+                return (success: target != null, target: target);
             }
 
             private void SetParameter(ProjectRootElement projectXml, string unevaluatedPropertyValue)
@@ -98,17 +101,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                     var targetName = GetTargetName(projectXml);
                     var target = projectXml.AddTarget(targetName);
                     SetTargetDependencies(target);
-                    var execTask = target.AddTask(_execTaskName);
+                    var execTask = target.AddTask(_execTask);
                     SetExecParameter(execTask, unevaluatedPropertyValue);
                 }
             }
 
             private void SetExecParameter(ProjectTaskElement execTask, string unevaluatedPropertyValue)
-                => execTask.SetParameter(_commandString, unevaluatedPropertyValue);
+                => execTask.SetParameter(_command, unevaluatedPropertyValue);
 
             private string GetTargetName(ProjectRootElement projectXml)
             {
-                var targetNames = projectXml.Targets.Select(t => t.Name).ToArray();
+                var targetNames = new HashSet<string>(projectXml.Targets.Select(t => t.Name));
                 var targetName = TargetNameString;
                 if (targetNames.Contains(targetName))
                 {
@@ -119,7 +122,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 
             }
 
-            private string FindNonCollidingName(string buildEventString, string[] targetNames)
+            private string FindNonCollidingName(string buildEventString, HashSet<string> targetNames)
             {
                 var initialValue = 1;
                 var newName = buildEventString + initialValue.ToString();

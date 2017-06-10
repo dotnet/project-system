@@ -10,12 +10,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
     {
         protected readonly IProjectLockService _projectLockService;
         protected readonly UnconfiguredProject _unconfiguredProject;
-        private readonly Helper _helper;
+        private readonly AbstractBuildEventHelper _helper;
 
         protected AbstractBuildEventValueProvider(
             IProjectLockService projectLockService,
             UnconfiguredProject unconfiguredProject,
-            Helper helper)
+            AbstractBuildEventHelper helper)
         {
             _projectLockService = projectLockService;
             _unconfiguredProject = unconfiguredProject;

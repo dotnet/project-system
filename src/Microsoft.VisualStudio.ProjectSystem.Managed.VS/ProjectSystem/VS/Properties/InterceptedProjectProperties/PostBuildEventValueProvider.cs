@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                    new PostBuildEventHelper())
         {}
 
-        internal class PostBuildEventHelper : Helper
+        internal class PostBuildEventHelper : AbstractBuildEventHelper
         {
             internal PostBuildEventHelper()
                 : base(_postBuildEventString,
