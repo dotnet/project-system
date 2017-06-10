@@ -15,27 +15,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             private const string _execTask = "Exec";
             private const string _command = "Command";
 
-            protected AbstractBuildEventHelper(string buildEventString,
-                   string targetNameString,
-                   Func<ProjectTargetElement, string> getTargetString,
+            protected AbstractBuildEventHelper(string buildEvent,
+                   string targetName,
+                   Func<ProjectTargetElement, string> getTarget,
                    Action<ProjectTargetElement> setTargetDependencies)
             {
-                BuildEventString = buildEventString;
-                TargetNameString = targetNameString;
-                GetTargetString = getTargetString;
+                BuildEvent = buildEvent;
+                TargetName = targetName;
+                GetTarget = getTarget;
                 SetTargetDependencies = setTargetDependencies;
             }
 
-            private Func<ProjectTargetElement, string> GetTargetString { get; }
+            private Func<ProjectTargetElement, string> GetTarget { get; }
             private Action<ProjectTargetElement> SetTargetDependencies { get; }
-            private string BuildEventString { get; }
-            private string TargetNameString { get; }
+            private string BuildEvent { get; }
+            private string TargetName { get; }
 
             public string GetProperty(ProjectRootElement projectXml)
             {
                 var result = FindExecTaskInTargets(projectXml);
 
-                if (result.success == false)
+                if (!result.success)
                 {
                     return null;
                 }
@@ -45,8 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                     return commandText;
                 }
 
-                Environment.FailFast("This location should be unreachable");
-                return null;
+                return null; // exec task as written in the project file is invalid, we should be resilient to this case.
             }
 
             public void SetProperty(string unevaluatedPropertyValue, ProjectRootElement projectXml)
@@ -69,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             private (bool success, ProjectTaskElement execTask) FindExecTaskInTargets(ProjectRootElement projectXml)
             {
                 var execTask = projectXml.Targets
-                                    .Where(target => StringComparer.OrdinalIgnoreCase.Compare(GetTargetString(target), BuildEventString) == 0)
+                                    .Where(target => StringComparer.OrdinalIgnoreCase.Compare(GetTarget(target), BuildEvent) == 0)
                                     .SelectMany(target => target.Tasks)
                                     .Where(task => StringComparer.OrdinalIgnoreCase.Compare(task.Name, _execTask) == 0)
                                     .FirstOrDefault();
@@ -78,14 +77,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 
             private (bool success, ProjectTargetElement target) FindTargetToRemove(ProjectRootElement projectXml)
             {
-                var target = projectXml.Targets
-                                        .Where(t =>
-                                            StringComparer.OrdinalIgnoreCase.Compare(GetTargetString(t), BuildEventString) == 0 &&
-                                            t.Children.Count == 1 &&
-                                            t.Tasks.Count == 1 &&
-                                            StringComparer.OrdinalIgnoreCase.Compare(t.Tasks.First().Name, _execTask) == 0)
+                var foundTarget = projectXml.Targets
+                                        .Where(target =>
+                                            StringComparer.OrdinalIgnoreCase.Compare(GetTarget(target), BuildEvent) == 0 &&
+                                            target.Children.Count == 1 &&
+                                            target.Tasks.Count == 1 &&
+                                            StringComparer.OrdinalIgnoreCase.Compare(target.Tasks.First().Name, _execTask) == 0)
                                         .FirstOrDefault();
-                return (success: target != null, target: target);
+                return (success: foundTarget != null, target: foundTarget);
             }
 
             private void SetParameter(ProjectRootElement projectXml, string unevaluatedPropertyValue)
@@ -112,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             private string GetTargetName(ProjectRootElement projectXml)
             {
                 var targetNames = new HashSet<string>(projectXml.Targets.Select(t => t.Name));
-                var targetName = TargetNameString;
+                var targetName = TargetName;
                 if (targetNames.Contains(targetName))
                 {
                     targetName = FindNonCollidingName(targetName, targetNames);
@@ -122,15 +121,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 
             }
 
-            private string FindNonCollidingName(string buildEventString, HashSet<string> targetNames)
+            private string FindNonCollidingName(string buildEvent, HashSet<string> targetNames)
             {
-                var initialValue = 1;
-                var newName = buildEventString + initialValue.ToString();
-                while (targetNames.Contains(newName))
+                var initialValue = 0;
+                var newName = string.Empty;
+
+                do
                 {
                     initialValue++;
-                    newName = buildEventString + initialValue.ToString();
-                }
+                    newName = buildEvent + initialValue.ToString();
+                } while (targetNames.Contains(newName));
 
                 return newName;
             }
