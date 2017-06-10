@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public async void OptionStrictEnumProviderTest()
+        public async Task OptionStrictEnumProviderTest()
         {
             var dynamicEnumValuesGenerator = await new OptionStrictEnumProvider().GetProviderAsync(null);
             var values = await dynamicEnumValuesGenerator.GetListedValuesAsync();
@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public async void WarningLevelEnumProviderTest()
+        public async Task WarningLevelEnumProviderTest()
         {
             var dynamicEnumValuesGenerator = await new WarningLevelEnumProvider().GetProviderAsync(null);
             var values = await dynamicEnumValuesGenerator.GetListedValuesAsync();
