@@ -76,6 +76,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
+        public static void GetPropertyTest_ExistingProperties()
+        {
+            var root = @"
+<Project Sdk=""Microsoft.NET.Sdk"">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <PreBuildEvent>echo $(ProjectDir)</PreBuildEvent>
+  </PropertyGroup>
+
+</Project>
+".AsProjectRootElement();
+            var actual = systemUnderTest.GetProperty(root);
+            Assert.Equal(@"echo $(ProjectDir)", actual);
+        }
+
+        [Fact]
         public static void SetPropertyTest_NoTargetsPresent()
         {
             var root = @"
@@ -464,6 +482,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
   <Target Name=""PreBuild2"" BeforeTargets=""PreBuildEvent"">
     <Exec Command=""echo &quot;pre build $(OutDir)&quot;"" />
   </Target>
+</Project>";
+
+            var actual = stringWriter.ToString();
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public static void SetPropertyTest_ExistingProperties()
+        {
+            var root = @"
+<Project Sdk=""Microsoft.NET.Sdk"">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <PreBuildEvent>echo $(ProjectDir)</PreBuildEvent>
+    <PostBuildEvent>echo $(ProjectDir)</PostBuildEvent>
+  </PropertyGroup>
+
+</Project>
+".AsProjectRootElement();
+            systemUnderTest.SetProperty(@"echo ""post build $(OutDir)""", root);
+            var stringWriter = new System.IO.StringWriter();
+            root.Save(stringWriter);
+
+            var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<Project Sdk=""Microsoft.NET.Sdk"">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <PreBuildEvent>eecho ""post build $(OutDir)""</PreBuildEvent>
+    <PostBuildEvent>echo $(ProjectDir)</PostBuildEvent>
+  </PropertyGroup>
 </Project>";
 
             var actual = stringWriter.ToString();

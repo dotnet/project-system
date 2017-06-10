@@ -5,10 +5,10 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectProperties
 {
-    [ExportInterceptingPropertyValueProvider(_preBuildEventName, ExportInterceptingPropertyValueProviderFile.ProjectFile)]
+    [ExportInterceptingPropertyValueProvider(_preBuildEvent, ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     internal class PreBuildEventValueProvider : AbstractBuildEventValueProvider
     {
-        private const string _preBuildEventName = "PreBuildEvent";
+        private const string _preBuildEvent = "PreBuildEvent";
         private const string _targetName = "PreBuild";
 
         [ImportingConstructor]
@@ -23,10 +23,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
         internal class PreBuildEventHelper : AbstractBuildEventHelper
         {
             internal PreBuildEventHelper()
-                : base(_preBuildEventString,
+                : base(_preBuildEvent,
                        _targetName,
                        target => target.BeforeTargets,
-                       target => { target.BeforeTargets = _preBuildEventString; })
+                       target => { target.BeforeTargets = _preBuildEvent; })
             { }
         }
     }

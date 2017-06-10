@@ -33,6 +33,49 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 
             public string GetProperty(ProjectRootElement projectXml)
             {
+                // Check if project file already has props in place for this.
+                var result = TryGetFromProperty(projectXml);
+                if (result.success)
+                {
+                    return result.property;
+                }
+
+                // Check if build events can be found in targets
+                return GetFromTargets(projectXml);
+            }
+
+            public void SetProperty(string unevaluatedPropertyValue, ProjectRootElement projectXml)
+            {
+                // Check if project file already has props in place for this.
+                if (TrySetProperty(unevaluatedPropertyValue, projectXml))
+                {
+                    return;
+                }
+
+                if (OnlyWhitespaceCharacters(unevaluatedPropertyValue))
+                {
+                    var result = FindTargetToRemove(projectXml);
+                    if (result.success)
+                    {
+                        projectXml.RemoveChild(result.target);
+                    }
+                }
+                else
+                {
+                    SetParameter(projectXml, unevaluatedPropertyValue);
+                }
+            }
+
+            private (bool success, string property) TryGetFromProperty(ProjectRootElement projectXml)
+            {
+                var property = projectXml.Properties
+                    .Where(prop => StringComparer.OrdinalIgnoreCase.Compare(prop.Name, BuildEvent) == 0)
+                    .FirstOrDefault();
+                return (success: property != null, property?.Value);
+            }
+
+            private string GetFromTargets(ProjectRootElement projectXml)
+            {
                 var result = FindExecTaskInTargets(projectXml);
 
                 if (!result.success)
@@ -48,22 +91,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                 return null; // exec task as written in the project file is invalid, we should be resilient to this case.
             }
 
-            public void SetProperty(string unevaluatedPropertyValue, ProjectRootElement projectXml)
+            private bool TrySetProperty(string unevaluatedPropertyValue, ProjectRootElement projectXml)
             {
-                if (string.IsNullOrWhiteSpace(unevaluatedPropertyValue) &&
-                    !unevaluatedPropertyValue.Contains("\n"))
+                var property = projectXml.Properties
+                    .Where(prop => StringComparer.OrdinalIgnoreCase.Compare(prop.Name, BuildEvent) == 0)
+                    .FirstOrDefault();
+                if (property == null)
                 {
-                    var result = FindTargetToRemove(projectXml);
-                    if (result.success)
-                    {
-                        projectXml.RemoveChild(result.target);
-                    }
+                    return false;
                 }
-                else
+
+                if (OnlyWhitespaceCharacters(unevaluatedPropertyValue))
                 {
-                    SetParameter(projectXml, unevaluatedPropertyValue);
+                    projectXml.RemoveChild(property);
+                    return true;
                 }
+
+                property.Value = unevaluatedPropertyValue;
+                return true;
             }
+
+            private static bool OnlyWhitespaceCharacters(string unevaluatedPropertyValue)
+                => string.IsNullOrWhiteSpace(unevaluatedPropertyValue) &&
+                   !unevaluatedPropertyValue.Contains("\n");
 
             private (bool success, ProjectTaskElement execTask) FindExecTaskInTargets(ProjectRootElement projectXml)
             {
