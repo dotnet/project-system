@@ -96,22 +96,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public static void SetPropertyTest_NoTargetsPresent()
         {
-            var root = @"
-<Project Sdk=""Microsoft.NET.Sdk"">
-
+            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
-
-</Project>
-".AsProjectRootElement();
+</Project>".AsProjectRootElement();
             systemUnderTest.SetProperty(@"echo ""post build output""", root);
-            var stringWriter = new System.IO.StringWriter();
-            root.Save(stringWriter);
 
-            var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
-<Project Sdk=""Microsoft.NET.Sdk"">
+            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
@@ -121,33 +114,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
   </Target>
 </Project>";
 
-            var actual = stringWriter.ToString();
+            var actual = root.SaveAndGetChanges();
             Assert.Equal(expected, actual);
         }
 
         [Fact]
         public static void SetPropertyTest_TargetPresent()
         {
-            var root = @"
-<Project Sdk=""Microsoft.NET.Sdk"">
-
+            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
-
   <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
     <Exec Command=""echo &quot;post build output&quot;"" />
   </Target>
-
-</Project>
-".AsProjectRootElement();
+</Project>".AsProjectRootElement();
             systemUnderTest.SetProperty(@"echo ""post build $(OutDir)""", root);
-            var stringWriter = new System.IO.StringWriter();
-            root.Save(stringWriter);
 
-            var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
-<Project Sdk=""Microsoft.NET.Sdk"">
+            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
@@ -157,32 +142,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
   </Target>
 </Project>";
 
-            var actual = stringWriter.ToString();
+            var actual = root.SaveAndGetChanges();
             Assert.Equal(expected, actual);
         }
 
         [Fact]
         public static void SetPropertyTest_TargetPresent_NoTasks()
         {
-            var root = @"
-<Project Sdk=""Microsoft.NET.Sdk"">
-
+            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
-
   <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
   </Target>
-
-</Project>
-".AsProjectRootElement();
+</Project>".AsProjectRootElement();
             systemUnderTest.SetProperty(@"echo ""post build $(OutDir)""", root);
-            var stringWriter = new System.IO.StringWriter();
-            root.Save(stringWriter);
 
-            var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
-<Project Sdk=""Microsoft.NET.Sdk"">
+            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
@@ -194,34 +171,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
   </Target>
 </Project>";
 
-            var actual = stringWriter.ToString();
+            var actual = root.SaveAndGetChanges();
             Assert.Equal(expected, actual);
         }
 
         [Fact]
         public static void SetPropertyTest_TargetPresent_MultipleTasks()
         {
-            var root = @"
-<Project Sdk=""Microsoft.NET.Sdk"">
-
+            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
-
   <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
     <Exec Command=""echo &quot;post build output&quot;"" />
     <Exec Command=""echo &quot;post build output&quot;"" />
   </Target>
-
-</Project>
-".AsProjectRootElement();
+</Project>".AsProjectRootElement();
             systemUnderTest.SetProperty(@"echo ""post build $(OutDir)""", root);
-            var stringWriter = new System.IO.StringWriter();
-            root.Save(stringWriter);
 
-            var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
-<Project Sdk=""Microsoft.NET.Sdk"">
+            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
@@ -232,34 +201,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
   </Target>
 </Project>";
 
-            var actual = stringWriter.ToString();
+            var actual = root.SaveAndGetChanges();
             Assert.Equal(expected, actual);
         }
 
         [Fact]
         public static void SetPropertyTest_DoNotRemoveTarget_EmptyString()
         {
-            var root = @"
-<Project Sdk=""Microsoft.NET.Sdk"">
-
+            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
-
   <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
     <Exec Command=""echo &quot;post build output&quot;"" />
     <Exec Command=""echo &quot;post build output&quot;"" />
   </Target>
-
-</Project>
-".AsProjectRootElement();
+</Project>".AsProjectRootElement();
             systemUnderTest.SetProperty(string.Empty, root);
-            var stringWriter = new System.IO.StringWriter();
-            root.Save(stringWriter);
 
-            var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
-<Project Sdk=""Microsoft.NET.Sdk"">
+            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
@@ -270,132 +231,100 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
   </Target>
 </Project>";
 
-            var actual = stringWriter.ToString();
+            var actual = root.SaveAndGetChanges();
             Assert.Equal(expected, actual);
         }
 
         [Fact]
         public static void SetPropertyTest_RemoveTarget_EmptyString()
         {
-            var root = @"
-<Project Sdk=""Microsoft.NET.Sdk"">
-
+            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
-
   <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
     <Exec Command=""echo &quot;post build output&quot;"" />
   </Target>
-
-</Project>
-".AsProjectRootElement();
+</Project>".AsProjectRootElement();
             systemUnderTest.SetProperty(string.Empty, root);
-            var stringWriter = new System.IO.StringWriter();
-            root.Save(stringWriter);
 
-            var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
-<Project Sdk=""Microsoft.NET.Sdk"">
+            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
 </Project>";
 
-            var actual = stringWriter.ToString();
+            var actual = root.SaveAndGetChanges();
             Assert.Equal(expected, actual);
         }
 
         [Fact]
         public static void SetPropertyTest_RemoveTarget_WhitespaceCharacter()
         {
-            var root = @"
-<Project Sdk=""Microsoft.NET.Sdk"">
-
+            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
-
   <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
     <Exec Command=""echo &quot;post build output&quot;"" />
   </Target>
-
-</Project>
-".AsProjectRootElement();
+</Project>".AsProjectRootElement();
             systemUnderTest.SetProperty("       ", root);
-            var stringWriter = new System.IO.StringWriter();
-            root.Save(stringWriter);
 
-            var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
-<Project Sdk=""Microsoft.NET.Sdk"">
+            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
 </Project>";
 
-            var actual = stringWriter.ToString();
+            var actual = root.SaveAndGetChanges();
             Assert.Equal(expected, actual);
         }
 
         [Fact]
         public static void SetPropertyTest_RemoveTarget_TabCharacter()
         {
-            var root = @"
-<Project Sdk=""Microsoft.NET.Sdk"">
-
+            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
-
   <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
     <Exec Command=""echo &quot;post build output&quot;"" />
   </Target>
-
-</Project>
-".AsProjectRootElement();
+</Project>".AsProjectRootElement();
             systemUnderTest.SetProperty("\t\t\t", root);
-            var stringWriter = new System.IO.StringWriter();
-            root.Save(stringWriter);
 
-            var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
-<Project Sdk=""Microsoft.NET.Sdk"">
+            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
 </Project>";
 
-            var actual = stringWriter.ToString();
+            var actual = root.SaveAndGetChanges();
             Assert.Equal(expected, actual);
         }
 
         [Fact]
         public static void SetPropertyTest_RemoveTarget_NewlineCharacter()
         {
-            var root = @"
-<Project Sdk=""Microsoft.NET.Sdk"">
-
+            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
-
   <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
     <Exec Command=""echo &quot;post build output&quot;"" />
   </Target>
-
-</Project>
-".AsProjectRootElement();
+</Project>".AsProjectRootElement();
             systemUnderTest.SetProperty("\r\n", root);
-            var stringWriter = new System.IO.StringWriter();
-            root.Save(stringWriter);
 
-            var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
-<Project Sdk=""Microsoft.NET.Sdk"">
+            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
@@ -405,32 +334,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
   </Target>
 </Project>";
 
-            var actual = stringWriter.ToString();
+            var actual = root.SaveAndGetChanges();
             Assert.Equal(expected, actual);
         }
 
         [Fact]
         public static void SetPropertyTest_TargetNameCollision()
         {
-            var root = @"
-<Project Sdk=""Microsoft.NET.Sdk"">
-
+            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
-
   <Target Name=""PostBuild"">
   </Target>
-
-</Project>
-".AsProjectRootElement();
+</Project>".AsProjectRootElement();
             systemUnderTest.SetProperty(@"echo ""post build $(OutDir)""", root);
-            var stringWriter = new System.IO.StringWriter();
-            root.Save(stringWriter);
 
-            var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
-<Project Sdk=""Microsoft.NET.Sdk"">
+            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
@@ -442,35 +363,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
   </Target>
 </Project>";
 
-            var actual = stringWriter.ToString();
+            var actual = root.SaveAndGetChanges();
             Assert.Equal(expected, actual);
         }
 
         [Fact]
         public static void SetPropertyTest_TargetNameCollision02()
         {
-            var root = @"
-<Project Sdk=""Microsoft.NET.Sdk"">
-
+            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
-
   <Target Name=""PostBuild"">
   </Target>
-
   <Target Name=""PostBuild1"">
   </Target>
-
 </Project>
 ".AsProjectRootElement();
             systemUnderTest.SetProperty(@"echo ""post build $(OutDir)""", root);
-            var stringWriter = new System.IO.StringWriter();
-            root.Save(stringWriter);
 
-            var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
-<Project Sdk=""Microsoft.NET.Sdk"">
+            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
@@ -484,31 +397,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
   </Target>
 </Project>";
 
-            var actual = stringWriter.ToString();
+            var actual = root.SaveAndGetChanges();
             Assert.Equal(expected, actual);
         }
 
         [Fact]
         public static void SetPropertyTest_ExistingProperties()
         {
-            var root = @"
-<Project Sdk=""Microsoft.NET.Sdk"">
-
+            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <PreBuildEvent>echo $(ProjectDir)</PreBuildEvent>
     <PostBuildEvent>echo $(ProjectDir)</PostBuildEvent>
   </PropertyGroup>
-
-</Project>
-".AsProjectRootElement();
+</Project>".AsProjectRootElement();
             systemUnderTest.SetProperty(@"echo ""post build $(OutDir)""", root);
-            var stringWriter = new System.IO.StringWriter();
-            root.Save(stringWriter);
 
-            var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
-<Project Sdk=""Microsoft.NET.Sdk"">
+            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
@@ -517,7 +423,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
   </PropertyGroup>
 </Project>";
 
-            var actual = stringWriter.ToString();
+            var actual = root.SaveAndGetChanges();
             Assert.Equal(expected, actual);
         }
     }
