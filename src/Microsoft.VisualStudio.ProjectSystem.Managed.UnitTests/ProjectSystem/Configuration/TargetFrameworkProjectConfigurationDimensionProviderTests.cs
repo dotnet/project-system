@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.Build;
 using Xunit;
 
@@ -32,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 </Project>";
 
         [Fact]
-        public async void TargetFrameworkProjectConfigurationDimensionProvider_GetDefaultValuesForDimensionsAsync_TFM()
+        public async Task TargetFrameworkProjectConfigurationDimensionProvider_GetDefaultValuesForDimensionsAsync_TFM()
         {
             using (var projectFile = new MsBuildProjectFile(ProjectXmlTFM))
             {
@@ -47,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         [Theory]
         [InlineData(ProjectXmlTFMs)]
         [InlineData(ProjectXmlTFMAndTFMs)]
-        public async void TargetFrameworkProjectConfigurationDimensionProvider_GetDefaultValuesForDimensionsAsync_TFMs(string projectXml)
+        public async Task TargetFrameworkProjectConfigurationDimensionProvider_GetDefaultValuesForDimensionsAsync_TFMs(string projectXml)
         {
             using (var projectFile = new MsBuildProjectFile(projectXml))
             {
@@ -63,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         }
 
         [Fact]
-        public async void TargetFrameworkProjectConfigurationDimensionProvider_GetProjectConfigurationDimensionsAsync_TFM()
+        public async Task TargetFrameworkProjectConfigurationDimensionProvider_GetProjectConfigurationDimensionsAsync_TFM()
         {
             using (var projectFile = new MsBuildProjectFile(ProjectXmlTFM))
             {
@@ -78,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         [Theory]
         [InlineData(ProjectXmlTFMs)]
         [InlineData(ProjectXmlTFMAndTFMs)]
-        public async void TargetFrameworkProjectConfigurationDimensionProvider_GetProjectConfigurationDimensionsAsync_TFMs(string projectXml)
+        public async Task TargetFrameworkProjectConfigurationDimensionProvider_GetProjectConfigurationDimensionsAsync_TFMs(string projectXml)
         {
             using (var projectFile = new MsBuildProjectFile(projectXml))
             {
@@ -103,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         [InlineData(ConfigurationDimensionChange.Rename, ChangeEventStage.After)]
         [InlineData(ConfigurationDimensionChange.Delete, ChangeEventStage.Before)]
         [InlineData(ConfigurationDimensionChange.Delete, ChangeEventStage.After)]
-        public async void TargetFrameworkProjectConfigurationDimensionProvider_OnDimensionValueChanged(ConfigurationDimensionChange change, ChangeEventStage stage)
+        public async Task TargetFrameworkProjectConfigurationDimensionProvider_OnDimensionValueChanged(ConfigurationDimensionChange change, ChangeEventStage stage)
         {
             // No changes should happen for TFM so verify that the property is the same before and after
             using (var projectFile = new MsBuildProjectFile(ProjectXmlTFMs))
@@ -121,7 +122,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                     ConfigurationGeneral.TargetFrameworkProperty,
                     "NewTFM");
                 await provider.OnDimensionValueChangedAsync(args);
-                
+
                 Assert.NotNull(property);
                 Assert.Equal(expectedTFMs, property.Value);
             }

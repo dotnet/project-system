@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
@@ -16,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [InlineData("WinMDObj", "2")]
         [InlineData("AppContainerExe", "1")]
         [InlineData("", "0")]
-        public async void GetEvaluatedValue(object outputTypePropertyValue, string expectedMappedValue)
+        public async Task GetEvaluatedValue(object outputTypePropertyValue, string expectedMappedValue)
         {
             var properties = ProjectPropertiesFactory.Create(
                 UnconfiguredProjectFactory.Create(),
@@ -36,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [InlineData("0", "WinExe")]
         [InlineData("1", "Exe")]
         [InlineData("2", "Library")]
-        public async void SetValue(string incomingValue, string expectedOutputTypeValue)
+        public async Task SetValue(string incomingValue, string expectedOutputTypeValue)
         {
             var setValues = new List<object>();
             var properties = ProjectPropertiesFactory.Create(
@@ -57,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Theory]
         [InlineData("3")]
         [InlineData("InvalidValue")]
-        public async void SetValue_ThrowsKeyNotFoundException(string invalidValue)
+        public async Task SetValue_ThrowsKeyNotFoundException(string invalidValue)
         {
             var setValues = new List<object>();
             var properties = ProjectPropertiesFactory.Create(
