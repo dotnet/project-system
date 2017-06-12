@@ -59,6 +59,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
+        public static void GetPropertyTest_PreBuildTargetPresent_LowerCase()
+        {
+            var root = @"
+<Project Sdk=""Microsoft.NET.Sdk"">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+
+  <Target Name=""prebuild"" BeforeTargets=""prebuildevent"">
+    <Exec Command=""echo &quot;prebuild output&quot;"" />
+  </Target>
+
+</Project>
+".AsProjectRootElement();
+            var actual = systemUnderTest.GetProperty(root);
+            Assert.Equal(@"echo ""prebuild output""", actual);
+        }
+
+        [Fact]
         public static void GetPropertyTest_NoTargetsPresent()
         {
             var root = @"
@@ -146,6 +167,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
+        public static void SetPropertyTest_TargetPresent_LowerCase()
+        {
+            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+  <Target Name=""prebuild"" BeforeTargets=""prebuildevent"">
+    <Exec Command=""echo &quot;pre build output&quot;"" />
+  </Target>
+</Project>".AsProjectRootElement();
+            systemUnderTest.SetProperty(@"echo ""pre build $(OutDir)""", root);
+
+            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+  <Target Name=""prebuild"" BeforeTargets=""prebuildevent"">
+    <Exec Command=""echo &quot;pre build $(OutDir)&quot;"" />
+  </Target>
+</Project>";
+
+            var actual = root.SaveAndGetChanges();
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public static void SetPropertyTest_TargetPresent_NoTasks()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
@@ -167,6 +216,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
   </Target>
   <Target Name=""PreBuild1"" BeforeTargets=""PreBuildEvent"">
     <Exec Command=""echo &quot;pre build $(OutDir)&quot;"" />
+  </Target>
+</Project>";
+
+            var actual = root.SaveAndGetChanges();
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public static void SetPropertyTest_TargetPresent_NoTasks_Removal()
+        {
+            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+  <Target Name=""PreBuild"" BeforeTargets=""PreBuildEvent"">
+  </Target>
+  <Target Name=""PreBuild1"" BeforeTargets=""PreBuildEvent"">
+    <Exec Command=""echo &quot;pre build $(OutDir)&quot;"" />
+  </Target>
+</Project>".AsProjectRootElement();
+            systemUnderTest.SetProperty(@"", root);
+
+            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+  <Target Name=""PreBuild"" BeforeTargets=""PreBuildEvent"">
   </Target>
 </Project>";
 
@@ -394,6 +472,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
   <Target Name=""PreBuild"">
   </Target>
   <Target Name=""PreBuild1"">
+  </Target>
+  <Target Name=""PreBuild2"" BeforeTargets=""PreBuildEvent"">
+    <Exec Command=""echo &quot;pre build $(OutDir)&quot;"" />
+  </Target>
+</Project>";
+
+            var actual = root.SaveAndGetChanges();
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public static void SetPropertyTest_TargetNameCollision_LowerCase()
+        {
+            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+  <Target Name=""prebuild"">
+  </Target>
+  <Target Name=""prebuild1"">
+  </Target>
+</Project>".AsProjectRootElement();
+            systemUnderTest.SetProperty(@"echo ""pre build $(OutDir)""", root);
+
+            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+  <Target Name=""prebuild"">
+  </Target>
+  <Target Name=""prebuild1"">
   </Target>
   <Target Name=""PreBuild2"" BeforeTargets=""PreBuildEvent"">
     <Exec Command=""echo &quot;pre build $(OutDir)&quot;"" />
