@@ -5,11 +5,11 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectProperties
 {
-    [ExportInterceptingPropertyValueProvider(_postBuildEvent, ExportInterceptingPropertyValueProviderFile.ProjectFile)]
+    [ExportInterceptingPropertyValueProvider(PostBuildEvent, ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     internal class PostBuildEventValueProvider : AbstractBuildEventValueProvider
     {
-        private const string _postBuildEvent = "PostBuildEvent";
-        private const string _targetName = "PostBuild";
+        private const string PostBuildEvent = "PostBuildEvent";
+        private const string TargetName = "PostBuild";
 
         [ImportingConstructor]
         public PostBuildEventValueProvider(
@@ -23,10 +23,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
         internal class PostBuildEventHelper : AbstractBuildEventHelper
         {
             internal PostBuildEventHelper()
-                : base(_postBuildEvent,
-                       _targetName,
+                : base(PostBuildEvent,
+                       TargetName,
                        target => target.AfterTargets,
-                       target => { target.AfterTargets = _postBuildEvent; })
+                       target => { target.AfterTargets = PostBuildEvent; })
             { }
         }
     }

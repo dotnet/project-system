@@ -41,7 +41,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             using (var access = await _projectLockService.WriteLockAsync())
             {
                 var projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
-
                 _helper.SetProperty(unevaluatedPropertyValue, projectXml);
             }
 

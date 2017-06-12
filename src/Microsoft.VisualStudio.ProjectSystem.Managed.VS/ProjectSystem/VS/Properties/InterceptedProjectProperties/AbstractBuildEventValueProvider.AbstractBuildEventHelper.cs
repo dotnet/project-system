@@ -12,8 +12,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
     {
         public abstract class AbstractBuildEventHelper
         {
-            private const string _execTask = "Exec";
-            private const string _command = "Command";
+            private const string ExecTask = "Exec";
+            private const string Command = "Command";
 
             protected AbstractBuildEventHelper(string buildEvent,
                    string targetName,
@@ -68,9 +68,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 
             private (bool success, string property) TryGetFromProperty(ProjectRootElement projectXml)
             {
+                // Choose last or default as that matches the evaluation order for MSBuild
                 var property = projectXml.Properties
                     .Where(prop => StringComparer.OrdinalIgnoreCase.Compare(prop.Name, BuildEvent) == 0)
-                    .FirstOrDefault();
+                    .LastOrDefault();
                 return (success: property != null, property?.Value);
             }
 
@@ -83,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                     return null;
                 }
 
-                if (result.execTask.Parameters.TryGetValue(_command, out var commandText))
+                if (result.execTask.Parameters.TryGetValue(Command, out var commandText))
                 {
                     return commandText;
                 }
@@ -93,9 +94,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 
             private bool TrySetProperty(string unevaluatedPropertyValue, ProjectRootElement projectXml)
             {
+                // Choose last or default as that matches the evaluation order for MSBuild
                 var property = projectXml.Properties
                     .Where(prop => StringComparer.OrdinalIgnoreCase.Compare(prop.Name, BuildEvent) == 0)
-                    .FirstOrDefault();
+                    .LastOrDefault();
                 if (property == null)
                 {
                     return false;
@@ -120,7 +122,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                 var execTask = projectXml.Targets
                                     .Where(target => StringComparer.OrdinalIgnoreCase.Compare(GetTarget(target), BuildEvent) == 0)
                                     .SelectMany(target => target.Tasks)
-                                    .Where(task => StringComparer.OrdinalIgnoreCase.Compare(task.Name, _execTask) == 0)
+                                    .Where(task => StringComparer.OrdinalIgnoreCase.Compare(task.Name, ExecTask) == 0)
                                     .FirstOrDefault();
                 return (success: execTask != null, execTask: execTask);
             }
@@ -132,7 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                                             StringComparer.OrdinalIgnoreCase.Compare(GetTarget(target), BuildEvent) == 0 &&
                                             target.Children.Count == 1 &&
                                             target.Tasks.Count == 1 &&
-                                            StringComparer.OrdinalIgnoreCase.Compare(target.Tasks.First().Name, _execTask) == 0)
+                                            StringComparer.OrdinalIgnoreCase.Compare(target.Tasks.First().Name, ExecTask) == 0)
                                         .FirstOrDefault();
                 return (success: foundTarget != null, target: foundTarget);
             }
@@ -150,17 +152,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                     var targetName = GetTargetName(projectXml);
                     var target = projectXml.AddTarget(targetName);
                     SetTargetDependencies(target);
-                    var execTask = target.AddTask(_execTask);
+                    var execTask = target.AddTask(ExecTask);
                     SetExecParameter(execTask, unevaluatedPropertyValue);
                 }
             }
 
             private void SetExecParameter(ProjectTaskElement execTask, string unevaluatedPropertyValue)
-                => execTask.SetParameter(_command, unevaluatedPropertyValue);
+                => execTask.SetParameter(Command, unevaluatedPropertyValue);
 
             private string GetTargetName(ProjectRootElement projectXml)
             {
-                var targetNames = new HashSet<string>(projectXml.Targets.Select(t => t.Name));
+                var targetNames = new HashSet<string>(projectXml.Targets.Select(t => t.Name), StringComparer.OrdinalIgnoreCase);
                 var targetName = TargetName;
                 if (targetNames.Contains(targetName))
                 {
