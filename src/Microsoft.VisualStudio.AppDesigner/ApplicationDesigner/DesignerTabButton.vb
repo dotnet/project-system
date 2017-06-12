@@ -248,7 +248,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             ''' </summary>
             Public Overrides ReadOnly Property State() As AccessibleStates
                 Get
-                    Return _button.AccessibleState
+                    Return MyBase.State Or _button.AccessibleState
                 End Get
             End Property
 
