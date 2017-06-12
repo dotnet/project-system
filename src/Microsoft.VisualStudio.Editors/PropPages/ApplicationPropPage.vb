@@ -338,6 +338,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 EnableControl(AppIconBrowse, ApplicationIconSupported())
                 EnableControl(ApplicationIcon, ApplicationIconSupported())
                 EnableControl(ApplicationIconLabel, ApplicationIconSupported())
+                ManifestExplanationLabel.Enabled = False
                 IconRadioButton.Checked = False
                 If Not ApplicationManifestEntryIsDefault(ApplicationManifest.Text) Then
                     ApplicationManifest.Text = String.Empty
@@ -365,6 +366,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 AppIconBrowse.Enabled = False
                 ApplicationIcon.Enabled = False
                 ApplicationIconLabel.Enabled = False
+                ManifestExplanationLabel.Enabled = False
                 IconRadioButton.Checked = False
                 ApplicationManifest.Text = String.Empty
                 ApplicationManifestLabel.Enabled = False
@@ -376,6 +378,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 EnableControl(ApplicationIconLabel, ApplicationIconSupported())
                 EnableControl(ApplicationIcon, ApplicationIconSupported())
                 EnableControl(AppIconBrowse, ApplicationIconSupported())
+                ManifestExplanationLabel.Enabled = True
                 IconRadioButton.Checked = True
                 If (ProjectProperties.OutputType <> VSLangProj.prjOutputType.prjOutputTypeLibrary) Then
                     ApplicationManifest.Text = stApplicationManifest
@@ -511,6 +514,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Private Sub IconResourceFile_CheckedChanged(sender As Object, e As EventArgs) Handles IconRadioButton.CheckedChanged, Win32ResourceRadioButton.CheckedChanged
             If (IconRadioButton.Checked = True) Then
+                ManifestExplanationLabel.Enabled = True
                 EnableControl(ApplicationIconLabel, ApplicationIconSupported())
                 EnableControl(ApplicationIcon, ApplicationIconSupported())
                 EnableControl(AppIconBrowse, ApplicationIconSupported())
@@ -524,6 +528,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Win32ResourceFile.Enabled = False
                 Win32ResourceFileBrowse.Enabled = False
             ElseIf (Win32ResourceRadioButton.Checked = True) Then
+                ManifestExplanationLabel.Enabled = False
                 ApplicationIconLabel.Enabled = False
                 ApplicationIcon.Enabled = False
                 AppIconBrowse.Enabled = False
