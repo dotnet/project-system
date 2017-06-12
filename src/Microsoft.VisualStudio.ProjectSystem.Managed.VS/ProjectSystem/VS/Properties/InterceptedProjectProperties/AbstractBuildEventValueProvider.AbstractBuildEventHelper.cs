@@ -58,12 +58,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                     if (result.success)
                     {
                         projectXml.RemoveChild(result.target);
+                        return;
                     }
                 }
-                else
-                {
-                    SetParameter(projectXml, unevaluatedPropertyValue);
-                }
+
+                SetParameter(projectXml, unevaluatedPropertyValue);
             }
 
             private (bool success, string property) TryGetFromProperty(ProjectRootElement projectXml)

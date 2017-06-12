@@ -304,7 +304,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
   <Target Name=""PreBuild"" BeforeTargets=""PreBuildEvent"">
-    <Exec Command=""echo &quot;pre build output&quot;"" />
+    <Exec Command="""" />
     <Exec Command=""echo &quot;pre build output&quot;"" />
   </Target>
 </Project>";

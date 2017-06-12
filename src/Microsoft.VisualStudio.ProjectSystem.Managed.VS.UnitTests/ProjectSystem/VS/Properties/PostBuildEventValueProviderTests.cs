@@ -304,7 +304,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
   <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
-    <Exec Command=""echo &quot;post build output&quot;"" />
+    <Exec Command="""" />
     <Exec Command=""echo &quot;post build output&quot;"" />
   </Target>
 </Project>";
