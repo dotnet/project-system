@@ -540,6 +540,22 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             SetDirty(Win32ResourceFile, True)
         End Sub
 
+        Protected Overrides Function ProcessDialogKey(keyData As Keys) As Boolean
+            ' Our control is currently setup so that the radio buttons and the corresponding controls are all siblings
+            ' This prevents Up/Down from just navigating between the radio buttons and breaks accessibility
+            If (ActiveControl Is IconRadioButton OrElse ActiveControl Is Win32ResourceRadioButton) Then
+                If (keyData = Keys.Down OrElse keyData = Keys.Up) Then
+                    If ActiveControl Is IconRadioButton Then
+                        Win32ResourceRadioButton.Select()
+                    Else
+                        IconRadioButton.Select()
+                    End If
+                    Return True
+                End If
+            End If
+            Return MyBase.ProcessDialogKey(keyData)
+        End Function
+
         ''' <summary>
         ''' validate a property
         ''' </summary>
