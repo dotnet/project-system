@@ -16,6 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     [Export(typeof(IBuildUpToDateCheckProvider))]
+    [ExportMetadata("BeforeDrainCriticalTasks", true)]
     internal sealed class BuildUpToDateCheck : OnceInitializedOnceDisposed, IBuildUpToDateCheckProvider
     {
         private sealed class Logger
@@ -78,6 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly IProjectSystemOptions _projectSystemOptions;
         private readonly ConfiguredProject _configuredProject;
         private readonly Lazy<IFileTimestampCache> _fileTimestampCache;
+        private readonly IProjectAsynchronousTasksService _tasksService;
 
         private IDisposable _link;
         private IComparable _lastVersionSeen;
@@ -94,11 +96,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public BuildUpToDateCheck(
             IProjectSystemOptions projectSystemOptions,
             ConfiguredProject configuredProject,
-            Lazy<IFileTimestampCache> fileTimestampCache)
+            Lazy<IFileTimestampCache> fileTimestampCache,
+            IProjectAsynchronousTasksService tasksService)
         {
             _projectSystemOptions = projectSystemOptions;
             _configuredProject = configuredProject;
             _fileTimestampCache = fileTimestampCache;
+            _tasksService = tasksService;
         }
 
         protected override void Initialize()
@@ -241,6 +245,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             var itemsChangedSinceLastCheck = _itemsChangedSinceLastCheck;
             _itemsChangedSinceLastCheck = false;
+
+            if (!_tasksService.IsTaskQueueEmpty(ProjectCriticalOperation.Build))
+            {
+                logger.Info("Critical build tasks are running, skipping check.");
+                return false;
+            }
 
             if (_lastVersionSeen == null || _configuredProject.ProjectVersion.CompareTo(_lastVersionSeen) > 0)
             {
