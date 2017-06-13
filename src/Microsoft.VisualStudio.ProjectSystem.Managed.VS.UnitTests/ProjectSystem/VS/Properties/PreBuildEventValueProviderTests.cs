@@ -391,7 +391,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static void SetPropertyTest_RemoveTarget_NewlineCharacter()
+        public static void SetPropertyTest_DoNotRemoveTarget_NewlineCharacter()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
