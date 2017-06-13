@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var threadingService = IProjectThreadingServiceFactory.Create();
 
             Assert.Throws<ArgumentNullException>("serviceProvider", () => {
-                return new VsService<string, string>((IServiceProvider)null, threadingService);
+                return new VsOptionalService<string, string>((IServiceProvider)null, threadingService);
             });
         }
 
@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var serviceProvider = SVsServiceProviderFactory.Create();
 
             Assert.Throws<ArgumentNullException>("threadingService", () => {
-                return new VsService<string, string>(serviceProvider, (IProjectThreadingService)null);
+                return new VsOptionalService<string, string>(serviceProvider, (IProjectThreadingService)null);
             });
         }
 
