@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
     [Export(typeof(ITargetFrameworkProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal sealed class TargetFrameworkProvider : ITargetFrameworkProvider
+    internal class TargetFrameworkProvider : ITargetFrameworkProvider
     {
         [ImportingConstructor]
         public TargetFrameworkProvider(
