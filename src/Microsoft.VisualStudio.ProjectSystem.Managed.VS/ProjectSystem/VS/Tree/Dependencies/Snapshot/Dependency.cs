@@ -266,7 +266,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         private static string Normalize(string id)
         {
-            return id.Replace('/', '\\');
+            return id
+                .Replace('/', '\\')
+                .Replace("..", "__");
         }
 
         public static string GetID(ITargetFramework targetFramework, string providerType, string modelId)
