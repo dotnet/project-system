@@ -338,6 +338,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 EnableControl(AppIconBrowse, ApplicationIconSupported())
                 EnableControl(ApplicationIcon, ApplicationIconSupported())
                 EnableControl(ApplicationIconLabel, ApplicationIconSupported())
+                ManifestExplanationLabel.Enabled = False
                 IconRadioButton.Checked = False
                 If Not ApplicationManifestEntryIsDefault(ApplicationManifest.Text) Then
                     ApplicationManifest.Text = String.Empty
@@ -365,6 +366,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 AppIconBrowse.Enabled = False
                 ApplicationIcon.Enabled = False
                 ApplicationIconLabel.Enabled = False
+                ManifestExplanationLabel.Enabled = False
                 IconRadioButton.Checked = False
                 ApplicationManifest.Text = String.Empty
                 ApplicationManifestLabel.Enabled = False
@@ -376,6 +378,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 EnableControl(ApplicationIconLabel, ApplicationIconSupported())
                 EnableControl(ApplicationIcon, ApplicationIconSupported())
                 EnableControl(AppIconBrowse, ApplicationIconSupported())
+                ManifestExplanationLabel.Enabled = True
                 IconRadioButton.Checked = True
                 If (ProjectProperties.OutputType <> VSLangProj.prjOutputType.prjOutputTypeLibrary) Then
                     ApplicationManifest.Text = stApplicationManifest
@@ -511,6 +514,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <remarks></remarks>
         Private Sub IconResourceFile_CheckedChanged(sender As Object, e As EventArgs) Handles IconRadioButton.CheckedChanged, Win32ResourceRadioButton.CheckedChanged
             If (IconRadioButton.Checked = True) Then
+                ManifestExplanationLabel.Enabled = True
                 EnableControl(ApplicationIconLabel, ApplicationIconSupported())
                 EnableControl(ApplicationIcon, ApplicationIconSupported())
                 EnableControl(AppIconBrowse, ApplicationIconSupported())
@@ -524,6 +528,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Win32ResourceFile.Enabled = False
                 Win32ResourceFileBrowse.Enabled = False
             ElseIf (Win32ResourceRadioButton.Checked = True) Then
+                ManifestExplanationLabel.Enabled = False
                 ApplicationIconLabel.Enabled = False
                 ApplicationIcon.Enabled = False
                 AppIconBrowse.Enabled = False
@@ -539,6 +544,22 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             SetDirty(ApplicationManifest, False)
             SetDirty(Win32ResourceFile, True)
         End Sub
+
+        Protected Overrides Function ProcessDialogKey(keyData As Keys) As Boolean
+            ' Our control is currently setup so that the radio buttons and the corresponding controls are all siblings
+            ' This prevents Up/Down from just navigating between the radio buttons and breaks accessibility
+            If (ActiveControl Is IconRadioButton OrElse ActiveControl Is Win32ResourceRadioButton) Then
+                If (keyData = Keys.Down OrElse keyData = Keys.Up) Then
+                    If ActiveControl Is IconRadioButton Then
+                        Win32ResourceRadioButton.Select()
+                    Else
+                        IconRadioButton.Select()
+                    End If
+                    Return True
+                End If
+            End If
+            Return MyBase.ProcessDialogKey(keyData)
+        End Function
 
         ''' <summary>
         ''' validate a property
