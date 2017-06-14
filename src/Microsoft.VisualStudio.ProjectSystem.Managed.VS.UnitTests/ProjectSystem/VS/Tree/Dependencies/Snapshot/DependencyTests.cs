@@ -122,8 +122,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Theory]
-        [InlineData(@"../../somepath", @"tfm1\xxx\..\..\somepath")]
-        [InlineData(@"__\somepath..\", @"tfm1\xxx\__\somepath..")]
+        [InlineData(@"../../somepath", @"tfm1\xxx\__\__\somepath")]
+        [InlineData(@"__\somepath..\", @"tfm1\xxx\__\somepath__")]
         [InlineData(@"somepath", @"tfm1\xxx\somepath")]
         public void Dependency_Id_NoSnapsotTargetFramework(string modelId, string expectedId)
         {
@@ -137,8 +137,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Theory]
-        [InlineData(@"../../somepath", @"tfm\providerType\..\..\somepath")]
-        [InlineData(@"__\somepath..\", @"tfm\providerType\__\somepath..")]
+        [InlineData(@"../../somepath", @"tfm\providerType\__\__\somepath")]
+        [InlineData(@"__\somepath..\", @"tfm\providerType\__\somepath__")]
         [InlineData(@"somepath", @"tfm\providerType\somepath")]
         public void Dependency_Id(string modelId, string expectedId)
         {
