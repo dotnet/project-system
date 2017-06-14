@@ -114,6 +114,10 @@
                     Visible="False" 
                     ReadOnly="True" />
                     
+    <StringProperty Name="DotnetCliToolTargetFramework" 
+                    Visible="False" 
+                    ReadOnly="True" />
+                    
     <StringProperty Name="TreatWarningsAsErrors" 
                     Visible="False" 
                     ReadOnly="True" />
