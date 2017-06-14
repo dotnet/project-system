@@ -195,7 +195,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             {
                 try
                 {
-                    await _projectServices.Project.Services.ProjectAsynchronousTasks.LoadedProjectAsync(async () =>
+                    await _projectServices.Project.Services.ProjectAsynchronousTasks.LoadedProjectAvoidingUnnecessaryWorkAsync(async () =>
                     {
                         using (var access = await _projectLockService.WriteLockAsync())
                         {

@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             if (IsDisposing || IsDisposed)
                 return;
 
-            await _tasksService.LoadedProjectAsync(async () =>
+            await _tasksService.LoadedProjectAvoidingUnnecessaryWorkAsync(async () =>
             {
                 await HandleAsync(e, handlerType).ConfigureAwait(false);
             });
