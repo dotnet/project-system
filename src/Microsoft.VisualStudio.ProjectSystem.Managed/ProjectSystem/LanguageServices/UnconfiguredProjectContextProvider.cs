@@ -233,7 +233,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                 return null;
 
             // Don't initialize until the project has been loaded into the IDE and available in Solution Explorer
-            await _asyncLoadDashboard.ProjectLoadedInHost.ConfigureAwait(false);
+            await _asyncLoadDashboard.ProjectLoadedInHostWithCancellation(_commonServices.Project).ConfigureAwait(false);
 
             // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
             return await _taskScheduler.RunAsync(TaskSchedulerPriority.UIThreadBackgroundPriority, async () =>

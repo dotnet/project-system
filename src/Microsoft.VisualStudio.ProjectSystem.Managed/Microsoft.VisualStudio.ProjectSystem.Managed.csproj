@@ -88,6 +88,12 @@
     <Compile Update="ProjectSystem\Rules\EmbeddedResource.cs">
       <DependentUpon>EmbeddedResource.xaml</DependentUpon>
     </Compile>
+    <Compile Update="ProjectSystem\Rules\UpToDateCheckInput.cs">
+      <DependentUpon>UpToDateCheckInput.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\UpToDateCheckOutput.cs">
+      <DependentUpon>UpToDateCheckOutput.xaml</DependentUpon>
+    </Compile>
     <Compile Update="ProjectSystem\Rules\Folder.cs">
       <DependentUpon>Folder.xaml</DependentUpon>
     </Compile>
@@ -154,6 +160,14 @@
       <SubType>Designer</SubType>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\EmbeddedResource.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\UpToDateCheckInput.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\UpToDateCheckOutput.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
