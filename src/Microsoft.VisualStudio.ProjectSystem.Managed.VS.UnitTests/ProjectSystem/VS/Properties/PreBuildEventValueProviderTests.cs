@@ -114,6 +114,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
+        public static void GetPropertyTest_WrongTargetName()
+        {
+            var root = @"
+<Project Sdk=""Microsoft.NET.Sdk"">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+
+  <Target Name=""PreeBuild"" BeforeTargets=""PreBuildEvent"">
+    <Exec Command=""echo &quot;prebuild output&quot;"" />
+  </Target>
+
+</Project>
+".AsProjectRootElement();
+            var result = systemUnderTest.GetProperty(root);
+            Assert.Null(result);
+        }
+
+        [Fact]
         public static void SetPropertyTest_NoTargetsPresent()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
@@ -535,6 +556,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     <PreBuildEvent>echo ""post build $(OutDir)""</PreBuildEvent>
     <PostBuildEvent>echo $(ProjectDir)</PostBuildEvent>
   </PropertyGroup>
+</Project>";
+
+            var actual = root.SaveAndGetChanges();
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public static void SetPropertyTest_WrongTargetName()
+        {
+            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+  <Target Name=""PreeBuild"" BeforeTargets=""PreBuildEvent"">
+    <Exec Command=""echo &quot;pre build output&quot;"" />
+  </Target>
+</Project>
+".AsProjectRootElement();
+            systemUnderTest.SetProperty(@"echo ""post build $(OutDir)""", root);
+
+            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+  <Target Name=""PreeBuild"" BeforeTargets=""PreBuildEvent"">
+    <Exec Command=""echo &quot;pre build output&quot;"" />
+  </Target>
+  <Target Name=""PreBuild"" BeforeTargets=""PreBuildEvent"">
+    <Exec Command=""echo &quot;post build $(OutDir)&quot;"" />
+  </Target>
 </Project>";
 
             var actual = root.SaveAndGetChanges();

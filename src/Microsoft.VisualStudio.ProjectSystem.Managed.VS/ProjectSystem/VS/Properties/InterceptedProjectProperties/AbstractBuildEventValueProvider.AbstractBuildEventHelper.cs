@@ -119,7 +119,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             private (bool success, ProjectTaskElement execTask) FindExecTaskInTargets(ProjectRootElement projectXml)
             {
                 var execTask = projectXml.Targets
-                                    .Where(target => StringComparer.OrdinalIgnoreCase.Compare(GetTarget(target), BuildEvent) == 0)
+                                    .Where(target =>
+                                        StringComparer.OrdinalIgnoreCase.Compare(GetTarget(target), BuildEvent) == 0 &&
+                                        StringComparer.OrdinalIgnoreCase.Compare(target.Name, TargetName) == 0)
                                     .SelectMany(target => target.Tasks)
                                     .Where(task => StringComparer.OrdinalIgnoreCase.Compare(task.Name, ExecTask) == 0)
                                     .FirstOrDefault();
