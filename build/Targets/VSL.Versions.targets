@@ -24,6 +24,7 @@
     <SystemReflectionMetadataVersion>1.4.2</SystemReflectionMetadataVersion>
     <SystemRuntimeInteropServicesRuntimeInformationVersion>4.3.0</SystemRuntimeInteropServicesRuntimeInformationVersion>
     <MicrosoftDotNetIBCMergeVersion>4.7.1-alpha-00001</MicrosoftDotNetIBCMergeVersion>
+    <MicrosoftVisualStudioShellInterop9Version>9.0.30729</MicrosoftVisualStudioShellInterop9Version>
     <MicrosoftVisualStudioShellInterop10Version>10.0.30319</MicrosoftVisualStudioShellInterop10Version>
     <MicrosoftVisualStudioShellInterop11Version>11.0.61030</MicrosoftVisualStudioShellInterop11Version>
     <MicrosoftVisualStudioTextManagerInterop10Version>10.0.30319</MicrosoftVisualStudioTextManagerInterop10Version>
