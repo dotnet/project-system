@@ -19,7 +19,7 @@
 
   <PropertyGroup>
     <RoslynDependenciesOptimizationDataVersion>2.0.0-rc-61101-17</RoslynDependenciesOptimizationDataVersion>
-    <ProjectSystemSDKVersion>15.3.93-pre-g57d342093d</ProjectSystemSDKVersion>
+    <ProjectSystemSDKVersion>15.3.178-pre-g209fb07c2e</ProjectSystemSDKVersion>
     <SystemCollectionsImmutableVersion>1.3.1</SystemCollectionsImmutableVersion>
     <SystemReflectionMetadataVersion>1.4.2</SystemReflectionMetadataVersion>
     <SystemRuntimeInteropServicesRuntimeInformationVersion>4.3.0</SystemRuntimeInteropServicesRuntimeInformationVersion>
