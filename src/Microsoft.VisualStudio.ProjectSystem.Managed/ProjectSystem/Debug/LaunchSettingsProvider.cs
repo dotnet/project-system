@@ -221,7 +221,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         protected async Task UpdateActiveProfileInSnapshotAsync(string activeProfile)
         {
             var snapshot = CurrentSnapshot;
-            if (snapshot == null || await SettingsFileHasChangedAsync())
+            if (snapshot == null || await SettingsFileHasChangedAsync().ConfigureAwait(false))
             {
                 await UpdateProfilesAsync(activeProfile).ConfigureAwait(false);
                 return;
@@ -251,7 +251,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     }
                 }
 
-                var launchSettingData = await GetLaunchSettingsAsync();
+                var launchSettingData = await GetLaunchSettingsAsync().ConfigureAwait(false);
 
 
                 // If there are no profiles, we will add a default profile to run the prroject. W/o it our debugger
@@ -330,7 +330,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             LaunchSettingsData settings;
             if (FileManager.FileExists(fileName))
             {
-                settings = await ReadSettingsFileFromDiskAsync();
+                settings = await ReadSettingsFileFromDiskAsync().ConfigureAwait(false);
             }
             else
             {
@@ -697,7 +697,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var activeProfileName = ActiveProfile?.Name;
 
             ILaunchSettings newSnapshot = new LaunchSettings(newSettings.Profiles, newSettings.GlobalSettings, activeProfileName);
-            await SaveSettingsToDiskAsync(newSettings);
+            await SaveSettingsToDiskAsync(newSettings).ConfigureAwait(false);
 
             FinishUpdate(newSnapshot);
         }
