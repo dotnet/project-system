@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         /// <param name="worldBuilder">Builder for immutable world dictionary of updating snapshot.</param>
         /// <param name="topLevelBuilder">Top level dependencies list builder of updating snapshot.</param>
         /// <param name="subTreeProviders">All known subtree providers</param>
-        /// <param name="projectItemSpecs">List of all items contained in project's xml at given moment</param>
+        /// <param name="projectItemSpecs">List of all items contained in project's xml at given moment, otherwise, <see langword="null"/> if we do not have any data.</param>
         /// <param name="filterAnyChanges">True if filter did any changes in the snapshot</param>
         /// <returns>Dependency to be added if addition is approved, null if dependency should not be added to snapshot</returns>
         IDependency BeforeAdd(

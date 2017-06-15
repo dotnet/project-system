@@ -41,12 +41,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         Task ExecuteInWriteLock(Action<ProjectRootElement> action);
 
         /// <summary>
-        /// Returns a hash set of all project items contained in project's xml at given moment
-        /// </summary>
-        /// <returns></returns>
-        Task<HashSet<string>> GetProjectItems();
-
-        /// <summary>
         /// Returns a collection of items.
         /// </summary>
         /// <param name="configuredProject">The configured project.</param>
