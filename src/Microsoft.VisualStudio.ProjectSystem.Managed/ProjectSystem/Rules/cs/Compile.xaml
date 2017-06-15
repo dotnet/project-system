@@ -16,7 +16,7 @@
   </EnumProperty>
   <StringProperty Name="Generator" Category="Advanced" DisplayName="Vlastní nástroj" Description="Určuje nástroj, který transformuje soubor v okamžiku návrhu a vloží výstup této transformace do jiného souboru. Například k souboru DataSet (.xsd) se dodává výchozí vlastní nástroj." />
   <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="Obor názvů vlastního nástroje" Description="Obor názvů, do kterého se umístí výstup vlastního nástroje" />
-  <StringProperty Name="FullPath" Visible="false">
+  <StringProperty Name="FullPath" Visible="false" ReadOnly="true">
     <StringProperty.DataSource>
       <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>

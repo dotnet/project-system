@@ -38,7 +38,7 @@
       DisplayName="Custom Tool Namespace"
       Description="The namespace into which the output of the custom tool is placed." />
 
-    <StringProperty Name="FullPath" Visible="false">
+    <StringProperty Name="FullPath" Visible="false" ReadOnly="true">
         <StringProperty.DataSource>
             <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>

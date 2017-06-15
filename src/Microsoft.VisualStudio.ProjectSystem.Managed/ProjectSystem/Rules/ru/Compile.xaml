@@ -16,7 +16,7 @@
   </EnumProperty>
   <StringProperty Name="Generator" Category="Advanced" DisplayName="Пользовательский инструмент" Description="Указывает инструмент, который преобразует файл во время разработки и помещает выходные данные этого преобразования в другой файл. Например, файл набора данных (XSD) поставляется с пользовательским инструментом по умолчанию." />
   <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="Пространство имен пользовательского инструмента" Description="Пространство имен, в которое помещаются выходные данные пользовательского инструмента." />
-  <StringProperty Name="FullPath" Visible="false">
+  <StringProperty Name="FullPath" Visible="false" ReadOnly="true">
     <StringProperty.DataSource>
       <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
