@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             return await ExecuteWithinLockAsync(() =>
             {
                 return Task.FromResult(_currentAggregateProjectContext);
-            });
+            }).ConfigureAwait(false);
         }
 
         public async Task<ConfiguredProject> GetConfiguredProject(ITargetFramework target)
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             return await ExecuteWithinLockAsync(() =>
             {
                 return Task.FromResult(_currentAggregateProjectContext.GetInnerConfiguredProject(target));
-            });
+            }).ConfigureAwait(false);
         }
 
         protected async Task AddInitialSubscriptionsAsync()
@@ -155,7 +155,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             var previousProjectContext = await ExecuteWithinLockAsync(() =>
             {
                 return Task.FromResult(_currentAggregateProjectContext);
-            });
+            }).ConfigureAwait(false);
 
             var newProjectContext = await UpdateProjectContextAsync().ConfigureAwait(false);
             if (previousProjectContext != newProjectContext)
@@ -227,7 +227,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 OnAggregateContextChanged(previousContextToDispose, _currentAggregateProjectContext);
 
                 return _currentAggregateProjectContext;
-            });
+            }).ConfigureAwait(false);
         }
 
         private async Task DisposeAggregateProjectContextAsync(AggregateCrossTargetProjectContext projectContext)
@@ -299,7 +299,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     {
                         await _contextProvider.Value.ReleaseProjectContextAsync(_currentAggregateProjectContext).ConfigureAwait(false);
                     }
-                });
+                }).ConfigureAwait(false);
             }
         }
 

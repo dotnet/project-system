@@ -205,7 +205,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 }
 
                 return _currentAggregateProjectContext;
-            });
+            }).ConfigureAwait(false);
         }
 
         private async Task DisposeAggregateProjectContextAsync(AggregateWorkspaceProjectContext projectContext)
@@ -267,7 +267,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 }
 
                 _languageServiceHandlerManager.Handle(update, handlerType, projectContextToUpdate, isActiveContext);
-            });
+            }).ConfigureAwait(false);
         }
         
         private bool HasTargetFrameworksChanged(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
@@ -288,7 +288,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     {
                         await _contextProvider.Value.ReleaseProjectContextAsync(_currentAggregateProjectContext).ConfigureAwait(false);
                     }
-                });
+                }).ConfigureAwait(false);
             }
         }
 
