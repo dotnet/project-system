@@ -94,6 +94,9 @@
     <Compile Update="ProjectSystem\Rules\UpToDateCheckOutput.cs">
       <DependentUpon>UpToDateCheckOutput.xaml</DependentUpon>
     </Compile>
+    <Compile Update="ProjectSystem\Rules\CopyUpToDateMarker.cs">
+      <DependentUpon>CopyUpToDateMarker.xaml</DependentUpon>
+    </Compile>
     <Compile Update="ProjectSystem\Rules\Folder.cs">
       <DependentUpon>Folder.xaml</DependentUpon>
     </Compile>
@@ -168,6 +171,10 @@
       <SubType>Designer</SubType>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\UpToDateCheckOutput.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\CopyUpToDateMarker.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>

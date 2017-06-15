@@ -135,6 +135,10 @@
       <Context>File</Context>
     </PropertyPageSchema>
 
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)CopyUpToDateMarker.xaml">
+      <Context>File</Context>
+    </PropertyPageSchema>
+
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)SpecialFolder.xaml">
       <Context>File;ProjectSubscriptionService</Context>
     </PropertyPageSchema>
