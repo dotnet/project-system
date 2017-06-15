@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
             _activeProjectConfigurationRefreshService = activeProjectConfigurationRefreshService;
             _evaluationSubscriptionLinks = new List<IDisposable>();
-        }      
+        }
 
         protected abstract IEnumerable<Lazy<ICrossTargetSubscriber>> Subscribers { get; }
 
@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             return await ExecuteWithinLockAsync(() =>
             {
                 return Task.FromResult(_currentAggregateProjectContext);
-            });
+            }).ConfigureAwait(false);
         }
 
         public async Task<ConfiguredProject> GetConfiguredProject(ITargetFramework target)
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             return await ExecuteWithinLockAsync(() =>
             {
                 return Task.FromResult(_currentAggregateProjectContext.GetInnerConfiguredProject(target));
-            });
+            }).ConfigureAwait(false);
         }
 
         protected async Task AddInitialSubscriptionsAsync()
@@ -155,7 +155,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             var previousProjectContext = await ExecuteWithinLockAsync(() =>
             {
                 return Task.FromResult(_currentAggregateProjectContext);
-            });
+            }).ConfigureAwait(false);
 
             var newProjectContext = await UpdateProjectContextAsync().ConfigureAwait(false);
             if (previousProjectContext != newProjectContext)
@@ -227,7 +227,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 OnAggregateContextChanged(previousContextToDispose, _currentAggregateProjectContext);
 
                 return _currentAggregateProjectContext;
-            });
+            }).ConfigureAwait(false);
         }
 
         private async Task DisposeAggregateProjectContextAsync(AggregateCrossTargetProjectContext projectContext)
@@ -277,13 +277,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     ruleNames: new[] { ConfigurationGeneral.SchemaName },
                     suppressVersionOnlyUpdates: true));
         }
-            
+
         private bool HasTargetFrameworksChanged(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
         {
             // remember actual property value and compare
             return e.Value.ProjectChanges.TryGetValue(
                         ConfigurationGeneral.SchemaName, out IProjectChangeDescription projectChange) &&
-                   (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.TargetFrameworkProperty) 
+                   (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.TargetFrameworkProperty)
                     || projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.TargetFrameworksProperty));
         }
 
@@ -299,7 +299,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     {
                         await _contextProvider.Value.ReleaseProjectContextAsync(_currentAggregateProjectContext).ConfigureAwait(false);
                     }
-                });
+                }).ConfigureAwait(false);
             }
         }
 
@@ -321,34 +321,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             }
         }
 
-        private JoinableTask<T> ExecuteWithinLockAsync<T>(Func<Task<T>> task)
+        private Task<T> ExecuteWithinLockAsync<T>(Func<Task<T>> task)
         {
-            // We need to request the lock within a joinable task to ensure that if we are blocking the UI
-            // thread (i.e. when CPS is draining critical tasks on the UI thread and is waiting on this task),
-            // and the lock is already held by another task requesting UI thread access, we don't reach a deadlock.
-            return JoinableFactory.RunAsync(async delegate
-            {
-                using (JoinableCollection.Join())
-                using (await _gate.DisposableWaitAsync().ConfigureAwait(false))
-                {
-                    return await task().ConfigureAwait(false);
-                }
-            });
+            return _gate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, task);
         }
 
-        private JoinableTask ExecuteWithinLockAsync(Func<Task> task)
+        private Task ExecuteWithinLockAsync(Func<Task> task)
         {
-            // We need to request the lock within a joinable task to ensure that if we are blocking the UI
-            // thread (i.e. when CPS is draining critical tasks on the UI thread and is waiting on this task),
-            // and the lock is already held by another task requesting UI thread access, we don't reach a deadlock.
-            return JoinableFactory.RunAsync(async delegate
-            {
-                using (JoinableCollection.Join())
-                using (await _gate.DisposableWaitAsync().ConfigureAwait(false))
-                {
-                    await task().ConfigureAwait(false);
-                }
-            });
+            return _gate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, task);
         }
     }
 }

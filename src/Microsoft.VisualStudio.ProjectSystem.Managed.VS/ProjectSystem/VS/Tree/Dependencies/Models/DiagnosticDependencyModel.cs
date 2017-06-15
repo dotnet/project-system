@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             ProjectTreeFlags flags,
             bool isVisible,
             IImmutableDictionary<string, string> properties)
-            : base(providerType, originalItemSpec, originalItemSpec, flags, resolved:true, isImplicit:false, properties:properties)
+            : base(providerType, originalItemSpec, originalItemSpec, flags, resolved:false, isImplicit:false, properties:properties)
         {
             Requires.NotNullOrEmpty(originalItemSpec, nameof(originalItemSpec));
             Requires.NotNullOrEmpty(message, nameof(message));

@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using Microsoft.Build.Construction;
+using Microsoft.Build.Execution;
 
 namespace Microsoft.VisualStudio.Build
 {
@@ -192,6 +193,27 @@ namespace Microsoft.VisualStudio.Build
 
                 return propertyGroup.AddProperty(propertyName, string.Empty);
             }
+        }
+
+        /// <summary>
+        ///     Returns a value indicating if the specified <see cref="ProjectItemInstance"/>
+        ///     originated in an imported file.
+        /// </summary>
+        /// <returns>
+        ///     <see langword="true"/> if <paramref name="item"/> originated in an imported file;
+        ///     otherwise, <see langword="false"/> if it was defined in the project being built.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="item"/> is <see langword="null"/>.
+        /// </exception>
+        public static bool IsImported(this ProjectItemInstance item)
+        {
+            Requires.NotNull(item, nameof(item));
+
+            string definingProjectFullPath = item.GetMetadataValue("DefiningProjectFullPath");
+            string projectFullPath = item.Project.FullPath; // NOTE: This returns project being built, not owning target
+
+            return !StringComparers.Paths.Equals(definingProjectFullPath, projectFullPath);
         }
     }
 }
