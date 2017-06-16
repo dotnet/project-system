@@ -2,9 +2,10 @@
 
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Build.Construction;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectProperties
 {
@@ -33,21 +34,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 
             public string GetProperty(ProjectRootElement projectXml)
             {
-                // Check if project file already has props in place for this.
-                var result = TryGetFromProperty(projectXml);
-                if (result.success)
-                {
-                    return result.property;
-                }
-
                 // Check if build events can be found in targets
                 return GetFromTargets(projectXml);
             }
 
-            public void SetProperty(string unevaluatedPropertyValue, ProjectRootElement projectXml)
+            public async Task SetPropertyAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, ProjectRootElement projectXml)
             {
                 // Check if project file already has props in place for this.
-                if (TrySetProperty(unevaluatedPropertyValue, projectXml))
+                if (await TrySetPropertyAsync(unevaluatedPropertyValue, defaultProperties, projectXml).ConfigureAwait(true))
                 {
                     return;
                 }
@@ -63,15 +57,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                 }
 
                 SetParameter(projectXml, unevaluatedPropertyValue);
-            }
-
-            private (bool success, string property) TryGetFromProperty(ProjectRootElement projectXml)
-            {
-                // Choose last or default as that matches the evaluation order for MSBuild
-                var property = projectXml.Properties
-                    .Where(prop => StringComparer.OrdinalIgnoreCase.Compare(prop.Name, BuildEvent) == 0)
-                    .LastOrDefault();
-                return (success: property != null, property?.Value);
             }
 
             private string GetFromTargets(ProjectRootElement projectXml)
@@ -91,24 +76,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                 return null; // exec task as written in the project file is invalid, we should be resilient to this case.
             }
 
-            private bool TrySetProperty(string unevaluatedPropertyValue, ProjectRootElement projectXml)
+            private async Task<bool> TrySetPropertyAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, ProjectRootElement projectXml)
             {
-                // Choose last or default as that matches the evaluation order for MSBuild
-                var property = projectXml.Properties
-                    .Where(prop => StringComparer.OrdinalIgnoreCase.Compare(prop.Name, BuildEvent) == 0)
-                    .LastOrDefault();
-                if (property == null)
+                var currentValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(BuildEvent).ConfigureAwait(true);
+                if (currentValue == null)
                 {
                     return false;
                 }
 
                 if (OnlyWhitespaceCharacters(unevaluatedPropertyValue))
                 {
-                    projectXml.RemoveChild(property);
+                    await defaultProperties.DeletePropertyAsync(BuildEvent).ConfigureAwait(true);
                     return true;
                 }
 
-                property.Value = unevaluatedPropertyValue;
+                await defaultProperties.SetPropertyValueAsync(BuildEvent, unevaluatedPropertyValue).ConfigureAwait(true);
                 return true;
             }
 
@@ -133,6 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                 var foundTarget = projectXml.Targets
                                         .Where(target =>
                                             StringComparer.OrdinalIgnoreCase.Compare(GetTarget(target), BuildEvent) == 0 &&
+                                            StringComparer.OrdinalIgnoreCase.Compare(target.Name, TargetName) == 0 &&
                                             target.Children.Count == 1 &&
                                             target.Tasks.Count == 1 &&
                                             StringComparer.OrdinalIgnoreCase.Compare(target.Tasks.First().Name, ExecTask) == 0)
@@ -150,8 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                 }
                 else
                 {
-                    var targetName = GetTargetName(projectXml);
-                    var target = projectXml.AddTarget(targetName);
+                    var target = projectXml.AddTarget(this.TargetName);
                     SetTargetDependencies(target);
                     var execTask = target.AddTask(ExecTask);
                     SetExecParameter(execTask, unevaluatedPropertyValue);
@@ -160,33 +142,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 
             private void SetExecParameter(ProjectTaskElement execTask, string unevaluatedPropertyValue)
                 => execTask.SetParameter(Command, unevaluatedPropertyValue);
-
-            private string GetTargetName(ProjectRootElement projectXml)
-            {
-                var targetNames = new HashSet<string>(projectXml.Targets.Select(t => t.Name), StringComparer.OrdinalIgnoreCase);
-                var targetName = TargetName;
-                if (targetNames.Contains(targetName))
-                {
-                    targetName = FindNonCollidingName(targetName, targetNames);
-                }
-
-                return targetName;
-
-            }
-
-            private string FindNonCollidingName(string buildEvent, HashSet<string> targetNames)
-            {
-                var initialValue = 0;
-                var newName = string.Empty;
-
-                do
-                {
-                    initialValue++;
-                    newName = buildEvent + initialValue.ToString();
-                } while (targetNames.Contains(newName));
-
-                return newName;
-            }
         }
     }
 }

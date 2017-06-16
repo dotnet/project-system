@@ -26,6 +26,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             string evaluatedPropertyValue,
             IProjectProperties defaultProperties)
         {
+            if (evaluatedPropertyValue != null)
+            {
+                return evaluatedPropertyValue;
+            }
+
             using (var access = await _projectLockService.ReadLockAsync())
             {
                 var projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
@@ -41,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             using (var access = await _projectLockService.WriteLockAsync())
             {
                 var projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
-                _helper.SetProperty(unevaluatedPropertyValue, projectXml);
+                await _helper.SetPropertyAsync(unevaluatedPropertyValue, defaultProperties, projectXml).ConfigureAwait(true); ;
             }
 
             return null;
