@@ -16,7 +16,7 @@
   </EnumProperty>
   <StringProperty Name="Generator" Category="Advanced" DisplayName="Narzędzie niestandardowe" Description="Określa narzędzie, które przekształca plik w czasie projektowania i umieszcza wynik przekształcenia w innym pliku. Na przykład plik zestawu danych (xsd) zawiera domyślne narzędzie niestandardowe." />
   <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="Przestrzeń nazw narzędzia niestandardowego" Description="Przestrzeń nazw, w której zostaną umieszczone dane wyjściowe narzędzia niestandardowego." />
-  <StringProperty Name="FullPath" Visible="false">
+  <StringProperty Name="FullPath" Visible="false" ReadOnly="true">
     <StringProperty.DataSource>
       <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>

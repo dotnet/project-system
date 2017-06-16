@@ -16,7 +16,7 @@
   </EnumProperty>
   <StringProperty Name="Generator" Category="Advanced" DisplayName="自定义工具" Description="指定一个工具，该工具在设计时转换文件，并将该转换的输出放在另一个文件中。例如，数据集(.xsd)文件附带默认自定义工具。" />
   <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="自定义工具命名空间" Description="用于放置自定义工具的输出的命名空间。" />
-  <StringProperty Name="FullPath" Visible="false">
+  <StringProperty Name="FullPath" Visible="false" ReadOnly="true">
     <StringProperty.DataSource>
       <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
