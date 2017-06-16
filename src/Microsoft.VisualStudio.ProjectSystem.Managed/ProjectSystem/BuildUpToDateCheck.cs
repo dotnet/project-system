@@ -385,10 +385,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return (earliest, earliestPath);
         }
 
+        // Reference assembly copy markers are strange. The property is always going to be present on 
+        // references to SDK-based projects, regardless of whether or not those referenced projects 
+        // will actually produce a marker. And an item always will be present in an SDK-based project, 
+        // regardless of whether or not the project produces a marker. So, basically, we only check 
+        // here if the project actually produced a marker and we only check it against references that
+        // actually produced a marker.
         private bool CheckMarkers(Logger logger, IDictionary<string, DateTime> timestampCache)
         {
-            // If there is no marker file for this project, then it doesn't copy any reference assemblies
-            // and there's nothing to check.
             if (string.IsNullOrWhiteSpace(_markerFile) || !_referenceMarkerFiles.Any())
             {
                 return true;
@@ -399,12 +403,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 logger.Verbose("Found possible input marker '{0}'.", referenceMarkerFile);
             }
 
-            logger.Verbose("Found output marker '{0}'.", _markerFile);
+            logger.Verbose("Found possible output marker '{0}'.", _markerFile);
 
-            // All projects set a CopyUpToDateMarker on their references, even if they don't actually
-            // copy any reference assemblies. So if one doesn't exist, just ignore it. (In the case where
-            // a project hasn't been built yet or cleaned, the output won't exist either, so the check
-            // for outputs vs. inputs will suffice.)
             var latestInputMarker = GetLatestInput(_referenceMarkerFiles, timestampCache, true);
             var outputMarkerTime = GetTimestamp(_markerFile, timestampCache);
 
@@ -414,7 +414,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
             else
             {
-                logger.Info("No input markers exist.");
+                logger.Info("No input markers exist, skipping marker check.");
             }
 
             if (outputMarkerTime != null)
@@ -423,10 +423,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
             else
             {
-                logger.Info("Output marker '{0}' does not exist.", _markerFile);
+                logger.Info("Output marker '{0}' does not exist, skipping marker check.", _markerFile);
             }
 
-            return latestInputMarker.time != null && outputMarkerTime != null && outputMarkerTime > latestInputMarker.time;
+            return latestInputMarker.time == null || outputMarkerTime == null || outputMarkerTime > latestInputMarker.time;
         }
 
         public async Task<bool> IsUpToDateAsync(BuildAction buildAction, TextWriter logWriter, CancellationToken cancellationToken = default(CancellationToken))
