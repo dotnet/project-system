@@ -389,7 +389,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             // If there is no marker file for this project, then it doesn't copy any reference assemblies
             // and there's nothing to check.
-            if (string.IsNullOrWhiteSpace(_markerFile))
+            if (string.IsNullOrWhiteSpace(_markerFile) || !_referenceMarkerFiles.Any())
             {
                 return true;
             }
