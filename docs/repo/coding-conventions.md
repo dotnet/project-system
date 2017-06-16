@@ -13,6 +13,7 @@ We use the same coding style conventions as outlined in [.NET Framework Coding S
 
 - For MEF parts/components, we favor constructor injection over property/field injection.
 - We flavor `IVsService<T>` and `IVsService<TService, TInterface>` over usage of `SVsServiceProvider`.
+- We favor importing components over usage of `IComponentModel`
 
 ## Tests
 
