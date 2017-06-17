@@ -16,7 +16,7 @@
   </EnumProperty>
   <StringProperty Name="Generator" Category="Advanced" DisplayName="사용자 지정 도구" Description="디자인 타임에 파일을 변환하고 변환 결과를 다른 파일에 저장하는 도구를 지정합니다. 예를 들어 데이터 집합 파일(.xsd)의 경우 기본 사용자 지정 도구가 제공됩니다." />
   <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="사용자 지정 도구 네임스페이스" Description="사용자 지정 도구의 출력이 들어갈 네임스페이스입니다." />
-  <StringProperty Name="FullPath" Visible="false">
+  <StringProperty Name="FullPath" Visible="false" ReadOnly="true">
     <StringProperty.DataSource>
       <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
