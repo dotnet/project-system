@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             using (var access = await _projectLockService.ReadLockAsync())
             {
                 var projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
-                return await _helper.GetPropertyAsync(projectXml, defaultProperties);
+                return await _helper.GetPropertyAsync(projectXml, defaultProperties).ConfigureAwait(true);
             }
         }
 
@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             using (var access = await _projectLockService.WriteLockAsync())
             {
                 var projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
-                await _helper.SetPropertyAsync(unevaluatedPropertyValue, defaultProperties, projectXml).ConfigureAwait(true); ;
+                await _helper.SetPropertyAsync(unevaluatedPropertyValue, defaultProperties, projectXml).ConfigureAwait(true);
             }
 
             return null;

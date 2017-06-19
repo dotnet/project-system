@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             IProjectPropertiesFactory.MockWithProperty(string.Empty).Object;
 
         [Fact]
-        public static async Task GetPropertyTest_AllTargetsPresentAsync()
+        public static async Task GetPropertyTest_AllTargetsPresent()
         {
             var root = @"
 <Project Sdk=""Microsoft.NET.Sdk"">
@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task GetPropertyTest_PostBuildTargetPresentAsync()
+        public static async Task GetPropertyTest_PostBuildTargetPresent()
         {
             var root = @"
 <Project Sdk=""Microsoft.NET.Sdk"">
@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task GetPropertyTest_PostBuildTargetPresent_LowerCaseAsync()
+        public static async Task GetPropertyTest_PostBuildTargetPresent_LowerCase()
         {
             var root = @"
 <Project Sdk=""Microsoft.NET.Sdk"">
@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task GetPropertyTest_NoTargetsPresentAsync()
+        public static async Task GetPropertyTest_NoTargetsPresent()
         {
             var root = @"
 <Project Sdk=""Microsoft.NET.Sdk"">
@@ -102,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task GetPropertyTest_ExistingPropertiesAsync()
+        public static async Task GetPropertyTest_ExistingProperties()
         {
             var root = @"
 <Project Sdk=""Microsoft.NET.Sdk"">
@@ -123,7 +123,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public static async Task GetPropertyTest_WrongTargetNameAsync()
+        public static async Task GetPropertyTest_WrongTargetName()
         {
             var root = @"
 <Project Sdk=""Microsoft.NET.Sdk"">
@@ -134,6 +134,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
   </PropertyGroup>
   <Target Name=""PoostBuild"" AfterTargets=""PostBuildEvent"">
     <Exec Command=""echo &quot;post build output&quot;"" />
+  </Target>
+</Project>
+".AsProjectRootElement();
+            var result = await systemUnderTest.GetPropertyAsync(root, emptyProjectProperties);
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public static async Task GetPropertyTest_WrongExec()
+        {
+            var root = @"
+<Project Sdk=""Microsoft.NET.Sdk"">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+  <Target Name=""PostBuild"" AfterTargets=""PostBuildEvent"">
+    <Exec Commmand=""echo &quot;post build output&quot;"" />
   </Target>
 </Project>
 ".AsProjectRootElement();
