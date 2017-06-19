@@ -6,15 +6,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Build;
 using Microsoft.VisualStudio.Telemetry;
-using System;
-using System.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 {
     /// <summary>
     /// Base project configuration dimension provider
     /// </summary>
-    internal abstract class BaseProjectConfigurationDimensionProvider : OnceInitializedOnceDisposedAsync, IProjectConfigurationDimensionsProvider2
+    internal abstract class BaseProjectConfigurationDimensionProvider : IProjectConfigurationDimensionsProvider2
     {
         protected const string TelemetryEventName = "DimensionChanged";
 
@@ -36,7 +34,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             string dimensionName,
             string propertyName,
             bool valueContainsPii)
-             : base(unconfiguredProjectCommonServices.ThreadingService.JoinableTaskContext)
         {
             Requires.NotNull(projectXmlAccessor, nameof(projectXmlAccessor));
 
@@ -72,28 +69,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         public ITelemetryService TelemetryService
         {
             get;
-        }
-        public Guid Guid
-        {
-            get;
-            set;
-        }
-
-        protected override Task DisposeCoreAsync(bool initialized)
-        {
-            return Task.CompletedTask;
-        }
-
-        protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
-        {
-            var configurationGeneralProperties = await UnconfiguredProjectCommonServices
-                                                    .ActiveConfiguredProjectProperties
-                                                    .GetConfigurationGeneralPropertiesAsync()
-                                                    .ConfigureAwait(false);
-            if (Guid.TryParse((string)await configurationGeneralProperties.ProjectGuid.GetValueAsync().ConfigureAwait(false), out Guid guid))
-            {
-                Guid = guid;
-            }
         }
 
         /// <summary>

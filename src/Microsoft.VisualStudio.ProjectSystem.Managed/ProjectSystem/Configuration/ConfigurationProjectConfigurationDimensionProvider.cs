@@ -78,7 +78,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 BuildUtilities.AppendPropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, configurationName);
             }).ConfigureAwait(false);
 
-            TelemetryService?.PostProperty($"{TelemetryEventName}/{DimensionName}/Add", "Value", HashValueIfNeeded(configurationName), Guid, unconfiguredProject);
+            //if (TelemetryService != null)
+            //{
+            //    await TelemetryService.PostPropertyAsync($"{TelemetryEventName}/{DimensionName}/Add", "Value", HashValueIfNeeded(configurationName), Guid, unconfiguredProject).ConfigureAwait(false);
+            //}
+
+            TelemetryService.PostProperty($"{TelemetryEventName}/{DimensionName}/Add", "Value", HashValueIfNeeded(configurationName), unconfiguredProject);
         }
 
         /// <summary>
@@ -95,8 +100,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 BuildUtilities.RemovePropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, configurationName);
             }).ConfigureAwait(false);
 
-            TelemetryService?.PostProperty($"{TelemetryEventName}/{DimensionName}/Remove", "Value", HashValueIfNeeded(configurationName), Guid, unconfiguredProject);
+            //if (TelemetryService != null)
+            //{
+            //    await TelemetryService.PostPropertyAsync($"{TelemetryEventName}/{DimensionName}/Remove", "Value", HashValueIfNeeded(configurationName), Guid, unconfiguredProject).ConfigureAwait(false);
+            //}
 
+            TelemetryService.PostProperty($"{TelemetryEventName}/{DimensionName}/Remove", "Value", HashValueIfNeeded(configurationName), unconfiguredProject);
         }
 
         /// <summary>
@@ -120,7 +129,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 ("NewValue", HashValueIfNeeded(newName)),
             };
 
-            TelemetryService.PostProperties($"{TelemetryEventName}/{DimensionName}/Rename", properties, Guid, unconfiguredProject);
+            //if (TelemetryService != null)
+            //{
+            //    await TelemetryService.PostPropertiesAsync($"{TelemetryEventName}/{DimensionName}/Rename", properties, Guid, unconfiguredProject).ConfigureAwait(false);
+            //}
+
+            TelemetryService.PostProperties($"{TelemetryEventName}/{DimensionName}/Rename", properties, unconfiguredProject);
         }
     }
 }

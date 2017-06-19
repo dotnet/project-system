@@ -7,20 +7,20 @@ using Microsoft.VisualStudio.ProjectSystem;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.Telemetry
 {
+    [Export(typeof(ITelemetryService))]
     [Export(typeof(IVsTelemetryService))]
     internal class VsTelemetryService : IVsTelemetryService, ITelemetryService
     {
         private const string EventPrefix = "vs/projectsystem/managed/";
         private const string PropertyPrefix = "VS.ProjectSystem.Managed.";
         private const string ProjectIdGuid = PropertyPrefix + "ProjectGuid";
-
         private readonly IUnconfiguredProjectCommonServices _unconfiguredProjectCommonServices;
 
-        private Dictionary<Guid, TelemetryEventCorrelation> _projectAssets = new Dictionary<Guid, TelemetryEventCorrelation>();
-        private Guid _guid;
+        private TelemetryEventCorrelation _telemetryEventCorrelation;
 
         [ImportingConstructor]
         public VsTelemetryService(IUnconfiguredProjectCommonServices unconfiguredProjectCommonServices)
@@ -38,13 +38,9 @@ namespace Microsoft.VisualStudio.Telemetry
         private async Task CreateProjectAssetAsync()
         {
             var configurationGeneralProperties = await _unconfiguredProjectCommonServices
-                                                    .ActiveConfiguredProjectProperties
-                                                    .GetConfigurationGeneralPropertiesAsync()
-                                                    .ConfigureAwait(false);
-            if (Guid.TryParse((string)await configurationGeneralProperties.ProjectGuid.GetValueAsync().ConfigureAwait(false), out Guid guid))
-            {
-                _guid = guid;
-            }
+                                                .ActiveConfiguredProjectProperties
+                                                .GetConfigurationGeneralPropertiesAsync()
+                                                .ConfigureAwait(false);
 
             var targetFrameworkProperty = await configurationGeneralProperties.TargetFramework.GetEvaluatedValueAtEndAsync().ConfigureAwait(false);
             var targetFrameworksProperty = await configurationGeneralProperties.TargetFrameworks.GetEvaluatedValueAtEndAsync().ConfigureAwait(false);
@@ -68,13 +64,11 @@ namespace Microsoft.VisualStudio.Telemetry
                 projectProperties[BuildPropertyName(eventName, ConfigurationGeneral.OutputTypeProperty)] = outputTypeProperty;
             }
 
-            var projectAsset = TelemetryService.DefaultSession.PostAsset(
-                                    EventPrefix + eventName.ToLowerInvariant(),
-                                    _guid.ToString(),
-                                    0,
-                                    projectProperties);
-
-            _projectAssets.Add(_guid, projectAsset);
+            _telemetryEventCorrelation = TelemetryService.DefaultSession.PostAsset(
+                                            EventPrefix + eventName.ToLowerInvariant(),
+                                            _unconfiguredProjectCommonServices.Project.FullPath.ToString(),
+                                            0,
+                                            projectProperties);
         }
 
         public async Task PostEventAsync(string eventName, UnconfiguredProject unconfiguredProject, IUnconfiguredProjectCommonServices unconfiguredProjectCommonServices, IEnumerable<KeyValuePair<string, object>> properties)
@@ -118,15 +112,15 @@ namespace Microsoft.VisualStudio.Telemetry
             TelemetryService.DefaultSession.PostEvent(eventName);
         }
 
-        public void PostProperty(string eventName, string propertyName, string propertyValue, Guid projectId, UnconfiguredProject unconfiguredProject)
+        public void PostProperty(string eventName, string propertyName, string propertyValue, UnconfiguredProject unconfiguredProject)
         {
             TelemetryEvent telemetryEvent = new TelemetryEvent(EventPrefix + eventName.ToLower());
             telemetryEvent.Properties.Add(BuildPropertyName(eventName, propertyName), propertyValue);
-            TryCorrelateProject(projectId, telemetryEvent);
+            TryCorrelateProject(telemetryEvent);
             TelemetryService.DefaultSession.PostEvent(telemetryEvent);
         }
 
-        public void PostProperties(string eventName, List<(string propertyName, string propertyValue)> properties, Guid projectId, UnconfiguredProject unconfiguredProject)
+        public void PostProperties(string eventName, List<(string propertyName, string propertyValue)> properties, UnconfiguredProject unconfiguredProject)
         {
             TelemetryEvent telemetryEvent = new TelemetryEvent(EventPrefix + eventName.ToLower());
             foreach (var property in properties)
@@ -134,7 +128,7 @@ namespace Microsoft.VisualStudio.Telemetry
                 telemetryEvent.Properties.Add(BuildPropertyName(eventName, property.propertyName), property.propertyValue);
             }
 
-            TryCorrelateProject(projectId, telemetryEvent);
+            TryCorrelateProject(telemetryEvent);
             TelemetryService.DefaultSession.PostEvent(telemetryEvent);
         }
 
@@ -206,17 +200,10 @@ namespace Microsoft.VisualStudio.Telemetry
         /// <summary>
         /// Tries to correlate a project 
         /// </summary>
-        /// <param name="projectId">Id of the project that we would like to correlate.</param>
         /// <param name="telemetryEvent">Telemetry event to correlate the asset to.</param>
-        private void TryCorrelateProject(Guid projectId, TelemetryEvent telemetryEvent)
+        private void TryCorrelateProject(TelemetryEvent telemetryEvent)
         {
-            if (projectId != Guid.Empty)
-            {
-                if (_projectAssets.TryGetValue(projectId, out TelemetryEventCorrelation projectAsset))
-                {
-                    telemetryEvent.Correlate(projectAsset);
-                }
-            }
+            telemetryEvent.Correlate(_telemetryEventCorrelation);
         }
     }
 }
