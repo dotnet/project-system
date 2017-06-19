@@ -3,11 +3,11 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using Microsoft.VisualStudio.ProjectSystem;
-using System.Threading.Tasks;
+using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.VisualStudio.Threading;
+using System.Threading.Tasks;
+using Microsoft.VisualStudio.ProjectSystem;
 
 namespace Microsoft.VisualStudio.Telemetry
 {
@@ -17,30 +17,42 @@ namespace Microsoft.VisualStudio.Telemetry
     {
         private const string EventPrefix = "vs/projectsystem/managed/";
         private const string PropertyPrefix = "VS.ProjectSystem.Managed.";
-        private const string ProjectIdGuid = PropertyPrefix + "ProjectGuid";
         private readonly IUnconfiguredProjectCommonServices _unconfiguredProjectCommonServices;
+        private readonly object _lock =  new object();
 
         private TelemetryEventCorrelation _telemetryEventCorrelation;
+        private bool _telemetryEventCorrelationInitialized;
+        private Guid _projectGuid;
 
         [ImportingConstructor]
         public VsTelemetryService(IUnconfiguredProjectCommonServices unconfiguredProjectCommonServices)
         {
+            Requires.NotNull(unconfiguredProjectCommonServices, nameof(unconfiguredProjectCommonServices));
+
             _unconfiguredProjectCommonServices = unconfiguredProjectCommonServices;
         }
 
-        [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
-        [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
-        internal async Task OnProjectFactoryCompletedAsync()
-        {
-            await CreateProjectAssetAsync().ConfigureAwait(false);
-        }
-
-        private async Task CreateProjectAssetAsync()
+        /// <summary>
+        /// Creates the Project Correlation asset which will be used to correlate all the telemetry events for this project
+        /// identified uniquely through the Project Guid.
+        /// </summary>
+        /// <returns></returns>
+        private async Task<bool> CreateProjectCorrelationAssetAsync()
         {
             var configurationGeneralProperties = await _unconfiguredProjectCommonServices
                                                 .ActiveConfiguredProjectProperties
                                                 .GetConfigurationGeneralPropertiesAsync()
                                                 .ConfigureAwait(false);
+
+            if (Guid.TryParse((string)await configurationGeneralProperties.ProjectGuid.GetValueAsync().ConfigureAwait(false), out Guid guid))
+            {
+                _projectGuid = guid;
+            }
+            else
+            {
+                Debug.Fail("Telemetry Service - Event Correlation Failed", "Event Correlation data creation failed because failure to retrieve the Project Guid info.");
+                return false;
+            }
 
             var targetFrameworkProperty = await configurationGeneralProperties.TargetFramework.GetEvaluatedValueAtEndAsync().ConfigureAwait(false);
             var targetFrameworksProperty = await configurationGeneralProperties.TargetFrameworks.GetEvaluatedValueAtEndAsync().ConfigureAwait(false);
@@ -66,70 +78,60 @@ namespace Microsoft.VisualStudio.Telemetry
 
             _telemetryEventCorrelation = TelemetryService.DefaultSession.PostAsset(
                                             EventPrefix + eventName.ToLowerInvariant(),
-                                            _unconfiguredProjectCommonServices.Project.FullPath.ToString(),
+                                            _projectGuid.ToString(),
                                             0,
                                             projectProperties);
+            _telemetryEventCorrelationInitialized = true;
+            return true;
         }
 
-        public async Task PostEventAsync(string eventName, UnconfiguredProject unconfiguredProject, IUnconfiguredProjectCommonServices unconfiguredProjectCommonServices, IEnumerable<KeyValuePair<string, object>> properties)
+        /// <summary>
+        /// Posts a simple event with just the event name.
+        /// </summary>
+        /// <param name="eventName"></param>
+        public void PostEvent(string eventName)
         {
             Requires.NotNullOrEmpty(eventName, nameof(eventName));
-            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
-            Requires.NotNull(unconfiguredProjectCommonServices, nameof(unconfiguredProjectCommonServices));
-            Requires.NotNull(properties, nameof(properties));
-
-            var telemetryEvent = new TelemetryEvent(eventName);
-            if (!((IDisposableObservable)unconfiguredProject).IsDisposed)
-            {
-                try
-                {
-                    await unconfiguredProject.Services.ProjectAsynchronousTasks.LoadedProjectAsync(async () =>
-                    {
-                        var configurationGeneralProperties = await unconfiguredProjectCommonServices
-                                                                .ActiveConfiguredProjectProperties
-                                                                .GetConfigurationGeneralPropertiesAsync()
-                                                                .ConfigureAwait(false);
-                        if (Guid.TryParse((string)await configurationGeneralProperties.ProjectGuid.GetValueAsync().ConfigureAwait(false), out Guid guid))
-                        {
-                            telemetryEvent.Properties[ProjectIdGuid] = guid;
-                        }
-                    });
-                }
-                // Project is unloaded or object is disposed
-                catch (OperationCanceledException)
-                {
-                }
-                catch (ObjectDisposedException)
-                {
-                }
-            }
-
-            foreach (var property in properties)
-            {
-                telemetryEvent.Properties.Add(property);
-            }
 
             TelemetryService.DefaultSession.PostEvent(eventName);
         }
 
-        public void PostProperty(string eventName, string propertyName, string propertyValue, UnconfiguredProject unconfiguredProject)
+        /// <summary>
+        /// Post an event with the event name also with the corresponding Property name and Property value. This 
+        /// event will be correlated with the Project Telemetry Correlation asset.
+        /// </summary>
+        /// <param name="eventName">Name of the event.</param>
+        /// <param name="propertyName">Property name to be reported.</param>
+        /// <param name="propertyValue">Property value to be reported.</param>
+        public void PostProperty(string eventName, string propertyName, string propertyValue)
         {
+            Requires.NotNullOrEmpty(eventName, nameof(eventName));
+            Requires.NotNullOrEmpty(propertyName, nameof(propertyName));
+            Requires.NotNullOrEmpty(propertyValue, nameof(propertyValue));
+
             TelemetryEvent telemetryEvent = new TelemetryEvent(EventPrefix + eventName.ToLower());
             telemetryEvent.Properties.Add(BuildPropertyName(eventName, propertyName), propertyValue);
-            TryCorrelateProject(telemetryEvent);
-            TelemetryService.DefaultSession.PostEvent(telemetryEvent);
+            PostEvent(telemetryEvent);
         }
 
-        public void PostProperties(string eventName, List<(string propertyName, string propertyValue)> properties, UnconfiguredProject unconfiguredProject)
+        /// <summary>
+        /// Post an event with the event name also with the corresponding Property names and Property values. This 
+        /// event will be correlated with the Project Telemetry Correlation asset.
+        /// </summary>
+        /// <param name="eventName">Name of the event.</param>
+        /// <param name="properties">List of Property name and corresponding values. PropertyName and PropertyValue cannot be null or empty.</param>
+        public void PostProperties(string eventName, List<(string propertyName, string propertyValue)> properties)
         {
+            Requires.NotNullOrEmpty(eventName, nameof(eventName));
+            Requires.NotNullOrEmpty(properties, nameof(properties));
+
             TelemetryEvent telemetryEvent = new TelemetryEvent(EventPrefix + eventName.ToLower());
             foreach (var property in properties)
             {
                 telemetryEvent.Properties.Add(BuildPropertyName(eventName, property.propertyName), property.propertyValue);
             }
 
-            TryCorrelateProject(telemetryEvent);
-            TelemetryService.DefaultSession.PostEvent(telemetryEvent);
+            PostEvent(telemetryEvent);
         }
 
         public TelemetryEventCorrelation PostOperation(string eventName, TelemetryResult result, string resultSummary = null, TelemetryEventCorrelation[] correlatedWith = null)
@@ -201,9 +203,52 @@ namespace Microsoft.VisualStudio.Telemetry
         /// Tries to correlate a project 
         /// </summary>
         /// <param name="telemetryEvent">Telemetry event to correlate the asset to.</param>
-        private void TryCorrelateProject(TelemetryEvent telemetryEvent)
+        private void PostEvent(TelemetryEvent telemetryEvent)
         {
-            telemetryEvent.Correlate(_telemetryEventCorrelation);
+            if (!_telemetryEventCorrelationInitialized)
+            {
+                lock (_lock)
+                {
+                    // Make sure it was not initialized while waiting for the lock
+                    if (!_telemetryEventCorrelationInitialized)
+                    {
+                        _unconfiguredProjectCommonServices.ThreadingService.Fork(async () =>
+                        {
+                            if(await CreateProjectCorrelationAssetAsync().ConfigureAwait(false))
+                            {
+                                PostEvent(telemetryEvent, true);
+                            }
+                            else
+                            {
+                                PostEvent(telemetryEvent, false);
+                            }
+                        }, unconfiguredProject: _unconfiguredProjectCommonServices.Project);
+                    }
+                    else
+                    {
+                        PostEvent(telemetryEvent, true);
+                    }
+                }
+            }
+            else
+            {
+                PostEvent(telemetryEvent, true);
+            }
+        }
+
+        /// <summary>
+        /// Tries to correlate a project 
+        /// </summary>
+        /// <param name="telemetryEvent">Telemetry event to correlate the asset to.</param>
+        /// <param name="correlate">Says whether the telemetry event should be correlated</param>
+        private void PostEvent(TelemetryEvent telemetryEvent, bool correlate)
+        {
+            if (correlate)
+            {
+                telemetryEvent.Correlate(_telemetryEventCorrelation);
+            }
+
+            TelemetryService.DefaultSession.PostEvent(telemetryEvent);
         }
     }
 }
