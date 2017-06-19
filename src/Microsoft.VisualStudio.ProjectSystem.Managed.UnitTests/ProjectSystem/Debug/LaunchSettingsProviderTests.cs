@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             var provider = GetLaunchSettingsProvider(null, appDesignerFolder: appDesignerFolder);
 
-            string result = await provider.GetLaunchSettingsFilePathAsync();
+            string result = await provider.GetLaunchSettingsFilePathNoCacheAsync();
 
             Assert.Equal(expected, result);
         }
@@ -339,7 +339,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             IFileSystemMock moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
 
-            string fileName = await provider.GetLaunchSettingsFilePathAsync();
+            string fileName = await provider.GetLaunchSettingsFilePathNoCacheAsync();
             // Write file and generate disk change
             var eventArgs = new FileSystemEventArgs(WatcherChangeTypes.Changed, Path.GetDirectoryName(fileName), Path.GetFileName(fileName));
             moqFS.WriteAllText(fileName, JsonString1);

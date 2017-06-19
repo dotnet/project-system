@@ -24,8 +24,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// needed w/o making them public
     /// </summary>
     [Export(typeof(ILaunchSettingsProvider))]
+    [Export(typeof(ILaunchSettingsProvider2))]
     [AppliesTo(ProjectCapability.LaunchProfiles)]
-    internal class LaunchSettingsProvider : OnceInitializedOnceDisposed, ILaunchSettingsProvider
+    internal class LaunchSettingsProvider : OnceInitializedOnceDisposed, ILaunchSettingsProvider2
     {
         private readonly ISpecialFilesManager _specialFilesManager;
         private readonly AsyncLazy<string> _launchSettingsFilePath;
@@ -45,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             ProjectSubscriptionService = projectSubscriptionService;
             _specialFilesManager = specialFilesManager;
-            _launchSettingsFilePath = new AsyncLazy<string>(GetLaunchSettingsFilePathAsync, commonProjectServices.ThreadingService.JoinableTaskFactory);
+            _launchSettingsFilePath = new AsyncLazy<string>(GetLaunchSettingsFilePathNoCacheAsync, commonProjectServices.ThreadingService.JoinableTaskFactory);
         }
 
         // TODO: Add error list support. Tracked by https://github.com/dotnet/roslyn-project-system/issues/424
@@ -415,6 +416,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 LogError(err, false);
                 throw;
             }
+        }
+
+        public Task<string> GetLaunchSettingsFilePathAsync()
+        {
+            return _launchSettingsFilePath.GetValueAsync();
         }
 
         /// <summary>
@@ -858,7 +864,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             await props.ActiveDebugProfile.SetValueAsync(profileName).ConfigureAwait(true);
         }
 
-        internal async Task<string> GetLaunchSettingsFilePathAsync()
+        internal async Task<string> GetLaunchSettingsFilePathNoCacheAsync()
         {
             // NOTE: To reduce behavior changes, we currently cache the folder that we get from
             // the ISpecialFilesManager, even though it can change over the lifetime of the project
