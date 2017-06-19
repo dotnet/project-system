@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         private SequencialTaskExecutor _sequentialTaskQueue = new SequencialTaskExecutor();
 
-        [Obsolete("Use GetLaunchSettingsFileAsync instead.")]
+        [Obsolete("Use GetLaunchSettingsFilePathAsync instead.")]
         public string LaunchSettingsFile
         {
             get
