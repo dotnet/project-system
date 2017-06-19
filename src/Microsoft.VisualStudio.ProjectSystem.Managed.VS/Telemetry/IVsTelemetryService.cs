@@ -7,13 +7,8 @@ namespace Microsoft.VisualStudio.Telemetry
     /// <summary>
     /// Internal as we don't want anyone who depends on us to post events to our eventId.
     /// </summary>
-    internal interface ITelemetryService
+    internal interface IVsTelemetryService
     {
-        /// <summary>
-        /// Posts a given telemetry event path to the telemetry service session for the program.
-        /// </summary>
-        void PostEvent(string eventName);
-
         /// <summary>
         /// Posts a given telemetry operation to the telemetry service. <seealso cref="TelemetrySessionExtensions.PostOperation(TelemetrySession, string, TelemetryResult, string, TelemetryEventCorrelation[])"/>
         /// </summary>

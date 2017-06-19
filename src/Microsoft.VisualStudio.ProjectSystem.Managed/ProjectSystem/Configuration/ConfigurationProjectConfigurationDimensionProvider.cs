@@ -3,6 +3,8 @@
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Build;
+using Microsoft.VisualStudio.Telemetry;
+using System.Collections.Generic;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 {
@@ -21,8 +23,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     internal class ConfigurationProjectConfigurationDimensionProvider : BaseProjectConfigurationDimensionProvider
     {
         [ImportingConstructor]
-        public ConfigurationProjectConfigurationDimensionProvider(IProjectXmlAccessor projectXmlAccessor)
-            : base(projectXmlAccessor, ConfigurationGeneral.ConfigurationProperty, "Configurations")
+        public ConfigurationProjectConfigurationDimensionProvider(IProjectXmlAccessor projectXmlAccessor, ITelemetryService telemetryService, IUnconfiguredProjectCommonServices unconfiguredProjectCommonServices)
+            : base(projectXmlAccessor, telemetryService, unconfiguredProjectCommonServices, ConfigurationGeneral.ConfigurationProperty, "Configurations", valueContainsPii: true)
         {
         }
 
@@ -75,6 +77,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             {
                 BuildUtilities.AppendPropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, configurationName);
             }).ConfigureAwait(false);
+
+            TelemetryService?.PostProperty($"{TelemetryEventName}/{DimensionName}/Add", "Value", HashValueIfNeeded(configurationName), Guid, unconfiguredProject);
         }
 
         /// <summary>
@@ -90,6 +94,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             {
                 BuildUtilities.RemovePropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, configurationName);
             }).ConfigureAwait(false);
+
+            TelemetryService?.PostProperty($"{TelemetryEventName}/{DimensionName}/Remove", "Value", HashValueIfNeeded(configurationName), Guid, unconfiguredProject);
+
         }
 
         /// <summary>
@@ -106,6 +113,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             {
                 BuildUtilities.RenamePropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, oldName, newName);
             }).ConfigureAwait(false);
+
+            var properties = new List<(string propertyName, string propertyValue)>()
+            {
+                ("OldValue", HashValueIfNeeded(oldName)),
+                ("NewValue", HashValueIfNeeded(newName)),
+            };
+
+            TelemetryService.PostProperties($"{TelemetryEventName}/{DimensionName}/Rename", properties, Guid, unconfiguredProject);
         }
     }
 }

@@ -5,27 +5,48 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Build;
+using Microsoft.VisualStudio.Telemetry;
+using System;
+using System.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 {
     /// <summary>
     /// Base project configuration dimension provider
     /// </summary>
-    internal abstract class BaseProjectConfigurationDimensionProvider : IProjectConfigurationDimensionsProvider2
+    internal abstract class BaseProjectConfigurationDimensionProvider : OnceInitializedOnceDisposedAsync, IProjectConfigurationDimensionsProvider2
     {
+        protected const string TelemetryEventName = "DimensionChanged";
+
+        private readonly bool _valueContainsPii;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseProjectConfigurationDimensionProvider"/> class.
         /// </summary>
         /// <param name="projectXmlAccessor">Lock service for the project file.</param>
+        /// <param name="telemetryService">Telemetry service.</param>
+        /// <param name="unconfiguredProjectCommonServices">UnconfiguredProject Common Services.</param>
         /// <param name="dimensionName">Name of the dimension.</param>
         /// <param name="propertyName">Name of the project property containing the dimension values.</param>
-        public BaseProjectConfigurationDimensionProvider(IProjectXmlAccessor projectXmlAccessor, string dimensionName, string propertyName)
+        /// <param name="valueContainsPii">Says if the dimension values contain PII and needs to hashed before being reported to Telemetry</param>
+        public BaseProjectConfigurationDimensionProvider(
+            IProjectXmlAccessor projectXmlAccessor,
+            ITelemetryService telemetryService,
+            IUnconfiguredProjectCommonServices unconfiguredProjectCommonServices,
+            string dimensionName,
+            string propertyName,
+            bool valueContainsPii)
+             : base(unconfiguredProjectCommonServices.ThreadingService.JoinableTaskContext)
         {
             Requires.NotNull(projectXmlAccessor, nameof(projectXmlAccessor));
 
             ProjectXmlAccessor = projectXmlAccessor;
+            TelemetryService = telemetryService;
             DimensionName = dimensionName;
             PropertyName = propertyName;
+            UnconfiguredProjectCommonServices = unconfiguredProjectCommonServices;
+
+            _valueContainsPii = valueContainsPii;
         }
 
         public string DimensionName
@@ -38,9 +59,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             get;
         }
 
+        public IUnconfiguredProjectCommonServices UnconfiguredProjectCommonServices
+        {
+            get;
+        }
+
         public IProjectXmlAccessor ProjectXmlAccessor
         {
             get;
+        }
+
+        public ITelemetryService TelemetryService
+        {
+            get;
+        }
+        public Guid Guid
+        {
+            get;
+            set;
+        }
+
+        protected override Task DisposeCoreAsync(bool initialized)
+        {
+            return Task.CompletedTask;
+        }
+
+        protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
+        {
+            var configurationGeneralProperties = await UnconfiguredProjectCommonServices
+                                                    .ActiveConfiguredProjectProperties
+                                                    .GetConfigurationGeneralPropertiesAsync()
+                                                    .ConfigureAwait(false);
+            if (Guid.TryParse((string)await configurationGeneralProperties.ProjectGuid.GetValueAsync().ConfigureAwait(false), out Guid guid))
+            {
+                Guid = guid;
+            }
         }
 
         /// <summary>
@@ -140,6 +193,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         protected async Task<string> GetPropertyValue(UnconfiguredProject unconfiguredProject)
         {
             return await ProjectXmlAccessor.GetEvaluatedPropertyValue(unconfiguredProject, PropertyName).ConfigureAwait(false);
+        }
+
+        protected string HashValueIfNeeded(string value)
+        {
+            return _valueContainsPii ? TelemetryService.HashValue(value) : value;
         }
     }
 }
