@@ -26,15 +26,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             string evaluatedPropertyValue,
             IProjectProperties defaultProperties)
         {
-            if (evaluatedPropertyValue != null)
-            {
-                return evaluatedPropertyValue;
-            }
-
             using (var access = await _projectLockService.ReadLockAsync())
             {
                 var projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
-                return _helper.GetProperty(projectXml);
+                return await _helper.GetPropertyAsync(projectXml, defaultProperties);
             }
         }
 

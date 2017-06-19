@@ -32,8 +32,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             private string BuildEvent { get; }
             private string TargetName { get; }
 
-            public string GetProperty(ProjectRootElement projectXml)
+            public async Task<string> GetPropertyAsync(ProjectRootElement projectXml, IProjectProperties defaultProperties)
             {
+                // check if value already exists
+                var unevaluatedPropertyValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(BuildEvent).ConfigureAwait(true);
+                if (unevaluatedPropertyValue != null)
+                {
+                    return unevaluatedPropertyValue;
+                }
+
                 // Check if build events can be found in targets
                 return GetFromTargets(projectXml);
             }

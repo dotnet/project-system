@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             IProjectPropertiesFactory.MockWithProperty(string.Empty).Object;
 
         [Fact]
-        public static void GetPropertyTest_AllTargetsPresent()
+        public static async Task GetPropertyTest_AllTargetsPresentAsync()
         {
             var root = @"
 <Project Sdk=""Microsoft.NET.Sdk"">
@@ -38,12 +38,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
 </Project>
 ".AsProjectRootElement();
-            var actual = systemUnderTest.GetProperty(root);
+            var actual = await systemUnderTest.GetPropertyAsync(root, emptyProjectProperties);
             Assert.Equal(@"echo ""post build output""", actual);
         }
 
         [Fact]
-        public static void GetPropertyTest_PostBuildTargetPresent()
+        public static async Task GetPropertyTest_PostBuildTargetPresentAsync()
         {
             var root = @"
 <Project Sdk=""Microsoft.NET.Sdk"">
@@ -59,12 +59,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
 </Project>
 ".AsProjectRootElement();
-            var actual = systemUnderTest.GetProperty(root);
+            var actual = await systemUnderTest.GetPropertyAsync(root, emptyProjectProperties);
             Assert.Equal(@"echo ""post build output""", actual);
         }
 
         [Fact]
-        public static void GetPropertyTest_PostBuildTargetPresent_LowerCase()
+        public static async Task GetPropertyTest_PostBuildTargetPresent_LowerCaseAsync()
         {
             var root = @"
 <Project Sdk=""Microsoft.NET.Sdk"">
@@ -80,12 +80,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
 </Project>
 ".AsProjectRootElement();
-            var actual = systemUnderTest.GetProperty(root);
+            var actual = await systemUnderTest.GetPropertyAsync(root, emptyProjectProperties);
             Assert.Equal(@"echo ""post build output""", actual);
         }
 
         [Fact]
-        public static void GetPropertyTest_NoTargetsPresent()
+        public static async Task GetPropertyTest_NoTargetsPresentAsync()
         {
             var root = @"
 <Project Sdk=""Microsoft.NET.Sdk"">
@@ -97,12 +97,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
 </Project>
 ".AsProjectRootElement();
-            var actual = systemUnderTest.GetProperty(root);
+            var actual = await systemUnderTest.GetPropertyAsync(root, emptyProjectProperties);
             Assert.Null(actual);
         }
 
         [Fact]
-        public static void GetPropertyTest_ExistingProperties()
+        public static async Task GetPropertyTest_ExistingPropertiesAsync()
         {
             var root = @"
 <Project Sdk=""Microsoft.NET.Sdk"">
@@ -115,12 +115,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
 </Project>
 ".AsProjectRootElement();
-            var result = systemUnderTest.GetProperty(root);
-            Assert.Null(result);
+
+            var expected = "echo $(ProjectDir)";
+            var projectProperties = IProjectPropertiesFactory.CreateWithPropertyAndValue("PostBuildEvent", expected);
+            var actual = await systemUnderTest.GetPropertyAsync(root, projectProperties);
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public static void GetPropertyTest_WrongTargetName()
+        public static async Task GetPropertyTest_WrongTargetNameAsync()
         {
             var root = @"
 <Project Sdk=""Microsoft.NET.Sdk"">
@@ -134,7 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
   </Target>
 </Project>
 ".AsProjectRootElement();
-            var result = systemUnderTest.GetProperty(root);
+            var result = await systemUnderTest.GetPropertyAsync(root, emptyProjectProperties);
             Assert.Null(result);
         }
 
