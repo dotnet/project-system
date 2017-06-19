@@ -592,6 +592,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
+        public static async Task SetPropertyTest_RemoveExistingProperties()
+        {
+            var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <PreBuildEvent>echo $(ProjectDir)</PreBuildEvent>
+  </PropertyGroup>
+</Project>".AsProjectRootElement();
+
+            var prebuildEventProjectProperties =
+                IProjectPropertiesFactory.CreateWithPropertyAndValue("PreBuildEvent", "echo $(ProjectDir)");
+            await systemUnderTest.SetPropertyAsync(" ", prebuildEventProjectProperties, root);
+
+            var result = await prebuildEventProjectProperties.GetUnevaluatedPropertyValueAsync("PreBuildEvent");
+            Assert.Null(result);
+        }
+
+        [Fact]
         public static async Task SetPropertyTest_WrongTargetName()
         {
             var root = @"<Project Sdk=""Microsoft.NET.Sdk"">
