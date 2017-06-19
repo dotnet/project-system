@@ -60,6 +60,11 @@
             <DataSource Persistence="ProjectFile" PersistedName="DisableFastUpToDateCheck" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </BoolProperty.DataSource>
     </BoolProperty>
+    <StringProperty Name="CodeAnalysisRuleSet" DisplayName="Code analysis rule set">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="CodeAnalysisRuleSet" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+        </StringProperty.DataSource>
+    </StringProperty>
 
     <StringProperty Name="TargetPath" />
     <StringProperty Name="DocumentationFile" DisplayName="XML doc comments file" />
