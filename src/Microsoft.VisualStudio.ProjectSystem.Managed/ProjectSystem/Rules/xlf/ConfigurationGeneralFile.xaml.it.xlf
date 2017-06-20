@@ -60,7 +60,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|Identity|Description">
         <source>The item specified in the Include attribute.</source>
-        <target state="translated">L'elemento specificato nell'attributo Include.</target>
+        <target state="translated">Elemento specificato nell'attributo Include.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">

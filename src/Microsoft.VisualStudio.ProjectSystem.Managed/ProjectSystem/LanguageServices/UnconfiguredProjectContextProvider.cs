@@ -233,7 +233,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                 return null;
 
             // Don't initialize until the project has been loaded into the IDE and available in Solution Explorer
-            await _asyncLoadDashboard.ProjectLoadedInHost.ConfigureAwait(false);
+            await _asyncLoadDashboard.ProjectLoadedInHostWithCancellation(_commonServices.Project).ConfigureAwait(false);
 
             // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
             return await _taskScheduler.RunAsync(TaskSchedulerPriority.UIThreadBackgroundPriority, async () =>
@@ -271,16 +271,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
                         // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
                         await _commonServices.ThreadingService.SwitchToUIThread();
-
-                        // HACK HACK: Roslyn's CreateProjectContext only supports C# and VB and for F#, a new overload was added. Instead, that should be removed and the main overload should just take an optional error prefix.
-                        if (languageName == "F#")
-                        {
-                            workspaceProjectContext = _contextFactory.Value.CreateProjectContext(languageName, displayName, projectData.FullPath, projectGuid, configuredProjectHostObject, targetPath, null);
-                        }
-                        else
-                        {
-                            workspaceProjectContext = _contextFactory.Value.CreateProjectContext(languageName, displayName, projectData.FullPath, projectGuid, configuredProjectHostObject, targetPath);
-                        }
+                        workspaceProjectContext = _contextFactory.Value.CreateProjectContext(languageName, displayName, projectData.FullPath, projectGuid, configuredProjectHostObject, targetPath);
 
                         // By default, set "LastDesignTimeBuildSucceeded = false" to turn off diagnostics until first design time build succeeds for this project.
                         workspaceProjectContext.LastDesignTimeBuildSucceeded = false;

@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         {
             _cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
             _cancellationToken = _cts.Token;
-            _autoDisposeRegistration = RegisterNoThrowOnDispose(cancellationToken, Dispose);
+            _autoDisposeRegistration = RegisterNoThrowOnDispose(Dispose, cancellationToken);
         }
 
         /// <summary>
@@ -155,7 +155,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         /// protecting against <see cref="ObjectDisposedException"/> in the event that the
         /// <see cref="CancellationTokenSource"/> has already been disposed.
         /// </summary>
-        internal static CancellationTokenRegistration RegisterNoThrowOnDispose(CancellationToken token, Action callback)
+        internal static CancellationTokenRegistration RegisterNoThrowOnDispose(Action callback, CancellationToken token)
         {
             try
             {

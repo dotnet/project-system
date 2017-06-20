@@ -98,7 +98,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'Opt out of page scaling since we're using AutoScaleMode
             PageRequiresScaling = False
 
-            linkLabelHelp.SetThemedColor(VsUIShell5Service)
+            linkLabelHelp.SetThemedColor(VsUIShell5Service, SupportsTheming)
         End Sub
 
 #Region "Event handlers"

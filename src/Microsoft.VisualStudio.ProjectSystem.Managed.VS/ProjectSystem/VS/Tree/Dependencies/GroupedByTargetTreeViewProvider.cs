@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.References;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
@@ -39,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <summary>
         /// Builds Dependencies tree for given dependencies snapshot
         /// </summary>
-        public override IProjectTree BuildTree(
+        public override async Task<IProjectTree> BuildTreeAsync(
             IProjectTree dependenciesTree, 
             IDependenciesSnapshot snapshot, 
             CancellationToken cancellationToken = default(CancellationToken))
@@ -65,12 +66,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         return originalTree;
                     }
 
-                    dependenciesTree = BuildSubTrees(
+                    dependenciesTree = await BuildSubTreesAsync(
                         dependenciesTree,
                         snapshot.ActiveTarget,
                         target.Value,
                         target.Value.Catalogs,
-                        rememberNewNodes);
+                        rememberNewNodes).ConfigureAwait(false);
                 }
             }
             else
@@ -84,11 +85,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                     if (target.Key.Equals(TargetFramework.Any))
                     {
-                        dependenciesTree = BuildSubTrees(dependenciesTree, 
+                        dependenciesTree = await BuildSubTreesAsync(dependenciesTree, 
                                                          snapshot.ActiveTarget, 
                                                          target.Value, 
                                                          target.Value.Catalogs, 
-                                                         rememberNewNodes);
+                                                         rememberNewNodes).ConfigureAwait(false);
                     }
                     else
                     {
@@ -101,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                   rule:null, 
                                                   isProjectItem:false, 
                                                   additionalFlags: ProjectTreeFlags.Create(ProjectTreeFlags.Common.BubbleUp));
-                        node = BuildSubTrees(node, snapshot.ActiveTarget, target.Value, target.Value.Catalogs, CleanupOldNodes);
+                        node = await BuildSubTreesAsync(node, snapshot.ActiveTarget, target.Value, target.Value.Catalogs, CleanupOldNodes).ConfigureAwait(false);
 
                         if (shouldAddTargetNode)
                         {
@@ -188,7 +189,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// Builds all available sub trees under root: target framework or Dependencies node 
         /// when there is only one target.
         /// </summary>
-        private IProjectTree BuildSubTrees(
+        private async Task<IProjectTree> BuildSubTreesAsync(
             IProjectTree rootNode,
             ITargetFramework activeTarget,
             ITargetedDependenciesSnapshot targetedSnapshot,
@@ -241,13 +242,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     isProjectItem:false, 
                     excludedFlags:excludedFlags);
 
-                subTreeNode = BuildSubTree(
-                    subTreeNode, 
-                    targetedSnapshot, 
-                    dependencyGroup.Value, 
-                    catalogs, 
-                    isActiveTarget, 
-                    shouldCleanup:!isNewSubTreeNode);
+                subTreeNode = await BuildSubTreeAsync(
+                    subTreeNode,
+                    targetedSnapshot,
+                    dependencyGroup.Value,
+                    catalogs,
+                    isActiveTarget,
+                    shouldCleanup: !isNewSubTreeNode).ConfigureAwait(false);
                 
                 currentNodes.Add(subTreeNode);
 
@@ -267,7 +268,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <summary>
         /// Builds a sub tree under root: target framework or Dependencies node when there is only one target.
         /// </summary>
-        private IProjectTree BuildSubTree(
+        private async Task<IProjectTree> BuildSubTreeAsync(
             IProjectTree rootNode,
             ITargetedDependenciesSnapshot targetedSnapshot,
             IEnumerable<IDependency> dependencies,
@@ -295,7 +296,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     }
                 }
 
-                dependencyNode = CreateOrUpdateNode(dependencyNode, dependency, targetedSnapshot, catalogs, isActiveTarget);
+                dependencyNode = await CreateOrUpdateNodeAsync(dependencyNode, dependency, targetedSnapshot, catalogs, isActiveTarget).ConfigureAwait(false);
                 currentNodes.Add(dependencyNode);
 
                 if (isNewDependencyNode)
@@ -332,7 +333,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <summary>
         /// Updates or creates new node
         /// </summary>
-        private IProjectTree CreateOrUpdateNode(
+        private async Task<IProjectTree> CreateOrUpdateNodeAsync(
             IProjectTree node,
             IDependency dependency,
             ITargetedDependenciesSnapshot targetedSnapshot,
@@ -344,15 +345,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IRule rule = null;
             if (dependency.Flags.Contains(DependencyTreeFlags.SupportsRuleProperties))
             {
-                rule = TreeServices.GetRule(dependency, catalogs);
+                rule = await TreeServices.GetRuleAsync(dependency, catalogs)
+                                         .ConfigureAwait(false);
             }
 
             return CreateOrUpdateNode(
-                node, 
-                dependency.ToViewModel(targetedSnapshot), 
-                rule, 
-                isProjectItem, 
-                additionalFlags, 
+                node,
+                dependency.ToViewModel(targetedSnapshot),
+                rule,
+                isProjectItem,
+                additionalFlags,
                 excludedFlags);
         }
 

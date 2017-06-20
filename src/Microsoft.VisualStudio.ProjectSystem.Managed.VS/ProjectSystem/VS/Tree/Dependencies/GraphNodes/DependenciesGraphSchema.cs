@@ -12,13 +12,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         public static readonly GraphSchema Schema = new GraphSchema("Microsoft.VisualStudio.ProjectSystem.VS.Tree.DependenciesSchema");
         public static readonly GraphCategory CategoryDependency = Schema.Categories.AddNewCategory(VSResources.GraphNodeCategoryDependency);
 
-        private static readonly string DependencyIdPropertyId = "Dependency.Id";
+        private const string DependencyIdPropertyId = "Dependency.Id";
         public static readonly GraphProperty DependencyIdProperty;
 
-        private static readonly string ResolvedPropertyId = "Dependency.Resolved";
+        private const string ResolvedPropertyId = "Dependency.Resolved";
         public static readonly GraphProperty ResolvedProperty;
 
-        private static readonly string IsFrameworkAssemblyFolderPropertyId = "Dependency.IsFrameworkAssembly";
+        private const string IsFrameworkAssemblyFolderPropertyId = "Dependency.IsFrameworkAssembly";
         public static readonly GraphProperty IsFrameworkAssemblyFolderProperty;
 
         static DependenciesGraphSchema()

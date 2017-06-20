@@ -44,11 +44,16 @@
       <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="TargetFrameworkMonikers" DisplayName="Target Framework Monikers" ReadOnly="True">
+  <StringProperty Name="TargetFrameworkMonikers" DisplayName="Monikers de la plataforma de destino" ReadOnly="True">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMonikers" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
+  <BoolProperty Name="DisableFastUpToDateCheck" DisplayName="Disable Fast Up To Date Check">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="DisableFastUpToDateCheck" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
   <StringProperty Name="TargetPath" />
   <StringProperty Name="DocumentationFile" DisplayName="Archivo de comentarios de documento XML" />
   <StringProperty Name="AssemblyName" />
@@ -63,14 +68,20 @@
   <StringProperty Name="BaseIntermediateOutputPath" />
   <EnumProperty Name="OutputType">
     <EnumValue Name="Library" DisplayName="Biblioteca de clases" />
-    <EnumValue Name="Exe" DisplayName="Console Application" />
-    <EnumValue Name="WinExe" DisplayName="Windows Application" />
+    <EnumValue Name="Exe" DisplayName="Aplicación de consola" />
+    <EnumValue Name="WinExe" DisplayName="Aplicación Windows" />
     <EnumValue Name="AppContainerExe" DisplayName="Aplicación de la Tienda Windows" />
     <EnumValue Name="WinMDObj" DisplayName="WinMD" />
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="OutputType" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </EnumProperty.DataSource>
   </EnumProperty>
   <StringListProperty Name="AvailablePlatforms" Separator="," />
   <BoolProperty Name="Optimize" Description="¿Debe el compilador optimizar los resultados?" />
+  <!-- Same as MSBuildProjectDirectory but has a directory separator '\' appended at the end.-->
+  <StringProperty Name="ProjectDir" Visible="false" />
   <StringProperty Name="MSBuildProjectDirectory" Visible="false" />
+  <StringProperty Name="MSBuildProjectFullPath" Visible="false" />
   <StringProperty Name="DefaultPlatform" Visible="false" />
   <StringProperty Name="PackageAction" Visible="false" Description="Versión de destino de MSBuild que se usará al empaquetar un proyecto." />
   <StringProperty Name="DefaultContentType" Visible="false" Description="Nombre del tipo de contenido predeterminado que se usará al agregar archivos." />
@@ -121,6 +132,6 @@
   <StringProperty Name="SharedProjectAppliesTo" Visible="False" Description="Expresión de coincidencia de funcionalidad que como mínimo prueba el idioma del proyecto compartido; se usa para filtrar selecciones de Agregar referencia de proyecto compartido." />
   <BoolProperty Name="AlwaysUseNumericalSuffixInItemNames" Visible="False" Description="Indica si los nombres de los nuevos elementos agregados debe incluir un sufijo con un número." />
   <StringProperty Name="LanguageServiceName" ReadOnly="True" Visible="False" Description="Representa el elemento LanguageName que se pasa a Roslyn" />
-  <StringProperty Name="LanguageServiceId" ReadOnly="True" Visible="False" Description="Represents the GUID of object that implements the language service for the project." />
+  <StringProperty Name="LanguageServiceId" ReadOnly="True" Visible="False" Description="Representa el GUID del objeto que implementa el servicio de lenguaje para el proyecto." />
   <StringProperty Name="TemplateLanguage" ReadOnly="True" Visible="False" Description="Representa el lenguaje que se mantiene en los elementos y las plantillas de proyecto" />
 </Rule>

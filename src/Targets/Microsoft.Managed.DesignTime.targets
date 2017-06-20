@@ -21,6 +21,8 @@
 
     <!--This property sets the default output types supported by the project system.-->
     <SupportedOutputTypes Condition="'$(SupportedOutputTypes)' == ''">Exe;WinExe;Library</SupportedOutputTypes>
+
+    <SuppressOutOfDateMessageOnBuild Condition="'$(SuppressOutOfDateMessageOnBuild)' == ''">true</SuppressOutOfDateMessageOnBuild>
   </PropertyGroup>
 
   <!--
@@ -123,6 +125,14 @@
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)EmbeddedResource.xaml">
       <Context>File;BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)UpToDateCheckInput.xaml">
+      <Context>File</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)UpToDateCheckOutput.xaml">
+      <Context>File</Context>
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)SpecialFolder.xaml">
@@ -231,17 +241,6 @@
       <Context>ProjectSubscriptionService;BrowseObject</Context>
     </PropertyPageSchema>
   </ItemGroup>
-
-  <!-- Workaround: https://github.com/Microsoft/msbuild/pull/1879 -->
-  <ItemGroup>
-    <ProjectCapability Remove="ProjectConfigurationsInferredFromUsage" />
-  </ItemGroup>
-
-  <!-- Workaround: Need to remove this once an insertion containing this changes goes in https://github.com/dotnet/sdk/pull/949 -->
-  <PropertyGroup>
-    <Configurations Condition=" '$(Configurations)' == '' ">Debug;Release</Configurations>
-    <Platforms Condition=" '$(Platforms)' == '' ">AnyCPU</Platforms>
-  </PropertyGroup>
 
   <!-- Targets -->
 

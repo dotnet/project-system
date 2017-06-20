@@ -16,7 +16,7 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
 
         Public Property FastUpToDateCheckEnabled As Boolean
             Get
-                Return If(_settingsManager?.GetValueOrDefault(FastUpToDateEnabledSettingKey, False), False)
+                Return If(_settingsManager?.GetValueOrDefault(FastUpToDateEnabledSettingKey, True), True)
             End Get
             Set
                 _settingsManager.SetValueAsync(FastUpToDateEnabledSettingKey, Value, isMachineLocal:=False)

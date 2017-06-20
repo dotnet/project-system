@@ -89,7 +89,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [InlineData("Debug|AnyCPU",                     "Debug|AnyCPU|net45",                                     "Debug|AnyCPU|net45")]
         [InlineData("Debug|AnyCPU",                     "Debug|AnyCPU|net45;Release|AnyCPU|net45",                "Debug|AnyCPU|net45")]
         [InlineData("Debug|AnyCPU",                     "Debug|AnyCPU|net45;Debug|AnyCPU|net46",                  "Debug|AnyCPU|net45;Debug|AnyCPU|net46")]
-        [InlineData("Debug|AnyCPU",                     "Debug|AnyCPU|net45;Debug|AnyCPU|net46",                  "Debug|AnyCPU|net45;Debug|AnyCPU|net46")]
         public async Task GetActiveProjectConfigurationsAsync_ConfigurationsWithTargetFrameworkDimensionProvider_ReturnsConfigsThatMatchConfigurationAndPlatformFromActiveConfiguration(string activeConfiguration, string configurations, string expected)
         {
             var provider = CreateInstance(activeConfiguration, configurations, "TargetFramework");

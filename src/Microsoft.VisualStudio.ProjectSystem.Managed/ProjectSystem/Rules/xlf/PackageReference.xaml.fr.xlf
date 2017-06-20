@@ -9,8 +9,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|PackageReference|Description">
-        <source>Package</source>
-        <target state="translated">Package</target>
+        <source>Package Properties</source>
+        <target state="translated">Propriétés du package</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|DisplayName">
@@ -67,6 +67,16 @@
         <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
         <target state="translated">Nom d'élément évalué de l'élément de référence d'origine dont la résolution a eu pour résultat cet élément de référence résolu.</target>
         <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|NoWarn|DisplayName">
+        <source>NoWarn</source>
+        <target state="new">NoWarn</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|NoWarn|Description">
+        <source>Comma-delimited list of warnings that should be suppressed for this package</source>
+        <target state="new">Comma-delimited list of warnings that should be suppressed for this package</target>
+        <note></note>
       </trans-unit>
     </body>
   </file>

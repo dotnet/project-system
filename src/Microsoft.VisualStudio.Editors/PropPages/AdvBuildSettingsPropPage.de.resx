@@ -157,9 +157,9 @@
     <value>Auf arithmetischen Über-/Unterlauf über&amp;prüfen</value>
   </data>
   <data name="CSharpLanguageVerison.Default" xml:space="preserve">
-    <value>C# latest major version (default)</value>
+    <value>Aktuelle C#-Hauptversion (Standard)</value>
   </data>
   <data name="CSharpLanguageVerison.Latest" xml:space="preserve">
-    <value>C# latest minor version (latest)</value>
+    <value>Aktuelle C#-Nebenversion (aktuell)</value>
   </data>
 </root>

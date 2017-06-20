@@ -35,16 +35,19 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 if (level <= _requestedLogLevel)
                 {
-                    _logger?.WriteLine($"FastUpToDate: {string.Format(message, values)} ({Path.GetFileNameWithoutExtension(_fileName)})");
+                    _logger?.WriteLine($"FastUpToDate: {string.Format(message, values)} ({_fileName})");
                 }
             }
 
             public void Info(string message, params object[] values) => Log(LogLevel.Info, message, values);
             public void Verbose(string message, params object[] values) => Log(LogLevel.Verbose, message, values);
         }
+
         private const string TrueValue = "true";
         private const string FullPath = "FullPath";
         private const string ResolvedPath = "ResolvedPath";
+        private const string CopyToOutputDirectory = "CopyToOutputDirectory";
+        private const string Never = "Never";
 
         private static HashSet<string> KnownOutputGroups = new HashSet<string>
         {
@@ -61,13 +64,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             .Add(ResolvedCOMReference.SchemaName)
             .Add(ResolvedProjectReference.SchemaName);
 
-        private static ImmutableHashSet<string> ItemSchemas => ImmutableHashSet<string>.Empty
-            .Add(AdditionalFiles.SchemaName)
-            .Add(Compile.SchemaName)
-            .Add(Content.SchemaName)
-            .Add(EmbeddedResource.SchemaName)
-            .Add(None.SchemaName);
-
         private static ImmutableHashSet<string> ProjectPropertiesSchemas => ImmutableHashSet<string>.Empty
             .Add(ConfigurationGeneral.SchemaName)
             .Union(ReferenceSchemas);
@@ -75,26 +71,32 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly IProjectSystemOptions _projectSystemOptions;
         private readonly ConfiguredProject _configuredProject;
         private readonly Lazy<IFileTimestampCache> _fileTimestampCache;
+        private readonly IProjectItemSchemaService _projectItemSchemaService;
 
         private IDisposable _link;
         private IComparable _lastVersionSeen;
 
         private bool _isDisabled = true;
+        private bool _itemsChangedSinceLastCheck = true;
         private string _msBuildProjectFullPath;
         private HashSet<string> _imports = new HashSet<string>();
+        private HashSet<string> _itemTypes = new HashSet<string>();
         private Dictionary<string, HashSet<string>> _items = new Dictionary<string, HashSet<string>>();
         private Dictionary<string, HashSet<string>> _references = new Dictionary<string, HashSet<string>>();
+        private HashSet<string> _customOutputs = new HashSet<string>();
         private Dictionary<string, HashSet<string>> _outputGroups = new Dictionary<string, HashSet<string>>();
 
         [ImportingConstructor]
         public BuildUpToDateCheck(
             IProjectSystemOptions projectSystemOptions,
             ConfiguredProject configuredProject,
-            Lazy<IFileTimestampCache> fileTimestampCache)
+            Lazy<IFileTimestampCache> fileTimestampCache,
+            IProjectItemSchemaService projectItemSchemaService)
         {
             _projectSystemOptions = projectSystemOptions;
             _configuredProject = configuredProject;
             _fileTimestampCache = fileTimestampCache;
+            _projectItemSchemaService = projectItemSchemaService;
         }
 
         protected override void Initialize()
@@ -102,9 +104,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _link = ProjectDataSources.SyncLinkTo(
                 _configuredProject.Services.ProjectSubscription.JointRuleSource.SourceBlock.SyncLinkOptions(new StandardRuleDataflowLinkOptions { RuleNames = ProjectPropertiesSchemas }),
                 _configuredProject.Services.ProjectSubscription.ImportTreeSource.SourceBlock.SyncLinkOptions(),
-                _configuredProject.Services.ProjectSubscription.SourceItemsRuleSource.SourceBlock.SyncLinkOptions(new StandardRuleDataflowLinkOptions { RuleNames = ItemSchemas }),
+                _configuredProject.Services.ProjectSubscription.SourceItemsRuleSource.SourceBlock.SyncLinkOptions(),
                 _configuredProject.Services.OutputGroups.SourceBlock.SyncLinkOptions(),
-                target: new ActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectImportTreeSnapshot, IProjectSubscriptionUpdate, IImmutableDictionary<string, IOutputGroup>>>>(e => OnChanged(e)),
+                _projectItemSchemaService.SourceBlock.SyncLinkOptions(),
+                target: new ActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectImportTreeSnapshot, IProjectSubscriptionUpdate, IImmutableDictionary<string, IOutputGroup>, IProjectItemSchema>>>(e => OnChanged(e)),
                 linkOptions: new DataflowLinkOptions { PropagateCompletion = true });
         }
 
@@ -116,9 +119,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _msBuildProjectFullPath = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, _msBuildProjectFullPath);
             foreach (var referenceSchema in ReferenceSchemas)
             {
-                if (e.CurrentState.TryGetValue(referenceSchema, out var snapshot))
+                if (e.ProjectChanges.TryGetValue(referenceSchema, out var changes) &&
+                    changes.Difference.AnyChanges)
                 {
-                    _references[referenceSchema] = new HashSet<string>(snapshot.Items.Select(item => item.Value[ResolvedPath]));
+                    _references[referenceSchema] = new HashSet<string>(changes.After.Items.Select(item => item.Value[ResolvedPath]));
                 }
             }
         }
@@ -138,11 +142,30 @@ namespace Microsoft.VisualStudio.ProjectSystem
             AddImports(e.Value);
         }
 
-        private void OnSourceItemChanged(IProjectSubscriptionUpdate e)
+        private void OnSourceItemChanged(IProjectSubscriptionUpdate e, IProjectItemSchema projectItemSchema)
         {
-            foreach (var itemType in e.ProjectChanges)
+            var itemTypes = new HashSet<string>(projectItemSchema.GetKnownItemTypes().Where(itemType => projectItemSchema.GetItemType(itemType).UpToDateCheckInput));
+            var itemTypesChanged = !_itemTypes.SetEquals(itemTypes);
+
+            if (itemTypesChanged)
             {
-                _items[itemType.Key] = new HashSet<string>(itemType.Value.After.Items.Select(item => item.Value[FullPath]));
+                _itemTypes = itemTypes;
+                _items = new Dictionary<string, HashSet<string>>();
+            }
+
+            foreach (var itemType in e.ProjectChanges.Where(changes => (itemTypesChanged || changes.Value.Difference.AnyChanges) && _itemTypes.Contains(changes.Key)))
+            {
+                var items = itemType.Value
+                    .After.Items
+                    .Select(item => item.Value[FullPath]);
+                _items[itemType.Key] = new HashSet<string>(items);
+                _itemsChangedSinceLastCheck = true;
+            }
+
+            if (e.ProjectChanges.TryGetValue(UpToDateCheckOutput.SchemaName, out var outputs) &&
+                outputs.Difference.AnyChanges)
+            {
+                _customOutputs = new HashSet<string>(outputs.After.Items.Select(item => item.Value[FullPath]));
             }
         }
 
@@ -150,15 +173,20 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             foreach (var outputGroupPair in e.Where(pair => KnownOutputGroups.Contains(pair.Key)))
             {
-                _outputGroups[outputGroupPair.Key] = new HashSet<string>(outputGroupPair.Value.Outputs.Select(output => output.Key));
+                var outputs = outputGroupPair.Value
+                    .Outputs
+                    .Where(output => !output.Value.ContainsKey(CopyToOutputDirectory)
+                        || !string.Equals(output.Value[CopyToOutputDirectory], Never, StringComparison.InvariantCultureIgnoreCase))
+                    .Select(output => output.Key);
+                _outputGroups[outputGroupPair.Key] = new HashSet<string>(outputs);
             }
         }
 
-        private void OnChanged(IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectImportTreeSnapshot, IProjectSubscriptionUpdate, IImmutableDictionary<string, IOutputGroup>>> e)
+        private void OnChanged(IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectImportTreeSnapshot, IProjectSubscriptionUpdate, IImmutableDictionary<string, IOutputGroup>, IProjectItemSchema>> e)
         {
             OnProjectChanged(e.Value.Item1);
             OnProjectImportsChanged(e.Value.Item2);
-            OnSourceItemChanged(e.Value.Item3);
+            OnSourceItemChanged(e.Value.Item3, e.Value.Item5);
             OnOutputGroupChanged(e.Value.Item4);
             _lastVersionSeen = e.DataSourceVersions[ProjectDataSources.ConfiguredProjectVersion];
         }
@@ -225,9 +253,18 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return false;
             }
 
+            var itemsChangedSinceLastCheck = _itemsChangedSinceLastCheck;
+            _itemsChangedSinceLastCheck = false;
+
             if (_lastVersionSeen == null || _configuredProject.ProjectVersion.CompareTo(_lastVersionSeen) > 0)
             {
                 logger.Info("Project information is older than current project version, skipping check.");
+                return false;
+            }
+
+            if (itemsChangedSinceLastCheck)
+            {
+                logger.Info("The list of source items has changed since the last build.");
                 return false;
             }
 
@@ -268,6 +305,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 AddOutputs(logger, outputs, pair.Value, pair.Key);
             }
+
+            AddOutputs(logger, outputs, _customOutputs, "UpToDateCheckOutput");
 
             return outputs;
         }

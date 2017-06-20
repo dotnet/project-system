@@ -130,7 +130,7 @@
     <value>Annulla</value>
   </data>
   <data name="messageLabel2.Text" xml:space="preserve">
-    <value>Alcuni file potrebbero includere contenuto dannoso.  Rispondere Sì solo se si ritiene attendibile l'origine del file.</value>
+    <value>Alcuni file potrebbero includere contenuto dannoso. Rispondere Sì solo se si ritiene attendibile l'origine del file.</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Apri file</value>

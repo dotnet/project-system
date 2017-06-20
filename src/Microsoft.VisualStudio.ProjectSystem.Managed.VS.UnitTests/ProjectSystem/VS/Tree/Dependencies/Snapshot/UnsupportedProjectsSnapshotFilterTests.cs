@@ -135,7 +135,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void UnsupportedProjectsSnapshotFilter_WhenProjectSnapshotNotFound_ShouldMakeUnresolved()
+        public void UnsupportedProjectsSnapshotFilter_WhenProjectSnapshotNotFound_ShouldDoNothing()
         {
             // Arrange 
             var snapshotProvider = IDependenciesSnapshotProviderFactory.Implement(currentSnapshot: null);
@@ -145,10 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     topLevel: true,
                     resolved: true,
                     flags: DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.ResolvedFlags),
-                    originalItemSpec: @"c:\myproject2\project.csproj",
-                    setPropertiesResolved: false,
-                    setPropertiesSchemaName: ProjectReference.SchemaName,
-                    setPropertiesFlags: DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.UnresolvedFlags));
+                    originalItemSpec: @"c:\myproject2\project.csproj");
 
             var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider, null);
 
@@ -166,7 +163,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void UnsupportedProjectsSnapshotFilter_WhenProjectSnapshotFoundAndTargetFrameworkNull_ShouldMakeUnresolved()
+        public void UnsupportedProjectsSnapshotFilter_WhenProjectSnapshotFoundAndTargetFrameworkNull_ShouldDoNothing()
         {
             // Arrange 
             var targetFramework = ITargetFrameworkFactory.Implement(moniker: "tfm1");
@@ -185,10 +182,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     resolved: true,
                     flags: DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.ResolvedFlags),
                     originalItemSpec: @"c:\myproject2\project.csproj",
-                    targetFramework: targetFramework,
-                    setPropertiesResolved: false,
-                    setPropertiesSchemaName: ProjectReference.SchemaName,
-                    setPropertiesFlags: DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.UnresolvedFlags));
+                    targetFramework: targetFramework);
 
             var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider, targetFrameworkProvider);
 

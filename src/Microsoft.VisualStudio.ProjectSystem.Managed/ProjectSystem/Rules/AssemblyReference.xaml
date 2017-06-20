@@ -6,9 +6,15 @@
     PageTemplate="generic"
     Description="Reference Properties"
     xmlns="http://schemas.microsoft.com/build/2009/properties">
+
     <Rule.DataSource>
-        <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+        <DataSource Persistence="ProjectFile"
+                    ItemType="Reference"
+                    HasConfigurationCondition="False"
+                    SourceOfDefaultValue="AfterContext" />
     </Rule.DataSource>
+
+    <!-- Visible properties -->
 
     <StringListProperty Name="Aliases"
                         DisplayName="Aliases"
@@ -16,10 +22,14 @@
                         Separator="," />
 
     <BoolProperty Name="CopyLocal"
-                DisplayName="Copy Local"
-                Description="Indicates whether the reference will be copied to the output directory.">
+                  DisplayName="Copy Local"
+                  Description="Indicates whether the reference will be copied to the output directory.">
         <BoolProperty.DataSource>
-            <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" PersistedName="Private" SourceOfDefaultValue="AfterContext" />
+            <DataSource Persistence="ProjectFile"
+                        ItemType="Reference"
+                        HasConfigurationCondition="False"
+                        PersistedName="Private"
+                        SourceOfDefaultValue="AfterContext" />
         </BoolProperty.DataSource>
     </BoolProperty>
 
@@ -27,22 +37,62 @@
                   DisplayName="Embed Interop Types"
                   Description="Indicates whether types defined in this assembly will be embedded into the target assembly." />
 
+    <StringProperty Name="Identity"
+                    ReadOnly="True"
+                    DisplayName="Identity"
+                    Description="Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).">
+        <StringProperty.DataSource>
+            <DataSource PersistedName="{}{Identity}"
+                        SourceOfDefaultValue="AfterContext" />
+        </StringProperty.DataSource>
+    </StringProperty>
+
+    <StringProperty Name="ResolvedPath"
+                    ReadOnly="True"
+                    DisplayName="Path"
+                    Description="Location of the file being referenced.">
+        <StringProperty.DataSource>
+            <DataSource PersistedName="Identity"
+                        SourceOfDefaultValue="AfterContext" />
+        </StringProperty.DataSource>
+    </StringProperty>
+
     <BoolProperty Name="SpecificVersion" 
                   DisplayName="Specific Version"
                   Description="Indicates whether this assembly can be resolved without regard to multi-targeting rules for assembly resolution.">
         <BoolProperty.DataSource>
-            <DataSource Persistence="AssemblyReference" ItemType="Reference" HasConfigurationCondition="False"  SourceOfDefaultValue="AfterContext" />
+            <DataSource Persistence="AssemblyReference"
+                        ItemType="Reference"
+                        HasConfigurationCondition="False"
+                        SourceOfDefaultValue="AfterContext" />
         </BoolProperty.DataSource>
     </BoolProperty>
 
-    <StringProperty Name="RequiredTargetFramework" DisplayName="Required Target Framework" Visible="False" />
+    <StringProperty Name="Version"
+                    ReadOnly="True"
+                    DisplayName="Version"
+                    Description="Version of reference.">
+    </StringProperty>
+
+    <!-- Hidden properties -->
+
     <StringProperty Name="HintPath" Visible="false" />
-    <StringProperty Name="SDKName" Visible="false" />
-    <BoolProperty Name="IsWinMDFile" Visible="false" />
+
     <StringProperty Name="ImageRuntime"
                     DisplayName="Runtime Version"
                     Description="The CLR runtime version targeted by this assembly."
                     Visible="False"
                     ReadOnly="True" />
-    <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
+
+    <StringProperty Name="IsImplicitlyDefined"
+                    Visible="False"
+                    ReadOnly="True" />
+
+    <BoolProperty Name="IsWinMDFile" Visible="false" />
+
+    <StringProperty Name="RequiredTargetFramework"
+                    DisplayName="Required Target Framework"
+                    Visible="False" />
+
+    <StringProperty Name="SDKName" Visible="false" />
 </Rule>

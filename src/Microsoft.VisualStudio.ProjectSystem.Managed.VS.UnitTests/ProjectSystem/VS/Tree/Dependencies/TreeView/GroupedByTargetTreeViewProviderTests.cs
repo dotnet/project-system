@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
@@ -14,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     public class GroupedByTargetTreeViewProviderTests
     {
         [Fact]
-        public void GrouppedByTargetTreeViewProvider_WhenEmptySnapshot_ShouldJustUpdateDependencyRootNode()
+        public async Task GrouppedByTargetTreeViewProvider_WhenEmptySnapshot_ShouldJustUpdateDependencyRootNode()
         {
             // Arrange
             var treeServices = new MockIDependenciesTreeServices();
@@ -32,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             // Act
             var provider = new GroupedByTargetTreeViewProvider(treeServices, treeViewModelFactory, commonServices);
-            var resultTree = provider.BuildTree(dependenciesRoot, snapshot);
+            var resultTree = await provider.BuildTreeAsync(dependenciesRoot, snapshot);
 
             // Assert
             var expectedFlatHierarchy =
@@ -44,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void GrouppedByTargetTreeViewProvider_WhenOneTargetSnapshotWithExistingDependencies_ShouldApplyChanges()
+        public async Task GrouppedByTargetTreeViewProvider_WhenOneTargetSnapshotWithExistingDependencies_ShouldApplyChanges()
         {
             var tfm1 = ITargetFrameworkFactory.Implement(moniker: "tfm1");
             var dependencyRootXxx = IDependencyFactory.FromJson(@"
@@ -150,7 +151,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 commonServices);
 
             // Act
-            var resultTree = provider.BuildTree(dependenciesRoot, GetSnapshot(testData));
+            var resultTree = await provider.BuildTreeAsync(dependenciesRoot, GetSnapshot(testData));
 
             // Assert            
             var expectedFlatHierarchy =
@@ -165,7 +166,7 @@ Caption=Dependency1, FilePath=tfm1\Xxx\dependencyXxxpath, IconHash=325249260, Ex
         }
 
         [Fact]
-        public void GrouppedByTargetTreeViewProvider_WhenOneTargetSnapshotAndDependencySupportsHierarchyAndIsResolved_ShouldReadd()
+        public async Task GrouppedByTargetTreeViewProvider_WhenOneTargetSnapshotAndDependencySupportsHierarchyAndIsResolved_ShouldReadd()
         {
             var tfm1 = ITargetFrameworkFactory.Implement(moniker: "tfm1");
             var dependencyRootYyy = IDependencyFactory.FromJson(@"
@@ -236,7 +237,7 @@ Caption=Dependency1, FilePath=tfm1\Xxx\dependencyXxxpath, IconHash=325249260, Ex
                 commonServices);
 
             // Act
-            var resultTree = provider.BuildTree(dependenciesRoot, GetSnapshot(testData));
+            var resultTree = await provider.BuildTreeAsync(dependenciesRoot, GetSnapshot(testData));
 
             // Assert            
             var expectedFlatHierarchy =
@@ -248,7 +249,7 @@ Caption=DependencyExisting, FilePath=tfm1\Yyy\dependencyExistingpath, IconHash=3
         }
 
         [Fact]
-        public void GrouppedByTargetTreeViewProvider_WhenOneTargetSnapshotAndDependencySupportsHierarchyAndIsUnresolved_ShouldReadd()
+        public async Task GrouppedByTargetTreeViewProvider_WhenOneTargetSnapshotAndDependencySupportsHierarchyAndIsUnresolved_ShouldReadd()
         {
             var dependencyRootYyy = IDependencyFactory.FromJson(@"
 {
@@ -318,7 +319,7 @@ Caption=DependencyExisting, FilePath=tfm1\Yyy\dependencyExistingpath, IconHash=3
                 commonServices);
 
             // Act
-            var resultTree = provider.BuildTree(dependenciesRoot, GetSnapshot(testData));
+            var resultTree = await provider.BuildTreeAsync(dependenciesRoot, GetSnapshot(testData));
 
             // Assert            
             var expectedFlatHierarchy =
@@ -330,7 +331,7 @@ Caption=DependencyExisting, FilePath=tfm1\yyy\dependencyExisting, IconHash=32524
         }
 
         [Fact]
-        public void GrouppedByTargetTreeViewProvider_WhenOneTargetSnapshotAndDependencySupportsRule_ShouldCreateRule()
+        public async Task GrouppedByTargetTreeViewProvider_WhenOneTargetSnapshotAndDependencySupportsRule_ShouldCreateRule()
         {
             var dependencyRootYyy = IDependencyFactory.FromJson(@"
 {
@@ -397,7 +398,7 @@ Caption=DependencyExisting, FilePath=tfm1\yyy\dependencyExisting, IconHash=32524
                 commonServices);
 
             // Act
-            var resultTree = provider.BuildTree(dependenciesRoot, GetSnapshot(testData));
+            var resultTree = await provider.BuildTreeAsync(dependenciesRoot, GetSnapshot(testData));
 
             // Assert            
             var expectedFlatHierarchy =
@@ -409,7 +410,7 @@ Caption=DependencyExisting, FilePath=tfm1\yyy\dependencyExisting, IconHash=32524
         }
 
         [Fact]
-        public void GrouppedByTargetTreeViewProvider_WheEmptySnapshotAndVisibilityMarkerProvided_ShouldDisplaySubTreeRoot()
+        public async Task GrouppedByTargetTreeViewProvider_WheEmptySnapshotAndVisibilityMarkerProvided_ShouldDisplaySubTreeRoot()
         {
             var dependencyRootYyy = IDependencyFactory.FromJson(@"
 {
@@ -466,7 +467,7 @@ Caption=DependencyExisting, FilePath=tfm1\yyy\dependencyExisting, IconHash=32524
                 commonServices);
 
             // Act
-            var resultTree = provider.BuildTree(dependenciesRoot, GetSnapshot(testData));
+            var resultTree = await provider.BuildTreeAsync(dependenciesRoot, GetSnapshot(testData));
 
             // Assert            
             var expectedFlatHierarchy =
@@ -477,7 +478,7 @@ Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconH
         }
 
         [Fact]
-        public void GrouppedByTargetTreeViewProvider_WheEmptySnapshotAndVisibilityMarkerNotProvided_ShouldHideSubTreeRoot()
+        public async Task GrouppedByTargetTreeViewProvider_WheEmptySnapshotAndVisibilityMarkerNotProvided_ShouldHideSubTreeRoot()
         {
             var dependencyRootYyy = IDependencyFactory.FromJson(@"
 {
@@ -534,7 +535,7 @@ Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconH
                 commonServices);
 
             // Act
-            var resultTree = provider.BuildTree(dependenciesRoot, GetSnapshot(testData));
+            var resultTree = await provider.BuildTreeAsync(dependenciesRoot, GetSnapshot(testData));
 
             // Assert            
             var expectedFlatHierarchy =
@@ -544,7 +545,7 @@ Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconH
         }
 
         [Fact]
-        public void GrouppedByTargetTreeViewProvider_WhenMultipleTargetSnapshotsWithExistingDependencies_ShouldApplyChanges()
+        public async Task GrouppedByTargetTreeViewProvider_WhenMultipleTargetSnapshotsWithExistingDependencies_ShouldApplyChanges()
         {
             var tfm1 = ITargetFrameworkFactory.Implement(moniker: "tfm1");
             var tfm2 = ITargetFrameworkFactory.Implement(moniker: "tfm2");
@@ -697,7 +698,7 @@ Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconH
                 commonServices);
 
             // Act
-            var resultTree = provider.BuildTree(dependenciesRoot, GetSnapshot(testData));
+            var resultTree = await provider.BuildTreeAsync(dependenciesRoot, GetSnapshot(testData));
 
             // Assert            
             var expectedFlatHierarchy =

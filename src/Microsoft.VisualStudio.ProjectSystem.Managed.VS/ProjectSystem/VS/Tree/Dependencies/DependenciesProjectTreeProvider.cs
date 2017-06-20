@@ -390,17 +390,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
 
             var nowait = SubmitTreeUpdateAsync(
-                (treeSnapshot, configuredProjectExports, cancellationToken) =>
+                async (treeSnapshot, configuredProjectExports, cancellationToken) =>
                 {
                     var dependenciesNode = treeSnapshot.Value.Tree;
                     if (!cancellationToken.IsCancellationRequested)
                     {
-                        dependenciesNode = viewProvider.Value.BuildTree(dependenciesNode, snapshot, cancellationToken);
+                        dependenciesNode = await viewProvider.Value.BuildTreeAsync(dependenciesNode, snapshot, cancellationToken)
+                                                                   .ConfigureAwait(false);
                     }
 
                     // TODO We still are getting mismatched data sources and need to figure out better 
                     // way of merging, mute them for now and get to it in U1
-                    return Task.FromResult(new TreeUpdateResult(dependenciesNode, false, null));
+                    return new TreeUpdateResult(dependenciesNode, false, null);
                 });
 
             return Task.CompletedTask;
@@ -436,7 +437,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
         }
 
-        private IImmutableDictionary<string, IPropertyPagesCatalog> GetNamedCatalogs(IProjectCatalogSnapshot catalogs)
+        private async Task<IImmutableDictionary<string, IPropertyPagesCatalog>> GetNamedCatalogsAsync(IProjectCatalogSnapshot catalogs)
         {
             if (catalogs != null)
             {
@@ -448,17 +449,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return NamedCatalogs;
             }
 
-            ThreadHelper.JoinableTaskFactory.Run(async () =>
-            {
-                // Note: it is unlikely that we end up here, however for cases when node providers
-                // getting their node data not from Design time build events, we might have OnDependenciesChanged
-                // event coming before initial design time build event updates NamedCatalogs in this class.
-                // Thus, just in case, explicitly request it here (GetCatalogsAsync will accuire a project read lock)
-                NamedCatalogs = await ActiveConfiguredProject.Services
-                                                             .PropertyPagesCatalog
-                                                             .GetCatalogsAsync(CancellationToken.None)
-                                                             .ConfigureAwait(false);
-            });
+
+            // Note: it is unlikely that we end up here, however for cases when node providers
+            // getting their node data not from Design time build events, we might have OnDependenciesChanged
+            // event coming before initial design time build event updates NamedCatalogs in this class.
+            // Thus, just in case, explicitly request it here (GetCatalogsAsync will accuire a project read lock)
+            NamedCatalogs = await ActiveConfiguredProject.Services
+                                                         .PropertyPagesCatalog
+                                                         .GetCatalogsAsync(CancellationToken.None)
+                                                         .ConfigureAwait(false);
 
             return NamedCatalogs;
         }
@@ -563,7 +562,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 flags: flags);
         }
 
-        public IRule GetRule(IDependency dependency, IProjectCatalogSnapshot catalogs)
+        public async Task<IRule> GetRuleAsync(IDependency dependency, IProjectCatalogSnapshot catalogs)
         {
             Requires.NotNull(dependency, nameof(dependency));
 
@@ -574,15 +573,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
             else
             {
-                ThreadHelper.JoinableTaskFactory.Run(async () =>
-                {
-                    project = await DependenciesHost.GetConfiguredProject(dependency.TargetFramework)
-                                                    .ConfigureAwait(false) ?? ActiveConfiguredProject;
-                });
+                project = await DependenciesHost.GetConfiguredProject(dependency.TargetFramework)
+                                                .ConfigureAwait(false) ?? ActiveConfiguredProject;
             }
 
             var configuredProjectExports = GetActiveConfiguredProjectExports(project);
-            var namedCatalogs = GetNamedCatalogs(catalogs);
+            var namedCatalogs = await GetNamedCatalogsAsync(catalogs).ConfigureAwait(false);
             Requires.NotNull(namedCatalogs, nameof(namedCatalogs));
 
             var browseObjectsCatalog = namedCatalogs[PropertyPageContexts.BrowseObject];

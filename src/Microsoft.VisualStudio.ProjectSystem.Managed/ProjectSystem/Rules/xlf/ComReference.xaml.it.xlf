@@ -9,8 +9,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|ComReference|Description">
-        <source>COM reference properties</source>
-        <target state="translated">Proprietà rifermento COM</target>
+        <source>COM Reference Properties</source>
+        <target state="translated">Proprietà del riferimento COM</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Guid|DisplayName">

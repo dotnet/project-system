@@ -9,8 +9,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|AnalyzerReference|Description">
-        <source>Analyzer reference properties</source>
-        <target state="translated">Свойства ссылки на анализатор</target>
+        <source>Analyzer Properties</source>
+        <target state="translated">Свойства анализатора</target>
         <note />
       </trans-unit>
     </body>

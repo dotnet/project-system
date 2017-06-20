@@ -3825,9 +3825,9 @@ NextControl:
         Protected Overridable Sub OnThemeChanged()
             If SupportsTheming Then
                 Dim VsUIShell5 = VsUIShell5Service
-                BackColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell5, "Background", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Window)
+                BackColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell5, "Background", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Control)
             Else
-                BackColor = SystemColors.Window
+                BackColor = SystemColors.Control
             End If
         End Sub
 

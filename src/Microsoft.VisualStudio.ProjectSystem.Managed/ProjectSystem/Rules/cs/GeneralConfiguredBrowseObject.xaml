@@ -12,10 +12,14 @@
   <EnumProperty Name="PlatformTarget" DisplayName="Cílová platforma" Visible="False" />
   <BoolProperty Name="Prefer32Bit" DisplayName="Preferovat 32bitovou" Visible="False" />
   <BoolProperty Name="AllowUnsafeBlocks" Default="False" DisplayName="Povolit nezabezpečený kód" Visible="False" />
-  <BoolProperty Name="Optimize" DisplayName="Optimize" Visible="False" />
+  <BoolProperty Name="Optimize" DisplayName="Optimalizovat" Visible="False" />
   <StringProperty Name="NoWarn" DisplayName="Potlačit upozornění" Visible="False" />
   <BoolProperty Name="TreatWarningsAsErrors" Default="False" Description="Zpracovávat upozornění jako chyby" Visible="False" />
-  <StringProperty Name="TreatSpecificWarningsAsErrors" Description="Považovat specifická upozornění za chyby" Visible="False" />
+  <StringProperty Name="TreatSpecificWarningsAsErrors" Description="Považovat specifická upozornění za chyby" Visible="False">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="WarningsAsErrors" />
+    </StringProperty.DataSource>
+  </StringProperty>
   <StringProperty Name="OutputPath" DisplayName="Výstupní cesta" Visible="False" />
   <StringProperty Name="DocumentationFile" DisplayName="Soubor dokumentace" Visible="False" />
   <EnumProperty Name="GenerateSerializationAssemblies" DisplayName="Generovat serializované sestavení" Visible="False">
@@ -46,64 +50,67 @@
   <StringProperty Name="DebugSymbols" DisplayName="Symboly ladění" Visible="False" />
   <EnumProperty Name="FileAlignment" DisplayName="Zarovnání souboru" Visible="False" />
   <StringProperty Name="BaseAddress" DisplayName="Základní adresa" Visible="False" />
-  <StringProperty Name="FullPath" DisplayName="Project Folder" ReadOnly="True">
+  <StringProperty Name="FullPath" DisplayName="Složka projektu" ReadOnly="True">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <DynamicEnumProperty Name="WarningLevel" DisplayName="Warning Level" EnumProvider="WarningLevelEnumProvider" Visible="False">
+  <DynamicEnumProperty Name="WarningLevel" DisplayName="Úroveň upozornění" EnumProvider="WarningLevelEnumProvider" Visible="False">
     <DynamicEnumProperty.DataSource>
       <DataSource Persistence="ProjectFile" HasConfigurationCondition="True" SourceOfDefaultValue="AfterContext" />
     </DynamicEnumProperty.DataSource>
   </DynamicEnumProperty>
   <!-- VB Compile Page Properties-->
-  <EnumProperty Name="OptionExplicit" DisplayName="Option Explicit" Visible="False">
+  <EnumProperty Name="OptionExplicit" DisplayName="Parametr Explicit" Visible="False">
     <EnumProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="OptionExplicit" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </EnumProperty.DataSource>
-    <EnumValue Name="Off" DisplayName="Off" />
-    <EnumValue Name="On" DisplayName="On" IsDefault="True" />
+    <EnumValue Name="Off" DisplayName="Vypnuto" />
+    <EnumValue Name="On" DisplayName="Zapnuto" IsDefault="True" />
   </EnumProperty>
-  <EnumProperty Name="OptionCompare" DisplayName="Option Compare" Visible="False">
+  <EnumProperty Name="OptionCompare" DisplayName="Parametr Compare" Visible="False">
     <EnumProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="OptionCompare" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </EnumProperty.DataSource>
-    <EnumValue Name="Binary" DisplayName="Binary" IsDefault="True" />
+    <EnumValue Name="Binary" DisplayName="Binární" IsDefault="True" />
     <EnumValue Name="Text" DisplayName="Text" />
   </EnumProperty>
-  <EnumProperty Name="OptionInfer" DisplayName="Option Compare" Visible="False">
+  <EnumProperty Name="OptionInfer" DisplayName="Parametr Compare" Visible="False">
     <EnumProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="OptionInfer" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </EnumProperty.DataSource>
-    <EnumValue Name="Off" DisplayName="Off" />
-    <EnumValue Name="On" DisplayName="On" IsDefault="True" />
+    <EnumValue Name="Off" DisplayName="Vypnuto" />
+    <EnumValue Name="On" DisplayName="Zapnuto" IsDefault="True" />
   </EnumProperty>
-  <DynamicEnumProperty Name="OptionStrict" DisplayName="Option Strict" EnumProvider="OptionStrictEnumProvider" Visible="False">
+  <DynamicEnumProperty Name="OptionStrict" DisplayName="Parametr Strict" EnumProvider="OptionStrictEnumProvider" Visible="False">
     <DynamicEnumProperty.DataSource>
       <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </DynamicEnumProperty.DataSource>
   </DynamicEnumProperty>
   <!-- VB Advanced Compile Options-->
-  <BoolProperty Name="RemoveIntegerChecks" DisplayName="Remove Integer Checks" Visible="False" />
-  <BoolProperty Name="DefineDebug" DisplayName="Define Debug" Visible="False" />
-  <BoolProperty Name="DefineTrace" DisplayName="Define Trace" Visible="False" />
+  <BoolProperty Name="RemoveIntegerChecks" DisplayName="Odebrat kontroly celých čísel" Visible="False" />
+  <BoolProperty Name="DefineDebug" DisplayName="Definovat ladění" Visible="False" />
+  <BoolProperty Name="DefineTrace" DisplayName="Definovat trasování" Visible="False" />
   <!-- VB Compile Build Event Page-->
-  <StringProperty Name="PreBuildEvent" DisplayName="Pre Build Event" Visible="False">
+  <StringProperty Name="PreBuildEvent" DisplayName="Událost před sestavením" Visible="False">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="PostBuildEvent" DisplayName="Post Build Event" Visible="False">
+  <StringProperty Name="PostBuildEvent" DisplayName="Událost po sestavení" Visible="False">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <EnumProperty Name="RunPostBuildEvent" DisplayName="Run Post-Build Event" Visible="False">
+  <EnumProperty Name="RunPostBuildEvent" DisplayName="Spustit událost po sestavení" Visible="False">
     <EnumProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="RunPostBuildEvent" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </EnumProperty.DataSource>
-    <EnumValue Name="Always" DisplayName="Always" />
-    <EnumValue Name="OnBuildSuccess" DisplayName="On successful build" IsDefault="True" />
-    <EnumValue Name="OnOutputUpdated" DisplayName="When the build updates the project output" />
+    <EnumValue Name="Always" DisplayName="Vždy" />
+    <EnumValue Name="OnBuildSuccess" DisplayName="Při úspěšném sestavení" IsDefault="True" />
+    <EnumValue Name="OnOutputUpdated" DisplayName="Když sestavení aktualizuje výstup projektu" />
   </EnumProperty>
+  <!-- CSharp Project Configuration Properties-->
+  <StringProperty Name="LangVersion" DisplayName="Verze jazyka CSharp" Visible="False" />
+  <StringProperty Name="CodeAnalysisRuleSet" DisplayName=" Sada pravidel analýzy kódu" Visible="False" />
 </Rule>

@@ -60,8 +60,8 @@
       </trans-unit>
       <trans-unit id="12">
         <source>A project that contains xUnit.net tests that can run on .NET Core on Windows, Linux and MacOS.</source>
-        <target state="needs-review-translation">Проект с тестами xunit, которые могут выполняться на базе .NET Core в Windows, Linux и MacOS</target>
-        <note></note>
+        <target state="translated">Проект с тестами xUnit.net, которые могут выполняться на базе .NET Core в Windows, Linux и MacOS.</target>
+        <note />
       </trans-unit>
     </body>
   </file>

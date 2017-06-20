@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
@@ -20,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <param name="snapshot">Current dependencies snapshot</param>
         /// <param name="cancellationToken">Cancellation token if need to stop building the view</param>
         /// <returns>New dependencies node</returns>
-        IProjectTree BuildTree(
+        Task<IProjectTree> BuildTreeAsync(
             IProjectTree dependenciesTree, 
             IDependenciesSnapshot snapshot, 
             CancellationToken cancellationToken = default(CancellationToken));

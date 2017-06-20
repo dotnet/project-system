@@ -9,8 +9,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|SdkReference|Description">
-        <source>SDK reference properties</source>
-        <target state="translated">Propriedades da referência do SDK</target>
+        <source>SDK Reference Properties</source>
+        <target state="translated">Propriedades da Referência do SDK</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|SDKRootFolder|DisplayName">
@@ -55,18 +55,18 @@
       </trans-unit>
       <trans-unit id="StringProperty|DisplayName|DisplayName">
         <source>Display Name</source>
-        <target state="new">Display Name</target>
-        <note></note>
+        <target state="translated">Nome de Exibição</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Name|DisplayName">
         <source>Name</source>
-        <target state="new">Name</target>
-        <note></note>
+        <target state="translated">Nome</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
-        <target state="new">Version</target>
-        <note></note>
+        <target state="translated">Versão</target>
+        <note />
       </trans-unit>
     </body>
   </file>

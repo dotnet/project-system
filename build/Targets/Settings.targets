@@ -17,14 +17,6 @@
     <BaseNuGetRuntimeIdentifier Condition="'$(OS)' == 'Windows_NT'">win7</BaseNuGetRuntimeIdentifier>
   </PropertyGroup>
 
-  <!-- Import the global NuGet packages -->
-  <PropertyGroup>
-    <RoslynDiagnosticsNugetPackageVersion>1.2.0-beta2</RoslynDiagnosticsNugetPackageVersion>
-    <RoslynDiagnosticsPropsFilePath>$(NuGetPackageRoot)\Microsoft.Net.RoslynDiagnostics\$(RoslynDiagnosticsNugetPackageVersion)\build\Microsoft.Net.RoslynDiagnostics.props</RoslynDiagnosticsPropsFilePath>
-    <RoslynBuildUtilFilePath>$(NuGetPackageRoot)\Roslyn.Build.Util\0.9.4-portable\lib\dotnet\Roslyn.MSBuild.Util.dll</RoslynBuildUtilFilePath>
-    <AdditionalFileItemNames>$(AdditionalFileItemNames);PublicAPI</AdditionalFileItemNames>
-  </PropertyGroup>
-
   <!-- Prevent vsix manifests from being copied to the shared output directory, makes build more deterministic -->
   <PropertyGroup>
     <CopyVsixManifestToOutput>false</CopyVsixManifestToOutput>
@@ -78,7 +70,7 @@
 
     <SignAssembly Condition="'$(SignAssembly)' == ''">true</SignAssembly>
 
-    <UseRoslynAnalyzers Condition="'$(UseRoslynAnalyzers)' == ''">false</UseRoslynAnalyzers>
+    <UseRoslynAnalyzers Condition="'$(UseRoslynAnalyzers)' == ''">true</UseRoslynAnalyzers>
 
     <Deterministic>True</Deterministic>
 
@@ -126,11 +118,12 @@
     <!-- Use the compiler server -->
     <UseSharedCompilation>true</UseSharedCompilation>
   </PropertyGroup>
-
-  <ImportGroup>
-    <Import Project="$(RoslynDiagnosticsPropsFilePath)"
-            Condition="Exists('$(RoslynDiagnosticsPropsFilePath)') And ('$(UseRoslynAnalyzers)' == 'true')" />
-  </ImportGroup>
+  
+  <!-- Import the global NuGet packages -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Net.Compilers" Version="2.3.0-beta2-61719-05" Condition="'$(UseRoslynAnalyzers)' == 'true'" />
+    <PackageReference Include="Microsoft.Net.RoslynDiagnostics" Version="2.3.0-beta1" Condition="'$(UseRoslynAnalyzers)' == 'true'" />
+  </ItemGroup>
 
   <!-- Common project settings -->
   <PropertyGroup>

@@ -70,13 +70,13 @@
       </trans-unit>
       <trans-unit id="CSharpLanguageVerison.Default">
         <source>C# latest major version (default)</source>
-        <target state="new">C# latest major version (default)</target>
-        <note></note>
+        <target state="translated">Dernière version principale C# (par défaut)</target>
+        <note />
       </trans-unit>
       <trans-unit id="CSharpLanguageVerison.Latest">
         <source>C# latest minor version (latest)</source>
-        <target state="new">C# latest minor version (latest)</target>
-        <note></note>
+        <target state="translated">Dernière version mineure C# (en dernier)</target>
+        <note />
       </trans-unit>
     </body>
   </file>

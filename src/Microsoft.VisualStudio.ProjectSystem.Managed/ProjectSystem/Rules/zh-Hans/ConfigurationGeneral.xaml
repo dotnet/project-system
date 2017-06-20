@@ -44,11 +44,16 @@
       <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="TargetFrameworkMonikers" DisplayName="Target Framework Monikers" ReadOnly="True">
+  <StringProperty Name="TargetFrameworkMonikers" DisplayName="目标框架名字对象" ReadOnly="True">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMonikers" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
+  <BoolProperty Name="DisableFastUpToDateCheck" DisplayName="Disable Fast Up To Date Check">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="DisableFastUpToDateCheck" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
   <StringProperty Name="TargetPath" />
   <StringProperty Name="DocumentationFile" DisplayName="XML 文档注释文件" />
   <StringProperty Name="AssemblyName" />
@@ -63,14 +68,20 @@
   <StringProperty Name="BaseIntermediateOutputPath" />
   <EnumProperty Name="OutputType">
     <EnumValue Name="Library" DisplayName="类库" />
-    <EnumValue Name="Exe" DisplayName="Console Application" />
-    <EnumValue Name="WinExe" DisplayName="Windows Application" />
+    <EnumValue Name="Exe" DisplayName="控制台应用程序" />
+    <EnumValue Name="WinExe" DisplayName="Windows 应用程序" />
     <EnumValue Name="AppContainerExe" DisplayName="Windows 应用商店应用" />
     <EnumValue Name="WinMDObj" DisplayName="WinMD" />
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="OutputType" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </EnumProperty.DataSource>
   </EnumProperty>
   <StringListProperty Name="AvailablePlatforms" Separator="," />
   <BoolProperty Name="Optimize" Description="编译器是否应优化输出?" />
+  <!-- Same as MSBuildProjectDirectory but has a directory separator '\' appended at the end.-->
+  <StringProperty Name="ProjectDir" Visible="false" />
   <StringProperty Name="MSBuildProjectDirectory" Visible="false" />
+  <StringProperty Name="MSBuildProjectFullPath" Visible="false" />
   <StringProperty Name="DefaultPlatform" Visible="false" />
   <StringProperty Name="PackageAction" Visible="false" Description="将项目打包时使用的 MSBuild 目标。" />
   <StringProperty Name="DefaultContentType" Visible="false" Description="添加文件时使用的默认内容类型名称。" />
@@ -121,6 +132,6 @@
   <StringProperty Name="SharedProjectAppliesTo" Visible="False" Description="至少会对共享项目的语言进行测试的功能匹配表达式；用于筛选“添加共享项目引用”选项。" />
   <BoolProperty Name="AlwaysUseNumericalSuffixInItemNames" Visible="False" Description="指示新添加的项目名称是否应该始终使用数字作后缀。" />
   <StringProperty Name="LanguageServiceName" ReadOnly="True" Visible="False" Description="表示传递给 Roslyn 的 LanguageName" />
-  <StringProperty Name="LanguageServiceId" ReadOnly="True" Visible="False" Description="Represents the GUID of object that implements the language service for the project." />
+  <StringProperty Name="LanguageServiceId" ReadOnly="True" Visible="False" Description="表示为项目实现语言服务的对象 GUID。" />
   <StringProperty Name="TemplateLanguage" ReadOnly="True" Visible="False" Description="表示项和项目模板中保留的语言" />
 </Rule>

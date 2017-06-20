@@ -65,3 +65,21 @@ To get Windows to automatically save a memory dump every time Visual Studio cras
 [AlwaysSaveDevEnvCrashDumps.reg](/docs/repo/content/AlwaysSaveDevEnvCrashDumps.reg?raw=true)
 
 Dumps will be saved to C:\Crashdumps.
+
+## UI Delays
+
+To get Windows to automatically send on data about UI delays in Visual Studio, merge the following registry settings:
+
+[AlwaysSendPerfWatsonData.reg](/docs/repo/content/AlwaysSendPerfWatsonData.reg?raw=true)
+
+For more information on these settings, see [Configure Windows telemetry in your organization](https://docs.microsoft.com/en-us/windows/configuration/configure-windows-telemetry-in-your-organization).
+
+## Testing SDK Changes
+
+If you're making changes to the SDK (that is, the [dotnet/sdk](https://github.com/dotnet/sdk) repo) you can easily test VS or msbuild.exe with those changes by setting the `DOTNET_MSBUILD_SDK_RESOLVER_SDKS_DIR` environment variable.
+
+After you build, find the generated Sdks directory. For example, if your repo is at D:\Projects\sdk, you'll find it at D:\Projects\sdk\bin\Debug\Sdks. Set the environment variable to point to this location:
+
+`set DOTNET_MSBUILD_SDK_RESOLVER_SDKS_DIR=D:\Projects\sdk\bin\Debug\Sdks`
+
+Now any instances of msbuild.exe or VS that inherit that setting will use your locally-produced SDK.

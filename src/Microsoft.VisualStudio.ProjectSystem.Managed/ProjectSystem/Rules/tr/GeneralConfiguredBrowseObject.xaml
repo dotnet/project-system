@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--Copyright, Microsoft Corporation, All rights reserved.-->
-<Rule Name="ConfiguredBrowseObject" DisplayName="Общие" PageTemplate="generic" Description="Общие" OverrideMode="Replace" xmlns="http://schemas.microsoft.com/build/2009/properties">
+<Rule Name="ConfiguredBrowseObject" DisplayName="Genel" PageTemplate="generic" Description="Genel" OverrideMode="Replace" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.Categories>
-    <Category Name="General" DisplayName="Общие" Description="Genel" />
+    <Category Name="General" DisplayName="Genel" Description="Genel" />
   </Rule.Categories>
   <Rule.DataSource>
     <DataSource Persistence="ProjectFile" HasConfigurationCondition="True" SourceOfDefaultValue="AfterContext" />
@@ -12,10 +12,14 @@
   <EnumProperty Name="PlatformTarget" DisplayName="Platform Hedefi" Visible="False" />
   <BoolProperty Name="Prefer32Bit" DisplayName="32Bit Tercih Et" Visible="False" />
   <BoolProperty Name="AllowUnsafeBlocks" Default="False" DisplayName="Güvenli olmayan koda izin ver" Visible="False" />
-  <BoolProperty Name="Optimize" DisplayName="Optimize" Visible="False" />
+  <BoolProperty Name="Optimize" DisplayName="İyileştir" Visible="False" />
   <StringProperty Name="NoWarn" DisplayName="Uyarıyı Gösterme" Visible="False" />
   <BoolProperty Name="TreatWarningsAsErrors" Default="False" Description="Uyarıları hata olarak değerlendir" Visible="False" />
-  <StringProperty Name="TreatSpecificWarningsAsErrors" Description="Belirli uyarıları hata olarak değerlendir" Visible="False" />
+  <StringProperty Name="TreatSpecificWarningsAsErrors" Description="Belirli uyarıları hata olarak değerlendir" Visible="False">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="WarningsAsErrors" />
+    </StringProperty.DataSource>
+  </StringProperty>
   <StringProperty Name="OutputPath" DisplayName="Çıkış Yolu" Visible="False" />
   <StringProperty Name="DocumentationFile" DisplayName="Belge dosyası" Visible="False" />
   <EnumProperty Name="GenerateSerializationAssemblies" DisplayName="Serileştirme bütünleştirilmiş kodları oluştur" Visible="False">
@@ -46,12 +50,12 @@
   <StringProperty Name="DebugSymbols" DisplayName="Hata ayıklama simgeleri" Visible="False" />
   <EnumProperty Name="FileAlignment" DisplayName="Dosya Hizalama" Visible="False" />
   <StringProperty Name="BaseAddress" DisplayName="Temel adres" Visible="False" />
-  <StringProperty Name="FullPath" DisplayName="Project Folder" ReadOnly="True">
+  <StringProperty Name="FullPath" DisplayName="Proje Klasörü" ReadOnly="True">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <DynamicEnumProperty Name="WarningLevel" DisplayName="Warning Level" EnumProvider="WarningLevelEnumProvider" Visible="False">
+  <DynamicEnumProperty Name="WarningLevel" DisplayName="Uyarı Düzeyi" EnumProvider="WarningLevelEnumProvider" Visible="False">
     <DynamicEnumProperty.DataSource>
       <DataSource Persistence="ProjectFile" HasConfigurationCondition="True" SourceOfDefaultValue="AfterContext" />
     </DynamicEnumProperty.DataSource>
@@ -61,22 +65,22 @@
     <EnumProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="OptionExplicit" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </EnumProperty.DataSource>
-    <EnumValue Name="Off" DisplayName="Off" />
-    <EnumValue Name="On" DisplayName="On" IsDefault="True" />
+    <EnumValue Name="Off" DisplayName="Kapalı" />
+    <EnumValue Name="On" DisplayName="Açık" IsDefault="True" />
   </EnumProperty>
   <EnumProperty Name="OptionCompare" DisplayName="Option Compare" Visible="False">
     <EnumProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="OptionCompare" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </EnumProperty.DataSource>
-    <EnumValue Name="Binary" DisplayName="Binary" IsDefault="True" />
-    <EnumValue Name="Text" DisplayName="Text" />
+    <EnumValue Name="Binary" DisplayName="İkili" IsDefault="True" />
+    <EnumValue Name="Text" DisplayName="Metin" />
   </EnumProperty>
   <EnumProperty Name="OptionInfer" DisplayName="Option Compare" Visible="False">
     <EnumProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="OptionInfer" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </EnumProperty.DataSource>
-    <EnumValue Name="Off" DisplayName="Off" />
-    <EnumValue Name="On" DisplayName="On" IsDefault="True" />
+    <EnumValue Name="Off" DisplayName="Kapalı" />
+    <EnumValue Name="On" DisplayName="Açık" IsDefault="True" />
   </EnumProperty>
   <DynamicEnumProperty Name="OptionStrict" DisplayName="Option Strict" EnumProvider="OptionStrictEnumProvider" Visible="False">
     <DynamicEnumProperty.DataSource>
@@ -84,26 +88,29 @@
     </DynamicEnumProperty.DataSource>
   </DynamicEnumProperty>
   <!-- VB Advanced Compile Options-->
-  <BoolProperty Name="RemoveIntegerChecks" DisplayName="Remove Integer Checks" Visible="False" />
-  <BoolProperty Name="DefineDebug" DisplayName="Define Debug" Visible="False" />
-  <BoolProperty Name="DefineTrace" DisplayName="Define Trace" Visible="False" />
+  <BoolProperty Name="RemoveIntegerChecks" DisplayName="Tamsayı Denetimlerini Kaldır" Visible="False" />
+  <BoolProperty Name="DefineDebug" DisplayName="Hata Ayıklama Tanımla" Visible="False" />
+  <BoolProperty Name="DefineTrace" DisplayName="İzleme Tanımla" Visible="False" />
   <!-- VB Compile Build Event Page-->
-  <StringProperty Name="PreBuildEvent" DisplayName="Pre Build Event" Visible="False">
+  <StringProperty Name="PreBuildEvent" DisplayName="Derleme Öncesi Olayı" Visible="False">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="PostBuildEvent" DisplayName="Post Build Event" Visible="False">
+  <StringProperty Name="PostBuildEvent" DisplayName="Derleme Sonrası Olayı" Visible="False">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <EnumProperty Name="RunPostBuildEvent" DisplayName="Run Post-Build Event" Visible="False">
+  <EnumProperty Name="RunPostBuildEvent" DisplayName="Derleme Sonrası Olayı Çalıştır" Visible="False">
     <EnumProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="RunPostBuildEvent" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </EnumProperty.DataSource>
-    <EnumValue Name="Always" DisplayName="Always" />
-    <EnumValue Name="OnBuildSuccess" DisplayName="On successful build" IsDefault="True" />
-    <EnumValue Name="OnOutputUpdated" DisplayName="When the build updates the project output" />
+    <EnumValue Name="Always" DisplayName="Her Zaman" />
+    <EnumValue Name="OnBuildSuccess" DisplayName="Derleme başarılı olduğunda" IsDefault="True" />
+    <EnumValue Name="OnOutputUpdated" DisplayName="Oluşturma proje çıkışını güncelleştirdiğinde" />
   </EnumProperty>
+  <!-- CSharp Project Configuration Properties-->
+  <StringProperty Name="LangVersion" DisplayName="CSharp Dil Sürümü" Visible="False" />
+  <StringProperty Name="CodeAnalysisRuleSet" DisplayName="Kod Analizi Kural Kümesi" Visible="False" />
 </Rule>

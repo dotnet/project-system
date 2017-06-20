@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
@@ -95,12 +96,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         ///         -or-
         ///     </para>
         ///     <paramref name="metadata" /> is <see langword="null"/>.
+        ///     <para>
+        ///         -or-
+        ///     </para>
+        ///     <paramref name="logger" /> is <see langword="null"/>.
         /// </exception>
-        public void ApplyEvaluationChanges(IComparable version, IProjectChangeDiff difference, IImmutableDictionary<string, IImmutableDictionary<string, string>> metadata, bool isActiveContext)
+        public void ApplyEvaluationChanges(IComparable version, IProjectChangeDiff difference, IImmutableDictionary<string, IImmutableDictionary<string, string>> metadata, bool isActiveContext, IProjectLogger logger)
         {
             Requires.NotNull(version, nameof(version));
             Requires.NotNull(version, nameof(version));
             Requires.NotNull(metadata, nameof(metadata));
+            Requires.NotNull(logger, nameof(logger));
 
             if (!difference.AnyChanges)
                 return;
@@ -108,7 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             difference = NormalizeDifferences(difference);
             EnqueueEvaluation(version, difference);
 
-            ApplyChangesToContext(version, difference, metadata, isActiveContext);
+            ApplyChangesToContext(version, difference, metadata, isActiveContext, logger);
         }
 
         /// <summary>
@@ -121,11 +127,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         ///         -or-
         ///     </para>
         ///     <paramref name="difference" /> is <see langword="null"/>.
+        ///     <para>
+        ///         -or-
+        ///     </para>
+        ///     <paramref name="logger" /> is <see langword="null"/>.
         /// </exception>
-        public void ApplyDesignTimeChanges(IComparable version, IProjectChangeDiff difference, bool isActiveContext)
+        public void ApplyDesignTimeChanges(IComparable version, IProjectChangeDiff difference, bool isActiveContext, IProjectLogger logger)
         {
             Requires.NotNull(version, nameof(version));
             Requires.NotNull(difference, nameof(difference));
+            Requires.NotNull(logger, nameof(logger));
 
             if (!difference.AnyChanges)
                 return;
@@ -133,36 +144,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             difference = NormalizeDifferences(difference);
             difference = ResolveDesignTimeConflicts(version, difference);
 
-            ApplyChangesToContext(version, difference, ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty, isActiveContext);
+            ApplyChangesToContext(version, difference, ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty, isActiveContext, logger);
         }
 
-        protected abstract void AddToContext(string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext);
+        protected abstract void AddToContext(string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext, IProjectLogger logger);
 
-        protected abstract void RemoveFromContext(string fullPath);
+        protected abstract void RemoveFromContext(string fullPath, IProjectLogger logger);
 
-        private void ApplyChangesToContext(IComparable version, IProjectChangeDiff difference, IImmutableDictionary<string, IImmutableDictionary<string, string>> metadata, bool isActiveContext)
+        private void ApplyChangesToContext(IComparable version, IProjectChangeDiff difference, IImmutableDictionary<string, IImmutableDictionary<string, string>> metadata, bool isActiveContext, IProjectLogger logger)
         {
             foreach (string includePath in difference.RemovedItems)
             {
-                RemoveFromContextIfPresent(includePath);
+                RemoveFromContextIfPresent(includePath, logger);
             }
 
             foreach (string includePath in difference.AddedItems)
             {
-                AddToContextIfNotPresent(includePath, metadata, isActiveContext);
+                AddToContextIfNotPresent(includePath, metadata, isActiveContext, logger);
             }
 
             // We Remove then Add changed items to pick up the Linked metadata
             foreach (string includePath in difference.ChangedItems)
             {
-                RemoveFromContextIfPresent(includePath);
-                AddToContextIfNotPresent(includePath, metadata, isActiveContext);
+                RemoveFromContextIfPresent(includePath, logger);
+                AddToContextIfNotPresent(includePath, metadata, isActiveContext, logger);
             }
 
             Assumes.True(difference.RenamedItems.Count == 0, "We should have normalized renames.");
         }
 
-        private void RemoveFromContextIfPresent(string includePath)
+        private void RemoveFromContextIfPresent(string includePath, IProjectLogger logger)
         {
             string fullPath = _project.MakeRooted(includePath);
 
@@ -170,13 +181,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             // or other reason, that our state of the world remains consistent
             if (_paths.Contains(fullPath))
             {
-                RemoveFromContext(fullPath);
+                RemoveFromContext(fullPath, logger);
                 bool removed = _paths.Remove(fullPath);
                 Assumes.True(removed);
             }
         }
 
-        private void AddToContextIfNotPresent(string includePath, IImmutableDictionary<string, IImmutableDictionary<string, string>> metadata, bool isActiveContext)
+        private void AddToContextIfNotPresent(string includePath, IImmutableDictionary<string, IImmutableDictionary<string, string>> metadata, bool isActiveContext, IProjectLogger logger)
         {
             string fullPath = _project.MakeRooted(includePath);
 
@@ -185,7 +196,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             if (!_paths.Contains(fullPath))
             {
                 var itemMetadata = metadata.GetValueOrDefault(includePath, ImmutableDictionary<string, string>.Empty);
-                AddToContext(fullPath, itemMetadata, isActiveContext);
+                AddToContext(fullPath, itemMetadata, isActiveContext, logger);
                 bool added = _paths.Add(fullPath);
                 Assumes.True(added);
             }

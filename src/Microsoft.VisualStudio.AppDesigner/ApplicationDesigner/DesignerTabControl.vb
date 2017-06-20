@@ -461,6 +461,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="item">The tab button which has been clicked.</param>
         ''' <remarks></remarks>
         Public Overridable Sub OnItemClick(item As ProjectDesignerTabButton)
+            OnItemClick(item, reactivatePage:=False)
+        End Sub
+
+        Public Overridable Sub OnItemClick(item As ProjectDesignerTabButton, reactivatePage As Boolean)
             SelectedItem = item
         End Sub
 
