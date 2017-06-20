@@ -79,7 +79,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private bool _isDisabled = true;
         private bool _itemsChangedSinceLastCheck = true;
         private string _msBuildProjectFullPath;
-        private string _ruleset;
         private HashSet<string> _imports = new HashSet<string>();
         private HashSet<string> _itemTypes = new HashSet<string>();
         private Dictionary<string, HashSet<string>> _items = new Dictionary<string, HashSet<string>>();
@@ -118,7 +117,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _isDisabled = disableFastUpToDateCheckString != null && string.Equals(disableFastUpToDateCheckString, TrueValue, StringComparison.OrdinalIgnoreCase);
 
             _msBuildProjectFullPath = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, _msBuildProjectFullPath);
-            _ruleset = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.CodeAnalysisRuleSetProperty, _ruleset);
 
             foreach (var referenceSchema in ReferenceSchemas)
             {
@@ -285,11 +283,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var inputs = new HashSet<string>();
 
             AddInput(logger, inputs, _msBuildProjectFullPath, "project file");
-
-            if (_ruleset != null)
-            {
-                AddInput(logger, inputs, _ruleset, "ruleset");
-            }
 
             AddInputs(logger, inputs, _imports, "import");
 
