@@ -21,21 +21,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'Add any initialization after the InitializeComponent() call
             AddChangeHandlers()
 
-            Dim Flags As __FCSTORAGEFLAGS = __FCSTORAGEFLAGS.FCSF_READONLY
-
-            Dim FontColorStorage As IVsFontAndColorStorage = TryCast(GetService(GetType(IVsFontAndColorStorage)), IVsFontAndColorStorage)
-            If FontColorStorage IsNot Nothing Then
-                FontColorStorage.OpenCategory(DefGuidList.guidTextEditorFontCategory, CType(Flags, System.UInt32))
-                Dim TextEditorFont As FontInfo() = Nothing
-                FontColorStorage.GetFont(Nothing, TextEditorFont)
-
-                ' Try to set the font..
-                Dim FontDisplayed As System.Drawing.Font
-                FontDisplayed = New System.Drawing.Font(TextEditorFont(0).bstrFaceName, CType(TextEditorFont(0).wPointSize, Single))
-                txtPreBuildEventCommandLine.Font = FontDisplayed
-                txtPostBuildEventCommandLine.Font = FontDisplayed
-
-            End If
         End Sub
 
         Public Enum Tokens
@@ -82,6 +67,25 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             "ProjectExt",
             "SolutionExt"
         }
+
+        Private Sub OnFontColorPreferencesChanged(sender As Object, e As EventArgs)
+            Dim Flags As __FCSTORAGEFLAGS = __FCSTORAGEFLAGS.FCSF_READONLY
+
+            Dim FontColorStorage As IVsFontAndColorStorage = TryCast(GetService(GetType(IVsFontAndColorStorage)), IVsFontAndColorStorage)
+            If FontColorStorage IsNot Nothing Then
+                FontColorStorage.OpenCategory(DefGuidList.guidTextEditorFontCategory, CType(Flags, System.UInt32))
+                Dim TextEditorFont As FontInfo() = Nothing
+                FontColorStorage.GetFont(Nothing, TextEditorFont)
+
+                ' Try to set the font..
+                Dim FontDisplayed As System.Drawing.Font
+                FontDisplayed = New System.Drawing.Font(TextEditorFont(0).bstrFaceName, CType(TextEditorFont(0).wPointSize, Single))
+                txtPreBuildEventCommandLine.Font = FontDisplayed
+                txtPostBuildEventCommandLine.Font = FontDisplayed
+
+            End If
+
+        End Sub
 
         Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
             Get
