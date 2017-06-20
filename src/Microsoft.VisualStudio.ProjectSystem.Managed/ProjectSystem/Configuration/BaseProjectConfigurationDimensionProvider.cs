@@ -23,14 +23,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// </summary>
         /// <param name="projectXmlAccessor">Lock service for the project file.</param>
         /// <param name="telemetryService">Telemetry service.</param>
-        /// <param name="unconfiguredProjectCommonServices">UnconfiguredProject Common Services.</param>
         /// <param name="dimensionName">Name of the dimension.</param>
         /// <param name="propertyName">Name of the project property containing the dimension values.</param>
         /// <param name="valueContainsPii">Says if the dimension values contain PII and needs to hashed before being reported to Telemetry</param>
         public BaseProjectConfigurationDimensionProvider(
             IProjectXmlAccessor projectXmlAccessor,
             ITelemetryService telemetryService,
-            IUnconfiguredProjectCommonServices unconfiguredProjectCommonServices,
             string dimensionName,
             string propertyName,
             bool valueContainsPii)
@@ -41,7 +39,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             TelemetryService = telemetryService;
             DimensionName = dimensionName;
             PropertyName = propertyName;
-            UnconfiguredProjectCommonServices = unconfiguredProjectCommonServices;
 
             _valueContainsPii = valueContainsPii;
         }
@@ -52,11 +49,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         }
 
         public string PropertyName
-        {
-            get;
-        }
-
-        public IUnconfiguredProjectCommonServices UnconfiguredProjectCommonServices
         {
             get;
         }

@@ -22,8 +22,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     internal class PlatformProjectConfigurationDimensionProvider : BaseProjectConfigurationDimensionProvider
     {
         [ImportingConstructor]
-        public PlatformProjectConfigurationDimensionProvider(IProjectXmlAccessor projectXmlAccessor, ITelemetryService telemetryService, IUnconfiguredProjectCommonServices unconfiguredProjectCommonServices)
-            : base(projectXmlAccessor, telemetryService, unconfiguredProjectCommonServices, ConfigurationGeneral.PlatformProperty, "Platforms", valueContainsPii: false)
+        public PlatformProjectConfigurationDimensionProvider(IProjectXmlAccessor projectXmlAccessor, ITelemetryService telemetryService)
+            : base(projectXmlAccessor, telemetryService, ConfigurationGeneral.PlatformProperty, "Platforms", valueContainsPii: false)
         {
         }
 
