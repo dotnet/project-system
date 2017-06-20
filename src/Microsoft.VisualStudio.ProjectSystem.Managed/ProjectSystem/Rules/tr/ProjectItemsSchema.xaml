@@ -12,9 +12,13 @@
   <ContentType Name="EmbeddedResource" DisplayName="Eklenmiş kaynak" ItemType="EmbeddedResource">
     <NameValuePair Name="DefaultMetadata_Generator" Value="ResXFileCodeGenerator" />
   </ContentType>
+  <ContentType Name="UpToDateCheckInput" DisplayName="Up-to-date check input" ItemType="UpToDateCheckInput"></ContentType>
+  <ContentType Name="UpToDateCheckOutput" DisplayName="Up-to-date check output" ItemType="UpToDateCheckOutput"></ContentType>
   <ItemType Name="None" DisplayName="Hiçbiri" />
   <ItemType Name="Content" DisplayName="İçerik" />
   <ItemType Name="EmbeddedResource" DisplayName="Eklenmiş kaynak" />
+  <ItemType Name="UpToDateCheckInput" DisplayName="Up-to-date check input" />
+  <ItemType Name="UpToDateCheckOutput" DisplayName="Up-to-date check output" UpToDateCheckInput="False" />
   <FileExtension Name=".asax" ContentType="Asax" />
   <FileExtension Name=".asmx" ContentType="HTML" />
   <FileExtension Name=".asp" ContentType="AspPage" />

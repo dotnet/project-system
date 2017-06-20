@@ -59,5 +59,6 @@
   <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="Der ausgewertete Elementname des ursprünglichen Verweiselements, dessen Auflösung zu diesem aufgelösten Verweiselement geführt hat." />
   <StringProperty Name="ReferenceFromSDK" Visible="False" ReadOnly="True" Description="Das SDK, von dem dieser Verweis stammte, als das erweiterte SDK-Ziel verwendet wurde." />
   <StringProperty Name="ResolvedFrom" Visible="False" ReadOnly="True" Description="{}Das Repository, das den Verweis enthielt, der für die Auflösung verwendet wurde. (&quot;{GAC}&quot;, wenn er sich im GAC befand)." />
+  <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
   <BoolProperty Name="WinMDFile" Visible="false" ReadOnly="True" Description="Gibt an, ob vom Buildsystem überprüft wurde, dass es sich hierbei um eine WinMD handelt (im Gegensatz zu einer Assembly)" />
 </Rule>

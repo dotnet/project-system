@@ -43,4 +43,5 @@
   <StringProperty Name="Project" Visible="False" Description="идентификатор GUID, с помощью которого решение отслеживает ссылочную целевую сборку отдельного проекта" />
   <StringProperty Name="ReferencedProjectIdentifier" Visible="False" Description="Старый (из бета-версии VS2010) способ хранения идентификатора GUID, с помощью которого решение отслеживает ссылочную целевую сборку отдельного проекта" />
   <BoolProperty Name="UseLibraryDependencyInputs" Visible="False" />
+  <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
 </Rule>

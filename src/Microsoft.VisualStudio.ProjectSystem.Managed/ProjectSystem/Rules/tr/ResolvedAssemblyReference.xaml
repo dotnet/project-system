@@ -59,5 +59,6 @@
   <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="Çözümlemesi, bu çözümlenen başvuru öğesiyle sonuçlanmış olan orijinal başvuru öğesinin değerlendirilen öğe adı." />
   <StringProperty Name="ReferenceFromSDK" Visible="False" ReadOnly="True" Description="Genişletme SDK hedefi kullanılırken bu başvurunun geldiği SDK." />
   <StringProperty Name="ResolvedFrom" Visible="False" ReadOnly="True" Description="{}Bunu çözümlemek için kullanılan başvuruyu hangi deponun tuttuğu. (GAC'de ise, &quot;{GAC}&quot;)." />
+  <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
   <BoolProperty Name="WinMDFile" Visible="false" ReadOnly="True" Description="Oluşturma sisteminin (bir derlemeden farklı olarak), bunun bir WinMD olduğunu doğrulayıp doğrulamadığını gösterir" />
 </Rule>

@@ -70,7 +70,12 @@
             <DataSource Persistence="ResolvedReference" ItemType="PackageReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </StringListProperty.DataSource>
     </StringListProperty>
+    
     <BoolProperty Name="IsTopLevelDependency" 
                   Visible="False"
                   ReadOnly="True"/>
+
+    <BoolProperty Name="Visible"
+                  Visible="False"
+                  ReadOnly="True" />
 </Rule>

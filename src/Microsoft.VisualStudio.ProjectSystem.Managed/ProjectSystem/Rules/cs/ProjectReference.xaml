@@ -43,4 +43,5 @@
   <StringProperty Name="Project" Visible="False" Description="Identifikátor GUID, pomocí něhož řešení sleduje jednotlivý cíl odkazu na projekt" />
   <StringProperty Name="ReferencedProjectIdentifier" Visible="False" Description="Starý způsob (beta verze VS2010) uložení identifikátoru GUID, pomocí něhož řešení sleduje jednotlivý cíl odkazu na projekt" />
   <BoolProperty Name="UseLibraryDependencyInputs" Visible="False" />
+  <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
 </Rule>
