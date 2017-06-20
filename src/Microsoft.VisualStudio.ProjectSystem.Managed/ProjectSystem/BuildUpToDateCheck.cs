@@ -93,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             IProjectSystemOptions projectSystemOptions,
             ConfiguredProject configuredProject,
             Lazy<IFileTimestampCache> fileTimestampCache,
-            IProjectAsynchronousTasksService tasksService,
+            [Import(ExportContractNames.Scopes.ConfiguredProject)] IProjectAsynchronousTasksService tasksService,
             IProjectItemSchemaService projectItemSchemaService)
         {
             _projectSystemOptions = projectSystemOptions;
