@@ -1,9 +1,11 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Build;
+using Microsoft.VisualStudio.Mocks;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Configuration
@@ -25,8 +27,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         {
             using (var projectFile = new MsBuildProjectFile(projectXml))
             {
+                var telemetryService = ITelemetryServiceFactory.Implement();
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
-                var provider = new ConfigurationProjectConfigurationDimensionProvider(_projectXmlAccessor);
+                var provider = new ConfigurationProjectConfigurationDimensionProvider(_projectXmlAccessor, telemetryService);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
                 var values = await provider.GetDefaultValuesForDimensionsAsync(unconfiguredProject);
                 Assert.Equal(1, values.Count());
@@ -41,8 +44,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         {
             using (var projectFile = new MsBuildProjectFile())
             {
+                var telemetryService = ITelemetryServiceFactory.Implement();
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
-                var provider = new ConfigurationProjectConfigurationDimensionProvider(_projectXmlAccessor);
+                var provider = new ConfigurationProjectConfigurationDimensionProvider(_projectXmlAccessor, telemetryService);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
                 var values = await provider.GetDefaultValuesForDimensionsAsync(unconfiguredProject);
                 Assert.Equal(0, values.Count());
@@ -54,8 +58,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         {
             using (var projectFile = new MsBuildProjectFile(projectXml))
             {
+                var telemetryService = ITelemetryServiceFactory.Implement();
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
-                var provider = new ConfigurationProjectConfigurationDimensionProvider(_projectXmlAccessor);
+                var provider = new ConfigurationProjectConfigurationDimensionProvider(_projectXmlAccessor, telemetryService);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
                 var values = await provider.GetProjectConfigurationDimensionsAsync(unconfiguredProject);
                 Assert.Equal(1, values.Count());
@@ -73,8 +78,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         {
             using (var projectFile = new MsBuildProjectFile())
             {
+                var telemetryService = ITelemetryServiceFactory.Implement();
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
-                var provider = new ConfigurationProjectConfigurationDimensionProvider(_projectXmlAccessor);
+                var provider = new ConfigurationProjectConfigurationDimensionProvider(_projectXmlAccessor, telemetryService);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
                 var values = await provider.GetProjectConfigurationDimensionsAsync(unconfiguredProject);
                 Assert.Equal(0, values.Count());
@@ -86,8 +92,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         {
             using (var projectFile = new MsBuildProjectFile(projectXml))
             {
+                var postPropertyEvents = new List<Tuple<string, string, string>>();
+                var telemetryService = ITelemetryServiceFactory.Implement(postProperty: postPropertyEvents.Add);
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
-                var provider = new ConfigurationProjectConfigurationDimensionProvider(_projectXmlAccessor);
+
+                var provider = new ConfigurationProjectConfigurationDimensionProvider(_projectXmlAccessor, telemetryService);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
 
                 // On ChangeEventStage.After nothing should be changed
@@ -113,6 +122,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 property = BuildUtilities.GetProperty(projectFile.Project, Configurations);
                 Assert.NotNull(property);
                 Assert.Equal("Debug;Release;CustomConfiguration;CustomConfig", property.Value);
+
+                var telemetryEvent = postPropertyEvents[0];
+                Assert.Equal("DimensionChanged/Configuration/Add", telemetryEvent.Item1);
+                Assert.Equal("Value", telemetryEvent.Item2);
+                Assert.Equal("CustomConfig#Hashed", telemetryEvent.Item3);
             }
         }
 
@@ -121,8 +135,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         {
             using (var projectFile = new MsBuildProjectFile(projectXml))
             {
+                var postPropertyEvents = new List<Tuple<string, string, string>>();
+                var telemetryService = ITelemetryServiceFactory.Implement(postProperty: postPropertyEvents.Add);
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
-                var provider = new ConfigurationProjectConfigurationDimensionProvider(_projectXmlAccessor);
+                var provider = new ConfigurationProjectConfigurationDimensionProvider(_projectXmlAccessor, telemetryService);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
 
                 // On ChangeEventStage.After nothing should be changed
@@ -148,6 +164,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 property = BuildUtilities.GetProperty(projectFile.Project, Configurations);
                 Assert.NotNull(property);
                 Assert.Equal("Debug;Release", property.Value);
+
+                var telemetryEvent = postPropertyEvents[0];
+                Assert.Equal("DimensionChanged/Configuration/Remove", telemetryEvent.Item1);
+                Assert.Equal("Value", telemetryEvent.Item2);
+                Assert.Equal("CustomConfiguration#Hashed", telemetryEvent.Item3);
             }
         }
 
@@ -156,8 +177,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         {
             using (var projectFile = new MsBuildProjectFile(projectXml))
             {
+                var telemetryService = ITelemetryServiceFactory.Implement();
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
-                var provider = new ConfigurationProjectConfigurationDimensionProvider(_projectXmlAccessor);
+                var provider = new ConfigurationProjectConfigurationDimensionProvider(_projectXmlAccessor, telemetryService);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
 
                 ProjectConfigurationDimensionValueChangedEventArgs args = new ProjectConfigurationDimensionValueChangedEventArgs(
@@ -178,8 +200,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         {
             using (var projectFile = new MsBuildProjectFile(projectXml))
             {
+                var postPropertiesEvents = new List<Tuple<string, List<(string propertyName, string propertyValue)>>>();
+                var telemetryService = ITelemetryServiceFactory.Implement(postProperties: postPropertiesEvents.Add);
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
-                var provider = new ConfigurationProjectConfigurationDimensionProvider(_projectXmlAccessor);
+                var provider = new ConfigurationProjectConfigurationDimensionProvider(_projectXmlAccessor, telemetryService);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
 
                 // On ChangeEventStage.Before nothing should be changed
@@ -207,6 +231,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 property = BuildUtilities.GetProperty(projectFile.Project, Configurations);
                 Assert.NotNull(property);
                 Assert.Equal("Debug;Release;RenamedConfiguration", property.Value);
+
+                var telemetryEvent = postPropertiesEvents[0];
+                Assert.Equal("DimensionChanged/Configuration/Rename", telemetryEvent.Item1);
+                Assert.Equal("OldValue", telemetryEvent.Item2[0].propertyName);
+                Assert.Equal("CustomConfiguration#Hashed", telemetryEvent.Item2[0].propertyValue);
+                Assert.Equal("NewValue", telemetryEvent.Item2[1].propertyName);
+                Assert.Equal("RenamedConfiguration#Hashed", telemetryEvent.Item2[1].propertyValue);
             }
         }
 
@@ -215,8 +246,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         {
             using (var projectFile = new MsBuildProjectFile(projectXml))
             {
+                var telemetryService = ITelemetryServiceFactory.Implement();
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
-                var provider = new ConfigurationProjectConfigurationDimensionProvider(_projectXmlAccessor);
+                var provider = new ConfigurationProjectConfigurationDimensionProvider(_projectXmlAccessor, telemetryService);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
 
                 ProjectConfigurationDimensionValueChangedEventArgs args = new ProjectConfigurationDimensionValueChangedEventArgs(
