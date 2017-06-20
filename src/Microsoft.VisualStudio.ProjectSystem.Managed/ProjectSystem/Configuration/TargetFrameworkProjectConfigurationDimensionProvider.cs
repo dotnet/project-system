@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     internal class TargetFrameworkProjectConfigurationDimensionProvider : BaseProjectConfigurationDimensionProvider, IActiveConfiguredProjectsDimensionProvider
     {
         [ImportingConstructor]
-        public TargetFrameworkProjectConfigurationDimensionProvider(IProjectXmlAccessor projectXmlAccessor, ITelemetryService telemetryService)
+        public TargetFrameworkProjectConfigurationDimensionProvider(IProjectXmlAccessor projectXmlAccessor, [Import(AllowDefault = true)] ITelemetryService telemetryService)
             : base(projectXmlAccessor, telemetryService, ConfigurationGeneral.TargetFrameworkProperty, ConfigurationGeneral.TargetFrameworksProperty, valueContainsPii: false)
         {
         }
