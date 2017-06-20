@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         protected async Task AddInitialSubscriptionsAsync()
         {
-            using (_tasksService.LoadedProject())
+            await _tasksService.LoadedProjectAsync(async () =>
             {
                 SubscribeToConfiguredProject(_activeConfiguredProjectSubscriptionService,
                     new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedAsync(e, RuleHandlerType.Evaluation)));
@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     await subscriber.Value.InitializeSubscriberAsync(this, _activeConfiguredProjectSubscriptionService)
                                           .ConfigureAwait(false);
                 }
-            }
+            });
         }
 
         protected virtual void OnAggregateContextChanged(AggregateCrossTargetProjectContext oldContext,
@@ -98,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         }
 
         /// <summary>
-        /// Workaround for CPS bug 375276 which causes double entry on InitializeAsync and exception 
+        /// Workaround for CPS bug 375276 which causes double entry on InitializeAsync and exception
         /// "InvalidOperationException: The value factory has called for the value on the same instance".
         /// </summary>
         /// <returns></returns>
@@ -249,7 +249,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
             await _commonServices.ThreadingService.SwitchToUIThread();
 
-            using (_tasksService.LoadedProject())
+            await _tasksService.LoadedProjectAsync(() =>
             {
                 lock (_linksLock)
                 {
@@ -265,7 +265,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                         subscriber.Value.AddSubscriptionsAsync(newProjectContext);
                     }
                 }
-            }
+
+                return Task.CompletedTask;
+            });
         }
 
         private void SubscribeToConfiguredProject(IProjectSubscriptionService subscriptionService,

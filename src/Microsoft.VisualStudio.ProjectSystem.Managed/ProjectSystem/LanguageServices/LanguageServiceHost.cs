@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// Current TargetFramework for non-cross targeting project - accesses to this field must be done with a lock on <see cref="_gate"/>.
         /// </summary>
         private string _currentTargetFramework;
-        
+
 
         [ImportingConstructor]
         public LanguageServiceHost(IUnconfiguredProjectCommonServices commonServices,
@@ -223,8 +223,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             Requires.NotNull(newProjectContext, nameof(newProjectContext));
 
             await _commonServices.ThreadingService.SwitchToUIThread();
-
-            using (_tasksService.LoadedProject())
+            await _tasksService.LoadedProjectAsync(() =>
             {
                 var watchedEvaluationRules = _languageServiceHandlerManager.GetWatchedRules(RuleHandlerType.Evaluation);
                 var watchedDesignTimeBuildRules = _languageServiceHandlerManager.GetWatchedRules(RuleHandlerType.DesignTimeBuild);
@@ -246,14 +245,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                     _projectConfigurationsWithSubscriptions.Add(configuredProject.ProjectConfiguration);
                 }
-            }
+
+                return Task.CompletedTask;
+            });
         }
 
         private async Task HandleAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, RuleHandlerType handlerType)
         {
             // We need to process the update within a lock to ensure that we do not release this context during processing.
             // TODO: Enable concurrent execution of updates themeselves, i.e. two separate invocations of HandleAsync
-            //       should be able to run concurrently. 
+            //       should be able to run concurrently.
             await ExecuteWithinLockAsync(async () =>
             {
                 // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
@@ -269,7 +270,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 _languageServiceHandlerManager.Handle(update, handlerType, projectContextToUpdate, isActiveContext);
             }).ConfigureAwait(false);
         }
-        
+
         private bool HasTargetFrameworksChanged(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
         {
             return e.Value.ProjectChanges.TryGetValue(ConfigurationGeneral.SchemaName, out IProjectChangeDescription projectChange) &&
