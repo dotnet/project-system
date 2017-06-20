@@ -408,9 +408,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var latestInputMarker = GetLatestInput(_referenceMarkerFiles, timestampCache, true);
             var outputMarkerTime = GetTimestamp(_markerFile, timestampCache);
 
-            if (latestInputMarker.time != null)
+            if (latestInputMarker.path != null)
             {
-                logger.Info("Lastest write timestamp on input marker is {0} on '{1}'.", latestInputMarker.time.Value, latestInputMarker.path);
+                logger.Info("Latest write timestamp on input marker is {0} on '{1}'.", latestInputMarker.time.Value, latestInputMarker.path);
             }
             else
             {
@@ -426,7 +426,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 logger.Info("Output marker '{0}' does not exist, skipping marker check.", _markerFile);
             }
 
-            return latestInputMarker.time == null || outputMarkerTime == null || outputMarkerTime > latestInputMarker.time;
+            return latestInputMarker.path == null || outputMarkerTime == null || outputMarkerTime > latestInputMarker.time;
         }
 
         public async Task<bool> IsUpToDateAsync(BuildAction buildAction, TextWriter logWriter, CancellationToken cancellationToken = default(CancellationToken))
@@ -450,7 +450,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             
             if (latestInput.time != null)
             {
-                logger.Info("Lastest write timestamp on input is {0} on '{1}'.", latestInput.time.Value, latestInput.path);
+                logger.Info("Latest write timestamp on input is {0} on '{1}'.", latestInput.time.Value, latestInput.path);
             }
             else
             {
