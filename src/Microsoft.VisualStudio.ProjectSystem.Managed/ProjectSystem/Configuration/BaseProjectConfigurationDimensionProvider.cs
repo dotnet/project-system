@@ -137,6 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             {
                 var dimensionValues = ImmutableArray.CreateBuilder<KeyValuePair<string, IEnumerable<string>>>();
                 dimensionValues.Add(new KeyValuePair<string, IEnumerable<string>>(DimensionName, values));
+                TelemetryService?.PostProperty($"{DimensionName}/Get", "Value", string.Join(";", values.Select(v => HashValueIfNeeded(v))));
                 return dimensionValues.ToImmutable();
             }
         }

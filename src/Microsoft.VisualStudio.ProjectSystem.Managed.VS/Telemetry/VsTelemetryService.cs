@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -50,7 +49,6 @@ namespace Microsoft.VisualStudio.Telemetry
             }
             else
             {
-                Debug.Fail("Telemetry Service - Event Correlation Failed", "Event Correlation data creation failed because failure to retrieve the Project Guid info.");
                 return false;
             }
 
