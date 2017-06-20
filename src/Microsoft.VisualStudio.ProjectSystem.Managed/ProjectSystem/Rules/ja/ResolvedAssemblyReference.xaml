@@ -59,5 +59,6 @@
   <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="結果がこの解決済みの参照項目であった元の参照項目の評価済み項目名です。" />
   <StringProperty Name="ReferenceFromSDK" Visible="False" ReadOnly="True" Description="拡張 SDK の参照を使用するときにこの参照が属していた SDK です。" />
   <StringProperty Name="ResolvedFrom" Visible="False" ReadOnly="True" Description="{}これを解決するために参照を保持していたリポジトリを示します (GAC の場合は &quot;{GAC}&quot;)。" />
+  <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
   <BoolProperty Name="WinMDFile" Visible="false" ReadOnly="True" Description="ビルド システムが (アセンブリではなく) WinMD であることを確認したかどうかを示します" />
 </Rule>

@@ -59,5 +59,6 @@
   <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="O nome do item avaliado do item de referência original cuja resolução resultou nesse item de referência resolvido." />
   <StringProperty Name="ReferenceFromSDK" Visible="False" ReadOnly="True" Description="O SDK de origem dessa referência ao usar o destino do SDK de expansão." />
   <StringProperty Name="ResolvedFrom" Visible="False" ReadOnly="True" Description="{}Que repositório retém a referência que foi usada para resolver isso. (&quot;{GAC}&quot; se estava no GAC)." />
+  <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
   <BoolProperty Name="WinMDFile" Visible="false" ReadOnly="True" Description="Indica se o sistema de compilação determinou que esse é um WinMD (ao contrário de um assembly)" />
 </Rule>

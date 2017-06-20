@@ -43,4 +43,5 @@
   <StringProperty Name="Project" Visible="False" Description="方案藉以追蹤個別專案參考目標的 GUID" />
   <StringProperty Name="ReferencedProjectIdentifier" Visible="False" Description="儲存方案藉以追蹤個別專案參考目標之 GUID 的舊 (VS2010 Beta) 方式" />
   <BoolProperty Name="UseLibraryDependencyInputs" Visible="False" />
+  <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
 </Rule>

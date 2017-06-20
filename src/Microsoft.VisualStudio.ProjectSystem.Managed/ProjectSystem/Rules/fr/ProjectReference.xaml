@@ -43,4 +43,5 @@
   <StringProperty Name="Project" Visible="False" Description="Guid avec lequel la solution suit une cible de référence d'un projet individuel" />
   <StringProperty Name="ReferencedProjectIdentifier" Visible="False" Description="Ancienne méthode(VS2010 bêta) pour stocker le Guid avec lequel la solution suit une cible de référence d'un projet individuel" />
   <BoolProperty Name="UseLibraryDependencyInputs" Visible="False" />
+  <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
 </Rule>

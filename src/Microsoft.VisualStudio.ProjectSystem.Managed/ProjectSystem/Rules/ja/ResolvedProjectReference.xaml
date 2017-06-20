@@ -58,4 +58,5 @@
   <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="結果がこの解決済みの参照項目であった元の参照項目の評価済み項目名です。" />
   <StringProperty Name="FusionName" Visible="False" ReadOnly="True" />
   <StringProperty Name="Name" Visible="false" ReadOnly="True" />
+  <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
 </Rule>

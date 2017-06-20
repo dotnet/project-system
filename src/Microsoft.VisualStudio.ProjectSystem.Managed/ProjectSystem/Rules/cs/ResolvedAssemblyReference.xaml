@@ -59,5 +59,6 @@
   <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="Vyhodnocený název původní položky odkazu, jejíž překlad vedl ke vzniku tohoto nerozpoznaného odkazu" />
   <StringProperty Name="ReferenceFromSDK" Visible="False" ReadOnly="True" Description="Sada SDK, z níž pochází tento odkaz, při použití rozbalení cíle sady SDK" />
   <StringProperty Name="ResolvedFrom" Visible="False" ReadOnly="True" Description="{}V jakém úložišti byl uložen odkaz, který byl použit při překladu (&quot;{GAC}&quot;, pokud byl uložen v globální mezipaměti sestavení)" />
+  <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
   <BoolProperty Name="WinMDFile" Visible="false" ReadOnly="True" Description="Určuje, zda systém sestavení zjistil, že se jedná o soubor WinMD (na rozdíl od sestavení)." />
 </Rule>

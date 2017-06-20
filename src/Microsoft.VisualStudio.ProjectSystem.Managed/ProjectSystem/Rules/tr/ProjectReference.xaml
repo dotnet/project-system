@@ -43,4 +43,5 @@
   <StringProperty Name="Project" Visible="False" Description="Çözümün tek bir proje başvuru hedefini birlikte izlediği Guid" />
   <StringProperty Name="ReferencedProjectIdentifier" Visible="False" Description="Çözümün tek bir proje başvuru hedefini birlikte izlediği Guid'i depolamanın eski (VS2010 beta) yöntemi" />
   <BoolProperty Name="UseLibraryDependencyInputs" Visible="False" />
+  <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
 </Rule>

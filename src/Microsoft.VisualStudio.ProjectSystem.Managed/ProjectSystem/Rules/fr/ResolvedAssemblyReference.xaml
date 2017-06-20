@@ -59,5 +59,6 @@
   <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="Nom d'élément évalué de l'élément de référence d'origine dont la résolution a eu pour résultat cet élément de référence résolu." />
   <StringProperty Name="ReferenceFromSDK" Visible="False" ReadOnly="True" Description="Kit SDK dont est issue cette référence lorsque la cible SDK développée a été utilisée." />
   <StringProperty Name="ResolvedFrom" Visible="False" ReadOnly="True" Description="{}Référentiel contenant la référence ayant servi à la résolution. (&quot;{GAC}&quot; si elle se trouvait dans le GAC)." />
+  <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
   <BoolProperty Name="WinMDFile" Visible="false" ReadOnly="True" Description="Indique si le système de génération a établi qu'il s'agit d'un WinMD (et non d'un assembly)" />
 </Rule>
