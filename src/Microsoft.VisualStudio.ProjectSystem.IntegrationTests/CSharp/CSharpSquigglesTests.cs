@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
             VisualStudio.SolutionExplorer.OpenFile(Project, "Class1.cs");
         }
 
-        [Fact, Trait("Integration", "Squiggles")]
+        [Fact(Skip = "https://github.com/dotnet/project-system/issues/2281"), Trait("Integration", "Squiggles")]
         public void VerifySyntaxErrorSquiggles()
         {
             VisualStudio.Editor.SetText(@"using System;
