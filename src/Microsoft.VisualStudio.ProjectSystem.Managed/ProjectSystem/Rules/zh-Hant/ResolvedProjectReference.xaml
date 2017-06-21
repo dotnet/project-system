@@ -58,4 +58,5 @@
   <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="因解析而產生這個已解析參考項目的原始參考項目的評估項目名稱。" />
   <StringProperty Name="FusionName" Visible="False" ReadOnly="True" />
   <StringProperty Name="Name" Visible="false" ReadOnly="True" />
+  <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
 </Rule>

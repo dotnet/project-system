@@ -140,6 +140,10 @@
       <Context>File</Context>
     </PropertyPageSchema>
 
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)CopyUpToDateMarker.xaml">
+      <Context>File</Context>
+    </PropertyPageSchema>
+
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)SpecialFolder.xaml">
       <Context>File;ProjectSubscriptionService</Context>
     </PropertyPageSchema>
@@ -245,6 +249,10 @@
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedAnalyzerReference.xaml">
       <Context>ProjectSubscriptionService;BrowseObject</Context>
     </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedCompilationReference.xaml">
+      <Context>ProjectSubscriptionService</Context>
+    </PropertyPageSchema>
   </ItemGroup>
 
   <!-- Targets -->
@@ -271,5 +279,8 @@
 
   <!-- This target collects all Analyzers in the project. -->
   <Target Name="CollectAnalyzersDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(Analyzer)" />
+  
+  <!-- This target collects all the resolved references that are used to actually compile. -->
+  <Target Name="CollectResolvedCompilationReferencesDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(ReferencePathWithRefAssemblies)" />
 
 </Project>

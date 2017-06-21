@@ -35,4 +35,5 @@
   <BoolProperty Name="IsWinMDFile" Visible="false" />
   <StringProperty Name="RequiredTargetFramework" DisplayName="必要なターゲット フレームワーク" Visible="False" />
   <StringProperty Name="SDKName" Visible="false" />
+  <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
 </Rule>

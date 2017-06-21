@@ -151,6 +151,51 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal("someitemspec1\\versio1".GetHashCode() + "somprovider".GetHashCode(), model1.GetHashCode());
         }
 
+        [Fact]
+        public void DependencyModel_Visible_True()
+        {
+            var dependencyModel = new DependencyModel(
+                providerType: "someProvider",
+                path: "somePath",
+                originalItemSpec: "someItemSpec",
+                flags: ProjectTreeFlags.Empty,
+                resolved: true,
+                isImplicit: false,
+                properties: ImmutableDictionary<string, string>.Empty.Add("Visible", "true"));
+
+            Assert.True(dependencyModel.Visible);
+        }
+
+        [Fact]
+        public void DependencyModel_Visible_False()
+        {
+            var dependencyModel = new DependencyModel(
+                providerType: "someProvider",
+                path: "somePath",
+                originalItemSpec: "someItemSpec",
+                flags: ProjectTreeFlags.Empty,
+                resolved: true,
+                isImplicit: false,
+                properties: ImmutableDictionary<string, string>.Empty.Add("Visible", "false"));
+
+            Assert.False(dependencyModel.Visible);
+        }
+
+        [Fact]
+        public void DependencyModel_Visible_TrueWhenNotSpecified()
+        {
+            var dependencyModel = new DependencyModel(
+                providerType: "someProvider",
+                path: "somePath",
+                originalItemSpec: "someItemSpec",
+                flags: ProjectTreeFlags.Empty,
+                resolved: true,
+                isImplicit: false,
+                properties: null);
+
+            Assert.True(dependencyModel.Visible);
+        }
+
         private class TestableDependencyModel : DependencyModel
         {
             public TestableDependencyModel(

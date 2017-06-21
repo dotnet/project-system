@@ -59,5 +59,6 @@
   <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="확인 결과 이 확인된 참조 항목으로 드러난 원래 참조 항목의 평가 항목 이름입니다." />
   <StringProperty Name="ReferenceFromSDK" Visible="False" ReadOnly="True" Description="SDK 대상 확장을 사용할 때 이 참조를 호출하는 SDK입니다." />
   <StringProperty Name="ResolvedFrom" Visible="False" ReadOnly="True" Description="{}이것을 확인하는 데 사용된 참조를 포함하고 있는 리포지토리입니다(GAC에 있었던 경우 &quot;{GAC}&quot;)." />
+  <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
   <BoolProperty Name="WinMDFile" Visible="false" ReadOnly="True" Description="빌드 시스템에서 이것이 WinMD인 것(어셈블리가 아님)을 확인했는지 여부를 나타냅니다." />
 </Rule>

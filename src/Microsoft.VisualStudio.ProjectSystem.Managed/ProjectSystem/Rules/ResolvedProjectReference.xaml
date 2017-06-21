@@ -184,4 +184,8 @@
     <StringProperty Name="Name"
                     Visible="false"
                     ReadOnly="True" />
+
+    <BoolProperty Name="Visible"
+                  Visible="False"
+                  ReadOnly="True" />
 </Rule>

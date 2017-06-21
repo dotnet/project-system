@@ -58,4 +58,5 @@
   <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="Çözümlemesi, bu çözümlenen başvuru öğesiyle sonuçlanmış olan orijinal başvuru öğesinin değerlendirilen öğe adı." />
   <StringProperty Name="FusionName" Visible="False" ReadOnly="True" />
   <StringProperty Name="Name" Visible="false" ReadOnly="True" />
+  <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
 </Rule>

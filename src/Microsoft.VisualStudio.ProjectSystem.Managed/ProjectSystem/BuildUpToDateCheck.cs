@@ -16,6 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     [Export(typeof(IBuildUpToDateCheckProvider))]
+    [ExportMetadata("BeforeDrainCriticalTasks", true)]
     internal sealed class BuildUpToDateCheck : OnceInitializedOnceDisposed, IBuildUpToDateCheckProvider
     {
         private sealed class Logger
@@ -48,6 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private const string ResolvedPath = "ResolvedPath";
         private const string CopyToOutputDirectory = "CopyToOutputDirectory";
         private const string Never = "Never";
+        private const string OriginalPath = "OriginalPath";
 
         private static HashSet<string> KnownOutputGroups = new HashSet<string>
         {
@@ -60,17 +62,22 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private static ImmutableHashSet<string> ReferenceSchemas => ImmutableHashSet<string>.Empty
             .Add(ResolvedAnalyzerReference.SchemaName)
-            .Add(ResolvedAssemblyReference.SchemaName)
-            .Add(ResolvedCOMReference.SchemaName)
-            .Add(ResolvedProjectReference.SchemaName);
+            .Add(ResolvedCompilationReference.SchemaName);
+
+        private static ImmutableHashSet<string> UpToDateSchemas => ImmutableHashSet<string>.Empty
+            .Add(CopyUpToDateMarker.SchemaName)
+            .Add(UpToDateCheckInput.SchemaName)
+            .Add(UpToDateCheckOutput.SchemaName);
 
         private static ImmutableHashSet<string> ProjectPropertiesSchemas => ImmutableHashSet<string>.Empty
             .Add(ConfigurationGeneral.SchemaName)
-            .Union(ReferenceSchemas);
+            .Union(ReferenceSchemas)
+            .Union(UpToDateSchemas);
 
         private readonly IProjectSystemOptions _projectSystemOptions;
         private readonly ConfiguredProject _configuredProject;
         private readonly Lazy<IFileTimestampCache> _fileTimestampCache;
+        private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IProjectItemSchemaService _projectItemSchemaService;
 
         private IDisposable _link;
@@ -79,11 +86,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private bool _isDisabled = true;
         private bool _itemsChangedSinceLastCheck = true;
         private string _msBuildProjectFullPath;
+        private string _markerFile;
         private HashSet<string> _imports = new HashSet<string>();
         private HashSet<string> _itemTypes = new HashSet<string>();
         private Dictionary<string, HashSet<string>> _items = new Dictionary<string, HashSet<string>>();
-        private Dictionary<string, HashSet<string>> _references = new Dictionary<string, HashSet<string>>();
+        private HashSet<string> _customInputs = new HashSet<string>();
         private HashSet<string> _customOutputs = new HashSet<string>();
+        private HashSet<string> _analyzerReferences = new HashSet<string>();
+        private HashSet<string> _compilationReferences = new HashSet<string>();
+        private HashSet<string> _copyReferenceInputs = new HashSet<string>();
         private Dictionary<string, HashSet<string>> _outputGroups = new Dictionary<string, HashSet<string>>();
 
         [ImportingConstructor]
@@ -91,11 +102,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
             IProjectSystemOptions projectSystemOptions,
             ConfiguredProject configuredProject,
             Lazy<IFileTimestampCache> fileTimestampCache,
+            [Import(ExportContractNames.Scopes.ConfiguredProject)] IProjectAsynchronousTasksService tasksService,
             IProjectItemSchemaService projectItemSchemaService)
         {
             _projectSystemOptions = projectSystemOptions;
             _configuredProject = configuredProject;
             _fileTimestampCache = fileTimestampCache;
+            _tasksService = tasksService;
             _projectItemSchemaService = projectItemSchemaService;
         }
 
@@ -118,13 +131,48 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             _msBuildProjectFullPath = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, _msBuildProjectFullPath);
 
-            foreach (var referenceSchema in ReferenceSchemas)
+            if (e.ProjectChanges.TryGetValue(ResolvedAnalyzerReference.SchemaName, out var changes) &&
+                changes.Difference.AnyChanges)
             {
-                if (e.ProjectChanges.TryGetValue(referenceSchema, out var changes) &&
-                    changes.Difference.AnyChanges)
+                _analyzerReferences = new HashSet<string>(changes.After.Items.Select(item => item.Value[ResolvedPath]));
+            }
+
+            if (e.ProjectChanges.TryGetValue(ResolvedCompilationReference.SchemaName, out changes) &&
+                changes.Difference.AnyChanges)
+            {
+                _compilationReferences.Clear();
+                _copyReferenceInputs.Clear();
+
+                foreach (var item in changes.After.Items)
                 {
-                    _references[referenceSchema] = new HashSet<string>(changes.After.Items.Select(item => item.Value[ResolvedPath]));
+                    _compilationReferences.Add(item.Value[ResolvedPath]);
+                    if (!string.IsNullOrWhiteSpace(item.Value[CopyUpToDateMarker.SchemaName]))
+                    {
+                        _copyReferenceInputs.Add(item.Value[CopyUpToDateMarker.SchemaName]);
+                    }
+                    if (!string.IsNullOrWhiteSpace(item.Value[OriginalPath]))
+                    {
+                        _copyReferenceInputs.Add(item.Value[OriginalPath]);
+                    }
                 }
+            }
+
+            if (e.ProjectChanges.TryGetValue(UpToDateCheckInput.SchemaName, out var inputs) &&
+                inputs.Difference.AnyChanges)
+            {
+                _customInputs = new HashSet<string>(inputs.After.Items.Select(item => item.Value[FullPath]));
+            }
+
+            if (e.ProjectChanges.TryGetValue(UpToDateCheckOutput.SchemaName, out var outputs) &&
+                outputs.Difference.AnyChanges)
+            {
+                _customOutputs = new HashSet<string>(outputs.After.Items.Select(item => item.Value[FullPath]));
+            }
+
+            if (e.ProjectChanges.TryGetValue(CopyUpToDateMarker.SchemaName, out var upToDateMarkers) &&
+                upToDateMarkers.Difference.AnyChanges)
+            {
+                _markerFile = upToDateMarkers.After.Items.Count == 1 ? upToDateMarkers.After.Items.Single().Value[FullPath] : null;
             }
         }
 
@@ -161,12 +209,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     .Select(item => item.Value[FullPath]);
                 _items[itemType.Key] = new HashSet<string>(items);
                 _itemsChangedSinceLastCheck = true;
-            }
-
-            if (e.ProjectChanges.TryGetValue(UpToDateCheckOutput.SchemaName, out var outputs) &&
-                outputs.Difference.AnyChanges)
-            {
-                _customOutputs = new HashSet<string>(outputs.After.Items.Select(item => item.Value[FullPath]));
             }
         }
 
@@ -257,6 +299,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var itemsChangedSinceLastCheck = _itemsChangedSinceLastCheck;
             _itemsChangedSinceLastCheck = false;
 
+            if (!_tasksService.IsTaskQueueEmpty(ProjectCriticalOperation.Build))
+            {
+                logger.Info("Critical build tasks are running, skipping check.");
+                return false;
+            }
+
             if (_lastVersionSeen == null || _configuredProject.ProjectVersion.CompareTo(_lastVersionSeen) > 0)
             {
                 logger.Info("Project information is older than current project version, skipping check.");
@@ -291,10 +339,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 AddInputs(logger, inputs, pair.Value, pair.Key);
             }
 
-            foreach (var pair in _references)
-            {
-                AddInputs(logger, inputs, pair.Value, pair.Key);
-            }
+            AddInputs(logger, inputs, _analyzerReferences, ResolvedAnalyzerReference.SchemaName);
+            AddInputs(logger, inputs, _compilationReferences, ResolvedCompilationReference.SchemaName);
+            AddInputs(logger, inputs, _customInputs, UpToDateCheckInput.SchemaName);
 
             return inputs;
         }
@@ -308,12 +355,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 AddOutputs(logger, outputs, pair.Value, pair.Key);
             }
 
-            AddOutputs(logger, outputs, _customOutputs, "UpToDateCheckOutput");
+            AddOutputs(logger, outputs, _customOutputs, UpToDateCheckOutput.SchemaName);
 
             return outputs;
         }
 
-        private (DateTime? time, string path) GetLatestInput(HashSet<string> inputs, IDictionary<string, DateTime> timestampCache)
+        private (DateTime? time, string path) GetLatestInput(HashSet<string> inputs, IDictionary<string, DateTime> timestampCache, bool ignoreMissing = false)
         {
             DateTime? latest = DateTime.MinValue;
             string latestPath = null;
@@ -321,7 +368,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             foreach (var input in inputs)
             {
                 var time = GetTimestamp(input, timestampCache);
-                if (latest != null && (time == null || time > latest))
+                if (latest != null && (time == null && !ignoreMissing || time > latest))
                 {
                     latest = time;
                     latestPath = input;
@@ -349,6 +396,50 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return (earliest, earliestPath);
         }
 
+        // Reference assembly copy markers are strange. The property is always going to be present on 
+        // references to SDK-based projects, regardless of whether or not those referenced projects 
+        // will actually produce a marker. And an item always will be present in an SDK-based project, 
+        // regardless of whether or not the project produces a marker. So, basically, we only check 
+        // here if the project actually produced a marker and we only check it against references that
+        // actually produced a marker.
+        private bool CheckMarkers(Logger logger, IDictionary<string, DateTime> timestampCache)
+        {
+            if (string.IsNullOrWhiteSpace(_markerFile) || !_copyReferenceInputs.Any())
+            {
+                return true;
+            }
+
+            foreach (var referenceMarkerFile in _copyReferenceInputs)
+            {
+                logger.Verbose("Found possible input marker '{0}'.", referenceMarkerFile);
+            }
+
+            logger.Verbose("Found possible output marker '{0}'.", _markerFile);
+
+            var latestInputMarker = GetLatestInput(_copyReferenceInputs, timestampCache, true);
+            var outputMarkerTime = GetTimestamp(_markerFile, timestampCache);
+
+            if (latestInputMarker.path != null)
+            {
+                logger.Info("Latest write timestamp on input marker is {0} on '{1}'.", latestInputMarker.time.Value, latestInputMarker.path);
+            }
+            else
+            {
+                logger.Info("No input markers exist, skipping marker check.");
+            }
+
+            if (outputMarkerTime != null)
+            {
+                logger.Info("Write timestamp on output marker is {0} on '{1}'.", outputMarkerTime, _markerFile);
+            }
+            else
+            {
+                logger.Info("Output marker '{0}' does not exist, skipping marker check.", _markerFile);
+            }
+
+            return latestInputMarker.path == null || outputMarkerTime == null || outputMarkerTime > latestInputMarker.time;
+        }
+
         public async Task<bool> IsUpToDateAsync(BuildAction buildAction, TextWriter logWriter, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -370,7 +461,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             
             if (latestInput.time != null)
             {
-                logger.Info("Lastest write timestamp on input is {0} on '{1}'.", latestInput.time.Value, latestInput.path);
+                logger.Info("Latest write timestamp on input is {0} on '{1}'.", latestInput.time.Value, latestInput.path);
             }
             else
             {
@@ -387,7 +478,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
 
             // We are up to date if the earliest output write happened after the latest input write
-            var isUpToDate = latestInput.time != null && earliestOutput.time != null && earliestOutput.time > latestInput.time;
+            var markersUpToDate = CheckMarkers(logger, timestampCache);
+            var isUpToDate = 
+                latestInput.time != null 
+                && earliestOutput.time != null 
+                && earliestOutput.time > latestInput.time 
+                && markersUpToDate;
+
             logger.Info("Project is{0} up to date.", (!isUpToDate ? " not" : ""));
 
             return isUpToDate;
