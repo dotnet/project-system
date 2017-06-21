@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     {
         [ImportingConstructor]
         public ConfigurationProjectConfigurationDimensionProvider(IProjectXmlAccessor projectXmlAccessor, [Import(AllowDefault = true)] ITelemetryService telemetryService)
-            : base(projectXmlAccessor, telemetryService, ConfigurationGeneral.ConfigurationProperty, "Configurations", valueContainsPii: true)
+            : base(projectXmlAccessor, telemetryService, ConfigurationGeneral.ConfigurationProperty, "Configurations")
         {
         }
 
@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 BuildUtilities.AppendPropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, configurationName);
             }).ConfigureAwait(false);
 
-            TelemetryService.PostPropertySafe($"{TelemetryEventName}/{DimensionName}/Add", "Value", HashValueIfNeeded(configurationName));
+            TelemetryService.PostPropertySafe($"{TelemetryEventName}/{DimensionName}/Add", "Value", HashValue(configurationName));
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 BuildUtilities.RemovePropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, configurationName);
             }).ConfigureAwait(false);
 
-            TelemetryService.PostPropertySafe($"{TelemetryEventName}/{DimensionName}/Remove", "Value", HashValueIfNeeded(configurationName));
+            TelemetryService.PostPropertySafe($"{TelemetryEventName}/{DimensionName}/Remove", "Value", HashValue(configurationName));
         }
 
         /// <summary>
@@ -115,8 +115,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 
             var properties = new List<(string propertyName, string propertyValue)>()
             {
-                ("OldValue", HashValueIfNeeded(oldName)),
-                ("NewValue", HashValueIfNeeded(newName)),
+                ("OldValue", HashValue(oldName)),
+                ("NewValue", HashValue(newName)),
             };
 
             TelemetryService.PostPropertiesSafe($"{TelemetryEventName}/{DimensionName}/Rename", properties);

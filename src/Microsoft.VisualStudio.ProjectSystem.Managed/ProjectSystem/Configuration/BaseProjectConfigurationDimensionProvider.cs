@@ -16,8 +16,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     {
         protected const string TelemetryEventName = "DimensionChanged";
 
-        private readonly bool _valueContainsPii;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseProjectConfigurationDimensionProvider"/> class.
         /// </summary>
@@ -25,13 +23,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// <param name="telemetryService">Telemetry service. The telemetry service could be null since the implementation lives in VS layer.</param>
         /// <param name="dimensionName">Name of the dimension.</param>
         /// <param name="propertyName">Name of the project property containing the dimension values.</param>
-        /// <param name="valueContainsPii">Says if the dimension values contain PII and needs to hashed before being reported to Telemetry</param>
         public BaseProjectConfigurationDimensionProvider(
             IProjectXmlAccessor projectXmlAccessor,
             ITelemetryService telemetryService,
             string dimensionName,
-            string propertyName,
-            bool valueContainsPii)
+            string propertyName)
         {
             Requires.NotNull(projectXmlAccessor, nameof(projectXmlAccessor));
 
@@ -39,8 +35,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             TelemetryService = telemetryService;
             DimensionName = dimensionName;
             PropertyName = propertyName;
-
-            _valueContainsPii = valueContainsPii;
         }
 
         public string DimensionName
@@ -137,7 +131,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             {
                 var dimensionValues = ImmutableArray.CreateBuilder<KeyValuePair<string, IEnumerable<string>>>();
                 dimensionValues.Add(new KeyValuePair<string, IEnumerable<string>>(DimensionName, values));
-                TelemetryService.PostPropertySafe($"{DimensionName}/Get", "Value", string.Join(";", values.Select(v => HashValueIfNeeded(v))));
+                TelemetryService.PostPropertySafe($"{DimensionName}/Get", "Value", string.Join(";", values.Select(v => HashValue(v))));
                 return dimensionValues.ToImmutable();
             }
         }
@@ -163,9 +157,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             return await ProjectXmlAccessor.GetEvaluatedPropertyValue(unconfiguredProject, PropertyName).ConfigureAwait(false);
         }
 
-        protected string HashValueIfNeeded(string value)
+        protected string HashValue(string value)
         {
-            return _valueContainsPii ? TelemetryService.HashValueSafe(value) : value;
+            return TelemetryService.HashValueSafe(value);
         }
     }
 }

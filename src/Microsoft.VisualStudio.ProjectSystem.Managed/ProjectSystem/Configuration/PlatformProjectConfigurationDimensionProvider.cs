@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     {
         [ImportingConstructor]
         public PlatformProjectConfigurationDimensionProvider(IProjectXmlAccessor projectXmlAccessor, [Import(AllowDefault = true)] ITelemetryService telemetryService)
-            : base(projectXmlAccessor, telemetryService, ConfigurationGeneral.PlatformProperty, "Platforms", valueContainsPii: false)
+            : base(projectXmlAccessor, telemetryService, ConfigurationGeneral.PlatformProperty, "Platforms")
         {
         }
 
@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 BuildUtilities.AppendPropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, platformName);
             }).ConfigureAwait(false);
 
-            TelemetryService.PostPropertySafe($"{TelemetryEventName}/{DimensionName}/Add", "Value", HashValueIfNeeded(platformName));
+            TelemetryService.PostPropertySafe($"{TelemetryEventName}/{DimensionName}/Add", "Value", HashValue(platformName));
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 BuildUtilities.RemovePropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, platformName);
             }).ConfigureAwait(false);
 
-            TelemetryService.PostPropertySafe($"{TelemetryEventName}/{DimensionName}/Remove", "Value", HashValueIfNeeded(platformName));
+            TelemetryService.PostPropertySafe($"{TelemetryEventName}/{DimensionName}/Remove", "Value", HashValue(platformName));
         }
     }
 }

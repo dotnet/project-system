@@ -98,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 var telemetryEvent = postPropertyEvents[0];
                 Assert.Equal("DimensionChanged/Platform/Add", telemetryEvent.Item1);
                 Assert.Equal("Value", telemetryEvent.Item2);
-                Assert.Equal("ARM", telemetryEvent.Item3);
+                Assert.Equal("ARM#Hashed", telemetryEvent.Item3);
             }
         }
 
@@ -140,7 +140,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 var telemetryEvent = postPropertyEvents[0];
                 Assert.Equal("DimensionChanged/Platform/Remove", telemetryEvent.Item1);
                 Assert.Equal("Value", telemetryEvent.Item2);
-                Assert.Equal("x86", telemetryEvent.Item3);
+                Assert.Equal("x86#Hashed", telemetryEvent.Item3);
             }
         }
 
