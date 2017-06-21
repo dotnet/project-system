@@ -25,6 +25,11 @@
     <SuppressOutOfDateMessageOnBuild Condition="'$(SuppressOutOfDateMessageOnBuild)' == ''">true</SuppressOutOfDateMessageOnBuild>
   </PropertyGroup>
 
+  <!-- If the project we're compiling has a ruleset, make sure we check it for up-to-date checks. -->
+  <ItemGroup Condition="'$(CodeAnalysisRuleSet)' != ''">
+    <UpToDateCheckInput Include="$(CodeAnalysisRuleSet)" />
+  </ItemGroup>
+
   <!--
     Locate the approriate localized xaml resources based on the language ID or name.
 

@@ -331,6 +331,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var inputs = new HashSet<string>();
 
             AddInput(logger, inputs, _msBuildProjectFullPath, "project file");
+
             AddInputs(logger, inputs, _imports, "import");
 
             foreach (var pair in _items)
