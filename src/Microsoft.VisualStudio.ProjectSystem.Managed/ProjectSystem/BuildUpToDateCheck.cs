@@ -21,9 +21,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         private sealed class Logger
         {
-            private TextWriter _logger;
-            private LogLevel _requestedLogLevel;
-            private string _fileName;
+            private readonly TextWriter _logger;
+            private readonly LogLevel _requestedLogLevel;
+            private readonly string _fileName;
 
             public Logger(TextWriter logger, LogLevel requestedLogLevel, string projectPath)
             {
@@ -48,13 +48,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private const string FullPath = "FullPath";
         private const string ResolvedPath = "ResolvedPath";
         private const string CopyToOutputDirectory = "CopyToOutputDirectory";
-        private const string Never = "Never";
+        private const string Always = "Always";
 
-        private static HashSet<string> KnownOutputGroups = new HashSet<string>
+        private static readonly HashSet<string> KnownOutputGroups = new HashSet<string>
         {
             "Symbols",
             "Built",
-            "ContentFiles",
             "Documentation",
             "LocalizedResourceDlls"
         };
@@ -69,6 +68,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
             .Add(ConfigurationGeneral.SchemaName)
             .Union(ReferenceSchemas);
 
+        private static ImmutableHashSet<string> NonCompilationItemTypes => ImmutableHashSet<string>.Empty
+            .Add(None.SchemaName)
+            .Add(Content.SchemaName);
+
         private readonly IProjectSystemOptions _projectSystemOptions;
         private readonly ConfiguredProject _configuredProject;
         private readonly Lazy<IFileTimestampCache> _fileTimestampCache;
@@ -81,12 +84,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private bool _isDisabled = true;
         private bool _itemsChangedSinceLastCheck = true;
         private string _msBuildProjectFullPath;
-        private HashSet<string> _imports = new HashSet<string>();
-        private HashSet<string> _itemTypes = new HashSet<string>();
-        private Dictionary<string, HashSet<string>> _items = new Dictionary<string, HashSet<string>>();
-        private Dictionary<string, HashSet<string>> _references = new Dictionary<string, HashSet<string>>();
-        private HashSet<string> _customOutputs = new HashSet<string>();
-        private Dictionary<string, HashSet<string>> _outputGroups = new Dictionary<string, HashSet<string>>();
+
+        private readonly HashSet<string> _imports = new HashSet<string>();
+        private readonly HashSet<string> _itemTypes = new HashSet<string>();
+        private readonly Dictionary<string, (bool hasCopyAlways, HashSet<string> items)> _items = new Dictionary<string, (bool hasCopyAlways, HashSet<string> items)>();
+        private readonly Dictionary<string, HashSet<string>> _references = new Dictionary<string, HashSet<string>>();
+        private readonly HashSet<string> _customOutputs = new HashSet<string>();
+        private readonly Dictionary<string, HashSet<string>> _outputGroups = new Dictionary<string, HashSet<string>>();
 
         [ImportingConstructor]
         public BuildUpToDateCheck(
@@ -148,28 +152,30 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private void OnSourceItemChanged(IProjectSubscriptionUpdate e, IProjectItemSchema projectItemSchema)
         {
-            var itemTypes = new HashSet<string>(projectItemSchema.GetKnownItemTypes().Where(itemType => projectItemSchema.GetItemType(itemType).UpToDateCheckInput));
+            var itemTypes = projectItemSchema.GetKnownItemTypes().Where(itemType => projectItemSchema.GetItemType(itemType).UpToDateCheckInput).ToList();
             var itemTypesChanged = !_itemTypes.SetEquals(itemTypes);
 
             if (itemTypesChanged)
             {
-                _itemTypes = itemTypes;
-                _items = new Dictionary<string, HashSet<string>>();
+                _itemTypes.Clear();
+                _itemTypes.AddRange(itemTypes);
+                _items.Clear();
             }
 
             foreach (var itemType in e.ProjectChanges.Where(changes => (itemTypesChanged || changes.Value.Difference.AnyChanges) && _itemTypes.Contains(changes.Key)))
             {
-                var items = itemType.Value
-                    .After.Items
-                    .Select(item => item.Value[FullPath]);
-                _items[itemType.Key] = new HashSet<string>(items);
+                var items = itemType.Value.After.Items.Select(item => item.Value[FullPath]);
+                var hasAlwaysCopy = itemType.Value.After.Items.Any(item => item.Value.ContainsKey(CopyToOutputDirectory) &&
+                    string.Equals(item.Value[CopyToOutputDirectory], Always, StringComparison.InvariantCultureIgnoreCase));
+                _items[itemType.Key] = (hasAlwaysCopy, new HashSet<string>(items));
                 _itemsChangedSinceLastCheck = true;
             }
 
             if (e.ProjectChanges.TryGetValue(UpToDateCheckOutput.SchemaName, out var outputs) &&
                 outputs.Difference.AnyChanges)
             {
-                _customOutputs = new HashSet<string>(outputs.After.Items.Select(item => item.Value[FullPath]));
+                _customOutputs.Clear();
+                _customOutputs.AddRange(outputs.After.Items.Select(item => item.Value[FullPath]));
             }
         }
 
@@ -177,11 +183,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             foreach (var outputGroupPair in e.Where(pair => KnownOutputGroups.Contains(pair.Key)))
             {
-                var outputs = outputGroupPair.Value
-                    .Outputs
-                    .Where(output => !output.Value.ContainsKey(CopyToOutputDirectory)
-                        || !string.Equals(output.Value[CopyToOutputDirectory], Never, StringComparison.InvariantCultureIgnoreCase))
-                    .Select(output => output.Key);
+                var outputs = outputGroupPair.Value.Outputs.Select(output => output.Key);
                 _outputGroups[outputGroupPair.Key] = new HashSet<string>(outputs);
             }
         }
@@ -205,30 +207,24 @@ namespace Microsoft.VisualStudio.ProjectSystem
             if (!timestampCache.TryGetValue(path, out var time))
             {
                 var info = new FileInfo(path);
-                if (info.Exists)
-                {
-                    time = info.LastWriteTimeUtc;
-                    timestampCache[path] = time;
-                    return time;
-                }
-                else
+                if (!info.Exists)
                 {
                     return null;
                 }
+                time = info.LastWriteTimeUtc;
+                timestampCache[path] = time;
             }
-            else
-            {
-                return time;
-            }
+
+            return time;
         }
 
-        private void AddInput(Logger logger, HashSet<string> inputs, string path, string description)
+        private static void AddInput(Logger logger, HashSet<string> inputs, string path, string description)
         {
             logger.Verbose("Found input {0} '{1}'.", description, path);
             inputs.Add(path);
         }
 
-        private void AddInputs(Logger logger, HashSet<string> inputs, IEnumerable<string> paths, string description)
+        private static void AddInputs(Logger logger, HashSet<string> inputs, IEnumerable<string> paths, string description)
         {
             foreach (var path in paths)
             {
@@ -236,13 +232,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
         }
 
-        private void AddOutput(Logger logger, HashSet<string> outputs, string path, string description)
+        private static void AddOutput(Logger logger, HashSet<string> outputs, string path, string description)
         {
             logger.Verbose("Found output {0} '{1}'.", description, path);
             outputs.Add(path);
         }
 
-        private void AddOutputs(Logger logger, HashSet<string> outputs, IEnumerable<string> paths, string description)
+        private static void AddOutputs(Logger logger, HashSet<string> outputs, IEnumerable<string> paths, string description)
         {
             foreach (var path in paths)
             {
@@ -284,6 +280,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return false;
             }
 
+            if (_items.Any(kvp => kvp.Value.hasCopyAlways))
+            {
+                logger.Info("The project has an item with CopyToOutputDirectory set to 'Always', skipping check.");
+            }
+
             return true;
         }
 
@@ -294,9 +295,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             AddInput(logger, inputs, _msBuildProjectFullPath, "project file");
             AddInputs(logger, inputs, _imports, "import");
 
-            foreach (var pair in _items)
+            foreach (var pair in _items.Where(kvp => !NonCompilationItemTypes.Contains(kvp.Key)))
             {
-                AddInputs(logger, inputs, pair.Value, pair.Key);
+                AddInputs(logger, inputs, pair.Value.items, pair.Key);
             }
 
             foreach (var pair in _references)
