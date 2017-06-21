@@ -59,5 +59,6 @@
   <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="经解析得到此解析的引用项的原始引用项的计算项名称。" />
   <StringProperty Name="ReferenceFromSDK" Visible="False" ReadOnly="True" Description="使用扩展的 SDK 目标时提供此引用的 SDK。" />
   <StringProperty Name="ResolvedFrom" Visible="False" ReadOnly="True" Description="{}用于对此进行解析的引用所在的存储库。(如果在 GAC 中，则为“{GAC}”)。" />
+  <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
   <BoolProperty Name="WinMDFile" Visible="false" ReadOnly="True" Description="指示生成系统是否已确定此为 WinMD (而非程序集)" />
 </Rule>

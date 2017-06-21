@@ -122,4 +122,5 @@
     <StringProperty Name="FusionName" Visible="False" ReadOnly="True" />
     <StringProperty Name="Name" Visible="false" ReadOnly="True" />
     <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
+    <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
 </Rule>

@@ -59,5 +59,6 @@
   <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="Sprawdzona nazwa elementu oryginalnego elementu odwołania, którego rozpoznanie spowodowało rozpoznanie tego elementu odwołania." />
   <StringProperty Name="ReferenceFromSDK" Visible="False" ReadOnly="True" Description="Zestaw SDK, z którego pochodzi to odwołanie, jeśli jest używany rozszerzony docelowy zestaw SDK." />
   <StringProperty Name="ResolvedFrom" Visible="False" ReadOnly="True" Description="{}Które repozytorium przechowuje odwołanie użyte do rozpoznania tego.  („{GAC}”, jeśli było w GAC)." />
+  <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
   <BoolProperty Name="WinMDFile" Visible="false" ReadOnly="True" Description="Wskazuje, czy system kompilacji upewnił się że jest to WinMD (w przeciwieństwie do zestawu)" />
 </Rule>

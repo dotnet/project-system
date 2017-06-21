@@ -83,4 +83,8 @@
                     Visible="True"
                     DisplayName="NoWarn"
                     Description="Comma-delimited list of warnings that should be suppressed for this package" />
+
+    <BoolProperty Name="Visible"
+                  Visible="False"
+                  ReadOnly="True" />
 </Rule>

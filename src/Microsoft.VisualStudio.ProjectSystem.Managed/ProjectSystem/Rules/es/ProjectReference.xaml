@@ -43,4 +43,5 @@
   <StringProperty Name="Project" Visible="False" Description="GUID que la solución usa para realizar un seguimiento de un destino de referencia de un proyecto individual." />
   <StringProperty Name="ReferencedProjectIdentifier" Visible="False" Description="Método empleado en VS2010 beta para almacenar el GUID que la solución usa para realizar un seguimiento de un destino de referencia de un proyecto individual." />
   <BoolProperty Name="UseLibraryDependencyInputs" Visible="False" />
+  <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
 </Rule>
