@@ -56,30 +56,36 @@ namespace Microsoft.VisualStudio.Telemetry
             var targetFrameworksProperty = await configurationGeneralProperties.TargetFrameworks.GetEvaluatedValueAtEndAsync().ConfigureAwait(false);
             var outputTypeProperty = await configurationGeneralProperties.OutputType.GetEvaluatedValueAtEndAsync().ConfigureAwait(false);
 
-            var eventName = "Project";
-            var projectProperties = new Dictionary<string, object>();
-
-            if (!string.IsNullOrEmpty(targetFrameworkProperty))
+            lock (_lock)
             {
-                projectProperties[BuildPropertyName(eventName, ConfigurationGeneral.TargetFrameworkProperty)] = targetFrameworkProperty;
-            }
+                if (!_telemetryEventCorrelationInitialized)
+                {
+                    var eventName = "Project";
+                    var projectProperties = new Dictionary<string, object>();
 
-            if (!string.IsNullOrEmpty(targetFrameworksProperty))
-            {
-                projectProperties[BuildPropertyName(eventName, ConfigurationGeneral.TargetFrameworksProperty)] = targetFrameworksProperty;
-            }
+                    if (!string.IsNullOrEmpty(targetFrameworkProperty))
+                    {
+                        projectProperties[BuildPropertyName(eventName, ConfigurationGeneral.TargetFrameworkProperty)] = targetFrameworkProperty;
+                    }
 
-            if (!string.IsNullOrEmpty(outputTypeProperty))
-            {
-                projectProperties[BuildPropertyName(eventName, ConfigurationGeneral.OutputTypeProperty)] = outputTypeProperty;
-            }
+                    if (!string.IsNullOrEmpty(targetFrameworksProperty))
+                    {
+                        projectProperties[BuildPropertyName(eventName, ConfigurationGeneral.TargetFrameworksProperty)] = targetFrameworksProperty;
+                    }
 
-            _telemetryEventCorrelation = TelemetryService.DefaultSession.PostAsset(
-                                            EventPrefix + eventName.ToLowerInvariant(),
-                                            _projectGuid.ToString(),
-                                            0,
-                                            projectProperties);
-            _telemetryEventCorrelationInitialized = true;
+                    if (!string.IsNullOrEmpty(outputTypeProperty))
+                    {
+                        projectProperties[BuildPropertyName(eventName, ConfigurationGeneral.OutputTypeProperty)] = outputTypeProperty;
+                    }
+
+                    _telemetryEventCorrelation = TelemetryService.DefaultSession.PostAsset(
+                                                    EventPrefix + eventName.ToLowerInvariant(),
+                                                    _projectGuid.ToString(),
+                                                    0,
+                                                    projectProperties);
+                    _telemetryEventCorrelationInitialized = true;
+                }
+            }
             return true;
         }
 
@@ -205,28 +211,19 @@ namespace Microsoft.VisualStudio.Telemetry
         {
             if (!_telemetryEventCorrelationInitialized)
             {
-                lock (_lock)
+                _unconfiguredProjectCommonServices.ThreadingService.Fork(async () =>
                 {
-                    // Make sure it was not initialized while waiting for the lock
-                    if (!_telemetryEventCorrelationInitialized)
-                    {
-                        _unconfiguredProjectCommonServices.ThreadingService.Fork(async () =>
-                        {
-                            if(await CreateProjectCorrelationAssetAsync().ConfigureAwait(false))
-                            {
-                                PostEvent(telemetryEvent, true);
-                            }
-                            else
-                            {
-                                PostEvent(telemetryEvent, false);
-                            }
-                        }, unconfiguredProject: _unconfiguredProjectCommonServices.Project);
-                    }
-                    else
+                    if (await CreateProjectCorrelationAssetAsync().ConfigureAwait(false))
                     {
                         PostEvent(telemetryEvent, true);
                     }
-                }
+                    else
+                    {
+                        // still post the event even if correlation asset cannot be created.
+                        // This will let us know about the existence of cases where asset creation after project initialization.
+                        PostEvent(telemetryEvent, false);
+                    }
+                }, unconfiguredProject: _unconfiguredProjectCommonServices.Project);
             }
             else
             {

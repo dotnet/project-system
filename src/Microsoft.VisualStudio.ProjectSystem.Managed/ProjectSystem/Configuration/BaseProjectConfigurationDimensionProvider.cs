@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// Initializes a new instance of the <see cref="BaseProjectConfigurationDimensionProvider"/> class.
         /// </summary>
         /// <param name="projectXmlAccessor">Lock service for the project file.</param>
-        /// <param name="telemetryService">Telemetry service.</param>
+        /// <param name="telemetryService">Telemetry service. The telemetry service could be null since the implementation lives in VS layer.</param>
         /// <param name="dimensionName">Name of the dimension.</param>
         /// <param name="propertyName">Name of the project property containing the dimension values.</param>
         /// <param name="valueContainsPii">Says if the dimension values contain PII and needs to hashed before being reported to Telemetry</param>
