@@ -218,8 +218,8 @@ namespace Microsoft.VisualStudio.Telemetry
                     }
                     else
                     {
-                        // still post the event even if correlation asset cannot be created.
-                        // This will let us know about the existence of cases where asset creation after project initialization.
+                        // Post the event even if correlation asset cannot be created.
+                        // This will let us know about the existence of cases where asset creation falied after project initialization.
                         PostEvent(telemetryEvent, false);
                     }
                 }, unconfiguredProject: _unconfiguredProjectCommonServices.Project);
