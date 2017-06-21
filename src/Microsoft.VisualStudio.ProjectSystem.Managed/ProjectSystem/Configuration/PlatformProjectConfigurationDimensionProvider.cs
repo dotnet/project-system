@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 BuildUtilities.AppendPropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, platformName);
             }).ConfigureAwait(false);
 
-            TelemetryService?.PostProperty($"{TelemetryEventName}/{DimensionName}/Add", "Value", HashValueIfNeeded(platformName));
+            TelemetryService.PostPropertySafe($"{TelemetryEventName}/{DimensionName}/Add", "Value", HashValueIfNeeded(platformName));
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 BuildUtilities.RemovePropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, platformName);
             }).ConfigureAwait(false);
 
-            TelemetryService?.PostProperty($"{TelemetryEventName}/{DimensionName}/Remove", "Value", HashValueIfNeeded(platformName));
+            TelemetryService.PostPropertySafe($"{TelemetryEventName}/{DimensionName}/Remove", "Value", HashValueIfNeeded(platformName));
         }
     }
 }
