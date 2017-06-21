@@ -63,14 +63,13 @@ namespace Microsoft.VisualStudio.Telemetry
                     var eventName = "Project";
                     var projectProperties = new Dictionary<string, object>();
 
-                    if (!string.IsNullOrEmpty(targetFrameworkProperty))
-                    {
-                        projectProperties[BuildPropertyName(eventName, ConfigurationGeneral.TargetFrameworkProperty)] = targetFrameworkProperty;
-                    }
-
                     if (!string.IsNullOrEmpty(targetFrameworksProperty))
                     {
                         projectProperties[BuildPropertyName(eventName, ConfigurationGeneral.TargetFrameworksProperty)] = targetFrameworksProperty;
+                    }
+                    else if (!string.IsNullOrEmpty(targetFrameworkProperty))
+                    {
+                        projectProperties[BuildPropertyName(eventName, ConfigurationGeneral.TargetFrameworkProperty)] = targetFrameworkProperty;
                     }
 
                     if (!string.IsNullOrEmpty(outputTypeProperty))
