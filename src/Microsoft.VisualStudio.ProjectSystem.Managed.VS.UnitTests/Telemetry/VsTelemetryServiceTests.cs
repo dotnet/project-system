@@ -11,26 +11,6 @@ namespace Microsoft.VisualStudio.Telemetry
     public class VsTelemetryServiceTests
     {
         [Fact]
-        public void PostEvent_NullAsEventName_ThrowArgumentNull()
-        {
-            var service = CreateInstance();
-
-            Assert.Throws<ArgumentNullException>("eventName", () => {
-                service.PostEvent((string)null);
-            });
-        }
-
-        [Fact]
-        public void PostEvent_EmptyAsEventName_ThrowArgument()
-        {
-            var service = CreateInstance();
-
-            Assert.Throws<ArgumentException>("eventName", () => {
-                service.PostEvent(string.Empty);
-            });
-        }
-
-        [Fact]
         public void PostProperty_NullAsEventName_ThrowArgumentNull()
         {
             var service = CreateInstance();
@@ -129,56 +109,6 @@ namespace Microsoft.VisualStudio.Telemetry
 
             Assert.Throws<ArgumentException>("properties", () => {
                 service.PostProperties("event1", new List<(string propertyName, string propertyValue)>());
-            });
-        }
-
-        [Fact]
-        public void PostOperation_NullAsEventName_ThrowArgumentNull()
-        {
-            var service = CreateInstance();
-
-            Assert.Throws<ArgumentNullException>("eventName", () => {
-                service.PostOperation((string)null, TelemetryResult.Failure, resultSummary:"resultSummary", correlatedWith:null);
-            });
-        }
-
-        [Fact]
-        public void PostOperation_EmptyAsEventName_ThrowArgument()
-        {
-            var service = CreateInstance();
-
-            Assert.Throws<ArgumentException>("eventName", () => {
-                service.PostOperation(string.Empty, TelemetryResult.Failure, resultSummary: "resultSummary", correlatedWith: null);
-            });
-        }
-
-        [Fact]
-        public void Report_NullAsEventName_ThrowArgumentNull()
-        {
-            var service = CreateInstance();
-
-            Assert.Throws<ArgumentNullException>("eventName", () => {
-                service.Report((string)null, "description", new Exception(), null);
-            });
-        }
-
-        [Fact]
-        public void Report_EmptyAsEventName_ThrowArgumentNull()
-        {
-            var service = CreateInstance();
-
-            Assert.Throws<ArgumentException>("eventName", () => {
-                service.Report(string.Empty, "description", new Exception(), null);
-            });
-        }
-
-        [Fact]
-        public void Report_NullAsException_ThrowArgumentNull()
-        {
-            var service = CreateInstance();
-
-            Assert.Throws<ArgumentNullException>("exception", () => {
-                service.Report("EventName", "description", (Exception)null, null);
             });
         }
 

@@ -10,16 +10,10 @@ namespace Microsoft.VisualStudio.Mocks
     internal class ITelemetryServiceFactory
     {
         public static ITelemetryService Implement(
-            Action<string> postEvent = null,
             Action<Tuple<string, string, string>> postProperty = null,
             Action<Tuple<string, List<(string propertyName, string propertyValue)>>> postProperties = null)
         {
             var service = new Mock<ITelemetryService>();
-            if (postEvent != null)
-            {
-                service.Setup(s => s.PostEvent(It.IsAny<string>()))
-                       .Callback<string>((e) => postEvent(e));
-            }
 
             if (postProperty != null)
             {

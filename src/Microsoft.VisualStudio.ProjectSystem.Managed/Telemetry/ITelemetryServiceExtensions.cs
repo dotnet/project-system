@@ -14,11 +14,6 @@ namespace Microsoft.VisualStudio.Telemetry
             return service?.HashValue(value) ?? value;
         }
 
-        public static void PostEventSafe(this ITelemetryService service, string eventName)
-        {
-            service?.PostEvent(eventName);
-        }
-
         public static void PostPropertiesSafe(this ITelemetryService service, string eventName, List<(string propertyName, string propertyValue)> properties)
         {
             service?.PostProperties(eventName, properties);

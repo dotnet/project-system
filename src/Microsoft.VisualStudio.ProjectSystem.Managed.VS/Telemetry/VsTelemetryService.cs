@@ -11,8 +11,7 @@ using Microsoft.VisualStudio.ProjectSystem;
 namespace Microsoft.VisualStudio.Telemetry
 {
     [Export(typeof(ITelemetryService))]
-    [Export(typeof(IVsTelemetryService))]
-    internal class VsTelemetryService : IVsTelemetryService, ITelemetryService
+    internal class VsTelemetryService : ITelemetryService
     {
         private const string EventPrefix = "vs/projectsystem/managed/";
         private const string PropertyPrefix = "VS.ProjectSystem.Managed.";
@@ -89,17 +88,6 @@ namespace Microsoft.VisualStudio.Telemetry
         }
 
         /// <summary>
-        /// Posts a simple event with just the event name.
-        /// </summary>
-        /// <param name="eventName"></param>
-        public void PostEvent(string eventName)
-        {
-            Requires.NotNullOrEmpty(eventName, nameof(eventName));
-
-            TelemetryService.DefaultSession.PostEvent(eventName);
-        }
-
-        /// <summary>
         /// Post an event with the event name also with the corresponding Property name and Property value. This 
         /// event will be correlated with the Project Telemetry Correlation asset.
         /// </summary>
@@ -135,31 +123,6 @@ namespace Microsoft.VisualStudio.Telemetry
             }
 
             PostEvent(telemetryEvent);
-        }
-
-        public TelemetryEventCorrelation PostOperation(string eventName, TelemetryResult result, string resultSummary = null, TelemetryEventCorrelation[] correlatedWith = null)
-        {
-            Requires.NotNullOrEmpty(eventName, nameof(eventName));
-            if (result == TelemetryResult.None)
-                throw new ArgumentException(null, nameof(result));
-
-            return TelemetryService.DefaultSession.PostOperation(
-                eventName: eventName,
-                result: result,
-                resultSummary: resultSummary,
-                correlatedWith: correlatedWith);
-        }
-
-        public TelemetryEventCorrelation Report(string eventName, string description, Exception exception, Func<IFaultUtility, int> callback = null)
-        {
-            Requires.NotNullOrEmpty(eventName, nameof(eventName));
-            Requires.NotNull(exception, nameof(exception));
-
-            return TelemetryService.DefaultSession.PostFault(
-                eventName: eventName,
-                description: description,
-                exceptionObject: exception,
-                gatherEventDetails: callback);
         }
 
         /// <summary>
