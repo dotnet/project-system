@@ -43,6 +43,9 @@
     <Compile Update="ProjectSystem\Rules\ResolvedAnalyzerReference.xaml.cs">
       <DependentUpon>ResolvedAnalyzerReference.xaml</DependentUpon>
     </Compile>
+    <Compile Update="ProjectSystem\Rules\ResolvedCompilationReference.cs">
+      <DependentUpon>ResolvedCompilationReference.xaml</DependentUpon>
+    </Compile>
     <Compile Update="ProjectSystem\Rules\ResolvedPackageReference.cs">
       <DependentUpon>ResolvedPackageReference.xaml</DependentUpon>
     </Compile>
@@ -90,6 +93,9 @@
     </Compile>
     <Compile Update="ProjectSystem\Rules\UpToDateCheckOutput.cs">
       <DependentUpon>UpToDateCheckOutput.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\CopyUpToDateMarker.cs">
+      <DependentUpon>CopyUpToDateMarker.xaml</DependentUpon>
     </Compile>
     <Compile Update="ProjectSystem\Rules\Folder.cs">
       <DependentUpon>Folder.xaml</DependentUpon>
@@ -165,6 +171,10 @@
       <SubType>Designer</SubType>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\UpToDateCheckOutput.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\CopyUpToDateMarker.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
@@ -277,6 +287,10 @@
   </ItemGroup>
   <ItemGroup>
     <XamlPropertyRule Include="ProjectSystem\Rules\ResolvedAnalyzerReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\ResolvedCompilationReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>

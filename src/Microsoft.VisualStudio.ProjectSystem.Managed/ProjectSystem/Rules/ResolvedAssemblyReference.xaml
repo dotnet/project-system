@@ -176,6 +176,8 @@
                     ReadOnly="True" 
                     Description="{}What repository held the reference that was used to resolve this.  (&quot;{GAC}&quot; if it was in the GAC)." />
 
+    <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
+    
     <BoolProperty Name="WinMDFile" 
                   Visible="false"
                   ReadOnly="True" 

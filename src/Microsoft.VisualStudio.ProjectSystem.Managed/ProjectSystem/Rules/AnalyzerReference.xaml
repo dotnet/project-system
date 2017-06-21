@@ -11,4 +11,5 @@
                     SourceType="TargetResults" MSBuildTarget="CollectAnalyzersDesignTime"/>
     </Rule.DataSource>
     <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
+    <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
 </Rule>

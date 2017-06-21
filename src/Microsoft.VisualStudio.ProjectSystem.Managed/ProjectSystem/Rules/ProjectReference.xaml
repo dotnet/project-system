@@ -127,4 +127,7 @@
     <BoolProperty Name="UseLibraryDependencyInputs"
                   Visible="False" />
 
+    <BoolProperty Name="Visible"
+                  Visible="False"
+                  ReadOnly="True" />
 </Rule>

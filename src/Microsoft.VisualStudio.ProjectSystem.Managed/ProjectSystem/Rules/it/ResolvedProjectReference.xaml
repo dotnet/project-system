@@ -58,4 +58,5 @@
   <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="Nome di elemento valutato dell'elemento di riferimento originale la cui risoluzione ha restituito questo elemento di riferimento risolto." />
   <StringProperty Name="FusionName" Visible="False" ReadOnly="True" />
   <StringProperty Name="Name" Visible="false" ReadOnly="True" />
+  <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
 </Rule>
