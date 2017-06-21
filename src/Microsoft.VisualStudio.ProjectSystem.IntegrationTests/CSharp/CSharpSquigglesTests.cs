@@ -17,13 +17,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
             VisualStudio.SolutionExplorer.OpenFile(Project, "Class1.cs");
         }
 
-        [Fact, Trait("Integration", "Squiggles")]
+        [Fact(Skip = "https://github.com/dotnet/project-system/issues/2281"), Trait("Integration", "Squiggles")]
         public void VerifySyntaxErrorSquiggles()
         {
             VisualStudio.Editor.SetText(@"using System;
 using System.Collections.Generic;
 using System.Text;
- 
+
 namespace ConsoleApplication1
 {
     /// <summary/>
@@ -34,7 +34,7 @@ namespace ConsoleApplication1
         {
             Console.WriteLine(""Hello World"")
         }
- 
+
         private void sub()
         {
     }
@@ -51,18 +51,18 @@ namespace ConsoleApplication1
             Assert.Equal(expectedTags, actualTags);
         }
 
-        [Fact, Trait("Integration", "Squiggles")]
+        [Fact(Skip = "https://github.com/dotnet/project-system/issues/2281"), Trait("Integration", "Squiggles")]
         public void VerifySemanticErrorSquiggles()
         {
             VisualStudio.Editor.SetText(@"using System;
- 
+
 class C  : Bar
 {
 }");
             VisualStudio.Workspace.WaitForAsyncOperations(FeatureAttribute.SolutionCrawler);
             VisualStudio.Workspace.WaitForAsyncOperations(FeatureAttribute.DiagnosticService);
             var actualTags = VisualStudio.Editor.GetErrorTags();
-            var expectedTags = new[] 
+            var expectedTags = new[]
             {
                 "Microsoft.VisualStudio.Text.Tagging.ErrorTag:'Bar'[29-32]",
                 "Microsoft.VisualStudio.Text.Tagging.ErrorTag:'using System;'[0-13]"
