@@ -16,6 +16,7 @@
             <DataSource PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
-
+    
+    <StringProperty Name="OriginalPath" ReadOnly="True" Visible="False"/>
     <StringProperty Name="CopyUpToDateMarker" ReadOnly="True" Visible="False"/>
 </Rule>

@@ -48,6 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private const string ResolvedPath = "ResolvedPath";
         private const string CopyToOutputDirectory = "CopyToOutputDirectory";
         private const string Never = "Never";
+        private const string OriginalPath = "OriginalPath";
 
         private static HashSet<string> KnownOutputGroups = new HashSet<string>
         {
@@ -91,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private HashSet<string> _customOutputs = new HashSet<string>();
         private HashSet<string> _analyzerReferences = new HashSet<string>();
         private HashSet<string> _compilationReferences = new HashSet<string>();
-        private HashSet<string> _referenceMarkerFiles = new HashSet<string>();
+        private HashSet<string> _copyReferenceInputs = new HashSet<string>();
         private Dictionary<string, HashSet<string>> _outputGroups = new Dictionary<string, HashSet<string>>();
 
         [ImportingConstructor]
@@ -136,14 +137,18 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 changes.Difference.AnyChanges)
             {
                 _compilationReferences.Clear();
-                _referenceMarkerFiles.Clear();
+                _copyReferenceInputs.Clear();
 
                 foreach (var item in changes.After.Items)
                 {
                     _compilationReferences.Add(item.Value[ResolvedPath]);
                     if (!string.IsNullOrWhiteSpace(item.Value[CopyUpToDateMarker.SchemaName]))
                     {
-                        _referenceMarkerFiles.Add(item.Value[CopyUpToDateMarker.SchemaName]);
+                        _copyReferenceInputs.Add(item.Value[CopyUpToDateMarker.SchemaName]);
+                    }
+                    if (!string.IsNullOrWhiteSpace(item.Value[OriginalPath]))
+                    {
+                        _copyReferenceInputs.Add(item.Value[OriginalPath]);
                     }
                 }
             }
@@ -161,14 +166,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
 
             if (e.ProjectChanges.TryGetValue(CopyUpToDateMarker.SchemaName, out var upToDateMarkers) &&
-                upToDateMarkers.Difference.AnyChanges &&
-                upToDateMarkers.After.Items.Count == 1)
+                upToDateMarkers.Difference.AnyChanges)
             {
-                _markerFile = upToDateMarkers.After.Items.Single().Value[FullPath];
-            }
-            else
-            {
-                _markerFile = null;
+                _markerFile = upToDateMarkers.After.Items.Count == 1 ? upToDateMarkers.After.Items.Single().Value[FullPath] : null;
             }
         }
 
@@ -393,19 +393,19 @@ namespace Microsoft.VisualStudio.ProjectSystem
         // actually produced a marker.
         private bool CheckMarkers(Logger logger, IDictionary<string, DateTime> timestampCache)
         {
-            if (string.IsNullOrWhiteSpace(_markerFile) || !_referenceMarkerFiles.Any())
+            if (string.IsNullOrWhiteSpace(_markerFile) || !_copyReferenceInputs.Any())
             {
                 return true;
             }
 
-            foreach (var referenceMarkerFile in _referenceMarkerFiles)
+            foreach (var referenceMarkerFile in _copyReferenceInputs)
             {
                 logger.Verbose("Found possible input marker '{0}'.", referenceMarkerFile);
             }
 
             logger.Verbose("Found possible output marker '{0}'.", _markerFile);
 
-            var latestInputMarker = GetLatestInput(_referenceMarkerFiles, timestampCache, true);
+            var latestInputMarker = GetLatestInput(_copyReferenceInputs, timestampCache, true);
             var outputMarkerTime = GetTimestamp(_markerFile, timestampCache);
 
             if (latestInputMarker.path != null)
