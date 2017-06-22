@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         {
             EnsureInitialized();
         }
-        
+
         /// <summary>
         /// Initialize the watcher.
         /// </summary>
@@ -100,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             var projectUpdate = dataFlowUpdate.Value.Item2;
             var projectLockFilePath = GetProjectAssetsFilePath(newTree, projectUpdate);
 
-            // project.json may have been renamed to {projectName}.project.json or in the case of the project.assets.json, 
+            // project.json may have been renamed to {projectName}.project.json or in the case of the project.assets.json,
             // the immediate path could have changed. In either case, change the file watcher.
             if (!PathHelper.IsSamePath(projectLockFilePath, _fileBeingWatched))
             {
@@ -113,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         {
             var projectFilePath = projectUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, null);
 
-            // First check to see if the project has a project.json. 
+            // First check to see if the project has a project.json.
             IProjectTree projectJsonNode = FindProjectJsonNode(newTree, projectFilePath);
             if (projectJsonNode != null)
             {
@@ -129,7 +129,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             if (string.IsNullOrEmpty(objDirectory))
             {   // Don't have an intermdiate directory set, probably missing SDK attribute or Microsoft.Common.props
 
-                return null; 
+                return null;
             }
 
             objDirectory = PathHelper.MakeRooted(projectFilePath, objDirectory);
@@ -152,7 +152,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             return null;
         }
-        
+
         private void RegisterFileWatcherAsync(string projectLockJsonFilePath)
         {
             // Note file change service is free-threaded
@@ -215,7 +215,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 {
                     // Project is already unloaded
                 }
-            }, unconfiguredProject: _projectServices.Project);
+            }, unconfiguredProject: _projectServices.Project,
+               factory: _projectServices.ThreadingService.JoinableTaskFactory);
 
             return VSConstants.S_OK;
         }
