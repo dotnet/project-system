@@ -58,23 +58,9 @@
       <NameValuePair Name="DefaultMetadata_Generator" Value="ResXFileCodeGenerator" />
     </ContentType>
 
-    <ContentType
-      Name="UpToDateCheckInput"
-      DisplayName="Up-to-date check input"
-      ItemType="UpToDateCheckInput">
-    </ContentType>
-
-    <ContentType
-      Name="UpToDateCheckOutput"
-      DisplayName="Up-to-date check output"
-      ItemType="UpToDateCheckOutput">
-    </ContentType>
-
     <ItemType Name="None" DisplayName="None"/>
     <ItemType Name="Content" DisplayName="Content" />
     <ItemType Name="EmbeddedResource" DisplayName="Embedded resource"/>
-    <ItemType Name="UpToDateCheckInput" DisplayName="Up-to-date check input"/>
-    <ItemType Name="UpToDateCheckOutput" DisplayName="Up-to-date check output" UpToDateCheckInput="False"/>
 
     <FileExtension Name=".asax" ContentType="Asax" />
     <FileExtension Name=".asmx" ContentType="HTML" />

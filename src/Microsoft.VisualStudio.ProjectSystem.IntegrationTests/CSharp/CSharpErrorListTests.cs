@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
             VisualStudio.SolutionExplorer.OpenFile(Project, "Class1.cs");
         }
 
-        [Fact, Trait("Integration", "ErrorList")]
+        [Fact(Skip = "https://github.com/dotnet/project-system/issues/2281"), Trait("Integration", "ErrorList")]
         public void ErrorList()
         {
             VisualStudio.Editor.SetText(@"
@@ -29,7 +29,7 @@ class C
     {
         System.Console.WriteLin();
     }
- 
+
     static void Main(string[] args)
     {
     }
@@ -90,12 +90,12 @@ class C
             Assert.Equal(expectedContents, actualContents);
         }
 
-        [Fact, Trait("Integration", "ErrorList")]
+        [Fact(Skip = "https://github.com/dotnet/project-system/issues/2281"), Trait("Integration", "ErrorList")]
         public virtual void ErrorsDuringMethodBodyEditing()
         {
             VisualStudio.Editor.SetText(@"
 using System;
- 
+
 class Program2
 {
     static void Main(string[] args)

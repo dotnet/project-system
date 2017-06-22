@@ -24,8 +24,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// needed w/o making them public
     /// </summary>
     [Export(typeof(ILaunchSettingsProvider))]
+    [Export(typeof(ILaunchSettingsProvider2))]
     [AppliesTo(ProjectCapability.LaunchProfiles)]
-    internal class LaunchSettingsProvider : OnceInitializedOnceDisposed, ILaunchSettingsProvider
+    internal class LaunchSettingsProvider : OnceInitializedOnceDisposed, ILaunchSettingsProvider2
     {
         private readonly ISpecialFilesManager _specialFilesManager;
         private readonly AsyncLazy<string> _launchSettingsFilePath;
@@ -45,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             ProjectSubscriptionService = projectSubscriptionService;
             _specialFilesManager = specialFilesManager;
-            _launchSettingsFilePath = new AsyncLazy<string>(GetLaunchSettingsFilePathAsync, commonProjectServices.ThreadingService.JoinableTaskFactory);
+            _launchSettingsFilePath = new AsyncLazy<string>(GetLaunchSettingsFilePathNoCacheAsync, commonProjectServices.ThreadingService.JoinableTaskFactory);
         }
 
         // TODO: Add error list support. Tracked by https://github.com/dotnet/roslyn-project-system/issues/424
@@ -103,13 +104,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         private SequencialTaskExecutor _sequentialTaskQueue = new SequencialTaskExecutor();
 
-        [Obsolete("Use GetLaunchSettingsFileAsync instead.")]
+        [Obsolete("Use GetLaunchSettingsFilePathAsync instead.")]
         public string LaunchSettingsFile
         {
             get
             {
                 return CommonProjectServices.ThreadingService.ExecuteSynchronously(() => {
-                    return _launchSettingsFilePath.GetValueAsync();
+                    return GetLaunchSettingsFilePathAsync();
                 });
             }
         }
@@ -288,8 +289,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         protected async Task<bool> SettingsFileHasChangedAsync()
         {
-            string fileName = await _launchSettingsFilePath.GetValueAsync()
-                                                           .ConfigureAwait(false);
+            string fileName = await GetLaunchSettingsFilePathAsync().ConfigureAwait(false);
 
             return !FileManager.FileExists(fileName) || FileManager.LastFileWriteTime(fileName) != LastSettingsFileSyncTime;
         }
@@ -324,8 +324,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         protected async Task<LaunchSettingsData> GetLaunchSettingsAsync()
         {
-            string fileName = await _launchSettingsFilePath.GetValueAsync()
-                                                           .ConfigureAwait(false);
+            string fileName = await GetLaunchSettingsFilePathAsync().ConfigureAwait(false);
 
             LaunchSettingsData settings;
             if (FileManager.FileExists(fileName))
@@ -355,8 +354,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         protected async Task<LaunchSettingsData> ReadSettingsFileFromDiskAsync()
         {
-            string fileName = await _launchSettingsFilePath.GetValueAsync()
-                                                           .ConfigureAwait(false);
+            string fileName = await GetLaunchSettingsFilePathAsync().ConfigureAwait(false);
 
             // Clear errors
             ClearErrors();
@@ -417,6 +415,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
         }
 
+        public Task<string> GetLaunchSettingsFilePathAsync()
+        {
+            return _launchSettingsFilePath.GetValueAsync();
+        }
+
         /// <summary>
         /// Does a quick validation to make sure at least a name is present in each profile. Removes bad ones and
         /// logs errors. Returns the resultant profiles as a list
@@ -471,8 +474,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Clear stale errors since we are saving
             ClearErrors();
             var serializationData = GetSettingsToSerialize(newSettings);
-            string fileName = await _launchSettingsFilePath.GetValueAsync()
-                                                           .ConfigureAwait(false);
+            string fileName = await GetLaunchSettingsFilePathAsync().ConfigureAwait(false);
 
             try
             {
@@ -546,8 +548,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var sourceControlIntegration = SourceControlIntegrations.FirstOrDefault();
             if (sourceControlIntegration != null && sourceControlIntegration.Value != null)
             {
-                string fileName = await _launchSettingsFilePath.GetValueAsync()
-                                                               .ConfigureAwait(false);
+                string fileName = await GetLaunchSettingsFilePathAsync().ConfigureAwait(false);
 
                 await sourceControlIntegration.Value.CanChangeProjectFilesAsync(new[] { fileName }).ConfigureAwait(false);
             }
@@ -593,8 +594,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         protected async Task EnsureSettingsFolderAsync()
         {
-            string fileName = await _launchSettingsFilePath.GetValueAsync()
-                                                           .ConfigureAwait(false);
+            string fileName = await GetLaunchSettingsFilePathAsync().ConfigureAwait(false);
 
             string parentPath = Path.GetDirectoryName(fileName);
 
@@ -839,8 +839,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var currentSettings = await WaitForFirstSnapshot(WaitForFirstSnapshotDelay).ConfigureAwait(false);
             if (currentSettings == null || (currentSettings.Profiles.Count == 1 && string.Equals(currentSettings.Profiles[0].CommandName, ErrorProfileCommandName, StringComparison.Ordinal)))
             {
-                string fileName = await _launchSettingsFilePath.GetValueAsync()
-                                                               .ConfigureAwait(false);
+                string fileName = await GetLaunchSettingsFilePathAsync().ConfigureAwait(false);
 
                 throw new Exception(string.Format(Resources.JsonErrorNeedToBeCorrected, fileName));
             }
@@ -858,7 +857,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             await props.ActiveDebugProfile.SetValueAsync(profileName).ConfigureAwait(true);
         }
 
-        internal async Task<string> GetLaunchSettingsFilePathAsync()
+        internal async Task<string> GetLaunchSettingsFilePathNoCacheAsync()
         {
             // NOTE: To reduce behavior changes, we currently cache the folder that we get from
             // the ISpecialFilesManager, even though it can change over the lifetime of the project
