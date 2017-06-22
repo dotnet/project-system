@@ -5,8 +5,8 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Threading;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
+using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 DebugPageViewModel viewModel = e.OldValue as DebugPageViewModel;
                 viewModel.FocusEnvironmentVariablesGridRow -= OnFocusEnvironmentVariableGridRow;
                 viewModel.ClearEnvironmentVariablesGridError -= OnClearEnvironmentVariableGridError;
-                viewModel.PropertyChanged -= ViewModel_PropertyChanged; 
+                viewModel.PropertyChanged -= ViewModel_PropertyChanged;
             }
 
             if (e.NewValue != null && e.NewValue is DebugPageViewModel)
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 DebugPageViewModel viewModel = e.NewValue as DebugPageViewModel;
                 viewModel.FocusEnvironmentVariablesGridRow += OnFocusEnvironmentVariableGridRow;
                 viewModel.ClearEnvironmentVariablesGridError += OnClearEnvironmentVariableGridError;
-                viewModel.PropertyChanged += ViewModel_PropertyChanged; 
+                viewModel.PropertyChanged += ViewModel_PropertyChanged;
             }
         }
 
@@ -48,21 +48,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             ClearGridError(dataGridEnvironmentVariables);
         }
 
-        private void OnFocusEnvironmentVariableGridRow(object sender, EventArgs e)
+        private async void OnFocusEnvironmentVariableGridRow(object sender, EventArgs e)
         {
             if (DataContext != null && DataContext is DebugPageViewModel)
             {
-                Dispatcher.BeginInvoke(new DispatcherOperationCallback((param) =>
+                await ThreadHelper.JoinableTaskFactory
+                    .WithPriority(VsTaskRunContext.UIThreadBackgroundPriority)
+                    .SwitchToMainThreadAsync();
+                if ((DataContext as DebugPageViewModel).EnvironmentVariables.Count > 0)
                 {
-                    if ((DataContext as DebugPageViewModel).EnvironmentVariables.Count > 0)
-                    {
-                        // get the new cell, set focus, then open for edit
-                        var cell = WpfHelper.GetCell(dataGridEnvironmentVariables, (DataContext as DebugPageViewModel).EnvironmentVariables.Count - 1, 0);
-                        cell.Focus();
-                        dataGridEnvironmentVariables.BeginEdit();
-                    }
-                    return null;
-                }), DispatcherPriority.Background, new object[] { null });
+                    // get the new cell, set focus, then open for edit
+                    var cell = WpfHelper.GetCell(dataGridEnvironmentVariables, (DataContext as DebugPageViewModel).EnvironmentVariables.Count - 1, 0);
+                    cell.Focus();
+                    dataGridEnvironmentVariables.BeginEdit();
+                }
             }
         }
 
@@ -76,18 +75,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 cellErrorInfo.SetValue(dataGrid, false, null);
                 rowErrorInfo.SetValue(dataGrid, false, null);
             }
-            catch (Exception) 
-            { 
+            catch (Exception)
+            {
             }
         }
-        
+
         /// <summary>
         /// Called when a property changes on the view model. Used to detect when the custom UI changes so that
         /// the size of its grids can be determined
         /// </summary>
         private void ViewModel_PropertyChanged(Object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if(e.PropertyName.Equals(nameof(DebugPageViewModel.ActiveProviderUserControl)))
+            if (e.PropertyName.Equals(nameof(DebugPageViewModel.ActiveProviderUserControl)))
             {
                 _customControlLayoutUpdateRequired = true;
             }
@@ -99,13 +98,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         private void DebugPageControl_LayoutUpdated(Object sender, EventArgs e)
         {
-            if(_customControlLayoutUpdateRequired && _mainGrid != null && DataContext != null)
+            if (_customControlLayoutUpdateRequired && _mainGrid != null && DataContext != null)
             {
                 _customControlLayoutUpdateRequired = false;
 
                 // Get the control that was added to the grid
                 var customControl = ((DebugPageViewModel)DataContext).ActiveProviderUserControl;
-                if(customControl != null)
+                if (customControl != null)
                 {
                     if (customControl.Content is Grid childGrid && childGrid.ColumnDefinitions.Count == _mainGrid.ColumnDefinitions.Count)
                     {

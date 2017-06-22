@@ -74,12 +74,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             // We need to schedule this to occur later after databinding has completed, otherwise
             // focus appears in the textbox, but at the start of the suggested name rather than at
             // the end.
+#pragma warning disable VSTHRD001 // Avoid legacy threading switching APIs
             Dispatcher.BeginInvoke(
                     (SetFocusCallback)delegate ()
                     {
                         ProfileNameTextBox.Select(0, ProfileNameTextBox.Text.Length);
                         ProfileNameTextBox.Focus();
                     }, System.Windows.Threading.DispatcherPriority.DataBind, null);
+#pragma warning restore VSTHRD001 // Avoid legacy threading switching APIs
         }
     }
 }
