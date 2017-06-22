@@ -132,11 +132,9 @@ namespace Microsoft.VisualStudio.Telemetry
         /// <returns>Hashed value.</returns>
         public string HashValue(string value)
         {
-            using (var crypto = SHA256.Create())
-            {
-                byte[] hash = crypto.ComputeHash(Encoding.UTF8.GetBytes(value));
-                return BitConverter.ToString(hash);
-            }
+            var inputBytes = Encoding.UTF8.GetBytes(value);
+            var hashedBytes = new SHA256CryptoServiceProvider().ComputeHash(inputBytes);
+            return BitConverter.ToString(hashedBytes);
         }
 
 
