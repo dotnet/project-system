@@ -191,7 +191,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             Assert.Equal(dependency1, dependency2);
             Assert.NotEqual(dependency1, dependency3);
-            Assert.Equal(@"tfm1\providertype\someid1".GetHashCode(), dependency1.GetHashCode());
+            Assert.Equal(dependency1.GetHashCode(), dependency2.GetHashCode());
+            Assert.NotEqual(dependency1.GetHashCode(), dependency3.GetHashCode());
         }
 
         [Fact]
