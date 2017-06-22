@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             return Task.CompletedTask;
         }
 
-        public Task UnloadAsync() => Task.CompletedTask;
+        public Task UnloadAsync() => DisposeAsync();
 
         private async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update)
         {
