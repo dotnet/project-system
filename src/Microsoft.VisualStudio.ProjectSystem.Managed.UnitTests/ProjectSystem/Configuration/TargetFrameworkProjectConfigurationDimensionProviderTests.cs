@@ -3,6 +3,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Build;
+using Microsoft.VisualStudio.Mocks;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Configuration
@@ -37,8 +38,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         {
             using (var projectFile = new MsBuildProjectFile(ProjectXmlTFM))
             {
+                var telemetryService = ITelemetryServiceFactory.Implement();
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
-                var provider = new TargetFrameworkProjectConfigurationDimensionProvider(_projectXmlAccessor);
+                var provider = new TargetFrameworkProjectConfigurationDimensionProvider(_projectXmlAccessor, telemetryService);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
                 var values = await provider.GetDefaultValuesForDimensionsAsync(unconfiguredProject);
                 Assert.Equal(0, values.Count());
@@ -52,8 +54,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         {
             using (var projectFile = new MsBuildProjectFile(projectXml))
             {
+                var telemetryService = ITelemetryServiceFactory.Implement();
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
-                var provider = new TargetFrameworkProjectConfigurationDimensionProvider(_projectXmlAccessor);
+                var provider = new TargetFrameworkProjectConfigurationDimensionProvider(_projectXmlAccessor, telemetryService);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
                 var values = await provider.GetDefaultValuesForDimensionsAsync(unconfiguredProject);
                 Assert.Equal(1, values.Count());
@@ -68,8 +71,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         {
             using (var projectFile = new MsBuildProjectFile(ProjectXmlTFM))
             {
+                var telemetryService = ITelemetryServiceFactory.Implement();
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
-                var provider = new TargetFrameworkProjectConfigurationDimensionProvider(_projectXmlAccessor);
+                var provider = new TargetFrameworkProjectConfigurationDimensionProvider(_projectXmlAccessor, telemetryService);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
                 var values = await provider.GetProjectConfigurationDimensionsAsync(unconfiguredProject);
                 Assert.Equal(0, values.Count());
@@ -83,8 +87,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         {
             using (var projectFile = new MsBuildProjectFile(projectXml))
             {
+                var telemetryService = ITelemetryServiceFactory.Implement();
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
-                var provider = new TargetFrameworkProjectConfigurationDimensionProvider(_projectXmlAccessor);
+                var provider = new TargetFrameworkProjectConfigurationDimensionProvider(_projectXmlAccessor, telemetryService);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
                 var values = await provider.GetProjectConfigurationDimensionsAsync(unconfiguredProject);
                 Assert.Equal(1, values.Count());
@@ -109,8 +114,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             // No changes should happen for TFM so verify that the property is the same before and after
             using (var projectFile = new MsBuildProjectFile(ProjectXmlTFMs))
             {
+                var telemetryService = ITelemetryServiceFactory.Implement();
                 IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
-                var provider = new TargetFrameworkProjectConfigurationDimensionProvider(_projectXmlAccessor);
+                var provider = new TargetFrameworkProjectConfigurationDimensionProvider(_projectXmlAccessor, telemetryService);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
                 var property = BuildUtilities.GetProperty(projectFile.Project, ConfigurationGeneral.TargetFrameworksProperty);
                 string expectedTFMs = property.Value;

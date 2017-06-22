@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Build;
+using Microsoft.VisualStudio.Telemetry;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 {
@@ -13,17 +14,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     /// </summary>
     internal abstract class BaseProjectConfigurationDimensionProvider : IProjectConfigurationDimensionsProvider2
     {
+        protected const string TelemetryEventName = "DimensionChanged";
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseProjectConfigurationDimensionProvider"/> class.
         /// </summary>
         /// <param name="projectXmlAccessor">Lock service for the project file.</param>
+        /// <param name="telemetryService">Telemetry service. The telemetry service could be null since the implementation lives in VS layer.</param>
         /// <param name="dimensionName">Name of the dimension.</param>
         /// <param name="propertyName">Name of the project property containing the dimension values.</param>
-        public BaseProjectConfigurationDimensionProvider(IProjectXmlAccessor projectXmlAccessor, string dimensionName, string propertyName)
+        public BaseProjectConfigurationDimensionProvider(
+            IProjectXmlAccessor projectXmlAccessor,
+            ITelemetryService telemetryService,
+            string dimensionName,
+            string propertyName)
         {
             Requires.NotNull(projectXmlAccessor, nameof(projectXmlAccessor));
 
             ProjectXmlAccessor = projectXmlAccessor;
+            TelemetryService = telemetryService;
             DimensionName = dimensionName;
             PropertyName = propertyName;
         }
@@ -39,6 +48,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         }
 
         public IProjectXmlAccessor ProjectXmlAccessor
+        {
+            get;
+        }
+
+        public ITelemetryService TelemetryService
         {
             get;
         }
@@ -117,6 +131,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             {
                 var dimensionValues = ImmutableArray.CreateBuilder<KeyValuePair<string, IEnumerable<string>>>();
                 dimensionValues.Add(new KeyValuePair<string, IEnumerable<string>>(DimensionName, values));
+                TelemetryService.PostPropertySafe($"{DimensionName}/Get", "Value", string.Join(";", values.Select(v => HashValue(v))));
                 return dimensionValues.ToImmutable();
             }
         }
@@ -140,6 +155,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         protected async Task<string> GetPropertyValue(UnconfiguredProject unconfiguredProject)
         {
             return await ProjectXmlAccessor.GetEvaluatedPropertyValue(unconfiguredProject, PropertyName).ConfigureAwait(false);
+        }
+
+        protected string HashValue(string value)
+        {
+            return TelemetryService.HashValueSafe(value);
         }
     }
 }
