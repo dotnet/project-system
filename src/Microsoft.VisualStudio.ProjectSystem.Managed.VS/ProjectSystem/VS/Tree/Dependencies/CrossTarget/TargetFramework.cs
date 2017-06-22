@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             }
             else
             {
-                return Moniker.ToLowerInvariant().GetHashCode();
+                return StringComparer.OrdinalIgnoreCase.GetHashCode(Moniker);
             }
         }
 
