@@ -52,6 +52,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         string SchemaItemType { get; }
 
         /// <summary>
+        /// Optional alternative schema name that can be bound to a context in the project file
+        /// to build a browse object rule. When provided, this should be used to build the browse
+        /// object rule directly from the dependency's project file context.
+        /// </summary>
+        string BindableBrowseObjectSchemaName { get; }
+
+        /// <summary>
         /// Version of the dependency
         /// </summary>
         string Version { get; }

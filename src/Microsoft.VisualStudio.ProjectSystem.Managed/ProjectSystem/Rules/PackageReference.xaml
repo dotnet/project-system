@@ -42,8 +42,17 @@
                     DisplayName="PrivateAssets"
                     Description="Assets that are private in this reference" />
 
+    <StringProperty Name="Identity"
+                    Visible="True"
+                    ReadOnly="True"
+                    Description="The item specified in the Include attribute.">
+        <StringProperty.DataSource>
+            <DataSource Persistence="Intrinsic" ItemType="PackageReference" PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
+        </StringProperty.DataSource>
+    </StringProperty>
+
     <StringProperty Name="Name" 
-                    Visible="True" 
+                    Visible="False" 
                     ReadOnly="True" />
 
     <StringProperty Name="OriginalItemSpec" 

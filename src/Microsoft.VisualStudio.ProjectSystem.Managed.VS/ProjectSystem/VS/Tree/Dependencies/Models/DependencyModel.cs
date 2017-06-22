@@ -57,6 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         public string Path { get; protected set; }
         public string SchemaName { get; protected set; }
         public string SchemaItemType { get; protected set; }
+        public string BindableBrowseObjectSchemaName { get; protected set; } = null;
         public string Version { get; protected set; }
         public bool Resolved { get; protected set; } = false;
         public bool TopLevel { get; protected set; } = true;

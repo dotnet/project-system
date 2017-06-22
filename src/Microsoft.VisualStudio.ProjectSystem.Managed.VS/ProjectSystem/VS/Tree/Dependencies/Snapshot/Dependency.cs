@@ -42,6 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             OriginalItemSpec = dependencyModel.OriginalItemSpec ?? string.Empty;
             Path = dependencyModel.Path ?? string.Empty;
             SchemaName = dependencyModel.SchemaName ?? Folder.SchemaName;
+            BindableBrowseObjectSchemaName = dependencyModel.BindableBrowseObjectSchemaName;
             _schemaItemType = dependencyModel.SchemaItemType ?? Folder.PrimaryDataSourceItemType;            
             Resolved = dependencyModel.Resolved;
             TopLevel = dependencyModel.TopLevel;
@@ -120,6 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public string OriginalItemSpec { get; protected set; }
         public string Path { get; protected set; }
         public string SchemaName { get; protected set; }
+        public string BindableBrowseObjectSchemaName { get; protected set; } = null;
         private string _schemaItemType;
         public string SchemaItemType
         {
