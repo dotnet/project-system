@@ -135,6 +135,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             public string Path { get; set; }
             public string SchemaName { get; set; }
             public string SchemaItemType { get; set; }
+            public string BindableBrowseObjectSchemaName { get; set; } = null;
             public string Version { get; set; }
             public bool Resolved { get; set; } = false;
             public bool TopLevel { get; set; } = true;

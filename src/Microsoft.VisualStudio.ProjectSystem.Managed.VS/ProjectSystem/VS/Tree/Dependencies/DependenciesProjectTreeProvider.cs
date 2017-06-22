@@ -582,7 +582,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Requires.NotNull(namedCatalogs, nameof(namedCatalogs));
 
             var browseObjectsCatalog = namedCatalogs[PropertyPageContexts.BrowseObject];
-            var schema = browseObjectsCatalog.GetSchema(dependency.SchemaName);
+            var schema = browseObjectsCatalog.GetSchema(dependency.BindableBrowseObjectSchemaName ?? dependency.SchemaName);
             var itemSpec = string.IsNullOrEmpty(dependency.OriginalItemSpec) ? dependency.Path : dependency.OriginalItemSpec;
             var context = ProjectPropertiesContext.GetContext(UnconfiguredProject,
                 itemType: dependency.SchemaItemType,
@@ -591,7 +591,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IRule rule = null;
             if (schema != null)
             {
-                if (dependency.Resolved)
+                if (dependency.Resolved && dependency.BindableBrowseObjectSchemaName == null)
                 {
                     rule = configuredProjectExports.RuleFactory.CreateResolvedReferencePageRule(
                                 schema,

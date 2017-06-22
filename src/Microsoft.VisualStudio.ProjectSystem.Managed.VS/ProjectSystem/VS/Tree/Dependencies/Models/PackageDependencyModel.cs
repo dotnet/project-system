@@ -55,6 +55,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
                 Priority = Dependency.UnresolvedReferenceNodePriority;
                 SchemaName = PackageReference.SchemaName;
             }
+
+            // When building browse object rule, always use PackageReference schema and bind
+            // to the package reference item in the project file
+            BindableBrowseObjectSchemaName = PackageReference.SchemaName;
         }
 
         private string _id;
