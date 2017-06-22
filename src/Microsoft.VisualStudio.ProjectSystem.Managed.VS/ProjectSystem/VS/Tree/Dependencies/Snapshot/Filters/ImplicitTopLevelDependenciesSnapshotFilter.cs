@@ -63,6 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
 
                 resultDependency = resultDependency.SetProperties(
                     icon: internalProvider.GetImplicitIcon(),
+                    expandedIcon: internalProvider.GetImplicitIcon(),
                     isImplicit: true);
                 filterAnyChanges = true;
             }
