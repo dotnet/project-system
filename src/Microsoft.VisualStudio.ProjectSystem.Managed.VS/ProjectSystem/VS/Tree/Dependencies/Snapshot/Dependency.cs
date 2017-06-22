@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
+using System.Linq;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
@@ -96,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             // since this is a clone make the modelId and dependencyIds match the original model
             _modelId = modelId;
 
-            if (model.DependencyIDs != null)
+            if (model.DependencyIDs != null && model.DependencyIDs.Any())
             {
                 DependencyIDs = ImmutableList.CreateRange(model.DependencyIDs);
             }
