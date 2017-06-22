@@ -19,6 +19,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
     [ExportMetadata("BeforeDrainCriticalTasks", true)]
     internal sealed class BuildUpToDateCheck : OnceInitializedOnceDisposed, IBuildUpToDateCheckProvider
     {
+        private enum CopyType
+        {
+            CopyNever,
+            CopyIfNewer,
+            CopyAlways
+        }
+
         private sealed class Logger
         {
             private readonly TextWriter _logger;
@@ -46,10 +53,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private const string TrueValue = "true";
         private const string FullPath = "FullPath";
-        private const string ResolvedPath = "ResolvedPath";
         private const string CopyToOutputDirectory = "CopyToOutputDirectory";
+        private const string PreserveNewest = "PreserveNewest";
         private const string Always = "Always";
-        private const string OriginalPath = "OriginalPath";
 
         private static readonly HashSet<string> KnownOutputGroups = new HashSet<string>
         {
@@ -90,17 +96,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private bool _itemsChangedSinceLastCheck = true;
         private string _msBuildProjectFullPath;
         private string _markerFile;
-
+        private string _outputPath;
 
         private readonly HashSet<string> _imports = new HashSet<string>();
         private readonly HashSet<string> _itemTypes = new HashSet<string>();
-        private readonly Dictionary<string, (bool hasCopyAlways, HashSet<string> items)> _items = new Dictionary<string, (bool hasCopyAlways, HashSet<string> items)>();
-        private HashSet<string> _customInputs = new HashSet<string>();
-        private HashSet<string> _customOutputs = new HashSet<string>();
-        private HashSet<string> _analyzerReferences = new HashSet<string>();
-        private HashSet<string> _compilationReferences = new HashSet<string>();
-        private HashSet<string> _copyReferenceInputs = new HashSet<string>();
+        private readonly Dictionary<string, HashSet<(string Path, CopyType CopyType)>> _items = new Dictionary<string, HashSet<(string Path, CopyType CopyType)>>();
+        private readonly HashSet<string> _customInputs = new HashSet<string>();
         private readonly HashSet<string> _customOutputs = new HashSet<string>();
+        private readonly HashSet<string> _analyzerReferences = new HashSet<string>();
+        private readonly HashSet<string> _compilationReferences = new HashSet<string>();
+        private readonly HashSet<string> _copyReferenceInputs = new HashSet<string>();
         private readonly Dictionary<string, HashSet<string>> _outputGroups = new Dictionary<string, HashSet<string>>();
 
         [ImportingConstructor]
@@ -137,10 +142,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             _msBuildProjectFullPath = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, _msBuildProjectFullPath);
 
+            _outputPath = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputPathProperty, _outputPath);
+
             if (e.ProjectChanges.TryGetValue(ResolvedAnalyzerReference.SchemaName, out var changes) &&
                 changes.Difference.AnyChanges)
             {
-                _analyzerReferences = new HashSet<string>(changes.After.Items.Select(item => item.Value[ResolvedPath]));
+                _analyzerReferences.Clear();
+                _analyzerReferences.AddRange(changes.After.Items.Select(item => item.Value[ResolvedAnalyzerReference.ResolvedPathProperty]));
             }
 
             if (e.ProjectChanges.TryGetValue(ResolvedCompilationReference.SchemaName, out changes) &&
@@ -151,14 +159,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
                 foreach (var item in changes.After.Items)
                 {
-                    _compilationReferences.Add(item.Value[ResolvedPath]);
+                    _compilationReferences.Add(item.Value[ResolvedCompilationReference.ResolvedPathProperty]);
                     if (!string.IsNullOrWhiteSpace(item.Value[CopyUpToDateMarker.SchemaName]))
                     {
                         _copyReferenceInputs.Add(item.Value[CopyUpToDateMarker.SchemaName]);
                     }
-                    if (!string.IsNullOrWhiteSpace(item.Value[OriginalPath]))
+                    if (!string.IsNullOrWhiteSpace(item.Value[ResolvedCompilationReference.OriginalPathProperty]))
                     {
-                        _copyReferenceInputs.Add(item.Value[OriginalPath]);
+                        _copyReferenceInputs.Add(item.Value[ResolvedCompilationReference.OriginalPathProperty]);
                     }
                 }
             }
@@ -166,19 +174,21 @@ namespace Microsoft.VisualStudio.ProjectSystem
             if (e.ProjectChanges.TryGetValue(UpToDateCheckInput.SchemaName, out var inputs) &&
                 inputs.Difference.AnyChanges)
             {
-                _customInputs = new HashSet<string>(inputs.After.Items.Select(item => item.Value[FullPath]));
+                _customInputs.Clear();
+                _customInputs.AddRange(inputs.After.Items.Select(item => item.Value[UpToDateCheckInput.FullPathProperty]));
             }
 
             if (e.ProjectChanges.TryGetValue(UpToDateCheckOutput.SchemaName, out var outputs) &&
                 outputs.Difference.AnyChanges)
             {
-                _customOutputs = new HashSet<string>(outputs.After.Items.Select(item => item.Value[FullPath]));
+                _customOutputs.Clear();
+                _customOutputs.AddRange(outputs.After.Items.Select(item => item.Value[UpToDateCheckOutput.FullPathProperty]));
             }
 
             if (e.ProjectChanges.TryGetValue(CopyUpToDateMarker.SchemaName, out var upToDateMarkers) &&
                 upToDateMarkers.Difference.AnyChanges)
             {
-                _markerFile = upToDateMarkers.After.Items.Count == 1 ? upToDateMarkers.After.Items.Single().Value[FullPath] : null;
+                _markerFile = upToDateMarkers.After.Items.Count == 1 ? upToDateMarkers.After.Items.Single().Value[CopyUpToDateMarker.FullPathProperty] : null;
             }
         }
 
@@ -197,6 +207,24 @@ namespace Microsoft.VisualStudio.ProjectSystem
             AddImports(e.Value);
         }
 
+        private static CopyType GetCopyType(IImmutableDictionary<string, string> itemMetadata)
+        {
+            if (itemMetadata.TryGetValue(CopyToOutputDirectory, out var value))
+            {
+                if (string.Equals(value, Always, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return CopyType.CopyAlways;
+                }
+
+                if (string.Equals(value, PreserveNewest, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return CopyType.CopyIfNewer;
+                }
+            }
+
+            return CopyType.CopyNever;
+        }
+
         private void OnSourceItemChanged(IProjectSubscriptionUpdate e, IProjectItemSchema projectItemSchema)
         {
             var itemTypes = projectItemSchema.GetKnownItemTypes().Where(itemType => projectItemSchema.GetItemType(itemType).UpToDateCheckInput).ToList();
@@ -211,10 +239,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             foreach (var itemType in e.ProjectChanges.Where(changes => (itemTypesChanged || changes.Value.Difference.AnyChanges) && _itemTypes.Contains(changes.Key)))
             {
-                var items = itemType.Value.After.Items.Select(item => item.Value[FullPath]);
-                var hasAlwaysCopy = itemType.Value.After.Items.Any(item => item.Value.ContainsKey(CopyToOutputDirectory) &&
-                    string.Equals(item.Value[CopyToOutputDirectory], Always, StringComparison.InvariantCultureIgnoreCase));
-                _items[itemType.Key] = (hasAlwaysCopy, new HashSet<string>(items));
+                var items = itemType.Value.After.Items.Select(item => (item.Value[FullPath], GetCopyType(item.Value)));
+                _items[itemType.Key] = new HashSet<(string Path, CopyType CopyType)>(items);
                 _itemsChangedSinceLastCheck = true;
             }
 
@@ -222,7 +248,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 outputs.Difference.AnyChanges)
             {
                 _customOutputs.Clear();
-                _customOutputs.AddRange(outputs.After.Items.Select(item => item.Value[FullPath]));
+                _customOutputs.AddRange(outputs.After.Items.Select(item => item.Value[UpToDateCheckOutput.FullPathProperty]));
             }
         }
 
@@ -249,7 +275,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _link?.Dispose();
         }
 
-        private DateTime? GetTimestamp(string path, IDictionary<string, DateTime> timestampCache)
+        private static DateTime? GetTimestamp(string path, IDictionary<string, DateTime> timestampCache)
         {
             if (!timestampCache.TryGetValue(path, out var time))
             {
@@ -265,31 +291,45 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return time;
         }
 
-        private static void AddInput(Logger logger, HashSet<string> inputs, string path, string description)
+        private static void AddInput(Logger logger, HashSet<string> inputs, string path)
         {
-            logger.Verbose("Found input {0} '{1}'.", description, path);
+            logger.Verbose("    '{0}'", path);
             inputs.Add(path);
         }
 
         private static void AddInputs(Logger logger, HashSet<string> inputs, IEnumerable<string> paths, string description)
         {
+            var first = true;
+
             foreach (var path in paths)
             {
-                AddInput(logger, inputs, path, description);
+                if (first)
+                {
+                    logger.Verbose("Adding {0} inputs:", description);
+                    first = false;
+                }
+                AddInput(logger, inputs, path);
             }
         }
 
-        private static void AddOutput(Logger logger, HashSet<string> outputs, string path, string description)
+        private static void AddOutput(Logger logger, HashSet<string> outputs, string path)
         {
-            logger.Verbose("Found output {0} '{1}'.", description, path);
+            logger.Verbose("    '{0}'", path);
             outputs.Add(path);
         }
 
         private static void AddOutputs(Logger logger, HashSet<string> outputs, IEnumerable<string> paths, string description)
         {
+            var first = true;
+
             foreach (var path in paths)
             {
-                AddOutput(logger, outputs, path, description);
+                if (first)
+                {
+                    logger.Verbose("Adding {0} outputs:", description);
+                    first = false;
+                }
+                AddOutput(logger, outputs, path);
             }
         }
 
@@ -327,7 +367,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return false;
             }
 
-            if (_items.Any(kvp => kvp.Value.hasCopyAlways))
+            if (_items.SelectMany(kvp => kvp.Value).Any(item => item.CopyType == CopyType.CopyAlways))
             {
                 logger.Info("The project has an item with CopyToOutputDirectory set to 'Always', skipping check.");
             }
@@ -339,13 +379,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var inputs = new HashSet<string>();
 
-            AddInput(logger, inputs, _msBuildProjectFullPath, "project file");
+            logger.Verbose("Adding project file inputs:");
+            AddInput(logger, inputs, _msBuildProjectFullPath);
 
             AddInputs(logger, inputs, _imports, "import");
 
             foreach (var pair in _items.Where(kvp => !NonCompilationItemTypes.Contains(kvp.Key)))
             {
-                AddInputs(logger, inputs, pair.Value.items, pair.Key);
+                AddInputs(logger, inputs, pair.Value.Select(item => item.Path), pair.Key);
             }
 
             AddInputs(logger, inputs, _analyzerReferences, ResolvedAnalyzerReference.SchemaName);
@@ -369,7 +410,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return outputs;
         }
 
-        private (DateTime? time, string path) GetLatestInput(HashSet<string> inputs, IDictionary<string, DateTime> timestampCache, bool ignoreMissing = false)
+        private static (DateTime? time, string path) GetLatestInput(HashSet<string> inputs, IDictionary<string, DateTime> timestampCache, bool ignoreMissing = false)
         {
             DateTime? latest = DateTime.MinValue;
             string latestPath = null;
@@ -387,7 +428,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return (latest, latestPath);
         }
 
-        private (DateTime? time, string path) GetEarliestOutput(HashSet<string> outputs, IDictionary<string, DateTime> timestampCache)
+        private static (DateTime? time, string path) GetEarliestOutput(HashSet<string> outputs, IDictionary<string, DateTime> timestampCache)
         { 
             DateTime? earliest = DateTime.MaxValue;
             string earliestPath = null;
@@ -418,12 +459,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return true;
             }
 
+            logger.Verbose("Adding input reference copy markers:");
+
             foreach (var referenceMarkerFile in _copyReferenceInputs)
             {
-                logger.Verbose("Found possible input marker '{0}'.", referenceMarkerFile);
+                logger.Verbose("    '{0}'", referenceMarkerFile);
             }
 
-            logger.Verbose("Found possible output marker '{0}'.", _markerFile);
+            logger.Verbose("Adding output reference copy marker:");
+            logger.Verbose("    '{0}'", _markerFile);
 
             var latestInputMarker = GetLatestInput(_copyReferenceInputs, timestampCache, true);
             var outputMarkerTime = GetTimestamp(_markerFile, timestampCache);
@@ -447,6 +491,56 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
 
             return latestInputMarker.path == null || outputMarkerTime == null || outputMarkerTime > latestInputMarker.time;
+        }
+
+        private bool CheckCopyToOutputDirectoryFiles(Logger logger, IDictionary<string, DateTime> timestampCache)
+        {
+            var items = _items.SelectMany(kvp => kvp.Value).Where(item => item.CopyType == CopyType.CopyIfNewer)
+                .Select(item => item.Path);
+
+            foreach (var item in items)
+            {
+                var filename = Path.GetFileName(item);
+
+                if (string.IsNullOrEmpty(filename))
+                {
+                    continue;
+                }
+
+                logger.Info("Checking PreserveNewest file '{0}':", item);
+
+                var itemTime = GetTimestamp(item, timestampCache);
+
+                if (itemTime != null)
+                {
+                    logger.Info("    Write {0}: '{1}'.", itemTime, item);
+                }
+                else
+                {
+                    logger.Info("    '{0}' does not exist.", item);
+                    return false;
+                }
+
+                var outputItem = Path.Combine(_outputPath, filename);
+                var outputItemTime = GetTimestamp(outputItem, timestampCache);
+
+                if (outputItemTime != null)
+                {
+                    logger.Info("    Output file write {0}: '{1}'.", outputItemTime, outputItem);
+                }
+                else
+                {
+                    logger.Info("    Output file '{0}' does not exist.", outputItem);
+                    return false;
+                }
+
+                if (outputItemTime <= itemTime)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public async Task<bool> IsUpToDateAsync(BuildAction buildAction, TextWriter logWriter, CancellationToken cancellationToken = default(CancellationToken))
@@ -488,6 +582,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             // We are up to date if the earliest output write happened after the latest input write
             var markersUpToDate = CheckMarkers(logger, timestampCache);
+            var copyToOutputDirectoryUpToDate = CheckCopyToOutputDirectoryFiles(logger, timestampCache);
             var isUpToDate = 
                 latestInput.time != null 
                 && earliestOutput.time != null 
