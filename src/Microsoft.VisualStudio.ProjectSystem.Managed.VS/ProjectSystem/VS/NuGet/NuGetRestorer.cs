@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
     using TIdentityDictionary = IImmutableDictionary<NamedIdentity, IComparable>;
 
-    [Export(ExportContractNames.Scopes.ConfiguredProject, typeof(IProjectDynamicLoadComponent))]
+    [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectDynamicLoadComponent))]
     [AppliesTo(ProjectCapabilities.PackageReferences)]
     internal class NuGetRestorer : OnceInitializedOnceDisposedAsync, IProjectDynamicLoadComponent
     {
