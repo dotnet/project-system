@@ -1,6 +1,8 @@
 # Architecture
 
-![image](https://cloud.githubusercontent.com/assets/1103906/14921086/248166fa-0de5-11e6-86fa-e96240b7fd07.png)
+|||
+|-------:|:----------|
+| ![layers01](https://user-images.githubusercontent.com/9797472/27418819-6ed10544-56d2-11e7-95b3-110335d74db7.png) | ![layers02](https://user-images.githubusercontent.com/9797472/27418842-8564a266-56d2-11e7-92c6-456116ee0c65.png)|
 
 ## Laying Rules:
 
