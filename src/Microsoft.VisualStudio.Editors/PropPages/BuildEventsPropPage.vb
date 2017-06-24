@@ -1,5 +1,6 @@
 ' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+Imports System.Drawing
 Imports System.Windows.Forms
 Imports Microsoft.VisualStudio.Editor
 Imports Microsoft.VisualStudio.Shell.Interop
@@ -78,8 +79,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 FontColorStorage.GetFont(Nothing, TextEditorFont)
 
                 ' Try to set the font..
-                Dim FontDisplayed As System.Drawing.Font
-                FontDisplayed = New System.Drawing.Font(TextEditorFont(0).bstrFaceName, CType(TextEditorFont(0).wPointSize, Single))
+                Dim FontDisplayed As Font
+                FontDisplayed = New Font(TextEditorFont(0).bstrFaceName, CType(TextEditorFont(0).wPointSize, Single))
                 txtPreBuildEventCommandLine.Font = FontDisplayed
                 txtPostBuildEventCommandLine.Font = FontDisplayed
 
