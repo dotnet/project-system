@@ -14,21 +14,47 @@ namespace Microsoft.VisualStudio.Telemetry
         private const string EventPrefix = "vs/projectsystem/managed/";
         private const string PropertyPrefix = "VS.ProjectSystem.Managed.";
 
+        private readonly Dictionary<string, (string Event, Dictionary<string, string> Properties)> _eventCache = new Dictionary<string, (string, Dictionary<string, string>)>();
+
+        private (string Event, Dictionary<string, string> Properties) GetEventInfo(string eventName)
+        {
+            if (!_eventCache.TryGetValue(eventName, out var eventInfo))
+            {
+                eventInfo = (EventPrefix + eventName.ToLower(), new Dictionary<string, string>());
+                _eventCache[eventName] = eventInfo;
+            }
+
+            return eventInfo;
+        }
+
+        private string GetEventName(string eventName) => GetEventInfo(eventName).Event;
+
+        private string GetPropertyName(string eventName, string propertyName)
+        {
+            var eventInfo = GetEventInfo(eventName);
+            if (!eventInfo.Properties.TryGetValue(propertyName, out var fullPropertyName))
+            {
+                fullPropertyName = BuildPropertyName(eventName, propertyName);
+                eventInfo.Properties[propertyName] = fullPropertyName;
+            }
+
+            return fullPropertyName;
+        }
+
         /// <summary>
-        /// Post an event with the event name. This event will be correlated with the Project Telemetry Correlation asset.
+        /// Post an event with the event name.
         /// </summary>
         /// <param name="eventName">Name of the event.</param>
         public void PostEvent(string eventName)
         {
             Requires.NotNullOrEmpty(eventName, nameof(eventName));
 
-            TelemetryEvent telemetryEvent = new TelemetryEvent(EventPrefix + eventName.ToLower());
+            TelemetryEvent telemetryEvent = new TelemetryEvent(GetEventName(eventName));
             TelemetryService.DefaultSession.PostEvent(telemetryEvent);
         }
 
         /// <summary>
-        /// Post an event with the event name also with the corresponding Property name and Property value. This 
-        /// event will be correlated with the Project Telemetry Correlation asset.
+        /// Post an event with the event name also with the corresponding Property name and Property value.
         /// </summary>
         /// <param name="eventName">Name of the event.</param>
         /// <param name="propertyName">Property name to be reported.</param>
@@ -39,14 +65,13 @@ namespace Microsoft.VisualStudio.Telemetry
             Requires.NotNullOrEmpty(propertyName, nameof(propertyName));
             Requires.NotNullOrEmpty(propertyValue, nameof(propertyValue));
 
-            TelemetryEvent telemetryEvent = new TelemetryEvent(EventPrefix + eventName.ToLower());
+            TelemetryEvent telemetryEvent = new TelemetryEvent(GetEventName(eventName));
             telemetryEvent.Properties.Add(BuildPropertyName(eventName, propertyName), propertyValue);
             TelemetryService.DefaultSession.PostEvent(telemetryEvent);
         }
 
         /// <summary>
-        /// Post an event with the event name also with the corresponding Property names and Property values. This 
-        /// event will be correlated with the Project Telemetry Correlation asset.
+        /// Post an event with the event name also with the corresponding Property names and Property values.
         /// </summary>
         /// <param name="eventName">Name of the event.</param>
         /// <param name="properties">List of Property name and corresponding values. PropertyName and PropertyValue cannot be null or empty.</param>
@@ -55,10 +80,10 @@ namespace Microsoft.VisualStudio.Telemetry
             Requires.NotNullOrEmpty(eventName, nameof(eventName));
             Requires.NotNullOrEmpty(properties, nameof(properties));
 
-            TelemetryEvent telemetryEvent = new TelemetryEvent(EventPrefix + eventName.ToLower());
+            TelemetryEvent telemetryEvent = new TelemetryEvent(GetEventName(eventName));
             foreach (var property in properties)
             {
-                telemetryEvent.Properties.Add(BuildPropertyName(eventName, property.propertyName), property.propertyValue);
+                telemetryEvent.Properties.Add(GetPropertyName(eventName, property.propertyName), property.propertyValue);
             }
 
             TelemetryService.DefaultSession.PostEvent(telemetryEvent);
@@ -75,8 +100,7 @@ namespace Microsoft.VisualStudio.Telemetry
             var hashedBytes = new SHA256CryptoServiceProvider().ComputeHash(inputBytes);
             return BitConverter.ToString(hashedBytes);
         }
-
-
+        
         /// <summary>
         /// Build a fully qualified property name based on it's parent event and the property name
         /// </summary>
@@ -88,9 +112,9 @@ namespace Microsoft.VisualStudio.Telemetry
         /// with the the slashes from the vent name replaced by periods.
         /// e.g. vs/myevent would translate to VS.MyEvent.MyProperty
         /// </remarks>
-        private string BuildPropertyName(string eventName, string propertyName)
+        private static string BuildPropertyName(string eventName, string propertyName)
         {
-            string name = PropertyPrefix + eventName.Replace('/', '.');
+            var name = PropertyPrefix + eventName.Replace('/', '.');
 
             if (!name.EndsWith("."))
             {
