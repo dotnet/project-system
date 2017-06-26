@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+using Microsoft.VisualStudio.Telemetry;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -50,6 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private const string CopyToOutputDirectory = "CopyToOutputDirectory";
         private const string Never = "Never";
         private const string OriginalPath = "OriginalPath";
+        private const string TelemetryEventName = "UpToDateCheck";
 
         private static HashSet<string> KnownOutputGroups = new HashSet<string>
         {
@@ -79,6 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly Lazy<IFileTimestampCache> _fileTimestampCache;
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IProjectItemSchemaService _projectItemSchemaService;
+        private readonly ITelemetryService _telemetryService;
 
         private IDisposable _link;
         private IComparable _lastVersionSeen;
@@ -103,13 +106,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
             ConfiguredProject configuredProject,
             Lazy<IFileTimestampCache> fileTimestampCache,
             [Import(ExportContractNames.Scopes.ConfiguredProject)] IProjectAsynchronousTasksService tasksService,
-            IProjectItemSchemaService projectItemSchemaService)
+            IProjectItemSchemaService projectItemSchemaService,
+            ITelemetryService telemetryService)
         {
             _projectSystemOptions = projectSystemOptions;
             _configuredProject = configuredProject;
             _fileTimestampCache = fileTimestampCache;
             _tasksService = tasksService;
             _projectItemSchemaService = projectItemSchemaService;
+            _telemetryService = telemetryService;
         }
 
         protected override void Initialize()
