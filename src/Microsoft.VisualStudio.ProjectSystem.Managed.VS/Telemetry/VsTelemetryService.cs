@@ -15,6 +15,18 @@ namespace Microsoft.VisualStudio.Telemetry
         private const string PropertyPrefix = "VS.ProjectSystem.Managed.";
 
         /// <summary>
+        /// Post an event with the event name. This event will be correlated with the Project Telemetry Correlation asset.
+        /// </summary>
+        /// <param name="eventName">Name of the event.</param>
+        public void PostEvent(string eventName)
+        {
+            Requires.NotNullOrEmpty(eventName, nameof(eventName));
+
+            TelemetryEvent telemetryEvent = new TelemetryEvent(EventPrefix + eventName.ToLower());
+            TelemetryService.DefaultSession.PostEvent(telemetryEvent);
+        }
+
+        /// <summary>
         /// Post an event with the event name also with the corresponding Property name and Property value. This 
         /// event will be correlated with the Project Telemetry Correlation asset.
         /// </summary>
@@ -31,6 +43,7 @@ namespace Microsoft.VisualStudio.Telemetry
             telemetryEvent.Properties.Add(BuildPropertyName(eventName, propertyName), propertyValue);
             TelemetryService.DefaultSession.PostEvent(telemetryEvent);
         }
+
         /// <summary>
         /// Post an event with the event name also with the corresponding Property names and Property values. This 
         /// event will be correlated with the Project Telemetry Correlation asset.

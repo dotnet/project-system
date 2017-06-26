@@ -294,6 +294,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
         }
 
+        private bool Fail(Logger logger, string message, string reason)
+        {
+            logger.Info(message);
+            _telemetryService.PostProperty($"{TelemetryEventName}/Fail", "Reason", reason);
+            return false;
+        }
+
         private bool CheckGlobalConditions(BuildAction buildAction, Logger logger)
         {
             if (buildAction != BuildAction.Build)
@@ -306,26 +313,22 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             if (!_tasksService.IsTaskQueueEmpty(ProjectCriticalOperation.Build))
             {
-                logger.Info("Critical build tasks are running, skipping check.");
-                return false;
+                return Fail(logger, "Critical build tasks are running, skipping check.", "CriticalTasks");
             }
 
             if (_lastVersionSeen == null || _configuredProject.ProjectVersion.CompareTo(_lastVersionSeen) > 0)
             {
-                logger.Info("Project information is older than current project version, skipping check.");
-                return false;
+                return Fail(logger, "Project information is older than current project version, skipping check.", "ProjectInfoOutOfDate");
             }
 
             if (itemsChangedSinceLastCheck)
             {
-                logger.Info("The list of source items has changed since the last build.");
-                return false;
+                return Fail(logger, "The list of source items has changed since the last build.", "ItemInfoOutOfDate");
             }
 
             if (_isDisabled)
             {
-                logger.Info("The 'DisableFastUpToDateCheckProperty' property is true, skipping check.");
-                return false;
+                return Fail(logger, "The 'DisableFastUpToDateCheckProperty' property is true, skipping check.", "Disabled");
             }
 
             return true;
@@ -484,13 +487,23 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             // We are up to date if the earliest output write happened after the latest input write
             var markersUpToDate = CheckMarkers(logger, timestampCache);
-            var isUpToDate = 
-                latestInput.time != null 
-                && earliestOutput.time != null 
-                && earliestOutput.time > latestInput.time 
-                && markersUpToDate;
+            var outputsUpToDate = latestInput.time != null && earliestOutput.time != null && earliestOutput.time > latestInput.time;
+            var isUpToDate = outputsUpToDate && markersUpToDate;
 
-            logger.Info("Project is{0} up to date.", (!isUpToDate ? " not" : ""));
+            if (!markersUpToDate)
+            {
+                _telemetryService.PostProperty($"{TelemetryEventName}/Fail", "Reason", "Marker");
+            }
+            else if (!outputsUpToDate)
+            {
+                _telemetryService.PostProperty($"{TelemetryEventName}/Fail", "Reason", "Outputs");
+            }
+            else
+            {
+                _telemetryService.PostEvent($"{TelemetryEventName}/Success");
+            }
+
+            logger.Info("Project is{0} up to date.", !isUpToDate ? " not" : "");
 
             return isUpToDate;
         }
