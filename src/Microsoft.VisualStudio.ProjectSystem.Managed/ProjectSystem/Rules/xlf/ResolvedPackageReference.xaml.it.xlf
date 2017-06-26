@@ -48,6 +48,46 @@
         <target state="translated">Elenco delimitato da punti e virgola delle dipendenze dirette della dipendenza corrente.</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|NoWarn|DisplayName">
+        <source>NoWarn</source>
+        <target state="new">NoWarn</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|NoWarn|Description">
+        <source>Comma-delimited list of warnings that should be suppressed for this package</source>
+        <target state="new">Comma-delimited list of warnings that should be suppressed for this package</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|IncludeAssets|DisplayName">
+        <source>IncludeAssets</source>
+        <target state="new">IncludeAssets</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|IncludeAssets|Description">
+        <source>Assets to include from this reference</source>
+        <target state="new">Assets to include from this reference</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
+        <source>ExcludeAssets</source>
+        <target state="new">ExcludeAssets</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|ExcludeAssets|Description">
+        <source>Assets to exclude from this reference</source>
+        <target state="new">Assets to exclude from this reference</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PrivateAssets|DisplayName">
+        <source>PrivateAssets</source>
+        <target state="new">PrivateAssets</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PrivateAssets|Description">
+        <source>Assets that are private in this reference</source>
+        <target state="new">Assets that are private in this reference</target>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>
