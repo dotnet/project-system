@@ -4,7 +4,6 @@ Imports System.Drawing
 Imports System.Windows.Forms
 Imports Microsoft.VisualStudio.Editor
 Imports Microsoft.VisualStudio.Shell.Interop
-Imports Microsoft.VisualStudio.TextManager.Interop
 Imports VSLangProj80
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
