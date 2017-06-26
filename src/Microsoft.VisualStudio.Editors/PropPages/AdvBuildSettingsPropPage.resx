@@ -216,22 +216,6 @@
   <data name="cboReportCompilerErrors.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
   </data>
-  <data name="cboReportCompilerErrors.Items" xml:space="preserve">
-    <value>none</value>
-    <comment>{Locked}</comment>
-  </data>
-  <data name="cboReportCompilerErrors.Items1" xml:space="preserve">
-    <value>prompt</value>
-    <comment>{Locked}</comment>
-  </data>
-  <data name="cboReportCompilerErrors.Items2" xml:space="preserve">
-    <value>send</value>
-    <comment>{Locked}</comment>
-  </data>
-  <data name="cboReportCompilerErrors.Items3" xml:space="preserve">
-    <value>queue</value>
-    <comment>{Locked}</comment>
-  </data>
   <data name="cboReportCompilerErrors.Location" type="System.Drawing.Point, System.Drawing">
     <value>167, 46</value>
   </data>
@@ -291,26 +275,6 @@
   </data>
   <data name="cboDebugInfo.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
-  </data>
-  <data name="cboDebugInfo.Items" xml:space="preserve">
-    <value>none</value>
-    <comment>{Locked}</comment>
-  </data>
-  <data name="cboDebugInfo.Items1" xml:space="preserve">
-    <value>full</value>
-    <comment>{Locked}</comment>
-  </data>
-  <data name="cboDebugInfo.Items2" xml:space="preserve">
-    <value>pdb-only</value>
-    <comment>{Locked}</comment>
-  </data>
-  <data name="cboDebugInfo.Items3" xml:space="preserve">
-    <value>portable</value>
-    <comment>{Locked}</comment>
-  </data>
-  <data name="cboDebugInfo.Items4" xml:space="preserve">
-    <value>embedded</value>
-    <comment>{Locked}</comment>
   </data>
   <data name="cboDebugInfo.Location" type="System.Drawing.Point, System.Drawing">
     <value>167, 115</value>
@@ -577,7 +541,7 @@
     <value>0</value>
   </data>
   <data name="outputTableLayoutPanel.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="outputLabel" Row="-1" RowSpan="1" Column="-1" ColumnSpan="1" /&gt;&lt;Control Name="outputLineLabel" Row="-1" RowSpan="1" Column="-1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls /&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="generalTableLayoutPanel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
@@ -738,9 +702,9 @@
   <data name="overarchingTableLayoutPanel.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="outputTableLayoutPanel" Row="4" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="txtDLLBase" Row="7" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="generalTableLayoutPanel" Row="0" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="lblDLLBase" Row="7" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lblFileAlignment" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cboDebugInfo" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="cboFileAlignment" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lblDebugInfo" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cboReportCompilerErrors" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="cboLanguageVersion" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="chkOverflow" Row="3" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="lblReportCompilerErrors" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lblLanguageVersion" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <data name="$this.Localizable" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
+  </data>
   <data name="$this.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
