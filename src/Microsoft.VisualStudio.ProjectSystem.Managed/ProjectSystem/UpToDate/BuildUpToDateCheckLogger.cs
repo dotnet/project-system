@@ -2,7 +2,7 @@
 
 using System.IO;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
     internal sealed class BuildUpToDateCheckLogger
     {

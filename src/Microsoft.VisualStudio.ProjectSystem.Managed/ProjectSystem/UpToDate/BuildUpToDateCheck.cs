@@ -1,7 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.VisualStudio.ProjectSystem.Build;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -11,9 +9,10 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
-using Microsoft.VisualStudio.ProjectSystem.UpToDate;
+using Microsoft.VisualStudio.ProjectSystem.Build;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-namespace Microsoft.VisualStudio.ProjectSystem
+namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     [Export(typeof(IBuildUpToDateCheckProvider))]
