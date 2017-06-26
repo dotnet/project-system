@@ -4,6 +4,7 @@ Imports System.Drawing
 Imports System.Windows.Forms
 Imports Microsoft.VisualStudio.Editor
 Imports Microsoft.VisualStudio.Shell.Interop
+Imports Microsoft.VisualStudio.TextManager.Interop
 Imports VSLangProj80
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
@@ -21,6 +22,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             'Add any initialization after the InitializeComponent() call
             AddChangeHandlers()
+
+            ' Get the Text Editor's font setting from Font and Colors category and set it
+            SetupTextEditorFontSetting()
 
         End Sub
 
@@ -69,20 +73,29 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             "SolutionExt"
         }
 
-        Private Sub OnFontColorPreferencesChanged(sender As Object, e As EventArgs)
-            Dim Flags As __FCSTORAGEFLAGS = __FCSTORAGEFLAGS.FCSF_READONLY
+        Private prevFontInfo As FontInfo
 
-            Dim FontColorStorage As IVsFontAndColorStorage = TryCast(GetService(GetType(IVsFontAndColorStorage)), IVsFontAndColorStorage)
+        Private Sub SetupTextEditorFontSetting()
+            Dim Flags As __FCSTORAGEFLAGS = __FCSTORAGEFLAGS.FCSF_READONLY Or __FCSTORAGEFLAGS.FCSF_LOADDEFAULTS
+            Dim VsConstantResult As Integer
+            Dim FontAndColorStorageService = Shell.ServiceProvider.GlobalProvider.GetService(GetType(SVsFontAndColorStorage))
+            Dim FontColorStorage As IVsFontAndColorStorage = TryCast(FontAndColorStorageService, IVsFontAndColorStorage)
             If FontColorStorage IsNot Nothing Then
-                FontColorStorage.OpenCategory(DefGuidList.guidTextEditorFontCategory, CType(Flags, System.UInt32))
-                Dim TextEditorFont As FontInfo() = Nothing
-                FontColorStorage.GetFont(Nothing, TextEditorFont)
+                VsConstantResult = FontColorStorage.OpenCategory(DefGuidList.guidTextEditorFontCategory, CType(Flags, System.UInt32))
+                If VsConstantResult = VSConstants.S_OK Then
+                    Dim logFontw(1) As LOGFONTW
+                    Dim TextEditorFont(1) As FontInfo
+                    VsConstantResult = FontColorStorage.GetFont(logFontw, TextEditorFont)
+                    If VsConstantResult = VSConstants.S_OK Then
+                        ' Try to set the font..
+                        Dim FontDisplayed As Font
+                        FontDisplayed = New Font(TextEditorFont(0).bstrFaceName, CType(TextEditorFont(0).wPointSize, Single))
+                        txtPreBuildEventCommandLine.Font = FontDisplayed
+                        txtPostBuildEventCommandLine.Font = FontDisplayed
+                    End If
 
-                ' Try to set the font..
-                Dim FontDisplayed As Font
-                FontDisplayed = New Font(TextEditorFont(0).bstrFaceName, CType(TextEditorFont(0).wPointSize, Single))
-                txtPreBuildEventCommandLine.Font = FontDisplayed
-                txtPostBuildEventCommandLine.Font = FontDisplayed
+                End If
+                FontColorStorage.CloseCategory()
 
             End If
 
