@@ -256,10 +256,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 DeleteTemporaryFolders(_deleteFoldersOnEditorExit)
                 _deleteFoldersOnEditorExit.Clear()
 
-                If _cachedResources IsNot Nothing Then
-                    _cachedResources.Dispose()
-                End If
-
                 _typeResolutionServiceCache = Nothing
 
             End If
@@ -4843,14 +4839,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 #Region "Private class - resources cached by this resource editor instance"
 
         Friend NotInheritable Class CachedResourcesForView
-            Implements IDisposable
 
             Private _errorGlyphLarge As Image
             Private _errorGlyphSmall As Image
             Private _errorGlyphState As Image
             Private _sortUpGlyph As Image
             Private _sortDownGlyph As Image
-            Private _imageService As IVsImageService2
             Private _backgroundColor As Color
 
             ''' <summary>
@@ -4864,45 +4858,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 _errorGlyphState = GetImageFromImageService(KnownMonikers.StatusError, 12, 12, background)
                 _sortUpGlyph = GetImageFromImageService(KnownMonikers.GlyphUp, 12, 12, background)
                 _sortDownGlyph = GetImageFromImageService(KnownMonikers.GlyphDown, 12, 12, background)
-            End Sub
-
-            ''' <summary>
-            ''' IDisposable.Dispose
-            ''' </summary>
-            ''' <remarks></remarks>
-            Public Overloads Sub Dispose() Implements IDisposable.Dispose
-                Dispose(Disposing:=True)
-            End Sub
-
-
-            ''' <summary>
-            ''' Dispose the instance.
-            ''' </summary>
-            ''' <param name="Disposing"></param>
-            ''' <remarks></remarks>
-            Public Overloads Sub Dispose(Disposing As Boolean)
-                If Disposing Then
-                    If _errorGlyphLarge IsNot Nothing Then
-                        _errorGlyphLarge.Dispose()
-                        _errorGlyphLarge = Nothing
-                    End If
-                    If _errorGlyphSmall IsNot Nothing Then
-                        _errorGlyphSmall.Dispose()
-                        _errorGlyphSmall = Nothing
-                    End If
-                    If _errorGlyphState IsNot Nothing Then
-                        _errorGlyphState.Dispose()
-                        _errorGlyphState = Nothing
-                    End If
-                    If _sortUpGlyph IsNot Nothing Then
-                        _sortUpGlyph.Dispose()
-                        _sortUpGlyph = Nothing
-                    End If
-                    If _sortDownGlyph IsNot Nothing Then
-                        _sortDownGlyph.Dispose()
-                        _sortDownGlyph = Nothing
-                    End If
-                End If
             End Sub
 
             ''' <summary>
