@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Security.Cryptography;
@@ -14,13 +15,13 @@ namespace Microsoft.VisualStudio.Telemetry
         private const string EventPrefix = "vs/projectsystem/managed/";
         private const string PropertyPrefix = "VS.ProjectSystem.Managed.";
 
-        private readonly Dictionary<string, (string Event, Dictionary<string, string> Properties)> _eventCache = new Dictionary<string, (string, Dictionary<string, string>)>();
+        private readonly ConcurrentDictionary<string, (string Event, ConcurrentDictionary<string, string> Properties)> _eventCache = new ConcurrentDictionary<string, (string, ConcurrentDictionary<string, string>)>();
 
-        private (string Event, Dictionary<string, string> Properties) GetEventInfo(string eventName)
+        private (string Event, ConcurrentDictionary<string, string> Properties) GetEventInfo(string eventName)
         {
             if (!_eventCache.TryGetValue(eventName, out var eventInfo))
             {
-                eventInfo = (EventPrefix + eventName.ToLower(), new Dictionary<string, string>());
+                eventInfo = (EventPrefix + eventName.ToLower(), new ConcurrentDictionary<string, string>());
                 _eventCache[eventName] = eventInfo;
             }
 
