@@ -32,6 +32,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             ILaunchSettingsProvider profileProvider,
             IProjectThreadingService threadingService)
         {
+            Requires.NotNull(profileProvider, nameof(profileProvider));
+            Requires.NotNull(threadingService, nameof(threadingService));
+
             this.listedValues = new AsyncLazy<ICollection<IEnumValue>>(delegate
             {
                 var curSnapshot = profileProvider.CurrentSnapshot;
