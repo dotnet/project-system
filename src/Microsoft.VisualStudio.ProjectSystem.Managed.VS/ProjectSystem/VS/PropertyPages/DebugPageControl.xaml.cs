@@ -48,20 +48,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             ClearGridError(dataGridEnvironmentVariables);
         }
 
-        private async void OnFocusEnvironmentVariableGridRow(object sender, EventArgs e)
+        private void OnFocusEnvironmentVariableGridRow(object sender, EventArgs e)
         {
             if (DataContext != null && DataContext is DebugPageViewModel)
             {
-                await ThreadHelper.JoinableTaskFactory
-                    .WithPriority(VsTaskRunContext.UIThreadBackgroundPriority)
-                    .SwitchToMainThreadAsync();
-                if ((DataContext as DebugPageViewModel).EnvironmentVariables.Count > 0)
+                ThreadHelper.JoinableTaskFactory.StartOnIdle(async () =>
                 {
-                    // get the new cell, set focus, then open for edit
-                    var cell = WpfHelper.GetCell(dataGridEnvironmentVariables, (DataContext as DebugPageViewModel).EnvironmentVariables.Count - 1, 0);
-                    cell.Focus();
-                    dataGridEnvironmentVariables.BeginEdit();
-                }
+                    await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+                    if ((DataContext as DebugPageViewModel).EnvironmentVariables.Count > 0)
+                    {
+                        // get the new cell, set focus, then open for edit
+                        var cell = WpfHelper.GetCell(dataGridEnvironmentVariables, (DataContext as DebugPageViewModel).EnvironmentVariables.Count - 1, 0);
+                        cell.Focus();
+                        dataGridEnvironmentVariables.BeginEdit();
+                    }
+                });
             }
         }
 
