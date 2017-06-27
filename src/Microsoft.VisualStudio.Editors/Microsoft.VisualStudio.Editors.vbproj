@@ -777,6 +777,7 @@
     <None Include="Docs\Project Designer Architecture.vsd" />
     <None Include="Docs\ProjectDesigner Control Flow.doc" />
     <None Include="MyExtensibility\MyExtensibilityClassDiagram.cd" />
+    <None Include="PropPages\AdvBuildSettingsPropPage.ComboItem.vb" />
     <None Include="Resources\Native\ResX.ico" />
     <None Include="Resources\Native\Settings.ico" />
     <None Include="Microsoft.VisualStudio.Editors.pkgdef">
