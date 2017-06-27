@@ -74,7 +74,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             // We need to schedule this to occur later after databinding has completed, otherwise
             // focus appears in the textbox, but at the start of the suggested name rather than at
             // the end.
-#pragma warning disable VSTHRD001 // Avoid legacy threading switching APIs
+#pragma warning disable VSTHRD001 // Avoid legacy threading switching APIs. 
+                                  // see https://github.com/Microsoft/vs-threading/issues/138
+                                  // There is currently no better way to queue an item on 
+                                  // DispatcherPriority.DataBind until the above issue is fixed
             Dispatcher.BeginInvoke(
                     (SetFocusCallback)delegate ()
                     {
