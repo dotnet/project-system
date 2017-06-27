@@ -28,6 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private IDisposable _targetFrameworkSubscriptionLink;
         private DisposableBag _designTimeBuildSubscriptionLink;
         private const int perfPackageRestoreEnd = 7343;
+        private bool hasBeenUnloaded = false;
 
         private static ImmutableHashSet<string> _targetFrameworkWatchedRules = Empty.OrdinalIgnoreCaseStringSet
             .Add(NuGetRestore.SchemaName);
@@ -58,7 +59,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             _activeConfiguredProjectsProvider = activeConfiguredProjectsProvider;
         }
 
-        public Task LoadAsync()
+        // In order for the initial project restore to work, we need to wait for the project to be configured
+        // hence startAfter: ProjectLoadCheckpoint.ProjectFactoryCompleted.
+        [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
+        [AppliesTo(ProjectCapabilities.PackageReferences)]
+        internal Task OnProjectFactoryCompletedAsync()
         {
             // set up a subscription to listen for target framework changes
             var target = new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedAsync(e));
@@ -70,7 +75,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             return Task.CompletedTask;
         }
 
-        public Task UnloadAsync() => DisposeAsync();
+        public Task LoadAsync()
+        {
+            // This method can only be run if this is a project that has been unloaded previously.
+            if (hasBeenUnloaded)
+            {
+                return OnProjectFactoryCompletedAsync();
+            }
+
+            return Task.CompletedTask;
+        }
+
+        public async Task UnloadAsync()
+        {
+            await DisposeCoreAsync(true).ConfigureAwait(false);
+            hasBeenUnloaded = true;
+        }
 
         private async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update)
         {
