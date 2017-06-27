@@ -35,7 +35,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             ProjectTreeFlags? flags = null,
             string schemaName = null,
             IImmutableList<string> dependencyIDs = null,
-            ImageMoniker icon = new ImageMoniker(),
+            ImageMoniker icon = default(ImageMoniker),
+            ImageMoniker expandedIcon = default(ImageMoniker),
             bool? isImplicit = null);
     }
 }

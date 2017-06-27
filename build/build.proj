@@ -138,7 +138,34 @@
     <!-- Downloading Roslyn Vsixes -->
     <Exec Command="&quot;$(DownloadRoslynVsixesExe)&quot; $(DownloadRoslynVsixesArgs)" />
 
-    <!-- Installing Roslyn Vsixes -->
+    <!-- Modify Project System Vsixes to be 'experimental' -->
+    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.vsix $(ModifyVsixManifestArgs)" />
+    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.Test.vsix $(ModifyVsixManifestArgs)" />
+    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetCore.VB.ProjectTemplates.vsix $(ModifyVsixManifestArgs)" />
+    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetStandard.CSharp.ProjectTemplates.vsix $(ModifyVsixManifestArgs)" />
+    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetStandard.VB.ProjectTemplates.vsix $(ModifyVsixManifestArgs)" />
+    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)ProjectSystem.vsix $(ModifyVsixManifestArgs)" />
+    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)VisualStudioEditorsSetup.vsix $(ModifyVsixManifestArgs)" />
+
+    <!-- Uninstall any old (locally-deployed) Project System Vsixes -->
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)VisualStudioEditorsSetup.vsix" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)ProjectSystem.vsix" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetStandard.VB.ProjectTemplates.vsix" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetStandard.CSharp.ProjectTemplates.vsix" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.VB.ProjectTemplates.vsix" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.Test.vsix" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.vsix" />
+
+    <!-- Uninstall any old (locally-deployed) Roslyn Vsixes -->
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Microsoft.VisualStudio.IntegrationTest.Setup.vsix" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.VisualStudio.DiagnosticsWindow.vsix" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\ExpressionEvaluatorPackage.vsix" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.VisualStudio.InteractiveComponents.vsix" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.VisualStudio.Setup.Next.vsix" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.VisualStudio.Setup.vsix" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.Compilers.Extension.vsix" />
+
+    <!-- Install Roslyn Vsixes -->
     <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.Compilers.Extension.vsix" />
     <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.VisualStudio.Setup.vsix" />
     <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.VisualStudio.Setup.Next.vsix" />
@@ -147,28 +174,14 @@
     <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.VisualStudio.DiagnosticsWindow.vsix" />
     <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Microsoft.VisualStudio.IntegrationTest.Setup.vsix" />
 
-    <!-- Installing Project System Vsixes -->
-    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.vsix $(ModifyVsixManifestArgs)" />
+    <!-- Install Project System Vsixes -->
     <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.vsix" />
-
-    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.Test.vsix $(ModifyVsixManifestArgs)" />
     <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.Test.vsix" />
-    
-    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetCore.VB.ProjectTemplates.vsix $(ModifyVsixManifestArgs)" />
     <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.VB.ProjectTemplates.vsix" />
-
-    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetStandard.CSharp.ProjectTemplates.vsix $(ModifyVsixManifestArgs)" />
     <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetStandard.CSharp.ProjectTemplates.vsix" />
-
-    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetStandard.VB.ProjectTemplates.vsix $(ModifyVsixManifestArgs)" />
     <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetStandard.VB.ProjectTemplates.vsix" />
-
-    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)ProjectSystem.vsix $(ModifyVsixManifestArgs)" />
     <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)ProjectSystem.vsix" />
-
-    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)VisualStudioEditorsSetup.vsix $(ModifyVsixManifestArgs)" />
     <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)VisualStudioEditorsSetup.vsix" />
-
 
     <Message Text="Running integrations tests for %(SolutionFile.Filename) [$(Configuration)]" Importance="high" />
 

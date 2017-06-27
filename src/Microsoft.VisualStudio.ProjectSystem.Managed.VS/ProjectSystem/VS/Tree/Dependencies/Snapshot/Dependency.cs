@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
+using System.Linq;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
@@ -87,10 +88,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
         }
 
+        /// <summary>
+        /// Private constructor used to clone Dependency
+        /// </summary>
         private Dependency(IDependency model, string modelId)
             : this(model, model.TargetFramework)
         {
+            // since this is a clone make the modelId and dependencyIds match the original model
             _modelId = modelId;
+
+            if (model.DependencyIDs != null && model.DependencyIDs.Any())
+            {
+                DependencyIDs = ImmutableList.CreateRange(model.DependencyIDs);
+            }
         }
 
         #region IDependencyModel
@@ -146,7 +156,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public bool Implicit { get; private set; }
         public bool Visible { get; }
         public ImageMoniker Icon { get; private set; }
-        public ImageMoniker ExpandedIcon { get; }
+        public ImageMoniker ExpandedIcon { get; private set; }
         public ImageMoniker UnresolvedIcon { get; }
         public ImageMoniker UnresolvedExpandedIcon { get; }
         public int Priority { get; }
@@ -168,7 +178,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             ProjectTreeFlags? flags = null,
             string schemaName = null,
             IImmutableList<string> dependencyIDs = null,
-            ImageMoniker icon = new ImageMoniker(),
+            ImageMoniker icon = default(ImageMoniker),
+            ImageMoniker expandedIcon = default(ImageMoniker),
             bool? isImplicit = null)
         {
             var clone = new Dependency(this, _modelId);
@@ -201,6 +212,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             if (icon.Id != 0 && icon.Guid != Guid.Empty)
             {
                 clone.Icon = icon;
+            }
+
+            if (expandedIcon.Id != 0 && expandedIcon.Guid != Guid.Empty)
+            {
+                clone.ExpandedIcon = expandedIcon;
             }
 
             if (isImplicit != null)
