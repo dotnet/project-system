@@ -32,13 +32,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             Mock<ILaunchSettingsProvider> moqProfileProvider = new Mock<ILaunchSettingsProvider>();
             moqProfileProvider.Setup(p => p.CurrentSnapshot).Returns(testProfiles.Object);
-            var moqThreadingService = new Mock<IProjectThreadingService>();
-            moqThreadingService
-                .Setup(p => p.JoinableTaskFactory)
-                .Returns(new Threading.JoinableTaskFactory(new Threading.JoinableTaskContext()));
+            var threadingService = new IProjectThreadingServiceMock();
 
             DebugProfileEnumValuesGenerator generator =  
-                new DebugProfileEnumValuesGenerator(moqProfileProvider.Object, moqThreadingService.Object); 
+                new DebugProfileEnumValuesGenerator(moqProfileProvider.Object, threadingService); 
             ICollection<IEnumValue> results = await generator.GetListedValuesAsync();
             Assert.True(results.Count == 4);
             Assert.True(results.ElementAt(0).Name == "Profile1" &&  results.ElementAt(0).DisplayName == "Profile1" );
@@ -59,13 +56,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             Mock<ILaunchSettingsProvider> moqProfileProvider = new Mock<ILaunchSettingsProvider>();
             moqProfileProvider.Setup(p => p.CurrentSnapshot).Returns(testProfiles.Object);
-            var moqThreadingService = new Mock<IProjectThreadingService>();
-            moqThreadingService
-                .Setup(p => p.JoinableTaskFactory)
-                .Returns(new Threading.JoinableTaskFactory(new Threading.JoinableTaskContext()));
+            var threadingService = new IProjectThreadingServiceMock();
 
             DebugProfileEnumValuesGenerator generator = 
-                new DebugProfileEnumValuesGenerator(moqProfileProvider.Object, moqThreadingService.Object); 
+                new DebugProfileEnumValuesGenerator(moqProfileProvider.Object, threadingService); 
 
             Assert.False(generator.AllowCustomValues);
             IEnumValue result = await generator.TryCreateEnumValueAsync("Profile1");
