@@ -121,6 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                             setPropertiesSchemaName, 
                             setPropertiesDependencyIDs,
                             It.IsAny<ImageMoniker>(),
+                            It.IsAny<ImageMoniker>(),
                             setPropertiesImplicit))
                     .Returns(mock.Object);
             }
