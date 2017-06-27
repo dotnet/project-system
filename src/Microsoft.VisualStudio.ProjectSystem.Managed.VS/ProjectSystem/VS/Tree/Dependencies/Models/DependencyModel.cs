@@ -87,8 +87,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override int GetHashCode()
         {
-            return unchecked(Id.ToLowerInvariant().GetHashCode() 
-                             + ProviderType.ToLowerInvariant().GetHashCode());
+            return unchecked(StringComparer.OrdinalIgnoreCase.GetHashCode(Id) 
+                             + StringComparer.OrdinalIgnoreCase.GetHashCode(ProviderType));
         }
 
         public override bool Equals(object obj)
