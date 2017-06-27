@@ -28,7 +28,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// <summary>
         /// Create a new instance of the class.
         /// </summary>
-        internal DebugProfileEnumValuesGenerator(ILaunchSettingsProvider profileProvider)
+        internal DebugProfileEnumValuesGenerator(
+            ILaunchSettingsProvider profileProvider,
+            IProjectThreadingService threadingService)
         {
             this.listedValues = new AsyncLazy<ICollection<IEnumValue>>(delegate
             {
@@ -40,22 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
                 ICollection<IEnumValue> emptyCollection = new List<IEnumValue>();
                 return Task.FromResult(emptyCollection);
-            }, TryGetJoinableTaskFactory());
-        }
-
-        private static JoinableTaskFactory TryGetJoinableTaskFactory()
-        {
-            JoinableTaskFactory factory = null;
-            try
-            {
-                factory = ThreadHelper.JoinableTaskFactory;
-            }
-            catch (System.NullReferenceException)
-            {
-                // we are not running inside Visual Studio, so there is no JoinableTaskFactory
-            }
-
-            return factory;
+            }, threadingService.JoinableTaskFactory);
         }
 
         /// <summary>
