@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
     [Collection(nameof(SharedIntegrationHostFixture))]
     public class CSharpProjectFileEditTest : AbstractIntegrationTest
     {
-        protected override string DefaultLanuageName => LanguageNames.CSharp;
+        protected override string DefaultLanguageName => LanguageNames.CSharp;
 
         public CSharpProjectFileEditTest(VisualStudioInstanceFactory instanceFactory)
             : base(nameof(CSharpProjectFileEditTest), WellKnownProjectTemplates.CSharpNetCoreConsoleApplication, instanceFactory)

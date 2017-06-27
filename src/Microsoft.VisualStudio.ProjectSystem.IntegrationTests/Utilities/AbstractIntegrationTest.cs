@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
 
         private VisualStudioInstanceContext _visualStudioContext;
 
-        protected abstract string DefaultLanuageName { get; }
+        protected abstract string DefaultLanguageName { get; }
 
         protected AbstractIntegrationTest(
             string solutionName,
@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
             VisualStudio = _visualStudioContext.Instance;
 
             VisualStudio.SolutionExplorer.CreateSolution(solutionName);
-            VisualStudio.SolutionExplorer.AddProject(Project, projectTemplate, DefaultLanuageName);
+            VisualStudio.SolutionExplorer.AddProject(Project, projectTemplate, DefaultLanguageName);
 
             // wait for restore to complete.
             VisualStudio.WaitForApplicationIdle();
