@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                         cell.Focus();
                         dataGridEnvironmentVariables.BeginEdit();
                     }
-                });
+                }).FileAndForget(TelemetryEvents.ProjectSystemRootPath);
             }
         }
 
