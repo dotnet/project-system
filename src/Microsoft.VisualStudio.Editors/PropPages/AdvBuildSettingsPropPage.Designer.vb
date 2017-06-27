@@ -79,7 +79,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             resources.ApplyResources(Me.cboReportCompilerErrors, "cboReportCompilerErrors")
             Me.cboReportCompilerErrors.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.cboReportCompilerErrors.FormattingEnabled = True
-            Me.cboReportCompilerErrors.Items.AddRange(New Object() {resources.GetString("cboReportCompilerErrors.Items"), resources.GetString("cboReportCompilerErrors.Items1"), resources.GetString("cboReportCompilerErrors.Items2"), resources.GetString("cboReportCompilerErrors.Items3")})
             Me.cboReportCompilerErrors.Name = "cboReportCompilerErrors"
             '
             'lblDebugInfo
@@ -92,7 +91,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             resources.ApplyResources(Me.cboDebugInfo, "cboDebugInfo")
             Me.cboDebugInfo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.cboDebugInfo.FormattingEnabled = True
-            Me.cboDebugInfo.Items.AddRange(New Object() {resources.GetString("cboDebugInfo.Items"), resources.GetString("cboDebugInfo.Items1"), resources.GetString("cboDebugInfo.Items2"), resources.GetString("cboDebugInfo.Items3"), resources.GetString("cboDebugInfo.Items4")})
             Me.cboDebugInfo.Name = "cboDebugInfo"
             '
             'lblFileAlignment

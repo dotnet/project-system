@@ -27,6 +27,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             'Add any initialization after the InitializeComponent() call
 
+            cboReportCompilerErrors.Items.AddRange(New Object() {New ComboItem("none", My.Resources.Designer.PPG_AdvancedBuildSettings_ReportCompilerErrors_None), New ComboItem("prompt", My.Resources.Designer.PPG_AdvancedBuildSettings_ReportCompilerErrors_Prompt), New ComboItem("send", My.Resources.Designer.PPG_AdvancedBuildSettings_ReportCompilerErrors_Send), New ComboItem("queue", My.Resources.Designer.PPG_AdvancedBuildSettings_ReportCompilerErrors_Queue)})
+            cboDebugInfo.Items.AddRange(New Object() {New ComboItem("none", My.Resources.Designer.PPG_AdvancedBuildSettings_DebugInfo_None), New ComboItem("full", My.Resources.Designer.PPG_AdvancedBuildSettings_DebugInfo_Full), New ComboItem("pdbonly", My.Resources.Designer.PPG_AdvancedBuildSettings_DebugInfo_PdbOnly), New ComboItem("portable", My.Resources.Designer.PPG_AdvancedBuildSettings_DebugInfo_Portable), New ComboItem("embedded", My.Resources.Designer.PPG_AdvancedBuildSettings_DebugInfo_Embedded)})
+
             ' Scale the width of the overarching table layout panel
             overarchingTableLayoutPanel.Width = DpiHelper.LogicalToDeviceUnitsX(overarchingTableLayoutPanel.Width)
 
@@ -127,7 +130,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If (Not (PropertyControlData.IsSpecialValue(value))) Then
                 Dim stValue As String = CType(value, String)
                 If stValue <> "" Then
-                    cboReportCompilerErrors.Text = stValue
+                    SelectComboItem(cboReportCompilerErrors, stValue)
                 Else
                     cboReportCompilerErrors.SelectedIndex = 0        '// Zero is the (none) entry in the list
                 End If
@@ -138,8 +141,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Private Function ErrorReportGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
-            If (cboReportCompilerErrors.SelectedIndex <> -1) Then
-                value = cboReportCompilerErrors.Text
+            Dim item As ComboItem = CType(CType(control, ComboBox).SelectedItem, ComboItem)
+            If item IsNot Nothing Then
+                value = item.Value
                 Return True
             Else
                 Return False         '// Indeterminate - let the architecture handle it
@@ -245,15 +249,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Else
                 Dim stValue As String = TryCast(value, String)
                 If (Not stValue Is Nothing) AndAlso (stValue.Trim().Length > 0) Then
-
-                    '// Need to special case pdb-only becuase it's stored in the property without the dash but it's
-                    '// displayed in the dialog with a dash.
-
-                    If (String.Compare(stValue, "pdbonly", StringComparison.OrdinalIgnoreCase) <> 0) Then
-                        cboDebugInfo.Text = stValue
-                    Else
-                        cboDebugInfo.Text = "pdb-only"
-                    End If
+                    SelectComboItem(cboDebugInfo, stValue)
                 Else
                     cboDebugInfo.SelectedIndex = 0        '// Zero is the (none) entry in the list
                 End If
@@ -262,20 +258,20 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Private Function DebugInfoGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
+            Dim item As ComboItem = CType(CType(control, ComboBox).SelectedItem, ComboItem)
 
-            '// Need to special case pdb-only because the display name has a dash while the actual property value
-            '// doesn't have the dash.
-            If (String.Compare(cboDebugInfo.Text, "pdb-only", StringComparison.OrdinalIgnoreCase) <> 0) Then
-                value = cboDebugInfo.Text
+            If item IsNot Nothing Then
+                value = item.Value
             Else
-                value = "pdbonly"
+                value = "none"
             End If
+
             Return True
         End Function
 
         Private Sub DebugInfo_SelectedIndexChanged(sender As System.Object, e As EventArgs) Handles cboDebugInfo.SelectedIndexChanged
             If cboDebugInfo.SelectedIndex = 0 Then
-                '// user selcted none
+                '// user selected none
                 m_bDebugSymbols = False
             Else
                 m_bDebugSymbols = True
@@ -320,6 +316,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
+        Private Shared Sub SelectComboItem(control As ComboBox, value As String)
+            For Each entry As ComboItem In control.Items
+                If entry.Value = value Then
+                    control.SelectedItem = entry
+                    Exit For
+                End If
+            Next
+        End Sub
     End Class
 
 End Namespace
