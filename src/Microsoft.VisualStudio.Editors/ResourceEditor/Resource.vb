@@ -1161,7 +1161,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                     Debug.Assert(TypeName <> "", "ResXDataNode.GetValueTypeName() should never return an empty string or Nothing (not even for ResXNullRef)")
 
-                    TypeName = AdjustAssemblyQualifiedNameForNetStandard(TypeName)
+                    TypeName = AdjustSystemStringAssemblyQualifiedName(TypeName)
 
                     Return TypeName
                 Catch ex As Exception When ReportWithoutCrash(ex, "Unexpected exception - ResXDataNode.GetValueTypeName() is not supposed to throw exceptions (except unrecoverable ones), it should instead return the typename as in the original .resx file", NameOf(Resource))
@@ -1607,7 +1607,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         End Function
 
         ''' <remarks>
-        ''' This is a bit of a hack to allow the designer to work properly with netstandard2.0 projects.
         ''' Our multi-targeting support quite correctly tells us that types like System.String are found
         ''' in netstandard.dll. However, VS (and thus the resx designer) and resgen.exe run on the net462
         ''' framework, which does not have a netstandard.dll. As such the designer doesn't understand the
@@ -1615,36 +1614,34 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' could get past that, resgen.exe would see the references to netstandard.dll in the .resx
         ''' file, fail to locate it, and die while trying to produce the .designer.cs file.
         ''' 
-        ''' The workaround here is to check if the assembly-qualified type name refers to a type in 
-        ''' netstandard.dll, and if it does swap in mscorlib.dll instead. This allows the designer to
-        ''' work. The updated assembly-qualified typename also makes its way into the .resx file,
-        ''' allowing resgen.exe to work properly and produce the .designer.cs file.
+        ''' The workaround here is to check if the assembly-qualified type name refers to some
+        ''' System.String, and if so swap in the name of the System.String loaded in VS. This allows the
+        ''' designer to work. Since System.String is the default type of values in the .resx file this
+        ''' technically incorrect type name isn't persisted, and thus our workaround doesn't trip up
+        ''' anything else.
         ''' 
         ''' This does not affect the runtime behavior of the app in any way as the types in the .resx
         ''' file are only used to produce the .designer.cs file, which is still built against
         ''' netstandard.dll.
         ''' </remarks>
-        Private Shared Function AdjustAssemblyQualifiedNameForNetStandard(AssemblyQualifiedName As String) As String
-            Static MscorlibAssemblyName As AssemblyName
+        Private Shared Function AdjustSystemStringAssemblyQualifiedName(AssemblyQualifiedName As String) As String
+            Static SystemStringAssemblyQualifiedName As String
 
-            ' If this type definitely isn't from netstandard.dll then bail out before we allocate.
-            If Not AssemblyQualifiedName.Contains("netstandard") Then
+            ' If this type definitely isn't System.String then bail out before we allocate
+            If Not AssemblyQualifiedName.StartsWith("System.String") Then
                 Return AssemblyQualifiedName
             End If
 
             Dim indexOfFirstComma = AssemblyQualifiedName.IndexOf(",")
             If indexOfFirstComma <> -1 Then
-                Dim assemblyName = New AssemblyName(AssemblyQualifiedName.Substring(indexOfFirstComma + 1))
-                If assemblyName.Name = "netstandard" Then
-                    Dim typeName = AssemblyQualifiedName.Substring(startIndex:=0, length:=indexOfFirstComma)
+                Dim typeName = AssemblyQualifiedName.Substring(startIndex:=0, length:=indexOfFirstComma)
+                If typeName = "System.String" Then
 
-                    If MscorlibAssemblyName Is Nothing Then
-                        MscorlibAssemblyName = AppDomain.CurrentDomain().GetAssemblies().
-                            Select(Function(a) a.GetName()).
-                            First(Function(a) a.Name = "mscorlib")
+                    If SystemStringAssemblyQualifiedName Is Nothing Then
+                        SystemStringAssemblyQualifiedName = GetType(String).AssemblyQualifiedName
                     End If
 
-                    AssemblyQualifiedName = typeName + ", " + MscorlibAssemblyName.FullName
+                    Return SystemStringAssemblyQualifiedName
                 End If
             End If
 
