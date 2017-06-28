@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.Telemetry;
 
 namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
@@ -24,6 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private const string CopyToOutputDirectory = "CopyToOutputDirectory";
         private const string PreserveNewest = "PreserveNewest";
         private const string Always = "Always";
+        private const string TelemetryEventName = "UpToDateCheck";
 
         private static readonly HashSet<string> KnownOutputGroups = new HashSet<string>
         {
@@ -56,6 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private readonly Lazy<IFileTimestampCache> _fileTimestampCache;
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IProjectItemSchemaService _projectItemSchemaService;
+        private readonly ITelemetryService _telemetryService;
 
         private IDisposable _link;
         private IComparable _lastVersionSeen;
@@ -82,13 +85,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             ConfiguredProject configuredProject,
             Lazy<IFileTimestampCache> fileTimestampCache,
             [Import(ExportContractNames.Scopes.ConfiguredProject)] IProjectAsynchronousTasksService tasksService,
-            IProjectItemSchemaService projectItemSchemaService)
+            IProjectItemSchemaService projectItemSchemaService,
+            ITelemetryService telemetryService)
         {
             _projectSystemOptions = projectSystemOptions;
             _configuredProject = configuredProject;
             _fileTimestampCache = fileTimestampCache;
             _tasksService = tasksService;
             _projectItemSchemaService = projectItemSchemaService;
+            _telemetryService = telemetryService;
         }
 
         protected override void Initialize()
@@ -301,6 +306,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
         }
 
+        private bool Fail(BuildUpToDateCheckLogger logger, string message, string reason)
+        {
+            logger.Info(message);
+            _telemetryService.PostProperty($"{TelemetryEventName}/Fail", "Reason", reason);
+            return false;
+        }
+
         private bool CheckGlobalConditions(BuildAction buildAction, BuildUpToDateCheckLogger logger)
         {
             if (buildAction != BuildAction.Build)
@@ -313,26 +325,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             if (!_tasksService.IsTaskQueueEmpty(ProjectCriticalOperation.Build))
             {
-                logger.Info("Critical build tasks are running, skipping check.");
-                return false;
+                return Fail(logger, "Critical build tasks are running, skipping check.", "CriticalTasks");
             }
 
             if (_lastVersionSeen == null || _configuredProject.ProjectVersion.CompareTo(_lastVersionSeen) > 0)
             {
-                logger.Info("Project information is older than current project version, skipping check.");
-                return false;
+                return Fail(logger, "Project information is older than current project version, skipping check.", "ProjectInfoOutOfDate");
             }
 
             if (itemsChangedSinceLastCheck)
             {
-                logger.Info("The list of source items has changed since the last build.");
-                return false;
+                return Fail(logger, "The list of source items has changed since the last build.", "ItemInfoOutOfDate");
             }
 
             if (_isDisabled)
             {
-                logger.Info("The 'DisableFastUpToDateCheckProperty' property is true, skipping check.");
-                return false;
+                return Fail(logger, "The 'DisableFastUpToDateCheckProperty' property is true, skipping check.", "Disabled");
             }
 
             var copyAlwaysItem = _items.SelectMany(kvp => kvp.Value).FirstOrDefault(item => item.CopyType == CopyToOutputDirectoryType.CopyAlways);
@@ -551,15 +559,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             // We are up to date if the earliest output write happened after the latest input write
             var markersUpToDate = CheckMarkers(logger, timestampCache);
+            var outputsUpToDate = latestInput.time != null && earliestOutput.time != null && earliestOutput.time > latestInput.time;
             var copyToOutputDirectoryUpToDate = CheckCopyToOutputDirectoryFiles(logger, timestampCache);
-            var isUpToDate = 
-                latestInput.time != null 
-                && earliestOutput.time != null 
-                && earliestOutput.time > latestInput.time 
-                && markersUpToDate
-                && copyToOutputDirectoryUpToDate;
+            var isUpToDate = outputsUpToDate && markersUpToDate && copyToOutputDirectoryUpToDate;
 
-            logger.Info("Project is{0} up to date.", (!isUpToDate ? " not" : ""));
+            if (!markersUpToDate)
+            {
+                _telemetryService.PostProperty($"{TelemetryEventName}/Fail", "Reason", "Marker");
+            }
+            else if (!outputsUpToDate)
+            {
+                _telemetryService.PostProperty($"{TelemetryEventName}/Fail", "Reason", "Outputs");
+            }
+            else if (!copyToOutputDirectoryUpToDate)
+            {
+                _telemetryService.PostProperty($"{TelemetryEventName}/Fail", "Reason", "CopyToOutputDirectory");
+            }
+            else
+            {
+                _telemetryService.PostEvent($"{TelemetryEventName}/Success");
+            }
+
+            logger.Info("Project is{0} up to date.", !isUpToDate ? " not" : "");
 
             return isUpToDate;
         }
