@@ -57,15 +57,16 @@
       <NUGET_PACKAGES Condition="'$(NUGET_PACKAGES)' == ''">$(UserProfile)\.nuget\packages</NUGET_PACKAGES>
       <RepositoryRootDirectory>$(MSBuildThisFileDirectory)..\..\</RepositoryRootDirectory>
       <IntegrationDirectory>$([System.IO.Path]::GetFullPath('$(RepositoryRootDirectory)bin\$(Configuration)\IntegrationTests\'))</IntegrationDirectory>
-      <DownloadRoslynVsixesExe>$(NUGET_PACKAGES)\roslyntools.downloadroslynvsixes\$(RoslynToolsDownloadRoslynVsixesVersion)\tools\DownloadRoslynVsixes.exe</DownloadRoslynVsixesExe>
-      <DownloadRoslynVsixesArgs>"$([System.IO.Path]::GetFullPath('$(RepositoryRootDirectory)bin\$(Configuration)\IntegrationTests'))"</DownloadRoslynVsixesArgs>
       <VsixExpInstallerExe>$(NUGET_PACKAGES)\roslyntools.microsoft.vsixexpinstaller\$(RoslynToolsMicrosoftVSIXExpInstallerVersion)\tools\VsixExpInstaller.exe</VsixExpInstallerExe>
       <VsixExpInstallerArgs>-rootSuffix:$(VSSDKTargetPlatformRegRootSuffix) -vsInstallDir:"$([System.IO.Path]::GetFullPath('$(MSBuildBinPath)\..\..\..'))"</VsixExpInstallerArgs>
     </PropertyGroup>
 
     <!-- Downloading Roslyn Vsixes -->
-    <Exec Command="&quot;$(DownloadRoslynVsixesExe)&quot; $(DownloadRoslynVsixesArgs)"/>
-    
+    <Exec Command="mkdir &quot;$(IntegrationDirectory)Roslyn\Vsixes&quot;" IgnoreExitCode="true"/>
+    <Exec Command="@powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;((New-Object System.Net.WebClient).DownloadFile('https://dotnet.myget.org/F/roslyn/vsix/0b48e25b-9903-4d8b-ad39-d4cca196e3c7-$(RoslynIntegrationVsixVersion).vsix', '$(IntegrationDirectory)Roslyn\Roslyn.Deployment.Full.Next.zip'))&quot;" />
+    <Exec Command="@powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;((New-Object System.Net.WebClient).DownloadFile('https://dotnet.myget.org/F/roslyn/vsix/d0122878-51f1-4b36-95ec-dec2079a2a84-$(RoslynIntegrationVsixVersion).vsix', '$(IntegrationDirectory)Roslyn\Vsixes\Microsoft.VisualStudio.IntegrationTest.Setup.vsix'))&quot;" />
+    <Exec Command="@powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;Expand-Archive -path $(IntegrationDirectory)Roslyn\Roslyn.Deployment.Full.Next.zip -destinationPath $(IntegrationDirectory)Roslyn -force" />
+
     <!-- Uninstall any old (locally-deployed) Roslyn Vsixes -->
     <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Microsoft.VisualStudio.IntegrationTest.Setup.vsix" IgnoreExitCode="true" />
     <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.VisualStudio.DiagnosticsWindow.vsix" IgnoreExitCode="true" />
