@@ -14,9 +14,6 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.IntegrationTests\Microsoft.VisualStudio.ProjectSystem.IntegrationTests.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.IntegrationTest.Utilities" Version="[$(MicrosoftVisualStudioIntegrationTestUtilitiesVersion)]" />
     <PackageReference Include="Microsoft.VisualStudio.LanguageServices" Version="[$(MicrosoftVisualStudioLanguageServicesVersion)]" />
     <PackageReference Include="Microsoft.VisualStudio.Text.Logic" Version="[$(MicrosoftVisualStudioTextLogicVersion)]" />
@@ -27,6 +24,29 @@
     <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="$(SystemRuntimeInteropServicesRuntimeInformationVersion)" />
     <PackageReference Include="xunit.runner.console" Version="[$(XUnitRunnerConsoleVersion)]" />
     <PackageReference Include="xunit.runner.visualstudio" Version="[$(XUnitRunnerVisualstudioVersion)]" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj" />
+    <ProjectReference Include="..\Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.vbproj" />
+    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.CSharp.VS\Microsoft.VisualStudio.ProjectSystem.CSharp.VS.csproj" />
+    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.CSharp\Microsoft.VisualStudio.ProjectSystem.CSharp.csproj" />
+    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.FSharp.VS\Microsoft.VisualStudio.ProjectSystem.FSharp.VS.csproj" />
+    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.FSharp\Microsoft.VisualStudio.ProjectSystem.FSharp.csproj" />
+    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.VS\Microsoft.VisualStudio.ProjectSystem.Managed.VS.csproj" />
+    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" />
+    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS\Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.csproj" />
+    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.VisualBasic\Microsoft.VisualStudio.ProjectSystem.VisualBasic.csproj" />
+    <ProjectReference Include="..\ProjectSystemSetup\ProjectSystemSetup.csproj" />
+    <ProjectReference Include="..\Templates\Microsoft.NetCore.CSharp.ProjectTemplates.Test.Vsix\Microsoft.NetCore.CSharp.ProjectTemplates.Test.Vsix.csproj" />
+    <ProjectReference Include="..\Templates\Microsoft.NetCore.CSharp.ProjectTemplates.Vsix\Microsoft.NetCore.CSharp.ProjectTemplates.Vsix.csproj" />
+    <ProjectReference Include="..\Templates\Microsoft.NetCore.FSharp.ProjectTemplates.Test.Vsix\Microsoft.NetCore.FSharp.ProjectTemplates.Test.Vsix.csproj" />
+    <ProjectReference Include="..\Templates\Microsoft.NetCore.FSharp.ProjectTemplates.Vsix\Microsoft.NetCore.FSharp.ProjectTemplates.Vsix.csproj" />
+    <ProjectReference Include="..\Templates\Microsoft.NetCore.VB.ProjectTemplates.Test.Vsix\Microsoft.NetCore.VB.ProjectTemplates.Test.Vsix.csproj" />
+    <ProjectReference Include="..\Templates\Microsoft.NetCore.VB.ProjectTemplates.Vsix\Microsoft.NetCore.VB.ProjectTemplates.Vsix.csproj" />
+    <ProjectReference Include="..\Templates\Microsoft.NetStandard.CSharp.ProjectTemplates.Vsix\Microsoft.NetStandard.CSharp.ProjectTemplates.Vsix.csproj" />
+    <ProjectReference Include="..\Templates\Microsoft.NetStandard.FSharp.ProjectTemplates.Vsix\Microsoft.NetStandard.FSharp.ProjectTemplates.Vsix.csproj" />
+    <ProjectReference Include="..\Templates\Microsoft.NetStandard.VB.ProjectTemplates.Vsix\Microsoft.NetStandard.VB.ProjectTemplates.Vsix.csproj" />
+    <ProjectReference Include="..\VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj" />
   </ItemGroup>
   <Import Project="..\..\build\Targets\ProducesNoOutput.Imports.targets" />
 </Project>
