@@ -6,6 +6,7 @@ using System.Threading;
 using Microsoft.VisualStudio.Shell;
 using Task = System.Threading.Tasks.Task;
 using System.ComponentModel.Design;
+using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools

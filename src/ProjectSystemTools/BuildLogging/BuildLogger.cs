@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.VisualStudio.Shell.Interop;
 using System;
+using Microsoft.VisualStudio.Shell.Interop;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Tools
+namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 {
     internal sealed class BuildLogger : IVsUpdateSolutionEvents4, IDisposable
     {

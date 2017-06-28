@@ -2,7 +2,7 @@
 
 using System.Windows.Controls;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Tools
+namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 {
     public partial class BuildLoggingToolWindowControl : UserControl
     {
