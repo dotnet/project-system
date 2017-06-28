@@ -29,18 +29,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools
 
         public const int BuildLoggingToolbarMenuId = 0x0100;
 
+        public static ProjectSystemToolsPackage Instance;
+
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
             var mcs = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
-            mcs.AddCommand(new MenuCommand(ShowBuildLoggingToolWindow, new CommandID(CommandSetGuid, BuildLoggingCommandId)));
+            mcs?.AddCommand(new MenuCommand(ShowBuildLoggingToolWindow, new CommandID(CommandSetGuid, BuildLoggingCommandId)));
+
+            Instance = this;
         }
 
         private void ShowBuildLoggingToolWindow(object sender, EventArgs e)
         {
             var window = FindToolWindow(typeof(BuildLoggingToolWindow), 0, true);
-            if ((window == null) || (window.Frame == null))
+            if (window?.Frame == null)
             {
                 throw new NotSupportedException("Cannot create tool window");
             }

@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.OLE.Interop;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using System;
@@ -9,15 +11,15 @@ using Constants = Microsoft.VisualStudio.OLE.Interop.Constants;
 namespace Microsoft.VisualStudio.ProjectSystem.Tools
 {
     [Guid(BuildLoggingToolWindowGuidString)]
-    public class BuildLoggingToolWindow : ToolWindowPane, IOleCommandTarget
+    public sealed class BuildLoggingToolWindow : ToolWindowPane, IOleCommandTarget
     {
         public const string BuildLoggingToolWindowGuidString = "391238ea-dad7-488c-94d1-e2b6b5172bf3";
 
         public const string BuildLoggingToolWindowCaption = "Build Logging";
 
-        private bool _logging = false;
+        private readonly BuildLogger _buildLogger;
 
-        public BuildLoggingToolWindow() : base(null)
+        public BuildLoggingToolWindow() : base(ProjectSystemToolsPackage.Instance)
         {
             Caption = BuildLoggingToolWindowCaption;
 
@@ -25,6 +27,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools
             ToolBarLocation = (int)VSTWT_LOCATION.VSTWT_TOP;
 
             Content = new BuildLoggingToolWindowControl();
+
+            _buildLogger = new BuildLogger(ProjectSystemToolsPackage.Instance);
         }
 
         int IOleCommandTarget.QueryStatus(ref Guid commandGroupGuid, uint commandCount, OLECMD[] commands, IntPtr commandText)
@@ -41,21 +45,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools
 
             var cmd = commands[0];
 
-            bool handled = true;
-            bool enabled = false;
-            bool visible = false;
-            bool latched = false;
+            var handled = true;
+            var enabled = false;
+            var visible = false;
+            var latched = false;
 
             switch (cmd.cmdID)
             {
                 case ProjectSystemToolsPackage.StartLoggingCommandId:
                     visible = true;
-                    enabled = !_logging;
+                    enabled = !_buildLogger.IsLogging;
                     break;
 
                 case ProjectSystemToolsPackage.StopLoggingCommandId:
                     visible = true;
-                    enabled = _logging;
+                    enabled = _buildLogger.IsLogging;
                     break;
 
                 default:
@@ -93,16 +97,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools
                 return (int)Constants.MSOCMDERR_E_UNKNOWNGROUP;
             }
 
-            bool handled = true;
+            var handled = true;
 
             switch (commandID)
             {
                 case ProjectSystemToolsPackage.StartLoggingCommandId:
-                    _logging = true;
+                    _buildLogger.Start();
                     break;
 
                 case ProjectSystemToolsPackage.StopLoggingCommandId:
-                    _logging = false;
+                    _buildLogger.Stop();
                     break;
 
                 default:
