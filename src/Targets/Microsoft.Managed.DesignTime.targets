@@ -25,11 +25,6 @@
     <SuppressOutOfDateMessageOnBuild Condition="'$(SuppressOutOfDateMessageOnBuild)' == ''">true</SuppressOutOfDateMessageOnBuild>
   </PropertyGroup>
 
-  <!-- If the project we're compiling has a ruleset, make sure we check it for up-to-date checks. -->
-  <ItemGroup Condition="'$(CodeAnalysisRuleSet)' != ''">
-    <UpToDateCheckInput Include="$(CodeAnalysisRuleSet)" />
-  </ItemGroup>
-
   <!--
     Locate the approriate localized xaml resources based on the language ID or name.
 
@@ -282,5 +277,16 @@
   
   <!-- This target collects all the resolved references that are used to actually compile. -->
   <Target Name="CollectResolvedCompilationReferencesDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(ReferencePathWithRefAssemblies)" />
+
+  <!-- This target collects all up-to-date file additions. -->
+  <Target Name="CollectUpToDateInputsDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(UpToDateCheckInput)">
+    <!-- If the project we're compiling has a ruleset, make sure we check it for up-to-date checks. -->
+    <ItemGroup Condition="'$(ResolvedCodeAnalysisRuleSet)' != ''">
+      <UpToDateCheckInput Include="$([System.IO.Path]::GetFullPath($(ResolvedCodeAnalysisRuleSet)))" />
+    </ItemGroup>
+  </Target>
+
+  <!-- This target collects all up-to-date file additions. -->
+  <Target Name="CollectUpToDateOutputsDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(UpToDateCheckOutput)" />
 
 </Project>
