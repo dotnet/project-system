@@ -49,11 +49,11 @@ namespace Microsoft.VisualStudio.Packaging
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            IComponentModel componentModel = (IComponentModel)GetService(typeof(SComponentModel));
+            IComponentModel componentModel = (IComponentModel)(await GetServiceAsync(typeof(SComponentModel)).ConfigureAwait(true));
             ICompositionService compositionService = componentModel.DefaultCompositionService;
             var debugFrameworksCmd = componentModel.DefaultExportProvider.GetExport<DebugFrameworksDynamicMenuCommand>();
 
-            var mcs = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
+            var mcs = (await GetServiceAsync(typeof(IMenuCommandService)).ConfigureAwait(true)) as OleMenuCommandService;
             mcs.AddCommand(debugFrameworksCmd.Value);
 
             var debugFrameworksMenuTextUpdater = componentModel.DefaultExportProvider.GetExport<DebugFrameworkPropertyMenuTextUpdater>();

@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
         public override int GetHashCode()
         {
-            return unchecked(Id.ToLowerInvariant().GetHashCode());
+            return StringComparer.OrdinalIgnoreCase.GetHashCode(Id);
         }
 
         public override bool Equals(object obj)

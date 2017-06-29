@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26507.0
+VisualStudioVersion = 15.0.26612.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeployTestDependencies", "DeployTestDependencies\DeployTestDependencies.csproj", "{37BA82E6-9ABD-4ACA-AA26-2DFD39A359A5}"
 EndProject
@@ -111,7 +111,7 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-		Description = The C# and Visual Basic project system for Visual Studio "15"
+		Description = C#, F# and Visual Basic project system for Visual Studio.
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{37BA82E6-9ABD-4ACA-AA26-2DFD39A359A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -324,5 +324,8 @@ Global
 		{8CE6132E-DD84-4137-A09C-0C4660DCC98F} = {7AC93D71-E528-4BDA-AEEF-47876EC5F5A0}
 		{CC1FF91F-C0A9-4729-9863-45A688483F84} = {7AC93D71-E528-4BDA-AEEF-47876EC5F5A0}
 		{AE328174-EBB5-49CF-B642-DBF6CEB2EA4B} = {6DE4B49E-AC38-4E35-82CD-D52731503111}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9CCA9461-85DF-4DB6-8EEA-B06C0CB2628F}
 	EndGlobalSection
 EndGlobal
