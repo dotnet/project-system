@@ -149,6 +149,14 @@
     <OutDir>$(OutDir)\Samples\$(MSBuildProjectName)</OutDir>
   </PropertyGroup>
 
+  <!-- Setting UseLocalRoslynForIntegrationTests to true and LocalRoslynDebugDirectoryPath to the Debug path of Roslyn bits will enable using 
+  Locally built Roslyn bits for integration tests -->
+  <PropertyGroup>
+    <UseLocalRoslynForIntegrationTests>true</UseLocalRoslynForIntegrationTests>
+    <LocalRoslynDebugDirectoryPath>C:\repos\roslyn-internal\Open\Binaries\Debug\</LocalRoslynDebugDirectoryPath>
+    <MicrosoftVisualStudioLanguageServicesVersion>2.3.0-dev-56735-00</MicrosoftVisualStudioLanguageServicesVersion>
+  </PropertyGroup>
+
   <PropertyGroup>
   <!-- Disable AppX packaging for the Roslyn source. Not setting this to false has the side effect
        that any builds of portable projects end up in a sub folder of $(OutDir). Search for this flag in
