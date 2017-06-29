@@ -62,7 +62,7 @@
       </trans-unit>
       <trans-unit id="APPDES_ResourceTabTitle">
         <source>Resources</source>
-        <target state="translated">Ресурсы.</target>
+        <target state="translated">Ресурсы</target>
         <note />
       </trans-unit>
       <trans-unit id="APPDES_SettingsTabTitle">

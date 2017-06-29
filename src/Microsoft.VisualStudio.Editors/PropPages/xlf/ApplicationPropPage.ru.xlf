@@ -75,7 +75,7 @@
       </trans-unit>
       <trans-unit id="ResourcesGroupBox.Text">
         <source>Resources</source>
-        <target state="translated">Ресурсы.</target>
+        <target state="translated">Ресурсы</target>
         <note />
       </trans-unit>
       <trans-unit id="AppIconBrowse.AccessibleName">
