@@ -12,13 +12,9 @@
   <ContentType Name="EmbeddedResource" DisplayName="嵌入的资源" ItemType="EmbeddedResource">
     <NameValuePair Name="DefaultMetadata_Generator" Value="ResXFileCodeGenerator" />
   </ContentType>
-  <ContentType Name="UpToDateCheckInput" DisplayName="Up-to-date check input" ItemType="UpToDateCheckInput"></ContentType>
-  <ContentType Name="UpToDateCheckOutput" DisplayName="Up-to-date check output" ItemType="UpToDateCheckOutput"></ContentType>
   <ItemType Name="None" DisplayName="无" />
   <ItemType Name="Content" DisplayName="内容" />
   <ItemType Name="EmbeddedResource" DisplayName="嵌入的资源" />
-  <ItemType Name="UpToDateCheckInput" DisplayName="Up-to-date check input" />
-  <ItemType Name="UpToDateCheckOutput" DisplayName="Up-to-date check output" UpToDateCheckInput="False" />
   <FileExtension Name=".asax" ContentType="Asax" />
   <FileExtension Name=".asmx" ContentType="HTML" />
   <FileExtension Name=".asp" ContentType="AspPage" />
