@@ -117,6 +117,12 @@
       <ModifyVsixManifestArgs>--add-attribute=//x:PackageManifest/x:Installation;Experimental;true</ModifyVsixManifestArgs>
     </PropertyGroup>
 
+    <ItemGroup>		
+      <IntegrationTestAssembly Include="$(IntegrationDirectory)*IntegrationTests.dll" />		
+      <IntegrationXmlTestFile Include="$(IntegrationDirectory)xUnitResults\TestResults.xml" />   <!-- For Jenkins to read -->		
+      <IntegrationHtmlTestFile Include="$(IntegrationDirectory)xUnitResults\TestResults.html" /> <!-- For Humans to read -->		
+    </ItemGroup>
+
     <!-- Modify Project System Vsixes to be 'experimental' -->
     <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.vsix $(ModifyVsixManifestArgs)"/>
     <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.Test.vsix $(ModifyVsixManifestArgs)" />

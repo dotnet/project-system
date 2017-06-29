@@ -16,7 +16,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.VisualStudio.IntegrationTest.Utilities" Version="[$(MicrosoftVisualStudioIntegrationTestUtilitiesVersion)]" />
+    <PackageReference Include="Microsoft.VisualStudio.IntegrationTest.Utilities" Version="[$(MicrosoftVisualStudioLanguageServicesVersion)]" />
     <PackageReference Include="Microsoft.VisualStudio.LanguageServices" Version="[$(MicrosoftVisualStudioLanguageServicesVersion)]" />
     <PackageReference Include="Microsoft.VisualStudio.Text.Logic" Version="[$(MicrosoftVisualStudioTextLogicVersion)]" />
     <PackageReference Include="RoslynTools.DownloadRoslynVsixes" Version="$(RoslynToolsDownloadRoslynVsixesVersion)" />
@@ -52,7 +52,7 @@
   </ItemGroup>
   <Import Project="..\..\build\Targets\ProducesNoOutput.Imports.targets" />
 
-  <Target Name="DeployIntegrationDependencies" Condition="'$(DesignTimeBuild)' == ''" AfterTargets="PostBuildEvent">
+  <Target Name="DeployIntegrationDependencies" Condition="'$(DesignTimeBuild)' == '' AND  ('$(DeployVsixExtension)' == 'true' OR '$(RunIntegrationTests)' == 'true')" AfterTargets="PostBuildEvent">
     <PropertyGroup>
       <NUGET_PACKAGES Condition="'$(NUGET_PACKAGES)' == ''">$(UserProfile)\.nuget\packages</NUGET_PACKAGES>
       <RepositoryRootDirectory>$(MSBuildThisFileDirectory)..\..\</RepositoryRootDirectory>
