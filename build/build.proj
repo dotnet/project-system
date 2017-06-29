@@ -111,85 +111,52 @@
 
     <PropertyGroup>
       <BinariesDirectory>$([System.IO.Path]::GetFullPath('$(RepositoryRootDirectory)bin\$(Configuration)\'))</BinariesDirectory>
-    </PropertyGroup>
-
-    <Exec Command="SETX VisualBasicDesignTimeTargetsPath $(BinariesDirectory)Rules\Microsoft.VisualBasic.DesignTime.targets"/>  
-    <Exec Command="SETX FSharpDesignTimeTargetsPath $(BinariesDirectory)Rules\Microsoft.FSharp.DesignTime.targets"/>  
-    <Exec Command="SETX CSharpDesignTimeTargetsPath $(BinariesDirectory)Rules\Microsoft.CSharp.DesignTime.targets"/>  
-
-    <PropertyGroup>
-      <DownloadRoslynVsixesExe>$(NUGET_PACKAGES)\roslyntools.downloadroslynvsixes\$(RoslynToolsDownloadRoslynVsixesVersion)\tools\DownloadRoslynVsixes.exe</DownloadRoslynVsixesExe>
-      <DownloadRoslynVsixesArgs>"$([System.IO.Path]::GetFullPath('$(RepositoryRootDirectory)bin\$(Configuration)\IntegrationTests'))"</DownloadRoslynVsixesArgs>
-    </PropertyGroup>
-
-    <PropertyGroup>
       <VsixExpInstallerExe>$(NUGET_PACKAGES)\roslyntools.microsoft.vsixexpinstaller\$(RoslynToolsMicrosoftVSIXExpInstallerVersion)\tools\VsixExpInstaller.exe</VsixExpInstallerExe>
       <VsixExpInstallerArgs>-rootSuffix:ProjectSystem -vsInstallDir:"$([System.IO.Path]::GetFullPath('$(MSBuildBinPath)\..\..\..'))"</VsixExpInstallerArgs>
       <ModifyVsixManifestToolExe>$(NUGET_PACKAGES)\roslyntools.microsoft.modifyvsixmanifest\$(RoslynToolsMicrosoftModifyVsixManifestVersion)\tools\ModifyVsixManifest.exe</ModifyVsixManifestToolExe>
       <ModifyVsixManifestArgs>--add-attribute=//x:PackageManifest/x:Installation;Experimental;true</ModifyVsixManifestArgs>
     </PropertyGroup>
 
-    <ItemGroup>
-      <IntegrationTestAssembly Include="$(IntegrationDirectory)*IntegrationTests.dll" />
-      <IntegrationXmlTestFile Include="$(IntegrationDirectory)xUnitResults\TestResults.xml" />   <!-- For Jenkins to read -->
-      <IntegrationHtmlTestFile Include="$(IntegrationDirectory)xUnitResults\TestResults.html" /> <!-- For Humans to read -->
+    <ItemGroup>		
+      <IntegrationTestAssembly Include="$(IntegrationDirectory)*IntegrationTests.dll" />		
+      <IntegrationXmlTestFile Include="$(IntegrationDirectory)xUnitResults\TestResults.xml" />   <!-- For Jenkins to read -->		
+      <IntegrationHtmlTestFile Include="$(IntegrationDirectory)xUnitResults\TestResults.html" /> <!-- For Humans to read -->		
     </ItemGroup>
 
-    <!-- Downloading Roslyn Vsixes -->
-    <Exec Command="&quot;$(DownloadRoslynVsixesExe)&quot; $(DownloadRoslynVsixesArgs)" />
-
     <!-- Modify Project System Vsixes to be 'experimental' -->
-    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.vsix $(ModifyVsixManifestArgs)" />
+    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.vsix $(ModifyVsixManifestArgs)"/>
     <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.Test.vsix $(ModifyVsixManifestArgs)" />
-    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetCore.VB.ProjectTemplates.vsix $(ModifyVsixManifestArgs)" />
-    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetStandard.CSharp.ProjectTemplates.vsix $(ModifyVsixManifestArgs)" />
-    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetStandard.VB.ProjectTemplates.vsix $(ModifyVsixManifestArgs)" />
-    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)ProjectSystem.vsix $(ModifyVsixManifestArgs)" />
-    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)VisualStudioEditorsSetup.vsix $(ModifyVsixManifestArgs)" />
+    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetCore.VB.ProjectTemplates.vsix $(ModifyVsixManifestArgs)"/>
+    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetStandard.CSharp.ProjectTemplates.vsix $(ModifyVsixManifestArgs)"/>
+    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetStandard.VB.ProjectTemplates.vsix $(ModifyVsixManifestArgs)"/>
+    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)ProjectSystem.vsix $(ModifyVsixManifestArgs)"/>
+    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)VisualStudioEditorsSetup.vsix $(ModifyVsixManifestArgs)"/>
 
     <!-- Uninstall any old (locally-deployed) Project System Vsixes -->
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)VisualStudioEditorsSetup.vsix" />
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)ProjectSystem.vsix" />
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetStandard.VB.ProjectTemplates.vsix" />
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetStandard.CSharp.ProjectTemplates.vsix" />
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.VB.ProjectTemplates.vsix" />
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.Test.vsix" />
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.vsix" />
-
-    <!-- Uninstall any old (locally-deployed) Roslyn Vsixes -->
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Microsoft.VisualStudio.IntegrationTest.Setup.vsix" />
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.VisualStudio.DiagnosticsWindow.vsix" />
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\ExpressionEvaluatorPackage.vsix" />
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.VisualStudio.InteractiveComponents.vsix" />
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.VisualStudio.Setup.Next.vsix" />
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.VisualStudio.Setup.vsix" />
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.Compilers.Extension.vsix" />
-
-    <!-- Install Roslyn Vsixes -->
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.Compilers.Extension.vsix" />
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.VisualStudio.Setup.vsix" />
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.VisualStudio.Setup.Next.vsix" />
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.VisualStudio.InteractiveComponents.vsix" />
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\ExpressionEvaluatorPackage.vsix" />
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.VisualStudio.DiagnosticsWindow.vsix" />
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Microsoft.VisualStudio.IntegrationTest.Setup.vsix" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)VisualStudioEditorsSetup.vsix" IgnoreExitCode="true" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)ProjectSystem.vsix" IgnoreExitCode="true" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetStandard.VB.ProjectTemplates.vsix" IgnoreExitCode="true" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetStandard.CSharp.ProjectTemplates.vsix" IgnoreExitCode="true" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.VB.ProjectTemplates.vsix" IgnoreExitCode="true" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.Test.vsix" IgnoreExitCode="true" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.vsix" IgnoreExitCode="true" />
 
     <!-- Install Project System Vsixes -->
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.vsix" />
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.Test.vsix" />
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.VB.ProjectTemplates.vsix" />
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetStandard.CSharp.ProjectTemplates.vsix" />
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetStandard.VB.ProjectTemplates.vsix" />
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)ProjectSystem.vsix" />
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)VisualStudioEditorsSetup.vsix" />
-
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.vsix"/>
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.Test.vsix"/>
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.VB.ProjectTemplates.vsix"/>
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetStandard.CSharp.ProjectTemplates.vsix"/>
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetStandard.VB.ProjectTemplates.vsix"/>
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)ProjectSystem.vsix"/>
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)VisualStudioEditorsSetup.vsix"/>
+    
     <Message Text="Running integrations tests for %(SolutionFile.Filename) [$(Configuration)]" Importance="high" />
 
-    <Exec Command="&quot;$(NUGET_PACKAGES)\xunit.runner.console\$(XUnitRunnerConsoleVersion)\tools\xunit.console.x86.exe&quot; &quot;@(IntegrationTestAssembly, '&quot; &quot;')&quot; -quiet -nologo -noshadow -xml &quot;@(IntegrationXmlTestFile)&quot; -html &quot;@(IntegrationHtmlTestFile)&quot;"
+    <Exec Command="SET VisualBasicDesignTimeTargetsPath=$(BinariesDirectory)Rules\Microsoft.VisualBasic.DesignTime.targets &amp; SET FSharpDesignTimeTargetsPath=$(BinariesDirectory)Rules\Microsoft.FSharp.DesignTime.targets &amp; SET CSharpDesignTimeTargetsPath=$(BinariesDirectory)Rules\Microsoft.CSharp.DesignTime.targets &amp; &quot;$(NUGET_PACKAGES)\xunit.runner.console\$(XUnitRunnerConsoleVersion)\tools\xunit.console.x86.exe&quot; &quot;@(IntegrationTestAssembly, '&quot; &quot;')&quot; -quiet -nologo -noshadow -xml &quot;@(IntegrationXmlTestFile)&quot; -html &quot;@(IntegrationHtmlTestFile)&quot;"
           LogStandardErrorAsError="true"
           IgnoreExitCode="true"
           >
-
+          
       <Output TaskParameter="ExitCode" PropertyName="ExitCode" />
     </Exec>
 
