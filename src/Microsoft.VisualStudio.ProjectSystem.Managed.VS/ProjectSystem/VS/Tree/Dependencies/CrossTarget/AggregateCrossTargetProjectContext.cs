@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             Assumes.True(activeProjectConfiguration.IsCrossTargeting());
             Assumes.True(knownProjectConfigurations.All(c => c.IsCrossTargeting()));
 
-            var activeTargetFramework = activeProjectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty];
+            var activeTargetFramework = TargetFrameworkProvider.GetTargetFramework(activeProjectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty]);
             if (!_activeTargetFramework.Equals(activeTargetFramework))
             {
                 // Active target framework is different.
