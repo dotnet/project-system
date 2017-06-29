@@ -1,0 +1,27 @@
+<TreeView x:Uid="_this" x:Class="Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI.LoggingTreeView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging"
+    xmlns:model="clr-namespace:Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel.LoggingTreeView"
+    Margin="0,0,3,0"
+    ItemsSource="{Binding Path=RootItems}"
+    Loaded="LoggingTreeView_Loaded"
+    x:Name="_this"
+    >
+    <TreeView.InputBindings>
+        <KeyBinding x:Uid="KeyBinding_Open" Command="{x:Static local:Commands.Open}" Key="Enter" />
+    </TreeView.InputBindings>
+    <TreeView.Resources>
+        <BooleanToVisibilityConverter x:Uid="Converter_BooleanToVisibilityConverter" x:Key="BooleanToVisibility"/>
+       
+        <!-- Template for logs -->
+        <HierarchicalDataTemplate x:Uid="HierarchicalDataTemplate_LogItem" DataType="{x:Type model:LogTreeViewItem}" ItemsSource="{Binding Path=Children}">
+            <TextBlock x:Uid="TextBlock_LogItemText" Text="{Binding Path=Text}" MouseLeftButtonDown="LoggingTreeView_MouseLeftButtonDown"/>
+        </HierarchicalDataTemplate>
+
+        <!-- Template for the build -->
+        <HierarchicalDataTemplate x:Uid="HierarchicalDataTemplate_BuildItem" DataType="{x:Type model:BuildTreeViewItem}" ItemsSource="{Binding Path=Children}">
+            <TextBlock x:Uid="TextBlock_BuildItemText" Text="{Binding Path=Text}"/>
+        </HierarchicalDataTemplate>
+    </TreeView.Resources>
+</TreeView>

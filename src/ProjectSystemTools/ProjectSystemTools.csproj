@@ -28,8 +28,16 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="BuildLogging\BuildLoggingToolWindowControl.xaml.cs">
-      <DependentUpon>BuildLoggingToolWindowControl.xaml</DependentUpon>
+    <Compile Update="BuildLogging\UI\BuildLoggingToolWindow.xaml.cs">
+      <DependentUpon>BuildLoggingToolWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="BuildLogging\UI\LoggingTreeView.xaml.cs">
+      <DependentUpon>LoggingTreeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="BuildLogging\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Update="VSPackage.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -38,6 +46,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Update="BuildLogging\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="VSPackage.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>VSPackage.Designer.cs</LastGenOutput>
@@ -51,10 +63,17 @@
     </VSCTCompile>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="BuildLogging\BuildLoggingToolWindowControl.xaml">
+    <Page Include="BuildLogging\UI\BuildLoggingToolWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="BuildLogging\UI\LoggingTreeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="BuildLogging\ViewModel\BuildLoggingToolWindow\" />
   </ItemGroup>
   <PropertyGroup>
     <!-- This is here to get XAML files compiling until https://github.com/dotnet/project-system/issues/1467 is fixed. -->

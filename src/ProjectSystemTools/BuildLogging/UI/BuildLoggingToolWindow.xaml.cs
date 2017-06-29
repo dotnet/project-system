@@ -2,9 +2,9 @@
 
 using System.Windows.Controls;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
+namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI
 {
-    public partial class BuildLoggingToolWindowControl : UserControl
+    internal partial class BuildLoggingToolWindowControl : UserControl
     {
         public BuildLoggingToolWindowControl()
         {
