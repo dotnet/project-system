@@ -113,4 +113,6 @@
   <!-- CSharp Project Configuration Properties-->
   <StringProperty Name="LangVersion" DisplayName="Verze jazyka CSharp" Visible="False" />
   <StringProperty Name="CodeAnalysisRuleSet" DisplayName=" Sada pravidel analýzy kódu" Visible="False" />
+  <!-- F# specific properties-->
+  <BoolProperty Name="Tailcalls" Visible="False" />
 </Rule>
