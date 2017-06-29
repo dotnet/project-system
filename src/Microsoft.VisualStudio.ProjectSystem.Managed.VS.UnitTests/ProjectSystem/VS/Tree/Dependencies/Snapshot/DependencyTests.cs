@@ -213,6 +213,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(true, newDependency.Resolved);
             Assert.True(newDependency.Flags.Equals(DependencyTreeFlags.BaseReferenceFlags));
             Assert.True(newDependency.DependencyIDs.Count == 1);
+            Assert.Equal("aaa", newDependency.DependencyIDs[0]);
+        }
+
+        [Fact]
+        public void Dependency_SetProperties_PreservesDependencyIDs()
+        {
+            var mockModel = IDependencyModelFactory.Implement(
+                providerType: "providerType",
+                id: "cube",
+                dependencyIDs: ImmutableList<string>.Empty.Add("glass"));
+            var dependency = new Dependency(mockModel, ITargetFrameworkFactory.Implement("tfm1"));
+
+            var expectedId = "tfm1\\providerType\\cube";
+            var expectedDependencyId = "tfm1\\providerType\\glass";
+
+            Assert.Equal(expectedId, dependency.Id);
+            Assert.True(dependency.DependencyIDs.Count == 1);
+            Assert.Equal(expectedDependencyId, dependency.DependencyIDs[0]);
+
+            var newDependency = dependency.SetProperties(
+                caption: "newcaption");
+
+            Assert.Equal("newcaption", newDependency.Caption);
+
+            Assert.Equal(expectedId, newDependency.Id);
+            Assert.True(newDependency.DependencyIDs.Count == 1);
+            Assert.Equal(expectedDependencyId, newDependency.DependencyIDs[0]);
         }
 
         //[Fact]

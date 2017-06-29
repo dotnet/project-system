@@ -19,20 +19,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
             VisualStudio.SolutionExplorer.OpenFile(Project, "Class1.vb");
         }
 
-        [Fact, Trait("Integration", "ErrorList")]
+        [Fact(Skip = "https://github.com/dotnet/project-system/issues/2281"), Trait("Integration", "ErrorList")]
         public void ErrorList()
         {
             VisualStudio.Editor.SetText(@"
 Module Module1
- 
+
     Function Food() As P
         Return Nothing
     End Function
- 
+
     Sub Main()
         Foo()
     End Sub
- 
+
 End Module
 ");
             VisualStudio.ErrorList.ShowErrorList();

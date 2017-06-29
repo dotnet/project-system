@@ -19,4 +19,5 @@
   <BoolProperty Name="ExpandReferenceAssemblies" DisplayName="Développer les assemblys de référence" ReadOnly="True" />
   <BoolProperty Name="CopyLocalExpandedReferenceAssemblies" DisplayName="Copier les assemblys de référence développés locaux" ReadOnly="True" />
   <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
+  <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
 </Rule>

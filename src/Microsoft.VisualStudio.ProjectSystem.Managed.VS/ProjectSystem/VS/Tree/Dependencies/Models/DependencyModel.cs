@@ -42,6 +42,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             {
                 Flags = Flags.Except(DependencyTreeFlags.SupportsRemove);
             }
+
+            if (Properties.TryGetValue("Visible", out string visibleMetadata)
+                && bool.TryParse(visibleMetadata, out bool visible))
+            {
+                Visible = visible;
+            }
         }
 
         public string ProviderType { get; protected set; }

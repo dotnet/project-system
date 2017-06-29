@@ -43,4 +43,5 @@
   <StringProperty Name="Project" Visible="False" Description="個々のプロジェクトの参照先を追跡するためにソリューションで使用する GUID" />
   <StringProperty Name="ReferencedProjectIdentifier" Visible="False" Description="個々のプロジェクトの参照先を追跡するためにソリューションで使用する GUID を格納する以前 (VS2010 beta) の方法" />
   <BoolProperty Name="UseLibraryDependencyInputs" Visible="False" />
+  <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
 </Rule>

@@ -16,7 +16,7 @@
   </EnumProperty>
   <StringProperty Name="Generator" Category="Advanced" DisplayName="Outil personnalisé" Description="Spécifie l'outil qui transforme un fichier au moment du design et qui place les résultats de cette transformation dans un autre fichier. Par exemple, un fichier dataset (.xsd) est fourni avec un outil personnalisé par défaut." />
   <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="Espace de noms de l'outil personnalisé" Description="Espace de noms dans lequel est placé le résultat de l'outil personnalisé." />
-  <StringProperty Name="FullPath" Visible="false">
+  <StringProperty Name="FullPath" Visible="false" ReadOnly="true">
     <StringProperty.DataSource>
       <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>

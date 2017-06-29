@@ -59,5 +59,6 @@
   <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="Вычисленное имя исходного ссылочного элемента, в результате разрешения которого был получен данный разрешенный ссылочный элемент." />
   <StringProperty Name="ReferenceFromSDK" Visible="False" ReadOnly="True" Description="Пакет SDK, из которого получена эта ссылочная сборка, при использовании расширенной целевой сборки SDK." />
   <StringProperty Name="ResolvedFrom" Visible="False" ReadOnly="True" Description="{}Репозиторий, в котором хранилась ссылка, с помощью которой было выполнено данное разрешение. (&quot;{GAC}&quot;, если репозиторием был глобальный кэш сборок)." />
+  <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
   <BoolProperty Name="WinMDFile" Visible="false" ReadOnly="True" Description="Указывает, действительно ли система сборки подтвердила, что файл является WinMD-файлом (а не сборкой)" />
 </Rule>

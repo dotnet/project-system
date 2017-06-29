@@ -19,4 +19,5 @@
   <BoolProperty Name="ExpandReferenceAssemblies" DisplayName="展開參考組件" ReadOnly="True" />
   <BoolProperty Name="CopyLocalExpandedReferenceAssemblies" DisplayName="複製展開的參考組件到本機" ReadOnly="True" />
   <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
+  <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
 </Rule>

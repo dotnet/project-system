@@ -19,4 +19,5 @@
   <BoolProperty Name="ExpandReferenceAssemblies" DisplayName="Başvuru Bütünleştirilmiş Kodlarını Genişlet" ReadOnly="True" />
   <BoolProperty Name="CopyLocalExpandedReferenceAssemblies" DisplayName="Yerel Genişletilmiş Başvuru Derlemelerini Kopyala" ReadOnly="True" />
   <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
+  <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
 </Rule>
