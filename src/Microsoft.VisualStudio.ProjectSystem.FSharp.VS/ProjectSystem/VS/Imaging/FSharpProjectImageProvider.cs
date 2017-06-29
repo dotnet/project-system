@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.ProjectSystem.Imaging;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging
 {
     /// <summary>
-    ///     Provides C# project images.
+    ///     Provides F# project images.
     /// </summary>
     [Export(typeof(IProjectImageProvider))]
     [AppliesTo(ProjectCapability.FSharp)]
