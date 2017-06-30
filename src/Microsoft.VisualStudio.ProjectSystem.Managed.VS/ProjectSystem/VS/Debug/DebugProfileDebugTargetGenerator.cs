@@ -33,10 +33,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private IDisposable _debugProviderLink;
 
         [ImportingConstructor]
-        public DebugProfileDebugTargetGenerator(UnconfiguredProject unconfiguredProject, ILaunchSettingsProvider launchSettingProvider)
+        public DebugProfileDebugTargetGenerator(
+            UnconfiguredProject unconfiguredProject, 
+            ILaunchSettingsProvider launchSettingProvider,
+            IProjectThreadingService threadingService)
             : base(unconfiguredProject.Services)
         {
             LaunchSettingProvider = launchSettingProvider;
+            ProjectThreadingService = threadingService;
         }
 
         private NamedIdentity _dataSourceKey = new NamedIdentity();
@@ -63,15 +67,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         private ILaunchSettingsProvider LaunchSettingProvider{ get; }
+        private IProjectThreadingService ProjectThreadingService { get; }
 
 
         /// <summary>
         /// This provides access to the class which creates the list of debugger values..
         /// </summary>
         public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair> options)
-        {
-            return Task.FromResult<IDynamicEnumValuesGenerator>(new DebugProfileEnumValuesGenerator(LaunchSettingProvider));
-        }
+            => Task.FromResult<IDynamicEnumValuesGenerator>(
+                new DebugProfileEnumValuesGenerator(LaunchSettingProvider, ProjectThreadingService));
 
 
         protected override void Initialize()

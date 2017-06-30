@@ -144,4 +144,9 @@
     <Rule Id="IDE1006" Action="Error" />                      <!-- Naming styles                                Task Open()                                         Task OpenAsync()                      -->
     <Rule Id="IDE1006WithoutSuggestion" Action="Info" />
   </Rules>
+  <Rules AnalyzerId="Microsoft.VisualStudio.Threading.Analyzers" RuleNamespace="Microsoft.VisualStudio.Threading.Analyzers">
+    <Rule Id="VSTHRD200" Action="None" />                       <!-- Naming styles                              Task Open()                                         Task OpenAsync()                      -->
+    <Rule Id="VSTHRD010" Action="None" />                       <!-- Visual Studio service should be used on main thread explicitly.-->
+    <Rule Id="VSTHRD103" Action="None" />                       <!-- Call async methods when in an async method.-->
+  </Rules>
 </RuleSet>

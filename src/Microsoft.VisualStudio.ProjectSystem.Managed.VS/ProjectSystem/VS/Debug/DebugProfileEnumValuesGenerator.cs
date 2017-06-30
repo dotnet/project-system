@@ -6,7 +6,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.Threading;
-using Microsoft.VisualStudio.ProjectSystem.Properties;    
+using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.Shell;
+using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
@@ -26,19 +28,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// <summary>
         /// Create a new instance of the class.
         /// </summary>
-        internal DebugProfileEnumValuesGenerator(ILaunchSettingsProvider profileProvider)
+        internal DebugProfileEnumValuesGenerator(
+            ILaunchSettingsProvider profileProvider,
+            IProjectThreadingService threadingService)
         {
-            listedValues = new AsyncLazy<ICollection<IEnumValue>>(delegate 
+            Requires.NotNull(profileProvider, nameof(profileProvider));
+            Requires.NotNull(threadingService, nameof(threadingService));
+
+            this.listedValues = new AsyncLazy<ICollection<IEnumValue>>(delegate
             {
                 var curSnapshot = profileProvider.CurrentSnapshot;
-                if (curSnapshot != null )
+                if (curSnapshot != null)
                 {
                     return Task.FromResult(GetEnumeratorEnumValues(curSnapshot));
                 }
 
                 ICollection<IEnumValue> emptyCollection = new List<IEnumValue>();
                 return Task.FromResult(emptyCollection);
-            });
+            }, threadingService.JoinableTaskFactory);
         }
 
         /// <summary>
