@@ -29,5 +29,10 @@ namespace Microsoft.VisualStudio
         {
             get { return StringComparer.Ordinal; }
         }
+
+        public static IEqualityComparer<string> DependencyProviderTypes
+        {
+            get { return StringComparer.OrdinalIgnoreCase; }
+        }
     }
 }
