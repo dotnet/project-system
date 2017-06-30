@@ -128,4 +128,6 @@
   <StringProperty Name="LangVersion" DisplayName="CSharp Language Version" Visible="False"/>
   <StringProperty Name="CodeAnalysisRuleSet" DisplayName=" Code Analysis Rule set" Visible="False"/>
 
+  <!-- F# specific properties-->
+  <BoolProperty Name="Tailcalls" Visible="False" />
 </Rule>

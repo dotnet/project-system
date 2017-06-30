@@ -216,13 +216,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 _items[itemType.Key] = new HashSet<(string Path, CopyToOutputDirectoryType CopyType)>(items, UpToDateCheckItemComparer.Instance);
                 _itemsChangedSinceLastCheck = true;
             }
-
-            if (e.ProjectChanges.TryGetValue(UpToDateCheckOutput.SchemaName, out var outputs) &&
-                outputs.Difference.AnyChanges)
-            {
-                _customOutputs.Clear();
-                _customOutputs.AddRange(outputs.After.Items.Select(item => item.Value[UpToDateCheckOutput.FullPathProperty]));
-            }
         }
 
         private void OnOutputGroupChanged(IImmutableDictionary<string, IOutputGroup> e)
@@ -511,7 +504,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     return false;
                 }
 
-                if (outputItemTime <= itemTime)
+                if (outputItemTime < itemTime)
                 {
                     return false;
                 }
@@ -565,22 +558,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             if (!markersUpToDate)
             {
-                _telemetryService.PostProperty($"{TelemetryEventName}/Fail", "Reason", "Marker");
+                Fail(logger, "Project is not up to date due to markers being out of date.", "Marker");
             }
             else if (!outputsUpToDate)
             {
-                _telemetryService.PostProperty($"{TelemetryEventName}/Fail", "Reason", "Outputs");
+                Fail(logger, "Project is not up to date due to outputs being out of date.", "Outputs");
             }
             else if (!copyToOutputDirectoryUpToDate)
             {
-                _telemetryService.PostProperty($"{TelemetryEventName}/Fail", "Reason", "CopyToOutputDirectory");
+                Fail(logger, "Project is not up to date due to file copies being out of date.", "CopyToOutputDirectory");
             }
             else
             {
+                logger.Info("Project is up to date.");
                 _telemetryService.PostEvent($"{TelemetryEventName}/Success");
             }
-
-            logger.Info("Project is{0} up to date.", !isUpToDate ? " not" : "");
 
             return isUpToDate;
         }

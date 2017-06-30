@@ -172,4 +172,8 @@
     </StringProperty>
 
     <DynamicEnumProperty Name="SupportedTargetFrameworks" DisplayName="Supported TargetFrameworks" EnumProvider="SupportedTargetFrameworksEnumProvider" Visible="False"/>
+    
+    <!-- F# specific properties-->
+    <BoolProperty Name="CanUseTargetFSharpCoreVersion" Visible="False"/>
+    <StringProperty Name="TargetFSharpCoreVersion" Visible="False" />
 </Rule>
