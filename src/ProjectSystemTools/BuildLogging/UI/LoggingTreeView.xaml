@@ -4,8 +4,7 @@
     xmlns:local="clr-namespace:Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging"
     xmlns:model="clr-namespace:Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel.LoggingTreeView"
     Margin="0,0,3,0"
-    ItemsSource="{Binding Path=RootItems}"
-    Loaded="LoggingTreeView_Loaded"
+    ItemsSource="{Binding Path=BuildItems}"
     x:Name="_this"
     >
     <TreeView.InputBindings>

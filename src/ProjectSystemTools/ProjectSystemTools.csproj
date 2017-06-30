@@ -72,9 +72,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="BuildLogging\ViewModel\BuildLoggingToolWindow\" />
-  </ItemGroup>
   <PropertyGroup>
     <!-- This is here to get XAML files compiling until https://github.com/dotnet/project-system/issues/1467 is fixed. -->
     <ProjectLanguage>CSharp</ProjectLanguage>

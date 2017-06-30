@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel.LoggingT
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI
 {
-    internal partial class LoggingTreeView : TreeView
+    public partial class LoggingTreeView : TreeView
     {
         public LoggingTreeView()
         {
