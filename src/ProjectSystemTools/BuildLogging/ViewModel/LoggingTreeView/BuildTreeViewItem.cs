@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel.LoggingTreeView
 {
-    class BuildTreeViewItem
+    internal sealed class BuildTreeViewItem
     {
+        public ObservableCollection<LogTreeViewItem> Children { get; }
+
+        public string Text { get; }
+
+        public BuildTreeViewItem(BuildOperation buildOperation)
+        {
+            Text = buildOperation.ToString();
+        }
     }
 }

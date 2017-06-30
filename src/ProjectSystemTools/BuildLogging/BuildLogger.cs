@@ -23,6 +23,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
         public void Stop() => IsLogging = false;
 
+        public event EventHandler<BuildOperation> BuildStarted;
+
+        public event EventHandler<BuildOperation> BuildEnded;
+
         public void Dispose()
         {
             if (!_isDisposed)
@@ -37,10 +41,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
             _isDisposed = true;
         }
 
-        void IVsUpdateSolutionEvents4.UpdateSolution_QueryDelayFirstUpdateAction(out int pfDelay)
+        private static BuildOperation ActionToOperation(uint dwAction)
         {
-            pfDelay = 0;
+            var action = (VSSOLNBUILDUPDATEFLAGS)dwAction;
+
+            switch (action & VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_MASK)
+            {
+                case VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_CLEAN:
+                    return BuildOperation.Clean;
+                case VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD:
+                    return BuildOperation.Build;
+                case VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD | VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_FORCE_UPDATE:
+                    return BuildOperation.Rebuild;
+                case VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_DEPLOY:
+                    return BuildOperation.Deploy;
+            }
+
+            var action2 = (VSSOLNBUILDUPDATEFLAGS2)dwAction;
+
+            switch (action2 & (VSSOLNBUILDUPDATEFLAGS2)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_MASK)
+            {
+                case VSSOLNBUILDUPDATEFLAGS2.SBF_OPERATION_PUBLISH:
+                    return BuildOperation.Publish;
+                case VSSOLNBUILDUPDATEFLAGS2.SBF_OPERATION_PUBLISHUI:
+                    return BuildOperation.PublishUI;
+                default:
+                    return BuildOperation.Unknown;
+            }
         }
+
+        void IVsUpdateSolutionEvents4.UpdateSolution_QueryDelayFirstUpdateAction(out int pfDelay) => pfDelay = 0;
 
         void IVsUpdateSolutionEvents4.UpdateSolution_BeginFirstUpdateAction()
         {
@@ -50,13 +80,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
         {
         }
 
-        void IVsUpdateSolutionEvents4.UpdateSolution_BeginUpdateAction(uint dwAction)
-        {
-        }
+        void IVsUpdateSolutionEvents4.UpdateSolution_BeginUpdateAction(uint dwAction) => BuildStarted?.Invoke(this, ActionToOperation(dwAction));
 
-        void IVsUpdateSolutionEvents4.UpdateSolution_EndUpdateAction(uint dwAction)
-        {
-        }
+        void IVsUpdateSolutionEvents4.UpdateSolution_EndUpdateAction(uint dwAction) => BuildEnded?.Invoke(this, ActionToOperation(dwAction));
 
         void IVsUpdateSolutionEvents4.OnActiveProjectCfgChangeBatchBegin()
         {

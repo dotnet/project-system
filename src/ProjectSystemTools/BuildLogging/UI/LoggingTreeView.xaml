@@ -6,6 +6,7 @@
     Margin="0,0,3,0"
     ItemsSource="{Binding Path=BuildItems}"
     x:Name="_this"
+    x:ClassModifier="internal"
     >
     <TreeView.InputBindings>
         <KeyBinding x:Uid="KeyBinding_Open" Command="{x:Static local:Commands.Open}" Key="Enter" />
@@ -14,7 +15,7 @@
         <BooleanToVisibilityConverter x:Uid="Converter_BooleanToVisibilityConverter" x:Key="BooleanToVisibility"/>
        
         <!-- Template for logs -->
-        <HierarchicalDataTemplate x:Uid="HierarchicalDataTemplate_LogItem" DataType="{x:Type model:LogTreeViewItem}" ItemsSource="{Binding Path=Children}">
+        <HierarchicalDataTemplate x:Uid="HierarchicalDataTemplate_LogItem" DataType="{x:Type model:LogTreeViewItem}">
             <TextBlock x:Uid="TextBlock_LogItemText" Text="{Binding Path=Text}" MouseLeftButtonDown="LoggingTreeView_MouseLeftButtonDown"/>
         </HierarchicalDataTemplate>
 

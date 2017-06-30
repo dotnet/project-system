@@ -5,12 +5,12 @@ using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel.BuildLog
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI
 {
-    public partial class BuildLoggingToolWindow : UserControl
+    internal partial class BuildLoggingToolWindowControl : UserControl
     {
-        public BuildLoggingToolWindow()
+        public BuildLoggingToolWindowControl(BuildLogger buildLogger)
         {
             InitializeComponent();
-            DataContext = new ToolWindow();
+            DataContext = new ToolWindow(buildLogger);
         }
     }
 }
