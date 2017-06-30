@@ -21,6 +21,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private readonly IVsOptionalService<SVsSettingsPersistenceManager, ISettingsManager> _settingsManager;
         private readonly IEnvironmentHelper _environment;
+#if !DEBUG
+        private bool? _isProjectOutputPaneEnabled;
+#endif
 
         [ImportingConstructor]
         private ProjectSystemOptions(IEnvironmentHelper environment, IVsOptionalService<SVsSettingsPersistenceManager, ISettingsManager> settingsManager)
@@ -38,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 #if DEBUG
                 return true;
 #else
-                return IsEnabled("PROJECTSYSTEM_PROJECTOUTPUTPANEENABLED");
+                return IsEnabled("PROJECTSYSTEM_PROJECTOUTPUTPANEENABLED", ref _isProjectOutputPaneEnabled);
 #endif
             }
         }
@@ -55,11 +58,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return _settingsManager.Value?.GetValueOrDefault(FastUpToDateLogLevelSettingKey, LogLevel.None) ?? LogLevel.None;
         }
 
-        private bool IsEnabled(string variable)
+        private bool IsEnabled(string variable, ref bool? result)
         {
-            string value = _environment.GetEnvironmentVariable(variable);
+            if (result == null)
+            {
+                string value = _environment.GetEnvironmentVariable(variable);
 
-            return string.Equals(value, "1", StringComparison.OrdinalIgnoreCase);
+                result = string.Equals(value, "1", StringComparison.OrdinalIgnoreCase);
+            }
+
+            return result.Value;
         }
     }
 }
