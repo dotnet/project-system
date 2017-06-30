@@ -13,6 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel.Buil
     internal sealed class ToolWindow : IDisposable
     {
         private readonly BuildLogger _buildLogger;
+        private BuildTreeViewItem _currentBuildItem;
 
         public ObservableCollection<BuildTreeViewItem> BuildItems { get; }
 
@@ -21,16 +22,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel.Buil
             BuildItems = new ObservableCollection<BuildTreeViewItem>();
             _buildLogger = buildLogger;
             _buildLogger.BuildStarted += OnBuildStarted;
+            _buildLogger.BuildEnded += OnBuildEnded;
+        }
+
+        private void OnBuildEnded(object sender, BuildOperation e)
+        {
+            _currentBuildItem?.Completed();
+            _currentBuildItem = null;
         }
 
         private void OnBuildStarted(object sender, BuildOperation buildOperation)
         {
-            BuildItems.Add(new BuildTreeViewItem(buildOperation));
+            _currentBuildItem = new BuildTreeViewItem(buildOperation);
+            BuildItems.Add(_currentBuildItem);
         }
 
         public void Dispose()
         {
             _buildLogger.BuildStarted -= OnBuildStarted;
+            _buildLogger.BuildEnded -= OnBuildEnded;
             _buildLogger?.Dispose();
         }
     }
