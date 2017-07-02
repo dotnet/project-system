@@ -5,7 +5,6 @@ using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
-using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI.CommandHandlers;
 using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel.LoggingTreeView;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI
@@ -20,9 +19,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI
 
         private void RegisterCommandBindings()
         {
-            var handlers = new BaseHandler[]
+            var handlers = new BaseCommandHandler[]
             {
-                new Open() 
+                new OpenCommandHandler() 
             };
 
             CommandBindings.AddRange(handlers.Select(h => h.CreateCommandBinding()).ToArray());

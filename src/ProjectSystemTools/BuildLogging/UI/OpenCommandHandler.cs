@@ -3,9 +3,9 @@
 using System.Windows.Input;
 using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel.LoggingTreeView;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI.CommandHandlers
+namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI
 {
-    internal sealed class Open : BaseHandler
+    internal sealed class OpenCommandHandler : BaseCommandHandler
     {
         protected override ICommand Command => Commands.Open;
 

@@ -2,9 +2,9 @@
 
 using System.Windows.Input;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI.CommandHandlers
+namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI
 {
-    internal abstract class BaseHandler
+    internal abstract class BaseCommandHandler
     {
         public CommandBinding CreateCommandBinding()
         {
