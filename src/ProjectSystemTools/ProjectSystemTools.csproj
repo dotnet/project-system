@@ -28,8 +28,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="BuildLogging\UI\BuildLoggingToolWindowControl.xaml.cs">
-      <DependentUpon>BuildLoggingToolWindowControl.xaml</DependentUpon>
+    <Compile Update="BuildLogging\UI\ToolWindowControl.xaml.cs">
+      <DependentUpon>ToolWindowControl.xaml</DependentUpon>
     </Compile>
     <Compile Update="BuildLogging\UI\LoggingTreeView.xaml.cs">
       <DependentUpon>LoggingTreeView.xaml</DependentUpon>
@@ -63,7 +63,7 @@
     </VSCTCompile>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="BuildLogging\UI\BuildLoggingToolWindowControl.xaml">
+    <Page Include="BuildLogging\UI\ToolWindowControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

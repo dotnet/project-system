@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
             ToolBarLocation = (int)VSTWT_LOCATION.VSTWT_TOP;
 
             _buildLogger = new BuildLogger(ProjectSystemToolsPackage.Instance);
-            Content = new BuildLoggingToolWindowControl(_buildLogger);
+            Content = new ToolWindowControl(_buildLogger);
         }
 
         int IOleCommandTarget.QueryStatus(ref Guid commandGroupGuid, uint commandCount, OLECMD[] commands, IntPtr commandText)

@@ -5,9 +5,9 @@ using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel.BuildLog
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI
 {
-    internal partial class BuildLoggingToolWindowControl : UserControl
+    internal partial class ToolWindowControl : UserControl
     {
-        public BuildLoggingToolWindowControl(BuildLogger buildLogger)
+        public ToolWindowControl(BuildLogger buildLogger)
         {
             InitializeComponent();
             DataContext = new ToolWindow(buildLogger);
