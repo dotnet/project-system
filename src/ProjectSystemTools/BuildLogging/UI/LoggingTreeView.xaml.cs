@@ -5,7 +5,7 @@ using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
-using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel.LoggingTreeView;
+using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI
 {
@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI
         private void LoggingTreeView_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             // Handle double click directly
-            if (e.ClickCount != 2 || !(((StackPanel) sender).DataContext is LogTreeViewItem currentItem))
+            if (e.ClickCount != 2 || !(((StackPanel) sender).DataContext is LogTreeViewModel currentItem))
             {
                 return;
             }

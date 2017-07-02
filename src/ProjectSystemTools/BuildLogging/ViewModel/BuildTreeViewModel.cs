@@ -1,13 +1,15 @@
-﻿using System;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel.LoggingTreeView
+namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel
 {
-    internal sealed class BuildTreeViewItem : INotifyPropertyChanged
+    internal sealed class BuildTreeViewModel : INotifyPropertyChanged
     {
-        public ObservableCollection<LogTreeViewItem> Children { get; }
+        public ObservableCollection<LogTreeViewModel> Children { get; }
 
         public string Text
         {
@@ -22,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel.Logg
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public BuildTreeViewItem(BuildOperation buildOperation)
+        public BuildTreeViewModel(BuildOperation buildOperation)
         {
             Operation = buildOperation;
             Text = $"{buildOperation} (Running...)";

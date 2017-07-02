@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Windows.Input;
-using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel.LoggingTreeView;
+using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI
 {
@@ -22,21 +22,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI
 
         public static bool CanExecute(LoggingTreeView treeView)
         {
-            var treeViewItem = treeView.SelectedItem as LogTreeViewItem;
+            var treeViewItem = treeView.SelectedItem as LogTreeViewModel;
 
-            return treeViewItem != null &&
-                   treeViewItem.SupportsNavigateTo;
+            return treeViewItem != null;
         }
 
         public static bool Executed(LoggingTreeView treeView)
         {
-            if (CanExecute(treeView))
+            if (!CanExecute(treeView))
             {
-                ((LogTreeViewItem)treeView.SelectedItem).Open();
-                return true;
+                return false;
             }
 
-            return false;
+            ((LogTreeViewModel)treeView.SelectedItem).Open();
+            return true;
         }
     }
 }
