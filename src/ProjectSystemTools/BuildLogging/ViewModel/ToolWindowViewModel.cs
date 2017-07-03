@@ -34,6 +34,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel
             ThreadHelper.JoinableTaskFactory.RunAsync(async delegate
             {
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+                if (_currentBuildItem == null)
+                {
+                    _currentBuildItem = new BuildTreeViewModel(BuildOperation.DesignTime);
+                    BuildItems.Add(_currentBuildItem);
+                }
                 _currentBuildItem.Children.Add(new LogTreeViewModel(configuredProject));
             });
         }

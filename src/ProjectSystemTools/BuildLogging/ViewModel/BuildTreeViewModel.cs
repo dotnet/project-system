@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel
         {
             Operation = buildOperation;
             Children = new ObservableCollection<LogTreeViewModel>();
-            Text = $"{buildOperation} (Running...)";
+            Text = $"{buildOperation}{(buildOperation == BuildOperation.DesignTime ? "" : " (Running...)")}";
         }
 
         public void Completed()

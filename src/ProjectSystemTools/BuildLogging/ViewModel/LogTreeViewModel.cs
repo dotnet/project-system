@@ -1,7 +1,10 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Immutable;
 using System.ComponentModel;
+using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel
@@ -16,21 +19,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel
 
         private string _text;
 
-        public readonly string Path;
+        public readonly string FullPath;
+        public ImmutableDictionary<string, string> Dimensions;
         public DateTime? CompletionTime;
+
+        private string BaseText => $"{Path.GetFileName(FullPath)} [{Dimensions.Values.Aggregate((current, next) => $"{current}|{next}")}]";
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public LogTreeViewModel(ConfiguredProject configuredProject)
         {
-            Path = configuredProject.UnconfiguredProject.FullPath;
-            Text = $"{Path} (Building...)";
+            FullPath = configuredProject.UnconfiguredProject.FullPath;
+            Dimensions = configuredProject.ProjectConfiguration.Dimensions.ToImmutableDictionary();
+            Text = $"{BaseText} (Building...)";
         }
 
         public void Completed()
         {
             CompletionTime = DateTime.Now;
-            Text = $"{Path} ({CompletionTime})";
+            Text = $"{BaseText} ({CompletionTime})";
         }
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)

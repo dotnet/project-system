@@ -8,6 +8,7 @@
         Rebuild,
         Deploy,
         Publish,
-        PublishUI
+        PublishUI,
+        DesignTime
     }
 }
