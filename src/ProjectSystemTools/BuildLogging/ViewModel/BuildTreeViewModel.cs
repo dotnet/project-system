@@ -17,16 +17,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel
             set { _text = value; OnPropertyChanged(); }
         }
 
-        public BuildOperation Operation;
-
-        public DateTime? CompletionTime;
         private string _text;
+
+        public BuildOperation Operation;
+        public DateTime? CompletionTime;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public BuildTreeViewModel(BuildOperation buildOperation)
         {
             Operation = buildOperation;
+            Children = new ObservableCollection<LogTreeViewModel>();
             Text = $"{buildOperation} (Running...)";
         }
 

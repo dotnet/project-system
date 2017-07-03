@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 {
-    internal interface IBuildLogger
+    internal interface IBuildManager
     {
         bool IsLogging { get; }
 
@@ -15,8 +15,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
         void Stop();
 
-        void OnBuildStarted(BuildOperation operation);
+        void NotifyBuildOperationStarted(BuildOperation operation);
 
-        void OnBuildEnded(BuildOperation operation);
+        void NotifyBuildOperationEnded(BuildOperation operation);
+
+        void NotifyBuildStarted(ConfiguredProject configuredProject);
+
+        void NotifyBuildEnded(ConfiguredProject configuredProject);
     }
 }

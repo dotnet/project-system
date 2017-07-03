@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
         public const string BuildLoggingToolWindowCaption = "Build Logging";
 
-        private readonly IBuildLogger _buildLogger;
+        private readonly IBuildManager _buildLogger;
         private IVsSolutionBuildManager5 _updateSolutionEventsService;
         private readonly uint _updateSolutionEventsCookie;
 
@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
             ToolBarLocation = (int)VSTWT_LOCATION.VSTWT_TOP;
 
             var componentModel = (IComponentModel)GetService(typeof(SComponentModel));
-            _buildLogger = componentModel.GetService<IBuildLogger>();
+            _buildLogger = componentModel.GetService<IBuildManager>();
 
             _updateSolutionEventsService = ((System.IServiceProvider)ProjectSystemToolsPackage.Instance).GetService(typeof(SVsSolutionBuildManager)) as IVsSolutionBuildManager5;
             _updateSolutionEventsService?.AdviseUpdateSolutionEvents4(this, out _updateSolutionEventsCookie);
@@ -175,9 +175,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
         {
         }
 
-        void IVsUpdateSolutionEvents4.UpdateSolution_BeginUpdateAction(uint dwAction) => _buildLogger.OnBuildStarted(ActionToOperation(dwAction));
+        void IVsUpdateSolutionEvents4.UpdateSolution_BeginUpdateAction(uint dwAction) => _buildLogger.NotifyBuildOperationStarted(ActionToOperation(dwAction));
 
-        void IVsUpdateSolutionEvents4.UpdateSolution_EndUpdateAction(uint dwAction) => _buildLogger.OnBuildEnded(ActionToOperation(dwAction));
+        void IVsUpdateSolutionEvents4.UpdateSolution_EndUpdateAction(uint dwAction) => _buildLogger.NotifyBuildOperationEnded(ActionToOperation(dwAction));
 
         void IVsUpdateSolutionEvents4.OnActiveProjectCfgChangeBatchBegin()
         {
