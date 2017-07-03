@@ -149,13 +149,7 @@
     <OutDir>$(OutDir)\Samples\$(MSBuildProjectName)</OutDir>
   </PropertyGroup>
 
-  <!-- Setting UseLocalRoslynForIntegrationTests to true and LocalRoslynDebugDirectoryPath to the Debug path of Roslyn bits will enable using 
-  Locally built Roslyn bits for integration tests -->
-  <PropertyGroup>
-    <UseLocalRoslynForIntegrationTests>true</UseLocalRoslynForIntegrationTests>
-    <LocalRoslynDebugDirectoryPath>C:\repos\roslyn-internal\Open\Binaries\Debug\</LocalRoslynDebugDirectoryPath>
-    <LocalRoslynNugetPath>$(LocalRoslynDebugDirectoryPath)Nuget\PerBuildPreRelease</LocalRoslynNugetPath>
-  </PropertyGroup>
+
 
   <Choose>
     <When Condition="'$(UseLocalRoslynForIntegrationTests)' == 'true' AND Exists('$(LocalRoslynNugetPath)')">
