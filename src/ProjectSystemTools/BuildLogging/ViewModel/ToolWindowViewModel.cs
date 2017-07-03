@@ -5,38 +5,27 @@ using System.Collections.ObjectModel;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel
 {
-    internal sealed class ToolWindowViewModel : IDisposable
+    internal sealed class ToolWindowViewModel
     {
-        private readonly BuildLogger _buildLogger;
         private BuildTreeViewModel _currentBuildItem;
 
         public ObservableCollection<BuildTreeViewModel> BuildItems { get; }
 
-        public ToolWindowViewModel(BuildLogger buildLogger)
+        public ToolWindowViewModel()
         {
             BuildItems = new ObservableCollection<BuildTreeViewModel>();
-            _buildLogger = buildLogger;
-            _buildLogger.BuildStarted += OnBuildStarted;
-            _buildLogger.BuildEnded += OnBuildEnded;
         }
 
-        private void OnBuildEnded(object sender, BuildOperation e)
+        public void OnBuildEnded(BuildOperation e)
         {
             _currentBuildItem?.Completed();
             _currentBuildItem = null;
         }
 
-        private void OnBuildStarted(object sender, BuildOperation buildOperation)
+        public void OnBuildStarted(BuildOperation buildOperation)
         {
             _currentBuildItem = new BuildTreeViewModel(buildOperation);
             BuildItems.Add(_currentBuildItem);
-        }
-
-        public void Dispose()
-        {
-            _buildLogger.BuildStarted -= OnBuildStarted;
-            _buildLogger.BuildEnded -= OnBuildEnded;
-            _buildLogger?.Dispose();
         }
     }
 

@@ -3,6 +3,7 @@
 using System;
 using System.ComponentModel.Design;
 using System.Runtime.InteropServices;
+using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI;
 using Microsoft.VisualStudio.Shell;
@@ -12,13 +13,15 @@ using Constants = Microsoft.VisualStudio.OLE.Interop.Constants;
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 {
     [Guid(BuildLoggingToolWindowGuidString)]
-    public sealed class BuildLoggingToolWindow : ToolWindowPane, IOleCommandTarget
+    public sealed class BuildLoggingToolWindow : ToolWindowPane, IOleCommandTarget, IVsUpdateSolutionEvents4
     {
         public const string BuildLoggingToolWindowGuidString = "391238ea-dad7-488c-94d1-e2b6b5172bf3";
 
         public const string BuildLoggingToolWindowCaption = "Build Logging";
 
-        private readonly BuildLogger _buildLogger;
+        private readonly IBuildLogger _buildLogger;
+        private IVsSolutionBuildManager5 _updateSolutionEventsService;
+        private readonly uint _updateSolutionEventsCookie;
 
         public BuildLoggingToolWindow() : base(ProjectSystemToolsPackage.Instance)
         {
@@ -27,7 +30,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
             ToolBar = new CommandID(ProjectSystemToolsPackage.UIGroupGuid, ProjectSystemToolsPackage.BuildLoggingToolbarMenuId);
             ToolBarLocation = (int)VSTWT_LOCATION.VSTWT_TOP;
 
-            _buildLogger = new BuildLogger(ProjectSystemToolsPackage.Instance);
+            var componentModel = (IComponentModel)GetService(typeof(SComponentModel));
+            _buildLogger = componentModel.GetService<IBuildLogger>();
+
+            _updateSolutionEventsService = ((System.IServiceProvider)ProjectSystemToolsPackage.Instance).GetService(typeof(SVsSolutionBuildManager)) as IVsSolutionBuildManager5;
+            _updateSolutionEventsService?.AdviseUpdateSolutionEvents4(this, out _updateSolutionEventsCookie);
+
             Content = new ToolWindowControl(_buildLogger);
         }
 
@@ -90,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
             return handled ? VSConstants.S_OK : (int)Constants.OLECMDERR_E_NOTSUPPORTED;
         }
 
-        int IOleCommandTarget.Exec(ref Guid commandGroupGuid, uint commandID, uint commandExecutionOptions, IntPtr pvaIn, IntPtr pvaOut)
+        int IOleCommandTarget.Exec(ref Guid commandGroupGuid, uint commandId, uint commandExecutionOptions, IntPtr pvaIn, IntPtr pvaOut)
         {
             if (commandGroupGuid != ProjectSystemToolsPackage.CommandSetGuid)
             {
@@ -99,7 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
             var handled = true;
 
-            switch (commandID)
+            switch (commandId)
             {
                 case ProjectSystemToolsPackage.StartLoggingCommandId:
                     _buildLogger.Start();
@@ -115,6 +123,68 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
             }
 
             return handled ? VSConstants.S_OK : (int)Constants.OLECMDERR_E_NOTSUPPORTED;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (_updateSolutionEventsService == null)
+            {
+                return;
+            }
+
+            _updateSolutionEventsService.UnadviseUpdateSolutionEvents4(_updateSolutionEventsCookie);
+            _updateSolutionEventsService = null;
+        }
+
+        private static BuildOperation ActionToOperation(uint dwAction)
+        {
+            var action = (VSSOLNBUILDUPDATEFLAGS)dwAction;
+
+            switch (action & VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_MASK)
+            {
+                case VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_CLEAN:
+                    return BuildOperation.Clean;
+                case VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD:
+                    return BuildOperation.Build;
+                case VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD | VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_FORCE_UPDATE:
+                    return BuildOperation.Rebuild;
+                case VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_DEPLOY:
+                    return BuildOperation.Deploy;
+            }
+
+            var action2 = (VSSOLNBUILDUPDATEFLAGS2)dwAction;
+
+            switch (action2 & (VSSOLNBUILDUPDATEFLAGS2)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_MASK)
+            {
+                case VSSOLNBUILDUPDATEFLAGS2.SBF_OPERATION_PUBLISH:
+                    return BuildOperation.Publish;
+                case VSSOLNBUILDUPDATEFLAGS2.SBF_OPERATION_PUBLISHUI:
+                    return BuildOperation.PublishUI;
+                default:
+                    return BuildOperation.Unknown;
+            }
+        }
+
+        void IVsUpdateSolutionEvents4.UpdateSolution_QueryDelayFirstUpdateAction(out int pfDelay) => pfDelay = 0;
+
+        void IVsUpdateSolutionEvents4.UpdateSolution_BeginFirstUpdateAction()
+        {
+        }
+
+        void IVsUpdateSolutionEvents4.UpdateSolution_EndLastUpdateAction()
+        {
+        }
+
+        void IVsUpdateSolutionEvents4.UpdateSolution_BeginUpdateAction(uint dwAction) => _buildLogger.OnBuildStarted(ActionToOperation(dwAction));
+
+        void IVsUpdateSolutionEvents4.UpdateSolution_EndUpdateAction(uint dwAction) => _buildLogger.OnBuildEnded(ActionToOperation(dwAction));
+
+        void IVsUpdateSolutionEvents4.OnActiveProjectCfgChangeBatchBegin()
+        {
+        }
+
+        void IVsUpdateSolutionEvents4.OnActiveProjectCfgChangeBatchEnd()
+        {
         }
     }
 }

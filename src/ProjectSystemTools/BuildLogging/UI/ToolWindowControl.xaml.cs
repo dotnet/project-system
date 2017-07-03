@@ -7,10 +7,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI
 {
     internal partial class ToolWindowControl : UserControl
     {
-        public ToolWindowControl(BuildLogger buildLogger)
+        public ToolWindowControl(IBuildLogger buildLogger)
         {
             InitializeComponent();
-            DataContext = new ToolWindowViewModel(buildLogger);
+            DataContext = buildLogger;
         }
     }
 }
