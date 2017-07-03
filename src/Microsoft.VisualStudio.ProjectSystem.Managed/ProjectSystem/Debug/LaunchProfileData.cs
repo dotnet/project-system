@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         const string Prop_launchUrl = "launchUrl";
         const string Prop_environmentVariables = "environmentVariables";
 
-        static HashSet<string> knownProfileProperties = new HashSet<string>(StringComparer.Ordinal)
+        static HashSet<string> KnownProfileProperties = new HashSet<string>(StringComparer.Ordinal)
         {
             {Prop_commandName},
             {Prop_executablePath},
@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         public static bool IsKnownProfileProperty(string propertyName)
         {
-            return knownProfileProperties.Contains(propertyName);
+            return KnownProfileProperties.Contains(propertyName);
         }
 
         // We don't serialize the name as it the dictionary index

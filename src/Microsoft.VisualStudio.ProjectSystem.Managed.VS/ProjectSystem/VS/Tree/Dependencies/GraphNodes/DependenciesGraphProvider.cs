@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         private Dictionary<string, SnapshotChangedEventArgs> _changedContextsQueue =
             new Dictionary<string, SnapshotChangedEventArgs>(StringComparer.OrdinalIgnoreCase);
         private Task _trackChangesTask;
-        private readonly object _ExpandedGraphContextsLock = new object();
+        private readonly object _expandedGraphContextsLock = new object();
 
         /// <summary>
         /// Remembers expanded graph nodes to track changes in their children.
@@ -158,7 +158,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                 var shouldTrackChanges = actionHandlers.Aggregate(
                     false, (previousTrackFlag, handler) => previousTrackFlag || handler.Value.HandleRequest(context));
 
-                lock (_ExpandedGraphContextsLock)
+                lock (_expandedGraphContextsLock)
                 {
                     if (shouldTrackChanges && !ExpandedGraphContexts.Contains(context))
                     {
@@ -237,7 +237,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         internal Task TrackChangesAsync(SnapshotChangedEventArgs updatedProjectContext)
         {
             IList<IGraphContext> expandedContexts;
-            lock (_ExpandedGraphContextsLock)
+            lock (_expandedGraphContextsLock)
             {
                 expandedContexts = ExpandedGraphContexts.ToList();
             }
