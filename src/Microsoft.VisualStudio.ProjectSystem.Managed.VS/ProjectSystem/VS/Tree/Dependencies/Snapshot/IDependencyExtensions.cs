@@ -112,8 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             if (!ManagedPathHelper.IsRooted(dependency.OriginalItemSpec))
             {
-                var projectFolder = Path.GetDirectoryName(containingProjectPath);
-                dependencyProjectPath = ManagedPathHelper.TryMakeRooted(projectFolder, dependency.OriginalItemSpec);
+                dependencyProjectPath = ManagedPathHelper.TryMakeRooted(containingProjectPath, dependency.OriginalItemSpec);
             }
 
             return dependencyProjectPath;
