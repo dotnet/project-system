@@ -143,20 +143,23 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Sub
 
         Protected Overrides Function ProcessDialogKey(keyData As Keys) As Boolean
-            Select Case (keyData And Keys.KeyCode)
+            Dim keyCode = keyData And Keys.KeyCode
+
+            Select Case keyCode
                 Case Keys.Enter
                     Dim parent As ProjectDesignerTabControl = ParentTabControl
                     If parent IsNot Nothing Then
                         parent.OnItemClick(Me, reactivatePage:=True)
                     End If
-                Case Keys.Tab
-                    If (keyData And Keys.Control) <> Keys.Control Then
+                Case Keys.Tab, Keys.Up, Keys.Down
+
+                    If keyCode <> Keys.Tab OrElse (keyData And Keys.Control) <> Keys.Control Then                                   ' Don't process if Ctrl+Tab, but do Process for Ctrl+Up and Ctrl+Down
                         Dim parent As ProjectDesignerTabControl = ParentTabControl
                         If parent IsNot Nothing Then
                             Dim nextIndex As Int32 = ButtonIndex
-                            If (keyData And Keys.Shift) = Keys.Shift Then
+                            If (keyCode = Keys.Tab AndAlso (keyData And Keys.Shift) = Keys.Shift) OrElse keyCode = Keys.Up Then     ' Process if Shift+Tab or Up
                                 nextIndex -= 1
-                                If nextIndex <= 1 Then
+                                If nextIndex < 0 Then
                                     nextIndex = parent.TabButtonCount - 1
                                 End If
                             Else
