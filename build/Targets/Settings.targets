@@ -149,8 +149,6 @@
     <OutDir>$(OutDir)\Samples\$(MSBuildProjectName)</OutDir>
   </PropertyGroup>
 
-
-
   <Choose>
     <When Condition="'$(UseLocalRoslynForIntegrationTests)' == 'true' AND Exists('$(LocalRoslynNugetPath)')">
       <PropertyGroup>
