@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 if (itemFilter(item))
                 {
                     // Double check we don't already have this one -  we shouldn't
-                    var existingNode = tree.FindNodeByPath(item);
+                    var existingNode = tree.FindImmediateChildByPath(item);
                     System.Diagnostics.Debug.Assert(existingNode == null);
                     if (existingNode == null)
                     {
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 if (itemFilter(file))
                 {
                     // See if we already have this one -  we shouldn't
-                    var existingNode = tree.FindNodeByPath(file);
+                    var existingNode = tree.FindImmediateChildByPath(file);
                     System.Diagnostics.Debug.Assert(existingNode != null);
                     if (existingNode != null)
                     {
@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <param name="tree"></param>
         /// <param name="itemPath"></param>
         /// <returns></returns>
-        public static IProjectTree FindNodeByPath(this IProjectTree tree, string itemPath)
+        public static IProjectTree FindImmediateChildByPath(this IProjectTree tree, string itemPath)
         {
             return FindNodeHelper(tree, itemPath, child => child.FilePath);
         }
