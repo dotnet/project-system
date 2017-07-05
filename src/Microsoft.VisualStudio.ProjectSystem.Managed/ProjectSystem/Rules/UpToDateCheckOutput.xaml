@@ -7,7 +7,7 @@
     Description="File Properties"
     xmlns="http://schemas.microsoft.com/build/2009/properties">
     <Rule.DataSource>
-        <DataSource HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" SourceType="TargetResults" MSBuildTarget="CollectUpToDateOutputsDesignTime"/>
+        <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="UpToDateCheckOutput" SourceOfDefaultValue="AfterContext" />
     </Rule.DataSource>
     <Rule.Categories>
         <Category Name="Advanced" DisplayName="Advanced" />

@@ -216,6 +216,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 _items[itemType.Key] = new HashSet<(string Path, CopyToOutputDirectoryType CopyType)>(items, UpToDateCheckItemComparer.Instance);
                 _itemsChangedSinceLastCheck = true;
             }
+
+            if (e.ProjectChanges.TryGetValue(UpToDateCheckOutput.SchemaName, out var outputs) &&
+                outputs.Difference.AnyChanges)
+            {
+                _customOutputs.Clear();
+                _customOutputs.AddRange(outputs.After.Items.Select(item => item.Value[UpToDateCheckOutput.FullPathProperty]));
+            }
         }
 
         private void OnOutputGroupChanged(IImmutableDictionary<string, IOutputGroup> e)
