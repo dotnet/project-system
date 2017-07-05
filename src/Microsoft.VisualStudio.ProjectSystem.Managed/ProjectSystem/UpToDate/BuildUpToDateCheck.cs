@@ -504,7 +504,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     return false;
                 }
 
-                if (outputItemTime < itemTime)
+                if (outputItemTime <= itemTime)
                 {
                     return false;
                 }
@@ -558,21 +558,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             if (!markersUpToDate)
             {
-                Fail(logger, "Project is not up to date due to markers being out of date.", "Marker");
+                _telemetryService.PostProperty($"{TelemetryEventName}/Fail", "Reason", "Marker");
             }
             else if (!outputsUpToDate)
             {
-                Fail(logger, "Project is not up to date due to outputs being out of date.", "Outputs");
+                _telemetryService.PostProperty($"{TelemetryEventName}/Fail", "Reason", "Outputs");
             }
             else if (!copyToOutputDirectoryUpToDate)
             {
-                Fail(logger, "Project is not up to date due to file copies being out of date.", "CopyToOutputDirectory");
+                _telemetryService.PostProperty($"{TelemetryEventName}/Fail", "Reason", "CopyToOutputDirectory");
             }
             else
             {
-                logger.Info("Project is up to date.");
                 _telemetryService.PostEvent($"{TelemetryEventName}/Success");
             }
+
+            logger.Info("Project is{0} up to date.", !isUpToDate ? " not" : "");
 
             return isUpToDate;
         }
