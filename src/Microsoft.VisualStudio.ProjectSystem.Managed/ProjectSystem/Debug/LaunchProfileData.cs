@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         const string Prop_launchUrl = "launchUrl";
         const string Prop_environmentVariables = "environmentVariables";
 
-        static HashSet<string> KnownProfileProperties = new HashSet<string>(StringComparer.Ordinal)
+        static readonly HashSet<string> KnownProfileProperties = new HashSet<string>(StringComparer.Ordinal)
         {
             {Prop_commandName},
             {Prop_executablePath},
