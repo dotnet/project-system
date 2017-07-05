@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     public class SdkAndPackagesDependenciesSnapshotFilterTests
     {
         [Fact]
-        public void SdkAndPackagesDependenciesSnapshotFilter_WhenNotTopLevelOrResolved_ShouldDoNothing()
+        public void WhenNotTopLevelOrResolved_ShouldDoNothing()
         {
             var dependency = IDependencyFactory.Implement(
                 id: "mydependency1",
@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void SdkAndPackagesDependenciesSnapshotFilter_WhenSdk_ShouldFindMatchingPackageAndSetProperties()
+        public void WhenSdk_ShouldFindMatchingPackageAndSetProperties()
         {
             var dependencyIDs = new List<string> { "id1", "id2" }.ToImmutableList();
 
@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void SdkAndPackagesDependenciesSnapshotFilter_WhenSdkAndPackageUnresolved_ShouldDoNothing()
+        public void WhenSdkAndPackageUnresolved_ShouldDoNothing()
         {
             var dependencyIDs = new List<string> { "id1", "id2" }.ToImmutableList();
 
@@ -128,7 +128,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void SdkAndPackagesDependenciesSnapshotFilter_WhenPackage_ShouldFindMatchingSdkAndSetProperties()
+        public void WhenPackage_ShouldFindMatchingSdkAndSetProperties()
         {
             var dependencyIDs = new List<string> { "id1", "id2" }.ToImmutableList();
 
@@ -180,7 +180,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void SdkAndPackagesDependenciesSnapshotFilter_WhenPackageRemoving_ShouldCleanupSdk()
+        public void WhenPackageRemoving_ShouldCleanupSdk()
         {
             var dependencyIDs = ImmutableList<string>.Empty;
 

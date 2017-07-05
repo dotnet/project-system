@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     public class PackageAnalyzerAssemblyDependencyModelTests
     {
         [Fact]
-        public void PackageAnalyzerAssemblyDependencyModelTests_Resolved()
+        public void Resolved()
         {
             var properties = ImmutableDictionary<string, string>.Empty.Add("myProp", "myVal");
             var dependencyIDs = new[] { "id1", "id2" };
@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void PackageAnalyzerAssemblyDependencyModelTests_Unresolved()
+        public void Unresolved()
         {
             var properties = ImmutableDictionary<string, string>.Empty.Add("myProp", "myVal");
             var dependencyIDs = new[] { "id1", "id2" };

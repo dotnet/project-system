@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         }
 
         [Fact]
-        public void VsLangProjectProperties_NotNull()
+        public void NotNull()
         {
             var unconfiguredProjectMock = new Mock<UnconfiguredProject>();
             unconfiguredProjectMock.Setup(p => p.Capabilities)
@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         }
 
         [Fact]
-        public void VsLangProjectProperties_ImportsAndEventsAsNull()
+        public void ImportsAndEventsAsNull()
         {
             var imports = Mock.Of<Imports>();
             var events = Mock.Of<VSProjectEvents>();
@@ -93,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 
 
         [Fact]
-        public void VsLangProjectProperties_ImportsAndEventsAsNonNull()
+        public void ImportsAndEventsAsNonNull()
         {
             var imports = Mock.Of<Imports>();
             var importsImpl = new OrderPrecedenceImportCollection<Imports>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, (UnconfiguredProject)null)
@@ -127,7 +127,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         }
 
         [Fact]
-        public void VsLangProjectProperties_OutputTypeEx()
+        public void OutputTypeEx()
         {
             var setValues = new List<object>();
             var project = UnconfiguredProjectFactory.Create();
@@ -150,7 +150,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         }
 
         [Fact]
-        public void VsLangProjectProperties_OutputType()
+        public void OutputType()
         {
             var setValues = new List<object>();
             var project = UnconfiguredProjectFactory.Create();
@@ -173,7 +173,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         }
 
         [Fact]
-        public void VsLangProjectProperties_AssemblyName()
+        public void AssemblyName()
         {
             var setValues = new List<object>();
             var project = UnconfiguredProjectFactory.Create();
@@ -197,7 +197,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         }
 
         [Fact]
-        public void VsLangProjectProperties_FullPath()
+        public void FullPath()
         {
             var project = UnconfiguredProjectFactory.Create();
             var data = new PropertyPageData()
@@ -215,7 +215,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         }
 
         [Fact]
-        public void VsLangProjectProperties_AbsoluteProjectDirectory()
+        public void AbsoluteProjectDirectory()
         {
             var project = UnconfiguredProjectFactory.Create();
             var data = new PropertyPageData()
@@ -233,7 +233,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         }
 
         [Fact]
-        public void VsLangProjectProperties_ExtenderCATID()
+        public void ExtenderCATID()
         {
             var vsproject = CreateInstance(
                 Mock.Of<VSLangProj.VSProject>(),

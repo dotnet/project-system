@@ -82,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         }
 
         [Fact]
-        public void ConsoleDebugLaunchProvider_GetExeAndArguments()
+        public void GetExeAndArguments()
         {
             var debugger = GetDebugTargetsProvider();
 
@@ -100,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         }
 
         [Fact]
-        public void ConsoleDebugLaunchProvider_GetExeAndArgumentsWithEscapedArgs()
+        public void GetExeAndArgumentsWithEscapedArgs()
         {
             var debugger = GetDebugTargetsProvider();
 
@@ -118,7 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         }
 
         [Fact]
-        public void ConsoleDebugLaunchProvider_GetExeAndArgumentsWithNullArgs()
+        public void GetExeAndArgumentsWithNullArgs()
         {
             var debugger = GetDebugTargetsProvider();
 
@@ -132,7 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         }
 
         [Fact]
-        public void ConsoleDebugLaunchProvider_GetExeAndArgumentsWithEmptyArgs()
+        public void GetExeAndArgumentsWithEmptyArgs()
         {
             var debugger = GetDebugTargetsProvider();
 
@@ -146,7 +146,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         }
 
         [Fact]
-        public async Task ConsoleDebugLaunchProvider_QueryDebugTargets_ProjectProfileAsyncF5()
+        public async Task QueryDebugTargets_ProjectProfileAsyncF5()
         {
             var debugger = GetDebugTargetsProvider();
 
@@ -164,7 +164,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         }
 
         [Fact]
-        public async Task ConsoleDebugLaunchProvider_QueryDebugTargets_ProjectProfileAsyncCtrlF5()
+        public async Task QueryDebugTargets_ProjectProfileAsyncCtrlF5()
         {
             var debugger = GetDebugTargetsProvider();
 
@@ -183,7 +183,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         }
 
         [Fact]
-        public async Task ConsoleDebugLaunchProvider_QueryDebugTargets_ProjectProfileAsyncProfile()
+        public async Task QueryDebugTargets_ProjectProfileAsyncProfile()
         {
             var debugger = GetDebugTargetsProvider();
 
@@ -197,7 +197,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         }
 
         [Fact]
-        public async Task ConsoleDebugLaunchProvider_QueryDebugTargets_ExeProfileAsyncF5()
+        public async Task QueryDebugTargets_ExeProfileAsyncF5()
         {
             var debugger = GetDebugTargetsProvider();
 
@@ -212,7 +212,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         }
 
         [Fact]
-        public async Task ConsoleDebugLaunchProvider_QueryDebugTargets_ExeProfileAsyncCtrlF5()
+        public async Task QueryDebugTargets_ExeProfileAsyncCtrlF5()
         {
             var debugger = GetDebugTargetsProvider();
 
@@ -230,7 +230,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         }
 
         [Fact]
-        public async Task ConsoleDebugLaunchProvider_QueryDebugTargets_ExeProfileAsyncExeRelativeNoWorkingDir()
+        public async Task QueryDebugTargets_ExeProfileAsyncExeRelativeNoWorkingDir()
         {
             var debugger = GetDebugTargetsProvider();
 
@@ -244,7 +244,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         }
 
         [Fact]
-        public async Task ConsoleDebugLaunchProvider_QueryDebugTargets_ExeProfileAsyncExeRelativeTooWorkingDir()
+        public async Task QueryDebugTargets_ExeProfileAsyncExeRelativeTooWorkingDir()
         {
             var debugger = GetDebugTargetsProvider();
 
@@ -259,7 +259,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         }
 
         [Fact]
-        public void ConsoleDebugLaunchProvider_ValidateSettingsNoExe()
+        public void ValidateSettingsNoExe()
         {
             string executable = null;
             string workingDir= null;
@@ -278,7 +278,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         }
 
         [Fact]
-        public void ConsoleDebugLaunchProvider_ValidateSettingsExeNotFound()
+        public void ValidateSettingsExeNotFound()
         {
             string executable = null;
             string workingDir= null;
@@ -301,7 +301,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         }
 
         [Fact]
-        public void ConsoleDebugLaunchProvider_ValidateSettingsWorkingDir()
+        public void ValidateSettingsWorkingDir()
         {
             string executable = null;
             string workingDir= null;

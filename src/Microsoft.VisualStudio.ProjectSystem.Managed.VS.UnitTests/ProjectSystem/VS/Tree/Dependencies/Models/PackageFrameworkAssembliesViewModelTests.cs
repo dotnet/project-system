@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     public class PackageFrameworkAssembliesViewModelTests
     {
         [Fact]
-        public void PackageFrameworkAssembliesViewModelTests_Resolved()
+        public void Resolved()
         {
             var model = new PackageFrameworkAssembliesViewModel();
 

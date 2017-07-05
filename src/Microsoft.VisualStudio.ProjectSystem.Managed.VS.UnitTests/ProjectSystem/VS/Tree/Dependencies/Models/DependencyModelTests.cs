@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     public class DependencyModelTests
     {
         [Fact]
-        public void DependencyModel_Constructor_WhenRequiredParamsNotProvided_ShouldThrow()
+        public void Constructor_WhenRequiredParamsNotProvided_ShouldThrow()
         {
             Assert.Throws<ArgumentNullException>("providerType", () =>
             {
@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void DependencyModel_Constructor_WhenOptionalValuesNotProvided_ShouldSetDefaults()
+        public void Constructor_WhenOptionalValuesNotProvided_ShouldSetDefaults()
         {
             var model = new DependencyModel(
                 providerType: "somProvider", 
@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void DependencyModel_Constructor_WhenValidParametersProvided_UnresolvedAndNotImplicit()
+        public void Constructor_WhenValidParametersProvided_UnresolvedAndNotImplicit()
         {
             var model = new TestableDependencyModel(
                 providerType: "somProvider",
@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void DependencyModel_Constructor_WhenValidParametersProvided_ResolvedAndNotImplicit()
+        public void Constructor_WhenValidParametersProvided_ResolvedAndNotImplicit()
         {
             var model = new TestableDependencyModel(
                 providerType: "somProvider",
@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void DependencyModel_Constructor_WhenValidParametersProvided_ResolvedAndImplicit()
+        public void Constructor_WhenValidParametersProvided_ResolvedAndImplicit()
         {
             var model = new TestableDependencyModel(
                 providerType: "somProvider",
@@ -114,7 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void DependencyModel_EqualsAndGetHashCode()
+        public void EqualsAndGetHashCode()
         {
             var model1 = new TestableDependencyModel(
                 providerType: "somProvider",
@@ -154,7 +154,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void DependencyModel_Visible_True()
+        public void Visible_True()
         {
             var dependencyModel = new DependencyModel(
                 providerType: "someProvider",
@@ -169,7 +169,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void DependencyModel_Visible_False()
+        public void Visible_False()
         {
             var dependencyModel = new DependencyModel(
                 providerType: "someProvider",
@@ -184,7 +184,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void DependencyModel_Visible_TrueWhenNotSpecified()
+        public void Visible_TrueWhenNotSpecified()
         {
             var dependencyModel = new DependencyModel(
                 providerType: "someProvider",

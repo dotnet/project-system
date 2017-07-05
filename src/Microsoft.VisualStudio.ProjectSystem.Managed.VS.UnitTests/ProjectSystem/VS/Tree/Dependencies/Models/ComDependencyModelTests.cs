@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     public class ComDependencyModelTests
     {
         [Fact]
-        public void ComDependencyModelTests_Resolved()
+        public void Resolved()
         {
             var properties = ImmutableDictionary<string, string>.Empty.Add("myProp", "myVal");
 
@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void ComDependencyModelTests_Unresolved()
+        public void Unresolved()
         {
             var properties = ImmutableDictionary<string, string>.Empty.Add("myProp", "myVal");
 
@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void ComDependencyModelTests_Implicit()
+        public void Implicit()
         {
             var properties = ImmutableDictionary<string, string>.Empty.Add("myProp", "myVal");
 

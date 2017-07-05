@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     public class TargetedDependenciesSnapshotTests
     {
         [Fact]
-        public void TargetedDependenciesSnapshot_Constructor_WhenRequiredParamsNotProvided_ShouldThrow()
+        public void TConstructor_WhenRequiredParamsNotProvided_ShouldThrow()
         {
             Assert.Throws<ArgumentNullException>("projectPath", () =>
             {
@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void TargetedDependenciesSnapshot_Constructor()
+        public void TConstructor()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void TargetedDependenciesSnapshot_FromChanges_Empty()
+        public void TFromChanges_Empty()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
@@ -91,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void TargetedDependenciesSnapshot_FromChanges_NoChanges()
+        public void TFromChanges_NoChanges()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
@@ -152,7 +152,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void TargetedDependenciesSnapshot_FromChanges_NoChangesAfterBeforeRemoveFilterDeclinedChange()
+        public void TFromChanges_NoChangesAfterBeforeRemoveFilterDeclinedChange()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
@@ -214,7 +214,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void TargetedDependenciesSnapshot_FromChanges_ReportedChangesAfterBeforeRemoveFilterDeclinedChange()
+        public void TFromChanges_ReportedChangesAfterBeforeRemoveFilterDeclinedChange()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
@@ -287,7 +287,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void TargetedDependenciesSnapshot_FromChanges_NoChangesAfterBeforeAddFilterDeclinedChange()
+        public void TFromChanges_NoChangesAfterBeforeAddFilterDeclinedChange()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
@@ -358,7 +358,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void TargetedDependenciesSnapshot_FromChanges_ReportedChangesAfterBeforeAddFilterDeclinedChange()
+        public void TFromChanges_ReportedChangesAfterBeforeAddFilterDeclinedChange()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
@@ -430,7 +430,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void TargetedDependenciesSnapshot_FromChanges_RemovedAndAddedChanges()
+        public void TFromChanges_RemovedAndAddedChanges()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = ITargetFrameworkFactory.Implement("tfm1");

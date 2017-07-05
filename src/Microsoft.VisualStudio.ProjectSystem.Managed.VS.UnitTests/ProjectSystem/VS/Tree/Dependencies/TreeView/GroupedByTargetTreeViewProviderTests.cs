@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     public class GroupedByTargetTreeViewProviderTests
     {
         [Fact]
-        public async Task GrouppedByTargetTreeViewProvider_WhenEmptySnapshot_ShouldJustUpdateDependencyRootNode()
+        public async Task WhenEmptySnapshot_ShouldJustUpdateDependencyRootNode()
         {
             // Arrange
             var treeServices = new MockIDependenciesTreeServices();
@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public async Task GrouppedByTargetTreeViewProvider_WhenOneTargetSnapshotWithExistingDependencies_ShouldApplyChanges()
+        public async Task WhenOneTargetSnapshotWithExistingDependencies_ShouldApplyChanges()
         {
             var tfm1 = ITargetFrameworkFactory.Implement(moniker: "tfm1");
             var dependencyRootXxx = IDependencyFactory.FromJson(@"
@@ -166,7 +166,7 @@ Caption=Dependency1, FilePath=tfm1\Xxx\dependencyXxxpath, IconHash=325249260, Ex
         }
 
         [Fact]
-        public async Task GrouppedByTargetTreeViewProvider_WhenOneTargetSnapshotAndDependencySupportsHierarchyAndIsResolved_ShouldReadd()
+        public async Task WhenOneTargetSnapshotAndDependencySupportsHierarchyAndIsResolved_ShouldReadd()
         {
             var tfm1 = ITargetFrameworkFactory.Implement(moniker: "tfm1");
             var dependencyRootYyy = IDependencyFactory.FromJson(@"
@@ -249,7 +249,7 @@ Caption=DependencyExisting, FilePath=tfm1\Yyy\dependencyExistingpath, IconHash=3
         }
 
         [Fact]
-        public async Task GrouppedByTargetTreeViewProvider_WhenOneTargetSnapshotAndDependencySupportsHierarchyAndIsUnresolved_ShouldReadd()
+        public async Task WhenOneTargetSnapshotAndDependencySupportsHierarchyAndIsUnresolved_ShouldReadd()
         {
             var dependencyRootYyy = IDependencyFactory.FromJson(@"
 {
@@ -331,7 +331,7 @@ Caption=DependencyExisting, FilePath=tfm1\yyy\dependencyExisting, IconHash=32524
         }
 
         [Fact]
-        public async Task GrouppedByTargetTreeViewProvider_WhenOneTargetSnapshotAndDependencySupportsRule_ShouldCreateRule()
+        public async Task WhenOneTargetSnapshotAndDependencySupportsRule_ShouldCreateRule()
         {
             var dependencyRootYyy = IDependencyFactory.FromJson(@"
 {
@@ -410,7 +410,7 @@ Caption=DependencyExisting, FilePath=tfm1\yyy\dependencyExisting, IconHash=32524
         }
 
         [Fact]
-        public async Task GrouppedByTargetTreeViewProvider_WheEmptySnapshotAndVisibilityMarkerProvided_ShouldDisplaySubTreeRoot()
+        public async Task WheEmptySnapshotAndVisibilityMarkerProvided_ShouldDisplaySubTreeRoot()
         {
             var dependencyRootYyy = IDependencyFactory.FromJson(@"
 {
@@ -478,7 +478,7 @@ Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconH
         }
 
         [Fact]
-        public async Task GrouppedByTargetTreeViewProvider_WheEmptySnapshotAndVisibilityMarkerNotProvided_ShouldHideSubTreeRoot()
+        public async Task WheEmptySnapshotAndVisibilityMarkerNotProvided_ShouldHideSubTreeRoot()
         {
             var dependencyRootYyy = IDependencyFactory.FromJson(@"
 {
@@ -545,7 +545,7 @@ Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconH
         }
 
         [Fact]
-        public async Task GrouppedByTargetTreeViewProvider_WhenMultipleTargetSnapshotsWithExistingDependencies_ShouldApplyChanges()
+        public async Task WhenMultipleTargetSnapshotsWithExistingDependencies_ShouldApplyChanges()
         {
             var tfm1 = ITargetFrameworkFactory.Implement(moniker: "tfm1");
             var tfm2 = ITargetFrameworkFactory.Implement(moniker: "tfm2");
@@ -722,7 +722,7 @@ Caption=Dependency1, FilePath=tfm1\Xxx\dependencyxxxpath, IconHash=325249260, Ex
         }
 
         [Fact]
-        public void GrouppedByTargetTreeViewProvider_WhenFindByPathAndNoolNode_ShouldDoNothing()
+        public void WhenFindByPathAndNoolNode_ShouldDoNothing()
         {
             // Arrange
             const string projectPath = @"c:\myfolder\mysubfolder\myproject.csproj";
@@ -749,7 +749,7 @@ Caption=Dependency1, FilePath=tfm1\Xxx\dependencyxxxpath, IconHash=325249260, Ex
         }
 
         [Fact]
-        public void GrouppedByTargetTreeViewProvider_WhenFindByPathAndNotDependenciesRoot_ShouldDoNothing()
+        public void WhenFindByPathAndNotDependenciesRoot_ShouldDoNothing()
         {
             // Arrange
             const string projectPath = @"c:\myfolder\mysubfolder\myproject.csproj";
@@ -776,7 +776,7 @@ Caption=Dependency1, FilePath=tfm1\Xxx\dependencyxxxpath, IconHash=325249260, Ex
         }
 
         [Fact]
-        public void GrouppedByTargetTreeViewProvider_WhenFindByPathAndAbsoluteNodePath_ShouldFind()
+        public void WhenFindByPathAndAbsoluteNodePath_ShouldFind()
         {
             // Arrange
             const string projectPath = @"c:\myfolder\mysubfolder\myproject.csproj";
@@ -855,7 +855,7 @@ Caption=Dependency1, FilePath=tfm1\Xxx\dependencyxxxpath, IconHash=325249260, Ex
         }
 
         [Fact]
-        public void GrouppedByTargetTreeViewProvider_WhenFindByPathAndRelativeNodePath_ShouldFind()
+        public void WhenFindByPathAndRelativeNodePath_ShouldFind()
         {
             // Arrange
             const string projectPath = @"c:\myfolder\mysubfolder\myproject.csproj";
@@ -934,7 +934,7 @@ Caption=Dependency1, FilePath=tfm1\Xxx\dependencyxxxpath, IconHash=325249260, Ex
         }
 
         [Fact]
-        public void GrouppedByTargetTreeViewProvider_WhenFindByPathAndNeedToFindDependenciesRoot_ShouldFind()
+        public void WhenFindByPathAndNeedToFindDependenciesRoot_ShouldFind()
         {
             // Arrange
             const string projectPath = @"c:\myfolder\mysubfolder\myproject.csproj";

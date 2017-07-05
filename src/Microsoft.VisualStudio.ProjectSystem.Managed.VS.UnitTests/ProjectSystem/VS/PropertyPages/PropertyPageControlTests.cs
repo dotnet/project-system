@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     public class PropertyPageControlTests
     {
         [Fact]
-        public void PropertyPageControl_Test()
+        public void Test()
         {
 
             var thread = new Thread(new ThreadStart(CallPropertyPageControl));

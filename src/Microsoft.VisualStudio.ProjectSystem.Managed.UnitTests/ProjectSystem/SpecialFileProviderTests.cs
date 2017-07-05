@@ -368,7 +368,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
     Properties (flags: {Folder AppDesignerFolder}), FilePath: ""C:\Foo\Properties""
     myapp.manifest, FilePath: ""C:\Foo\myapp.manifest""
 ", "NoManifest", @"C:\Foo\Properties\app.manifest")]
-        public async Task AppManifestSpecialFileProvider_Test(string input, string appManifestPropertyValue, string expectedFilePath)
+        public async Task Test(string input, string appManifestPropertyValue, string expectedFilePath)
         {
             var inputTree = ProjectTreeParser.Parse(input);
 
