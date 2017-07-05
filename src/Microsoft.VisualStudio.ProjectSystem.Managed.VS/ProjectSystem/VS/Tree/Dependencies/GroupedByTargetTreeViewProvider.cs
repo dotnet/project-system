@@ -147,13 +147,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return null;
             }
 
-            var result = FindByPathInternal(dependenciesNode, path);
-            if (result != null)
-            {
-                return result;
-            }
-
-            return FindByPathInternal(dependenciesNode, CommonServices.Project.GetRelativePath(path));
+            return FindByPathInternal(dependenciesNode, path);
         }
 
         private IProjectTree FindByPathInternal(IProjectTree root, string path)
