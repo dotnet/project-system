@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 </Project>";
 
         [Fact]
-        public async Task TargetFrameworkProjectConfigurationDimensionProvider_GetDefaultValuesForDimensionsAsync_TFM()
+        public async Task GetDefaultValuesForDimensionsAsync_TFM()
         {
             using (var projectFile = new MsBuildProjectFile(ProjectXmlTFM))
             {
@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         [Theory]
         [InlineData(ProjectXmlTFMs)]
         [InlineData(ProjectXmlTFMAndTFMs)]
-        public async Task TargetFrameworkProjectConfigurationDimensionProvider_GetDefaultValuesForDimensionsAsync_TFMs(string projectXml)
+        public async Task GetDefaultValuesForDimensionsAsync_TFMs(string projectXml)
         {
             using (var projectFile = new MsBuildProjectFile(projectXml))
             {
@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         }
 
         [Fact]
-        public async Task TargetFrameworkProjectConfigurationDimensionProvider_GetProjectConfigurationDimensionsAsync_TFM()
+        public async Task GetProjectConfigurationDimensionsAsync_TFM()
         {
             using (var projectFile = new MsBuildProjectFile(ProjectXmlTFM))
             {
@@ -79,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         [Theory]
         [InlineData(ProjectXmlTFMs)]
         [InlineData(ProjectXmlTFMAndTFMs)]
-        public async Task TargetFrameworkProjectConfigurationDimensionProvider_GetProjectConfigurationDimensionsAsync_TFMs(string projectXml)
+        public async Task GetProjectConfigurationDimensionsAsync_TFMs(string projectXml)
         {
             using (var projectFile = new MsBuildProjectFile(projectXml))
             {
@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         [InlineData(ConfigurationDimensionChange.Rename, ChangeEventStage.After)]
         [InlineData(ConfigurationDimensionChange.Delete, ChangeEventStage.Before)]
         [InlineData(ConfigurationDimensionChange.Delete, ChangeEventStage.After)]
-        public async Task TargetFrameworkProjectConfigurationDimensionProvider_OnDimensionValueChanged(ConfigurationDimensionChange change, ChangeEventStage stage)
+        public async Task OnDimensionValueChanged(ConfigurationDimensionChange change, ChangeEventStage stage)
         {
             // No changes should happen for TFM so verify that the property is the same before and after
             using (var projectFile = new MsBuildProjectFile(ProjectXmlTFMs))

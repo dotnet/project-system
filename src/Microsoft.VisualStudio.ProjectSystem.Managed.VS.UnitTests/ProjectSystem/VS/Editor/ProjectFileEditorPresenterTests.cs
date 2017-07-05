@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         private static readonly Guid XmlFactoryGuid = Guid.Parse("{fa3cd31e-987b-443a-9b81-186104e8dac1}");
 
         [Fact]
-        public void ProjectFileEditorPresenter_NullThreadingService_Throws()
+        public void NullThreadingService_Throws()
         {
             Assert.Throws<ArgumentNullException>("threadingService", () => new ProjectFileEditorPresenter(
                 null,
@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public void ProjectFileEditorPresenter_NullUnconfiguredProject_Throws()
+        public void NullUnconfiguredProject_Throws()
         {
             Assert.Throws<ArgumentNullException>("unconfiguredProject", () => new ProjectFileEditorPresenter(
                 IProjectThreadingServiceFactory.Create(),
@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public void ProjectFileEditorPresenter_NullServiceProvider_Throws()
+        public void NullServiceProvider_Throws()
         {
             Assert.Throws<ArgumentNullException>("serviceProvider", () => new ProjectFileEditorPresenter(
                 IProjectThreadingServiceFactory.Create(),
@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public void ProjectFileEditorPresenter_NullShellHelper_Throws()
+        public void NullShellHelper_Throws()
         {
             Assert.Throws<ArgumentNullException>("shellHelper", () => new ProjectFileEditorPresenter(
                 IProjectThreadingServiceFactory.Create(),
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public void ProjectFileEditorPresenter_NullProjectFileModelWatcherFactory_Throws()
+        public void NullProjectFileModelWatcherFactory_Throws()
         {
             Assert.Throws<ArgumentNullException>("projectFileModelWatcherFactory", () => new ProjectFileEditorPresenter(
                 IProjectThreadingServiceFactory.Create(),
@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public void ProjectFileEditorPresenter_NullTextBufferListenerFactory_Throws()
+        public void NullTextBufferListenerFactory_Throws()
         {
             Assert.Throws<ArgumentNullException>("textBufferListenerFactory", () => new ProjectFileEditorPresenter(
                 IProjectThreadingServiceFactory.Create(),
@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public void ProjectFileEditorPresenter_NullFrameEventsListenerFactory_Throws()
+        public void NullFrameEventsListenerFactory_Throws()
         {
             Assert.Throws<ArgumentNullException>("frameEventsListenerFactory", () => new ProjectFileEditorPresenter(
                 IProjectThreadingServiceFactory.Create(),
@@ -115,7 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public void ProjectFileEditorPresenter_NullTextBufferManagerFactory_Throws()
+        public void NullTextBufferManagerFactory_Throws()
         {
             Assert.Throws<ArgumentNullException>("textBufferManagerFactory", () => new ProjectFileEditorPresenter(
                 IProjectThreadingServiceFactory.Create(),
@@ -129,7 +129,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public async Task ProjectFileEditorPresenter_OpenEditor_SetsUpListeners()
+        public async Task OpenEditor_SetsUpListeners()
         {
             var filePath = @"C:\Temp\ConsoleApp1.csproj";
             var textBufferManager = ITextBufferManagerFactory.ImplementFilePath(filePath);
@@ -170,7 +170,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public async Task ProjectFileEditorPresenter_MultipleOpen_CallsShowSecondTime()
+        public async Task MultipleOpen_CallsShowSecondTime()
         {
             var filePath = @"C:\Temp\ConsoleApp1.csproj";
             var textBufferManager = ITextBufferManagerFactory.ImplementFilePath(filePath);
@@ -212,7 +212,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public async Task ProjectFileEditorPresenter_CloseWindowSuccess_ReturnsContinueClose()
+        public async Task CloseWindowSuccess_ReturnsContinueClose()
         {
             var filePath = @"C:\Temp\ConsoleApp1.csproj";
             var textBufferManager = ITextBufferManagerFactory.ImplementFilePath(filePath);
@@ -250,7 +250,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public async Task ProjectFileEditorPresenter_CloseWindowFail_ReturnsStopClose()
+        public async Task CloseWindowFail_ReturnsStopClose()
         {
             var filePath = @"C:\Temp\ConsoleApp1.csproj";
             var textBufferManager = ITextBufferManagerFactory.ImplementFilePath(filePath);
@@ -288,7 +288,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public async Task ProjectFileEditorPresenter_DisposeWithoutOpen_DoesNothing()
+        public async Task DisposeWithoutOpen_DoesNothing()
         {
             var filePath = @"C:\Temp\ConsoleApp1.csproj";
             var textBufferManager = ITextBufferManagerFactory.ImplementFilePath(filePath);
@@ -328,7 +328,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public async Task ProjectFileEditorPresenter_DisposeWithOpen_DisposesListeners()
+        public async Task DisposeWithOpen_DisposesListeners()
         {
             var filePath = @"C:\Temp\ConsoleApp1.csproj";
             var textBufferManager = ITextBufferManagerFactory.ImplementFilePath(filePath);
@@ -374,7 +374,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public async Task ProjectFileEditorPresenter_UpdateProjectFile_SchedulesUpdate()
+        public async Task UpdateProjectFile_SchedulesUpdate()
         {
             var filePath = @"C:\Temp\ConsoleApp1.csproj";
             var textBufferManager = ITextBufferManagerFactory.ImplementFilePath(filePath);
@@ -428,7 +428,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         [InlineData((int)ProjectFileEditorPresenter.EditorState.NoEditor)]
         [InlineData((int)ProjectFileEditorPresenter.EditorState.EditorClosing)]
         [InlineData((int)ProjectFileEditorPresenter.EditorState.WritingProjectFile)]
-        public void ProjectFileEditorPresenter_UpdateProjectFileIncorrectEditorState_DoesNothing(int state)
+        public void UpdateProjectFileIncorrectEditorState_DoesNothing(int state)
         {
             var editorState = new ProjectFileEditorPresenterTester(
                 IProjectThreadingServiceFactory.Create(),
@@ -447,7 +447,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public async Task ProjectFileEditorPresenter_SaveProjectFile_SavesFile()
+        public async Task SaveProjectFile_SavesFile()
         {
             var filePath = @"C:\Temp\ConsoleApp1.csproj";
             var textBufferManager = ITextBufferManagerFactory.ImplementFilePath(filePath);
@@ -499,7 +499,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         [InlineData((int)ProjectFileEditorPresenter.EditorState.Initializing)]
         [InlineData((int)ProjectFileEditorPresenter.EditorState.NoEditor)]
         [InlineData((int)ProjectFileEditorPresenter.EditorState.WritingProjectFile)]
-        public async Task ProjectFileEditorPresenter_SaveProjectFile_OnlySavesInEditorOpen(int state)
+        public async Task SaveProjectFile_OnlySavesInEditorOpen(int state)
         {
             var filePath = @"C:\Temp\ConsoleApp1.csproj";
             var textBufferManager = ITextBufferManagerFactory.ImplementFilePath(filePath);

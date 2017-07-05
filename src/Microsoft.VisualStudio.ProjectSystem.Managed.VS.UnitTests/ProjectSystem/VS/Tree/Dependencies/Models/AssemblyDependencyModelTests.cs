@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     public class AssemblyDependencyModelTests
     {
         [Fact]
-        public void AssemblyDependencyModelTests_Resolved_NoFusionName()
+        public void Resolved_NoFusionName()
         {
             var properties = ImmutableDictionary<string, string>.Empty.Add("myProp", "myVal");
 
@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void AssemblyDependencyModelTests_Resolved_WithFusionName()
+        public void Resolved_WithFusionName()
         {
             var properties = ImmutableDictionary<string, string>.Empty.Add(ResolvedAssemblyReference.FusionNameProperty, "myAssembly.dll");
 
@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void AssemblyDependencyModelTests_Unresolved()
+        public void Unresolved()
         {
             var properties = ImmutableDictionary<string, string>.Empty.Add("myProp", "myVal");
 
@@ -108,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void AssemblyDependencyModelTests_Implicit()
+        public void Implicit()
         {
             var properties = ImmutableDictionary<string, string>.Empty.Add("myProp", "myVal");
 

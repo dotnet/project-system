@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Fact]
-        public void LaunchSettingsProvider_ActiveProfileTests()
+        public void ActiveProfileTests()
         { 
             string activeProfile = "MyCommand";
             var testProfiles = new Mock<ILaunchSettings>();
@@ -94,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Fact]
-        public async Task LaunchSettingsProvider_UpdateProfiles_NoSettingsFile()
+        public async Task UpdateProfiles_NoSettingsFile()
         {
 
             IFileSystemMock moqFS = new IFileSystemMock();
@@ -107,7 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Fact]
-        public async Task LaunchSettingsProvider_UpdateProfilesBasicSettingsFile()
+        public async Task UpdateProfilesBasicSettingsFile()
         {
             IFileSystemMock moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
@@ -120,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Fact]
-        public async Task LaunchSettingsProvider_UpdateProfilesSetActiveProfileFromProperty()
+        public async Task UpdateProfilesSetActiveProfileFromProperty()
         {
             IFileSystemMock moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
@@ -134,7 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Fact]
-        public async Task LaunchSettingsProvider_UpdateProfiles_ChangeActiveProfileOnly()
+        public async Task UpdateProfiles_ChangeActiveProfileOnly()
         {
             IFileSystemMock moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
@@ -149,7 +149,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Fact]
-        public async Task LaunchSettingsProvider_UpdateProfiles_BadJsonShouldLeaveProfilesStable()
+        public async Task UpdateProfiles_BadJsonShouldLeaveProfilesStable()
         {
             IFileSystemMock moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
@@ -164,7 +164,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
             
         [Fact]
-        public async Task LaunchSettingsProvider_UpdateProfiles_SetsErrorProfileTests()
+        public async Task UpdateProfiles_SetsErrorProfileTests()
         {
             IFileSystemMock moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
@@ -176,7 +176,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Fact]
-        public async Task LaunchSettingsProvider_SettingsFileHasChangedTests()
+        public async Task SettingsFileHasChangedTests()
         {
             IFileSystemMock moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
@@ -192,7 +192,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
 
         [Fact]
-        public async Task LaunchSettingsProvider_ReadProfilesFromDisk_NoFile()
+        public async Task ReadProfilesFromDisk_NoFile()
         {
 
             IFileSystemMock moqFS = new IFileSystemMock();
@@ -212,7 +212,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Fact]
-        public async Task LaunchSettingsProvider_ReadProfilesFromDisk_GoodFile()
+        public async Task ReadProfilesFromDisk_GoodFile()
         {
 
             IFileSystemMock moqFS = new IFileSystemMock();
@@ -226,7 +226,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Fact]
-        public async Task LaunchSettingsProvider_ReadProfilesFromDisk_BadJsonFile()
+        public async Task ReadProfilesFromDisk_BadJsonFile()
         {
             IFileSystemMock moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
@@ -243,7 +243,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Fact]
-        public async Task LaunchSettingsProvider_ReadProfilesFromDisk_JsonWithExtensionsNoProvider()
+        public async Task ReadProfilesFromDisk_JsonWithExtensionsNoProvider()
         {
             IFileSystemMock moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
@@ -257,7 +257,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Fact]
-        public async Task LaunchSettingsProvider_ReadProfilesFromDisk_JsonWithExtensionsWithProvider()
+        public async Task ReadProfilesFromDisk_JsonWithExtensionsWithProvider()
         {
             IFileSystemMock moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
@@ -275,7 +275,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Fact]
-        public async Task LaunchSettingsProvider_SaveProfilesToDiskTests()
+        public async Task SaveProfilesToDiskTests()
         {
             IFileSystemMock moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
@@ -317,7 +317,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Fact]
-        public async Task LaunchSettingsProvider_LaunchSettingsFile_Changed()
+        public async Task LaunchSettingsFile_Changed()
         {
             IFileSystemMock moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
@@ -334,7 +334,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Fact]
-        public async Task LaunchSettingsProvider_LaunchSettingsFile_TestIgnoreFlag()
+        public async Task LaunchSettingsFile_TestIgnoreFlag()
         {
             IFileSystemMock moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
@@ -360,7 +360,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Fact]
-        public async Task LaunchSettingsProvider_LaunchSettingsFile_TestTimeStampFlag()
+        public async Task LaunchSettingsFile_TestTimeStampFlag()
         {
             IFileSystemMock moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
@@ -386,7 +386,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
         
         [Fact]
-        public void LaunchSettingsProvider_DisposeTests()
+        public void DisposeTests()
         {
             IFileSystemMock moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
@@ -397,7 +397,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Fact]
-        public async Task LaunchSettingsProvider_UpdateAndSaveProfilesAsync()
+        public async Task UpdateAndSaveProfilesAsync()
         {
             IFileSystemMock moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
@@ -444,7 +444,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Fact]
-        public async Task LaunchSettingsProvider_UpdateAndSaveProfilesAsync_ActiveProfilePreserved()
+        public async Task UpdateAndSaveProfilesAsync_ActiveProfilePreserved()
         {
             IFileSystemMock moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS, "Properties", "bar");
@@ -476,7 +476,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Theory]
         [InlineData(true, 0)]
         [InlineData(false, 2)]
-        public async Task LaunchSettingsProvider_AddOrUpdateProfileAsync_ProfileDoesntExist(bool addToFront, int expectedIndex)
+        public async Task AddOrUpdateProfileAsync_ProfileDoesntExist(bool addToFront, int expectedIndex)
         {
             IFileSystemMock moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
@@ -508,7 +508,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Theory]
         [InlineData(true, 0)]
         [InlineData(false, 1)]
-        public async Task LaunchSettingsProvider_AddOrUpdateProfileAsync_ProfileExists(bool addToFront, int expectedIndex)
+        public async Task AddOrUpdateProfileAsync_ProfileExists(bool addToFront, int expectedIndex)
         {
             IFileSystemMock moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
@@ -540,7 +540,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Fact]
-        public async Task LaunchSettingsProvider_RemoveProfileAsync_ProfileExists()
+        public async Task RemoveProfileAsync_ProfileExists()
         {
             IFileSystemMock moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
@@ -568,7 +568,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Fact]
-        public async Task LaunchSettingsProvider_RemoveProfileAsync_ProfileDoesntExists()
+        public async Task RemoveProfileAsync_ProfileDoesntExists()
         {
             IFileSystemMock moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
@@ -594,7 +594,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Fact]
-        public async Task LaunchSettingsProvider_AddOrUpdateGlobalSettingAsync_SettingDoesntExist()
+        public async Task AddOrUpdateGlobalSettingAsync_SettingDoesntExist()
         {
             IFileSystemMock moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
@@ -623,7 +623,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Fact]
-        public async Task LaunchSettingsProvider_AddOrUpdateGlobalSettingAsync_SettingExists()
+        public async Task AddOrUpdateGlobalSettingAsync_SettingExists()
         {
             IFileSystemMock moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
@@ -653,7 +653,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.True(((IISSettingsData)updatedSettings).WindowsAuthentication);
         }
         [Fact]
-        public async Task LaunchSettingsProvider_RemoveGlobalSettingAsync_SettingDoesntExist()
+        public async Task RemoveGlobalSettingAsync_SettingDoesntExist()
         {
             IFileSystemMock moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
@@ -679,7 +679,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Fact]
-        public async Task LaunchSettingsProvider_RemoveGlobalSettingAsync_SettingExists()
+        public async Task RemoveGlobalSettingAsync_SettingExists()
         {
             IFileSystemMock moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);

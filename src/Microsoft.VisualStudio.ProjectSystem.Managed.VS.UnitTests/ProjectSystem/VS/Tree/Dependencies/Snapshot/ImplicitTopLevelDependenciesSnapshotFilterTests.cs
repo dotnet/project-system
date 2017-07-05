@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     public class ImplicitTopLevelDependenciesSnapshotFilterTests
     {
         [Fact]
-        public void ImplicitTopLevelDependenciesSnapshotFilter_WhenNotTopLevel_ShouldDoNothing()
+        public void WhenNotTopLevel_ShouldDoNothing()
         {
             var dependency = IDependencyFactory.Implement(
                 id: "mydependency2",
@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void ImplicitTopLevelDependenciesSnapshotFilter_WhenImplicitAlready_ShouldDoNothing()
+        public void WhenImplicitAlready_ShouldDoNothing()
         {
             var dependency = IDependencyFactory.Implement(
                 id: "mydependency2",
@@ -74,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void ImplicitTopLevelDependenciesSnapshotFilter_WhenUnresolved_ShouldDoNothing()
+        public void WhenUnresolved_ShouldDoNothing()
         {
             var dependency = IDependencyFactory.Implement(
                 id: "mydependency2",
@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void ImplicitTopLevelDependenciesSnapshotFilter_WhenNotGenericDependency_ShouldDoNothing()
+        public void WhenNotGenericDependency_ShouldDoNothing()
         {
             var dependency = IDependencyFactory.Implement(
                 id: "mydependency2",
@@ -139,7 +139,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void ImplicitTopLevelDependenciesSnapshotFilter_WhenCanApplyImplicitProjectContainsItem_ShouldDoNothing()
+        public void WhenCanApplyImplicitProjectContainsItem_ShouldDoNothing()
         {
             var dependency = IDependencyFactory.Implement(
                 id: "mydependency2",
@@ -173,7 +173,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void ImplicitTopLevelDependenciesSnapshotFilter_WhenNeedToApplyImplicit_ShouldSetProperties()
+        public void WhenNeedToApplyImplicit_ShouldSetProperties()
         {
             var dependency = IDependencyFactory.Implement(
                 id: "mydependency2",

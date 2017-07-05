@@ -17,32 +17,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         private const string testGuid4 = "B8026ED7-DA10-4AFA-BD7B-157AAAEE0719";
 
         [Fact]
-        public void RemoteCodeGeneratorRegistrationAttribute_NullAsGeneratorGuid_ThrowsArgumentNull()
+        public void NullAsGeneratorGuid_ThrowsArgumentNull()
         {
             Assert.Throws<ArgumentNullException>("generatorGuid", () => new RemoteCodeGeneratorRegistrationAttribute(null, "ResXFileCodeGenerator", testGuid));
         }
 
 
         [Fact]
-        public void RemoteCodeGeneratorRegistrationAttribute_NullAsGeneratorClassName_ThrowsArgumentNull()
+        public void NullAsGeneratorClassName_ThrowsArgumentNull()
         {
             Assert.Throws<ArgumentNullException>("generatorClassName", () => new RemoteCodeGeneratorRegistrationAttribute(testGuid2, null, "ResXFileCodeGenerator", testGuid));
         }
 
         [Fact]
-        public void RemoteCodeGeneratorRegistrationAttribute_NullAsGeneratorName_ThrowsArgumentNull()
+        public void NullAsGeneratorName_ThrowsArgumentNull()
         {
             Assert.Throws<ArgumentNullException>("generatorName", () => new RemoteCodeGeneratorRegistrationAttribute(testGuid2, "ResXFileCodeGenerator", null, testGuid));
         }
 
         [Fact]
-        public void RemoteCodeGeneratorRegistrationAttribute_NullAsContextGuid_ThrowsArgumentNull()
+        public void NullAsContextGuid_ThrowsArgumentNull()
         {
             Assert.Throws<ArgumentNullException>("contextGuid", () => new RemoteCodeGeneratorRegistrationAttribute(testGuid, "ResXFileCodeGenerator", null));
         }
 
         [Fact]
-        public void RemoteCodeGeneratorRegistrationAttribute_BadGuidAsContextGuid_ThrowsArgument()
+        public void BadGuidAsContextGuid_ThrowsArgument()
         {
             Assert.Throws<ArgumentException>(() => new RemoteCodeGeneratorRegistrationAttribute(".resx", "ResXFileCodeGenerator",
                 "Not a guid"));
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         [InlineData(testGuid2, "PublicResXCodeFileGenerator", testGuid3, true, false)]
         [InlineData(testGuid4, "TextTemplateCodeFileGenerator", testGuid3, false, true)]
         [InlineData(testGuid4, "TextTemplateCodeFilePreprocessor", testGuid2, true, true)]
-        public void RemoteCodeGeneratorRegistrationAttribute_ValidRegistration_CreatesCorrectKeys(string generatorGuid, string generatorName, string contextGuid, bool generatesDesignTimeSource, bool generatesSharedDesignTimeSource)
+        public void ValidRegistration_CreatesCorrectKeys(string generatorGuid, string generatorName, string contextGuid, bool generatesDesignTimeSource, bool generatesSharedDesignTimeSource)
         {
             var numTimesCreateKeyCalled = 0;
             var createdKey = "";

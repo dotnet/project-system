@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     public class DependencyExtensionsTests
     {
         [Fact]
-        public void DependencyExtensionsTests_IsOrHasUnresolvedDependency()
+        public void IsOrHasUnresolvedDependency()
         {
             var dependency1 = IDependencyFactory.FromJson(@"
 {
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void DependencyExtensionsTests_ToViewModel()
+        public void ToViewModel()
         {
             var dependencyResolved = IDependencyFactory.FromJson(@"
 {
@@ -115,7 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void DependencyExtensionsTests_GetIcons()
+        public void GetIcons()
         {
             var dependency = IDependencyFactory.FromJson(@"
 {
@@ -143,7 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void DependencyExtensionsTests_IsPackage()
+        public void IsPackage()
         {
             var dependency = IDependencyFactory.FromJson(@"
 {
@@ -161,7 +161,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void DependencyExtensionsTests_IsProject()
+        public void IsProject()
         {
             var dependency = IDependencyFactory.FromJson(@"
 {
@@ -179,7 +179,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void DependencyExtensionsTests_HasSameTarget()
+        public void HasSameTarget()
         {
             var targetFramework1 = ITargetFrameworkFactory.Implement("tfm1");
             var targetFramework2 = ITargetFrameworkFactory.Implement("tfm2");
@@ -194,7 +194,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void DependencyExtensionsTests_GetActualPath()
+        public void GetActualPath()
         {
             const string projectPath = @"c:\somepath\someproject\project.csproj";
             var dependency1 = IDependencyFactory.FromJson(@"
@@ -223,7 +223,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void DependencyExtensionsTests_GetTopLevelId()
+        public void GetTopLevelId()
         {
             var dependency1 = IDependencyFactory.FromJson(@"
 {

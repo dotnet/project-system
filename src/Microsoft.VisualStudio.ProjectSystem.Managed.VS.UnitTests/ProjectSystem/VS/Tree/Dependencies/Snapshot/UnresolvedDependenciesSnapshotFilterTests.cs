@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     public class UnresolvedDependenciesSnapshotFilterTests
     {
         [Fact]
-        public void UnresolvedDependenciesSnapshotFilter_WhenUnresolvedAndExistsResolvedInSnapshot_ShouldReturnNull()
+        public void WhenUnresolvedAndExistsResolvedInSnapshot_ShouldReturnNull()
         {
             var dependency = IDependencyFactory.Implement(
                 id: "mydependency2",
@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void UnresolvedDependenciesSnapshotFilter_WhenUnresolvedAndNotExistsResolvedInSnapshot_ShouldReturnDependency()
+        public void WhenUnresolvedAndNotExistsResolvedInSnapshot_ShouldReturnDependency()
         {
             var dependency = IDependencyFactory.Implement(
                 id: "mydependency2",
@@ -74,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void UnresolvedDependenciesSnapshotFilter_WhenResolved_ShouldReturnDependency()
+        public void WhenResolved_ShouldReturnDependency()
         {
             var dependency = IDependencyFactory.Implement(
                 id: "mydependency2",

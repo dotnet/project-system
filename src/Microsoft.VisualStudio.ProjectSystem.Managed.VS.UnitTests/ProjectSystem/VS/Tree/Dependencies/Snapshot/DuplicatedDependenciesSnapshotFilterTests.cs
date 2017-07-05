@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     public class DuplicatedDependenciesSnapshotFilterTests
     {
         [Fact]
-        public void DuplicatedDependenciesSnapshotFilter_WhenThereNoMatchingDependencies_ShouldNotUpdateCaption()
+        public void WhenThereNoMatchingDependencies_ShouldNotUpdateCaption()
         {
             const string caption = "MyCaption";
             var dependency = IDependencyFactory.Implement(
@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void DuplicatedDependenciesSnapshotFilter_WhenThereIsMatchingDependencies_ShouldUpdateCaptionForAll()
+        public void WhenThereIsMatchingDependencies_ShouldUpdateCaptionForAll()
         {
             const string caption = "MyCaption";
             var dependency = IDependencyFactory.Implement(
@@ -100,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void DuplicatedDependenciesSnapshotFilter_WhenThereIsMatchingDependencyWithAliasApplied_ShouldUpdateCaptionForCurrentDependency()
+        public void WhenThereIsMatchingDependencyWithAliasApplied_ShouldUpdateCaptionForCurrentDependency()
         {
             const string caption = "MyCaption";
             var dependency = IDependencyFactory.Implement(
