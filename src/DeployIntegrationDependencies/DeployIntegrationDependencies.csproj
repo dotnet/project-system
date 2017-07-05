@@ -52,7 +52,7 @@
   </ItemGroup>
   <Import Project="..\..\build\Targets\ProducesNoOutput.Imports.targets" />
 
-  <Target Name="DeployIntegrationDependencies" Condition="'$(DesignTimeBuild)' == '' AND  ('$(DeployVsixExtension)' == 'true' OR '$(RunIntegrationTests)' == 'true')" AfterTargets="PostBuildEvent">
+  <Target Name="DeployIntegrationDependencies" Condition="'$(DesignTimeBuild)' == '' AND '$(RunIntegrationTests)' == 'true'" AfterTargets="PostBuildEvent">
     <PropertyGroup>
       <NUGET_PACKAGES Condition="'$(NUGET_PACKAGES)' == ''">$(UserProfile)\.nuget\packages</NUGET_PACKAGES>
       <RepositoryRootDirectory>$(MSBuildThisFileDirectory)..\..\</RepositoryRootDirectory>
