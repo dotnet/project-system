@@ -152,7 +152,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         private IProjectTree FindByPathInternal(IProjectTree root, string path)
         {
-            var node = root.FindNodeByPath(path);
+            var node = root.FindImmediateChildByPath(path);
             if (node != null)
             {
                 return node;
@@ -160,7 +160,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             foreach (var child in root.Children)
             {
-                node = child.FindNodeByPath(path);
+                node = child.FindImmediateChildByPath(path);
                 if (node != null)
                 {
                     return node;
@@ -168,7 +168,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                 foreach (var thirdLevelNode in child.Children)
                 {
-                    node = thirdLevelNode.FindNodeByPath(path);
+                    node = thirdLevelNode.FindImmediateChildByPath(path);
                     if (node != null)
                     {
                         return node;

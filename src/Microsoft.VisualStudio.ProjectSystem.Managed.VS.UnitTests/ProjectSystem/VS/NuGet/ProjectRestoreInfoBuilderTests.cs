@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     public class ProjectRestoreInfoBuilderTests
     {
         [Fact]
-        public void ProjectRestoreInfoBuilder_NullUpdate_ThrowsArgumentNull()
+        public void NullUpdate_ThrowsArgumentNull()
         {
             Assert.Throws<ArgumentNullException>("updates", () => {
                 ProjectRestoreInfoBuilder.Build(null, GetMockProject());
@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         }
 
         [Fact]
-        public void ProjectRestoreInfoBuilder_NullProject_ThrowsArgumentNull()
+        public void NullProject_ThrowsArgumentNull()
         {
             Assert.Throws<ArgumentNullException>("project", () => {
                 var projectSubscriptionUpdates = GetVersionedUpdatesFromJson(_sampleSubscriptionUpdate);
@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         }
 
         [Fact]
-        public void ProjectRestoreInfoBuilder_NoProjectChanges_ReturnsNull()
+        public void NoProjectChanges_ReturnsNull()
         {
             var projectSubscriptionUpdates = GetVersionedUpdatesFromJson(@"{
     ""ProjectChanges"": {
@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         }
 
         [Fact]
-        public void ProjectRestoreInfoBuilder_WithAnyChanges_ReturnsFullRestoreInfo()
+        public void WithAnyChanges_ReturnsFullRestoreInfo()
         {
             var projectSubscriptionUpdates = GetVersionedUpdatesFromJson(_sampleSubscriptionUpdate);
             var restoreInfo = ProjectRestoreInfoBuilder.Build(projectSubscriptionUpdates, GetMockProject());
@@ -117,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         }
 
         [Fact]
-        public void ProjectRestoreInfoBuilder_WithNoTargetFrameworkDimension_UsesPropertiesInstead()
+        public void WithNoTargetFrameworkDimension_UsesPropertiesInstead()
         {
             var projectSubscriptionUpdates = GetVersionedUpdatesFromJson(@"{
     ""ProjectConfiguration"": {
@@ -175,7 +175,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         }
 
         [Fact]
-        public void ProjectRestoreInfoBuilder_WithEmptyTargetFramework_ReturnsNull()
+        public void WithEmptyTargetFramework_ReturnsNull()
         {
             var projectSubscriptionUpdates = GetVersionedUpdatesFromJson(@"{
     ""ProjectConfiguration"": {
@@ -230,7 +230,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         }
 
         [Fact]
-        public void ProjectRestoreInfoBuilder_WithTwoIdenticalUpdates_ReturnsSingleTFM()
+        public void WithTwoIdenticalUpdates_ReturnsSingleTFM()
         {
             var projectSubscriptionUpdates = GetVersionedUpdatesFromJson(
                 _sampleSubscriptionUpdate,
@@ -244,7 +244,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         }
 
         [Fact]
-        public void ProjectRestoreInfoBuilder_WithTwoDifferentUpdates_ReturnsTwoTFMs()
+        public void WithTwoDifferentUpdates_ReturnsTwoTFMs()
         {
             var projectSubscriptionUpdates = GetVersionedUpdatesFromJson(@"{
     ""ProjectConfiguration"": {
@@ -350,7 +350,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         }
 
         [Fact]
-        public void ProjectRestoreInfoBuilder_WithRepeatedToolReference_ReturnsJustOne()
+        public void WithRepeatedToolReference_ReturnsJustOne()
         {
             var projectSubscriptionUpdates = GetVersionedUpdatesFromJson(@"{
     ""ProjectConfiguration"": {
@@ -471,7 +471,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         }
 
         [Fact]
-        public void ProjectRestoreInfoBuilder_WithoutDefiningProjectDirectory_UsesUnconfiguredProjectRoot()
+        public void WithoutDefiningProjectDirectory_UsesUnconfiguredProjectRoot()
         {
             var projectSubscriptionUpdates = GetVersionedUpdatesFromJson(@"{
     ""ProjectConfiguration"": {

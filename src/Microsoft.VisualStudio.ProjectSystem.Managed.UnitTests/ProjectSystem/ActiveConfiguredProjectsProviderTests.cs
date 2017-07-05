@@ -9,6 +9,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
+    [ProjectSystemTrait]
     public class ActiveConfiguredProjectsProviderTests
     {
         [Fact]

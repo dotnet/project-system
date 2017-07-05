@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     public class PackageDependencyModelTests
     {
         [Fact]
-        public void PackageDependencyModelTests_Resolved()
+        public void Resolved()
         {
             var properties = ImmutableDictionary<string, string>.Empty.Add("myProp", "myVal");
             var dependencyIDs = new[] { "id1", "id2" };
@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void PackageDependencyModelTests_Unresolved()
+        public void Unresolved()
         {
             var properties = ImmutableDictionary<string, string>.Empty.Add("myProp", "myVal");
             var dependencyIDs = new[] { "id1", "id2" };
@@ -103,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void PackageDependencyModelTests_Implicit()
+        public void Implicit()
         {
             var properties = ImmutableDictionary<string, string>.Empty.Add("myProp", "myVal");
             var dependencyIDs = new[] { "id1", "id2" };

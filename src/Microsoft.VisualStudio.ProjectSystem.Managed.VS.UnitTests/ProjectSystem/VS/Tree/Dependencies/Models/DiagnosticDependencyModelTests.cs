@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     public class DiagnosticDependencyModelTests
     {
         [Fact]
-        public void DiagnosticDependencyModelTests_Error()
+        public void Error()
         {
             var properties = ImmutableDictionary<string, string>.Empty.Add("myProp", "myVal");
 
@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void DiagnosticDependencyModelTests_Warning()
+        public void Warning()
         {
             var properties = ImmutableDictionary<string, string>.Empty.Add("myProp", "myVal");
 

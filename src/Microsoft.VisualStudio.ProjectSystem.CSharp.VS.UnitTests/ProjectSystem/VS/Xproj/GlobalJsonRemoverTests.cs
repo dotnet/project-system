@@ -18,19 +18,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         private const string Directory = @"C:\Temp";
 
         [Fact]
-        public void GlobalJsonRemover_InvalidServiceProvider_Throws()
+        public void InvalidServiceProvider_Throws()
         {
             Assert.Throws<ArgumentNullException>("serviceProvider", () => new GlobalJsonRemover(null, IFileSystemFactory.Create()));
         }
 
         [Fact]
-        public void GlobalJsonRemover_NullFileSystem_Throws()
+        public void NullFileSystem_Throws()
         {
             Assert.Throws<ArgumentNullException>("fileSystem", () => new GlobalJsonRemover(IServiceProviderFactory.Create(), null));
         }
 
         [Fact]
-        public void GlobalJsonRemover_RemovesJson_WhenExists()
+        public void RemovesJson_WhenExists()
         {
             UnitTestHelper.IsRunningUnitTests = true;
             var globalJsonPath = Path.Combine(Directory, "global.json");
@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         }
 
         [Fact]
-        public void GlobalJsonRemover_NoJson_DoesntCrash()
+        public void NoJson_DoesntCrash()
         {
             UnitTestHelper.IsRunningUnitTests = true;
             var solution = IVsSolutionFactory.CreateWithSolutionDirectory(DirectoryInfoCallback);
@@ -103,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         }
 
         [Fact]
-        public void GlobalJsonRemover_AfterRemoval_UnadvisesEvents()
+        public void AfterRemoval_UnadvisesEvents()
         {
             UnitTestHelper.IsRunningUnitTests = true;
             var globalJsonPath = Path.Combine(Directory, "global.json");

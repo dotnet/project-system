@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
     public class TempFileBufferStateListenerTests
     {
         [Fact]
-        public void TempFileBufferStateListener_NullEditorState_Throws()
+        public void NullEditorState_Throws()
         {
             Assert.Throws<ArgumentNullException>("editorState", () => new TempFileBufferStateListener(null,
                 IVsEditorAdaptersFactoryServiceFactory.Create(),
@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
         }
 
         [Fact]
-        public void TempFileBufferStateListener_NullEditorAdaptersFactory_Throws()
+        public void NullEditorAdaptersFactory_Throws()
         {
             Assert.Throws<ArgumentNullException>("editorAdaptersService", () => new TempFileBufferStateListener(
                 IProjectFileEditorPresenterFactory.Create(),
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
         }
 
         [Fact]
-        public void TempFileBufferStateListener_NullTextDocumentFactoryService_Throws()
+        public void NullTextDocumentFactoryService_Throws()
         {
             Assert.Throws<ArgumentNullException>("textDocumentFactoryService", () => new TempFileBufferStateListener(
                 IProjectFileEditorPresenterFactory.Create(),
@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
         }
 
         [Fact]
-        public void TempFileBufferStateListener_NullThreadingService_Throws()
+        public void NullThreadingService_Throws()
         {
             Assert.Throws<ArgumentNullException>("threadingService", () => new TempFileBufferStateListener(
                 IProjectFileEditorPresenterFactory.Create(),
@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
         }
 
         [Fact]
-        public void TempFileBufferStateListener_NullShellUtilities_Throws()
+        public void NullShellUtilities_Throws()
         {
             Assert.Throws<ArgumentNullException>("shellUtilities", () => new TempFileBufferStateListener(
                 IProjectFileEditorPresenterFactory.Create(),
@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
         }
 
         [Fact]
-        public async Task TempFileBufferStateListener_Initialize_SubscribesToTextChangedEvents()
+        public async Task Initialize_SubscribesToTextChangedEvents()
         {
             var tempFile = @"C:\Temp\ConsoleApp1.csproj";
             var docData = IVsPersistDocDataFactory.ImplementAsIVsTextBuffer();
@@ -100,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
         }
 
         [Fact]
-        public async Task TempFileBufferStateListener_Dispose_UnsubscribtesFromTextChangedEvents()
+        public async Task Dispose_UnsubscribtesFromTextChangedEvents()
         {
             var tempFile = @"C:\Temp\ConsoleApp1.csproj";
             var docData = IVsPersistDocDataFactory.ImplementAsIVsTextBuffer();
@@ -133,7 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor.Listeners
         [Theory]
         [InlineData(FileActionTypes.ContentLoadedFromDisk)]
         [InlineData(FileActionTypes.DocumentRenamed)]
-        public async Task TempFileBufferStateListener_NonFileSavedToDisk_DoesNotSaveProjectFile(FileActionTypes action)
+        public async Task NonFileSavedToDisk_DoesNotSaveProjectFile(FileActionTypes action)
         {
             var tempFile = @"C:\Temp\ConsoleApp1.csproj";
             var docData = IVsPersistDocDataFactory.ImplementAsIVsTextBuffer();

@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
     public class TempFileTextBufferManagerTests
     {
         [Fact]
-        public void TempFileTextBufferManager_NullProject_Throws()
+        public void NullProject_Throws()
         {
             Assert.Throws<ArgumentNullException>("unconfiguredProject", () => new TempFileTextBufferManager(
                 null,
@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public void TempFileTextBufferManager_NullMsBuildAccessor_Throws()
+        public void NullMsBuildAccessor_Throws()
         {
             Assert.Throws<ArgumentNullException>("projectXmlAccessor", () => new TempFileTextBufferManager(
                 UnconfiguredProjectFactory.Create(),
@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public void TempFileTextBufferManager_NullEditorService_Throws()
+        public void NullEditorService_Throws()
         {
             Assert.Throws<ArgumentNullException>("editorAdaptersService", () => new TempFileTextBufferManager(
                 UnconfiguredProjectFactory.Create(),
@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public void TempFileTextBufferManager_NullTextDocumentService_Throws()
+        public void NullTextDocumentService_Throws()
         {
             Assert.Throws<ArgumentNullException>("textDocumentService", () => new TempFileTextBufferManager(
                 UnconfiguredProjectFactory.Create(),
@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public void TempFileTextBufferManager_NullShellUtilities_Throws()
+        public void NullShellUtilities_Throws()
         {
             Assert.Throws<ArgumentNullException>("shellUtilities", () => new TempFileTextBufferManager(
                 UnconfiguredProjectFactory.Create(),
@@ -90,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public void TempFileTextBufferManager_NullFileSystem_Throws()
+        public void NullFileSystem_Throws()
         {
             Assert.Throws<ArgumentNullException>("fileSystem", () => new TempFileTextBufferManager(
                 UnconfiguredProjectFactory.Create(),
@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public void TempFileTextBufferManager_NullThreadingService_Throws()
+        public void NullThreadingService_Throws()
         {
             Assert.Throws<ArgumentNullException>("threadingService", () => new TempFileTextBufferManager(
                 UnconfiguredProjectFactory.Create(),
@@ -118,7 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public void TempFileTextBufferManager_NullServiceProvider_Throws()
+        public void NullServiceProvider_Throws()
         {
             Assert.Throws<ArgumentNullException>("serviceProvider", () => new TempFileTextBufferManager(
                 UnconfiguredProjectFactory.Create(),
@@ -132,7 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public async Task TempFileTextBufferManager_Initialize_CreatesTempFile()
+        public async Task Initialize_CreatesTempFile()
         {
             var projectFilePath = @"C:\ConsoleApp\ConsoleApp1\ConsoleApp1.csproj";
             var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFilePath, projectEncoding: Encoding.Default);
@@ -158,7 +158,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             Assert.Equal("<Project />", fileSystem.ReadAllText(tempProjectPath));
         }
 
-        public async Task TempFileTextBufferManager_NonStandardEncoding_UsesProjectEncoding()
+        public async Task NonStandardEncoding_UsesProjectEncoding()
         {
             var projectFilePath = @"C:\ConsoleApp\ConsoleApp1\ConsoleApp1.csproj";
             // Use some file encoding that's not the default
@@ -187,7 +187,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public async Task TempFileTextBufferManager_ResetBufferCleanDocData_UpdatesBufferNotFileSystem()
+        public async Task ResetBufferCleanDocData_UpdatesBufferNotFileSystem()
         {
             var projectFilePath = @"C:\ConsoleApp\ConsoleApp1\ConsoleApp1.csproj";
             // Use some file encoding that's not the default
@@ -232,7 +232,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public async Task TempFileTextBufferManager_ResetBufferDirtyDocData_UpdatesFileNotBuffer()
+        public async Task ResetBufferDirtyDocData_UpdatesFileNotBuffer()
         {
             var projectFilePath = @"C:\ConsoleApp\ConsoleApp1\ConsoleApp1.csproj";
             // Use some file encoding that's not the default
@@ -277,7 +277,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public async Task TempFileTextBufferManager_SaveAsync_SavesXmlToProject()
+        public async Task SaveAsync_SavesXmlToProject()
         {
             var projectFilePath = @"C:\ConsoleApp\ConsoleApp1\ConsoleApp1.csproj";
             // Use some file encoding that's not the default
@@ -319,7 +319,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public async Task TempFileTextBufferManager_SetReadonly_SetsOnlyReadonlyFlag()
+        public async Task SetReadonly_SetsOnlyReadonlyFlag()
         {
             var projectFilePath = @"C:\ConsoleApp\ConsoleApp1\ConsoleApp1.csproj";
             // Use some file encoding that's not the default
@@ -361,7 +361,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public async Task TempFileTextBufferManager_Dispose_RemovesTempFile()
+        public async Task Dispose_RemovesTempFile()
         {
             var projectFilePath = @"C:\ConsoleApp\ConsoleApp1\ConsoleApp1.csproj";
             // Use some file encoding that's not the default
@@ -402,7 +402,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
         }
 
         [Fact]
-        public async Task TempFileTextBufferManager_NoChangesFrom_DoesNotOverwriteNewChanges()
+        public async Task NoChangesFrom_DoesNotOverwriteNewChanges()
         {
             var projectFilePath = @"C:\ConsoleApp\ConsoleApp1\ConsoleApp1.csproj";
             // Use some file encoding that's not the default
