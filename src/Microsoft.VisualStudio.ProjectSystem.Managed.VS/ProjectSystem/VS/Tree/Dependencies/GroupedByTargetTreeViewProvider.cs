@@ -158,28 +158,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         private IProjectTree FindByPathInternal(IProjectTree root, string path)
         {
-            var node = root.FindImmediateChildByPath(path);
-            if (node != null)
+            foreach (IProjectTree node in root.GetSelfAndDescendentsBreadthFirst())
             {
-                return node;
-            }
-
-            foreach (var child in root.Children)
-            {
-                node = child.FindImmediateChildByPath(path);
-                if (node != null)
-                {
+                if (string.Equals(node.FilePath, path, StringComparison.OrdinalIgnoreCase))
                     return node;
-                }
-
-                foreach (var thirdLevelNode in child.Children)
-                {
-                    node = thirdLevelNode.FindImmediateChildByPath(path);
-                    if (node != null)
-                    {
-                        return node;
-                    }
-                }
             }
 
             return null;
