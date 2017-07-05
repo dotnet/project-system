@@ -160,7 +160,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
 
         [Theory] // Format               Arguments                                          Expected
         [InlineData("",                  new object[] { null },                             "")]
-        [InlineData("",                  new object[] { null },                             "")]
         [InlineData("{0}",               new object[] { null },                             "")]
         [InlineData("{0}{1}",            new object[] { null, null },                       "")]
         [InlineData("{0}{1}{2}",         new object[] { null, null, null },                 "")]
