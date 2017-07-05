@@ -2,6 +2,7 @@
 
 using Microsoft.VisualStudio.Shell;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel
@@ -9,6 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel
     internal sealed class ToolWindowViewModel
     {
         private BuildTreeViewModel _currentBuildItem;
+        private Dictionary<IBuild, LogTreeViewModel> _currentLogs = new Dictionary<IBuild, LogTreeViewModel>();
 
         public ObservableCollection<BuildTreeViewModel> BuildItems { get; }
 
@@ -29,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel
             BuildItems.Add(_currentBuildItem);
         }
 
-        public void NotifyBuildStarted(ConfiguredProject configuredProject)
+        public void NotifyBuildStarted(IBuild build)
         {
             ThreadHelper.JoinableTaskFactory.RunAsync(async delegate
             {
@@ -40,12 +42,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel
                     _currentBuildItem = new BuildTreeViewModel(BuildOperation.DesignTime);
                     BuildItems.Add(_currentBuildItem);
                 }
-                _currentBuildItem.Children.Add(new LogTreeViewModel(configuredProject));
+                var log = new LogTreeViewModel(build.ConfiguredProject);
+                _currentLogs[build] = log;
+                _currentBuildItem.Children.Add(log);
             });
         }
 
-        public void NotifyBuildEnded(ConfiguredProject configuredProject)
+        public void NotifyBuildEnded(IBuild build)
         {
+            if (_currentLogs.TryGetValue(build, out var log))
+            {
+                log.Completed();
+                _currentLogs.Remove(build);
+            }
         }
     }
 }

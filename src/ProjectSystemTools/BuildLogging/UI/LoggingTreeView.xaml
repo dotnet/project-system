@@ -11,6 +11,11 @@
     <TreeView.InputBindings>
         <KeyBinding x:Uid="KeyBinding_Open" Command="{x:Static local:Commands.Open}" Key="Enter" />
     </TreeView.InputBindings>
+    <TreeView.ItemContainerStyle>
+        <Style TargetType="{x:Type TreeViewItem}">
+            <Setter Property="IsExpanded" Value="True" />
+        </Style>
+    </TreeView.ItemContainerStyle>
     <TreeView.Resources>
         <BooleanToVisibilityConverter x:Uid="Converter_BooleanToVisibilityConverter" x:Key="BooleanToVisibility"/>
        

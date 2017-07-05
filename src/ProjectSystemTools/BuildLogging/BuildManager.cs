@@ -35,19 +35,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
             }
         }
 
-        public void NotifyBuildStarted(ConfiguredProject configuredProject)
+        public void NotifyBuildStarted(IBuild build)
         {
             if (IsLogging)
             {
-                _toolWindow.NotifyBuildStarted(configuredProject);
+                _toolWindow.NotifyBuildStarted(build);
             }
         }
 
-        public void NotifyBuildEnded(ConfiguredProject configuredProject)
+        public void NotifyBuildEnded(IBuild build)
         {
             if (IsLogging)
             {
-                _toolWindow.NotifyBuildEnded(configuredProject);
+                _toolWindow.NotifyBuildEnded(build);
             }
         }
     }

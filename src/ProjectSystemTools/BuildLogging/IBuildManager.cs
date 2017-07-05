@@ -19,8 +19,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
         void NotifyBuildOperationEnded(BuildOperation operation);
 
-        void NotifyBuildStarted(ConfiguredProject configuredProject);
+        void NotifyBuildStarted(IBuild build);
 
-        void NotifyBuildEnded(ConfiguredProject configuredProject);
+        void NotifyBuildEnded(IBuild build);
     }
 }
