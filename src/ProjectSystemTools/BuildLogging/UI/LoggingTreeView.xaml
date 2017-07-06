@@ -1,7 +1,7 @@
 <TreeView x:Uid="_this" x:Class="Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI.LoggingTreeView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging"
+    xmlns:ui="clr-namespace:Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI"
     xmlns:model="clr-namespace:Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel"
     Margin="0,0,3,0"
     ItemsSource="{Binding Path=BuildItems}"
@@ -9,7 +9,7 @@
     x:ClassModifier="internal"
     >
     <TreeView.InputBindings>
-        <KeyBinding x:Uid="KeyBinding_Open" Command="{x:Static local:Commands.Open}" Key="Enter" />
+        <KeyBinding x:Uid="KeyBinding_Open" Command="{x:Static ui:Commands.Open}" Key="Enter" />
     </TreeView.InputBindings>
     <TreeView.ItemContainerStyle>
         <Style TargetType="{x:Type TreeViewItem}">
