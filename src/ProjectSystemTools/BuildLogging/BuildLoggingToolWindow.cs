@@ -70,6 +70,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                     enabled = _buildLogger.IsLogging;
                     break;
 
+                case ProjectSystemToolsPackage.ClearCommandId:
+                    visible = true;
+                    enabled = true;
+                    break;
+
                 default:
                     handled = false;
                     break;
@@ -115,6 +120,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
                 case ProjectSystemToolsPackage.StopLoggingCommandId:
                     _buildLogger.Stop();
+                    break;
+
+                case ProjectSystemToolsPackage.ClearCommandId:
+                    _buildLogger.Clear();
                     break;
 
                 default:

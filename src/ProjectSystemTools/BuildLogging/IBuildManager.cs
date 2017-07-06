@@ -15,6 +15,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
         void Stop();
 
+        void Clear();
+
         void NotifyBuildOperationStarted(BuildOperation operation);
 
         void NotifyBuildOperationEnded(BuildOperation operation);

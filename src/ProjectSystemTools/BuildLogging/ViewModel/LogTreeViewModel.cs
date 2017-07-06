@@ -21,6 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel
 
         public readonly string FullPath;
         public ImmutableDictionary<string, string> Dimensions;
+        public DateTime? StartTime;
         public DateTime? CompletionTime;
 
         private string BaseText => $"{Path.GetFileName(FullPath)} [{Dimensions.Values.Aggregate((current, next) => $"{current}|{next}")}]";
@@ -31,13 +32,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel
         {
             FullPath = configuredProject.UnconfiguredProject.FullPath;
             Dimensions = configuredProject.ProjectConfiguration.Dimensions.ToImmutableDictionary();
+            StartTime = DateTime.Now;
             Text = $"{BaseText} (Building...)";
         }
 
         public void Completed()
         {
             CompletionTime = DateTime.Now;
-            Text = $"{BaseText} ({CompletionTime})";
+            Text = $"{BaseText} ({CompletionTime - StartTime})";
         }
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)

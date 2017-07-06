@@ -10,13 +10,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel
     internal sealed class ToolWindowViewModel
     {
         private BuildTreeViewModel _currentBuildItem;
-        private Dictionary<IBuild, LogTreeViewModel> _currentLogs = new Dictionary<IBuild, LogTreeViewModel>();
+        private readonly Dictionary<IBuild, LogTreeViewModel> _currentLogs = new Dictionary<IBuild, LogTreeViewModel>();
 
         public ObservableCollection<BuildTreeViewModel> BuildItems { get; }
 
         public ToolWindowViewModel()
         {
             BuildItems = new ObservableCollection<BuildTreeViewModel>();
+        }
+
+        public void Clear()
+        {
+            _currentBuildItem = null;
+            _currentLogs.Clear();
+            BuildItems.Clear();
         }
 
         public void NotifyBuildOperationEnded(BuildOperation e)

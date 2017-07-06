@@ -19,6 +19,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
         public void Stop() => IsLogging = false;
 
+        public void Clear()
+        {
+            _toolWindow.Clear();
+        }
+
         public void NotifyBuildOperationStarted(BuildOperation operation)
         {
             if (IsLogging)

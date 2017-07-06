@@ -4,7 +4,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 {
     internal sealed class FakeLogger : ILogger, IBuild
     {
-        private IBuildManager _buildManager;
+        private readonly IBuildManager _buildManager;
 
         public LoggerVerbosity Verbosity { get => LoggerVerbosity.Quiet; set { } }
 
