@@ -33,8 +33,8 @@
     <MicrosoftVisualStudioShellDesign>15.0.26507-alpha</MicrosoftVisualStudioShellDesign>
     <MicrosoftVisualStudioManagedInterfaces>8.0.50727</MicrosoftVisualStudioManagedInterfaces>
     <!-- NOTE: Both of these should be updated at once to reference the same roslyn build-->
-    <MicrosoftVisualStudioLanguageServicesVersion>2.3.0-beta3-61808-05</MicrosoftVisualStudioLanguageServicesVersion>
-    <RoslynIntegrationVsixVersion>2.3.0.6182805</RoslynIntegrationVsixVersion>
+    <MicrosoftVisualStudioLanguageServicesVersion>2.6.0-beta1-61911-10</MicrosoftVisualStudioLanguageServicesVersion>
+    <RoslynIntegrationVsixVersion>2.6.0.6191110</RoslynIntegrationVsixVersion>
     <MoqVersion>4.2.1402.2112</MoqVersion>
     <MicrosoftVisualStudioTextLogicVersion>15.0.26507-alpha</MicrosoftVisualStudioTextLogicVersion>
     <RoslynToolsDownloadRoslynVsixesVersion>0.3.4-beta</RoslynToolsDownloadRoslynVsixesVersion>
