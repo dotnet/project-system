@@ -855,7 +855,7 @@ Caption=Dependency1, FilePath=tfm1\Xxx\dependencyxxxpath, IconHash=325249260, Ex
         }
 
         [Fact]
-        public void WhenFindByPathAndRelativeNodePath_ShouldFind()
+        public void WhenFindByPathAndRelativeNodePath_ShouldNotFind()
         {
             // Arrange
             const string projectPath = @"c:\myfolder\mysubfolder\myproject.csproj";
@@ -929,12 +929,11 @@ Caption=Dependency1, FilePath=tfm1\Xxx\dependencyxxxpath, IconHash=325249260, Ex
             var resultTree = provider.FindByPath(dependenciesRoot, Path.Combine(projectFolder, @"level3Child32"));
 
             // Assert
-            Assert.NotNull(resultTree);
-            Assert.Equal("level3Child32", resultTree.Caption);
+            Assert.Null(resultTree);
         }
 
         [Fact]
-        public void WhenFindByPathAndNeedToFindDependenciesRoot_ShouldFind()
+        public void WhenFindByPathAndNeedToFindDependenciesRoot_ShouldNotFind()
         {
             // Arrange
             const string projectPath = @"c:\myfolder\mysubfolder\myproject.csproj";
@@ -1014,11 +1013,11 @@ Caption=Dependency1, FilePath=tfm1\Xxx\dependencyxxxpath, IconHash=325249260, Ex
 
             // Act
             var provider = new GroupedByTargetTreeViewProvider(treeServices, treeViewModelFactory, commonServices);
-            var resultTree = provider.FindByPath(projectRoot, Path.Combine(projectFolder, @"level3Child32"));
+
+            var result = provider.FindByPath(projectRoot, Path.Combine(projectFolder, @"level3Child32"));
 
             // Assert
-            Assert.NotNull(resultTree);
-            Assert.Equal("level3Child32", resultTree.Caption);
+            Assert.Null(result);
         }
 
         private IDependenciesSnapshot GetSnapshot(Dictionary<ITargetFramework, List<IDependency>> testData)
