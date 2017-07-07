@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="pl" original="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/CopyUpToDateMarker.xaml">
+    <body>
+      <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/CopyUpToDateMarker.xaml" />
+      <trans-unit id="Rule|CopyUpToDateMarker|DisplayName">
+        <source>Up-to-date check marker for reference assemblies</source>
+        <target state="new">Up-to-date check marker for reference assemblies</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Rule|CopyUpToDateMarker|Description">
+        <source>File Properties</source>
+        <target state="new">File Properties</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Category|Advanced|DisplayName">
+        <source>Advanced</source>
+        <target state="new">Advanced</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="Category|Misc|DisplayName">
+        <source>Misc</source>
+        <target state="new">Misc</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|FullPath|DisplayName">
+        <source>Full Path</source>
+        <target state="new">Full Path</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|FullPath|Description">
+        <source>Location of the file.</source>
+        <target state="new">Location of the file.</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

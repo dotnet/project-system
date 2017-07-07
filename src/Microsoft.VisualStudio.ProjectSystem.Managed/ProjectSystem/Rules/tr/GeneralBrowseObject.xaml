@@ -60,8 +60,16 @@
       <DataSource Persistence="ProjectFile" PersistedName="Win32Resource" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="PreBuildEvent" DisplayName="Derleme Öncesi Olayı" Visible="False" />
-  <StringProperty Name="PostBuildEvent" DisplayName="Derleme Sonrası Olayı" Visible="False" />
+  <StringProperty Name="PreBuildEvent" DisplayName="Derleme Öncesi Olayı" Visible="False">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="PreBuildEvent" HasConfigurationCondition="False" SourceOfDefaultValue="BeforeContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="PostBuildEvent" DisplayName="Derleme Sonrası Olayı" Visible="False">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="PostBuildEvent" HasConfigurationCondition="False" SourceOfDefaultValue="BeforeContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
   <EnumProperty Name="RunPostBuildEvent" DisplayName="Derleme Sonrası Olayını Çalıştır" Visible="False">
     <EnumValue Name="Always" DisplayName="Her Zaman" />
     <EnumValue Name="OnBuildSuccess" DisplayName="Derleme başarılı olduğunda" IsDefault="True" />

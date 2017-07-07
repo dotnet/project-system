@@ -60,8 +60,16 @@
       <DataSource Persistence="ProjectFile" PersistedName="Win32Resource" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="PreBuildEvent" DisplayName="Evento Pré-Build" Visible="False" />
-  <StringProperty Name="PostBuildEvent" DisplayName="Evento Pós-Build" Visible="False" />
+  <StringProperty Name="PreBuildEvent" DisplayName="Evento Pré-Build" Visible="False">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="PreBuildEvent" HasConfigurationCondition="False" SourceOfDefaultValue="BeforeContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="PostBuildEvent" DisplayName="Evento Pós-Build" Visible="False">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="PostBuildEvent" HasConfigurationCondition="False" SourceOfDefaultValue="BeforeContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
   <EnumProperty Name="RunPostBuildEvent" DisplayName="Executar Evento Pós-Build" Visible="False">
     <EnumValue Name="Always" DisplayName="Sempre" />
     <EnumValue Name="OnBuildSuccess" DisplayName="Em caso de build bem-sucedido" IsDefault="True" />
