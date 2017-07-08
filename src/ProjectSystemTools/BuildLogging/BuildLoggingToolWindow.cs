@@ -3,6 +3,9 @@
 using System;
 using System.ComponentModel.Design;
 using System.Runtime.InteropServices;
+using Microsoft.Build.BuildEngine;
+using Microsoft.Build.Evaluation;
+using Microsoft.Build.Framework;
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI;
@@ -15,6 +18,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
     [Guid(BuildLoggingToolWindowGuidString)]
     public sealed class BuildLoggingToolWindow : ToolWindowPane, IOleCommandTarget, IVsUpdateSolutionEvents4
     {
+        private sealed class FooLogger : ILogger
+        {
+            public void Initialize(IEventSource eventSource)
+            {
+                eventSource.BuildStarted += BuildStarted;
+            }
+
+            private void BuildStarted(object sender, BuildStartedEventArgs e)
+            {
+            }
+
+            public void Shutdown()
+            {
+            }
+
+            public LoggerVerbosity Verbosity { get; set; } = LoggerVerbosity.Diagnostic;
+            public string Parameters { get; set; }
+        }
+
         public const string BuildLoggingToolWindowGuidString = "391238ea-dad7-488c-94d1-e2b6b5172bf3";
 
         public const string BuildLoggingToolWindowCaption = "Build Logging";

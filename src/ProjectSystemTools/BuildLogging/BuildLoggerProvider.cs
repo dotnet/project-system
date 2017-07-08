@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
             if (_buildManager.IsLogging)
             {
-                loggers = loggers.Add(new FakeLogger(_buildManager, _configuredProject));
+                loggers = loggers.Add(new FakeLogger(_buildManager, _configuredProject, targets, properties));
             }
 
             return Task.FromResult(loggers);

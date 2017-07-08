@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel
                     _currentBuildItem = new BuildTreeViewModel(BuildOperation.DesignTime);
                     BuildItems.Add(_currentBuildItem);
                 }
-                var log = new LogTreeViewModel(build.ConfiguredProject);
+                var log = new LogTreeViewModel(build.ConfiguredProject, build.Targets);
                 _currentLogs[build] = log;
                 _currentBuildItem.Children.Add(log);
             });

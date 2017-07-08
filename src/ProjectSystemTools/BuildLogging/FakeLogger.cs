@@ -1,4 +1,6 @@
-﻿using Microsoft.Build.Framework;
+﻿using System.Collections.Generic;
+using System.Collections.Immutable;
+using Microsoft.Build.Framework;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 {
@@ -10,12 +12,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
         public ConfiguredProject ConfiguredProject { get; }
 
+        public IReadOnlyList<string> Targets { get; }
+
+        public IImmutableDictionary<string, string> Properties { get; }
+
         public string Parameters { get => null; set { } }
 
-        public FakeLogger(IBuildManager buildManager, ConfiguredProject configuredProject)
+        public FakeLogger(IBuildManager buildManager, ConfiguredProject configuredProject, IReadOnlyList<string> targets, IImmutableDictionary<string, string> properties)
         {
             _buildManager = buildManager;
             ConfiguredProject = configuredProject;
+            Targets = targets;
+            Properties = properties;
         }
 
         public void Initialize(IEventSource eventSource)

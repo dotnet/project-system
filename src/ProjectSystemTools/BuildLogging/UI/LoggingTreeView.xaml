@@ -20,7 +20,7 @@
         <BooleanToVisibilityConverter x:Uid="Converter_BooleanToVisibilityConverter" x:Key="BooleanToVisibility"/>
        
         <!-- Template for logs -->
-        <HierarchicalDataTemplate x:Uid="HierarchicalDataTemplate_LogItem" DataType="{x:Type model:LogTreeViewModel}">
+        <HierarchicalDataTemplate x:Uid="HierarchicalDataTemplate_LogItem" DataType="{x:Type model:LogTreeViewModel}" ItemsSource="{Binding Path=Targets}">
             <TextBlock x:Uid="TextBlock_LogItemText" Text="{Binding Path=Text}" MouseLeftButtonDown="LoggingTreeView_MouseLeftButtonDown"/>
         </HierarchicalDataTemplate>
 
