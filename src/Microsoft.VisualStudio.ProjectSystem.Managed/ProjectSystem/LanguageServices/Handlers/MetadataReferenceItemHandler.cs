@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
@@ -13,13 +14,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     /// </summary>
     internal class MetadataReferenceItemHandler : ICommandLineHandler
     {
-        // WORKAROUND: To avoid Roslyn throwing when we add duplicate references, we remember what 
-        // sent to them and avoid sending on duplicates.
+        // WORKAROUND: The language services through IWorkspaceProjectContext doesn't expect to see AddMetadataReference called more than
+        // once with the same path and different properties. This dedups the references to work around this limitation.
         // See: https://github.com/dotnet/project-system/issues/2230
 
         private readonly UnconfiguredProject _project;
         private readonly IWorkspaceProjectContext _context;
-        private readonly HashSet<string> _paths = new HashSet<string>(StringComparers.Paths);
+        private readonly Dictionary<string, MetadataReferenceProperties> _addedPathsWithMetadata = new Dictionary<string, MetadataReferenceProperties>(StringComparers.Paths);
 
         public MetadataReferenceItemHandler(UnconfiguredProject project, IWorkspaceProjectContext context)
         {
@@ -41,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             {
                 var fullPath = _project.MakeRooted(reference.Reference);
 
-                RemoveFromContextIfPresent(fullPath, logger);
+                RemoveFromContextIfPresent(fullPath, reference.Properties, logger);
             }
 
             foreach (CommandLineReference reference in added.MetadataReferences)
@@ -54,24 +55,77 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         private void AddToContextIfNotPresent(string fullPath, MetadataReferenceProperties properties, IProjectLogger logger)
         {
-            if (!_paths.Contains(fullPath))
+            if (_addedPathsWithMetadata.TryGetValue(fullPath, out var existingProperties))
             {
-                logger.WriteLine("Adding reference '{0}'", fullPath);
-                _context.AddMetadataReference(fullPath, properties);
-                bool added = _paths.Add(fullPath);
-                Assumes.True(added);
+                logger.WriteLine("Removing existing reference with '{0}' so we can update the aliases.", fullPath);
+
+                // The reference has already been added previously. The current implementation of IWorkspaceProjectContext
+                // presumes that we'll only called AddMetadataReference once for a given path. Thus we have to remove the
+                // existing one, compute merged properties, and add the new one.
+                _context.RemoveMetadataReference(fullPath);
+
+                var combinedAliases = GetEmptyIfGlobalAlias(GetGlobalAliasIfEmpty(existingProperties.Aliases).AddRange(GetGlobalAliasIfEmpty(properties.Aliases)));
+                properties = properties.WithAliases(combinedAliases);
             }
+
+            logger.WriteLine("Adding reference '{0}'", fullPath);
+            _context.AddMetadataReference(fullPath, properties);
+            _addedPathsWithMetadata[fullPath] = properties;
         }
 
-        private void RemoveFromContextIfPresent(string fullPath, IProjectLogger logger)
+        private void RemoveFromContextIfPresent(string fullPath, MetadataReferenceProperties properties, IProjectLogger logger)
         {
-            if (_paths.Contains(fullPath))
+            if (_addedPathsWithMetadata.TryGetValue(fullPath, out var existingProperties))
             {
                 logger.WriteLine("Removing reference '{0}'", fullPath);
                 _context.RemoveMetadataReference(fullPath);
-                bool removed = _paths.Remove(fullPath);
-                Assumes.True(removed);
+
+                // Subtract any existing aliases out. This will be an empty list if we should remove the reference entirely
+                var resultantAliases = GetGlobalAliasIfEmpty(existingProperties.Aliases).RemoveRange(GetGlobalAliasIfEmpty(properties.Aliases));
+
+                if (resultantAliases.IsEmpty)
+                {
+                    // There's nothing left here, completely remove it
+                    Assumes.True(_addedPathsWithMetadata.Remove(fullPath));
+                }
+                else
+                {
+                    // resultantAliases might be the global alias. In that case, let's remove it again.
+                    resultantAliases = GetEmptyIfGlobalAlias(resultantAliases);
+                    properties = properties.WithAliases(resultantAliases);
+                    logger.WriteLine("Adding reference '{0}' back with remaining aliases", fullPath);
+                    _context.AddMetadataReference(fullPath, properties);
+                    _addedPathsWithMetadata[fullPath] = properties;
+                }
             }
+        }
+
+        private static readonly ImmutableArray<string> s_listWithGlobalAlias = ImmutableArray.Create(MetadataReferenceProperties.GlobalAlias);
+
+        /// <summary>
+        /// Returns the list of aliases, replacing an empty list with "global".
+        /// </summary>
+        private static ImmutableArray<string> GetGlobalAliasIfEmpty(ImmutableArray<string> aliases)
+        {
+            if (aliases.IsDefaultOrEmpty)
+            {
+                return s_listWithGlobalAlias;
+
+            }
+            return aliases;
+        }
+
+        /// <summary>
+        /// Returns the list of aliases, replacing a list containing just "global" back to the empty list.
+        /// </summary>
+        private static ImmutableArray<string> GetEmptyIfGlobalAlias(ImmutableArray<string> aliases)
+        {
+            if (aliases.Length == 1 && aliases[0] == MetadataReferenceProperties.GlobalAlias)
+            {
+                return ImmutableArray<string>.Empty;
+            }
+
+            return aliases;
         }
     }
 }
