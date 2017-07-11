@@ -21,6 +21,7 @@
     <RoslynDependenciesOptimizationDataVersion>2.0.0-rc-61101-17</RoslynDependenciesOptimizationDataVersion>
     <ProjectSystemSDKVersion>15.3.178-pre-g209fb07c2e</ProjectSystemSDKVersion>
     <SystemCollectionsImmutableVersion>1.3.1</SystemCollectionsImmutableVersion>
+    <SystemDiagnosticsProcessVersion>4.3.0</SystemDiagnosticsProcessVersion>
     <SystemReflectionMetadataVersion>1.4.2</SystemReflectionMetadataVersion>
     <SystemRuntimeInteropServicesRuntimeInformationVersion>4.3.0</SystemRuntimeInteropServicesRuntimeInformationVersion>
     <MicrosoftDotNetIBCMergeVersion>4.7.1-alpha-00001</MicrosoftDotNetIBCMergeVersion>
