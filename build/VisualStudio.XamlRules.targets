@@ -25,12 +25,9 @@
 
   <!-- Copy translated XAML rule files for testing and setup authoring purposes -->
   <Target Name="CopyTranslatedXamlRulesToOutputDirectory" AfterTargets="CopyFilesToOutputDirectory" DependsOnTargets="TranslateSourceFromXlf">
-    <ItemGroup>
-      <_TranslatedXamlRuleToCopy Include="@(Xlf)" Condition="'%(Xlf.XlfSourceFormat)' == 'XamlRule'" />
-    </ItemGroup>
 
-    <Copy SourceFiles="@(_TranslatedXamlRuleToCopy->'%(XlfTranslatedFullPath)')"  
-          DestinationFiles="@(_TranslatedXamlRuleToCopy->'$(VisualStudioXamlRulesDir)%(XlfLanguage)\$([System.IO.Path]::GetFileName('%(XlfSource)'))')"
+    <Copy SourceFiles="@(XamlPropertyRuleTranslated)"  
+          DestinationFiles="@(XamlPropertyRuleTranslated->'$(VisualStudioXamlRulesDir)%(XlfLanguage)\$([System.IO.Path]::GetFileName('%(XlfSource)'))')"
           SkipUnchangedFiles="$(SkipCopyUnchangedFiles)"
           OverwriteReadOnlyFiles="$(OverwriteReadOnlyFiles)"
           Retries="$(CopyRetryCount)"

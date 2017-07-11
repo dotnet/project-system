@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     public class ProjectSystemTraitDiscoverer : ITraitDiscoverer
     {
-        public ProjectSystemTraitDiscoverer()
+        public ProjectSystemTraitDiscoverer(IMessageSink messageSink)
         {
         }
 
