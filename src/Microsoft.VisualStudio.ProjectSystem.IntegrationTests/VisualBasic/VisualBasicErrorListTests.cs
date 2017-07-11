@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
     [Collection(nameof(SharedIntegrationHostFixture))]
     public class VisualBasicErrorListTests : AbstractIntegrationTest
     {
-        protected override string DefaultLanuageName => LanguageNames.VisualBasic;
+        protected override string DefaultLanguageName => LanguageNames.VisualBasic;
 
         public VisualBasicErrorListTests(VisualStudioInstanceFactory instanceFactory)
             : base(nameof(CSharpSquigglesTests), WellKnownProjectTemplates.VisualBasicNetCoreClassLibrary, instanceFactory)
