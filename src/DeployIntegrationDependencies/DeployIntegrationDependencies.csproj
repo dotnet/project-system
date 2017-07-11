@@ -39,6 +39,7 @@
     <ProjectReference Include="..\Templates\Microsoft.NetStandard.FSharp.ProjectTemplates.Vsix\Microsoft.NetStandard.FSharp.ProjectTemplates.Vsix.csproj" />
     <ProjectReference Include="..\Templates\Microsoft.NetStandard.VB.ProjectTemplates.Vsix\Microsoft.NetStandard.VB.ProjectTemplates.Vsix.csproj" />
     <ProjectReference Include="..\VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj" />
+    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.csproj" />
   </ItemGroup>
   <Import Project="..\..\build\Targets\ProducesNoOutput.Imports.targets" />
 
@@ -53,8 +54,16 @@
 
     <!-- Downloading Roslyn Vsixes -->
     <Exec Command="mkdir &quot;$(IntegrationDirectory)Roslyn\Vsixes&quot;" IgnoreExitCode="true"/>
-    <Exec Command="@powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;((New-Object System.Net.WebClient).DownloadFile('https://dotnet.myget.org/F/roslyn/vsix/0b48e25b-9903-4d8b-ad39-d4cca196e3c7-$(RoslynIntegrationVsixVersion).vsix', '$(IntegrationDirectory)Roslyn\Roslyn.Deployment.Full.Next.zip'))&quot;" />
-    <Exec Command="@powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;((New-Object System.Net.WebClient).DownloadFile('https://dotnet.myget.org/F/roslyn/vsix/d0122878-51f1-4b36-95ec-dec2079a2a84-$(RoslynIntegrationVsixVersion).vsix', '$(IntegrationDirectory)Roslyn\Vsixes\Microsoft.VisualStudio.IntegrationTest.Setup.vsix'))&quot;" />
+
+    <!-- Download Roslyn from web if we are not using Locally Built Roslyn -->
+    <Exec Command="@powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;((New-Object System.Net.WebClient).DownloadFile('https://dotnet.myget.org/F/roslyn/vsix/0b48e25b-9903-4d8b-ad39-d4cca196e3c7-$(RoslynIntegrationVsixVersion).vsix', '$(IntegrationDirectory)Roslyn\Roslyn.Deployment.Full.Next.zip'))&quot;" Condition="'$(UseLocalRoslynForIntegrationTests)' != 'true'"/>
+    <Exec Command="@powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;((New-Object System.Net.WebClient).DownloadFile('https://dotnet.myget.org/F/roslyn/vsix/d0122878-51f1-4b36-95ec-dec2079a2a84-$(RoslynIntegrationVsixVersion).vsix', '$(IntegrationDirectory)Roslyn\Vsixes\Microsoft.VisualStudio.IntegrationTest.Setup.vsix'))&quot;" Condition="'$(UseLocalRoslynForIntegrationTests)' != 'true'"/>
+
+    <!-- Copy the local Roslyn bits -->
+    <Copy SourceFiles="$(LocalRoslynDebugDirectoryPath)Vsix\Roslyn.Deployment.Full.Next\Roslyn.Deployment.Full.Next.vsix" DestinationFiles="$(IntegrationDirectory)Roslyn\Roslyn.Deployment.Full.Next.zip" Condition="'$(UseLocalRoslynForIntegrationTests)' == 'true'"/> 
+    <Copy SourceFiles="$(LocalRoslynDebugDirectoryPath)Vsix\VisualStudioIntegrationTestSetup\Microsoft.VisualStudio.IntegrationTest.Setup.vsix" DestinationFiles="$(IntegrationDirectory)Roslyn\Vsixes\Microsoft.VisualStudio.IntegrationTest.Setup.vsix" Condition="'$(UseLocalRoslynForIntegrationTests)' == 'true'"/> 
+
+    <!-- Unzip the Roslyn full deployment vsix into individual vsixes -->
     <Exec Command="@powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;Expand-Archive -path $(IntegrationDirectory)Roslyn\Roslyn.Deployment.Full.Next.zip -destinationPath $(IntegrationDirectory)Roslyn -force" />
 
     <!-- Uninstall any old (locally-deployed) Roslyn Vsixes -->

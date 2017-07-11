@@ -150,6 +150,20 @@
     <OutDir>$(OutDir)\Samples\$(MSBuildProjectName)</OutDir>
   </PropertyGroup>
 
+  <Choose>
+    <When Condition="'$(UseLocalRoslynForIntegrationTests)' == 'true' AND Exists('$(LocalRoslynNugetPath)')">
+      <PropertyGroup>
+          <ListOfLocalNugetFiles>$([System.IO.Directory]::GetFiles(`$(LocalRoslynNugetPath)`))</ListOfLocalNugetFiles>
+
+          <!-- The first file will be Microsoft.CodeAnalysis Nupkg-->
+          <MSCANugetFileName>$(ListOfLocalNugetFiles.Split(';')[0])</MSCANugetFileName>
+
+          <!-- Get version from fullpath; <Path>\Microsoft.CodeAnalysis.2.3.0-dev-56735-00.nupkg-->
+          <MicrosoftVisualStudioLanguageServicesVersion>$(MSCANugetFileName.Split('.')[2]).$(MSCANugetFileName.Split('.')[3]).$(MSCANugetFileName.Split('.')[4])</MicrosoftVisualStudioLanguageServicesVersion>
+      </PropertyGroup>
+    </When>
+  </Choose>
+
   <PropertyGroup>
   <!-- Disable AppX packaging for the Roslyn source. Not setting this to false has the side effect
        that any builds of portable projects end up in a sub folder of $(OutDir). Search for this flag in
