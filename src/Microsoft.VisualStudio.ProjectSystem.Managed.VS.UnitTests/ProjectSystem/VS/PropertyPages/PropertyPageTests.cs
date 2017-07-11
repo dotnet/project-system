@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test.PropertyPages
         }
 
         [Fact]
-        public void Move()
+        public void MoveTest()
         {
             Castle.DynamicProxy.Generators.AttributesToAvoidReplicating.Add(typeof(System.Security.Permissions.UIPermissionAttribute));
 
