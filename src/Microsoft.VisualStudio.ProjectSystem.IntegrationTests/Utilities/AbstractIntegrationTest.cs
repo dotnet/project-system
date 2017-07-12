@@ -3,6 +3,8 @@
 using Microsoft.VisualStudio.IntegrationTest.Utilities;
 using Microsoft.VisualStudio.IntegrationTest.Utilities.Input;
 using System;
+using System.Configuration;
+using System.IO;
 using System.Threading;
 using ProjectUtils = Microsoft.VisualStudio.IntegrationTest.Utilities.Common.ProjectUtils;
 
@@ -11,6 +13,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
     [CaptureTestName]
     public abstract class AbstractIntegrationTest : IDisposable
     {
+        private const string XamlRulesDirRelativeToTestAssemblyConfigKey = "ProjectSystem.XamlRulesDirRelativeToTestAssembly";
+
+        static AbstractIntegrationTest()
+        {
+            string relativePath = ConfigurationManager.AppSettings[XamlRulesDirRelativeToTestAssemblyConfigKey] ?? "";
+            string dir = Path.Combine(Path.GetDirectoryName(typeof(AbstractIntegrationTest).Assembly.Location), relativePath);
+
+            void RequireFileExists(string path)
+            {
+                if (!File.Exists(path))
+                {
+                    throw new FileNotFoundException($"Design time targets file not found: '{path}'", path);
+                }
+            }
+
+            void SetVariable(string variableName, string fileName)
+            {
+                string fullPath = Path.GetFullPath(Path.Combine(dir, fileName));
+                RequireFileExists(fullPath);
+                Environment.SetEnvironmentVariable(variableName, fullPath);
+            }
+
+            SetVariable("VisualBasicDesignTimeTargetsPath", "Microsoft.VisualBasic.DesignTime.targets");
+            SetVariable("CSharpDesignTimeTargetsPath", "Microsoft.CSharp.DesignTime.targets");
+            SetVariable("FSharpDesignTimeTargetsPath", "Microsoft.FSharp.DesignTime.targets");
+            RequireFileExists(Path.Combine(dir, "Microsoft.Managed.DesignTime.targets"));
+        }
+
         public readonly VisualStudioInstance VisualStudio;
 
         protected const string ProjectName = "TestProj";
