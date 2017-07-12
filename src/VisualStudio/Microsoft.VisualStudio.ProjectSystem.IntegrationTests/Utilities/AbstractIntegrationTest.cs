@@ -3,6 +3,7 @@
 using Microsoft.VisualStudio.IntegrationTest.Utilities;
 using Microsoft.VisualStudio.IntegrationTest.Utilities.Input;
 using System;
+using System.IO;
 using System.Threading;
 using ProjectUtils = Microsoft.VisualStudio.IntegrationTest.Utilities.Common.ProjectUtils;
 
@@ -11,6 +12,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
     [CaptureTestName]
     public abstract class AbstractIntegrationTest : IDisposable
     {
+        static AbstractIntegrationTest()
+        {
+            string dir = Path.GetDirectoryName(typeof(AbstractIntegrationTest).Assembly.Location);
+            Environment.SetEnvironmentVariable("VisualBasicDesignTimeTargetsPath", Path.Combine(dir, "Microsoft.VisualBasic.DesignTime.targets"));
+            Environment.SetEnvironmentVariable("CSharpDesignTimeTargetsPath", Path.Combine(dir, "Microsoft.CSharp.DesignTime.targets"));
+            Environment.SetEnvironmentVariable("FSharpDesignTimeTargetsPath", Path.Combine(dir, "Microsoft.FSharp.DesignTime.targets"));
+        }
+
         public readonly VisualStudioInstance VisualStudio;
 
         protected const string ProjectName = "TestProj";
