@@ -9,4 +9,13 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.IntegrationTest.Utilities" Version="$(MicrosoftVisualStudioIntegrationTestUtilitiesVersion)" />
   </ItemGroup>
+  <ItemGroup>
+    <!-- TODO: these should be dependencies of Microsoft.VisualStudio.IntegrationTest.Utilities -->
+    <PackageReference Include="System.Diagnostics.Process" Version="4.3.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Setup.Configuration.Interop" Version="$(MicrosoftVisualStudioSetupConfigurationInteropVersion)" />
+    <PackageReference Include="Microsoft.VisualStudio.Setup.Configuration.Native.x86" Version="$(MicrosoftVisualStudioSetupConfigurationNativex86Version)" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
 </Project>
