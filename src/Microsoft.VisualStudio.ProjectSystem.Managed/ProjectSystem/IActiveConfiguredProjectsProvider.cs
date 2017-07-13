@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     /// <remarks>
     ///     This service replaces <see cref="IActiveConfiguredProjectProvider"/> to handle projects where more than
     ///     <see cref="ConfiguredProject"/> is considered active at the same time, such as projects that produce
-    ///     multiple outputs.
+    ///     multiple outputs. See <see cref="ActiveConfiguredProjectsProvider"/> for more information.
     /// </remarks>
     internal interface IActiveConfiguredProjectsProvider
     {
