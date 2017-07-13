@@ -171,4 +171,7 @@
   <data name="EnableUnmanagedDebugging.Text" xml:space="preserve">
     <value>Habilitar a depuração do código na&amp;tivo</value>
   </data>
+  <data name="StartArguments.AccessibleName" xml:space="preserve">
+    <value>Argumentos da linha de comando</value>
+  </data>
 </root>

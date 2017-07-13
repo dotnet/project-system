@@ -94,18 +94,21 @@ In Visual Studio 2017 there are two C# and Visual Basic project systems. By defa
 The new .NET Core and .NET Standard project types, however, open in the new [project system](http://github.com/dotnet/roslyn-project-system) and you can use the following steps to see the results of design-time builds:
 
 1. Close all instances of Visual Studio
-2. In Explorer, open `%ProgramData%\Microsoft\VisualStudio\Packages\_Instances` and remember the name of the folder under there, this is called an "instance id"
-3. In Start, enter `regedit.exe` and press __ENTER__
-4. Select HKEY_LOCAL_MACHINE and choose __File__ -> __Load Hive__
-5. Browse to `%LOCALAPPDATA%\Microsoft\VisualStudio\15.0_[instance id]`, where _instance id_ is the value you gathered in step 1
-6. Select privateregistry.bin and choose Open
-7. Enter `VS` as the key name and click OK
-8. Expand the newly added keys to `VS\Software\Microsoft\VisualStudio\15.0_[instance id]` and add a new key called `CPS`
-9. Create a new DWORD (32-bit) value `Design-time Build Logging` under `CPS` and set it to `1`.
-10. __Important:__ Select the root `VS` key and choose __File__ -> __Unload Hive__. Visual Studio will fail to start if you do not do this step.
-11. Open the solution in Visual Studio
+2. Download the following script: [DesignTimeBuildOutputPane.cmd](/docs/repo/content/DesignTimeBuildOutputPane.cmd?raw=true)
+3. From a elevated Visual Studio command-prompt, run the following:
+```
+DesignTimeBuildOutputPane.cmd enable
+```
+4. Open the solution in Visual Studio
 
 The results of the design time build will appear in a new category called __Build - Design-time__ in the __Output__ window. The verbosity of the category respects the same settings under __Tools__ -> __Options__ -> __Project and Solutions__ -> __Build and Run__ as normal builds.
+
+To turn off this pane:
+
+1. From a elevated Visual Studio command-prompt, run the following:
+```
+DesignTimeBuildOutputPane.cmd disable
+```
 
 ### Diagnosing why a design-time build is failing or taking too long
 

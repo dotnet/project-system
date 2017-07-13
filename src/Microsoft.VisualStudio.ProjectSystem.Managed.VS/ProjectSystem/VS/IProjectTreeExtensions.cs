@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 if (itemFilter(item))
                 {
                     // Double check we don't already have this one -  we shouldn't
-                    var existingNode = tree.FindNodeByPath(item);
+                    var existingNode = tree.FindImmediateChildByPath(item);
                     System.Diagnostics.Debug.Assert(existingNode == null);
                     if (existingNode == null)
                     {
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 if (itemFilter(file))
                 {
                     // See if we already have this one -  we shouldn't
-                    var existingNode = tree.FindNodeByPath(file);
+                    var existingNode = tree.FindImmediateChildByPath(file);
                     System.Diagnostics.Debug.Assert(existingNode != null);
                     if (existingNode != null)
                     {
@@ -67,14 +67,43 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         /// <summary>
-        /// Finds direct child of IProjectTree by it's path
+        ///     Finds the node with the specified path within the specified node's 
+        ///     immediate children.
         /// </summary>
-        /// <param name="tree"></param>
-        /// <param name="itemPath"></param>
-        /// <returns></returns>
-        public static IProjectTree FindNodeByPath(this IProjectTree tree, string itemPath)
+        /// <param name="tree">
+        ///     The <see cref="IProjectTree"/> to search
+        /// </param>
+        /// <param name="path">
+        ///     The path of the child to find.
+        /// </param>
+        /// <returns>
+        ///     The <see cref="IProjectTree"/> with the specified <paramref name="path"/>, 
+        ///     otherwise, <see langword="null"/> if the node could not be found.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="tree"/> is <see langword="null"/>.
+        ///     <para>
+        ///         -or-
+        ///     </para>
+        ///     <paramref name="path"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     <paramref name="path"/> is an empty string ("")
+        /// </exception>
+        public static IProjectTree FindImmediateChildByPath(this IProjectTree tree, string path)
         {
-            return FindNodeHelper(tree, itemPath, child => child.FilePath);
+            Requires.NotNull(tree, nameof(tree));
+            Requires.NotNullOrEmpty(path, nameof(path));
+
+            // NOTE: This is called *a lot*, do not be tempted to use LINQ 
+            // without understanding the extra pressure it puts on the GC
+            foreach (IProjectTree child in tree.Children)
+            {
+                if (string.Equals(child.FilePath, path, StringComparison.OrdinalIgnoreCase))
+                    return child;
+            }
+
+            return null;
         }
 
         /// <summary>

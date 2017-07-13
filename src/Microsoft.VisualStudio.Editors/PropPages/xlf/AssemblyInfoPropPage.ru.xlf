@@ -35,7 +35,7 @@
       </trans-unit>
       <trans-unit id="ComVisibleCheckBox.Text">
         <source>&amp;Make assembly COM-Visible</source>
-        <target state="translated">Сделать сборку &amp;видимой для COM:</target>
+        <target state="translated">Сделать сборку &amp;видимой для COM</target>
         <note />
       </trans-unit>
       <trans-unit id="NeutralLanguageLabel.Text">

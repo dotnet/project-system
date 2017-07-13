@@ -4,7 +4,7 @@
     Name="PackageReference"
     DisplayName="Package"
     PageTemplate="generic"
-    Description="Package"
+    Description="Package Properties"
     xmlns="http://schemas.microsoft.com/build/2009/properties">
     
     <Rule.DataSource>
@@ -78,4 +78,13 @@
     <StringProperty Name="IsImplicitlyDefined" 
                     Visible="False" 
                     ReadOnly="True" />
+
+    <StringProperty Name="NoWarn" 
+                    Visible="True"
+                    DisplayName="NoWarn"
+                    Description="Comma-delimited list of warnings that should be suppressed for this package" />
+
+    <BoolProperty Name="Visible"
+                  Visible="False"
+                  ReadOnly="True" />
 </Rule>

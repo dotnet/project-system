@@ -51,32 +51,44 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider, targetFRameworkProvider);
 
             var resultDependency = filter.BeforeAdd(
-                projectPath: null,
-                targetFramework: null,
-                dependency: dependency.Object,
-                worldBuilder: worldBuilder,
-                topLevelBuilder: null);
+                null,
+                null,
+                dependency.Object,
+                worldBuilder,
+                null,
+                null,
+                null,
+                out bool filterAnyChanges);
 
             resultDependency = filter.BeforeAdd(
-                projectPath: null,
-                targetFramework: null,
-                dependency: topLevelDependency.Object,
-                worldBuilder: worldBuilder,
-                topLevelBuilder: null);
+                null,
+                null,
+                topLevelDependency.Object,
+                worldBuilder,
+                null,
+                null,
+                null,
+                out bool filterAnyChanges2);
 
             resultDependency = filter.BeforeAdd(
-                projectPath: null,
-                targetFramework: null,
-                dependency: topLevelResolvedDependency.Object,
-                worldBuilder: worldBuilder,
-                topLevelBuilder: null);
+                null,
+                null,
+                topLevelResolvedDependency.Object,
+                worldBuilder,
+                null,
+                null,
+                null,
+                out bool filterAnyChanges3);
 
             resultDependency = filter.BeforeAdd(
-                projectPath: null,
-                targetFramework: null,
-                dependency: topLevelResolvedSharedProjectDependency.Object,
-                worldBuilder: worldBuilder,
-                topLevelBuilder: null);
+                null,
+                null,
+                topLevelResolvedSharedProjectDependency.Object,
+                worldBuilder,
+                null,
+                null,
+                null,
+                out bool filterAnyChanges4);
 
             dependency.VerifyAll();
             topLevelDependency.VerifyAll();
@@ -98,28 +110,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var targetFrameworkProvider = ITargetFrameworkProviderFactory.Implement(getNearestFramework: targetFramework);
 
             var dependency = IDependencyFactory.Implement(
+                    targetFramework: targetFramework,
                     topLevel: true,
                     resolved: true,
                     flags: DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.ResolvedFlags),
                     originalItemSpec:@"c:\myproject2\project.csproj",
-                    snapshot: targetedSnapshot,
                     setPropertiesResolved:false,
+                    setPropertiesSchemaName:ProjectReference.SchemaName,
                     setPropertiesFlags: DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.UnresolvedFlags));
 
             var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider, targetFrameworkProvider);
 
             var resultDependency = filter.BeforeAdd(
-                projectPath: null,
-                targetFramework: null,
-                dependency: dependency.Object,
-                worldBuilder: null,
-                topLevelBuilder: null);            
+                null,
+                null,
+                dependency.Object,
+                null,
+                null,
+                null,
+                null,
+                out bool filterAnyChanges);            
 
             dependency.VerifyAll();
         }
 
         [Fact]
-        public void UnsupportedProjectsSnapshotFilter_WhenProjectSnapshotNotFound_ShouldMakeUnresolved()
+        public void UnsupportedProjectsSnapshotFilter_WhenProjectSnapshotNotFound_ShouldDoNothing()
         {
             // Arrange 
             var snapshotProvider = IDependenciesSnapshotProviderFactory.Implement(currentSnapshot: null);
@@ -129,24 +145,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     topLevel: true,
                     resolved: true,
                     flags: DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.ResolvedFlags),
-                    originalItemSpec: @"c:\myproject2\project.csproj",
-                    setPropertiesResolved: false,
-                    setPropertiesFlags: DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.UnresolvedFlags));
+                    originalItemSpec: @"c:\myproject2\project.csproj");
 
             var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider, null);
 
             var resultDependency = filter.BeforeAdd(
-                projectPath: null,
-                targetFramework: null,
-                dependency: dependency.Object,
-                worldBuilder: null,
-                topLevelBuilder: null);
+                null,
+                null,
+                dependency.Object,
+                null,
+                null,
+                null,
+                null,
+                out bool filterAnyChanges);
 
             dependency.VerifyAll();
         }
 
         [Fact]
-        public void UnsupportedProjectsSnapshotFilter_WhenProjectSnapshotFoundAndTargetFrameworkNull_ShouldMakeUnresolved()
+        public void UnsupportedProjectsSnapshotFilter_WhenProjectSnapshotFoundAndTargetFrameworkNull_ShouldDoNothing()
         {
             // Arrange 
             var targetFramework = ITargetFrameworkFactory.Implement(moniker: "tfm1");
@@ -165,18 +182,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     resolved: true,
                     flags: DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.ResolvedFlags),
                     originalItemSpec: @"c:\myproject2\project.csproj",
-                    snapshot: targetedSnapshot,
-                    setPropertiesResolved: false,
-                    setPropertiesFlags: DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.UnresolvedFlags));
+                    targetFramework: targetFramework);
 
             var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider, targetFrameworkProvider);
 
             var resultDependency = filter.BeforeAdd(
-                projectPath: null,
-                targetFramework: null,
-                dependency: dependency.Object,
-                worldBuilder: null,
-                topLevelBuilder: null);
+                null,
+                null,
+                dependency.Object,
+                null,
+                null,
+                null,
+                null,
+                out bool filterAnyChanges);
 
             dependency.VerifyAll();
         }
@@ -201,16 +219,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     resolved: true,
                     flags: DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.ResolvedFlags),
                     originalItemSpec: @"c:\myproject2\project.csproj",
-                    snapshot:targetedSnapshot);
+                    targetFramework: targetFramework
+                 );
 
             var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider, targetFrameworkProvider);
 
             var resultDependency = filter.BeforeAdd(
-                projectPath: null,
-                targetFramework: null,
-                dependency: dependency.Object,
-                worldBuilder: null,
-                topLevelBuilder: null);
+                null,
+                null,
+                dependency.Object,
+                null,
+                null,
+                null,
+                null,
+                out bool filterAnyChanges);
 
             dependency.VerifyAll();
         }

@@ -277,6 +277,9 @@ Para depurar esse projeto, adicione um projeto executável a essa solução que 
     <value>Falha ao migrar o projeto XProj {0}. '{1}' fechado com o código de erro {2}.</value>
   </data>
   <data name="DebugFrameworkMenuText" xml:space="preserve">
-    <value>Framework ({0})</value>
+    <value>Estrutura ({0})</value>
+  </data>
+  <data name="OutputWindowPaneTitle" xml:space="preserve">
+    <value>Projeto</value>
   </data>
 </root>

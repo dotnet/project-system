@@ -2,7 +2,6 @@
 
 using System;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
-using Microsoft.VisualStudio.ProjectSystem.Utilities.DataFlowExtensions;
 using Microsoft.VisualStudio.Shell.Interop;
 using Moq;
 using Xunit;
@@ -28,11 +27,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var startupProjectRegistrar = CreateInstance(
                 iVsStartupProjectsListService,
                 activeConfiguredProjectWithLaunchProviders);
-
-            var testWrapperMethod = new DataFlowExtensionMethodCaller(new DataFlowExtensionMethodWrapperMock());
-            startupProjectRegistrar.WrapperMethodCaller = testWrapperMethod;
-
-            await startupProjectRegistrar.Load();
 
             var projectSubscriptionUpdate = IProjectSubscriptionUpdateFactory.FromJson(@"{
     ""ProjectChanges"": {
@@ -87,12 +81,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 iVsStartupProjectsListService,
                 activeConfiguredProjectWithLaunchProviders);
 
-            var testWrapperMethod = new DataFlowExtensionMethodCaller(new DataFlowExtensionMethodWrapperMock());
-            startupProjectRegistrar.WrapperMethodCaller = testWrapperMethod;
-
-            await startupProjectRegistrar.Load();
-
-
             var projectSubscriptionUpdate = IProjectSubscriptionUpdateFactory.FromJson(@"{
     ""ProjectChanges"": {
         ""ConfigurationGeneral"": {
@@ -130,12 +118,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var startupProjectRegistrar = CreateInstance(
                 iVsStartupProjectsListService,
                 activeConfiguredProjectWithLaunchProviders);
-
-            var testWrapperMethod = new DataFlowExtensionMethodCaller(new DataFlowExtensionMethodWrapperMock());
-            startupProjectRegistrar.WrapperMethodCaller = testWrapperMethod;
-
-            await startupProjectRegistrar.Load();
-
 
             var projectSubscriptionUpdate = IProjectSubscriptionUpdateFactory.FromJson(@"{
     ""ProjectChanges"": {
@@ -175,12 +157,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var startupProjectRegistrar = CreateInstance(
                 iVsStartupProjectsListService,
                 activeConfiguredProjectWithLaunchProviders);
-
-            var testWrapperMethod = new DataFlowExtensionMethodCaller(new DataFlowExtensionMethodWrapperMock());
-            startupProjectRegistrar.WrapperMethodCaller = testWrapperMethod;
-
-            await startupProjectRegistrar.Load();
-
 
             var projectSubscriptionUpdate = IProjectSubscriptionUpdateFactory.FromJson(@"{
     ""ProjectChanges"": {
@@ -237,12 +213,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var startupProjectRegistrar = CreateInstance(
                 iVsStartupProjectsListService,
                 activeConfiguredProjectWithLaunchProviders);
-
-            var testWrapperMethod = new DataFlowExtensionMethodCaller(new DataFlowExtensionMethodWrapperMock());
-            startupProjectRegistrar.WrapperMethodCaller = testWrapperMethod;
-
-            await startupProjectRegistrar.Load();
-
 
             var projectSubscriptionUpdate = IProjectSubscriptionUpdateFactory.FromJson(@"{
     ""ProjectChanges"": {

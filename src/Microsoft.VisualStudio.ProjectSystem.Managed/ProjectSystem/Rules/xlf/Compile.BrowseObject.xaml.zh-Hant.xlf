@@ -75,33 +75,33 @@
       </trans-unit>
       <trans-unit id="StringProperty|Generator|DisplayName">
         <source>Custom Tool</source>
-        <target state="new">Custom Tool</target>
-        <note></note>
+        <target state="translated">自訂工具</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Generator|Description">
         <source>Specifies the tool that transforms a file at design time and places the output of that transformation into another file. For example, a dataset (.xsd) file comes with a default custom tool.</source>
-        <target state="new">Specifies the tool that transforms a file at design time and places the output of that transformation into another file. For example, a dataset (.xsd) file comes with a default custom tool.</target>
-        <note></note>
+        <target state="translated">指定於設計階段轉換檔案並將轉換的輸出放置到其他檔案的工具。例如，資料集 (.xsd) 檔案隨附預設自訂工具。</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|CustomToolNamespace|DisplayName">
         <source>Custom Tool Namespace</source>
-        <target state="new">Custom Tool Namespace</target>
-        <note></note>
+        <target state="translated">自訂工具命名空間</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|CustomToolNamespace|Description">
         <source>The namespace into which the output of the custom tool is placed.</source>
-        <target state="new">The namespace into which the output of the custom tool is placed.</target>
-        <note></note>
+        <target state="translated">自訂工具產生的輸出所放置的命名空間。</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|Compile|DisplayName">
         <source>File Properties</source>
-        <target state="new">File Properties</target>
-        <note></note>
+        <target state="translated">檔案屬性</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|Compile|Description">
         <source>File Properties</source>
-        <target state="new">File Properties</target>
-        <note></note>
+        <target state="translated">檔案屬性</target>
+        <note />
       </trans-unit>
     </body>
   </file>

@@ -27,8 +27,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     '''  - Implements IComponent to be able to push the resource through SelectionService, so that the name of the resource 
     '''      appears on the Property Window's drop down list.
     ''' </remarks>
-    <Serializable()> _
-    <TypeDescriptionProvider(GetType(ResourceTypeDescriptionProvider))> _
+    <Serializable()>
+    <TypeDescriptionProvider(GetType(ResourceTypeDescriptionProvider))>
     Friend NotInheritable Class Resource
         Implements IComponent
         Implements ISerializable 'This allows us to fully control the serialization process
@@ -67,7 +67,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''  The persistence mode of the resource to show in PropertyWindow.
         ''' </summary>
         ''' <remarks></remarks>
-        <TypeConverter(GetType(ResourcePersistenceModeEnumConverter))> _
+        <TypeConverter(GetType(ResourcePersistenceModeEnumConverter))>
         Public Enum ResourcePersistenceMode
             'The resource is a link to a file on disk which is read and compiled into the manifest resources at compile time.
             Linked
@@ -1160,6 +1160,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     End If
 
                     Debug.Assert(TypeName <> "", "ResXDataNode.GetValueTypeName() should never return an empty string or Nothing (not even for ResXNullRef)")
+
+                    TypeName = AdjustSystemStringAssemblyQualifiedName(TypeName)
+
                     Return TypeName
                 Catch ex As Exception When ReportWithoutCrash(ex, "Unexpected exception - ResXDataNode.GetValueTypeName() is not supposed to throw exceptions (except unrecoverable ones), it should instead return the typename as in the original .resx file", NameOf(Resource))
                     Return My.Resources.Designer.RSE_UnknownType
@@ -1601,6 +1604,48 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Else
                 Return Type.GetType(ValueTypeName, ThrowOnError, ignoreCase:=True)
             End If
+        End Function
+
+        ''' <remarks>
+        ''' Our multi-targeting support quite correctly tells us that types like System.String are found
+        ''' in netstandard.dll. However, VS (and thus the resx designer) and resgen.exe run on the net462
+        ''' framework, which does not have a netstandard.dll. As such the designer doesn't understand the
+        ''' types involved and crashes while trying to create or update resource strings. Even if we
+        ''' could get past that, resgen.exe would see the references to netstandard.dll in the .resx
+        ''' file, fail to locate it, and die while trying to produce the .designer.cs file.
+        ''' 
+        ''' The workaround here is to check if the assembly-qualified type name refers to some
+        ''' System.String, and if so swap in the name of the System.String loaded in VS. This allows the
+        ''' designer to work. Since System.String is the default type of values in the .resx file this
+        ''' technically incorrect type name isn't persisted, and thus our workaround doesn't trip up
+        ''' anything else.
+        ''' 
+        ''' This does not affect the runtime behavior of the app in any way as the types in the .resx
+        ''' file are only used to produce the .designer.cs file, which is still built against
+        ''' netstandard.dll.
+        ''' </remarks>
+        Private Shared Function AdjustSystemStringAssemblyQualifiedName(AssemblyQualifiedName As String) As String
+            Static SystemStringAssemblyQualifiedName As String
+
+            ' If this type definitely isn't System.String then bail out before we allocate
+            If Not AssemblyQualifiedName.StartsWith("System.String") Then
+                Return AssemblyQualifiedName
+            End If
+
+            Dim indexOfFirstComma = AssemblyQualifiedName.IndexOf(",")
+            If indexOfFirstComma <> -1 Then
+                Dim typeName = AssemblyQualifiedName.Substring(startIndex:=0, length:=indexOfFirstComma)
+                If typeName = "System.String" Then
+
+                    If SystemStringAssemblyQualifiedName Is Nothing Then
+                        SystemStringAssemblyQualifiedName = GetType(String).AssemblyQualifiedName
+                    End If
+
+                    Return SystemStringAssemblyQualifiedName
+                End If
+            End If
+
+            Return AssemblyQualifiedName
         End Function
 
         Public Function TryGetValueType() As Type

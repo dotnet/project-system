@@ -9,8 +9,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedCOMReference|Description">
-        <source>Resolved reference</source>
-        <target state="translated">Разрешенная ссылка</target>
+        <source>COM Reference Properties</source>
+        <target state="translated">Свойства ссылки COM</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Guid|DisplayName">

@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     public class DiagnosticDependencyModelTests
     {
         [Fact]
-        public void DiagnosticDependencyModelTests_Error()
+        public void Error()
         {
             var properties = ImmutableDictionary<string, string>.Empty.Add("myProp", "myVal");
 
@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.False(model.TopLevel);
             Assert.Equal(true, model.Visible);
             Assert.Equal(null, model.SchemaName);
-            Assert.Equal(true, model.Resolved);
+            Assert.Equal(false, model.Resolved);
             Assert.Equal(false, model.Implicit);
             Assert.Equal(properties, model.Properties);
             Assert.Equal(Dependency.DiagnosticsErrorNodePriority, model.Priority);
@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void DiagnosticDependencyModelTests_Warning()
+        public void Warning()
         {
             var properties = ImmutableDictionary<string, string>.Empty.Add("myProp", "myVal");
 
@@ -71,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.False(model.TopLevel);
             Assert.Equal(true, model.Visible);
             Assert.Equal(null, model.SchemaName);
-            Assert.Equal(true, model.Resolved);
+            Assert.Equal(false, model.Resolved);
             Assert.Equal(false, model.Implicit);
             Assert.Equal(properties, model.Properties);
             Assert.Equal(Dependency.DiagnosticsWarningNodePriority, model.Priority);

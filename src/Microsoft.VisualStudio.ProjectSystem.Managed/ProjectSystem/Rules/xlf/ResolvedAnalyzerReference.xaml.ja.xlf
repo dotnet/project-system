@@ -9,13 +9,23 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedAnalyzerReference|Description">
-        <source>Resolved Analyzer reference properties</source>
-        <target state="translated">解決されたアナライザー参照プロパティ</target>
+        <source>Analyzer Properties</source>
+        <target state="translated">アナライザーのプロパティ</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OriginalItemSpec|Description">
         <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
         <target state="translated">結果がこの解決済みの参照項目であった元の参照項目の評価済み項目名です。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ResolvedPath|DisplayName">
+        <source>Path</source>
+        <target state="translated">パス</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ResolvedPath|Description">
+        <source>Location of the analyzer assembly.</source>
+        <target state="translated">アナライザー アセンブリの場所。</target>
         <note />
       </trans-unit>
     </body>

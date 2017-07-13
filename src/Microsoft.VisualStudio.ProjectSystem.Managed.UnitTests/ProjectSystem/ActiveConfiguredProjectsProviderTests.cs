@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Configuration;
@@ -8,6 +9,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
+    [ProjectSystemTrait]
     public class ActiveConfiguredProjectsProviderTests
     {
         [Fact]
@@ -76,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             var result = await provider.GetActiveProjectConfigurationsAsync();
 
-            Assert.Equal(1, result.Objects.Length);
+            Assert.Equal(1, result.Objects.Count);
             Assert.Equal(activeConfiguration, result.Objects[0].Name);
         }
 
@@ -88,7 +90,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [InlineData("Debug|AnyCPU",                     "Debug|AnyCPU|net45",                                     "Debug|AnyCPU|net45")]
         [InlineData("Debug|AnyCPU",                     "Debug|AnyCPU|net45;Release|AnyCPU|net45",                "Debug|AnyCPU|net45")]
         [InlineData("Debug|AnyCPU",                     "Debug|AnyCPU|net45;Debug|AnyCPU|net46",                  "Debug|AnyCPU|net45;Debug|AnyCPU|net46")]
-        [InlineData("Debug|AnyCPU",                     "Debug|AnyCPU|net45;Debug|AnyCPU|net46",                  "Debug|AnyCPU|net45;Debug|AnyCPU|net46")]
         public async Task GetActiveProjectConfigurationsAsync_ConfigurationsWithTargetFrameworkDimensionProvider_ReturnsConfigsThatMatchConfigurationAndPlatformFromActiveConfiguration(string activeConfiguration, string configurations, string expected)
         {
             var provider = CreateInstance(activeConfiguration, configurations, "TargetFramework");
@@ -96,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var result = await provider.GetActiveProjectConfigurationsAsync();
 
             var activeConfigs = ProjectConfigurationFactory.CreateMany(expected.Split(';'));
-            Assert.Equal(activeConfigs, result.Objects);
+            Assert.Equal(activeConfigs.OrderBy(c => c.Name), result.Objects.OrderBy(c => c.Name));
             Assert.Equal(new[] { "TargetFramework" }, result.DimensionNames);
         }
 
@@ -120,7 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             
             var result = await provider.GetActiveConfiguredProjectsAsync();
 
-            Assert.Equal(1, result.Objects.Length);
+            Assert.Equal(1, result.Objects.Count);
             Assert.Equal(activeConfiguration, result.Objects[0].ProjectConfiguration.Name);
             Assert.Empty(result.DimensionNames);
         }
@@ -129,26 +130,24 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var activeConfig = ProjectConfigurationFactory.Create(activeConfiguration);
             var configs = ProjectConfigurationFactory.CreateMany(configurations.Split(';'));
-            var configurationsService = IProjectConfigurationsServiceFactory.ImplementGetKnownProjectConfigurationsAsync(configs);
+            var configurationsService = IProjectConfigurationsServiceFactory.ImplementGetKnownProjectConfigurationsAsync(configs.ToImmutableHashSet());
             var activeConfiguredProjectProvider = IActiveConfiguredProjectProviderFactory.ImplementActiveProjectConfiguration(() => activeConfig);
             var services = IUnconfiguredProjectServicesFactory.Create(activeConfiguredProjectProvider: activeConfiguredProjectProvider, projectConfigurationsService: configurationsService);
-            var configuredProject = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync((projectConfiguration) => {
+            var project = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync((projectConfiguration) => {
                 return Task.FromResult(ConfiguredProjectFactory.ImplementProjectConfiguration(projectConfiguration));
             });
 
             var dimensionProviders = dimensionNames.Select(name => IActiveConfiguredProjectsDimensionProviderFactory.ImplementDimensionName(name));
 
-            var commonServices = IUnconfiguredProjectCommonServicesFactory.ImplementProject(configuredProject);
-
-            return CreateInstance(services: services, commonServices: commonServices, dimensionProviders: dimensionProviders);
+            return CreateInstance(services: services, project: project, dimensionProviders: dimensionProviders);
         }
 
-        private ActiveConfiguredProjectsProvider CreateInstance(IUnconfiguredProjectServices services = null, IUnconfiguredProjectCommonServices commonServices = null, IEnumerable<IActiveConfiguredProjectsDimensionProvider> dimensionProviders = null)
+        private ActiveConfiguredProjectsProvider CreateInstance(IUnconfiguredProjectServices services = null, UnconfiguredProject project = null, IEnumerable<IActiveConfiguredProjectsDimensionProvider> dimensionProviders = null)
         {
             services = services ?? IUnconfiguredProjectServicesFactory.Create();
-            commonServices = commonServices ?? IUnconfiguredProjectCommonServicesFactory.Create();
+            project = project ?? UnconfiguredProjectFactory.Create();
 
-            var provider = new ActiveConfiguredProjectsProvider(services, commonServices);
+            var provider = new ActiveConfiguredProjectsProvider(services, project);
 
             if (dimensionProviders != null)
             {

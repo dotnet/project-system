@@ -9,8 +9,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|AnalyzerReference|Description">
-        <source>Analyzer reference properties</source>
-        <target state="translated">Propiedades de referencia de analizador</target>
+        <source>Analyzer Properties</source>
+        <target state="translated">Propiedades del analizador</target>
         <note />
       </trans-unit>
     </body>

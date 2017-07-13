@@ -1,7 +1,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <RoslynSemanticVersion Condition="'$(RoslynSemanticVersion)' == '' AND '$(UseVisualStudioVersion)' == 'true'">15.3.0</RoslynSemanticVersion>
-    <RoslynSemanticVersion Condition="'$(RoslynSemanticVersion)' == ''">2.3.0</RoslynSemanticVersion>
+    <RoslynSemanticVersion Condition="'$(RoslynSemanticVersion)' == '' AND '$(UseVisualStudioVersion)' == 'true'">15.5.0</RoslynSemanticVersion>
+    <RoslynSemanticVersion Condition="'$(RoslynSemanticVersion)' == ''">2.5.0</RoslynSemanticVersion>
     <MicroBuildVersion>0.2.0</MicroBuildVersion>
     <BuildNumber Condition="'$(BuildNumber)' == ''">$(BUILD_BUILDNUMBER)</BuildNumber>
 
@@ -18,15 +18,33 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <ProjectSystemSDKVersion>15.3.5-pre-g4382fbdb8f</ProjectSystemSDKVersion>
+    <RoslynDependenciesOptimizationDataVersion>2.0.0-rc-61101-17</RoslynDependenciesOptimizationDataVersion>
+    <ProjectSystemSDKVersion>15.3.178-pre-g209fb07c2e</ProjectSystemSDKVersion>
     <SystemCollectionsImmutableVersion>1.3.1</SystemCollectionsImmutableVersion>
+    <SystemDiagnosticsProcessVersion>4.3.0</SystemDiagnosticsProcessVersion>
+    <SystemReflectionMetadataVersion>1.4.2</SystemReflectionMetadataVersion>
+    <SystemRuntimeInteropServicesRuntimeInformationVersion>4.3.0</SystemRuntimeInteropServicesRuntimeInformationVersion>
+    <MicrosoftDotNetIBCMergeVersion>4.7.1-alpha-00001</MicrosoftDotNetIBCMergeVersion>
+    <MicrosoftVisualStudioShellInterop9Version>9.0.30729</MicrosoftVisualStudioShellInterop9Version>
     <MicrosoftVisualStudioShellInterop10Version>10.0.30319</MicrosoftVisualStudioShellInterop10Version>
     <MicrosoftVisualStudioShellInterop11Version>11.0.61030</MicrosoftVisualStudioShellInterop11Version>
     <MicrosoftVisualStudioTextManagerInterop10Version>10.0.30319</MicrosoftVisualStudioTextManagerInterop10Version>
     <MicrosoftVisualStudioTextManagerInterop12Version>12.0.30110</MicrosoftVisualStudioTextManagerInterop12Version>
-    <MicrosoftVisualStudioShell15Version>15.0.26201</MicrosoftVisualStudioShell15Version>
-    <MicrosoftVisualStudioShellDesign>15.0.26201</MicrosoftVisualStudioShellDesign>
+    <MicrosoftVisualStudioShell15Version>15.0.26507-alpha</MicrosoftVisualStudioShell15Version>
+    <MicrosoftVisualStudioShellDesign>15.0.26507-alpha</MicrosoftVisualStudioShellDesign>
     <MicrosoftVisualStudioManagedInterfaces>8.0.50727</MicrosoftVisualStudioManagedInterfaces>
+    <!-- NOTE: Both of these should be updated at once to reference the same roslyn build-->
+    <MicrosoftVisualStudioLanguageServicesVersion>2.6.0-beta1-61911-10</MicrosoftVisualStudioLanguageServicesVersion>
+    <RoslynIntegrationVsixVersion>2.6.0.6191110</RoslynIntegrationVsixVersion>
+    <MoqVersion>4.2.1402.2112</MoqVersion>
+    <MicrosoftVisualStudioTextLogicVersion>15.0.26507-alpha</MicrosoftVisualStudioTextLogicVersion>
+    <RoslynDiagnosticsNugetPackageVersion>2.5.0-beta1-61911-01</RoslynDiagnosticsNugetPackageVersion>
+    <RoslynToolsDownloadRoslynVsixesVersion>0.3.4-beta</RoslynToolsDownloadRoslynVsixesVersion>
+    <RoslynToolsMicrosoftModifyVsixManifestVersion>0.2.4-beta</RoslynToolsMicrosoftModifyVsixManifestVersion>
+    <RoslynToolsMicrosoftVSIXExpInstallerVersion>0.4.1-beta</RoslynToolsMicrosoftVSIXExpInstallerVersion>
+    <XUnitVersion>2.2.0-beta4-build3444</XUnitVersion>
+    <XUnitRunnerConsoleVersion>2.2.0</XUnitRunnerConsoleVersion>
+    <XUnitRunnerVisualstudioVersion>2.2.0</XUnitRunnerVisualstudioVersion>
   </PropertyGroup>
 
   <Choose>
@@ -73,12 +91,13 @@
 
   <!-- NuGet version -->
   <PropertyGroup>
-    <VSSemanticVersion>15.3</VSSemanticVersion>
+    <CommonNuGetMoniker>beta1</CommonNuGetMoniker>
+    <VSSemanticVersion>15.5</VSSemanticVersion>    
     <RoslynNuGetReleaseVersion>$(RoslynSemanticVersion.Substring(0, $(RoslynSemanticVersion.LastIndexOf('.'))))</RoslynNuGetReleaseVersion>
-    <RoslynNuGetPerBuildVersion Condition="'$(BuildNumberFiveDigitDateStamp)' != '' AND '$(BuildNumberBuildOfTheDayPadded)' != ''">$(RoslynNuGetReleaseVersion).0-rc-$(BuildNumberFiveDigitDateStamp.Trim())$(BuildNumberBuildOfTheDayPadded.Trim())</RoslynNuGetPerBuildVersion>
-    <RoslynNuGetPerBuildVersion Condition="'$(RoslynNuGetPerBuildVersion)' == ''">1.0.0-rc</RoslynNuGetPerBuildVersion>
-    <VSNuGetPerBuildVersion Condition="'$(BuildNumberFiveDigitDateStamp)' != '' AND '$(BuildNumberBuildOfTheDayPadded)' != ''">$(VSSemanticVersion).0-rc-$(BuildNumberFiveDigitDateStamp.Trim())$(BuildNumberBuildOfTheDayPadded.Trim())</VSNuGetPerBuildVersion>
-    <VSNuGetPerBuildVersion Condition="'$(VSNuGetPerBuildVersion)' == ''">1.0.0-rc</VSNuGetPerBuildVersion>
+    <RoslynNuGetPerBuildVersion Condition="'$(BuildNumberFiveDigitDateStamp)' != '' AND '$(BuildNumberBuildOfTheDayPadded)' != ''">$(RoslynNuGetReleaseVersion).0-$(CommonNuGetMoniker)-$(BuildNumberFiveDigitDateStamp.Trim())$(BuildNumberBuildOfTheDayPadded.Trim())</RoslynNuGetPerBuildVersion>
+    <RoslynNuGetPerBuildVersion Condition="'$(RoslynNuGetPerBuildVersion)' == ''">1.0.0-$(CommonNuGetMoniker)</RoslynNuGetPerBuildVersion>
+    <VSNuGetPerBuildVersion Condition="'$(BuildNumberFiveDigitDateStamp)' != '' AND '$(BuildNumberBuildOfTheDayPadded)' != ''">$(VSSemanticVersion).0-$(CommonNuGetMoniker)-$(BuildNumberFiveDigitDateStamp.Trim())$(BuildNumberBuildOfTheDayPadded.Trim())</VSNuGetPerBuildVersion>
+    <VSNuGetPerBuildVersion Condition="'$(VSNuGetPerBuildVersion)' == ''">1.0.0-$(CommonNuGetMoniker)</VSNuGetPerBuildVersion>
   </PropertyGroup>
   
 </Project>

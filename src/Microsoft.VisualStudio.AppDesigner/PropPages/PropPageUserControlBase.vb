@@ -51,7 +51,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'This call is required by the Windows Form Designer.
             InitializeComponent()
 
-            BackColor = PropPageBackColor
+            'Ensure we set out colors based on the current theme
+            OnThemeChanged()
 
             'Add any initialization after the InitializeComponent() call
             AddToRunningTable()
@@ -251,6 +252,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _manualPageScaling As Boolean = False
 
         'Backcolor for all property pages
+        <Obsolete("Colors should be retrieved directly from the theming service")>
         Public Shared ReadOnly PropPageBackColor As Color = SystemColors.Control
 
         Private _activated As Boolean = True
@@ -310,6 +312,16 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Overridable ReadOnly Property ValidationControlGroups() As Control()()
             Get
                 Return Nothing
+            End Get
+        End Property
+
+        ''' <summary>
+        '''  Return a boolean value that indicates whether or not the control supports the color theming service
+        ''' </summary>
+        ''' <returns></returns>
+        Public Overridable ReadOnly Property SupportsTheming() As Boolean
+            Get
+                Return False
             End Get
         End Property
 
@@ -801,24 +813,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public ReadOnly Property ProjectProperties() As VSLangProj.ProjectProperties
             Get
                 Return _projectPropertiesObject
-            End Get
-        End Property
-
-        Public ReadOnly Property OutputTypeProperty As VSLangProj.prjOutputType
-            Get
-                ' csproj.dll and msbprj.dll implement this Property so first try getting the output type
-                ' through the ProjectProperties. The new CPS based project system doesn't implement this 
-                ' interface. The output type is part of the properties on the BrowseObject and so get it from there.
-                If ProjectProperties IsNot Nothing Then
-                    Return ProjectProperties.OutputType
-                Else
-                    Dim obj As Object = TryGetNonCommonPropertyValue(GetPropertyDescriptor("OutputTypeEx"))
-                    Try
-                        Return CType(obj, VSLangProj.prjOutputType)
-                    Catch ex As Exception
-                        Return 0
-                    End Try
-                End If
             End Get
         End Property
 
@@ -2449,10 +2443,6 @@ NextControl:
         ''' See "About 'common' properties" in PropertyControlData for information on "common" properties.
         ''' </remarks>
         Protected Function GetCommonPropertyValueNative(PropertyName As String) As Object
-            If PropertyName.Equals("FullPath") Then
-                Return GetProjectPath()
-            End If
-
             Return GetCommonPropertyValueNative(GetCommonPropertyDescriptor(PropertyName))
         End Function
 
@@ -3347,19 +3337,7 @@ NextControl:
         ''' <returns></returns>
         ''' <remarks></remarks>
         Protected Function GetProjectPath() As String
-            ' csproj.dll and msbprj.dll implement this Property so first try getting the full path
-            ' through the ProjectProperties. The new CPS based project system doesn't implement this 
-            ' interface. The full path is part of the properties on the BrowseObject and so get it from there.
-            Dim fullPath As String
-            If ProjectProperties IsNot Nothing Then
-                fullPath = ProjectProperties.FullPath
-            Else
-                Dim obj As Object = TryGetNonCommonPropertyValue(GetPropertyDescriptor("FullPath"))
-                fullPath = CType(obj, String)
-            End If
-
-            ' Append a directory separator char as some callsites in Microsoft.VisualStudio.Editors.ClickOnce assume project path ends with it.
-            Return Common.AppendBackslash(fullPath)
+            Return CStr(GetCommonPropertyValueNative("FullPath")) 'CONSIDER: This won't work for all project types, e.g. ASP.NET when project path is a URL
         End Function
 
         ''' <summary>
@@ -3839,8 +3817,19 @@ NextControl:
                     m_ScalingCompleted = False
                     SetDialogFont(PageRequiresScaling)
                 End If
+            ElseIf msg = Interop.win.WM_PALETTECHANGED OrElse msg = Interop.win.WM_SYSCOLORCHANGE OrElse msg = Interop.win.WM_THEMECHANGED Then
+                OnThemeChanged()
             End If
         End Function
+
+        Protected Overridable Sub OnThemeChanged()
+            If SupportsTheming Then
+                Dim VsUIShell5 = VsUIShell5Service
+                BackColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell5, "Background", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Control)
+            Else
+                BackColor = SystemColors.Control
+            End If
+        End Sub
 
         ''' <summary>
         ''' Set font and scale page accordingly

@@ -93,6 +93,11 @@
         <target state="translated">Habilitar depuración de &amp;código nativo</target>
         <note />
       </trans-unit>
+      <trans-unit id="StartArguments.AccessibleName">
+        <source>Command line arguments</source>
+        <target state="translated">Argumentos de la línea de comandos</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

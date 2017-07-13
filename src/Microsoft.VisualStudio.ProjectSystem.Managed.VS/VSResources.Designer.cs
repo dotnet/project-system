@@ -355,6 +355,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Project.
+        /// </summary>
+        internal static string OutputWindowPaneTitle {
+            get {
+                return ResourceManager.GetString("OutputWindowPaneTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Overwrite.
         /// </summary>
         internal static string Overwrite {

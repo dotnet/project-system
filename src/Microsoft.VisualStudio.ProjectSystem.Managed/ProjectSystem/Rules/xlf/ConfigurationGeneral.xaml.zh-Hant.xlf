@@ -130,17 +130,27 @@
       </trans-unit>
       <trans-unit id="EnumValue|OutputType.Exe|DisplayName">
         <source>Console Application</source>
-        <target state="new">Console Application</target>
-        <note></note>
+        <target state="translated">主控台應用程式</target>
+        <note />
       </trans-unit>
       <trans-unit id="EnumValue|OutputType.WinExe|DisplayName">
         <source>Windows Application</source>
-        <target state="new">Windows Application</target>
-        <note></note>
+        <target state="translated">Windows 應用程式</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|LanguageServiceId|Description">
         <source>Represents the GUID of object that implements the language service for the project.</source>
-        <target state="new">Represents the GUID of object that implements the language service for the project.</target>
+        <target state="translated">代表實作專案語言服務的物件 GUID。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetFrameworkMonikers|DisplayName">
+        <source>Target Framework Monikers</source>
+        <target state="translated">目標 Framework Moniker</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|DisableFastUpToDateCheck|DisplayName">
+        <source>Disable Fast Up To Date Check</source>
+        <target state="new">Disable Fast Up To Date Check</target>
         <note></note>
       </trans-unit>
     </body>

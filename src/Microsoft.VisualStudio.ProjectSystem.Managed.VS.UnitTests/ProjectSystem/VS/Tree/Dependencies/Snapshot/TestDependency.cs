@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging.Interop;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
@@ -35,23 +35,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public IImmutableList<string> DependencyIDs { get; set; } = ImmutableList<string>.Empty;
         public ProjectTreeFlags Flags { get; set; } = ProjectTreeFlags.Empty;
         public string Id { get; set; }
-        public bool HasUnresolvedDependency { get; set; }
         public string Alias { get; set; }
-        public IEnumerable<IDependency> Dependencies { get; set; }
-        public ITargetedDependenciesSnapshot Snapshot { get; set; }
+        public ITargetFramework TargetFramework { get; set; }
 
         public IDependency SetProperties(
             string caption = null,
             bool? resolved = null,
             ProjectTreeFlags? flags = null,
-            IImmutableList<string> dependencyIDs = null)
+            string schemaName = null,
+            IImmutableList<string> dependencyIDs = null,
+            ImageMoniker icon = default(ImageMoniker),
+            ImageMoniker expandedIcon = default(ImageMoniker),
+            bool? isImplicit = null)
         {
             return this;
         }
 
         public override int GetHashCode()
         {
-            return unchecked(Id.ToLowerInvariant().GetHashCode());
+            return StringComparer.OrdinalIgnoreCase.GetHashCode(Id);
         }
 
         public override bool Equals(object obj)

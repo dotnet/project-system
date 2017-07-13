@@ -8,7 +8,7 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedProjectReference|Description">
-        <source>Resolved reference</source>
+        <source>Reference Properties</source>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">
@@ -138,6 +138,46 @@
       <trans-unit id="StringProperty|OriginalItemSpec|Description">
         <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
         <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|CopyLocalSatelliteAssemblies|DisplayName">
+        <source>Copy Local Satellite Assemblies</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|CopyLocalSatelliteAssemblies|Description">
+        <source>Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory.</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
+        <source>Exclude Assets</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|ExcludeAssets|Description">
+        <source>Assets to exclude from this reference</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|IncludeAssets|DisplayName">
+        <source>Include Assets</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|IncludeAssets|Description">
+        <source>Assets to include from this reference</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|ReferenceOutputAssembly|DisplayName">
+        <source>Reference Output Assembly</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|ReferenceOutputAssembly|Description">
+        <source>A value indicating whether the compiler should include a reference to the target project's primary output assembly.</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PrivateAssets|DisplayName">
+        <source>Private Assets</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PrivateAssets|Description">
+        <source>Assets that are private in this reference</source>
+        <note></note>
       </trans-unit>
     </body>
   </file>

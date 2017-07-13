@@ -5,7 +5,6 @@ using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
-using Microsoft.VisualStudio.ProjectSystem.Utilities.DataFlowExtensions;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
@@ -24,8 +23,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private IDisposable _evaluationSubscriptionLink;
         private bool _isDebuggable;
 
-        internal DataFlowExtensionMethodCaller WrapperMethodCaller { get; set; }
-
         [ImportingConstructor]
         public StartupProjectRegistrar(
             IVsService<SVsStartupProjectsListService, IVsStartupProjectsListService> startupProjectsListService,
@@ -42,8 +39,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _threadingService = threadingService;
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
             _launchProviders = launchProviders;
-
-            WrapperMethodCaller = new DataFlowExtensionMethodCaller(new DataFlowExtensionMethodWrapper());
         }
 
         [ProjectAutoLoad(startAfter:ProjectLoadCheckpoint.ProjectFactoryCompleted)]
@@ -65,15 +60,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         protected override void Initialize()
         {
             var watchedEvaluationRules = Empty.OrdinalIgnoreCaseStringSet.Add(ConfigurationGeneral.SchemaName);
-            var evaluationBlock = new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(
-                ConfigurationGeneralRuleBlock_ChangedAsync);
-            IReceivableSourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> sourceBlock = 
-                _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock;
-            _evaluationSubscriptionLink = WrapperMethodCaller.LinkTo(
-                sourceBlock,
-                evaluationBlock,
-                ruleNames: watchedEvaluationRules, suppressVersionOnlyUpdates:true
-                );
+            var evaluationBlock = new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(ConfigurationGeneralRuleBlock_ChangedAsync);
+            _evaluationSubscriptionLink = _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock
+                                            .LinkTo(target: evaluationBlock, ruleNames: watchedEvaluationRules, suppressVersionOnlyUpdates: true);
         }
 
         internal async Task ConfigurationGeneralRuleBlock_ChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)

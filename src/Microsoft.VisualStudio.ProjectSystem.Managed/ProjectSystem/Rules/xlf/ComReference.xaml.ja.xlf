@@ -9,7 +9,7 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|ComReference|Description">
-        <source>COM reference properties</source>
+        <source>COM Reference Properties</source>
         <target state="translated">COM 参照のプロパティ</target>
         <note />
       </trans-unit>

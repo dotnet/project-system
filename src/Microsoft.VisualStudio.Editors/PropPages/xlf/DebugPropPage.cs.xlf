@@ -93,6 +93,11 @@
         <target state="translated">Povolit ladění na&amp;tivního kódu</target>
         <note />
       </trans-unit>
+      <trans-unit id="StartArguments.AccessibleName">
+        <source>Command line arguments</source>
+        <target state="translated">Argumenty příkazového řádku</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

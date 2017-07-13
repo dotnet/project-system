@@ -1,11 +1,13 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.IO;
 using Microsoft.Build.Construction;
+using Microsoft.VisualStudio.IO;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -56,6 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 _fileSystem.WriteAllText(_unconfiguredProject.FullPath, toSave, encoding);
             }
         }
+
         public async Task<string> GetEvaluatedPropertyValue(UnconfiguredProject unconfiguredProject, string propertyName)
         {
             var configuredProject = await unconfiguredProject.GetSuggestedConfiguredProjectAsync().ConfigureAwait(false);
@@ -73,6 +76,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 await access.CheckoutAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
                 var msbuildProject = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath).ConfigureAwait(false);
                 action.Invoke(msbuildProject);
+            }
+        }
+
+        public async Task<ICollection<(string evaluatedInclude, string metadataValue)>> GetItems(ConfiguredProject configuredProject, string itemType, string metadataName)
+        {
+            using (var access = await _projectLockService.ReadLockAsync())
+            {
+                var project = await access.GetProjectAsync(configuredProject).ConfigureAwait(true);
+                return project.GetItems(itemType: itemType).Select(i => (i.EvaluatedInclude, i.GetMetadataValue(metadataName))).ToArray();
             }
         }
     }

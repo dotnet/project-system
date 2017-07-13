@@ -25,5 +25,10 @@
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.VS\Microsoft.VisualStudio.ProjectSystem.Managed.VS.csproj" />
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="VSPackage.*.resx">
+      <DependentUpon>VSPackage.resx</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="..\..\build\Targets\VSL.Imports.targets" />
 </Project>

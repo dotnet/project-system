@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                   ProjectFaultSeverity faultSeverity = ProjectFaultSeverity.Recoverable,
                   ForkOptions options = ForkOptions.Default)
         {
-            Task.Run(asyncAction);
+            Task.Run(asyncAction).Wait();
         }
 
         public  JoinableTaskContextNode JoinableTaskContext { get; private set; } = new JoinableTaskContextNode(

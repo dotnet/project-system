@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Fact]
-        public async Task DebugTokenReplacer_ReplaceTokensInProfileTests()
+        public async Task ReplaceTokensInProfileTests()
         {
             IUnconfiguredProjectCommonServices services = IUnconfiguredProjectCommonServicesFactory.Create();
 
@@ -82,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [InlineData("this is msbuild: %env3% $(msbuildProperty2) $(msbuildProperty3)",  "this is msbuild: Property6 Property2 Property3", true)]
         [InlineData(null, null, true)]
         [InlineData(" ", " ", true)]
-        public async Task DebugTokenReplacer_ReplaceTokensInStringTests(string input, string expected, bool expandEnvVars)
+        public async Task ReplaceTokensInStringTests(string input, string expected, bool expandEnvVars)
         {
             IUnconfiguredProjectCommonServices services = IUnconfiguredProjectCommonServicesFactory.Create();
 

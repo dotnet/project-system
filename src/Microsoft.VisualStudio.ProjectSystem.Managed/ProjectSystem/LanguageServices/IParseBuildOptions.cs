@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
-    public interface IParseBuildOptions
+    internal interface IParseBuildOptions
     {
         BuildOptions Parse(IEnumerable<string> args, string baseDirectory);
     }

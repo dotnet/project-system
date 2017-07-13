@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Moq;
 using Newtonsoft.Json.Linq;
@@ -27,13 +28,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                             IEnumerable<string> dependencyIDs = null,
                                             bool? resolved = null,
                                             bool? topLevel = null,
+                                            bool? isImplicit = null,
                                             ProjectTreeFlags? flags = null,
                                             string setPropertiesCaption = null,
                                             bool? setPropertiesResolved = null,
                                             ProjectTreeFlags? setPropertiesFlags = null,
+                                            bool? setPropertiesImplicit = null,
                                             bool? equals = null,
                                             IImmutableList<string> setPropertiesDependencyIDs = null,
-                                            ITargetedDependenciesSnapshot snapshot = null,
+                                            string setPropertiesSchemaName = null,
+                                            ITargetFramework targetFramework = null,
                                             MockBehavior? mockBehavior = null)
         {
             var behavior = mockBehavior ?? MockBehavior.Strict;
@@ -89,22 +93,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 mock.Setup(x => x.TopLevel).Returns(topLevel.Value);
             }
 
+            if (isImplicit != null && isImplicit.HasValue)
+            {
+                mock.Setup(x => x.Implicit).Returns(isImplicit.Value);
+            }
+
             if (flags != null && flags.HasValue)
             {
                 mock.Setup(x => x.Flags).Returns(flags.Value);
             }
 
-            if (snapshot != null)
+            if (targetFramework != null)
             {
-                mock.Setup(x => x.Snapshot).Returns(snapshot);
+                mock.Setup(x => x.TargetFramework).Returns(targetFramework);
             }
 
             if (setPropertiesCaption != null 
                 || setPropertiesDependencyIDs != null 
                 || setPropertiesResolved != null
-                || setPropertiesFlags != null)
+                || setPropertiesFlags != null
+                || setPropertiesImplicit != null)
             {
-                mock.Setup(x => x.SetProperties(setPropertiesCaption, setPropertiesResolved, setPropertiesFlags, setPropertiesDependencyIDs))
+                mock.Setup(x => x.SetProperties(
+                            setPropertiesCaption, 
+                            setPropertiesResolved, 
+                            setPropertiesFlags,
+                            setPropertiesSchemaName, 
+                            setPropertiesDependencyIDs,
+                            It.IsAny<ImageMoniker>(),
+                            It.IsAny<ImageMoniker>(),
+                            setPropertiesImplicit))
                     .Returns(mock.Object);
             }
 
@@ -125,7 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             ImageMoniker? unresolvedExpandedIcon = null,
             Dictionary<string, string> properties = null,
             IEnumerable<string> dependenciesIds = null,
-            IEnumerable<IDependency> dependencies = null)
+            ITargetFramework targetFramework = null)
         {
             if (string.IsNullOrEmpty(jsonString))
             {
@@ -170,9 +188,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 data.DependencyIDs = ImmutableList<string>.Empty.AddRange(dependenciesIds);
             }
 
-            if (dependencies != null)
+            if (targetFramework != null)
             {
-                data.Dependencies = ImmutableList<IDependency>.Empty.AddRange(dependencies);
+                data.TargetFramework = targetFramework;
             }
 
             return data;

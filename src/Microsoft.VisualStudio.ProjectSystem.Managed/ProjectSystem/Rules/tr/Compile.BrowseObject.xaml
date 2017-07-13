@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--Copyright, Microsoft Corporation, All rights reserved.-->
-<Rule Name="Compile" DisplayName="File Properties" PageTemplate="generic" Description="File Properties" xmlns="http://schemas.microsoft.com/build/2009/properties">
+<Rule Name="Compile" DisplayName="Dosya Özellikleri" PageTemplate="generic" Description="Dosya Özellikleri" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
     <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
@@ -8,8 +8,8 @@
     <Category Name="Advanced" DisplayName="Gelişmiş" />
     <Category Name="Misc" DisplayName="Çeşitli" />
   </Rule.Categories>
-  <StringProperty Name="Generator" Category="Advanced" DisplayName="Custom Tool" Description="Specifies the tool that transforms a file at design time and places the output of that transformation into another file. For example, a dataset (.xsd) file comes with a default custom tool." />
-  <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="Custom Tool Namespace" Description="The namespace into which the output of the custom tool is placed." />
+  <StringProperty Name="Generator" Category="Advanced" DisplayName="Özel Araç" Description="Bir dosyayı tasarım zamanında dönüştüren ve dönüştürme çıkışını başka bir dosyaya yerleştiren aracı belirtir. Örneğin, bir veri kümesi (.xsd) dosyası, varsayılan bir özel araçla gelir." />
+  <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="Özel Araç İsim Uzayı" Description="Özel aracın çıkışının yerleştirileceği isim uzayı." />
   <DynamicEnumProperty Name="{}{ItemType}" DisplayName="Derleme Eylemi" Category="Advanced" Description="Dosyanın oluşturma ve dağıtım işlemleriyle olan ilişkisi." EnumProvider="ItemTypes" />
   <EnumProperty Name="CopyToOutputDirectory" DisplayName="Çıkış Dizinine Kopyala" Category="Advanced" Description="Kaynak dosyasının çıkış dizinine kopyalanacağını belirtir.">
     <EnumValue Name="Never" DisplayName="Kopyalama" />

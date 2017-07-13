@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     public class DependencyModelTests
     {
         [Fact]
-        public void DependencyModel_Constructor_WhenRequiredParamsNotProvided_ShouldThrow()
+        public void Constructor_WhenRequiredParamsNotProvided_ShouldThrow()
         {
             Assert.Throws<ArgumentNullException>("providerType", () =>
             {
@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void DependencyModel_Constructor_WhenOptionalValuesNotProvided_ShouldSetDefaults()
+        public void Constructor_WhenOptionalValuesNotProvided_ShouldSetDefaults()
         {
             var model = new DependencyModel(
                 providerType: "somProvider", 
@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void DependencyModel_Constructor_WhenValidParametersProvided_UnresolvedAndNotImplicit()
+        public void Constructor_WhenValidParametersProvided_UnresolvedAndNotImplicit()
         {
             var model = new TestableDependencyModel(
                 providerType: "somProvider",
@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void DependencyModel_Constructor_WhenValidParametersProvided_ResolvedAndNotImplicit()
+        public void Constructor_WhenValidParametersProvided_ResolvedAndNotImplicit()
         {
             var model = new TestableDependencyModel(
                 providerType: "somProvider",
@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void DependencyModel_Constructor_WhenValidParametersProvided_ResolvedAndImplicit()
+        public void Constructor_WhenValidParametersProvided_ResolvedAndImplicit()
         {
             var model = new TestableDependencyModel(
                 providerType: "somProvider",
@@ -114,7 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void DependencyModel_EqualsAndGetHashCode()
+        public void EqualsAndGetHashCode()
         {
             var model1 = new TestableDependencyModel(
                 providerType: "somProvider",
@@ -148,7 +148,54 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             Assert.Equal(model1, model2);
             Assert.NotEqual(model1, model3);
-            Assert.Equal("someitemspec1\\versio1".GetHashCode() + "somprovider".GetHashCode(), model1.GetHashCode());
+
+            Assert.Equal(model1.GetHashCode(), model2.GetHashCode());
+            Assert.NotEqual(model1.GetHashCode(), model3.GetHashCode());
+        }
+
+        [Fact]
+        public void Visible_True()
+        {
+            var dependencyModel = new DependencyModel(
+                providerType: "someProvider",
+                path: "somePath",
+                originalItemSpec: "someItemSpec",
+                flags: ProjectTreeFlags.Empty,
+                resolved: true,
+                isImplicit: false,
+                properties: ImmutableDictionary<string, string>.Empty.Add("Visible", "true"));
+
+            Assert.True(dependencyModel.Visible);
+        }
+
+        [Fact]
+        public void Visible_False()
+        {
+            var dependencyModel = new DependencyModel(
+                providerType: "someProvider",
+                path: "somePath",
+                originalItemSpec: "someItemSpec",
+                flags: ProjectTreeFlags.Empty,
+                resolved: true,
+                isImplicit: false,
+                properties: ImmutableDictionary<string, string>.Empty.Add("Visible", "false"));
+
+            Assert.False(dependencyModel.Visible);
+        }
+
+        [Fact]
+        public void Visible_TrueWhenNotSpecified()
+        {
+            var dependencyModel = new DependencyModel(
+                providerType: "someProvider",
+                path: "somePath",
+                originalItemSpec: "someItemSpec",
+                flags: ProjectTreeFlags.Empty,
+                resolved: true,
+                isImplicit: false,
+                properties: null);
+
+            Assert.True(dependencyModel.Visible);
         }
 
         private class TestableDependencyModel : DependencyModel

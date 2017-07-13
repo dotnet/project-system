@@ -7,13 +7,15 @@
   <StringProperty Name="SDKRootFolder" DisplayName="SDK 根" ReadOnly="True" />
   <StringProperty Name="AppXLocation" DisplayName="應用程式套件位置" ReadOnly="True" />
   <StringProperty Name="FrameworkIdentity" DisplayName="FrameworkIdentity" ReadOnly="True" />
-  <StringProperty Name="DisplayName" DisplayName="Display Name" Visible="False" ReadOnly="True" />
-  <StringProperty Name="Name" DisplayName="Name" ReadOnly="True" />
-  <StringProperty Name="Version" DisplayName="Version" ReadOnly="True" />
+  <StringProperty Name="DisplayName" DisplayName="顯示名稱" Visible="False" ReadOnly="True" />
+  <StringProperty Name="Name" DisplayName="名稱" ReadOnly="True" />
+  <StringProperty Name="Version" DisplayName="版本" ReadOnly="True" />
   <StringProperty Name="SDKPackageItemSpec" Visible="False" ReadOnly="True" />
   <BoolProperty Name="CopyPayload" DisplayName="複製承載" ReadOnly="True" />
   <StringProperty Name="CopyPayloadToSubDirectory" DisplayName="複製承載到子目錄" ReadOnly="True" />
   <BoolProperty Name="ExpandContent" DisplayName="展開內容" ReadOnly="True" />
   <BoolProperty Name="ExpandReferenceAssemblies" DisplayName="展開參考組件" ReadOnly="True" />
   <BoolProperty Name="CopyLocalExpandedReferenceAssemblies" DisplayName="複製展開的參考組件到本機" ReadOnly="True" />
+  <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
+  <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
 </Rule>

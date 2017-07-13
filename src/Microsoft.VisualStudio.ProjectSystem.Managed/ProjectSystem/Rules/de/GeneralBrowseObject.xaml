@@ -13,6 +13,11 @@
       <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
+  <StringProperty Name="TargetFrameworkMonikers" DisplayName="Zielframeworkmonikers" Visible="False" ReadOnly="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMonikers" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
   <StringProperty Name="AssemblyName" DisplayName="Assemblyname" Visible="False" />
   <StringProperty Name="Name" Visible="False" />
   <StringProperty Name="RootNamespace" DisplayName="Stammnamespace" Visible="False" />
@@ -32,18 +37,19 @@
     </IntProperty.DataSource>
   </IntProperty>
   <StringProperty Name="OutputName" Visible="False" />
-  <DynamicEnumProperty Name="OutputType" DisplayName="Ausgabetyp" EnumProvider="OutputTypeEnumProvider" Visible="False" />
-  <EnumProperty Name="OutputTypeEx" DisplayName="Ausgabetyp" Visible="False">
-    <EnumValue Name="WinExe" DisplayName="0" />
-    <EnumValue Name="Exe" DisplayName="1" />
-    <EnumValue Name="Library" DisplayName="2" />
-    <EnumValue Name="AppContainerExe" DisplayName="3" />
-    <EnumValue Name="WinMDObj" DisplayName="4" />
-    <EnumProperty.DataSource>
+  <!-- This property is used to provide the value of OutputType through BrowseObject, which is used by Property pages-->
+  <IntProperty Name="OutputType" DisplayName="Ausgabetyp" Visible="False">
+    <IntProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="OutputType" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </IntProperty.DataSource>
+  </IntProperty>
+  <!-- This property is used to provide the value of OutputTypeEx through BrowseObject, which is used by Property pages-->
+  <IntProperty Name="OutputTypeEx" DisplayName="Ausgabetypbeispiel" Visible="False">
+    <IntProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception" PersistedName="OutputTypeEx" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
-    </EnumProperty.DataSource>
-  </EnumProperty>
-  <StringProperty Name="StartupObject" DisplayName="Typ, der den Einstiegspunkt enthält" Visible="False" />
+    </IntProperty.DataSource>
+  </IntProperty>
+  <DynamicEnumProperty Name="StartupObject" DisplayName="Type that contains the entry point" EnumProvider="StartupObjectsEnumProvider" Visible="False" />
   <StringProperty Name="ApplicationManifest" DisplayName="Anwendungsmanifest" Visible="False">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception" PersistedName="ApplicationManifest" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext" />
@@ -145,4 +151,8 @@
       <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
+  <DynamicEnumProperty Name="SupportedTargetFrameworks" DisplayName="Unterstützte TargetFrameworks" EnumProvider="SupportedTargetFrameworksEnumProvider" Visible="False" />
+  <!-- F# specific properties-->
+  <BoolProperty Name="CanUseTargetFSharpCoreVersion" Visible="False" />
+  <StringProperty Name="TargetFSharpCoreVersion" Visible="False" />
 </Rule>

@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 
@@ -47,6 +48,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 resolved && !isImplicit, 
                 isImplicit,
                 properties);
+        }
+
+        public override ImageMoniker GetImplicitIcon()
+        {
+            return ManagedImageMonikers.SdkPrivate;
         }
     }
 }

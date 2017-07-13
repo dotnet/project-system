@@ -277,6 +277,9 @@
     <value>XProj 项目 {0} 迁移失败。“{1}”退出时出现错误代码 {2}。</value>
   </data>
   <data name="DebugFrameworkMenuText" xml:space="preserve">
-    <value>Framework ({0})</value>
+    <value>框架({0})</value>
+  </data>
+  <data name="OutputWindowPaneTitle" xml:space="preserve">
+    <value>项目</value>
   </data>
 </root>

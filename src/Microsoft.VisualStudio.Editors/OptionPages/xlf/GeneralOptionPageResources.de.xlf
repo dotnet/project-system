@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="de" original="src/Microsoft.VisualStudio.Editors/OptionPages/GeneralOptionPageResources.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/OptionPages/GeneralOptionPageResources.resx" />
+      <trans-unit id="General_FastUpToDateCheck">
+        <source>Don't call MSBuild if a project appears to be up to date.</source>
+        <target state="new">Don't call MSBuild if a project appears to be up to date.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="General_FastUpToDateCheck_LogLevel">
+        <source>Logging Level:</source>
+        <target state="new">Logging Level:</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="General_FastUpToDateCheck_LogLevel_Info">
+        <source>Info</source>
+        <target state="new">Info</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="General_FastUpToDateCheck_LogLevel_None">
+        <source>None</source>
+        <target state="new">None</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="General_FastUpToDateCheck_LogLevel_Verbose">
+        <source>Verbose</source>
+        <target state="new">Verbose</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="General_FastUpToDateCheck_Title">
+        <source>Up to Date Checks</source>
+        <target state="new">Up to Date Checks</target>
+        <note></note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

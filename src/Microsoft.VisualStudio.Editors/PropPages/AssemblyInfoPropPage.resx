@@ -505,7 +505,7 @@
     <value>172, 27</value>
   </data>
   <data name="ComVisibleCheckBox.TabIndex" type="System.Int32, mscorlib">
-    <value>26</value>
+    <value>20</value>
   </data>
   <data name="ComVisibleCheckBox.Text" xml:space="preserve">
     <value>&amp;Make assembly COM-Visible</value>
@@ -541,7 +541,7 @@
     <value>91, 13</value>
   </data>
   <data name="NeutralLanguageLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>22</value>
+    <value>18</value>
   </data>
   <data name="NeutralLanguageLabel.Text" xml:space="preserve">
     <value>&amp;Neutral language:</value>
@@ -811,7 +811,7 @@
     <value>403, 20</value>
   </data>
   <data name="GuidTextBox.TabIndex" type="System.Int32, mscorlib">
-    <value>21</value>
+    <value>17</value>
   </data>
   <data name="&gt;&gt;GuidTextBox.Name" xml:space="preserve">
     <value>GuidTextBox</value>
@@ -838,7 +838,7 @@
     <value>403, 21</value>
   </data>
   <data name="NeutralLanguageComboBox.TabIndex" type="System.Int32, mscorlib">
-    <value>23</value>
+    <value>19</value>
   </data>
   <data name="&gt;&gt;NeutralLanguageComboBox.Name" xml:space="preserve">
     <value>NeutralLanguageComboBox</value>
@@ -871,7 +871,7 @@
     <value>37, 13</value>
   </data>
   <data name="GuidLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>20</value>
+    <value>16</value>
   </data>
   <data name="GuidLabel.Text" xml:space="preserve">
     <value>&amp;GUID:</value>

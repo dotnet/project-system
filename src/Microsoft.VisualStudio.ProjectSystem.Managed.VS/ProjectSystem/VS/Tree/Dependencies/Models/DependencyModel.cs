@@ -42,6 +42,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             {
                 Flags = Flags.Except(DependencyTreeFlags.SupportsRemove);
             }
+
+            if (Properties.TryGetValue("Visible", out string visibleMetadata)
+                && bool.TryParse(visibleMetadata, out bool visible))
+            {
+                Visible = visible;
+            }
         }
 
         public string ProviderType { get; protected set; }
@@ -81,8 +87,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override int GetHashCode()
         {
-            return unchecked(Id.ToLowerInvariant().GetHashCode() 
-                             + ProviderType.ToLowerInvariant().GetHashCode());
+            return unchecked(StringComparer.OrdinalIgnoreCase.GetHashCode(Id) 
+                             + StringComparer.OrdinalIgnoreCase.GetHashCode(ProviderType));
         }
 
         public override bool Equals(object obj)

@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     public class PackageUnknownDependencyModelTests
     {
         [Fact]
-        public void PackageUnknownDependencyModelTests_Resolved()
+        public void Resolved()
         {
             var properties = ImmutableDictionary<string, string>.Empty.Add("myProp", "myVal");
             var dependencyIDs = new[] { "id1", "id2" };

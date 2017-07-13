@@ -144,9 +144,9 @@
         <note />
       </trans-unit>
       <trans-unit id="LaunchURL">
-        <source>Launch URL:</source>
-        <target state="translated">URL di avvio:</target>
-        <note />
+        <source>Launch browser:</source>
+        <target state="needs-review-translation">URL di avvio:</target>
+        <note></note>
       </trans-unit>
       <trans-unit id="NameHeader">
         <source>Name</source>

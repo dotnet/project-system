@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Build.Construction;
@@ -48,5 +49,22 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             return mock.Object;
         }
+
+        public static IProjectXmlAccessor WithItems(string itemType, string metadataName, ICollection<(string name, string metadataValue)> items)
+        {
+            var mock = new Mock<IProjectXmlAccessor>();
+
+            mock.Setup(m => m.GetItems(
+                It.IsAny<ConfiguredProject>(), 
+                It.Is<string>((t) => string.Equals(t, itemType)),
+                It.Is<string>((t) => string.Equals(t, metadataName))))
+                .Returns<ConfiguredProject, string, string>((configuredProject, innerItemType, innerMetadataName) =>
+                {
+                    return Task.FromResult(items);
+                });
+
+            return mock.Object;
+        }
+
     }
 }

@@ -274,8 +274,13 @@ Para depurar esse projeto, adicione um projeto executável a essa solução que 
       </trans-unit>
       <trans-unit id="DebugFrameworkMenuText">
         <source>Framework ({0})</source>
-        <target state="new">Framework ({0})</target>
-        <note></note>
+        <target state="translated">Estrutura ({0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OutputWindowPaneTitle">
+        <source>Project</source>
+        <target state="translated">Projeto</target>
+        <note />
       </trans-unit>
     </body>
   </file>

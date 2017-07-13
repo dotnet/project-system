@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 {
     [Export(typeof(IProjectChangeHintReceiver))]
     [ProjectChangeHintKind(ProjectChangeFileSystemEntityRenameHint.RenamedFileAsString)]
-    [AppliesTo(ProjectCapability.CSharp)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
     internal class FileRenameTracker : IProjectChangeHintReceiver
     {
         private readonly IUnconfiguredProjectVsServices _projectVsServices;

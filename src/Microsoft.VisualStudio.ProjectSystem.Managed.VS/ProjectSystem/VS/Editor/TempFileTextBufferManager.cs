@@ -3,7 +3,6 @@
 using System;
 using System.ComponentModel.Composition;
 using System.IO;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Editor;
@@ -20,8 +19,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
     [Export(typeof(ITextBufferManager))]
     internal class TempFileTextBufferManager : OnceInitializedOnceDisposedAsync, ITextBufferManager
     {
-        private readonly Regex _whitespaceRegex = new Regex(@"\s");
-
         private readonly UnconfiguredProject _unconfiguredProject;
         private readonly IProjectXmlAccessor _projectXmlAccessor;
         private readonly IVsEditorAdaptersFactoryService _editorAdaptersService;

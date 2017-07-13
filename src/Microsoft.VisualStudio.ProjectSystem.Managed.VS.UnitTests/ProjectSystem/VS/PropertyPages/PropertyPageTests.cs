@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test.PropertyPages
     public class PropertyPageTests
     {
         [Fact]
-        public void PropertyPage_GetPageInfoAndHelp()
+        public void GetPageInfoAndHelp()
         {
             Castle.DynamicProxy.Generators.AttributesToAvoidReplicating.Add(typeof(System.Security.Permissions.UIPermissionAttribute));
 
@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test.PropertyPages
         }
 
         [Fact]
-        public void PropertyPage_Move()
+        public void Move()
         {
             Castle.DynamicProxy.Generators.AttributesToAvoidReplicating.Add(typeof(System.Security.Permissions.UIPermissionAttribute));
 
@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test.PropertyPages
         }
 
         [Fact]
-        public void PropertyPage_MoveThrowsArgumentExceptionIfNullRect()
+        public void MoveThrowsArgumentExceptionIfNullRect()
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test.PropertyPages
         }
 
         [Fact]
-        public void PropertyPage_MoveThrowsArgumentExceptionIfEmptyRect()
+        public void MoveThrowsArgumentExceptionIfEmptyRect()
         {
             Assert.Throws<ArgumentNullException>(() =>
             {

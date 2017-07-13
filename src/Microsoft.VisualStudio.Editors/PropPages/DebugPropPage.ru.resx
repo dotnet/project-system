@@ -171,4 +171,7 @@
   <data name="EnableUnmanagedDebugging.Text" xml:space="preserve">
     <value>Включить отладку в &amp;машинном коде</value>
   </data>
+  <data name="StartArguments.AccessibleName" xml:space="preserve">
+    <value>Аргументы командной строки</value>
+  </data>
 </root>

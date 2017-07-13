@@ -26,17 +26,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             return dependency.IsPackage();
         }
 
-        public override void BuildGraph(IGraphContext graphContext, 
-                                          string projectPath, 
-                                          IDependency dependency, 
-                                          GraphNode dependencyGraphNode)
+        public override void BuildGraph(
+            IGraphContext graphContext, 
+            string projectPath, 
+            IDependency dependency, 
+            GraphNode dependencyGraphNode,
+            ITargetedDependenciesSnapshot targetedSnapshot)
         {
-            // store refreshed dependency
-            dependencyGraphNode.SetValue(DependenciesGraphSchema.DependencyProperty, dependency);
+            // store refreshed dependency info
+            dependencyGraphNode.SetValue(DependenciesGraphSchema.DependencyIdProperty, dependency.Id);
+            dependencyGraphNode.SetValue(DependenciesGraphSchema.ResolvedProperty, dependency.Resolved);
+
+            var children = targetedSnapshot.GetDependencyChildren(dependency);
+            if (children == null)
+            {
+                return;
+            }
 
             var regularChildren = new List<IDependency>();
             var fxAssembliesChildren = new List<IDependency>();
-            foreach (var childDependency in dependency.Dependencies)
+            foreach (var childDependency in children)
             {
                 if (!childDependency.Visible)
                 {
@@ -58,14 +67,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             {
                 foreach (var fxAssembly in fxAssembliesChildren)
                 {
-                    Builder.AddGraphNode(graphContext, projectPath, dependencyGraphNode, fxAssembly);
+                    Builder.AddGraphNode(
+                        graphContext, 
+                        projectPath, 
+                        dependencyGraphNode, 
+                        fxAssembly.ToViewModel(targetedSnapshot));
                 }
             }
             else
             {
                 foreach (var childDependency in regularChildren)
                 {
-                    Builder.AddGraphNode(graphContext, projectPath, dependencyGraphNode, childDependency);
+                    Builder.AddGraphNode(
+                        graphContext, 
+                        projectPath, 
+                        dependencyGraphNode, 
+                        childDependency.ToViewModel(targetedSnapshot));
                 }
 
                 if (fxAssembliesChildren.Count > 0)
@@ -74,7 +91,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                     var fxAssembliesNode = Builder.AddGraphNode(graphContext, projectPath, dependencyGraphNode, fxAssembliesViewModel);
                     fxAssembliesNode.SetValue(DgmlNodeProperties.ContainsChildren, true);
                     fxAssembliesNode.SetValue(DependenciesGraphSchema.IsFrameworkAssemblyFolderProperty, true);
-                    fxAssembliesNode.SetValue(DependenciesGraphSchema.DependencyProperty, dependency);
+                    fxAssembliesNode.SetValue(DependenciesGraphSchema.DependencyIdProperty, dependency.Id);
+                    fxAssembliesNode.SetValue(DependenciesGraphSchema.ResolvedProperty, dependency.Resolved);
                 }
             }
         }

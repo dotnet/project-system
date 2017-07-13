@@ -1,8 +1,11 @@
 <Project DefaultTargets="Build">
 
+  <Import Project="Targets\VSL.Versions.targets" />
+
   <PropertyGroup>
     <RepositoryRootDirectory>$(MSBuildThisFileDirectory)..\</RepositoryRootDirectory>
     <TestsDirectory>$(RepositoryRootDirectory)bin\$(Configuration)\Tests\</TestsDirectory>
+    <IntegrationDirectory>$(RepositoryRootDirectory)bin\$(Configuration)\IntegrationTests\</IntegrationDirectory>
 
     <!-- Make note NUGET_PACKAGES is environment variable respected
          by NuGet.exe, so don't be tempted to change the name.-->
@@ -15,6 +18,9 @@
     <NuGetProjectFile Include="$(RepositoryRootDirectory)src\NuGet\NuGet.proj" />
     <VsManProjectFile Include="$(RepositoryRootDirectory)src\VsixV3\EditorsPackage\Microsoft.VisualStudio.Editors.vsmanproj" />
     <VsManProjectFile Include="$(RepositoryRootDirectory)src\VsixV3\ProjectSystemPackage\Microsoft.VisualStudio.ProjectSystem.Managed.vsmanproj" />
+    <VsManProjectFile Include="$(RepositoryRootDirectory)src\VsixV3\ProjectTemplates\Microsoft.VisualStudio.NetCore.ProjectTemplates.vsmanproj" />
+    <VsManProjectFile Include="$(RepositoryRootDirectory)src\VsixV3\ProjectTemplates\Microsoft.VisualStudio.NetCore.ProjectTemplates.vsmanproj" />
+    <VsManProjectFile Include="$(RepositoryRootDirectory)src\VsixV3\ProjectTemplates1.x\Microsoft.VisualStudio.NetCore.ProjectTemplates.1.x.vsmanproj" />
   </ItemGroup>
 
   <Target Name="Restore">
@@ -81,14 +87,14 @@
   <Target Name="Test" Condition="'$(RunTests)' == 'true'">
 
     <ItemGroup>
-      <TestAssembly Include="$(TestsDirectory)*Tests.dll" />
+      <TestAssembly Include="$(TestsDirectory)*UnitTests.dll" />
       <XmlTestFile Include="$(TestsDirectory)TestResults.xml" />   <!-- For Jenkins to read -->
       <HtmlTestFile Include="$(TestsDirectory)TestResults.html" /> <!-- For Humans to read -->
     </ItemGroup>
 
     <Message Text="Running tests for %(SolutionFile.Filename) [$(Configuration)]" Importance="high" />
 
-    <Exec Command="&quot;$(NUGET_PACKAGES)\xunit.runner.console\2.1.0\tools\xunit.console.x86.exe&quot; &quot;@(TestAssembly, '&quot; &quot;')&quot; -quiet -nologo -noshadow -parallel all -xml &quot;@(XmlTestFile)&quot; -html &quot;@(HtmlTestFile)&quot;"
+    <Exec Command="&quot;$(NUGET_PACKAGES)\xunit.runner.console\$(XUnitRunnerConsoleVersion)\tools\xunit.console.x86.exe&quot; &quot;@(TestAssembly, '&quot; &quot;')&quot; -quiet -nologo -noshadow -parallel all -xml &quot;@(XmlTestFile)&quot; -html &quot;@(HtmlTestFile)&quot;"
           LogStandardErrorAsError="true"
           IgnoreExitCode="true"
           >
@@ -100,5 +106,63 @@
     <Error Text="There were test failures, for full log see %(HtmlTestFile.FullPath)" Condition="$(ExitCode) != 0" />
 
   </Target>
- 
+
+  <Target Name="TestIntegration" Condition="'$(RunIntegrationTests)' == 'true'">
+
+    <PropertyGroup>
+      <BinariesDirectory>$([System.IO.Path]::GetFullPath('$(RepositoryRootDirectory)bin\$(Configuration)\'))</BinariesDirectory>
+      <VsixExpInstallerExe>$(NUGET_PACKAGES)\roslyntools.microsoft.vsixexpinstaller\$(RoslynToolsMicrosoftVSIXExpInstallerVersion)\tools\VsixExpInstaller.exe</VsixExpInstallerExe>
+      <VsixExpInstallerArgs>-rootSuffix:ProjectSystem -vsInstallDir:"$([System.IO.Path]::GetFullPath('$(MSBuildBinPath)\..\..\..'))"</VsixExpInstallerArgs>
+      <ModifyVsixManifestToolExe>$(NUGET_PACKAGES)\roslyntools.microsoft.modifyvsixmanifest\$(RoslynToolsMicrosoftModifyVsixManifestVersion)\tools\ModifyVsixManifest.exe</ModifyVsixManifestToolExe>
+      <ModifyVsixManifestArgs>--add-attribute=//x:PackageManifest/x:Installation;Experimental;true</ModifyVsixManifestArgs>
+    </PropertyGroup>
+
+    <ItemGroup>		
+      <IntegrationTestAssembly Include="$(IntegrationDirectory)*IntegrationTests.dll" />		
+      <IntegrationXmlTestFile Include="$(IntegrationDirectory)xUnitResults\TestResults.xml" />   <!-- For Jenkins to read -->		
+      <IntegrationHtmlTestFile Include="$(IntegrationDirectory)xUnitResults\TestResults.html" /> <!-- For Humans to read -->		
+    </ItemGroup>
+
+    <!-- Modify Project System Vsixes to be 'experimental' -->
+    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.vsix $(ModifyVsixManifestArgs)"/>
+    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.Test.vsix $(ModifyVsixManifestArgs)" />
+    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetCore.VB.ProjectTemplates.vsix $(ModifyVsixManifestArgs)"/>
+    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetStandard.CSharp.ProjectTemplates.vsix $(ModifyVsixManifestArgs)"/>
+    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetStandard.VB.ProjectTemplates.vsix $(ModifyVsixManifestArgs)"/>
+    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)ProjectSystem.vsix $(ModifyVsixManifestArgs)"/>
+    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)VisualStudioEditorsSetup.vsix $(ModifyVsixManifestArgs)"/>
+
+    <!-- Uninstall any old (locally-deployed) Project System Vsixes -->
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)VisualStudioEditorsSetup.vsix" IgnoreExitCode="true" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)ProjectSystem.vsix" IgnoreExitCode="true" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetStandard.VB.ProjectTemplates.vsix" IgnoreExitCode="true" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetStandard.CSharp.ProjectTemplates.vsix" IgnoreExitCode="true" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.VB.ProjectTemplates.vsix" IgnoreExitCode="true" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.Test.vsix" IgnoreExitCode="true" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.vsix" IgnoreExitCode="true" />
+
+    <!-- Install Project System Vsixes -->
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.vsix"/>
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.Test.vsix"/>
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.VB.ProjectTemplates.vsix"/>
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetStandard.CSharp.ProjectTemplates.vsix"/>
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetStandard.VB.ProjectTemplates.vsix"/>
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)ProjectSystem.vsix"/>
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)VisualStudioEditorsSetup.vsix"/>
+    
+    <Message Text="Running integrations tests for %(SolutionFile.Filename) [$(Configuration)]" Importance="high" />
+
+    <Exec Command="SET VisualBasicDesignTimeTargetsPath=$(BinariesDirectory)Rules\Microsoft.VisualBasic.DesignTime.targets &amp; SET FSharpDesignTimeTargetsPath=$(BinariesDirectory)Rules\Microsoft.FSharp.DesignTime.targets &amp; SET CSharpDesignTimeTargetsPath=$(BinariesDirectory)Rules\Microsoft.CSharp.DesignTime.targets &amp; &quot;$(NUGET_PACKAGES)\xunit.runner.console\$(XUnitRunnerConsoleVersion)\tools\xunit.console.x86.exe&quot; &quot;@(IntegrationTestAssembly, '&quot; &quot;')&quot; -quiet -nologo -noshadow -xml &quot;@(IntegrationXmlTestFile)&quot; -html &quot;@(IntegrationHtmlTestFile)&quot;"
+          LogStandardErrorAsError="true"
+          IgnoreExitCode="true"
+          >
+          
+      <Output TaskParameter="ExitCode" PropertyName="ExitCode" />
+    </Exec>
+
+    <Message Text="All tests passed, for full log see %(HtmlTestFile.FullPath)" Condition="$(ExitCode) == 0" Importance="high" />
+    <Error Text="There were test failures, for full log see %(HtmlTestFile.FullPath)" Condition="$(ExitCode) != 0" />
+
+  </Target>
+
 </Project>

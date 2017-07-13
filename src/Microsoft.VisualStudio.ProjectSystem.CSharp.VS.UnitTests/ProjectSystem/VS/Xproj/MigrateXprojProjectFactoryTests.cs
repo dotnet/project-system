@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         private static readonly string GlobalJsonLocation = Path.Combine(SlnLocation, "global.json");
 
         [Fact]
-        public void MigrateXprojProjectFactory_NullProcessRunner_ThrowsArgumentNullException()
+        public void NullProcessRunner_ThrowsArgumentNullException()
         {
             Assert.Throws<ArgumentNullException>("runner", () => new MigrateXprojProjectFactory(
                 null,
@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         }
 
         [Fact]
-        public void MigrateXprojProjectFactory_NullFileSystem_ThrowsArgumentNullException()
+        public void NullFileSystem_ThrowsArgumentNullException()
         {
             Assert.Throws<ArgumentNullException>("fileSystem", () => new MigrateXprojProjectFactory(
                 ProcessRunnerFactory.CreateRunner(),
@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         }
 
         [Fact]
-        public void MigrateXprojProjectFactory_NullServiceProvider_ThrowsArgumentNullException()
+        public void NullServiceProvider_ThrowsArgumentNullException()
         {
             Assert.Throws<ArgumentNullException>("serviceProvider", () => new MigrateXprojProjectFactory(
                 ProcessRunnerFactory.CreateRunner(),
@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         }
 
         [Fact]
-        public void MigrateXprojProjectFactory_NullGlobalJsonSetup_ThrowsArgumentNullException()
+        public void NullGlobalJsonSetup_ThrowsArgumentNullException()
         {
             Assert.Throws<ArgumentNullException>("globalJsonSetup", () => new MigrateXprojProjectFactory(
                 ProcessRunnerFactory.CreateRunner(),
@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         }
 
         [Fact]
-        public void MigrateXprojProjectFactory_ValidArgs_BackupsCorrectly()
+        public void ValidArgs_BackupsCorrectly()
         {
             var procRunner = ProcessRunnerFactory.CreateRunner();
             var fileSystem = CreateFileSystem();
@@ -112,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         }
 
         [Fact]
-        public void MigrateXprojProjectFactory_WithXprojUser_BackupsCorrectly()
+        public void WithXprojUser_BackupsCorrectly()
         {
             var procRunner = ProcessRunnerFactory.CreateRunner();
             var fileSystem = CreateFileSystem(withXprojUser: true, withProjectLock: true);
@@ -153,7 +153,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
 
         [Fact]
-        public void MigrateXprojProjectFactory_NonExistantProjectJson_DoesNotBackUp()
+        public void NonExistantProjectJson_DoesNotBackUp()
         {
             var procRunner = ProcessRunnerFactory.CreateRunner();
             var migrator = CreateInstance(procRunner, CreateFileSystem(false));
@@ -171,7 +171,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         }
 
         [Fact]
-        public void MigrateXprojProjectFactory_ValidPaths_CallMigrateCorrectly()
+        public void ValidPaths_CallMigrateCorrectly()
         {
             // Runner returns valid response, standard exit code
             var procRunner = ProcessRunnerFactory.ImplementRunner(ProcessVerifier);
@@ -187,7 +187,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         }
 
         [Fact]
-        public void MigrateXprojProjectFactory_MigrateOutput_LoggedCorrectly()
+        public void MigrateOutput_LoggedCorrectly()
         {
             // Runner returns valid response, standard exit code
             var procRunner = ProcessRunnerFactory.ImplementRunner(ProcessVerifier, outputText: "Standard Output", errorText: "Standard Error");
@@ -215,7 +215,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         }
 
         [Fact]
-        public void MigrateXprojProjectFactory_MigrateError_ReturnsErrorCode()
+        public void MigrateError_ReturnsErrorCode()
         {
             // Runner returns valid response, standard exit code
             var procRunner = ProcessRunnerFactory.ImplementRunner(ProcessVerifier, exitCode: VSConstants.E_FAIL);
@@ -229,7 +229,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         }
 
         [Fact]
-        public void MigrateXprojProjectFactory_ValidCsproj_FindsCsproj()
+        public void ValidCsproj_FindsCsproj()
         {
             var fileSystem = CreateFileSystem();
 
@@ -244,7 +244,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         }
 
         [Fact]
-        public void MigrateXprojProjectFactory_NoLogFile_LogsError()
+        public void NoLogFile_LogsError()
         {
             var fileSystem = CreateFileSystem(withEntries: false);
 
@@ -273,7 +273,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         }
 
         [Fact]
-        public void MigrateXprojProjectFactory_InvalidLogFile_LogsError()
+        public void InvalidLogFile_LogsError()
         {
             var fileSystem = CreateFileSystem(withEntries: false);
             fileSystem.WriteAllText(LogFileLocation, string.Empty);
@@ -303,7 +303,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         }
 
         [Fact]
-        public void MigrateXprojProjectFactory_LogWithErrors_MessagesAreLoggedToVs()
+        public void LogWithErrors_MessagesAreLoggedToVs()
         {
             var fileSystem = CreateFileSystem(withEntries: false);
             var migrationReport = new MigrationReport(0, new List<ProjectMigrationReport>
@@ -365,7 +365,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         }
 
         [Fact]
-        public void MigrateXprojProjectFactory_ValidProject_IsUpgradable()
+        public void ValidProject_IsUpgradable()
         {
             var fileSystem = CreateFileSystem();
 
@@ -382,7 +382,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         }
 
         [Fact]
-        public void MigrateXprojProjectFactory_Cleanup_RemovesAllFiles()
+        public void Cleanup_RemovesAllFiles()
         {
             var fileSystem = CreateFileSystem(withEntries: true, withXprojUser: true, withProjectLock: true);
 
@@ -396,7 +396,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         }
 
         [Fact]
-        public void MigrateXprojProjectFactory_NoXprojUserOrProjectLock_CausesNoIssues()
+        public void NoXprojUserOrProjectLock_CausesNoIssues()
         {
             var fileSystem = CreateFileSystem(withEntries: true, withXprojUser: false, withProjectLock: false);
 
@@ -408,7 +408,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         }
 
         [Fact]
-        public void MigrateXprojProjectFactory_GlobalJsonExists_BacksUpAndRemovesGlobalJson()
+        public void GlobalJsonExists_BacksUpAndRemovesGlobalJson()
         {
             var fileSystem = CreateFileSystem(withEntries: true, withGlobalJson: true);
             var solution = IVsSolutionFactory.CreateWithSolutionDirectory(CreateSolutionInfo());
@@ -434,7 +434,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         }
 
         [Fact]
-        public void MigrateXprojProjectFactory_GlobalJsonHasSdkElement_ElementIsRemoved()
+        public void GlobalJsonHasSdkElement_ElementIsRemoved()
         {
             var fileSystem = CreateFileSystem(withEntries: true, withGlobalJson: true);
             var solution = IVsSolutionFactory.CreateWithSolutionDirectory(CreateSolutionInfo());
@@ -468,7 +468,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         }
 
         [Fact]
-        public void MigrateXprojProjectFactory_E2E_Works()
+        public void E2E_Works()
         {
             var fileSystem = CreateFileSystem(withEntries: true, withXprojUser: true, withProjectLock: true, withGlobalJson: true);
             var processRunner = ProcessRunnerFactory.ImplementRunner(pInfo =>

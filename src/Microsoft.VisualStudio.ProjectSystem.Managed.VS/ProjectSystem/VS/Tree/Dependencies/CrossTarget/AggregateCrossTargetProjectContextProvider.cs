@@ -202,14 +202,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         private async Task<AggregateCrossTargetProjectContext> CreateProjectContextAsyncCore()
         {           
             // Don't initialize until the project has been loaded into the IDE and available in Solution Explorer
-            await _asyncLoadDashboard.ProjectLoadedInHost.ConfigureAwait(false);
+            await _asyncLoadDashboard.ProjectLoadedInHostWithCancellation(_commonServices.Project).ConfigureAwait(false);
 
             return await _taskScheduler.RunAsync(TaskSchedulerPriority.UIThreadBackgroundPriority, async () => 
             {
                 var projectData = GetProjectData();
-                
+
                 // Get the set of active configured projects ignoring target framework.
+#pragma warning disable CS0618 // Type or member is obsolete
                 var configuredProjectsMap = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync().ConfigureAwait(true);
+#pragma warning restore CS0618 // Type or member is obsolete
                 var activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
                 var innerProjectContextsBuilder = ImmutableDictionary.CreateBuilder<ITargetFramework, ITargetedProjectContext>();
                 var activeTargetFramework = TargetFramework.Empty;

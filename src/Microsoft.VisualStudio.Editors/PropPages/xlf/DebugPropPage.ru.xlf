@@ -93,6 +93,11 @@
         <target state="translated">Включить отладку в &amp;машинном коде</target>
         <note />
       </trans-unit>
+      <trans-unit id="StartArguments.AccessibleName">
+        <source>Command line arguments</source>
+        <target state="translated">Аргументы командной строки</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -127,7 +127,7 @@
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_SettingsGridView.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;m_SettingsGridView.Name">
     <value xml:space="preserve">m_SettingsGridView</value>
@@ -151,7 +151,7 @@
     <value>150, 152</value>
   </data>
   <data name="SettingsTableLayoutPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;SettingsTableLayoutPanel.Name">
     <value xml:space="preserve">SettingsTableLayoutPanel</value>
@@ -203,7 +203,7 @@
     <value>59, 14</value>
   </data>
   <data name="DescriptionLinkLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="DescriptionLinkLabel.Text">
     <value xml:space="preserve"></value>

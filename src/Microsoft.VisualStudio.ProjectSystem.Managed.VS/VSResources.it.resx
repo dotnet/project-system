@@ -279,4 +279,7 @@ Per eseguire il debug del progetto, aggiungere a questa soluzione un progetto es
   <data name="DebugFrameworkMenuText" xml:space="preserve">
     <value>Framework ({0})</value>
   </data>
+  <data name="OutputWindowPaneTitle" xml:space="preserve">
+    <value>Progetto</value>
+  </data>
 </root>

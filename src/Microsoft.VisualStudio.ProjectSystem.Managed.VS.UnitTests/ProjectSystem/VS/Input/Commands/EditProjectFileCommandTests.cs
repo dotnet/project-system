@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         private const long CommandId = VisualStudioStandard2kCommandId.EditProjectFile;
 
         [Fact]
-        public void EditProjectFileCommand_NullAsUnconfiguredProject_Throws()
+        public void NullAsUnconfiguredProject_Throws()
         {
             var editorPresenter = IProjectFileEditorPresenterFactory.CreateLazy();
 
@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         }
 
         [Fact]
-        public void EditProjectFileCommand_NullAsPresenter_Throws()
+        public void NullAsPresenter_Throws()
         {
             var unconfiguredProject = UnconfiguredProjectFactory.Create();
 
@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         }
 
         [Fact]
-        public async Task EditProjectFileCommand_RootNode_ShouldHandle()
+        public async Task RootNode_ShouldHandle()
         {
             var tree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
@@ -51,7 +51,7 @@ Root (flags: {ProjectRoot})
         }
 
         [Fact]
-        public async Task EditProjectFileCommand_NonRootNode_ShouldHandle()
+        public async Task NonRootNode_ShouldHandle()
         {
             var tree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
@@ -71,7 +71,7 @@ Root (flags: {ProjectRoot})
         }
 
         [Fact]
-        public async Task EditProjectFileCommand_MultipleNodes_ShouldHandle()
+        public async Task MultipleNodes_ShouldHandle()
         {
             var tree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
@@ -91,7 +91,7 @@ Root (flags: {ProjectRoot})
         }
 
         [Fact]
-        public async Task EditProjectFileCommand_RootNode_CallsOpenAsync()
+        public async Task RootNode_CallsOpenAsync()
         {
             var tree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
@@ -110,7 +110,7 @@ Root (flags: {ProjectRoot})
         }
 
         [Fact]
-        public async Task EditProjectFileCommand_NonRootNode_CallsOpenAsync()
+        public async Task NonRootNode_CallsOpenAsync()
         {
             var tree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})
@@ -131,7 +131,7 @@ Root (flags: {ProjectRoot})
         }
 
         [Fact]
-        public async Task EditProjectFileCommand_MultipleNodes_CallsOpenAsync()
+        public async Task MultipleNodes_CallsOpenAsync()
         {
             var tree = ProjectTreeParser.Parse(@"
 Root (flags: {ProjectRoot})

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.Build;
 using Xunit;
 
@@ -19,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 </Project>";
 
         [Fact]
-        public async void PlatformProjectConfigurationDimensionProvider_GetDefaultValuesForDimensionsAsync()
+        public async Task PlatformProjectConfigurationDimensionProvider_GetDefaultValuesForDimensionsAsync()
         {
             using (var projectFile = new MsBuildProjectFile(projectXml))
             {
@@ -35,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         }
 
         [Fact]
-        public async void PlatformProjectConfigurationDimensionProvider_GetProjectConfigurationDimensionsAsync()
+        public async Task PlatformProjectConfigurationDimensionProvider_GetProjectConfigurationDimensionsAsync()
         {
             using (var projectFile = new MsBuildProjectFile(projectXml))
             {
@@ -55,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         }
 
         [Fact]
-        public async void PlatformProjectConfigurationDimensionProvider_OnDimensionValueChanged_Add()
+        public async Task PlatformProjectConfigurationDimensionProvider_OnDimensionValueChanged_Add()
         {
             using (var projectFile = new MsBuildProjectFile(projectXml))
             {
@@ -90,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         }
 
         [Fact]
-        public async void PlatformProjectConfigurationDimensionProvider_OnDimensionValueChanged_Remove()
+        public async Task PlatformProjectConfigurationDimensionProvider_OnDimensionValueChanged_Remove()
         {
             using (var projectFile = new MsBuildProjectFile(projectXml))
             {
@@ -125,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         }
 
         [Fact]
-        public async void PlatformProjectConfigurationDimensionProvider_OnDimensionValueChanged_Rename()
+        public async Task PlatformProjectConfigurationDimensionProvider_OnDimensionValueChanged_Rename()
         {
             using (var projectFile = new MsBuildProjectFile(projectXml))
             {

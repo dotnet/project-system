@@ -1,11 +1,13 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Imaging;
+using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
@@ -33,7 +35,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             SnapshotProvider = snapshotProvider;
             CommonServices = commonServices;
 
-            // TODO unsubscribe
             AggregateSnapshotProvider.SnapshotChanged += OnSnapshotChanged;
             AggregateSnapshotProvider.SnapshotProviderUnloading += OnSnapshotProviderUnloading;
 
@@ -71,7 +72,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 isImplicit,
                 properties);
         }
-        
+
+        public override ImageMoniker GetImplicitIcon()
+        {
+            return ManagedImageMonikers.ApplicationPrivate;
+        }
+
         private void OnSnapshotChanged(object sender, SnapshotChangedEventArgs e)
         {
             OnOtherProjectDependenciesChanged(e.Snapshot, shouldBeResolved: true);
@@ -89,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         /// </summary>
         /// <param name="otherProjectSnapshot"></param>
         /// <param name="shouldBeResolved">
-        /// Specifies if top-level project depencies resolved status. When other project just had it's dependencies
+        /// Specifies if top-level project dependencies resolved status. When other project just had it's dependencies
         /// changed, it is resolved=true (we check target's support when we add projec dependencies). However when 
         /// other project is unloaded, we should mark top-level dependencies as unresolved.
         /// </param>
@@ -109,7 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             var dependencyThatNeedChange = new List<IDependency>();
             foreach(var target in projectSnapshot.Targets)
             {
-                foreach (var dependency in target.Value.TopLevelDependencies)
+                foreach (var dependency in target.Value.TopLevelDependencies.Where(d => StringComparers.DependencyProviderTypes.Equals(d.ProviderType, ProviderTypeString)))
                 {
                     if (otherProjectPath.Equals(dependency.GetActualPath(projectPath)))
                     {
@@ -136,13 +142,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                                 dependency.Properties);
 
                 var changes = new DependenciesChanges();
-                changes.IncludeRemovedChange(model);
+
+                // avoid unnecessary removing since, add would upgrade dependency in snapshot anyway,
+                // but remove would require removing item from the tree instead of in-place upgrade.
+                if (!shouldBeResolved)
+                {
+                    changes.IncludeRemovedChange(model);
+                }
+
                 changes.IncludeAddedChange(model);
 
                 FireDependenciesChanged(
                     new DependenciesChangedEventArgs(
                         this, 
-                        dependency.Snapshot.TargetFramework.Moniker, 
+                        dependency.TargetFramework.Moniker, 
                         changes, 
                         catalogs:null, 
                         dataSourceVersions:null));

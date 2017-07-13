@@ -47,8 +47,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             return false;
         }
 
-        protected IDependency GetDependency(IGraphContext graphContext, GraphNode inputGraphNode)
+        protected IDependency GetDependency(
+            IGraphContext graphContext, 
+            GraphNode inputGraphNode, 
+            out IDependenciesSnapshot snapshot)
         {
+            snapshot = null;
+
             var projectPath = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.Assembly);
             if (string.IsNullOrEmpty(projectPath))
             {
@@ -56,32 +61,46 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             }
 
             var projectFolder = Path.GetDirectoryName(projectPath);
-            IDependency dependency = inputGraphNode.GetValue<IDependency>(DependenciesGraphSchema.DependencyProperty);
-            var id = dependency?.Id;
+            var id = inputGraphNode.GetValue<string>(DependenciesGraphSchema.DependencyIdProperty);
             if (id == null)
             {
-                // now check node file path if it is a DependencyNodeId 
+                // this is top level node and it contains full path 
                 id = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.File);
                 if (id.StartsWith(projectFolder, StringComparison.OrdinalIgnoreCase))
                 {
                     id = id.Substring(projectFolder.Length).TrimStart('\\');
                 }
-            }
 
-            if (id == null)
+                return GetTopLevelDependency(projectPath, id, out snapshot);
+            }
+            else
             {
-                return null;
+                return GetDependency(projectPath, id, out snapshot);
             }
-
-            // always refresh
-            return GetDependency(projectPath, id);
         }
 
-        protected IDependency GetDependency(string projectPath, string dependencyId)
+        protected IDependency GetDependency(
+            string projectPath, 
+            string dependencyId, 
+            out IDependenciesSnapshot snapshot)
+        {
+            snapshot = GetSnapshot(projectPath);
+            return snapshot?.FindDependency(dependencyId);
+        }
+
+        protected IDependency GetTopLevelDependency(
+            string projectPath,
+            string dependencyId,
+            out IDependenciesSnapshot snapshot)
+        {
+            snapshot = GetSnapshot(projectPath);
+            return snapshot?.FindDependency(dependencyId, topLevel:true);
+        }
+
+        protected IDependenciesSnapshot GetSnapshot(string projectPath)
         {
             var snapshotProvider = AggregateSnapshotProvider.GetSnapshotProvider(projectPath);
-            var snapshot = snapshotProvider?.CurrentSnapshot;
-            return snapshot?.FindDependency(dependencyId);
+            return snapshotProvider?.CurrentSnapshot;
         }
     }
 }

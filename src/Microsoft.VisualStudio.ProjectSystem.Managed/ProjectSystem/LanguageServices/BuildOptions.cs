@@ -1,39 +1,49 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
+using System.Collections.Immutable;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
-    public class BuildOptions
+    internal class BuildOptions
     {
-        public IEnumerable<CommandLineSourceFile> SourceFiles { get; }
-        public IEnumerable<CommandLineSourceFile> AdditionalFiles { get; }
-        public IEnumerable<CommandLineReference> MetadataReferences { get; }
-        public IEnumerable<CommandLineAnalyzerReference> AnalyzerReferences { get; }
-
-        public BuildOptions(IEnumerable<CommandLineSourceFile> sourceFiles, IEnumerable<CommandLineSourceFile> additionalFiles, IEnumerable<CommandLineReference> metadataReferences, IEnumerable<CommandLineAnalyzerReference> analyzerReferences)
+        public BuildOptions(ImmutableArray<CommandLineSourceFile> sourceFiles, ImmutableArray<CommandLineSourceFile> additionalFiles, ImmutableArray<CommandLineReference> metadataReferences, ImmutableArray<CommandLineAnalyzerReference> analyzerReferences)
         {
-            Requires.NotNull(sourceFiles, nameof(sourceFiles));
-            Requires.NotNull(additionalFiles, nameof(additionalFiles));
-            Requires.NotNull(metadataReferences, nameof(metadataReferences));
-            Requires.NotNull(analyzerReferences, nameof(analyzerReferences));
-
             SourceFiles = sourceFiles;
             AdditionalFiles = additionalFiles;
             MetadataReferences = metadataReferences;
             AnalyzerReferences = analyzerReferences;
         }
 
-        public static BuildOptions FromCommonCommandLineArguments(CommandLineArguments commonCommandLineArguments)
+        public ImmutableArray<CommandLineSourceFile> SourceFiles
         {
-            Requires.NotNull(commonCommandLineArguments, nameof(commonCommandLineArguments));
+            get;
+        }
+
+        public ImmutableArray<CommandLineSourceFile> AdditionalFiles
+        {
+            get;
+        }
+
+        public ImmutableArray<CommandLineReference> MetadataReferences
+        {
+            get;
+        }
+
+        public ImmutableArray<CommandLineAnalyzerReference> AnalyzerReferences
+        {
+            get;
+        }
+
+        public static BuildOptions FromCommandLineArguments(CommandLineArguments commandLineArguments)
+        {
+            Requires.NotNull(commandLineArguments, nameof(commandLineArguments));
 
             return new BuildOptions(
-                commonCommandLineArguments.SourceFiles,
-                commonCommandLineArguments.AdditionalFiles,
-                commonCommandLineArguments.MetadataReferences,
-                commonCommandLineArguments.AnalyzerReferences);
+                commandLineArguments.SourceFiles,
+                commandLineArguments.AdditionalFiles,
+                commandLineArguments.MetadataReferences,
+                commandLineArguments.AnalyzerReferences);
         }
     }
 }

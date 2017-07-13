@@ -15,7 +15,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
     /// </summary>
     internal abstract class AbstractSpecialFileProvider : ISpecialFileProvider
     {
-        private readonly IPhysicalProjectTree _projectTree;
         private readonly IProjectItemProvider _sourceItemsProvider;
         private readonly IFileSystem _fileSystem;
         private readonly ISpecialFilesManager _specialFilesManager;
@@ -26,6 +25,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         /// a file.
         /// </summary>
         private readonly Lazy<ICreateFileFromTemplateService> _templateFileCreationService;
+
+        protected readonly IPhysicalProjectTree _projectTree;
 
         public AbstractSpecialFileProvider(IPhysicalProjectTree projectTree,
                                            [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
@@ -114,7 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         ///       Look under the appdesigner folder for files that normally live there.
         ///       Look under the project root for all files.
         /// </summary>
-        private async Task<IProjectTree> FindFileAsync(string specialFileName)
+        protected virtual async Task<IProjectTree> FindFileAsync(string specialFileName)
         {
             IProjectTree rootNode = _projectTree.CurrentTree;
             IProjectTree specialFileNode;

@@ -9,6 +9,7 @@ Imports Microsoft.VisualStudio.Shell.Interop
 Imports VSLangProj80
 Imports VslangProj90
 Imports VSLangProj110
+Imports Microsoft.VisualStudio.Shell
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
@@ -876,6 +877,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             .SelectedIndex = .Items.Add(SelectedItemText)
                         End If
 
+                        If .SelectedItem Is Nothing AndAlso SelectedItemText = "" Then
+                            .SelectedIndex = .Items.Add(_noneText)
+                        End If
+
                         If PopulateDropdown Then
                             'If "Sub Main" is not in the list and this isn't a WindowsApplication with My, then add it.
                             Dim SubMainIndex As Integer = .Items.IndexOf(Const_SubMain)
@@ -991,6 +996,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             PopulateTargetFrameworkComboBox(TargetFrameworkComboBox)
 
+            ' Hide the AssemblyInformation button if project supports Pack capability, and hence has a Package property page with assembly info properties.
+            EnableControl(AssemblyInfoButton, Not ProjectHierarchy.IsCapabilityMatch(Pack))
         End Sub
 
         ''' <summary>
@@ -1019,7 +1026,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             ' enable/disable controls based upon the current value of the project's
             '   OutputType (.exe, .dll...)
-            EnableControlSet(OutputTypeProperty)
+            EnableControlSet(ProjectProperties.OutputType)
 
             PopulateIconList(False)
             UpdateIconImage(False)

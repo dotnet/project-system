@@ -1,0 +1,80 @@
+﻿<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Project>
+  <Import Project="..\..\build\Targets\ProducesNoOutput.Settings.targets" />
+  <PropertyGroup>
+    <TargetFramework>net46</TargetFramework>
+    <OutDir>$(OutDir)IntegrationTests\</OutDir>
+    <ProjectSystemLayer>VisualStudioDesigner</ProjectSystemLayer>
+    <Nonshipping>true</Nonshipping>
+    <ProjectSystemProjectType>Test</ProjectSystemProjectType>
+    <PlatformTarget>x86</PlatformTarget>
+    <VSSDKTargetPlatformRegRootSuffix Condition="'$(RunIntegrationTests)' != 'true'">RoslynDev</VSSDKTargetPlatformRegRootSuffix>
+    <VSSDKTargetPlatformRegRootSuffix Condition="'$(RunIntegrationTests)' == 'true'">ProjectSystem</VSSDKTargetPlatformRegRootSuffix>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.IntegrationTest.Utilities" Version="[$(MicrosoftVisualStudioLanguageServicesVersion)]" />
+    <PackageReference Include="Microsoft.VisualStudio.LanguageServices" Version="[$(MicrosoftVisualStudioLanguageServicesVersion)]" />
+    <PackageReference Include="Microsoft.VisualStudio.Text.Logic" Version="[$(MicrosoftVisualStudioTextLogicVersion)]" />
+    <PackageReference Include="RoslynTools.DownloadRoslynVsixes" Version="$(RoslynToolsDownloadRoslynVsixesVersion)" />
+    <PackageReference Include="RoslynTools.Microsoft.ModifyVsixManifest" Version="$(RoslynToolsMicrosoftModifyVsixManifestVersion)" />
+    <PackageReference Include="RoslynTools.Microsoft.VSIXExpInstaller" Version="$(RoslynToolsMicrosoftVSIXExpInstallerVersion)" />
+    <PackageReference Include="System.Diagnostics.Process" Version="[$(SystemDiagnosticsProcessVersion)]" />
+    <PackageReference Include="System.Reflection.Metadata" Version="[$(SystemReflectionMetadataVersion)]" />
+    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="$(SystemRuntimeInteropServicesRuntimeInformationVersion)" />
+    <PackageReference Include="xunit.runner.console" Version="[$(XUnitRunnerConsoleVersion)]" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="[$(XUnitRunnerVisualstudioVersion)]" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ProjectSystemSetup\ProjectSystemSetup.csproj" />
+    <ProjectReference Include="..\Templates\Microsoft.NetCore.CSharp.ProjectTemplates.Test.Vsix\Microsoft.NetCore.CSharp.ProjectTemplates.Test.Vsix.csproj" />
+    <ProjectReference Include="..\Templates\Microsoft.NetCore.CSharp.ProjectTemplates.Vsix\Microsoft.NetCore.CSharp.ProjectTemplates.Vsix.csproj" />
+    <ProjectReference Include="..\Templates\Microsoft.NetCore.FSharp.ProjectTemplates.Test.Vsix\Microsoft.NetCore.FSharp.ProjectTemplates.Test.Vsix.csproj" />
+    <ProjectReference Include="..\Templates\Microsoft.NetCore.FSharp.ProjectTemplates.Vsix\Microsoft.NetCore.FSharp.ProjectTemplates.Vsix.csproj" />
+    <ProjectReference Include="..\Templates\Microsoft.NetCore.VB.ProjectTemplates.Test.Vsix\Microsoft.NetCore.VB.ProjectTemplates.Test.Vsix.csproj" />
+    <ProjectReference Include="..\Templates\Microsoft.NetCore.VB.ProjectTemplates.Vsix\Microsoft.NetCore.VB.ProjectTemplates.Vsix.csproj" />
+    <ProjectReference Include="..\Templates\Microsoft.NetStandard.CSharp.ProjectTemplates.Vsix\Microsoft.NetStandard.CSharp.ProjectTemplates.Vsix.csproj" />
+    <ProjectReference Include="..\Templates\Microsoft.NetStandard.FSharp.ProjectTemplates.Vsix\Microsoft.NetStandard.FSharp.ProjectTemplates.Vsix.csproj" />
+    <ProjectReference Include="..\Templates\Microsoft.NetStandard.VB.ProjectTemplates.Vsix\Microsoft.NetStandard.VB.ProjectTemplates.Vsix.csproj" />
+    <ProjectReference Include="..\VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj" />
+  </ItemGroup>
+  <Import Project="..\..\build\Targets\ProducesNoOutput.Imports.targets" />
+
+  <Target Name="DeployIntegrationDependencies" Condition="'$(DesignTimeBuild)' == '' AND '$(RunIntegrationTests)' == 'true'" AfterTargets="PostBuildEvent">
+    <PropertyGroup>
+      <NUGET_PACKAGES Condition="'$(NUGET_PACKAGES)' == ''">$(UserProfile)\.nuget\packages</NUGET_PACKAGES>
+      <RepositoryRootDirectory>$(MSBuildThisFileDirectory)..\..\</RepositoryRootDirectory>
+      <IntegrationDirectory>$([System.IO.Path]::GetFullPath('$(RepositoryRootDirectory)bin\$(Configuration)\IntegrationTests\'))</IntegrationDirectory>
+      <VsixExpInstallerExe>$(NUGET_PACKAGES)\roslyntools.microsoft.vsixexpinstaller\$(RoslynToolsMicrosoftVSIXExpInstallerVersion)\tools\VsixExpInstaller.exe</VsixExpInstallerExe>
+      <VsixExpInstallerArgs>-rootSuffix:$(VSSDKTargetPlatformRegRootSuffix) -vsInstallDir:"$([System.IO.Path]::GetFullPath('$(MSBuildBinPath)\..\..\..'))"</VsixExpInstallerArgs>
+    </PropertyGroup>
+
+    <!-- Downloading Roslyn Vsixes -->
+    <Exec Command="mkdir &quot;$(IntegrationDirectory)Roslyn\Vsixes&quot;" IgnoreExitCode="true"/>
+    <Exec Command="@powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;((New-Object System.Net.WebClient).DownloadFile('https://dotnet.myget.org/F/roslyn/vsix/0b48e25b-9903-4d8b-ad39-d4cca196e3c7-$(RoslynIntegrationVsixVersion).vsix', '$(IntegrationDirectory)Roslyn\Roslyn.Deployment.Full.Next.zip'))&quot;" />
+    <Exec Command="@powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;((New-Object System.Net.WebClient).DownloadFile('https://dotnet.myget.org/F/roslyn/vsix/d0122878-51f1-4b36-95ec-dec2079a2a84-$(RoslynIntegrationVsixVersion).vsix', '$(IntegrationDirectory)Roslyn\Vsixes\Microsoft.VisualStudio.IntegrationTest.Setup.vsix'))&quot;" />
+    <Exec Command="@powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;Expand-Archive -path $(IntegrationDirectory)Roslyn\Roslyn.Deployment.Full.Next.zip -destinationPath $(IntegrationDirectory)Roslyn -force" />
+
+    <!-- Uninstall any old (locally-deployed) Roslyn Vsixes -->
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Microsoft.VisualStudio.IntegrationTest.Setup.vsix" IgnoreExitCode="true" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.VisualStudio.DiagnosticsWindow.vsix" IgnoreExitCode="true" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\ExpressionEvaluatorPackage.vsix" IgnoreExitCode="true" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.VisualStudio.InteractiveComponents.vsix" IgnoreExitCode="true" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.VisualStudio.Setup.Next.vsix" IgnoreExitCode="true" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.VisualStudio.Setup.vsix" IgnoreExitCode="true" />
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.Compilers.Extension.vsix" IgnoreExitCode="true" />
+
+    <!-- Install Roslyn Vsixes -->
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.Compilers.Extension.vsix"/>
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.VisualStudio.Setup.vsix"/>
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.VisualStudio.Setup.Next.vsix"/>
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.VisualStudio.InteractiveComponents.vsix"/>
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\ExpressionEvaluatorPackage.vsix"/>
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Roslyn.VisualStudio.DiagnosticsWindow.vsix"/>
+    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(IntegrationDirectory)Roslyn\Vsixes\Microsoft.VisualStudio.IntegrationTest.Setup.vsix"/>
+
+  </Target>
+</Project>

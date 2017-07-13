@@ -187,7 +187,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             string filePath = _commonServices.Project.FullPath;
 
-            return new ProjectData() {
+            return new ProjectData()
+            {
                 FullPath = filePath,
                 DisplayName = Path.GetFileNameWithoutExtension(filePath)
             };
@@ -225,24 +226,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             string languageName = await GetLanguageServiceName().ConfigureAwait(false);
             if (string.IsNullOrEmpty(languageName))
                 return null;
-            
+
             Guid projectGuid = await GetProjectGuidAsync().ConfigureAwait(false);
             string targetPath = await GetTargetPathAsync().ConfigureAwait(false);
             if (string.IsNullOrEmpty(targetPath))
                 return null;
 
             // Don't initialize until the project has been loaded into the IDE and available in Solution Explorer
-            await _asyncLoadDashboard.ProjectLoadedInHost.ConfigureAwait(false);
+            await _asyncLoadDashboard.ProjectLoadedInHostWithCancellation(_commonServices.Project).ConfigureAwait(false);
 
             // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
-            return await _taskScheduler.RunAsync(TaskSchedulerPriority.UIThreadBackgroundPriority, async () => 
+            return await _taskScheduler.RunAsync(TaskSchedulerPriority.UIThreadBackgroundPriority, async () =>
             {
                 await _commonServices.ThreadingService.SwitchToUIThread();
 
                 var projectData = GetProjectData();
-                
+
                 // Get the set of active configured projects ignoring target framework.
+#pragma warning disable CS0618 // Type or member is obsolete
                 var configuredProjectsMap = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync().ConfigureAwait(true);
+#pragma warning restore CS0618 // Type or member is obsolete
 
                 // Get the unconfigured project host object (shared host object).
                 var configuredProjectsToRemove = new HashSet<ConfiguredProject>(_configuredProjectHostObjectsMap.Keys);
@@ -262,26 +265,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                         var projectProperties = configuredProject.Services.ExportProvider.GetExportedValue<ProjectProperties>();
                         var configurationGeneralProperties = await projectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
                         targetPath = (string)await configurationGeneralProperties.TargetPath.GetValueAsync().ConfigureAwait(true);
+                        var targetFrameworkMoniker = (string)await configurationGeneralProperties.TargetFrameworkMoniker.GetValueAsync().ConfigureAwait(true);
                         var displayName = GetDisplayName(configuredProject, projectData, targetFramework);
-                        configuredProjectHostObject = _projectHostProvider.GetConfiguredProjectHostObject(_unconfiguredProjectHostObject, displayName);
+                        configuredProjectHostObject = _projectHostProvider.GetConfiguredProjectHostObject(_unconfiguredProjectHostObject, displayName, targetFrameworkMoniker);
 
                         // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
                         await _commonServices.ThreadingService.SwitchToUIThread();
-
-                        // HACK HACK: Roslyn's CreateProjectContext only supports C# and VB and for F#, a new overload was added. Instead, that should be removed and the main overload should just take an optional error prefix.
-                        if (languageName == "F#")
-                        {
-                            workspaceProjectContext = _contextFactory.Value.CreateProjectContext(languageName, displayName, projectData.FullPath, projectGuid, configuredProjectHostObject, targetPath, null);
-                        }
-                        else
-                        {
-                            workspaceProjectContext = _contextFactory.Value.CreateProjectContext(languageName, displayName, projectData.FullPath, projectGuid, configuredProjectHostObject, targetPath);
-                        }
+                        workspaceProjectContext = _contextFactory.Value.CreateProjectContext(languageName, displayName, projectData.FullPath, projectGuid, configuredProjectHostObject, targetPath);
 
                         // By default, set "LastDesignTimeBuildSucceeded = false" to turn off diagnostics until first design time build succeeds for this project.
                         workspaceProjectContext.LastDesignTimeBuildSucceeded = false;
 
-                        AddConfiguredProjectState(configuredProject, workspaceProjectContext, configuredProjectHostObject);                        
+                        AddConfiguredProjectState(configuredProject, workspaceProjectContext, configuredProjectHostObject);
                     }
 
                     innerProjectContextsBuilder.Add(targetFramework, workspaceProjectContext);
@@ -306,7 +301,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             //   (a) The display name is used in the editor project context combo box when opening source files that used by more than one inner projects.
             //   (b) Language service requires each active workspace project context in the current workspace to have a unique value for {ProjectFilePath, DisplayName}.
             return configuredProject.ProjectConfiguration.IsCrossTargeting() ?
-                $"{projectData.DisplayName}({targetFramework})" :
+                $"{projectData.DisplayName} ({targetFramework})" :
                 projectData.DisplayName;
         }
 

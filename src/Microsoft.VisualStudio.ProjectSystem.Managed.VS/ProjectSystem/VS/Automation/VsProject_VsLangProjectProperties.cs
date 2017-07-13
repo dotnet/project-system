@@ -1,5 +1,6 @@
-﻿using System;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System;
 using VSLangProj;
 using VSLangProj110;
 
@@ -7,7 +8,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
     public partial class VSProject : VSLangProj.ProjectProperties
     {
-
         private ProjectProperties ProjectProperties
         {
             get { return _projectProperties.Value; }
@@ -19,9 +19,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             {
                 return _threadingService.ExecuteSynchronously(async () =>
                 {
-                    var browseObjectProperties = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync().ConfigureAwait(true);
-                    var value = (IEnumValue)(await browseObjectProperties.OutputTypeEx.GetValueAsync().ConfigureAwait(true));
-                    return (prjOutputTypeEx)Convert.ToInt32(value.DisplayName);
+                    var configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync().ConfigureAwait(true);
+                    var value = await configurationGeneralProperties.OutputType.GetValueAsync().ConfigureAwait(true);
+                    return (prjOutputTypeEx)value;
                 });
             }
 
@@ -29,8 +29,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             {
                 _threadingService.ExecuteSynchronously(async () =>
                 {
-                    var browseObjectProperties = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync().ConfigureAwait(true);
-                    await browseObjectProperties.OutputTypeEx.SetValueAsync(value).ConfigureAwait(true);
+                    var configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync().ConfigureAwait(true);
+                    await configurationGeneralProperties.OutputType.SetValueAsync(value).ConfigureAwait(true);
                 });
             }
         }
@@ -43,9 +43,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             {
                 return _threadingService.ExecuteSynchronously(async () =>
                 {
-                    var browseObjectProperties = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync().ConfigureAwait(true);
-                    var value = (IEnumValue)(await browseObjectProperties.OutputType.GetValueAsync().ConfigureAwait(true));
-                    return (prjOutputType)Convert.ToInt32(value.DisplayName);
+                    var configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync().ConfigureAwait(true);
+                    var value = await configurationGeneralProperties.OutputType.GetValueAsync().ConfigureAwait(true);
+                    return (prjOutputType)value;
                 });
             }
 
@@ -53,8 +53,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             {
                 _threadingService.ExecuteSynchronously(async () =>
                 {
-                    var browseObjectProperties = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync().ConfigureAwait(true);
-                    await browseObjectProperties.OutputType.SetValueAsync(value).ConfigureAwait(true);
+                    var configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync().ConfigureAwait(true);
+                    await configurationGeneralProperties.OutputType.SetValueAsync(value).ConfigureAwait(true);
                 });
             }
         }
@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                 return _threadingService.ExecuteSynchronously(async () =>
                 {
                     var configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
-                    return await configurationGeneralProperties.TargetPath.GetEvaluatedValueAtEndAsync().ConfigureAwait(true);
+                    return await configurationGeneralProperties.ProjectDir.GetEvaluatedValueAtEndAsync().ConfigureAwait(true);
                 });
             }
         }

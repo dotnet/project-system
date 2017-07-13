@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -17,43 +18,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public async Task GetPagesAsync_ReturnsPagesInOrder()
+        public async Task GetPagesAsync_WhenAllCapabiltiesPresent_ReturnsPagesInOrder()
         {
-            var provider = CreateInstance();
-            var pages = await provider.GetPagesAsync();
-            ProjectDesignerPageMetadata[] expectedPages = new ProjectDesignerPageMetadata[]
-            {
-                CSharpProjectDesignerPage.Application,
-                CSharpProjectDesignerPage.Build,
-                CSharpProjectDesignerPage.BuildEvents,
-                CSharpProjectDesignerPage.Debug,
-                CSharpProjectDesignerPage.Signing,
-            };
+            var provider = CreateInstance(ProjectCapability.LaunchProfiles, ProjectCapability.Pack);
+            var result = await provider.GetPagesAsync();
 
-            Assert.Equal(expectedPages.Length, pages.Count());
-            for (int i = 0; i < pages.Count; i++)
-                Assert.Same(expectedPages[i], pages.ElementAt(i));
-        }
-
-        [Fact]
-        public async Task GetPagesAsync_WithPackCapability()
-        {
-            var provider = CreateInstance(ProjectCapability.Pack);
-            var pages = await provider.GetPagesAsync();
-
-            ProjectDesignerPageMetadata[] expectedPages = new ProjectDesignerPageMetadata[]
-            {
+            var expected = ImmutableArray.Create<IPageMetadata>(
                 CSharpProjectDesignerPage.Application,
                 CSharpProjectDesignerPage.Build,
                 CSharpProjectDesignerPage.BuildEvents,
                 CSharpProjectDesignerPage.Package,
                 CSharpProjectDesignerPage.Debug,
-                CSharpProjectDesignerPage.Signing,
-            };
+                CSharpProjectDesignerPage.Signing
+            );
 
-            Assert.Equal(expectedPages.Length, pages.Count());
-            for (int i = 0; i < pages.Count; i++)
-                Assert.Same(expectedPages[i], pages.ElementAt(i));
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public async Task GetPagesAsync_WhenNoLaunchProfilesCapability_DoesNotContainDebugPage()
+        {
+            var provider = CreateInstance();
+            var result = await provider.GetPagesAsync();
+
+            Assert.DoesNotContain(CSharpProjectDesignerPage.Debug, result);
+        }
+
+        [Fact]
+        public async Task GetPagesAsync_WhenNoPackCapability_DoesNotContainPackagePage()
+        {
+            var provider = CreateInstance();
+            var result = await provider.GetPagesAsync();
+
+            Assert.DoesNotContain(CSharpProjectDesignerPage.Package, result);
         }
 
         private static CSharpProjectDesignerPageProvider CreateInstance(params string[] capabilities)
