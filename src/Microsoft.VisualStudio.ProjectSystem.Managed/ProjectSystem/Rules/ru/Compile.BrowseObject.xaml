@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--Copyright, Microsoft Corporation, All rights reserved.-->
-<Rule Name="Compile" DisplayName="File Properties" PageTemplate="generic" Description="File Properties" xmlns="http://schemas.microsoft.com/build/2009/properties">
+<Rule Name="Compile" DisplayName="Свойства файла" PageTemplate="generic" Description="Свойства файла" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
     <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
@@ -8,8 +8,8 @@
     <Category Name="Advanced" DisplayName="Дополнительно" />
     <Category Name="Misc" DisplayName="Прочее" />
   </Rule.Categories>
-  <StringProperty Name="Generator" Category="Advanced" DisplayName="Custom Tool" Description="Specifies the tool that transforms a file at design time and places the output of that transformation into another file. For example, a dataset (.xsd) file comes with a default custom tool." />
-  <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="Custom Tool Namespace" Description="The namespace into which the output of the custom tool is placed." />
+  <StringProperty Name="Generator" Category="Advanced" DisplayName="Пользовательский инструмент" Description="Указывает инструмент, который преобразует файл во время разработки и помещает выходные данные этого преобразования в другой файл. Например, файл набора данных (XSD) поставляется с пользовательским инструментом по умолчанию." />
+  <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="Пространство имен пользовательского инструмента" Description="Пространство имен, в которое помещаются выходные данные пользовательского инструмента." />
   <DynamicEnumProperty Name="{}{ItemType}" DisplayName="Действие при сборке" Category="Advanced" Description="Как файл связан с процессами сборки и развертывания." EnumProvider="ItemTypes" />
   <EnumProperty Name="CopyToOutputDirectory" DisplayName="Копировать в выходной каталог" Category="Advanced" Description="Указывает, что файл исходного кода будет скопирован в выходной каталог.">
     <EnumValue Name="Never" DisplayName="Не копировать" />

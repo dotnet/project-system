@@ -20,4 +20,11 @@
     <Rule Id="IDE1006" Action="None" />                       <!-- Naming styles                                Task Open()                                         Task OpenAsync()                      -->
     <Rule Id="IDE1006WithoutSuggestion" Action="None" />
   </Rules>
+  <Rules AnalyzerId="Microsoft.VisualStudio.Threading.Analyzers" RuleNamespace="Microsoft.VisualStudio.Threading.Analyzers">
+    <Rule Id="VSTHRD001" Action="None" />                     <!-- Await JoinableTaskFactory.SwitchToMainThreadAsync() to switch to the UI thread instead of APIs that can deadlock or require specifying a priority.-->
+    <Rule Id="VSTHRD002" Action="None" />                     <!-- Synchronously waiting on tasks or awaiters may cause deadlocks. Use JoinableTaskFactory.Run instead.-->
+    <Rule Id="VSTHRD010" Action="None" />                     <!-- Visual Studio service should be used on main thread explicitly.-->
+    <Rule Id="VSTHRD103" Action="None" />                     <!-- Synchronously blocks. Await ThrowsAsync instead.-->
+    <Rule Id="VSTHRD200" Action="None" />                     <!-- Naming styles                                Task Open()                                         Task OpenAsync()                      -->
+  </Rules>
 </RuleSet>

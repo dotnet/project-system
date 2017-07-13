@@ -1,42 +1,37 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     /// <summary>
     ///     Handles changes to the project and makes sure the language service is aware of them.
     /// </summary>
-    [Export(typeof(ILanguageServiceRuleHandler))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
-    internal class ProjectPropertiesItemHandler : AbstractLanguageServiceRuleHandler
+    internal class ProjectPropertiesItemHandler : IEvaluationHandler
     {
-        [ImportingConstructor]
-        public ProjectPropertiesItemHandler()
+        private readonly IWorkspaceProjectContext _context;
+
+        public ProjectPropertiesItemHandler(IWorkspaceProjectContext context)
         {
+            Requires.NotNull(context, nameof(context));
+
+            _context = context;
         }
 
-        public override RuleHandlerType HandlerType
+        public void Handle(IComparable version, IProjectChangeDescription projectChange, bool isActiveContext, IProjectLogger logger)
         {
-            get { return RuleHandlerType.Evaluation; }
-        }
-
-        public override string RuleName
-        {
-            get { return ConfigurationGeneral.SchemaName; }
-        }
-
-        public override void Handle(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, bool isActiveContext)
-        {
+            Requires.NotNull(version, nameof(version));
             Requires.NotNull(projectChange, nameof(projectChange));
+            Requires.NotNull(logger, nameof(logger));
 
             if (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.ProjectGuidProperty))
             {
                 if (Guid.TryParse(projectChange.After.Properties[ConfigurationGeneral.ProjectGuidProperty], out Guid result))
                 {
-                    context.Guid = result;
+                    logger.WriteLine("ProjectGuid: {0}", result);
+                    _context.Guid = result;
                 }
             }
 
@@ -52,7 +47,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 var newBinOutputPath = projectChange.After.Properties[ConfigurationGeneral.TargetPathProperty];
                 if (!string.IsNullOrEmpty(newBinOutputPath))
                 {
-                    context.BinOutputPath = newBinOutputPath;
+                    logger.WriteLine("BinOutputPath: {0}", newBinOutputPath);
+                    _context.BinOutputPath = newBinOutputPath;
                 }
             }
         }

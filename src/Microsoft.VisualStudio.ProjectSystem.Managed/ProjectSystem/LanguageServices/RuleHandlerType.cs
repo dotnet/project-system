@@ -6,13 +6,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     internal enum RuleHandlerType
     {
         /// <summary>
-        ///     The <see cref="ILanguageServiceRuleHandler"/> handles changes 
+        ///     The <see cref="IEvaluationHandler"/> handles changes 
         ///     to evaluation rules.
         /// </summary>
         Evaluation,
 
         /// <summary>
-        ///     The <see cref="ILanguageServiceRuleHandler"/> handles changes 
+        ///     The <see cref="IEvaluationHandler"/> handles changes 
         ///     to design-time build rules.
         /// </summary>
         DesignTimeBuild,

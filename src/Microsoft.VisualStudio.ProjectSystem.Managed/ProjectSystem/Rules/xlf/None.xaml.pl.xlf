@@ -9,8 +9,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|None|Description">
-        <source>Non-build items</source>
-        <target state="translated">Elementy niekompilowane</target>
+        <source>File Properties</source>
+        <target state="translated">Właściwości pliku</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Advanced|DisplayName">

@@ -54,9 +54,9 @@
         <note />
       </trans-unit>
       <trans-unit id="AppIconBrowse.Text">
-        <source>...</source>
-        <target state="translated">...</target>
-        <note />
+        <source>Browse...</source>
+        <target state="needs-review-translation">...</target>
+        <note></note>
       </trans-unit>
       <trans-unit id="ApplicationManifestLabel.Text">
         <source>Manifest:</source>
@@ -69,13 +69,18 @@
         <note />
       </trans-unit>
       <trans-unit id="Win32ResourceFileBrowse.Text">
-        <source>...</source>
-        <target state="translated">...</target>
-        <note />
+        <source>Browse...</source>
+        <target state="needs-review-translation">...</target>
+        <note></note>
       </trans-unit>
       <trans-unit id="ResourcesGroupBox.Text">
         <source>Resources</source>
         <target state="translated">Kaynaklar</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AppIconBrowse.AccessibleName">
+        <source>Browse for icon</source>
+        <target state="translated">Simgeye gözat</target>
         <note />
       </trans-unit>
     </body>

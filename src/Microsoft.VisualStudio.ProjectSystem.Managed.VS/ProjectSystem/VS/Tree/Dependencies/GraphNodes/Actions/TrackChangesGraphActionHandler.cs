@@ -37,9 +37,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
 
             foreach (var inputGraphNode in graphContext.InputNodes.ToList())
             {
-                var existingDependency = inputGraphNode.GetValue<IDependency>(
-                                            DependenciesGraphSchema.DependencyProperty);
-                if (existingDependency == null)
+                var existingDependencyId = inputGraphNode.GetValue<string>(DependenciesGraphSchema.DependencyIdProperty);
+                if (string.IsNullOrEmpty(existingDependencyId))
                 {
                     continue;
                 }
@@ -50,19 +49,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                     continue;
                 }
 
-                var viewProvider = ViewProviders.FirstOrDefault(x => x.Value.SupportsDependency(existingDependency));
+                var updatedDependency = GetDependency(projectPath, existingDependencyId, out IDependenciesSnapshot updatedSnapshot);
+                if (updatedDependency == null)
+                {
+                    continue;
+                }
+
+                var viewProvider = ViewProviders.FirstOrDefault(x => x.Value.SupportsDependency(updatedDependency));
                 if (viewProvider == null)
                 {
                     continue;
                 }
 
-                if (!viewProvider.Value.ShouldTrackChanges(projectPath, snapshot.ProjectPath, existingDependency))
-                {
-                    continue;
-                }
-
-                var updatedDependency = GetDependency(projectPath, existingDependency.Id);
-                if (updatedDependency == null)
+                if (!viewProvider.Value.ShouldTrackChanges(projectPath, snapshot.ProjectPath, updatedDependency))
                 {
                     continue;
                 }
@@ -70,7 +69,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                 using (var scope = new GraphTransactionScope())
                 {
                     viewProvider.Value.TrackChanges(
-                        graphContext, projectPath, existingDependency, updatedDependency, inputGraphNode);
+                        graphContext, 
+                        projectPath,
+                        updatedDependency, 
+                        inputGraphNode,
+                        updatedSnapshot.Targets[updatedDependency.TargetFramework]);
 
                     scope.Complete();
                 }

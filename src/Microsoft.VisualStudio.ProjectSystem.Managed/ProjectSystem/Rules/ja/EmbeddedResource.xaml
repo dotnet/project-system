@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
-<Rule Name="EmbeddedResource" DisplayName="埋め込みリソース" PageTemplate="generic" Description="埋め込まれたリソース" xmlns="http://schemas.microsoft.com/build/2009/properties">
+<Rule Name="EmbeddedResource" DisplayName="埋め込みリソース" PageTemplate="generic" Description="ファイルのプロパティ" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
     <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="EmbeddedResource" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>

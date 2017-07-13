@@ -14,11 +14,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     [ExportInterceptingPropertyValueProvider("TargetFrameworkMoniker", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     internal sealed class TargetFrameworkMonikerValueProvider : InterceptingPropertyValueProviderBase
     {
-        private IUnconfiguredProjectVsServices _unconfiguredProjectVsServices;
+        private readonly IUnconfiguredProjectVsServices _unconfiguredProjectVsServices;
         private readonly ProjectProperties _properties;
         private readonly IVsFrameworkParser _frameworkParser;
         private const string _targetFrameworkProperty = "TargetFramework";
-        private const string _targetFrameworksProperty = "TargetFrameworks";
 
         [ImportingConstructor]
         public TargetFrameworkMonikerValueProvider(IUnconfiguredProjectVsServices unconfiguredProjectVsServices, ProjectProperties properties, IVsFrameworkParser frameworkParser)
@@ -48,12 +47,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
                 // This causes the project to be reloaded after changing the values.
                 // Since the property providers are called under a write-lock, trying to reload the project on the same context fails saying it can't load the project
                 // if a lock is held. We are not going to write to the file under this lock (we return null from this method) and so we fork execution here to schedule
-                // a lambda on the UI thread and we don't pass the lock information from this context to the new one. 
+                // a lambda on the UI thread and we don't pass the lock information from this context to the new one.
                 _unconfiguredProjectVsServices.ThreadingService.Fork(() =>
                 {
                     _unconfiguredProjectVsServices.VsHierarchy.SetProperty(HierarchyId.Root, (int)VsHierarchyPropID.TargetFrameworkMoniker, unevaluatedPropertyValue);
                     return System.Threading.Tasks.Task.CompletedTask;
-                }, options: ForkOptions.HideLocks | ForkOptions.StartOnMainThread);
+                }, options: ForkOptions.HideLocks | ForkOptions.StartOnMainThread,
+                   factory: _unconfiguredProjectVsServices.ThreadingService.JoinableTaskFactory);
             }
             return await System.Threading.Tasks.Task.FromResult<string>(null).ConfigureAwait(false);
         }

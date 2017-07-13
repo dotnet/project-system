@@ -1,6 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="Common diagnostic rules to run during build for all shipping Roslyn projects" Description="This file contains diagnostic settings used by all Roslyn projects. Projects that need specific settings should have their own rule set files that Include this one, and then make the neceessary adjustments." ToolsVersion="14.0">
+<RuleSet Name="Common diagnostic rules to run during build for all shipping Roslyn projects" Description="This file contains diagnostic settings used by all Roslyn projects. Projects that need specific settings should have their own rule set files that Include this one, and then make the neceessary adjustments." ToolsVersion="15.0">
   <IncludeAll Action="Hidden" />
+  <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
+    <Rule Id="CA1801" Action="None" />
+    <Rule Id="CA1804" Action="None" />
+    <Rule Id="CA1806" Action="None" />
+    <Rule Id="CA1821" Action="None" />
+    <Rule Id="CA1823" Action="None" />
+    <Rule Id="CA1824" Action="None" />
+    <Rule Id="CA2200" Action="None" />
+  </Rules>
   <Rules AnalyzerId="Microsoft.ApiDesignGuidelines.Analyzers" RuleNamespace="Microsoft.ApiDesignGuidelines.Analyzers">
     <Rule Id="CA1000" Action="None" />
     <Rule Id="CA1001" Action="None" />
@@ -126,14 +135,18 @@
     <Rule Id="IDE0019WithoutSuggestion" Action="Error" />
     <Rule Id="IDE0020" Action="Error" />                      <!-- Use pattern matching                         if (control is Button)                              if (control is Button button)         -->
     <Rule Id="IDE0020WithoutSuggestion" Action="Error" />
-    <Rule Id="IDE0028" Action="Error" />                      <!-- Use coalesce expression                      string y = x == null ? string.Empty : x;            string y = x ?? string.Empty;         -->
-    <Rule Id="IDE0028WithoutSuggestion" Action="Error" />      
-    <Rule Id="IDE0029" Action="Error" />                      <!-- Use coalesce expression (nullable)           int? y = x.HasValue ? x.Value : 0                   int? y = x ?? 0;                      -->
-    <Rule Id="IDE0029WithoutSuggestion" Action="Error" />     
-    <Rule Id="IDE0030" Action="Error" />                      <!-- Use null propagation                         string y = x == null ? null : x.ToLower()           string y = x?.ToLower();              -->
-    <Rule Id="IDE0030WithoutSuggestion" Action="Error" />
+    <Rule Id="IDE0029" Action="Error" />                      <!-- Use coalesce expression                      string y = x == null ? string.Empty : x;            string y = x ?? string.Empty;         -->
+    <Rule Id="IDE0029WithoutSuggestion" Action="Error" />      
+    <Rule Id="IDE0030" Action="Error" />                      <!-- Use coalesce expression (nullable)           int? y = x.HasValue ? x.Value : 0                   int? y = x ?? 0;                      -->
+    <Rule Id="IDE0030WithoutSuggestion" Action="Error" />     
+    <Rule Id="IDE0031" Action="Error" />                      <!-- Use null propagation                         string y = x == null ? null : x.ToLower()           string y = x?.ToLower();              -->
+    <Rule Id="IDE0031WithoutSuggestion" Action="Error" />
     <Rule Id="IDE1006" Action="Error" />                      <!-- Naming styles                                Task Open()                                         Task OpenAsync()                      -->
     <Rule Id="IDE1006WithoutSuggestion" Action="Info" />
   </Rules>
- 
+  <Rules AnalyzerId="Microsoft.VisualStudio.Threading.Analyzers" RuleNamespace="Microsoft.VisualStudio.Threading.Analyzers">
+    <Rule Id="VSTHRD200" Action="None" />                       <!-- Naming styles                              Task Open()                                         Task OpenAsync()                      -->
+    <Rule Id="VSTHRD010" Action="None" />                       <!-- Visual Studio service should be used on main thread explicitly.-->
+    <Rule Id="VSTHRD103" Action="None" />                       <!-- Call async methods when in an async method.-->
+  </Rules>
 </RuleSet>

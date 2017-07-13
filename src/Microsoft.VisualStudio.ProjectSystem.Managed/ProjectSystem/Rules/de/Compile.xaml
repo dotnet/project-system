@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Rule Name="Compile" DisplayName="File Properties" PageTemplate="generic" Description="File Properties" xmlns="http://schemas.microsoft.com/build/2009/properties">
+<Rule Name="Compile" DisplayName="Dateieigenschaften" PageTemplate="generic" Description="Dateieigenschaften" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
     <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
@@ -16,6 +16,11 @@
   </EnumProperty>
   <StringProperty Name="Generator" Category="Advanced" DisplayName="Benutzerdefiniertes Tool" Description="Gibt das Tool an, das eine Datei zur Entwurfszeit transformiert und die Ausgabe in einer anderen Datei speichert. Datasetdateien (&quot;.xsd&quot;) verfügen beispielsweise über ein benutzerdefiniertes Standardtool." />
   <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="Namespace des benutzerdefinierten Tools" Description="Der Namespace, in den die Ausgabe des benutzerdefinierten Tools kopiert wird." />
+  <StringProperty Name="FullPath" Visible="false" ReadOnly="true">
+    <StringProperty.DataSource>
+      <DataSource Persistence="Intrinsic" ItemType="Compile" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
   <BoolProperty Name="ExcludedFromBuild" DisplayName="Von Build ausgeschlossen">
     <BoolProperty.DataSource>
       <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="true" SourceOfDefaultValue="AfterContext" />

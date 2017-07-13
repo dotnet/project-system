@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     public class SharedSharedProjectDependencyModelTests
     {
         [Fact]
-        public void SharedSharedProjectDependencyModelTests_Resolved()
+        public void SharedResolved()
         {
             var properties = ImmutableDictionary<string, string>.Empty.Add("myProp", "myVal");
 
@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void SharedProjectDependencyModelTests_Unresolved()
+        public void Unresolved()
         {
             var properties = ImmutableDictionary<string, string>.Empty.Add("myProp", "myVal");
 
@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void SharedProjectDependencyModelTests_Implicit()
+        public void Implicit()
         {
             var properties = ImmutableDictionary<string, string>.Empty.Add("myProp", "myVal");
 

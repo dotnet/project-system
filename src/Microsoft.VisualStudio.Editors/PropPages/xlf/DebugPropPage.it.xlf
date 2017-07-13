@@ -93,6 +93,11 @@
         <target state="translated">Abilita de&amp;bug codice nativo</target>
         <note />
       </trans-unit>
+      <trans-unit id="StartArguments.AccessibleName">
+        <source>Command line arguments</source>
+        <target state="translated">Argomenti della riga di comando</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

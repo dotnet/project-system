@@ -9,8 +9,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|AssemblyReference|Description">
-        <source>Assembly reference properties</source>
-        <target state="translated">アセンブリ参照のプロパティ</target>
+        <source>Reference Properties</source>
+        <target state="translated">参照プロパティ</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">
@@ -67,6 +67,36 @@
         <source>The CLR runtime version targeted by this assembly.</source>
         <target state="translated">このアセンブリが対象としている CLR のランタイム バージョンです。</target>
         <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Identity|DisplayName">
+        <source>Identity</source>
+        <target state="new">Identity</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Identity|Description">
+        <source>Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</source>
+        <target state="new">Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|ResolvedPath|DisplayName">
+        <source>Path</source>
+        <target state="new">Path</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|ResolvedPath|Description">
+        <source>Location of the file being referenced.</source>
+        <target state="new">Location of the file being referenced.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Version|DisplayName">
+        <source>Version</source>
+        <target state="new">Version</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Version|Description">
+        <source>Version of reference.</source>
+        <target state="new">Version of reference.</target>
+        <note></note>
       </trans-unit>
     </body>
   </file>

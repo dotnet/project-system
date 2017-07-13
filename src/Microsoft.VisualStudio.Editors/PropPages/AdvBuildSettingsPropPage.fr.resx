@@ -157,9 +157,9 @@
     <value>&amp;Vérifier les dépassements de capacité arithmétiques positifs et négatifs</value>
   </data>
   <data name="CSharpLanguageVerison.Default" xml:space="preserve">
-    <value>C# latest major version (default)</value>
+    <value>Dernière version principale C# (par défaut)</value>
   </data>
   <data name="CSharpLanguageVerison.Latest" xml:space="preserve">
-    <value>C# latest minor version (latest)</value>
+    <value>Dernière version mineure C# (en dernier)</value>
   </data>
 </root>

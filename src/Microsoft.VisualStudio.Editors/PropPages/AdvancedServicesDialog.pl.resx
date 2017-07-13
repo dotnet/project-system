@@ -130,9 +130,9 @@
     <value>&amp;Użyj niestandardowych parametrów połączenia.</value>
   </data>
   <data name="TimeUnitComboBox.AccessibleName" xml:space="preserve">
-    <value>Role service cache timeout units</value>
+    <value>Jednostki limitu czasu pamięci podręcznej usługi ról</value>
   </data>
   <data name="CustomConnectionString.AccessibleName" xml:space="preserve">
-    <value>Custom connection string</value>
+    <value>Niestandardowe parametry połączenia</value>
   </data>
 </root>

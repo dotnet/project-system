@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Rule
-	Name="SdkReference"
-	DisplayName="SDK Reference"
-	PageTemplate="generic"
-	Description="SDK reference properties"
-	xmlns="http://schemas.microsoft.com/build/2009/properties">
+    Name="SdkReference"
+    DisplayName="SDK Reference"
+    PageTemplate="generic"
+    Description="SDK Reference Properties"
+    xmlns="http://schemas.microsoft.com/build/2009/properties">
     <Rule.DataSource>
         <DataSource Persistence="ProjectFile" ItemType="SDKReference" HasConfigurationCondition="False"
-                    SourceType="TargetResults" MSBuildTarget="CollectSDKReferencesDesignTime" SourceOfDefaultValue="AfterContext" />        
+                    SourceType="TargetResults" MSBuildTarget="CollectSDKReferencesDesignTime" SourceOfDefaultValue="AfterContext" />
     </Rule.DataSource>
     <StringProperty Name="SDKRootFolder" DisplayName="SDK Root" ReadOnly="True" />
     <StringProperty Name="AppXLocation" DisplayName="App Package Location" ReadOnly="True" />
@@ -23,4 +23,5 @@
     <BoolProperty Name="ExpandReferenceAssemblies" DisplayName="Expand Reference Assemblies" ReadOnly="True" />
     <BoolProperty Name="CopyLocalExpandedReferenceAssemblies" DisplayName="Copy Local Expanded Reference Assemblies" ReadOnly="True" />
     <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
+    <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
 </Rule>

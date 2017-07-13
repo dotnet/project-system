@@ -1939,4 +1939,31 @@ Do you want to update the value in the .settings file?</value>
   <data name="PropPage_CurrentImportsTitle" xml:space="preserve">
     <value>Current Imports</value>
   </data>
+  <data name="PPG_AdvancedBuildSettings_ReportCompilerErrors_None" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="PPG_AdvancedBuildSettings_ReportCompilerErrors_Prompt" xml:space="preserve">
+    <value>Prompt</value>
+  </data>
+  <data name="PPG_AdvancedBuildSettings_ReportCompilerErrors_Queue" xml:space="preserve">
+    <value>Queue</value>
+  </data>
+  <data name="PPG_AdvancedBuildSettings_ReportCompilerErrors_Send" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="PPG_AdvancedBuildSettings_DebugInfo_Embedded" xml:space="preserve">
+    <value>Embedded</value>
+  </data>
+  <data name="PPG_AdvancedBuildSettings_DebugInfo_Full" xml:space="preserve">
+    <value>Full</value>
+  </data>
+  <data name="PPG_AdvancedBuildSettings_DebugInfo_None" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="PPG_AdvancedBuildSettings_DebugInfo_PdbOnly" xml:space="preserve">
+    <value>Pdb-only</value>
+  </data>
+  <data name="PPG_AdvancedBuildSettings_DebugInfo_Portable" xml:space="preserve">
+    <value>Portable</value>
+  </data>
 </root>

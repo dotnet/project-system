@@ -8,7 +8,7 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|AssemblyReference|Description">
-        <source>Assembly reference properties</source>
+        <source>Reference Properties</source>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">
@@ -54,6 +54,30 @@
       <trans-unit id="StringProperty|ImageRuntime|Description">
         <source>The CLR runtime version targeted by this assembly.</source>
         <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Identity|DisplayName">
+        <source>Identity</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Identity|Description">
+        <source>Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|ResolvedPath|DisplayName">
+        <source>Path</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|ResolvedPath|Description">
+        <source>Location of the file being referenced.</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Version|DisplayName">
+        <source>Version</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|Version|Description">
+        <source>Version of reference.</source>
+        <note></note>
       </trans-unit>
     </body>
   </file>

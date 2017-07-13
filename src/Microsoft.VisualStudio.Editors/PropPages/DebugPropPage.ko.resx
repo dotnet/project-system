@@ -171,4 +171,7 @@
   <data name="EnableUnmanagedDebugging.Text" xml:space="preserve">
     <value>네이티브 코드 디버깅 사용(&amp;T)</value>
   </data>
+  <data name="StartArguments.AccessibleName" xml:space="preserve">
+    <value>명령줄 인수</value>
+  </data>
 </root>

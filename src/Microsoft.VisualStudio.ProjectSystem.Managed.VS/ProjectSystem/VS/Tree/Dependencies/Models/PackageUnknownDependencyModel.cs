@@ -26,7 +26,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             Name = name;
             Caption = name;
             TopLevel = false;
-            Visible = true;
             Icon = KnownMonikers.QuestionMark;
             ExpandedIcon = Icon;
             UnresolvedIcon = KnownMonikers.QuestionMark;

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--Copyright, Microsoft Corporation, All rights reserved.-->
-<Rule Name="Compile" DisplayName="File Properties" PageTemplate="generic" Description="File Properties" xmlns="http://schemas.microsoft.com/build/2009/properties">
+<Rule Name="Compile" DisplayName="ファイルのプロパティ" PageTemplate="generic" Description="ファイルのプロパティ" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
     <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
@@ -8,8 +8,8 @@
     <Category Name="Advanced" DisplayName="詳細設定" />
     <Category Name="Misc" DisplayName="その他" />
   </Rule.Categories>
-  <StringProperty Name="Generator" Category="Advanced" DisplayName="Custom Tool" Description="Specifies the tool that transforms a file at design time and places the output of that transformation into another file. For example, a dataset (.xsd) file comes with a default custom tool." />
-  <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="Custom Tool Namespace" Description="The namespace into which the output of the custom tool is placed." />
+  <StringProperty Name="Generator" Category="Advanced" DisplayName="カスタム ツール" Description="設計時にファイルを変換し、その変換結果を別のファイルに出力するツールを指定します。たとえば、データセット (.xsd) ファイルには既定のカスタム ツールが用意されています。" />
+  <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="カスタム ツールの名前空間" Description="カスタム ツールの出力を配置する名前空間です。" />
   <DynamicEnumProperty Name="{}{ItemType}" DisplayName="ビルド アクション" Category="Advanced" Description="ビルドおよび配置のプロセスにファイルがどのように関連しているかを示します。" EnumProvider="ItemTypes" />
   <EnumProperty Name="CopyToOutputDirectory" DisplayName="出力ディレクトリにコピー" Category="Advanced" Description="ソース ファイルを出力ディレクトリにコピーするよう指定します。">
     <EnumValue Name="Never" DisplayName="コピーしない" />

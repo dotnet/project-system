@@ -274,8 +274,13 @@ Aby debugować ten projekt, dodaj projekt wykonywalny do tego rozwiązania, któ
       </trans-unit>
       <trans-unit id="DebugFrameworkMenuText">
         <source>Framework ({0})</source>
-        <target state="new">Framework ({0})</target>
-        <note></note>
+        <target state="translated">Platforma ({0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OutputWindowPaneTitle">
+        <source>Project</source>
+        <target state="translated">Projekt</target>
+        <note />
       </trans-unit>
     </body>
   </file>

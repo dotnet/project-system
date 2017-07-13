@@ -63,6 +63,26 @@
         <target state="translated">포함 리소스</target>
         <note />
       </trans-unit>
+      <trans-unit id="ContentType|UpToDateCheckInput|DisplayName">
+        <source>Up-to-date check input</source>
+        <target state="new">Up-to-date check input</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ContentType|UpToDateCheckOutput|DisplayName">
+        <source>Up-to-date check output</source>
+        <target state="new">Up-to-date check output</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ItemType|UpToDateCheckInput|DisplayName">
+        <source>Up-to-date check input</source>
+        <target state="new">Up-to-date check input</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="ItemType|UpToDateCheckOutput|DisplayName">
+        <source>Up-to-date check output</source>
+        <target state="new">Up-to-date check output</target>
+        <note></note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

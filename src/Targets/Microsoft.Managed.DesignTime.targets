@@ -7,7 +7,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
-  <!-- Turn off capabilities from Microsoft.Common.CurrentVersions.targets and explicitly include the ones we want. The list below
+    <!-- Turn off capabilities from Microsoft.Common.CurrentVersions.targets and explicitly include the ones we want. The list below
        currently matches what is in common targets, but removes BuildWindowsDesktopTarget -->
     <DefineCommonItemSchemas>false</DefineCommonItemSchemas>
     <DefineCommonCapabilities>false</DefineCommonCapabilities>
@@ -18,6 +18,11 @@
     <DefineCommonManagedReferenceSchemas Condition=" '$(DefineCommonManagedReferenceSchemas)' == '' ">true</DefineCommonManagedReferenceSchemas>
 
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+
+    <!--This property sets the default output types supported by the project system.-->
+    <SupportedOutputTypes Condition="'$(SupportedOutputTypes)' == ''">Exe;WinExe;Library</SupportedOutputTypes>
+
+    <SuppressOutOfDateMessageOnBuild Condition="'$(SuppressOutOfDateMessageOnBuild)' == ''">true</SuppressOutOfDateMessageOnBuild>
   </PropertyGroup>
 
   <!--
@@ -87,7 +92,7 @@
 
     <!-- Settings page capability -->
     <ProjectCapability Include="AppSettings" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'"/>
- </ItemGroup>
+  </ItemGroup>
 
   <!-- Common Project System rules that override rules defined in msbuild. These are exact copy of the rules defined in msbuild. -->
   <ItemGroup Condition="'$(DefineCommonManagedItemSchemas)' == 'true'">
@@ -120,6 +125,18 @@
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)EmbeddedResource.xaml">
       <Context>File;BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)UpToDateCheckInput.xaml">
+      <Context>File</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)UpToDateCheckOutput.xaml">
+      <Context>File</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)CopyUpToDateMarker.xaml">
+      <Context>File</Context>
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)SpecialFolder.xaml">
@@ -166,7 +183,7 @@
   <ItemGroup Condition="'$(DefineCommonManagedReferenceSchemas)' == 'true'">
     <!-- Assembly references -->
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)AssemblyReference.xaml">
-      <Context>;BrowseObject</Context>
+      <Context>Project;BrowseObject</Context>
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedAssemblyReference.xaml">
@@ -175,7 +192,7 @@
 
     <!-- COM references -->
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)COMReference.xaml">
-      <Context>;BrowseObject</Context>
+      <Context>Project;BrowseObject</Context>
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedCOMReference.xaml">
@@ -184,7 +201,7 @@
 
     <!-- Project references -->
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectReference.xaml">
-      <Context>;BrowseObject</Context>
+      <Context>Project;BrowseObject</Context>
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedProjectReference.xaml">
@@ -227,18 +244,11 @@
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedAnalyzerReference.xaml">
       <Context>ProjectSubscriptionService;BrowseObject</Context>
     </PropertyPageSchema>
-  </ItemGroup>
 
-  <!-- Workaround: https://github.com/Microsoft/msbuild/pull/1879 -->
-  <ItemGroup>
-    <ProjectCapability Remove="ProjectConfigurationsInferredFromUsage" />
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedCompilationReference.xaml">
+      <Context>ProjectSubscriptionService</Context>
+    </PropertyPageSchema>
   </ItemGroup>
-
-  <!-- Workaround: Need to remove this once an insertion containing this changes goes in https://github.com/dotnet/sdk/pull/949 -->
-  <PropertyGroup>
-    <Configurations Condition=" '$(Configurations)' == '' ">Debug;Release</Configurations>
-    <Platforms Condition=" '$(Platforms)' == '' ">AnyCPU</Platforms>
-  </PropertyGroup>
 
   <!-- Targets -->
 
@@ -261,5 +271,11 @@
            />
 
   </Target>
+
+  <!-- This target collects all Analyzers in the project. -->
+  <Target Name="CollectAnalyzersDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(Analyzer)" />
+  
+  <!-- This target collects all the resolved references that are used to actually compile. -->
+  <Target Name="CollectResolvedCompilationReferencesDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(ReferencePathWithRefAssemblies)" />
 
 </Project>

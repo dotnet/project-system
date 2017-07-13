@@ -12,11 +12,14 @@
   <EnumProperty Name="PlatformTarget" DisplayName="Plataforma de Destino" Visible="False" />
   <BoolProperty Name="Prefer32Bit" DisplayName="Preferir 32 bits" Visible="False" />
   <BoolProperty Name="AllowUnsafeBlocks" Default="False" DisplayName="Permitir código não seguro" Visible="False" />
-  <StringProperty Name="Optimize" DisplayName="Otimizar" Visible="False" />
-  <EnumProperty Name="WarningLevel" DisplayName="Nível de Aviso" Visible="False" />
+  <BoolProperty Name="Optimize" DisplayName="Otimizar" Visible="False" />
   <StringProperty Name="NoWarn" DisplayName="Suprimir Aviso" Visible="False" />
   <BoolProperty Name="TreatWarningsAsErrors" Default="False" Description="Tratar avisos como erros" Visible="False" />
-  <StringProperty Name="TreatSpecificWarningsAsErrors" Description="Tratar avisos específicos como erros" Visible="False" />
+  <StringProperty Name="TreatSpecificWarningsAsErrors" Description="Tratar avisos específicos como erros" Visible="False">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="WarningsAsErrors" />
+    </StringProperty.DataSource>
+  </StringProperty>
   <StringProperty Name="OutputPath" DisplayName="Caminho de Saída" Visible="False" />
   <StringProperty Name="DocumentationFile" DisplayName="Arquivo de documentação" Visible="False" />
   <EnumProperty Name="GenerateSerializationAssemblies" DisplayName="Gerar assemblies de serialização" Visible="False">
@@ -47,9 +50,69 @@
   <StringProperty Name="DebugSymbols" DisplayName="Símbolos de depuração" Visible="False" />
   <EnumProperty Name="FileAlignment" DisplayName="Alinhamento de Arquivo" Visible="False" />
   <StringProperty Name="BaseAddress" DisplayName="Endereço básico" Visible="False" />
-  <StringProperty Name="FullPath" DisplayName="Project Folder" ReadOnly="True">
+  <StringProperty Name="FullPath" DisplayName="Pasta do Projeto" ReadOnly="True">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
+  <DynamicEnumProperty Name="WarningLevel" DisplayName="Nível de Aviso" EnumProvider="WarningLevelEnumProvider" Visible="False">
+    <DynamicEnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" HasConfigurationCondition="True" SourceOfDefaultValue="AfterContext" />
+    </DynamicEnumProperty.DataSource>
+  </DynamicEnumProperty>
+  <!-- VB Compile Page Properties-->
+  <EnumProperty Name="OptionExplicit" DisplayName="Opção Explicit" Visible="False">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="OptionExplicit" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="Off" DisplayName="Desligado" />
+    <EnumValue Name="On" DisplayName="Ligado" IsDefault="True" />
+  </EnumProperty>
+  <EnumProperty Name="OptionCompare" DisplayName="Opção Compare" Visible="False">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="OptionCompare" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="Binary" DisplayName="Binário" IsDefault="True" />
+    <EnumValue Name="Text" DisplayName="Texto" />
+  </EnumProperty>
+  <EnumProperty Name="OptionInfer" DisplayName="Opção Compare" Visible="False">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="OptionInfer" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="Off" DisplayName="Desligado" />
+    <EnumValue Name="On" DisplayName="Ligado" IsDefault="True" />
+  </EnumProperty>
+  <DynamicEnumProperty Name="OptionStrict" DisplayName="Opção Strict" EnumProvider="OptionStrictEnumProvider" Visible="False">
+    <DynamicEnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </DynamicEnumProperty.DataSource>
+  </DynamicEnumProperty>
+  <!-- VB Advanced Compile Options-->
+  <BoolProperty Name="RemoveIntegerChecks" DisplayName="Remover Verificações de Inteiro" Visible="False" />
+  <BoolProperty Name="DefineDebug" DisplayName="Definir Depuração" Visible="False" />
+  <BoolProperty Name="DefineTrace" DisplayName="Definir Rastreamento" Visible="False" />
+  <!-- VB Compile Build Event Page-->
+  <StringProperty Name="PreBuildEvent" DisplayName="Evento Pré-Build" Visible="False">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="PostBuildEvent" DisplayName="Evento Pós-Build" Visible="False">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <EnumProperty Name="RunPostBuildEvent" DisplayName="Executar Evento de Pós-Build" Visible="False">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="RunPostBuildEvent" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="Always" DisplayName="Sempre" />
+    <EnumValue Name="OnBuildSuccess" DisplayName="Em caso de build bem-sucedido" IsDefault="True" />
+    <EnumValue Name="OnOutputUpdated" DisplayName="Quando a compilação atualizar a saída do projeto" />
+  </EnumProperty>
+  <!-- CSharp Project Configuration Properties-->
+  <StringProperty Name="LangVersion" DisplayName="Versão da Linguagem CSharp" Visible="False" />
+  <StringProperty Name="CodeAnalysisRuleSet" DisplayName=" Conjunto de Regras da Análise de Código" Visible="False" />
+  <!-- F# specific properties-->
+  <BoolProperty Name="Tailcalls" Visible="False" />
 </Rule>

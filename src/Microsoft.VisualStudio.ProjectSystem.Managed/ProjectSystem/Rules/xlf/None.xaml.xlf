@@ -8,7 +8,7 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|None|Description">
-        <source>Non-build items</source>
+        <source>File Properties</source>
         <note />
       </trans-unit>
       <trans-unit id="Category|Advanced|DisplayName">

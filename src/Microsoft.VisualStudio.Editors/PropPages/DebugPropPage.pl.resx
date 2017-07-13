@@ -171,4 +171,7 @@
   <data name="EnableUnmanagedDebugging.Text" xml:space="preserve">
     <value>Włącz na&amp;tywne debugowanie kodu</value>
   </data>
+  <data name="StartArguments.AccessibleName" xml:space="preserve">
+    <value>Argumenty wiersza polecenia</value>
+  </data>
 </root>

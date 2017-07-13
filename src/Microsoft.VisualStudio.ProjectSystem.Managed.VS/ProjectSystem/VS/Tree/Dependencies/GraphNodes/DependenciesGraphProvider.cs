@@ -53,11 +53,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                                     ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast);
         }
 
-        private readonly GraphCommand ContainsGraphCommand = new GraphCommand(
+        private static readonly GraphCommand[] ContainsGraphCommand = new[] { new GraphCommand(
                 GraphCommandDefinition.Contains,
                 targetCategories: null,
                 linkCategories: new[] { GraphCommonSchema.Contains },
-                trackChanges: true);
+                trackChanges: true) };
 
         private readonly object _knownIconsLock = new object();
 
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         private Dictionary<string, SnapshotChangedEventArgs> _changedContextsQueue =
             new Dictionary<string, SnapshotChangedEventArgs>(StringComparer.OrdinalIgnoreCase);
         private Task _trackChangesTask;
-        private readonly object _ExpandedGraphContextsLock = new object();
+        private readonly object _expandedGraphContextsLock = new object();
 
         /// <summary>
         /// Remembers expanded graph nodes to track changes in their children.
@@ -126,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         /// </summary>
         public IEnumerable<GraphCommand> GetCommands(IEnumerable<GraphNode> nodes)
         {
-            yield return ContainsGraphCommand;
+            return ContainsGraphCommand;
         }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                 var shouldTrackChanges = actionHandlers.Aggregate(
                     false, (previousTrackFlag, handler) => previousTrackFlag || handler.Value.HandleRequest(context));
 
-                lock (_ExpandedGraphContextsLock)
+                lock (_expandedGraphContextsLock)
                 {
                     if (shouldTrackChanges && !ExpandedGraphContexts.Contains(context))
                     {
@@ -237,7 +237,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         internal Task TrackChangesAsync(SnapshotChangedEventArgs updatedProjectContext)
         {
             IList<IGraphContext> expandedContexts;
-            lock (_ExpandedGraphContextsLock)
+            lock (_expandedGraphContextsLock)
             {
                 expandedContexts = ExpandedGraphContexts.ToList();
             }
@@ -309,41 +309,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             IGraphContext graphContext, 
             string projectPath, 
             GraphNode parentNode, 
-            IDependency dependency)
-        {
-            var newNodeId = GetGraphNodeId(projectPath, parentNode, dependency);
-            return DoAddGraphNode(newNodeId, graphContext, projectPath, parentNode, dependency);
-        }
-
-        public GraphNode AddGraphNode(
-            IGraphContext graphContext, 
-            string projectPath, 
-            GraphNode parentNode, 
             IDependencyViewModel viewModel)
         {
-            var newNodeId = GetGraphNodeId(projectPath, parentNode, viewModel);
+            var modelId = viewModel.OriginalModel == null ? viewModel.Caption : viewModel.OriginalModel.Id;
+            var newNodeId = GetGraphNodeId(projectPath, parentNode, modelId);
             return DoAddGraphNode(newNodeId, graphContext, projectPath, parentNode, viewModel);
         }
 
         public GraphNode AddTopLevelGraphNode(
             IGraphContext graphContext,
             string projectPath,
-            IDependency dependency)
+            IDependencyViewModel viewModel)
         {
-            var newNodeId = GetTopLevelGraphNodeId(projectPath, dependency);
-            return DoAddGraphNode(newNodeId, graphContext, projectPath, parentNode: null, dependency: dependency);
-        }
-
-        private GraphNode DoAddGraphNode(
-            GraphNodeId graphNodeId,
-            IGraphContext graphContext,
-            string projectPath,
-            GraphNode parentNode,
-            IDependency dependency)
-        {
-            var newNode = DoAddGraphNode(graphNodeId, graphContext, projectPath, parentNode, dependency.ToViewModel());
-            newNode.SetValue(DependenciesGraphSchema.DependencyProperty, dependency);
-            return newNode;
+            var newNodeId = GetTopLevelGraphNodeId(projectPath, viewModel.OriginalModel.GetTopLevelId());
+            return DoAddGraphNode(newNodeId, graphContext, projectPath, parentNode: null, viewModel:viewModel);
         }
 
         private GraphNode DoAddGraphNode(
@@ -362,6 +341,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                              new SourceLocation(projectPath, new Position(viewModel.Priority, 0)));
             newNode.AddCategory(DependenciesGraphSchema.CategoryDependency);
 
+            if (viewModel.OriginalModel != null)
+            {
+                newNode.SetValue(DependenciesGraphSchema.DependencyIdProperty, viewModel.OriginalModel.Id);
+                newNode.SetValue(DependenciesGraphSchema.ResolvedProperty, viewModel.OriginalModel.Resolved);
+            }
+
             graphContext.OutputNodes.Add(newNode);
 
             if (parentNode != null)
@@ -374,10 +359,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
         public void RemoveGraphNode(IGraphContext graphContext,
                                      string projectPath,
-                                     IDependency dependency,
+                                     string modelId,
                                      GraphNode parentNode)
         {
-            var id = GetGraphNodeId(projectPath, parentNode, dependency);
+            var id = GetGraphNodeId(projectPath, parentNode, modelId);
             var nodeToRemove = graphContext.Graph.Nodes.Get(id);
 
             if (nodeToRemove != null)
@@ -387,24 +372,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             }
         }
 
-        private GraphNodeId GetGraphNodeId(string projectPath, GraphNode parentNode, IDependency dependency)
-        {
-            return GetGraphNodeId(projectPath, parentNode, dependency.Id);
-        }
-
-        private GraphNodeId GetGraphNodeId(string projectPath, GraphNode parentNode, IDependencyViewModel viewModel)
-        {
-            return GetGraphNodeId(projectPath, parentNode, viewModel.Caption);
-        }
-
-        private GraphNodeId GetGraphNodeId(string projectPath, GraphNode parentNode, string id)
+        private GraphNodeId GetGraphNodeId(string projectPath, GraphNode parentNode, string modelId)
         {
             var partialValues = new List<GraphNodeId>
             {
                 GraphNodeId.GetPartial(CodeGraphNodeIdName.Assembly,
                                        new Uri(projectPath, UriKind.RelativeOrAbsolute)),
                 GraphNodeId.GetPartial(CodeGraphNodeIdName.File,
-                                       new Uri(id.ToLowerInvariant(), UriKind.RelativeOrAbsolute))
+                                       new Uri(modelId.ToLowerInvariant(), UriKind.RelativeOrAbsolute))
             };
 
             var parents = string.Empty;
@@ -423,13 +398,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                 parents = projectPath.GetHashCode().ToString();
             }
 
-            parents = parents + ";" + id.GetHashCode();
+            parents = parents + ";" + modelId.GetHashCode();
             partialValues.Add(GraphNodeId.GetPartial(CodeGraphNodeIdName.Namespace, parents));
 
             return GraphNodeId.GetNested(partialValues.ToArray());
         }
 
-        private GraphNodeId GetTopLevelGraphNodeId(string projectPath, IDependency dependency)
+        private GraphNodeId GetTopLevelGraphNodeId(string projectPath, string modelId)
         {
             var partialValues = new List<GraphNodeId>
             {
@@ -437,7 +412,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             };
 
             var projectFolder = Path.GetDirectoryName(projectPath)?.ToLowerInvariant() ?? string.Empty;
-            var filePath = new Uri(Path.Combine(projectFolder, dependency.Id.ToLowerInvariant()), UriKind.RelativeOrAbsolute);
+            var filePath = new Uri(Path.Combine(projectFolder, modelId.ToLowerInvariant()), UriKind.RelativeOrAbsolute);
 
             partialValues.Add(GraphNodeId.GetPartial(CodeGraphNodeIdName.File, filePath));
 

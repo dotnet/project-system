@@ -4,10 +4,9 @@ using System;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks.Dataflow;
-using Microsoft.VisualStudio.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using TPL = System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
@@ -19,6 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private readonly IServiceProvider _serviceProvider;
         private readonly IUnconfiguredProjectCommonServices _projectServices;
         private readonly IProjectLockService _projectLockService;
+        private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IProjectTreeProvider _fileSystemTreeProvider;
         private IVsFileChangeEx _fileChangeService;
         private IDisposable _treeWatcher;
@@ -29,17 +29,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         public ProjectAssetFileWatcher([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
                                       [Import(ContractNames.ProjectTreeProviders.FileSystemDirectoryTree)] IProjectTreeProvider fileSystemTreeProvider,
                                       IUnconfiguredProjectCommonServices projectServices,
-                                      IProjectLockService projectLockService)
+                                      IProjectLockService projectLockService,
+                                      IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService)
         {
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
             Requires.NotNull(fileSystemTreeProvider, nameof(fileSystemTreeProvider));
             Requires.NotNull(projectServices, nameof(projectServices));
             Requires.NotNull(projectLockService, nameof(projectLockService));
+            Requires.NotNull(activeConfiguredProjectSubscriptionService, nameof(activeConfiguredProjectSubscriptionService));
 
             _serviceProvider = serviceProvider;
             _fileSystemTreeProvider = fileSystemTreeProvider;
             _projectServices = projectServices;
             _projectLockService = projectLockService;
+            _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
         }
 
         /// <summary>
@@ -51,22 +54,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         {
             EnsureInitialized();
         }
-        
+
         /// <summary>
         /// Initialize the watcher.
         /// </summary>
         protected override void Initialize()
         {
             _fileChangeService = _serviceProvider.GetService<IVsFileChangeEx, SVsFileChangeEx>();
-            _treeWatcher = _fileSystemTreeProvider.Tree.LinkTo(new ActionBlock<IProjectVersionedValue<IProjectTreeSnapshot>>(new Action<IProjectVersionedValue<IProjectTreeSnapshot>>(ProjectTree_ChangedAsync)));
+
+            // The tree source to get changes to the tree so that we can identify when the assets file changes.
+            var treeSource = _fileSystemTreeProvider.Tree.SyncLinkOptions();
+
+            // The property source used to get the value of the $ProjectAssetsFile property so that we can identify the location of the assets file.
+            var sourceLinkOptions = new StandardRuleDataflowLinkOptions
+            {
+                RuleNames = Empty.OrdinalIgnoreCaseStringSet.Add(ConfigurationGeneral.SchemaName),
+                PropagateCompletion = true
+            };
+            var propertySource = _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(sourceLinkOptions);
+            var target = new ActionBlock<IProjectVersionedValue<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>>(new Action<IProjectVersionedValue<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>>(DataFlow_Changed));
+
+            // Join the two sources so that we get synchronized versions of the data.
+            _treeWatcher = ProjectDataSources.SyncLinkTo(treeSource, propertySource, target);
         }
 
         /// <summary>
         /// Called on changes to the project tree.
         /// </summary>
-        internal async void ProjectTree_ChangedAsync(IProjectVersionedValue<IProjectTreeSnapshot> treeSnapshot)
+        internal void DataFlow_Changed(IProjectVersionedValue<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>> dataFlowUpdate)
         {
-            var newTree = treeSnapshot.Value.Tree;
+            var treeSnapshot = dataFlowUpdate.Value.Item1;
+            var newTree = treeSnapshot.Tree;
             if (newTree == null)
             {
                 return;
@@ -79,9 +97,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             }
 
             // NOTE: Project lock file path may be null
-            var projectLockFilePath = await GetProjectLockFilePathAsync(newTree).ConfigureAwait(false);
+            var projectUpdate = dataFlowUpdate.Value.Item2;
+            var projectLockFilePath = GetProjectAssetsFilePath(newTree, projectUpdate);
 
-            // project.json may have been renamed to {projectName}.project.json or in the case of the project.assets.json, 
+            // project.json may have been renamed to {projectName}.project.json or in the case of the project.assets.json,
             // the immediate path could have changed. In either case, change the file watcher.
             if (!PathHelper.IsSamePath(projectLockFilePath, _fileBeingWatched))
             {
@@ -90,40 +109,42 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             }
         }
 
-        private async TPL.Task<string> GetProjectLockFilePathAsync(IProjectTree newTree)
+        private string GetProjectAssetsFilePath(IProjectTree newTree, IProjectSubscriptionUpdate projectUpdate)
         {
-            // First check to see if the project has a project.json. 
-            IProjectTree projectJsonNode = FindProjectJsonNode(newTree);
+            var projectFilePath = projectUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, null);
+
+            // First check to see if the project has a project.json.
+            IProjectTree projectJsonNode = FindProjectJsonNode(newTree, projectFilePath);
             if (projectJsonNode != null)
             {
-                var projectDirectory = Path.GetDirectoryName(_projectServices.Project.FullPath);
+                var projectDirectory = Path.GetDirectoryName(projectFilePath);
                 var projectLockJsonFilePath = Path.ChangeExtension(PathHelper.Combine(projectDirectory, projectJsonNode.Caption), ".lock.json");
                 return projectLockJsonFilePath;
             }
 
             // If there is no project.json then get the patch to obj\project.assets.json file which is generated for projects
             // with <PackageReference> items.
-            var configurationGeneral = await _projectServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
-            var objDirectory = (string) await configurationGeneral.BaseIntermediateOutputPath.GetValueAsync().ConfigureAwait(false);
-            if (objDirectory.Length == 0)
+            var objDirectory = projectUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.BaseIntermediateOutputPathProperty, null);
+
+            if (string.IsNullOrEmpty(objDirectory))
             {   // Don't have an intermdiate directory set, probably missing SDK attribute or Microsoft.Common.props
 
-                return null; 
+                return null;
             }
 
-            objDirectory = _projectServices.Project.MakeRooted(objDirectory);
+            objDirectory = PathHelper.MakeRooted(projectFilePath, objDirectory);
             var projectAssetsFilePath = PathHelper.Combine(objDirectory, "project.assets.json");
             return projectAssetsFilePath;
         }
 
-        private IProjectTree FindProjectJsonNode(IProjectTree newTree)
+        private IProjectTree FindProjectJsonNode(IProjectTree newTree, string projectFilePath)
         {
             if (newTree.TryFindImmediateChild("project.json", out IProjectTree projectJsonNode))
             {
                 return projectJsonNode;
             }
 
-            var projectName = Path.GetFileNameWithoutExtension(_projectServices.Project.FullPath);
+            var projectName = Path.GetFileNameWithoutExtension(projectFilePath);
             if (newTree.TryFindImmediateChild($"{projectName}.project.json", out projectJsonNode))
             {
                 return projectJsonNode;
@@ -131,7 +152,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             return null;
         }
-        
+
         private void RegisterFileWatcherAsync(string projectLockJsonFilePath)
         {
             // Note file change service is free-threaded
@@ -194,7 +215,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 {
                     // Project is already unloaded
                 }
-            }, unconfiguredProject: _projectServices.Project);
+            }, unconfiguredProject: _projectServices.Project,
+               factory: _projectServices.ThreadingService.JoinableTaskFactory);
 
             return VSConstants.S_OK;
         }

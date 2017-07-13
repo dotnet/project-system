@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <UseVisualStudioVersion>true</UseVisualStudioVersion>
+  </PropertyGroup>
+
+  <Import Project="..\..\..\build\Targets\VSL.Settings.targets" />
+
+  <PropertyGroup>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FinalizeManifest>true</FinalizeManifest>
+    <FinalizeSkipLayout>true</FinalizeSkipLayout>
+    <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
+    <OutputPath>$(OutDir)\VsixV3</OutputPath>
+    <IsPackage>true</IsPackage>
+    <FinalizeValidate>false</FinalizeValidate>
+    <ValidateManifest>false</ValidateManifest>
+  </PropertyGroup>
+
+  <Import Project="$(NuGetPackageRoot)\MicroBuild.Core\$(MicroBuildVersion)\build\MicroBuild.Core.props" />
+  <Import Project="$(NuGetPackageRoot)\MicroBuild.Core\$(MicroBuildVersion)\build\MicroBuild.Core.targets" />
+
+  <Target Name="BeforeBuild">
+    <ItemGroup>
+      <VisualStudioProjectTemplateVsixFilesToCopy Include="$(OutDir)\Microsoft.NetCore.CSharp.ProjectTemplates.json" />
+      <VisualStudioProjectTemplateVsixFilesToCopy Include="$(OutDir)\Microsoft.NetCore.CSharp.ProjectTemplates.vsix" />
+      <VisualStudioProjectTemplateVsixFilesToCopy Include="$(OutDir)\Microsoft.NetCore.CSharp.ProjectTemplates.Test.json" />
+      <VisualStudioProjectTemplateVsixFilesToCopy Include="$(OutDir)\Microsoft.NetCore.CSharp.ProjectTemplates.Test.vsix" />
+      <VisualStudioProjectTemplateVsixFilesToCopy Include="$(OutDir)\Microsoft.NetStandard.CSharp.ProjectTemplates.json" />
+      <VisualStudioProjectTemplateVsixFilesToCopy Include="$(OutDir)\Microsoft.NetStandard.CSharp.ProjectTemplates.vsix" />
+      <VisualStudioProjectTemplateVsixFilesToCopy Include="$(OutDir)\Microsoft.NetCore.FSharp.ProjectTemplates.json" />
+      <VisualStudioProjectTemplateVsixFilesToCopy Include="$(OutDir)\Microsoft.NetCore.FSharp.ProjectTemplates.vsix" />
+      <VisualStudioProjectTemplateVsixFilesToCopy Include="$(OutDir)\Microsoft.NetCore.FSharp.ProjectTemplates.Test.json" />
+      <VisualStudioProjectTemplateVsixFilesToCopy Include="$(OutDir)\Microsoft.NetCore.FSharp.ProjectTemplates.Test.vsix" />
+      <VisualStudioProjectTemplateVsixFilesToCopy Include="$(OutDir)\Microsoft.NetStandard.FSharp.ProjectTemplates.json" />
+      <VisualStudioProjectTemplateVsixFilesToCopy Include="$(OutDir)\Microsoft.NetStandard.FSharp.ProjectTemplates.vsix" />
+      <VisualStudioProjectTemplateVsixFilesToCopy Include="$(OutDir)\Microsoft.NetCore.VB.ProjectTemplates.json" />
+      <VisualStudioProjectTemplateVsixFilesToCopy Include="$(OutDir)\Microsoft.NetCore.VB.ProjectTemplates.vsix" />
+      <VisualStudioProjectTemplateVsixFilesToCopy Include="$(OutDir)\Microsoft.NetCore.VB.ProjectTemplates.Test.json" />
+      <VisualStudioProjectTemplateVsixFilesToCopy Include="$(OutDir)\Microsoft.NetCore.VB.ProjectTemplates.Test.vsix" />
+      <VisualStudioProjectTemplateVsixFilesToCopy Include="$(OutDir)\Microsoft.NetStandard.VB.ProjectTemplates.json" />
+      <VisualStudioProjectTemplateVsixFilesToCopy Include="$(OutDir)\Microsoft.NetStandard.VB.ProjectTemplates.vsix" />
+	</ItemGroup>
+    <Copy SourceFiles="@(VisualStudioProjectTemplateVsixFilesToCopy)" DestinationFolder="$(OutputPath)" />
+  </Target>
+
+  <ItemGroup>
+    <MergeManifest Include="$(OutputPath)\Microsoft.NetCore.CSharp.ProjectTemplates.json" />
+    <MergeManifest Include="$(OutputPath)\Microsoft.NetCore.CSharp.ProjectTemplates.Test.json" />
+    <MergeManifest Include="$(OutputPath)\Microsoft.NetStandard.CSharp.ProjectTemplates.json" />
+    <MergeManifest Include="$(OutputPath)\Microsoft.NetCore.FSharp.ProjectTemplates.json" />
+    <MergeManifest Include="$(OutputPath)\Microsoft.NetCore.FSharp.ProjectTemplates.Test.json" />
+    <MergeManifest Include="$(OutputPath)\Microsoft.NetStandard.FSharp.ProjectTemplates.json" />
+    <MergeManifest Include="$(OutputPath)\Microsoft.NetCore.VB.ProjectTemplates.json" />
+    <MergeManifest Include="$(OutputPath)\Microsoft.NetCore.VB.ProjectTemplates.Test.json" />
+    <MergeManifest Include="$(OutputPath)\Microsoft.NetStandard.VB.ProjectTemplates.json" />
+  </ItemGroup>
+
+  <Target Name="ValidateManifest" />
+</Project>

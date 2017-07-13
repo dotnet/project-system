@@ -12,7 +12,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal static class UnconfiguredProjectFactory
     {
         public static UnconfiguredProject Create(object hostObject = null, IEnumerable<string> capabilities = null, string filePath = null,
-            IProjectConfigurationsService projectConfigurationsService = null, ConfiguredProject configuredProject = null, Encoding projectEncoding = null)
+            IProjectConfigurationsService projectConfigurationsService = null, ConfiguredProject configuredProject = null, Encoding projectEncoding = null,
+            IProjectCapabilitiesScope scope = null)
         {
             capabilities = capabilities ?? Enumerable.Empty<string>();
 
@@ -34,6 +35,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             unconfiguredProject.SetupGet(u => u.FullPath)
                                 .Returns(filePath);
+
+            unconfiguredProject.Setup(u => u.Capabilities)
+                               .Returns(scope);
 
             unconfiguredProject.Setup(u => u.GetSuggestedConfiguredProjectAsync()).Returns(Task.FromResult(configuredProject));
 

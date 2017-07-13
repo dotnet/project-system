@@ -32,12 +32,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         public string ProjectPath { get; }
+
         public ITargetFramework TargetFramework { get; }
+
         public IProjectCatalogSnapshot Catalogs { get; }
+
         public ImmutableHashSet<IDependency> TopLevelDependencies { get; private set; } 
             = ImmutableHashSet<IDependency>.Empty;
+
         public ImmutableDictionary<string, IDependency> DependenciesWorld { get; private set; }
             = ImmutableDictionary<string, IDependency>.Empty;
+
+        private readonly object _snapshotLock = new object();
+
+        private Dictionary<string, IDependency> _topLevelDependenciesByPathMap
+            = new Dictionary<string, IDependency>(StringComparer.OrdinalIgnoreCase);
+
+        private Dictionary<string, IList<IDependency>> _dependenciesChildrenMap
+            = new Dictionary<string, IList<IDependency>>(StringComparer.OrdinalIgnoreCase);
+
+        private Dictionary<string, bool> _unresolvedDescendantsMap 
+            = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
 
         private bool? _hasUresolvedDependency;
         public bool HasUnresolvedDependency
@@ -57,8 +72,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
         }
 
-        private Dictionary<string, bool> _unresolvedDescendantsMap 
-            = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
         public bool CheckForUnresolvedDependencies(IDependency dependency)
         {
             if (_unresolvedDescendantsMap.TryGetValue(dependency.Id, out bool hasUnresolvedDescendants))
@@ -75,12 +88,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                     x => x.ProviderType.Equals(providerType, StringComparison.OrdinalIgnoreCase) && !x.Resolved);
         }
 
+        public IEnumerable<IDependency> GetDependencyChildren(IDependency dependency)
+        {
+            lock (_snapshotLock)
+            {
+                if (!_dependenciesChildrenMap.TryGetValue(dependency.Id, out IList<IDependency> children))
+                {
+                    children = new List<IDependency>();
+                    foreach (var id in dependency.DependencyIDs)
+                    {
+                        if (TryToFindDependency(id, out IDependency child))
+                        {
+                            children.Add(child);
+                        }
+                    }
+
+                    _dependenciesChildrenMap.Add(dependency.Id, children);
+                }
+
+                return children;
+            }
+        }
+
         private bool FindUnresolvedDependenciesRecursive(IDependency dependency)
         {
             var result = false;
             if (dependency.DependencyIDs.Count > 0)
             {
-                foreach (var child in dependency.Dependencies)
+                foreach (var child in GetDependencyChildren(dependency))
                 {
                     if (!child.Resolved)
                     {
@@ -105,14 +140,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             return result;
         }
 
+        private bool TryToFindDependency(string id, out IDependency dependency)
+        {
+            if (DependenciesWorld.TryGetValue(id, out dependency))
+            {
+                return true;
+            }
+
+            return _topLevelDependenciesByPathMap.TryGetValue(id, out dependency);
+        }
+
         private bool MergeChanges(
             IDependenciesChanges changes, 
-            IEnumerable<IDependenciesSnapshotFilter> snapshotFilters)
+            IEnumerable<IDependenciesSnapshotFilter> snapshotFilters,
+            IEnumerable<IProjectDependenciesSubTreeProvider> subTreeProviders,
+            HashSet<string> projectItemSpecs)
         {
-            var topLevelBuilder = TopLevelDependencies.ToBuilder();
             var worldBuilder = ImmutableDictionary.CreateBuilder<string, IDependency>(
                                     StringComparer.OrdinalIgnoreCase);
             worldBuilder.AddRange(DependenciesWorld);
+            var topLevelBuilder = ImmutableHashSet.CreateBuilder<IDependency>();
+            topLevelBuilder.AddRange(TopLevelDependencies);
+
             var anyChanges = false;
 
             foreach (var removed in changes.RemovedNodes)
@@ -123,25 +172,59 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                     continue;
                 }
 
-                snapshotFilters.ForEach(
-                    filter => filter.BeforeRemove(ProjectPath, TargetFramework, dependency, worldBuilder, topLevelBuilder));
+                if (snapshotFilters != null)
+                {
+                    foreach (var filter in snapshotFilters)
+                    {
+                        dependency = filter.BeforeRemove(
+                            ProjectPath, TargetFramework, dependency, worldBuilder, topLevelBuilder, out bool filterAnyChanges);
+
+                        anyChanges |= filterAnyChanges;
+
+                        if (dependency == null)
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                if (dependency == null)
+                {
+                    continue;
+                }
 
                 anyChanges = true;
 
                 worldBuilder.Remove(targetedId);
-                topLevelBuilder.Remove(dependency);             
+                topLevelBuilder.Remove(dependency);
             }
+
+            var subTreeProvidersMap = GetSubTreeProviderMap(subTreeProviders);
 
             foreach (var added in changes.AddedNodes)
             {
-                IDependency newDependency = new Dependency(added, this);
-                
-                foreach(var filter in snapshotFilters)
+                IDependency newDependency = new Dependency(added, TargetFramework);
+
+                if (snapshotFilters != null)
                 {
-                    newDependency = filter.BeforeAdd(ProjectPath, TargetFramework, newDependency, worldBuilder, topLevelBuilder);
-                    if (newDependency == null)
+                    foreach (var filter in snapshotFilters)
                     {
-                        break;
+                        newDependency = filter.BeforeAdd(
+                            ProjectPath, 
+                            TargetFramework, 
+                            newDependency, 
+                            worldBuilder, 
+                            topLevelBuilder,
+                            subTreeProvidersMap,
+                            projectItemSpecs,
+                            out bool filterAnyChanges);
+
+                        anyChanges |= filterAnyChanges;
+
+                        if (newDependency == null)
+                        {
+                            break;
+                        }
                     }
                 }
 
@@ -164,9 +247,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             DependenciesWorld = worldBuilder.ToImmutable();
             TopLevelDependencies = topLevelBuilder.ToImmutable();
 
+            ConstructTopLevelDependenciesByPathMap();
+
             return anyChanges;
         }
 
+        private void ConstructTopLevelDependenciesByPathMap()
+        {
+            foreach (var topLevelDependency in TopLevelDependencies)
+            {
+                if (!string.IsNullOrEmpty(topLevelDependency.Path))
+                {
+                    _topLevelDependenciesByPathMap.Add(
+                        Dependency.GetID(TargetFramework, topLevelDependency.ProviderType, topLevelDependency.Path),
+                        topLevelDependency);
+                }
+            }
+        }
+        
         public static TargetedDependenciesSnapshot FromChanges(
             string projectPath,
             ITargetFramework targetFramework,
@@ -174,11 +272,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             IDependenciesChanges changes,
             IProjectCatalogSnapshot catalogs,
             IEnumerable<IDependenciesSnapshotFilter> snapshotFilters,
+            IEnumerable<IProjectDependenciesSubTreeProvider> subTreeProviders,
+            HashSet<string> projectItemSpecs,
             out bool anyChanges)
         {
             var newSnapshot = new TargetedDependenciesSnapshot(projectPath, targetFramework, previousSnapshot, catalogs);
-            anyChanges = newSnapshot.MergeChanges(changes, snapshotFilters);
+            anyChanges = newSnapshot.MergeChanges(changes, snapshotFilters, subTreeProviders, projectItemSpecs);
             return newSnapshot;
+        }
+
+        private static Dictionary<string, IProjectDependenciesSubTreeProvider> GetSubTreeProviderMap(
+            IEnumerable<IProjectDependenciesSubTreeProvider> subTreeProviders)
+        {
+            var subTreeProvidersMap = new Dictionary<string, IProjectDependenciesSubTreeProvider>(
+                StringComparer.OrdinalIgnoreCase);
+            if (subTreeProviders != null)
+            {
+                foreach (var provider in subTreeProviders)
+                {
+                    subTreeProvidersMap[provider.ProviderType] = provider;
+                }
+            }
+
+            return subTreeProvidersMap;
         }
     }
 }

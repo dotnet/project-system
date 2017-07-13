@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Rule Name="AssemblyReference" DisplayName="Ссылка на сборку" PageTemplate="generic" Description="Свойства ссылки на сборку" xmlns="http://schemas.microsoft.com/build/2009/properties">
+<Rule Name="AssemblyReference" DisplayName="Ссылка на сборку" PageTemplate="generic" Description="Свойства ссылки" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
     <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
+  <!-- Visible properties -->
   <StringListProperty Name="Aliases" DisplayName="Псевдонимы" Description="Разделенный запятыми список псевдонимов данной сборки." Separator="," />
   <BoolProperty Name="CopyLocal" DisplayName="Копировать локально" Description="Указывает, будет ли ссылочная сборка скопирована в выходной каталог.">
     <BoolProperty.DataSource>
@@ -11,14 +12,28 @@
     </BoolProperty.DataSource>
   </BoolProperty>
   <BoolProperty Name="EmbedInteropTypes" DisplayName="Внедрить типы взаимодействия" Description="Указывает, будут ли типы, определенные в этой сборке, внедрены в целевую сборку." />
+  <StringProperty Name="Identity" ReadOnly="True" DisplayName="Identity" Description="Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="{}{Identity}" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Path" Description="Location of the file being referenced.">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
   <BoolProperty Name="SpecificVersion" DisplayName="Конкретная версия" Description="Определяет, может ли эта сборка быть разрешена без применения правил настройки разрешения сборки для различных версий.">
     <BoolProperty.DataSource>
       <DataSource Persistence="AssemblyReference" ItemType="Reference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
-  <StringProperty Name="RequiredTargetFramework" DisplayName="Требуемая версия .NET Framework" Visible="False" />
+  <StringProperty Name="Version" ReadOnly="True" DisplayName="Version" Description="Version of reference."></StringProperty>
+  <!-- Hidden properties -->
   <StringProperty Name="HintPath" Visible="false" />
-  <StringProperty Name="SDKName" Visible="false" />
-  <BoolProperty Name="IsWinMDFile" Visible="false" />
   <StringProperty Name="ImageRuntime" DisplayName="Версия среды выполнения" Description="Версия среды CLR, для которой предназначена данная сборка." Visible="False" ReadOnly="True" />
+  <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
+  <BoolProperty Name="IsWinMDFile" Visible="false" />
+  <StringProperty Name="RequiredTargetFramework" DisplayName="Требуемая версия .NET Framework" Visible="False" />
+  <StringProperty Name="SDKName" Visible="false" />
+  <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
 </Rule>

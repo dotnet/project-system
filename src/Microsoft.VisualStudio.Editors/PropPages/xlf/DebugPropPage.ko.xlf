@@ -93,6 +93,11 @@
         <target state="translated">네이티브 코드 디버깅 사용(&amp;T)</target>
         <note />
       </trans-unit>
+      <trans-unit id="StartArguments.AccessibleName">
+        <source>Command line arguments</source>
+        <target state="translated">명령줄 인수</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

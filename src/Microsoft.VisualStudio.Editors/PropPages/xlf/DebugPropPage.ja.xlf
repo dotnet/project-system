@@ -93,6 +93,11 @@
         <target state="translated">ネイティブ コード デバッグを有効にする(&amp;T)</target>
         <note />
       </trans-unit>
+      <trans-unit id="StartArguments.AccessibleName">
+        <source>Command line arguments</source>
+        <target state="translated">コマンド ライン引数</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

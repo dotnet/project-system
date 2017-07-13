@@ -9,8 +9,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedSdkReference|Description">
-        <source>Resolved SDK reference</source>
-        <target state="translated">Riferimento a SDK risolto</target>
+        <source>SDK Reference Properties</source>
+        <target state="translated">Proprietà del riferimento a SDK</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|AppXLocation|DisplayName">
@@ -50,23 +50,23 @@
       </trans-unit>
       <trans-unit id="StringProperty|SDKRootFolder|DisplayName">
         <source>SDK Root</source>
-        <target state="new">SDK Root</target>
-        <note></note>
+        <target state="translated">Radice SDK</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Name|DisplayName">
         <source>Name</source>
-        <target state="new">Name</target>
-        <note></note>
+        <target state="translated">Nome</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
-        <target state="new">Version</target>
-        <note></note>
+        <target state="translated">Versione</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|CopyPayloadToSubDirectory|DisplayName">
         <source>Copy Payload to Subdirectory</source>
-        <target state="new">Copy Payload to Subdirectory</target>
-        <note></note>
+        <target state="translated">Copia payload nella sottodirectory</target>
+        <note />
       </trans-unit>
     </body>
   </file>

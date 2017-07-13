@@ -565,7 +565,7 @@
     <value>111, 17</value>
   </data>
   <data name="IconRadioButton.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="IconRadioButton.Text" xml:space="preserve">
     <value>I&amp;con and manifest</value>
@@ -703,7 +703,7 @@
     <value>5</value>
   </data>
   <data name="AppIconBrowse.Text" xml:space="preserve">
-    <value>...</value>
+    <value>Browse...</value>
   </data>
   <data name="&gt;&gt;AppIconBrowse.Name" xml:space="preserve">
     <value>AppIconBrowse</value>
@@ -829,7 +829,7 @@
     <value>91, 17</value>
   </data>
   <data name="Win32ResourceRadioButton.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>9</value>
   </data>
   <data name="Win32ResourceRadioButton.Text" xml:space="preserve">
     <value>Re&amp;source file:</value>
@@ -859,7 +859,7 @@
     <value>467, 21</value>
   </data>
   <data name="Win32ResourceFile.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="&gt;&gt;Win32ResourceFile.Name" xml:space="preserve">
     <value>Win32ResourceFile</value>
@@ -895,10 +895,10 @@
     <value>29, 23</value>
   </data>
   <data name="Win32ResourceFileBrowse.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="Win32ResourceFileBrowse.Text" xml:space="preserve">
-    <value>...</value>
+    <value>Browse...</value>
   </data>
   <data name="&gt;&gt;Win32ResourceFileBrowse.Name" xml:space="preserve">
     <value>Win32ResourceFileBrowse</value>
@@ -928,7 +928,7 @@
     <value>547, 208</value>
   </data>
   <data name="iconTableLayoutPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;iconTableLayoutPanel.Name" xml:space="preserve">
     <value>iconTableLayoutPanel</value>
@@ -961,7 +961,7 @@
     <value>563, 238</value>
   </data>
   <data name="ResourcesGroupBox.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>1</value>
   </data>
   <data name="ResourcesGroupBox.Text" xml:space="preserve">
     <value>Resources</value>
@@ -994,7 +994,7 @@
     <value>563, 384</value>
   </data>
   <data name="overarchingLayoutPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;overarchingLayoutPanel.Name" xml:space="preserve">
     <value>overarchingLayoutPanel</value>
@@ -1037,5 +1037,8 @@
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>Microsoft.VisualStudio.Editors.PropertyPages.ApplicationPropPageBase, Microsoft.VisualStudio.Editors, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AppIconBrowse.AccessibleName" xml:space="preserve">
+    <value>Browse for icon</value>
   </data>
 </root>

@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         [Fact]
         public async Task TaskExtensiosns_TryWaitForCompleteOrTimeoutTests()
         {
-            var t1 = Task.FromResult(true);
+            var t1 = TaskResult.True;
             Assert.True(await t1.TryWaitForCompleteOrTimeout(1000));
 
             var t2 = Task.Delay(10000);

@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     public class UnresolvedDependenciesSnapshotFilterTests
     {
         [Fact]
-        public void UnresolvedDependenciesSnapshotFilter_WhenUnresolvedAndExistsResolvedInSnapshot_ShouldReturnNull()
+        public void WhenUnresolvedAndExistsResolvedInSnapshot_ShouldReturnNull()
         {
             var dependency = IDependencyFactory.Implement(
                 id: "mydependency2",
@@ -29,11 +29,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var filter = new UnresolvedDependenciesSnapshotFilter();
 
             var resultDependency = filter.BeforeAdd(
-                projectPath: null,
-                targetFramework: null,
-                dependency: dependency.Object,
-                worldBuilder: worldBuilder,
-                topLevelBuilder: null);
+                null,
+                null,
+                dependency.Object,
+                worldBuilder,
+                null,
+                null,
+                null,
+                out bool filterAnyChanges);
 
             Assert.Null(resultDependency);
 
@@ -42,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void UnresolvedDependenciesSnapshotFilter_WhenUnresolvedAndNotExistsResolvedInSnapshot_ShouldReturnDependency()
+        public void WhenUnresolvedAndNotExistsResolvedInSnapshot_ShouldReturnDependency()
         {
             var dependency = IDependencyFactory.Implement(
                 id: "mydependency2",
@@ -55,11 +58,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var filter = new UnresolvedDependenciesSnapshotFilter();
 
             var resultDependency = filter.BeforeAdd(
-                projectPath: null,
-                targetFramework: null,
-                dependency: dependency.Object,
-                worldBuilder: worldBuilder,
-                topLevelBuilder: null);
+                null,
+                null,
+                dependency.Object,
+                worldBuilder,
+                null,
+                null,
+                null,
+                out bool filterAnyChanges);
 
             Assert.NotNull(resultDependency);
             Assert.Equal("mydependency2", resultDependency.Id);
@@ -68,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void UnresolvedDependenciesSnapshotFilter_WhenResolved_ShouldReturnDependency()
+        public void WhenResolved_ShouldReturnDependency()
         {
             var dependency = IDependencyFactory.Implement(
                 id: "mydependency2",
@@ -77,11 +83,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var filter = new UnresolvedDependenciesSnapshotFilter();
 
             var resultDependency = filter.BeforeAdd(
-                projectPath: null,
-                targetFramework: null,
-                dependency: dependency.Object,
-                worldBuilder: null,
-                topLevelBuilder: null);
+                null,
+                null,
+                dependency.Object,
+                null,
+                null,
+                null,
+                null,
+                out bool filterAnyChanges);
 
             Assert.NotNull(resultDependency);
             Assert.Equal("mydependency2", resultDependency.Id);

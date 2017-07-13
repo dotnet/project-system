@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.ComponentModel.Composition;
-using System.Runtime.InteropServices;
 using EnvDTE;
 using VSLangProj;
 
@@ -30,16 +29,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         internal VSProject(
             [Import(ExportContractNames.VsTypes.CpsVSProject)] VSLangProj.VSProject vsProject,
             IProjectThreadingService threadingService,
-            ActiveConfiguredProject<ProjectProperties> projectProperties)
+            ActiveConfiguredProject<ProjectProperties> projectProperties,
+            UnconfiguredProject project)
         {
             Requires.NotNull(vsProject, nameof(vsProject));
             Requires.NotNull(threadingService, nameof(threadingService));
             Requires.NotNull(projectProperties, nameof(projectProperties));
+            Requires.NotNull(project, nameof(project));
 
             _vsProject = vsProject;
             _threadingService = threadingService;
             _projectProperties = projectProperties;
+
+            ImportsImpl = new OrderPrecedenceImportCollection<Imports>(projectCapabilityCheckProvider: project);
+            VSProjectEventsImpl = new OrderPrecedenceImportCollection<VSProjectEvents>(projectCapabilityCheckProvider: project);
         }
+
+        [ImportMany]
+        internal OrderPrecedenceImportCollection<Imports> ImportsImpl { get; set; }
+
+        [ImportMany]
+        internal OrderPrecedenceImportCollection<VSProjectEvents> VSProjectEventsImpl { get; set; }
 
         public VSLangProj.References References => _vsProject.References;
 
@@ -55,9 +65,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 
         public bool WorkOffline { get => _vsProject.WorkOffline; set => _vsProject.WorkOffline = value; }
 
-        public Imports Imports => _vsProject.Imports;
+        public Imports Imports
+        {
+            get
+            {
+                var imports = ImportsImpl.FirstOrDefault();
+                if (imports != null)
+                {
+                    return imports.Value;
+                }
+                else
+                {
+                    return _vsProject.Imports;
+                }
+            }
+        }
 
-        public VSProjectEvents Events => _vsProject.Events;
+        public VSProjectEvents Events
+        {
+            get
+            {
+                var vsprojectevent = VSProjectEventsImpl.FirstOrDefault();
+                if (vsprojectevent != null)
+                {
+                    return vsprojectevent.Value;
+                }
+                else
+                {
+                    return _vsProject.Events;
+                }
+            }
+        }
 
         public ProjectItem CreateWebReferencesFolder()
         {

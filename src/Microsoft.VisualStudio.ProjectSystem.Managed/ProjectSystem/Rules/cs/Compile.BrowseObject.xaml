@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--Copyright, Microsoft Corporation, All rights reserved.-->
-<Rule Name="Compile" DisplayName="File Properties" PageTemplate="generic" Description="File Properties" xmlns="http://schemas.microsoft.com/build/2009/properties">
+<Rule Name="Compile" DisplayName="Vlastnosti souboru" PageTemplate="generic" Description="Vlastnosti souboru" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
     <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="Compile" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
@@ -8,8 +8,8 @@
     <Category Name="Advanced" DisplayName="Upřesnit" />
     <Category Name="Misc" DisplayName="Různé" />
   </Rule.Categories>
-  <StringProperty Name="Generator" Category="Advanced" DisplayName="Custom Tool" Description="Specifies the tool that transforms a file at design time and places the output of that transformation into another file. For example, a dataset (.xsd) file comes with a default custom tool." />
-  <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="Custom Tool Namespace" Description="The namespace into which the output of the custom tool is placed." />
+  <StringProperty Name="Generator" Category="Advanced" DisplayName="Vlastní nástroj" Description="Určuje nástroj, který transformuje soubor v okamžiku návrhu a vloží výstup této transformace do jiného souboru. Například k souboru DataSet (.xsd) se dodává výchozí vlastní nástroj." />
+  <StringProperty Name="CustomToolNamespace" Category="Advanced" DisplayName="Obor názvů vlastního nástroje" Description="Obor názvů, do kterého se umístí výstup vlastního nástroje" />
   <DynamicEnumProperty Name="{}{ItemType}" DisplayName="Akce sestavení" Category="Advanced" Description="Jak se soubor vztahuje k procesům sestavení a nasazení." EnumProvider="ItemTypes" />
   <EnumProperty Name="CopyToOutputDirectory" DisplayName="Kopírovat do výstupního adresáře" Category="Advanced" Description="Určuje zdrojový soubor, který se zkopíruje do výstupního adresáře.">
     <EnumValue Name="Never" DisplayName="Nekopírovat" />

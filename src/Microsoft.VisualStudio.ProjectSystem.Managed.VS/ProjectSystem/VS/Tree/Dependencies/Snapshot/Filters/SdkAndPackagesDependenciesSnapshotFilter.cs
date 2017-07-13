@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
@@ -26,8 +27,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             ITargetFramework targetFramework,
             IDependency dependency, 
             ImmutableDictionary<string, IDependency>.Builder worldBuilder,
-            ImmutableHashSet<IDependency>.Builder topLevelBuilder)
+            ImmutableHashSet<IDependency>.Builder topLevelBuilder,
+            Dictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviders,
+            HashSet<string> projectItemSpecs,
+            out bool filterAnyChanges)
         {
+            filterAnyChanges = false;
+
             IDependency resultDependency = dependency;
             if (!dependency.TopLevel)
             {
@@ -42,7 +48,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
 
                 if (worldBuilder.TryGetValue(packageId, out IDependency package) && package.Resolved)
                 {
-                    resultDependency = dependency.SetProperties(dependencyIDs:package.DependencyIDs, resolved:true);
+                    filterAnyChanges = true;
+                    resultDependency = dependency.ToResolved(
+                        schemaName: ResolvedSdkReference.SchemaName,
+                        dependencyIDs:package.DependencyIDs);
                 }
             }
             else if (dependency.Flags.Contains(DependencyTreeFlags.PackageNodeFlags) && dependency.Resolved)
@@ -53,24 +62,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
 
                 if (worldBuilder.TryGetValue(sdkId, out IDependency sdk))
                 {
-                    sdk = sdk.SetProperties(dependencyIDs:dependency.DependencyIDs, resolved:true);
-                    worldBuilder[sdk.Id] = sdk;
+                    filterAnyChanges = true;
+                    sdk = sdk.ToResolved(
+                        schemaName: ResolvedSdkReference.SchemaName,
+                        dependencyIDs: dependency.DependencyIDs);
+
+                    worldBuilder.Remove(sdk.Id);
+                    worldBuilder.Add(sdk.Id, sdk);
+                    topLevelBuilder.Remove(sdk);
+                    topLevelBuilder.Add(sdk);
                 }
             }
 
             return resultDependency;
         }
 
-        public override void BeforeRemove(
+        public override IDependency BeforeRemove(
             string projectPath,
             ITargetFramework targetFramework,
             IDependency dependency, 
             ImmutableDictionary<string, IDependency>.Builder worldBuilder,
-            ImmutableHashSet<IDependency>.Builder topLevelBuilder)
+            ImmutableHashSet<IDependency>.Builder topLevelBuilder,
+            out bool filterAnyChanges)
         {
+            filterAnyChanges = false;
             if (!dependency.TopLevel || !dependency.Resolved)
             {
-                return;
+                return dependency;
             }
 
             if (dependency.Flags.Contains(DependencyTreeFlags.PackageNodeFlags))
@@ -81,11 +99,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
 
                 if (worldBuilder.TryGetValue(sdkId, out IDependency sdk))
                 {
+                    filterAnyChanges = true;
                     // clean up sdk when corresponding package is removing
-                    sdk = sdk.SetProperties(dependencyIDs:ImmutableList<string>.Empty, resolved:false);
-                    worldBuilder[sdk.Id] = sdk;
+                    sdk = sdk.ToUnresolved(
+                        schemaName: SdkReference.SchemaName,
+                        dependencyIDs:ImmutableList<string>.Empty);
+
+                    worldBuilder.Remove(sdk.Id);
+                    worldBuilder.Add(sdk.Id, sdk);
+                    topLevelBuilder.Remove(sdk);
+                    topLevelBuilder.Add(sdk);
                 }
             }
+
+            return dependency;
         }
     }
 }

@@ -53,21 +53,6 @@
         <target state="translated">ターゲット フレームワーク</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|OutputType|DisplayName">
-        <source>Output Type</source>
-        <target state="translated">出力の種類</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|OutputTypeEx|DisplayName">
-        <source>Output Type</source>
-        <target state="translated">出力の種類</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|StartupObject|DisplayName">
-        <source>Type that contains the entry point</source>
-        <target state="translated">エントリ ポイントを含む型</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|ApplicationManifest|DisplayName">
         <source>Application Manifest</source>
         <target state="translated">アプリケーション マニフェスト</target>
@@ -233,29 +218,29 @@
         <target state="translated">ニュートラル リソース言語</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|OutputTypeEx.WinExe|DisplayName">
-        <source>0</source>
-        <target state="new">0</target>
-        <note></note>
+      <trans-unit id="StringProperty|TargetFrameworkMonikers|DisplayName">
+        <source>Target Framework Monikers</source>
+        <target state="translated">ターゲット フレームワーク モニカー</target>
+        <note />
       </trans-unit>
-      <trans-unit id="EnumValue|OutputTypeEx.Exe|DisplayName">
-        <source>1</source>
-        <target state="new">1</target>
-        <note></note>
+      <trans-unit id="DynamicEnumProperty|SupportedTargetFrameworks|DisplayName">
+        <source>Supported TargetFrameworks</source>
+        <target state="translated">サポートされるターゲット フレームワーク</target>
+        <note />
       </trans-unit>
-      <trans-unit id="EnumValue|OutputTypeEx.Library|DisplayName">
-        <source>2</source>
-        <target state="new">2</target>
-        <note></note>
+      <trans-unit id="IntProperty|OutputType|DisplayName">
+        <source>Output Type</source>
+        <target state="translated">出力の種類</target>
+        <note />
       </trans-unit>
-      <trans-unit id="EnumValue|OutputTypeEx.AppContainerExe|DisplayName">
-        <source>3</source>
-        <target state="new">3</target>
-        <note></note>
+      <trans-unit id="IntProperty|OutputTypeEx|DisplayName">
+        <source>Output Type Ex</source>
+        <target state="translated">出力の種類 Ex</target>
+        <note />
       </trans-unit>
-      <trans-unit id="EnumValue|OutputTypeEx.WinMDObj|DisplayName">
-        <source>4</source>
-        <target state="new">4</target>
+      <trans-unit id="DynamicEnumProperty|StartupObject|DisplayName">
+        <source>Type that contains the entry point</source>
+        <target state="new">Type that contains the entry point</target>
         <note></note>
       </trans-unit>
     </body>

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Rule Name="ResolvedCOMReference" DisplayName="Aufgelöster COM-Verweis" PageTemplate="generic" Description="Aufgelöster Verweis" xmlns="http://schemas.microsoft.com/build/2009/properties">
+<Rule Name="ResolvedCOMReference" DisplayName="Aufgelöster COM-Verweis" PageTemplate="generic" Description="Eigenschaften für COM-Verweis" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
     <DataSource Persistence="ResolvedReference" ItemType="COMReference" HasConfigurationCondition="False" SourceType="TargetResults" MSBuildTarget="ResolveComReferencesDesignTime" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
@@ -54,4 +54,6 @@
   <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="Der ausgewertete Elementname des ursprünglichen Verweiselements, dessen Auflösung zu diesem aufgelösten Verweiselement geführt hat." />
   <StringProperty Name="FusionName" Visible="False" ReadOnly="True" />
   <StringProperty Name="Name" Visible="false" ReadOnly="True" />
+  <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
+  <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
 </Rule>

@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         
         
         [Fact]
-        public void ProjectDebuggerProvider_GetDebugEngineForFrameworkTests()
+        public void GetDebugEngineForFrameworkTests()
         {
 
             Assert.Equal(DebuggerEngines.ManagedCoreEngine, ProjectDebuggerProvider.GetManagedDebugEngineForFramework(".NetStandardApp"));
@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }        
 
         [Fact]
-        public async Task ProjectDebuggerProvider_CanLaunchAsyncTests()
+        public async Task CanLaunchAsyncTests()
         {
             Mock<ConfiguredProject> configuredProjectMoq = new Mock<ConfiguredProject>();
             var debugger = new ProjectDebuggerProvider(configuredProjectMoq.Object, new Mock<ILaunchSettingsProvider>().Object);
@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
            
         [Fact]
-        public void ProjectDebuggerProvider_GetLaunchTargetsProviderForProfileTests()
+        public void GetLaunchTargetsProviderForProfileTests()
         {
             var debugger = new ProjectDebuggerProvider(_configuredProjectMoq.Object, _LaunchSettingsProviderMoq.Object, _launchProviders);
             Assert.Equal(_mockWebProvider.Object, debugger.GetLaunchTargetsProvider(new LaunchProfile() {Name = "test", CommandName = "IISExpress"}));
@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Fact]
-        public async Task ProjectDebuggerProvider_QueryDebugTargetsAsyncCorrectProvider()
+        public async Task QueryDebugTargetsAsyncCorrectProvider()
         {
             var debugger = new ProjectDebuggerProvider(_configuredProjectMoq.Object, _LaunchSettingsProviderMoq.Object, _launchProviders);
 
@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Fact]
-        public async Task ProjectDebuggerProvider_QueryDebugTargetsNoLaunchProfiler()
+        public async Task QueryDebugTargetsNoLaunchProfiler()
         {
             var debugger = new ProjectDebuggerProvider(_configuredProjectMoq.Object, _LaunchSettingsProviderMoq.Object, _launchProviders);
             _activeProfile = null;
@@ -122,7 +122,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Fact]
-        public async Task ProjectDebuggerProvider_QueryDebugTargetsNoInstalledProvider()
+        public async Task QueryDebugTargetsNoInstalledProvider()
         {
             var debugger = new ProjectDebuggerProvider(_configuredProjectMoq.Object, _LaunchSettingsProviderMoq.Object, _launchProviders);
             _activeProfile = new LaunchProfile() {Name="NoActionProfile", CommandName = "SomeOtherExtension"};

@@ -279,4 +279,7 @@ Pour déboguer ce projet, ajoutez à cette solution un projet exécutable qui fa
   <data name="DebugFrameworkMenuText" xml:space="preserve">
     <value>Framework ({0})</value>
   </data>
+  <data name="OutputWindowPaneTitle" xml:space="preserve">
+    <value>Projet</value>
+  </data>
 </root>

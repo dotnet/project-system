@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     public class DuplicatedDependenciesSnapshotFilterTests
     {
         [Fact]
-        public void DuplicatedDependenciesSnapshotFilter_WhenThereNoMatchingDependencies_ShouldNotUpdateCaption()
+        public void WhenThereNoMatchingDependencies_ShouldNotUpdateCaption()
         {
             const string caption = "MyCaption";
             var dependency = IDependencyFactory.Implement(
@@ -38,11 +38,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var filter = new DuplicatedDependenciesSnapshotFilter();
 
             var resultDependency = filter.BeforeAdd(
-                projectPath: null,
-                targetFramework: null,
-                dependency: dependency.Object,
-                worldBuilder: worldBuilder,
-                topLevelBuilder: topLevelBuilder);
+                null,
+                null,
+                dependency.Object,
+                worldBuilder,
+                topLevelBuilder,
+                null,
+                null,
+                out bool filterAnyChanges);
 
             Assert.False(worldBuilder.ContainsKey(otherDependency.Object.Id));
 
@@ -51,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void DuplicatedDependenciesSnapshotFilter_WhenThereIsMatchingDependencies_ShouldUpdateCaptionForAll()
+        public void WhenThereIsMatchingDependencies_ShouldUpdateCaptionForAll()
         {
             const string caption = "MyCaption";
             var dependency = IDependencyFactory.Implement(
@@ -81,11 +84,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var filter = new DuplicatedDependenciesSnapshotFilter();
 
             var resultDependency = filter.BeforeAdd(
-                projectPath: null,
-                targetFramework: null,
-                dependency: dependency.Object,
-                worldBuilder: worldBuilder,
-                topLevelBuilder: topLevelBuilder);
+                null,
+                null,
+                dependency.Object,
+                worldBuilder,
+                topLevelBuilder,
+                null,
+                null,
+                out bool filterAnyChanges);
 
             Assert.True(worldBuilder.ContainsKey(otherDependency.Object.Id));
 
@@ -94,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void DuplicatedDependenciesSnapshotFilter_WhenThereIsMatchingDependencyWithAliasApplied_ShouldUpdateCaptionForCurrentDependency()
+        public void WhenThereIsMatchingDependencyWithAliasApplied_ShouldUpdateCaptionForCurrentDependency()
         {
             const string caption = "MyCaption";
             var dependency = IDependencyFactory.Implement(
@@ -122,11 +128,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var filter = new DuplicatedDependenciesSnapshotFilter();
 
             var resultDependency = filter.BeforeAdd(
-                projectPath: null,
-                targetFramework: null,
-                dependency: dependency.Object,
-                worldBuilder: worldBuilder,
-                topLevelBuilder: topLevelBuilder);
+                null,
+                null,
+                dependency.Object,
+                worldBuilder,
+                topLevelBuilder,
+                null,
+                null,
+                out bool filterAnyChanges);
 
             Assert.False(worldBuilder.ContainsKey(otherDependency.Object.Id));
 

@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Rule Name="AssemblyReference" DisplayName="Referencia de ensamblado" PageTemplate="generic" Description="Propiedades de la referencia de ensamblado" xmlns="http://schemas.microsoft.com/build/2009/properties">
+<Rule Name="AssemblyReference" DisplayName="Referencia de ensamblado" PageTemplate="generic" Description="Propiedades de la referencia" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
     <DataSource Persistence="ProjectFile" ItemType="Reference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
+  <!-- Visible properties -->
   <StringListProperty Name="Aliases" DisplayName="Alias" Description="Lista de alias delimitada con comas para esta referencia." Separator="," />
   <BoolProperty Name="CopyLocal" DisplayName="Copia local" Description="Indica si la referencia se copiará en el directorio de salida.">
     <BoolProperty.DataSource>
@@ -11,14 +12,28 @@
     </BoolProperty.DataSource>
   </BoolProperty>
   <BoolProperty Name="EmbedInteropTypes" DisplayName="Incrustar tipos de interoperabilidad" Description="Indica si los tipos definidos en este ensamblado se incrustarán en el ensamblado de destino." />
+  <StringProperty Name="Identity" ReadOnly="True" DisplayName="Identity" Description="Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="{}{Identity}" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Path" Description="Location of the file being referenced.">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
   <BoolProperty Name="SpecificVersion" DisplayName="Versión específica" Description="Indica si este ensamblado se puede resolver independientemente de las reglas de compatibilidad con múltiples versiones (multi-targeting) para la resolución de ensamblados.">
     <BoolProperty.DataSource>
       <DataSource Persistence="AssemblyReference" ItemType="Reference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
-  <StringProperty Name="RequiredTargetFramework" DisplayName="Plataforma de destino requerida" Visible="False" />
+  <StringProperty Name="Version" ReadOnly="True" DisplayName="Version" Description="Version of reference."></StringProperty>
+  <!-- Hidden properties -->
   <StringProperty Name="HintPath" Visible="false" />
-  <StringProperty Name="SDKName" Visible="false" />
-  <BoolProperty Name="IsWinMDFile" Visible="false" />
   <StringProperty Name="ImageRuntime" DisplayName="Versión de runtime" Description="Versión de runtime de CLR de destino de este ensamblado." Visible="False" ReadOnly="True" />
+  <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
+  <BoolProperty Name="IsWinMDFile" Visible="false" />
+  <StringProperty Name="RequiredTargetFramework" DisplayName="Plataforma de destino requerida" Visible="False" />
+  <StringProperty Name="SDKName" Visible="false" />
+  <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
 </Rule>

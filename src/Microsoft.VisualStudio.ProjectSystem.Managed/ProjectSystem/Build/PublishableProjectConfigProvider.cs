@@ -4,6 +4,7 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Build
 {
@@ -17,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         public Task<bool> IsPublishSupportedAsync()
         {
             // No support for ClickOnce publishing for now.
-            return Task.FromResult(false);
+            return TaskResult.False;
         }
 
         public Task PublishAsync(CancellationToken cancellationToken, TextWriter outputPaneWriter)
@@ -28,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
 
         public Task<bool> ShowPublishPromptAsync()
         {
-            return Task.FromResult(false);
+            return TaskResult.False;
         }
     }
 }

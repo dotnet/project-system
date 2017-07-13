@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using Microsoft.VisualStudio.Build;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
@@ -88,40 +87,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 return InnerProjectContexts.Single();
             }
-        }
-
-        /// <summary>
-        /// Returns true if this cross-targeting aggregate project context has the same set of target frameworks and active target framework as the given TargetFrameworks property value.
-        /// </summary>
-        /// <param name="targetFrameworksProperty">Property value for MSBuild property "TargetsFramework"</param>
-        public bool HasMatchingTargetFrameworks(string targetFrameworksProperty)
-        {
-            Requires.NotNull(targetFrameworksProperty, nameof(targetFrameworksProperty));
-            Requires.Range(IsCrossTargeting, nameof(targetFrameworksProperty), "This method should only be invoked for Cross targeting projects");
-
-            ImmutableArray<string> parsedTargetFrameworks = BuildUtilities.GetPropertyValues(targetFrameworksProperty);
-            if (parsedTargetFrameworks.Length != _configuredProjectContextsByTargetFramework.Count)
-            {
-                // Different number of target frameworks.
-                return false;
-            }
-
-            if (!string.Equals(parsedTargetFrameworks[0], _activeTargetFramework))
-            {
-                // Active target framework is different.
-                return false;
-            }
-
-            foreach (var targetFramework in parsedTargetFrameworks.Skip(1))
-            {
-                if (!_configuredProjectContextsByTargetFramework.ContainsKey(targetFramework))
-                {
-                    // Differing TargetFramework
-                    return false;
-                }
-            }
-
-            return true;
         }
 
         /// <summary>

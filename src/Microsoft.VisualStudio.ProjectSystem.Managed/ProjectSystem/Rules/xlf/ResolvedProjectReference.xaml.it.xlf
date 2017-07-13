@@ -9,8 +9,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedProjectReference|Description">
-        <source>Resolved reference</source>
-        <target state="translated">Riferimento risolto</target>
+        <source>Reference Properties</source>
+        <target state="translated">Proprietà del riferimento</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">
@@ -160,7 +160,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|Project|Description">
         <source>the Guid the solution tracks an individual project reference target with</source>
-        <target state="translated">il Guid con cui la soluzione traccia la destinazione del riferimento di un singolo progetto</target>
+        <target state="translated">GUID con cui la soluzione tiene traccia della destinazione del riferimento di un singolo progetto</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|WinMDFile|Description">
@@ -172,6 +172,56 @@
         <source>The evaluated item name of the original reference item whose resolution resulted in this resolved reference item.</source>
         <target state="translated">Nome di elemento valutato dell'elemento di riferimento originale la cui risoluzione ha restituito questo elemento di riferimento risolto.</target>
         <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|CopyLocalSatelliteAssemblies|DisplayName">
+        <source>Copy Local Satellite Assemblies</source>
+        <target state="new">Copy Local Satellite Assemblies</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|CopyLocalSatelliteAssemblies|Description">
+        <source>Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory.</source>
+        <target state="new">Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
+        <source>Exclude Assets</source>
+        <target state="new">Exclude Assets</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|ExcludeAssets|Description">
+        <source>Assets to exclude from this reference</source>
+        <target state="new">Assets to exclude from this reference</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|IncludeAssets|DisplayName">
+        <source>Include Assets</source>
+        <target state="new">Include Assets</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|IncludeAssets|Description">
+        <source>Assets to include from this reference</source>
+        <target state="new">Assets to include from this reference</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|ReferenceOutputAssembly|DisplayName">
+        <source>Reference Output Assembly</source>
+        <target state="new">Reference Output Assembly</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="BoolProperty|ReferenceOutputAssembly|Description">
+        <source>A value indicating whether the compiler should include a reference to the target project's primary output assembly.</source>
+        <target state="new">A value indicating whether the compiler should include a reference to the target project's primary output assembly.</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PrivateAssets|DisplayName">
+        <source>Private Assets</source>
+        <target state="new">Private Assets</target>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PrivateAssets|Description">
+        <source>Assets that are private in this reference</source>
+        <target state="new">Assets that are private in this reference</target>
+        <note></note>
       </trans-unit>
     </body>
   </file>

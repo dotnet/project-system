@@ -1,11 +1,7 @@
 ﻿<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Project>
-  <PropertyGroup>
-    <IsDeployment>true</IsDeployment>
-  </PropertyGroup>
   <Import Project="..\..\build\Targets\ProducesNoOutput.Settings.targets" />
   <PropertyGroup>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <TargetFramework>net46</TargetFramework>
     <OutDir>$(OutDir)Tests\</OutDir>
     <ProjectSystemLayer>VisualStudioDesigner</ProjectSystemLayer>
@@ -30,9 +26,9 @@
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.VisualBasic\Microsoft.VisualStudio.ProjectSystem.VisualBasic.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.1.0" />
-    <PackageReference Include="xunit.runner.console" Version="2.1.0" />
-    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="[$(XUnitRunnerVisualstudioVersion)]" />
+    <PackageReference Include="xunit.runner.console" Version="[$(XUnitRunnerConsoleVersion)]" />
+    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="$(SystemRuntimeInteropServicesRuntimeInformationVersion)" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Readme.txt" />

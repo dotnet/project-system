@@ -95,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var behavior = mockBehavior ?? MockBehavior.Default;
             var mock = new Mock<ITargetedDependenciesSnapshot>(behavior);
 
-            mock.Setup(x => x.CheckForUnresolvedDependencies(It.Is<IDependency>(y => y.Id.Equals(id))))
+            mock.Setup(x => x.CheckForUnresolvedDependencies(It.Is<IDependency>(y => y.Id.Equals(id, System.StringComparison.OrdinalIgnoreCase))))
                 .Returns(hasUnresolvedDependency);
 
             return mock.Object;

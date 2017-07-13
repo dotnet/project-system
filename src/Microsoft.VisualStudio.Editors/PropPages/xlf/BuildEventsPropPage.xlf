@@ -8,16 +8,16 @@
         <note />
       </trans-unit>
       <trans-unit id="btnPreBuildBuilder.Text">
-        <source>Ed&amp;it Pre-build ...</source>
-        <note />
+        <source>Ed&amp;it Pre-build...</source>
+        <note></note>
       </trans-unit>
       <trans-unit id="lblPostBuildEventCommandLine.Text">
         <source>P&amp;ost-build event command line:</source>
         <note />
       </trans-unit>
       <trans-unit id="btnPostBuildBuilder.Text">
-        <source>Edit Post-b&amp;uild ...</source>
-        <note />
+        <source>Edit Post-b&amp;uild...</source>
+        <note></note>
       </trans-unit>
       <trans-unit id="lblRunPostBuildEvent.Text">
         <source>Ru&amp;n the post-build event:</source>

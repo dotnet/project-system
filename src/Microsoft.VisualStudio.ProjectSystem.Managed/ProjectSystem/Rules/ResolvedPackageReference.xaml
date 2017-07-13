@@ -4,7 +4,7 @@
     Name="ResolvedPackageReference"
     DisplayName="Package"
     PageTemplate="generic"
-    Description="Package"
+    Description="Package Properties"
     xmlns="http://schemas.microsoft.com/build/2009/properties">
    
     <Rule.DataSource>
@@ -61,6 +61,54 @@
                     Visible="False" 
                     ReadOnly="True" />
 
+    <StringProperty Name="NoWarn" 
+                    Visible="True"
+                    DisplayName="NoWarn"
+                    Description="Comma-delimited list of warnings that should be suppressed for this package">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile"
+                        ItemType="PackageReference"
+                        HasConfigurationCondition="False"
+                        SourceOfDefaultValue="AfterContext" />
+        </StringProperty.DataSource>
+    </StringProperty>
+
+    <StringProperty Name="IncludeAssets" 
+                    Visible="True"
+                    DisplayName="IncludeAssets"
+                    Description="Assets to include from this reference">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile"
+                        ItemType="PackageReference"
+                        HasConfigurationCondition="False"
+                        SourceOfDefaultValue="AfterContext" />
+        </StringProperty.DataSource>
+    </StringProperty>
+
+    <StringProperty Name="ExcludeAssets" 
+                    Visible="True"
+                    DisplayName="ExcludeAssets"
+                    Description="Assets to exclude from this reference">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile"
+                        ItemType="PackageReference"
+                        HasConfigurationCondition="False"
+                        SourceOfDefaultValue="AfterContext" />
+        </StringProperty.DataSource>
+    </StringProperty>
+
+    <StringProperty Name="PrivateAssets" 
+                    Visible="True"
+                    DisplayName="PrivateAssets"
+                    Description="Assets that are private in this reference">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile"
+                        ItemType="PackageReference"
+                        HasConfigurationCondition="False"
+                        SourceOfDefaultValue="AfterContext" />
+        </StringProperty.DataSource>
+    </StringProperty>
+
     <StringListProperty Name="Dependencies"
                         DisplayName="Dependencies"
                         Visible="false"
@@ -70,7 +118,12 @@
             <DataSource Persistence="ResolvedReference" ItemType="PackageReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </StringListProperty.DataSource>
     </StringListProperty>
+    
     <BoolProperty Name="IsTopLevelDependency" 
                   Visible="False"
                   ReadOnly="True"/>
+
+    <BoolProperty Name="Visible"
+                  Visible="False"
+                  ReadOnly="True" />
 </Rule>

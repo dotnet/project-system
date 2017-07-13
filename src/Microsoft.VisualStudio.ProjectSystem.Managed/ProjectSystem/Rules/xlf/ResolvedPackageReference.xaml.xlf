@@ -8,7 +8,7 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedPackageReference|Description">
-        <source>Package</source>
+        <source>Package Properties</source>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|DisplayName">
@@ -38,6 +38,38 @@
       <trans-unit id="StringListProperty|Dependencies|Description">
         <source>A semicolon-delimited list of direct dependencies of current dependency.</source>
         <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|NoWarn|DisplayName">
+        <source>NoWarn</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|NoWarn|Description">
+        <source>Comma-delimited list of warnings that should be suppressed for this package</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|IncludeAssets|DisplayName">
+        <source>IncludeAssets</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|IncludeAssets|Description">
+        <source>Assets to include from this reference</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
+        <source>ExcludeAssets</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|ExcludeAssets|Description">
+        <source>Assets to exclude from this reference</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PrivateAssets|DisplayName">
+        <source>PrivateAssets</source>
+        <note></note>
+      </trans-unit>
+      <trans-unit id="StringProperty|PrivateAssets|Description">
+        <source>Assets that are private in this reference</source>
+        <note></note>
       </trans-unit>
     </body>
   </file>

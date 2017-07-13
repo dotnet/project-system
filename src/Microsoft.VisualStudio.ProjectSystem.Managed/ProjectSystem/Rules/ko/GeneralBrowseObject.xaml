@@ -13,6 +13,11 @@
       <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMoniker" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
+  <StringProperty Name="TargetFrameworkMonikers" DisplayName="대상 프레임워크 모니커" Visible="False" ReadOnly="True">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMonikers" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
   <StringProperty Name="AssemblyName" DisplayName="어셈블리 이름" Visible="False" />
   <StringProperty Name="Name" Visible="False" />
   <StringProperty Name="RootNamespace" DisplayName="루트 네임스페이스" Visible="False" />
@@ -32,18 +37,19 @@
     </IntProperty.DataSource>
   </IntProperty>
   <StringProperty Name="OutputName" Visible="False" />
-  <DynamicEnumProperty Name="OutputType" DisplayName="출력 형식" EnumProvider="OutputTypeEnumProvider" Visible="False" />
-  <EnumProperty Name="OutputTypeEx" DisplayName="출력 형식" Visible="False">
-    <EnumValue Name="WinExe" DisplayName="0" />
-    <EnumValue Name="Exe" DisplayName="1" />
-    <EnumValue Name="Library" DisplayName="2" />
-    <EnumValue Name="AppContainerExe" DisplayName="3" />
-    <EnumValue Name="WinMDObj" DisplayName="4" />
-    <EnumProperty.DataSource>
+  <!-- This property is used to provide the value of OutputType through BrowseObject, which is used by Property pages-->
+  <IntProperty Name="OutputType" DisplayName="출력 형식" Visible="False">
+    <IntProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="OutputType" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </IntProperty.DataSource>
+  </IntProperty>
+  <!-- This property is used to provide the value of OutputTypeEx through BrowseObject, which is used by Property pages-->
+  <IntProperty Name="OutputTypeEx" DisplayName="출력 형식 Ex" Visible="False">
+    <IntProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception" PersistedName="OutputTypeEx" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
-    </EnumProperty.DataSource>
-  </EnumProperty>
-  <StringProperty Name="StartupObject" DisplayName="진입점을 포함하는 형식입니다." Visible="False" />
+    </IntProperty.DataSource>
+  </IntProperty>
+  <DynamicEnumProperty Name="StartupObject" DisplayName="Type that contains the entry point" EnumProvider="StartupObjectsEnumProvider" Visible="False" />
   <StringProperty Name="ApplicationManifest" DisplayName="응용 프로그램 매니페스트" Visible="False">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception" PersistedName="ApplicationManifest" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext" />
@@ -145,4 +151,8 @@
       <DataSource Persistence="ProjectFileWithInterception" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
+  <DynamicEnumProperty Name="SupportedTargetFrameworks" DisplayName="지원되는 대상 프레임워크" EnumProvider="SupportedTargetFrameworksEnumProvider" Visible="False" />
+  <!-- F# specific properties-->
+  <BoolProperty Name="CanUseTargetFSharpCoreVersion" Visible="False" />
+  <StringProperty Name="TargetFSharpCoreVersion" Visible="False" />
 </Rule>

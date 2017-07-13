@@ -11,6 +11,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         Private _index As Integer
         Private _dirtyIndicator As Boolean
+        Private _focusedFromKeyboardNav As Boolean
 
 
         Public Sub New()
@@ -141,10 +142,62 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End If
         End Sub
 
+        Protected Overrides Function ProcessDialogKey(keyData As Keys) As Boolean
+            Dim keyCode = keyData And Keys.KeyCode
+
+            Select Case keyCode
+                Case Keys.Enter
+                    Dim parent As ProjectDesignerTabControl = ParentTabControl
+                    If parent IsNot Nothing Then
+                        parent.OnItemClick(Me, reactivatePage:=True)
+                    End If
+                Case Keys.Tab, Keys.Up, Keys.Down
+
+                    If keyCode <> Keys.Tab OrElse (keyData And Keys.Control) <> Keys.Control Then                                   ' Don't process if Ctrl+Tab, but do Process for Ctrl+Up and Ctrl+Down
+                        Dim parent As ProjectDesignerTabControl = ParentTabControl
+                        If parent IsNot Nothing Then
+                            Dim nextIndex As Int32 = ButtonIndex
+                            If (keyCode = Keys.Tab AndAlso (keyData And Keys.Shift) = Keys.Shift) OrElse keyCode = Keys.Up Then     ' Process if Shift+Tab or Up
+                                nextIndex -= 1
+                                If nextIndex < 0 Then
+                                    nextIndex = parent.TabButtonCount - 1
+                                End If
+                            Else
+                                nextIndex += 1
+                                If nextIndex >= parent.TabButtonCount Then
+                                    nextIndex = 0
+                                End If
+                            End If
+                            Dim nextButton = parent.GetTabButton(nextIndex)
+                            nextButton.Focus()
+                            nextButton.FocusedFromKeyboardNav = True
+                            Return True
+                        End If
+                    End If
+            End Select
+            Return MyBase.ProcessDialogKey(keyData)
+        End Function
+
+        Friend ReadOnly Property DrawFocusCues As Boolean
+            Get
+                Return ShowFocusCues OrElse (Focused And FocusedFromKeyboardNav)
+            End Get
+        End Property
+
+        Friend Property FocusedFromKeyboardNav As Boolean
+            Get
+                Return _focusedFromKeyboardNav
+            End Get
+            Set(value As Boolean)
+                _focusedFromKeyboardNav = value
+            End Set
+        End Property
 
         Protected Overrides Sub OnGotFocus(e As EventArgs)
             Common.Switches.TracePDFocus(TraceLevel.Warning, "ProjectDesignerTabButton.OnGotFocus - forwarding to parent")
             MyBase.OnGotFocus(e)
+
+            FocusedFromKeyboardNav = False
 
             Dim parent As ProjectDesignerTabControl = ParentTabControl
             If parent IsNot Nothing Then
@@ -152,6 +205,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End If
             Invalidate()
         End Sub
+
+        Protected Overrides Sub OnLostFocus(e As EventArgs)
+            FocusedFromKeyboardNav = False
+        End Sub
+
 
         ''' <summary>
         ''' Create customized accessible object
@@ -193,7 +251,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             ''' </summary>
             Public Overrides ReadOnly Property State() As AccessibleStates
                 Get
-                    Return _button.AccessibleState
+                    Return MyBase.State Or _button.AccessibleState
                 End Get
             End Property
 

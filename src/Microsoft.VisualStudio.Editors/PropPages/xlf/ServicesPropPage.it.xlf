@@ -5,7 +5,7 @@
       <group id="src/Microsoft.VisualStudio.Editors/PropPages/ServicesPropPage.resx" />
       <trans-unit id="HelpLabel.Text">
         <source>Client application services enable your Windows-based applications to use the ASP.NET login (authentication), roles, and profile (settings) services.  Learn more about client application services...</source>
-        <target state="translated">I servizi dell'applicazione client consentono alle applicazioni basate su Windows di usare accesso ASP.NET (autenticazione), ruoli e servizi profili (impostazioni).  Altre informazioni sui servizi dell'applicazione client...</target>
+        <target state="translated">I servizi dell'applicazione client consentono alle applicazioni basate su Windows di usare accesso ASP.NET (autenticazione), ruoli e servizi profili (impostazioni). Altre informazioni sui servizi dell'applicazione client...</target>
         <note />
       </trans-unit>
       <trans-unit id="WindowsBasedAuth.Text">

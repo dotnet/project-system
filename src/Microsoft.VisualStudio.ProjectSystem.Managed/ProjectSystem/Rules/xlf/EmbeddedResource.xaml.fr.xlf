@@ -9,8 +9,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|EmbeddedResource|Description">
-        <source>Embedded resources</source>
-        <target state="translated">Ressources incorporées</target>
+        <source>File Properties</source>
+        <target state="translated">Propriétés du fichier</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Advanced|DisplayName">

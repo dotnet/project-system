@@ -12,11 +12,14 @@
   <EnumProperty Name="PlatformTarget" DisplayName="플랫폼 대상" Visible="False" />
   <BoolProperty Name="Prefer32Bit" DisplayName="32비트 기본 사용" Visible="False" />
   <BoolProperty Name="AllowUnsafeBlocks" Default="False" DisplayName="안전하지 않은 코드 허용" Visible="False" />
-  <StringProperty Name="Optimize" DisplayName="최적화" Visible="False" />
-  <EnumProperty Name="WarningLevel" DisplayName="경고 수준" Visible="False" />
+  <BoolProperty Name="Optimize" DisplayName="최적화" Visible="False" />
   <StringProperty Name="NoWarn" DisplayName="경고 표시 안 함" Visible="False" />
   <BoolProperty Name="TreatWarningsAsErrors" Default="False" Description="경고를 오류로 처리" Visible="False" />
-  <StringProperty Name="TreatSpecificWarningsAsErrors" Description="특정 경고를 오류로 처리" Visible="False" />
+  <StringProperty Name="TreatSpecificWarningsAsErrors" Description="특정 경고를 오류로 처리" Visible="False">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="WarningsAsErrors" />
+    </StringProperty.DataSource>
+  </StringProperty>
   <StringProperty Name="OutputPath" DisplayName="출력 경로" Visible="False" />
   <StringProperty Name="DocumentationFile" DisplayName="문서 파일" Visible="False" />
   <EnumProperty Name="GenerateSerializationAssemblies" DisplayName="Serialization 어셈블리 생성" Visible="False">
@@ -47,9 +50,69 @@
   <StringProperty Name="DebugSymbols" DisplayName="디버그 기호" Visible="False" />
   <EnumProperty Name="FileAlignment" DisplayName="파일 맞춤" Visible="False" />
   <StringProperty Name="BaseAddress" DisplayName="기준 주소" Visible="False" />
-  <StringProperty Name="FullPath" DisplayName="Project Folder" ReadOnly="True">
+  <StringProperty Name="FullPath" DisplayName="프로젝트 폴더" ReadOnly="True">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
+  <DynamicEnumProperty Name="WarningLevel" DisplayName="경고 수준" EnumProvider="WarningLevelEnumProvider" Visible="False">
+    <DynamicEnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" HasConfigurationCondition="True" SourceOfDefaultValue="AfterContext" />
+    </DynamicEnumProperty.DataSource>
+  </DynamicEnumProperty>
+  <!-- VB Compile Page Properties-->
+  <EnumProperty Name="OptionExplicit" DisplayName="Option Explicit" Visible="False">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="OptionExplicit" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="Off" DisplayName="해제" />
+    <EnumValue Name="On" DisplayName="설정" IsDefault="True" />
+  </EnumProperty>
+  <EnumProperty Name="OptionCompare" DisplayName="Option Compare" Visible="False">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="OptionCompare" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="Binary" DisplayName="이진" IsDefault="True" />
+    <EnumValue Name="Text" DisplayName="텍스트" />
+  </EnumProperty>
+  <EnumProperty Name="OptionInfer" DisplayName="Option Compare" Visible="False">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="OptionInfer" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="Off" DisplayName="해제" />
+    <EnumValue Name="On" DisplayName="설정" IsDefault="True" />
+  </EnumProperty>
+  <DynamicEnumProperty Name="OptionStrict" DisplayName="Option Strict" EnumProvider="OptionStrictEnumProvider" Visible="False">
+    <DynamicEnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </DynamicEnumProperty.DataSource>
+  </DynamicEnumProperty>
+  <!-- VB Advanced Compile Options-->
+  <BoolProperty Name="RemoveIntegerChecks" DisplayName="정수 오류 검사 제거" Visible="False" />
+  <BoolProperty Name="DefineDebug" DisplayName="Debug 정의" Visible="False" />
+  <BoolProperty Name="DefineTrace" DisplayName="Trace 정의" Visible="False" />
+  <!-- VB Compile Build Event Page-->
+  <StringProperty Name="PreBuildEvent" DisplayName="빌드 전 이벤트" Visible="False">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="PostBuildEvent" DisplayName="빌드 후 이벤트" Visible="False">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <EnumProperty Name="RunPostBuildEvent" DisplayName="빌드 후 이벤트 실행" Visible="False">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFile" PersistedName="RunPostBuildEvent" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="Always" DisplayName="항상" />
+    <EnumValue Name="OnBuildSuccess" DisplayName="빌드가 성공한 경우" IsDefault="True" />
+    <EnumValue Name="OnOutputUpdated" DisplayName="빌드에서 프로젝트 출력을 업데이트한 경우" />
+  </EnumProperty>
+  <!-- CSharp Project Configuration Properties-->
+  <StringProperty Name="LangVersion" DisplayName="CSharp 언어 버전" Visible="False" />
+  <StringProperty Name="CodeAnalysisRuleSet" DisplayName=" 코드 분석 규칙 집합" Visible="False" />
+  <!-- F# specific properties-->
+  <BoolProperty Name="Tailcalls" Visible="False" />
 </Rule>

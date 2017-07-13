@@ -23,7 +23,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         public IActiveConfiguredProjectsProviderFactory ImplementGetActiveConfiguredProjectsMapAsync(ImmutableDictionary<string, ConfiguredProject> configuredProjects) 
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             _mock.Setup(x => x.GetActiveConfiguredProjectsMapAsync())
+#pragma warning restore CS0618 // Type or member is obsolete
                               .Returns(Task.FromResult(configuredProjects));
             return this;
         }

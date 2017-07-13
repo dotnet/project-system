@@ -4,7 +4,7 @@
     Name="ResolvedCOMReference"
     DisplayName="Resolved COM Reference"
     PageTemplate="generic"
-    Description="Resolved reference"
+    Description="COM Reference Properties"
     xmlns="http://schemas.microsoft.com/build/2009/properties">
     <Rule.DataSource>
         <DataSource Persistence="ResolvedReference" ItemType="COMReference" HasConfigurationCondition="False" 
@@ -122,4 +122,5 @@
     <StringProperty Name="FusionName" Visible="False" ReadOnly="True" />
     <StringProperty Name="Name" Visible="false" ReadOnly="True" />
     <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
+    <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
 </Rule>

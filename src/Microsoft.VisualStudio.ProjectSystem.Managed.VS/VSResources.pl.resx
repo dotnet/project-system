@@ -277,6 +277,9 @@ Aby debugować ten projekt, dodaj projekt wykonywalny do tego rozwiązania, któ
     <value>Nie można migrować projektu XProj {0}. Element „{1}” zakończył działanie z kodem błędu {2}.</value>
   </data>
   <data name="DebugFrameworkMenuText" xml:space="preserve">
-    <value>Framework ({0})</value>
+    <value>Platforma ({0})</value>
+  </data>
+  <data name="OutputWindowPaneTitle" xml:space="preserve">
+    <value>Projekt</value>
   </data>
 </root>
