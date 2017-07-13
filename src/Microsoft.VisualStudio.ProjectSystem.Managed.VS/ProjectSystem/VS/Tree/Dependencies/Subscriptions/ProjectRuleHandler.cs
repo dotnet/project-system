@@ -116,6 +116,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             {
                 foreach (var dependency in target.Value.TopLevelDependencies)
                 {
+                    // We're only interested in project dependencies
+                    if (!StringComparers.DependencyProviderTypes.Equals(dependency.ProviderType, ProviderTypeString))
+                        continue;
+
                     if (otherProjectPath.Equals(dependency.GetActualPath(projectPath)))
                     {
                         dependencyThatNeedChange.Add(dependency);
