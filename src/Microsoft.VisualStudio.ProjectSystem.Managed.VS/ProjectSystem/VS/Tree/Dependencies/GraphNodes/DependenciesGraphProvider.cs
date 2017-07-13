@@ -53,11 +53,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                                     ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast);
         }
 
-        private readonly GraphCommand ContainsGraphCommand = new GraphCommand(
+        private static readonly GraphCommand[] ContainsGraphCommand = new[] { new GraphCommand(
                 GraphCommandDefinition.Contains,
                 targetCategories: null,
                 linkCategories: new[] { GraphCommonSchema.Contains },
-                trackChanges: true);
+                trackChanges: true) };
 
         private readonly object _knownIconsLock = new object();
 
@@ -126,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         /// </summary>
         public IEnumerable<GraphCommand> GetCommands(IEnumerable<GraphNode> nodes)
         {
-            yield return ContainsGraphCommand;
+            return ContainsGraphCommand;
         }
 
         /// <summary>
