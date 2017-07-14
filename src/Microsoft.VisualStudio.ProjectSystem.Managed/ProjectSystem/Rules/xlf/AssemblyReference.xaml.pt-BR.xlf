@@ -70,33 +70,33 @@
       </trans-unit>
       <trans-unit id="StringProperty|Identity|DisplayName">
         <source>Identity</source>
-        <target state="new">Identity</target>
-        <note></note>
+        <target state="translated">Identidade</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Identity|Description">
         <source>Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</source>
-        <target state="new">Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</target>
-        <note></note>
+        <target state="translated">Identidade de segurança do assembly referenciado (veja System.Reflection.Assembly.Evidence ou System.Security.Policy.Evidence).</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|DisplayName">
         <source>Path</source>
-        <target state="new">Path</target>
-        <note></note>
+        <target state="translated">Caminho</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|Description">
         <source>Location of the file being referenced.</source>
-        <target state="new">Location of the file being referenced.</target>
-        <note></note>
+        <target state="translated">Localização do arquivo que está sendo referenciado.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
-        <target state="new">Version</target>
-        <note></note>
+        <target state="translated">Versão</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|Description">
         <source>Version of reference.</source>
-        <target state="new">Version of reference.</target>
-        <note></note>
+        <target state="translated">Versão de referência.</target>
+        <note />
       </trans-unit>
     </body>
   </file>

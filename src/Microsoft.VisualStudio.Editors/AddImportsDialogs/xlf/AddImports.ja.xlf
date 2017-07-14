@@ -41,7 +41,7 @@
       </trans-unit>
       <trans-unit id="AddImportsExtensionMethodsMainFormatString">
         <source>Importing '{0}' would change the meaning of other code in your file, including calls to extension methods. Click OK to correct '{1}' by changing it to '{2}' </source>
-        <target state="translated">'{0}' をインポートすると、拡張メソッドの呼び出しを含めて、ファイル内の他のコードの意味が変わる場合があります。'{1}' を '{2}' に変更して修正するには、[OK] をクリックします。 </target>
+        <target state="translated">{0}' をインポートすると、拡張メソッドの呼び出しを含めて、ファイル内の他のコードの意味が変わります。'{1}' を '{2}' に変更して修正するには、[OK] をクリックします。 </target>
         <note />
       </trans-unit>
     </body>

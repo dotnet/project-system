@@ -55,18 +55,18 @@
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|DisplayName">
         <source>Include Assets</source>
-        <target state="needs-review-translation">IncludeAssets</target>
-        <note></note>
+        <target state="translated">Uwzględnij zasoby</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
         <source>Assets to include from this reference</source>
-        <target state="translated">Zasoby do zawarcia z tego odwołania</target>
+        <target state="translated">Zasoby do uwzględnienia z tego odwołania</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
         <source>Exclude Assets</source>
-        <target state="needs-review-translation">ExcludeAssets</target>
-        <note></note>
+        <target state="translated">Wyklucz zasoby</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
         <source>Assets to exclude from this reference</source>
@@ -75,8 +75,8 @@
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
         <source>Private Assets</source>
-        <target state="needs-review-translation">PrivateAssets</target>
-        <note></note>
+        <target state="translated">Prywatne zasoby</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">
         <source>Assets that are private in this reference</source>
@@ -85,73 +85,73 @@
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">
         <source>Aliases</source>
-        <target state="new">Aliases</target>
-        <note></note>
+        <target state="translated">Aliasy</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|Description">
         <source>A comma-delimited list of aliases to this reference.</source>
-        <target state="new">A comma-delimited list of aliases to this reference.</target>
-        <note></note>
+        <target state="translated">Rozdzielona przecinkami lista aliasów do tego odwołania.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Culture|DisplayName">
         <source>Culture</source>
-        <target state="new">Culture</target>
-        <note></note>
+        <target state="translated">Kultura</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Culture|Description">
         <source>The value of the culture field from the assembly metadata.</source>
-        <target state="new">The value of the culture field from the assembly metadata.</target>
-        <note></note>
+        <target state="translated">Wartość pola kultury z metadanych zestawu.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|DisplayName">
         <source>Description</source>
-        <target state="new">Description</target>
-        <note></note>
+        <target state="translated">Opis</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|Description">
         <source>The value of the Title field from the assembly metadata.</source>
-        <target state="new">The value of the Title field from the assembly metadata.</target>
-        <note></note>
+        <target state="translated">Wartość pola Tytuł z metadanych zestawu.</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EmbedInteropTypes|DisplayName">
         <source>Embed Interop Types</source>
-        <target state="new">Embed Interop Types</target>
-        <note></note>
+        <target state="translated">Osadź typy międzyoperacyjne</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EmbedInteropTypes|Description">
         <source>Indicates whether types defined in this assembly will be embedded into the target assembly.</source>
-        <target state="new">Indicates whether types defined in this assembly will be embedded into the target assembly.</target>
-        <note></note>
+        <target state="translated">Wskazuje, czy typy zdefiniowane w tym zestawie będą osadzone w zestawie docelowym.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Identity|DisplayName">
         <source>Identity</source>
-        <target state="new">Identity</target>
-        <note></note>
+        <target state="translated">Tożsamość</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Identity|Description">
         <source>Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</source>
-        <target state="new">Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</target>
-        <note></note>
+        <target state="translated">Tożsamość zabezpieczeń zestawu, do którego się odwoływano (zobacz System.Reflection.Assembly.Evidence lub System.Security.Policy.Evidence).</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|DisplayName">
         <source>Path</source>
-        <target state="new">Path</target>
-        <note></note>
+        <target state="translated">Ścieżka</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|Description">
         <source>Location of the file being referenced.</source>
-        <target state="new">Location of the file being referenced.</target>
-        <note></note>
+        <target state="translated">Lokalizacja pliku, którego dotyczy odwołanie.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
-        <target state="new">Version</target>
-        <note></note>
+        <target state="translated">Wersja</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|Description">
         <source>Version of reference.</source>
-        <target state="new">Version of reference.</target>
-        <note></note>
+        <target state="translated">Wersja odwołania.</target>
+        <note />
       </trans-unit>
     </body>
   </file>

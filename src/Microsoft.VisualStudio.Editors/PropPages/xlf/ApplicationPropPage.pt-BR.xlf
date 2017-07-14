@@ -55,8 +55,8 @@
       </trans-unit>
       <trans-unit id="AppIconBrowse.Text">
         <source>Browse...</source>
-        <target state="needs-review-translation">...</target>
-        <note></note>
+        <target state="translated">Procurar...</target>
+        <note />
       </trans-unit>
       <trans-unit id="ApplicationManifestLabel.Text">
         <source>Manifest:</source>
@@ -70,8 +70,8 @@
       </trans-unit>
       <trans-unit id="Win32ResourceFileBrowse.Text">
         <source>Browse...</source>
-        <target state="needs-review-translation">...</target>
-        <note></note>
+        <target state="translated">Procurar...</target>
+        <note />
       </trans-unit>
       <trans-unit id="ResourcesGroupBox.Text">
         <source>Resources</source>

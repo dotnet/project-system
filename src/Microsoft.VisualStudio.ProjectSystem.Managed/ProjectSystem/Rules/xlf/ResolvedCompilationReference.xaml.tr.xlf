@@ -5,23 +5,23 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ResolvedCompilationReference.xaml" />
       <trans-unit id="Rule|ResolvedCompilationReference|DisplayName">
         <source>Resolved Compilation Reference</source>
-        <target state="new">Resolved Compilation Reference</target>
-        <note></note>
+        <target state="translated">Çözümlenen Derleme Başvurusu</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedCompilationReference|Description">
         <source>Resolved Compilation Reference Properties</source>
-        <target state="new">Resolved Compilation Reference Properties</target>
-        <note></note>
+        <target state="translated">Çözümlenen Derleme Başvurusu Özellikleri</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|DisplayName">
         <source>Path</source>
-        <target state="new">Path</target>
-        <note></note>
+        <target state="translated">Yol</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|Description">
         <source>Location of the referenced assembly.</source>
-        <target state="new">Location of the referenced assembly.</target>
-        <note></note>
+        <target state="translated">Başvurulan bütünleştirilmiş kodun konumu.</target>
+        <note />
       </trans-unit>
     </body>
   </file>

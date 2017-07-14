@@ -80,7 +80,7 @@
       </trans-unit>
       <trans-unit id="AssemblyVersionMinorTextBox.AccessibleName">
         <source>Minor</source>
-        <target state="translated">Secundária</target>
+        <target state="translated">Secundário</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMajorTextBox.AccessibleName">
@@ -100,7 +100,7 @@
       </trans-unit>
       <trans-unit id="FileVersionMinorTextBox.AccessibleName">
         <source>Minor</source>
-        <target state="translated">Secundária</target>
+        <target state="translated">Secundário</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMajorTextBox.AccessibleName">

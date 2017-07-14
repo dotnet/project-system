@@ -5,7 +5,7 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS/VisualBasicVSResources.resx" />
       <trans-unit id="ImportsFromTargetCannotBeDeleted">
         <source>{0} - Import comes fom target file. This import cannot be removed.</source>
-        <target state="translated">{0} -대상 파일에서 가져옵니다. 이 가져오기는 제거할 수 없습니다.</target>
+        <target state="translated">{0} - 대상 파일에서 가져옵니다. 이 가져오기는 제거할 수 없습니다.</target>
         <note />
       </trans-unit>
     </body>

@@ -145,12 +145,12 @@
       </trans-unit>
       <trans-unit id="LaunchURL">
         <source>Launch browser:</source>
-        <target state="needs-review-translation">URL-адрес для запуска:</target>
-        <note></note>
+        <target state="translated">Запустить браузер:</target>
+        <note />
       </trans-unit>
       <trans-unit id="NameHeader">
         <source>Name</source>
-        <target state="translated">Название</target>
+        <target state="translated">Имя</target>
         <note />
       </trans-unit>
       <trans-unit id="NewBtn">

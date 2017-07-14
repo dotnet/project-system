@@ -5,33 +5,33 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/CopyUpToDateMarker.xaml" />
       <trans-unit id="Rule|CopyUpToDateMarker|DisplayName">
         <source>Up-to-date check marker for reference assemblies</source>
-        <target state="new">Up-to-date check marker for reference assemblies</target>
-        <note></note>
+        <target state="translated">參考組件的最新版檢查標記</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|CopyUpToDateMarker|Description">
         <source>File Properties</source>
-        <target state="new">File Properties</target>
-        <note></note>
+        <target state="translated">檔案屬性</target>
+        <note />
       </trans-unit>
       <trans-unit id="Category|Advanced|DisplayName">
         <source>Advanced</source>
-        <target state="new">Advanced</target>
-        <note></note>
+        <target state="translated">進階</target>
+        <note />
       </trans-unit>
       <trans-unit id="Category|Misc|DisplayName">
         <source>Misc</source>
-        <target state="new">Misc</target>
-        <note></note>
+        <target state="translated">其他</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">
         <source>Full Path</source>
-        <target state="new">Full Path</target>
-        <note></note>
+        <target state="translated">完整路徑</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|Description">
         <source>Location of the file.</source>
-        <target state="new">Location of the file.</target>
-        <note></note>
+        <target state="translated">檔案的位置。</target>
+        <note />
       </trans-unit>
     </body>
   </file>

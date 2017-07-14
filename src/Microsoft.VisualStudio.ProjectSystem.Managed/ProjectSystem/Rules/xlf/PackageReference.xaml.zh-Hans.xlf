@@ -70,13 +70,13 @@
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
         <source>NoWarn</source>
-        <target state="new">NoWarn</target>
-        <note></note>
+        <target state="translated">NoWarn</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
         <source>Comma-delimited list of warnings that should be suppressed for this package</source>
-        <target state="new">Comma-delimited list of warnings that should be suppressed for this package</target>
-        <note></note>
+        <target state="translated">应为此包取消的警告逗号分隔列表</target>
+        <note />
       </trans-unit>
     </body>
   </file>

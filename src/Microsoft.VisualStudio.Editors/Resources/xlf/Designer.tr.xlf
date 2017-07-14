@@ -523,7 +523,7 @@ Bu ayarın değiştirilmesi, tüm yapılandırmaların ayarlarını sıfırlar.<
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_Excluded">
         <source>Exclude</source>
-        <target state="translated">Hariç Tut</target>
+        <target state="translated">Dışla</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_FullTrustToolTip">
