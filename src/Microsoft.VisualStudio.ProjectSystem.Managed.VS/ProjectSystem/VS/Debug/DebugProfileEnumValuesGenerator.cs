@@ -12,7 +12,6 @@ using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
-
     /// <summary>
     /// Provides the IEnumValue's for the ActiveDebugProfile property. This is what is used to drive
     /// the debug target selection dropdown.
@@ -23,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// <summary>
         /// The listed values.
         /// </summary>
-        private AsyncLazy<ICollection<IEnumValue>> listedValues;
+        private AsyncLazy<ICollection<IEnumValue>> _listedValues;
 
         /// <summary>
         /// Create a new instance of the class.
@@ -35,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Requires.NotNull(profileProvider, nameof(profileProvider));
             Requires.NotNull(threadingService, nameof(threadingService));
 
-            this.listedValues = new AsyncLazy<ICollection<IEnumValue>>(delegate
+            this._listedValues = new AsyncLazy<ICollection<IEnumValue>>(delegate
             {
                 var curSnapshot = profileProvider.CurrentSnapshot;
                 if (curSnapshot != null)
@@ -53,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public async Task<ICollection<IEnumValue>> GetListedValuesAsync()
         {
-            return await listedValues.GetValueAsync().ConfigureAwait(true);
+            return await _listedValues.GetValueAsync().ConfigureAwait(true);
         }
 
         /// <summary>
@@ -69,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public async Task<IEnumValue> TryCreateEnumValueAsync(string userSuppliedValue)
         {
-            return (await listedValues.GetValueAsync().ConfigureAwait(true))
+            return (await _listedValues.GetValueAsync().ConfigureAwait(true))
             .FirstOrDefault(v => LaunchProfile.IsSameProfileName(v.Name, userSuppliedValue));
         }
 
