@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Requires.NotNull(profileProvider, nameof(profileProvider));
             Requires.NotNull(threadingService, nameof(threadingService));
 
-            this._listedValues = new AsyncLazy<ICollection<IEnumValue>>(delegate
+            _listedValues = new AsyncLazy<ICollection<IEnumValue>>(delegate
             {
                 var curSnapshot = profileProvider.CurrentSnapshot;
                 if (curSnapshot != null)
