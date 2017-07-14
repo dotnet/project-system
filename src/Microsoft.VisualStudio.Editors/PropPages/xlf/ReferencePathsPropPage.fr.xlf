@@ -30,8 +30,8 @@
       </trans-unit>
       <trans-unit id="FolderBrowse.Text">
         <source>Browse...</source>
-        <target state="needs-review-translation">...</target>
-        <note></note>
+        <target state="translated">Parcourir...</target>
+        <note />
       </trans-unit>
       <trans-unit id="MoveUp.AccessibleName">
         <source>Move up</source>

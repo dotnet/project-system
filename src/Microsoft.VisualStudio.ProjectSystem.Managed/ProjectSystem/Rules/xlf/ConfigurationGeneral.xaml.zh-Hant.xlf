@@ -150,8 +150,8 @@
       </trans-unit>
       <trans-unit id="BoolProperty|DisableFastUpToDateCheck|DisplayName">
         <source>Disable Fast Up To Date Check</source>
-        <target state="new">Disable Fast Up To Date Check</target>
-        <note></note>
+        <target state="translated">停用快速最新版檢查</target>
+        <note />
       </trans-unit>
     </body>
   </file>

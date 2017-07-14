@@ -240,8 +240,8 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|StartupObject|DisplayName">
         <source>Type that contains the entry point</source>
-        <target state="new">Type that contains the entry point</target>
-        <note></note>
+        <target state="translated">진입점을 포함하는 형식입니다.</target>
+        <note />
       </trans-unit>
     </body>
   </file>

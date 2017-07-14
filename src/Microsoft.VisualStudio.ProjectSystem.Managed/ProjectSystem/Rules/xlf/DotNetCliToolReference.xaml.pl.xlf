@@ -35,17 +35,17 @@
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|DisplayName">
         <source>IncludeAssets</source>
-        <target state="translated">IncludeAssets</target>
+        <target state="translated">Uwzględnij zasoby</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
         <source>Assets to include from this reference</source>
-        <target state="translated">Zasoby do zawarcia z tego odwołania</target>
+        <target state="translated">Zasoby do uwzględnienia z tego odwołania</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
         <source>ExcludeAssets</source>
-        <target state="translated">ExcludeAssets</target>
+        <target state="translated">Wyklucz zasoby</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
@@ -55,7 +55,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
         <source>PrivateAssets</source>
-        <target state="translated">PrivateAssets</target>
+        <target state="translated">Prywatne zasoby</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">

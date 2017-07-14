@@ -175,53 +175,53 @@
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocalSatelliteAssemblies|DisplayName">
         <source>Copy Local Satellite Assemblies</source>
-        <target state="new">Copy Local Satellite Assemblies</target>
-        <note></note>
+        <target state="translated">复制本地附属程序集</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocalSatelliteAssemblies|Description">
         <source>Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory.</source>
-        <target state="new">Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory.</target>
-        <note></note>
+        <target state="translated">指示是否应将引用目标的附属程序集复制到此项目的输出目录中。</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
         <source>Exclude Assets</source>
-        <target state="new">Exclude Assets</target>
-        <note></note>
+        <target state="translated">排除资产</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
         <source>Assets to exclude from this reference</source>
-        <target state="new">Assets to exclude from this reference</target>
-        <note></note>
+        <target state="translated">要从此引用中排除的资产</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|DisplayName">
         <source>Include Assets</source>
-        <target state="new">Include Assets</target>
-        <note></note>
+        <target state="translated">包括资产</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
         <source>Assets to include from this reference</source>
-        <target state="new">Assets to include from this reference</target>
-        <note></note>
+        <target state="translated">要从此引用中包括的资产</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ReferenceOutputAssembly|DisplayName">
         <source>Reference Output Assembly</source>
-        <target state="new">Reference Output Assembly</target>
-        <note></note>
+        <target state="translated">引用输出程序集</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ReferenceOutputAssembly|Description">
         <source>A value indicating whether the compiler should include a reference to the target project's primary output assembly.</source>
-        <target state="new">A value indicating whether the compiler should include a reference to the target project's primary output assembly.</target>
-        <note></note>
+        <target state="translated">该值指示编译器是否应包括对目标项目主输出程序集的引用。</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
         <source>Private Assets</source>
-        <target state="new">Private Assets</target>
-        <note></note>
+        <target state="translated">私有资产</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">
         <source>Assets that are private in this reference</source>
-        <target state="new">Assets that are private in this reference</target>
-        <note></note>
+        <target state="translated">此引用中的私有资产</target>
+        <note />
       </trans-unit>
     </body>
   </file>

@@ -35,7 +35,7 @@
       </trans-unit>
       <trans-unit id="Label1.Text">
         <source>Specify XML documents to infer XML Schema set</source>
-        <target state="translated">XML スキーマ セットを生成する XML ドキュメントを指定する</target>
+        <target state="translated">XML スキーマ セットを推論する XML ドキュメントを指定する</target>
         <note />
       </trans-unit>
       <trans-unit id="_addFromFileButton.AccessibleName">
@@ -75,7 +75,7 @@
       </trans-unit>
       <trans-unit id="$this.Text">
         <source>Infer XML Schema set from XML documents</source>
-        <target state="translated">XML ドキュメントからの XML スキーマ セットの生成</target>
+        <target state="translated">XML ドキュメントからの XML スキーマ セットの推論</target>
         <note />
       </trans-unit>
     </body>

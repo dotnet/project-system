@@ -473,7 +473,7 @@ La modification de ce paramètre réinitialise les paramètres dans toutes les c
       </trans-unit>
       <trans-unit id="PPG_MgdStatus_Building">
         <source>Building...</source>
-        <target state="translated">Génération..</target>
+        <target state="translated">Génération...</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_MgdStatus_Analyzing">

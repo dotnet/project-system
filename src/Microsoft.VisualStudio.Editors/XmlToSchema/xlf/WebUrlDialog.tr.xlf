@@ -20,7 +20,7 @@
       </trans-unit>
       <trans-unit id="$this.Text">
         <source>Add an XML document from the Web</source>
-        <target state="translated">Webden bir XML belgesi ekleyin</target>
+        <target state="translated">Web’den bir XML belgesi ekleyin</target>
         <note />
       </trans-unit>
     </body>

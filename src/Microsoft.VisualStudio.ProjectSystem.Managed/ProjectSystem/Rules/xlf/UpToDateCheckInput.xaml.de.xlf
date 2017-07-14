@@ -5,33 +5,33 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/UpToDateCheckInput.xaml" />
       <trans-unit id="Rule|UpToDateCheckInput|DisplayName">
         <source>Up-to-date check input</source>
-        <target state="new">Up-to-date check input</target>
-        <note></note>
+        <target state="translated">Aktualitätsprüfungseingabe</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|UpToDateCheckInput|Description">
         <source>File Properties</source>
-        <target state="new">File Properties</target>
-        <note></note>
+        <target state="translated">Dateieigenschaften</target>
+        <note />
       </trans-unit>
       <trans-unit id="Category|Advanced|DisplayName">
         <source>Advanced</source>
-        <target state="new">Advanced</target>
-        <note></note>
+        <target state="translated">Erweitert</target>
+        <note />
       </trans-unit>
       <trans-unit id="Category|Misc|DisplayName">
         <source>Misc</source>
-        <target state="new">Misc</target>
-        <note></note>
+        <target state="translated">Sonst.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">
         <source>Full Path</source>
-        <target state="new">Full Path</target>
-        <note></note>
+        <target state="translated">Vollständiger Pfad</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|Description">
         <source>Location of the file.</source>
-        <target state="new">Location of the file.</target>
-        <note></note>
+        <target state="translated">Speicherort der Datei.</target>
+        <note />
       </trans-unit>
     </body>
   </file>

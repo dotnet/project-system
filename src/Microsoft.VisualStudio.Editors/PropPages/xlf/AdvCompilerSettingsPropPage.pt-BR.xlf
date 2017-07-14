@@ -65,7 +65,7 @@
       </trans-unit>
       <trans-unit id="EnableGatekeeperAudit.Text">
         <source>Enable static analysis for .NET Native</source>
-        <target state="translated">Habilitar análise estática para .NET Nativo</target>
+        <target state="translated">Habilitar análise estática para .NET Native</target>
         <note />
       </trans-unit>
     </body>

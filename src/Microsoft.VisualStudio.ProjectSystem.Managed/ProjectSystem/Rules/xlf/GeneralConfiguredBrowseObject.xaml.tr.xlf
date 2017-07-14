@@ -240,7 +240,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|CodeAnalysisRuleSet|DisplayName">
         <source> Code Analysis Rule set</source>
-        <target state="translated">Kod Analizi Kural Kümesi</target>
+        <target state="translated"> Kod Analizi Kural Kümesi</target>
         <note />
       </trans-unit>
     </body>

@@ -5,8 +5,8 @@
       <group id="src/Microsoft.VisualStudio.Editors/VSPackage.resx" />
       <trans-unit id="1001">
         <source>.NET Core</source>
-        <target state="new">.NET Core</target>
-        <note></note>
+        <target state="translated">.NET Core</target>
+        <note />
       </trans-unit>
     </body>
   </file>
