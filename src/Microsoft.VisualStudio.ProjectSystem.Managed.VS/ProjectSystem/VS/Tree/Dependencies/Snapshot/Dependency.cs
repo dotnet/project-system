@@ -293,7 +293,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Requires.NotNullOrEmpty(providerType, nameof(providerType));
             Requires.NotNullOrEmpty(modelId, nameof(modelId));
 
-            return $"{targetFramework.ShortName}\\{providerType}\\{Normalize(modelId)}".TrimEnd('\\');
+            return $"{targetFramework.ShortName}\\{providerType}\\{Normalize(modelId)}".TrimEnd(CommonConstants.BackSlashDelimiter);
         }
     }
 }
