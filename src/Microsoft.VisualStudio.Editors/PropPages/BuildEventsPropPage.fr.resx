@@ -121,13 +121,13 @@
     <value>Ligne de commande de l'événement p&amp;ré-build :</value>
   </data>
   <data name="btnPreBuildBuilder.Text" xml:space="preserve">
-    <value>Modif&amp;ier pré-build...</value>
+    <value>M&amp;odifier pré-build...</value>
   </data>
   <data name="lblPostBuildEventCommandLine.Text" xml:space="preserve">
     <value>Ligne de commande de l'événement p&amp;ost-build :</value>
   </data>
   <data name="btnPostBuildBuilder.Text" xml:space="preserve">
-    <value>Modifier pré-b&amp;uild...</value>
+    <value>&amp;Modifier post-build...</value>
   </data>
   <data name="lblRunPostBuildEvent.Text" xml:space="preserve">
     <value>Exécuter l'évé&amp;nement post-build :</value>

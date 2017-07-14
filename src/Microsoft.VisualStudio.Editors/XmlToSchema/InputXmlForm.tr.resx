@@ -136,7 +136,7 @@
     <value>&amp;XML yaz veya yapıştır</value>
   </data>
   <data name="Label1.Text" xml:space="preserve">
-    <value>XML Şema kümesini çıkarsama yapabilmek için XML belgesi belirleyin</value>
+    <value>XML Şema kümesinin çıkarsanacağı XML belgelerini belirleyin</value>
   </data>
   <data name="_addFromFileButton.AccessibleName" xml:space="preserve">
     <value>Dosyadan Ekle</value>
@@ -160,6 +160,6 @@
     <value>XML Dosyaları Ekle</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>XML belgelerinden XML Şema kümesi çıkarsama yapma</value>
+    <value>XML belgelerinden XML Şema kümesi çıkarsama</value>
   </data>
 </root>

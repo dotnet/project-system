@@ -15,7 +15,7 @@
       <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" PersistedName="Private" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
-  <BoolProperty Name="CopyLocalSatelliteAssemblies" DisplayName="Copy Local Satellite Assemblies" Description="Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory." />
+  <BoolProperty Name="CopyLocalSatelliteAssemblies" DisplayName="Kopiuj lokalne zestawy satelickie" Description="Wskazuje, czy zestawy satelickie docelowego odwołania powinny być kopiowane do katalogu wyjściowego tego projektu." />
   <StringProperty Name="Culture" ReadOnly="True" DisplayName="Kultura" Description="Wartość pola kultury z metadanych zestawu."></StringProperty>
   <StringProperty Name="Description" ReadOnly="True" DisplayName="Opis" Description="Wartość pola Tytuł z metadanych zestawu."></StringProperty>
   <BoolProperty Name="EmbedInteropTypes" DisplayName="Osadź typy międzyoperacyjne" Description="Wskazuje, czy typy zdefiniowane w tym zestawie będą osadzone w zestawie docelowym.">
@@ -23,15 +23,15 @@
       <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
-  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="Exclude Assets" Description="Assets to exclude from this reference" />
+  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="Wyklucz zasoby" Description="Zasoby do wykluczenia z tego odwołania" />
   <StringProperty Name="Identity" ReadOnly="True" DisplayName="Tożsamość" Description="Tożsamość zabezpieczeń zestawu, do którego się odwoływano (zobacz System.Reflection.Assembly.Evidence lub System.Security.Policy.Evidence).">
     <StringProperty.DataSource>
       <DataSource PersistedName="{}{Identity}" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="Include Assets" Description="Assets to include from this reference" />
-  <BoolProperty Name="ReferenceOutputAssembly" DisplayName="Reference Output Assembly" Description="A value indicating whether the compiler should include a reference to the target project's primary output assembly." />
-  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="Private Assets" Description="Assets that are private in this reference" />
+  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="Uwzględnij zasoby" Description="Zasoby do uwzględnienia z tego odwołania" />
+  <BoolProperty Name="ReferenceOutputAssembly" DisplayName="Odwołanie do zestawu wyjściowego" Description="Wartość wskazująca, czy kompilator powinien uwzględniać odwołanie do głównego zestawu wyjściowego projektu docelowego." />
+  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="Prywatne zasoby" Description="Prywatne zasoby w tym odwołaniu" />
   <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Ścieżka" Description="Lokalizacja pliku, którego dotyczy odwołanie.">
     <StringProperty.DataSource>
       <DataSource PersistedName="Identity" SourceOfDefaultValue="AfterContext" />

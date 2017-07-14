@@ -15,7 +15,7 @@
       <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" PersistedName="Private" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
-  <BoolProperty Name="CopyLocalSatelliteAssemblies" DisplayName="Copy Local Satellite Assemblies" Description="Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory." />
+  <BoolProperty Name="CopyLocalSatelliteAssemblies" DisplayName="ローカルのサテライト アセンブリをコピー" Description="参照先のサテライト アセンブリをこのプロジェクトの出力ディレクトリにコピーする必要があるかどうかを示します。" />
   <StringProperty Name="Culture" ReadOnly="True" DisplayName="カルチャ" Description="アセンブリ メタデータの Culture フィールドの値です。"></StringProperty>
   <StringProperty Name="Description" ReadOnly="True" DisplayName="説明" Description="アセンブリ メタデータの Title フィールドの値です。"></StringProperty>
   <BoolProperty Name="EmbedInteropTypes" DisplayName="相互運用型の埋め込み" Description="このアセンブリ内で定義される型をターゲット アセンブリに埋め込むかどうかを示します。">
@@ -23,15 +23,15 @@
       <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
-  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="Exclude Assets" Description="Assets to exclude from this reference" />
+  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="Exclude Assets" Description="この参照から除外する資産" />
   <StringProperty Name="Identity" ReadOnly="True" DisplayName="ID" Description="参照されたアセンブリのセキュリティ ID です。System.Reflection.Assembly.Evidence または System.Security.Policy.Evidence を参照してください。">
     <StringProperty.DataSource>
       <DataSource PersistedName="{}{Identity}" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="Include Assets" Description="Assets to include from this reference" />
-  <BoolProperty Name="ReferenceOutputAssembly" DisplayName="Reference Output Assembly" Description="A value indicating whether the compiler should include a reference to the target project's primary output assembly." />
-  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="Private Assets" Description="Assets that are private in this reference" />
+  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="Include Assets" Description="この参照から含める資産" />
+  <BoolProperty Name="ReferenceOutputAssembly" DisplayName="参照出力アセンブリ" Description="コンパイラに対象プロジェクトのプライマリ出力アセンブリへの参照が含まれているかどうかを示す値です。" />
+  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="Private Assets" Description="この参照で非公開のアセット" />
   <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="パス" Description="参照されているファイルの場所です。">
     <StringProperty.DataSource>
       <DataSource PersistedName="Identity" SourceOfDefaultValue="AfterContext" />

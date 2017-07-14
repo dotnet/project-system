@@ -22,6 +22,6 @@
   <StringProperty Name="FrameworkName" Visible="False" ReadOnly="True" />
   <StringProperty Name="FrameworkVersion" Visible="False" ReadOnly="True" />
   <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
-  <StringProperty Name="NoWarn" Visible="True" DisplayName="NoWarn" Description="Comma-delimited list of warnings that should be suppressed for this package" />
+  <StringProperty Name="NoWarn" Visible="True" DisplayName="NoWarn" Description="Lista de avisos delimitada por vírgulas que deve ser suprimida para este pacote" />
   <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
 </Rule>

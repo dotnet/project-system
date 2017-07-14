@@ -12,12 +12,12 @@
     </BoolProperty.DataSource>
   </BoolProperty>
   <BoolProperty Name="EmbedInteropTypes" DisplayName="Vložit typy spolupráce" Description="Určuje, zda typy definované v tomto sestavení budou vloženy do cílového sestavení." />
-  <StringProperty Name="Identity" ReadOnly="True" DisplayName="Identity" Description="Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).">
+  <StringProperty Name="Identity" ReadOnly="True" DisplayName="Identita" Description="Identita zabezpečení odkazovaného sestavení (viz System.Reflection.Assembly.Evidence nebo System.Security.Policy.Evidence)">
     <StringProperty.DataSource>
       <DataSource PersistedName="{}{Identity}" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Path" Description="Location of the file being referenced.">
+  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Cesta" Description="Umístění odkazovaného souboru">
     <StringProperty.DataSource>
       <DataSource PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
@@ -27,7 +27,7 @@
       <DataSource Persistence="AssemblyReference" ItemType="Reference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
-  <StringProperty Name="Version" ReadOnly="True" DisplayName="Version" Description="Version of reference."></StringProperty>
+  <StringProperty Name="Version" ReadOnly="True" DisplayName="Verze" Description="Verze odkazu"></StringProperty>
   <!-- Hidden properties -->
   <StringProperty Name="HintPath" Visible="false" />
   <StringProperty Name="ImageRuntime" DisplayName="Verze modulu runtime" Description="Verze modulu CLR, na kterou cílí toto sestavení" Visible="False" ReadOnly="True" />

@@ -121,7 +121,7 @@
     <value>Cancelar</value>
   </data>
   <data name="ColumnHeader1.Text" xml:space="preserve">
-    <value>Tipo de origem</value>
+    <value>Tipo de Origem</value>
   </data>
   <data name="ColumnHeader2.Text" xml:space="preserve">
     <value>Local do Documento XML</value>
@@ -136,13 +136,13 @@
     <value>Digitar ou colar &amp;XML</value>
   </data>
   <data name="Label1.Text" xml:space="preserve">
-    <value>Especifique documentos XML para inferir conjunto de Esquemas XML</value>
+    <value>Especificar documentos XML para inferir conjunto de Esquemas XML</value>
   </data>
   <data name="_addFromFileButton.AccessibleName" xml:space="preserve">
-    <value>Adicionar de arquivo</value>
+    <value>Adicionar do Arquivo</value>
   </data>
   <data name="_addFromFileButton.Text" xml:space="preserve">
-    <value>Adicionar de &amp;arquivo</value>
+    <value>Adicionar do &amp;Arquivo</value>
   </data>
   <data name="_addFromWebButton.AccessibleName" xml:space="preserve">
     <value>Adicionar da Web</value>

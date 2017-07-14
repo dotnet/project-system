@@ -148,7 +148,7 @@
     <value>아이콘:</value>
   </data>
   <data name="AppIconBrowse.Text" xml:space="preserve">
-    <value>...</value>
+    <value>찾아보기...</value>
   </data>
   <data name="ApplicationManifestLabel.Text" xml:space="preserve">
     <value>매니페스트:</value>
@@ -157,7 +157,7 @@
     <value>리소스 파일(&amp;S):</value>
   </data>
   <data name="Win32ResourceFileBrowse.Text" xml:space="preserve">
-    <value>...</value>
+    <value>찾아보기...</value>
   </data>
   <data name="ResourcesGroupBox.Text" xml:space="preserve">
     <value>리소스</value>

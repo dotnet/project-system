@@ -163,7 +163,7 @@
     <value>Build</value>
   </data>
   <data name="AssemblyVersionMinorTextBox.AccessibleName" xml:space="preserve">
-    <value>Secundária</value>
+    <value>Secundário</value>
   </data>
   <data name="AssemblyVersionMajorTextBox.AccessibleName" xml:space="preserve">
     <value>Principal</value>
@@ -175,7 +175,7 @@
     <value>Build</value>
   </data>
   <data name="FileVersionMinorTextBox.AccessibleName" xml:space="preserve">
-    <value>Secundária</value>
+    <value>Secundário</value>
   </data>
   <data name="FileVersionMajorTextBox.AccessibleName" xml:space="preserve">
     <value>Principal</value>

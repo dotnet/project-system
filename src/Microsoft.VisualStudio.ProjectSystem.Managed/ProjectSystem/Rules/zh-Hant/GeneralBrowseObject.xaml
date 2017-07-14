@@ -49,7 +49,7 @@
       <DataSource Persistence="ProjectFileWithInterception" PersistedName="OutputTypeEx" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </IntProperty.DataSource>
   </IntProperty>
-  <DynamicEnumProperty Name="StartupObject" DisplayName="Type that contains the entry point" EnumProvider="StartupObjectsEnumProvider" Visible="False" />
+  <DynamicEnumProperty Name="StartupObject" DisplayName="包含進入點的類型" EnumProvider="StartupObjectsEnumProvider" Visible="False" />
   <StringProperty Name="ApplicationManifest" DisplayName="應用程式資訊清單" Visible="False">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception" PersistedName="ApplicationManifest" HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext" />

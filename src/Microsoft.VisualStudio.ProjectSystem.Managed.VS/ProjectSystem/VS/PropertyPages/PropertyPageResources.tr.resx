@@ -202,7 +202,7 @@
     <value>Başlatma:</value>
   </data>
   <data name="LaunchURL" xml:space="preserve">
-    <value>Başlatma URL’si:</value>
+    <value>Tarayıcıyı başlat:</value>
   </data>
   <data name="NameHeader" xml:space="preserve">
     <value>Ad</value>

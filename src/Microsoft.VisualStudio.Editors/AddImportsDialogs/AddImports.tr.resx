@@ -121,7 +121,7 @@
     <value>'{0}' öğesinin içeri aktarılması bu dosyadaki diğer tanımlayıcıların anlamını değiştirir. '{1}' hatasını düzeltmek ve diğer tanımlayıcıların anlamını korumak için aşağıdaki seçeneklerden birini belirleyin:</value>
   </data>
   <data name="ImportsAnywaysFormatString" xml:space="preserve">
-    <value>'{0}' öğesini &amp;içe aktar ve etkilenen tanımlayıcıları nitelendirin.</value>
+    <value>'{0}' öğesini &amp;içeri aktar ve etkilenen tanımlayıcıları nitelendir.</value>
   </data>
   <data name="QualifyCurrentLineFormatString" xml:space="preserve">
     <value>'{0}' öğesini içeri &amp;aktarma ancak '{1}' değerini '{2}' olarak değiştir.</value>

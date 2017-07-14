@@ -5,7 +5,7 @@
     <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <!-- Visible properties -->
-  <StringListProperty Name="Aliases" DisplayName="Aliases" Description="A comma-delimited list of aliases to this reference." Separator=",">
+  <StringListProperty Name="Aliases" DisplayName="別名" Description="這個參考的逗號分隔別名清單。" Separator=",">
     <StringListProperty.DataSource>
       <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringListProperty.DataSource>
@@ -16,28 +16,28 @@
     </BoolProperty.DataSource>
   </BoolProperty>
   <BoolProperty Name="CopyLocalSatelliteAssemblies" DisplayName="複製附屬組件到本機" Description="表示是否應將參考目標的附屬組件複製到這個專案的輸出目錄。" />
-  <StringProperty Name="Culture" ReadOnly="True" DisplayName="Culture" Description="The value of the culture field from the assembly metadata."></StringProperty>
-  <StringProperty Name="Description" ReadOnly="True" DisplayName="Description" Description="The value of the Title field from the assembly metadata."></StringProperty>
-  <BoolProperty Name="EmbedInteropTypes" DisplayName="Embed Interop Types" Description="Indicates whether types defined in this assembly will be embedded into the target assembly.">
+  <StringProperty Name="Culture" ReadOnly="True" DisplayName="文化特性" Description="來自組件中繼資料 [文化特性] 欄位的值。"></StringProperty>
+  <StringProperty Name="Description" ReadOnly="True" DisplayName="說明" Description="來自組件中繼資料的 [標題] 欄位的值。"></StringProperty>
+  <BoolProperty Name="EmbedInteropTypes" DisplayName="內嵌 Interop 類型" Description="指出此組件中所定義的類型是否將內嵌在目標組件中。">
     <BoolProperty.DataSource>
       <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
-  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="ExcludeAssets" Description="要從此參考排除的資產" />
-  <StringProperty Name="Identity" ReadOnly="True" DisplayName="Identity" Description="Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).">
+  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="排除資產" Description="要從此參考排除的資產" />
+  <StringProperty Name="Identity" ReadOnly="True" DisplayName="識別" Description="參考組件的安全性識別 (請參閱 System.Reflection.Assembly.Evidence 或 System.Security.Policy.Evidence)。">
     <StringProperty.DataSource>
       <DataSource PersistedName="{}{Identity}" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="IncludeAssets" Description="要從此參考包含的資產" />
+  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="包含資產" Description="要從此參考包含的資產" />
   <BoolProperty Name="ReferenceOutputAssembly" DisplayName="參考輸出組件" Description="這個值指出編譯器是否應該包含目標專案的主要輸出組件參考。" />
-  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="PrivateAssets" Description="此參考中的私用資產" />
-  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Path" Description="Location of the file being referenced.">
+  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="私用資產" Description="此參考中的私用資產" />
+  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="路徑" Description="正被參考之檔案的位置。">
     <StringProperty.DataSource>
       <DataSource PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="Version" ReadOnly="True" DisplayName="Version" Description="Version of reference."></StringProperty>
+  <StringProperty Name="Version" ReadOnly="True" DisplayName="版本" Description="參考的版本。"></StringProperty>
   <!-- Hidden properties -->
   <BoolProperty Name="LinkLibraryDependencies" Visible="False" />
   <StringProperty Name="Project" Visible="False" Description="方案藉以追蹤個別專案參考目標的 GUID" />

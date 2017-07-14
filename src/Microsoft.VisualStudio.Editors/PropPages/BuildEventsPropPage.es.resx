@@ -127,7 +127,7 @@
     <value>Línea de comandos del evento p&amp;osterior a la compilación:</value>
   </data>
   <data name="btnPostBuildBuilder.Text" xml:space="preserve">
-    <value>Edición po&amp;sterior a la compilación ...</value>
+    <value>Edición po&amp;sterior a la compilación...</value>
   </data>
   <data name="lblRunPostBuildEvent.Text" xml:space="preserve">
     <value>Eje&amp;cutar el evento posterior a la compilación:</value>

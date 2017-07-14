@@ -15,7 +15,7 @@
       <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" PersistedName="Private" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
-  <BoolProperty Name="CopyLocalSatelliteAssemblies" DisplayName="Copy Local Satellite Assemblies" Description="Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory." />
+  <BoolProperty Name="CopyLocalSatelliteAssemblies" DisplayName="Zkopírovat místní satelitní sestavení" Description="Určuje, zda se do výstupního adresáře tohoto projektu mají zkopírovat satelitní sestavení cíle odkazu." />
   <StringProperty Name="Culture" ReadOnly="True" DisplayName="Jazyková verze" Description="Hodnota pole Jazyková verze z metadat sestavení"></StringProperty>
   <StringProperty Name="Description" ReadOnly="True" DisplayName="Popis" Description="Hodnota pole Název z metadat sestavení"></StringProperty>
   <BoolProperty Name="EmbedInteropTypes" DisplayName="Vložit typy spolupráce" Description="Určuje, zda typy definované v tomto sestavení budou vloženy do cílového sestavení.">
@@ -23,15 +23,15 @@
       <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
-  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="Exclude Assets" Description="Assets to exclude from this reference" />
+  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="Vyloučit prostředky" Description="Prostředky vyloučené z tohoto odkazu" />
   <StringProperty Name="Identity" ReadOnly="True" DisplayName="Identita" Description="Identita zabezpečení odkazovaného sestavení (viz System.Reflection.Assembly.Evidence nebo System.Security.Policy.Evidence)">
     <StringProperty.DataSource>
       <DataSource PersistedName="{}{Identity}" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="Include Assets" Description="Assets to include from this reference" />
-  <BoolProperty Name="ReferenceOutputAssembly" DisplayName="Reference Output Assembly" Description="A value indicating whether the compiler should include a reference to the target project's primary output assembly." />
-  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="Private Assets" Description="Assets that are private in this reference" />
+  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="Zahrnout prostředky" Description="Prostředky zahrnuté z tohoto odkazu" />
+  <BoolProperty Name="ReferenceOutputAssembly" DisplayName="Odkazovat výstupní sestavení" Description="Hodnota určující, zda má kompilátor zahrnout odkaz na primární výstupní sestavení cílového projektu" />
+  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="Soukromé prostředky" Description="Soukromé prostředky v tomto odkazu" />
   <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Cesta" Description="Umístění odkazovaného souboru">
     <StringProperty.DataSource>
       <DataSource PersistedName="Identity" SourceOfDefaultValue="AfterContext" />

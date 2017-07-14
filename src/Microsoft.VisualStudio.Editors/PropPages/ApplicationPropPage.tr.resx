@@ -148,7 +148,7 @@
     <value>Simge:</value>
   </data>
   <data name="AppIconBrowse.Text" xml:space="preserve">
-    <value>...</value>
+    <value>Gözat...</value>
   </data>
   <data name="ApplicationManifestLabel.Text" xml:space="preserve">
     <value>Bildirim:</value>
@@ -157,7 +157,7 @@
     <value>Ka&amp;ynak dosyası:</value>
   </data>
   <data name="Win32ResourceFileBrowse.Text" xml:space="preserve">
-    <value>...</value>
+    <value>Gözat...</value>
   </data>
   <data name="ResourcesGroupBox.Text" xml:space="preserve">
     <value>Kaynaklar</value>

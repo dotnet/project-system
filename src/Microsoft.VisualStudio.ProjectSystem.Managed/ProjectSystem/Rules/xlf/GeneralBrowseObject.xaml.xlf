@@ -193,7 +193,7 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|StartupObject|DisplayName">
         <source>Type that contains the entry point</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

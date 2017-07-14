@@ -15,7 +15,7 @@
       <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" PersistedName="Private" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
-  <BoolProperty Name="CopyLocalSatelliteAssemblies" DisplayName="Copy Local Satellite Assemblies" Description="Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory." />
+  <BoolProperty Name="CopyLocalSatelliteAssemblies" DisplayName="Копировать локальные вспомогательные сборки" Description="Указывает, должны ли вспомогательные сборки ссылочной целевой сборки копироваться в выходной каталог проекта." />
   <StringProperty Name="Culture" ReadOnly="True" DisplayName="Культура" Description="Значение поля культуры из метаданных сборки."></StringProperty>
   <StringProperty Name="Description" ReadOnly="True" DisplayName="Описание" Description="Значение поля заголовка из метаданных сборки."></StringProperty>
   <BoolProperty Name="EmbedInteropTypes" DisplayName="Внедрить типы взаимодействия" Description="Указывает, будут ли типы, определенные в этой сборке, внедрены в целевую сборку.">
@@ -23,15 +23,15 @@
       <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
-  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="Exclude Assets" Description="Assets to exclude from this reference" />
+  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="Exclude Assets" Description="Ресурсы, исключаемые из этой ссылки" />
   <StringProperty Name="Identity" ReadOnly="True" DisplayName="Идентификатор" Description="Идентификатор безопасности сборки, на которую указывает ссылка (см System.Reflection.Assembly.Evidence или System.Security.Policy.Evidence).">
     <StringProperty.DataSource>
       <DataSource PersistedName="{}{Identity}" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="Include Assets" Description="Assets to include from this reference" />
-  <BoolProperty Name="ReferenceOutputAssembly" DisplayName="Reference Output Assembly" Description="A value indicating whether the compiler should include a reference to the target project's primary output assembly." />
-  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="Private Assets" Description="Assets that are private in this reference" />
+  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="Include Assets" Description="Ресурсы, включаемые из этой ссылки" />
+  <BoolProperty Name="ReferenceOutputAssembly" DisplayName="Ссылка на выходную сборку" Description="Значение, указывающее, должен ли компилятор включить ссылку на основную выходную сборку целевого проекта." />
+  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="Private Assets" Description="Ресурсы, являющиеся закрытыми в этой ссылке" />
   <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Путь" Description="Расположение файла, на который указывает ссылка.">
     <StringProperty.DataSource>
       <DataSource PersistedName="Identity" SourceOfDefaultValue="AfterContext" />

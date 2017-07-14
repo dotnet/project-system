@@ -15,7 +15,7 @@
       <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" PersistedName="Private" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
-  <BoolProperty Name="CopyLocalSatelliteAssemblies" DisplayName="Copy Local Satellite Assemblies" Description="Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory." />
+  <BoolProperty Name="CopyLocalSatelliteAssemblies" DisplayName="Copia assembly satellite locale" Description="Indica se gli assembly satellite della destinazione del riferimento devono essere copiati nella directory di output di questo progetto." />
   <StringProperty Name="Culture" ReadOnly="True" DisplayName="Impostazioni cultura" Description="Valore del campo Impostazioni cultura dei metadati dell'assembly."></StringProperty>
   <StringProperty Name="Description" ReadOnly="True" DisplayName="Descrizione" Description="Valore del campo Titolo dei metadati dell'assembly."></StringProperty>
   <BoolProperty Name="EmbedInteropTypes" DisplayName="Incorpora tipi di interoperabilità" Description="Indica se i tipi definiti nell'assembly corrente verranno incorporati nell'assembly di destinazione.">
@@ -23,15 +23,15 @@
       <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
-  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="Exclude Assets" Description="Assets to exclude from this reference" />
+  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="Risorse da escludere" Description="Risorse da escludere da questo riferimento" />
   <StringProperty Name="Identity" ReadOnly="True" DisplayName="Identità" Description="Identità di sicurezza dell'assembly a cui viene fatto riferimento (vedere System.Reflection.Assembly.Evidence o System.Security.Policy.Evidence).">
     <StringProperty.DataSource>
       <DataSource PersistedName="{}{Identity}" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="Include Assets" Description="Assets to include from this reference" />
-  <BoolProperty Name="ReferenceOutputAssembly" DisplayName="Reference Output Assembly" Description="A value indicating whether the compiler should include a reference to the target project's primary output assembly." />
-  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="Private Assets" Description="Assets that are private in this reference" />
+  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="Risorse da includere" Description="Risorse da includere da questo riferimento" />
+  <BoolProperty Name="ReferenceOutputAssembly" DisplayName="Assembly di output del riferimento" Description="Valore che indica se il compilatore deve includere un riferimento all'assembly di output primario del progetto di destinazione." />
+  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="Risorse private" Description="Risorse private in questo riferimento" />
   <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Percorso" Description="Percorso del file a cui viene fatto riferimento.">
     <StringProperty.DataSource>
       <DataSource PersistedName="Identity" SourceOfDefaultValue="AfterContext" />

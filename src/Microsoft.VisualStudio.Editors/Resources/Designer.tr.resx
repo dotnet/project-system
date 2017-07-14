@@ -428,7 +428,7 @@ Bu ayarın değiştirilmesi, tüm yapılandırmaların ayarlarını sıfırlar.<
     <value>Dahil Et</value>
   </data>
   <data name="PPG_SecurityPage_Excluded" xml:space="preserve">
-    <value>Hariç Tut</value>
+    <value>Dışla</value>
   </data>
   <data name="PPG_SecurityPage_FullTrustToolTip" xml:space="preserve">
     <value>Uygulamanın seçilmiş bölgede çalışabilmesi için yükseltilmiş izinler gerekecek. Daha fazla bilgi için yukarıdaki yardım bağlantısına tıklayın.</value>

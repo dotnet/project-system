@@ -148,7 +148,7 @@
     <value>アイコン:</value>
   </data>
   <data name="AppIconBrowse.Text" xml:space="preserve">
-    <value>...</value>
+    <value>参照...</value>
   </data>
   <data name="ApplicationManifestLabel.Text" xml:space="preserve">
     <value>マニフェスト:</value>
@@ -157,7 +157,7 @@
     <value>リソース ファイル(&amp;S):</value>
   </data>
   <data name="Win32ResourceFileBrowse.Text" xml:space="preserve">
-    <value>...</value>
+    <value>参照...</value>
   </data>
   <data name="ResourcesGroupBox.Text" xml:space="preserve">
     <value>リソース</value>
