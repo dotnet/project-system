@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// <summary>
         /// The listed values.
         /// </summary>
-        private AsyncLazy<ICollection<IEnumValue>> _listedValues;
+        private readonly AsyncLazy<ICollection<IEnumValue>> _listedValues;
 
         /// <summary>
         /// Create a new instance of the class.
