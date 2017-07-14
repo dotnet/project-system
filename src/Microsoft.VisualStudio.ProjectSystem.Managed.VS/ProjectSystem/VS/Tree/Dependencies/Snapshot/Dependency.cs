@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             if (model.DependencyIDs != null && model.DependencyIDs.Any())
             {
-                DependencyIDs = ImmutableList.CreateRange(model.DependencyIDs);
+                DependencyIDs = model.DependencyIDs;
             }
         }
 
