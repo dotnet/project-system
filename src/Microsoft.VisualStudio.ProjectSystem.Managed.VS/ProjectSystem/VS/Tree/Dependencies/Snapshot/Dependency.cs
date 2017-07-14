@@ -78,13 +78,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
             else
             {
-                var normalizedDependencyIDs = new List<string>();
+                var normalizedDependencyIDs = ImmutableList.CreateBuilder<string>();
                 foreach (var id in dependencyModel.DependencyIDs)
                 {
                     normalizedDependencyIDs.Add(GetID(TargetFramework, ProviderType, id));
                 }
 
-                DependencyIDs = ImmutableList.CreateRange(normalizedDependencyIDs);
+                DependencyIDs = normalizedDependencyIDs.ToImmutable();
             }
         }
 
@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             if (model.DependencyIDs != null && model.DependencyIDs.Any())
             {
-                DependencyIDs = ImmutableList.CreateRange(model.DependencyIDs);
+                DependencyIDs = model.DependencyIDs;
             }
         }
 
