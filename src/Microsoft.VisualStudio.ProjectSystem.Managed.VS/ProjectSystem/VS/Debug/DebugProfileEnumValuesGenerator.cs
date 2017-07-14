@@ -19,9 +19,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
     internal class DebugProfileEnumValuesGenerator : IDynamicEnumValuesGenerator
     {
-        /// <summary>
-        /// The listed values.
-        /// </summary>
         private readonly AsyncLazy<ICollection<IEnumValue>> _listedValues;
 
         /// <summary>
