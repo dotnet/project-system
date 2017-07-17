@@ -102,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             var result = await provider.AddMessageAsync(task);
 
-            Assert.Equal(result, AddMessageResult.NotHandled);
+            Assert.Equal(AddMessageResult.NotHandled, result);
         }
 
         [Fact]
@@ -114,7 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             var result = await provider.AddMessageAsync(task);
 
-            Assert.Equal(result, AddMessageResult.NotHandled);
+            Assert.Equal(AddMessageResult.NotHandled, result);
         }
 
 
@@ -127,7 +127,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             var result = await provider.AddMessageAsync(task);
 
-            Assert.Equal(result, AddMessageResult.NotHandled);
+            Assert.Equal(AddMessageResult.NotHandled, result);
         }
 
         [Fact]
@@ -144,7 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             var result = await provider.AddMessageAsync(task);
 
-            Assert.Equal(result, AddMessageResult.NotHandled);
+            Assert.Equal(AddMessageResult.NotHandled, result);
         }
 
         [Fact]
@@ -174,7 +174,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             var result = await provider.AddMessageAsync(task);
 
-            Assert.Equal(result, AddMessageResult.HandledAndStopProcessing);
+            Assert.Equal(AddMessageResult.HandledAndStopProcessing, result);
         }
 
         [Fact]
@@ -189,7 +189,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             await provider.AddMessageAsync(new TargetGeneratedError("Test", new BuildWarningEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender")));
 
-            Assert.Equal(result, VSTASKPRIORITY.TP_NORMAL);
+            Assert.Equal(VSTASKPRIORITY.TP_NORMAL, result);
         }
 
         [Fact]
@@ -204,7 +204,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             await provider.AddMessageAsync(new TargetGeneratedError("Test", new BuildErrorEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender")));
 
-            Assert.Equal(result, VSTASKPRIORITY.TP_HIGH);
+            Assert.Equal(VSTASKPRIORITY.TP_HIGH, result);
         }
 
         [Fact]
@@ -219,7 +219,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             await provider.AddMessageAsync(new TargetGeneratedError("Test", new CriticalBuildMessageEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender")));
 
-            Assert.Equal(result, VSTASKPRIORITY.TP_LOW);
+            Assert.Equal(VSTASKPRIORITY.TP_LOW, result);
         }
 
         //          ErrorMessage                                    Code

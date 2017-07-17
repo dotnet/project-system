@@ -158,6 +158,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             Assert.Equal("<Project />", fileSystem.ReadAllText(tempProjectPath));
         }
 
+        [Fact]
         public async Task NonStandardEncoding_UsesProjectEncoding()
         {
             var projectFilePath = @"C:\ConsoleApp\ConsoleApp1\ConsoleApp1.csproj";

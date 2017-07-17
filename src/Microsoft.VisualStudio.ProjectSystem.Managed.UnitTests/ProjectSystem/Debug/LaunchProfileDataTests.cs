@@ -66,37 +66,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var profile = profiles["IIS Express"];
             Assert.Equal("IISExpress", profile.CommandName);
             Assert.Equal("http://localhost:1234:/test.html", profile.LaunchUrl);
-            Assert.Equal(true, profile.LaunchBrowser);
+            Assert.True(profile.LaunchBrowser);
 
             profile = profiles["HasCustomValues"];
             Assert.Equal("c:\\test\\project", profile.WorkingDirectory);
             Assert.Equal("c:\\test\\project\\bin\\project.exe", profile.ExecutablePath);
-            Assert.Equal(null, profile.LaunchBrowser);
-            Assert.Equal(null, profile.LaunchUrl);
-            Assert.Equal(null, profile.EnvironmentVariables);
-            Assert.Equal(true, profile.OtherSettings["custom1"]);
+            Assert.Null(profile.LaunchBrowser);
+            Assert.Null(profile.LaunchUrl);
+            Assert.Null(profile.EnvironmentVariables);
+            Assert.True((bool)profile.OtherSettings["custom1"]);
             Assert.Equal(124, profile.OtherSettings["custom2"]);
             Assert.Equal("mycustomVal", profile.OtherSettings["custom3"]);
 
             profile = profiles["Docker"];
             Assert.Equal("Docker", profile.CommandName);
-            Assert.Equal(null, profile.WorkingDirectory);
-            Assert.Equal(null, profile.ExecutablePath);
-            Assert.Equal(false, profile.LaunchBrowser);
-            Assert.Equal(null, profile.LaunchUrl);
-            Assert.Equal(null, profile.EnvironmentVariables);
+            Assert.Null(profile.WorkingDirectory);
+            Assert.Null(profile.ExecutablePath);
+            Assert.False(profile.LaunchBrowser);
+            Assert.Null(profile.LaunchUrl);
+            Assert.Null(profile.EnvironmentVariables);
             Assert.Equal("some option in docker", profile.OtherSettings["dockerOption1"]);
             Assert.Equal("Another option in docker", profile.OtherSettings["dockerOption2"]);
 
             profile = profiles["web"];
             Assert.Equal("Project", profile.CommandName);
-            Assert.Equal(null, profile.WorkingDirectory);
-            Assert.Equal(null, profile.ExecutablePath);
-            Assert.Equal(true, profile.LaunchBrowser);
-            Assert.Equal(null, profile.LaunchUrl);
+            Assert.Null(profile.WorkingDirectory);
+            Assert.Null(profile.ExecutablePath);
+            Assert.True(profile.LaunchBrowser);
+            Assert.Null(profile.LaunchUrl);
             Assert.Equal("Development", profile.EnvironmentVariables["ASPNET_ENVIRONMENT"]);
             Assert.Equal("c:\\Users\\billhie\\Documents\\projects\\WebApplication8\\src\\WebApplication8", profile.EnvironmentVariables["ASPNET_APPLICATIONBASE"]);
-            Assert.Equal(null, profile.OtherSettings);
+            Assert.Null(profile.OtherSettings);
         }
 
         [Fact]
@@ -119,7 +119,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Equal(3, serializableProfile.Count);
             Assert.Equal("IISExpress", serializableProfile["commandName"]);
             Assert.Equal("http://localhost:1234:/test.html", serializableProfile["launchUrl"]);
-            Assert.Equal(true, serializableProfile["launchBrowser"]);
+            Assert.True((bool)serializableProfile["launchBrowser"]);
 
             profile = profiles["HasCustomValues"];
             serializableProfile = LaunchProfileData.ToSerializableForm(new LaunchProfile(profile));
@@ -127,7 +127,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Equal("c:\\test\\project", serializableProfile["workingDirectory"]);
             Assert.Equal("c:\\test\\project\\bin\\project.exe", serializableProfile["executablePath"]);
             Assert.Equal("--arg1 --arg2", serializableProfile["commandLineArgs"]);
-            Assert.Equal(true, serializableProfile["custom1"]);
+            Assert.True((bool)serializableProfile["custom1"]);
             Assert.Equal(124, serializableProfile["custom2"]);
             Assert.Equal("mycustomVal", serializableProfile["custom3"]);
 
@@ -143,7 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             serializableProfile = LaunchProfileData.ToSerializableForm(new LaunchProfile(profile));
             Assert.Equal(3, serializableProfile.Count);
             Assert.Equal("Project", serializableProfile["commandName"]);
-            Assert.Equal(true, serializableProfile["launchBrowser"]);
+            Assert.True((bool)serializableProfile["launchBrowser"]);
             Assert.Equal("Development", ((IDictionary)serializableProfile["environmentVariables"])["ASPNET_ENVIRONMENT"]);
             Assert.Equal("c:\\Users\\billhie\\Documents\\projects\\WebApplication8\\src\\WebApplication8", ((IDictionary)serializableProfile["environmentVariables"])["ASPNET_APPLICATIONBASE"]);
         }

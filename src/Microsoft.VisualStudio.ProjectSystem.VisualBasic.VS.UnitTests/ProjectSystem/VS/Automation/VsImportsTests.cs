@@ -150,7 +150,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             dispImportsEventsMock.Verify(d => d.ImportAdded(It.IsAny<string>()), Times.Once);
             dispImportsEventsMock.Verify(d => d.ImportRemoved(It.IsAny<string>()), Times.Once);
 
-            Assert.Equal(vsimports.Count, 2);
+            Assert.Equal(2, vsimports.Count);
         }
 
         private VisualBasicVSImports CreateInstance(
