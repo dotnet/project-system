@@ -166,7 +166,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             Mock.Get(textBufferListener).Verify(t => t.InitializeListenerAsync(filePath), Times.Once);
             Mock.Get(frameListener).Verify(f => f.InitializeEventsAsync(windowFrame), Times.Once);
             Mock.Get(projectFileWatcher).Verify(p => p.InitializeModelWatcher(), Times.Once);
-            Assert.Equal(ProjectFileEditorPresenter.EditorState.EditorOpen, editorState.CurrentState);
+            Assert.Equal(editorState.CurrentState, ProjectFileEditorPresenter.EditorState.EditorOpen);
         }
 
         [Fact]
@@ -208,7 +208,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Editor
             Mock.Get(textBufferListener).Verify(t => t.InitializeListenerAsync(filePath), Times.Once);
             Mock.Get(frameListener).Verify(f => f.InitializeEventsAsync(windowFrame), Times.Once);
             Mock.Get(projectFileWatcher).Verify(p => p.InitializeModelWatcher(), Times.Once);
-            Assert.Equal(ProjectFileEditorPresenter.EditorState.EditorOpen, editorState.CurrentState);
+            Assert.Equal(editorState.CurrentState, ProjectFileEditorPresenter.EditorState.EditorOpen);
         }
 
         [Fact]

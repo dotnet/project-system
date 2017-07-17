@@ -24,16 +24,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         {
             EnumMatchToBooleanConverter converter = new EnumMatchToBooleanConverter();
 
-            Assert.Null(converter.ConvertBack(null, typeof(MyEnum), null, CultureInfo.CurrentCulture));
+            Assert.Equal(converter.ConvertBack(null, typeof(MyEnum), null, CultureInfo.CurrentCulture),null);
             Assert.Equal(MyEnum.Value12, converter.ConvertBack(true, typeof(MyEnum), "Value12", CultureInfo.CurrentCulture));
             Assert.Equal(MyEnum.Value13, converter.ConvertBack(true, typeof(MyEnum), "Value13", CultureInfo.CurrentCulture));
             Assert.Equal(MyEnum.Value12, converter.ConvertBack(true, typeof(MyEnum), "12", CultureInfo.CurrentCulture));
             Assert.Equal(MyEnum.Value13, converter.ConvertBack(true, typeof(MyEnum), "13", CultureInfo.CurrentCulture));
 
-            Assert.Null(converter.ConvertBack(false, typeof(MyEnum), "Value12", CultureInfo.CurrentCulture));
-            Assert.Null(converter.ConvertBack(false, typeof(MyEnum), "Value13", CultureInfo.CurrentCulture));
-            Assert.Null(converter.ConvertBack(false, typeof(MyEnum), "12", CultureInfo.CurrentCulture));
-            Assert.Null(converter.ConvertBack(false, typeof(MyEnum), "13", CultureInfo.CurrentCulture));
+            Assert.Equal(converter.ConvertBack(false, typeof(MyEnum), "Value12", CultureInfo.CurrentCulture), null);
+            Assert.Equal(converter.ConvertBack(false, typeof(MyEnum), "Value13", CultureInfo.CurrentCulture), null);
+            Assert.Equal(converter.ConvertBack(false, typeof(MyEnum), "12", CultureInfo.CurrentCulture), null);
+            Assert.Equal(converter.ConvertBack(false, typeof(MyEnum), "13", CultureInfo.CurrentCulture), null);
         }
     }
 

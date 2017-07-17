@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                                              .Returns((IActiveDebugFrameworkServices)null);
 
             var command = new TestDebugFrameworksDynamicMenuCommand(startupHelper.Object);
-            Assert.False(command.ExecCommand(0, EventArgs.Empty));
+            Assert.Equal(false, command.ExecCommand(0, EventArgs.Empty));
             startupHelper.Verify();
         }
 
@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                                              .Returns((IActiveDebugFrameworkServices)null);
 
             var command = new TestDebugFrameworksDynamicMenuCommand(startupHelper.Object);
-            Assert.False(command.QueryStatusCommand(0, EventArgs.Empty));
+            Assert.Equal(false, command.QueryStatusCommand(0, EventArgs.Empty));
             startupHelper.Verify();
         }
 
