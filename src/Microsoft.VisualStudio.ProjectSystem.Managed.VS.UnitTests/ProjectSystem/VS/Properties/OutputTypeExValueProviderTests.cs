@@ -57,6 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             Assert.Equal(setValues.Single(), expectedOutputTypeValue);
         }
 
+        [Fact]
         public async Task SetValue_ThrowsKeyNotFoundException()
         {
             var setValues = new List<object>();

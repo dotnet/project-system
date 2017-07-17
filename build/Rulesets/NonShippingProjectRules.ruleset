@@ -27,4 +27,7 @@
     <Rule Id="VSTHRD103" Action="None" />                     <!-- Synchronously blocks. Await ThrowsAsync instead.-->
     <Rule Id="VSTHRD200" Action="None" />                     <!-- Naming styles                                Task Open()                                         Task OpenAsync()                      -->
   </Rules>
+  <Rules AnalyzerId="xunit.analyzers" RuleNamespace="Xunit.Analyzers">
+    <Rule Id="xUnit1004" Action="None" /> <!-- allow skipped tests -->
+  </Rules>
 </RuleSet>
