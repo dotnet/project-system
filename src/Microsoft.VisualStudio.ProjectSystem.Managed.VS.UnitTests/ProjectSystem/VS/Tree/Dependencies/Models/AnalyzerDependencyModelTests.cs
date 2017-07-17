@@ -31,8 +31,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
             Assert.Equal("myPath", model.Caption);
             Assert.Equal(ResolvedAnalyzerReference.SchemaName, model.SchemaName);
-            Assert.True(model.Resolved);
-            Assert.False(model.Implicit);
+            Assert.Equal(true, model.Resolved);
+            Assert.Equal(false, model.Implicit);
             Assert.Equal(properties, model.Properties);
             Assert.Equal(Dependency.AnalyzerNodePriority, model.Priority);
             Assert.Equal(AnalyzerReference.PrimaryDataSourceItemType, model.SchemaItemType);
@@ -63,8 +63,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
             Assert.Equal("c:\\myPath", model.Caption);
             Assert.Equal(AnalyzerReference.SchemaName, model.SchemaName);
-            Assert.False(model.Resolved);
-            Assert.False(model.Implicit);
+            Assert.Equal(false, model.Resolved);
+            Assert.Equal(false, model.Implicit);
             Assert.Equal(properties, model.Properties);
             Assert.Equal(Dependency.AnalyzerNodePriority, model.Priority);
             Assert.Equal(AnalyzerReference.PrimaryDataSourceItemType, model.SchemaItemType);
@@ -95,8 +95,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
             Assert.Equal("myPath", model.Caption);
             Assert.Equal(ResolvedAnalyzerReference.SchemaName, model.SchemaName);
-            Assert.True(model.Resolved);
-            Assert.True(model.Implicit);
+            Assert.Equal(true, model.Resolved);
+            Assert.Equal(true, model.Implicit);
             Assert.Equal(properties, model.Properties);
             Assert.Equal(Dependency.AnalyzerNodePriority, model.Priority);
             Assert.Equal(AnalyzerReference.PrimaryDataSourceItemType, model.SchemaItemType);

@@ -176,7 +176,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             dependency.VerifyAll();
             sdkDependency.VerifyAll();
 
-            Assert.Equal(topLevelBuilder.First().Id, sdkDependency.Object.Id);
+            Assert.True(topLevelBuilder.First().Id.Equals(sdkDependency.Object.Id));
         }
 
         [Fact]
@@ -226,7 +226,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             dependency.VerifyAll();
             sdkDependency.VerifyAll();
 
-            Assert.Equal(topLevelBuilder.First().Id, sdkDependency.Object.Id);
+            Assert.True(topLevelBuilder.First().Id.Equals(sdkDependency.Object.Id));
         }
     }
 }

@@ -211,7 +211,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 dependencyIDs: ImmutableList<string>.Empty.Add("aaa"));
 
             Assert.Equal("newcaption", newDependency.Caption);
-            Assert.True(newDependency.Resolved);
+            Assert.Equal(true, newDependency.Resolved);
             Assert.True(newDependency.Flags.Equals(DependencyTreeFlags.BaseReferenceFlags));
             Assert.True(newDependency.DependencyIDs.Count == 1);
             Assert.Equal("aaa", newDependency.DependencyIDs[0]);

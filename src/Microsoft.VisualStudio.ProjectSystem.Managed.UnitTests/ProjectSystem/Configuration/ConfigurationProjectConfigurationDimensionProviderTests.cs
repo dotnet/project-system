@@ -69,7 +69,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             }
         }
 
-        [Fact]
         public async Task GetProjectConfigurationDimensionsAsync_NoPropertyValue()
         {
             using (var projectFile = new MsBuildProjectFile())

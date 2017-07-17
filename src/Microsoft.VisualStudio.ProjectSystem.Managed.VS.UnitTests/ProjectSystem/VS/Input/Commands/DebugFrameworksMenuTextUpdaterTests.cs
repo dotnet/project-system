@@ -17,10 +17,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         {
             var command = new DebugFrameworkPropertyMenuTextUpdater(null);
             DebugFrameworkPropertyMenuTextUpdater.ExecHandler(command, EventArgs.Empty);
-            Assert.True(command.Visible);
+            Assert.Equal(true, command.Visible);
             Assert.Equal("", command.Text);
-            Assert.False(command.Checked);
-            Assert.True(command.Enabled);
+            Assert.Equal(false, command.Checked);
+            Assert.Equal(true, command.Enabled);
         }
 
         [Fact]
@@ -32,10 +32,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             var command = new TestDebugFrameworkPropertyMenuTextUpdater(startupHelper.Object);
             command.QueryStatus();
-            Assert.True(command.Visible);
+            Assert.Equal(true, command.Visible);
             Assert.Equal("", command.Text);
-            Assert.False(command.Checked);
-            Assert.True(command.Enabled);
+            Assert.Equal(false, command.Checked);
+            Assert.Equal(true, command.Enabled);
         }
 
         [Fact]
@@ -50,10 +50,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             var command = new TestDebugFrameworkPropertyMenuTextUpdater(startupHelper.Object);
             command.QueryStatus();
-            Assert.True(command.Visible);
+            Assert.Equal(true, command.Visible);
             Assert.Equal("", command.Text);
-            Assert.False(command.Checked);
-            Assert.True(command.Enabled);
+            Assert.Equal(false, command.Checked);
+            Assert.Equal(true, command.Enabled);
         }
 
         [Fact]
@@ -68,10 +68,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             var command = new TestDebugFrameworkPropertyMenuTextUpdater(startupHelper.Object);
             command.QueryStatus();
-            Assert.True(command.Visible);
+            Assert.Equal(true, command.Visible);
             Assert.Equal("", command.Text);
-            Assert.False(command.Checked);
-            Assert.True(command.Enabled);
+            Assert.Equal(false, command.Checked);
+            Assert.Equal(true, command.Enabled);
         }
 
         [Fact]
@@ -86,10 +86,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             var command = new TestDebugFrameworkPropertyMenuTextUpdater(startupHelper.Object);
             command.QueryStatus();
-            Assert.True(command.Visible);
+            Assert.Equal(true, command.Visible);
             Assert.Equal(string.Format(VSResources.DebugFrameworkMenuText, "net461"), command.Text);
-            Assert.False(command.Checked);
-            Assert.True(command.Enabled);
+            Assert.Equal(false, command.Checked);
+            Assert.Equal(true, command.Enabled);
         }
         [Fact]
         public void QueryStatusTests_FrameworkNoMatchingAciive()
@@ -103,10 +103,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             var command = new TestDebugFrameworkPropertyMenuTextUpdater(startupHelper.Object);
             command.QueryStatus();
-            Assert.True(command.Visible);
+            Assert.Equal(true, command.Visible);
             Assert.Equal(string.Format(VSResources.DebugFrameworkMenuText, "net461"), command.Text);
-            Assert.False(command.Checked);
-            Assert.True(command.Enabled);
+            Assert.Equal(false, command.Checked);
+            Assert.Equal(true, command.Enabled);
         }
 
         [Fact]
@@ -121,10 +121,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             var command = new TestDebugFrameworkPropertyMenuTextUpdater(startupHelper.Object);
             command.QueryStatus();
-            Assert.True(command.Visible);
+            Assert.Equal(true, command.Visible);
             Assert.Equal(string.Format(VSResources.DebugFrameworkMenuText, "netcoreapp1.0"), command.Text);
-            Assert.False(command.Checked);
-            Assert.True(command.Enabled);
+            Assert.Equal(false, command.Checked);
+            Assert.Equal(true, command.Enabled);
         }
 
         class TestDebugFrameworkPropertyMenuTextUpdater : DebugFrameworkPropertyMenuTextUpdater

@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var testProfiles = new Mock<ILaunchSettings>();
             testProfiles.Setup(m => m.ActiveProfile).Returns(new LaunchProfile() { Name = activeProfile });
             var provider = GetLaunchSettingsProvider(null);
-            Assert.Null(provider.ActiveProfile);
+            Assert.Equal(null, provider.ActiveProfile);
 
             provider.SetCurrentSnapshot(testProfiles.Object);
             Assert.Equal(activeProfile, provider.ActiveProfile.Name);

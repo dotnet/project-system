@@ -45,7 +45,6 @@
     <XUnitVersion>2.2.0-beta4-build3444</XUnitVersion>
     <XUnitRunnerConsoleVersion>2.2.0</XUnitRunnerConsoleVersion>
     <XUnitRunnerVisualstudioVersion>2.2.0</XUnitRunnerVisualstudioVersion>
-    <XUnitAnalyzersVersion>0.5.0</XUnitAnalyzersVersion>
   </PropertyGroup>
 
   <Choose>
