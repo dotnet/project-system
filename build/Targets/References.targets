@@ -208,6 +208,7 @@
 
         <PackageReference Include="Moq" Version="$(MoqVersion)" />
         <PackageReference Include="xunit" Version="$(XUnitVersion)" />
+        <PackageReference Include="xunit.analyzers" Version="$(XUnitAnalyzersVersion)" />
 
       </ItemGroup>
     </When>
