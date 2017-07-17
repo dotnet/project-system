@@ -330,7 +330,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 return null;
             }
 
-            var paths = pathEnv.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+            var paths = pathEnv.Split(CommonConstants.SemicolonDelimiter, StringSplitOptions.RemoveEmptyEntries);
             foreach (var path in paths)
             {
                 // We don't want one bad path entry to derail the search

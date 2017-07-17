@@ -59,8 +59,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal("SomeItemSpec", model.OriginalItemSpec);
             Assert.True(model.Flags.Contains(ProjectTreeFlags.HiddenProjectItem));
             Assert.True(model.Flags.Contains(DependencyTreeFlags.GenericUnresolvedDependencyFlags));
-            Assert.Equal(false, model.Resolved);
-            Assert.Equal(false, model.Implicit);
+            Assert.False(model.Resolved);
+            Assert.False(model.Implicit);
             Assert.Equal(1, model.Properties.Count);
         }
 
@@ -83,8 +83,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal("SomeItemSpec", model.OriginalItemSpec);
             Assert.True(model.Flags.Contains(ProjectTreeFlags.HiddenProjectItem));
             Assert.True(model.Flags.Contains(DependencyTreeFlags.GenericResolvedDependencyFlags));
-            Assert.Equal(true, model.Resolved);
-            Assert.Equal(false, model.Implicit);
+            Assert.True(model.Resolved);
+            Assert.False(model.Implicit);
             Assert.Equal(1, model.Properties.Count);
         }
 
@@ -108,8 +108,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.True(model.Flags.Contains(ProjectTreeFlags.HiddenProjectItem));
             Assert.True(model.Flags.Contains(DependencyTreeFlags.GenericResolvedDependencyFlags.Except(DependencyTreeFlags.SupportsRemove)));
             Assert.False(model.Flags.Contains(DependencyTreeFlags.SupportsRemove));
-            Assert.Equal(true, model.Resolved);
-            Assert.Equal(true, model.Implicit);
+            Assert.True(model.Resolved);
+            Assert.True(model.Implicit);
             Assert.Equal(1, model.Properties.Count);
         }
 

@@ -91,8 +91,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             string cmdExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
 
             debugger.GetExeAndArguments(false, exeIn, argsIn, out string finalExePath, out string finalArguments);
-            Assert.True(finalExePath.Equals(exeIn));
-            Assert.True(finalArguments.Equals(argsIn));
+            Assert.Equal(finalExePath, exeIn);
+            Assert.Equal(finalArguments, argsIn);
 
             debugger.GetExeAndArguments(true, exeIn, argsIn, out finalExePath, out finalArguments);
             Assert.Equal(cmdExePath, finalExePath);
@@ -174,7 +174,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             activeProfile.EnvironmentVariables = new Dictionary<string, string>() { { "var1", "Value1" } }.ToImmutableDictionary();
             var targets = await debugger.QueryDebugTargetsAsync(DebugLaunchOptions.NoDebug, activeProfile);
             Assert.Equal(1, targets.Count);
-            Assert.True(targets[0].Executable.EndsWith(@"\cmd.exe", StringComparison.OrdinalIgnoreCase));
+            Assert.EndsWith(@"\cmd.exe", targets[0].Executable, StringComparison.OrdinalIgnoreCase);
             Assert.Equal(DebugLaunchOperation.CreateProcess, targets[0].LaunchOperation);
             Assert.Equal((DebugLaunchOptions.NoDebug | DebugLaunchOptions.StopDebuggingOnEnd | DebugLaunchOptions.MergeEnvironment), targets[0].LaunchOptions);
             Assert.Equal(DebuggerEngines.ManagedCoreEngine, targets[0].LaunchDebugEngineGuid);
@@ -272,7 +272,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             }
             catch(Exception ex)
             {
-                Assert.True(ex.Message.Equals(string.Format(VSResources.NoDebugExecutableSpecified, profileName)));
+                Assert.Equal(ex.Message, string.Format(VSResources.NoDebugExecutableSpecified, profileName));
             }
 
         }
@@ -292,7 +292,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             }
             catch(Exception ex)
             {
-                Assert.True(ex.Message.Equals(string.Format(VSResources.DebugExecutableNotFound, executable, profileName)));
+                Assert.Equal(ex.Message, string.Format(VSResources.DebugExecutableNotFound, executable, profileName));
                 _mockFS.WriteAllText(executable, "");
                 debugger.ValidateSettings(executable, workingDir, profileName);
                 Assert.True(true);
@@ -320,7 +320,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             }
             catch(Exception ex)
             {
-                Assert.True(ex.Message.Equals(string.Format(VSResources.WorkingDirecotryInvalid, workingDir, profileName)));
+                Assert.Equal(ex.Message, string.Format(VSResources.WorkingDirecotryInvalid, workingDir, profileName));
                 _mockFS.AddFolder(workingDir);
                 debugger.ValidateSettings(executable, workingDir, profileName);
                 Assert.True(true);

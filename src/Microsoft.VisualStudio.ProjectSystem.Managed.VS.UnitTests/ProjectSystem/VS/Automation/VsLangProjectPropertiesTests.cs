@@ -143,7 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
             var vsLangProjectProperties = CreateInstance(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
-            Assert.Equal(vsLangProjectProperties.OutputTypeEx, prjOutputTypeEx.prjOutputTypeEx_AppContainerExe);
+            Assert.Equal(prjOutputTypeEx.prjOutputTypeEx_AppContainerExe, vsLangProjectProperties.OutputTypeEx);
 
             vsLangProjectProperties.OutputTypeEx = prjOutputTypeEx.prjOutputTypeEx_WinExe;
             Assert.Equal(setValues.Single().ToString(), prjOutputTypeEx.prjOutputTypeEx_WinExe.ToString());
@@ -166,10 +166,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
             var vsLangProjectProperties = CreateInstance(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
-            Assert.Equal(vsLangProjectProperties.OutputType, prjOutputType.prjOutputTypeExe);
+            Assert.Equal(prjOutputType.prjOutputTypeExe, vsLangProjectProperties.OutputType);
 
             vsLangProjectProperties.OutputType = prjOutputType.prjOutputTypeLibrary;
-            Assert.Equal(setValues.Single(), prjOutputType.prjOutputTypeLibrary);
+            Assert.Equal(prjOutputType.prjOutputTypeLibrary, setValues.Single());
         }
 
         [Fact]
@@ -189,7 +189,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
             var vsLangProjectProperties = CreateInstance(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
-            Assert.Equal(vsLangProjectProperties.AssemblyName, "Blah");
+            Assert.Equal("Blah", vsLangProjectProperties.AssemblyName);
 
             var testValue = "Testing";
             vsLangProjectProperties.AssemblyName = testValue;
@@ -211,7 +211,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
             var vsLangProjectProperties = CreateInstance(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
-            Assert.Equal(vsLangProjectProperties.FullPath, "somepath");
+            Assert.Equal("somepath", vsLangProjectProperties.FullPath);
         }
 
         [Fact]
@@ -229,7 +229,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
             var vsLangProjectProperties = CreateInstance(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
-            Assert.Equal(vsLangProjectProperties.AbsoluteProjectDirectory, "testvalue");
+            Assert.Equal("testvalue", vsLangProjectProperties.AbsoluteProjectDirectory);
         }
 
         [Fact]

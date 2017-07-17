@@ -7,21 +7,14 @@ using System.Threading.Tasks;
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
-    ///     Provides set of configured projects whose ProjectConfiguration has all dimensions (except the TargetFramework) matching the active VS configuration.
-    ///
-    ///     For example, for a cross-targeting project with TargetFrameworks = "net45;net46" we have:
-    ///     -> All known configurations:
-    ///         Debug | AnyCPU | net45
-    ///         Debug | AnyCPU | net46
-    ///         Release | AnyCPU | net45
-    ///         Release | AnyCPU | net46
-    ///         
-    ///     -> Say, active VS configuration = "Debug | AnyCPU"
-    ///       
-    ///     -> Active configurations returned by this provider:
-    ///         Debug | AnyCPU | net45
-    ///         Debug | AnyCPU | net46
+    ///     An UnconfiguredProject-level service that provides access to the <see cref="ProjectConfiguration"/> and
+    ///     <see cref="ConfiguredProject"/> objects that the host considers to be active.
     /// </summary>
+    /// <remarks>
+    ///     This service replaces <see cref="IActiveConfiguredProjectProvider"/> to handle projects where more than
+    ///     <see cref="ConfiguredProject"/> is considered active at the same time, such as projects that produce
+    ///     multiple outputs. See <see cref="ActiveConfiguredProjectsProvider"/> for more information.
+    /// </remarks>
     internal interface IActiveConfiguredProjectsProvider
     {
         /// <summary>

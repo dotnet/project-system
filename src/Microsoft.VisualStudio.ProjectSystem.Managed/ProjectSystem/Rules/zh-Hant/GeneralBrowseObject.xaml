@@ -60,8 +60,16 @@
       <DataSource Persistence="ProjectFile" PersistedName="Win32Resource" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="PreBuildEvent" DisplayName="建置前事件" Visible="False" />
-  <StringProperty Name="PostBuildEvent" DisplayName="建置後事件" Visible="False" />
+  <StringProperty Name="PreBuildEvent" DisplayName="建置前事件" Visible="False">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="PreBuildEvent" HasConfigurationCondition="False" SourceOfDefaultValue="BeforeContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+  <StringProperty Name="PostBuildEvent" DisplayName="建置後事件" Visible="False">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" PersistedName="PostBuildEvent" HasConfigurationCondition="False" SourceOfDefaultValue="BeforeContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
   <EnumProperty Name="RunPostBuildEvent" DisplayName="執行建置後事件" Visible="False">
     <EnumValue Name="Always" DisplayName="永遠" />
     <EnumValue Name="OnBuildSuccess" DisplayName="建置成功時" IsDefault="True" />

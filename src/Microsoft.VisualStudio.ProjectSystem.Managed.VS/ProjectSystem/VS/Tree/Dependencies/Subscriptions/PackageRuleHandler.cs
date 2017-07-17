@@ -316,7 +316,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     && properties[ProjectItemMetadata.Dependencies] != null)
                 {
                     var dependencyIds = properties[ProjectItemMetadata.Dependencies]
-                        .Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                        .Split(CommonConstants.SemicolonDelimiter, StringSplitOptions.RemoveEmptyEntries);
                     // store only unique dependency IDs
                     foreach (var dependencyId in dependencyIds)
                     {
@@ -363,7 +363,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             public static string GetTargetFromDependencyId(string dependencyId)
             {
-                var idParts = dependencyId.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+                var idParts = dependencyId.Split(CommonConstants.FowardSlashDelimiter, StringSplitOptions.RemoveEmptyEntries);
                 Requires.NotNull(idParts, nameof(idParts));
                 if (idParts.Count() <= 0)
                 {

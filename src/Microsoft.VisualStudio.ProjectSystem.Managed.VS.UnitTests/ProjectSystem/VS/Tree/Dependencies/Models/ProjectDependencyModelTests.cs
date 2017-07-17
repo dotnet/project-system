@@ -31,8 +31,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
             Assert.Equal("myPath", model.Caption);
             Assert.Equal(ResolvedProjectReference.SchemaName, model.SchemaName);
-            Assert.Equal(true, model.Resolved);
-            Assert.Equal(false, model.Implicit);
+            Assert.True(model.Resolved);
+            Assert.False(model.Implicit);
             Assert.Equal(properties, model.Properties);
             Assert.Equal(Dependency.ProjectNodePriority, model.Priority);
             Assert.Equal(ProjectReference.PrimaryDataSourceItemType, model.SchemaItemType);
@@ -64,8 +64,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
             Assert.Equal("myPath", model.Caption);
             Assert.Equal(ProjectReference.SchemaName, model.SchemaName);
-            Assert.Equal(false, model.Resolved);
-            Assert.Equal(false, model.Implicit);
+            Assert.False(model.Resolved);
+            Assert.False(model.Implicit);
             Assert.Equal(properties, model.Properties);
             Assert.Equal(Dependency.ProjectNodePriority, model.Priority);
             Assert.Equal(ProjectReference.PrimaryDataSourceItemType, model.SchemaItemType);
@@ -97,8 +97,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
             Assert.Equal("myPath", model.Caption);
             Assert.Equal(ResolvedProjectReference.SchemaName, model.SchemaName);
-            Assert.Equal(true, model.Resolved);
-            Assert.Equal(true, model.Implicit);
+            Assert.True(model.Resolved);
+            Assert.True(model.Implicit);
             Assert.Equal(properties, model.Properties);
             Assert.Equal(Dependency.ProjectNodePriority, model.Priority);
             Assert.Equal(ProjectReference.PrimaryDataSourceItemType, model.SchemaItemType);

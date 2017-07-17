@@ -51,22 +51,6 @@
         <source>Embedded resource</source>
         <note />
       </trans-unit>
-      <trans-unit id="ContentType|UpToDateCheckInput|DisplayName">
-        <source>Up-to-date check input</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="ContentType|UpToDateCheckOutput|DisplayName">
-        <source>Up-to-date check output</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="ItemType|UpToDateCheckInput|DisplayName">
-        <source>Up-to-date check input</source>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="ItemType|UpToDateCheckOutput|DisplayName">
-        <source>Up-to-date check output</source>
-        <note></note>
-      </trans-unit>
     </body>
   </file>
 </xliff>

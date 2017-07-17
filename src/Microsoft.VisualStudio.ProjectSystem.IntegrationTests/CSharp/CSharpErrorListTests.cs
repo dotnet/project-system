@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
     [Collection(nameof(SharedIntegrationHostFixture))]
     public class CSharpErrorListTests : AbstractIntegrationTest
     {
-        protected override string DefaultLanuageName => LanguageNames.CSharp;
+        protected override string DefaultLanguageName => LanguageNames.CSharp;
 
         public CSharpErrorListTests(VisualStudioInstanceFactory instanceFactory)
             : base(nameof(CSharpErrorListTests), WellKnownProjectTemplates.CSharpNetCoreClassLibrary, instanceFactory)

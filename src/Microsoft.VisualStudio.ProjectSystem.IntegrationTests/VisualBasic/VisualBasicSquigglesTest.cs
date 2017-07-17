@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
     [Collection(nameof(SharedIntegrationHostFixture))]
     public class VisualBasicSquigglesTest : AbstractIntegrationTest
     {
-        protected override string DefaultLanuageName => LanguageNames.VisualBasic;
+        protected override string DefaultLanguageName => LanguageNames.VisualBasic;
 
         public VisualBasicSquigglesTest(VisualStudioInstanceFactory instanceFactory)
             : base(nameof(CSharpSquigglesTests), WellKnownProjectTemplates.VisualBasicNetCoreClassLibrary, instanceFactory)

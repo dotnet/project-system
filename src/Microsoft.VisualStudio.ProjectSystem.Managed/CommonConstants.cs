@@ -5,8 +5,23 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal static class CommonConstants
     {
         /// <summary>
-        /// Single, static instance of an array that contains a comma, which is used to split strings.
+        /// Single, static instance of an array that contains a comma ',', which is used to split strings.
         /// </summary>
         internal static readonly char[] CommaDelimiter = new char[] { ',' };
+
+        /// <summary>
+        /// Single, static instance of an array that contains a period '.', which is used to split strings.
+        /// </summary>
+        internal static readonly char[] PeriodDelimiter = new char[] { '.' };
+
+        /// <summary>
+        /// Single, static instance of an array that contains a semi-colon ';', which is used to split strings.
+        /// </summary>
+        internal static readonly char[] SemicolonDelimiter = new char[] { ';' };
+
+        /// <summary>
+        /// Single, static instance of an array that contains a forward slash '/', which is used to split strings.
+        /// </summary>
+        internal static readonly char[] FowardSlashDelimiter = new char[] { '/' };
     }
 }

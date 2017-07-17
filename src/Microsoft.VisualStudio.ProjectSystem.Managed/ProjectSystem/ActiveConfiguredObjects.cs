@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     ///     objects, and the names of the configuration dimensions that participated in the calculation of the active configured objects.
     /// </summary>
     /// <typeparam name="T">
-    ///     The type of the active configured objects.
+    ///     The type of the active configured objects, typically <see cref="ProjectConfiguration"/> or <see cref="ConfiguredProject"/>.
     /// </typeparam>
     internal class ActiveConfiguredObjects<T>
     {
@@ -53,6 +53,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <value>
         ///     An <see cref="IReadOnlyList{T}"/> of the active configured objects.
         /// </value>
+        /// <remarks>
+        ///     The order in the returned <see cref="IReadOnlyList{T}"/> matches the declared ordered within
+        ///     the project file.
+        /// </remarks>
         public IReadOnlyList<T> Objects
         {
             get;

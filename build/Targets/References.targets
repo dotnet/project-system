@@ -70,7 +70,7 @@
         <PackageReference Include="System.Reflection.Metadata" Version="1.4.2" />
         <PackageReference Include="System.ValueTuple" Version="4.3.0" />
         <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
-        <PackageReference Include="Microsoft.VisualStudio.LanguageServices" Version="2.3.0-beta3-61808-05" />
+        <PackageReference Include="Microsoft.VisualStudio.LanguageServices" Version="2.6.0-beta1-61911-10" />
         <PackageReference Include="Microsoft.Build" Version="15.1.0-preview-000516-03" />
         <PackageReference Include="Microsoft.Build.Framework" Version="15.1.0-preview-000516-03" />
         <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.1.0-preview-000516-03" />
@@ -208,6 +208,7 @@
 
         <PackageReference Include="Moq" Version="$(MoqVersion)" />
         <PackageReference Include="xunit" Version="$(XUnitVersion)" />
+        <PackageReference Include="xunit.analyzers" Version="$(XUnitAnalyzersVersion)" />
 
       </ItemGroup>
     </When>

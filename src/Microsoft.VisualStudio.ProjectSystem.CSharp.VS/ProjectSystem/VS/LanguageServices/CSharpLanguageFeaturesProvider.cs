@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             Requires.NotNullOrEmpty(name, nameof(name));
 
-            IEnumerable<string> namespaceNames = name.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries)
+            IEnumerable<string> namespaceNames = name.Split(CommonConstants.PeriodDelimiter, StringSplitOptions.RemoveEmptyEntries)
                                                      .Select(MakeProperIdentifier);
 
             return string.Join(".", namespaceNames);

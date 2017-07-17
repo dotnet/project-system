@@ -33,11 +33,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal("myPath", model.Name);
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
             Assert.Equal("myPath", model.Caption);
-            Assert.Equal(null, model.SchemaName);
-            Assert.Equal(false, model.TopLevel);
-            Assert.Equal(true, model.Visible);
-            Assert.Equal(true, model.Resolved);
-            Assert.Equal(false, model.Implicit);
+            Assert.Null(model.SchemaName);
+            Assert.False(model.TopLevel);
+            Assert.True(model.Visible);
+            Assert.True(model.Resolved);
+            Assert.False(model.Implicit);
             Assert.Equal(properties, model.Properties);
             Assert.Equal(Dependency.UnresolvedReferenceNodePriority, model.Priority);
             Assert.Equal(KnownMonikers.QuestionMark, model.Icon);
