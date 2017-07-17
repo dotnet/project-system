@@ -26,14 +26,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test.PropertyPages
             PROPPAGEINFO info = pageInfoArray[0];
             Assert.Equal("MyPage", info.pszTitle);
             Assert.Equal(0u, info.dwHelpContext);
-            Assert.Null(info.pszDocString);
-            Assert.Null(info.pszHelpFile);
+            Assert.Equal(info.pszDocString,null);
+            Assert.Equal(info.pszHelpFile,null);
             Assert.Equal(page.Object.Size.Width, info.SIZE.cx);
             Assert.Equal(page.Object.Size.Height, info.SIZE.cy);
         }
 
         [Fact]
-        public void Move_SimpleCase()
+        public void Move()
         {
             Castle.DynamicProxy.Generators.AttributesToAvoidReplicating.Add(typeof(System.Security.Permissions.UIPermissionAttribute));
 

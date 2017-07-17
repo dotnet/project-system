@@ -65,13 +65,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Equal("$(msbuildProperty2)", resolvedProfile.CommandName);
             Assert.Equal("envVariable1", resolvedProfile.CommandLineArgs);
             Assert.Equal("$(test this string", resolvedProfile.ExecutablePath);
-            Assert.False(resolvedProfile.LaunchBrowser);
+            Assert.Equal(false, resolvedProfile.LaunchBrowser);
             Assert.Equal("http://localhost:8080/", resolvedProfile.LaunchUrl);
             Assert.Equal("c:\\test\\Property6", resolvedProfile.WorkingDirectory);
             Assert.Equal("envVariable1", resolvedProfile.EnvironmentVariables["var1"]);
             Assert.Equal("Property3", resolvedProfile.EnvironmentVariables["var2"]);
             Assert.Equal("envVariable1", resolvedProfile.OtherSettings["setting1"]);
-            Assert.True((bool)resolvedProfile.OtherSettings["setting2"]);
+            Assert.Equal(true, resolvedProfile.OtherSettings["setting2"]);
         }
         
         [Theory]

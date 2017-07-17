@@ -189,7 +189,6 @@ Root (flags: {ProjectRoot})
             Assert.Equal("folderName", browseLocations);
         }
 
-        [Fact]
         public async Task TryHandleCommand_FolderAsNodes_ReturnsTrueWhenUserClicksCancel()
         {
             var projectProperties = ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(), new[] {
