@@ -23,5 +23,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// Single, static instance of an array that contains a forward slash '/', which is used to split strings.
         /// </summary>
         internal static readonly char[] FowardSlashDelimiter = new char[] { '/' };
+
+        /// <summary>
+        /// Single, static instance of an array that contains a back slash '\', which is used to split strings.
+        /// </summary>
+        internal static readonly char[] BackSlashDelimiter = new char[] { '\\' };
     }
 }
