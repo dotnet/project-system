@@ -5,33 +5,33 @@
       <group id="src/Microsoft.VisualStudio.Editors/OptionPages/GeneralOptionPageResources.resx" />
       <trans-unit id="General_FastUpToDateCheck">
         <source>Don't call MSBuild if a project appears to be up to date.</source>
-        <target state="new">Don't call MSBuild if a project appears to be up to date.</target>
-        <note></note>
+        <target state="translated">Bir proje güncel görünüyorsa MSBuild’i çağırmayın.</target>
+        <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_LogLevel">
         <source>Logging Level:</source>
-        <target state="new">Logging Level:</target>
-        <note></note>
+        <target state="translated">Günlüğe Kaydetme Düzeyi:</target>
+        <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_LogLevel_Info">
         <source>Info</source>
-        <target state="new">Info</target>
-        <note></note>
+        <target state="translated">Bilgi</target>
+        <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_LogLevel_None">
         <source>None</source>
-        <target state="new">None</target>
-        <note></note>
+        <target state="translated">Yok</target>
+        <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_LogLevel_Verbose">
         <source>Verbose</source>
-        <target state="new">Verbose</target>
-        <note></note>
+        <target state="translated">Ayrıntılı</target>
+        <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_Title">
         <source>Up to Date Checks</source>
-        <target state="new">Up to Date Checks</target>
-        <note></note>
+        <target state="translated">Güncellik Denetimleri</target>
+        <note />
       </trans-unit>
     </body>
   </file>

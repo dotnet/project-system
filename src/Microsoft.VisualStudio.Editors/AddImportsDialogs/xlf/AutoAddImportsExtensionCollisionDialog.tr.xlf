@@ -15,7 +15,7 @@
       </trans-unit>
       <trans-unit id="$this.Text">
         <source>Add Imports Validation Error</source>
-        <target state="translated">Import Ekleme Doğrulama Hatası</target>
+        <target state="translated">Imports Ekleme Doğrulama Hatası</target>
         <note />
       </trans-unit>
     </body>

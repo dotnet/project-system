@@ -15,7 +15,7 @@
       <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" PersistedName="Private" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
-  <BoolProperty Name="CopyLocalSatelliteAssemblies" DisplayName="Copy Local Satellite Assemblies" Description="Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory." />
+  <BoolProperty Name="CopyLocalSatelliteAssemblies" DisplayName="로컬 위성 어셈블리 복사" Description="참조 대상의 위성 어셈블리를 이 프로젝트의 출력 디렉터리에 복사해야 하는지 여부를 나타냅니다." />
   <StringProperty Name="Culture" ReadOnly="True" DisplayName="문화권" Description="어셈블리 메타데이터의 Culture 필드 값입니다."></StringProperty>
   <StringProperty Name="Description" ReadOnly="True" DisplayName="설명" Description="어셈블리 메타데이터의 Title 필드 값입니다."></StringProperty>
   <BoolProperty Name="EmbedInteropTypes" DisplayName="Interop 형식 포함" Description="이 어셈블리에 정의된 형식이 대상 어셈블리에 포함되는지 여부를 나타냅니다.">
@@ -23,15 +23,15 @@
       <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
-  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="Exclude Assets" Description="Assets to exclude from this reference" />
+  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="자산 제외" Description="이 참조에서 제외할 자산입니다." />
   <StringProperty Name="Identity" ReadOnly="True" DisplayName="ID" Description="참조된 어셈블리의 보안 ID입니다(System.Reflection.Assembly.Evidence 또는 System.Security.Policy.Evidence 참조).">
     <StringProperty.DataSource>
       <DataSource PersistedName="{}{Identity}" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="Include Assets" Description="Assets to include from this reference" />
-  <BoolProperty Name="ReferenceOutputAssembly" DisplayName="Reference Output Assembly" Description="A value indicating whether the compiler should include a reference to the target project's primary output assembly." />
-  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="Private Assets" Description="Assets that are private in this reference" />
+  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="자산 포함" Description="이 참조에서 포함할 자산입니다." />
+  <BoolProperty Name="ReferenceOutputAssembly" DisplayName="참조 출력 어셈블리" Description="컴파일러가 대상 프로젝트의 기본 출력 어셈블리에 참조를 포함해야 하는지 여부를 나타내는 값입니다." />
+  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="개인 자산" Description="이 참조에서 private인 자산입니다." />
   <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="경로" Description="참조되는 파일의 위치입니다.">
     <StringProperty.DataSource>
       <DataSource PersistedName="Identity" SourceOfDefaultValue="AfterContext" />

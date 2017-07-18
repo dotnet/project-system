@@ -133,7 +133,7 @@
     <value>瀏覽資料夾</value>
   </data>
   <data name="FolderBrowse.Text" xml:space="preserve">
-    <value>...</value>
+    <value>瀏覽...</value>
   </data>
   <data name="MoveUp.AccessibleName" xml:space="preserve">
     <value>上移</value>

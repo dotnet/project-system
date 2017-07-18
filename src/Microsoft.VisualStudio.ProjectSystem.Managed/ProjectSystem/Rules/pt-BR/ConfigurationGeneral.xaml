@@ -49,7 +49,7 @@
       <DataSource Persistence="ProjectFileWithInterception" PersistedName="TargetFrameworkMonikers" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <BoolProperty Name="DisableFastUpToDateCheck" DisplayName="Disable Fast Up To Date Check">
+  <BoolProperty Name="DisableFastUpToDateCheck" DisplayName="Desabilitar verificação atualizada rápida">
     <BoolProperty.DataSource>
       <DataSource Persistence="ProjectFile" PersistedName="DisableFastUpToDateCheck" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>

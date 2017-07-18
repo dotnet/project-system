@@ -145,8 +145,8 @@
       </trans-unit>
       <trans-unit id="LaunchURL">
         <source>Launch browser:</source>
-        <target state="needs-review-translation">Lancer l’URL :</target>
-        <note></note>
+        <target state="translated">Lancer le navigateur :</target>
+        <note />
       </trans-unit>
       <trans-unit id="NameHeader">
         <source>Name</source>

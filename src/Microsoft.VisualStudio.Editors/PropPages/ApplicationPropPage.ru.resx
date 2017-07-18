@@ -148,7 +148,7 @@
     <value>Значок:</value>
   </data>
   <data name="AppIconBrowse.Text" xml:space="preserve">
-    <value>...</value>
+    <value>Обзор...</value>
   </data>
   <data name="ApplicationManifestLabel.Text" xml:space="preserve">
     <value>Манифест:</value>
@@ -157,7 +157,7 @@
     <value>&amp;Файл ресурсов:</value>
   </data>
   <data name="Win32ResourceFileBrowse.Text" xml:space="preserve">
-    <value>...</value>
+    <value>Обзор...</value>
   </data>
   <data name="ResourcesGroupBox.Text" xml:space="preserve">
     <value>Ресурсы.</value>

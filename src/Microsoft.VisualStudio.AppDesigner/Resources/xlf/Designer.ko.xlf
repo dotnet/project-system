@@ -10,7 +10,7 @@
       </trans-unit>
       <trans-unit id="APPDES_ClickHereCreateSettings">
         <source>This project does not contain a default settings file.  Click here to create one.</source>
-        <target state="translated">이 프로젝트에는 기본 설정 파일이 없습니다.  기본 설정 파일을 만들려면 여기를 클릭하세요.</target>
+        <target state="translated">이 프로젝트에는 기본 설정 파일이 없습니다. 기본 설정 파일을 만들려면 여기를 클릭하세요.</target>
         <note />
       </trans-unit>
       <trans-unit id="APPDES_DesignerLoader_NotDeferred">

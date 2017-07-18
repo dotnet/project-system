@@ -5,33 +5,33 @@
       <group id="src/Microsoft.VisualStudio.Editors/OptionPages/GeneralOptionPageResources.resx" />
       <trans-unit id="General_FastUpToDateCheck">
         <source>Don't call MSBuild if a project appears to be up to date.</source>
-        <target state="new">Don't call MSBuild if a project appears to be up to date.</target>
-        <note></note>
+        <target state="translated">프로젝트가 최신으로 표시되는 경우 MSBuild를 호출하지 않습니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_LogLevel">
         <source>Logging Level:</source>
-        <target state="new">Logging Level:</target>
-        <note></note>
+        <target state="translated">로깅 수준:</target>
+        <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_LogLevel_Info">
         <source>Info</source>
-        <target state="new">Info</target>
-        <note></note>
+        <target state="translated">정보</target>
+        <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_LogLevel_None">
         <source>None</source>
-        <target state="new">None</target>
-        <note></note>
+        <target state="translated">없음</target>
+        <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_LogLevel_Verbose">
         <source>Verbose</source>
-        <target state="new">Verbose</target>
-        <note></note>
+        <target state="translated">자세한 정보 표시</target>
+        <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_Title">
         <source>Up to Date Checks</source>
-        <target state="new">Up to Date Checks</target>
-        <note></note>
+        <target state="translated">최신 검사</target>
+        <note />
       </trans-unit>
     </body>
   </file>

@@ -127,7 +127,7 @@
     <value>Riga di c&amp;omando eventi di post-compilazione:</value>
   </data>
   <data name="btnPostBuildBuilder.Text" xml:space="preserve">
-    <value>Modi&amp;fica...</value>
+    <value>Modi&amp;fica post-compilazione...</value>
   </data>
   <data name="lblRunPostBuildEvent.Text" xml:space="preserve">
     <value>Esegui eve&amp;nto di post-compilazione:</value>

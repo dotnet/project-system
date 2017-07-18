@@ -425,7 +425,7 @@ Zmiana tego ustawienia spowoduje zresetowanie ustawień we wszystkich konfigurac
     <value>(Strefa domyślna)</value>
   </data>
   <data name="PPG_SecurityPage_Included" xml:space="preserve">
-    <value>Dołącz</value>
+    <value>Uwzględnij</value>
   </data>
   <data name="PPG_SecurityPage_Excluded" xml:space="preserve">
     <value>Wyklucz</value>
@@ -437,7 +437,7 @@ Zmiana tego ustawienia spowoduje zresetowanie ustawień we wszystkich konfigurac
     <value>Nie można załadować uprawnienia. Naciśnij klawisz Delete, aby je usunąć z projektu.</value>
   </data>
   <data name="PPG_SecurityPage_HeaderIncluded" xml:space="preserve">
-    <value>Dołączone</value>
+    <value>Uwzględnione</value>
   </data>
   <data name="PPG_SecurityPage_HeaderPermission" xml:space="preserve">
     <value>Uprawnienie</value>
@@ -474,13 +474,13 @@ Błąd:</value>
     <value>Wystąpił błąd i nie można załadować pliku app.manifest. Usuń wszystkie dokonane w pliku zmiany i ponownie załaduj stronę właściwości zabezpieczeń.</value>
   </data>
   <data name="PPG_SecurityPage_CheckAccessibilityName" xml:space="preserve">
-    <value>Dołączone</value>
+    <value>Uwzględnione</value>
   </data>
   <data name="PPG_SecurityPage_BlankAccessibilityName" xml:space="preserve">
-    <value>Niedołączone</value>
+    <value>Nieuwzględnione</value>
   </data>
   <data name="PPG_SecurityPage_BangAccessibilityName" xml:space="preserve">
-    <value>Dołączone z ostrzeżeniem</value>
+    <value>Uwzględnione z ostrzeżeniem</value>
   </data>
   <data name="PPG_SecurityPage_PermCalcFailed" xml:space="preserve">
     <value>Obliczanie uprawnień nie powiodło się.</value>

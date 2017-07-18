@@ -15,7 +15,7 @@
       </trans-unit>
       <trans-unit id="DescriptionLabel.Text">
         <source>&amp;Description:</source>
-        <target state="translated">&amp;Descrizione:</target>
+        <target state="translated">Descri&amp;zione:</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageIconUrlLabel.Text">

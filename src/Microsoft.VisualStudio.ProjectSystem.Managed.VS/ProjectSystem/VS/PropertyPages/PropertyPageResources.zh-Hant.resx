@@ -202,7 +202,7 @@
     <value>啟動:</value>
   </data>
   <data name="LaunchURL" xml:space="preserve">
-    <value>啟動 URL:</value>
+    <value>啟動瀏覽器:</value>
   </data>
   <data name="NameHeader" xml:space="preserve">
     <value>名稱</value>

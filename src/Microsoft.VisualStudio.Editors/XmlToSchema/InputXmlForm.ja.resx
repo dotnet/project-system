@@ -136,7 +136,7 @@
     <value>XML の入力または貼り付け(&amp;X)</value>
   </data>
   <data name="Label1.Text" xml:space="preserve">
-    <value>XML スキーマ セットを生成する XML ドキュメントを指定する</value>
+    <value>XML スキーマ セットを推論する XML ドキュメントを指定する</value>
   </data>
   <data name="_addFromFileButton.AccessibleName" xml:space="preserve">
     <value>ファイルから追加</value>
@@ -160,6 +160,6 @@
     <value>XML ファイルの追加</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>XML ドキュメントからの XML スキーマ セットの生成</value>
+    <value>XML ドキュメントからの XML スキーマ セットの推論</value>
   </data>
 </root>

@@ -202,7 +202,7 @@
     <value>시작:</value>
   </data>
   <data name="LaunchURL" xml:space="preserve">
-    <value>시작 URL:</value>
+    <value>브라우저 시작:</value>
   </data>
   <data name="NameHeader" xml:space="preserve">
     <value>이름</value>

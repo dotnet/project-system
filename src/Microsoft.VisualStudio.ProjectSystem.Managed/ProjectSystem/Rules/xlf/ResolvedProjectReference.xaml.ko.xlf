@@ -175,53 +175,53 @@
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocalSatelliteAssemblies|DisplayName">
         <source>Copy Local Satellite Assemblies</source>
-        <target state="new">Copy Local Satellite Assemblies</target>
-        <note></note>
+        <target state="translated">로컬 위성 어셈블리 복사</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocalSatelliteAssemblies|Description">
         <source>Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory.</source>
-        <target state="new">Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory.</target>
-        <note></note>
+        <target state="translated">참조 대상의 위성 어셈블리를 이 프로젝트의 출력 디렉터리에 복사해야 하는지 여부를 나타냅니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
         <source>Exclude Assets</source>
-        <target state="new">Exclude Assets</target>
-        <note></note>
+        <target state="translated">자산 제외</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
         <source>Assets to exclude from this reference</source>
-        <target state="new">Assets to exclude from this reference</target>
-        <note></note>
+        <target state="translated">이 참조에서 제외할 자산입니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|DisplayName">
         <source>Include Assets</source>
-        <target state="new">Include Assets</target>
-        <note></note>
+        <target state="translated">자산 포함</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
         <source>Assets to include from this reference</source>
-        <target state="new">Assets to include from this reference</target>
-        <note></note>
+        <target state="translated">이 참조에서 포함할 자산입니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ReferenceOutputAssembly|DisplayName">
         <source>Reference Output Assembly</source>
-        <target state="new">Reference Output Assembly</target>
-        <note></note>
+        <target state="translated">참조 출력 어셈블리</target>
+        <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ReferenceOutputAssembly|Description">
         <source>A value indicating whether the compiler should include a reference to the target project's primary output assembly.</source>
-        <target state="new">A value indicating whether the compiler should include a reference to the target project's primary output assembly.</target>
-        <note></note>
+        <target state="translated">컴파일러가 대상 프로젝트의 기본 출력 어셈블리에 참조를 포함해야 하는지 여부를 나타내는 값입니다.</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
         <source>Private Assets</source>
-        <target state="new">Private Assets</target>
-        <note></note>
+        <target state="translated">개인 자산</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">
         <source>Assets that are private in this reference</source>
-        <target state="new">Assets that are private in this reference</target>
-        <note></note>
+        <target state="translated">이 참조에서 private인 자산입니다.</target>
+        <note />
       </trans-unit>
     </body>
   </file>

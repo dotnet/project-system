@@ -133,7 +133,7 @@
     <value>Procurar pasta</value>
   </data>
   <data name="FolderBrowse.Text" xml:space="preserve">
-    <value>...</value>
+    <value>Procurar...</value>
   </data>
   <data name="MoveUp.AccessibleName" xml:space="preserve">
     <value>Mover para cima</value>

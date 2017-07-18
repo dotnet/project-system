@@ -6,9 +6,9 @@
   </Rule.DataSource>
   <StringProperty Name="Description" ReadOnly="True" Visible="True" DisplayName="Opis" Description="Opis zależności." />
   <StringProperty Name="Version" ReadOnly="True" DisplayName="Wersja" Description="Wersja zależności."></StringProperty>
-  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="IncludeAssets" Description="Zasoby do zawarcia z tego odwołania" />
-  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="ExcludeAssets" Description="Zasoby do wykluczenia z tego odwołania" />
-  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="PrivateAssets" Description="Prywatne zasoby w tym odwołaniu" />
+  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="Uwzględnij zasoby" Description="Zasoby do uwzględnienia z tego odwołania" />
+  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="Wyklucz zasoby" Description="Zasoby do wykluczenia z tego odwołania" />
+  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="Prywatne zasoby" Description="Prywatne zasoby w tym odwołaniu" />
   <StringProperty Name="Name" Visible="True" ReadOnly="True" />
   <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="Sprawdzona nazwa elementu oryginalnego elementu odwołania, którego rozpoznanie spowodowało rozpoznanie tego elementu odwołania." />
   <StringProperty Name="Path" Visible="False" ReadOnly="True" />

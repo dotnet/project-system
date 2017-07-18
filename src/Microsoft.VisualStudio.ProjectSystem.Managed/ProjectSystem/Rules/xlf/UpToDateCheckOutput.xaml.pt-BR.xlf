@@ -5,33 +5,33 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/UpToDateCheckOutput.xaml" />
       <trans-unit id="Rule|UpToDateCheckOutput|DisplayName">
         <source>Up-to-date check output</source>
-        <target state="new">Up-to-date check output</target>
-        <note></note>
+        <target state="translated">Saída da verificação atualizada</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|UpToDateCheckOutput|Description">
         <source>File Properties</source>
-        <target state="new">File Properties</target>
-        <note></note>
+        <target state="translated">Propriedades do Arquivo</target>
+        <note />
       </trans-unit>
       <trans-unit id="Category|Advanced|DisplayName">
         <source>Advanced</source>
-        <target state="new">Advanced</target>
-        <note></note>
+        <target state="translated">Avançado</target>
+        <note />
       </trans-unit>
       <trans-unit id="Category|Misc|DisplayName">
         <source>Misc</source>
-        <target state="new">Misc</target>
-        <note></note>
+        <target state="translated">Diversos</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">
         <source>Full Path</source>
-        <target state="new">Full Path</target>
-        <note></note>
+        <target state="translated">Caminho Completo</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|Description">
         <source>Location of the file.</source>
-        <target state="new">Location of the file.</target>
-        <note></note>
+        <target state="translated">Localização do arquivo.</target>
+        <note />
       </trans-unit>
     </body>
   </file>

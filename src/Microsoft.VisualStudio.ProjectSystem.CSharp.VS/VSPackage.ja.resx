@@ -127,13 +127,13 @@
     <value>コンソール アプリ (.NET Core)</value>
   </data>
   <data name="4" xml:space="preserve">
-    <value>Windows、Linux、MacOS 上の .NET Core で実行できるコマンドライン アプリケーションを作成するためのプロジェクトです。</value>
+    <value>Windows、Linux、MacOS 上の .NET Core で実行できるコマンドライン アプリケーションを作成するためのプロジェクト。</value>
   </data>
   <data name="5" xml:space="preserve">
     <value>クラス ライブラリ (.NET Standard)</value>
   </data>
   <data name="6" xml:space="preserve">
-    <value>.NET Standard を対象とするクラス ライブラリを作成するためのプロジェクトです。</value>
+    <value>.NET Standard を対象とするクラス ライブラリを作成するためのプロジェクト。</value>
   </data>
   <data name="7" xml:space="preserve">
     <value>読み込まれたプロジェクト ファイル エディター</value>
@@ -145,7 +145,7 @@
     <value>クラス ライブラリ (.NET Core)</value>
   </data>
   <data name="10" xml:space="preserve">
-    <value>.NET Core を対象とするクラス ライブラリを作成するためのプロジェクトです。</value>
+    <value>.NET Core を対象とするクラス ライブラリを作成するためのプロジェクト。</value>
   </data>
   <data name="11" xml:space="preserve">
     <value>xUnit テスト プロジェクト (.NET Core)</value>

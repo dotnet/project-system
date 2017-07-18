@@ -45,7 +45,7 @@
       </trans-unit>
       <trans-unit id="AssemblyVersionLabel.Text">
         <source>&amp;Assembly version:</source>
-        <target state="translated">Versão do &amp;assembly:</target>
+        <target state="translated">&amp;Versão do assembly:</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionLabel.Text">

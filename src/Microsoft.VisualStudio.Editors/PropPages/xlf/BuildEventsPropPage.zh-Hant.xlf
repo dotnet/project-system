@@ -10,8 +10,8 @@
       </trans-unit>
       <trans-unit id="btnPreBuildBuilder.Text">
         <source>Ed&amp;it Pre-build...</source>
-        <target state="needs-review-translation">建置前進行編輯(&amp;I)...</target>
-        <note></note>
+        <target state="translated">建置前進行編輯(&amp;I)...</target>
+        <note />
       </trans-unit>
       <trans-unit id="lblPostBuildEventCommandLine.Text">
         <source>P&amp;ost-build event command line:</source>
@@ -20,8 +20,8 @@
       </trans-unit>
       <trans-unit id="btnPostBuildBuilder.Text">
         <source>Edit Post-b&amp;uild...</source>
-        <target state="needs-review-translation">建置後進行編輯(&amp;U)...</target>
-        <note></note>
+        <target state="translated">建置後進行編輯(&amp;U)...</target>
+        <note />
       </trans-unit>
       <trans-unit id="lblRunPostBuildEvent.Text">
         <source>Ru&amp;n the post-build event:</source>

@@ -12,12 +12,12 @@
     </BoolProperty.DataSource>
   </BoolProperty>
   <BoolProperty Name="EmbedInteropTypes" DisplayName="內嵌 Interop 類型" Description="指出此組件中所定義的類型是否將內嵌在目標組件中。" />
-  <StringProperty Name="Identity" ReadOnly="True" DisplayName="Identity" Description="Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).">
+  <StringProperty Name="Identity" ReadOnly="True" DisplayName="識別" Description="參考組件的安全性識別 (請參閱 System.Reflection.Assembly.Evidence 或 System.Security.Policy.Evidence)。">
     <StringProperty.DataSource>
       <DataSource PersistedName="{}{Identity}" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Path" Description="Location of the file being referenced.">
+  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="路徑" Description="正被參考之檔案的位置。">
     <StringProperty.DataSource>
       <DataSource PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
@@ -27,7 +27,7 @@
       <DataSource Persistence="AssemblyReference" ItemType="Reference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
-  <StringProperty Name="Version" ReadOnly="True" DisplayName="Version" Description="Version of reference."></StringProperty>
+  <StringProperty Name="Version" ReadOnly="True" DisplayName="版本" Description="參考的版本。"></StringProperty>
   <!-- Hidden properties -->
   <StringProperty Name="HintPath" Visible="false" />
   <StringProperty Name="ImageRuntime" DisplayName="執行階段版本" Description="此組件的目標 CLR 執行階段版本。" Visible="False" ReadOnly="True" />

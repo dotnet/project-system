@@ -121,7 +121,7 @@
     <value>이 프로젝트에는 기본 리소스 파일이 없습니다.  기본 리소스 파일을 만들려면 여기를 클릭하세요.</value>
   </data>
   <data name="APPDES_ClickHereCreateSettings" xml:space="preserve">
-    <value>이 프로젝트에는 기본 설정 파일이 없습니다.  기본 설정 파일을 만들려면 여기를 클릭하세요.</value>
+    <value>이 프로젝트에는 기본 설정 파일이 없습니다. 기본 설정 파일을 만들려면 여기를 클릭하세요.</value>
   </data>
   <data name="APPDES_DesignerLoader_NotDeferred" xml:space="preserve">
     <value>디자이너에 대한 문서를 로드하지 않았으므로 디자이너를 표시할 수 없습니다.</value>

@@ -142,7 +142,7 @@
     <value>Idioma &amp;neutro:</value>
   </data>
   <data name="AssemblyVersionLabel.Text" xml:space="preserve">
-    <value>Versão do &amp;assembly:</value>
+    <value>&amp;Versão do assembly:</value>
   </data>
   <data name="FileVersionLabel.Text" xml:space="preserve">
     <value>Versão do &amp;arquivo:</value>

@@ -202,7 +202,7 @@
     <value>起動:</value>
   </data>
   <data name="LaunchURL" xml:space="preserve">
-    <value>起動 URL:</value>
+    <value>ブラウザーの起動:</value>
   </data>
   <data name="NameHeader" xml:space="preserve">
     <value>名前</value>

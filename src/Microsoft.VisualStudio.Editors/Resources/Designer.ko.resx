@@ -745,7 +745,7 @@
     <value>이 프로젝트에는 기본 리소스 파일이 없습니다.  기본 리소스 파일을 만들려면 여기를 클릭하세요.</value>
   </data>
   <data name="APPDES_ClickHereCreateSettings" xml:space="preserve">
-    <value>이 프로젝트에는 기본 설정 파일이 없습니다.  기본 리소스 파일을 만들려면 여기를 클릭하세요.</value>
+    <value>이 프로젝트에는 기본 설정 파일이 없습니다. 기본 설정 파일을 만들려면 여기를 클릭하세요.</value>
   </data>
   <data name="APPDES_FileNotFound_1Arg" xml:space="preserve">
     <value>'{0}' 파일을 찾을 수 없습니다.</value>
@@ -778,7 +778,7 @@
     <value>어셈블리 버전</value>
   </data>
   <data name="PPG_Property_AssemblyFileVersion" xml:space="preserve">
-    <value>어셈블리 파일 전</value>
+    <value>어셈블리 파일 버전</value>
   </data>
   <data name="PPG_Property_AssemblyGuid" xml:space="preserve">
     <value>어셈블리 GUID</value>
@@ -1516,7 +1516,7 @@ app.config 파일의 새 값은 '{1}'입니다.
     <value>응용 프로그램 정의 파일에서 필요한 루트 요소 "{0}"을(를) 찾을 수 없습니다.</value>
   </data>
   <data name="PPG_WPFApp_Xaml_UnexpectedFormat_2Args" xml:space="preserve">
-    <value>.xaml 파일의 줄 {0} 열 {1} 근처에 잘못된 형식이 있습니다.</value>
+    <value>.xaml 파일의 줄 {0} 열 {1} 근처에 예기치 않은 형식이 있습니다.</value>
   </data>
   <data name="PPG_Application_StartupObjectLabelText" xml:space="preserve">
     <value>시작 개체(&amp;O):</value>

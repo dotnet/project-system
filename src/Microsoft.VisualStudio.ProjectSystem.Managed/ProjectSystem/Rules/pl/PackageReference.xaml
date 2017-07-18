@@ -10,9 +10,9 @@
       <DataSource PersistenceStyle="Attribute" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="IncludeAssets" Description="Zasoby do zawarcia z tego odwołania" />
-  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="ExcludeAssets" Description="Zasoby do wykluczenia z tego odwołania" />
-  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="PrivateAssets" Description="Prywatne zasoby w tym odwołaniu" />
+  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="Uwzględnij zasoby" Description="Zasoby do uwzględnienia z tego odwołania" />
+  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="Wyklucz zasoby" Description="Zasoby do wykluczenia z tego odwołania" />
+  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="Prywatne zasoby" Description="Prywatne zasoby w tym odwołaniu" />
   <StringProperty Name="Name" Visible="True" ReadOnly="True" />
   <StringProperty Name="OriginalItemSpec" Visible="False" ReadOnly="True" Description="Sprawdzona nazwa elementu oryginalnego elementu odwołania, którego rozpoznanie spowodowało rozpoznanie tego elementu odwołania." />
   <StringProperty Name="Path" Visible="False" ReadOnly="True" />
@@ -22,6 +22,6 @@
   <StringProperty Name="FrameworkName" Visible="False" ReadOnly="True" />
   <StringProperty Name="FrameworkVersion" Visible="False" ReadOnly="True" />
   <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
-  <StringProperty Name="NoWarn" Visible="True" DisplayName="NoWarn" Description="Comma-delimited list of warnings that should be suppressed for this package" />
+  <StringProperty Name="NoWarn" Visible="True" DisplayName="NoWarn" Description="Rozdzielona przecinkami lista ostrzeżeń, które mają zostać pominięte dla tego pakietu" />
   <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
 </Rule>

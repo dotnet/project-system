@@ -398,7 +398,7 @@ La modification de ce paramètre réinitialise les paramètres dans toutes les c
     <value>Démarrage...</value>
   </data>
   <data name="PPG_MgdStatus_Building" xml:space="preserve">
-    <value>Génération..</value>
+    <value>Génération...</value>
   </data>
   <data name="PPG_MgdStatus_Analyzing" xml:space="preserve">
     <value>Analyse...</value>
