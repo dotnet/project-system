@@ -33,7 +33,7 @@ Targets that dynamically change references, source files or compilation options 
 If you've determined that your target needs to run in a design-time build, using the above table set `BeforeTargets` to the normal target equivalent of what you are contributing to the build. For example, if a target changes `<Reference>` items, then it should indicate that it runs _before_ `ResolveAssemblyReferences` target:
 
 ``` XML
-  <Target Name="AddAdditionalReferences" BeforeTargets="ResolveAssemblyReference">
+  <Target Name="AddAdditionalReferences" BeforeTargets="ResolveAssemblyReferences">
      ...
   </Target>
 ```
@@ -44,7 +44,7 @@ The `AddAdditionalReferences` target will run in both normal builds _and_ design
 Use the `DesignTimeBuild` property to differentiate between when a target is run in a design-time build versus a normal build. This can be used to avoid expensive calculations or work that is only needed for a normal build.
 
 ``` XML
-  <Target Name="AddAdditionalReferences" BeforeTargets="ResolveAssemblyReference">
+  <Target Name="AddAdditionalReferences" BeforeTargets="ResolveAssemblyReferences">
      <PropertyGroup Condition="'$(DesignTimeBuild)' == 'true'">
          <_AvoidExpensiveCalculation>true</_AvoidExpensiveCalculation>
      </PropertyGroup>
