@@ -15,22 +15,22 @@
   <StringProperty Name="FrameworkName" Visible="False" ReadOnly="True" />
   <StringProperty Name="IsImplicitlyDefined" Visible="False" ReadOnly="True" />
   <StringProperty Name="FrameworkVersion" Visible="False" ReadOnly="True" />
-  <StringProperty Name="NoWarn" Visible="True" DisplayName="NoWarn" Description="Comma-delimited list of warnings that should be suppressed for this package">
+  <StringProperty Name="NoWarn" Visible="True" DisplayName="NoWarn" Description="应为此包取消的警告逗号分隔列表">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFile" ItemType="PackageReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="IncludeAssets" Description="Assets to include from this reference">
+  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="IncludeAssets" Description="要从此引用中包括的资产">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFile" ItemType="PackageReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="ExcludeAssets" Description="Assets to exclude from this reference">
+  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="ExcludeAssets" Description="要从此引用中排除的资产">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFile" ItemType="PackageReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="PrivateAssets" Description="Assets that are private in this reference">
+  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="PrivateAssets" Description="此引用中的私有资产">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFile" ItemType="PackageReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>

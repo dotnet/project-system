@@ -121,7 +121,7 @@
     <value>Linha de comando do evento p&amp;ré-build:</value>
   </data>
   <data name="btnPreBuildBuilder.Text" xml:space="preserve">
-    <value>Ed&amp;itar Pré-build...</value>
+    <value>Ed&amp;itar pré-build...</value>
   </data>
   <data name="lblPostBuildEventCommandLine.Text" xml:space="preserve">
     <value>Linha de comando do event&amp;o pós-build:</value>

@@ -124,7 +124,7 @@
     <value>Cancelar</value>
   </data>
   <data name="Label1.Text" xml:space="preserve">
-    <value>Digi&amp;te ou cole um documento XML</value>
+    <value>Digi&amp;tar ou colar um documento XML</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Adicionar XML</value>

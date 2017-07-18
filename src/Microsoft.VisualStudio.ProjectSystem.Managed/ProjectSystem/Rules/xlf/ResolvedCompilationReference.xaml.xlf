@@ -5,19 +5,19 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ResolvedCompilationReference.xaml" />
       <trans-unit id="Rule|ResolvedCompilationReference|DisplayName">
         <source>Resolved Compilation Reference</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedCompilationReference|Description">
         <source>Resolved Compilation Reference Properties</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|DisplayName">
         <source>Path</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|Description">
         <source>Location of the referenced assembly.</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

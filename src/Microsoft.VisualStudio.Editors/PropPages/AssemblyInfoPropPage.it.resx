@@ -142,7 +142,7 @@
     <value>&amp;Lingua di sistema:</value>
   </data>
   <data name="AssemblyVersionLabel.Text" xml:space="preserve">
-    <value>&amp;Versione dell'assembly:</value>
+    <value>Versione dell'&amp;assembly:</value>
   </data>
   <data name="FileVersionLabel.Text" xml:space="preserve">
     <value>V&amp;ersione del file:</value>

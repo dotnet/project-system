@@ -121,7 +121,7 @@
     <value>Befehlszeile für P&amp;räbuildereignis:</value>
   </data>
   <data name="btnPreBuildBuilder.Text" xml:space="preserve">
-    <value>Präbuild bearbe&amp;iten...</value>
+    <value>Buildvorstufe bearbe&amp;iten...</value>
   </data>
   <data name="lblPostBuildEventCommandLine.Text" xml:space="preserve">
     <value>Befehlszeile für P&amp;ostbuildereignis:</value>

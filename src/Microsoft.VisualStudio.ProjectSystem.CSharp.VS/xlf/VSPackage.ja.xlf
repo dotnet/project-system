@@ -20,7 +20,7 @@
       </trans-unit>
       <trans-unit id="4">
         <source>A project for creating a command-line application that can run on .NET Core on Windows, Linux and MacOS.</source>
-        <target state="translated">Windows、Linux、MacOS 上の .NET Core で実行できるコマンドライン アプリケーションを作成するためのプロジェクトです。</target>
+        <target state="translated">Windows、Linux、MacOS 上の .NET Core で実行できるコマンドライン アプリケーションを作成するためのプロジェクト。</target>
         <note />
       </trans-unit>
       <trans-unit id="5">
@@ -30,7 +30,7 @@
       </trans-unit>
       <trans-unit id="6">
         <source>A project for creating a class library that targets .NET Standard.</source>
-        <target state="translated">.NET Standard を対象とするクラス ライブラリを作成するためのプロジェクトです。</target>
+        <target state="translated">.NET Standard を対象とするクラス ライブラリを作成するためのプロジェクト。</target>
         <note />
       </trans-unit>
       <trans-unit id="7">
@@ -50,7 +50,7 @@
       </trans-unit>
       <trans-unit id="10">
         <source>A project for creating a class library that targets .NET Core.</source>
-        <target state="translated">.NET Core を対象とするクラス ライブラリを作成するためのプロジェクトです。</target>
+        <target state="translated">.NET Core を対象とするクラス ライブラリを作成するためのプロジェクト。</target>
         <note />
       </trans-unit>
       <trans-unit id="11">

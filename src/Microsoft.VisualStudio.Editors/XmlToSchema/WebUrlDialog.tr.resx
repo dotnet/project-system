@@ -127,6 +127,6 @@
     <value>XML belgesinin HTTP adresini &amp;sağlayın:</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Webden bir XML belgesi ekleyin</value>
+    <value>Web’den bir XML belgesi ekleyin</value>
   </data>
 </root>

@@ -15,7 +15,7 @@
       <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" PersistedName="Private" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
-  <BoolProperty Name="CopyLocalSatelliteAssemblies" DisplayName="Copy Local Satellite Assemblies" Description="Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory." />
+  <BoolProperty Name="CopyLocalSatelliteAssemblies" DisplayName="複製附屬組件到本機" Description="表示是否應將參考目標的附屬組件複製到這個專案的輸出目錄。" />
   <StringProperty Name="Culture" ReadOnly="True" DisplayName="文化特性" Description="來自組件中繼資料 [文化特性] 欄位的值。"></StringProperty>
   <StringProperty Name="Description" ReadOnly="True" DisplayName="說明" Description="來自組件中繼資料的 [標題] 欄位的值。"></StringProperty>
   <BoolProperty Name="EmbedInteropTypes" DisplayName="內嵌 Interop 類型" Description="指出此組件中所定義的類型是否將內嵌在目標組件中。">
@@ -23,15 +23,15 @@
       <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
-  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="Exclude Assets" Description="Assets to exclude from this reference" />
+  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="排除資產" Description="要從此參考排除的資產" />
   <StringProperty Name="Identity" ReadOnly="True" DisplayName="識別" Description="參考組件的安全性識別 (請參閱 System.Reflection.Assembly.Evidence 或 System.Security.Policy.Evidence)。">
     <StringProperty.DataSource>
       <DataSource PersistedName="{}{Identity}" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="Include Assets" Description="Assets to include from this reference" />
-  <BoolProperty Name="ReferenceOutputAssembly" DisplayName="Reference Output Assembly" Description="A value indicating whether the compiler should include a reference to the target project's primary output assembly." />
-  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="Private Assets" Description="Assets that are private in this reference" />
+  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="包含資產" Description="要從此參考包含的資產" />
+  <BoolProperty Name="ReferenceOutputAssembly" DisplayName="參考輸出組件" Description="這個值指出編譯器是否應該包含目標專案的主要輸出組件參考。" />
+  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="私用資產" Description="此參考中的私用資產" />
   <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="路徑" Description="正被參考之檔案的位置。">
     <StringProperty.DataSource>
       <DataSource PersistedName="Identity" SourceOfDefaultValue="AfterContext" />

@@ -25,7 +25,7 @@
   <EnumProperty Name="GenerateSerializationAssemblies" DisplayName="Genera assembly di serializzazione" Visible="False">
     <EnumValue Name="Auto" DisplayName="Automatico" IsDefault="True" />
     <EnumValue Name="On" DisplayName="Sì" />
-    <EnumValue Name="Off" DisplayName="No" />
+    <EnumValue Name="Off" DisplayName="Off" />
   </EnumProperty>
   <!-- ** removed for RTM: needs translation
   <BoolProperty Name="RegisterForComInterop" Default="False" DisplayName="Register for COM Interop" Visible="False"/>

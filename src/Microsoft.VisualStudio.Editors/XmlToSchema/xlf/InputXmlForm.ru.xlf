@@ -70,7 +70,7 @@
       </trans-unit>
       <trans-unit id="_xmlFileDialog.Title">
         <source>Add XML Files</source>
-        <target state="translated">Добавить файлы XML</target>
+        <target state="translated">Добавить XML-файлы</target>
         <note />
       </trans-unit>
       <trans-unit id="$this.Text">

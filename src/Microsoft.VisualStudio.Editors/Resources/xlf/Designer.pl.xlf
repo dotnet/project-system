@@ -518,7 +518,7 @@ Zmiana tego ustawienia spowoduje zresetowanie ustawień we wszystkich konfigurac
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_Included">
         <source>Include</source>
-        <target state="translated">Dołącz</target>
+        <target state="translated">Uwzględnij</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_Excluded">
@@ -538,7 +538,7 @@ Zmiana tego ustawienia spowoduje zresetowanie ustawień we wszystkich konfigurac
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_HeaderIncluded">
         <source>Included</source>
-        <target state="translated">Dołączone</target>
+        <target state="translated">Uwzględnione</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_HeaderPermission">
@@ -600,17 +600,17 @@ Błąd:</target>
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_CheckAccessibilityName">
         <source>Included</source>
-        <target state="translated">Dołączone</target>
+        <target state="translated">Uwzględnione</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_BlankAccessibilityName">
         <source>Not Included</source>
-        <target state="translated">Niedołączone</target>
+        <target state="translated">Nieuwzględnione</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_BangAccessibilityName">
         <source>Included with warning</source>
-        <target state="translated">Dołączone z ostrzeżeniem</target>
+        <target state="translated">Uwzględnione z ostrzeżeniem</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_SecurityPage_PermCalcFailed">

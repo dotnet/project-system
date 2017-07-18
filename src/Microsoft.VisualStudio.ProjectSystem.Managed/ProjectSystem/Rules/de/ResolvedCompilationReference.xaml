@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Rule Name="ResolvedCompilationReference" DisplayName="Resolved Compilation Reference" PageTemplate="generic" Description="Resolved Compilation Reference Properties" xmlns="http://schemas.microsoft.com/build/2009/properties">
+<Rule Name="ResolvedCompilationReference" DisplayName="Aufgelöster Kompilierungsverweis" PageTemplate="generic" Description="Eigenschaften des aufgelösten Kompilierungsverweises" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
     <DataSource Persistence="ResolvedReference" ItemType="ReferencePathWithRefAssemblies" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" SourceType="TargetResults" MSBuildTarget="CollectResolvedCompilationReferencesDesignTime" />
   </Rule.DataSource>
-  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Path" Description="Location of the referenced assembly.">
+  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Pfad" Description="Speicherort der Assembly, auf die verwiesen wird.">
     <StringProperty.DataSource>
       <DataSource PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>

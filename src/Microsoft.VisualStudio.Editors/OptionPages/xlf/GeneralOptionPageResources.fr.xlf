@@ -5,33 +5,33 @@
       <group id="src/Microsoft.VisualStudio.Editors/OptionPages/GeneralOptionPageResources.resx" />
       <trans-unit id="General_FastUpToDateCheck">
         <source>Don't call MSBuild if a project appears to be up to date.</source>
-        <target state="new">Don't call MSBuild if a project appears to be up to date.</target>
-        <note></note>
+        <target state="translated">N'appelez pas MSBuild si un projet semble être à jour.</target>
+        <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_LogLevel">
         <source>Logging Level:</source>
-        <target state="new">Logging Level:</target>
-        <note></note>
+        <target state="translated">Niveau de journalisation :</target>
+        <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_LogLevel_Info">
         <source>Info</source>
-        <target state="new">Info</target>
-        <note></note>
+        <target state="translated">Informations</target>
+        <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_LogLevel_None">
         <source>None</source>
-        <target state="new">None</target>
-        <note></note>
+        <target state="translated">Aucun</target>
+        <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_LogLevel_Verbose">
         <source>Verbose</source>
-        <target state="new">Verbose</target>
-        <note></note>
+        <target state="translated">Mode détaillé</target>
+        <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_Title">
         <source>Up to Date Checks</source>
-        <target state="new">Up to Date Checks</target>
-        <note></note>
+        <target state="translated">Contrôles de mise à jour</target>
+        <note />
       </trans-unit>
     </body>
   </file>

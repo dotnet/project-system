@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
-<Rule Name="UpToDateCheckInput" DisplayName="Up-to-date check input" PageTemplate="generic" Description="File Properties" xmlns="http://schemas.microsoft.com/build/2009/properties">
+<Rule Name="UpToDateCheckInput" DisplayName="Güncellik denetimi girişi" PageTemplate="generic" Description="Dosya Özellikleri" xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
     <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="UpToDateCheckInput" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <Rule.Categories>
-    <Category Name="Advanced" DisplayName="Advanced" />
-    <Category Name="Misc" DisplayName="Misc" />
+    <Category Name="Advanced" DisplayName="Gelişmiş" />
+    <Category Name="Misc" DisplayName="Çeşitli" />
   </Rule.Categories>
-  <StringProperty Name="FullPath" DisplayName="Full Path" ReadOnly="true" Category="Misc" Description="Location of the file.">
+  <StringProperty Name="FullPath" DisplayName="Tam Yol" ReadOnly="true" Category="Misc" Description="Dosyanın konumu.">
     <StringProperty.DataSource>
       <DataSource Persistence="Intrinsic" ItemType="UpToDateCheckInput" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>

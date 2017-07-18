@@ -15,7 +15,7 @@
       </trans-unit>
       <trans-unit id="Label1.Text">
         <source>&amp;Type or paste an XML document</source>
-        <target state="translated">Digi&amp;te ou cole um documento XML</target>
+        <target state="translated">Digi&amp;tar ou colar um documento XML</target>
         <note />
       </trans-unit>
       <trans-unit id="$this.Text">

@@ -5,27 +5,27 @@
       <group id="src/Microsoft.VisualStudio.Editors/OptionPages/GeneralOptionPageResources.resx" />
       <trans-unit id="General_FastUpToDateCheck">
         <source>Don't call MSBuild if a project appears to be up to date.</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_LogLevel">
         <source>Logging Level:</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_LogLevel_Info">
         <source>Info</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_LogLevel_None">
         <source>None</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_LogLevel_Verbose">
         <source>Verbose</source>
-        <note></note>
+        <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_Title">
         <source>Up to Date Checks</source>
-        <note></note>
+        <note />
       </trans-unit>
     </body>
   </file>

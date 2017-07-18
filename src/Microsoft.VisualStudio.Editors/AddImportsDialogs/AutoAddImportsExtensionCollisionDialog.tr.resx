@@ -124,6 +124,6 @@
     <value>İptal</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Import Ekleme Doğrulama Hatası</value>
+    <value>Imports Ekleme Doğrulama Hatası</value>
   </data>
 </root>

@@ -10,7 +10,7 @@
       </trans-unit>
       <trans-unit id="ColumnHeader1.Text">
         <source>Source Type</source>
-        <target state="translated">Tipo de origem</target>
+        <target state="translated">Tipo de Origem</target>
         <note />
       </trans-unit>
       <trans-unit id="ColumnHeader2.Text">
@@ -35,17 +35,17 @@
       </trans-unit>
       <trans-unit id="Label1.Text">
         <source>Specify XML documents to infer XML Schema set</source>
-        <target state="translated">Especifique documentos XML para inferir conjunto de Esquemas XML</target>
+        <target state="translated">Especificar documentos XML para inferir conjunto de Esquemas XML</target>
         <note />
       </trans-unit>
       <trans-unit id="_addFromFileButton.AccessibleName">
         <source>Add from File</source>
-        <target state="translated">Adicionar de arquivo</target>
+        <target state="translated">Adicionar do Arquivo</target>
         <note />
       </trans-unit>
       <trans-unit id="_addFromFileButton.Text">
         <source>Add from &amp;File</source>
-        <target state="translated">Adicionar de &amp;arquivo</target>
+        <target state="translated">Adicionar do &amp;Arquivo</target>
         <note />
       </trans-unit>
       <trans-unit id="_addFromWebButton.AccessibleName">

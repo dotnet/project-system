@@ -5,23 +5,23 @@
       <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ResolvedCompilationReference.xaml" />
       <trans-unit id="Rule|ResolvedCompilationReference|DisplayName">
         <source>Resolved Compilation Reference</source>
-        <target state="new">Resolved Compilation Reference</target>
-        <note></note>
+        <target state="translated">Rozpoznano odwołanie kompilacji</target>
+        <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedCompilationReference|Description">
         <source>Resolved Compilation Reference Properties</source>
-        <target state="new">Resolved Compilation Reference Properties</target>
-        <note></note>
+        <target state="translated">Rozpoznano właściwości odwołań kompilacji</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|DisplayName">
         <source>Path</source>
-        <target state="new">Path</target>
-        <note></note>
+        <target state="translated">Ścieżka</target>
+        <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|Description">
         <source>Location of the referenced assembly.</source>
-        <target state="new">Location of the referenced assembly.</target>
-        <note></note>
+        <target state="translated">Lokalizacja przywoływanego zestawu.</target>
+        <note />
       </trans-unit>
     </body>
   </file>

@@ -148,7 +148,7 @@
     <value>Symbol:</value>
   </data>
   <data name="AppIconBrowse.Text" xml:space="preserve">
-    <value>...</value>
+    <value>Durchsuchen...</value>
   </data>
   <data name="ApplicationManifestLabel.Text" xml:space="preserve">
     <value>Manifest:</value>
@@ -157,7 +157,7 @@
     <value>Re&amp;ssourcendatei:</value>
   </data>
   <data name="Win32ResourceFileBrowse.Text" xml:space="preserve">
-    <value>...</value>
+    <value>Durchsuchen...</value>
   </data>
   <data name="ResourcesGroupBox.Text" xml:space="preserve">
     <value>Ressourcen</value>

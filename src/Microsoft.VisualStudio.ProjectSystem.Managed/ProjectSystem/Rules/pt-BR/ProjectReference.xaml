@@ -5,7 +5,7 @@
     <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   <!-- Visible properties -->
-  <StringListProperty Name="Aliases" DisplayName="Aliases" Description="A comma-delimited list of aliases to this reference." Separator=",">
+  <StringListProperty Name="Aliases" DisplayName="Aliases" Description="Uma lista delimitada por vírgula de aliases para esta referência." Separator=",">
     <StringListProperty.DataSource>
       <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </StringListProperty.DataSource>
@@ -16,28 +16,28 @@
     </BoolProperty.DataSource>
   </BoolProperty>
   <BoolProperty Name="CopyLocalSatelliteAssemblies" DisplayName="Assemblies Satélite do Local da Cópia" Description="Indica se os assemblies satélite do destino de referência devem ser copiados nesse diretório de saída do projeto." />
-  <StringProperty Name="Culture" ReadOnly="True" DisplayName="Culture" Description="The value of the culture field from the assembly metadata."></StringProperty>
-  <StringProperty Name="Description" ReadOnly="True" DisplayName="Description" Description="The value of the Title field from the assembly metadata."></StringProperty>
-  <BoolProperty Name="EmbedInteropTypes" DisplayName="Embed Interop Types" Description="Indicates whether types defined in this assembly will be embedded into the target assembly.">
+  <StringProperty Name="Culture" ReadOnly="True" DisplayName="Cultura" Description="O valor do campo de cultura dos metadados do assembly."></StringProperty>
+  <StringProperty Name="Description" ReadOnly="True" DisplayName="Descrição" Description="O valor do campo Título dos metadados do assembly."></StringProperty>
+  <BoolProperty Name="EmbedInteropTypes" DisplayName="Inserir Tipos Interop" Description="Indica se os tipos definidos neste assembly serão inseridos no assembly de destino.">
     <BoolProperty.DataSource>
       <DataSource Persistence="ProjectFile" ItemType="ProjectReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
-  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="ExcludeAssets" Description="Ativos a serem excluídos dessa referência" />
-  <StringProperty Name="Identity" ReadOnly="True" DisplayName="Identity" Description="Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).">
+  <StringProperty Name="ExcludeAssets" Visible="True" DisplayName="Exclude Assets" Description="Ativos a serem excluídos dessa referência" />
+  <StringProperty Name="Identity" ReadOnly="True" DisplayName="Identidade" Description="Identidade de segurança do assembly referenciado (veja System.Reflection.Assembly.Evidence ou System.Security.Policy.Evidence).">
     <StringProperty.DataSource>
       <DataSource PersistedName="{}{Identity}" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="IncludeAssets" Description="Ativos a serem incluídos dessa referência" />
+  <StringProperty Name="IncludeAssets" Visible="True" DisplayName="Include Assets" Description="Ativos a serem incluídos dessa referência" />
   <BoolProperty Name="ReferenceOutputAssembly" DisplayName="Assembly de Saída de Referência" Description="Um valor que indica se o compilador deve incluir uma referência ao assembly de saída principal do projeto de destino." />
-  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="PrivateAssets" Description="Ativos que são privados nessa referência" />
-  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Path" Description="Location of the file being referenced.">
+  <StringProperty Name="PrivateAssets" Visible="True" DisplayName="Private Assets" Description="Ativos que são privados nessa referência" />
+  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Caminho" Description="Localização do arquivo que está sendo referenciado.">
     <StringProperty.DataSource>
       <DataSource PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="Version" ReadOnly="True" DisplayName="Version" Description="Version of reference."></StringProperty>
+  <StringProperty Name="Version" ReadOnly="True" DisplayName="Versão" Description="Versão de referência."></StringProperty>
   <!-- Hidden properties -->
   <BoolProperty Name="LinkLibraryDependencies" Visible="False" />
   <StringProperty Name="Project" Visible="False" Description="o GUID com o qual a solução rastreia um destino de referência de projeto individual" />

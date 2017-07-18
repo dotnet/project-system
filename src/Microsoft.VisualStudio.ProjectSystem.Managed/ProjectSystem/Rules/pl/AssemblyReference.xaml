@@ -12,12 +12,12 @@
     </BoolProperty.DataSource>
   </BoolProperty>
   <BoolProperty Name="EmbedInteropTypes" DisplayName="Osadź typy międzyoperacyjne" Description="Wskazuje, czy typy zdefiniowane w tym zestawie będą osadzone w zestawie docelowym." />
-  <StringProperty Name="Identity" ReadOnly="True" DisplayName="Identity" Description="Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).">
+  <StringProperty Name="Identity" ReadOnly="True" DisplayName="Tożsamość" Description="Tożsamość zabezpieczeń zestawu, do którego się odwoływano (zobacz System.Reflection.Assembly.Evidence lub System.Security.Policy.Evidence).">
     <StringProperty.DataSource>
       <DataSource PersistedName="{}{Identity}" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Path" Description="Location of the file being referenced.">
+  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Ścieżka" Description="Lokalizacja pliku, którego dotyczy odwołanie.">
     <StringProperty.DataSource>
       <DataSource PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
@@ -27,7 +27,7 @@
       <DataSource Persistence="AssemblyReference" ItemType="Reference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
-  <StringProperty Name="Version" ReadOnly="True" DisplayName="Version" Description="Version of reference."></StringProperty>
+  <StringProperty Name="Version" ReadOnly="True" DisplayName="Wersja" Description="Wersja odwołania."></StringProperty>
   <!-- Hidden properties -->
   <StringProperty Name="HintPath" Visible="false" />
   <StringProperty Name="ImageRuntime" DisplayName="Wersja wykonawcza" Description="Wersja środowiska uruchomieniowego CLR będąca celem tego zestawu." Visible="False" ReadOnly="True" />

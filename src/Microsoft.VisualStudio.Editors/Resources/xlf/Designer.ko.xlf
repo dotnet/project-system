@@ -1053,7 +1053,7 @@ Error:</source>
       </trans-unit>
       <trans-unit id="APPDES_ClickHereCreateSettings">
         <source>This project does not contain a default settings file.  Click here to create one.</source>
-        <target state="translated">이 프로젝트에는 기본 설정 파일이 없습니다.  기본 리소스 파일을 만들려면 여기를 클릭하세요.</target>
+        <target state="translated">이 프로젝트에는 기본 설정 파일이 없습니다. 기본 설정 파일을 만들려면 여기를 클릭하세요.</target>
         <note />
       </trans-unit>
       <trans-unit id="APPDES_FileNotFound_1Arg">
@@ -1108,7 +1108,7 @@ Error:</source>
       </trans-unit>
       <trans-unit id="PPG_Property_AssemblyFileVersion">
         <source>Assembly File Version</source>
-        <target state="translated">어셈블리 파일 전</target>
+        <target state="translated">어셈블리 파일 버전</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Property_AssemblyGuid">
@@ -2396,7 +2396,7 @@ app.config 파일의 새 값은 '{1}'입니다.
       </trans-unit>
       <trans-unit id="PPG_WPFApp_Xaml_UnexpectedFormat_2Args">
         <source>The .xaml file was in an unexpected format, near line {0} column {1}.</source>
-        <target state="translated">.xaml 파일의 줄 {0} 열 {1} 근처에 잘못된 형식이 있습니다.</target>
+        <target state="translated">.xaml 파일의 줄 {0} 열 {1} 근처에 예기치 않은 형식이 있습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_Application_StartupObjectLabelText">

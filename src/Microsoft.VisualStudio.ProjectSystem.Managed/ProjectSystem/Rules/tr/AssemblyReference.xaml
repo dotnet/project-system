@@ -12,12 +12,12 @@
     </BoolProperty.DataSource>
   </BoolProperty>
   <BoolProperty Name="EmbedInteropTypes" DisplayName="Birlikte Çalışma Türlerini Ekle" Description="Bu bütünleştirilmiş kodda tanımlanan türlerin hedef bütünleştirilmiş koda katıştırılıp katıştırılmayacağını belirtir." />
-  <StringProperty Name="Identity" ReadOnly="True" DisplayName="Identity" Description="Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).">
+  <StringProperty Name="Identity" ReadOnly="True" DisplayName="Kimlik" Description="Başvurulan bütünleştirilmiş kodun güvenlik kimliği (bkz. System.Reflection.Assembly.Evidence veya System.Security.Policy.Evidence).">
     <StringProperty.DataSource>
       <DataSource PersistedName="{}{Identity}" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Path" Description="Location of the file being referenced.">
+  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Yol" Description="Başvurulan dosyanın konumu.">
     <StringProperty.DataSource>
       <DataSource PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
@@ -27,7 +27,7 @@
       <DataSource Persistence="AssemblyReference" ItemType="Reference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
-  <StringProperty Name="Version" ReadOnly="True" DisplayName="Version" Description="Version of reference."></StringProperty>
+  <StringProperty Name="Version" ReadOnly="True" DisplayName="Sürüm" Description="Başvurunun sürümü."></StringProperty>
   <!-- Hidden properties -->
   <StringProperty Name="HintPath" Visible="false" />
   <StringProperty Name="ImageRuntime" DisplayName="Çalışma Zamanı Sürümü" Description="Bu derleme tarafından hedeflenen CLR çalışma zamanı sürümü." Visible="False" ReadOnly="True" />

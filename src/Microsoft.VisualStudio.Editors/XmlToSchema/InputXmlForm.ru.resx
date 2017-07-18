@@ -157,7 +157,7 @@
     <value>XML-файлы (*.xml)|*.xml|Все файлы (*.*)|*.*</value>
   </data>
   <data name="_xmlFileDialog.Title" xml:space="preserve">
-    <value>Добавить файлы XML</value>
+    <value>Добавить XML-файлы</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Вывод набора схем XML из XML-документов</value>

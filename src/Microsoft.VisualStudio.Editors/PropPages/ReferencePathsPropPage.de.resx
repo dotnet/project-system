@@ -133,7 +133,7 @@
     <value>Nach Ordner suchen</value>
   </data>
   <data name="FolderBrowse.Text" xml:space="preserve">
-    <value>...</value>
+    <value>Durchsuchen...</value>
   </data>
   <data name="MoveUp.AccessibleName" xml:space="preserve">
     <value>Nach oben</value>

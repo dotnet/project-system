@@ -118,21 +118,21 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="General_FastUpToDateCheck" xml:space="preserve">
-    <value>Don't call MSBuild if a project appears to be up to date.</value>
+    <value>No llame a MSBuild si un proyecto parece estar actualizado.</value>
   </data>
   <data name="General_FastUpToDateCheck_LogLevel" xml:space="preserve">
-    <value>Logging Level:</value>
+    <value>Nivel de registro:</value>
   </data>
   <data name="General_FastUpToDateCheck_LogLevel_Info" xml:space="preserve">
     <value>Info</value>
   </data>
   <data name="General_FastUpToDateCheck_LogLevel_None" xml:space="preserve">
-    <value>None</value>
+    <value>Ninguno</value>
   </data>
   <data name="General_FastUpToDateCheck_LogLevel_Verbose" xml:space="preserve">
-    <value>Verbose</value>
+    <value>Detallado</value>
   </data>
   <data name="General_FastUpToDateCheck_Title" xml:space="preserve">
-    <value>Up to Date Checks</value>
+    <value>Comprobaciones de actualizaciones</value>
   </data>
 </root>

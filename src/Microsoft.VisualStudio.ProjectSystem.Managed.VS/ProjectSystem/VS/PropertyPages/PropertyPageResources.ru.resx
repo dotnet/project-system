@@ -202,10 +202,10 @@
     <value>Запустить:</value>
   </data>
   <data name="LaunchURL" xml:space="preserve">
-    <value>URL-адрес для запуска:</value>
+    <value>Запустить браузер:</value>
   </data>
   <data name="NameHeader" xml:space="preserve">
-    <value>Название</value>
+    <value>Имя</value>
   </data>
   <data name="NewBtn" xml:space="preserve">
     <value>Создать...</value>

@@ -148,7 +148,7 @@
     <value>图标:</value>
   </data>
   <data name="AppIconBrowse.Text" xml:space="preserve">
-    <value>...</value>
+    <value>浏览...</value>
   </data>
   <data name="ApplicationManifestLabel.Text" xml:space="preserve">
     <value>清单:</value>
@@ -157,7 +157,7 @@
     <value>资源文件(&amp;S):</value>
   </data>
   <data name="Win32ResourceFileBrowse.Text" xml:space="preserve">
-    <value>...</value>
+    <value>浏览...</value>
   </data>
   <data name="ResourcesGroupBox.Text" xml:space="preserve">
     <value>资源</value>

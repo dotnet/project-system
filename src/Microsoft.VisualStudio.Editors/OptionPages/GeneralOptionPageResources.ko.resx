@@ -118,21 +118,21 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="General_FastUpToDateCheck" xml:space="preserve">
-    <value>Don't call MSBuild if a project appears to be up to date.</value>
+    <value>프로젝트가 최신으로 표시되는 경우 MSBuild를 호출하지 않습니다.</value>
   </data>
   <data name="General_FastUpToDateCheck_LogLevel" xml:space="preserve">
-    <value>Logging Level:</value>
+    <value>로깅 수준:</value>
   </data>
   <data name="General_FastUpToDateCheck_LogLevel_Info" xml:space="preserve">
-    <value>Info</value>
+    <value>정보</value>
   </data>
   <data name="General_FastUpToDateCheck_LogLevel_None" xml:space="preserve">
-    <value>None</value>
+    <value>없음</value>
   </data>
   <data name="General_FastUpToDateCheck_LogLevel_Verbose" xml:space="preserve">
-    <value>Verbose</value>
+    <value>자세한 정보 표시</value>
   </data>
   <data name="General_FastUpToDateCheck_Title" xml:space="preserve">
-    <value>Up to Date Checks</value>
+    <value>최신 검사</value>
   </data>
 </root>

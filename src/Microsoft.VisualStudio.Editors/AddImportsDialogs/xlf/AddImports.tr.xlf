@@ -12,7 +12,7 @@
       </trans-unit>
       <trans-unit id="ImportsAnywaysFormatString">
         <source>&amp;Import '{0}' and qualify the affected identifiers.</source>
-        <target state="translated">'{0}' öğesini &amp;içe aktar ve etkilenen tanımlayıcıları nitelendirin.</target>
+        <target state="translated">'{0}' öğesini &amp;içeri aktar ve etkilenen tanımlayıcıları nitelendir.</target>
         <note>
       Defines the replacement string for use in "Imports Anyways" option of the add imports collision dialog.
       This text will be formated as richtext.

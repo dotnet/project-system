@@ -127,6 +127,6 @@
     <value>&amp;Ne pas importer '{0}', mais remplacer '{1}' par '{2}'.</value>
   </data>
   <data name="AddImportsExtensionMethodsMainFormatString" xml:space="preserve">
-    <value>L'importation de '{0}' modifierait la signification d'autre code contenu dans votre fichier, notamment les appels aux méthodes d'extension. Cliquez sur OK pour corriger '{1}' en le remplaçant par '{2}' </value>
+    <value>L'importation de '{0}' modifierait la signification d'une autre partie du code contenu dans votre fichier, notamment les appels aux méthodes d'extension. Cliquez sur OK pour corriger '{1}' en le remplaçant par '{2}' </value>
   </data>
 </root>

@@ -12,12 +12,12 @@
     </BoolProperty.DataSource>
   </BoolProperty>
   <BoolProperty Name="EmbedInteropTypes" DisplayName="Inserir Tipos Interop" Description="Indica se os tipos definidos neste assembly serão inseridos no assembly de destino." />
-  <StringProperty Name="Identity" ReadOnly="True" DisplayName="Identity" Description="Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).">
+  <StringProperty Name="Identity" ReadOnly="True" DisplayName="Identidade" Description="Identidade de segurança do assembly referenciado (veja System.Reflection.Assembly.Evidence ou System.Security.Policy.Evidence).">
     <StringProperty.DataSource>
       <DataSource PersistedName="{}{Identity}" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Path" Description="Location of the file being referenced.">
+  <StringProperty Name="ResolvedPath" ReadOnly="True" DisplayName="Caminho" Description="Localização do arquivo que está sendo referenciado.">
     <StringProperty.DataSource>
       <DataSource PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
@@ -27,7 +27,7 @@
       <DataSource Persistence="AssemblyReference" ItemType="Reference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
-  <StringProperty Name="Version" ReadOnly="True" DisplayName="Version" Description="Version of reference."></StringProperty>
+  <StringProperty Name="Version" ReadOnly="True" DisplayName="Versão" Description="Versão de referência."></StringProperty>
   <!-- Hidden properties -->
   <StringProperty Name="HintPath" Visible="false" />
   <StringProperty Name="ImageRuntime" DisplayName="Versão de Tempo de Execução" Description="A versão de tempo de execução do CLR de destino deste assembly." Visible="False" ReadOnly="True" />
