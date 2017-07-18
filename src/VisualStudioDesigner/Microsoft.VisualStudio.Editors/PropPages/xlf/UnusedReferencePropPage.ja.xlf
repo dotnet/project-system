@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ja" original="../UnusedReferencePropPage.resx">
+    <body>
+      <trans-unit id="ColHdr_Type.Text">
+        <source>Type</source>
+        <target state="translated">種類</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ColHdr_Path.Text">
+        <source>Path</source>
+        <target state="translated">パス</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnusedReferenceList.AccessibleName">
+        <source>Unused references</source>
+        <target state="translated">未使用の参照</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ColHdr_RefName.Text">
+        <source>Reference Name</source>
+        <target state="translated">参照名</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ColHdr_Version.Text">
+        <source>Version</source>
+        <target state="translated">バージョン</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ColHdr_CopyLocal.Text">
+        <source>Copy Local</source>
+        <target state="translated">ローカルにコピー</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnusedReferencesListLabel.Text">
+        <source>Clicking "Remove" will remove all checked references.</source>
+        <target state="translated">[削除] をクリックすると選択されたすべての参照が削除されます。</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

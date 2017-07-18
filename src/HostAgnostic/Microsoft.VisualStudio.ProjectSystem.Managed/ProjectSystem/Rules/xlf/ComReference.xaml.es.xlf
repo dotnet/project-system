@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="es" original="../COMReference.xaml">
+    <body>
+      <trans-unit id="Rule|ComReference|DisplayName">
+        <source>COM Reference</source>
+        <target state="translated">Referencia COM</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|ComReference|Description">
+        <source>COM Reference Properties</source>
+        <target state="translated">Propiedades de referencia COM</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Guid|DisplayName">
+        <source>CLSID</source>
+        <target state="translated">CLSID</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Guid|Description">
+        <source>The GUID of the COM server.</source>
+        <target state="translated">GUID del servidor COM.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Lcid|DisplayName">
+        <source>Locale</source>
+        <target state="translated">Configuración regional</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Lcid|Description">
+        <source>The LCID of the COM server.</source>
+        <target state="translated">LCID del servidor COM.</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

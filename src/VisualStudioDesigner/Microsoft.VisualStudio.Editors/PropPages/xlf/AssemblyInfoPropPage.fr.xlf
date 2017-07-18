@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="fr" original="../AssemblyInfoPropPage.resx">
+    <body>
+      <trans-unit id="TitleLabel.Text">
+        <source>&amp;Title:</source>
+        <target state="translated">&amp;Titre :</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TrademarkLabel.Text">
+        <source>T&amp;rademark:</source>
+        <target state="translated">Ma&amp;rque :</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CopyrightLabel.Text">
+        <source>C&amp;opyright:</source>
+        <target state="translated">C&amp;opyright :</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ProductLabel.Text">
+        <source>&amp;Product:</source>
+        <target state="translated">&amp;Produit :</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CompanyLabel.Text">
+        <source>&amp;Company:</source>
+        <target state="translated">So&amp;ciété :</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DescriptionLabel.Text">
+        <source>&amp;Description:</source>
+        <target state="translated">&amp;Description :</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ComVisibleCheckBox.Text">
+        <source>&amp;Make assembly COM-Visible</source>
+        <target state="translated">Rendre l'asse&amp;mbly visible par COM</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NeutralLanguageLabel.Text">
+        <source>&amp;Neutral language:</source>
+        <target state="translated">Langage &amp;neutre :</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AssemblyVersionLabel.Text">
+        <source>&amp;Assembly version:</source>
+        <target state="translated">Version de l'&amp;assembly :</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FileVersionLabel.Text">
+        <source>&amp;File version:</source>
+        <target state="translated">Version de &amp;fichier :</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FileVersionMajorTextBox.AccessibleName">
+        <source>Major</source>
+        <target state="translated">Principale</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FileVersionMinorTextBox.AccessibleName">
+        <source>Minor</source>
+        <target state="translated">Secondaire</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FileVersionBuildTextBox.AccessibleName">
+        <source>Build</source>
+        <target state="translated">Build</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FileVersionRevisionTextBox.AccessibleName">
+        <source>Revision</source>
+        <target state="translated">Révision</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GuidLabel.Text">
+        <source>&amp;GUID:</source>
+        <target state="translated">&amp;GUID :</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AssemblyVersionMajorTextBox.AccessibleName">
+        <source>Major</source>
+        <target state="translated">Principale</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AssemblyVersionMinorTextBox.AccessibleName">
+        <source>Minor</source>
+        <target state="translated">Secondaire</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AssemblyVersionBuildTextBox.AccessibleName">
+        <source>Build</source>
+        <target state="translated">Build</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AssemblyVersionRevisionTextBox.AccessibleName">
+        <source>Revision</source>
+        <target state="translated">Révision</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

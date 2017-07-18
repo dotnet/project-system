@@ -1,0 +1,247 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="cs" original="../GeneralBrowseObject.xaml">
+    <body>
+      <trans-unit id="Rule|ConfigurationGeneralBrowseObject|DisplayName">
+        <source>General</source>
+        <target state="translated">Obecné</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|ConfigurationGeneralBrowseObject|Description">
+        <source>General</source>
+        <target state="translated">Obecné</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|General|DisplayName">
+        <source>General</source>
+        <target state="translated">Obecné</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|General|Description">
+        <source>General</source>
+        <target state="translated">Obecné</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ApplicationIcon|DisplayName">
+        <source>Application Icon</source>
+        <target state="translated">Ikona aplikace</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetFrameworkMoniker|DisplayName">
+        <source>Target Framework Moniker</source>
+        <target state="translated">Moniker cílového rozhraní</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|AssemblyName|DisplayName">
+        <source>Assembly Name</source>
+        <target state="translated">Název sestavení</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|RootNamespace|DisplayName">
+        <source>Root namespace</source>
+        <target state="translated">Kořenový obor názvů</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DefaultNamespace|DisplayName">
+        <source>Default namespace</source>
+        <target state="translated">Výchozí obor názvů</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetFrameworks|DisplayName">
+        <source>Target Frameworks</source>
+        <target state="translated">Cílové platformy</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ApplicationManifest|DisplayName">
+        <source>Application Manifest</source>
+        <target state="translated">Manifest aplikace</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Win32ResourceFile|DisplayName">
+        <source>Win32 Resource File</source>
+        <target state="translated">Soubor prostředků Win32</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PreBuildEvent|DisplayName">
+        <source>Pre Build Event</source>
+        <target state="translated">Událost před sestavením</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PostBuildEvent|DisplayName">
+        <source>Post Build Event</source>
+        <target state="translated">Událost po sestavení</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|RunPostBuildEvent|DisplayName">
+        <source>Run Post Build Event</source>
+        <target state="translated">Spustit událost po sestavení</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|RunPostBuildEvent.Always|DisplayName">
+        <source>Always</source>
+        <target state="translated">Vždy</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|RunPostBuildEvent.OnBuildSuccess|DisplayName">
+        <source>On successful build</source>
+        <target state="translated">Při úspěšném sestavení</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|RunPostBuildEvent.OnOutputUpdated|DisplayName">
+        <source>When the build updates the project output</source>
+        <target state="translated">Když sestavení aktualizuje výstup projektu</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ReferencePath|DisplayName">
+        <source>Reference Path</source>
+        <target state="translated">Cesta odkazu</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FileName|DisplayName">
+        <source>Project File</source>
+        <target state="translated">Soubor projektu</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FullPath|DisplayName">
+        <source>Project Folder</source>
+        <target state="translated">Složka projektu</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Description|DisplayName">
+        <source>Assembly Description</source>
+        <target state="translated">Popis sestavení</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Product|DisplayName">
+        <source>Product</source>
+        <target state="translated">Produkt</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Copyright|DisplayName">
+        <source>Copyright</source>
+        <target state="translated">Autorská práva</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|AssemblyVersion|DisplayName">
+        <source>Assembly Version</source>
+        <target state="translated">Verze sestavení</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|SignAssembly|DisplayName">
+        <source>Sign the assembly</source>
+        <target state="translated">Podepsat sestavení</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|DelaySign|DisplayName">
+        <source>Delay sign only</source>
+        <target state="translated">Jen příznak odložení</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|AssemblyOriginatorKeyFile|DisplayName">
+        <source>Strong name key file</source>
+        <target state="translated">Soubor klíče se silným názvem</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|GeneratePackageOnBuild|DisplayName">
+        <source>Generate Package On Build</source>
+        <target state="translated">Generovat při sestavení balíček</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageId|DisplayName">
+        <source>Package Id</source>
+        <target state="translated">ID balíčku</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Version|DisplayName">
+        <source>Package Version</source>
+        <target state="translated">Verze balíčku</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Authors|DisplayName">
+        <source>Authors</source>
+        <target state="translated">Autoři</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|PackageRequireLicenseAcceptance|DisplayName">
+        <source>Package Require License Acceptance</source>
+        <target state="translated">Balíček vyžaduje přijetí licence</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageLicenseUrl|DisplayName">
+        <source>Package License Url</source>
+        <target state="translated">URL licence balíčku</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageProjectUrl|DisplayName">
+        <source>Package Project Url</source>
+        <target state="translated">URL projektu balíčku</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageIconUrl|DisplayName">
+        <source>Package Icon Url</source>
+        <target state="translated">URL ikony balíčku</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageTags|DisplayName">
+        <source>Package Tags</source>
+        <target state="translated">Značky balíčku</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageReleaseNotes|DisplayName">
+        <source>Release Notes</source>
+        <target state="translated">Poznámky k verzi</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|RepositoryUrl|DisplayName">
+        <source>Repository Url</source>
+        <target state="translated">URL úložiště</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|RepositoryType|DisplayName">
+        <source>Repository Type</source>
+        <target state="translated">Typ úložiště</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Company|DisplayName">
+        <source>Assembly Company</source>
+        <target state="translated">Společnost provádějící sestavení</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FileVersion|DisplayName">
+        <source>Assembly File Version</source>
+        <target state="translated">Verze souboru sestavení</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|NeutralLanguage|DisplayName">
+        <source>Neutral Resources Language</source>
+        <target state="translated">Jazyk neutrálních prostředků</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetFrameworkMonikers|DisplayName">
+        <source>Target Framework Monikers</source>
+        <target state="translated">Monikery cílové architektury</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|SupportedTargetFrameworks|DisplayName">
+        <source>Supported TargetFrameworks</source>
+        <target state="translated">Podporované cílové architektury</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IntProperty|OutputType|DisplayName">
+        <source>Output Type</source>
+        <target state="translated">Typ výstupu</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IntProperty|OutputTypeEx|DisplayName">
+        <source>Output Type Ex</source>
+        <target state="translated">Výstup typu Ex</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|StartupObject|DisplayName">
+        <source>Type that contains the entry point</source>
+        <target state="translated">Typ obsahující vstupní bod</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

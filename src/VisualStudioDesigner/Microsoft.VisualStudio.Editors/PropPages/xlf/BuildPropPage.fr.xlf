@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="fr" original="../BuildPropPage.resx">
+    <body>
+      <trans-unit id="lblConditionalCompilationSymbols.Text">
+        <source>Conditional compilation s&amp;ymbols:</source>
+        <target state="translated">S&amp;ymboles de compilation conditionnelle :</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="outputLabel.Text">
+        <source>Output</source>
+        <target state="translated">Sortie</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="generalLabel.Text">
+        <source>General</source>
+        <target state="translated">Général</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="treatWarningsAsErrorsLabel.Text">
+        <source>Treat warnings as errors</source>
+        <target state="translated">Considérer les avertissements comme des erreurs</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="errorsAndWarningsLabel.Text">
+        <source>Errors and warnings</source>
+        <target state="translated">Erreurs et avertissements</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="chkRegisterForCOM.Text">
+        <source>Register for &amp;COM interop</source>
+        <target state="translated">S'inscrire à &amp;COM Interop</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="chkXMLDocumentationFile.Text">
+        <source>&amp;XML documentation file:</source>
+        <target state="translated">Fichier de documentation &amp;XML :</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="btnOutputPathBrowse.Text">
+        <source>B&amp;rowse...</source>
+        <target state="translated">Pa&amp;rcourir...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="lblOutputPath.Text">
+        <source>&amp;Output path:</source>
+        <target state="translated">Chemin de s&amp;ortie :</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="rbWarningSpecific.Text">
+        <source>Specif&amp;ic warnings:</source>
+        <target state="translated">Avert&amp;issements spécifiques :</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="rbWarningAll.Text">
+        <source>A&amp;ll</source>
+        <target state="translated">&amp;Tout</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="rbWarningNone.Text">
+        <source>&amp;None</source>
+        <target state="translated">Aucu&amp;n</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="lblSupressWarnings.Text">
+        <source>&amp;Suppress warnings:</source>
+        <target state="translated">&amp;Supprimer les avertissements :</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cboWarningLevel.Items">
+        <source>0</source>
+        <target state="translated">0</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cboWarningLevel.Items1">
+        <source>1</source>
+        <target state="translated">1</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cboWarningLevel.Items2">
+        <source>2</source>
+        <target state="translated">2</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cboWarningLevel.Items3">
+        <source>3</source>
+        <target state="translated">3</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cboWarningLevel.Items4">
+        <source>4</source>
+        <target state="translated">4</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="lblWarningLevel.Text">
+        <source>W&amp;arning level:</source>
+        <target state="translated">Nive&amp;au d'avertissement :</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="chkOptimizeCode.Text">
+        <source>Optimi&amp;ze code</source>
+        <target state="translated">Optimi&amp;ser le code</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="chkAllowUnsafeCode.Text">
+        <source>Allow unsa&amp;fe code</source>
+        <target state="translated">Autoriser les blocs de code unsa&amp;fe</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="chkPrefer32Bit.Text">
+        <source>&amp;Prefer 32-bit</source>
+        <target state="translated">&amp;Préférer 32 bits</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="chkDefineTrace.Text">
+        <source>Define &amp;TRACE constant</source>
+        <target state="translated">Définir la constante &amp;TRACE</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="lblPlatformTarget.Text">
+        <source>Platform tar&amp;get:</source>
+        <target state="translated">Plate&amp;forme cible :</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="lblSGenOption.Text">
+        <source>G&amp;enerate serialization assembly:</source>
+        <target state="translated">Génér&amp;er un assembly de sérialisation :</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="btnAdvanced.Text">
+        <source>A&amp;dvanced...</source>
+        <target state="translated">Options a&amp;vancées...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="chkDefineDebug.Text">
+        <source>Define DEB&amp;UG constant</source>
+        <target state="translated">Définir la constante DEB&amp;UG</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ko" original="../InputXmlForm.resx">
+    <body>
+      <trans-unit id="_cancelButton.Text">
+        <source>Cancel</source>
+        <target state="translated">취소</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ColumnHeader1.Text">
+        <source>Source Type</source>
+        <target state="translated">소스 형식</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ColumnHeader2.Text">
+        <source>XML Document Location</source>
+        <target state="translated">XML 문서 위치</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="_listView.AccessibleName">
+        <source>XML Documents</source>
+        <target state="translated">XML 문서</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="_addAsTextButton.AccessibleName">
+        <source>Type or paste XML</source>
+        <target state="translated">XML 입력 또는 붙여넣기</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="_addAsTextButton.Text">
+        <source>Type or paste &amp;XML</source>
+        <target state="translated">XML 입력 또는 붙여넣기(&amp;X)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Label1.Text">
+        <source>Specify XML documents to infer XML Schema set</source>
+        <target state="translated">XML 스키마 집합을 유추하기 위해 XML 문서 지정</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="_addFromFileButton.AccessibleName">
+        <source>Add from File</source>
+        <target state="translated">파일에서 추가</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="_addFromFileButton.Text">
+        <source>Add from &amp;File</source>
+        <target state="translated">파일에서 추가(&amp;F)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="_addFromWebButton.AccessibleName">
+        <source>Add from Web</source>
+        <target state="translated">웹에서 추가</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="_addFromWebButton.Text">
+        <source>Add from &amp;Web</source>
+        <target state="translated">웹에서 추가(&amp;W)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="_okButton.Text">
+        <source>OK</source>
+        <target state="translated">확인</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="_xmlFileDialog.Filter">
+        <source>XML files (*.xml)|*.xml|All files (*.*)|*.*</source>
+        <target state="translated">XML 파일(*.xml)|*.xml|모든 파일(*.*)|*.*</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="_xmlFileDialog.Title">
+        <source>Add XML Files</source>
+        <target state="translated">XML 파일 추가</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="$this.Text">
+        <source>Infer XML Schema set from XML documents</source>
+        <target state="translated">XML 문서에서 XML 스키마 집합 유추</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

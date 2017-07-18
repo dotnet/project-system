@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ja" original="../AssemblyOptionDialog.resx">
+    <body>
+      <trans-unit id="buttonYes.Text">
+        <source>&amp;Yes</source>
+        <target state="translated">はい(&amp;Y)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="buttonNo.Text">
+        <source>&amp;No</source>
+        <target state="translated">いいえ(&amp;N)</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

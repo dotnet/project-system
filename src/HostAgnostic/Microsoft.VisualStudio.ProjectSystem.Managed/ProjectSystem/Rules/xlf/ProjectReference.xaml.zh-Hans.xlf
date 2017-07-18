@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="zh-Hans" original="../ProjectReference.xaml">
+    <body>
+      <trans-unit id="Rule|ProjectReference|DisplayName">
+        <source>Project Reference</source>
+        <target state="translated">项目引用</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|ProjectReference|Description">
+        <source>Reference Properties</source>
+        <target state="translated">引用属性</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ReferenceOutputAssembly|DisplayName">
+        <source>Reference Output Assembly</source>
+        <target state="translated">引用输出程序集</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ReferenceOutputAssembly|Description">
+        <source>A value indicating whether the compiler should include a reference to the target project's primary output assembly.</source>
+        <target state="translated">该值指示编译器是否应包括对目标项目主输出程序集的引用。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|CopyLocalSatelliteAssemblies|DisplayName">
+        <source>Copy Local Satellite Assemblies</source>
+        <target state="translated">复制本地附属程序集</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|CopyLocalSatelliteAssemblies|Description">
+        <source>Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory.</source>
+        <target state="translated">指示是否应将引用目标的附属程序集复制到此项目的输出目录中。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Project|Description">
+        <source>the Guid the solution tracks an individual project reference target with</source>
+        <target state="translated">解决方案跟踪单个项目引用目标时使用的 GUID</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ReferencedProjectIdentifier|Description">
+        <source>The old (VS2010 beta) way to store the Guid the solution tracks an individual project reference target with</source>
+        <target state="translated">解决方案跟踪单个项目引用目标时使用的 GUID 的旧(VS2010 beta)存储方式</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|CopyLocal|DisplayName">
+        <source>Copy Local</source>
+        <target state="translated">复制本地</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|CopyLocal|Description">
+        <source>Indicates whether the reference will be copied to the output directory.</source>
+        <target state="translated">指示是否将引用复制到输出目录。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|IncludeAssets|DisplayName">
+        <source>Include Assets</source>
+        <target state="translated">包括资产</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|IncludeAssets|Description">
+        <source>Assets to include from this reference</source>
+        <target state="translated">要从此引用中包括的资产</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
+        <source>Exclude Assets</source>
+        <target state="translated">排除资产</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ExcludeAssets|Description">
+        <source>Assets to exclude from this reference</source>
+        <target state="translated">要从此引用中排除的资产</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PrivateAssets|DisplayName">
+        <source>Private Assets</source>
+        <target state="translated">私有资产</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PrivateAssets|Description">
+        <source>Assets that are private in this reference</source>
+        <target state="translated">此引用中的私有资产</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringListProperty|Aliases|DisplayName">
+        <source>Aliases</source>
+        <target state="translated">别名</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringListProperty|Aliases|Description">
+        <source>A comma-delimited list of aliases to this reference.</source>
+        <target state="translated">此引用的别名的逗号分隔列表。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Culture|DisplayName">
+        <source>Culture</source>
+        <target state="translated">区域性</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Culture|Description">
+        <source>The value of the culture field from the assembly metadata.</source>
+        <target state="translated">程序集元数据中“区域性”字段的值。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Description|DisplayName">
+        <source>Description</source>
+        <target state="translated">说明</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Description|Description">
+        <source>The value of the Title field from the assembly metadata.</source>
+        <target state="translated">程序集元数据中“标题”字段的值。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|EmbedInteropTypes|DisplayName">
+        <source>Embed Interop Types</source>
+        <target state="translated">嵌入互操作类型</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|EmbedInteropTypes|Description">
+        <source>Indicates whether types defined in this assembly will be embedded into the target assembly.</source>
+        <target state="translated">指示是否将此程序集中定义的类型嵌入目标程序集。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Identity|DisplayName">
+        <source>Identity</source>
+        <target state="translated">标识</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Identity|Description">
+        <source>Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</source>
+        <target state="translated">所引用程序集的安全标识(参见 System.Reflection.Assembly.Evidence 或 System.Security.Policy.Evidence)。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ResolvedPath|DisplayName">
+        <source>Path</source>
+        <target state="translated">路径</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ResolvedPath|Description">
+        <source>Location of the file being referenced.</source>
+        <target state="translated">所引用的文件的位置。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Version|DisplayName">
+        <source>Version</source>
+        <target state="translated">版本</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Version|Description">
+        <source>Version of reference.</source>
+        <target state="translated">引用的版本。</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

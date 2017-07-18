@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="pl" original="../AdvCompilerSettingsPropPage.resx">
+    <body>
+      <trans-unit id="OptimizationsLabel.Text">
+        <source>Optimizations</source>
+        <target state="translated">Optymalizacje</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RemoveIntegerChecks.Text">
+        <source>&amp;Remove integer overflow checks</source>
+        <target state="translated">&amp;Usuń sprawdzenia nadmiaru operacji na liczbach całkowitych</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Optimize.Text">
+        <source>&amp;Enable optimizations</source>
+        <target state="translated">&amp;Włącz optymalizacje</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DllBaseLabel.Text">
+        <source>DLL &amp;base address:</source>
+        <target state="translated">Adres &amp;podstawowy biblioteki DLL:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DefineDebug.Text">
+        <source>Define &amp;DEBUG constant</source>
+        <target state="translated">Zdefiniuj stałą &amp;DEBUG</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DefineTrace.Text">
+        <source>Define &amp;TRACE constant</source>
+        <target state="translated">Zdefiniuj stałą &amp;TRACE</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GenerateSerializationAssembliesLabel.Text">
+        <source>Generate &amp;serialization assemblies:</source>
+        <target state="translated">Generuj zestawy &amp;serializacji:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CustomConstantsLabel.Text">
+        <source>&amp;Custom constants:</source>
+        <target state="translated">Stałe &amp;niestandardowe:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GenerateDebugInfoLabel.Text">
+        <source>&amp;Generate debug info:</source>
+        <target state="translated">&amp;Generuj informacje o debugowaniu:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CustomConstantsExampleLabel.Text">
+        <source>Example: Name1="Value1",Name2="Value2",Name3="Value3"</source>
+        <target state="translated">Przykład: Nazwa1="Wartość1",Nazwa2="Wartość2",Nazwa3="Wartość3"</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CompilationConstantsLabel.Text">
+        <source>Compilation Constants</source>
+        <target state="translated">Stałe kompilowania</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CompileWithDotNetNative.Text">
+        <source>Compile with .NET Native toolchain</source>
+        <target state="translated">Kompiluj z użyciem łańcucha narzędzi dla natywnego kodu platformy .NET</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnableGatekeeperAudit.Text">
+        <source>Enable static analysis for .NET Native</source>
+        <target state="translated">Włącz analizę statyczną dla platformy .NET Native</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
