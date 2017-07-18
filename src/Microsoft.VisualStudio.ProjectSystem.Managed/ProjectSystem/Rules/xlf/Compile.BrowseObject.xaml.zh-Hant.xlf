@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="zh-Hant" original="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/Compile.BrowseObject.xaml">
+  <file datatype="xml" source-language="en" target-language="zh-Hant" original="../Compile.BrowseObject.xaml">
     <body>
-      <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/Compile.BrowseObject.xaml" />
       <trans-unit id="Category|Advanced|DisplayName">
         <source>Advanced</source>
         <target state="translated">進階</target>

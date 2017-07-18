@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="ko" original="src/Microsoft.VisualStudio.ProjectSystem.Managed/Resources.resx">
+  <file datatype="xml" source-language="en" target-language="ko" original="../Resources.resx">
     <body>
-      <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/Resources.resx" />
       <trans-unit id="JsonErrorReadingLaunchSettings">
         <source>Error reading the launch settings file. This error will need to be corrected in order to debug this project. '{0}' </source>
         <target state="translated">시작 설정 파일을 읽는 동안 오류가 발생했습니다. 이 프로젝트를 디버그하려면 이 오류를 수정해야 합니다. '{0}' </target>
