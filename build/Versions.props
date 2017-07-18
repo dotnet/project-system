@@ -6,7 +6,7 @@
 
     <!-- Opt-in repo features -->
     <UsingToolVSSDK>true</UsingToolVSSDK>
-    <UsingToolIbcOptimization>true</UsingToolIbcOptimization>
+    <UsingToolIbcOptimization>false</UsingToolIbcOptimization>
 
     <!-- Toolset -->
     <RoslynToolsMicrosoftRepoToolsetVersion>1.0.0-alpha27</RoslynToolsMicrosoftRepoToolsetVersion>
