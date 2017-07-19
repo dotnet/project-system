@@ -19,20 +19,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             // persistent thread that acts like a UI thread. This will be invoked just
             // once for the module.
             DispatchThread = new DispatchThread();
-
-            DispatchThread.Invoke(() =>
-            {
-                // Internally this calls ThreadHelper.SetUIThread(), which
-                // causes ThreadHelper to remember this thread for the
-                // lifetime of the process as the dispatcher thread.
-                // Note that we don't want to take a dependency on VisualStudio from this managed assembly
-                // so instead of 
-                //      var serviceProvider = Microsoft.VisualStudio.Shell.ServiceProvider.GlobalProvider; 
-                // use refletion to get the property. 
-                var assembly = Assembly.Load("Microsoft.VisualStudio.Shell.15.0");
-                var sptype = assembly.GetType("Microsoft.VisualStudio.Shell.ServiceProvider");
-                var serviceProvider = sptype.GetProperty("GlobalProvider");
-            });
         }
 
         public void ExecuteSynchronously(Func<Task> asyncAction)
