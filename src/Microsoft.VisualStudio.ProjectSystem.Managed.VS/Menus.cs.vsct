@@ -47,12 +47,6 @@
       </Menu>
     </Menus>
     <Groups>
-      <Group guid="guidSHLMainMenu" id="IDG_VS_CTXT_PROJECT_EDITFILE" priority="0x0180">
-        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_PROJNODE" />
-      </Group>
-      <Group guid="guidSHLMainMenu" id="IDG_VS_CTXT_PROJECT_EDITFILE" priority="0x0180">
-        <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_PROJECT" />
-      </Group>
       <!-- Group added to the Debugging Framework Type menu on the debug controller -->
       <Group guid="guidManagedProjectSystemCommandSet" id="DebugTargetMenuDebugFrameworkGroup" priority="0x0100">
         <Parent guid="guidManagedProjectSystemCommandSet" id="DebugTargetMenuDebugFrameworkMenu" />

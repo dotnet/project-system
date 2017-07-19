@@ -41,24 +41,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
         }
 
-        public async Task SaveProjectXmlAsync(string toSave)
-        {
-            using (var access = await _projectLockService.WriteLockAsync())
-            {
-                await access.CheckoutAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
-                // We must clear the project dirty flag first. If it's dirty in memory, the ProjectReloadManager will detect that
-                // the project is dirty and fail the reload, and discard the changes.
-                var projectRoot = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
-                var stringWriter = new StringWriter();
-
-                // Calling save on the ProjectRootElement clears the dirty flag. However, we don't care about the result, to just
-                // throw it into a stringwriter and discard.
-                projectRoot.Save(stringWriter);
-                var encoding = await _unconfiguredProject.GetFileEncodingAsync().ConfigureAwait(false);
-                _fileSystem.WriteAllText(_unconfiguredProject.FullPath, toSave, encoding);
-            }
-        }
-
         public async Task<string> GetEvaluatedPropertyValue(UnconfiguredProject unconfiguredProject, string propertyName)
         {
             var configuredProject = await unconfiguredProject.GetSuggestedConfiguredProjectAsync().ConfigureAwait(false);
