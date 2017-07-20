@@ -115,7 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             var dependencyThatNeedChange = new List<IDependency>();
             foreach(var target in projectSnapshot.Targets)
             {
-                foreach (var dependency in target.Value.TopLevelDependencies.Where(d => StringComparers.DependencyProviderTypes.Equals(d.ProviderType, ProviderTypeString)))
+                foreach (var dependency in target.Value.TopLevelDependencies)
                 {
                     // We're only interested in project dependencies
                     if (!StringComparers.DependencyProviderTypes.Equals(dependency.ProviderType, ProviderTypeString))
