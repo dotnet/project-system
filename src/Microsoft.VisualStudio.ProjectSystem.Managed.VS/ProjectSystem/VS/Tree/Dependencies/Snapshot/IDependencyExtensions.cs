@@ -3,11 +3,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.IO;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
-using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
@@ -97,27 +95,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             return self.TargetFramework.Equals(other.TargetFramework);
         }
 
-        /// <summary>
-        /// Tries to convert OriginalItemSpec to absolute path for given dependency. If OriginalItemSpec is 
-        /// absolute path, just returns OriginalItemSpec. If OriginalItemSpec is not absoulte, tries to make
-        /// OriginalItemSpec rooted to current project folder.
-        /// </summary>
-        public static string GetActualPath(this IDependency dependency, string containingProjectPath)
-        {
-            var dependencyProjectPath = dependency.OriginalItemSpec;
-            if (string.IsNullOrEmpty(dependency.OriginalItemSpec))
-            {
-                return null;
-            }
-
-            if (!ManagedPathHelper.IsRooted(dependency.OriginalItemSpec))
-            {
-                dependencyProjectPath = ManagedPathHelper.TryMakeRooted(containingProjectPath, dependency.OriginalItemSpec);
-            }
-
-            return dependencyProjectPath;
-        }
-        
         public static IDependency ToResolved(this IDependency dependency,
                                              string schemaName = null,
                                              IImmutableList<string> dependencyIDs = null)

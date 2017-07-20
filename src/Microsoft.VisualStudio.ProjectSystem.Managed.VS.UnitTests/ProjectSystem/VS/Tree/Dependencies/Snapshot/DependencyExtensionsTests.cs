@@ -194,35 +194,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void GetActualPath()
-        {
-            const string projectPath = @"c:\somepath\someproject\project.csproj";
-            var dependency1 = IDependencyFactory.FromJson(@"
-{
-    ""Id"":""id1"",
-    ""ProviderType"": ""ProjectDependency""
-}");
-
-            Assert.Null(dependency1.GetActualPath(projectPath));
-
-            var dependency2 = IDependencyFactory.FromJson(@"
-{
-    ""Id"":""id1"",
-    ""OriginalItemSpec"": ""c:\\somerootedpath\\xxx""
-}");
-
-            Assert.Equal("c:\\somerootedpath\\xxx", dependency2.GetActualPath(projectPath));
-
-            var dependency3 = IDependencyFactory.FromJson(@"
-{
-    ""Id"":""id1"",
-    ""OriginalItemSpec"": ""subfolder\\xxx""
-}");
-
-            Assert.Equal(@"c:\somepath\someproject\subfolder\xxx", dependency3.GetActualPath(projectPath));
-        }
-
-        [Fact]
         public void GetTopLevelId()
         {
             var dependency1 = IDependencyFactory.FromJson(@"

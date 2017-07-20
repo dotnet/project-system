@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
+using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
@@ -26,16 +26,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public const int ComNodePriority = 170;
         public const int SdkNodePriority = 180;
 
-        public Dependency(IDependencyModel dependencyModel, ITargetFramework targetFramework)
+        public Dependency(IDependencyModel dependencyModel, ITargetFramework targetFramework, string containingProjectPath)
         {
             Requires.NotNull(dependencyModel, nameof(dependencyModel));
             Requires.NotNullOrEmpty(dependencyModel.ProviderType, nameof(dependencyModel.ProviderType));
             Requires.NotNullOrEmpty(dependencyModel.Id, nameof(dependencyModel.Id));
             Requires.NotNull(targetFramework, nameof(targetFramework));
+            Requires.NotNullOrEmpty(containingProjectPath, nameof(containingProjectPath));
 
             TargetFramework = targetFramework;
 
             _modelId = dependencyModel.Id;
+            _containingProjectPath = containingProjectPath;
+
             ProviderType = dependencyModel.ProviderType;
             Name = dependencyModel.Name ?? string.Empty;
             Version = dependencyModel.Version ?? string.Empty;
@@ -43,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             OriginalItemSpec = dependencyModel.OriginalItemSpec ?? string.Empty;
             Path = dependencyModel.Path ?? string.Empty;
             SchemaName = dependencyModel.SchemaName ?? Folder.SchemaName;
-            _schemaItemType = dependencyModel.SchemaItemType ?? Folder.PrimaryDataSourceItemType;            
+            _schemaItemType = dependencyModel.SchemaItemType ?? Folder.PrimaryDataSourceItemType;
             Resolved = dependencyModel.Resolved;
             TopLevel = dependencyModel.TopLevel;
             Implicit = dependencyModel.Implicit;
@@ -91,11 +94,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// <summary>
         /// Private constructor used to clone Dependency
         /// </summary>
-        private Dependency(IDependency model, string modelId)
-            : this(model, model.TargetFramework)
+        private Dependency(Dependency model, string modelId)
+            : this(model, model.TargetFramework, model._containingProjectPath)
         {
             // since this is a clone make the modelId and dependencyIds match the original model
             _modelId = modelId;
+            _fullPath = model._fullPath; // Grab the cached value if we've already created it
 
             if (model.DependencyIDs != null && model.DependencyIDs.Any())
             {
@@ -110,8 +114,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// to get a unique id for the whole snapshot.
         /// </summary>
         private string _modelId;
-
         private string _id;
+        private readonly string _containingProjectPath;
+        private string _fullPath;
+
         public string Id
         {
             get
@@ -129,6 +135,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public string Name { get; protected set; }
         public string OriginalItemSpec { get; protected set; }
         public string Path { get; protected set; }
+        public string FullPath
+        {
+            get
+            {
+                // Avoid calculating this unless absolutely needed as 
+                // we have a lot of Dependency instances floating around
+                if (_fullPath == null)
+                {
+                    _fullPath = GetFullPath(OriginalItemSpec, _containingProjectPath);
+                }
+
+                return _fullPath;
+            }
+        }
         public string SchemaName { get; protected set; }
         private string _schemaItemType;
         public string SchemaItemType
@@ -294,6 +314,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Requires.NotNullOrEmpty(modelId, nameof(modelId));
 
             return $"{targetFramework.ShortName}\\{providerType}\\{Normalize(modelId)}".TrimEnd(CommonConstants.BackSlashDelimiter);
+        }
+
+        private static string GetFullPath(string originalItemSpec, string containingProjectPath)
+        {
+            if (string.IsNullOrEmpty(originalItemSpec) || ManagedPathHelper.IsRooted(originalItemSpec))
+                return originalItemSpec ?? string.Empty;
+
+            return ManagedPathHelper.TryMakeRooted(containingProjectPath, originalItemSpec);
         }
     }
 }
