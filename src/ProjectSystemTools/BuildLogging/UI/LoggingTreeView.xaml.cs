@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI
         private void LoggingTreeView_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             // Handle double click directly
-            if (e.ClickCount != 2 || !(((StackPanel) sender).DataContext is LogTreeViewModel currentItem))
+            if (e.ClickCount != 2 || !(((StackPanel) sender).DataContext is ProjectTreeViewModel currentItem))
             {
                 return;
             }

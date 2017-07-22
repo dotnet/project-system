@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel
 {
     internal sealed class BuildTreeViewModel : INotifyPropertyChanged
     {
-        public ObservableCollection<LogTreeViewModel> Children { get; }
+        public ObservableCollection<ProjectTreeViewModel> Children { get; }
 
         public string Text
         {
@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel
         public BuildTreeViewModel(BuildOperation buildOperation)
         {
             Operation = buildOperation;
-            Children = new ObservableCollection<LogTreeViewModel>();
+            Children = new ObservableCollection<ProjectTreeViewModel>();
             Text = $"{buildOperation}{(buildOperation == BuildOperation.DesignTime ? "" : " (Running...)")}";
         }
 

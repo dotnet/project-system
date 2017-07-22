@@ -18,25 +18,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
     [Guid(BuildLoggingToolWindowGuidString)]
     public sealed class BuildLoggingToolWindow : ToolWindowPane, IOleCommandTarget, IVsUpdateSolutionEvents4
     {
-        private sealed class FooLogger : ILogger
-        {
-            public void Initialize(IEventSource eventSource)
-            {
-                eventSource.BuildStarted += BuildStarted;
-            }
-
-            private void BuildStarted(object sender, BuildStartedEventArgs e)
-            {
-            }
-
-            public void Shutdown()
-            {
-            }
-
-            public LoggerVerbosity Verbosity { get; set; } = LoggerVerbosity.Diagnostic;
-            public string Parameters { get; set; }
-        }
-
         public const string BuildLoggingToolWindowGuidString = "391238ea-dad7-488c-94d1-e2b6b5172bf3";
 
         public const string BuildLoggingToolWindowCaption = "Build Logging";
@@ -59,6 +40,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
             _updateSolutionEventsService?.AdviseUpdateSolutionEvents4(this, out _updateSolutionEventsCookie);
 
             Content = new ToolWindowControl(_buildLogger);
+
+            ProjectCollection.GlobalProjectCollection.RegisterLogger(new FakeLogger(_buildLogger));
         }
 
         int IOleCommandTarget.QueryStatus(ref Guid commandGroupGuid, uint commandCount, OLECMD[] commands, IntPtr commandText)
@@ -206,9 +189,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
         {
         }
 
-        void IVsUpdateSolutionEvents4.UpdateSolution_BeginUpdateAction(uint dwAction) => _buildLogger.NotifyBuildOperationStarted(ActionToOperation(dwAction));
+        void IVsUpdateSolutionEvents4.UpdateSolution_BeginUpdateAction(uint dwAction) => _buildLogger.NotifyBuildStarted(ActionToOperation(dwAction));
 
-        void IVsUpdateSolutionEvents4.UpdateSolution_EndUpdateAction(uint dwAction) => _buildLogger.NotifyBuildOperationEnded(ActionToOperation(dwAction));
+        void IVsUpdateSolutionEvents4.UpdateSolution_EndUpdateAction(uint dwAction) => _buildLogger.NotifyBuildEnded(ActionToOperation(dwAction));
 
         void IVsUpdateSolutionEvents4.OnActiveProjectCfgChangeBatchBegin()
         {

@@ -2,6 +2,7 @@
 
 using System.Collections.ObjectModel;
 using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel;
+using Microsoft.Build.Framework;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 {
@@ -9,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
     {
         bool IsLogging { get; }
 
-        ObservableCollection<BuildTreeViewModel> BuildItems { get; }
+        ObservableCollection<BuildTreeViewModel> Builds { get; }
 
         void Start();
 
@@ -17,12 +18,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
         void Clear();
 
-        void NotifyBuildOperationStarted(BuildOperation operation);
+        void NotifyBuildStarted(BuildOperation operation);
 
-        void NotifyBuildOperationEnded(BuildOperation operation);
+        void NotifyBuildEnded(BuildOperation operation);
 
-        void NotifyBuildStarted(IBuild build);
+        void NotifyProjectStarted(ProjectStartedEventArgs project);
 
-        void NotifyBuildEnded(IBuild build);
+        void NotifyProjectEnded(ProjectFinishedEventArgs project);
     }
 }

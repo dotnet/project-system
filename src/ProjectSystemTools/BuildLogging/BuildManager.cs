@@ -3,6 +3,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel;
+using Microsoft.Build.Framework;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 {
@@ -13,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
         public bool IsLogging { get; private set; }
 
-        public ObservableCollection<BuildTreeViewModel> BuildItems => _toolWindow.BuildItems;
+        public ObservableCollection<BuildTreeViewModel> Builds => _toolWindow.Builds;
 
         public void Start() => IsLogging = true;
 
@@ -24,35 +25,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
             _toolWindow.Clear();
         }
 
-        public void NotifyBuildOperationStarted(BuildOperation operation)
+        public void NotifyBuildStarted(BuildOperation operation)
         {
             if (IsLogging)
             {
-                _toolWindow.NotifyBuildOperationStarted(operation);
+                _toolWindow.NotifyBuildStarted(operation);
             }
         }
 
-        public void NotifyBuildOperationEnded(BuildOperation operation)
+        public void NotifyBuildEnded(BuildOperation operation)
         {
             if (IsLogging)
             {
-                _toolWindow.NotifyBuildOperationEnded(operation);
+                _toolWindow.NotifyBuildEnded(operation);
             }
         }
 
-        public void NotifyBuildStarted(IBuild build)
+        public void NotifyProjectStarted(ProjectStartedEventArgs project)
         {
             if (IsLogging)
             {
-                _toolWindow.NotifyBuildStarted(build);
+                _toolWindow.NotifyProjectStarted(project);
             }
         }
 
-        public void NotifyBuildEnded(IBuild build)
+        public void NotifyProjectEnded(ProjectFinishedEventArgs project)
         {
             if (IsLogging)
             {
-                _toolWindow.NotifyBuildEnded(build);
+                _toolWindow.NotifyProjectEnded(project);
             }
         }
     }

@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using Microsoft.Build.Framework;
 using Microsoft.VisualStudio.Shell;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -9,59 +9,73 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel
 {
     internal sealed class ToolWindowViewModel
     {
-        private BuildTreeViewModel _currentBuildItem;
-        private readonly Dictionary<IBuild, LogTreeViewModel> _currentLogs = new Dictionary<IBuild, LogTreeViewModel>();
+        private BuildTreeViewModel _currentBuild;
+        private readonly Dictionary<string, ProjectTreeViewModel> _currentProjects = new Dictionary<string, ProjectTreeViewModel>();
 
-        public ObservableCollection<BuildTreeViewModel> BuildItems { get; }
+        public ObservableCollection<BuildTreeViewModel> Builds { get; }
 
         public ToolWindowViewModel()
         {
-            BuildItems = new ObservableCollection<BuildTreeViewModel>();
+            Builds = new ObservableCollection<BuildTreeViewModel>();
         }
 
         public void Clear()
         {
-            _currentBuildItem = null;
-            _currentLogs.Clear();
-            BuildItems.Clear();
+            _currentBuild = null;
+            _currentProjects.Clear();
+            Builds.Clear();
         }
 
-        public void NotifyBuildOperationEnded(BuildOperation e)
+        public void NotifyBuildStarted(BuildOperation buildOperation)
         {
-            _currentBuildItem?.Completed();
-            _currentBuildItem = null;
+            _currentBuild = new BuildTreeViewModel(buildOperation);
+            Builds.Add(_currentBuild);
         }
 
-        public void NotifyBuildOperationStarted(BuildOperation buildOperation)
+        public void NotifyBuildEnded(BuildOperation e)
         {
-            _currentBuildItem = new BuildTreeViewModel(buildOperation);
-            BuildItems.Add(_currentBuildItem);
+            _currentBuild?.Completed();
+            _currentBuild = null;
         }
 
-        public void NotifyBuildStarted(IBuild build)
+        public void NotifyProjectStarted(ProjectStartedEventArgs project)
         {
             ThreadHelper.JoinableTaskFactory.RunAsync(async delegate
             {
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-                if (_currentBuildItem == null)
+                if (_currentBuild == null)
                 {
-                    _currentBuildItem = new BuildTreeViewModel(BuildOperation.DesignTime);
-                    BuildItems.Add(_currentBuildItem);
+                    _currentBuild = new BuildTreeViewModel(BuildOperation.DesignTime);
+                    Builds.Add(_currentBuild);
                 }
-                var log = new LogTreeViewModel(build.ConfiguredProject, build.Targets);
-                _currentLogs[build] = log;
-                _currentBuildItem.Children.Add(log);
+                var log = new ProjectTreeViewModel(
+                    project.ProjectFile,
+                    project.TargetNames,
+                    project.GlobalProperties.TryGetValue("Configuration", out var configuration)
+                        ? configuration
+                        : string.Empty,
+                    project.GlobalProperties.TryGetValue("Platform", out var platform)
+                        ? platform
+                        : string.Empty,
+                    project.Timestamp);
+                _currentProjects[project.ProjectFile] = log;
+                _currentBuild.Children.Add(log);
             });
         }
 
-        public void NotifyBuildEnded(IBuild build)
+        public void NotifyProjectEnded(ProjectFinishedEventArgs project)
         {
-            if (_currentLogs.TryGetValue(build, out var log))
+            ThreadHelper.JoinableTaskFactory.RunAsync(async delegate
             {
-                log.Completed();
-                _currentLogs.Remove(build);
-            }
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+                if (_currentProjects.TryGetValue(project.ProjectFile, out var log))
+                {
+                    log.Completed(project.Timestamp);
+                    _currentProjects.Remove(project.ProjectFile);
+                }
+            });
         }
     }
 }

@@ -10,7 +10,7 @@ using System.Runtime.CompilerServices;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel
 {
-    internal sealed class LogTreeViewModel : INotifyPropertyChanged
+    internal sealed class ProjectTreeViewModel : INotifyPropertyChanged
     {
         public string Text
         {
@@ -21,27 +21,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel
         private string _text;
 
         public string FullPath { get; }
-        public ImmutableDictionary<string, string> Dimensions { get; }
+        public string Configuration { get; }
+        public string Platform { get; }
         public DateTime? StartTime { get; }
         public DateTime? CompletionTime { get; private set; }
         public IReadOnlyList<string> Targets { get; }
 
-        private string BaseText => $"{Path.GetFileName(FullPath)} [{Dimensions.Values.Aggregate((current, next) => $"{current}|{next}")}]";
+        private string DimensionText => string.IsNullOrEmpty(Configuration) && string.IsNullOrEmpty(Platform) ?
+            "" :
+            $" [{Configuration}{(string.IsNullOrEmpty(Configuration) ? "" : "|")}{Platform}]";
+        private string BaseText => $"{Path.GetFileName(FullPath)}{DimensionText}";
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public LogTreeViewModel(ConfiguredProject configuredProject, IReadOnlyList<string> targets)
+        public ProjectTreeViewModel(string projectName, string targets, string configuration, string platform, DateTime startTime)
         {
-            FullPath = configuredProject.UnconfiguredProject.FullPath;
-            Dimensions = configuredProject.ProjectConfiguration.Dimensions.ToImmutableDictionary();
-            StartTime = DateTime.Now;
-            Targets = targets;
+            FullPath = projectName;
+            Configuration = configuration;
+            Platform = platform;
+            StartTime = startTime;
+            Targets = targets.Split(';');
             Text = $"{BaseText} (Building...)";
         }
 
-        public void Completed()
+        public void Completed(DateTime completionTime)
         {
-            CompletionTime = DateTime.Now;
+            CompletionTime = completionTime;
             Text = $"{BaseText} ({CompletionTime - StartTime})";
         }
 

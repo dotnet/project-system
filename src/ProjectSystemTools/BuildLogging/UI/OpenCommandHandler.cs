@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI
 
         public static bool CanExecute(LoggingTreeView treeView)
         {
-            var treeViewItem = treeView.SelectedItem as LogTreeViewModel;
+            var treeViewItem = treeView.SelectedItem as ProjectTreeViewModel;
 
             return treeViewItem != null;
         }
@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI
                 return false;
             }
 
-            ((LogTreeViewModel)treeView.SelectedItem).Open();
+            ((ProjectTreeViewModel)treeView.SelectedItem).Open();
             return true;
         }
     }

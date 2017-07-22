@@ -4,7 +4,7 @@
     xmlns:ui="clr-namespace:Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI"
     xmlns:model="clr-namespace:Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.ViewModel"
     Margin="0,0,3,0"
-    ItemsSource="{Binding Path=BuildItems}"
+    ItemsSource="{Binding Path=Builds}"
     x:Name="_this"
     x:ClassModifier="internal"
     >
@@ -20,7 +20,7 @@
         <BooleanToVisibilityConverter x:Uid="Converter_BooleanToVisibilityConverter" x:Key="BooleanToVisibility"/>
        
         <!-- Template for logs -->
-        <HierarchicalDataTemplate x:Uid="HierarchicalDataTemplate_LogItem" DataType="{x:Type model:LogTreeViewModel}" ItemsSource="{Binding Path=Targets}">
+        <HierarchicalDataTemplate x:Uid="HierarchicalDataTemplate_LogItem" DataType="{x:Type model:ProjectTreeViewModel}" ItemsSource="{Binding Path=Targets}">
             <TextBlock x:Uid="TextBlock_LogItemText" Text="{Binding Path=Text}" MouseLeftButtonDown="LoggingTreeView_MouseLeftButtonDown"/>
         </HierarchicalDataTemplate>
 

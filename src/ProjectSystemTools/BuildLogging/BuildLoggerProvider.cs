@@ -15,13 +15,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
     internal sealed class BuildLoggerProvider : IBuildLoggerProviderAsync
     {
         private readonly IBuildManager _buildManager;
-        private readonly ConfiguredProject _configuredProject;
 
         [ImportingConstructor]
-        public BuildLoggerProvider(IBuildManager buildManager, ConfiguredProject configuredProject)
+        public BuildLoggerProvider(IBuildManager buildManager)
         {
             _buildManager = buildManager;
-            _configuredProject = configuredProject;
         }
 
         public Task<IImmutableSet<ILogger>> GetLoggersAsync(IReadOnlyList<string> targets, IImmutableDictionary<string, string> properties, CancellationToken cancellationToken)
@@ -30,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
             if (_buildManager.IsLogging)
             {
-                loggers = loggers.Add(new FakeLogger(_buildManager, _configuredProject, targets, properties));
+                loggers = loggers.Add(new FakeLogger(_buildManager));
             }
 
             return Task.FromResult(loggers);
