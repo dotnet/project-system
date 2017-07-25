@@ -1,0 +1,40 @@
+<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Project>
+  <Import Project="..\Directory.Build.props"/>
+  <Import Project="$(RepoToolsetDir)Settings.props" />
+  <Import Project="..\build\VisualStudio.XamlRules.props" />
+
+  <PropertyGroup Condition="'$(Language)' == 'C#'">
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Language)' == 'VB'">
+    <!-- The default is Embed -->
+    <VBRuntime>Default</VBRuntime>
+    <RemoveIntegerChecks>true</RemoveIntegerChecks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- TODO: Remove suppressions of Xunit warnings: https://github.com/dotnet/project-system/issues/2584 -->
+    <NoWarn>$(NoWarn);xUnit1004;xUnit2000;xUnit2003;xUnit2004;xUnit2009;xUnit2010;xUnit1013</NoWarn>
+    
+    <CodeAnalysisRuleSet Condition="'$(IsTestProject)' == 'true'">$(RepoRoot)build\Test.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(IsTestProject)' != 'true'">$(RepoRoot)build\Default.ruleset</CodeAnalysisRuleSet>
+
+    <TestArchitectures>x86</TestArchitectures>
+
+    <!-- Use IBC optimization data if available -->
+    <IbcOptimizationDataDir>$(NuGetPackageRoot)\RoslynDependencies.OptimizationData\$(RoslynDependenciesOptimizationDataVersion)\content\OptimizationData\</IbcOptimizationDataDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Common\Test\App.config" CopyToOutputDirectory="PreserveNewest" Condition="'$(IsUnitTestProject)' == 'true'" />
+    <None Include="$(MSBuildThisFileDirectory)Common\Integration\App.config" CopyToOutputDirectory="PreserveNewest" Condition="'$(IsIntegrationTestProject)' == 'true'" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <SuppressFromVsix Include="Microsoft.VSDesigner.dll"/>
+    <SuppressFromVsix Include="Microsoft.VisualStudio.DataTools.Interop.dll"/>
+    <SuppressFromVsix Include="Microsoft.VisualStudio.XmlEditor.dll"/>
+  </ItemGroup>
+</Project>
