@@ -114,6 +114,10 @@
                     Visible="False" 
                     ReadOnly="True" />
                     
+    <StringProperty Name="RestoreAdditionalProjectFallbackFoldersExcludes" 
+                    Visible="False" 
+                    ReadOnly="True" />
+                    
     <StringProperty Name="DotnetCliToolTargetFramework" 
                     Visible="False" 
                     ReadOnly="True" />
