@@ -1,168 +1,33 @@
-<Project DefaultTargets="Build">
-
-  <Import Project="Targets\VSL.Versions.targets" />
-
+<Project DefaultTargets="Build" TreatAsLocalProperty="SolutionPath">
+  <!--
+    Optional parameters:
+      SolutionPath     Path to the solution to build
+      Configuration    Build configuration: "Debug", "Release", etc.
+      CIBuild          "true" if building on CI server
+      Restore          "true" to restore toolset and solution
+      Build            "true" to build solution
+      Rebuild          "true" to rebuild solution
+      Deploy           "true" to deploy assets (e.g. VSIXes) built in this repo
+      DeployDeps       "true" to deploy assets (e.g. VSIXes) this repo depeends on.
+      Test             "true" to run tests
+      IntegrationTest  "true" to run integration tests
+      Sign             "true" to sign built binaries
+      Pack             "true" to build NuGet packages
+      Properties        List of properties to pass to each build phase ("Name=Value;Name=Value;...")
+  -->
   <PropertyGroup>
-    <RepositoryRootDirectory>$(MSBuildThisFileDirectory)..\</RepositoryRootDirectory>
-    <TestsDirectory>$(RepositoryRootDirectory)bin\$(Configuration)\Tests\</TestsDirectory>
-    <IntegrationDirectory>$(RepositoryRootDirectory)bin\$(Configuration)\IntegrationTests\</IntegrationDirectory>
-
-    <!-- Make note NUGET_PACKAGES is environment variable respected
-         by NuGet.exe, so don't be tempted to change the name.-->
-    <NUGET_PACKAGES Condition="'$(NUGET_PACKAGES)' == ''">$(UserProfile)\.nuget\packages</NUGET_PACKAGES>
-
+    <SolutionPath Condition="'$(SolutionPath)' == ''">$(MSBuildThisFileDirectory)..\ProjectSystem.sln</SolutionPath>
   </PropertyGroup>
 
-  <ItemGroup>
-    <SolutionFile Include="$(RepositoryRootDirectory)src\ProjectSystem.sln" />
-    <NuGetProjectFile Include="$(RepositoryRootDirectory)src\NuGet\NuGet.proj" />
-    <VsManProjectFile Include="$(RepositoryRootDirectory)src\VsixV3\EditorsPackage\Microsoft.VisualStudio.Editors.vsmanproj" />
-    <VsManProjectFile Include="$(RepositoryRootDirectory)src\VsixV3\ProjectSystemPackage\Microsoft.VisualStudio.ProjectSystem.Managed.vsmanproj" />
-    <VsManProjectFile Include="$(RepositoryRootDirectory)src\VsixV3\ProjectTemplates\Microsoft.VisualStudio.NetCore.ProjectTemplates.vsmanproj" />
-    <VsManProjectFile Include="$(RepositoryRootDirectory)src\VsixV3\ProjectTemplates\Microsoft.VisualStudio.NetCore.ProjectTemplates.vsmanproj" />
-    <VsManProjectFile Include="$(RepositoryRootDirectory)src\VsixV3\ProjectTemplates1.x\Microsoft.VisualStudio.NetCore.ProjectTemplates.1.x.vsmanproj" />
-  </ItemGroup>
+  <Import Project="..\Directory.build.props"/>
 
-  <Target Name="Restore">
+  <Target Name="Build">    
+    <MSBuild Projects="Toolset.proj" 
+             Targets="Restore"
+             Properties="BaseIntermediateOutputPath=$(MSBuildThisFileDirectory)..\artifacts\toolset\;ExcludeRestorePackageImports=true;DeployDeps=$(DeployDeps)" 
+             Condition="'$(Restore)' == 'true'"/>
 
-    <Message Text="Restoring packages for %(SolutionFile.Filename) (this may take some time)" Importance="high" />
-
-    <MSBuild BuildInParallel="true"
-             Projects="@(SolutionFile)"
-             Targets="restore"
-             Properties="$(CommonMSBuildGlobalProperties)"
-             />
+    <MSBuild Projects="$(RepoToolsetDir)Build.proj" 
+             Properties="SolutionPath=$(SolutionPath);Configuration=$(Configuration);CIBuild=$(CIBuild);Restore=$(Restore);Build=$(Build);Rebuild=$(Rebuild);Deploy=$(Deploy);Test=$(Test);IntegrationTest=$(IntegrationTest);Sign=$(Sign);Pack=$(Pack);Properties=$(Properties)" />
   </Target>
-
-  <Target Name="Build">
-
-    <Message Text="Building %(SolutionFile.Filename) [$(Configuration)]" Importance="high" />
-
-    <MSBuild BuildInParallel="true"
-             Projects="@(SolutionFile)"
-             Targets="Build"
-             />
-  </Target>
-
-  <Target Name="Rebuild">
-
-    <Message Text="Rebuilding %(SolutionFile.Filename) [$(Configuration)]" Importance="high" />
-
-    <MSBuild BuildInParallel="true"
-             Projects="@(SolutionFile)"
-             Targets="Rebuild"
-             />
-  </Target>
-
-  <Target Name="BuildNuGetPackages">
-
-    <Message Text="Building NuGet packages [$(Configuration)]" Importance="high" />
-      
-    <MSBuild BuildInParallel="true"
-              Projects="@(NuGetProjectFile)"
-              Targets="Build"
-              />
-  </Target>
-  
-  <Target Name="RebuildNuGetPackages">
-
-    <Message Text="Rebuilding NuGet packages [$(Configuration)]" Importance="high" />
-      
-    <MSBuild BuildInParallel="true"
-              Projects="@(NuGetProjectFile)"
-              Targets="Rebuild"
-              />
-  </Target>
-
-  <Target Name="BuildModernVsixPackages">
-
-    <Message Text="Rebuilding Modern VSIX Packages [$(Configuration)]" Importance="high" />
-    
-    <MSBuild Projects="@(VsManProjectFile)"
-             Targets="Rebuild"
-             />
-
-  </Target>
-
-  <Target Name="Test" Condition="'$(RunTests)' == 'true'">
-
-    <ItemGroup>
-      <TestAssembly Include="$(TestsDirectory)*UnitTests.dll" />
-      <XmlTestFile Include="$(TestsDirectory)TestResults.xml" />   <!-- For Jenkins to read -->
-      <HtmlTestFile Include="$(TestsDirectory)TestResults.html" /> <!-- For Humans to read -->
-    </ItemGroup>
-
-    <Message Text="Running tests for %(SolutionFile.Filename) [$(Configuration)]" Importance="high" />
-
-    <Exec Command="&quot;$(NUGET_PACKAGES)\xunit.runner.console\$(XUnitRunnerConsoleVersion)\tools\xunit.console.x86.exe&quot; &quot;@(TestAssembly, '&quot; &quot;')&quot; -quiet -nologo -noshadow -parallel all -xml &quot;@(XmlTestFile)&quot; -html &quot;@(HtmlTestFile)&quot;"
-          LogStandardErrorAsError="true"
-          IgnoreExitCode="true"
-          >
-
-      <Output TaskParameter="ExitCode" PropertyName="ExitCode" />
-    </Exec>
-
-    <Message Text="All tests passed, for full log see %(HtmlTestFile.FullPath)" Condition="$(ExitCode) == 0" Importance="high" />
-    <Error Text="There were test failures, for full log see %(HtmlTestFile.FullPath)" Condition="$(ExitCode) != 0" />
-
-  </Target>
-
-  <Target Name="TestIntegration" Condition="'$(RunIntegrationTests)' == 'true'">
-
-    <PropertyGroup>
-      <BinariesDirectory>$([System.IO.Path]::GetFullPath('$(RepositoryRootDirectory)bin\$(Configuration)\'))</BinariesDirectory>
-      <VsixExpInstallerExe>$(NUGET_PACKAGES)\roslyntools.microsoft.vsixexpinstaller\$(RoslynToolsMicrosoftVSIXExpInstallerVersion)\tools\VsixExpInstaller.exe</VsixExpInstallerExe>
-      <VsixExpInstallerArgs>-rootSuffix:ProjectSystem -vsInstallDir:"$([System.IO.Path]::GetFullPath('$(MSBuildBinPath)\..\..\..'))"</VsixExpInstallerArgs>
-      <ModifyVsixManifestToolExe>$(NUGET_PACKAGES)\roslyntools.microsoft.modifyvsixmanifest\$(RoslynToolsMicrosoftModifyVsixManifestVersion)\tools\ModifyVsixManifest.exe</ModifyVsixManifestToolExe>
-      <ModifyVsixManifestArgs>--add-attribute=//x:PackageManifest/x:Installation;Experimental;true</ModifyVsixManifestArgs>
-    </PropertyGroup>
-
-    <ItemGroup>		
-      <IntegrationTestAssembly Include="$(IntegrationDirectory)*IntegrationTests.dll" />		
-      <IntegrationXmlTestFile Include="$(IntegrationDirectory)xUnitResults\TestResults.xml" />   <!-- For Jenkins to read -->		
-      <IntegrationHtmlTestFile Include="$(IntegrationDirectory)xUnitResults\TestResults.html" /> <!-- For Humans to read -->		
-    </ItemGroup>
-
-    <!-- Modify Project System Vsixes to be 'experimental' -->
-    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.vsix $(ModifyVsixManifestArgs)"/>
-    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.Test.vsix $(ModifyVsixManifestArgs)" />
-    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetCore.VB.ProjectTemplates.vsix $(ModifyVsixManifestArgs)"/>
-    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetStandard.CSharp.ProjectTemplates.vsix $(ModifyVsixManifestArgs)"/>
-    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)Microsoft.NetStandard.VB.ProjectTemplates.vsix $(ModifyVsixManifestArgs)"/>
-    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)ProjectSystem.vsix $(ModifyVsixManifestArgs)"/>
-    <Exec Command="&quot;$(ModifyVsixManifestToolExe)&quot; --vsix=$(BinariesDirectory)VisualStudioEditorsSetup.vsix $(ModifyVsixManifestArgs)"/>
-
-    <!-- Uninstall any old (locally-deployed) Project System Vsixes -->
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)VisualStudioEditorsSetup.vsix" IgnoreExitCode="true" />
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)ProjectSystem.vsix" IgnoreExitCode="true" />
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetStandard.VB.ProjectTemplates.vsix" IgnoreExitCode="true" />
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetStandard.CSharp.ProjectTemplates.vsix" IgnoreExitCode="true" />
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.VB.ProjectTemplates.vsix" IgnoreExitCode="true" />
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.Test.vsix" IgnoreExitCode="true" />
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; -u $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.vsix" IgnoreExitCode="true" />
-
-    <!-- Install Project System Vsixes -->
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.vsix"/>
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.CSharp.ProjectTemplates.Test.vsix"/>
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetCore.VB.ProjectTemplates.vsix"/>
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetStandard.CSharp.ProjectTemplates.vsix"/>
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)Microsoft.NetStandard.VB.ProjectTemplates.vsix"/>
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)ProjectSystem.vsix"/>
-    <Exec Command="&quot;$(VsixExpInstallerExe)&quot; $(VsixExpInstallerArgs) $(BinariesDirectory)VisualStudioEditorsSetup.vsix"/>
-    
-    <Message Text="Running integrations tests for %(SolutionFile.Filename) [$(Configuration)]" Importance="high" />
-
-    <Exec Command="SET VisualBasicDesignTimeTargetsPath=$(BinariesDirectory)Rules\Microsoft.VisualBasic.DesignTime.targets &amp; SET FSharpDesignTimeTargetsPath=$(BinariesDirectory)Rules\Microsoft.FSharp.DesignTime.targets &amp; SET CSharpDesignTimeTargetsPath=$(BinariesDirectory)Rules\Microsoft.CSharp.DesignTime.targets &amp; &quot;$(NUGET_PACKAGES)\xunit.runner.console\$(XUnitRunnerConsoleVersion)\tools\xunit.console.x86.exe&quot; &quot;@(IntegrationTestAssembly, '&quot; &quot;')&quot; -quiet -nologo -noshadow -xml &quot;@(IntegrationXmlTestFile)&quot; -html &quot;@(IntegrationHtmlTestFile)&quot;"
-          LogStandardErrorAsError="true"
-          IgnoreExitCode="true"
-          >
-          
-      <Output TaskParameter="ExitCode" PropertyName="ExitCode" />
-    </Exec>
-
-    <Message Text="All tests passed, for full log see %(HtmlTestFile.FullPath)" Condition="$(ExitCode) == 0" Importance="high" />
-    <Error Text="There were test failures, for full log see %(HtmlTestFile.FullPath)" Condition="$(ExitCode) != 0" />
-
-  </Target>
-
 </Project>

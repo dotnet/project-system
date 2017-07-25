@@ -1,0 +1,60 @@
+﻿<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    Parameters:
+      DeployDeps   Restore and deploy assets (e.g. VSIXes) this repo depends on.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net462</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="RoslynTools.Microsoft.RepoToolset" Version="$(RoslynToolsMicrosoftRepoToolsetVersion)" />
+    <PackageReference Include="RoslynTools.Microsoft.VsixExpInstaller" Version="$(RoslynToolsMicrosoftVsixExpInstallerVersion)" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <VsixCacheDir>$(BaseIntermediateOutputPath)Roslyn\$(RoslynIntegrationVsixVersion)\</VsixCacheDir>
+  </PropertyGroup>
+
+  <Target Name="_DeployDependencies" AfterTargets="Restore" Condition="'$(DeployDeps)' == 'true'">
+    
+    <PropertyGroup>
+      <VsInstallDir>$([System.IO.Path]::GetFullPath('$(MSBuildBinPath)\..\..\..'))</VsInstallDir>
+      <VsixExpInstallerExe>$(NuGetPackageRoot)\RoslynTools.Microsoft.VsixExpInstaller\$(RoslynToolsMicrosoftVsixExpInstallerVersion)\tools\VsixExpInstaller.exe</VsixExpInstallerExe>
+      <VsixExpInstallerArgs>-rootSuffix:$(VSSDKTargetPlatformRegRootSuffix) -vsInstallDir:"$(VsInstallDir)"</VsixExpInstallerArgs>
+
+      <RoslynVsixUrl>https://dotnet.myget.org/F/roslyn/vsix</RoslynVsixUrl>
+
+      <RoslynInsidersPackagePath>$(VsixCacheDir)Roslyn.Deployment.Full.Next.zip</RoslynInsidersPackagePath>
+      <IntegrationTestSetupPackagePath>$(VsixCacheDir)Vsixes\Microsoft.VisualStudio.IntegrationTest.Setup.vsix</IntegrationTestSetupPackagePath>
+    </PropertyGroup>
+
+    <Message Text="Deploying Roslyn Insiders and Integration Setup VSIXes to $(VSSDKTargetPlatformRegRootSuffix) hive of '$(VsInstallDir)'..." Importance="high" />
+    
+    <MakeDir Directories="$(VsixCacheDir)" />
+    
+    <Exec Command="@powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;Invoke-WebRequest '$(RoslynVsixUrl)/0b48e25b-9903-4d8b-ad39-d4cca196e3c7-$(RoslynIntegrationVsixVersion).vsix' -OutFile '$(RoslynInsidersPackagePath)'&quot;" />
+    <Exec Command="@powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;Expand-Archive -path '$(VsixCacheDir)Roslyn.Deployment.Full.Next.zip' -destinationPath '$(VsixCacheDir)' -force"/>
+    <Exec Command="@powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;Invoke-WebRequest '$(RoslynVsixUrl)/d0122878-51f1-4b36-95ec-dec2079a2a84-$(RoslynIntegrationVsixVersion).vsix' -OutFile '$(IntegrationTestSetupPackagePath)'&quot;"/>
+
+    <!-- Uninstall any old (locally-deployed) Roslyn Vsixes -->
+    <Exec Command='"$(VsixExpInstallerExe)" -u $(VsixExpInstallerArgs) "$(VsixCacheDir)Vsixes\Microsoft.VisualStudio.IntegrationTest.Setup.vsix"' IgnoreExitCode="true"/>
+    <Exec Command='"$(VsixExpInstallerExe)" -u $(VsixExpInstallerArgs) "$(VsixCacheDir)Vsixes\Roslyn.VisualStudio.DiagnosticsWindow.vsix"' IgnoreExitCode="true"/>
+    <Exec Command='"$(VsixExpInstallerExe)" -u $(VsixExpInstallerArgs) "$(VsixCacheDir)Vsixes\ExpressionEvaluatorPackage.vsix"' IgnoreExitCode="true"/>
+    <Exec Command='"$(VsixExpInstallerExe)" -u $(VsixExpInstallerArgs) "$(VsixCacheDir)Vsixes\Roslyn.VisualStudio.InteractiveComponents.vsix"' IgnoreExitCode="true"/>
+    <Exec Command='"$(VsixExpInstallerExe)" -u $(VsixExpInstallerArgs) "$(VsixCacheDir)Vsixes\Roslyn.VisualStudio.Setup.Next.vsix"' IgnoreExitCode="true"/>
+    <Exec Command='"$(VsixExpInstallerExe)" -u $(VsixExpInstallerArgs) "$(VsixCacheDir)Vsixes\Roslyn.VisualStudio.Setup.vsix"' IgnoreExitCode="true"/>
+    <Exec Command='"$(VsixExpInstallerExe)" -u $(VsixExpInstallerArgs) "$(VsixCacheDir)Vsixes\Roslyn.Compilers.Extension.vsix"' IgnoreExitCode="true"/>
+
+    <!-- Install Roslyn Vsixes -->
+    <Exec Command='"$(VsixExpInstallerExe)" $(VsixExpInstallerArgs) "$(VsixCacheDir)Vsixes\Roslyn.Compilers.Extension.vsix"'/>
+    <Exec Command='"$(VsixExpInstallerExe)" $(VsixExpInstallerArgs) "$(VsixCacheDir)Vsixes\Roslyn.VisualStudio.Setup.vsix"'/>
+    <Exec Command='"$(VsixExpInstallerExe)" $(VsixExpInstallerArgs) "$(VsixCacheDir)Vsixes\Roslyn.VisualStudio.Setup.Next.vsix"'/>
+    <Exec Command='"$(VsixExpInstallerExe)" $(VsixExpInstallerArgs) "$(VsixCacheDir)Vsixes\Roslyn.VisualStudio.InteractiveComponents.vsix"'/>
+    <Exec Command='"$(VsixExpInstallerExe)" $(VsixExpInstallerArgs) "$(VsixCacheDir)Vsixes\ExpressionEvaluatorPackage.vsix"'/>
+    <Exec Command='"$(VsixExpInstallerExe)" $(VsixExpInstallerArgs) "$(VsixCacheDir)Vsixes\Roslyn.VisualStudio.DiagnosticsWindow.vsix"'/>
+    <Exec Command='"$(VsixExpInstallerExe)" $(VsixExpInstallerArgs) "$(VsixCacheDir)Vsixes\Microsoft.VisualStudio.IntegrationTest.Setup.vsix"'/>
+    
+    <Message Text="Done deploying VSIXes." Importance="high" />
+  </Target>
+</Project>
