@@ -151,28 +151,42 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     If parent IsNot Nothing Then
                         parent.OnItemClick(Me, reactivatePage:=True)
                     End If
-                Case Keys.Tab, Keys.Up, Keys.Down
-
-                    If keyCode <> Keys.Tab OrElse (keyData And Keys.Control) <> Keys.Control Then                                   ' Don't process if Ctrl+Tab, but do Process for Ctrl+Up and Ctrl+Down
+                Case Keys.Up
+                    Dim parent As ProjectDesignerTabControl = ParentTabControl
+                    If parent IsNot Nothing Then
+                        Dim nextIndex As Int32 = ButtonIndex - 1
+                        If nextIndex < 0 Then
+                            nextIndex = parent.TabButtonCount - 1
+                        End If
+                        Dim nextButton = parent.GetTabButton(nextIndex)
+                        nextButton.Focus()
+                        nextButton.FocusedFromKeyboardNav = True
+                        Return True
+                    End If
+                Case Keys.Down
+                    Dim parent As ProjectDesignerTabControl = ParentTabControl
+                    If parent IsNot Nothing Then
+                        Dim nextIndex As Int32 = ButtonIndex + 1
+                        If nextIndex >= parent.TabButtonCount Then
+                            nextIndex = 0
+                        End If
+                        Dim nextButton = parent.GetTabButton(nextIndex)
+                        nextButton.Focus()
+                        nextButton.FocusedFromKeyboardNav = True
+                        Return True
+                    End If
+                Case Keys.Left, Keys.Right
+                    ' Don't move focus for left or right
+                    Return True
+                Case Keys.Tab
+                    ' Don't process if Ctrl+Tab, it is reserved for navigation between editor pages
+                    If (keyData And Keys.Control) <> Keys.Control Then
                         Dim parent As ProjectDesignerTabControl = ParentTabControl
                         If parent IsNot Nothing Then
-                            Dim nextIndex As Int32 = ButtonIndex
-                            If (keyCode = Keys.Tab AndAlso (keyData And Keys.Shift) = Keys.Shift) OrElse keyCode = Keys.Up Then     ' Process if Shift+Tab or Up
-                                nextIndex -= 1
-                                If nextIndex < 0 Then
-                                    nextIndex = parent.TabButtonCount - 1
-                                End If
-                            Else
-                                nextIndex += 1
-                                If nextIndex >= parent.TabButtonCount Then
-                                    nextIndex = 0
-                                End If
-                            End If
-                            Dim nextButton = parent.GetTabButton(nextIndex)
-                            nextButton.Focus()
-                            nextButton.FocusedFromKeyboardNav = True
-                            Return True
+                            ' Return focus back to the active property page
+                            parent.OnItemClick(parent.SelectedItem, reactivatePage:=True)
                         End If
+                        Return True
                     End If
             End Select
             Return MyBase.ProcessDialogKey(keyData)
