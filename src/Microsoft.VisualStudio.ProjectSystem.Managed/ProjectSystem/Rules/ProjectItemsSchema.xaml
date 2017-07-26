@@ -44,13 +44,13 @@
       DisplayName="Media file"
       ItemType="Content">
     </ContentType>
-    
+
     <ContentType
       Name="Image"
       DisplayName="Image file"
       ItemType="Content">
     </ContentType>
-    
+
     <ContentType
       Name="EmbeddedResource"
       DisplayName="Embedded resource"
@@ -58,9 +58,18 @@
       <NameValuePair Name="DefaultMetadata_Generator" Value="ResXFileCodeGenerator" />
     </ContentType>
 
+    <ContentType
+      Name="Page"
+      DisplayName="Page file"
+      ItemType="Page">
+      <NameValuePair Name="DefaultMetadata_Generator" Value="MSBuild:Compile" />
+    </ContentType>
+
     <ItemType Name="None" DisplayName="None"/>
     <ItemType Name="Content" DisplayName="Content" />
-    <ItemType Name="EmbeddedResource" DisplayName="Embedded resource"/>
+    <ItemType Name="EmbeddedResource" DisplayName="Embedded resource" />
+    <ItemType Name="Page" DisplayName="Page" />
+    <ItemType Name="ApplicationDefinition" DisplayName="Application definition" />
 
     <FileExtension Name=".asax" ContentType="Asax" />
     <FileExtension Name=".asmx" ContentType="HTML" />
@@ -80,6 +89,7 @@
     <FileExtension Name=".cd" ContentType="ClassDiagram" />
     <FileExtension Name=".licenses" ContentType="Licenses" />
     <FileExtension Name=".json" ContentType="Json" />
+    <FileExtension Name=".xaml" ContentType="Page" />
 
     <!-- Image formats -->
     <FileExtension Name=".jpeg" ContentType="Image" />
