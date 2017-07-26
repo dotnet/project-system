@@ -180,7 +180,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         Friend ReadOnly Property DrawFocusCues As Boolean
             Get
-                Return ShowFocusCues OrElse (Focused And FocusedFromKeyboardNav)
+                Return Focused And FocusedFromKeyboardNav
             End Get
         End Property
 
