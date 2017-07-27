@@ -37,6 +37,12 @@
     <Compile Update="ProjectSystem\Rules\AdditionalFiles.cs">
       <DependentUpon>AdditionalFiles.xaml</DependentUpon>
     </Compile>
+    <Compile Update="ProjectSystem\Rules\ApplicationDefinition.cs">
+      <DependentUpon>ApplicationDefinition.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\Page.cs">
+      <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
     <Compile Update="ProjectSystem\Rules\ProjectDebugger.xaml.cs">
       <DependentUpon>ProjectDebugger.xaml</DependentUpon>
     </Compile>
@@ -161,6 +167,14 @@
     <XamlPropertyRule Include="ProjectSystem\Rules\Content.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\ApplicationDefinition.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Page.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\EmbeddedResource.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
