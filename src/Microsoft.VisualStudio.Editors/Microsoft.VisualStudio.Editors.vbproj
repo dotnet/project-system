@@ -1,39 +1,25 @@
 ﻿<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\VisualStudioDesigner.props"/>
   <PropertyGroup>
-    <UseVisualStudioVersion>true</UseVisualStudioVersion>
-    <!-- Have to specify the language explicitly because temp projects for XAML don't have .vbproj extensions -->
-    <Language>VB</Language>
-  </PropertyGroup>
-  <Import Project="..\..\build\Targets\VSL.Settings.targets" />
-  <PropertyGroup>
-    <RootNamespace>
-    </RootNamespace>
-    <OptionCompare>binary</OptionCompare>
-    <OptionExplicit>On</OptionExplicit>
-    <OptionStrict>On</OptionStrict>
-    <OptionInfer>On</OptionInfer>
-    <SignAssembly>true</SignAssembly>
-    <NoWarn>$(NoWarn);42105;42107;42353;42355</NoWarn>
-    <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
-    <!-- Override Roslyn which embeds by default -->
-    <VBRuntime>Default</VBRuntime>
     <TargetFramework>net46</TargetFramework>
-    <ProjectSystemLayer>VisualStudioDesigner</ProjectSystemLayer>
-    <StrongNameCertificate>Microsoft</StrongNameCertificate>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-    <Prefer32Bit>false</Prefer32Bit>
+    
+    <!-- TODO: Function/Property doesn't return a value on all code paths (https://github.com/dotnet/project-system/issues/2592) -->
+    <NoWarn>$(NoWarn);42353;42355;42105</NoWarn>
+    
+    <!-- Nuget -->
+    <IsPackable>true</IsPackable>
+    <Description>Implementation of some designers and project property page editors in VisualStudio.</Description>
+    <Summary>Editors implementation for Project Properties</Summary>
+    <PackageTags>Roslyn Project Property Page Editors VisualStudio</PackageTags>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj" />
+    <PackageReference Include="Microsoft.VisualStudio.LanguageServices" Version="$(MicrosoftVisualStudioLanguageServicesVersion)" />
+    <PackageReference Include="Microsoft.Build.Tasks.Core" Version="$(MicrosoftBuildVersion)" />
   </ItemGroup>
   <ItemGroup>
-    <Import Include="VSConstants=Microsoft.VisualStudio.VSConstants" />
-    <Import Include="VSErrorHandler=Microsoft.VisualStudio.ErrorHandler" />
+    <ProjectReference Include="..\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj" />
   </ItemGroup>
   <ItemGroup>
     <RCResourceFile Include="native.rc" />
@@ -42,15 +28,7 @@
     <EmbeddedResource Update="AddImportsDialogs\AddImports.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Update="AddImportsDialogs\AddImports.*.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>AddImports.resx</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Update="AddImportsDialogs\AutoAddImportsCollisionDialog.resx">
-      <DependentUpon>AutoAddImportsCollisionDialog.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="AddImportsDialogs\AutoAddImportsCollisionDialog.*.resx">
       <DependentUpon>AutoAddImportsCollisionDialog.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -58,21 +36,10 @@
       <DependentUpon>AutoAddImportsExtensionCollisionDialog.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Update="AddImportsDialogs\AutoAddImportsExtensionCollisionDialog.*.resx">
-      <DependentUpon>AutoAddImportsExtensionCollisionDialog.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Update="DesignerFramework\ErrorControl.resx">
       <DependentUpon>ErrorControl.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Update="DesignerFramework\ErrorControl.*.resx">
-      <DependentUpon>ErrorControl.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Update="MyExtensibility\AddMyExtensionsDialog.resx">
-      <DependentUpon>AddMyExtensionsDialog.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="MyExtensibility\AddMyExtensionsDialog.*.resx">
       <DependentUpon>AddMyExtensionsDialog.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -80,15 +47,7 @@
       <DependentUpon>AssemblyOptionDialog.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Update="MyExtensibility\AssemblyOptionDialog.*.resx">
-      <DependentUpon>AssemblyOptionDialog.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Update="MyExtensibility\MyExtensibilityPropPage.resx">
-      <DependentUpon>MyExtensibilityPropPage.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="MyExtensibility\MyExtensibilityPropPage.*.resx">
       <DependentUpon>MyExtensibilityPropPage.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -102,19 +61,9 @@
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.AdvancedServicesDialog.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Update="PropPages\AdvancedServicesDialog.*.resx">
-      <DependentUpon>AdvancedServicesDialog.vb</DependentUpon>
-      <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.%(Filename).resources</LogicalName>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Update="PropPages\AdvBuildSettingsPropPage.resx">
       <DependentUpon>AdvBuildSettingsPropPage.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.AdvBuildSettingsPropPage.resources</LogicalName>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="PropPages\AdvBuildSettingsPropPage.*.resx">
-      <DependentUpon>AdvBuildSettingsPropPage.vb</DependentUpon>
-      <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.%(Filename).resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Update="PropPages\AdvCompilerSettingsPropPage.resx">
@@ -122,26 +71,12 @@
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.AdvCompilerSettingsPropPage.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Update="PropPages\AdvCompilerSettingsPropPage.*.resx">
-      <DependentUpon>AdvCompilerSettingsPropPage.vb</DependentUpon>
-      <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.%(Filename).resources</LogicalName>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Update="PropPages\ApplicationPropPage.resx">
       <DependentUpon>ApplicationPropPage.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.ApplicationPropPage.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Update="PropPages\ApplicationPropPage.*.resx">
-      <DependentUpon>ApplicationPropPage.vb</DependentUpon>
-      <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.%(Filename).resources</LogicalName>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Update="PropPages\ApplicationPropPageBase.resx">
-      <DependentUpon>ApplicationPropPageBase.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="PropPages\ApplicationPropPageBase.*.resx">
       <DependentUpon>ApplicationPropPageBase.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -149,23 +84,11 @@
       <DependentUpon>ApplicationPropPageVBBase.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Update="PropPages\ApplicationPropPageVBBase.*.resx">
-      <DependentUpon>ApplicationPropPageVBBase.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Update="PropPages\ApplicationPropPageVBWinForms.resx">
       <DependentUpon>ApplicationPropPageVBWinForms.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Update="PropPages\ApplicationPropPageVBWinForms.*.resx">
-      <DependentUpon>ApplicationPropPageVBWinForms.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Update="PropPages\PackagePropPage.resx">
-      <DependentUpon>PackagePropPage.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="PropPages\PackagePropPage.*.resx">
       <DependentUpon>PackagePropPage.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -174,19 +97,9 @@
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.AssemblyInfoPropPage.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Update="PropPages\AssemblyInfoPropPage.*.resx">
-      <DependentUpon>AssemblyInfoPropPage.vb</DependentUpon>
-      <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.%(Filename).resources</LogicalName>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Update="PropPages\BuildEventCommandLineDialog.resx">
       <DependentUpon>BuildEventCommandLineDialog.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.BuildEventCommandLineDialog.resources</LogicalName>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="PropPages\BuildEventCommandLineDialog.*.resx">
-      <DependentUpon>BuildEventCommandLineDialog.vb</DependentUpon>
-      <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.%(Filename).resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Update="PropPages\BuildEventsPropPage.resx">
@@ -194,19 +107,9 @@
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.BuildEventsPropPage.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Update="PropPages\BuildEventsPropPage.*.resx">
-      <DependentUpon>BuildEventsPropPage.vb</DependentUpon>
-      <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.%(Filename).resources</LogicalName>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Update="PropPages\BuildPropPage.resx">
       <DependentUpon>BuildPropPage.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.BuildPropPage.resources</LogicalName>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="PropPages\BuildPropPage.*.resx">
-      <DependentUpon>BuildPropPage.vb</DependentUpon>
-      <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.%(Filename).resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Update="PropPages\CompilePropPage2.resx">
@@ -214,19 +117,9 @@
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.CompilePropPage2.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Update="PropPages\CompilePropPage2.*.resx">
-      <DependentUpon>CompilePropPage2.vb</DependentUpon>
-      <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.%(Filename).resources</LogicalName>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Update="PropPages\CSharpApplicationPropPage.resx">
       <DependentUpon>CSharpApplicationPropPage.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.CSharpApplicationPropPage.resources</LogicalName>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="PropPages\CSharpApplicationPropPage.*.resx">
-      <DependentUpon>CSharpApplicationPropPage.vb</DependentUpon>
-      <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.%(Filename).resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Update="PropPages\DebugPropPage.resx">
@@ -234,19 +127,9 @@
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.DebugPropPage.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Update="PropPages\DebugPropPage.*.resx">
-      <DependentUpon>DebugPropPage.vb</DependentUpon>
-      <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.%(Filename).resources</LogicalName>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Update="PropPages\ReferencePathsPropPage.resx">
       <DependentUpon>ReferencePathsPropPage.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.ReferencePathsPropPage.resources</LogicalName>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="PropPages\ReferencePathsPropPage.*.resx">
-      <DependentUpon>ReferencePathsPropPage.vb</DependentUpon>
-      <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.%(Filename).resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Update="PropPages\ReferencePropPage.resx">
@@ -254,29 +137,14 @@
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.ReferencePropPage.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Update="PropPages\ReferencePropPage.*.resx">
-      <DependentUpon>ReferencePropPage.vb</DependentUpon>
-      <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.%(Filename).resources</LogicalName>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Update="PropPages\ServicesAuthenticationForm.resx">
       <DependentUpon>ServicesAuthenticationForm.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.ServicesAuthenticationForm.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Update="PropPages\ServicesAuthenticationForm.*.resx">
-      <DependentUpon>ServicesAuthenticationForm.vb</DependentUpon>
-      <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.%(Filename).resources</LogicalName>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Update="PropPages\ServicesPropPage.resx">
       <DependentUpon>ServicesPropPage.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.ServicesPropPage.resources</LogicalName>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="PropPages\ServicesPropPage.*.resx">
-      <DependentUpon>ServicesPropPage.vb</DependentUpon>
-      <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.%(Filename).resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Update="PropPages\Strings.resx">
@@ -285,24 +153,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Strings.Designer.vb</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="PropPages\Strings.*.resx">
-      <DependentUpon>Strings.resx</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Update="PropPages\UnusedReferencePropPage.resx">
       <DependentUpon>UnusedReferencePropPage.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.UnusedReferencePropPage.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Update="PropPages\UnusedReferencePropPage.*.resx">
-      <DependentUpon>UnusedReferencePropPage.vb</DependentUpon>
-      <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.%(Filename).resources</LogicalName>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Update="PropPages\WPF\AppDotXamlErrorControl.resx">
-      <DependentUpon>AppDotXamlErrorControl.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="PropPages\WPF\AppDotXamlErrorControl.*.resx">
       <DependentUpon>AppDotXamlErrorControl.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -310,16 +166,7 @@
       <DependentUpon>ApplicationPropPageVBWPF.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Update="PropPages\WPF\ApplicationPropPageVBWPF.*.resx">
-      <DependentUpon>ApplicationPropPageVBWPF.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Update="ResourceEditor\DialogQueryName.resx">
-      <DependentUpon>DialogQueryName.vb</DependentUpon>
-      <LogicalName>Microsoft.VisualStudio.Editors.ResourceEditor.DialogQueryName.resources</LogicalName>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="ResourceEditor\DialogQueryName.*.resx">
       <DependentUpon>DialogQueryName.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.ResourceEditor.DialogQueryName.resources</LogicalName>
       <SubType>Designer</SubType>
@@ -329,11 +176,6 @@
       <LogicalName>Microsoft.VisualStudio.Editors.ResourceEditor.OpenFileWarningDialog.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Update="ResourceEditor\OpenFileWarningDialog.*.resx">
-      <DependentUpon>OpenFileWarningDialog.vb</DependentUpon>
-      <LogicalName>Microsoft.VisualStudio.Editors.ResourceEditor.%(Filename).resources</LogicalName>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Update="Resources\Designer.resx">
       <LogicalName>Microsoft.VisualStudio.Editors.Designer.resources</LogicalName>
       <SubType>Designer</SubType>
@@ -341,17 +183,11 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Designer.Designer.vb</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Designer.*.resx">
-      <LogicalName>Microsoft.VisualStudio.Editors.%(Filename).resources</LogicalName>
-    </EmbeddedResource>
     <EmbeddedResource Update="Resources\MyExtensibilityRes.resx">
       <SubType>Designer</SubType>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>MyExtensibilityRes.Designer.vb</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\MyExtensibilityRes.*.resx">
-      <DependentUpon>MyExtensibilityRes.resx</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\ResourceEditor\BlankBmp.bmp">
       <LogicalName>Microsoft.VisualStudio.Editors.ResourceEditor.BlankBmp</LogicalName>
@@ -382,29 +218,14 @@
       <LogicalName>Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsDesignerView.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Update="SettingsDesigner\SettingsDesignerView.*.resx">
-      <DependentUpon>SettingsDesignerView.vb</DependentUpon>
-      <LogicalName>Microsoft.VisualStudio.Editors.SettingsDesigner.%(Filename).resources</LogicalName>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Update="SettingsDesigner\TypeEditorHostControl.resx">
       <DependentUpon>TypeEditorHostControl.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.SettingsDesigner.TypeEditorHostControl.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Update="SettingsDesigner\TypeEditorHostControl.*.resx">
-      <DependentUpon>TypeEditorHostControl.vb</DependentUpon>
-      <LogicalName>Microsoft.VisualStudio.Editors.SettingsDesigner.%(Filename).resources</LogicalName>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Update="SettingsDesigner\TypePickerDialog.resx">
       <DependentUpon>TypePickerDialog.vb</DependentUpon>
       <LogicalName>Microsoft.VisualStudio.Editors.SettingsDesigner.TypePickerDialog.resources</LogicalName>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="SettingsDesigner\TypePickerDialog.*.resx">
-      <DependentUpon>TypePickerDialog.vb</DependentUpon>
-      <LogicalName>Microsoft.VisualStudio.Editors.SettingsDesigner.%(Filename).resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Update="VSPackage.resx">
@@ -414,23 +235,11 @@
       <DependentUpon>InputXmlForm.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Update="XmlToSchema\InputXmlForm.*.resx">
-      <DependentUpon>InputXmlForm.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Update="XmlToSchema\PasteXmlDialog.resx">
       <DependentUpon>PasteXmlDialog.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Update="XmlToSchema\PasteXmlDialog.*.resx">
-      <DependentUpon>PasteXmlDialog.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Update="XmlToSchema\WebUrlDialog.resx">
-      <DependentUpon>WebUrlDialog.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="XmlToSchema\WebUrlDialog.*.resx">
       <DependentUpon>WebUrlDialog.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -781,16 +590,15 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
-  </ItemGroup>
-  <ItemGroup>
     <Page Include="OptionPages\GeneralOptionPageControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <Import Project="..\..\build\Targets\VSL.Imports.targets" />
-  <!-- We don't generate yet generate pkgdef, but we want it to end up in VSIX,
+  <ItemGroup>
+    <None Include="**\*.xlf" />
+  </ItemGroup>
+  <!-- We don't generate pkgdef, but we want it to end up in VSIX,
        implement the right output group so that ProjectSystemSetup pulls it in -->
   <Target Name="PkgdefProjectOutputGroup" Outputs="@(PkgdefOutputGroupOutput)">
     <ItemGroup>

@@ -1,51 +1,31 @@
 ﻿<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Project>
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\VisualStudioDesigner.props"/>
   <PropertyGroup>
-    <UseVisualStudioVersion>true</UseVisualStudioVersion>
-  </PropertyGroup>
-  <Import Project="..\..\build\Targets\VSL.Settings.targets" />
-  <PropertyGroup>
-    <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace>Microsoft.VisualStudio</RootNamespace>
-    <GeneratePkgDefFile>true</GeneratePkgDefFile>
-    <VSSDKTargetPlatformRegRootSuffix Condition="'$(RunIntegrationTests)' != 'true'">RoslynDev</VSSDKTargetPlatformRegRootSuffix>
-    <VSSDKTargetPlatformRegRootSuffix Condition="'$(RunIntegrationTests)' == 'true'">ProjectSystem</VSSDKTargetPlatformRegRootSuffix>
-    <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
-    <IncludeDebugSymbolsInVSIXContainer>false</IncludeDebugSymbolsInVSIXContainer>
-    <IncludeDebugSymbolsInLocalVSIXDeployment>false</IncludeDebugSymbolsInLocalVSIXDeployment>
-    <ImportVSSDKTargets>true</ImportVSSDKTargets>
-    <DeployExtension Condition="'$(DeployVsixExtension)' == 'false'">false</DeployExtension>
-    <RestorePackages>true</RestorePackages>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <TargetFramework>net46</TargetFramework>
-    <CopyBuildOutputToOutputDirectory>true</CopyBuildOutputToOutputDirectory>
-    <CopyOutputSymbolsToOutputDirectory>false</CopyOutputSymbolsToOutputDirectory>
-    <NoDocumentationFile>true</NoDocumentationFile>
-    <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
-    <ProjectSystemLayer>VisualStudio</ProjectSystemLayer>
-    <ProducingSignedVsix>true</ProducingSignedVsix>
-    <IsProductComponent>true</IsProductComponent>
-    <Ngen>true</Ngen>
-    <NgenArchitecture>All</NgenArchitecture>
-    <NgenPriority>3</NgenPriority>
+    <RootNamespace>Microsoft.VisualStudio</RootNamespace>
+    
+    <!-- VSIX -->
+    <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
     <ExtensionInstallationRoot>CommonExtensions</ExtensionInstallationRoot>
     <ExtensionInstallationFolder>Microsoft\VisualStudio\Editors</ExtensionInstallationFolder>
+
+    <!-- VS Setup -->
+    <VisualStudioInsertionComponent>Microsoft.VisualStudio.Editors</VisualStudioInsertionComponent>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj">
       <Name>Microsoft.VisualStudio.AppDesigner</Name>
-      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroupWithFinalOutputPath%3b</IncludeOutputGroupsInVSIX>
-      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
-      <Private>True</Private>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup</IncludeOutputGroupsInVSIX>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
       <Ngen>true</Ngen>
       <NgenArchitecture>All</NgenArchitecture>
       <NgenPriority>3</NgenPriority>
     </ProjectReference>
     <ProjectReference Include="..\Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.vbproj">
       <Name>Microsoft.VisualStudio.Editors</Name>
-      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroupWithFinalOutputPath%3bPkgdefProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
-      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
-      <Private>True</Private>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup</IncludeOutputGroupsInVSIX>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
       <Ngen>true</Ngen>
       <NgenArchitecture>All</NgenArchitecture>
       <NgenPriority>3</NgenPriority>
@@ -56,8 +36,4 @@
       <Link>ProvideBindingRedirectionAttribute.cs</Link>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-  </ItemGroup>
-  <Import Project="..\..\build\Targets\VSL.Imports.targets" />
 </Project>

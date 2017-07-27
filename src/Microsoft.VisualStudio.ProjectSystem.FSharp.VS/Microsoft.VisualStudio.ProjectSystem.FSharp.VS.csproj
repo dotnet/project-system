@@ -1,24 +1,16 @@
 ﻿<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Project>
-  <Import Project="..\..\build\Targets\VSL.Settings.targets" />
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\VisualStudio.props"/>
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
     <TargetFramework>net46</TargetFramework>
+    <!-- VSIX -->
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
-    <ImportVSSDKTargets>true</ImportVSSDKTargets>
     <CreateVsixContainer>false</CreateVsixContainer>
-    <DeployExtension>false</DeployExtension>
-    <UseCodebase>true</UseCodebase>
-    <SignAssembly>true</SignAssembly>
-    <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
-    <ProjectSystemLayer>VisualStudio</ProjectSystemLayer>
   </PropertyGroup>
   <ItemGroup>
-    <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.FSharp.VS.UnitTests" />
-    <InternalsVisibleToMoq Include="DynamicProxyGenAssembly2" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
+    <!-- Need VSSDK to generate pkgdef -->
+    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="$(MicrosoftVSSDKBuildToolsVersion)" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.FSharp\Microsoft.VisualStudio.ProjectSystem.FSharp.csproj" />
@@ -26,9 +18,11 @@
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Update="VSPackage.*.resx">
-      <DependentUpon>VSPackage.resx</DependentUpon>
-    </EmbeddedResource>
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.FSharp.VS.UnitTests" />
+    <InternalsVisibleTo Include="DynamicProxyGenAssembly2" Key="$(MoqPublicKey)"/>
   </ItemGroup>
-  <Import Project="..\..\build\Targets\VSL.Imports.targets" />
+  <ItemGroup>
+    <None Include="xlf\*" />
+    <EmbeddedResource Update="VSPackage.resx" />
+  </ItemGroup>
 </Project>

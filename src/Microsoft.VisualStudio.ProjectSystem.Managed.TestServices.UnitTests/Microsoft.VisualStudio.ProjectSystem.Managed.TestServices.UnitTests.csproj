@@ -1,38 +1,19 @@
 ﻿<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Project>
-  <Import Project="..\..\build\Targets\VSL.Settings.targets" />
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\HostAgnostic.props"/>
   <PropertyGroup>
-    <RootNamespace>Microsoft.VisualStudio</RootNamespace>
     <TargetFramework>net46</TargetFramework>    
-    <SignAssembly>true</SignAssembly>
-    <Nonshipping>true</Nonshipping>
-    <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
-    <OutDir>$(OutDir)Tests\</OutDir>
-    <ProjectSystemLayer>HostAgnostic</ProjectSystemLayer>
-    <ProjectSystemProjectType>Test</ProjectSystemProjectType>
   </PropertyGroup>
   <ItemGroup>
-    <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests" />
-    <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.CSharp.UnitTests" />
-    <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.CSharp.VS.UnitTests" />
-    <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic.UnitTests" />
-    <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.UnitTests" />
-    <InternalsVisibleToMoq Include="DynamicProxyGenAssembly2" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.CSharp.UnitTests" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.CSharp.VS.UnitTests" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic.UnitTests" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.UnitTests" />
+    <InternalsVisibleTo Include="DynamicProxyGenAssembly2" Key="$(MoqPublicKey)"/>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DeployTestDependencies\DeployTestDependencies.csproj">
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.csproj" />
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Common\Test\App.config">
-      <Link>App.config</Link>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
-  </ItemGroup>
-  <Import Project="..\..\build\Targets\VSL.Imports.targets" />
 </Project>
