@@ -14,6 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
     ///     called "Properties" in C# and "My Project" in Visual Basic.
     /// </summary>
     [ExportSpecialFileProvider(SpecialFiles.AppDesigner)]
+    [Export(typeof(AppDesignerFolderSpecialFileProvider))]
     [AppliesTo(ProjectCapability.AppDesigner)]
     internal class AppDesignerFolderSpecialFileProvider : ISpecialFileProvider
     {
