@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 Value = activeProfileValue.Object
             };
 
-            var specialFilesManager = ISpecialFilesManagerFactory.ImplementGetFile(appDesignerFolder);
+            var specialFilesManager = ActiveConfiguredProjectFactory.ImplementValue(() => AppDesignerFolderSpecialFileProviderFactory.ImplementGetFile(appDesignerFolder));
             var unconfiguredProject = UnconfiguredProjectFactory.Create(null, null, @"c:\test\Project1\Project1.csproj");
             var properties = ProjectPropertiesFactory.Create(unconfiguredProject, new[] { debuggerData  });
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(unconfiguredProject, null,  new IProjectThreadingServiceMock(), null, properties);
@@ -785,8 +785,8 @@ string JsonString1 = @"{
         // ECan pass null for all and a default will be crewated
         public LaunchSettingsUnderTest(UnconfiguredProject unconfiguredProject, IUnconfiguredProjectServices projectServices, 
                                       IFileSystem fileSystem,   IUnconfiguredProjectCommonServices commonProjectServices, 
-                                      IActiveConfiguredProjectSubscriptionService projectSubscriptionService, ISpecialFilesManager specialFilesManager)
-          : base(unconfiguredProject, projectServices, fileSystem, commonProjectServices, projectSubscriptionService, specialFilesManager)
+                                      IActiveConfiguredProjectSubscriptionService projectSubscriptionService, ActiveConfiguredProject<AppDesignerFolderSpecialFileProvider> appDesignerFolderSpecialFileProvider)
+          : base(unconfiguredProject, projectServices, fileSystem, commonProjectServices, projectSubscriptionService, appDesignerFolderSpecialFileProvider)
         {
             // Block the code from setting up one on the real file system. Since we block, it we need to set up the fileChange scheduler manually
             FileWatcher = new SimpleFileWatcher();
