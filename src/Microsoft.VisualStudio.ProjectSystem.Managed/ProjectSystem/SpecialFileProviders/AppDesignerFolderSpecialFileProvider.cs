@@ -31,6 +31,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             _properties = properties;
         }
 
+        // For unit tests
+        protected AppDesignerFolderSpecialFileProvider()
+        {
+        }
+
         public virtual async Task<string> GetFileAsync(SpecialFiles fileId, SpecialFileFlags flags, CancellationToken cancellationToken = default(CancellationToken))
         {
             // Make sure at least have a tree before we start searching it
