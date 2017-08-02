@@ -34,7 +34,7 @@ build.cmd /no-node-reuse /no-deploy-extension /${configuration.toLowerCase()}
         archiveSettings.setFailIfNothingArchived()
         archiveSettings.setArchiveOnFailure()
         Utilities.addArchival(newJob, archiveSettings)
-        Utilities.setMachineAffinity(newJob, 'Windows_NT', 'latest-dev15-3-preview2')
+        Utilities.setMachineAffinity(newJob, 'Windows_NT', 'latest-dev15-3-preview7')
         Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
         Utilities.addXUnitDotNETResults(newJob, "**/*TestResults.xml")
         if (isPR) {
@@ -81,7 +81,7 @@ build.cmd /no-node-reuse /no-deploy-extension /skiptests /integrationtests /${co
         archiveSettings.setFailIfNothingArchived()
         archiveSettings.setArchiveOnFailure()
         Utilities.addArchival(newVsiJob, archiveSettings)
-        Utilities.setMachineAffinity(newVsiJob, 'Windows_NT', 'latest-dev15-3-preview2')
+        Utilities.setMachineAffinity(newVsiJob, 'Windows_NT', 'latest-dev15-3-preview7')
         Utilities.standardJobSetup(newVsiJob, project, isPR, "*/${branch}")
         Utilities.addXUnitDotNETResults(newVsiJob, "**/*TestResults.xml")
 
