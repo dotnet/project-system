@@ -114,7 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     topLevel: true,
                     resolved: true,
                     flags: DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.ResolvedFlags),
-                    originalItemSpec:@"c:\myproject2\project.csproj",
+                    fullPath: @"c:\myproject1\project.csproj",
                     setPropertiesResolved:false,
                     setPropertiesSchemaName:ProjectReference.SchemaName,
                     setPropertiesFlags: DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.UnresolvedFlags));
@@ -145,7 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     topLevel: true,
                     resolved: true,
                     flags: DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.ResolvedFlags),
-                    originalItemSpec: @"c:\myproject2\project.csproj");
+                    fullPath: @"c:\myproject1\project.csproj");
 
             var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider, null);
 
@@ -181,7 +181,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     topLevel: true,
                     resolved: true,
                     flags: DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.ResolvedFlags),
-                    originalItemSpec: @"c:\myproject2\project.csproj",
+                    fullPath: @"c:\myproject1\project.csproj",
                     targetFramework: targetFramework);
 
             var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider, targetFrameworkProvider);
@@ -218,7 +218,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     topLevel: true,
                     resolved: true,
                     flags: DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.ResolvedFlags),
-                    originalItemSpec: @"c:\myproject2\project.csproj",
+                    fullPath: @"c:\myproject1\project.csproj",
                     targetFramework: targetFramework
                  );
 
