@@ -22,11 +22,11 @@
   <Import Project="$(NuGetPackageRoot)\MicroBuild.Core\$(MicroBuildVersion)\build\MicroBuild.Core.targets" />
 
   <Target Name="BeforeBuild">
-    <MSBuild Projects="Microsoft.VisualStudio.NetCore.ProjectTemplates.1.x.swixproj" Targets="Build" />
+    <MSBuild Projects="Microsoft.VisualStudio.NetCore.ProjectTemplates.Packages.swixproj" Targets="Build" />
   </Target>
 
   <ItemGroup>
-    <MergeManifest Include="$(OutputPath)\Microsoft.VisualStudio.NetCore.ProjectTemplates.1.x.json" />
+    <MergeManifest Include="$(OutputPath)\Microsoft.VisualStudio.NetCore.ProjectTemplates.Packages.json" />
   </ItemGroup>
 
   <Target Name="ValidateManifest" />
