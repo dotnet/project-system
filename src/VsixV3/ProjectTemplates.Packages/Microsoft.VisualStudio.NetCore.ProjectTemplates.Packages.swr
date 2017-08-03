@@ -12,5 +12,5 @@ folder "InstallDir:Common7\IDE\Extensions\Microsoft\Dotnet"
   file source="$(SourcePath)\VsixV3\ProjectTemplates.Packages\Templates.pkgdef"
   
 folder "InstallDir:Common7\IDE\Extensions\Microsoft\Dotnet\Templates\NetCore\Packages"
-  file source="$(OutputPath)\microsoft.dotnet.common.projecttemplates.2.x.1.0.0.nupkg"
-  file source="$(OutputPath)\microsoft.dotnet.test.projecttemplates.2.x.1.0.0.nupkg"
+  file source="$(OutputPath)\microsoft.dotnet.common.projecttemplates.2.0.1.0.0.nupkg"
+  file source="$(OutputPath)\microsoft.dotnet.test.projecttemplates.2.0.1.0.0.nupkg"

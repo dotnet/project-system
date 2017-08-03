@@ -11,19 +11,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.DotNet.Common.ProjectTemplates.2.x" Version="$(ProjectTemplateVersion)" />
-    <PackageReference Include="Microsoft.DotNet.Test.ProjectTemplates.2.x" Version="$(ProjectTemplateVersion)" />
+    <PackageReference Include="Microsoft.DotNet.Common.ProjectTemplates.2.0" Version="$(ProjectTemplateVersion)" />
+    <PackageReference Include="Microsoft.DotNet.Test.ProjectTemplates.2.0" Version="$(ProjectTemplateVersion)" />
   </ItemGroup>
 
   <Import Project="..\..\..\build\Targets\VSL.Imports.targets" />
   <Target Name="AfterBuild">
     <ItemGroup>
-      <NugetPackagesToCopy Include="$(NuGetPackageRoot)\microsoft.dotnet.common.projecttemplates.2.x\$(ProjectTemplateVersion)\microsoft.dotnet.common.projecttemplates.2.x.$(ProjectTemplateVersion).nupkg" />
-      <NugetPackagesToCopy Include="$(NuGetPackageRoot)\microsoft.dotnet.test.projecttemplates.2.x\$(ProjectTemplateVersion)\microsoft.dotnet.test.projecttemplates.2.x.$(ProjectTemplateVersion).nupkg" />
+      <NugetPackagesToCopy Include="$(NuGetPackageRoot)\microsoft.dotnet.common.projecttemplates.2.0\$(ProjectTemplateVersion)\microsoft.dotnet.common.projecttemplates.2.0.$(ProjectTemplateVersion).nupkg" />
+      <NugetPackagesToCopy Include="$(NuGetPackageRoot)\microsoft.dotnet.test.projecttemplates.2.0\$(ProjectTemplateVersion)\microsoft.dotnet.test.projecttemplates.2.0.$(ProjectTemplateVersion).nupkg" />
     </ItemGroup>
     <ItemGroup>
-      <NugetPackagesDestination Include="$(OutputPath)\microsoft.dotnet.common.projecttemplates.2.x.1.0.0.nupkg" />
-      <NugetPackagesDestination Include="$(OutputPath)\microsoft.dotnet.test.projecttemplates.2.x.1.0.0.nupkg" />
+      <NugetPackagesDestination Include="$(OutputPath)\microsoft.dotnet.common.projecttemplates.2.0.1.0.0.nupkg" />
+      <NugetPackagesDestination Include="$(OutputPath)\microsoft.dotnet.test.projecttemplates.2.0.1.0.0.nupkg" />
     </ItemGroup>
     <Copy SourceFiles="@(NugetPackagesToCopy)" DestinationFiles="@(NugetPackagesDestination)" ContinueOnError="true" />
   </Target>
