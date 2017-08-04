@@ -62,6 +62,21 @@
         <target state="translated">Внедренный ресурс</target>
         <note />
       </trans-unit>
+      <trans-unit id="ContentType|Page|DisplayName">
+        <source>Page file</source>
+        <target state="new">Page file</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|Page|DisplayName">
+        <source>Page</source>
+        <target state="new">Page</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|ApplicationDefinition|DisplayName">
+        <source>Application definition</source>
+        <target state="new">Application definition</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>
