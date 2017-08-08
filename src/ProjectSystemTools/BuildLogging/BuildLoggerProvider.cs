@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework;
 using Microsoft.VisualStudio.ProjectSystem.Build;
+using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 {
@@ -14,23 +15,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
     [AppliesTo(ProjectCapabilities.AlwaysApplicable)]
     internal sealed class BuildLoggerProvider : IBuildLoggerProviderAsync
     {
-        private readonly IBuildManager _buildManager;
-        private readonly ConfiguredProject _configuredProject;
+        private readonly IBuildTableDataSource _dataSource;
 
         [ImportingConstructor]
-        public BuildLoggerProvider(IBuildManager buildManager, ConfiguredProject configuredProject)
+        public BuildLoggerProvider(IBuildTableDataSource dataSource)
         {
-            _buildManager = buildManager;
-            _configuredProject = configuredProject;
+            _dataSource = dataSource;
         }
 
         public Task<IImmutableSet<ILogger>> GetLoggersAsync(IReadOnlyList<string> targets, IImmutableDictionary<string, string> properties, CancellationToken cancellationToken)
         {
             var loggers = (IImmutableSet<ILogger>)ImmutableHashSet<ILogger>.Empty;
 
-            if (_buildManager.IsLogging)
+            if (_dataSource.IsLogging)
             {
-                loggers = loggers.Add(new FakeLogger(_buildManager, _configuredProject, targets, properties));
+                loggers = loggers.Add(_dataSource);
             }
 
             return Task.FromResult(loggers);

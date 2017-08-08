@@ -6,8 +6,12 @@ using System.Threading;
 using Microsoft.VisualStudio.Shell;
 using Task = System.Threading.Tasks.Task;
 using System.ComponentModel.Design;
+using Microsoft.Internal.VisualStudio.Shell.TableControl;
+using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Shell.TableManager;
+using Microsoft.VisualStudio.TextManager.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools
 {
@@ -31,16 +35,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools
 
         public const int BuildLoggingToolbarMenuId = 0x0100;
 
+        public static IVsUIShell VsUIShell { get; private set; }
+
+        public static IVsFindManager VsFindManager { get; private set; }
+
         public static ProjectSystemToolsPackage Instance;
+
+        internal static ITableManagerProvider TableManagerProvider { get; private set; }
+        public static IWpfTableControlProvider TableControlProvider { get; private set; }
 
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
+            VsUIShell = GetService(typeof(IVsUIShell)) as IVsUIShell;
+            VsFindManager = GetService(typeof(SVsFindManager)) as IVsFindManager;
+
+            var componentModel = GetService(typeof(SComponentModel)) as IComponentModel;
+            TableControlProvider = componentModel?.GetService<IWpfTableControlProvider>();
+            TableManagerProvider = componentModel?.GetService<ITableManagerProvider>();
+
             var mcs = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
             mcs?.AddCommand(new MenuCommand(ShowBuildLoggingToolWindow, new CommandID(CommandSetGuid, BuildLoggingCommandId)));
 
             Instance = this;
+        }
+
+        public static void UpdateQueryStatus()
+        {
+            // Force the shell to refresh the QueryStatus for all the command since some of them may have been flagged as
+            // not supported (because the host had focus but the view did not) and switching focus from the zoom control
+            // back to the view will not automatically force the shell to requery for the command status.
+            VsUIShell?.UpdateCommandUI(0);
         }
 
         private void ShowBuildLoggingToolWindow(object sender, EventArgs e)

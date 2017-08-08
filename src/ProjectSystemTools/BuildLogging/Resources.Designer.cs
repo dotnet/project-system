@@ -61,11 +61,74 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Build.
+        /// </summary>
+        internal static string BuildHeaderLabel {
+            get {
+                return ResourceManager.GetString("BuildHeaderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot set property..
+        /// </summary>
+        internal static string CannotSetProperty {
+            get {
+                return ResourceManager.GetString("CannotSetProperty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dimensions.
+        /// </summary>
+        internal static string DimensionsHeaderLabel {
+            get {
+                return ResourceManager.GetString("DimensionsHeaderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Elapsed.
+        /// </summary>
+        internal static string ElapsedHeaderLabel {
+            get {
+                return ResourceManager.GetString("ElapsedHeaderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Open.
         /// </summary>
         internal static string OpenCommand {
             get {
                 return ResourceManager.GetString("OpenCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search Build Logs.
+        /// </summary>
+        internal static string SearchWatermark {
+            get {
+                return ResourceManager.GetString("SearchWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        internal static string StatusHeaderLabel {
+            get {
+                return ResourceManager.GetString("StatusHeaderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Targets.
+        /// </summary>
+        internal static string TargetsHeaderLabel {
+            get {
+                return ResourceManager.GetString("TargetsHeaderLabel", resourceCulture);
             }
         }
     }
