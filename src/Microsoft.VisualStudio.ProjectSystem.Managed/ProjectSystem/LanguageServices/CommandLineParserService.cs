@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.IO;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
@@ -35,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             if (parser == null)
                 throw new InvalidOperationException();
 
-            return parser.Value.Parse(arguments, Path.GetDirectoryName(_project.FullPath));
+            return parser.Value.Parse(arguments, _project.FullPath);
         }
     }
 }
