@@ -6,6 +6,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     internal interface IParseBuildOptions
     {
-        BuildOptions Parse(IEnumerable<string> args, string baseDirectory);
+        BuildOptions Parse(IEnumerable<string> args, string projectPath);
     }
 }

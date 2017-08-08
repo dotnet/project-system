@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
@@ -15,7 +16,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private const string ReferencePrefix = "-r:";
         private const string LongReferencePrefix = "--reference:";
 
-        public BuildOptions Parse(IEnumerable<string> args, string baseDirectory)
+        [ImportMany]
+        IEnumerable<Action<string, ImmutableArray<CommandLineSourceFile>, ImmutableArray<CommandLineReference>>> Handlers =  null;
+        public BuildOptions Parse(IEnumerable<string> args, string projectPath)
         {
             var sourceFiles = new List<CommandLineSourceFile>();
             var metadataReferences = new List<CommandLineReference>();
@@ -52,11 +55,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 }
             }
 
-            return new BuildOptions(
+            var buildOptions = new BuildOptions(
                 sourceFiles: sourceFiles.ToImmutableArray(),
                 additionalFiles: ImmutableArray<CommandLineSourceFile>.Empty,
                 metadataReferences: metadataReferences.ToImmutableArray(),
                 analyzerReferences: ImmutableArray<CommandLineAnalyzerReference>.Empty);
+            foreach (var handler in Handlers)
+            {
+                handler?.Invoke(projectPath, buildOptions.SourceFiles, buildOptions.MetadataReferences);
+            }
+
+            return buildOptions;
         }
     }
 }
