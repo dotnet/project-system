@@ -255,7 +255,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             // See if user has chosen mixed mode debugging. default is false
             var mixedMode = false;
-            if(resolvedProfile.OtherSettings.TryGetValue("enableunmanageddebugging", out object enableUnmanagedDebuggingObj))
+            if(resolvedProfile.OtherSettings.TryGetValue("enableUnmanagedDebugging", out object enableUnmanagedDebuggingObj))
             {
                 mixedMode = (bool)enableUnmanagedDebuggingObj;
             }
