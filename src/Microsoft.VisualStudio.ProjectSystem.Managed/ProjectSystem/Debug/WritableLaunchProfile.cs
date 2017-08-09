@@ -11,13 +11,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// <summary>
     /// Represents one launch profile read from the launchSettings file.
     /// </summary>
-    internal class WritableLaunchProfile : IWritableLaunchProfile
+    internal class WritableLaunchProfile : IWritableLaunchProfile2
     {
         public WritableLaunchProfile()
         {
         }
 
-        public WritableLaunchProfile(ILaunchProfile profile)
+        public WritableLaunchProfile(ILaunchProfile2 profile)
         {
             Name = profile.Name;
             ExecutablePath = profile.ExecutablePath;
@@ -26,6 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             WorkingDirectory = profile.WorkingDirectory;
             LaunchBrowser = profile.LaunchBrowser;
             LaunchUrl = profile.LaunchUrl;
+            EnableUnmanagedDebugging = profile.EnableUnmanagedDebugging;
 
             if(profile.EnvironmentVariables  != null)
             {
@@ -45,6 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public string WorkingDirectory { get; set; }
         public bool LaunchBrowser { get; set; }
         public string LaunchUrl { get; set; }
+        public bool EnableUnmanagedDebugging { get; set; }
 
         public Dictionary<string, string> EnvironmentVariables { get; } = new Dictionary<string, string>(StringComparer.Ordinal);
 
@@ -58,10 +60,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             return new LaunchProfile(this);
         }
 
+        public ILaunchProfile2 ToLaunchProfile2()
+        {
+            return new LaunchProfile(this);
+        }
+
         /// <summary>
         /// Compares two IWritableLaunchProfile to see if they contain the same values.
         /// </summary>
-        public static bool ProfilesAreEqual(IWritableLaunchProfile debugProfile1, IWritableLaunchProfile debugProfile2)
+        public static bool ProfilesAreEqual(IWritableLaunchProfile2 debugProfile1, IWritableLaunchProfile2 debugProfile2)
         {
             // Same instance are equal
             if (debugProfile1 == debugProfile2)
@@ -76,6 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                !string.Equals(debugProfile1.WorkingDirectory, debugProfile2.WorkingDirectory, StringComparison.Ordinal) ||
                !string.Equals(debugProfile1.LaunchUrl, debugProfile2.LaunchUrl, StringComparison.Ordinal) ||
                debugProfile1.LaunchBrowser != debugProfile2.LaunchBrowser ||
+               debugProfile1.EnableUnmanagedDebugging != debugProfile2.EnableUnmanagedDebugging||
                !DictionaryEqualityComparer<string, object>.Instance.Equals(debugProfile1.OtherSettings.ToImmutableDictionary(), debugProfile2.OtherSettings.ToImmutableDictionary()) ||
                !DictionaryEqualityComparer<string, string>.Instance.Equals(debugProfile1.EnvironmentVariables.ToImmutableDictionary(), debugProfile2.EnvironmentVariables.ToImmutableDictionary())
                )

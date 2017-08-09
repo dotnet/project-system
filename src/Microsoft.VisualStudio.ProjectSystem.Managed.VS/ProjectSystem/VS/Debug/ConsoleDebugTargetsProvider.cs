@@ -253,13 +253,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 }
             }
 
-            // See if user has chosen mixed mode debugging. default is false
+            // See if mixed mode debugging is enabled for this profile
             var mixedMode = false;
-            if(resolvedProfile.OtherSettings.TryGetValue("enableUnmanagedDebugging", out object enableUnmanagedDebuggingObj))
+            if(resolvedProfile is ILaunchProfile2 profile2)
             {
-                mixedMode = (bool)enableUnmanagedDebuggingObj;
+                mixedMode = profile2.EnableUnmanagedDebugging;
             }
-
 
             settings.Executable = finalExecutable;
             settings.Arguments = finalArguments;

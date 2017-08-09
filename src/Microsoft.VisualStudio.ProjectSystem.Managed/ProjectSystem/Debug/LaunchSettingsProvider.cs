@@ -509,7 +509,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         protected Dictionary<string, object> GetSettingsToSerialize(ILaunchSettings curSettings)
         {
             var profileData = new Dictionary<string, Dictionary<string, object>>(StringComparer.Ordinal);
-            foreach (var profile in curSettings.Profiles)
+            foreach (ILaunchProfile2 profile in curSettings.Profiles)
             {
                 if (ProfileShouldBePersisted(profile))
                 {

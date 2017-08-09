@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// <summary>
     /// Represents one launch profile read from the launchSettings file.
     /// </summary>
-    internal class LaunchProfile : ILaunchProfile
+    internal class LaunchProfile : ILaunchProfile2
     {
         public LaunchProfile()
         {
@@ -23,6 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             WorkingDirectory = data.WorkingDirectory;
             LaunchBrowser = data.LaunchBrowser?? false;
             LaunchUrl = data.LaunchUrl;
+            EnableUnmanagedDebugging = data.EnableUnmanagedDebugging;
             EnvironmentVariables = data.EnvironmentVariables == null ? null : ImmutableDictionary<string, string>.Empty.AddRange(data.EnvironmentVariables);
             OtherSettings = data.OtherSettings == null ? null : ImmutableDictionary<string, object>.Empty.AddRange(data.OtherSettings);
         }
@@ -42,9 +43,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
            LaunchUrl = existingProfile.LaunchUrl;
            EnvironmentVariables = existingProfile.EnvironmentVariables;
            OtherSettings = existingProfile.OtherSettings;
+        
+           if(existingProfile is ILaunchProfile2 profile2)
+             EnableUnmanagedDebugging = profile2.EnableUnmanagedDebugging;
         }
 
-        public LaunchProfile(IWritableLaunchProfile writableProfile)
+        public LaunchProfile(IWritableLaunchProfile2 writableProfile)
         {
            Name = writableProfile.Name;
            ExecutablePath = writableProfile.ExecutablePath;
@@ -53,6 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
            WorkingDirectory = writableProfile.WorkingDirectory;
            LaunchBrowser = writableProfile.LaunchBrowser;
            LaunchUrl = writableProfile.LaunchUrl;
+           EnableUnmanagedDebugging = writableProfile.EnableUnmanagedDebugging;
 
            // If there are no env variables or settings we want to set them to null
            EnvironmentVariables = writableProfile.EnvironmentVariables.Count == 0? null : ImmutableDictionary<string, string>.Empty.AddRange(writableProfile.EnvironmentVariables);
@@ -68,7 +73,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public string LaunchUrl { get; set; }
         public ImmutableDictionary<string, string> EnvironmentVariables { get; set; }
         public ImmutableDictionary<string, object> OtherSettings { get; set; }
-               
+        public bool EnableUnmanagedDebugging { get; set; }
+
         /// <summary>
         /// Compares two profile names. Using this function ensures case comparison consistency
         /// </summary>
@@ -83,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// <summary>
         /// Return a mutable instance
         /// </summary>
-        public static IWritableLaunchProfile ToWritableLaunchProfile(this ILaunchProfile curProfile)
+        public static IWritableLaunchProfile2 ToWritableLaunchProfile(this ILaunchProfile2 curProfile)
         {
             return new WritableLaunchProfile(curProfile);
         }

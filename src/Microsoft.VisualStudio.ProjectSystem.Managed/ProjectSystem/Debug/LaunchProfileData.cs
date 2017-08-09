@@ -22,6 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         const string Prop_launchBrowser = "launchBrowser";
         const string Prop_launchUrl = "launchUrl";
         const string Prop_environmentVariables = "environmentVariables";
+        const string Prop_enableUnmanagedDebugging = "enableUnmanagedDebugging";
 
         static readonly HashSet<string> KnownProfileProperties = new HashSet<string>(StringComparer.Ordinal)
         {
@@ -32,6 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {Prop_launchBrowser},
             {Prop_launchUrl},
             {Prop_environmentVariables},
+            {Prop_enableUnmanagedDebugging},
         };
 
         public static bool IsKnownProfileProperty(string propertyName)
@@ -59,6 +61,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         [JsonProperty(PropertyName = Prop_launchUrl)]
         public string LaunchUrl { get; set; }
+
+        [JsonProperty(PropertyName = Prop_enableUnmanagedDebugging)]
+        public bool EnableUnmanagedDebugging { get; set; }
 
         [JsonProperty(PropertyName=Prop_environmentVariables)]
         public IDictionary<string, string>  EnvironmentVariables { get; set; }
@@ -153,7 +158,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// Helper to convert an ILaunchProfile back to its serializable form. Bascially, it
         /// converts it to a dictionary of settings. This preserves custom values
         /// </summary>
-        public static Dictionary<string, object> ToSerializableForm(ILaunchProfile profile)
+        public static Dictionary<string, object> ToSerializableForm(ILaunchProfile2 profile)
         {
             var data = new Dictionary<string, object>(StringComparer.Ordinal);
 
@@ -182,8 +187,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {
                 data.Add(Prop_launchBrowser, profile.LaunchBrowser);
             }
-            
-            if(!string.IsNullOrEmpty(profile.LaunchUrl))
+
+            if (profile.EnableUnmanagedDebugging)
+            {
+                data.Add(Prop_enableUnmanagedDebugging, profile.EnableUnmanagedDebugging);
+            }
+
+            if (!string.IsNullOrEmpty(profile.LaunchUrl))
             {
                 data.Add(Prop_launchUrl, profile.LaunchUrl);
             }
@@ -208,7 +218,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// Helper to convert an ILaunchProfile back to its serializable form. It does some
         /// fixup. Like setting empty values to null.
         /// </summary>
-        public static LaunchProfileData FromILaunchProfile(ILaunchProfile profile)
+        public static LaunchProfileData FromILaunchProfile(ILaunchProfile2 profile)
         {
             var data = new LaunchProfileData();
             data.Name = profile.Name;
@@ -218,6 +228,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             data.WorkingDirectory = profile.WorkingDirectory;
             data.LaunchBrowser = profile.LaunchBrowser;
             data.LaunchUrl= profile.LaunchUrl; 
+            data.EnableUnmanagedDebugging = profile.EnableUnmanagedDebugging; 
             data.EnvironmentVariables = profile.EnvironmentVariables;
             data.OtherSettings = profile.OtherSettings;
             return data;
