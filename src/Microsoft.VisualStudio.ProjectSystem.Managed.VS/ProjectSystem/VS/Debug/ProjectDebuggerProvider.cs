@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             // The engine depends on the framework
             if (IsDotNetCoreFramework(targetFramework))
             {
-                if (mixedMode) throw new NotImplementedException("Mixed Mode debugging is not yet supported for .NET Core");
+                if (mixedMode) throw new Exception(VSResources.UnmanagedDebuggingNetCoreNotSupported);
                 return DebuggerEngines.ManagedCoreEngine;
             }
             else
