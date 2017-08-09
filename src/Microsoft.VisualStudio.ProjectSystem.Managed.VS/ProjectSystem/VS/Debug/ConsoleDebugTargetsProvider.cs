@@ -253,11 +253,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 }
             }
 
+            // See if user has chosen mixed mode debugging. default is false
+            var mixedMode = false;
+            if(resolvedProfile.OtherSettings.TryGetValue("enableunmanageddebugging", out object enableUnmanagedDebuggingObj))
+            {
+                mixedMode = (bool)enableUnmanagedDebuggingObj;
+            }
+
+
             settings.Executable = finalExecutable;
             settings.Arguments = finalArguments;
             settings.CurrentDirectory = workingDir;
             settings.LaunchOperation = DebugLaunchOperation.CreateProcess;
-            settings.LaunchDebugEngineGuid = await GetDebuggingEngineAsync(configuredProject).ConfigureAwait(false);
+            settings.LaunchDebugEngineGuid = await GetDebuggingEngineAsync(configuredProject, mixedMode).ConfigureAwait(false);
             settings.LaunchOptions = launchOptions | DebugLaunchOptions.StopDebuggingOnEnd;
             if (settings.Environment.Count > 0)
             {
@@ -309,12 +317,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             return new Tuple<string, string, string>(runCommand, runArguments, runWorkingDirectory);
         }
 
-        private async Task<Guid> GetDebuggingEngineAsync(ConfiguredProject configuredProject)
+        private async Task<Guid> GetDebuggingEngineAsync(ConfiguredProject configuredProject, bool mixedModeDebugger)
         {
             var properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
             var framework = await properties.GetEvaluatedPropertyValueAsync("TargetFrameworkIdentifier").ConfigureAwait(false);
 
-            return ProjectDebuggerProvider.GetManagedDebugEngineForFramework(framework);
+            return ProjectDebuggerProvider.GetManagedDebugEngineForFramework(framework, mixedModeDebugger);
         }
 
         /// <summary>

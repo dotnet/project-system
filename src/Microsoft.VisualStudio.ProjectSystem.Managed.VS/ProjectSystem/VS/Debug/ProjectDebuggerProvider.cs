@@ -68,16 +68,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// <summary>
         /// Helper returns the correct debugger engine based on the targeted framework
         /// </summary>
-        public static Guid GetManagedDebugEngineForFramework(string targetFramework)
+        public static Guid GetManagedDebugEngineForFramework(string targetFramework, bool mixedMode)
         {
             // The engine depends on the framework
             if (IsDotNetCoreFramework(targetFramework))
             {
+                if (mixedMode) throw new NotImplementedException("Mixed Mode debugging is not yet supported for .NET Core");
                 return DebuggerEngines.ManagedCoreEngine;
             }
             else
             {
-                return DebuggerEngines.ManagedOnlyEngine;
+                return mixedMode ? DebuggerEngines.MixedNativeAndManagedEngine :  DebuggerEngines.ManagedOnlyEngine;
             }
         }
 
