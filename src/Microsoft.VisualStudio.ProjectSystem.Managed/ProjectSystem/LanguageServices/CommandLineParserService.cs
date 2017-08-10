@@ -34,7 +34,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             if (parser == null)
                 throw new InvalidOperationException();
 
-            return parser.Value.Parse(arguments, _project.FullPath);
+            var buildOptions = parser.Value.Parse(arguments, _project.FullPath);
+
+            return buildOptions;
         }
     }
 }
