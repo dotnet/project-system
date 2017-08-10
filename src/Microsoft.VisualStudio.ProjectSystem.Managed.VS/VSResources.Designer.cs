@@ -487,15 +487,6 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mixed mode debugging of .NET Core projects is not supported..
-        /// </summary>
-        internal static string UnmanagedDebuggingNetCoreNotSupported {
-            get {
-                return ResourceManager.GetString("UnmanagedDebuggingNetCoreNotSupported", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The working directory &apos;{0}&apos; specified in the &apos;{1}&apos; debug profile does not exist..
         /// </summary>
         internal static string WorkingDirecotryInvalid {

@@ -282,7 +282,4 @@ In order to debug this project, add an executable project to this solution which
   <data name="OutputWindowPaneTitle" xml:space="preserve">
     <value>Project</value>
   </data>
-  <data name="UnmanagedDebuggingNetCoreNotSupported" xml:space="preserve">
-    <value>Mixed mode debugging of .NET Core projects is not supported.</value>
-  </data>
 </root>

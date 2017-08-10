@@ -259,16 +259,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             {
                 mixedMode = profile2.EnableUnmanagedDebugging;
             }
+            
 
             settings.Executable = finalExecutable;
             settings.Arguments = finalArguments;
             settings.CurrentDirectory = workingDir;
             settings.LaunchOperation = DebugLaunchOperation.CreateProcess;
-            settings.LaunchDebugEngineGuid = await GetDebuggingEngineAsync(configuredProject, mixedMode).ConfigureAwait(false);
+            settings.LaunchDebugEngineGuid = await GetDebuggingEngineAsync(configuredProject).ConfigureAwait(false);
             settings.LaunchOptions = launchOptions | DebugLaunchOptions.StopDebuggingOnEnd;
             if (settings.Environment.Count > 0)
             {
                 settings.LaunchOptions = settings.LaunchOptions | DebugLaunchOptions.MergeEnvironment;
+            }
+
+            if(mixedMode)
+            {
+                // For .NET Core, we have to add native as an additional engine.
+                // For .NET Framework, we can do the same for consistency
+                // TODO: This only works for .NET Core 2, what do we do for 1.x?
+                // How do we detect 1.x properly?
+                settings.AdditionalDebugEngines.Add(DebuggerEngines.NativeOnlyEngine);
             }
 
             return settings;
@@ -316,12 +326,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             return new Tuple<string, string, string>(runCommand, runArguments, runWorkingDirectory);
         }
 
-        private async Task<Guid> GetDebuggingEngineAsync(ConfiguredProject configuredProject, bool mixedModeDebugger)
+        private async Task<Guid> GetDebuggingEngineAsync(ConfiguredProject configuredProject)
         {
             var properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
             var framework = await properties.GetEvaluatedPropertyValueAsync("TargetFrameworkIdentifier").ConfigureAwait(false);
 
-            return ProjectDebuggerProvider.GetManagedDebugEngineForFramework(framework, mixedModeDebugger);
+            return ProjectDebuggerProvider.GetManagedDebugEngineForFramework(framework);
         }
 
         /// <summary>

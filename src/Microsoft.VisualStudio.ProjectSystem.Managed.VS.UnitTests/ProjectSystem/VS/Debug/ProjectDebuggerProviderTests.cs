@@ -58,12 +58,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         public void GetDebugEngineForFrameworkTests()
         {
 
-            Assert.Equal(DebuggerEngines.ManagedCoreEngine, ProjectDebuggerProvider.GetManagedDebugEngineForFramework(".NetStandardApp", false));
-            Assert.Equal(DebuggerEngines.ManagedCoreEngine, ProjectDebuggerProvider.GetManagedDebugEngineForFramework(".NetStandard", false));
-            Assert.Equal(DebuggerEngines.ManagedCoreEngine, ProjectDebuggerProvider.GetManagedDebugEngineForFramework(".NetCore", false));
-            Assert.Equal(DebuggerEngines.ManagedCoreEngine, ProjectDebuggerProvider.GetManagedDebugEngineForFramework(".NetCoreApp", false));
-            Assert.Equal(DebuggerEngines.ManagedOnlyEngine, ProjectDebuggerProvider.GetManagedDebugEngineForFramework(".NETFramework", false));
-            Assert.Equal(DebuggerEngines.MixedNativeAndManagedEngine, ProjectDebuggerProvider.GetManagedDebugEngineForFramework(".NETFramework", true));
+            Assert.Equal(DebuggerEngines.ManagedCoreEngine, ProjectDebuggerProvider.GetManagedDebugEngineForFramework(".NetStandardApp"));
+            Assert.Equal(DebuggerEngines.ManagedCoreEngine, ProjectDebuggerProvider.GetManagedDebugEngineForFramework(".NetStandard"));
+            Assert.Equal(DebuggerEngines.ManagedCoreEngine, ProjectDebuggerProvider.GetManagedDebugEngineForFramework(".NetCore"));
+            Assert.Equal(DebuggerEngines.ManagedCoreEngine, ProjectDebuggerProvider.GetManagedDebugEngineForFramework(".NetCoreApp"));
+            Assert.Equal(DebuggerEngines.ManagedOnlyEngine, ProjectDebuggerProvider.GetManagedDebugEngineForFramework(".NETFramework"));
         }        
 
         [Fact]
