@@ -29,6 +29,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             _commandLineParser = commandLineParser;
             _handlerProvider = handlerProvider;
             _logger = logger;
+            CommandLineNotifications = new OrderPrecedenceImportCollection<Action<string, BuildOptions, BuildOptions>>(projectCapabilityCheckProvider: project);
+        }
+
+        [ImportMany]
+        public OrderPrecedenceImportCollection<Action<string, BuildOptions, BuildOptions>> CommandLineNotifications
+        {
+            get;
         }
 
         public void Handle(IProjectVersionedValue<IProjectSubscriptionUpdate> update, RuleHandlerType handlerType, IWorkspaceProjectContext context, bool isActiveContext)
@@ -174,6 +181,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             {
                 handler.Handle(version, addedItems, removedItems, isActiveContext, logger);
             }
+
+            var notification = CommandLineNotifications.FirstOrDefault();
+            if (notification != null)
+                notification.Value.Invoke(_project.FullPath, addedItems, removedItems);
         }
 
         private void WriteHeader(IProjectLoggerBatch logger, IProjectVersionedValue<IProjectSubscriptionUpdate> update, IComparable version, RuleHandlerType source, bool isActiveContext)
