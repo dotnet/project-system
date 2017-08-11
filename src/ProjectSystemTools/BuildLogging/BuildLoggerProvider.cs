@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
             if (_dataSource.IsLogging)
             {
-                loggers = loggers.Add(_dataSource);
+                loggers = loggers.Add(_dataSource.CreateLogger());
             }
 
             return Task.FromResult(loggers);

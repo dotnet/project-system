@@ -3,19 +3,18 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Windows;
-using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model;
 using Microsoft.VisualStudio.Shell.TableControl;
 using Microsoft.VisualStudio.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI
 {
     [Export(typeof(ITableColumnDefinition))]
-    [Name(TableColumnNames.Build)]
-    internal sealed class BuildColumnDefinition : TableColumnDefinitionBase
+    [Name(TableColumnNames.StartTime)]
+    internal sealed class StartTimeColumnDefinition : TableColumnDefinitionBase
     {
-        public override string Name => TableColumnNames.Build;
+        public override string Name => TableColumnNames.StartTime;
 
-        public override string DisplayName => Resources.BuildHeaderLabel;
+        public override string DisplayName => Resources.StartTimeHeaderLabel;
 
         public override StringComparer Comparer => StringComparer.Ordinal;
 
@@ -25,10 +24,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI
 
         public override bool TryCreateStringContent(ITableEntryHandle entry, bool truncatedText, bool singleColumnView, out string content)
         {
-            if (entry.TryGetValue(TableKeyNames.Operation, out var operationValue) && operationValue != null && operationValue is BuildOperation operation &&
-                entry.TryGetValue(TableKeyNames.OperationTime, out var timeValue) && timeValue != null && timeValue is DateTime time)
+            if (entry.TryGetValue(TableKeyNames.StartTime, out var value) && value != null && value is DateTime startTime)
             {
-                content = $"{operation} ({time:s})";
+                content = startTime.ToString("s");
                 return true;
             }
 

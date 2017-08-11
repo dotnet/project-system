@@ -2,7 +2,8 @@
 {
     internal static class TableColumnNames
     {
-        public const string Build = "build";
+        public const string DesignTime = "designtime";
+        public const string StartTime = "starttime";
         public const string Dimensions = "dimensions";
         public const string Elapsed = "elapsed";
         public const string Status = "status";

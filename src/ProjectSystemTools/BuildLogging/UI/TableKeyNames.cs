@@ -4,7 +4,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI
 {
     internal static class TableKeyNames
     {
-        public const string Operation = "operation";
+        public const string DesignTime = "designtime";
+        public const string StartTime = "starttime";
         public const string OperationTime = "operationtime";
         public const string Dimensions = "dimensions";
         public const string Elapsed = "elapsed";

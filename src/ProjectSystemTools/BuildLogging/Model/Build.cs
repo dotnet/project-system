@@ -10,9 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 {
     internal sealed class Build : IComparable<Build>
     {
-        public BuildOperation Operation { get; }
-
-        public DateTime OperationTime { get; }
+        public bool DesignTime { get; }
 
         public IEnumerable<string> Dimensions { get; }
 
@@ -26,13 +24,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
         public string Project { get; }
 
-        public Build(BuildOperation operation, DateTime operationTime, string project, IEnumerable<string> dimensions, IEnumerable<string> targets, DateTime startTime)
+        public Build(string project, IEnumerable<string> dimensions, IEnumerable<string> targets, bool designTime, DateTime startTime)
         {
-            Operation = operation;
-            OperationTime = operationTime;
             Project = project;
             Dimensions = dimensions.ToArray();
             Targets = targets?.ToArray() ?? Enumerable.Empty<string>();
+            DesignTime = designTime;
             StartTime = startTime;
         }
 
@@ -59,16 +56,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
                     content = Targets;
                     break;
 
-                case TableKeyNames.OperationTime:
-                    content = OperationTime;
-                    break;
-
                 case TableKeyNames.Elapsed:
                     content = Elapsed;
                     break;
 
-                case TableKeyNames.Operation:
-                    content = Operation;
+                case TableKeyNames.DesignTime:
+                    content = DesignTime;
                     break;
 
                 case TableKeyNames.Status:
@@ -77,6 +70,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
                 case StandardTableKeyNames.ProjectName:
                     content = Project;
+                    break;
+
+                case TableKeyNames.StartTime:
+                    content = StartTime;
                     break;
 
                 default:
@@ -99,8 +96,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
                 return 1;
             }
 
-            var operationComparison = Operation.CompareTo(other.Operation);
-            return operationComparison != 0 ? operationComparison : OperationTime.CompareTo(other.OperationTime);
+            var startComparison = StartTime.CompareTo(other.StartTime);
+            return startComparison != 0 ? startComparison : String.Compare(Project, other.Project, StringComparison.Ordinal);
         }
     }
 }

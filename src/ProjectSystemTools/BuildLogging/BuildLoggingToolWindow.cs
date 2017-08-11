@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Microsoft.Internal.VisualStudio.PlatformUI;
@@ -16,8 +17,8 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Shell.TableControl;
 using Microsoft.VisualStudio.Shell.TableManager;
+using Microsoft.Win32;
 using Constants = Microsoft.VisualStudio.OLE.Interop.Constants;
-using IServiceProvider = System.IServiceProvider;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 {
@@ -29,11 +30,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
         public const string BuildLoggingToolWindowCaption = "Build Logging";
         public const string SearchFilterKey = "BuildLogSearchFilter";
 
+        private const string ColumnWidth = "Width";
+        private const string ColumnVisibility = "Visibility";
+        private const string ColumnSortPriority = "SortPriority";
+        private const string ColumnSortDown = "DescendingSort";
+        private const string ColumnOrder = "ColumnOrder";
+        private const string ColumnGroupingPriority = "GroupingPriority";
+        private const string ColumnsKey = "ProjectSystemTools\\BuildLogging\\Columns";
+
         private static readonly Guid BuildLoggingToolWindowSearchCategory = new Guid("6D3BC803-1271-4909-BA24-2921AF7F029B");
 
         private readonly IBuildTableDataSource _dataSource;
-        private IVsSolutionBuildManager5 _updateSolutionEventsService;
-        private readonly uint _updateSolutionEventsCookie;
 
         private readonly ContentWrapper _contentWrapper;
         private IWpfTableControl2 _tableControl;
@@ -59,13 +66,66 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
             var componentModel = (IComponentModel)GetService(typeof(SComponentModel));
             _dataSource = componentModel.GetService<IBuildTableDataSource>();
 
-            _updateSolutionEventsService = ((IServiceProvider)ProjectSystemToolsPackage.Instance).GetService(typeof(SVsSolutionBuildManager)) as IVsSolutionBuildManager5;
-            _updateSolutionEventsService?.AdviseUpdateSolutionEvents4(_dataSource, out _updateSolutionEventsCookie);
-
             _contentWrapper = new ContentWrapper(/* TODO */0x0000);
             Content = _contentWrapper;
 
             ResetTableControl();
+        }
+
+        public static IEnumerable<ColumnState> LoadSettings()
+        {
+            var columns = new List<Tuple<int, ColumnState>>();
+
+            using (var rootKey = VSRegistry.RegistryRoot(ProjectSystemToolsPackage.Instance, __VsLocalRegistryType.RegType_UserSettings, writable: false))
+            {
+                using (var columnsSubKey = rootKey.OpenSubKey(ColumnsKey, writable: false))
+                {
+                    //if (columnsSubKey == null)
+                    //{
+                        var defaultColumns = new List<ColumnState>
+                        {
+                            new ColumnState2(StandardTableColumnDefinitions.DetailsExpander, isVisible: true, width: 25),
+                            new ColumnState2(StandardTableColumnDefinitions.ProjectName, isVisible: true, width: 250),
+                            new ColumnState2(TableColumnNames.Dimensions, isVisible: true, width: 100),
+                            new ColumnState2(TableColumnNames.Targets, isVisible: true, width: 700),
+                            new ColumnState2(TableColumnNames.DesignTime, isVisible: true, width: 100),
+                            new ColumnState2(TableColumnNames.StartTime, isVisible: true, width: 125),
+                            new ColumnState2(TableColumnNames.Elapsed, isVisible: true, width: 100),
+                            new ColumnState2(TableColumnNames.Status, isVisible: true, width: 100)
+                        };
+
+                        return defaultColumns;
+                    //}
+
+                    foreach (var columnName in columnsSubKey.GetSubKeyNames())
+                    {
+                        using (var columnSubKey = columnsSubKey.OpenSubKey(columnName, writable: false))
+                        {
+                            if (columnSubKey == null)
+                            {
+                                continue;
+                            }
+
+                            var descendingSort = (int)columnSubKey.GetValue(ColumnSortDown, 1) != 0;
+                            var sortPriority = (int)columnSubKey.GetValue(ColumnSortPriority, 0);
+
+                            var groupingPriority = (int)columnSubKey.GetValue(ColumnGroupingPriority, 0);
+
+                            var columnOrder = (int)columnSubKey.GetValue(ColumnOrder, int.MaxValue);
+                            var visibility = (int)columnSubKey.GetValue(ColumnVisibility, 0) != 0;
+                            var width = (int)columnSubKey.GetValue(ColumnWidth, 20);
+
+                            var state = new ColumnState2(columnName, visibility, width, sortPriority, descendingSort, groupingPriority);
+
+                            columns.Add(new Tuple<int, ColumnState>(columnOrder, state));
+                        }
+                    }
+                }
+            }
+
+            columns.Sort((a, b) => a.Item1 - b.Item1);
+
+            return columns.Select(a => a.Item2);
         }
 
         private void ResetTableControl()
@@ -73,26 +133,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
             var columns = new[]
             {
                 StandardTableColumnDefinitions.DetailsExpander,
-                TableColumnNames.Build,
                 StandardTableColumnDefinitions.ProjectName,
                 TableColumnNames.Dimensions,
                 TableColumnNames.Targets,
+                TableColumnNames.DesignTime,
+                TableColumnNames.StartTime,
                 TableColumnNames.Elapsed,
                 TableColumnNames.Status
             };
 
-            var columnStates = new List<ColumnState>
-            {
-                new ColumnState2(StandardTableColumnDefinitions.DetailsExpander, isVisible: true, width: 0),
-                new ColumnState2(TableColumnNames.Build, isVisible: true, width: 0),
-                new ColumnState2(StandardTableColumnDefinitions.ProjectName, isVisible: true, width: 0),
-                new ColumnState2(TableColumnNames.Dimensions, isVisible: true, width: 0),
-                new ColumnState2(TableColumnNames.Targets, isVisible: true, width: 0),
-                new ColumnState2(TableColumnNames.Elapsed, isVisible: true, width: 0),
-                new ColumnState2(TableColumnNames.Status, isVisible: true, width: 0)
-            };
-
             var newManager = ProjectSystemToolsPackage.TableManagerProvider.GetTableManager(BuildLogging);
+            var columnStates = LoadSettings();
             var tableControl = (IWpfTableControl2)ProjectSystemToolsPackage.TableControlProvider.CreateControl(newManager, true, columnStates, columns);
 
             tableControl.RaiseDataUnstableChangeDelay = TimeSpan.Zero;
@@ -124,6 +175,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
             {
                 System.Diagnostics.Debug.Fail(
                     $"Can't push {GetType().Name} as the Shell's current command target");
+            }
+        }
+
+        protected override void OnClose()
+        {
+            var columns = _tableControl.ColumnStates;
+
+            using (var rootKey = VSRegistry.RegistryRoot(ProjectSystemToolsPackage.Instance, __VsLocalRegistryType.RegType_UserSettings, writable: true))
+            {
+                using (var columnsSubKey = rootKey.CreateSubKey(ColumnsKey))
+                {
+                    if (columnsSubKey == null)
+                    {
+                        return;
+                    }
+
+                    for (var i = 0; i < columns.Count; i++)
+                    {
+                        var column = columns[i];
+
+                        using (var columnSubKey = columnsSubKey.CreateSubKey(column.Name))
+                        {
+                            if (columnSubKey != null)
+                            {
+                                columnSubKey.SetValue(ColumnOrder, i, RegistryValueKind.DWord);
+                                columnSubKey.SetValue(ColumnVisibility, column.IsVisible ? 1 : 0, RegistryValueKind.DWord);
+                                columnSubKey.SetValue(ColumnWidth, (int)(column.Width), RegistryValueKind.DWord);
+
+                                columnSubKey.SetValue(ColumnSortDown, column.DescendingSort ? 1 : 0, RegistryValueKind.DWord);
+                                columnSubKey.SetValue(ColumnSortPriority, column.SortPriority, RegistryValueKind.DWord);
+
+                                if (column is ColumnState2 cs2)
+                                {
+                                    columnSubKey.SetValue(ColumnGroupingPriority, cs2.GroupingPriority, RegistryValueKind.DWord);
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -329,7 +419,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
         bool IVsWindowSearch.OnNavigationKeyDown([ComAliasName("Microsoft.VisualStudio.Shell.Interop.VSSEARCHNAVIGATIONKEY")]uint dwNavigationKey, [ComAliasName("VsShell.VSUIACCELMODIFIERS")]uint dwModifiers) => false;
 
-        protected override object GetService(Type serviceType) => 
+        protected override object GetService(Type serviceType) =>
             serviceType == typeof(IWpfTableControl)
                 ? _tableControl
                 : (serviceType.IsEquivalentTo(typeof(IOleCommandTarget)) ? this : base.GetService(serviceType));
@@ -347,9 +437,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                 {
                     // The side effect of setting table control to null is to dispose of the existing one
                     SetTableControl(null);
-
-                    _updateSolutionEventsService.UnadviseUpdateSolutionEvents4(_updateSolutionEventsCookie);
-                    _updateSolutionEventsService = null;
                 }
 
                 base.Dispose(disposing);
@@ -362,7 +449,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
         internal void OpenContextMenu() => _contentWrapper.OpenContextMenu();
 
-        protected override bool PreProcessMessage(ref Message m) => 
+        protected override bool PreProcessMessage(ref Message m) =>
             ContentWrapper.PreProcessMessage(ref m, this) || base.PreProcessMessage(ref m);
     }
 }

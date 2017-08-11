@@ -117,11 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BuildHeaderLabel" xml:space="preserve">
-    <value>Build</value>
-  </data>
   <data name="CannotSetProperty" xml:space="preserve">
     <value>Cannot set property.</value>
+  </data>
+  <data name="DesignTimeHeaderLabel" xml:space="preserve">
+    <value>Design-Time</value>
   </data>
   <data name="DimensionsHeaderLabel" xml:space="preserve">
     <value>Dimensions</value>
@@ -134,6 +134,9 @@
   </data>
   <data name="SearchWatermark" xml:space="preserve">
     <value>Search Build Logs</value>
+  </data>
+  <data name="StartTimeHeaderLabel" xml:space="preserve">
+    <value>Start</value>
   </data>
   <data name="StatusHeaderLabel" xml:space="preserve">
     <value>Status</value>

@@ -1,12 +1,11 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using Microsoft.Build.Framework;
-using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Shell.TableManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 {
-    internal interface IBuildTableDataSource : IVsUpdateSolutionEvents4, ILogger
+    internal interface IBuildTableDataSource
     {
         ITableManager Manager { get; set; }
 
@@ -17,5 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
         void Stop();
 
         void Clear();
+
+        ILogger CreateLogger();
     }
 }

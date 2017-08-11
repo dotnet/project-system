@@ -61,20 +61,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Build.
-        /// </summary>
-        internal static string BuildHeaderLabel {
-            get {
-                return ResourceManager.GetString("BuildHeaderLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Cannot set property..
         /// </summary>
         internal static string CannotSetProperty {
             get {
                 return ResourceManager.GetString("CannotSetProperty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Design-Time.
+        /// </summary>
+        internal static string DesignTimeHeaderLabel {
+            get {
+                return ResourceManager.GetString("DesignTimeHeaderLabel", resourceCulture);
             }
         }
         
@@ -111,6 +111,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging {
         internal static string SearchWatermark {
             get {
                 return ResourceManager.GetString("SearchWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start.
+        /// </summary>
+        internal static string StartTimeHeaderLabel {
+            get {
+                return ResourceManager.GetString("StartTimeHeaderLabel", resourceCulture);
             }
         }
         
