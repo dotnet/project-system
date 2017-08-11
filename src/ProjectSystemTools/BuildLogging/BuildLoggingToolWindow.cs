@@ -80,8 +80,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
             {
                 using (var columnsSubKey = rootKey.OpenSubKey(ColumnsKey, writable: false))
                 {
-                    //if (columnsSubKey == null)
-                    //{
+                    if (columnsSubKey == null)
+                    {
                         var defaultColumns = new List<ColumnState>
                         {
                             new ColumnState2(StandardTableColumnDefinitions.DetailsExpander, isVisible: true, width: 25),
@@ -95,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                         };
 
                         return defaultColumns;
-                    //}
+                    }
 
                     foreach (var columnName in columnsSubKey.GetSubKeyNames())
                     {
