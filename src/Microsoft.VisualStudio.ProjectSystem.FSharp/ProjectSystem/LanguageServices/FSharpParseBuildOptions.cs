@@ -16,13 +16,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private const string ReferencePrefix = "-r:";
         private const string LongReferencePrefix = "--reference:";
 
-        [ImportMany]
-        IEnumerable<Action<string, ImmutableArray<CommandLineSourceFile>, ImmutableArray<CommandLineReference>>> Handlers =  null;
+        private readonly UnconfiguredProject _project;
+
+        [ImportingConstructor]
+        public FSharpParseBuildOptions(UnconfiguredProject project)
+        {
+            Requires.NotNull(project, nameof(project));
+            _project = project;
+        }
 
         public BuildOptions Parse(IEnumerable<string> commandLineArgs, string projectPath)
         {
             var sourceFiles = new List<CommandLineSourceFile>();
             var metadataReferences = new List<CommandLineReference>();
+            var commandLineOptions = new List<String>();
 
             foreach (var commandLineArgument in commandLineArgs)
             {
@@ -39,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                         // e.g., --reference:C:\Path\To\FSharp.Core.dll
                         metadataReferences.Add(new CommandLineReference(arg.Substring(LongReferencePrefix.Length), MetadataReferenceProperties.Assembly));
                     }
-                    else if (!arg.StartsWith("-"))
+                    else if (!(arg.StartsWith("-") || arg.StartsWith("/")))
                     {
                         // not an option, should be a regular file
                         var extension = Path.GetExtension(arg).ToLowerInvariant();
@@ -57,25 +64,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                 break;
                         }
                     }
+                    else
+                    {
+                        // Neither a reference, nor a source file
+                        commandLineOptions.Add(arg);
+                    }
                 }
             }
 
-            return new BuildOptions(
+            return new FSharpBuildOptions(
                     sourceFiles: sourceFiles.ToImmutableArray(),
                     additionalFiles: ImmutableArray<CommandLineSourceFile>.Empty,
                     metadataReferences: metadataReferences.ToImmutableArray(),
-                    analyzerReferences: ImmutableArray<CommandLineAnalyzerReference>.Empty);
+                    analyzerReferences: ImmutableArray<CommandLineAnalyzerReference>.Empty,
+                    compileOptions: commandLineOptions.ToImmutableArray());
         }
-
-        [Export]
-        [AppliesTo(ProjectCapability.FSharp)]
-        public void HandleCommandLineNotifications(string projectPath, BuildOptions addedOptions, BuildOptions removedOptions)
-        {
-            foreach (var handler in Handlers)
-            {
-                handler?.Invoke(projectPath, addedOptions.SourceFiles, addedOptions.MetadataReferences);
-            }
-        }
-
     }
 }
