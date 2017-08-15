@@ -73,6 +73,7 @@
                           ProjectReferences;
                           PackageReferences;
                           SharedProjectReferences;
+                          WinRTReferences;
                           OutputGroups;
                           AllTargetOutputGroups;
                           VisualStudioWellKnownOutputGroups;
