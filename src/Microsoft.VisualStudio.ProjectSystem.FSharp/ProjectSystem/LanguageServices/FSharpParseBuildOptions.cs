@@ -13,10 +13,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     [AppliesTo(ProjectCapability.FSharp)]
     internal class FSharpParseBuildOptions : IParseBuildOptions
     {
-        private const string ReferencePrefix = "-r:";
-        private const string LongReferencePrefix = "--reference:";
+        private const string HyphenReferencePrefix = "-r:";
+        private const string SlashReferencePrefix  = "/r:";
+        private const string LongReferencePrefix   = "--reference:";
 
         private readonly UnconfiguredProject _project;
+
+        [ImportMany]
+        IEnumerable<Action<string, ImmutableArray<CommandLineSourceFile>, ImmutableArray<CommandLineReference>, ImmutableArray<string>>> Handlers =  null;
 
         [ImportingConstructor]
         public FSharpParseBuildOptions(UnconfiguredProject project)
@@ -36,10 +40,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 var args = commandLineArgument.Split(';');
                 foreach (var arg in args)
                 {
-                    if (arg.StartsWith(ReferencePrefix))
+                    if (arg.StartsWith(HyphenReferencePrefix))
+                    {
+                        // e.g., /r:C:\Path\To\FSharp.Core.dll
+                        metadataReferences.Add(new CommandLineReference(arg.Substring(HyphenReferencePrefix.Length), MetadataReferenceProperties.Assembly));
+                    }
+                    else if (arg.StartsWith(SlashReferencePrefix))
                     {
                         // e.g., -r:C:\Path\To\FSharp.Core.dll
-                        metadataReferences.Add(new CommandLineReference(arg.Substring(ReferencePrefix.Length), MetadataReferenceProperties.Assembly));
+                        metadataReferences.Add(new CommandLineReference(arg.Substring(SlashReferencePrefix.Length), MetadataReferenceProperties.Assembly));
                     }
                     else if (arg.StartsWith(LongReferencePrefix))
                     {
@@ -79,5 +88,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     analyzerReferences: ImmutableArray<CommandLineAnalyzerReference>.Empty,
                     compileOptions: commandLineOptions.ToImmutableArray());
         }
+
+        [Export]
+        [AppliesTo(ProjectCapability.FSharp)]
+        public void HandleCommandLineNotifications(string projectPath, BuildOptions added, BuildOptions removed)
+        {
+            if (added is FSharpBuildOptions fscAdded)
+            {
+                foreach (var handler in Handlers)
+                {
+                    handler?.Invoke(_project.FullPath, fscAdded.SourceFiles, fscAdded.MetadataReferences, fscAdded.CompileOptions);
+                }
+            }
+            return;
+         }
     }
 }
