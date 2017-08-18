@@ -2,7 +2,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\VisualStudioDesigner.props"/>
   <PropertyGroup>
-    <TargetFramework>net46</TargetFramework>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
     
     <!-- VSIX -->

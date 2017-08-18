@@ -3,7 +3,6 @@
   <Import Project="..\VisualStudio.props"/>
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
-    <TargetFramework>net46</TargetFramework>
     <!-- VSIX -->
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
     <CreateVsixContainer>false</CreateVsixContainer>

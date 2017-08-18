@@ -3,7 +3,6 @@
   <Import Project="..\VisualStudio.props"/>
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
-    <TargetFramework>net46</TargetFramework>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
