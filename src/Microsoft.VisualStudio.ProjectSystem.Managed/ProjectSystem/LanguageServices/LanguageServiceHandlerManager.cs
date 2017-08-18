@@ -182,9 +182,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 handler.Handle(version, addedItems, removedItems, isActiveContext, logger);
             }
 
-            var notification = CommandLineNotifications.FirstOrDefault();
-            if (notification != null)
-                notification.Value.Invoke(_project.FullPath, addedItems, removedItems);
+            CommandLineNotifications.FirstOrDefault()?.Value.Invoke(_project.FullPath, addedItems, removedItems);
         }
 
         private void WriteHeader(IProjectLoggerBatch logger, IProjectVersionedValue<IProjectSubscriptionUpdate> update, IComparable version, RuleHandlerType source, bool isActiveContext)
