@@ -7,7 +7,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     internal class FSharpBuildOptions :BuildOptions
     {
-        public FSharpBuildOptions(ImmutableArray<CommandLineSourceFile> sourceFiles, ImmutableArray<CommandLineSourceFile> additionalFiles, ImmutableArray<CommandLineReference> metadataReferences, ImmutableArray<CommandLineAnalyzerReference> analyzerReferences, ImmutableArray<string> compileOptions)
+        public FSharpBuildOptions(ImmutableArray<CommandLineSourceFile> sourceFiles,
+                                  ImmutableArray<CommandLineSourceFile> additionalFiles,
+                                  ImmutableArray<CommandLineReference> metadataReferences,
+                                  ImmutableArray<CommandLineAnalyzerReference> analyzerReferences,
+                                  ImmutableArray<string> compileOptions)
             : base(sourceFiles, additionalFiles, metadataReferences, analyzerReferences)
         {
             CompileOptions = compileOptions;
