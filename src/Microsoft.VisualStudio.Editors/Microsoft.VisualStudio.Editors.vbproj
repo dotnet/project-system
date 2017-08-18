@@ -2,7 +2,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\VisualStudioDesigner.props"/>
   <PropertyGroup>
-    <TargetFramework>net46</TargetFramework>
     <Prefer32Bit>false</Prefer32Bit>
     
     <!-- TODO: Function/Property doesn't return a value on all code paths (https://github.com/dotnet/project-system/issues/2592) -->

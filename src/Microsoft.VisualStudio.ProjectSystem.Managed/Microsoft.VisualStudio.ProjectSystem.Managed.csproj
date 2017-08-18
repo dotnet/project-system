@@ -3,7 +3,6 @@
   <Import Project="..\HostAgnostic.props"/>
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
-    <TargetFramework>net46</TargetFramework>
     <!-- The value of RuleInjectionClassName of XamlPropertyRule items defined by this project -->
     <XamlPropertyRuleInjectionClassName>ProjectProperties</XamlPropertyRuleInjectionClassName>
     

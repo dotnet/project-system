@@ -28,6 +28,10 @@
     <!-- Enables workaround for https://github.com/NuGet/Home/issues/4695. -->
     <RepoToolsetQuietRestore>true</RepoToolsetQuietRestore>
 
+    <!-- All projects in this repository target the same framework -->
+    <TargetFramework>net46</TargetFramework>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+
     <VSSDKTargetPlatformRegRootSuffix Condition="'$(RootSuffix)' != ''">$(RootSuffix)</VSSDKTargetPlatformRegRootSuffix>
     <VSSDKTargetPlatformRegRootSuffix Condition="'$(VSSDKTargetPlatformRegRootSuffix)' == ''">ProjectSystem</VSSDKTargetPlatformRegRootSuffix>
 
