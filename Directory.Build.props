@@ -1,0 +1,46 @@
+<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Project>
+  <Import Project="build\NuGet.props"/>
+  <Import Project="build\Versions.props"/>
+
+  <ItemGroup>
+    <PackageReference Include="RoslynTools.Microsoft.RepoToolset" Version="$(RoslynToolsMicrosoftRepoToolsetVersion)" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
+    
+    <RepoRoot>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\'))</RepoRoot>
+    <SignToolDataPath>$(RepoRoot)build\SignToolData.json</SignToolDataPath>
+    <VersionsPropsPath>$(RepoRoot)build\Versions.props</VersionsPropsPath>
+
+    <!--  
+      RepoToolset props and targets are conditionally imported based on whether RepoToolsetDir is set or not
+      to allow VS to load packages and perform automatic package restore. 
+      TODO: Remove once we can use a custom SDK (https://github.com/Microsoft/msbuild/issues/1493)
+    -->
+    <_RepoToolsetDir>$(NuGetPackageRoot)RoslynTools.Microsoft.RepoToolset\$(RoslynToolsMicrosoftRepoToolsetVersion)\tools\</_RepoToolsetDir>
+    <RepoToolsetDir Condition="'$(BuildingInsideVisualStudio)' != 'true' or Exists('$(_RepoToolsetDir)')">$(_RepoToolsetDir)</RepoToolsetDir>
+
+    <RepositoryUrl>https://github.com/dotnet/roslyn-project-system</RepositoryUrl>
+    <PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
+
+    <!-- Enables workaround for https://github.com/NuGet/Home/issues/4695. -->
+    <RepoToolsetQuietRestore>true</RepoToolsetQuietRestore>
+
+    <!-- All projects in this repository target the same framework -->
+    <TargetFramework>net46</TargetFramework>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+
+    <VSSDKTargetPlatformRegRootSuffix Condition="'$(RootSuffix)' != ''">$(RootSuffix)</VSSDKTargetPlatformRegRootSuffix>
+    <VSSDKTargetPlatformRegRootSuffix Condition="'$(VSSDKTargetPlatformRegRootSuffix)' == ''">ProjectSystem</VSSDKTargetPlatformRegRootSuffix>
+
+    <MoqPublicKey>0024000004800000940000000602000000240000525341310004000001000100c547cac37abd99c8db225ef2f6c8a3602f3b3606cc9891605d02baa56104f4cfc0734aa39b93bf7852f7d9266654753cc297e7d2edfe0bac1cdcf9f717241550e0a7b191195b7667bb4f64bcb8e2121380fd1d9d46ad2d92d2d15605093924cceaf74c4861eff62abf69b9291ed0a340e113be11e6a7d3113e92484cf7045cc7</MoqPublicKey>
+  </PropertyGroup>
+
+  <!-- 
+    TODO: Import layout props so that design-time build executed before package restore is finished doesn't
+    product artifacts into wrong obj directories. Remove once we can use a custom SDK (https://github.com/Microsoft/msbuild/issues/1493)
+  -->
+  <Import Project="build\RepoToolset\ProjectLayout.props"/>
+</Project>

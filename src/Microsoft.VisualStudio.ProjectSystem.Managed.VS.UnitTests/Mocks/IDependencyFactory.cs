@@ -22,6 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                             string id = null,
                                             string originalItemSpec = null,
                                             string path = null,
+                                            string fullPath = null,
                                             string name = null,
                                             string caption = null,
                                             string alias = null,
@@ -56,6 +57,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             if (originalItemSpec != null)
             {
                 mock.Setup(x => x.OriginalItemSpec).Returns(originalItemSpec);
+            }
+
+            if (fullPath != null)
+            {
+                mock.Setup(x => x.FullPath).Returns(fullPath);
             }
 
             if (path != null)

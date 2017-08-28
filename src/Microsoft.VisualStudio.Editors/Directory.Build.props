@@ -1,0 +1,12 @@
+<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Project>
+  <PropertyGroup>
+    <!-- 
+      Components in this directory are versioned based on the VS version and signed with Microsoft key
+    -->
+    <UseVisualStudioVersion>true</UseVisualStudioVersion>
+    <StrongNameKeyId>Microsoft</StrongNameKeyId>
+  </PropertyGroup>
+  
+  <Import Project="..\Directory.Build.props"/>  
+</Project>

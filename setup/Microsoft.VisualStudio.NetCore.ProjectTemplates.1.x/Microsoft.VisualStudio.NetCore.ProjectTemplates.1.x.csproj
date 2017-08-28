@@ -1,0 +1,20 @@
+<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!-- VS Insertion -->
+    <VisualStudioInsertionComponent>$(MSBuildProjectName)</VisualStudioInsertionComponent>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.DotNet.Common.ProjectTemplates.1.x" Version="$(MicrosoftDotNetProjectTemplatesVersion)" />
+    <PackageReference Include="Microsoft.DotNet.Test.ProjectTemplates.1.x" Version="$(MicrosoftDotNetProjectTemplatesVersion)" />
+  </ItemGroup>
+  <ItemGroup>
+    <SwrProperty Include="Version=$(VsixVersion)" />
+    <SwrProperty Include="MSBuildProjectDirectory=$(MSBuildProjectDirectory)" />
+    <SwrProperty Include="CommonTemplatesNupkg=$(NuGetPackageRoot)Microsoft.DotNet.Common.ProjectTemplates.1.x\$(MicrosoftDotNetProjectTemplatesVersion)\Microsoft.DotNet.Common.ProjectTemplates.1.x.$(MicrosoftDotNetProjectTemplatesVersion).nupkg" />
+    <SwrProperty Include="TestTemplatesNupkg=$(NuGetPackageRoot)Microsoft.DotNet.Test.ProjectTemplates.1.x\$(MicrosoftDotNetProjectTemplatesVersion)\Microsoft.DotNet.Test.ProjectTemplates.1.x.$(MicrosoftDotNetProjectTemplatesVersion).nupkg" />
+  </ItemGroup>
+  <ItemGroup>
+    <SwrFile Include="*.swr" />
+  </ItemGroup>
+</Project>

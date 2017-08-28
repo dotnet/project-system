@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
@@ -110,22 +109,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
 
             var otherProjectPath = otherProjectSnapshot.ProjectPath;
-            var projectPath = CommonServices.Project.FullPath;
 
             var dependencyThatNeedChange = new List<IDependency>();
             foreach(var target in projectSnapshot.Targets)
             {
-                foreach (var dependency in target.Value.TopLevelDependencies.Where(d => StringComparers.DependencyProviderTypes.Equals(d.ProviderType, ProviderTypeString)))
+                foreach (var dependency in target.Value.TopLevelDependencies)
                 {
                     // We're only interested in project dependencies
                     if (!StringComparers.DependencyProviderTypes.Equals(dependency.ProviderType, ProviderTypeString))
                         continue;
 
-                    if (otherProjectPath.Equals(dependency.GetActualPath(projectPath)))
-                    {
-                        dependencyThatNeedChange.Add(dependency);
-                        break;
-                    }
+                    if (!StringComparers.Paths.Equals(otherProjectPath, dependency.FullPath))
+                        continue;
+
+                    dependencyThatNeedChange.Add(dependency);
+                    break;
                 }
             }
 

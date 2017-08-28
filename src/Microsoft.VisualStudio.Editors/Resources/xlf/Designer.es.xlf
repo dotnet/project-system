@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="es" original="src/Microsoft.VisualStudio.Editors/Resources/Microsoft.VisualStudio.Editors.Designer.resx">
+  <file datatype="xml" source-language="en" target-language="es" original="../Designer.resx">
     <body>
-      <group id="src/Microsoft.VisualStudio.Editors/Resources/Microsoft.VisualStudio.Editors.Designer.resx" />
       <trans-unit id="CMN_AllFilesFilter">
         <source>All Files</source>
         <target state="translated">Todos los archivos</target>
@@ -2717,6 +2716,51 @@ El nuevo valor del archivo app.config es '{1}'
       <trans-unit id="PPG_Property_PackageVersion">
         <source>Package Version</source>
         <target state="translated">Versión de paquete</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_None">
+        <source>None</source>
+        <target state="new">None</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_Prompt">
+        <source>Prompt</source>
+        <target state="new">Prompt</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_Queue">
+        <source>Queue</source>
+        <target state="new">Queue</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_Send">
+        <source>Send</source>
+        <target state="new">Send</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_Embedded">
+        <source>Embedded</source>
+        <target state="new">Embedded</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_Full">
+        <source>Full</source>
+        <target state="new">Full</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_None">
+        <source>None</source>
+        <target state="new">None</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_PdbOnly">
+        <source>Pdb-only</source>
+        <target state="new">Pdb-only</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_Portable">
+        <source>Portable</source>
+        <target state="new">Portable</target>
         <note />
       </trans-unit>
     </body>

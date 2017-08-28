@@ -38,6 +38,13 @@ System.Threading.Thread.Sleep(this.Delay);
   </Target>
 ```
 
+### Measuring Design-Time Builds
+
+An easy way of measuring performance of a design-time build outside of VS is to run something like (replacing solution paths with appropriate solution):
+```
+msbuild /nologo /m:1 /v:m /clp:Summary;PerformanceSummary /t:CollectResolvedSDKReferencesDesignTime;DebugSymbolsProjectOutputGroup;ResolveComReferencesDesignTime;ContentFilesProjectOutputGroup;DocumentationProjectOutputGroupDependencies;SGenFilesOutputGroup;ResolveProjectReferencesDesignTime;SourceFilesProjectOutputGroup;DebugSymbolsProjectOutputGroupDependencies;SatelliteDllsProjectOutputGroup;BuiltProjectOutputGroup;SGenFilesOutputGroupDependencies;ResolveAssemblyReferencesDesignTime;CollectSDKReferencesDesignTime;DocumentationProjectOutputGroup;PriFilesOutputGroup;BuiltProjectOutputGroupDependencies;SatelliteDllsProjectOutputGroupDependencies /p:"SolutionFileName=Roslyn.sln;LangName=en-US;Configuration=Debug;LangID=1033;DesignTimeBuild=true;SolutionDir=E:\\roslyn\\;SolutionExt=.sln;BuildingInsideVisualStudio=true;DefineExplicitDefaults=true;Platform=AnyCPU;SolutionPath=E:\\roslyn\\Roslyn.sln;SolutionName=Roslyn;DevEnvDir=C:\Program Files (x86)\Microsoft Visual Studio\Enterprise\Common7\IDE;BuildingProject=false" E:\roslyn\src\Workspaces\CSharp\Portable\CSharpWorkspace.csproj
+```
+
 ## CPS Tracing
 
 When you build the solution either in Visual Studio or via the command-line, a trace listener is hooked up to output CPS tracing to the Debug category of the Output Window under the `RoslynDev` Visual Studio instance. You can use this to diagnose lots of issues, such as failing rules or missing snapshots.

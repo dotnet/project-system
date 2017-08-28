@@ -1,35 +1,18 @@
 ﻿<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Project>
-  <Import Project="..\..\build\Targets\VSL.Settings.targets" />
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\HostAgnostic.props"/>
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
-    <TargetFramework>net46</TargetFramework>
-    <ImportVSSDKTargets>false</ImportVSSDKTargets>
-    <CreateVsixContainer>false</CreateVsixContainer>
-    <DeployExtension>false</DeployExtension>
-    <UseCodebase>true</UseCodebase>
-    <SignAssembly>true</SignAssembly>
-    <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
-    <ProjectSystemLayer>HostAgnostic</ProjectSystemLayer>
+    <!-- The value of RuleInjectionClassName of XamlPropertyRule items defined by this project -->
+    <XamlPropertyRuleInjectionClassName>CSharpProjectProperties</XamlPropertyRuleInjectionClassName>
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.CSharp.VS" />
-    <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.CSharp.UnitTests" />
-    <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.CSharp.VS.UnitTests" />
-    <InternalsVisibleToMoq Include="DynamicProxyGenAssembly2" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.CSharp.UnitTests" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.CSharp.VS.UnitTests" />
+    <InternalsVisibleTo Include="DynamicProxyGenAssembly2" Key="$(MoqPublicKey)"/>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" />
   </ItemGroup>
-  <Import Project="..\..\build\Targets\VSL.Imports.targets" />
-  <ItemDefinitionGroup>
-    <!-- Change the defaults for all rules so that they generate to C# properties -->
-    <XamlPropertyRule>
-      <Namespace>Microsoft.VisualStudio.ProjectSystem</Namespace>
-      <RuleInjectionClassName>CSharpProjectProperties</RuleInjectionClassName>
-    </XamlPropertyRule>
-  </ItemDefinitionGroup>
 </Project>

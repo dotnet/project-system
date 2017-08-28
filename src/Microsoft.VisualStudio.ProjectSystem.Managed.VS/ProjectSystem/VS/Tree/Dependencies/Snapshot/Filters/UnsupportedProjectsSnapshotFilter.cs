@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 && resultDependency.Flags.Contains(DependencyTreeFlags.ProjectNodeFlags)
                 && !resultDependency.Flags.Contains(DependencyTreeFlags.SharedProjectFlags))
             {
-                var snapshot = GetSnapshot(projectPath, resultDependency, out string dependencyProjectPath);
+                var snapshot = GetSnapshot(projectPath, resultDependency);
                 if (snapshot != null && snapshot.HasUnresolvedDependency)
                 {
                     filterAnyChanges = true;
@@ -60,14 +60,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             return resultDependency;
         }
 
-        private ITargetedDependenciesSnapshot GetSnapshot(
-            string projectPath, 
-            IDependency dependency, 
-            out string dependencyProjectPath)
+        private ITargetedDependenciesSnapshot GetSnapshot(string projectPath, IDependency dependency)
         {
-            dependencyProjectPath = dependency.GetActualPath(projectPath);
-
-            var snapshotProvider = AggregateSnapshotProvider.GetSnapshotProvider(dependencyProjectPath);
+            var snapshotProvider = AggregateSnapshotProvider.GetSnapshotProvider(dependency.FullPath);
             if (snapshotProvider == null)
             {
                 return null;

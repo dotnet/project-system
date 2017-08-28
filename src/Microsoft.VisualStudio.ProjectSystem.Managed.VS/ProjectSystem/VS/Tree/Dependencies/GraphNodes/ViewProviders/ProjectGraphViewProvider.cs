@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
 
         private ITargetedDependenciesSnapshot GetSnapshot(string projectPath, IDependency dependency, out string dependencyProjectPath)
         {
-            dependencyProjectPath = dependency.GetActualPath(projectPath);
+            dependencyProjectPath = dependency.FullPath;
 
             var snapshotProvider = AggregateSnapshotProvider.GetSnapshotProvider(dependencyProjectPath);
             if (snapshotProvider == null)
@@ -102,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
 
         public override bool ShouldTrackChanges(string projectPath, string updatedProjectPath, IDependency dependency)
         {
-            var dependencyProjectPath = dependency.GetActualPath(projectPath);
+            var dependencyProjectPath = dependency.FullPath;
             return !string.IsNullOrEmpty(dependencyProjectPath)
                     && dependencyProjectPath.Equals(updatedProjectPath, StringComparison.OrdinalIgnoreCase);
         }
@@ -171,7 +171,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                 return true;
             }
 
-            var projectFullPath = topLevelDependency.GetActualPath(projectPath);
+            var projectFullPath = topLevelDependency.FullPath;
             if (!searchResultsPerContext.TryGetValue(projectFullPath, out HashSet<IDependency> contextResults)
                 || contextResults.Count == 0)
             {
