@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="de" original="../InputXmlForm.resx">
+    <body>
+      <trans-unit id="_cancelButton.Text">
+        <source>Cancel</source>
+        <target state="translated">Abbrechen</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ColumnHeader1.Text">
+        <source>Source Type</source>
+        <target state="translated">Quelltyp</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ColumnHeader2.Text">
+        <source>XML Document Location</source>
+        <target state="translated">XML-Dokumentspeicherort</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="_listView.AccessibleName">
+        <source>XML Documents</source>
+        <target state="translated">XML-Dokumente</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="_addAsTextButton.AccessibleName">
+        <source>Type or paste XML</source>
+        <target state="translated">XML eingeben oder einfügen</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="_addAsTextButton.Text">
+        <source>Type or paste &amp;XML</source>
+        <target state="translated">&amp;XML eingeben oder einfügen</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Label1.Text">
+        <source>Specify XML documents to infer XML Schema set</source>
+        <target state="translated">XML-Dokumente zur Ableitung des XML-Schemasets angeben</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="_addFromFileButton.AccessibleName">
+        <source>Add from File</source>
+        <target state="translated">Aus Datei hinzufügen</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="_addFromFileButton.Text">
+        <source>Add from &amp;File</source>
+        <target state="translated">Aus Datei hinzu&amp;fügen</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="_addFromWebButton.AccessibleName">
+        <source>Add from Web</source>
+        <target state="translated">Aus dem Web hinzufügen</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="_addFromWebButton.Text">
+        <source>Add from &amp;Web</source>
+        <target state="translated">Aus dem &amp;Web hinzufügen</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="_okButton.Text">
+        <source>OK</source>
+        <target state="translated">OK</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="_xmlFileDialog.Filter">
+        <source>XML files (*.xml)|*.xml|All files (*.*)|*.*</source>
+        <target state="translated">XML-Dateien (*.xml)|*.xml|Alle Dateien (*.*)|*.*</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="_xmlFileDialog.Title">
+        <source>Add XML Files</source>
+        <target state="translated">XML-Dateien hinzufügen</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="$this.Text">
+        <source>Infer XML Schema set from XML documents</source>
+        <target state="translated">XML-Schemaset aus XML-Dokumenten ableiten</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

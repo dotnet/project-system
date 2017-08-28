@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "ProjectSystemSetup": {
+      "commandName": "Executable",
+      "executablePath": "$(DevEnvDir)devenv.exe",
+      "commandLineArgs": "/rootsuffix $(VSSDKTargetPlatformRegRootSuffix) /log",
+      "environmentVariables": {
+        "VisualBasicDesignTimeTargetsPath": "$(AssetsDir)Microsoft.VisualBasic.DesignTime.targets",
+        "FSharpDesignTimeTargetsPath": "$(AssetsDir)Microsoft.FSharp.DesignTime.targets",
+        "CSharpDesignTimeTargetsPath": "$(AssetsDir)Microsoft.CSharp.DesignTime.targets"
+      }
+    }
+  }
+}

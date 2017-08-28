@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="de" original="../PackagePropPage.resx">
+    <body>
+      <trans-unit id="AssemblyVersionLabel.Text">
+        <source>&amp;Assembly version:</source>
+        <target state="translated">&amp;Assemblyversion:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CopyrightLabel.Text">
+        <source>&amp;Copyright:</source>
+        <target state="translated">&amp;Copyright:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DescriptionLabel.Text">
+        <source>&amp;Description:</source>
+        <target state="translated">&amp;Beschreibung:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageIconUrlLabel.Text">
+        <source>&amp;Icon URL:</source>
+        <target state="translated">&amp;Symbol-URL:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageVersionLabel.Text">
+        <source>Package &amp;version:</source>
+        <target state="translated">Paket&amp;version:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageLicenseUrlLabel.Text">
+        <source>&amp;License URL:</source>
+        <target state="translated">&amp;Lizenz-URL:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageTagsLabel.Text">
+        <source>&amp;Tags:</source>
+        <target state="translated">&amp;Tags:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RepositoryUrlLabel.Text">
+        <source>&amp;Repository URL:</source>
+        <target state="translated">&amp;Repository-URL:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageReleaseNotesLabel.Text">
+        <source>Release &amp;notes:</source>
+        <target state="translated">A&amp;nmerkungen zu dieser Version:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RepositoryTypeLabel.Text">
+        <source>&amp;Repository type:</source>
+        <target state="translated">&amp;Repositorytyp:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageProjectUrlLabel.Text">
+        <source>&amp;Project URL:</source>
+        <target state="translated">&amp;Projekt-URL:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GeneratePackageOnBuild.Text">
+        <source>&amp;Generate NuGet package on build</source>
+        <target state="translated">Nu&amp;Get-Paket beim Erstellen erzeugen</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NeutralLanguageLabel.Text">
+        <source>Assembly &amp;neutral language:</source>
+        <target state="translated">Assembly&amp;neutralsprache:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AssemblyVersionRevisionTextBox.AccessibleName">
+        <source>Revision</source>
+        <target state="translated">Revision</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AssemblyVersionBuildTextBox.AccessibleName">
+        <source>Build</source>
+        <target state="translated">Build</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AssemblyVersionMinorTextBox.AccessibleName">
+        <source>Minor</source>
+        <target state="translated">Nebenversion</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AssemblyVersionMajorTextBox.AccessibleName">
+        <source>Major</source>
+        <target state="translated">Hauptversion</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FileVersionRevisionTextBox.AccessibleName">
+        <source>Revision</source>
+        <target state="translated">Revision</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FileVersionBuildTextBox.AccessibleName">
+        <source>Build</source>
+        <target state="translated">Build</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FileVersionMinorTextBox.AccessibleName">
+        <source>Minor</source>
+        <target state="translated">Nebenversion</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FileVersionMajorTextBox.AccessibleName">
+        <source>Major</source>
+        <target state="translated">Hauptversion</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageRequireLicenseAcceptance.Text">
+        <source>Require &amp;license acceptance</source>
+        <target state="translated">Akzeptanz der &amp;Lizenz voraussetzen</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackageIdLabel.Text">
+        <source>Package &amp;id:</source>
+        <target state="translated">Paket-&amp;ID:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AuthorsLabel.Text">
+        <source>&amp;Authors:</source>
+        <target state="translated">&amp;Autoren:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AssemblyCompanyLabel.Text">
+        <source>Compan&amp;y:</source>
+        <target state="translated">&amp;Unternehmen:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ProductLabel.Text">
+        <source>&amp;Product:</source>
+        <target state="translated">&amp;Produkt:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AssemblyFileVersionLabel.Text">
+        <source>Assembly &amp;file version:</source>
+        <target state="translated">Assembl&amp;ydateiversion:</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

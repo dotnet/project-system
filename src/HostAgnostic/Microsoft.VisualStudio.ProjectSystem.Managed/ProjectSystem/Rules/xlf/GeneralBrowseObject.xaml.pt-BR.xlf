@@ -1,0 +1,247 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="pt-BR" original="../GeneralBrowseObject.xaml">
+    <body>
+      <trans-unit id="Rule|ConfigurationGeneralBrowseObject|DisplayName">
+        <source>General</source>
+        <target state="translated">Geral</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|ConfigurationGeneralBrowseObject|Description">
+        <source>General</source>
+        <target state="translated">Geral</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|General|DisplayName">
+        <source>General</source>
+        <target state="translated">Geral</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|General|Description">
+        <source>General</source>
+        <target state="translated">Geral</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ApplicationIcon|DisplayName">
+        <source>Application Icon</source>
+        <target state="translated">Ícone do Aplicativo</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetFrameworkMoniker|DisplayName">
+        <source>Target Framework Moniker</source>
+        <target state="translated">Moniker de Estrutura de Destino</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|AssemblyName|DisplayName">
+        <source>Assembly Name</source>
+        <target state="translated">Nome do Assembly</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|RootNamespace|DisplayName">
+        <source>Root namespace</source>
+        <target state="translated">Namespace raiz</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DefaultNamespace|DisplayName">
+        <source>Default namespace</source>
+        <target state="translated">Namespace padrão</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetFrameworks|DisplayName">
+        <source>Target Frameworks</source>
+        <target state="translated">Estruturas de Destino</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ApplicationManifest|DisplayName">
+        <source>Application Manifest</source>
+        <target state="translated">Manifesto do Aplicativo</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Win32ResourceFile|DisplayName">
+        <source>Win32 Resource File</source>
+        <target state="translated">Arquivo de Recursos do Win32</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PreBuildEvent|DisplayName">
+        <source>Pre Build Event</source>
+        <target state="translated">Evento Pré-Build</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PostBuildEvent|DisplayName">
+        <source>Post Build Event</source>
+        <target state="translated">Evento Pós-Build</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|RunPostBuildEvent|DisplayName">
+        <source>Run Post Build Event</source>
+        <target state="translated">Executar Evento Pós-Build</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|RunPostBuildEvent.Always|DisplayName">
+        <source>Always</source>
+        <target state="translated">Sempre</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|RunPostBuildEvent.OnBuildSuccess|DisplayName">
+        <source>On successful build</source>
+        <target state="translated">Em caso de build bem-sucedido</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|RunPostBuildEvent.OnOutputUpdated|DisplayName">
+        <source>When the build updates the project output</source>
+        <target state="translated">Quando a compilação atualizar a saída do projeto</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ReferencePath|DisplayName">
+        <source>Reference Path</source>
+        <target state="translated">Caminho de Referência</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FileName|DisplayName">
+        <source>Project File</source>
+        <target state="translated">Arquivo de Projeto</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FullPath|DisplayName">
+        <source>Project Folder</source>
+        <target state="translated">Pasta do Projeto</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Description|DisplayName">
+        <source>Assembly Description</source>
+        <target state="translated">Descrição do Assembly</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Product|DisplayName">
+        <source>Product</source>
+        <target state="translated">Produto</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Copyright|DisplayName">
+        <source>Copyright</source>
+        <target state="translated">Copyright</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|AssemblyVersion|DisplayName">
+        <source>Assembly Version</source>
+        <target state="translated">Versão do Assembly</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|SignAssembly|DisplayName">
+        <source>Sign the assembly</source>
+        <target state="translated">Assinar o assembly</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|DelaySign|DisplayName">
+        <source>Delay sign only</source>
+        <target state="translated">Apenas adiar a assinatura</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|AssemblyOriginatorKeyFile|DisplayName">
+        <source>Strong name key file</source>
+        <target state="translated">Arquivo de chave de nome forte</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|GeneratePackageOnBuild|DisplayName">
+        <source>Generate Package On Build</source>
+        <target state="translated">Gerar Pacote Durante o Build</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageId|DisplayName">
+        <source>Package Id</source>
+        <target state="translated">ID do Pacote</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Version|DisplayName">
+        <source>Package Version</source>
+        <target state="translated">Versão do Pacote</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Authors|DisplayName">
+        <source>Authors</source>
+        <target state="translated">Autores</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|PackageRequireLicenseAcceptance|DisplayName">
+        <source>Package Require License Acceptance</source>
+        <target state="translated">O Pacote Exige a Aceitação da Licença</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageLicenseUrl|DisplayName">
+        <source>Package License Url</source>
+        <target state="translated">URL da Licença do Pacote</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageProjectUrl|DisplayName">
+        <source>Package Project Url</source>
+        <target state="translated">URL do Projeto do Pacote</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageIconUrl|DisplayName">
+        <source>Package Icon Url</source>
+        <target state="translated">URL do Ícone do Pacote</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageTags|DisplayName">
+        <source>Package Tags</source>
+        <target state="translated">Marcas do Pacote</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageReleaseNotes|DisplayName">
+        <source>Release Notes</source>
+        <target state="translated">Notas de Versão</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|RepositoryUrl|DisplayName">
+        <source>Repository Url</source>
+        <target state="translated">URL do Repositório</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|RepositoryType|DisplayName">
+        <source>Repository Type</source>
+        <target state="translated">Tipo de Repositório</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Company|DisplayName">
+        <source>Assembly Company</source>
+        <target state="translated">Empresa do Assembly</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FileVersion|DisplayName">
+        <source>Assembly File Version</source>
+        <target state="translated">Versão do Arquivo do Assembly</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|NeutralLanguage|DisplayName">
+        <source>Neutral Resources Language</source>
+        <target state="translated">Idioma de Recursos Neutros</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetFrameworkMonikers|DisplayName">
+        <source>Target Framework Monikers</source>
+        <target state="translated">Monikers de Estrutura de Destino</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|SupportedTargetFrameworks|DisplayName">
+        <source>Supported TargetFrameworks</source>
+        <target state="translated">TargetFrameworks com Suporte</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IntProperty|OutputType|DisplayName">
+        <source>Output Type</source>
+        <target state="translated">Tipo de Saída</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IntProperty|OutputTypeEx|DisplayName">
+        <source>Output Type Ex</source>
+        <target state="translated">Ex. de Tipo de Saída</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|StartupObject|DisplayName">
+        <source>Type that contains the entry point</source>
+        <target state="translated">Tipo que contém o ponto de entrada</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

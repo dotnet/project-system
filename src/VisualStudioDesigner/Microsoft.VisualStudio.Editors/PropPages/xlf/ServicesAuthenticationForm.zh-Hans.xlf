@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="zh-Hans" original="../ServicesAuthenticationForm.resx">
+    <body>
+      <trans-unit id="AuthenticationServiceUrlLabel.Text">
+        <source>&amp;Authentication service location:</source>
+        <target state="translated">身份验证服务位置(&amp;A):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UserNameLabel.Text">
+        <source>&amp;Username:</source>
+        <target state="translated">用户名(&amp;U):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PasswordLabel.Text">
+        <source>&amp;Password:</source>
+        <target state="translated">密码(&amp;P):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OKButton.Text">
+        <source>&amp;Log In</source>
+        <target state="translated">登录(&amp;L)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Cancel.Text">
+        <source>&amp;Skip Login</source>
+        <target state="translated">跳过登录(&amp;S)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InfoLabel.Text">
+        <source>To retrieve Web settings for a particular user, specify the user credentials and click Log In. To skip authentication and retrieve Web settings for anonymous users, click Skip Login. 
+ 
+You can modify the location of the authentication and Web settings services on the Services page of the Project Designer. 
+</source>
+        <target state="translated">要检索特定用户的 Web 设置，请指定用户凭据，然后单击“登录”。要跳过身份验证并检索匿名用户的 Web 设置，请单击“跳过登录”。
+
+你可在项目设计器的“服务”页上更改身份验证和 Web 设置服务的位置。 
+</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="$this.Text">
+        <source>Login</source>
+        <target state="translated">登录</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

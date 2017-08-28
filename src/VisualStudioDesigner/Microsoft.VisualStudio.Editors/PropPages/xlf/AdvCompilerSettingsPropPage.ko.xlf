@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ko" original="../AdvCompilerSettingsPropPage.resx">
+    <body>
+      <trans-unit id="OptimizationsLabel.Text">
+        <source>Optimizations</source>
+        <target state="translated">최적화</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RemoveIntegerChecks.Text">
+        <source>&amp;Remove integer overflow checks</source>
+        <target state="translated">정수 오버플로 검사 해제(&amp;R)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Optimize.Text">
+        <source>&amp;Enable optimizations</source>
+        <target state="translated">최적화 사용(&amp;E)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DllBaseLabel.Text">
+        <source>DLL &amp;base address:</source>
+        <target state="translated">DLL 기준 주소(&amp;B):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DefineDebug.Text">
+        <source>Define &amp;DEBUG constant</source>
+        <target state="translated">DEBUG 상수 정의(&amp;D)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DefineTrace.Text">
+        <source>Define &amp;TRACE constant</source>
+        <target state="translated">TRACE 상수 정의(&amp;T)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GenerateSerializationAssembliesLabel.Text">
+        <source>Generate &amp;serialization assemblies:</source>
+        <target state="translated">Serialization 어셈블리 생성(&amp;S):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CustomConstantsLabel.Text">
+        <source>&amp;Custom constants:</source>
+        <target state="translated">사용자 지정 상수(&amp;C):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GenerateDebugInfoLabel.Text">
+        <source>&amp;Generate debug info:</source>
+        <target state="translated">디버그 정보 생성(&amp;G):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CustomConstantsExampleLabel.Text">
+        <source>Example: Name1="Value1",Name2="Value2",Name3="Value3"</source>
+        <target state="translated">예: Name1="Value1",Name2="Value2",Name3="Value3"</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CompilationConstantsLabel.Text">
+        <source>Compilation Constants</source>
+        <target state="translated">컴파일 상수</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CompileWithDotNetNative.Text">
+        <source>Compile with .NET Native toolchain</source>
+        <target state="translated">.NET 네이티브 도구 체인으로 컴파일</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnableGatekeeperAudit.Text">
+        <source>Enable static analysis for .NET Native</source>
+        <target state="translated">.NET 네이티브용 정적 분석을 사용합니다.</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,308 @@
+﻿<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Microsoft.VisualStudio</RootNamespace>
+    <TargetFramework>net46</TargetFramework>
+    <!-- The value of RuleInjectionClassName of XamlPropertyRule items defined by this project -->
+    <XamlPropertyRuleInjectionClassName>ProjectProperties</XamlPropertyRuleInjectionClassName>
+    
+    <!-- Nuget -->
+    <IsPackable>true</IsPackable>
+    <Description>Microsoft VisualStudio ProjectSystem for Managed languages Projects</Description>
+    <Summary>Microsoft VisualStudio Managed Project System</Summary>
+    <PackageTags>Roslyn Managed Project System VisualStudio</PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.CSharp" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.CSharp.VS" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.FSharp" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.FSharp.VS" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.CSharp.UnitTests" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.CSharp.VS.UnitTests" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic.UnitTests" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.UnitTests" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.FSharp.UnitTests" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.FSharp.VS.UnitTests" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests" />
+    <InternalsVisibleTo Include="DynamicProxyGenAssembly2" Key="$(MoqPublicKey)"/>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="ProjectSystem\Rules\AnalyzerReference.xaml.cs">
+      <DependentUpon>AnalyzerReference.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\AdditionalFiles.cs">
+      <DependentUpon>AdditionalFiles.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\ProjectDebugger.xaml.cs">
+      <DependentUpon>ProjectDebugger.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\ResolvedAnalyzerReference.xaml.cs">
+      <DependentUpon>ResolvedAnalyzerReference.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\ResolvedCompilationReference.cs">
+      <DependentUpon>ResolvedCompilationReference.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\ResolvedPackageReference.cs">
+      <DependentUpon>ResolvedPackageReference.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\ResolvedSdkReference.cs">
+      <DependentUpon>ResolvedSdkReference.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\SdkReference.xaml.cs">
+      <DependentUpon>SdkReference.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\PackageReference.cs">
+      <DependentUpon>PackageReference.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\CompilerCommandLineArgs.cs">
+      <DependentUpon>CompilerCommandLineArgs.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\AppDesigner.xaml.cs">
+      <DependentUpon>AppDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\Compile.cs">
+      <DependentUpon>Compile.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\AssemblyReference.cs">
+      <DependentUpon>AssemblyReference.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\COMReference.cs">
+      <DependentUpon>COMReference.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\ConfigurationGeneralFile.cs">
+      <DependentUpon>ConfigurationGeneralFile.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\Content.cs">
+      <DependentUpon>Content.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\DebuggerGeneral.cs">
+      <DependentUpon>DebuggerGeneral.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\DotNetCliToolReference.cs">
+      <DependentUpon>DotNetCliToolReference.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\EmbeddedResource.cs">
+      <DependentUpon>EmbeddedResource.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\UpToDateCheckInput.cs">
+      <DependentUpon>UpToDateCheckInput.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\UpToDateCheckOutput.cs">
+      <DependentUpon>UpToDateCheckOutput.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\CopyUpToDateMarker.cs">
+      <DependentUpon>CopyUpToDateMarker.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\Folder.cs">
+      <DependentUpon>Folder.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\SourceControl.cs">
+      <DependentUpon>SourceControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\SpecialFolder.cs">
+      <DependentUpon>SpecialFolder.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\SubProject.cs">
+      <DependentUpon>SubProject.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\ConfigurationGeneral.xaml.cs">
+      <DependentUpon>ConfigurationGeneral.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\ProjectReference.cs">
+      <DependentUpon>ProjectReference.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\ResolvedAssemblyReference.cs">
+      <DependentUpon>ResolvedAssemblyReference.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\ResolvedCOMReference.cs">
+      <DependentUpon>ResolvedCOMReference.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\ResolvedProjectReference.cs">
+      <DependentUpon>ResolvedProjectReference.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\GeneralBrowseObject.cs">
+      <DependentUpon>GeneralBrowseObject.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\ConfiguredBrowseObject.cs">
+      <DependentUpon>GeneralConfiguredBrowseObject.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\None.cs">
+      <DependentUpon>None.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\NuGetRestore.cs">
+      <DependentUpon>NuGetRestore.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\VisualBasic.NamespaceImport.cs">
+      <DependentUpon>VisualBasic.NamespaceImport.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Compile.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\AssemblyReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\COMReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Content.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\EmbeddedResource.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\UpToDateCheckInput.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\UpToDateCheckOutput.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\CopyUpToDateMarker.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Folder.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\SourceControl.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\SpecialFolder.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\SubProject.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\ConfigurationGeneral.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\ConfigurationGeneralFile.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\DebuggerGeneral.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\DotNetCliToolReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\GeneralBrowseObject.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\GeneralConfiguredBrowseObject.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\None.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\NuGetRestore.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\ProjectReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\VisualBasic.NamespaceImport.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\ResolvedAssemblyReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\ResolvedCOMReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\ResolvedProjectReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\AppDesigner.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\CompilerCommandLineArgs.xaml">
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\PackageReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\SdkReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\ResolvedSdkReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\ResolvedPackageReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\AnalyzerReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\ResolvedAnalyzerReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\ResolvedCompilationReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\ProjectDebugger.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\AdditionalFiles.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Compile.BrowseObject.xaml" />
+    <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\ProjectItemsSchema.xaml" />
+    <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\CSharp.ProjectItemsSchema.xaml" />
+    <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\VisualBasic.ProjectItemsSchema.xaml" />
+    <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\FSharp.ProjectItemsSchema.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="xlf\*" />
+    <EmbeddedResource Update="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <DesignTimeTargetsFile Include="ProjectSystem\DesignTimeTargets\*.targets"/>
+  </ItemGroup>
+</Project>

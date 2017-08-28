@@ -1,0 +1,47 @@
+{
+  "sign": [
+    {
+      "certificate": "MicrosoftSHA2",
+      "strongName": "MsSharedLib72",
+      "values": [
+        "bin/Microsoft.VisualStudio.AppDesigner\\net46\\Microsoft.VisualStudio.AppDesigner.dll",
+        "bin/Microsoft.VisualStudio.AppDesigner\\net46\\*\\Microsoft.VisualStudio.AppDesigner.resources.dll",
+        "bin/Microsoft.VisualStudio.Editors\\net46\\Microsoft.VisualStudio.Editors.dll",
+        "bin/Microsoft.VisualStudio.Editors\\net46\\*\\Microsoft.VisualStudio.Editors.resources.dll",
+        "bin/Microsoft.VisualStudio.ProjectSystem.CSharp\\net46\\Microsoft.VisualStudio.ProjectSystem.CSharp.dll",
+        //"bin/Microsoft.VisualStudio.ProjectSystem.CSharp\\net46\\*\\Microsoft.VisualStudio.ProjectSystem.CSharp.resources.dll",
+        "bin/Microsoft.VisualStudio.ProjectSystem.CSharp.VS\\net46\\Microsoft.VisualStudio.ProjectSystem.CSharp.VS.dll",
+        "bin/Microsoft.VisualStudio.ProjectSystem.CSharp.VS\\net46\\*\\Microsoft.VisualStudio.ProjectSystem.CSharp.VS.resources.dll",
+        "bin/Microsoft.VisualStudio.ProjectSystem.FSharp\\net46\\Microsoft.VisualStudio.ProjectSystem.FSharp.dll",
+        //"bin/Microsoft.VisualStudio.ProjectSystem.FSharp\\net46\\*\\Microsoft.VisualStudio.ProjectSystem.FSharp.resources.dll",
+        "bin/Microsoft.VisualStudio.ProjectSystem.FSharp.VS\\net46\\Microsoft.VisualStudio.ProjectSystem.FSharp.VS.dll",
+        "bin/Microsoft.VisualStudio.ProjectSystem.FSharp.VS\\net46\\*\\Microsoft.VisualStudio.ProjectSystem.FSharp.VS.resources.dll",
+        "bin/Microsoft.VisualStudio.ProjectSystem.Managed\\net46\\Microsoft.VisualStudio.ProjectSystem.Managed.dll",
+        "bin/Microsoft.VisualStudio.ProjectSystem.Managed\\net46\\*\\Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll",
+        "bin/Microsoft.VisualStudio.ProjectSystem.Managed.VS\\net46\\Microsoft.VisualStudio.ProjectSystem.Managed.VS.dll",
+        "bin/Microsoft.VisualStudio.ProjectSystem.Managed.VS\\net46\\*\\Microsoft.VisualStudio.ProjectSystem.Managed.VS.resources.dll",
+        "bin/Microsoft.VisualStudio.ProjectSystem.VisualBasic\\net46\\Microsoft.VisualStudio.ProjectSystem.VisualBasic.dll",
+        //"bin/Microsoft.VisualStudio.ProjectSystem.VisualBasic\\net46\\*\\Microsoft.VisualStudio.ProjectSystem.VisualBasic.resources.dll",
+        "bin/Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS\\net46\\Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.dll",
+        "bin/Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS\\net46\\*\\Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.resources.dll"
+      ]
+    },
+    {
+      "certificate": "VsixSHA2",
+      "strongName": null,
+      "values": [
+        "VSSetup/Microsoft.NetCore.CSharp.ProjectTemplates.Test.vsix",
+        "VSSetup/Microsoft.NetCore.CSharp.ProjectTemplates.vsix",
+        "VSSetup/Microsoft.NetCore.FSharp.ProjectTemplates.Test.vsix",
+        "VSSetup/Microsoft.NetCore.FSharp.ProjectTemplates.vsix",
+        "VSSetup/Microsoft.NetCore.VB.ProjectTemplates.Test.vsix",
+        "VSSetup/Microsoft.NetCore.VB.ProjectTemplates.vsix",
+        "VSSetup/Microsoft.NetStandard.CSharp.ProjectTemplates.vsix",
+        "VSSetup/Microsoft.NetStandard.FSharp.ProjectTemplates.vsix",
+        "VSSetup/Microsoft.NetStandard.VB.ProjectTemplates.vsix",
+        "VSSetup/ProjectSystem.vsix",
+        "VSSetup/VisualStudioEditorsSetup.vsix"
+      ]
+    }
+  ]
+}

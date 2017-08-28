@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<!--Copyright, Microsoft Corporation, All rights reserved.-->
-<ProjectSchemaDefinitions xmlns="http://schemas.microsoft.com/build/2009/properties">
-  <ContentType Name="FSharpFile" DisplayName="F# dosyası" ItemType="Compile"></ContentType>
-  <ItemType Name="Compile" DisplayName="F# derleyicisi" />
-  <FileExtension Name=".fs" ContentType="FSharpFile" />
-</ProjectSchemaDefinitions>

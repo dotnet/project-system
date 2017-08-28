@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="zh-Hans" original="../Resources.resx">
+    <body>
+      <trans-unit id="JsonErrorReadingLaunchSettings">
+        <source>Error reading the launch settings file. This error will need to be corrected in order to debug this project. '{0}' </source>
+        <target state="translated">在读取启动设置文件时出错。需要更正此错误以调试此项目。“{0}” </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrorReadingLaunchSettings">
+        <source>The following error occurred when reading the launch settings file '{0}'. {1} </source>
+        <target state="translated">在读取启动设置文件“{0}”时，发生以下错误。{1} </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrorWritingDebugSettings">
+        <source>The following error occurred when writing to the launch settings file '{0}'. {1} </source>
+        <target state="translated">在写入启动设置文件“{0}”时，发生以下错误。{1} </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ProfileMissingName">
+        <source>At least one launch profile is missing the required name attribute. These profiles will be ignored</source>
+        <target state="translated">至少一个启动配置文件丢失了所需的名称特性。这些配置文件将被忽略</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NoActionProfileName">
+        <source>Start</source>
+        <target state="translated">启动</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonErrorNeedToBeCorrected">
+        <source>Errors in '{0}' need to be corrected before applying changes.</source>
+        <target state="translated">在应用更改前，需要更正“{0}”中的错误。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MsBuildMissingValueToRemove">
+        <source>The specified value to remove '{0}' was not present in the property '{1}'</source>
+        <target state="translated">属性“{1}”中没有要用于删除“{0}”的指定值</target>
+        <note>{0} will be a specific property value such as "Debug", {1} will be an MsBuild property name such as "Configurations". Neither of those values will be localized.</note>
+      </trans-unit>
+      <trans-unit id="MsBuildMissingValueToRename">
+        <source>The specified value to rename '{0}' was not present in the property '{1}'</source>
+        <target state="translated">属性“{1}”中没有要用于重命名“{0}”的指定值</target>
+        <note>{0} will be a specific property value such as "Debug", {1} will be an MsBuild property name such as "Configurations". Neither of those values will be localized.</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

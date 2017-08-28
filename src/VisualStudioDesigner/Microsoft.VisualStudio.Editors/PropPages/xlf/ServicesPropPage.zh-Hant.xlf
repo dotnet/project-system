@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="zh-Hant" original="../ServicesPropPage.resx">
+    <body>
+      <trans-unit id="HelpLabel.Text">
+        <source>Client application services enable your Windows-based applications to use the ASP.NET login (authentication), roles, and profile (settings) services.  Learn more about client application services...</source>
+        <target state="translated">用戶端應用程式服務可以讓您的 Windows 應用程式使用 ASP.NET 登入 (驗證)、角色和設定檔 (設定) 服務。進一步了解用戶端應用程式服務...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WindowsBasedAuth.Text">
+        <source>Use &amp;Windows authentication</source>
+        <target state="translated">使用 Windows 驗證(&amp;W)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FormBasedAuth.Text">
+        <source>Use &amp;Forms authentication</source>
+        <target state="translated">使用表單驗證(&amp;F)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CustomCredentialProviderTypeLabel.Text">
+        <source>Optional: Credentials &amp;provider
+(for example: MyNamespace.MyLoginClass, MyAssembly):</source>
+        <target state="translated">選擇性:認證提供者(&amp;P)
+(例如:MyNamespace.MyLoginClass、MyAssembly):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AuthenticationServiceUrlLabel.Text">
+        <source>&amp;Authentication service location:</source>
+        <target state="translated">驗證服務位置(&amp;A):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AuthenticationProviderGroupBox.Text">
+        <source>Authentication</source>
+        <target state="translated">驗證</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RolesServiceUrlLabel.Text">
+        <source>&amp;Roles service location:</source>
+        <target state="translated">角色服務位置(&amp;R):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WebSettingsUrlLabel.Text">
+        <source>We&amp;b settings service location:</source>
+        <target state="translated">Web 設定服務位置(&amp;B):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AdvancedSettings.Text">
+        <source>A&amp;dvanced...</source>
+        <target state="translated">進階(&amp;D)...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnableApplicationServices.Text">
+        <source>&amp;Enable client application services</source>
+        <target state="translated">啟用用戶端應用程式服務(&amp;E)</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

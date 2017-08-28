@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="es" original="../ConfigurationGeneralFile.xaml">
+    <body>
+      <trans-unit id="Rule|ConfigurationGeneralFile|DisplayName">
+        <source>General</source>
+        <target state="translated">General</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|ConfigurationGeneralFile|Description">
+        <source>Project item general properties</source>
+        <target state="translated">Propiedades generales del elemento de proyecto</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Advanced|DisplayName">
+        <source>Advanced</source>
+        <target state="translated">Avanzadas</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Misc|DisplayName">
+        <source>Misc</source>
+        <target state="translated">Varios</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|{}{ItemType}|DisplayName">
+        <source>Build Action</source>
+        <target state="translated">Acción de compilación</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|{}{ItemType}|Description">
+        <source>How the file relates to the build and deployment processes.</source>
+        <target state="translated">Cómo se relaciona el archivo con los procesos de compilación e implementación.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|CopyToOutputDirectory|DisplayName">
+        <source>Copy to Output Directory</source>
+        <target state="translated">Copiar en el directorio de salida</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|CopyToOutputDirectory|Description">
+        <source>Specifies the source file will be copied to the output directory.</source>
+        <target state="translated">Especifica que el archivo de código fuente se copiará en el directorio de salida.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|CopyToOutputDirectory.Never|DisplayName">
+        <source>Do not copy</source>
+        <target state="translated">No copiar</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|CopyToOutputDirectory.Always|DisplayName">
+        <source>Copy always</source>
+        <target state="translated">Copiar siempre</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|CopyToOutputDirectory.PreserveNewest|DisplayName">
+        <source>Copy if newer</source>
+        <target state="translated">Copiar si es posterior</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Identity|Description">
+        <source>The item specified in the Include attribute.</source>
+        <target state="translated">El elemento especificado en el atributo Include.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FullPath|DisplayName">
+        <source>Full Path</source>
+        <target state="translated">Ruta de acceso completa</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FullPath|Description">
+        <source>Location of the file.</source>
+        <target state="translated">Ubicación del archivo.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FileNameAndExtension|DisplayName">
+        <source>File Name</source>
+        <target state="translated">Nombre de archivo</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FileNameAndExtension|Description">
+        <source>Name of the file or folder.</source>
+        <target state="translated">Nombre del archivo o carpeta.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DependentUpon|Description">
+        <source>The leaf name of the file that this item appears as a child to in the project tree.</source>
+        <target state="translated">Nombre de hoja del archivo para el que este objeto aparece como elemento secundario en el árbol de proyecto.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|LastGenOutput|Description">
+        <source>The filename of the last file generated as a result of the SFG.</source>
+        <target state="translated">Nombre del último archivo generado como resultado de SFG.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|DesignTime|Description">
+        <source>A value indicating whether this file has a designer.</source>
+        <target state="translated">Valor que indica si el archivo tiene un diseñador.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|AutoGen|Description">
+        <source>A value indicating whether this is a generated file.</source>
+        <target state="translated">Valor que indica si este es un archivo generado.</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

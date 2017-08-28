@@ -1,0 +1,40 @@
+<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Project>
+  <!-- Default values for XAML rules-->
+  <ItemDefinitionGroup>
+    <XamlPropertyRule>
+      <Namespace>Microsoft.VisualStudio.ProjectSystem</Namespace>
+      <RuleInjectionClassName>$(XamlPropertyRuleInjectionClassName)</RuleInjectionClassName>
+    </XamlPropertyRule>
+  </ItemDefinitionGroup>
+
+  <!-- Copy XAML rule files and design targets files for testing and setup authoring purposes -->
+  <Target Name="CopyXamlRulesToOutputDirectory" AfterTargets="CopyFilesToOutputDirectory">
+
+    <Copy SourceFiles="@(XamlPropertyRule);@(XamlPropertyRuleNoCodeBehind);@(XamlPropertyProjectItemsSchema);@(DesignTimeTargetsFile)"
+          DestinationFolder="$(VisualStudioXamlRulesDir)"
+          SkipUnchangedFiles="$(SkipCopyUnchangedFiles)"
+          OverwriteReadOnlyFiles="$(OverwriteReadOnlyFiles)"
+          Retries="$(CopyRetryCount)"
+          RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)"
+          UseHardlinksIfPossible="$(CreateHardLinksForCopyFilesToOutputDirectoryIfPossible)">
+
+      <Output TaskParameter="DestinationFiles" ItemName="FileWrites"/>
+    </Copy>
+  </Target>
+
+  <!-- Copy translated XAML rule files for testing and setup authoring purposes -->
+  <Target Name="CopyTranslatedXamlRulesToOutputDirectory" AfterTargets="CopyFilesToOutputDirectory" DependsOnTargets="TranslateSourceFromXlf">
+
+    <Copy SourceFiles="@(XamlPropertyRuleTranslated)"  
+          DestinationFiles="@(XamlPropertyRuleTranslated->'$(VisualStudioXamlRulesDir)%(XlfLanguage)\$([System.IO.Path]::GetFileName('%(XlfSource)'))')"
+          SkipUnchangedFiles="$(SkipCopyUnchangedFiles)"
+          OverwriteReadOnlyFiles="$(OverwriteReadOnlyFiles)"
+          Retries="$(CopyRetryCount)"
+          RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)"
+          UseHardlinksIfPossible="$(CreateHardLinksForCopyFilesToOutputDirectoryIfPossible)">
+      
+      <Output TaskParameter="DestinationFiles" ItemName="FileWrites"/>
+    </Copy>
+  </Target>
+</Project>

@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ko" original="../VSPackage.resx">
+    <body>
+      <trans-unit id="1">
+        <source>C#</source>
+        <target state="translated">C#</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="2">
+        <source>C# Project Files (*.csproj);*.csproj</source>
+        <target state="translated">C# 프로젝트 파일(*.csproj);*.csproj</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="3">
+        <source>Console App (.NET Core)</source>
+        <target state="translated">콘솔 앱(.NET Core)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="4">
+        <source>A project for creating a command-line application that can run on .NET Core on Windows, Linux and MacOS.</source>
+        <target state="translated">Windows, Linux 및 MacOS의 .NET Core에서 실행할 수 있는 명령줄 응용 프로그램을 만드는 프로젝트입니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="5">
+        <source>Class Library (.NET Standard)</source>
+        <target state="translated">클래스 라이브러리(.NET 표준)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="6">
+        <source>A project for creating a class library that targets .NET Standard.</source>
+        <target state="translated">.NET 표준을 대상으로 하는 클래스 라이브러리를 만드는 프로젝트입니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="7">
+        <source>Loaded Project File Editor</source>
+        <target state="translated">로드된 프로젝트 파일 편집기</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="8">
+        <source>.NET Core 2015 Project Files (*.xproj);*.xproj</source>
+        <target state="translated">.NET Core 2015 프로젝트 파일(*.xproj);*.xproj</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="9">
+        <source>Class Library (.NET Core)</source>
+        <target state="translated">클래스 라이브러리(.NET Core)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="10">
+        <source>A project for creating a class library that targets .NET Core.</source>
+        <target state="translated">.NET Core를 대상으로 하는 클래스 라이브러리를 만드는 프로젝트입니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="11">
+        <source>xUnit Test Project (.NET Core)</source>
+        <target state="translated">xUnit 테스트 프로젝트(.NET Core)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="12">
+        <source>A project that contains xUnit.net tests that can run on .NET Core on Windows, Linux and MacOS.</source>
+        <target state="translated">Windows, Linux 및 MacOS의 .NET Core에서 실행할 수 있는 xUnit.net 테스트를 포함하는 프로젝트입니다.</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

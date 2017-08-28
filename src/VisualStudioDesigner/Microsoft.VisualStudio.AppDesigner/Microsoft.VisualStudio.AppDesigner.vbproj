@@ -1,0 +1,118 @@
+﻿<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net46</TargetFramework>
+    
+    <!-- TODO: Function doesn't return a value on all code paths (https://github.com/dotnet/project-system/issues/2592) -->
+    <NoWarn>$(NoWarn);42353</NoWarn>
+    
+    <!-- Nuget -->
+    <IsPackable>true</IsPackable>
+    <Description>This package implements the AppDesigner, which is the designer host used for project property pages among other things in Visual Studio</Description>
+    <Summary>AppDesigner designer host implementation for Visual Studio project property pages</Summary>
+    <PackageTags>Roslyn Project AppDesigner VisualStudio</PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.DataDesign.Common" Version="$(MicrosoftVisualStudioDataDesignCommonVersion)"/>
+    <PackageReference Include="VsWebSite.Interop" Version="$(VsWebSiteInteropVersion)"/>
+    <PackageReference Include="Microsoft.VisualStudio.TemplateWizardInterface" Version="$(MicrosoftVisualStudioTemplateWizardInterfaceVersion)"/>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Common\ManagedCodeMarkers.vb">
+      <Link>ManagedCodeMarkers.vb</Link>
+    </Compile>
+    <Compile Update="ApplicationDesigner\ApplicationDesignerPanel.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="ApplicationDesigner\ApplicationDesignerRootComponent.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="ApplicationDesigner\ApplicationDesignerView.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="ApplicationDesigner\ApplicationDesignerWindowPaneControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="ApplicationDesigner\DesignerTabButton.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="ApplicationDesigner\DesignerTabControl.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="ApplicationDesigner\SpecialFileCustomView.Designer.vb">
+      <DependentUpon>SpecialFileCustomView.vb</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="ApplicationDesigner\SpecialFileCustomView.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="DesignerFramework\BaseDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="DesignerFramework\ErrorControl.Designer.vb">
+      <DependentUpon>ErrorControl.vb</DependentUpon>    
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="DesignerFramework\ErrorControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPageDesigner\PropPageDesignerRootComponent.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="PropPageDesigner\PropPageDesignerView.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\PropPageHostDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="PropPages\PropPageUserControlBase.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\VSThemedLinkLabel.vb">
+      <SubType>Component</SubType>
+    </Compile>  
+    <Compile Update="Resources\Designer.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Designer.resx</DependentUpon>
+    </Compile>    
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="ApplicationDesigner\ApplicationDesignerView.resx">
+      <DependentUpon>ApplicationDesignerView.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="ApplicationDesigner\SpecialFileCustomView.resx">
+      <DependentUpon>SpecialFileCustomView.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="PropPageDesigner\PropPageDesignerView.resx">
+      <DependentUpon>PropPageDesignerView.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="PropPages\PropPageHostDialog.resx">
+      <DependentUpon>PropPageHostDialog.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="PropPages\PropPageUserControlBase.resx">
+      <DependentUpon>PropPageUserControlBase.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Designer.resx">
+      <LogicalName>Microsoft.VisualStudio.AppDesigner.Designer.resources</LogicalName>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Designer.Designer.vb</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="DesignerFramework\ErrorControl.resx">
+      <DependentUpon>ErrorControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\ApplicationDesigner\OverflowImage.png">
+      <LogicalName>Microsoft.VisualStudio.Editors.ApplicationDesigner.OverflowImage</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="**\*.xlf" />
+  </ItemGroup>
+</Project>

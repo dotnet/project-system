@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="pl" original="../ConfigurationGeneral.xaml">
+    <body>
+      <trans-unit id="Rule|ConfigurationGeneral|DisplayName">
+        <source>General</source>
+        <target state="translated">Ogólne</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|ConfigurationGeneral|Description">
+        <source>General</source>
+        <target state="translated">Ogólne</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|General|DisplayName">
+        <source>General</source>
+        <target state="translated">Ogólne</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|General|Description">
+        <source>General</source>
+        <target state="translated">Ogólne</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ApplicationIcon|DisplayName">
+        <source>Application Icon</source>
+        <target state="translated">Ikona aplikacji</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetFrameworkIdentifier|DisplayName">
+        <source>Target Framework Identifier</source>
+        <target state="translated">Identyfikator platformy docelowej</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetFrameworks|DisplayName">
+        <source>Target Frameworks</source>
+        <target state="translated">Platformy docelowe</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetFramework|DisplayName">
+        <source>Target Framework</source>
+        <target state="translated">Platforma docelowa</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetFrameworkProfile|DisplayName">
+        <source>Target Framework Profile</source>
+        <target state="translated">Profil platformy docelowej</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetFrameworkVersion|DisplayName">
+        <source>Target Framework Version</source>
+        <target state="translated">Wersja platformy docelowej</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetFrameworkMoniker|DisplayName">
+        <source>Target Framework Moniker</source>
+        <target state="translated">Krótka nazwa platformy docelowej</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DocumentationFile|DisplayName">
+        <source>XML doc comments file</source>
+        <target state="translated">Plik komentarzy dokumentu XML</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|RootNamespace|DisplayName">
+        <source>Root namespace</source>
+        <target state="translated">Główna przestrzeń nazw</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputType.Library|DisplayName">
+        <source>Class Library</source>
+        <target state="translated">Biblioteka klas</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputType.AppContainerExe|DisplayName">
+        <source>Windows Store app</source>
+        <target state="translated">Aplikacja ze Sklepu Windows</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputType.WinMDObj|DisplayName">
+        <source>WinMD</source>
+        <target state="translated">WinMD</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Optimize|Description">
+        <source>Should compiler optimize output?</source>
+        <target state="translated">Czy kompilator powinien optymalizować dane wyjściowe?</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageAction|Description">
+        <source>The MSBuild target to use when packaging a project.</source>
+        <target state="translated">Element docelowy programu MSBuild używany podczas pakowania projektu.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DefaultContentType|Description">
+        <source>The default content type name to use when adding files.</source>
+        <target state="translated">Domyślna nazwa typu zawartości używana podczas dodawania plików.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|TargetRuntime.AppHost|DisplayName">
+        <source>Windows app</source>
+        <target state="translated">Aplikacja systemu Windows</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|SuppressOutOfDateMessageOnBuild|Description">
+        <source>True to just build out-of-date projects without ever prompting the user to confirm.</source>
+        <target state="translated">Wartość True pozwala kompilować przestarzałe projekty bez monitowania użytkownika o potwierdzenie.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|SharedProjectAppliesTo|Description">
+        <source>Capability match expression that at a minimum tests for the language of the Shared Project; used to filter Add Shared Project Reference choices.</source>
+        <target state="translated">Wyrażenie zgodności możliwości, które co najmniej sprawdza język projektu udostępnionego; służy do filtrowania opcji wyboru dodawania odwołania do projektu udostępnionego.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|AlwaysUseNumericalSuffixInItemNames|Description">
+        <source>Indicates if names of newly added items should always be suffixed with a number.</source>
+        <target state="translated">Wskazuje, czy nazwy nowo dodanych elementów powinny mieć zawsze sufiks z numerem.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|LanguageServiceName|Description">
+        <source>Represents the LanguageName that is passed to Roslyn</source>
+        <target state="translated">Reprezentuje atrybut LanguageName przekazany do platformy Roslyn.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TemplateLanguage|Description">
+        <source>Represent the language that is persisted in items and project templates</source>
+        <target state="translated">Reprezentuje język utrwalony w elementach i szablonach projektu.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputType.Exe|DisplayName">
+        <source>Console Application</source>
+        <target state="translated">Aplikacja konsolowa</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputType.WinExe|DisplayName">
+        <source>Windows Application</source>
+        <target state="translated">Aplikacja systemu Windows</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|LanguageServiceId|Description">
+        <source>Represents the GUID of object that implements the language service for the project.</source>
+        <target state="translated">Reprezentuje identyfikator GUID obiektu zawierającego implementację usługę języka projektu.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetFrameworkMonikers|DisplayName">
+        <source>Target Framework Monikers</source>
+        <target state="translated">Monikery platform docelowych</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|DisableFastUpToDateCheck|DisplayName">
+        <source>Disable Fast Up To Date Check</source>
+        <target state="translated">Wyłącz szybkie testy aktualności</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

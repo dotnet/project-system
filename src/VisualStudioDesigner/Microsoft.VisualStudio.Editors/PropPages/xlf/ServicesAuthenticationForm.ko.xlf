@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ko" original="../ServicesAuthenticationForm.resx">
+    <body>
+      <trans-unit id="AuthenticationServiceUrlLabel.Text">
+        <source>&amp;Authentication service location:</source>
+        <target state="translated">인증 서비스 위치(&amp;A):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UserNameLabel.Text">
+        <source>&amp;Username:</source>
+        <target state="translated">사용자 이름(&amp;U):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PasswordLabel.Text">
+        <source>&amp;Password:</source>
+        <target state="translated">암호(&amp;P):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OKButton.Text">
+        <source>&amp;Log In</source>
+        <target state="translated">로그인(&amp;L)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Cancel.Text">
+        <source>&amp;Skip Login</source>
+        <target state="translated">로그인 건너뛰기(&amp;S)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InfoLabel.Text">
+        <source>To retrieve Web settings for a particular user, specify the user credentials and click Log In. To skip authentication and retrieve Web settings for anonymous users, click Skip Login. 
+ 
+You can modify the location of the authentication and Web settings services on the Services page of the Project Designer. 
+</source>
+        <target state="translated">특정 사용자의 웹 설정을 가져오려면 사용자 자격 증명을 지정하고 [로그인]을 클릭하세요. 인증을 건너뛰고 익명 사용자의 웹 설정을 가져오려면 [로그인 건너뛰기]를 클릭하세요. 
+ 
+프로젝트 디자이너의 [서비스] 페이지에서 인증 및 웹 설정 서비스의 위치를 수정할 수 있습니다. 
+</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="$this.Text">
+        <source>Login</source>
+        <target state="translated">로그인</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

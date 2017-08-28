@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ko" original="../UnusedReferencePropPage.resx">
+    <body>
+      <trans-unit id="ColHdr_Type.Text">
+        <source>Type</source>
+        <target state="translated">형식</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ColHdr_Path.Text">
+        <source>Path</source>
+        <target state="translated">경로</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnusedReferenceList.AccessibleName">
+        <source>Unused references</source>
+        <target state="translated">사용하지 않는 참조</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ColHdr_RefName.Text">
+        <source>Reference Name</source>
+        <target state="translated">참조 이름</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ColHdr_Version.Text">
+        <source>Version</source>
+        <target state="translated">버전</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ColHdr_CopyLocal.Text">
+        <source>Copy Local</source>
+        <target state="translated">로컬 복사</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnusedReferencesListLabel.Text">
+        <source>Clicking "Remove" will remove all checked references.</source>
+        <target state="translated">"제거"를 클릭하면 선택한 모든 참조가 제거됩니다.</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
