@@ -17,6 +17,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
         void Clear();
 
-        ILogger CreateLogger();
+        ILogger CreateLogger(bool isDesignTime);
     }
 }

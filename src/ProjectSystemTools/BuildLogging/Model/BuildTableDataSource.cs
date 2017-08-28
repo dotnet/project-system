@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
             NotifyChange();
         }
 
-        public ILogger CreateLogger() => new BuildTableLogger(this);
+        public ILogger CreateLogger(bool isDesignTime) => new BuildTableLogger(this, isDesignTime);
 
         public IDisposable Subscribe(ITableDataSink sink)
         {

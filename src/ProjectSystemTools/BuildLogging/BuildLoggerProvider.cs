@@ -8,12 +8,15 @@ using System.Threading.Tasks;
 using Microsoft.Build.Framework;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model;
+using Microsoft.VisualStudio.Shell.BuildLogging;
+using System;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 {
     [Export(typeof(IBuildLoggerProviderAsync))]
     [AppliesTo(ProjectCapabilities.AlwaysApplicable)]
-    internal sealed class BuildLoggerProvider : IBuildLoggerProviderAsync
+    [Export(typeof(IVsBuildLoggerProvider))]
+    internal sealed class BuildLoggerProvider : IBuildLoggerProviderAsync, IVsBuildLoggerProvider
     {
         private readonly IBuildTableDataSource _dataSource;
 
@@ -23,13 +26,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
             _dataSource = dataSource;
         }
 
+        public ILogger GetLogger(string projectPath, IEnumerable<string> targets, IDictionary<string, string> properties, bool isDesignTimeBuild)
+        {
+            return _dataSource.CreateLogger(isDesignTimeBuild);
+        }
+
         public Task<IImmutableSet<ILogger>> GetLoggersAsync(IReadOnlyList<string> targets, IImmutableDictionary<string, string> properties, CancellationToken cancellationToken)
         {
             var loggers = (IImmutableSet<ILogger>)ImmutableHashSet<ILogger>.Empty;
 
             if (_dataSource.IsLogging)
             {
-                loggers = loggers.Add(_dataSource.CreateLogger());
+                var isDesignTime = properties.TryGetValue("DesignTimeBuild", out var value) &&
+                   string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
+
+                loggers = loggers.Add(_dataSource.CreateLogger(isDesignTime));
             }
 
             return Task.FromResult(loggers);

@@ -14,6 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
         private static readonly string[] Dimensions = {"Configuration", "Platform", "TargetFramework"};
 
         private readonly BuildTableDataSource _dataSource;
+        private readonly bool _isDesignTime;
         private int _projectInstanceId;
         private Build _build;
         private readonly string _logPath;
@@ -23,9 +24,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
         public string Parameters { get; set; }
 
-        public BuildTableLogger(BuildTableDataSource dataSource)
+        public BuildTableLogger(BuildTableDataSource dataSource, bool isDesignTime)
         {
             _dataSource = dataSource;
+            _isDesignTime = isDesignTime;
             _logPath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.binlog");
             _binaryLogger = new BinaryLogger
             {
@@ -72,12 +74,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
                 return;
             }
 
-            var isDesignTime = e.GlobalProperties.TryGetValue("DesignTimeBuild", out var value) &&
-                               string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
-
             var dimensions = GatherDimensions(e.GlobalProperties);
 
-            var build = new Build(Path.GetFileNameWithoutExtension(e.ProjectFile), dimensions.ToArray(), e.TargetNames?.Split(';'), isDesignTime, e.Timestamp);
+            var build = new Build(Path.GetFileNameWithoutExtension(e.ProjectFile), dimensions.ToArray(), e.TargetNames?.Split(';'), _isDesignTime, e.Timestamp);
             _build = build;
             _projectInstanceId = e.BuildEventContext.ProjectInstanceId;
             _dataSource.AddEntry(_build);
