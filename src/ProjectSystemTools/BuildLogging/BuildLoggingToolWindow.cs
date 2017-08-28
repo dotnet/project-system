@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -19,6 +20,7 @@ using Microsoft.VisualStudio.Shell.TableControl;
 using Microsoft.VisualStudio.Shell.TableManager;
 using Microsoft.Win32;
 using Constants = Microsoft.VisualStudio.OLE.Interop.Constants;
+using DialogResult = System.Windows.Forms.DialogResult;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 {
@@ -60,13 +62,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
         {
             Caption = BuildLoggingToolWindowCaption;
 
-            ToolBar = new CommandID(ProjectSystemToolsPackage.UIGroupGuid, ProjectSystemToolsPackage.BuildLoggingToolbarMenuId);
+            ToolBar = new CommandID(ProjectSystemToolsPackage.UIGuid, ProjectSystemToolsPackage.BuildLoggingToolbarMenuId);
             ToolBarLocation = (int)VSTWT_LOCATION.VSTWT_TOP;
 
             var componentModel = (IComponentModel)GetService(typeof(SComponentModel));
             _dataSource = componentModel.GetService<IBuildTableDataSource>();
 
-            _contentWrapper = new ContentWrapper(/* TODO */0x0000);
+            _contentWrapper = new ContentWrapper(ProjectSystemToolsPackage.BuildLoggingContextMenuId);
             Content = _contentWrapper;
 
             ResetTableControl();
@@ -247,6 +249,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
             }
         }
 
+        private void SaveLogs()
+        {
+            FolderBrowserDialog folderBrowser = new FolderBrowserDialog()
+            {
+                Description = Resources.LogFolderDescription
+            };
+
+            if (folderBrowser.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+
+            foreach (var entry in _tableControl.SelectedEntries)
+            {
+                if (!entry.TryGetValue(TableKeyNames.LogPath, out string logPath) ||
+                    !entry.TryGetValue(TableKeyNames.Filename, out string filename))
+                {
+                    continue;
+                }
+                try
+                {
+                    File.Copy(logPath, Path.Combine(folderBrowser.SelectedPath, filename));
+                }
+                catch
+                {
+                    // Oh, well...
+                }
+            }
+        }
+
         int IOleCommandTarget.QueryStatus(ref Guid commandGroupGuid, uint commandCount, OLECMD[] commands, IntPtr commandText)
         {
             if (commandGroupGuid != ProjectSystemToolsPackage.CommandSetGuid)
@@ -279,6 +311,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                     break;
 
                 case ProjectSystemToolsPackage.ClearCommandId:
+                case ProjectSystemToolsPackage.SaveLogsCommandId:
                     visible = true;
                     enabled = true;
                     break;
@@ -317,7 +350,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
             {
                 if (commandId == (uint)VSConstants.VSStd2KCmdID.SHOWCONTEXTMENU)
                 {
-                    OpenContextMenu();
+                    _contentWrapper.OpenContextMenu();
                     return VSConstants.S_OK;
                 }
             }
@@ -341,6 +374,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
                 case ProjectSystemToolsPackage.ClearCommandId:
                     _dataSource.Clear();
+                    break;
+
+                case ProjectSystemToolsPackage.SaveLogsCommandId:
+                    SaveLogs();
                     break;
 
                 default:
@@ -446,8 +483,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                 _isDisposed = true;
             }
         }
-
-        internal void OpenContextMenu() => _contentWrapper.OpenContextMenu();
 
         protected override bool PreProcessMessage(ref Message m) =>
             ContentWrapper.PreProcessMessage(ref m, this) || base.PreProcessMessage(ref m);

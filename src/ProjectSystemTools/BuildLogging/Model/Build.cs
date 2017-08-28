@@ -2,13 +2,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI;
 using Microsoft.VisualStudio.Shell.TableManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 {
-    internal sealed class Build : IComparable<Build>
+    internal sealed class Build : IComparable<Build>, IDisposable
     {
         public bool DesignTime { get; }
 
@@ -24,6 +25,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
         public string Project { get; }
 
+        public string LogPath { get; private set; }
+
+        public string Filename => $"{Project}_{Dimensions.Aggregate((c, n) => string.IsNullOrEmpty(n) ? c : $"{c}_{n}")}_{(DesignTime ? "design" : "")}_{StartTime:s}.binlog".Replace(':', '_');
+
         public Build(string project, IEnumerable<string> dimensions, IEnumerable<string> targets, bool designTime, DateTime startTime)
         {
             Project = project;
@@ -33,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
             StartTime = startTime;
         }
 
-        public void Finish(bool succeeded, DateTime time)
+        public void Finish(bool succeeded, DateTime time, string logPath)
         {
             if (Status != BuildStatus.Running)
             {
@@ -42,6 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
             Status = succeeded ? BuildStatus.Finished : BuildStatus.Failed;
             Elapsed = time - StartTime;
+            LogPath = logPath;
         }
 
         public bool TryGetValue(string keyName, out object content)
@@ -76,6 +82,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
                     content = StartTime;
                     break;
 
+                case TableKeyNames.LogPath:
+                    content = LogPath;
+                    break;
+
+                case TableKeyNames.Filename:
+                    content = Filename;
+                    break;
+
                 default:
                     content = null;
                     break;
@@ -98,6 +112,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
             var startComparison = StartTime.CompareTo(other.StartTime);
             return startComparison != 0 ? startComparison : String.Compare(Project, other.Project, StringComparison.Ordinal);
+        }
+
+        public void Dispose()
+        {
+            if (LogPath == null)
+            {
+                return;
+            }
+
+            var logPath = LogPath;
+            LogPath = null;
+            try
+            {
+                File.Delete(logPath);
+            }
+            catch
+            {
+                // If it fails, it fails...
+            }
         }
     }
 }

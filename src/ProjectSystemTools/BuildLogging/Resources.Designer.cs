@@ -97,6 +97,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save logs to:.
+        /// </summary>
+        internal static string LogFolderDescription {
+            get {
+                return ResourceManager.GetString("LogFolderDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Open.
         /// </summary>
         internal static string OpenCommand {

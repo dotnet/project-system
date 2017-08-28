@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.Build.Framework;
+using Microsoft.Build.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 {
@@ -15,20 +16,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
         private readonly BuildTableDataSource _dataSource;
         private int _projectInstanceId;
         private Build _build;
+        private readonly string _logPath;
+        private readonly BinaryLogger _binaryLogger;
 
-        public LoggerVerbosity Verbosity { get; set; }
+        public LoggerVerbosity Verbosity { get => LoggerVerbosity.Diagnostic; set {} }
 
         public string Parameters { get; set; }
 
         public BuildTableLogger(BuildTableDataSource dataSource)
         {
             _dataSource = dataSource;
+            _logPath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.binlog");
+            _binaryLogger = new BinaryLogger
+            {
+                Parameters = _logPath,
+                Verbosity =  LoggerVerbosity.Diagnostic,
+                CollectProjectImports = BinaryLogger.ProjectImportsCollectionMode.None
+            };
         }
 
         public void Initialize(IEventSource eventSource)
         {
             eventSource.ProjectStarted += ProjectStarted;
             eventSource.ProjectFinished += ProjectFinished;
+            _binaryLogger.Initialize(eventSource);
         }
 
         private void ProjectFinished(object sender, ProjectFinishedEventArgs e)
@@ -38,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
                 return;
             }
 
-            _build.Finish(e.Succeeded, e.Timestamp);
+            _build.Finish(e.Succeeded, e.Timestamp, _logPath);
             _dataSource.NotifyChange();
         }
 
@@ -74,6 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
         public void Shutdown()
         {
+            _binaryLogger.Shutdown();
         }
     }
 }

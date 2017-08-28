@@ -50,6 +50,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
         public void Clear()
         {
+            foreach (var build in _entries)
+            {
+                build.Dispose();
+            }
             _entries = ImmutableList<Build>.Empty;
             CurrentVersionNumber++;
             NotifyChange();
@@ -67,7 +71,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
             return this;
         }
 
-        public void Dispose() => Manager = null;
+        public void Dispose()
+        {
+            foreach (var build in _entries)
+            {
+                build.Dispose();
+            }
+            _entries = ImmutableList<Build>.Empty;
+            Manager = null;
+        }
 
         public void NotifyChange()
         {

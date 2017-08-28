@@ -129,6 +129,9 @@
   <data name="ElapsedHeaderLabel" xml:space="preserve">
     <value>Elapsed</value>
   </data>
+  <data name="LogFolderDescription" xml:space="preserve">
+    <value>Save logs to:</value>
+  </data>
   <data name="OpenCommand" xml:space="preserve">
     <value>Open</value>
   </data>
