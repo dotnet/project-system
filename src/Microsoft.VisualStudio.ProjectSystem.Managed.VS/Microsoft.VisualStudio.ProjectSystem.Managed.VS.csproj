@@ -1,28 +1,47 @@
 ﻿<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Project>
-  <Import Project="..\..\build\Targets\VSL.Settings.targets" />
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\VisualStudio.props"/>
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
-    <TargetFramework>net46</TargetFramework>
-    <SignAssembly>true</SignAssembly>
+    
+    <!-- VSIX -->
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
-    <ImportVSSDKTargets>true</ImportVSSDKTargets>
     <CreateVsixContainer>false</CreateVsixContainer>
-    <DeployExtension>false</DeployExtension>
-    <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
-    <ProjectSystemLayer>VisualStudio</ProjectSystemLayer>
+    
+    <!-- Nuget -->
+    <IsPackable>true</IsPackable>
+    <Description>Microsoft VisualStudio ProjectSystem for Managed Languages Project hosts that interact with VisualStudio interfaces.</Description>
+    <Summary>Microsoft VisualStudio Managed Project System VS Components</Summary>
+    <PackageTags>Roslyn Managed Project System VisualStudio</PackageTags>
   </PropertyGroup>
+  <ItemGroup>
+    <!-- Need VSSDK to generate pkgdef -->
+    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="$(MicrosoftVSSDKBuildToolsVersion)" />
+    
+    <PackageReference Include="NuGet.SolutionRestoreManager.Interop" Version="$(NuGetSolutionRestoreManagerInteropVersion)" />
+    <PackageReference Include="NuGet.VisualStudio" Version="$(NuGetVisualStudioVersion)" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
+  </ItemGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.CSharp.VS" />
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS" />
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.FSharp.VS" />
-    <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests" />
-    <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.CSharp.VS.UnitTests" />
-    <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.UnitTests" />
-    <InternalsVisibleToMoq Include="DynamicProxyGenAssembly2" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.CSharp.VS.UnitTests" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.UnitTests" />
+    <InternalsVisibleTo Include="DynamicProxyGenAssembly2" Key="$(MoqPublicKey)"/>
   </ItemGroup>
   <ItemGroup>
     <Compile Update="ProjectSystem\VS\PropertyPages\DebugPageControl.xaml.cs">
@@ -60,34 +79,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" />
-    <PackageReference Include="NuGet.SolutionRestoreManager.Interop" Version="4.0.0-rc-2024" />
-    <PackageReference Include="NuGet.VisualStudio" Version="4.0.0-rc-2048" />
-  </ItemGroup>
-  <ItemGroup>
     <None Update="ManagedImages.imagemanifest">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="ProjectSystem\VS\PropertyPages\PropertyPageResources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>PropertyPageResources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="ProjectSystem\VS\PropertyPages\PropertyPageResources.*.resx">
-      <DependentUpon>PropertyPageResources.resx</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="VSResources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>VSResources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-      <MergeWithCTO>true</MergeWithCTO>
-    </EmbeddedResource>
-    <EmbeddedResource Update="VSResources.*.resx">
-      <DependentUpon>VSResources.resx</DependentUpon>
-      <MergeWithCTO>true</MergeWithCTO>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Page Include="ProjectSystem\VS\PropertyPages\DebugPageControl.xaml">
@@ -216,28 +210,26 @@
     <Resource Include="Resources\Icons\NuGetGreyPrivate_16x.png" />
     <Resource Include="Resources\Icons\ReferenceGroupWarning_16x.png" />
     <Resource Include="Resources\Icons\ReferenceGroup_16x.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System.Design" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="WindowsBase" />
-    <Reference Include="WindowsFormsIntegration" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="warning.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="**\*.xlf" />
+    <EmbeddedResource Update="ProjectSystem\VS\PropertyPages\PropertyPageResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>PropertyPageResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="VSResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>VSResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+      <MergeWithCTO>true</MergeWithCTO>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <VSCTCompile Include="Menus.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
       <SubType>Designer</SubType>
     </VSCTCompile>
-    <VSCTCompile Include="Menus.*.vsct">
-      <ResourceName>Menus.ctmenu</ResourceName>
-      <DependentUpon>Menus.vsct</DependentUpon>
-    </VSCTCompile>
   </ItemGroup>
-  <Import Project="..\..\build\Targets\VSL.Imports.targets" />
 </Project>

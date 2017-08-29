@@ -1,9 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="$(MSBuildThisFileDirectory)..\Targets\VSL.Versions.targets" />
-  <PropertyGroup>
-    <TargetFramework>net46</TargetFramework>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.DotNet.IBCMerge" Version="[$(MicrosoftDotNetIBCMergeVersion)]" />
-  </ItemGroup>
-</Project>

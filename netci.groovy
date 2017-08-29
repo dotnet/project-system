@@ -1,108 +1,93 @@
-// Import the utility functionality.
-import jobs.generation.*;
+// Groovy Script: http://www.groovy-lang.org/syntax.html
+// Jenkins DSL: https://github.com/jenkinsci/job-dsl-plugin/wiki
 
-// Defines a the new of the repo, used elsewhere in the file
-def project = GithubProject
-def branch = GithubBranchName
+import jobs.generation.Utilities;
+import jobs.generation.ArchivalSettings;
 
-// Generate the builds for debug and release, commit and PRJob
-[true, false].each { isPR -> // Defines a closure over true and false, value assigned to isPR
-    ['Debug', 'Release'].each { configuration ->
+static addArchival(def job, def configName) {
+  def archivalSettings = new ArchivalSettings()
+  archivalSettings.addFiles("**/artifacts/**")
+  archivalSettings.excludeFiles("**/artifacts/${configName}/obj/**")
+  archivalSettings.excludeFiles("**/artifacts/${configName}/tmp/**")
+  archivalSettings.excludeFiles("**/artifacts/${configName}/VSSetup.obj/**")
+  archivalSettings.setFailIfNothingArchived()
+  archivalSettings.setArchiveOnFailure()
 
-        def newJobName = Utilities.getFullJobName(project, "windows_${configuration.toLowerCase()}", isPR)
-
-        def newJob = job(newJobName) {
-            // This opens the set of build steps that will be run.
-            steps {
-                // Indicates that a batch script should be run with the build string (see above)
-                // Also available is:
-                // shell (for unix scripting)
-                batchFile("""
-echo *** Build Roslyn Project System ***
-SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\Preview\\Enterprise\\Common7\\Tools\\
-SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\Preview\\Enterprise\\VSSDK\\
-SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\Preview\\Enterprise\\VSSDK\\
-
-build.cmd /no-node-reuse /no-deploy-extension /${configuration.toLowerCase()}
-""")
-            }
-        }
-
-        def archiveSettings = new ArchivalSettings()
-        archiveSettings.addFiles("bin/**/*")
-        archiveSettings.excludeFiles("bin/obj/*")
-        archiveSettings.setFailIfNothingArchived()
-        archiveSettings.setArchiveOnFailure()
-        Utilities.addArchival(newJob, archiveSettings)
-        Utilities.setMachineAffinity(newJob, 'Windows_NT', 'latest-dev15-3-preview7')
-        Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
-        Utilities.addXUnitDotNETResults(newJob, "**/*TestResults.xml")
-        if (isPR) {
-            Utilities.addGithubPRTriggerForBranch(newJob, branch, "Windows ${configuration}")
-        }
-        else {
-            Utilities.addGithubPushTrigger(newJob)
-        }
-    }
+  Utilities.addArchival(job, archivalSettings)
 }
 
-// Add VSI jobs.
-// Generate the builds for commit and PRJob
-[true, false].each { isPR -> // Defines a closure over true and false, value assigned to isPR
-    ['Debug', 'Release'].each { configuration ->
-
-        def newVsiJobName = Utilities.getFullJobName(project, "windows_integration_${configuration.toLowerCase()}", isPR)
-        
-        def newVsiJob = job(newVsiJobName) {
-            // This opens the set of build steps that will be run.
-            steps {             
-                // Indicates that a batch script should be run with the build string (see above)
-                // Also available is:
-                // shell (for unix scripting)
-                batchFile("""
-echo *** Installing 1.0 CLI ***
-
-@powershell -NoProfile -ExecutionPolicy Bypass -Command "((New-Object System.Net.WebClient).DownloadFile('https://download.microsoft.com/download/B/9/F/B9F1AF57-C14A-4670-9973-CDF47209B5BF/dotnet-dev-win-x64.1.0.4.exe', 'dotnet-dev-win-x64.1.0.4.exe'))"
-dotnet-dev-win-x64.1.0.4.exe /install /quiet /norestart /log bin\\cli_install.log
-
-echo *** Build Roslyn Project System ***
-SET VS150COMNTOOLS=%ProgramFiles(x86)%\\Microsoft Visual Studio\\Preview\\Enterprise\\Common7\\Tools\\
-SET VSSDK150Install=%ProgramFiles(x86)%\\Microsoft Visual Studio\\Preview\\Enterprise\\VSSDK\\
-SET VSSDKInstall=%ProgramFiles(x86)%\\Microsoft Visual Studio\\Preview\\Enterprise\\VSSDK\\
-
-build.cmd /no-node-reuse /no-deploy-extension /skiptests /integrationtests /${configuration.toLowerCase()}
-""")
-            }
-        }
-
-        def archiveSettings = new ArchivalSettings()
-        archiveSettings.addFiles("bin/**/*")
-        archiveSettings.excludeFiles("bin/obj/*")
-        archiveSettings.setFailIfNothingArchived()
-        archiveSettings.setArchiveOnFailure()
-        Utilities.addArchival(newVsiJob, archiveSettings)
-        Utilities.setMachineAffinity(newVsiJob, 'Windows_NT', 'latest-dev15-3-preview7')
-        Utilities.standardJobSetup(newVsiJob, project, isPR, "*/${branch}")
-        Utilities.addXUnitDotNETResults(newVsiJob, "**/*TestResults.xml")
-
-        if (isPR) {
-            def triggerPhrase = generateTriggerPhrase(newVsiJobName, "vsi")
-            Utilities.addGithubPRTriggerForBranch(newVsiJob, branch, newVsiJobName, triggerPhrase, /*triggerPhraseOnly*/ true)
-        } else {
-            Utilities.addGithubPushTrigger(newVsiJob)
-        }
-    }
-}
-
-static String generateTriggerPhrase(String jobName, String triggerPhraseExtra) {
+static addGithubTrigger(def job, def isPR, def branchName, def jobName, def manualTrigger, def altTriggerPhrase) {
+  if (isPR) {
     def triggerCore = "all|${jobName}"
-    if (triggerPhraseExtra) {
-        triggerCore = "${triggerCore}|${triggerPhraseExtra}"
+
+    if (altTriggerPhrase) {
+      triggerCore = "${triggerCore}|${altTriggerPhrase}"
     }
-    return "(?i).*test\\W+(${triggerCore})\\W+please.*";
+
+    def triggerPhrase = "(?i)^\\s*(@?dotnet-bot\\s+)?(re)?test\\s+(${triggerCore})(\\s+please)?\\s*\$"
+
+    Utilities.addGithubPRTriggerForBranch(job, branchName, jobName, triggerPhrase, manualTrigger)
+  } else {
+    Utilities.addGithubPushTrigger(job)
+  }
 }
 
-// Make the call to generate the help job
-Utilities.createHelperJob(this, project, branch,
-    "Welcome to the ${project} Repository",  // This is prepended to the help message
-    "Have a nice day!")  // This is appended to the help message.  You might put known issues here.
+static addXUnitDotNETResults(def job, def configName) {
+  def resultFilePattern = "**/artifacts/${configName}/TestResults/*.xml"
+  def skipIfNoTestFiles = false
+    
+  Utilities.addXUnitDotNETResults(job, resultFilePattern, skipIfNoTestFiles)
+}
+
+def createJob(def platform, def configName, def osName, def imageName, def isPR, def manualTrigger, def altTriggerPhrase) {
+  def projectName = GithubProject
+  def branchName = GithubBranchName  
+  def jobName = "${platform}_${configName}"
+  def newJob = job(Utilities.getFullJobName(projectName, jobName, isPR))
+
+  Utilities.standardJobSetup(newJob, projectName, isPR, "*/${branchName}")
+
+  addGithubTrigger(newJob, isPR, branchName, jobName, manualTrigger, altTriggerPhrase)
+  addArchival(newJob, configName)
+  addXUnitDotNETResults(newJob, configName)
+  Utilities.setMachineAffinity(newJob, osName, imageName)
+
+  return newJob
+}
+
+def osName = "Windows_NT"
+def imageName = "latest-dev15-3"
+
+[true, false].each { isPR ->
+  ["debug", "release"].each { configName ->
+    
+    def platform = "windows"
+    def manualTrigger = false
+    def altTriggerPhrase = ""
+
+    def newJob = createJob(platform, configName, osName, imageName, isPR, manualTrigger, altTriggerPhrase)
+
+    newJob.with {
+      steps {
+        batchFile(".\\build\\CIBuild.cmd -configuration ${configName} -prepareMachine")
+      }
+    }
+  }
+}
+
+[true, false].each { isPR ->
+  ["debug", "release"].each { configName ->
+    
+    def platform = "windows_integration"
+    def manualTrigger = true
+    def altTriggerPhrase = "vsi"
+    
+    def newJob = createJob(platform, configName, osName, imageName, isPR, manualTrigger, altTriggerPhrase)
+
+    newJob.with {
+      steps {
+        batchFile(".\\build\\VSIBuild.cmd -configuration ${configName} -prepareMachine")
+      }
+    }
+  }
+}

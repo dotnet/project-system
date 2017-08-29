@@ -1,12 +1,16 @@
 ﻿<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Project>
-  <Import Project="..\..\build\Targets\VSL.Settings.targets" />
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\HostAgnostic.props"/>
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
-    <TargetFramework>net46</TargetFramework>
-    <SignAssembly>true</SignAssembly>
-    <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
-    <ProjectSystemLayer>HostAgnostic</ProjectSystemLayer>
+    <!-- The value of RuleInjectionClassName of XamlPropertyRule items defined by this project -->
+    <XamlPropertyRuleInjectionClassName>ProjectProperties</XamlPropertyRuleInjectionClassName>
+    
+    <!-- Nuget -->
+    <IsPackable>true</IsPackable>
+    <Description>Microsoft VisualStudio ProjectSystem for Managed languages Projects</Description>
+    <Summary>Microsoft VisualStudio Managed Project System</Summary>
+    <PackageTags>Roslyn Managed Project System VisualStudio</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS" />
@@ -16,20 +20,16 @@
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS" />
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.FSharp" />
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.FSharp.VS" />
-    <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.CSharp.UnitTests" />
-    <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.CSharp.VS.UnitTests" />
-    <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic.UnitTests" />
-    <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.UnitTests" />
-    <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.FSharp.UnitTests" />
-    <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.FSharp.VS.UnitTests" />
-    <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests" />
-    <InternalsVisibleToTest Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests" />
-    <InternalsVisibleToMoq Include="DynamicProxyGenAssembly2" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.CSharp.UnitTests" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.CSharp.VS.UnitTests" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic.UnitTests" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.UnitTests" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.FSharp.UnitTests" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.FSharp.VS.UnitTests" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests" />
+    <InternalsVisibleTo Include="DynamicProxyGenAssembly2" Key="$(MoqPublicKey)"/>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-
   <ItemGroup>
     <Compile Update="ProjectSystem\Rules\AnalyzerReference.xaml.cs">
       <DependentUpon>AnalyzerReference.xaml</DependentUpon>
@@ -282,24 +282,10 @@
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
-    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Compile.BrowseObject.xaml">
-    </XamlPropertyRuleNoCodeBehind>
-    <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\ProjectItemsSchema.xaml">
-    </XamlPropertyProjectItemsSchema>
-    <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\CSharp.ProjectItemsSchema.xaml">
-    </XamlPropertyProjectItemsSchema>
-    <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\VisualBasic.ProjectItemsSchema.xaml">
-    </XamlPropertyProjectItemsSchema>
-    <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\FSharp.ProjectItemsSchema.xaml">
-    </XamlPropertyProjectItemsSchema>
-  </ItemGroup>
-  <ItemGroup>
     <XamlPropertyRule Include="ProjectSystem\Rules\AnalyzerReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
-  </ItemGroup>
-  <ItemGroup>
     <XamlPropertyRule Include="ProjectSystem\Rules\ResolvedAnalyzerReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
@@ -312,31 +298,25 @@
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\AdditionalFiles.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Compile.BrowseObject.xaml" />
+    <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\ProjectItemsSchema.xaml" />
+    <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\CSharp.ProjectItemsSchema.xaml" />
+    <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\VisualBasic.ProjectItemsSchema.xaml" />
+    <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\FSharp.ProjectItemsSchema.xaml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="xlf\*" />
     <EmbeddedResource Update="Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources.*.resx">
-      <DependentUpon>Resources.resx</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <XamlPropertyRule Include="ProjectSystem\Rules\AdditionalFiles.xaml">
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
-    </XamlPropertyRule>
+    <DesignTimeTargetsFile Include="ProjectSystem\DesignTimeTargets\*.targets"/>
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="PresentationFramework" />
-  </ItemGroup>
-  <Import Project="..\..\build\Targets\VSL.Imports.targets" />
-  <ItemDefinitionGroup>
-    <!-- By default, all XAML rules get generated into the same namespace -->
-    <XamlPropertyRule>
-      <Namespace>Microsoft.VisualStudio.ProjectSystem</Namespace>
-    </XamlPropertyRule>
-  </ItemDefinitionGroup>
 </Project>
