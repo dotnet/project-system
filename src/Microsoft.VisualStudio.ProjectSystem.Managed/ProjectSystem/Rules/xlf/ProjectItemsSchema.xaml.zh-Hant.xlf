@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="zh-Hant" original="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ProjectItemsSchema.xaml">
+  <file datatype="xml" source-language="en" target-language="zh-Hant" original="../ProjectItemsSchema.xaml">
     <body>
-      <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ProjectItemsSchema.xaml" />
       <trans-unit id="ContentType|Text|DisplayName">
         <source>Text file</source>
         <target state="translated">文字檔</target>
@@ -61,6 +60,21 @@
       <trans-unit id="ItemType|EmbeddedResource|DisplayName">
         <source>Embedded resource</source>
         <target state="translated">內嵌資源</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|Page|DisplayName">
+        <source>Page file</source>
+        <target state="new">Page file</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|Page|DisplayName">
+        <source>Page</source>
+        <target state="new">Page</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|ApplicationDefinition|DisplayName">
+        <source>Application definition</source>
+        <target state="new">Application definition</target>
         <note />
       </trans-unit>
     </body>

@@ -19,13 +19,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         Task<string> GetProjectXmlAsync();
 
         /// <summary>
-        /// Saves the given xml to the project file.
-        /// </summary>
-        /// <param name="toSave">XML content to save to the project.</param>
-        /// <returns>A task for the async operation.</returns>
-        Task SaveProjectXmlAsync(string toSave);
-
-        /// <summary>
         /// Gets the evaluated property value for the specified property.
         /// </summary>
         /// <param name="unconfiguredProject"></param>

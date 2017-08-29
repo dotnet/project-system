@@ -28,14 +28,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     [AppliesTo(ProjectCapability.LaunchProfiles)]
     internal class LaunchSettingsProvider : OnceInitializedOnceDisposed, ILaunchSettingsProvider2
     {
-        private readonly ISpecialFilesManager _specialFilesManager;
+        private readonly ActiveConfiguredProject<AppDesignerFolderSpecialFileProvider> _appDesignerSpecialFileProvider;
         private readonly AsyncLazy<string> _launchSettingsFilePath;
 
         [ImportingConstructor]
         public LaunchSettingsProvider(UnconfiguredProject unconfiguredProject, IUnconfiguredProjectServices projectServices,
                                       IFileSystem fileSystem, IUnconfiguredProjectCommonServices commonProjectServices,
                                       IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
-                                      ISpecialFilesManager specialFilesManager)
+                                      ActiveConfiguredProject<AppDesignerFolderSpecialFileProvider> appDesignerSpecialFileProvider)
         {
             ProjectServices = projectServices;
             FileManager = fileSystem;
@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             SourceControlIntegrations = new OrderPrecedenceImportCollection<ISourceCodeControlIntegration>(projectCapabilityCheckProvider: unconfiguredProject);
 
             ProjectSubscriptionService = projectSubscriptionService;
-            _specialFilesManager = specialFilesManager;
+            _appDesignerSpecialFileProvider = appDesignerSpecialFileProvider;
             _launchSettingsFilePath = new AsyncLazy<string>(GetLaunchSettingsFilePathNoCacheAsync, commonProjectServices.ThreadingService.JoinableTaskFactory);
         }
 
@@ -859,12 +859,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         internal async Task<string> GetLaunchSettingsFilePathNoCacheAsync()
         {
-            // NOTE: To reduce behavior changes, we currently cache the folder that we get from
-            // the ISpecialFilesManager, even though it can change over the lifetime of the project
-            // We should fix this, see: https://github.com/dotnet/project-system/issues/2316.
+            // NOTE: To reduce behavior changes, we currently cache the folder that we get from the AppDesignerSpecialFileProvider, 
+            // even though it can change over the lifetime of the project. We should fix this and convert to using dataflow  
+            // see: https://github.com/dotnet/project-system/issues/2316.
 
-            string folder = await _specialFilesManager.GetFileAsync(SpecialFiles.AppDesigner, SpecialFileFlags.FullPath)
-                                                      .ConfigureAwait(false);
+            string folder = await _appDesignerSpecialFileProvider.Value.GetFileAsync(SpecialFiles.AppDesigner, SpecialFileFlags.FullPath)
+                                                                       .ConfigureAwait(false);
 
             if (folder == null)  // AppDesigner capability not present, or the project has set AppDesignerFolder to empty
                 folder = Path.GetDirectoryName(CommonProjectServices.Project.FullPath);

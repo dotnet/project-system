@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<!--Copyright, Microsoft Corporation, All rights reserved.-->
-<ProjectSchemaDefinitions xmlns="http://schemas.microsoft.com/build/2009/properties">
-  <ContentType Name="CSharpFile" DisplayName="Soubor C#" ItemType="Compile"></ContentType>
-  <ItemType Name="Compile" DisplayName="Kompilátor C#" />
-  <ItemType Name="AdditionalFiles" DisplayName="Další soubor analyzátoru C#" />
-  <FileExtension Name=".cs" ContentType="CSharpFile" />
-</ProjectSchemaDefinitions>

@@ -7,10 +7,10 @@
 *.sln.docstates
 .vs/
 .vscode/
+.tools/
 
 # Build results, but not the debug folder under projectsystem
-[Bb]inaries/
-[Dd]ebug/*
+[Aa]rtifacts/
 ![Pp]roject[Ss]ystem/[Dd]ebug
 [Rr]elease/
 x64/

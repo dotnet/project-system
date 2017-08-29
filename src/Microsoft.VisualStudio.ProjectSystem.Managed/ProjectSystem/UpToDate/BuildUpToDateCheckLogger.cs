@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.IO;
 
 namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
@@ -21,7 +22,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             if (level <= _requestedLogLevel)
             {
+                // These are user visible, so we want them in local times so that 
+                // they correspond with dates/times that Explorer, etc shows
+                ConvertToLocalTimes(values);
+
                 _logger?.WriteLine($"FastUpToDate: {string.Format(message, values)} ({_fileName})");
+            }
+        }
+        private void ConvertToLocalTimes(object[] values)
+        {
+            for (int i = 0; i < values.Length; i++)
+            {
+                if (values[i] is DateTime time)
+                {
+                    values[i] = time.ToLocalTime();
+                }
             }
         }
 

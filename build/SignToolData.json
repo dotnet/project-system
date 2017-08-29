@@ -1,0 +1,44 @@
+{
+  "sign": [
+    {
+      "certificate": "MicrosoftSHA2",
+      "strongName": "MsSharedLib72",
+      "values": [
+        "bin/Dlls/Microsoft.VisualStudio.AppDesigner.dll",
+        "bin/Dlls/*/Microsoft.VisualStudio.AppDesigner.resources.dll",
+        "bin/Dlls/Microsoft.VisualStudio.Editors.dll",
+        "bin/Dlls/*/Microsoft.VisualStudio.Editors.resources.dll",
+        "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.CSharp.dll",
+        "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.CSharp.VS.dll",
+        "bin/Dlls/*/Microsoft.VisualStudio.ProjectSystem.CSharp.VS.resources.dll",
+        "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.FSharp.dll",
+        "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.FSharp.VS.dll",
+        "bin/Dlls/*/Microsoft.VisualStudio.ProjectSystem.FSharp.VS.resources.dll",
+        "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Managed.dll",
+        "bin/Dlls/*/Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll",
+        "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Managed.VS.dll",
+        "bin/Dlls/*/Microsoft.VisualStudio.ProjectSystem.Managed.VS.resources.dll",
+        "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.VisualBasic.dll",
+        "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.dll",
+        "bin/Dlls/*/Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.resources.dll"
+      ]
+    },
+    {
+      "certificate": "VsixSHA2",
+      "strongName": null,
+      "values": [
+        "VSSetup/Microsoft.NetCore.CSharp.ProjectTemplates.Test.vsix",
+        "VSSetup/Microsoft.NetCore.CSharp.ProjectTemplates.vsix",
+        "VSSetup/Microsoft.NetCore.FSharp.ProjectTemplates.Test.vsix",
+        "VSSetup/Microsoft.NetCore.FSharp.ProjectTemplates.vsix",
+        "VSSetup/Microsoft.NetCore.VB.ProjectTemplates.Test.vsix",
+        "VSSetup/Microsoft.NetCore.VB.ProjectTemplates.vsix",
+        "VSSetup/Microsoft.NetStandard.CSharp.ProjectTemplates.vsix",
+        "VSSetup/Microsoft.NetStandard.FSharp.ProjectTemplates.vsix",
+        "VSSetup/Microsoft.NetStandard.VB.ProjectTemplates.vsix",
+        "VSSetup/ProjectSystem.vsix",
+        "VSSetup/VisualStudioEditorsSetup.vsix"
+      ]
+    }
+  ]
+}

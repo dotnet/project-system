@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="zh-Hans" original="src/Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS/VisualBasicVSResources.resx">
+  <file datatype="xml" source-language="en" target-language="zh-Hans" original="../VisualBasicVSResources.resx">
     <body>
-      <group id="src/Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS/VisualBasicVSResources.resx" />
       <trans-unit id="ImportsFromTargetCannotBeDeleted">
         <source>{0} - Import comes fom target file. This import cannot be removed.</source>
         <target state="translated">{0} - 导入项来自目标文件。无法删除此导入。</target>

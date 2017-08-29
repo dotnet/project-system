@@ -19,6 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public string Caption { get; set; }
         public string OriginalItemSpec { get; set; }
         public string Path { get; set; }
+        public string FullPath { get; set; }
         public string SchemaName { get; set; }
         public string SchemaItemType { get; set; }
         public string Version { get; set; }

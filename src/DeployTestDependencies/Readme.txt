@@ -2,4 +2,4 @@
 project is used to copy and deploy all the required product, xUnit and Moq binaries required
 to run all the project system tests.
 
-When adding new dependencies, reference them from this project or add them to project.json.
+When adding new dependencies, reference them from this project.

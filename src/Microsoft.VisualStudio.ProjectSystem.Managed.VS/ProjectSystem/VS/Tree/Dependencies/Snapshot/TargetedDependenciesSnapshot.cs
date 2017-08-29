@@ -203,7 +203,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             foreach (var added in changes.AddedNodes)
             {
-                IDependency newDependency = new Dependency(added, TargetFramework);
+                IDependency newDependency = new Dependency(added, TargetFramework, ProjectPath);
 
                 if (snapshotFilters != null)
                 {

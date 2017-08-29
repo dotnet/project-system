@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="es" original="src/Microsoft.VisualStudio.Editors/PropPages/ServicesPropPage.resx">
+  <file datatype="xml" source-language="en" target-language="es" original="../ServicesPropPage.resx">
     <body>
-      <group id="src/Microsoft.VisualStudio.Editors/PropPages/ServicesPropPage.resx" />
       <trans-unit id="HelpLabel.Text">
         <source>Client application services enable your Windows-based applications to use the ASP.NET login (authentication), roles, and profile (settings) services.  Learn more about client application services...</source>
         <target state="translated">Los servicios de aplicación cliente permiten que las aplicaciones de Windows utilicen los servicios de inicio de sesión (autenticación), roles y perfil (configuración) de ASP.NET.  Más información sobre los servicios de aplicación cliente...</target>
