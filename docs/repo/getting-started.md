@@ -29,7 +29,7 @@ By default when you build inside Visual Studio or the command-line, the project 
 From the command-line, after you've run `build.cmd`, you can launch a Visual Studio instance with your recently built bits by running the following from a Visual Studio Command Prompt:
 
 ```
-devenv /rootsuffix RoslynDev
+devenv /rootsuffix ProjectSystem
 ```
 
 ### Visual Studio
@@ -40,14 +40,14 @@ To start debugging:
 2. Right-click on the __ProjectSystemSetup__ project, and choose __Set As Startup Project__
 3. Press _F5_
 
-If this is your first launch of the project system, or _RoslynDev_ experimental instance, press _CTRL+F5_ to pre-prime and avoid a _long_ start up time.
+If this is your first launch of the project system, or _ProjectSystem_ experimental instance, press _CTRL+F5_ to pre-prime and avoid a _long_ start up time.
 
 For tips, see [Debugging Tips](debugging-tips.md)
 
 ## Testing 
 
 ### Project System
-While the long term goal is to have all C#, F# and Visual Basi  projects use this project system, currently only .NET Core, .NET Standard and Shared Projects do. If you want to test other project types, you can manually create a project to test this:
+While the long term goal is to have all C#, F# and Visual Basic projects use this project system, currently only .NET Core, .NET Standard and Shared Projects do. If you want to test other project types, you can manually create a project to test this:
 
 1. __File__ -> __New__ -> __Project__ -> __C#__ -> __Templates__ -> __Visual C#__ -> __Windows__ -> __Console App (.NET Framework)__
 2. Right-click on the project and choose __Open in File Explorer__
