@@ -8,7 +8,7 @@
     <OutputLocalized>false</OutputLocalized>
     <OutputType>vsix</OutputType>
     <IsPackage>true</IsPackage>
-    <OutputName>Microsoft.VisualStudio.NetCore.ProjectTemplates.1.x</OutputName>
+    <OutputName>Microsoft.VisualStudio.NetCore.ProjectTemplates.Packages</OutputName>
   </PropertyGroup>
 
   <Import Project="$(NuGetPackageRoot)\MicroBuild.Core\$(MicroBuildVersion)\build\MicroBuild.Core.props" />
@@ -20,7 +20,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Package Include="Microsoft.VisualStudio.NetCore.ProjectTemplates.1.x.swr" />
+    <Package Include="Microsoft.VisualStudio.NetCore.ProjectTemplates.Packages.swr" />
   </ItemGroup>
 
   <Import Project="$(NuGetPackageRoot)\MicroBuild.Core\$(MicroBuildVersion)\build\MicroBuild.Core.targets" />
