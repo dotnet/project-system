@@ -16,12 +16,17 @@ static addArchival(def job, def configName) {
   Utilities.addArchival(job, archivalSettings)
 }
 
-static addGithubTrigger(def job, def isPR, def branchName, def jobName, def manualTrigger) {
+static addGithubTrigger(def job, def isPR, def branchName, def jobName, def manualTrigger, def altTriggerPhrase) {
   if (isPR) {
-    def prContext = "prtest/${jobName.replace('_', '/')}"
-    def triggerPhrase = "(?i)^\\s*(@?dotnet-bot\\s+)?(re)?test\\s+(${prContext})(\\s+please)?\\s*\$"
+    def triggerCore = "all|${jobName}"
 
-    Utilities.addGithubPRTriggerForBranch(job, branchName, prContext, triggerPhrase, manualTrigger)
+    if (altTriggerPhrase) {
+      triggerCore = "${triggerCore}|${altTriggerPhrase}"
+    }
+
+    def triggerPhrase = "(?i)^\\s*(@?dotnet-bot\\s+)?(re)?test\\s+(${triggerCore})(\\s+please)?\\s*\$"
+
+    Utilities.addGithubPRTriggerForBranch(job, branchName, jobName, triggerPhrase, manualTrigger)
   } else {
     Utilities.addGithubPushTrigger(job)
   }
@@ -34,7 +39,7 @@ static addXUnitDotNETResults(def job, def configName) {
   Utilities.addXUnitDotNETResults(job, resultFilePattern, skipIfNoTestFiles)
 }
 
-def createJob(def platform, def configName, def isPR, def manualTrigger) {
+def createJob(def platform, def configName, def osName, def imageName, def isPR, def manualTrigger, def altTriggerPhrase) {
   def projectName = GithubProject
   def branchName = GithubBranchName  
   def jobName = "${platform}_${configName}"
@@ -42,29 +47,46 @@ def createJob(def platform, def configName, def isPR, def manualTrigger) {
 
   Utilities.standardJobSetup(newJob, projectName, isPR, "*/${branchName}")
 
-  addGithubTrigger(newJob, isPR, branchName, jobName, manualTrigger)
+  addGithubTrigger(newJob, isPR, branchName, jobName, manualTrigger, altTriggerPhrase)
   addArchival(newJob, configName)
   addXUnitDotNETResults(newJob, configName)
+  Utilities.setMachineAffinity(newJob, osName, imageName)
 
   return newJob
 }
 
+def osName = "Windows_NT"
+def imageName = 'latest-dev15-3-preview7'
+
 [true, false].each { isPR ->
-  ['windows', 'windows_integration'].each { platform ->
-    ['debug', 'release'].each { configName ->
-      def manualTrigger = platform == 'windows_integration'
-      def newJob = createJob(platform, configName, isPR, manualTrigger)
+  ['debug', 'release'].each { configName ->
+    
+    def platform = "windows"
+    def manualTrigger = false
+    def altTriggerPhrase = ""
 
-      Utilities.setMachineAffinity(newJob, 'Windows_NT', 'latest-dev15-3-preview7')
+    def newJob = createJob(platform, configName, osName, imageName, isPR, manualTrigger, altTriggerPhrase)
 
-      newJob.with {
-        steps {
-          if (platform == 'windows') {
-            batchFile(".\\build\\CIBuild.cmd -configuration ${configName} -prepareMachine")
-          } else if (platform == 'windows_integration') {
-            batchFile(".\\build\\VSIBuild.cmd -configuration ${configName} -prepareMachine")
-          }
-        }
+    newJob.with {
+      steps {
+        batchFile(".\\build\\CIBuild.cmd -configuration ${configName} -prepareMachine")
+      }
+    }
+  }
+}
+
+[true, false].each { isPR ->
+  ['debug', 'release'].each { configName ->
+    
+    def platform = "windows_integration"
+    def manualTrigger = true
+    def altTriggerPhrase = "vsi"
+    
+    def newJob = createJob(platform, configName, osName, imageName, isPR, manualTrigger, altTriggerPhrase)
+
+    newJob.with {
+      steps {
+        batchFile(".\\build\\VSIBuild.cmd -configuration ${configName} -prepareMachine")
       }
     }
   }
