@@ -160,6 +160,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             Assert.Equal(DebugLaunchOperation.CreateProcess, targets[0].LaunchOperation);
             Assert.Equal((DebugLaunchOptions.StopDebuggingOnEnd), targets[0].LaunchOptions);
             Assert.Equal(DebuggerEngines.ManagedCoreEngine, targets[0].LaunchDebugEngineGuid);
+            Assert.Equal(0, targets[0].AdditionalDebugEngines.Count);
+            Assert.Equal("exec \"c:\\test\\project\\bin\\project.dll\" --someArgs", targets[0].Arguments);
+        }
+
+        [Fact]
+        public async Task QueryDebugTargets_ProjectProfileAsyncF5_NativeDebugging()
+        {
+            var debugger = GetDebugTargetsProvider();
+
+            _mockFS.WriteAllText(@"c:\program files\dotnet\dotnet.exe", "");
+            _mockFS.CreateDirectory(@"c:\test\project");
+
+            LaunchProfile activeProfile = new LaunchProfile() 
+            { 
+                Name = "MyApplication", 
+                CommandName = "Project", 
+                CommandLineArgs = "--someArgs",
+                OtherSettings = ImmutableDictionary<string, object>.Empty.Add(LaunchProfileExtensions.NativeDebuggingProperty, true)
+            };
+            var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
+            Assert.Equal(1, targets.Count);
+            Assert.Equal(@"c:\program files\dotnet\dotnet.exe", targets[0].Executable);
+            Assert.Equal(DebugLaunchOperation.CreateProcess, targets[0].LaunchOperation);
+            Assert.Equal((DebugLaunchOptions.StopDebuggingOnEnd), targets[0].LaunchOptions);
+            Assert.Equal(DebuggerEngines.ManagedCoreEngine, targets[0].LaunchDebugEngineGuid);
+            Assert.Equal(1, targets[0].AdditionalDebugEngines.Count);
+            Assert.Equal(DebuggerEngines.NativeOnlyEngine, targets[0].AdditionalDebugEngines[0]);
             Assert.Equal("exec \"c:\\test\\project\\bin\\project.dll\" --someArgs", targets[0].Arguments);
         }
 

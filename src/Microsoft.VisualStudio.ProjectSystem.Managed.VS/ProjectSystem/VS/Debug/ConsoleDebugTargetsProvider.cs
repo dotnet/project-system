@@ -258,6 +258,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             settings.CurrentDirectory = workingDir;
             settings.LaunchOperation = DebugLaunchOperation.CreateProcess;
             settings.LaunchDebugEngineGuid = await GetDebuggingEngineAsync(configuredProject).ConfigureAwait(false);
+
+            if (resolvedProfile.NativeDebuggingIsEnabled())
+            {
+                settings.AdditionalDebugEngines.Add(DebuggerEngines.NativeOnlyEngine);
+            }
+
             settings.LaunchOptions = launchOptions | DebugLaunchOptions.StopDebuggingOnEnd;
             if (settings.Environment.Count > 0)
             {
