@@ -22,7 +22,7 @@ __NOTE:__ To workaround a bug preventing Visual Studio from restoring this repro
 
 ## Debugging/Deploying
 
-By default when you build inside Visual Studio or the command-line, the project system and other binaries gets deployed to the _RoslynDev_ experimental instance of Visual Studio. They are setup so that they _override_ any binaries that come with Visual Studio.
+By default when you build inside Visual Studio or the command-line, the project system and other binaries gets deployed to the _ProjectSystem_ experimental instance of Visual Studio. They are setup so that they _override_ any binaries that come with Visual Studio.
 
 ### Command-line
 
