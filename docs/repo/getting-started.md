@@ -13,7 +13,7 @@ build.cmd
 This builds, runs tests and deploys to Visual Studio.
 
 ### Visual Studio
-From within [Visual Studio 2017](https://www.visualstudio.com/downloads/), simply open _src\ProjectSystem.sln_.
+From within [Visual Studio 2017](https://www.visualstudio.com/downloads/), simply open _ProjectSystem.sln_.
 
 Inside Visual Studio, you can build, run tests and deploy.
 
