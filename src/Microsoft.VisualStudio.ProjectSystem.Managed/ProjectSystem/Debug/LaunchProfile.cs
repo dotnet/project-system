@@ -80,6 +80,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
     internal static class LaunchProfileExtensions
     {
+        public const string NativeDebuggingProperty = "nativeDebugging";
+
         /// <summary>
         /// Return a mutable instance
         /// </summary>
@@ -88,5 +90,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             return new WritableLaunchProfile(curProfile);
         }
 
+        /// <summary>
+        /// Returns true if nativeDebugging property is set to true
+        /// </summary>
+        public static bool NativeDebuggingIsEnabled(this ILaunchProfile profile)
+        {
+            if (profile.OtherSettings != null 
+                && profile.OtherSettings.TryGetValue(NativeDebuggingProperty,  out object nativeDebugging) 
+                && nativeDebugging is bool)
+            {
+                return (bool)nativeDebugging;
+            }
+
+            return false;
+        }
     }
 }
