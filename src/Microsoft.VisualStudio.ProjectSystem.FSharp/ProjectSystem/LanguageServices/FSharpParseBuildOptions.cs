@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
@@ -12,51 +13,94 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     [AppliesTo(ProjectCapability.FSharp)]
     internal class FSharpParseBuildOptions : IParseBuildOptions
     {
-        private const string ReferencePrefix = "-r:";
-        private const string LongReferencePrefix = "--reference:";
+        private const string HyphenReferencePrefix = "-r:";
+        private const string SlashReferencePrefix  = "/r:";
+        private const string LongReferencePrefix   = "--reference:";
 
-        public BuildOptions Parse(IEnumerable<string> args, string baseDirectory)
+        private readonly UnconfiguredProject _project;
+
+        [ImportMany]
+        IEnumerable<Action<string, ImmutableArray<CommandLineSourceFile>, ImmutableArray<CommandLineReference>, ImmutableArray<string>>> Handlers =  null;
+
+        [ImportingConstructor]
+        public FSharpParseBuildOptions(UnconfiguredProject project)
+        {
+            Requires.NotNull(project, nameof(project));
+            _project = project;
+        }
+
+        public BuildOptions Parse(IEnumerable<string> commandLineArgs, string projectPath)
         {
             var sourceFiles = new List<CommandLineSourceFile>();
             var metadataReferences = new List<CommandLineReference>();
+            var commandLineOptions = new List<String>();
 
-            foreach (var arg in args)
+            foreach (var commandLineArgument in commandLineArgs)
             {
-                if (arg.StartsWith(ReferencePrefix))
+                var args = commandLineArgument.Split(';');
+                foreach (var arg in args)
                 {
-                    // e.g., -r:C:\Path\To\FSharp.Core.dll
-                    metadataReferences.Add(new CommandLineReference(arg.Substring(ReferencePrefix.Length), MetadataReferenceProperties.Assembly));
-                }
-                else if (arg.StartsWith(LongReferencePrefix))
-                {
-                    // e.g., --reference:C:\Path\To\FSharp.Core.dll
-                    metadataReferences.Add(new CommandLineReference(arg.Substring(LongReferencePrefix.Length), MetadataReferenceProperties.Assembly));
-                }
-                else if (!arg.StartsWith("-"))
-                {
-                    // not an option, should be a regular file
-                    var extension = Path.GetExtension(arg).ToLowerInvariant();
-                    switch (extension)
+                    if (arg.StartsWith(HyphenReferencePrefix))
                     {
-                        case ".fs":
-                        case ".fsi":
-                        case ".fsx":
-                        case ".fsscript":
-                        case ".ml":
-                        case ".mli":
-                            sourceFiles.Add(new CommandLineSourceFile(arg, isScript: (extension == ".fsx") || (extension == ".fsscript")));
-                            break;
-                        default:
-                            break;
+                        // e.g., /r:C:\Path\To\FSharp.Core.dll
+                        metadataReferences.Add(new CommandLineReference(arg.Substring(HyphenReferencePrefix.Length), MetadataReferenceProperties.Assembly));
+                    }
+                    else if (arg.StartsWith(SlashReferencePrefix))
+                    {
+                        // e.g., -r:C:\Path\To\FSharp.Core.dll
+                        metadataReferences.Add(new CommandLineReference(arg.Substring(SlashReferencePrefix.Length), MetadataReferenceProperties.Assembly));
+                    }
+                    else if (arg.StartsWith(LongReferencePrefix))
+                    {
+                        // e.g., --reference:C:\Path\To\FSharp.Core.dll
+                        metadataReferences.Add(new CommandLineReference(arg.Substring(LongReferencePrefix.Length), MetadataReferenceProperties.Assembly));
+                    }
+                    else if (!(arg.StartsWith("-") || arg.StartsWith("/")))
+                    {
+                        // not an option, should be a regular file
+                        var extension = Path.GetExtension(arg).ToLowerInvariant();
+                        switch (extension)
+                        {
+                            case ".fs":
+                            case ".fsi":
+                            case ".fsx":
+                            case ".fsscript":
+                            case ".ml":
+                            case ".mli":
+                                sourceFiles.Add(new CommandLineSourceFile(arg, isScript: (extension == ".fsx") || (extension == ".fsscript")));
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        // Neither a reference, nor a source file
+                        commandLineOptions.Add(arg);
                     }
                 }
             }
 
-            return new BuildOptions(
-                sourceFiles: sourceFiles.ToImmutableArray(),
-                additionalFiles: ImmutableArray<CommandLineSourceFile>.Empty,
-                metadataReferences: metadataReferences.ToImmutableArray(),
-                analyzerReferences: ImmutableArray<CommandLineAnalyzerReference>.Empty);
+            return new FSharpBuildOptions(
+                    sourceFiles: sourceFiles.ToImmutableArray(),
+                    additionalFiles: ImmutableArray<CommandLineSourceFile>.Empty,
+                    metadataReferences: metadataReferences.ToImmutableArray(),
+                    analyzerReferences: ImmutableArray<CommandLineAnalyzerReference>.Empty,
+                    compileOptions: commandLineOptions.ToImmutableArray());
         }
+
+        [Export]
+        [AppliesTo(ProjectCapability.FSharp)]
+        public void HandleCommandLineNotifications(string projectPath, BuildOptions added, BuildOptions removed)
+        {
+            if (added is FSharpBuildOptions fscAdded)
+            {
+                foreach (var handler in Handlers)
+                {
+                    handler?.Invoke(_project.FullPath, fscAdded.SourceFiles, fscAdded.MetadataReferences, fscAdded.CompileOptions);
+                }
+            }
+            return;
+         }
     }
 }
