@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             if(settings.Profiles != null)
             {
-                foreach(var profile in settings.Profiles)
+                foreach(ILaunchProfile2 profile in settings.Profiles)
                 {
                     Profiles.Add(new WritableLaunchProfile(profile));
                 }
@@ -74,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // if they contain the same items
             for (int i=0; i< launchSettings.Profiles.Count; i++)
             {
-                if (!WritableLaunchProfile.ProfilesAreEqual(launchSettings.Profiles[i], settingsToCompare.Profiles[i]))
+                if (!WritableLaunchProfile.ProfilesAreEqual((IWritableLaunchProfile2)launchSettings.Profiles[i], (IWritableLaunchProfile2)settingsToCompare.Profiles[i]))
                 {
                     return true;
                 }

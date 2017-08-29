@@ -253,6 +253,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 }
             }
 
+            // See if mixed mode debugging is enabled for this profile
+            var mixedMode = false;
+            if(resolvedProfile is ILaunchProfile2 profile2)
+            {
+                mixedMode = profile2.EnableUnmanagedDebugging;
+            }
+            
+
             settings.Executable = finalExecutable;
             settings.Arguments = finalArguments;
             settings.CurrentDirectory = workingDir;
@@ -268,6 +276,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             if (settings.Environment.Count > 0)
             {
                 settings.LaunchOptions = settings.LaunchOptions | DebugLaunchOptions.MergeEnvironment;
+            }
+
+            if(mixedMode)
+            {
+                // For .NET Core, we have to add native as an additional engine.
+                // For .NET Framework, we can do the same for consistency
+                // TODO: This only works for .NET Core 2, what do we do for 1.x?
+                // How do we detect 1.x properly?
+                settings.AdditionalDebugEngines.Add(DebuggerEngines.NativeOnlyEngine);
             }
 
             return settings;

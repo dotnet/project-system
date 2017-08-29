@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public LaunchSettings(IWritableLaunchSettings settings)
         {
             Profiles = ImmutableList<ILaunchProfile>.Empty;
-            foreach(var profile in settings.Profiles)
+            foreach(IWritableLaunchProfile2 profile in settings.Profiles)
             {
                 Profiles = Profiles.Add(new LaunchProfile(profile));
             }
