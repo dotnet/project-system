@@ -56,7 +56,7 @@ def createJob(def platform, def configName, def osName, def imageName, def isPR,
 }
 
 def osName = "Windows_NT"
-def imageName = 'latest-dev15-3-preview7'
+def imageName = 'latest-dev15-3'
 
 [true, false].each { isPR ->
   ['debug', 'release'].each { configName ->
