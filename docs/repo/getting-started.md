@@ -36,7 +36,7 @@ devenv /rootsuffix ProjectSystem
 
 To start debugging:
 
-1. Open __src\ProjectSystem.sln__
+1. Open __ProjectSystem.sln__
 2. Right-click on the __ProjectSystemSetup__ project, and choose __Set As Startup Project__
 3. Press _F5_
 
