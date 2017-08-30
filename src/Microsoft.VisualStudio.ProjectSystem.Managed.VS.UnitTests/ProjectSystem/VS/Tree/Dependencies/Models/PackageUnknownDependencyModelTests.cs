@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(KnownMonikers.QuestionMark, model.ExpandedIcon);
             Assert.Equal(KnownMonikers.QuestionMark, model.UnresolvedIcon);
             Assert.Equal(KnownMonikers.QuestionMark, model.UnresolvedExpandedIcon);
-            Assert.Equal(2, model.DependencyIDs.Count);
+            AssertEx.CollectionLength(model.DependencyIDs, 2);
             Assert.True(model.Flags.Contains(flag));
         }
     }

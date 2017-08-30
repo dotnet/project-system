@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             JObject jsonObject = JObject.Parse(JsonString2);
             var profiles = LaunchProfileData.DeserializeProfiles((JObject)jsonObject["profiles"]);
-            Assert.Equal(0, profiles.Count);
+            Assert.Empty(profiles);
         }
 
         [Fact]
@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var profile = profiles["IIS Express"];
             var serializableProfile = LaunchProfileData.ToSerializableForm(new LaunchProfile(profile));
 
-            Assert.Equal(3, serializableProfile.Count);
+            AssertEx.CollectionLength(serializableProfile, 3);
             Assert.Equal("IISExpress", serializableProfile["commandName"]);
             Assert.Equal("http://localhost:1234:/test.html", serializableProfile["launchUrl"]);
             Assert.Equal(true, serializableProfile["launchBrowser"]);
@@ -134,14 +134,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // tests launchBrowser:false is not rewritten
             profile = profiles["Docker"];
             serializableProfile = LaunchProfileData.ToSerializableForm(new LaunchProfile(profile));
-            Assert.Equal(3, serializableProfile.Count);
+            AssertEx.CollectionLength(serializableProfile, 3);
             Assert.Equal("Docker", serializableProfile["commandName"]);
             Assert.Equal("some option in docker", serializableProfile["dockerOption1"]);
             Assert.Equal("Another option in docker", serializableProfile["dockerOption2"]);
 
             profile = profiles["web"];
             serializableProfile = LaunchProfileData.ToSerializableForm(new LaunchProfile(profile));
-            Assert.Equal(3, serializableProfile.Count);
+            AssertEx.CollectionLength(serializableProfile, 3);
             Assert.Equal("Project", serializableProfile["commandName"]);
             Assert.Equal(true, serializableProfile["launchBrowser"]);
             Assert.Equal("Development", ((IDictionary)serializableProfile["environmentVariables"])["ASPNET_ENVIRONMENT"]);

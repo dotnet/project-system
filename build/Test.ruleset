@@ -27,4 +27,7 @@
     <Rule Id="VSTHRD103" Action="None" />                     <!-- Synchronously blocks. Await ThrowsAsync instead.-->
     <Rule Id="VSTHRD200" Action="None" />                     <!-- Naming styles                                Task Open()                                         Task OpenAsync()                      -->
   </Rules>
+  <Rules AnalyzerId="xunit.analyzers" RuleNamespace="xunit.analyzers">
+    <Rule Id="xUnit1026" Action="None" /> <!-- Theory methods must use all parameters -->
+  </Rules>
 </RuleSet>

@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var settings = new LaunchSettings(profiles, null, null);
             Assert.True(settings.ActiveProfile.Name == "abc");
             Assert.Equal(profiles.Count, settings.Profiles.Count);
-            Assert.Equal(0, settings.GlobalSettings.Count);
+            Assert.Empty(settings.GlobalSettings);
 
             settings = new LaunchSettings(profiles, null, "ghi");
             Assert.True(settings.ActiveProfile.Name == "ghi");

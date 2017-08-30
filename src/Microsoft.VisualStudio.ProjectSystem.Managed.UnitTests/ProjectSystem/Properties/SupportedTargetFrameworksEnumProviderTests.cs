@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var generator = await provider.GetProviderAsync(null);
             var values = await generator.GetListedValuesAsync();
 
-            Assert.Equal(3, values.Count);
+            AssertEx.CollectionLength(values, 3);
             Assert.Equal(new List<string> { ".NETCoreApp,Version=v1.0", ".NETCoreApp,Version=v1.1", ".NETCoreApp,Version=v2.0" }, values.Select(v => v.Name));
             Assert.Equal(new List<string> { ".NET Core 1.0", ".NET Core 1.1", ".NET Core 2.0" }, values.Select(v => v.DisplayName));
         }

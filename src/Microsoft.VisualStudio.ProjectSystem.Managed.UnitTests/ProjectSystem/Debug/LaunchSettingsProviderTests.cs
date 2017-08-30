@@ -102,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             // No settings  file, should add the default profile
             await provider.UpdateProfilesAsyncTest(null);
-            Assert.Equal(1, provider.CurrentSnapshot.Profiles.Count);
+            Assert.Single(provider.CurrentSnapshot.Profiles);
             Assert.Equal("Project", provider.CurrentSnapshot.ActiveProfile.CommandName);
         }
 
@@ -115,7 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             await provider.UpdateProfilesAsyncTest(null);
             Assert.Equal(4, provider.CurrentSnapshot.Profiles.Count);
-            Assert.Equal(0, provider.CurrentSnapshot.GlobalSettings.Count);
+            Assert.Empty(provider.CurrentSnapshot.GlobalSettings);
             Assert.Equal("IIS Express", provider.CurrentSnapshot.ActiveProfile.Name);
         }
 
@@ -144,7 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // don't change file on disk, just active one
             await provider.UpdateProfilesAsyncTest("Docker");
             Assert.Equal(4, provider.CurrentSnapshot.Profiles.Count);
-            Assert.Equal(0, provider.CurrentSnapshot.GlobalSettings.Count);
+            Assert.Empty(provider.CurrentSnapshot.GlobalSettings);
             Assert.Equal("Docker", provider.CurrentSnapshot.ActiveProfile.Name);
         }
 
@@ -159,7 +159,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             moqFS.WriteAllText(provider.LaunchSettingsFile, BadJsonString);
             await provider.UpdateProfilesAsyncTest("Docker");
             Assert.Equal(4, provider.CurrentSnapshot.Profiles.Count);
-            Assert.Equal(0, provider.CurrentSnapshot.GlobalSettings.Count);
+            Assert.Empty(provider.CurrentSnapshot.GlobalSettings);
             Assert.Equal("IIS Express", provider.CurrentSnapshot.ActiveProfile.Name);
         }
             
@@ -171,7 +171,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             moqFS.WriteAllText(provider.LaunchSettingsFile, BadJsonString);
 
             await provider.UpdateProfilesAsyncTest("Docker");
-            Assert.Equal(1, provider.CurrentSnapshot.Profiles.Count);
+            Assert.Single(provider.CurrentSnapshot.Profiles);
             Assert.Equal(LaunchSettingsProvider.ErrorProfileCommandName, provider.CurrentSnapshot.ActiveProfile.CommandName);
         }
 
@@ -251,8 +251,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Write a json file containing extension settings
             moqFS.WriteAllText(provider.LaunchSettingsFile, JsonStringWithWebSettings);
             var launchSettings = await provider.ReadSettingsFileFromDiskTestAsync();
-            Assert.Equal(2, launchSettings.Profiles.Count);
-            Assert.Equal(1, launchSettings.OtherSettings.Count);
+            AssertEx.CollectionLength(launchSettings.Profiles, 2);
+            Assert.Single(launchSettings.OtherSettings);
             Assert.True(launchSettings.OtherSettings["iisSettings"] is JObject);
         }
 
@@ -269,8 +269,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             SetJsonSerializationProviders(provider);
 
             var launchSettings = await provider.ReadSettingsFileFromDiskTestAsync();
-            Assert.Equal(2, launchSettings.Profiles.Count);
-            Assert.Equal(1, launchSettings.OtherSettings.Count);
+            AssertEx.CollectionLength(launchSettings.Profiles, 2);
+            Assert.Single(launchSettings.OtherSettings);
             Assert.True(launchSettings.OtherSettings["iisSettings"] is IISSettingsData);
         }
 
@@ -377,14 +377,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             provider.LastSettingsFileSyncTimeTest = moqFS.LastFileWriteTime(provider.LaunchSettingsFile);
             provider.LaunchSettingsFile_ChangedTest(eventArgs);
             await provider.FileChangeScheduler.LatestScheduledTask;
-            Assert.Equal(4, provider.CurrentSnapshot.Profiles.Count);
+            AssertEx.CollectionLength(provider.CurrentSnapshot.Profiles, 4);
 
             moqFS.WriteAllText(provider.LaunchSettingsFile, JsonStringWithWebSettings);
             provider.LaunchSettingsFile_ChangedTest(eventArgs);
             await provider.FileChangeScheduler.LatestScheduledTask;
-            Assert.Equal(2, provider.CurrentSnapshot.Profiles.Count);
+            AssertEx.CollectionLength(provider.CurrentSnapshot.Profiles, 2);
+
         }
-        
+
         [Fact]
         public void DisposeTests()
         {
@@ -436,8 +437,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Equal(JsonStringWithWebSettings, moqFS.ReadAllText(provider.LaunchSettingsFile), ignoreLineEndingDifferences:true);
 
             // Check snapshot
-            Assert.Equal(2, provider.CurrentSnapshot.Profiles.Count);
-            Assert.Equal(1, provider.CurrentSnapshot.GlobalSettings.Count);
+            AssertEx.CollectionLength(provider.CurrentSnapshot.Profiles, 2);
+            Assert.Single(provider.CurrentSnapshot.GlobalSettings);
 
             // Verify the activeProfile is set to the first one since no existing snapshot
             Assert.Equal("IIS Express", provider.CurrentSnapshot.ActiveProfile.Name);
@@ -500,7 +501,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.True(moqFS.FileExists(provider.LaunchSettingsFile));
 
             // Check snapshot
-            Assert.Equal(3, provider.CurrentSnapshot.Profiles.Count);
+            AssertEx.CollectionLength(provider.CurrentSnapshot.Profiles, 3);
             Assert.Equal("Test", provider.CurrentSnapshot.Profiles[expectedIndex].CommandName);
             Assert.Null(provider.CurrentSnapshot.Profiles[expectedIndex].ExecutablePath);
         }
@@ -533,7 +534,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.True(moqFS.FileExists(provider.LaunchSettingsFile));
 
             // Check snapshot
-            Assert.Equal(3, provider.CurrentSnapshot.Profiles.Count);
+            AssertEx.CollectionLength(provider.CurrentSnapshot.Profiles, 3);
             Assert.Equal("test", provider.CurrentSnapshot.Profiles[expectedIndex].Name);
             Assert.Equal("Test", provider.CurrentSnapshot.Profiles[expectedIndex].CommandName);
             Assert.Null(provider.CurrentSnapshot.Profiles[expectedIndex].ExecutablePath);
@@ -563,7 +564,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.True(moqFS.FileExists(provider.LaunchSettingsFile));
 
             // Check snapshot
-            Assert.Equal(2, provider.CurrentSnapshot.Profiles.Count);
+            AssertEx.CollectionLength(provider.CurrentSnapshot.Profiles, 2);
             Assert.Null(provider.CurrentSnapshot.Profiles.FirstOrDefault(p => p.Name.Equals("test")));
         }
 
@@ -590,7 +591,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.False(moqFS.FileExists(provider.LaunchSettingsFile));
 
             // Check snapshot
-            Assert.Equal(2, provider.CurrentSnapshot.Profiles.Count);
+            AssertEx.CollectionLength(provider.CurrentSnapshot.Profiles, 2);
         }
 
         [Fact]
@@ -616,7 +617,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             // Check disk file was written
             Assert.True(moqFS.FileExists(provider.LaunchSettingsFile));
-            Assert.Equal(2, provider.CurrentSnapshot.GlobalSettings.Count);
+            AssertEx.CollectionLength(provider.CurrentSnapshot.GlobalSettings, 2);
             // Check snapshot
             Assert.True(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out object updatedSettings));
             Assert.True(((IISSettingsData)updatedSettings).WindowsAuthentication);
@@ -648,7 +649,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Check disk file was written
             Assert.True(moqFS.FileExists(provider.LaunchSettingsFile));
             // Check snapshot
-            Assert.Equal(2, provider.CurrentSnapshot.GlobalSettings.Count);
+            AssertEx.CollectionLength(provider.CurrentSnapshot.GlobalSettings, 2);
             Assert.True(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out object updatedSettings));
             Assert.True(((IISSettingsData)updatedSettings).WindowsAuthentication);
         }
@@ -675,7 +676,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.False(moqFS.FileExists(provider.LaunchSettingsFile));
 
             // Check snapshot
-            Assert.Equal(1, provider.CurrentSnapshot.GlobalSettings.Count);
+            Assert.Single(provider.CurrentSnapshot.GlobalSettings);
         }
 
         [Fact]
@@ -703,7 +704,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.True(moqFS.FileExists(provider.LaunchSettingsFile));
 
             // Check snapshot
-            Assert.Equal(1, provider.CurrentSnapshot.GlobalSettings.Count);
+            Assert.Single(provider.CurrentSnapshot.GlobalSettings);
             Assert.False(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out object updatedSettings));
         }
 
@@ -813,7 +814,7 @@ string JsonString1 = @"{
         {
             return FileChangeScheduler == null &&
                    FileWatcher == null &&
-                   ProjectRuleSubscriptionLink == null && 
+                   ProjectRuleSubscriptionLink == null &&
                    _broadcastBlock == null;
         }
 

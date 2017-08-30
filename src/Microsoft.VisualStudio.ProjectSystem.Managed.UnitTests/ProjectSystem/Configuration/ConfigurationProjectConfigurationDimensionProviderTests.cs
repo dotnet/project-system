@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 var provider = new ConfigurationProjectConfigurationDimensionProvider(_projectXmlAccessor);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
                 var values = await provider.GetDefaultValuesForDimensionsAsync(unconfiguredProject);
-                Assert.Equal(1, values.Count());
+                Assert.Single(values);
                 var value = values.First();
                 Assert.Equal(ConfigurationGeneral.ConfigurationProperty, value.Key);
                 Assert.Equal("Debug", value.Value);
@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 var provider = new ConfigurationProjectConfigurationDimensionProvider(_projectXmlAccessor);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
                 var values = await provider.GetDefaultValuesForDimensionsAsync(unconfiguredProject);
-                Assert.Equal(0, values.Count());
+                Assert.Empty(values);
             }
         }
 
@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 var provider = new ConfigurationProjectConfigurationDimensionProvider(_projectXmlAccessor);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
                 var values = await provider.GetProjectConfigurationDimensionsAsync(unconfiguredProject);
-                Assert.Equal(1, values.Count());
+                Assert.Single(values);
                 var value = values.First();
                 Assert.Equal(ConfigurationGeneral.ConfigurationProperty, value.Key);
                 string[] dimensionValues = value.Value.ToArray();
@@ -77,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 var provider = new ConfigurationProjectConfigurationDimensionProvider(_projectXmlAccessor);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
                 var values = await provider.GetProjectConfigurationDimensionsAsync(unconfiguredProject);
-                Assert.Equal(0, values.Count());
+                Assert.Empty(values);
             }
         }
 
