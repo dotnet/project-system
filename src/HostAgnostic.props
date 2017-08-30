@@ -27,6 +27,7 @@
 
   <ItemGroup Condition="'$(IsTestProject)' == 'true'" >
     <PackageReference Include="Moq" Version="$(MoqVersion)"/>
+    <PackageReference Include="xunit.analyzers" Version="$(XUnitAnalyzersVersion)"/>
 
     <!-- TODO: Some tests need this. Seems wrong. -->
     <PackageReference Include="Microsoft.VisualStudio.Shell.15.0" Version="$(MicrosoftVisualStudioShell15Version)" />
