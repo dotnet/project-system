@@ -9,7 +9,7 @@
     <UsingToolIbcOptimization>true</UsingToolIbcOptimization>
 
     <!-- Toolset -->
-    <RoslynToolsMicrosoftRepoToolsetVersion>1.0.0-alpha36</RoslynToolsMicrosoftRepoToolsetVersion>
+    <RoslynToolsMicrosoftRepoToolsetVersion>1.0.0-alpha37</RoslynToolsMicrosoftRepoToolsetVersion>
     <RoslynDependenciesOptimizationDataVersion>2.0.0-rc-61101-17</RoslynDependenciesOptimizationDataVersion>
     <RoslynToolsMicrosoftVsixExpInstallerVersion>0.2.4-beta</RoslynToolsMicrosoftVsixExpInstallerVersion>
     <VSWhereVersion>1.0.47</VSWhereVersion>

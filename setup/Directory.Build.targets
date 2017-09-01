@@ -2,7 +2,7 @@
 <Project>
   <Import Project="$(RepoToolsetDir)Imports.targets" Condition="'$(RepoToolsetDir)' != ''" />
   
-  <Target Name="Build">
+  <Target Name="Build" DependsOnTargets="ResolveProjectReferences">
     <MakeDir Directories="$(IntermediateOutputPath)" ContinueOnError="True"/>
   </Target>
   
