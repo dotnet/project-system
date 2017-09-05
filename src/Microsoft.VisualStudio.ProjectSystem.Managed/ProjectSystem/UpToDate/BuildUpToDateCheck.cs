@@ -515,7 +515,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     return false;
                 }
 
-                if (outputItemTime <= itemTime)
+                if (outputItemTime < itemTime)
                 {
                     return false;
                 }
