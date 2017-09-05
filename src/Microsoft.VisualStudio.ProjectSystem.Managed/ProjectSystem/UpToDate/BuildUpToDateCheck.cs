@@ -66,6 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private bool _isDisabled = true;
         private bool _itemsChangedSinceLastCheck = true;
         private string _msBuildProjectFullPath;
+        private string _msBuildProjectDirectory;
         private string _markerFile;
         private string _outputPath;
 
@@ -114,7 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _isDisabled = disableFastUpToDateCheckString != null && string.Equals(disableFastUpToDateCheckString, TrueValue, StringComparison.OrdinalIgnoreCase);
 
             _msBuildProjectFullPath = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, _msBuildProjectFullPath);
-
+            _msBuildProjectDirectory = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectDirectoryProperty, _msBuildProjectDirectory);
             _outputPath = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputPathProperty, _outputPath);
 
             if (e.ProjectChanges.TryGetValue(ResolvedAnalyzerReference.SchemaName, out var changes) &&
@@ -475,6 +476,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var items = _items.SelectMany(kvp => kvp.Value).Where(item => item.CopyType == CopyToOutputDirectoryType.CopyIfNewer)
                 .Select(item => item.Path);
 
+            string outputFullPath = Path.Combine(_msBuildProjectDirectory, _outputPath);
+
             foreach (var item in items)
             {
                 var filename = Path.GetFileName(item);
@@ -498,7 +501,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     return false;
                 }
 
-                var outputItem = Path.Combine(_outputPath, filename);
+                
+                var outputItem = Path.Combine(outputFullPath, filename);
                 var outputItemTime = GetTimestamp(outputItem, timestampCache);
 
                 if (outputItemTime != null)
