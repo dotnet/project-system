@@ -26,5 +26,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             return defaultValue;
         }
+
+        /// <summary>
+        ///     Returns a value indicating if the value that is associated with the specified rule and property is <see langword="true"/>.
+        /// </summary>
+        public static bool IsPropertyTrue(this IImmutableDictionary<string, IProjectRuleSnapshot> snapshots, string ruleName, string propertyName, bool defaultValue)
+        {
+            string value = snapshots.GetPropertyOrDefault(ruleName, propertyName, defaultValue ? "true" : "false");
+
+            return StringComparers.PropertyValues.Equals(value, "true");
+        }
     }
 }
