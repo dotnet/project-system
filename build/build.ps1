@@ -117,6 +117,10 @@ function Build {
     $logCmd = ""
   }
 
+  if ($ci) {
+    Write-Host "Using $msbuildExe"
+  }
+
   $nodeReuse = !$ci
 
   & $msbuildExe $BuildProj /m /nologo /clp:Summary /nodeReuse:$nodeReuse /warnaserror /v:$verbosity $logCmd /p:Configuration=$configuration /p:SolutionPath=$solution /p:Restore=$restore /p:DeployDeps=$deployDeps /p:Build=$build /p:Rebuild=$rebuild /p:Deploy=$deploy /p:Test=$test /p:IntegrationTest=$integrationTest /p:Sign=$sign /p:Pack=$pack /p:CIBuild=$ci $properties
