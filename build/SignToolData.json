@@ -4,10 +4,6 @@
       "certificate": "MicrosoftSHA2",
       "strongName": "MsSharedLib72",
       "values": [
-        "bin/Dlls/Microsoft.VisualStudio.AppDesigner.dll",
-        "bin/Dlls/*/Microsoft.VisualStudio.AppDesigner.resources.dll",
-        "bin/Dlls/Microsoft.VisualStudio.Editors.dll",
-        "bin/Dlls/*/Microsoft.VisualStudio.Editors.resources.dll",
         "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.CSharp.dll",
         "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.CSharp.VS.dll",
         "bin/Dlls/*/Microsoft.VisualStudio.ProjectSystem.CSharp.VS.resources.dll",
@@ -21,6 +17,16 @@
         "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.VisualBasic.dll",
         "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.dll",
         "bin/Dlls/*/Microsoft.VisualStudio.ProjectSystem.VisualBasic.VS.resources.dll"
+      ]
+    },
+    {
+      "certificate": "MicrosoftSHA2",
+      "strongName": "67",
+      "values": [
+        "bin/Dlls/Microsoft.VisualStudio.AppDesigner.dll",
+        "bin/Dlls/*/Microsoft.VisualStudio.AppDesigner.resources.dll",
+        "bin/Dlls/Microsoft.VisualStudio.Editors.dll",
+        "bin/Dlls/*/Microsoft.VisualStudio.Editors.resources.dll"
       ]
     },
     {

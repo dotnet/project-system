@@ -2,10 +2,9 @@
 <Project>
   <PropertyGroup>
     <!-- 
-      Components in this directory are versioned based on the VS version and signed with Microsoft key
+      Components in this directory are versioned based on the VS version
     -->
     <UseVisualStudioVersion>true</UseVisualStudioVersion>
-    <StrongNameKeyId>Microsoft</StrongNameKeyId>
   </PropertyGroup>
   
   <Import Project="..\Directory.Build.props"/>  

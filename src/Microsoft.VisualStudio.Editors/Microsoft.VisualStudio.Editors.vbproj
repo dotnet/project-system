@@ -3,7 +3,8 @@
   <Import Project="..\VisualStudioDesigner.props"/>
   <PropertyGroup>
     <Prefer32Bit>false</Prefer32Bit>
-    
+    <StrongNameKeyId>Microsoft</StrongNameKeyId>
+
     <!-- TODO: Function/Property doesn't return a value on all code paths (https://github.com/dotnet/project-system/issues/2592) -->
     <NoWarn>$(NoWarn);42353;42355;42105</NoWarn>
     
