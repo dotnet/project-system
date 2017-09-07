@@ -20,6 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IActiveProjectConfigurationRefreshService _activeProjectConfigurationRefreshService;
+        private readonly ITargetFrameworkProvider _targetFrameworkProvider;
         private readonly object _linksLock = new object();
         private readonly List<IDisposable> _evaluationSubscriptionLinks;
         private object _initializationLock = new object();
@@ -35,19 +36,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                                    Lazy<IAggregateCrossTargetProjectContextProvider> contextProvider,
                                    [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService,
                                    IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
-                                   IActiveProjectConfigurationRefreshService activeProjectConfigurationRefreshService)
+                                   IActiveProjectConfigurationRefreshService activeProjectConfigurationRefreshService,
+                                   ITargetFrameworkProvider targetFrameworkProvider)
             : base(commonServices.ThreadingService.JoinableTaskContext)
         {
             Requires.NotNull(contextProvider, nameof(contextProvider));
             Requires.NotNull(tasksService, nameof(tasksService));
             Requires.NotNull(activeConfiguredProjectSubscriptionService, nameof(activeConfiguredProjectSubscriptionService));
             Requires.NotNull(activeProjectConfigurationRefreshService, nameof(activeProjectConfigurationRefreshService));
+            Requires.NotNull(targetFrameworkProvider, nameof(targetFrameworkProvider));
 
             _commonServices = commonServices;
             _contextProvider = contextProvider;
             _tasksService = tasksService;
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
             _activeProjectConfigurationRefreshService = activeProjectConfigurationRefreshService;
+            _targetFrameworkProvider = targetFrameworkProvider;
             _evaluationSubscriptionLinks = new List<IDisposable>();
         }
 
@@ -188,7 +192,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
                     if (!_currentAggregateProjectContext.IsCrossTargeting)
                     {
-                        var newTargetFramework = (string)await projectProperties.TargetFramework.GetValueAsync().ConfigureAwait(false);
+                        var newTargetFramework = _targetFrameworkProvider.GetTargetFramework((string)await projectProperties.TargetFramework.GetValueAsync().ConfigureAwait(false));
                         if (_currentAggregateProjectContext.ActiveProjectContext.TargetFramework.Equals(newTargetFramework))
                         {
                             return _currentAggregateProjectContext;
