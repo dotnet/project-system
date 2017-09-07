@@ -15,6 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             ProjectTreeFlags flags,
             bool resolved,
             bool isImplicit,
+            bool hasDiagnosticAnalyzers,
             IImmutableDictionary<string, string> properties)
             : base(providerType, path, originalItemSpec, flags, resolved, isImplicit, properties)
         {
@@ -35,6 +36,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             ExpandedIcon = Icon;
             UnresolvedIcon = ManagedImageMonikers.CodeInformationWarning;
             UnresolvedExpandedIcon = UnresolvedIcon;
+
+            if (!hasDiagnosticAnalyzers)
+            {
+                Visible = false;
+            }
         }
     }
 }

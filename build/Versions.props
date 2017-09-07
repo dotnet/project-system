@@ -74,6 +74,7 @@
     
     <!-- Libs -->
     <NewtonsoftJsonVersion>9.0.1</NewtonsoftJsonVersion>
+    <SystemReflectionMetadataVersion>1.4.2</SystemReflectionMetadataVersion>
 
     <!-- Microsoft.DotNet.*.ProjectTemplates -->
     <MicrosoftDotNetProjectTemplatesVersion>1.0.0-beta2-20170425-203</MicrosoftDotNetProjectTemplatesVersion>

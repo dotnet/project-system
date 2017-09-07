@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Imaging;
@@ -21,6 +22,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         protected override string ResolvedRuleName { get; } = ResolvedAnalyzerReference.SchemaName;
         public override string ProviderType { get; } = ProviderTypeString;
 
+        private readonly IAnalyzerAssemblyService _analyzerAssemblyService;
+
+        [ImportingConstructor]
+        public AnalyzerRuleHandler(IAnalyzerAssemblyService analyzerAssemblyService)
+        {
+            _analyzerAssemblyService = analyzerAssemblyService ?? throw new ArgumentNullException(nameof(analyzerAssemblyService));
+        }
+
         public override IDependencyModel CreateRootDependencyNode()
         {
             return new SubTreeRootDependencyModel(
@@ -39,14 +48,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             bool isImplicit,
             IImmutableDictionary<string, string> properties)
         {
-            return new AnalyzerDependencyModel(
+            var hasDiagnosticsAnalyzers = _analyzerAssemblyService.ContainsDiagnosticAnalyzers(path);
+
+            var model = new AnalyzerDependencyModel(
                 providerType,
                 path,
                 originalItemSpec,
                 DependencyTreeFlags.AnalyzerSubTreeNodeFlags,
                 resolved,
                 isImplicit,
+                hasDiagnosticsAnalyzers,
                 properties);
+
+            return model;
         }
 
         public override ImageMoniker GetImplicitIcon()

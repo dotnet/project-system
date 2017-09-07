@@ -21,9 +21,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 "myProvider",
                 "c:\\myPath",
                 "myOriginalItemSpec",
-                flags:flag,
-                resolved:true,
-                isImplicit:false,
+                flags: flag,
+                resolved: true,
+                isImplicit: false,
+                hasDiagnosticAnalyzers: true,
                 properties: properties);
 
             Assert.Equal("myProvider", model.ProviderType);
@@ -41,6 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(ManagedImageMonikers.CodeInformationWarning, model.UnresolvedIcon);
             Assert.Equal(ManagedImageMonikers.CodeInformationWarning, model.UnresolvedExpandedIcon);
             Assert.True(model.Flags.Contains(flag));
+            Assert.True(model.Visible);
         }
 
         [Fact]
@@ -56,6 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 flags: flag,
                 resolved: false,
                 isImplicit: false,
+                hasDiagnosticAnalyzers: true,
                 properties: properties);
 
             Assert.Equal("myProvider", model.ProviderType);
@@ -73,6 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(ManagedImageMonikers.CodeInformationWarning, model.UnresolvedIcon);
             Assert.Equal(ManagedImageMonikers.CodeInformationWarning, model.UnresolvedExpandedIcon);
             Assert.True(model.Flags.Contains(flag));
+            Assert.True(model.Visible);
         }
 
         [Fact]
@@ -88,6 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 flags: flag,
                 resolved: true,
                 isImplicit: true,
+                hasDiagnosticAnalyzers: true,
                 properties: properties);
 
             Assert.Equal("myProvider", model.ProviderType);
@@ -105,6 +110,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(ManagedImageMonikers.CodeInformationWarning, model.UnresolvedIcon);
             Assert.Equal(ManagedImageMonikers.CodeInformationWarning, model.UnresolvedExpandedIcon);
             Assert.True(model.Flags.Contains(flag));
+            Assert.True(model.Visible);
+        }
+
+        [Fact]
+        public void NoDiagnosticAnalyzers()
+        {
+            var properties = ImmutableDictionary<string, string>.Empty.Add("myProp", "myVal");
+
+            var flag = ProjectTreeFlags.Create("MyCustomFlag");
+            var model = new AnalyzerDependencyModel(
+                "myProvider",
+                "c:\\myPath",
+                "myOriginalItemSpec",
+                flags: flag,
+                resolved: true,
+                isImplicit: false,
+                hasDiagnosticAnalyzers: false,
+                properties: properties);
+
+            Assert.Equal("myProvider", model.ProviderType);
+            Assert.Equal("c:\\myPath", model.Path);
+            Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
+            Assert.Equal("myPath", model.Caption);
+            Assert.Equal(ResolvedAnalyzerReference.SchemaName, model.SchemaName);
+            Assert.Equal(true, model.Resolved);
+            Assert.Equal(false, model.Implicit);
+            Assert.Equal(properties, model.Properties);
+            Assert.Equal(Dependency.AnalyzerNodePriority, model.Priority);
+            Assert.Equal(AnalyzerReference.PrimaryDataSourceItemType, model.SchemaItemType);
+            Assert.Equal(KnownMonikers.CodeInformation, model.Icon);
+            Assert.Equal(KnownMonikers.CodeInformation, model.ExpandedIcon);
+            Assert.Equal(ManagedImageMonikers.CodeInformationWarning, model.UnresolvedIcon);
+            Assert.Equal(ManagedImageMonikers.CodeInformationWarning, model.UnresolvedExpandedIcon);
+            Assert.True(model.Flags.Contains(flag));
+            Assert.False(model.Visible);
         }
     }
 }
