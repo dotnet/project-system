@@ -7,11 +7,6 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
-    <TargetFramework>net46</TargetFramework>
-  </PropertyGroup>
-
   <PropertyGroup Condition="'$(TargetFramework)' == 'net46' AND '$(BuildForPack)' == ''">
     <OutDir>$(OutputPath)</OutDir>
   </PropertyGroup>
