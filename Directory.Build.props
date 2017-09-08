@@ -1,0 +1,33 @@
+<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Project>
+  <PropertyGroup>
+    <RepositoryRootDirectory>$(MSBuildThisFileDirectory)</RepositoryRootDirectory>
+    <OutputPath>$([System.IO.Path]::GetFullPath('$(RepositoryRootDirectory)bin\$(Configuration)'))\</OutputPath>
+    <OutDir>$(OutputPath)</OutDir>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
+    <TargetFramework>net46</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net46' AND '$(BuildForPack)' == ''">
+    <OutDir>$(OutputPath)</OutDir>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net46' AND '$(BuildForPack)' != ''">
+    <OutDir>$(OutputPath)\net46</OutDir>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.4'">
+    <OutDir>$(OutputPath)\netstandard1.4</OutDir>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Assembly signing isn't supported by non-Windows MSBuild. Disable until supported. See #55 (https://github.com/dotnet/sdk/issues/55) -->
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+
+  <Import Project="$(RepositoryRootDirectory)build\Signing\Signing.props"/>
+</Project>
