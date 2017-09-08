@@ -80,7 +80,7 @@
     <MicrosoftDotNetProjectTemplatesVersion>1.0.0-beta2-20170425-203</MicrosoftDotNetProjectTemplatesVersion>
 
     <!-- Tests -->
-    <MoqVersion>4.2.1402.2112</MoqVersion>
+    <MoqVersion>4.7.99</MoqVersion>
     <XUnitAnalyzersVersion>0.7.0</XUnitAnalyzersVersion>
   </PropertyGroup>
 </Project>
