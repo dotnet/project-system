@@ -273,9 +273,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                 {
                     File.Copy(logPath, Path.Combine(folderBrowser.SelectedPath, filename));
                 }
-                catch
+                catch (Exception e)
                 {
-                    // Oh, well...
+                    var title = $"Error saving {filename}";
+                    ShowExceptionMessageDialog(e, title);
                 }
             }
         }
@@ -293,11 +294,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                 {
                     Process.Start(logPath);
                 }
-                catch
+                catch (Exception e)
                 {
-                    // Oops.
+                    var title = $"Error opening {Path.GetFileName(logPath)}";
+                    ShowExceptionMessageDialog(e, title);
                 }
             }
+        }
+
+        private static void ShowExceptionMessageDialog(Exception e, string title)
+        {
+            var message = $@"{e.GetType().FullName}
+
+{e.Message}
+
+{e.StackTrace}";
+
+            MessageDialog.Show(title, message, MessageDialogCommandSet.Ok);
         }
 
         int IOleCommandTarget.QueryStatus(ref Guid commandGroupGuid, uint commandCount, OLECMD[] commands, IntPtr commandText)
