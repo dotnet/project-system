@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -279,6 +280,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
             }
         }
 
+        private void OpenLogs()
+        {
+            foreach (var entry in _tableControl.SelectedEntries)
+            {
+                if (!entry.TryGetValue(TableKeyNames.LogPath, out string logPath))
+                {
+                    continue;
+                }
+
+                try
+                {
+                    Process.Start(logPath);
+                }
+                catch
+                {
+                    // Oops.
+                }
+            }
+        }
+
         int IOleCommandTarget.QueryStatus(ref Guid commandGroupGuid, uint commandCount, OLECMD[] commands, IntPtr commandText)
         {
             if (commandGroupGuid != ProjectSystemToolsPackage.CommandSetGuid)
@@ -312,6 +333,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
                 case ProjectSystemToolsPackage.ClearCommandId:
                 case ProjectSystemToolsPackage.SaveLogsCommandId:
+                case ProjectSystemToolsPackage.OpenLogsCommandId:
                     visible = true;
                     enabled = true;
                     break;
@@ -378,6 +400,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
                 case ProjectSystemToolsPackage.SaveLogsCommandId:
                     SaveLogs();
+                    break;
+
+                case ProjectSystemToolsPackage.OpenLogsCommandId:
+                    OpenLogs();
                     break;
 
                 default:
