@@ -62,7 +62,7 @@
   <StringProperty Name="BaseAddress" DisplayName="Base address" Visible="False"/>
   <StringProperty Name="FullPath" DisplayName="Project Folder" ReadOnly="True">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" SourceOfDefaultValue="AfterContext" />
+      <DataSource Persistence="ProjectFile" PersistedName="ProjectDir" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <DynamicEnumProperty Name="WarningLevel" DisplayName="Warning Level" EnumProvider="WarningLevelEnumProvider" Visible="False">

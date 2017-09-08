@@ -83,7 +83,7 @@
   </StringProperty>
   <StringProperty Name="FullPath" DisplayName="Složka projektu" ReadOnly="True">
     <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" SourceOfDefaultValue="AfterContext" />
+      <DataSource Persistence="ProjectFile" PersistedName="ProjectDir" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
   <StringProperty Name="LocalPath" ReadOnly="True" Visible="False">
