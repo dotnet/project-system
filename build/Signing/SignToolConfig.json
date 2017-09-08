@@ -4,14 +4,14 @@
             "certificate": "Microsoft400",
             "strongName": "MsSharedLib72",
             "values": [
-                "ProjectSystemTools.dll"
+                "Microsoft.VisualStudio.ProjectSystem.Tools.dll.dll"
             ]
         },
         {
             "certificate": "VsixSHA2",
             "strongName": null,
             "values": [
-                "ProjectSystemTools.vsix"
+                "Microsoft.VisualStudio.ProjectSystem.Tools.dll.vsix"
             ]
         }
     ]
