@@ -6,7 +6,6 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using Microsoft.VisualStudio.OLE.Interop;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI
@@ -23,19 +22,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI
         protected override void OnPreviewMouseRightButtonUp(MouseButtonEventArgs e) => OpenContextMenu();
 
         // Handles WM_CONTEXTMENU message to invoke context menu.
-        internal static bool PreProcessMessage(ref Message m, IOleCommandTarget cmdTarget) => 
-            m.Msg == 0x007B && 
+        internal static bool PreProcessMessage(ref Message m, IOleCommandTarget cmdTarget) =>
+            m.Msg == 0x007B &&
             ErrorHandler.Succeeded(cmdTarget.Exec(VSConstants.VSStd2K, (uint)VSConstants.VSStd2KCmdID.SHOWCONTEXTMENU, 0, IntPtr.Zero, IntPtr.Zero));
 
         internal void OpenContextMenu()
         {
-            //var guidContextMenu = VsMenus.guidSHLMainMenu;
-            //var location = GetContextMenuLocation();
-            //POINTS[] locationPoints = { new POINTS { x = (short)location.X, y = (short)location.Y } };
+            var guidContextMenu = ProjectSystemToolsPackage.UIGuid;
+            var location = GetContextMenuLocation();
+            var locationPoints = new[] { new POINTS { x = (short)location.X, y = (short)location.Y } };
 
-            //// Show context menu blocks, so we need to yield out of this method
-            //// for e.Handled to be noticed by WPF
-            //Dispatcher.BeginInvoke(new Action(() => ProjectSystemToolsPackage.VsUIShell.ShowContextMenu(0, ref guidContextMenu, _contextMenuId, locationPoints, pCmdTrgtActive: null)));
+            // Show context menu blocks, so we need to yield out of this method
+            // for e.Handled to be noticed by WPF
+            Dispatcher.BeginInvoke(new Action(() => ProjectSystemToolsPackage.VsUIShell.ShowContextMenu(0, ref guidContextMenu, _contextMenuId, locationPoints, pCmdTrgtActive: null)));
         }
 
         // Default to the bottom-left corner of the control for the position of contect menu invoked from keyboard

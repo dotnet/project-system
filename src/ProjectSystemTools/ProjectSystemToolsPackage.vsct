@@ -4,17 +4,26 @@
   <Extern href="vsshlids.h"/>
   <Commands package="PackageGuid">
     <Menus>
-      <Menu guid="UIGroupGuid" id="BuildLoggingToolbarMenuId" priority="0x0000" type="ToolWindowToolbar">
-        <Parent guid="UIGroupGuid" id="BuildLoggingToolbarMenuId" />
+      <Menu guid="UIGuid" id="BuildLoggingToolbarMenuId" priority="0x0000" type="ToolWindowToolbar">
+        <Parent guid="UIGuid" id="BuildLoggingToolbarMenuId" />
         <CommandFlag>DontCache</CommandFlag>
         <Strings>
           <ButtonText>Build Logging</ButtonText>
         </Strings>
       </Menu>
+      <Menu guid="UIGuid" id="BuildLoggingContextMenuId" priority="0x0000" type="Context">
+        <Parent guid="UIGuid" id="BuildLoggingContextMenuId" />
+        <Strings>
+          <ButtonText>Build Loggging</ButtonText>
+        </Strings>
+      </Menu>
     </Menus>
     <Groups>
-      <Group guid="UIGroupGuid" id="BuildLoggingControlGroupId" priority="0x0000">
-        <Parent guid="UIGroupGuid" id="BuildLoggingToolbarMenuId"/>
+      <Group guid="UIGuid" id="BuildLoggingToolbarGroupId" priority="0x0000">
+        <Parent guid="UIGuid" id="BuildLoggingToolbarMenuId"/>
+      </Group>
+      <Group guid="UIGuid" id="BuildLoggingContextGroupId" priority="0x0000">
+        <Parent guid="UIGuid" id="BuildLoggingContextMenuId"/>
       </Group>
     </Groups>
     <Buttons>
@@ -25,7 +34,6 @@
       </Button>
       <Button guid="CommandSetGuid" id="StartLoggingCommandId" type="Button">
         <Icon guid="ImageCatalogGuid" id="Play" />
-        <CommandFlag>DontCache</CommandFlag>
         <CommandFlag>IconIsMoniker</CommandFlag>
         <Strings>
           <ButtonText>Start logging</ButtonText>
@@ -34,7 +42,6 @@
       </Button>
       <Button guid="CommandSetGuid" id="StopLoggingCommandId" type="Button">
         <Icon guid="ImageCatalogGuid" id="Stop" />
-        <CommandFlag>DontCache</CommandFlag>
         <CommandFlag>IconIsMoniker</CommandFlag>
         <Strings>
           <ButtonText>Stop logging</ButtonText>
@@ -43,11 +50,15 @@
       </Button>
       <Button guid="CommandSetGuid" id="ClearCommandId" type="Button">
         <Icon guid="ImageCatalogGuid" id="ClearWindowContent" />
-        <CommandFlag>DontCache</CommandFlag>
         <CommandFlag>IconIsMoniker</CommandFlag>
         <Strings>
           <ButtonText>Clear</ButtonText>
           <ToolTipText>Clear list of builds</ToolTipText>
+        </Strings>
+      </Button>
+      <Button guid="CommandSetGuid" id="SaveLogsCommandId" type="Button">
+        <Strings>
+          <ButtonText>Save Logs...</ButtonText>
         </Strings>
       </Button>
     </Buttons>
@@ -57,13 +68,16 @@
       <Parent guid="guidSHLMainMenu" id="IDG_VS_WNDO_OTRWNDWS1" />
     </CommandPlacement>
     <CommandPlacement guid="CommandSetGuid" id="StartLoggingCommandId" priority="0x0000">
-      <Parent guid="UIGroupGuid" id="BuildLoggingControlGroupId" />
+      <Parent guid="UIGuid" id="BuildLoggingToolbarGroupId" />
     </CommandPlacement>
     <CommandPlacement guid="CommandSetGuid" id="StopLoggingCommandId" priority="0x0000">
-      <Parent guid="UIGroupGuid" id="BuildLoggingControlGroupId" />
+      <Parent guid="UIGuid" id="BuildLoggingToolbarGroupId" />
     </CommandPlacement>
     <CommandPlacement guid="CommandSetGuid" id="ClearCommandId" priority="0x0000">
-      <Parent guid="UIGroupGuid" id="BuildLoggingControlGroupId" />
+      <Parent guid="UIGuid" id="BuildLoggingToolbarGroupId" />
+    </CommandPlacement>
+    <CommandPlacement guid="CommandSetGuid" id="SaveLogsCommandId" priority="0x0000">
+      <Parent guid="UIGuid" id="BuildLoggingContextGroupId" />
     </CommandPlacement>
   </CommandPlacements>
   <Symbols>
@@ -73,10 +87,13 @@
       <IDSymbol name="StartLoggingCommandId" value="0x0101" />
       <IDSymbol name="StopLoggingCommandId" value="0x0102" />
       <IDSymbol name="ClearCommandId" value="0x0103" />
+      <IDSymbol name="SaveLogsCommandId" value="0x0107" />
     </GuidSymbol>
-    <GuidSymbol name="UIGroupGuid" value="{629080DF-2A44-40E5-9AF4-371D4B727D16}">
+    <GuidSymbol name="UIGuid" value="{629080DF-2A44-40E5-9AF4-371D4B727D16}">
       <IDSymbol name="BuildLoggingToolbarMenuId" value="0x0100" />
-      <IDSymbol name="BuildLoggingControlGroupId" value="0x0104" />
+      <IDSymbol name="BuildLoggingToolbarGroupId" value="0x0104" />
+      <IDSymbol name="BuildLoggingContextMenuId" value="0x0105" />
+      <IDSymbol name="BuildLoggingContextGroupId" value ="0x0106" />
     </GuidSymbol>
     <GuidSymbol name="ImageCatalogGuid" value="{ae27a6b0-e345-4288-96df-5eaf394ee369}">
       <IDSymbol name="Play" value="2356" />
