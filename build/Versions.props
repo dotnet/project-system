@@ -67,8 +67,8 @@
     <MicrosoftNetRoslynDiagnosticsVersion>2.3.0-beta1</MicrosoftNetRoslynDiagnosticsVersion>
 
     <!-- NuGet -->
-    <NuGetSolutionRestoreManagerInteropVersion>4.0.0-rc-2024</NuGetSolutionRestoreManagerInteropVersion>
-    <NuGetVisualStudioVersion>4.0.0-rc-2048</NuGetVisualStudioVersion>
+    <NuGetSolutionRestoreManagerInteropVersion>4.3.0</NuGetSolutionRestoreManagerInteropVersion>
+    <NuGetVisualStudioVersion>4.3.0</NuGetVisualStudioVersion>
     
     <!-- Msbuild -->
     <MicrosoftBuildVersion>15.1.0-preview-000516-03</MicrosoftBuildVersion>
