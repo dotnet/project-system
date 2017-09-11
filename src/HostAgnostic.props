@@ -15,6 +15,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Validation" Version="$(MicrosoftVisualStudioValidationVersion)" />    
     <PackageReference Include="Microsoft.VisualStudio.Threading" Version="$(MicrosoftVisualStudioThreadingVersion)" />
     <PackageReference Include="Microsoft.Net.RoslynDiagnostics" Version="$(MicrosoftNetRoslynDiagnosticsVersion)" />
+    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.Analyzers" Version="$(MicrosoftVisualStudioProjectSystemAnalyzersVersion)" />
 
     <!-- Msbuild -->
     <PackageReference Include="Microsoft.Build" Version="$(MicrosoftBuildVersion)" />
