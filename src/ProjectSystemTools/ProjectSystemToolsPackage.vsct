@@ -14,7 +14,7 @@
       <Menu guid="UIGuid" id="BuildLoggingContextMenuId" priority="0x0000" type="Context">
         <Parent guid="UIGuid" id="BuildLoggingContextMenuId" />
         <Strings>
-          <ButtonText>Build Loggging</ButtonText>
+          <ButtonText>Build Logging</ButtonText>
         </Strings>
       </Menu>
     </Menus>
