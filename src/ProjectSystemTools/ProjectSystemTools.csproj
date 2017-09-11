@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net46</TargetFramework>
-    <VSSDKTargetPlatformRegRootSuffix>RoslynDev</VSSDKTargetPlatformRegRootSuffix>
     <RootNamespace>Microsoft.VisualStudio.ProjectSystem.Tools</RootNamespace>
     <AssemblyName>Microsoft.VisualStudio.ProjectSystem.Tools</AssemblyName>
 

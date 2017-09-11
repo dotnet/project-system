@@ -11,9 +11,9 @@
     <VersionsPropsPath>$(RepoRoot)build\Versions.props</VersionsPropsPath>
     <RepoToolsetDir>$(NuGetPackageRoot)RoslynTools.Microsoft.RepoToolset\$(RoslynToolsMicrosoftRepoToolsetVersion)\tools\</RepoToolsetDir>
     
-    <RepositoryUrl>https://github.com/panopticoncentral/project-system-tools</RepositoryUrl>
+    <RepositoryUrl>https://github.com/dotnet/project-system-tools</RepositoryUrl>
     <PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
 
-    <VSSDKTargetPlatformRegRootSuffix>IW</VSSDKTargetPlatformRegRootSuffix>
+    <VSSDKTargetPlatformRegRootSuffix>RoslynDev</VSSDKTargetPlatformRegRootSuffix>
   </PropertyGroup>
 </Project>
