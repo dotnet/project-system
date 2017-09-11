@@ -34,5 +34,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string PreserveFormatting = nameof(PreserveFormatting);
         public const string ProjectConfigurationsDeclaredDimensions = ProjectCapabilities.ProjectConfigurationsDeclaredDimensions;
         public const string LanguageService = ProjectCapabilities.LanguageService;
+        public const string SortByDisplayOrder = ProjectCapabilities.SortByDisplayOrder;
     }
 }
