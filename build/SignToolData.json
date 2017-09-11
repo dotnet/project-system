@@ -1,0 +1,19 @@
+{
+  "sign": [
+    {
+      "certificate": "MicrosoftSHA2",
+      "strongName": "MsSharedLib72",
+      "values": [
+        "bin/ProjectSystemTools/net46/Microsoft.VisualStudio.ProjectSystem.Tools.dll",
+        "bin/ProjectSystemTools/net46/*/Microsoft.VisualStudio.ProjectSystem.Tools.resources.dll",
+      ]
+    },
+    {
+      "certificate": "VsixSHA2",
+      "strongName": null,
+      "values": [
+        "VSSetup/Microsoft.VisualStudio.ProjectSystem.Tools.vsix"
+      ]
+    }
+  ]
+}
