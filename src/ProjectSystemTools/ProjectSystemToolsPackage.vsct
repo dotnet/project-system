@@ -61,6 +61,11 @@
           <ButtonText>Save Logs...</ButtonText>
         </Strings>
       </Button>
+      <Button guid="CommandSetGuid" id="OpenLogsCommandId" type="Button">
+        <Strings>
+          <ButtonText>Open Logs...</ButtonText>
+        </Strings>
+      </Button>
     </Buttons>
   </Commands>
   <CommandPlacements>
@@ -79,6 +84,9 @@
     <CommandPlacement guid="CommandSetGuid" id="SaveLogsCommandId" priority="0x0000">
       <Parent guid="UIGuid" id="BuildLoggingContextGroupId" />
     </CommandPlacement>
+    <CommandPlacement guid="CommandSetGuid" id="OpenLogsCommandId" priority="0x0010">
+      <Parent guid="UIGuid" id="BuildLoggingContextGroupId" />
+    </CommandPlacement>
   </CommandPlacements>
   <Symbols>
     <GuidSymbol name="PackageGuid" value="{e3bfb509-b8fd-4692-b4c4-4b2f6ed62bc7}" />
@@ -88,6 +96,7 @@
       <IDSymbol name="StopLoggingCommandId" value="0x0102" />
       <IDSymbol name="ClearCommandId" value="0x0103" />
       <IDSymbol name="SaveLogsCommandId" value="0x0107" />
+      <IDSymbol name="OpenLogsCommandId" value="0x0108" />
     </GuidSymbol>
     <GuidSymbol name="UIGuid" value="{629080DF-2A44-40E5-9AF4-371D4B727D16}">
       <IDSymbol name="BuildLoggingToolbarMenuId" value="0x0100" />

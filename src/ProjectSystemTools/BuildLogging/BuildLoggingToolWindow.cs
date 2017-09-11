@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -272,11 +273,44 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                 {
                     File.Copy(logPath, Path.Combine(folderBrowser.SelectedPath, filename));
                 }
-                catch
+                catch (Exception e)
                 {
-                    // Oh, well...
+                    var title = $"Error saving {filename}";
+                    ShowExceptionMessageDialog(e, title);
                 }
             }
+        }
+
+        private void OpenLogs()
+        {
+            foreach (var entry in _tableControl.SelectedEntries)
+            {
+                if (!entry.TryGetValue(TableKeyNames.LogPath, out string logPath))
+                {
+                    continue;
+                }
+
+                try
+                {
+                    Process.Start(logPath);
+                }
+                catch (Exception e)
+                {
+                    var title = $"Error opening {Path.GetFileName(logPath)}";
+                    ShowExceptionMessageDialog(e, title);
+                }
+            }
+        }
+
+        private static void ShowExceptionMessageDialog(Exception e, string title)
+        {
+            var message = $@"{e.GetType().FullName}
+
+{e.Message}
+
+{e.StackTrace}";
+
+            MessageDialog.Show(title, message, MessageDialogCommandSet.Ok);
         }
 
         int IOleCommandTarget.QueryStatus(ref Guid commandGroupGuid, uint commandCount, OLECMD[] commands, IntPtr commandText)
@@ -312,6 +346,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
                 case ProjectSystemToolsPackage.ClearCommandId:
                 case ProjectSystemToolsPackage.SaveLogsCommandId:
+                case ProjectSystemToolsPackage.OpenLogsCommandId:
                     visible = true;
                     enabled = true;
                     break;
@@ -378,6 +413,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
                 case ProjectSystemToolsPackage.SaveLogsCommandId:
                     SaveLogs();
+                    break;
+
+                case ProjectSystemToolsPackage.OpenLogsCommandId:
+                    OpenLogs();
                     break;
 
                 default:

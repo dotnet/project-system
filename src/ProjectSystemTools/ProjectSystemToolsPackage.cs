@@ -31,6 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools
         public const int StopLoggingCommandId = 0x0102;
         public const int ClearCommandId = 0x0103;
         public const int SaveLogsCommandId = 0x0107;
+        public const int OpenLogsCommandId = 0x0108;
 
         public static readonly Guid UIGuid = new Guid("629080DF-2A44-40E5-9AF4-371D4B727D16");
 
