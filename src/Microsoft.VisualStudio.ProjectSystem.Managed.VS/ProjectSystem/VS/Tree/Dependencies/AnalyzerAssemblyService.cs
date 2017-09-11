@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Reflection;
 using System.Reflection.Metadata;
@@ -14,19 +15,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     internal class AnalyzerAssemblyService : IAnalyzerAssemblyService
     {
         private object _guard = new object();
-        private Dictionary<string, bool> _map = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
+        private ImmutableDictionary<string, bool> _map = ImmutableDictionary<string, bool>.Empty.WithComparers(StringComparers.Paths, EqualityComparer<bool>.Default);
 
         public bool ContainsDiagnosticAnalyzers(string fullPathToAssembly)
         {
+            if (_map.TryGetValue(fullPathToAssembly, out bool cachedValue))
+            {
+                return cachedValue;
+            }
+
+            var result = ContainsDiagnosticAnalyzersCore(fullPathToAssembly);
+
             lock (_guard)
             {
-                if (!_map.TryGetValue(fullPathToAssembly, out bool containsDiagnosticAnalyzers))
+                if (_map.TryGetValue(fullPathToAssembly, out cachedValue))
                 {
-                    containsDiagnosticAnalyzers = ContainsDiagnosticAnalyzersCore(fullPathToAssembly);
-                    _map.Add(fullPathToAssembly, containsDiagnosticAnalyzers);
+                    return cachedValue;
                 }
 
-                return containsDiagnosticAnalyzers;
+                _map = _map.Add(fullPathToAssembly, result);
+
+                return result;
             }
         }
 
