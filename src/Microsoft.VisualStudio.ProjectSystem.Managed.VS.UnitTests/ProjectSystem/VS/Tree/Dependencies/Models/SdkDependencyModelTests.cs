@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal("myProvider", model.ProviderType);
             Assert.Equal("c:\\myPath.dll", model.Path);
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
-            Assert.Equal("c:\\myPath.dll", model.Caption);
+            Assert.Equal("c:\\myPath.dll (2.0.0)", model.Caption);
             Assert.Equal("2.0.0", model.Version);
             Assert.Equal(ResolvedSdkReference.SchemaName, model.SchemaName);
             Assert.Equal(true, model.Resolved);
@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal("myProvider", model.ProviderType);
             Assert.Equal("c:\\myPath.dll", model.Path);
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
-            Assert.Equal("c:\\myPath.dll", model.Caption);
+            Assert.Equal("c:\\myPath.dll (2.0.0)", model.Caption);
             Assert.Equal("2.0.0", model.Version);
             Assert.Equal(SdkReference.SchemaName, model.SchemaName);
             Assert.Equal(false, model.Resolved);
@@ -96,7 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal("myProvider", model.ProviderType);
             Assert.Equal("c:\\myPath.dll", model.Path);
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
-            Assert.Equal("c:\\myPath.dll", model.Caption);
+            Assert.Equal("c:\\myPath.dll (2.0.0)", model.Caption);
             Assert.Equal("2.0.0", model.Version);
             Assert.Equal(ResolvedSdkReference.SchemaName, model.SchemaName);
             Assert.Equal(true, model.Resolved);

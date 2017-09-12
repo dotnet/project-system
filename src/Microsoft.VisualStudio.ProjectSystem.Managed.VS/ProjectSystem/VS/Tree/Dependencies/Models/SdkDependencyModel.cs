@@ -31,8 +31,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
                 SchemaName = SdkReference.SchemaName;
             }
 
-            Caption = Path.Split(CommonConstants.CommaDelimiter, StringSplitOptions.RemoveEmptyEntries)
-                          .FirstOrDefault();
             SchemaItemType = SdkReference.PrimaryDataSourceItemType;
             Priority = Dependency.SdkNodePriority;
             Icon = isImplicit ? ManagedImageMonikers.SdkPrivate : ManagedImageMonikers.Sdk;
@@ -41,6 +39,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             UnresolvedExpandedIcon = UnresolvedIcon;
             Version = properties != null && properties.ContainsKey(ProjectItemMetadata.Version)
                         ? properties[ProjectItemMetadata.Version] : string.Empty;
+            var baseCaption = Path.Split(CommonConstants.CommaDelimiter, StringSplitOptions.RemoveEmptyEntries)
+                                .FirstOrDefault();
+            Caption = string.IsNullOrEmpty(Version) ? baseCaption : $"{baseCaption} ({Version})";
         }
     }
 }
