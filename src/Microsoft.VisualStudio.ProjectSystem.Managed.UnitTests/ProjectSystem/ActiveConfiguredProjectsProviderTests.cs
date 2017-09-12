@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             var result = await provider.GetActiveProjectConfigurationsAsync();
 
-            Assert.Equal(1, result.Objects.Count);
+            Assert.Single(result.Objects);
             Assert.Equal(activeConfiguration, result.Objects[0].Name);
         }
 
@@ -121,7 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             
             var result = await provider.GetActiveConfiguredProjectsAsync();
 
-            Assert.Equal(1, result.Objects.Count);
+            Assert.Single(result.Objects);
             Assert.Equal(activeConfiguration, result.Objects[0].ProjectConfiguration.Name);
             Assert.Empty(result.DimensionNames);
         }

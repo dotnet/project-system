@@ -66,14 +66,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             Assert.Equal(@"obj\", restoreInfo.BaseIntermediatePath);
             Assert.Equal("netcoreapp1.0", restoreInfo.OriginalTargetFrameworks);
 
-            Assert.Equal(1, restoreInfo.TargetFrameworks.Count);
+            Assert.Single(restoreInfo.TargetFrameworks);
             var tfm = restoreInfo.TargetFrameworks.Item("netcoreapp1.0");
             Assert.Equal(tfm, restoreInfo.TargetFrameworks.Item(0));
             Assert.Null(restoreInfo.TargetFrameworks.Item("InvalidFrameworkMoniker"));
 
             Assert.Equal("netcoreapp1.0", tfm.TargetFrameworkMoniker);
-            Assert.Equal(1, tfm.ProjectReferences.Count);
-            Assert.Equal(2, tfm.PackageReferences.Count);
+            Assert.Single(tfm.ProjectReferences);
+            AssertEx.CollectionLength(tfm.PackageReferences, 2);
             Assert.Equal(9, tfm.Properties.Count);
 
             var definingProjectDirectory = "C:\\Test\\Projects\\TestProj";
@@ -109,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             Assert.Equal(definingProjectFullPath, packageRef.Properties.Item("DefiningProjectFullPath").Value);
 
             // tool references
-            Assert.Equal(1, restoreInfo.ToolReferences.Count);
+            Assert.Single(restoreInfo.ToolReferences);
             var toolRef = restoreInfo.ToolReferences.Item(0);
             Assert.Equal(toolRef, restoreInfo.ToolReferences.Item("Microsoft.AspNet.EF.Tools"));
             Assert.Equal("Microsoft.AspNet.EF.Tools", toolRef.Name);
@@ -170,7 +170,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             var restoreInfo = ProjectRestoreInfoBuilder.Build(projectSubscriptionUpdates, GetMockProject());
 
             Assert.NotNull(restoreInfo);
-            Assert.Equal(1, restoreInfo.TargetFrameworks.Count);
+            Assert.Single(restoreInfo.TargetFrameworks);
             Assert.NotNull(restoreInfo.TargetFrameworks.Item("netcoreapp1.0"));
         }
 
@@ -238,7 +238,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             var restoreInfo = ProjectRestoreInfoBuilder.Build(projectSubscriptionUpdates, GetMockProject());
 
             Assert.NotNull(restoreInfo);
-            Assert.Equal(1, restoreInfo.TargetFrameworks.Count);
+            Assert.Single(restoreInfo.TargetFrameworks);
             var tfm = restoreInfo.TargetFrameworks.Item(0);
             Assert.Equal("netcoreapp1.0", tfm.TargetFrameworkMoniker);
         }
@@ -344,7 +344,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             var restoreInfo = ProjectRestoreInfoBuilder.Build(projectSubscriptionUpdates, GetMockProject());
 
             Assert.NotNull(restoreInfo);
-            Assert.Equal(2, restoreInfo.TargetFrameworks.Count);
+            AssertEx.CollectionLength(restoreInfo.TargetFrameworks, 2);
             Assert.NotNull(restoreInfo.TargetFrameworks.Item("netcoreapp1.0"));
             Assert.NotNull(restoreInfo.TargetFrameworks.Item("netstandard1.4"));
         }
@@ -462,8 +462,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             var restoreInfo = ProjectRestoreInfoBuilder.Build(projectSubscriptionUpdates, GetMockProject());
 
             Assert.NotNull(restoreInfo);
-            Assert.Equal(2, restoreInfo.TargetFrameworks.Count);
-            Assert.Equal(1, restoreInfo.ToolReferences.Count);
+            AssertEx.CollectionLength(restoreInfo.TargetFrameworks, 2);
+            Assert.Single(restoreInfo.ToolReferences);
             var toolRef = restoreInfo.ToolReferences.Item(0);
             Assert.Equal(toolRef, restoreInfo.ToolReferences.Item("Microsoft.AspNet.EF.Tools"));
             Assert.Equal("Microsoft.AspNet.EF.Tools", toolRef.Name);
@@ -527,11 +527,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             var restoreInfo = ProjectRestoreInfoBuilder.Build(projectSubscriptionUpdates, GetMockProject());
 
             Assert.NotNull(restoreInfo);
-            Assert.Equal(1, restoreInfo.TargetFrameworks.Count);
+            Assert.Single(restoreInfo.TargetFrameworks);
 
             var tfm = restoreInfo.TargetFrameworks.Item("netcoreapp1.0");
             Assert.Equal("netcoreapp1.0", tfm.TargetFrameworkMoniker);
-            Assert.Equal(1, tfm.ProjectReferences.Count);
+            Assert.Single(tfm.ProjectReferences);
 
             // project references
             var projectRef = tfm.ProjectReferences.Item(0);

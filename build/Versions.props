@@ -81,5 +81,6 @@
 
     <!-- Tests -->
     <MoqVersion>4.2.1402.2112</MoqVersion>
+    <XUnitAnalyzersVersion>0.7.0</XUnitAnalyzersVersion>
   </PropertyGroup>
 </Project>

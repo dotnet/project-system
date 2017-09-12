@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
@@ -86,8 +85,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(projectPath, snapshot.ProjectPath);
             Assert.Equal(catalogs, snapshot.Catalogs);
             Assert.False(anyChanges);
-            Assert.Equal(0, snapshot.TopLevelDependencies.Count);
-            Assert.Equal(0, snapshot.DependenciesWorld.Count);
+            Assert.Empty(snapshot.TopLevelDependencies);
+            Assert.Empty(snapshot.DependenciesWorld);
         }
 
         [Fact]
@@ -147,8 +146,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(projectPath, snapshot.ProjectPath);
             Assert.Equal(catalogs, snapshot.Catalogs);
             Assert.False(anyChanges);
-            Assert.Equal(1, snapshot.TopLevelDependencies.Count);
-            Assert.Equal(2, snapshot.DependenciesWorld.Count);
+            Assert.Single(snapshot.TopLevelDependencies);
+            AssertEx.CollectionLength(snapshot.DependenciesWorld, 2);
         }
 
         [Fact]
@@ -209,8 +208,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(projectPath, snapshot.ProjectPath);
             Assert.Equal(catalogs, snapshot.Catalogs);
             Assert.False(anyChanges);
-            Assert.Equal(1, snapshot.TopLevelDependencies.Count);
-            Assert.Equal(2, snapshot.DependenciesWorld.Count);
+            Assert.Single(snapshot.TopLevelDependencies);
+            AssertEx.CollectionLength(snapshot.DependenciesWorld, 2);
         }
 
         [Fact]
@@ -282,8 +281,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(projectPath, snapshot.ProjectPath);
             Assert.Equal(catalogs, snapshot.Catalogs);
             Assert.True(anyChanges);
-            Assert.Equal(1, snapshot.TopLevelDependencies.Count);
-            Assert.Equal(2, snapshot.DependenciesWorld.Count);
+            Assert.Single(snapshot.TopLevelDependencies);
+            AssertEx.CollectionLength(snapshot.DependenciesWorld, 2);
         }
 
         [Fact]
@@ -353,8 +352,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(projectPath, snapshot.ProjectPath);
             Assert.Equal(catalogs, snapshot.Catalogs);
             Assert.False(anyChanges);
-            Assert.Equal(1, snapshot.TopLevelDependencies.Count);
-            Assert.Equal(2, snapshot.DependenciesWorld.Count);
+            Assert.Single(snapshot.TopLevelDependencies);
+            AssertEx.CollectionLength(snapshot.DependenciesWorld, 2);
         }
 
         [Fact]
@@ -425,8 +424,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(projectPath, snapshot.ProjectPath);
             Assert.Equal(catalogs, snapshot.Catalogs);
             Assert.True(anyChanges);
-            Assert.Equal(1, snapshot.TopLevelDependencies.Count);
-            Assert.Equal(2, snapshot.DependenciesWorld.Count);
+            Assert.Single(snapshot.TopLevelDependencies);
+            AssertEx.CollectionLength(snapshot.DependenciesWorld, 2);
         }
 
         [Fact]
@@ -561,10 +560,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(projectPath, snapshot.ProjectPath);
             Assert.Equal(catalogs, snapshot.Catalogs);
             Assert.True(anyChanges);
-            Assert.Equal(2, snapshot.TopLevelDependencies.Count);
-            Assert.True(snapshot.TopLevelDependencies.Any(x => x.Id.Equals(@"topdependency1")));
-            Assert.True(snapshot.TopLevelDependencies.Any(x => x.Id.Equals(@"tfm1\xxx\addeddependency2") && x.Caption.Equals("AddedDependency2Changed")));
-            Assert.Equal(5, snapshot.DependenciesWorld.Count);
+            AssertEx.CollectionLength(snapshot.TopLevelDependencies, 2);
+            Assert.Contains(snapshot.TopLevelDependencies, x => x.Id.Equals(@"topdependency1"));
+            Assert.Contains(snapshot.TopLevelDependencies, x => x.Id.Equals(@"tfm1\xxx\addeddependency2") && x.Caption.Equals("AddedDependency2Changed"));
+            AssertEx.CollectionLength(snapshot.DependenciesWorld, 5);
             Assert.True(snapshot.DependenciesWorld.ContainsKey(@"tfm1\xxx\topdependency1"));
             Assert.True(snapshot.DependenciesWorld.ContainsKey(@"tfm1\xxx\childdependency1"));
             Assert.True(snapshot.DependenciesWorld.ContainsKey(@"tfm1\xxx\addeddependency2"));
@@ -588,7 +587,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             Cancel,
             ShouldBeRemoved,
-            ShouldBeAdded            
+            ShouldBeAdded
         }
 
         internal class TestDependenciesSnapshotFilter : IDependenciesSnapshotFilter
@@ -608,7 +607,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return this;
             }
 
-            private Dictionary<string, Tuple<IDependency, FilterAction>> _beforeAdd 
+            private Dictionary<string, Tuple<IDependency, FilterAction>> _beforeAdd
                 = new Dictionary<string, Tuple<IDependency, FilterAction>>(StringComparer.OrdinalIgnoreCase);
 
             public TestDependenciesSnapshotFilter ImplementBeforeRemoveResult(FilterAction action, string id, IDependency dependency)

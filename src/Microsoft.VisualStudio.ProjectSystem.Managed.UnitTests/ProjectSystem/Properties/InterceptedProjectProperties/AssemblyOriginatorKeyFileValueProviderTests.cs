@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
                 () => keyFileProvider, providerMetadata) };
             var interceptedProvider = new ProjectFileInterceptedProjectPropertiesProvider(delegateProvider, instanceProvider, unconfiguredProject, lazyArray);
             var propertyNames = await properties.GetPropertyNamesAsync();
-            Assert.Equal(1, propertyNames.Count());
+            Assert.Single(propertyNames);
             Assert.Equal(AssemblyOriginatorKeyFilePropertyName, propertyNames.First());
             properties = interceptedProvider.GetProperties("path/to/project.testproj", null, null);
             string newKeyFileName = "KeyFile2.snk";

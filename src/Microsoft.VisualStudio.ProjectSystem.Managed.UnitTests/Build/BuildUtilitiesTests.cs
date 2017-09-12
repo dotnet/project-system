@@ -47,35 +47,34 @@ namespace Microsoft.VisualStudio.Build
         public void GetPropertyValues_SingleValue()
         {
             var values = BuildUtilities.GetPropertyValues("MyPropertyValue");
-            Assert.Equal(1, values.Length);
-            Assert.Equal("MyPropertyValue", values[0]);
+            Assert.Collection(values, firstValue => Assert.Equal("MyPropertyValue", firstValue));
         }
 
         [Fact]
         public void GetPropertyValues_MultipleValues()
         {
             var values = BuildUtilities.GetPropertyValues("1;2");
-            Assert.Equal(2, values.Length);
-            Assert.Equal("1", values[0]);
-            Assert.Equal("2", values[1]);
+            Assert.Collection(values, 
+                firstValue => Assert.Equal("1", firstValue),
+                secondValue => Assert.Equal("2", secondValue));
         }
 
         [Fact]
         public void GetPropertyValues_NonDefaultDelimiter()
         {
             var values = BuildUtilities.GetPropertyValues("1|2", '|');
-            Assert.Equal(2, values.Length);
-            Assert.Equal("1", values[0]);
-            Assert.Equal("2", values[1]);
+            Assert.Collection(values,
+                firstValue => Assert.Equal("1", firstValue),
+                secondValue => Assert.Equal("2", secondValue));
         }
 
         [Fact]
         public void GetPropertyValues_EmptyValues()
         {
             var values = BuildUtilities.GetPropertyValues("1;   ;;;2");
-            Assert.Equal(2, values.Length);
-            Assert.Equal("1", values[0]);
-            Assert.Equal("2", values[1]);
+            Assert.Collection(values,
+                firstValue => Assert.Equal("1", firstValue),
+                secondValue => Assert.Equal("2", secondValue));
         }
 
         [Fact]
@@ -84,14 +83,10 @@ namespace Microsoft.VisualStudio.Build
             using (var project = new MsBuildProjectFile())
             {
                 BuildUtilities.GetOrAddProperty(project.Project, "MyProperty");
-                Assert.Equal(1, project.Project.Properties.Count);
-                Assert.Equal(1, project.Project.PropertyGroups.Count);
-
-                var group = project.Project.PropertyGroups.First();
-                Assert.Equal(1, group.Properties.Count);
-
-                var property = group.Properties.First();
-                Assert.Equal(string.Empty, property.Value);
+                Assert.Single(project.Project.Properties);
+                Assert.Collection(project.Project.PropertyGroups, 
+                    group => Assert.Collection(group.Properties,
+                        firstProperty => Assert.Equal(string.Empty, firstProperty.Value)));
             }
         }
 
@@ -107,11 +102,11 @@ namespace Microsoft.VisualStudio.Build
             using (var project = new MsBuildProjectFile(projectXml))
             {
                 BuildUtilities.GetOrAddProperty(project.Project, "MyProperty");
-                Assert.Equal(1, project.Project.Properties.Count);
-                Assert.Equal(2, project.Project.PropertyGroups.Count);
+                Assert.Single(project.Project.Properties);
+                AssertEx.CollectionLength(project.Project.PropertyGroups, 2);
 
                 var group = project.Project.PropertyGroups.First();
-                Assert.Equal(1, group.Properties.Count);
+                Assert.Single(group.Properties);
 
                 var property = group.Properties.First();
                 Assert.Equal(string.Empty, property.Value);
@@ -131,11 +126,11 @@ namespace Microsoft.VisualStudio.Build
             using (var project = new MsBuildProjectFile(projectXml))
             {
                 BuildUtilities.GetOrAddProperty(project.Project, "MyProperty");
-                Assert.Equal(1, project.Project.Properties.Count);
-                Assert.Equal(1, project.Project.PropertyGroups.Count);
+                Assert.Single(project.Project.Properties);
+                Assert.Single(project.Project.PropertyGroups);
 
                 var group = project.Project.PropertyGroups.First();
-                Assert.Equal(1, group.Properties.Count);
+                Assert.Single(group.Properties);
 
                 var property = group.Properties.First();
                 Assert.Equal("1", property.Value);

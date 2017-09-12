@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var provider = new TargetFrameworkGlobalBuildPropertyProvider(projectService, configuredProject);
 
             var properties = await provider.GetGlobalPropertiesAsync(CancellationToken.None);
-            Assert.Equal(1, properties.Count);
+            Assert.Single(properties);
             Assert.Equal("TargetFramework", properties.Keys.First());
             Assert.Equal(string.Empty, properties.Values.First());
         }

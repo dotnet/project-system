@@ -155,7 +155,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
 
             LaunchProfile activeProfile = new LaunchProfile() { Name = "MyApplication", CommandName = "Project", CommandLineArgs = "--someArgs" };
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
-            Assert.Equal(1, targets.Count);
+            Assert.Single(targets);
             Assert.Equal(@"c:\program files\dotnet\dotnet.exe", targets[0].Executable);
             Assert.Equal(DebugLaunchOperation.CreateProcess, targets[0].LaunchOperation);
             Assert.Equal((DebugLaunchOptions.StopDebuggingOnEnd), targets[0].LaunchOptions);
@@ -180,12 +180,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
                 OtherSettings = ImmutableDictionary<string, object>.Empty.Add(LaunchProfileExtensions.NativeDebuggingProperty, true)
             };
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
-            Assert.Equal(1, targets.Count);
+            Assert.Single(targets);
             Assert.Equal(@"c:\program files\dotnet\dotnet.exe", targets[0].Executable);
             Assert.Equal(DebugLaunchOperation.CreateProcess, targets[0].LaunchOperation);
             Assert.Equal((DebugLaunchOptions.StopDebuggingOnEnd), targets[0].LaunchOptions);
             Assert.Equal(DebuggerEngines.ManagedCoreEngine, targets[0].LaunchDebugEngineGuid);
-            Assert.Equal(1, targets[0].AdditionalDebugEngines.Count);
+            Assert.Single(targets[0].AdditionalDebugEngines);
             Assert.Equal(DebuggerEngines.NativeOnlyEngine, targets[0].AdditionalDebugEngines[0]);
             Assert.Equal("exec \"c:\\test\\project\\bin\\project.dll\" --someArgs", targets[0].Arguments);
         }
@@ -200,7 +200,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             // Now control-F5, add env
             activeProfile.EnvironmentVariables = new Dictionary<string, string>() { { "var1", "Value1" } }.ToImmutableDictionary();
             var targets = await debugger.QueryDebugTargetsAsync(DebugLaunchOptions.NoDebug, activeProfile);
-            Assert.Equal(1, targets.Count);
+            Assert.Single(targets);
             Assert.True(targets[0].Executable.EndsWith(@"\cmd.exe", StringComparison.OrdinalIgnoreCase));
             Assert.Equal(DebugLaunchOperation.CreateProcess, targets[0].LaunchOperation);
             Assert.Equal((DebugLaunchOptions.NoDebug | DebugLaunchOptions.StopDebuggingOnEnd | DebugLaunchOptions.MergeEnvironment), targets[0].LaunchOptions);
@@ -230,7 +230,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
 
             LaunchProfile activeProfile = new LaunchProfile() { Name = "MyApplication",  CommandLineArgs = "--someArgs", ExecutablePath=@"c:\test\Project\someapp.exe" };
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
-            Assert.Equal(1, targets.Count);
+            Assert.Single(targets);
             Assert.Equal(activeProfile.ExecutablePath, targets[0].Executable);
             Assert.Equal(DebugLaunchOperation.CreateProcess, targets[0].LaunchOperation);
             Assert.Equal((DebugLaunchOptions.StopDebuggingOnEnd), targets[0].LaunchOptions);
@@ -248,7 +248,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             // Now control-F5, add env vars
             activeProfile.EnvironmentVariables = new Dictionary<string, string>() { { "var1", "Value1" } }.ToImmutableDictionary();
             var targets = await debugger.QueryDebugTargetsAsync(DebugLaunchOptions.NoDebug, activeProfile);
-            Assert.Equal(1, targets.Count);
+            Assert.Single(targets);
             Assert.Equal(activeProfile.ExecutablePath, targets[0].Executable);
             Assert.Equal(DebugLaunchOperation.CreateProcess, targets[0].LaunchOperation);
             Assert.Equal((DebugLaunchOptions.NoDebug | DebugLaunchOptions.StopDebuggingOnEnd | DebugLaunchOptions.MergeEnvironment), targets[0].LaunchOptions);
@@ -265,7 +265,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             _mockFS.WriteAllText(@"c:\test\project\test.exe", string.Empty);
             var activeProfile = new LaunchProfile(){Name="run", ExecutablePath=".\\test.exe"};
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
-            Assert.Equal(1, targets.Count);
+            Assert.Single(targets);
             Assert.Equal(@"c:\test\project\test.exe", targets[0].Executable);
             Assert.Equal(@"c:\test\project", targets[0].CurrentDirectory);
         }
@@ -280,7 +280,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             _mockFS.CreateDirectory(@"c:\WorkingDir");
             var activeProfile = new LaunchProfile(){Name="run", ExecutablePath=".\\mytest.exe", WorkingDirectory=@"c:\WorkingDir"};
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
-            Assert.Equal(1, targets.Count);
+            Assert.Single(targets);
             Assert.Equal(@"c:\WorkingDir\mytest.exe", targets[0].Executable);
             Assert.Equal(@"c:\WorkingDir", targets[0].CurrentDirectory);
         }

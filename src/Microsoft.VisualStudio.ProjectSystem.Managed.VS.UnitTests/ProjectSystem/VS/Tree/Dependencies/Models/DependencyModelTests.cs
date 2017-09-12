@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.True(model.Flags.Contains(DependencyTreeFlags.GenericUnresolvedDependencyFlags));
             Assert.Equal(false, model.Resolved);
             Assert.Equal(false, model.Implicit);
-            Assert.Equal(1, model.Properties.Count);
+            Assert.Single(model.Properties);
         }
 
         [Fact]
@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.True(model.Flags.Contains(DependencyTreeFlags.GenericResolvedDependencyFlags));
             Assert.Equal(true, model.Resolved);
             Assert.Equal(false, model.Implicit);
-            Assert.Equal(1, model.Properties.Count);
+            Assert.Single(model.Properties);
         }
 
         [Fact]
@@ -110,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.False(model.Flags.Contains(DependencyTreeFlags.SupportsRemove));
             Assert.Equal(true, model.Resolved);
             Assert.Equal(true, model.Implicit);
-            Assert.Equal(1, model.Properties.Count);
+            Assert.Single(model.Properties);
         }
 
         [Fact]

@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             Assert.True(migrator.BackupProject(BackupLocation, XprojLocation, "XprojMigrationTests", logger));
 
             // We expect 2 informational messages about what files were backed up.
-            Assert.Equal(2, loggedMessages.Count);
+            AssertEx.CollectionLength(loggedMessages, 2);
             loggedMessages.ForEach(message =>
             {
                 Assert.Equal((uint)__VSUL_ERRORLEVEL.VSUL_INFORMATIONAL, message.Level);
@@ -106,9 +106,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
             // Finally, assert that there actually are backup files in the backup directory
             var backedUpFiles = fileSystem.EnumerateFiles(BackupLocation, "*", SearchOption.TopDirectoryOnly);
-            Assert.Equal(2, backedUpFiles.Count());
-            Assert.True(backedUpFiles.Contains(xprojBackedUp));
-            Assert.True(backedUpFiles.Contains(projectJsonBackedUp));
+            AssertEx.CollectionLength(backedUpFiles, 2);
+            Assert.Contains(xprojBackedUp, backedUpFiles);
+            Assert.Contains(projectJsonBackedUp, backedUpFiles);
         }
 
         [Fact]
@@ -124,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             Assert.True(migrator.BackupProject(BackupLocation, XprojLocation, "XprojMigrationTests", logger));
 
             // We expect 2 informational messages about what files were backed up.
-            Assert.Equal(3, loggedMessages.Count);
+            AssertEx.CollectionLength(loggedMessages, 3);
             loggedMessages.ForEach(message =>
             {
                 Assert.Equal((uint)__VSUL_ERRORLEVEL.VSUL_INFORMATIONAL, message.Level);
@@ -146,9 +146,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             // Finally, assert that there actually are backup files in the backup directory
             var backedUpFiles = fileSystem.EnumerateFiles(BackupLocation, "*", SearchOption.TopDirectoryOnly);
             Assert.Equal(3, backedUpFiles.Count());
-            Assert.True(backedUpFiles.Contains(xprojBackedUp));
-            Assert.True(backedUpFiles.Contains(projectJsonBackedUp));
-            Assert.True(backedUpFiles.Contains(xprojUserBackedUp));
+            Assert.Contains(xprojBackedUp, backedUpFiles);
+            Assert.Contains(projectJsonBackedUp, backedUpFiles);
+            Assert.Contains(xprojUserBackedUp, backedUpFiles);
         }
 
 
@@ -163,7 +163,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
             Assert.False(migrator.BackupProject(BackupLocation, XprojLocation, "XprojMigrationTests", logger));
 
-            Assert.Equal(1, loggedMessages.Count);
+            Assert.Single(loggedMessages);
             Assert.Equal((uint)__VSUL_ERRORLEVEL.VSUL_ERROR, loggedMessages[0].Level);
             Assert.Equal("XprojMigrationTests", loggedMessages[0].Project);
             Assert.Equal(ProjectJsonLocation, loggedMessages[0].File);
@@ -183,7 +183,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             var migrateResults = migrator.MigrateProject(SlnLocation, RootLocation, XprojLocation, "XprojMigrationTests", logger);
 
             Assert.Equal(0, migrateResults.exitCode);
-            Assert.Equal(0, loggedMessages.Count);
+            Assert.Empty(loggedMessages);
         }
 
         [Fact]
@@ -197,7 +197,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
 
             Assert.Equal(0, migrator.MigrateProject(SlnLocation, RootLocation, XprojLocation, "XprojMigrationTests", logger).exitCode);
-            Assert.Equal(2, loggedMessages.Count);
+            AssertEx.CollectionLength(loggedMessages, 2);
             Assert.Equal(new LogMessage
             {
                 File = XprojLocation,
@@ -240,7 +240,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             var (foundProjectFile, success) = migrator.LogReport(LogFileLocation, 0, ProjectName, XprojLocation, logger);
             Assert.Equal(CsprojLocation, foundProjectFile);
             Assert.True(success);
-            Assert.Equal(0, loggedMessages.Count);
+            Assert.Empty(loggedMessages);
         }
 
         [Fact]
@@ -255,7 +255,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             var (projectFile, success) = migrator.LogReport(LogFileLocation, VSConstants.E_FAIL, ProjectName, XprojLocation, logger);
             Assert.Equal(string.Empty, projectFile);
             Assert.False(success);
-            Assert.Equal(2, loggedMessages.Count);
+            AssertEx.CollectionLength(loggedMessages, 2);
             Assert.Equal(new LogMessage
             {
                 File = XprojLocation,
@@ -285,7 +285,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             var (projectFile, success) = migrator.LogReport(LogFileLocation, VSConstants.E_ABORT, ProjectName, XprojLocation, logger);
             Assert.Equal(string.Empty, projectFile);
             Assert.False(success);
-            Assert.Equal(2, loggedMessages.Count);
+            AssertEx.CollectionLength(loggedMessages, 2);
             Assert.Equal(new LogMessage
             {
                 File = XprojLocation,
@@ -422,7 +422,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
             migrator.BackupAndDeleteGlobalJson(SlnLocation, solution, BackupLocation, XprojLocation, ProjectName, logger);
             Assert.True(fileSystem.FileExists(globalJsonBackedUp));
-            Assert.Equal(1, loggedMessages.Count);
+            Assert.Single(loggedMessages);
             Assert.Equal(new LogMessage
             {
                 File = GlobalJsonLocation,
@@ -455,7 +455,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
             migrator.BackupAndDeleteGlobalJson(SlnLocation, solution, BackupLocation, XprojLocation, ProjectName, logger);
             Assert.True(fileSystem.FileExists(globalJsonBackedUp));
-            Assert.Equal(1, loggedMessages.Count);
+            Assert.Single(loggedMessages);
             Assert.Equal(new LogMessage
             {
                 File = GlobalJsonLocation,

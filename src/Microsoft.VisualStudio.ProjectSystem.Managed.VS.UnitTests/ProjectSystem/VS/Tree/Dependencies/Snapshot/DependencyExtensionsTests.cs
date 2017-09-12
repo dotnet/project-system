@@ -136,10 +136,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var icons = dependency.GetIcons();
 
             Assert.Equal(4, icons.Count());
-            Assert.True(icons.Any(x => x.Equals(KnownMonikers.Uninstall)));
-            Assert.True(icons.Any(x => x.Equals(KnownMonikers.AbsolutePosition)));
-            Assert.True(icons.Any(x => x.Equals(KnownMonikers.AboutBox)));
-            Assert.True(icons.Any(x => x.Equals(KnownMonikers.Abbreviation)));
+            Assert.Contains(icons, x => x.Equals(KnownMonikers.Uninstall));
+            Assert.Contains(icons, x => x.Equals(KnownMonikers.AbsolutePosition));
+            Assert.Contains(icons, x => x.Equals(KnownMonikers.AboutBox));
+            Assert.Contains(icons, x => x.Equals(KnownMonikers.Abbreviation));
         }
 
         [Fact]

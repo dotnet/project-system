@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 var provider = new PlatformProjectConfigurationDimensionProvider(_projectXmlAccessor);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
                 var values = await provider.GetDefaultValuesForDimensionsAsync(unconfiguredProject);
-                Assert.Equal(1, values.Count());
+                Assert.Single(values);
                 var value = values.First();
                 Assert.Equal(ConfigurationGeneral.PlatformProperty, value.Key);
                 Assert.Equal("AnyCPU", value.Value);
@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 var provider = new PlatformProjectConfigurationDimensionProvider(_projectXmlAccessor);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
                 var values = await provider.GetProjectConfigurationDimensionsAsync(unconfiguredProject);
-                Assert.Equal(1, values.Count());
+                Assert.Single(values);
                 var value = values.First();
                 Assert.Equal(ConfigurationGeneral.PlatformProperty, value.Key);
                 string[] dimensionValues = value.Value.ToArray();

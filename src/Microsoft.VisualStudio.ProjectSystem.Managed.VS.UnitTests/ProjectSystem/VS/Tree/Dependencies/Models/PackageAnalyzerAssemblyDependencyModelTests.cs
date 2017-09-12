@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(KnownMonikers.CodeInformation, model.ExpandedIcon);
             Assert.Equal(ManagedImageMonikers.CodeInformationWarning, model.UnresolvedIcon);
             Assert.Equal(ManagedImageMonikers.CodeInformationWarning, model.UnresolvedExpandedIcon);
-            Assert.Equal(2, model.DependencyIDs.Count);
+            AssertEx.CollectionLength(model.DependencyIDs, 2);
             Assert.True(model.Flags.Contains(flag));
         }
 
@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(KnownMonikers.CodeInformation, model.ExpandedIcon);
             Assert.Equal(ManagedImageMonikers.CodeInformationWarning, model.UnresolvedIcon);
             Assert.Equal(ManagedImageMonikers.CodeInformationWarning, model.UnresolvedExpandedIcon);
-            Assert.Equal(2, model.DependencyIDs.Count);
+            AssertEx.CollectionLength(model.DependencyIDs, 2);
             Assert.True(model.Flags.Contains(flag));
         }
     }
