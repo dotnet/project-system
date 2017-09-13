@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="25f47167-7a8a-4dc7-98cf-f05d92349c9a" Version="1.0" Language="en-US" Publisher="Microsoft" />
+    <Identity Id="Microsoft.VisualStudio.ProjectSystem.Tools" Version="1.0" Language="en-US" Publisher="Microsoft" />
     <DisplayName>Project System Tools</DisplayName>
     <Description>Tools for working with the C#, Visual Basic, and F# project systems.</Description>
   </Metadata>

@@ -1,0 +1,37 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <VersionBase>1.0.0</VersionBase>
+    <PreReleaseVersionLabel>beta1</PreReleaseVersionLabel>
+
+    <!-- Opt-in repo features -->
+    <UsingToolVSSDK>true</UsingToolVSSDK>
+    
+    <!-- Toolset -->
+    <RoslynToolsMicrosoftRepoToolsetVersion>1.0.0-alpha40</RoslynToolsMicrosoftRepoToolsetVersion>
+    <VSWhereVersion>1.0.47</VSWhereVersion>
+
+    <!-- MSBuild -->
+    <MicrosoftBuildVersion>15.3.409</MicrosoftBuildVersion>
+    <MicrosoftBuildEngineVersion>15.3.409</MicrosoftBuildEngineVersion>
+    <MicrosoftBuildFrameworkVersion>15.3.409</MicrosoftBuildFrameworkVersion>
+    
+    <!-- VS SDK -->
+    <MicrosoftVisualStudioComponentModelHostVersion>15.0.26906-alpha</MicrosoftVisualStudioComponentModelHostVersion>
+    <MicrosoftVisualStudioCoreUtilityVersion>15.0.26906-alpha</MicrosoftVisualStudioCoreUtilityVersion>
+    <MicrosoftVisualStudioImageCatalogVersion>15.0.26906-alpha</MicrosoftVisualStudioImageCatalogVersion>
+    <MicrosoftVisualStudioEditorVersion>15.0.26906-alpha</MicrosoftVisualStudioEditorVersion>
+    <MicrosoftVisualStudioProjectSystemSDKVersion>15.3.224</MicrosoftVisualStudioProjectSystemSDKVersion>
+    <MicrosoftVisualStudioShell150Version>15.0.26906-alpha</MicrosoftVisualStudioShell150Version>
+    <MicrosoftVisualStudioShellFrameworkVersion>15.0.26906-alpha</MicrosoftVisualStudioShellFrameworkVersion>
+    <MicrosoftVisualStudioShellInterop140DesignTimeVersion>15.0.25726-Preview5</MicrosoftVisualStudioShellInterop140DesignTimeVersion>
+    <MicrosoftVisualStudioShellInterop150DesignTimeVersion>15.0.26906-alpha</MicrosoftVisualStudioShellInterop150DesignTimeVersion>
+    <MicrosoftVisualStudioShellInterop153DesignTimeVersion>15.0.26906-alpha</MicrosoftVisualStudioShellInterop153DesignTimeVersion>
+    <MicrosoftVisualStudioShellInterop90Version>9.0.30729</MicrosoftVisualStudioShellInterop90Version>
+    <MicrosoftVisualStudioTextManagerInterop100Version>10.0.30319</MicrosoftVisualStudioTextManagerInterop100Version>
+    <MicrosoftVisualStudioUtilitiesVersion>15.0.26906-alpha</MicrosoftVisualStudioUtilitiesVersion>
+
+    <!-- Libs -->
+    <SystemCompositionVersion>1.1.0</SystemCompositionVersion>
+
+  </PropertyGroup>
+</Project>

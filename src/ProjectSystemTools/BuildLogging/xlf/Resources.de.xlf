@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="de" original="../Resources.resx">
+    <body>
+      <trans-unit id="CannotSetProperty">
+        <source>Cannot set property.</source>
+        <target state="new">Cannot set property.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DesignTimeHeaderLabel">
+        <source>Design-Time</source>
+        <target state="new">Design-Time</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DimensionsHeaderLabel">
+        <source>Dimensions</source>
+        <target state="new">Dimensions</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ElapsedHeaderLabel">
+        <source>Elapsed</source>
+        <target state="new">Elapsed</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LogFolderDescription">
+        <source>Save logs to:</source>
+        <target state="new">Save logs to:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OpenCommand">
+        <source>Open</source>
+        <target state="new">Open</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SearchWatermark">
+        <source>Search Build Logs</source>
+        <target state="new">Search Build Logs</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartTimeHeaderLabel">
+        <source>Start</source>
+        <target state="new">Start</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StatusHeaderLabel">
+        <source>Status</source>
+        <target state="new">Status</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TargetsHeaderLabel">
+        <source>Targets</source>
+        <target state="new">Targets</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

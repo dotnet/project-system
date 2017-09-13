@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="tr" original="../ProjectSystemToolsPackage.vsct">
+    <body>
+      <trans-unit id="BuildLoggingToolbarMenuId|ButtonText">
+        <source>Build Logging</source>
+        <target state="new">Build Logging</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BuildLoggingContextMenuId|ButtonText">
+        <source>Build Logging</source>
+        <target state="new">Build Logging</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BuildLoggingCommandId|ButtonText">
+        <source>Build Logging</source>
+        <target state="new">Build Logging</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartLoggingCommandId|ButtonText">
+        <source>Start logging</source>
+        <target state="new">Start logging</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartLoggingCommandId|ToolTipText">
+        <source>Start logging builds</source>
+        <target state="new">Start logging builds</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StopLoggingCommandId|ButtonText">
+        <source>Stop logging</source>
+        <target state="new">Stop logging</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StopLoggingCommandId|ToolTipText">
+        <source>Stop logging builds</source>
+        <target state="new">Stop logging builds</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ClearCommandId|ButtonText">
+        <source>Clear</source>
+        <target state="new">Clear</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ClearCommandId|ToolTipText">
+        <source>Clear list of builds</source>
+        <target state="new">Clear list of builds</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SaveLogsCommandId|ButtonText">
+        <source>Save Logs...</source>
+        <target state="new">Save Logs...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OpenLogsCommandId|ButtonText">
+        <source>Open Logs...</source>
+        <target state="new">Open Logs...</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,28 +1,19 @@
 <!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Project>
-  <PropertyGroup>
-    <RepositoryRootDirectory>$(MSBuildThisFileDirectory)</RepositoryRootDirectory>
-    <OutputPath>$([System.IO.Path]::GetFullPath('$(RepositoryRootDirectory)bin\$(Configuration)'))\</OutputPath>
-    <OutDir>$(OutputPath)</OutDir>
-    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net46' AND '$(BuildForPack)' == ''">
-    <OutDir>$(OutputPath)</OutDir>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net46' AND '$(BuildForPack)' != ''">
-    <OutDir>$(OutputPath)\net46</OutDir>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.4'">
-    <OutDir>$(OutputPath)\netstandard1.4</OutDir>
-  </PropertyGroup>
+  <Import Project="build\NuGet.props"/>
+  <Import Project="build\Versions.props"/>
 
   <PropertyGroup>
-    <!-- Assembly signing isn't supported by non-Windows MSBuild. Disable until supported. See #55 (https://github.com/dotnet/sdk/issues/55) -->
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
+    <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
+    
+    <RepoRoot>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\'))</RepoRoot>
+    <SignToolDataPath>$(RepoRoot)build\SignToolData.json</SignToolDataPath>
+    <VersionsPropsPath>$(RepoRoot)build\Versions.props</VersionsPropsPath>
+    <RepoToolsetDir>$(NuGetPackageRoot)RoslynTools.Microsoft.RepoToolset\$(RoslynToolsMicrosoftRepoToolsetVersion)\tools\</RepoToolsetDir>
+    
+    <RepositoryUrl>https://github.com/dotnet/project-system-tools</RepositoryUrl>
+    <PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
 
-  <Import Project="$(RepositoryRootDirectory)build\Signing\Signing.props"/>
+    <VSSDKTargetPlatformRegRootSuffix>RoslynDev</VSSDKTargetPlatformRegRootSuffix>
+  </PropertyGroup>
 </Project>
