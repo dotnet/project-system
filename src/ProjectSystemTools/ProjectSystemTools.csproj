@@ -5,6 +5,7 @@
     <AssemblyName>Microsoft.VisualStudio.ProjectSystem.Tools</AssemblyName>
 
     <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+    <IsProductComponent>false</IsProductComponent>
 
     <!-- VSIX -->
     <ExtensionInstallationRoot>CommonExtensions</ExtensionInstallationRoot>
