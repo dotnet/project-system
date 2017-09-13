@@ -19,8 +19,8 @@
        Microsoft.VisualStudio.Diagnostics.PerformanceProvider.dll is needed by GraphProvider unit tests.
        if it is not provided here, tests fail to load this assembly at runtime.
     -->
+    <PackageReference Include="Microsoft.VisualStudio.DataTools.Interop" Version="$(MicrosoftVisualStudioDataToolsInteropVersion)" />
     <PackageReference Include="Microsoft.VisualStudio.Diagnostics.PerformanceProvider" Version="$(MicrosoftVisualStudioDiagnosticsPerformanceProviderVersion)" />
-
     <PackageReference Include="Microsoft.VisualStudio.Designer.Interfaces" Version="$(MicrosoftVisualStudioDesignerInterfacesVersion)" />
     <PackageReference Include="Microsoft.VisualStudio.GraphModel" Version="$(MicrosoftVisualStudioGraphModelVersion)" />
     <PackageReference Include="Microsoft.VisualStudio.Editor" Version="$(MicrosoftVisualStudioEditorVersion)" />
@@ -42,21 +42,30 @@
     <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.12.1.DesignTime" Version="$(MicrosoftVisualStudioShellInterop121DesignTimeVersion)" />
     <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.14.0.DesignTime" Version="$(MicrosoftVisualStudioShellInterop140DesignTimeVersion)" />
     <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.15.0.DesignTime" Version="$(MicrosoftVisualStudioShellInterop150DesignTimeVersion)" />
+    <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.15.3.DesignTime" Version="$(MicrosoftVisualStudioShellInterop153DesignTimeVersion)" />
     <PackageReference Include="Microsoft.VisualStudio.Shell.Design" Version="$(MicrosoftVisualStudioShellDesignVersion)" />
     <PackageReference Include="Microsoft.VisualStudio.Shell.15.0" Version="$(MicrosoftVisualStudioShell15Version)" />
     <PackageReference Include="Microsoft.VisualStudio.Shell.Framework" Version="$(MicrosoftVisualStudioShellFrameworkVersion)" />
     <PackageReference Include="Microsoft.VisualStudio.Telemetry" Version="$(MicrosoftVisualStudioTelemetryVersion)" ExcludeAssets="Build" />
     <PackageReference Include="Microsoft.VisualStudio.Utilities" Version="$(MicrosoftVisualStudioUtilitiesVersion)" />
     <PackageReference Include="Microsoft.VisualStudio.Validation" Version="$(MicrosoftVisualStudioValidationVersion)" />
+    <PackageReference Include="Microsoft.VisualStudio.VSHelp" Version="$(MicrosoftVisualStudioVsHelpVersion)" />
+    <PackageReference Include="Microsoft.VisualStudio.XmlEditor" Version="$(MicrosoftVisualStudioXmlEditorVersion)" />
     <PackageReference Include="Microsoft.VisualStudio.WCFReference.Interop" Version="$(MicrosoftVisualStudioWCFReferenceInteropVersion)" />
+    <PackageReference Include="Microsoft.VSDesigner" Version="$(MicrosoftVsDesignerVersion)" />
+
+    <PackageReference Include="Newtonsoft.Json" Version="$(NewtonsoftJsonVersion)" />
   </ItemGroup>
 
   <!--
-    This is a copy of the Microsoft.VisualStudio.SDK.EmbedInteropTypes NuGet package, but only the list of
-    assemblies that we need. The package includes things like EnvDTE which are reasonable for consumers, but
-    strange since we actually _implement_ DTE and use it as an exchange type with generics in a few places. 
+    Some of the VSSDK packages may pull in Microsoft.VisualStudio.SDK.EmbedInteropTypes which essentially
+    does the below but for all of the listed references. We can't just use what they have since they include
+    things like EnvDTE which is reasonable for consumers, but strange since we actually _implement_ DTE and
+    use it as an exchange type with generics in a few places. Instead, we run directly after the target declared
+    in the EmbedInteropTypes package and ensure only the dependencies we need are embedded and the others are
+    skipped.
   -->
-  <Target Name="LinkVSSDKEmbeddableAssemblies" BeforeTargets="FindReferenceAssembliesForReferences;ResolveReferences">
+  <Target Name="CustomLinkVSSDKEmbeddableAssemblies" AfterTargets="LinkVSSDKEmbeddableAssemblies">
     <ItemGroup>
       <ReferencePath Condition="
               '%(FileName)' == 'Microsoft.VisualStudio.Shell.Embeddable'
@@ -64,6 +73,7 @@
            or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.12.1.DesignTime'
            or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.14.0.DesignTime'
            or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.15.0.DesignTime'
+           or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.15.3.DesignTime'
            or '%(Filename)' == 'Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime'
            or '%(FileName)' == 'Microsoft.VisualStudio.TextManager.Interop.12.1.DesignTime'
            or '%(FileName)' == 'Microsoft.VisualStudio.ProjectSystem.Interop'
@@ -73,6 +83,19 @@
            or '%(FileName)' == 'NuGet.VisualStudio'
            or '%(FileName)' == 'VSLangProj110'">
         <EmbedInteropTypes>true</EmbedInteropTypes>
+      </ReferencePath>
+      <ReferencePath Condition="
+              '%(FileName)' == 'Microsoft.VisualStudio.Imaging.Interop.15.0.DesignTime'
+           or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.10.0'
+           or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.11.0'
+           or '%(FileName)' == 'Microsoft.VisualStudio.Feedback.Interop.12.0.DesignTime'
+           or '%(FileName)' == 'microsoft.visualstudio.designer.interfaces'
+           or '%(FileName)' == 'EnvDTE80'
+           or '%(FileName)' == 'EnvDTE90'
+           or '%(FileName)' == 'EnvDTE100'
+           or '%(FileName)' == 'Microsoft.Internal.VisualStudio.Shell.Interop.14.1.DesignTime'
+           or '%(FileName)' == 'Microsoft.Internal.VisualStudio.Shell.Interop.14.2.DesignTime'">
+        <EmbedInteropTypes>false</EmbedInteropTypes>
       </ReferencePath>
     </ItemGroup>
   </Target>
