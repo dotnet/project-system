@@ -38,7 +38,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                    contextProvider,
                    tasksService,
                    activeConfiguredProjectSubscriptionService,
-                   activeProjectConfigurationRefreshService)
+                   activeProjectConfigurationRefreshService,
+                   targetFrameworkProvider)
         {
             CommonServices = commonServices;
             DependencySubscribers = new OrderPrecedenceImportCollection<IDependencyCrossTargetSubscriber>(
