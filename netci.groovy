@@ -2,6 +2,7 @@
 // Jenkins DSL: https://github.com/jenkinsci/job-dsl-plugin/wiki
 
 import jobs.generation.Utilities;
+import jobs.generation.InternalUtilities;
 import jobs.generation.ArchivalSettings;
 
 static addArchival(def job, def configName) {
@@ -41,7 +42,7 @@ def createJob(def platform, def configName, def isPR) {
   def jobName = "${platform}_${configName}"
   def newJob = job(Utilities.getFullJobName(projectName, jobName, isPR))
 
-  Utilities.standardJobSetup(newJob, projectName, isPR, "*/${branchName}")
+  InternalUtilities.standardJobSetup(newJob, projectName, isPR, "*/${branchName}")
 
   addGithubTrigger(newJob, isPR, branchName, jobName)
   addArchival(newJob, configName)
