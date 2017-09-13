@@ -29,13 +29,6 @@ static addGithubTrigger(def job, def isPR, def branchName, def jobName) {
   }
 }
 
-static addXUnitDotNETResults(def job, def configName) {
-  def resultFilePattern = "**/artifacts/${configName}/TestResults/*.xml"
-  def skipIfNoTestFiles = false
-    
-  Utilities.addXUnitDotNETResults(job, resultFilePattern, skipIfNoTestFiles)
-}
-
 def createJob(def platform, def configName, def isPR) {
   def projectName = GithubProject
   def branchName = GithubBranchName  
@@ -46,7 +39,6 @@ def createJob(def platform, def configName, def isPR) {
 
   addGithubTrigger(newJob, isPR, branchName, jobName)
   addArchival(newJob, configName)
-  addXUnitDotNETResults(newJob, configName)
 
   return newJob
 }
