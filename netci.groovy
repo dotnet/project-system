@@ -42,7 +42,7 @@ def createJob(def platform, def configName, def isPR) {
   def jobName = "${platform}_${configName}"
   def newJob = job(InternalUtilities.getFullJobName(projectName, jobName, isPR))
 
-  Utilities.standardJobSetup(newJob, projectName, isPR, "*/${branchName}")
+  InternalUtilities.standardJobSetup(newJob, projectName, isPR, "*/${branchName}")
 
   addGithubTrigger(newJob, isPR, branchName, jobName)
   addArchival(newJob, configName)
