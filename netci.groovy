@@ -2,6 +2,7 @@
 // Jenkins DSL: https://github.com/jenkinsci/job-dsl-plugin/wiki
 
 import jobs.generation.Utilities;
+import jobs.generation.InternalUtilities;
 import jobs.generation.ArchivalSettings;
 
 static addArchival(def job, def configName) {
@@ -39,7 +40,7 @@ def createJob(def platform, def configName, def isPR) {
   def projectName = GithubProject
   def branchName = GithubBranchName  
   def jobName = "${platform}_${configName}"
-  def newJob = job(Utilities.getFullJobName(projectName, jobName, isPR))
+  def newJob = job(InternalUtilities.getFullJobName(projectName, jobName, isPR))
 
   Utilities.standardJobSetup(newJob, projectName, isPR, "*/${branchName}")
 
@@ -55,7 +56,7 @@ def createJob(def platform, def configName, def isPR) {
     ['debug', 'release'].each { configName ->
       def newJob = createJob(platform, configName, isPR)
 
-      Utilities.setMachineAffinity(newJob, 'Windows_NT', 'latest-dev15-3-preview7')
+      Utilities.setMachineAffinity(newJob, 'Windows_NT', 'latest-dev15-3')
 
       newJob.with {
         steps {
