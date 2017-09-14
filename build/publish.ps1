@@ -42,7 +42,7 @@ try {
         exit 1
     }
 
-    if ($uploadUrl -ne "") {
+    if ($uploadUrl -eq "") {
         Write-Host "Must provide the URL to upload the VSIX to -uploadUrl"
         exit 1
     }
