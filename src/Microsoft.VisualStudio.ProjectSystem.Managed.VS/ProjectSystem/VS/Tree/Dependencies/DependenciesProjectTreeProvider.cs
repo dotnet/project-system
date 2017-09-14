@@ -425,6 +425,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                 ApplyProjectTreePropertiesCustomization(null, values);
 
+                // Note that all the parameters are specified so we can force this call to an
+                // overload of NewTree available prior to 15.5 versions of CPS. Once a 15.5 build
+                // is publicly available we can move this to an overload with default values for
+                // most of the parameters, and we'll only need to pass the interesting ones.
                 return NewTree(
                          caption: values.Caption,
                          filePath: null,
@@ -535,6 +539,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             bool visible = true,
             ProjectTreeFlags? flags = default(ProjectTreeFlags?))
         {
+            // Note that all the parameters are specified so we can force this call to an
+            // overload of NewTree available prior to 15.5 versions of CPS. Once a 15.5 build
+            // is publicly available we can move this to an overload with default values for
+            // most of the parameters, and we'll only need to pass the interesting ones.
             return NewTree(
                 caption: caption,
                 item: itemContext,
