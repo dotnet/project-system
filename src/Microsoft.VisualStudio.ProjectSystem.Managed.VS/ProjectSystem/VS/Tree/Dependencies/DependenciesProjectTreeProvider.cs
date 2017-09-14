@@ -426,9 +426,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 ApplyProjectTreePropertiesCustomization(null, values);
 
                 return NewTree(
-                         values.Caption,
+                         caption: values.Caption,
+                         filePath: null,
+                         browseObjectProperties: null,
                          icon: values.Icon,
                          expandedIcon: values.ExpandedIcon,
+                         visible: true,
                          flags: values.Flags);
             }
             else
@@ -540,7 +543,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 icon: icon,
                 expandedIcon: expandedIcon,
                 visible: visible,
-                flags: flags);
+                flags: flags,
+                isLinked: false);
         }
 
         public IProjectTree CreateTree(
