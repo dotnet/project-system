@@ -2,7 +2,6 @@
 
 using System;
 using System.Runtime.Versioning;
-using BCLDebug = System.Diagnostics.Debug;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
@@ -97,8 +96,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         public bool Equals(string obj)
         {
-            BCLDebug.Fail("This should never be called.");
-
             if (obj != null)
             {
                 return string.Equals(Moniker, obj, StringComparison.OrdinalIgnoreCase)
