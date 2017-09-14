@@ -48,6 +48,14 @@
     <ForceGenerationOfBindingRedirects>true</ForceGenerationOfBindingRedirects>
   </PropertyGroup>
 
+  <!-- Workaround https://github.com/dotnet/sdk/issues/1510 -->
+  <Target Name="WorkaroundConflictResolution" AfterTargets="_ComputeActiveTFMFileDependencies"
+          Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+    <ItemGroup>
+      <_ActiveTFMFileDependencies Remove="@(_ActiveTFMFileDependencies->WithMetadataValue('FileGroup', 'RuntimeTarget'))" />
+    </ItemGroup>
+  </Target>
+
   <!-- 
     TODO: Import layout props so that design-time build executed before package restore is finished doesn't
     product artifacts into wrong obj directories. Remove once we can use a custom SDK (https://github.com/Microsoft/msbuild/issues/1493)
