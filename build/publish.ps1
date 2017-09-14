@@ -14,7 +14,7 @@ Param(
     [switch]$test,
 
     # Credentials 
-    [string]$apiKey = "",
+    [string]$apiKey = ""
 )
 
 Set-StrictMode -version 2.0
