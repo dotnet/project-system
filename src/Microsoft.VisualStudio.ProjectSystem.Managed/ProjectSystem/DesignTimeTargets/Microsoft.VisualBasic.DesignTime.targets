@@ -30,7 +30,7 @@
         <Context>ProjectSubscriptionService</Context>
       </PropertyPageSchema>
 
-     <ProjectCapability Include="VB;Managed"/>
+     <ProjectCapability Include="VB;Managed;ClassDesigner;"/>
   </ItemGroup>
 
   <!-- Targets -->
