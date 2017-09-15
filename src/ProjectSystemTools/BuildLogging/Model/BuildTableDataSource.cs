@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using Microsoft.Build.Framework;
 using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI;
+using Microsoft.VisualStudio.ProjectSystem.Tools.Providers;
 using Microsoft.VisualStudio.Shell.TableManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model

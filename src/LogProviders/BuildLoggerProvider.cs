@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
@@ -7,11 +8,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework;
 using Microsoft.VisualStudio.ProjectSystem.Build;
-using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model;
 using Microsoft.VisualStudio.Shell.BuildLogging;
-using System;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
+namespace Microsoft.VisualStudio.ProjectSystem.Tools.Providers
 {
     [Export(typeof(IBuildLoggerProviderAsync))]
     [AppliesTo(ProjectCapabilities.AlwaysApplicable)]
