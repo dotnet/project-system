@@ -1,17 +1,12 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <TargetFramework>net46</TargetFramework>
-    <RootNamespace>Microsoft.VisualStudio.ProjectSystem.Tools</RootNamespace>
-    <AssemblyName>Microsoft.VisualStudio.ProjectSystem.Tools</AssemblyName>
-
-    <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+    <AssemblyName>Microsoft.VisualStudio.ProjectSystem.Tools.Providers</AssemblyName>
+    <RootNamespace>Microsoft.VisualStudio.ProjectSystem.Tools.Providers</RootNamespace>
     <IsProductComponent>false</IsProductComponent>
-
-    <!-- VSIX -->
-    <ExtensionInstallationRoot>CommonExtensions</ExtensionInstallationRoot>
-    <ExtensionInstallationFolder>Microsoft\ProjectSystemTools</ExtensionInstallationFolder>
-    <VisualStudioInsertionComponent>Microsoft.VisualStudio.ProjectSystemTools</VisualStudioInsertionComponent>
   </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.Build" Version="$(MicrosoftBuildVersion)" />
     <PackageReference Include="Microsoft.Build.Engine" Version="$(MicrosoftBuildEngineVersion)" />
@@ -30,27 +25,5 @@
     <PackageReference Include="Microsoft.VisualStudio.TextManager.Interop.10.0" Version="$(MicrosoftVisualStudioTextManagerInterop100Version)" />
     <PackageReference Include="Microsoft.VisualStudio.Utilities" Version="$(MicrosoftVisualStudioUtilitiesVersion)" />
     <PackageReference Include="System.Composition" Version="$(SystemCompositionVersion)" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System.Design" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="WindowsBase" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="xlf\*" />
-    <EmbeddedResource Include="BuildLogging\Resources.resx" GenerateSource="true" />
-    <EmbeddedResource Include="VSPackage.resx">
-      <MergeWithCTO>true</MergeWithCTO>
-      <ManifestResourceName>VSPackage</ManifestResourceName>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <ProjectReference Include="..\LogProviders\LogProviders.csproj" />
-    <VSCTCompile Include="ProjectSystemToolsPackage.vsct">
-      <ResourceName>Menus.ctmenu</ResourceName>
-      <SubType>Designer</SubType>
-    </VSCTCompile>
   </ItemGroup>
 </Project>

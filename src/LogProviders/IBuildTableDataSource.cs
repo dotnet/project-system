@@ -3,9 +3,9 @@
 using Microsoft.Build.Framework;
 using Microsoft.VisualStudio.Shell.TableManager;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
+namespace Microsoft.VisualStudio.ProjectSystem.Tools.Providers
 {
-    internal interface IBuildTableDataSource
+    public interface IBuildTableDataSource
     {
         ITableManager Manager { get; set; }
 
@@ -17,6 +17,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
         void Clear();
 
-        ILogger CreateLogger();
+        ILogger CreateLogger(bool isDesignTime);
     }
 }

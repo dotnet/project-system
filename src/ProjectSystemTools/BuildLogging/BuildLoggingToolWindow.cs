@@ -15,6 +15,7 @@ using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model;
 using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI;
+using Microsoft.VisualStudio.ProjectSystem.Tools.Providers;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Shell.TableControl;
