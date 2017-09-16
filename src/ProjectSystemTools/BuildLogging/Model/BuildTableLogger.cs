@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
             var dimensions = GatherDimensions(e.GlobalProperties);
 
-            var build = new Build(Path.GetFileNameWithoutExtension(e.ProjectFile), dimensions.ToArray(), e.TargetNames?.Split(';'), _isDesignTime, e.Timestamp);
+            var build = new Build(e.ProjectFile, dimensions.ToArray(), e.TargetNames?.Split(';'), _isDesignTime, e.Timestamp);
             _build = build;
             _projectInstanceId = e.BuildEventContext.ProjectInstanceId;
             _dataSource.AddEntry(_build);

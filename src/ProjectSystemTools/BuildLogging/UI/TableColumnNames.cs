@@ -8,5 +8,6 @@
         public const string Elapsed = "elapsed";
         public const string Status = "status";
         public const string Targets = "targets";
+        public const string ProjectType = "projecttype";
     }
 }

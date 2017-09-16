@@ -52,6 +52,11 @@
         <target state="new">Targets</target>
         <note />
       </trans-unit>
+      <trans-unit id="ProjectTypeHeaderLabel">
+        <source>Type</source>
+        <target state="new">Type</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>
