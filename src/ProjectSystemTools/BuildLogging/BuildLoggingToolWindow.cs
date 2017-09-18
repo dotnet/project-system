@@ -89,7 +89,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                         var defaultColumns = new List<ColumnState>
                         {
                             new ColumnState2(StandardTableColumnDefinitions.DetailsExpander, isVisible: true, width: 25),
-                            new ColumnState2(StandardTableColumnDefinitions.ProjectName, isVisible: true, width: 250),
+                            new ColumnState2(StandardTableColumnDefinitions.ProjectName, isVisible: true, width: 200),
+                            new ColumnState2(TableColumnNames.ProjectType, isVisible: true, width: 50),
                             new ColumnState2(TableColumnNames.Dimensions, isVisible: true, width: 100),
                             new ColumnState2(TableColumnNames.Targets, isVisible: true, width: 700),
                             new ColumnState2(TableColumnNames.DesignTime, isVisible: true, width: 100),
@@ -138,6 +139,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
             {
                 StandardTableColumnDefinitions.DetailsExpander,
                 StandardTableColumnDefinitions.ProjectName,
+                TableColumnNames.ProjectType,
                 TableColumnNames.Dimensions,
                 TableColumnNames.Targets,
                 TableColumnNames.DesignTime,

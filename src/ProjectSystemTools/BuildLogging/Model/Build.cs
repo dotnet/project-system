@@ -23,15 +23,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
         public BuildStatus Status { get; private set; }
 
-        public string Project { get; }
+        public string ProjectPath { get; }
 
         public string LogPath { get; private set; }
 
-        public string Filename => $"{Project}_{Dimensions.Aggregate((c, n) => string.IsNullOrEmpty(n) ? c : $"{c}_{n}")}_{(DesignTime ? "design" : "")}_{StartTime:s}.binlog".Replace(':', '_');
+        public string Filename => $"{Path.GetFileNameWithoutExtension(ProjectPath)}_{Dimensions.Aggregate((c, n) => string.IsNullOrEmpty(n) ? c : $"{c}_{n}")}_{(DesignTime ? "design" : "")}_{StartTime:s}.binlog".Replace(':', '_');
 
-        public Build(string project, IEnumerable<string> dimensions, IEnumerable<string> targets, bool designTime, DateTime startTime)
+        public Build(string projectPath, IEnumerable<string> dimensions, IEnumerable<string> targets, bool designTime, DateTime startTime)
         {
-            Project = project;
+            ProjectPath = projectPath;
             Dimensions = dimensions.ToArray();
             Targets = targets?.ToArray() ?? Enumerable.Empty<string>();
             DesignTime = designTime;
@@ -75,7 +75,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
                     break;
 
                 case StandardTableKeyNames.ProjectName:
-                    content = Project;
+                    content = Path.GetFileNameWithoutExtension(ProjectPath);
+                    break;
+
+                case TableKeyNames.ProjectType:
+                    content = Path.GetExtension(ProjectPath);
                     break;
 
                 case TableKeyNames.StartTime:
@@ -111,7 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
             }
 
             var startComparison = StartTime.CompareTo(other.StartTime);
-            return startComparison != 0 ? startComparison : String.Compare(Project, other.Project, StringComparison.Ordinal);
+            return startComparison != 0 ? startComparison : String.Compare(ProjectPath, other.ProjectPath, StringComparison.Ordinal);
         }
 
         public void Dispose()
