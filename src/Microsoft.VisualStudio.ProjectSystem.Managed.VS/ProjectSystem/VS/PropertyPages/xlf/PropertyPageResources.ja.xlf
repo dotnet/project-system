@@ -177,6 +177,21 @@
         <target state="translated">作業ディレクトリ:</target>
         <note />
       </trans-unit>
+      <trans-unit id="CancelBtn">
+        <source>Cancel</source>
+        <target state="new">Cancel</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OKBtn">
+        <source>OK</source>
+        <target state="new">OK</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ProfileName">
+        <source>Profile name:</source>
+        <target state="new">Profile name:</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

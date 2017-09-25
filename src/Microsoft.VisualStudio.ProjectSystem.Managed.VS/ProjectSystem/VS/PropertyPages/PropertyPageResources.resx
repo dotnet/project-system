@@ -222,4 +222,13 @@
   <data name="WorkingDirectory" xml:space="preserve">
     <value>Working directory:</value>
   </data>
+  <data name="CancelBtn" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="OKBtn" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="ProfileName" xml:space="preserve">
+    <value>Profile name:</value>
+  </data>
 </root>
