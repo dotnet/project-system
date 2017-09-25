@@ -7,8 +7,6 @@
     
     <!-- VSIX -->
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
-    <ExtensionInstallationRoot>CommonExtensions</ExtensionInstallationRoot>
-    <ExtensionInstallationFolder>Microsoft\VisualStudio\Editors</ExtensionInstallationFolder>
 
     <!-- VS Insertion -->
     <VisualStudioInsertionComponent>Microsoft.VisualStudio.ProjectSystem.Managed</VisualStudioInsertionComponent>
