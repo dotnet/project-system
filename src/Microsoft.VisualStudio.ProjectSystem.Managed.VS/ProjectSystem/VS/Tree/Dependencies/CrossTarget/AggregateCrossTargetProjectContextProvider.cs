@@ -273,7 +273,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 }
             }
 
-            return _targetFrameworkProvider.GetTargetFramework(shortOrFullName);
+            return _targetFrameworkProvider.GetTargetFramework(shortOrFullName) ?? TargetFramework.Empty;
         }
 
         private static string GetDisplayName(ConfiguredProject configuredProject, ProjectData projectData, string targetFramework)
