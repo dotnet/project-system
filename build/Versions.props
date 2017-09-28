@@ -16,19 +16,19 @@
     <MicrosoftBuildFrameworkVersion>15.3.409</MicrosoftBuildFrameworkVersion>
     
     <!-- VS SDK -->
-    <MicrosoftVisualStudioComponentModelHostVersion>15.0.26906-alpha</MicrosoftVisualStudioComponentModelHostVersion>
-    <MicrosoftVisualStudioCoreUtilityVersion>15.0.26906-alpha</MicrosoftVisualStudioCoreUtilityVersion>
-    <MicrosoftVisualStudioImageCatalogVersion>15.0.26906-alpha</MicrosoftVisualStudioImageCatalogVersion>
-    <MicrosoftVisualStudioEditorVersion>15.0.26906-alpha</MicrosoftVisualStudioEditorVersion>
+    <MicrosoftVisualStudioComponentModelHostVersion>15.0.26927-alpha</MicrosoftVisualStudioComponentModelHostVersion>
+    <MicrosoftVisualStudioCoreUtilityVersion>15.0.26927-alpha</MicrosoftVisualStudioCoreUtilityVersion>
+    <MicrosoftVisualStudioImageCatalogVersion>15.0.26927-alpha</MicrosoftVisualStudioImageCatalogVersion>
+    <MicrosoftVisualStudioEditorVersion>15.0.26927-alpha</MicrosoftVisualStudioEditorVersion>
     <MicrosoftVisualStudioProjectSystemSDKVersion>15.3.224</MicrosoftVisualStudioProjectSystemSDKVersion>
-    <MicrosoftVisualStudioShell150Version>15.0.26906-alpha</MicrosoftVisualStudioShell150Version>
-    <MicrosoftVisualStudioShellFrameworkVersion>15.0.26906-alpha</MicrosoftVisualStudioShellFrameworkVersion>
+    <MicrosoftVisualStudioShell150Version>15.0.26927-alpha</MicrosoftVisualStudioShell150Version>
+    <MicrosoftVisualStudioShellFrameworkVersion>15.0.26927-alpha</MicrosoftVisualStudioShellFrameworkVersion>
     <MicrosoftVisualStudioShellInterop140DesignTimeVersion>15.0.25726-Preview5</MicrosoftVisualStudioShellInterop140DesignTimeVersion>
-    <MicrosoftVisualStudioShellInterop150DesignTimeVersion>15.0.26906-alpha</MicrosoftVisualStudioShellInterop150DesignTimeVersion>
-    <MicrosoftVisualStudioShellInterop153DesignTimeVersion>15.0.26906-alpha</MicrosoftVisualStudioShellInterop153DesignTimeVersion>
+    <MicrosoftVisualStudioShellInterop150DesignTimeVersion>15.0.26927-alpha</MicrosoftVisualStudioShellInterop150DesignTimeVersion>
+    <MicrosoftVisualStudioShellInterop153DesignTimeVersion>15.0.26927-alpha</MicrosoftVisualStudioShellInterop153DesignTimeVersion>
     <MicrosoftVisualStudioShellInterop90Version>9.0.30729</MicrosoftVisualStudioShellInterop90Version>
     <MicrosoftVisualStudioTextManagerInterop100Version>10.0.30319</MicrosoftVisualStudioTextManagerInterop100Version>
-    <MicrosoftVisualStudioUtilitiesVersion>15.0.26906-alpha</MicrosoftVisualStudioUtilitiesVersion>
+    <MicrosoftVisualStudioUtilitiesVersion>15.0.26927-alpha</MicrosoftVisualStudioUtilitiesVersion>
 
     <!-- Libs -->
     <SystemCompositionVersion>1.1.0</SystemCompositionVersion>
