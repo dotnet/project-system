@@ -25,6 +25,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.Providers
             _dataSource = dataSource;
         }
 
+        public LoggerVerbosity Verbosity => throw new NotImplementedException();
+
+        public BuildLoggerEvents Events => throw new NotImplementedException();
+
         public ILogger GetLogger(string projectPath, IEnumerable<string> targets, IDictionary<string, string> properties, bool isDesignTimeBuild)
         {
             return _dataSource.CreateLogger(isDesignTimeBuild);
