@@ -4,7 +4,6 @@
     <Identity Id="Microsoft.VisualStudio.ProjectSystem.Tools" Version="|%CurrentProject%;GetBuildVersion|" Language="en-US" Publisher="Microsoft" />
     <DisplayName>Project System Tools</DisplayName>
     <Description>Tools for working with the C#, Visual Basic, and F# project systems.</Description>
-    <License>..\..\LICENSE.md</License>
     <Icon>Icon.png</Icon>
     <PreviewImage>Icon.png</PreviewImage>
     <Tags>project, csproj, vbproj</Tags>
