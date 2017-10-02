@@ -77,6 +77,11 @@
         <target state="translated">このパッケージで非表示にする必要がある警告のコンマ区切りリスト</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|Path|Description">
+        <source>Location of the package being referenced.</source>
+        <target state="new">Location of the package being referenced.</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

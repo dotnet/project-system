@@ -87,6 +87,11 @@
         <target state="translated">Recursos que son privados en esta referencia</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|Path|Description">
+        <source>Location of the package being referenced.</source>
+        <target state="new">Location of the package being referenced.</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

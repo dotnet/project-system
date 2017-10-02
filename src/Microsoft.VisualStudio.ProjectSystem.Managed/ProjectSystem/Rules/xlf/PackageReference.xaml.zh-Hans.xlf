@@ -77,6 +77,11 @@
         <target state="translated">应为此包取消的警告逗号分隔列表</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|Path|Description">
+        <source>Location of the package being referenced.</source>
+        <target state="new">Location of the package being referenced.</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

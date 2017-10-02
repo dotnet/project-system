@@ -52,8 +52,9 @@
                     Description="The evaluated item name of the original reference item whose resolution resulted in this resolved reference item." />
 
     <StringProperty Name="Path" 
-                    Visible="False" 
-                    ReadOnly="True" />
+                    Visible="True" 
+                    ReadOnly="True"
+                    Description="Location of the package being referenced." />
 
     <StringProperty Name="Type" 
                     Visible="False" 
