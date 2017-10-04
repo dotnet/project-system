@@ -54,7 +54,7 @@
       </trans-unit>
       <trans-unit id="11">
         <source>xUnit Test Project (.NET Core)</source>
-        <target state="translated">Projekt testování xUnit (.NET Core)</target>
+        <target state="translated">Projekt testů xUnit (.NET Core)</target>
         <note />
       </trans-unit>
       <trans-unit id="12">
