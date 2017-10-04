@@ -52,13 +52,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         public DebugPageViewModel()
         {
+            // Hook into our own property changed event. This is solely to know when an active profile has been edited
+            PropertyChanged += ViewModel_PropertyChanged;
         }
+
 
         // for unit testing
         internal DebugPageViewModel(bool useTaskFactory, UnconfiguredProject unconfiguredProject)
         {
             _useTaskFactory = useTaskFactory;
             UnconfiguredProject = unconfiguredProject;
+            PropertyChanged += ViewModel_PropertyChanged;
+        }
+
+        /// <summary>
+        /// This is here so that we can clear the in-memory status of teh active profile if it has been edited. This is
+        /// so that the profile, and hence the users customizations, will be saved to disk
+        /// </summary>
+        private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (!IgnoreEvents)
+            {
+                if(SelectedDebugProfile != null && SelectedDebugProfile.IsInMemoryProfile())
+                {
+                    ((IWritableLaunchProfile2)SelectedDebugProfile).IsInMemoryProfile = false;
+                }
+            }
         }
         
         private List<LaunchType> _launchTypes;
@@ -161,7 +180,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// Called from the CustomUI when a change occurs. This just fires a dummy property change
         /// to dirty the page.
         /// </summary>
-        private void OnCustomUIStateChanged(Object sender, PropertyChangedEventArgs e)
+        private void OnCustomUIStateChanged(object sender, PropertyChangedEventArgs e)
         {
             OnPropertyChanged("CustomUIDirty");
         }
@@ -980,6 +999,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 _debugProfileProviderLink.Dispose();
                 _debugProfileProviderLink = null;
             }
+
+            PropertyChanged -= ViewModel_PropertyChanged;
         }
         
         ILaunchSettingsProvider _launchSettingsProvider;
@@ -996,7 +1017,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// <summary>
         /// Called by the currently active control when errors within the control have changed
         /// </summary>
-        private void OnCustomUIErrorsChanged(Object sender, DataErrorsChangedEventArgs e)
+        private void OnCustomUIErrorsChanged(object sender, DataErrorsChangedEventArgs e)
         {
             ErrorsChanged?.Invoke(this, e);
 

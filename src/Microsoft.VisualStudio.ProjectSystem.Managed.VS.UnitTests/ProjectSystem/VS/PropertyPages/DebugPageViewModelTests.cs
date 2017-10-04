@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+using System.Windows.Controls;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Moq;
 using Moq.Protected;
@@ -98,6 +99,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             Assert.Equal(string.Empty, viewModel.Object.LaunchPage);
             Assert.Equal(string.Empty, viewModel.Object.ExecutablePath);
             Assert.Equal(string.Empty, viewModel.Object.CommandLineArguments);
+        }
+
+        [Fact]
+        public async Task DebugPageViewModel_PropertyChange()
+        {
+            TestUnconfiguredPropertyProvider unconfiguredProvider = new TestUnconfiguredPropertyProvider();
+            var profiles = new List<ILaunchProfile>()
+            {
+                {new LaunchProfile() {Name="p1", CommandName="test", IsInMemoryProfile = true}}
+            };
+
+            var viewModelData = new ViewModelData()
+            {
+                UnconfiguredProvider = unconfiguredProvider,
+                Profiles = profiles,
+                UIProviders = new List<Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>>()
+                {
+                    {new Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>(() => 
+                    {
+                        var uiProvider = new Mock<ILaunchSettingsUIProvider>();
+                        uiProvider.Setup(m => m.CustomUI).Returns((UserControl)null);
+                        uiProvider.Setup(m => m.ShouldEnableProperty(It.IsAny<string>())).Returns(true);
+                        uiProvider.Setup(m => m.CommandName).Returns("test");
+                        return uiProvider.Object;
+                    }, new Mock<IOrderPrecedenceMetadataView>().Object)}
+                }
+            };
+
+            var viewModel = CreateViewModel(viewModelData);
+            await viewModel.Object.Initialize();
+            viewModel.Object.InitializeDebugTargetsCore(viewModelData.LaunchProfiles);
+
+            Assert.True(viewModel.Object.HasProfiles);
+            Assert.True(viewModel.Object.IsProfileSelected);
+            Assert.True(viewModel.Object.SelectedDebugProfile.IsInMemoryProfile());
+
+            // Change a property, should trigger the selected profile to no longer be in-memory
+            viewModel.Object.CommandLineArguments = "-arg";
+            Assert.False(viewModel.Object.SelectedDebugProfile.IsInMemoryProfile());
         }
     }
 }

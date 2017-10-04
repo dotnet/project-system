@@ -173,6 +173,62 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             await provider.UpdateProfilesAsyncTest("Docker");
             Assert.Single(provider.CurrentSnapshot.Profiles);
             Assert.Equal(LaunchSettingsProvider.ErrorProfileCommandName, provider.CurrentSnapshot.ActiveProfile.CommandName);
+            Assert.True(((ILaunchProfile2)provider.CurrentSnapshot.ActiveProfile).IsInMemoryProfile);
+        }
+
+        [Fact]
+        public async Task UpdateProfiles_MergeInMemroyProfiles()
+        {
+            IFileSystemMock moqFS = new IFileSystemMock();
+            var provider = GetLaunchSettingsProvider(moqFS);
+            moqFS.WriteAllText(provider.LaunchSettingsFile, JsonString1);
+
+            var curProfiles = new Mock<ILaunchSettings>();
+            curProfiles.Setup(m => m.Profiles).Returns(() =>
+            {
+                return new List<ILaunchProfile>()
+                {
+                    { new LaunchProfile() { Name = "IIS Express", CommandName="IISExpress", LaunchBrowser=true, IsInMemoryProfile = true } },
+                    { new LaunchProfile() { Name = "InMemory1", IsInMemoryProfile = true} }
+                }.ToImmutableList();
+            });
+
+            provider.SetCurrentSnapshot(curProfiles.Object);
+
+            await provider.UpdateProfilesAsyncTest(null);
+            Assert.Equal(5, provider.CurrentSnapshot.Profiles.Count);
+            Assert.Equal("InMemory1", provider.CurrentSnapshot.Profiles[1].Name);
+            Assert.Equal(true, provider.CurrentSnapshot.Profiles[1].IsInMemoryProfile());
+            Assert.Equal(false, provider.CurrentSnapshot.Profiles[0].IsInMemoryProfile());
+        }
+
+        [Fact]
+        public async Task UpdateProfiles_MergeInMemroyProfiles_AddProfileAtAend()
+        {
+            IFileSystemMock moqFS = new IFileSystemMock();
+            var provider = GetLaunchSettingsProvider(moqFS);
+            moqFS.WriteAllText(provider.LaunchSettingsFile, JsonString1);
+
+            var curProfiles = new Mock<ILaunchSettings>();
+            curProfiles.Setup(m => m.Profiles).Returns(() =>
+            {
+                return new List<ILaunchProfile>()
+                {
+                    { new LaunchProfile() { Name = "profile1", CommandName="IISExpress", LaunchBrowser=true} },
+                    { new LaunchProfile() { Name ="profile2", CommandName="IISExpress", LaunchBrowser=true} },
+                    { new LaunchProfile() { Name ="profile3", CommandName="IISExpress", LaunchBrowser=true} },
+                    { new LaunchProfile() { Name ="profile4", CommandName="IISExpress", LaunchBrowser=true} },
+                    { new LaunchProfile() { Name ="profile5", CommandName="IISExpress", LaunchBrowser=true} },
+                    { new LaunchProfile() { Name = "InMemory1", IsInMemoryProfile = true} }
+                }.ToImmutableList();
+            });
+
+            provider.SetCurrentSnapshot(curProfiles.Object);
+
+            await provider.UpdateProfilesAsyncTest(null);
+            Assert.Equal(5, provider.CurrentSnapshot.Profiles.Count);
+            Assert.Equal("InMemory1", provider.CurrentSnapshot.Profiles[provider.CurrentSnapshot.Profiles.Count - 1].Name);
+            Assert.Equal(true, provider.CurrentSnapshot.Profiles[provider.CurrentSnapshot.Profiles.Count - 1].IsInMemoryProfile());
         }
 
         [Fact]
@@ -475,9 +531,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Theory]
-        [InlineData(true, 0)]
-        [InlineData(false, 2)]
-        public async Task AddOrUpdateProfileAsync_ProfileDoesntExist(bool addToFront, int expectedIndex)
+        [InlineData(true, 0, false)]
+        [InlineData(false, 2, false)]
+        [InlineData(false, 2, true)]
+        public async Task AddOrUpdateProfileAsync_ProfileDoesntExist(bool addToFront, int expectedIndex, bool isInMemory)
         {
             IFileSystemMock moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
@@ -493,12 +550,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             provider.SetCurrentSnapshot(testSettings.Object);
 
-            var newProfile = new LaunchProfile() { Name = "test", CommandName = "Test" };
+            var newProfile = new LaunchProfile() { Name = "test", CommandName = "Test", IsInMemoryProfile = isInMemory};
 
             await provider.AddOrUpdateProfileAsync(newProfile, addToFront).ConfigureAwait(true);
 
-            // Check disk file was written
-            Assert.True(moqFS.FileExists(provider.LaunchSettingsFile));
+            // Check disk file was written unless not in memory
+            Assert.Equal(!isInMemory, moqFS.FileExists(provider.LaunchSettingsFile));
 
             // Check snapshot
             AssertEx.CollectionLength(provider.CurrentSnapshot.Profiles, 3);
@@ -507,9 +564,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Theory]
-        [InlineData(true, 0)]
-        [InlineData(false, 1)]
-        public async Task AddOrUpdateProfileAsync_ProfileExists(bool addToFront, int expectedIndex)
+        [InlineData(true, 0, false)]
+        [InlineData(false, 1, false)]
+        [InlineData(false, 1, true)]
+        public async Task AddOrUpdateProfileAsync_ProfileExists(bool addToFront, int expectedIndex, bool isInMemory)
         {
             IFileSystemMock moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
@@ -526,12 +584,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             provider.SetCurrentSnapshot(testSettings.Object);
 
-            var newProfile = new LaunchProfile() { Name = "test", CommandName = "Test" };
+            var newProfile = new LaunchProfile() { Name = "test", CommandName = "Test", IsInMemoryProfile = isInMemory };
 
             await provider.AddOrUpdateProfileAsync(newProfile, addToFront).ConfigureAwait(true);
 
-            // Check disk file was written
-            Assert.True(moqFS.FileExists(provider.LaunchSettingsFile));
+            // Check disk file was written unless in memory profile
+            Assert.Equal(!isInMemory, moqFS.FileExists(provider.LaunchSettingsFile));
 
             // Check snapshot
             AssertEx.CollectionLength(provider.CurrentSnapshot.Profiles, 3);

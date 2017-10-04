@@ -232,11 +232,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             FinishUpdate(newSnapshot);
         }
 
-
         /// <summary>
-        /// Does the processing to update the profiles when changes have been made to either the file, the active profile or projectData. Note that
-        /// any of the parmaters can be null. This code must handle that correctly. Setting existingProfiles to null effectively re-intilaizes the
-        /// entire list.
+        /// Does the processing to update the profiles when changes have been made to either the file or the active profile. 
+        /// When merging with the disk, it needs to honor in-memory only profiles that may have been programmatically added. If 
+        /// a profile on disk has the same name as an in-memory profile, the one on disk wins. It tries to add the in-memory profiles
+        /// in the same order they appeared prior to the disk change.
         /// </summary>
         protected async Task UpdateProfilesAsync(string activeProfile)
         {
@@ -254,7 +254,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
                 var launchSettingData = await GetLaunchSettingsAsync().ConfigureAwait(false);
 
-
                 // If there are no profiles, we will add a default profile to run the prroject. W/o it our debugger
                 // won't be called on F5 and the user will see a poor error message
                 if (launchSettingData.Profiles.Count == 0)
@@ -262,10 +261,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     launchSettingData.Profiles.Add(new LaunchProfileData() { Name = Path.GetFileNameWithoutExtension(CommonProjectServices.Project.FullPath), CommandName = RunProjectCommandName });
                 }
 
+                // If we have a previous snapshot merge in in-memory profiles
+                var prevSnapshot = CurrentSnapshot;
+                if(prevSnapshot != null)
+                {
+                    MergeExistingInMemoryProfiles(launchSettingData, prevSnapshot);
+                }
+
                 var newSnapshot = new LaunchSettings(launchSettingData, activeProfile);
 
                 FinishUpdate(newSnapshot);
-
             }
             catch (Exception ex)
             {
@@ -275,10 +280,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // display the error when run
                 if (CurrentSnapshot == null)
                 {
-                    var errorProfile = new LaunchProfile() { Name = Resources.NoActionProfileName, CommandName = ErrorProfileCommandName };
+                    var errorProfile = new LaunchProfile() { Name = Resources.NoActionProfileName, CommandName = ErrorProfileCommandName, IsInMemoryProfile = true};
                     errorProfile.OtherSettings = ImmutableDictionary<string, object>.Empty.Add("ErrorString", ex.Message);
                     var snapshot = new LaunchSettings(new List<ILaunchProfile>() { errorProfile }, null, errorProfile.Name);
                     FinishUpdate(snapshot);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Re-applies in-memory profils to the newly created snapshot
+        /// </summary>
+        protected void MergeExistingInMemoryProfiles(LaunchSettingsData newSnapshot, ILaunchSettings prevSnapshot)
+        {
+            for (int i =0; i < prevSnapshot.Profiles.Count; i++)
+            {
+                var profile = prevSnapshot.Profiles[i];
+                if(profile.IsInMemoryProfile())
+                {
+                    // Does it already have one with this name?
+                    if(newSnapshot.Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, profile.Name)) == null)
+                    {
+                        // Create a new one from the existing in-memory profile and insert it in the same location, or the end if it
+                        // is beyond the end of the list
+                        if(i > newSnapshot.Profiles.Count)
+                        {
+                            newSnapshot.Profiles.Add(LaunchProfileData.FromILaunchProfile(profile));
+                        }
+                        else
+                        {
+                            newSnapshot.Profiles.Insert(i, LaunchProfileData.FromILaunchProfile(profile));
+                        }
+                    }
                 }
             }
         }
@@ -312,7 +345,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         protected string GetActiveProfile(IProjectSubscriptionUpdate projectSubscriptionUpdate)
         {
-            if (projectSubscriptionUpdate.CurrentState.TryGetValue(ProjectDebugger.SchemaName, out IProjectRuleSnapshot ruleSnapshot) && ruleSnapshot.Properties.TryGetValue(ProjectDebugger.ActiveDebugProfileProperty, out string activeProfile))
+            if (projectSubscriptionUpdate.CurrentState.TryGetValue(ProjectDebugger.SchemaName, out IProjectRuleSnapshot ruleSnapshot) && 
+                ruleSnapshot.Properties.TryGetValue(ProjectDebugger.ActiveDebugProfileProperty, out string activeProfile))
             {
                 return activeProfile;
             }
@@ -537,7 +571,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         private bool ProfileShouldBePersisted(ILaunchProfile profile)
         {
-            return !string.Equals(profile.CommandName, ErrorProfileCommandName);
+            return !profile.IsInMemoryProfile();
         }
 
         /// <summary>
@@ -689,7 +723,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// made, the file will be checked out and saved. Note it ignores the value of the active profile
         /// as this setting is controlled by a user property.
         /// </summary>
-        private async Task UpdateAndSaveSettingsInternalAsync(ILaunchSettings newSettings)
+        private async Task UpdateAndSaveSettingsInternalAsync(ILaunchSettings newSettings, bool persistToDisk = true)
         {
             await CheckoutSettingsFileAsync().ConfigureAwait(false);
 
@@ -697,7 +731,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var activeProfileName = ActiveProfile?.Name;
 
             ILaunchSettings newSnapshot = new LaunchSettings(newSettings.Profiles, newSettings.GlobalSettings, activeProfileName);
-            await SaveSettingsToDiskAsync(newSettings).ConfigureAwait(false);
+            if(persistToDisk)
+            {
+                await SaveSettingsToDiskAsync(newSettings).ConfigureAwait(false);
+            }
 
             FinishUpdate(newSnapshot);
         }
@@ -763,8 +800,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     profiles = profiles.Insert(insertionIndex, new LaunchProfile(profile));
                 }
 
+                // If the new profile is i-nmemory only, we don't want to touch the disk
+                bool saveToDisk = !profile.IsInMemoryProfile();
+                
                 var newSnapshot = new LaunchSettings(profiles, currentSettings?.GlobalSettings, currentSettings?.ActiveProfile?.Name);
-                await UpdateAndSaveSettingsInternalAsync(newSnapshot).ConfigureAwait(false);
+                await UpdateAndSaveSettingsInternalAsync(newSnapshot, saveToDisk).ConfigureAwait(false);
             }).ConfigureAwait(false);
         }
 
@@ -781,8 +821,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 if (existingProfile != null)
                 {
                     var profiles = currentSettings.Profiles.Remove(existingProfile);
+                   
+                    // If the new profile is i-nmemory only, we don't want to touch the disk
+                    bool saveToDisk = !existingProfile.IsInMemoryProfile();
                     var newSnapshot = new LaunchSettings(profiles, currentSettings.GlobalSettings, currentSettings.ActiveProfile?.Name);
-                    await UpdateAndSaveSettingsInternalAsync(newSnapshot).ConfigureAwait(false);
+                    await UpdateAndSaveSettingsInternalAsync(newSnapshot, saveToDisk).ConfigureAwait(false);
                 }
             }).ConfigureAwait(false);
         }
