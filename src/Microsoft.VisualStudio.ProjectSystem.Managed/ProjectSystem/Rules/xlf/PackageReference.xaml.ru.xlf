@@ -77,6 +77,11 @@
         <target state="translated">Разделенный запятыми список предупреждений, которые должны быть подавлены для этого пакета.</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|Path|Description">
+        <source>Location of the package being referenced.</source>
+        <target state="new">Location of the package being referenced.</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

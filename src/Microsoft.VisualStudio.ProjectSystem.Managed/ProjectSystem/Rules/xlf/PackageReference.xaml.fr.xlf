@@ -77,6 +77,11 @@
         <target state="translated">Liste délimitée par des virgules, qui répertorie les avertissements à supprimer pour ce package</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|Path|Description">
+        <source>Location of the package being referenced.</source>
+        <target state="new">Location of the package being referenced.</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

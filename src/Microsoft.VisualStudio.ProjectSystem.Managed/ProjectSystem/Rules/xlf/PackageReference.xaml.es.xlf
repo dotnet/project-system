@@ -77,6 +77,11 @@
         <target state="translated">Lista de advertencias delimitada por comas que se deben suprimir en este paquete</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|Path|Description">
+        <source>Location of the package being referenced.</source>
+        <target state="new">Location of the package being referenced.</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

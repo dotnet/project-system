@@ -6,7 +6,7 @@
     PageTemplate="generic"
     Description="Package Properties"
     xmlns="http://schemas.microsoft.com/build/2009/properties">
-   
+
     <Rule.DataSource>
         <DataSource Persistence="ResolvedReference" ItemType="PackageReference" HasConfigurationCondition="False" 
                     SourceType="TargetResults" MSBuildTarget="ResolvePackageDependenciesDesignTime" SourceOfDefaultValue="AfterContext" />
@@ -27,15 +27,16 @@
     <StringProperty Name="Name" 
                     Visible="True" 
                     ReadOnly="True" />
-    
+
     <StringProperty Name="OriginalItemSpec" 
                     Visible="False" 
                     ReadOnly="True" 
                     Description="The evaluated item name of the original reference item whose resolution resulted in this resolved reference item." />
-    
+
     <StringProperty Name="Path" 
-                    Visible="False" 
-                    ReadOnly="True" />
+                    Visible="True"
+                    ReadOnly="True"
+                    Description="Location of the package being referenced." />
 
     <StringProperty Name="Type" 
                     Visible="False" 
@@ -56,7 +57,7 @@
     <StringProperty Name="IsImplicitlyDefined" 
                     Visible="False" 
                     ReadOnly="True" />
-    
+
     <StringProperty Name="FrameworkVersion" 
                     Visible="False" 
                     ReadOnly="True" />
@@ -118,7 +119,7 @@
             <DataSource Persistence="ResolvedReference" ItemType="PackageReference" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
         </StringListProperty.DataSource>
     </StringListProperty>
-    
+
     <BoolProperty Name="IsTopLevelDependency" 
                   Visible="False"
                   ReadOnly="True"/>

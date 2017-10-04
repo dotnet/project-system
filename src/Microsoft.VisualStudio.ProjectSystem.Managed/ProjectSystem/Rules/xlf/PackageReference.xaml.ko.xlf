@@ -77,6 +77,11 @@
         <target state="translated">이 패키지에 대해 표시하지 않는, 쉼표로 구분된 경고 목록</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|Path|Description">
+        <source>Location of the package being referenced.</source>
+        <target state="new">Location of the package being referenced.</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>
