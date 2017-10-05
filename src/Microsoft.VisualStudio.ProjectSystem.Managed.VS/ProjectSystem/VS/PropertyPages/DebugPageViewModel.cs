@@ -22,7 +22,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     {
         private readonly string _executableFilter = string.Format("{0} (*.exe)|*.exe|{1} (*.*)|*.*", PropertyPageResources.ExecutableFiles, PropertyPageResources.AllFiles);
         private IDisposable _debugProfileProviderLink;
-        private bool _useTaskFactory = true;
+
+        // Unit Tests only
+        private TaskCompletionSource<bool> _firstSnapshotCompleteSource = null;
         
         private IProjectThreadingService _projectThreadingService;
         private IProjectThreadingService ProjectThreadingService
@@ -58,9 +60,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
 
         // for unit testing
-        internal DebugPageViewModel(bool useTaskFactory, UnconfiguredProject unconfiguredProject)
+        internal DebugPageViewModel(TaskCompletionSource<bool> snapshotComplete, UnconfiguredProject unconfiguredProject)
         {
-            _useTaskFactory = useTaskFactory;
+            _firstSnapshotCompleteSource = snapshotComplete;
             UnconfiguredProject = unconfiguredProject;
             PropertyChanged += ViewModel_PropertyChanged;
         }
@@ -73,9 +75,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             if (!IgnoreEvents)
             {
-                if(SelectedDebugProfile != null && SelectedDebugProfile.IsInMemoryProfile())
+                if(SelectedDebugProfile != null && SelectedDebugProfile.IsInMemoryObject() && SelectedDebugProfile is IWritablePersistOption writablePersist)
                 {
-                    ((IWritableLaunchProfile2)SelectedDebugProfile).IsInMemoryProfile = false;
+                    writablePersist.DoNotPersist = false;
                 }
             }
         }
@@ -655,6 +657,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             finally
             {
                 PopIgnoreEvents();
+                if(_firstSnapshotCompleteSource != null)
+                {
+                    _firstSnapshotCompleteSource.TrySetResult(true);
+                }
             }
         }
 
@@ -668,7 +674,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 var debugProfilesBlock = new ActionBlock<ILaunchSettings>(
                 async (profiles) =>
                 {
-                    if (_useTaskFactory)
+                    if (_firstSnapshotCompleteSource == null)
                     {
                         await ProjectThreadingService.SwitchToUIThread();
                     }

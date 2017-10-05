@@ -14,14 +14,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             return new WritableLaunchProfile(curProfile);
         }
 
-        public static bool IsInMemoryProfile(this ILaunchProfile profile)
+        public static bool IsInMemoryObject(this object persistObject)
         {
-            return profile is ILaunchProfile2 profile2 && profile2.IsInMemoryProfile;
-        }
-
-        public static bool IsInMemoryProfile(this IWritableLaunchProfile profile)
-        {
-            return profile is IWritableLaunchProfile2 profile2 && profile2.IsInMemoryProfile;
+            return persistObject is IPersistOption profile2 && profile2.DoNotPersist;
         }
 
         /// <summary>

@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// <summary>
     /// Represents one launch profile read from the launchSettings file.
     /// </summary>
-    internal class LaunchProfile : ILaunchProfile, ILaunchProfile2
+    internal class LaunchProfile : ILaunchProfile, IPersistOption
     {
         public LaunchProfile()
         {
@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             LaunchUrl = data.LaunchUrl;
             EnvironmentVariables = data.EnvironmentVariables == null ? null : ImmutableDictionary<string, string>.Empty.AddRange(data.EnvironmentVariables);
             OtherSettings = data.OtherSettings == null ? null : ImmutableDictionary<string, object>.Empty.AddRange(data.OtherSettings);
-            IsInMemoryProfile = data.InMemoryProfile;
+            DoNotPersist = data.InMemoryProfile;
         }
 
 
@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             LaunchUrl = existingProfile.LaunchUrl;
             EnvironmentVariables = existingProfile.EnvironmentVariables;
             OtherSettings = existingProfile.OtherSettings;
-            IsInMemoryProfile =existingProfile.IsInMemoryProfile();
+            DoNotPersist =existingProfile.IsInMemoryObject();
         }
 
         public LaunchProfile(IWritableLaunchProfile writableProfile)
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             WorkingDirectory = writableProfile.WorkingDirectory;
             LaunchBrowser = writableProfile.LaunchBrowser;
             LaunchUrl = writableProfile.LaunchUrl;
-            IsInMemoryProfile =writableProfile is IWritableLaunchProfile2 profile2? profile2.IsInMemoryProfile : false;
+            DoNotPersist =writableProfile.IsInMemoryObject();
 
             // If there are no env variables or settings we want to set them to null
             EnvironmentVariables = writableProfile.EnvironmentVariables.Count == 0? null : ImmutableDictionary<string, string>.Empty.AddRange(writableProfile.EnvironmentVariables);
@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public string WorkingDirectory { get; set; }
         public bool LaunchBrowser { get; set; }
         public string LaunchUrl { get; set; }
-        public bool IsInMemoryProfile { get; set; }
+        public bool DoNotPersist { get; set; }
 
         public ImmutableDictionary<string, string> EnvironmentVariables { get; set; }
         public ImmutableDictionary<string, object> OtherSettings { get; set; }

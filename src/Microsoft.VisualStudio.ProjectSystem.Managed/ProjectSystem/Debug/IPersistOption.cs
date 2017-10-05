@@ -5,8 +5,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// <summary>
     /// Extends ILaunchProfile to support in-memory (not persisted) profiles
     /// </summary>
-    public interface ILaunchProfile2
+    public interface IPersistOption
     {
-        bool IsInMemoryProfile{ get; }
+        bool DoNotPersist{ get; }
     }
 }

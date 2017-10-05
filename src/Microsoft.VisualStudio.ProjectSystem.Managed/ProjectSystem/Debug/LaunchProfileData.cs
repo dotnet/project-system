@@ -224,7 +224,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 LaunchUrl= profile.LaunchUrl,
                 EnvironmentVariables = profile.EnvironmentVariables,
                 OtherSettings = profile.OtherSettings,
-                InMemoryProfile = profile.IsInMemoryProfile()
+                InMemoryProfile = profile.IsInMemoryObject()
             };
         }
     }

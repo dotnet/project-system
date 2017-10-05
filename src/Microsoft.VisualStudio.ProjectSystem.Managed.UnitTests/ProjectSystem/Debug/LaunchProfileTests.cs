@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
            Assert.Equal(data.LaunchUrl, profile.LaunchUrl);
            Assert.True(DictionaryEqualityComparer<string, string>.Instance.Equals(data.EnvironmentVariables.ToImmutableDictionary(), profile.EnvironmentVariables));
            Assert.True(DictionaryEqualityComparer<string, object>.Instance.Equals(data.OtherSettings.ToImmutableDictionary(), profile.OtherSettings));
-           Assert.Equal(data.InMemoryProfile, profile.IsInMemoryProfile);
+           Assert.Equal(data.InMemoryProfile, profile.DoNotPersist);
            
            // Test overload
            LaunchProfile profile2 = new LaunchProfile(profile);
@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
            Assert.Equal(profile.LaunchUrl, profile2.LaunchUrl);
            Assert.True(DictionaryEqualityComparer<string, string>.Instance.Equals(profile.EnvironmentVariables, profile2.EnvironmentVariables));
            Assert.True(DictionaryEqualityComparer<string, object>.Instance.Equals(profile.OtherSettings.ToImmutableDictionary(), profile2.OtherSettings));
-           Assert.Equal(profile.IsInMemoryProfile, profile2.IsInMemoryProfile);
+           Assert.Equal(profile.DoNotPersist, profile2.DoNotPersist);
         }
 
         [Fact]

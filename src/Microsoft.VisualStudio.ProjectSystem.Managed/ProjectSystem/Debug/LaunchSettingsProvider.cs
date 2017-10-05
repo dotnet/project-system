@@ -266,6 +266,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 if(prevSnapshot != null)
                 {
                     MergeExistingInMemoryProfiles(launchSettingData, prevSnapshot);
+                    MergeExistingInMemoryGlobalSettings(launchSettingData, prevSnapshot);
                 }
 
                 var newSnapshot = new LaunchSettings(launchSettingData, activeProfile);
@@ -280,7 +281,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // display the error when run
                 if (CurrentSnapshot == null)
                 {
-                    var errorProfile = new LaunchProfile() { Name = Resources.NoActionProfileName, CommandName = ErrorProfileCommandName, IsInMemoryProfile = true};
+                    var errorProfile = new LaunchProfile() { Name = Resources.NoActionProfileName, CommandName = ErrorProfileCommandName, DoNotPersist = true};
                     errorProfile.OtherSettings = ImmutableDictionary<string, object>.Empty.Add("ErrorString", ex.Message);
                     var snapshot = new LaunchSettings(new List<ILaunchProfile>() { errorProfile }, null, errorProfile.Name);
                     FinishUpdate(snapshot);
@@ -289,14 +290,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         /// <summary>
-        /// Re-applies in-memory profils to the newly created snapshot
+        /// Re-applies in-memory profiles to the newly created snapshot
         /// </summary>
         protected void MergeExistingInMemoryProfiles(LaunchSettingsData newSnapshot, ILaunchSettings prevSnapshot)
         {
             for (int i =0; i < prevSnapshot.Profiles.Count; i++)
             {
                 var profile = prevSnapshot.Profiles[i];
-                if(profile.IsInMemoryProfile())
+                if(profile.IsInMemoryObject())
                 {
                     // Does it already have one with this name?
                     if(newSnapshot.Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, profile.Name)) == null)
@@ -310,6 +311,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                         else
                         {
                             newSnapshot.Profiles.Insert(i, LaunchProfileData.FromILaunchProfile(profile));
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Re-applies in-memory global options to the newly created snapshot
+        /// </summary>
+        protected void MergeExistingInMemoryGlobalSettings(LaunchSettingsData newSnapshot, ILaunchSettings prevSnapshot)
+        {
+            if(prevSnapshot.GlobalSettings != null)
+            {
+                foreach (var kvp in prevSnapshot.GlobalSettings)
+                {
+                    if(kvp.Value.IsInMemoryObject())
+                    {
+                        if(newSnapshot.OtherSettings == null)
+                        {
+                            newSnapshot.OtherSettings = new Dictionary<string, object> ();
+                            newSnapshot.OtherSettings[kvp.Key] = kvp.Value;
+                        }
+                        else if(!newSnapshot.OtherSettings.TryGetValue(kvp.Key, out var existingValue))
+                        {
+                            newSnapshot.OtherSettings[kvp.Key] = kvp.Value;
                         }
                     }
                 }
@@ -539,6 +565,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// <summary>
         /// Gets the serialization object for the set of profiles and custom settings. It filters out built in profiles that get added to 
         /// wire up the debugger infrastructure (NoAction profiles). Returns a dictionary of the elements to serialize.
+        /// Removes in-memory profiles and global objects
         /// </summary>
         protected Dictionary<string, object> GetSettingsToSerialize(ILaunchSettings curSettings)
         {
@@ -555,7 +582,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             foreach (var setting in curSettings.GlobalSettings)
             {
-                dataToSave.Add(setting.Key, setting.Value);
+                if(!setting.Value.IsInMemoryObject())
+                {
+                    dataToSave.Add(setting.Key, setting.Value);
+                }
             }
 
             if (profileData.Count > 0)
@@ -571,7 +601,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         private bool ProfileShouldBePersisted(ILaunchProfile profile)
         {
-            return !profile.IsInMemoryProfile();
+            return !profile.IsInMemoryObject();
         }
 
         /// <summary>
@@ -800,8 +830,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     profiles = profiles.Insert(insertionIndex, new LaunchProfile(profile));
                 }
 
-                // If the new profile is i-nmemory only, we don't want to touch the disk
-                bool saveToDisk = !profile.IsInMemoryProfile();
+                // If the new profile is i-nmemory only, we don't want to touch the disk unless it replaces an existing disk based
+                // profile
+                bool saveToDisk = !profile.IsInMemoryObject() || (existingProfile != null && !existingProfile.IsInMemoryObject());
                 
                 var newSnapshot = new LaunchSettings(profiles, currentSettings?.GlobalSettings, currentSettings?.ActiveProfile?.Name);
                 await UpdateAndSaveSettingsInternalAsync(newSnapshot, saveToDisk).ConfigureAwait(false);
@@ -823,7 +854,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     var profiles = currentSettings.Profiles.Remove(existingProfile);
                    
                     // If the new profile is i-nmemory only, we don't want to touch the disk
-                    bool saveToDisk = !existingProfile.IsInMemoryProfile();
+                    bool saveToDisk = !existingProfile.IsInMemoryObject();
                     var newSnapshot = new LaunchSettings(profiles, currentSettings.GlobalSettings, currentSettings.ActiveProfile?.Name);
                     await UpdateAndSaveSettingsInternalAsync(newSnapshot, saveToDisk).ConfigureAwait(false);
                 }
@@ -841,7 +872,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {
                 var currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
                 ImmutableDictionary<string, object> globalSettings = ImmutableDictionary<string, object>.Empty;
-                if (currentSettings.GlobalSettings.TryGetValue(settingName, out object currentValue))
+                if (currentSettings.GlobalSettings.TryGetValue(settingName, out var currentValue))
                 {
                     globalSettings = currentSettings.GlobalSettings.Remove(settingName);
                 }
@@ -850,8 +881,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     globalSettings = currentSettings.GlobalSettings;
                 }
 
+                bool saveToDisk = !settingContent.IsInMemoryObject() || (currentValue != null && !currentValue.IsInMemoryObject());
+
                 var newSnapshot = new LaunchSettings(currentSettings.Profiles, globalSettings.Add(settingName, settingContent), currentSettings.ActiveProfile?.Name);
-                await UpdateAndSaveSettingsInternalAsync(newSnapshot).ConfigureAwait(false);
+                await UpdateAndSaveSettingsInternalAsync(newSnapshot, saveToDisk).ConfigureAwait(false);
             }).ConfigureAwait(false);
         }
 
@@ -864,11 +897,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             await _sequentialTaskQueue.ExecuteTask(async () =>
             {
                 var currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
-                if (currentSettings.GlobalSettings.TryGetValue(settingName, out object currentValue))
+                if (currentSettings.GlobalSettings.TryGetValue(settingName, out var currentValue))
                 {
+                    bool saveToDisk = !currentValue.IsInMemoryObject();
                     var globalSettings = currentSettings.GlobalSettings.Remove(settingName);
                     var newSnapshot = new LaunchSettings(currentSettings.Profiles, globalSettings, currentSettings.ActiveProfile?.Name);
-                    await UpdateAndSaveSettingsInternalAsync(newSnapshot).ConfigureAwait(false);
+                    await UpdateAndSaveSettingsInternalAsync(newSnapshot, saveToDisk).ConfigureAwait(false);
                 }
             }).ConfigureAwait(false);
         }

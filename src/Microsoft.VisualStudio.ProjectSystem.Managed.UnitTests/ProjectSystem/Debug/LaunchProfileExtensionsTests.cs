@@ -15,11 +15,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             LaunchProfile data =  new LaunchProfile()
             {
-                IsInMemoryProfile = isInMemory
+                DoNotPersist = isInMemory
             };
             
             ILaunchProfile lp = (ILaunchProfile)data;
-            Assert.Equal(isInMemory, lp.IsInMemoryProfile());
+            Assert.Equal(isInMemory, lp.IsInMemoryObject());
         }
 
         [Theory]
@@ -29,11 +29,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             WritableLaunchProfile data =  new WritableLaunchProfile()
             {
-                IsInMemoryProfile = isInMemory
+                DoNotPersist = isInMemory
             };
 
             IWritableLaunchProfile lp = (IWritableLaunchProfile)data;
-            Assert.Equal(isInMemory, lp.IsInMemoryProfile());
+            Assert.Equal(isInMemory, lp.IsInMemoryObject());
         }
 
         [Theory]

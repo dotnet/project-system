@@ -22,6 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             public ILaunchSettingsProvider ProfileProvider { get; set; }
             public ILaunchSettings LaunchProfiles { get; set; }
             public IList<Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>> UIProviders { get; set; } = new List<Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>>();
+            public TaskCompletionSource<bool> FirstSnapshotComplete { get; set; }
         }
 
         private Mock<DebugPageViewModel> CreateViewModel(ViewModelData data)
@@ -30,7 +31,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             var mockSourceBlock = new Mock<IReceivableSourceBlock<ILaunchSettings>>();
             var mockProfiles = new Mock<ILaunchSettings>();
             var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj");
-            var viewModel = new Mock<DebugPageViewModel>(false, unconfiguredProject);
+
+            data.FirstSnapshotComplete = new TaskCompletionSource<bool>();
+            var viewModel = new Mock<DebugPageViewModel>(data.FirstSnapshotComplete, unconfiguredProject);
 
             mockSourceBlock.Setup(m => m.LinkTo(It.IsAny<ITargetBlock<ILaunchSettings>>(), It.IsAny<DataflowLinkOptions>())).Callback
                 (
@@ -64,12 +67,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             viewModel.Protected().Setup<IEnumerable<Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>>>("GetUIProviders").Returns(data.UIProviders);
             return viewModel;
         }
-               
+
         [Fact]
         public void DebugPageViewModel_UICommands()
         {
             var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj");
-            var viewModel = new DebugPageViewModel(false, unconfiguredProject);
+            var viewModel = new DebugPageViewModel(null, unconfiguredProject);
 
             Assert.IsType<Utilities.DelegateCommand>(viewModel.BrowseDirectoryCommand);
             Assert.IsType<Utilities.DelegateCommand>(viewModel.BrowseExecutableCommand);
@@ -107,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             TestUnconfiguredPropertyProvider unconfiguredProvider = new TestUnconfiguredPropertyProvider();
             var profiles = new List<ILaunchProfile>()
             {
-                {new LaunchProfile() {Name="p1", CommandName="test", IsInMemoryProfile = true}}
+                {new LaunchProfile() {Name="p1", CommandName="test", DoNotPersist = true}}
             };
 
             var viewModelData = new ViewModelData()
@@ -129,15 +132,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
             var viewModel = CreateViewModel(viewModelData);
             await viewModel.Object.Initialize();
-            viewModel.Object.InitializeDebugTargetsCore(viewModelData.LaunchProfiles);
+            await viewModelData.FirstSnapshotComplete.Task;
 
             Assert.True(viewModel.Object.HasProfiles);
             Assert.True(viewModel.Object.IsProfileSelected);
-            Assert.True(viewModel.Object.SelectedDebugProfile.IsInMemoryProfile());
+            Assert.True(viewModel.Object.SelectedDebugProfile.IsInMemoryObject());
 
             // Change a property, should trigger the selected profile to no longer be in-memory
             viewModel.Object.CommandLineArguments = "-arg";
-            Assert.False(viewModel.Object.SelectedDebugProfile.IsInMemoryProfile());
+            Assert.False(viewModel.Object.SelectedDebugProfile.IsInMemoryObject());
         }
     }
 }

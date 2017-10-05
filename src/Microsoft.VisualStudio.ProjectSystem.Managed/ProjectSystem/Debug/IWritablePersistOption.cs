@@ -6,8 +6,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// <summary>
     /// Extennds IWritableLaunchProfile to handle inmemory only profiles
     /// </summary>
-    public interface IWritableLaunchProfile2
+    public interface IWritablePersistOption : IPersistOption
     {
-        bool IsInMemoryProfile { get; set; }
+        new bool DoNotPersist { get; set; }
     }
 }
