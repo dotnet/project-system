@@ -41,6 +41,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         // We don't serialize the name as it the dictionary index
         public string Name { get; set; }
+        
+        // Or serialize the InMemoryProfile state
+        public bool InMemoryProfile { get; set; }
 
         [JsonProperty(PropertyName = Prop_commandName)]
         public string CommandName { get; set; }
@@ -210,17 +213,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public static LaunchProfileData FromILaunchProfile(ILaunchProfile profile)
         {
-            var data = new LaunchProfileData();
-            data.Name = profile.Name;
-            data.ExecutablePath = profile.ExecutablePath;
-            data.CommandName = profile.CommandName;
-            data.CommandLineArgs = profile.CommandLineArgs;
-            data.WorkingDirectory = profile.WorkingDirectory;
-            data.LaunchBrowser = profile.LaunchBrowser;
-            data.LaunchUrl= profile.LaunchUrl; 
-            data.EnvironmentVariables = profile.EnvironmentVariables;
-            data.OtherSettings = profile.OtherSettings;
-            return data;
+            return new LaunchProfileData()
+            {
+                Name = profile.Name,
+                ExecutablePath = profile.ExecutablePath,
+                CommandName = profile.CommandName,
+                CommandLineArgs = profile.CommandLineArgs,
+                WorkingDirectory = profile.WorkingDirectory,
+                LaunchBrowser = profile.LaunchBrowser,
+                LaunchUrl= profile.LaunchUrl,
+                EnvironmentVariables = profile.EnvironmentVariables,
+                OtherSettings = profile.OtherSettings,
+                InMemoryProfile = profile.IsInMemoryObject()
+            };
         }
     }
 }

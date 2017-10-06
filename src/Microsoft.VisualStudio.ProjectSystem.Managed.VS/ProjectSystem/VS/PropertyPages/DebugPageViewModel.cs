@@ -22,7 +22,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     {
         private readonly string _executableFilter = string.Format("{0} (*.exe)|*.exe|{1} (*.*)|*.*", PropertyPageResources.ExecutableFiles, PropertyPageResources.AllFiles);
         private IDisposable _debugProfileProviderLink;
-        private bool _useTaskFactory = true;
+
+        // Unit Tests only
+        private TaskCompletionSource<bool> _firstSnapshotCompleteSource = null;
         
         private IProjectThreadingService _projectThreadingService;
         private IProjectThreadingService ProjectThreadingService
@@ -52,13 +54,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         public DebugPageViewModel()
         {
+            // Hook into our own property changed event. This is solely to know when an active profile has been edited
+            PropertyChanged += ViewModel_PropertyChanged;
         }
 
+
         // for unit testing
-        internal DebugPageViewModel(bool useTaskFactory, UnconfiguredProject unconfiguredProject)
+        internal DebugPageViewModel(TaskCompletionSource<bool> snapshotComplete, UnconfiguredProject unconfiguredProject)
         {
-            _useTaskFactory = useTaskFactory;
+            _firstSnapshotCompleteSource = snapshotComplete;
             UnconfiguredProject = unconfiguredProject;
+            PropertyChanged += ViewModel_PropertyChanged;
+        }
+
+        /// <summary>
+        /// This is here so that we can clear the in-memory status of the active profile if it has been edited. This is
+        /// so that the profile, and hence the users customizations, will be saved to disk
+        /// </summary>
+        private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (!IgnoreEvents)
+            {
+                if(SelectedDebugProfile != null && SelectedDebugProfile is IWritablePersistOption writablePersist)
+                {
+                    writablePersist.DoNotPersist = false;
+                }
+            }
         }
         
         private List<LaunchType> _launchTypes;
@@ -161,7 +182,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// Called from the CustomUI when a change occurs. This just fires a dummy property change
         /// to dirty the page.
         /// </summary>
-        private void OnCustomUIStateChanged(Object sender, PropertyChangedEventArgs e)
+        private void OnCustomUIStateChanged(object sender, PropertyChangedEventArgs e)
         {
             OnPropertyChanged("CustomUIDirty");
         }
@@ -636,6 +657,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             finally
             {
                 PopIgnoreEvents();
+                if(_firstSnapshotCompleteSource != null)
+                {
+                    _firstSnapshotCompleteSource.TrySetResult(true);
+                }
             }
         }
 
@@ -649,7 +674,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 var debugProfilesBlock = new ActionBlock<ILaunchSettings>(
                 async (profiles) =>
                 {
-                    if (_useTaskFactory)
+                    if (_firstSnapshotCompleteSource == null)
                     {
                         await ProjectThreadingService.SwitchToUIThread();
                     }
@@ -980,6 +1005,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 _debugProfileProviderLink.Dispose();
                 _debugProfileProviderLink = null;
             }
+
+            PropertyChanged -= ViewModel_PropertyChanged;
         }
         
         ILaunchSettingsProvider _launchSettingsProvider;
@@ -996,7 +1023,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// <summary>
         /// Called by the currently active control when errors within the control have changed
         /// </summary>
-        private void OnCustomUIErrorsChanged(Object sender, DataErrorsChangedEventArgs e)
+        private void OnCustomUIErrorsChanged(object sender, DataErrorsChangedEventArgs e)
         {
             ErrorsChanged?.Invoke(this, e);
 

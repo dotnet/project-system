@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// <summary>
     /// Represents one launch profile read from the launchSettings file.
     /// </summary>
-    internal class WritableLaunchProfile : IWritableLaunchProfile
+    internal class WritableLaunchProfile : IWritableLaunchProfile, IWritablePersistOption
     {
         public WritableLaunchProfile()
         {
@@ -26,6 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             WorkingDirectory = profile.WorkingDirectory;
             LaunchBrowser = profile.LaunchBrowser;
             LaunchUrl = profile.LaunchUrl;
+            DoNotPersist = profile.IsInMemoryObject();
 
             if(profile.EnvironmentVariables  != null)
             {
@@ -45,6 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public string WorkingDirectory { get; set; }
         public bool LaunchBrowser { get; set; }
         public string LaunchUrl { get; set; }
+        public bool DoNotPersist { get; set; }
 
         public Dictionary<string, string> EnvironmentVariables { get; } = new Dictionary<string, string>(StringComparer.Ordinal);
 
@@ -82,8 +84,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {
                 return false;
             }
-
-            return true;
+            
+            // Compare in-memory states
+            return debugProfile1.IsInMemoryObject() == debugProfile2.IsInMemoryObject();
         }
     }
 }

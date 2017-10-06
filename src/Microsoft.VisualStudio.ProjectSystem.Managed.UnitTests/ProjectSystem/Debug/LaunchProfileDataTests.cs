@@ -14,8 +14,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     [ProjectSystemTrait]
     public class LaunchProfileDataTests
     {
-        [Fact]
-        public void LaunchProfileData_FromILaunchProfileTests()
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public void LaunchProfileData_FromILaunchProfileTests(bool isInMemory)
         {
             LaunchProfile profile = new LaunchProfile()
             {
@@ -27,7 +29,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 LaunchBrowser = true,
                 LaunchUrl = "LaunchPage.html",
                 EnvironmentVariables = new Dictionary<string, string>() { { "var1", "Value1" }, { "var2", "Value2" } }.ToImmutableDictionary(),
-                OtherSettings = new Dictionary<string, object>(StringComparer.Ordinal) { { "setting1", true }, { "setting2", "mysetting" } }.ToImmutableDictionary()
+                OtherSettings = new Dictionary<string, object>(StringComparer.Ordinal) { { "setting1", true }, { "setting2", "mysetting" } }.ToImmutableDictionary(),
+                DoNotPersist = isInMemory
             };
 
             LaunchProfileData data = LaunchProfileData.FromILaunchProfile(profile);
@@ -40,6 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.True(data.LaunchUrl == profile.LaunchUrl);
             Assert.True(DictionaryEqualityComparer<string, string>.Instance.Equals(data.EnvironmentVariables.ToImmutableDictionary(), profile.EnvironmentVariables));
             Assert.True(DictionaryEqualityComparer<string, string>.Instance.Equals(data.EnvironmentVariables.ToImmutableDictionary(), profile.EnvironmentVariables));
+            Assert.Equal(isInMemory, data.InMemoryProfile);
         }
 
         [Fact]
@@ -67,6 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Equal("IISExpress", profile.CommandName);
             Assert.Equal("http://localhost:1234:/test.html", profile.LaunchUrl);
             Assert.Equal(true, profile.LaunchBrowser);
+            Assert.False(profile.InMemoryProfile);
 
             profile = profiles["HasCustomValues"];
             Assert.Equal("c:\\test\\project", profile.WorkingDirectory);
@@ -77,6 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Equal(true, profile.OtherSettings["custom1"]);
             Assert.Equal(124, profile.OtherSettings["custom2"]);
             Assert.Equal("mycustomVal", profile.OtherSettings["custom3"]);
+            Assert.False(profile.InMemoryProfile);
 
             profile = profiles["Docker"];
             Assert.Equal("Docker", profile.CommandName);
@@ -87,6 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Equal(null, profile.EnvironmentVariables);
             Assert.Equal("some option in docker", profile.OtherSettings["dockerOption1"]);
             Assert.Equal("Another option in docker", profile.OtherSettings["dockerOption2"]);
+            Assert.False(profile.InMemoryProfile);
 
             profile = profiles["web"];
             Assert.Equal("Project", profile.CommandName);
@@ -97,6 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Equal("Development", profile.EnvironmentVariables["ASPNET_ENVIRONMENT"]);
             Assert.Equal("c:\\Users\\billhie\\Documents\\projects\\WebApplication8\\src\\WebApplication8", profile.EnvironmentVariables["ASPNET_APPLICATIONBASE"]);
             Assert.Equal(null, profile.OtherSettings);
+            Assert.False(profile.InMemoryProfile);
         }
 
         [Fact]

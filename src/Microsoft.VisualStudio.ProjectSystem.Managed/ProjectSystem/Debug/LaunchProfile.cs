@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// <summary>
     /// Represents one launch profile read from the launchSettings file.
     /// </summary>
-    internal class LaunchProfile : ILaunchProfile
+    internal class LaunchProfile : ILaunchProfile, IPersistOption
     {
         public LaunchProfile()
         {
@@ -25,6 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             LaunchUrl = data.LaunchUrl;
             EnvironmentVariables = data.EnvironmentVariables == null ? null : ImmutableDictionary<string, string>.Empty.AddRange(data.EnvironmentVariables);
             OtherSettings = data.OtherSettings == null ? null : ImmutableDictionary<string, object>.Empty.AddRange(data.OtherSettings);
+            DoNotPersist = data.InMemoryProfile;
         }
 
 
@@ -33,30 +34,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public LaunchProfile(ILaunchProfile existingProfile)
         {
-           Name = existingProfile.Name;
-           ExecutablePath = existingProfile.ExecutablePath;
-           CommandName = existingProfile.CommandName;
-           CommandLineArgs = existingProfile.CommandLineArgs; 
-           WorkingDirectory = existingProfile.WorkingDirectory;
-           LaunchBrowser = existingProfile.LaunchBrowser;
-           LaunchUrl = existingProfile.LaunchUrl;
-           EnvironmentVariables = existingProfile.EnvironmentVariables;
-           OtherSettings = existingProfile.OtherSettings;
+            Name = existingProfile.Name;
+            ExecutablePath = existingProfile.ExecutablePath;
+            CommandName = existingProfile.CommandName;
+            CommandLineArgs = existingProfile.CommandLineArgs; 
+            WorkingDirectory = existingProfile.WorkingDirectory;
+            LaunchBrowser = existingProfile.LaunchBrowser;
+            LaunchUrl = existingProfile.LaunchUrl;
+            EnvironmentVariables = existingProfile.EnvironmentVariables;
+            OtherSettings = existingProfile.OtherSettings;
+            DoNotPersist =existingProfile.IsInMemoryObject();
         }
 
         public LaunchProfile(IWritableLaunchProfile writableProfile)
         {
-           Name = writableProfile.Name;
-           ExecutablePath = writableProfile.ExecutablePath;
-           CommandName = writableProfile.CommandName;
-           CommandLineArgs = writableProfile.CommandLineArgs; 
-           WorkingDirectory = writableProfile.WorkingDirectory;
-           LaunchBrowser = writableProfile.LaunchBrowser;
-           LaunchUrl = writableProfile.LaunchUrl;
+            Name = writableProfile.Name;
+            ExecutablePath = writableProfile.ExecutablePath;
+            CommandName = writableProfile.CommandName;
+            CommandLineArgs = writableProfile.CommandLineArgs; 
+            WorkingDirectory = writableProfile.WorkingDirectory;
+            LaunchBrowser = writableProfile.LaunchBrowser;
+            LaunchUrl = writableProfile.LaunchUrl;
+            DoNotPersist = writableProfile.IsInMemoryObject();
 
-           // If there are no env variables or settings we want to set them to null
-           EnvironmentVariables = writableProfile.EnvironmentVariables.Count == 0? null : ImmutableDictionary<string, string>.Empty.AddRange(writableProfile.EnvironmentVariables);
-           OtherSettings = writableProfile.OtherSettings.Count == 0? null : ImmutableDictionary<string, object>.Empty.AddRange(writableProfile.OtherSettings);
+            // If there are no env variables or settings we want to set them to null
+            EnvironmentVariables = writableProfile.EnvironmentVariables.Count == 0? null : ImmutableDictionary<string, string>.Empty.AddRange(writableProfile.EnvironmentVariables);
+            OtherSettings = writableProfile.OtherSettings.Count == 0? null : ImmutableDictionary<string, object>.Empty.AddRange(writableProfile.OtherSettings);
         }
 
         public string Name { get; set; }
@@ -66,6 +69,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public string WorkingDirectory { get; set; }
         public bool LaunchBrowser { get; set; }
         public string LaunchUrl { get; set; }
+        public bool DoNotPersist { get; set; }
+
         public ImmutableDictionary<string, string> EnvironmentVariables { get; set; }
         public ImmutableDictionary<string, object> OtherSettings { get; set; }
                
@@ -75,34 +80,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public static bool IsSameProfileName(string name1, string name2)
         {
             return string.Equals(name1, name2, StringComparison.Ordinal);
-        }
-    }
-
-    internal static class LaunchProfileExtensions
-    {
-        public const string NativeDebuggingProperty = "nativeDebugging";
-
-        /// <summary>
-        /// Return a mutable instance
-        /// </summary>
-        public static IWritableLaunchProfile ToWritableLaunchProfile(this ILaunchProfile curProfile)
-        {
-            return new WritableLaunchProfile(curProfile);
-        }
-
-        /// <summary>
-        /// Returns true if nativeDebugging property is set to true
-        /// </summary>
-        public static bool NativeDebuggingIsEnabled(this ILaunchProfile profile)
-        {
-            if (profile.OtherSettings != null 
-                && profile.OtherSettings.TryGetValue(NativeDebuggingProperty,  out object nativeDebugging) 
-                && nativeDebugging is bool)
-            {
-                return (bool)nativeDebugging;
-            }
-
-            return false;
         }
     }
 }
