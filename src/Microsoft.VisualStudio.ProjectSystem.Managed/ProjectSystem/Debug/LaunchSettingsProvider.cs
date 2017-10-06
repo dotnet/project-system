@@ -830,7 +830,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     profiles = profiles.Insert(insertionIndex, new LaunchProfile(profile));
                 }
 
-                // If the new profile is i-nmemory only, we don't want to touch the disk unless it replaces an existing disk based
+                // If the new profile is in-nmemory only, we don't want to touch the disk unless it replaces an existing disk based
                 // profile
                 bool saveToDisk = !profile.IsInMemoryObject() || (existingProfile != null && !existingProfile.IsInMemoryObject());
                 
@@ -853,7 +853,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 {
                     var profiles = currentSettings.Profiles.Remove(existingProfile);
                    
-                    // If the new profile is i-nmemory only, we don't want to touch the disk
+                    // If the new profile is in-nmemory only, we don't want to touch the disk
                     bool saveToDisk = !existingProfile.IsInMemoryObject();
                     var newSnapshot = new LaunchSettings(profiles, currentSettings.GlobalSettings, currentSettings.ActiveProfile?.Name);
                     await UpdateAndSaveSettingsInternalAsync(newSnapshot, saveToDisk).ConfigureAwait(false);

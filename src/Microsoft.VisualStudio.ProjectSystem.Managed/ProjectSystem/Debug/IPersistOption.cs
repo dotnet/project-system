@@ -7,6 +7,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// </summary>
     public interface IPersistOption
     {
-        bool DoNotPersist{ get; }
+        bool DoNotPersist { get; }
     }
 }

@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         // We don't serialize the name as it the dictionary index
         public string Name { get; set; }
         
-        // Or the InMemoryProfile
+        // Or serialize the InMemoryProfile state
         public bool InMemoryProfile { get; set; }
 
         [JsonProperty(PropertyName = Prop_commandName)]

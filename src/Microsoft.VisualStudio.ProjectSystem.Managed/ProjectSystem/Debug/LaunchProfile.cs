@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             WorkingDirectory = writableProfile.WorkingDirectory;
             LaunchBrowser = writableProfile.LaunchBrowser;
             LaunchUrl = writableProfile.LaunchUrl;
-            DoNotPersist =writableProfile.IsInMemoryObject();
+            DoNotPersist = writableProfile.IsInMemoryObject();
 
             // If there are no env variables or settings we want to set them to null
             EnvironmentVariables = writableProfile.EnvironmentVariables.Count == 0? null : ImmutableDictionary<string, string>.Empty.AddRange(writableProfile.EnvironmentVariables);

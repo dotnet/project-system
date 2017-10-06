@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             WorkingDirectory = profile.WorkingDirectory;
             LaunchBrowser = profile.LaunchBrowser;
             LaunchUrl = profile.LaunchUrl;
-            DoNotPersist =profile.IsInMemoryObject();
+            DoNotPersist = profile.IsInMemoryObject();
 
             if(profile.EnvironmentVariables  != null)
             {

@@ -68,14 +68,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         }
 
         /// <summary>
-        /// This is here so that we can clear the in-memory status of teh active profile if it has been edited. This is
+        /// This is here so that we can clear the in-memory status of the active profile if it has been edited. This is
         /// so that the profile, and hence the users customizations, will be saved to disk
         /// </summary>
         private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (!IgnoreEvents)
             {
-                if(SelectedDebugProfile != null && SelectedDebugProfile.IsInMemoryObject() && SelectedDebugProfile is IWritablePersistOption writablePersist)
+                if(SelectedDebugProfile != null && SelectedDebugProfile is IWritablePersistOption writablePersist)
                 {
                     writablePersist.DoNotPersist = false;
                 }
