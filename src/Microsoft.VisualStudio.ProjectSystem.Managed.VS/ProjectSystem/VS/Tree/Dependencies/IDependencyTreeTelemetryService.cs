@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 {
@@ -21,13 +22,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// ignored when determining whether all rules have resolved. Typically 
         /// these are "Evaluation-only" rules.
         /// </summary>
-        void ObserveUnresolvedRules(IEnumerable<string> rules);
+        void ObserveUnresolvedRules(ITargetFramework targetFramework, IEnumerable<string> rules);
 
         /// <summary>
         /// Observe the full set of rules processed by a handler, and determine 
         /// if they have any changes.
         /// </summary>
         void ObserveHandlerRulesChanges(
+            ITargetFramework targetFramework,
             IEnumerable<string> handlerRules,
             IImmutableDictionary<string, IProjectChangeDescription> projectChanges);
 
@@ -35,6 +37,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// Observe when a pass handling all changed rules has completed, indicating
         /// whether the pass covered Evaluation or DesignTimeBuild rules
         /// </summary>
-        void ObserveCompleteHandlers(RuleHandlerType handlerType);
+        void ObserveCompleteHandlers(ITargetFramework targetFramework, RuleHandlerType handlerType);
     }
 }
