@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
@@ -33,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         public class TelemetryState
         {
-            public Dictionary<string, bool> ObservedRuleChanges { get; } = new Dictionary<string, bool>();
+            public ConcurrentDictionary<string, bool> ObservedRuleChanges { get; } = new ConcurrentDictionary<string, bool>();
             public bool ObservedDesignTime { get; set; } = false;
             public bool StopTelemetry { get; set; } = false;
 
@@ -46,8 +47,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         private readonly ITelemetryService _telemetryService;
-        private readonly Dictionary<ITargetFramework, TelemetryState> telemetryStates = 
-            new Dictionary<ITargetFramework, TelemetryState>();
+        private readonly ConcurrentDictionary<ITargetFramework, TelemetryState> telemetryStates = 
+            new ConcurrentDictionary<ITargetFramework, TelemetryState>();
         private readonly string projectId;
         private bool stopTelemetry = false;
         private bool isReadyToResolve = false;
@@ -67,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             using (var sha1 = SHA256.Create())
             {
                 var hash = sha1.ComputeHash(Encoding.UTF8.GetBytes(project.FullPath));
-                return BitConverter.ToString(hash);
+                return BitConverter.ToString(hash).Replace("-", string.Empty);
             }
         }
 
@@ -91,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             if (stopTelemetry) return;
 
             stopTelemetry = isReadyToResolve ||
-                (telemetryStates.Any() && telemetryStates.Values.All(t => t.StopTelemetry));
+                (!telemetryStates.IsEmpty && telemetryStates.Values.All(t => t.StopTelemetry));
 
             _telemetryService.PostProperty($"{TelemetryEventName}/{(isReadyToResolve ? ResolvedLabel : UnresolvedLabel)}",
                 ProjectProperty, projectId);
@@ -101,11 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             if (stopTelemetry) return;
 
-            if (!telemetryStates.TryGetValue(targetFramework, out var telemetryState))
-            {
-                telemetryState = new TelemetryState();
-                telemetryStates[targetFramework] = telemetryState;
-            }
+            var telemetryState = telemetryStates.GetOrAdd(targetFramework, (key) => new TelemetryState());
 
             foreach (var rule in rules)
             {
@@ -125,9 +122,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 foreach (var rule in handlerRules)
                 {
-                    var hasChanges = projectChanges.ContainsKey(rule)
-                        && projectChanges[rule].Difference.AnyChanges;
-
+                    var hasChanges = projectChanges.TryGetValue(rule, out var description)
+                        && description.Difference.AnyChanges;
                     UpdateObservedRuleChanges(telemetryState, rule, hasChanges);
                 }
             }
@@ -143,19 +139,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 telemetryState.StopTelemetry |= telemetryState.ObservedDesignTime && handlerType == RuleHandlerType.Evaluation;
             }
 
-            isReadyToResolve = telemetryStates.Any() && telemetryStates.Values.All(s => s.IsReadyToResolve());
+            isReadyToResolve = !telemetryStates.IsEmpty && telemetryStates.Values.All(s => s.IsReadyToResolve());
         }
 
         private void UpdateObservedRuleChanges(TelemetryState telemetryState, string rule, bool hasChanges = true)
         {
-            if (telemetryState.ObservedRuleChanges.TryGetValue(rule, out var anyChanges))
-            {
-                telemetryState.ObservedRuleChanges[rule] = anyChanges || hasChanges;
-            }
-            else
-            {
-                telemetryState.ObservedRuleChanges.Add(rule, hasChanges);
-            }
+            telemetryState.ObservedRuleChanges.AddOrUpdate(
+                rule, 
+                hasChanges, 
+                (key, anyChanges) => anyChanges || hasChanges);
         }
     }
 }
