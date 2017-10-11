@@ -107,7 +107,7 @@ namespace Microsoft.VisualStudio.Telemetry
             var service = CreateInstance();
 
             Assert.Throws<ArgumentException>("properties", () => {
-                service.PostProperties("event1", new List<(string propertyName, string propertyValue)>());
+                service.PostProperties("event1", new List<(string propertyName, object propertyValue)>());
             });
         }
 
