@@ -60,18 +60,6 @@ namespace Microsoft.VisualStudio.Telemetry
         }
 
         [Fact]
-        public void PostProperty_EmptyAsPropertyValue_ThrowArgument()
-        {
-            var service = CreateInstance();
-
-            Assert.Throws<ArgumentException>("propertyValue", () => {
-                service.PostProperty("event1", "propName", string.Empty);
-
-            });
-        }
-
-
-        [Fact]
         public void PostProperties_NullAsEventName_ThrowArgumentNull()
         {
             var service = CreateInstance();
