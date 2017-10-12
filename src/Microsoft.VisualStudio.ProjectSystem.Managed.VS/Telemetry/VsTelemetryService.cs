@@ -15,10 +15,6 @@ namespace Microsoft.VisualStudio.Telemetry
         private const string EventPrefix = "vs/projectsystem/managed/";
         private const string PropertyPrefix = "VS.ProjectSystem.Managed.";
 
-
-        // SHA1 is good enough here since we're just hashing PII names.
-        private readonly SHA256CryptoServiceProvider _cryptoService = new SHA256CryptoServiceProvider();
-
         private readonly ConcurrentDictionary<string, (string Event, ConcurrentDictionary<string, string> Properties)> _eventCache = new ConcurrentDictionary<string, (string, ConcurrentDictionary<string, string>)>();
 
         private (string Event, ConcurrentDictionary<string, string> Properties) GetEventInfo(string eventName)
@@ -108,7 +104,7 @@ namespace Microsoft.VisualStudio.Telemetry
             }
 
             var inputBytes = Encoding.UTF8.GetBytes(value);
-            var hashedBytes = _cryptoService.ComputeHash(inputBytes);
+            var hashedBytes = new SHA256CryptoServiceProvider().ComputeHash(inputBytes);
             return BitConverter.ToString(hashedBytes);
         }
         

@@ -10,24 +10,6 @@ namespace Microsoft.VisualStudio.Telemetry
 {
     internal sealed class DesignTimeTelemetryLogger : ILogger
     {
-        private sealed class TargetRecord
-        {
-            public TargetRecord(string targetName, DateTime started)
-            {
-                TargetName = targetName;
-                Started = started;
-                Ended = DateTime.MinValue;
-            }
-
-            public string TargetName { get; }
-
-            public DateTime Started { get; }
-
-            public DateTime Ended { get; set; }
-
-            public TimeSpan Elapsed => Ended - Started;
-        }
-
         private readonly ITelemetryService _telemetryService;
 
         private readonly Dictionary<int, TargetRecord> _targets = new Dictionary<int, TargetRecord>();
