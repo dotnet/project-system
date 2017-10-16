@@ -60,16 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             _telemetryService = telemetryService;
 
-            projectId = GetUniqueId(project);
-        }
-
-        private string GetUniqueId(UnconfiguredProject project)
-        {
-            using (var sha1 = SHA256.Create())
-            {
-                var hash = sha1.ComputeHash(Encoding.UTF8.GetBytes(project.FullPath));
-                return BitConverter.ToString(hash).Replace("-", string.Empty);
-            }
+            projectId = _telemetryService.HashValue(project.FullPath);
         }
 
         /// <summary>
