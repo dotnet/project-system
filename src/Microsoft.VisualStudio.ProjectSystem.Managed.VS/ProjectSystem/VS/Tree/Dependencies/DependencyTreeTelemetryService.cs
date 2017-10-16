@@ -91,8 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             if (stopTelemetry) return;
 
-            stopTelemetry = isReadyToResolve ||
-                (!telemetryStates.IsEmpty && telemetryStates.Values.All(t => t.StopTelemetry));
+            stopTelemetry = isReadyToResolve || IsStopTelemetryInAllTargetFrameworks();
 
             _telemetryService.PostProperty($"{TelemetryEventName}/{(isReadyToResolve ? ResolvedLabel : UnresolvedLabel)}",
                 ProjectProperty, projectId);
@@ -140,7 +139,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
 
             isReadyToResolve = !telemetryStates.IsEmpty && telemetryStates.Values.All(s => s.IsReadyToResolve());
+
+            // if isReadyToResolve, wait until atleast one Resolved telemetry event has fired before stopping telemetry
+            stopTelemetry = !isReadyToResolve && IsStopTelemetryInAllTargetFrameworks();
         }
+
+        private bool IsStopTelemetryInAllTargetFrameworks() => 
+            !telemetryStates.IsEmpty && telemetryStates.Values.All(t => t.StopTelemetry);
 
         private void UpdateObservedRuleChanges(TelemetryState telemetryState, string rule, bool hasChanges = true)
         {
