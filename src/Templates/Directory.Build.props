@@ -8,6 +8,7 @@
 
   <PropertyGroup>
     <DebugSymbols>false</DebugSymbols>
+    <PublishOutputToSymStore>false</PublishOutputToSymStore>
     
     <!-- VSIX -->
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>

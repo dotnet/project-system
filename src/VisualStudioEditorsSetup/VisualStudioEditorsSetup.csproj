@@ -3,6 +3,7 @@
   <Import Project="..\VisualStudioDesigner.props"/>
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
+    <PublishOutputToSymStore>false</PublishOutputToSymStore>
     
     <!-- VSIX -->
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
