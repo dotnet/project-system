@@ -1,13 +1,10 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.Telemetry;
@@ -32,11 +29,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <summary>
         /// Maintain state for each target framework
         /// </summary>
-        public class TelemetryState
+        internal class TelemetryState
         {
-            public ConcurrentDictionary<string, bool> ObservedRuleChanges { get; } = new ConcurrentDictionary<string, bool>();
-            public bool ObservedDesignTime { get; set; } = false;
-            public bool StopTelemetry { get; set; } = false;
+            public ConcurrentDictionary<string, bool> ObservedRuleChanges { get; } = new ConcurrentDictionary<string, bool>(StringComparers.RuleNames);
+            public bool ObservedDesignTime { get; set; }
+            public bool StopTelemetry { get; set; }
 
             public bool IsReadyToResolve()
             {
@@ -47,11 +44,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         private readonly ITelemetryService _telemetryService;
-        private readonly ConcurrentDictionary<ITargetFramework, TelemetryState> telemetryStates = 
+        private readonly ConcurrentDictionary<ITargetFramework, TelemetryState> _telemetryStates = 
             new ConcurrentDictionary<ITargetFramework, TelemetryState>();
-        private readonly string projectId;
-        private bool stopTelemetry = false;
-        private bool isReadyToResolve = false;
+        private readonly string _projectId;
+        private bool _stopTelemetry = false;
+        private bool _isReadyToResolve = false;
 
         [ImportingConstructor]
         public DependencyTreeTelemetryService(
@@ -60,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             _telemetryService = telemetryService;
 
-            projectId = _telemetryService.HashValue(project.FullPath);
+            _projectId = _telemetryService.HashValue(project.FullPath);
         }
 
         /// <summary>
@@ -80,19 +77,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         public void ObserveTreeUpdateCompleted()
         {
-            if (stopTelemetry) return;
+            if (_stopTelemetry) return;
 
-            stopTelemetry = isReadyToResolve || IsStopTelemetryInAllTargetFrameworks();
+            _stopTelemetry = _isReadyToResolve || IsStopTelemetryInAllTargetFrameworks();
 
-            _telemetryService.PostProperty($"{TelemetryEventName}/{(isReadyToResolve ? ResolvedLabel : UnresolvedLabel)}",
-                ProjectProperty, projectId);
+            _telemetryService.PostProperty($"{TelemetryEventName}/{(_isReadyToResolve ? ResolvedLabel : UnresolvedLabel)}",
+                ProjectProperty, _projectId);
         }
 
         public void ObserveUnresolvedRules(ITargetFramework targetFramework, IEnumerable<string> rules)
         {
-            if (stopTelemetry) return;
+            if (_stopTelemetry) return;
 
-            var telemetryState = telemetryStates.GetOrAdd(targetFramework, (key) => new TelemetryState());
+            var telemetryState = _telemetryStates.GetOrAdd(targetFramework, (key) => new TelemetryState());
 
             foreach (var rule in rules)
             {
@@ -106,9 +103,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IEnumerable<string> handlerRules, 
             IImmutableDictionary<string, IProjectChangeDescription> projectChanges)
         {
-            if (stopTelemetry) return;
+            if (_stopTelemetry) return;
 
-            if (telemetryStates.TryGetValue(targetFramework, out var telemetryState))
+            if (_telemetryStates.TryGetValue(targetFramework, out var telemetryState))
             {
                 foreach (var rule in handlerRules)
                 {
@@ -121,22 +118,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         public void ObserveCompleteHandlers(ITargetFramework targetFramework, RuleHandlerType handlerType)
         {
-            if (stopTelemetry) return;
+            if (_stopTelemetry) return;
 
-            if (telemetryStates.TryGetValue(targetFramework, out var telemetryState))
+            if (_telemetryStates.TryGetValue(targetFramework, out var telemetryState))
             {
                 telemetryState.ObservedDesignTime |= handlerType == RuleHandlerType.DesignTimeBuild;
                 telemetryState.StopTelemetry |= telemetryState.ObservedDesignTime && handlerType == RuleHandlerType.Evaluation;
             }
 
-            isReadyToResolve = !telemetryStates.IsEmpty && telemetryStates.Values.All(s => s.IsReadyToResolve());
+            _isReadyToResolve = !_telemetryStates.IsEmpty && _telemetryStates.Values.All(s => s.IsReadyToResolve());
 
             // if isReadyToResolve, wait until atleast one Resolved telemetry event has fired before stopping telemetry
-            stopTelemetry = !isReadyToResolve && IsStopTelemetryInAllTargetFrameworks();
+            _stopTelemetry = !_isReadyToResolve && IsStopTelemetryInAllTargetFrameworks();
         }
 
         private bool IsStopTelemetryInAllTargetFrameworks() => 
-            !telemetryStates.IsEmpty && telemetryStates.Values.All(t => t.StopTelemetry);
+            !_telemetryStates.IsEmpty && _telemetryStates.Values.All(t => t.StopTelemetry);
 
         private void UpdateObservedRuleChanges(TelemetryState telemetryState, string rule, bool hasChanges = true)
         {
