@@ -10,7 +10,7 @@
 
     <!-- Toolset -->
     <RoslynToolsMicrosoftRepoToolsetVersion>1.0.0-alpha43</RoslynToolsMicrosoftRepoToolsetVersion>
-    <RoslynDependenciesOptimizationDataVersion>2.6.0-beta1-62010-04</RoslynDependenciesOptimizationDataVersion>
+    <RoslynDependenciesProjectSystemOptimizationDataVersion>2.6.0-beta1-62205-02</RoslynDependenciesProjectSystemOptimizationDataVersion>
     <RoslynToolsMicrosoftVsixExpInstallerVersion>0.4.1-beta</RoslynToolsMicrosoftVsixExpInstallerVersion>
     <VSWhereVersion>2.1.4</VSWhereVersion>
     <MicrosoftDotNetIBCMergeVersion>4.7.1-alpha-00001</MicrosoftDotNetIBCMergeVersion>

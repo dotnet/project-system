@@ -13,7 +13,7 @@
     <VisualStudioInsertionComponent>Microsoft.VisualStudio.ProjectSystem.Managed</VisualStudioInsertionComponent>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="RoslynDependencies.OptimizationData" Version="$(RoslynDependenciesOptimizationDataVersion)" />
+    <PackageReference Include="RoslynDependencies.ProjectSystem.OptimizationData" Version="$(RoslynDependenciesProjectSystemOptimizationDataVersion)" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.CSharp.VS\Microsoft.VisualStudio.ProjectSystem.CSharp.VS.csproj">
