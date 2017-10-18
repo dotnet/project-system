@@ -254,10 +254,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                                                   ruleChangeContext)
                                      .ConfigureAwait(true);
 
-                        // check full set of handler rules for changes
+                        // check full set of handler rules for changes                        
+                        var allHandlerRules = handler.SupportsHandlerType(RuleHandlerType.DesignTimeBuild)
+                            ? handler.GetRuleNames(RuleHandlerType.DesignTimeBuild)
+                            : handlerRules;
+
                         _treeTelemetryService.ObserveHandlerRulesChanges(
                             projectContextToUpdate.TargetFramework,
-                            handler.GetRuleNames(RuleHandlerType.DesignTimeBuild), 
+                            allHandlerRules, 
                             projectChanges);
                     }
                 }
