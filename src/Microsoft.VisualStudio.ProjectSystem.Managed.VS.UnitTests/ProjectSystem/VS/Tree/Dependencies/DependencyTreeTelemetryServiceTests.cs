@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     public class DependencyTreeTelemetryServiceTests
     {
         private const string TestFilePath = @"C:\Path\To\Project.csproj";
-
+        private static readonly Guid TestGuid = Guid.NewGuid();
         private static ITelemetryServiceFactory.TelemetryParameters CalledParameters;
 
         /// <summary>
@@ -158,9 +159,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             CalledParameters = new ITelemetryServiceFactory.TelemetryParameters();
 
-            return new DependencyTreeTelemetryService(
+            var telemetryService = new DependencyTreeTelemetryService(
                 UnconfiguredProjectFactory.Create(filePath: TestFilePath), 
                 ITelemetryServiceFactory.Create(CalledParameters));
+
+            // set id directly because ExportProvider.GetExportedValueOrDefault() is an extension
+            // method and cannot be mocked.
+            telemetryService.SetProjectId(TestGuid.ToString());
+            return telemetryService;
         }
     }
 }

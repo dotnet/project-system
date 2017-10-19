@@ -35,19 +35,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             public bool ObservedDesignTime { get; set; }
             public bool StopTelemetry { get; set; }
 
-            public bool IsReadyToResolve()
-            {
-                return ObservedDesignTime 
-                    && ObservedRuleChanges.Any() 
-                    && ObservedRuleChanges.All(entry => entry.Value);
-            }
+            public bool IsReadyToResolve() => ObservedDesignTime
+                && ObservedRuleChanges.Any()
+                && ObservedRuleChanges.All(entry => entry.Value);            
         }
 
+        private readonly UnconfiguredProject _project;
         private readonly ITelemetryService _telemetryService;
         private readonly ConcurrentDictionary<ITargetFramework, TelemetryState> _telemetryStates = 
             new ConcurrentDictionary<ITargetFramework, TelemetryState>();
         private readonly object _stateUpdateLock = new object();
-        private readonly string _projectId;
+        private string _projectId;
         private bool _stopTelemetry = false;
         private bool _isReadyToResolve = false;
 
@@ -56,9 +54,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             UnconfiguredProject project,
             ITelemetryService telemetryService)
         {
+            _project = project;
             _telemetryService = telemetryService;
-
-            _projectId = _telemetryService.HashValue(project.FullPath);
         }
 
         /// <summary>
@@ -79,6 +76,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public void ObserveTreeUpdateCompleted()
         {
             if (_stopTelemetry) return;
+
+            if (_projectId == null)
+            {
+                InitializeProjectId();
+            }
 
             lock (_stateUpdateLock)
             {
@@ -145,6 +147,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             }
         }
 
+        private void InitializeProjectId()
+        {
+            var projectGuidService = _project.Services.ExportProvider.GetExportedValueOrDefault<IProjectGuidService>();
+            if (projectGuidService != null)
+            {
+                SetProjectId(projectGuidService.ProjectGuid.ToString());
+            }
+            else
+            {
+                SetProjectId(_telemetryService.HashValue(_project.FullPath));
+            }
+        }
+
         private bool IsStopTelemetryInAllTargetFrameworks() => 
             !_telemetryStates.IsEmpty && _telemetryStates.Values.All(t => t.StopTelemetry);
 
@@ -154,6 +169,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 rule, 
                 hasChanges, 
                 (key, anyChanges) => anyChanges || hasChanges);
+        }
+
+        // helper to support testing
+        internal void SetProjectId(string projectId)
+        {
+            _projectId = projectId;
         }
     }
 }
