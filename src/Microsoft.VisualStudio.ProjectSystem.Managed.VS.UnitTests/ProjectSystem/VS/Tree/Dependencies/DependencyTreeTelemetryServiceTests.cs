@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 telemetryService.ObserveCompleteHandlers(tf, RuleHandlerType.Evaluation);
 
                 telemetryService.ObserveTreeUpdateCompleted();
-                Assert.Equal("TreeUpdated/Unresolved", CalledParameters.EventName);
+                CheckForUnresolvedTreeUpdate();
                 ResetTestCallParameters();
             }
 
@@ -68,8 +68,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 telemetryService.ObserveTreeUpdateCompleted();
 
                 // only resolved after the last target framework
-                Assert.Equal(++count < targetFrameworks.Count() ? "TreeUpdated/Unresolved" : "TreeUpdated/Resolved", 
-                    CalledParameters.EventName);
+                if (++count < targetFrameworks.Count())
+                {
+                    CheckForUnresolvedTreeUpdate();
+                }
+                else
+                {
+                    CheckForResolvedTreeUpdate();
+                }
                 ResetTestCallParameters();
             }
 
@@ -84,12 +90,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var telemetryService = CreateInstance();
 
             telemetryService.ObserveUnresolvedRules(
-                ITargetFrameworkFactory.Implement("tfm1"), 
+                ITargetFrameworkFactory.Implement("tfm1"),
                 new string[] { "Rule1", "Rule2" });
 
             telemetryService.ObserveTreeUpdateCompleted();
 
-            Assert.Equal("TreeUpdated/Unresolved", CalledParameters.EventName);
+            CheckForUnresolvedTreeUpdate();
         }
 
         /// <summary>
@@ -119,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             telemetryService.ObserveCompleteHandlers(targetFramework, RuleHandlerType.Evaluation);
 
             telemetryService.ObserveTreeUpdateCompleted();
-            Assert.Equal("TreeUpdated/Unresolved", CalledParameters.EventName);
+            CheckForUnresolvedTreeUpdate();
             ResetTestCallParameters();
 
             // Observe Design Time
@@ -133,7 +139,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             telemetryService.ObserveTreeUpdateCompleted();
 
             // one of the design time rules has no changes hence this should not report resolved
-            Assert.Equal("TreeUpdated/Unresolved", CalledParameters.EventName);
+            CheckForUnresolvedTreeUpdate();
             ResetTestCallParameters();
 
             // Observe another evaluation
@@ -153,6 +159,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             CalledParameters.EventName = null;
             CalledParameters.Properties = null;
+        }
+
+        private static void CheckForResolvedTreeUpdate()
+        {
+            Assert.Equal("TreeUpdated/Resolved", CalledParameters.EventName);
+            CheckForProjectGuid();
+        }
+
+        private static void CheckForUnresolvedTreeUpdate()
+        {
+            Assert.Equal("TreeUpdated/Unresolved", CalledParameters.EventName);
+            CheckForProjectGuid();
+        }
+
+        private static void CheckForProjectGuid()
+        {
+            Assert.Equal("Project", CalledParameters.Properties.Single().propertyName);
+            Assert.Equal(TestGuid.ToString(), CalledParameters.Properties.Single().propertyValue);
         }
 
         static DependencyTreeTelemetryService CreateInstance()

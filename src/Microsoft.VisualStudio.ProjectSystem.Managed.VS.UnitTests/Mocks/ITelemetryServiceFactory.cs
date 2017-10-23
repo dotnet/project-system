@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.Telemetry
         {
             public string EventName { get; set; }
 
-            public IEnumerable<(string propertyName, string propertyValue)> Properties { get; set; }
+            public IEnumerable<(string propertyName, object propertyValue)> Properties { get; set; }
         }
 
         public static ITelemetryService Create() => Mock.Of<ITelemetryService>();
@@ -23,18 +23,18 @@ namespace Microsoft.VisualStudio.Telemetry
             telemetryService.Setup(t => t.PostEvent(It.IsAny<string>()))
                 .Callback((string name) => callParameters.EventName = name);
 
-            telemetryService.Setup(t => t.PostProperty(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Callback((string e, string p, string v) => 
+            telemetryService.Setup(t => t.PostProperty(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<object>()))
+                .Callback((string e, string p, object v) => 
                 {
                     callParameters.EventName = e;
-                    callParameters.Properties = new List<(string, string)>
+                    callParameters.Properties = new List<(string, object)>
                     {
                         (p, v)
                     };
                 });
 
-            telemetryService.Setup(t => t.PostProperties(It.IsAny<string>(), It.IsAny<IEnumerable<(string propertyName, string propertyValue)>>()))
-                .Callback((string e, IEnumerable<(string propertyName, string propertyValue)> p) =>
+            telemetryService.Setup(t => t.PostProperties(It.IsAny<string>(), It.IsAny<IEnumerable<(string propertyName, object propertyValue)>>()))
+                .Callback((string e, IEnumerable<(string propertyName, object propertyValue)> p) =>
                 {
                     callParameters.EventName = e;
                     callParameters.Properties = p;
