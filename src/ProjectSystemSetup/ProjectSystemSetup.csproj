@@ -4,7 +4,8 @@
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
     <AssemblyName>ProjectSystem</AssemblyName>
-    
+    <PublishOutputToSymStore>false</PublishOutputToSymStore>
+
     <!-- VSIX -->
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
 

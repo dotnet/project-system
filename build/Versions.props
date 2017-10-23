@@ -9,7 +9,7 @@
     <UsingToolIbcOptimization>true</UsingToolIbcOptimization>
 
     <!-- Toolset -->
-    <RoslynToolsMicrosoftRepoToolsetVersion>1.0.0-alpha40</RoslynToolsMicrosoftRepoToolsetVersion>
+    <RoslynToolsMicrosoftRepoToolsetVersion>1.0.0-alpha43</RoslynToolsMicrosoftRepoToolsetVersion>
     <RoslynDependenciesOptimizationDataVersion>2.6.0-beta1-62010-04</RoslynDependenciesOptimizationDataVersion>
     <RoslynToolsMicrosoftVsixExpInstallerVersion>0.4.1-beta</RoslynToolsMicrosoftVsixExpInstallerVersion>
     <VSWhereVersion>2.1.4</VSWhereVersion>
@@ -61,7 +61,7 @@
     <VsWebSiteInteropVersion>8.0.0-alpha</VsWebSiteInteropVersion>
     
     <!-- CPS -->
-    <MicrosoftVisualStudioProjectSystemSDKVersion>15.5.114-pre-gb992513730</MicrosoftVisualStudioProjectSystemSDKVersion>
+    <MicrosoftVisualStudioProjectSystemSDKVersion>15.5.293-pre</MicrosoftVisualStudioProjectSystemSDKVersion>
     
     <!-- Roslyn -->
     <MicrosoftVisualStudioLanguageServicesVersion>2.6.0-beta1-62113-02</MicrosoftVisualStudioLanguageServicesVersion>

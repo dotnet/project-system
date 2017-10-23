@@ -60,11 +60,11 @@ namespace Microsoft.VisualStudio.Telemetry
         /// <param name="eventName">Name of the event.</param>
         /// <param name="propertyName">Property name to be reported.</param>
         /// <param name="propertyValue">Property value to be reported.</param>
-        public void PostProperty(string eventName, string propertyName, string propertyValue)
+        public void PostProperty(string eventName, string propertyName, object propertyValue)
         {
             Requires.NotNullOrEmpty(eventName, nameof(eventName));
             Requires.NotNullOrEmpty(propertyName, nameof(propertyName));
-            Requires.NotNullOrEmpty(propertyValue, nameof(propertyValue));
+            Requires.NotNull(propertyValue, nameof(propertyValue));
 
             TelemetryEvent telemetryEvent = new TelemetryEvent(GetEventName(eventName));
             telemetryEvent.Properties.Add(BuildPropertyName(eventName, propertyName), propertyValue);
@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.Telemetry
         /// </summary>
         /// <param name="eventName">Name of the event.</param>
         /// <param name="properties">List of Property name and corresponding values. PropertyName and PropertyValue cannot be null or empty.</param>
-        public void PostProperties(string eventName, IEnumerable<(string propertyName, string propertyValue)> properties)
+        public void PostProperties(string eventName, IEnumerable<(string propertyName, object propertyValue)> properties)
         {
             Requires.NotNullOrEmpty(eventName, nameof(eventName));
             Requires.NotNullOrEmpty(properties, nameof(properties));
@@ -97,6 +97,12 @@ namespace Microsoft.VisualStudio.Telemetry
         /// <returns>Hashed value.</returns>
         public string HashValue(string value)
         {
+            // Don't hash PII for internal users since we don't need to.
+            if (TelemetryService.DefaultSession.IsUserMicrosoftInternal)
+            {
+                return value;
+            }
+
             var inputBytes = Encoding.UTF8.GetBytes(value);
             var hashedBytes = new SHA256CryptoServiceProvider().ComputeHash(inputBytes);
             return BitConverter.ToString(hashedBytes);
