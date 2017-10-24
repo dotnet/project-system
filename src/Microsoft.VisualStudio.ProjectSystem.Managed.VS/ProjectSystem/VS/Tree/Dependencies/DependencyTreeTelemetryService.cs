@@ -75,16 +75,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         public void ObserveTreeUpdateCompleted()
         {
-            if (_stopTelemetry) return;
+            lock (_stateUpdateLock)
+            {
+                if (_stopTelemetry) return;
+
+                _stopTelemetry = _isReadyToResolve || IsStopTelemetryInAllTargetFrameworks();
+            }
 
             if (_projectId == null)
             {
                 InitializeProjectId();
-            }
-
-            lock (_stateUpdateLock)
-            {
-                _stopTelemetry = _isReadyToResolve || IsStopTelemetryInAllTargetFrameworks();
             }
 
             _telemetryService.PostProperty($"{TelemetryEventName}/{(_isReadyToResolve ? ResolvedLabel : UnresolvedLabel)}",
@@ -93,10 +93,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         public void ObserveUnresolvedRules(ITargetFramework targetFramework, IEnumerable<string> rules)
         {
-            if (_stopTelemetry) return;
-
             lock (_stateUpdateLock)
             {
+                if (_stopTelemetry) return;
+
                 var telemetryState = _telemetryStates.GetOrAdd(targetFramework, (key) => new TelemetryState());
 
                 foreach (var rule in rules)
@@ -112,10 +112,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IEnumerable<string> handlerRules, 
             IImmutableDictionary<string, IProjectChangeDescription> projectChanges)
         {
-            if (_stopTelemetry) return;
-
             lock (_stateUpdateLock)
             {
+                if (_stopTelemetry) return;
+
                 if (_telemetryStates.TryGetValue(targetFramework, out var telemetryState))
                 {
                     foreach (var rule in handlerRules)
@@ -130,10 +130,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         public void ObserveCompleteHandlers(ITargetFramework targetFramework, RuleHandlerType handlerType)
         {
-            if (_stopTelemetry) return;
-
             lock (_stateUpdateLock)
             {
+                if (_stopTelemetry) return;
+
                 if (_telemetryStates.TryGetValue(targetFramework, out var telemetryState))
                 {
                     telemetryState.ObservedDesignTime |= handlerType == RuleHandlerType.DesignTimeBuild;
