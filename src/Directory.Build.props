@@ -30,7 +30,7 @@
     <TestArchitectures>x86</TestArchitectures>
 
     <!-- Use IBC optimization data if available -->
-    <IbcOptimizationDataDir>$(NuGetPackageRoot)\RoslynDependencies.OptimizationData\$(RoslynDependenciesOptimizationDataVersion)\content\OptimizationData\</IbcOptimizationDataDir>
+    <IbcOptimizationDataDir>$(NuGetPackageRoot)\RoslynDependencies.ProjectSystem.OptimizationData\$(RoslynDependenciesProjectSystemOptimizationDataVersion)\content\OptimizationData\</IbcOptimizationDataDir>
 
     <UseCommonOutputDirectory Condition="'$(UseCommonOutputDirectory)' == ''">true</UseCommonOutputDirectory>
 
