@@ -32,11 +32,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         internal class TelemetryState
         {
             public ConcurrentDictionary<string, bool> ObservedRuleChanges { get; } = new ConcurrentDictionary<string, bool>(StringComparers.RuleNames);
-            public bool ObservedDesignTime { get; set; }
             public bool StopTelemetry { get; set; }
 
-            public bool IsReadyToResolve() => ObservedDesignTime
-                && ObservedRuleChanges.Any()
+            public bool IsReadyToResolve() => ObservedRuleChanges.Any()
                 && ObservedRuleChanges.All(entry => entry.Value);            
         }
 
@@ -136,8 +134,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                 if (_telemetryStates.TryGetValue(targetFramework, out var telemetryState))
                 {
-                    telemetryState.ObservedDesignTime |= handlerType == RuleHandlerType.DesignTimeBuild;
-                    telemetryState.StopTelemetry |= telemetryState.ObservedDesignTime && handlerType == RuleHandlerType.Evaluation;
+                    telemetryState.StopTelemetry |= telemetryState.IsReadyToResolve() 
+                        && handlerType == RuleHandlerType.Evaluation;
                 }
 
                 _isReadyToResolve = !_telemetryStates.IsEmpty && _telemetryStates.Values.All(s => s.IsReadyToResolve());

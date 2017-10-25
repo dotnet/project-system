@@ -98,63 +98,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             CheckForUnresolvedTreeUpdate();
         }
 
-        /// <summary>
-        /// Evaluation after Design Time stops telemetry even if no Resolved yet
-        /// </summary>
-        [Fact]
-        public void EvaluationAfterDesignTime_StopsTelemetry()
-        {
-            var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
-            var evalRules = new List<string> { "eval1", "eval2", "eval3" };
-            var dtRules = new List<string> { "dt1", "dt2", "dt3" };
-            var allRules = evalRules.Concat(dtRules);
-            var withChanges = IProjectChangeDescriptionFactory.Implement(difference: IProjectChangeDiffFactory.Implement(anyChanges: true));
-            var noChanges = IProjectChangeDescriptionFactory.Implement(difference: IProjectChangeDiffFactory.Implement(anyChanges: false));
-
-            var telemetryService = CreateInstance();
-
-            // Initialization
-            telemetryService.ObserveUnresolvedRules(targetFramework, evalRules);
-
-            // Observe Evaluation
-            var builder = ImmutableDictionary.CreateBuilder<string, IProjectChangeDescription>(StringComparers.RuleNames);
-            evalRules.ForEach(rule => builder.Add(rule, withChanges));
-            dtRules.ForEach(rule => builder.Add(rule, noChanges));
-
-            telemetryService.ObserveHandlerRulesChanges(targetFramework, allRules, builder.ToImmutable());
-            telemetryService.ObserveCompleteHandlers(targetFramework, RuleHandlerType.Evaluation);
-
-            telemetryService.ObserveTreeUpdateCompleted();
-            CheckForUnresolvedTreeUpdate();
-            ResetTestCallParameters();
-
-            // Observe Design Time
-            builder = ImmutableDictionary.CreateBuilder<string, IProjectChangeDescription>(StringComparers.RuleNames);
-            evalRules.ForEach(rule => builder.Add(rule, noChanges));
-            dtRules.ForEach(rule => builder.Add(rule, rule != "dt3" ? withChanges : noChanges));
-
-            telemetryService.ObserveHandlerRulesChanges(targetFramework, allRules, builder.ToImmutable());
-            telemetryService.ObserveCompleteHandlers(targetFramework, RuleHandlerType.DesignTimeBuild);
-
-            telemetryService.ObserveTreeUpdateCompleted();
-
-            // one of the design time rules has no changes hence this should not report resolved
-            CheckForUnresolvedTreeUpdate();
-            ResetTestCallParameters();
-
-            // Observe another evaluation
-            builder = ImmutableDictionary.CreateBuilder<string, IProjectChangeDescription>(StringComparers.RuleNames);
-            evalRules.ForEach(rule => builder.Add(rule, withChanges));
-            dtRules.ForEach(rule => builder.Add(rule, noChanges));
-
-            telemetryService.ObserveHandlerRulesChanges(targetFramework, allRules, builder.ToImmutable());
-            telemetryService.ObserveCompleteHandlers(targetFramework, RuleHandlerType.Evaluation);
-
-            // no more telemetry events
-            telemetryService.ObserveTreeUpdateCompleted();
-            Assert.Null(CalledParameters.EventName);
-        }
-
         private void ResetTestCallParameters()
         {
             CalledParameters.EventName = null;
