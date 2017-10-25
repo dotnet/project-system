@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -32,10 +33,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         internal class TelemetryState
         {
             public ConcurrentDictionary<string, bool> ObservedRuleChanges { get; } = new ConcurrentDictionary<string, bool>(StringComparers.RuleNames);
+            public ConcurrentDictionary<string, bool> ObservedHandlerDesignTime { get; } = new ConcurrentDictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
             public bool StopTelemetry { get; set; }
 
-            public bool IsReadyToResolve() => ObservedRuleChanges.Any()
-                && ObservedRuleChanges.All(entry => entry.Value);            
+            public bool IsReadyToResolve() => !ObservedRuleChanges.IsEmpty && ObservedRuleChanges.All(entry => entry.Value)
+                && !ObservedHandlerDesignTime.IsEmpty && ObservedHandlerDesignTime.All(entry => entry.Value);
+
+            public void UpdateObservedRuleChanges(string rule, bool hasChanges = true)
+            {
+                ObservedRuleChanges.AddOrUpdate(
+                    rule,
+                    hasChanges,
+                    (key, anyChanges) => anyChanges || hasChanges);
+            }
+
+            public void UpdateObservedHandlerDesignTime(string handlerName, bool isDesignTime)
+            {
+                ObservedHandlerDesignTime.AddOrUpdate(
+                    handlerName,
+                    isDesignTime,
+                    (key, anyDesignTime) => anyDesignTime || isDesignTime);
+            }
         }
 
         private readonly UnconfiguredProject _project;
@@ -100,14 +118,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 foreach (var rule in rules)
                 {
                     // observe all unresolved rules by default ignoring whether they have actual changes
-                    UpdateObservedRuleChanges(telemetryState, rule);
+                    telemetryState.UpdateObservedRuleChanges(rule);
                 }
             }
         }
 
         public void ObserveHandlerRulesChanges(
             ITargetFramework targetFramework,
+            string handlerName,
             IEnumerable<string> handlerRules, 
+            RuleHandlerType handlerType, 
             IImmutableDictionary<string, IProjectChangeDescription> projectChanges)
         {
             lock (_stateUpdateLock)
@@ -120,8 +140,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     {
                         var hasChanges = projectChanges.TryGetValue(rule, out var description)
                             && description.Difference.AnyChanges;
-                        UpdateObservedRuleChanges(telemetryState, rule, hasChanges);
+                        telemetryState.UpdateObservedRuleChanges(rule, hasChanges);
                     }
+
+                    telemetryState.UpdateObservedHandlerDesignTime(handlerName, handlerType == RuleHandlerType.DesignTimeBuild);
                 }
             }
         }
@@ -134,7 +156,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                 if (_telemetryStates.TryGetValue(targetFramework, out var telemetryState))
                 {
-                    telemetryState.StopTelemetry |= telemetryState.IsReadyToResolve() 
+                    telemetryState.StopTelemetry |= telemetryState.ObservedHandlerDesignTime.Any()
+                        && telemetryState.ObservedHandlerDesignTime.All(entry => entry.Value)
                         && handlerType == RuleHandlerType.Evaluation;
                 }
 
@@ -160,14 +183,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         private bool IsStopTelemetryInAllTargetFrameworks() => 
             !_telemetryStates.IsEmpty && _telemetryStates.Values.All(t => t.StopTelemetry);
-
-        private void UpdateObservedRuleChanges(TelemetryState telemetryState, string rule, bool hasChanges = true)
-        {
-            telemetryState.ObservedRuleChanges.AddOrUpdate(
-                rule, 
-                hasChanges, 
-                (key, anyChanges) => anyChanges || hasChanges);
-        }
 
         // helper to support testing
         internal void SetProjectId(string projectId)

@@ -261,7 +261,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
                         _treeTelemetryService.ObserveHandlerRulesChanges(
                             projectContextToUpdate.TargetFramework,
+                            handler.GetType().ToString(),
                             allHandlerRules, 
+                            handlerType,
                             projectChanges);
                     }
                 }

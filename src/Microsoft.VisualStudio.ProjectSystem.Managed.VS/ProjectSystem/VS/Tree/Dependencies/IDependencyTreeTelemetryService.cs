@@ -30,7 +30,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         void ObserveHandlerRulesChanges(
             ITargetFramework targetFramework,
-            IEnumerable<string> handlerRules,
+            string handlerName,
+            IEnumerable<string> handlerRules, 
+            RuleHandlerType handlerType,
             IImmutableDictionary<string, IProjectChangeDescription> projectChanges);
 
         /// <summary>
