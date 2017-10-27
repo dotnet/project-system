@@ -3,7 +3,7 @@
   <TemplateData>
     <Name Package="{860A27C0-B665-47F3-BC12-637E16A1050A}" ID="11" />
     <Description Package="{860A27C0-B665-47F3-BC12-637E16A1050A}" ID="12" />
-    <Icon Package="{52CBD135-1F97-2580-011F-C7CD052E44DE}" ID="531"/>
+    <Icon Package="{91A04A73-4F2C-4E7C-AD38-C1A68E7DA05C}" ID="4018" />
     <ProjectType>FSharp</ProjectType>
     <RequiredFrameworkVersion>2.0</RequiredFrameworkVersion>
     <SortOrder>16</SortOrder>
