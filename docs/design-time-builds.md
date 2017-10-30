@@ -41,7 +41,7 @@ The `AddAdditionalReferences` target will run in both normal builds _and_ design
 
 ### Determining whether a target is run in a design-time build
 
-Use the `DesignTimeBuild` (CPS-based projects) and 'BuildingProject' (legacy project system) properties to differentiate between when a target is run in a design-time build versus a normal build. This can be used to avoid expensive calculations or work that is only needed for a normal build.
+Use the `DesignTimeBuild` (CPS-based projects) and `BuildingProject` (legacy project system) properties to differentiate between when a target is run in a design-time build versus a normal build. This can be used to avoid expensive calculations or work that is only needed for a normal build.
 
 ``` XML
   <Target Name="AddAdditionalReferences" BeforeTargets="ResolveAssemblyReferences">
