@@ -33,22 +33,43 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             out bool filterAnyChanges)
         {
             filterAnyChanges = false;
-            IDependency resultDependency = dependency;
+            var resultDependency = dependency;
 
-            var matchingDependency = topLevelBuilder.FirstOrDefault(
-                x => !x.Id.Equals(dependency.Id, StringComparison.OrdinalIgnoreCase)
-                     && x.ProviderType.Equals(dependency.ProviderType, StringComparison.OrdinalIgnoreCase) 
-                     && x.Caption.Equals(dependency.Caption, StringComparison.OrdinalIgnoreCase));
-            
+            IDependency matchingDependency = null;
+            foreach (var x in topLevelBuilder)
+            {
+                if (!x.Id.Equals(dependency.Id, StringComparison.OrdinalIgnoreCase)
+                     && x.ProviderType.Equals(dependency.ProviderType, StringComparison.OrdinalIgnoreCase)
+                     && x.Caption.Equals(dependency.Caption, StringComparison.OrdinalIgnoreCase))
+                {
+                    matchingDependency = x;
+                    break;
+                }
+            }
+
             // If found node with same caption, or if there were nodes with same caption but with Alias already applied
             // NOTE: Performance sensitive, so avoid formatting the Caption with parens if it's possible to avoid it.
-            var shouldApplyAlias = (matchingDependency == null)
-                ? topLevelBuilder.Any(
-                    x => !x.Id.Equals(dependency.Id)
+            bool shouldApplyAlias;
+            if (matchingDependency == null)
+            {
+                foreach (var x in topLevelBuilder)
+                {
+                    if (!x.Id.Equals(dependency.Id)
                          && x.ProviderType.Equals(dependency.ProviderType, StringComparison.OrdinalIgnoreCase)
                          && x.Caption.StartsWith(dependency.Caption, StringComparison.OrdinalIgnoreCase)
                          && string.Compare(x.Caption, dependency.Caption.Length + " (".Length, x.OriginalItemSpec, 0, x.OriginalItemSpec.Length, StringComparison.OrdinalIgnoreCase) == 0)
-                : true;
+                    {
+                        shouldApplyAlias = true;
+                        break;
+                    }
+                }
+
+                shouldApplyAlias = false;
+            }
+            else
+            {
+                shouldApplyAlias = true;
+            }
 
             if (shouldApplyAlias)
             {
