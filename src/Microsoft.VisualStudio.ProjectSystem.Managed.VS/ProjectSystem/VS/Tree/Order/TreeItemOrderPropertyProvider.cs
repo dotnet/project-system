@@ -18,36 +18,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
         {
             Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar
         };
-
-        public IReadOnlyCollection<ProjectItemIdentity> OrderedItems { get; }
-
-        public ImmutableHashSet<string> AllowedItemTypes { get; }
-
-        public Dictionary<string, int> DisplayOrderMap { get; } = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+        private Dictionary<string, int> _displayOrderMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+        private ImmutableHashSet<string> _allowedItemTypes;
 
         public TreeItemOrderPropertyProvider(IReadOnlyCollection<ProjectItemIdentity> orderedItems)
         {
             OrderedItems = orderedItems;
 
-            AllowedItemTypes = OrderedItems.Select(p => p.ItemType).ToImmutableHashSet();
+            _allowedItemTypes = OrderedItems.Select(p => p.ItemType).ToImmutableHashSet();
 
-            ComputeIndices(orderedItems);
+            ComputeIndices();
         }
+
+        public IReadOnlyCollection<ProjectItemIdentity> OrderedItems { get; }
 
         /// <summary>
         /// Preorder folders and items that are provided as ordered evaluated includes
         /// </summary>
-        /// <param name="orderedItems">ordered evaluated includes</param>
-        private void ComputeIndices(IReadOnlyCollection<ProjectItemIdentity> orderedItems)
+        private void ComputeIndices()
         {
             var index = 1;
-            var parts = OrderedItems.SelectMany(p => p.EvaluatedInclude.Split(_separators));
+            var parts = OrderedItems.SelectMany(p => p.EvaluatedInclude.Split(_separators, StringSplitOptions.RemoveEmptyEntries));
 
             foreach (var item in parts)
             {
-                if (!DisplayOrderMap.ContainsKey(item))
+                if (!_displayOrderMap.ContainsKey(item))
                 {
-                    DisplayOrderMap.Add(item, index++);
+                    _displayOrderMap.Add(item, index++);
                 }
             }
         }
@@ -65,12 +62,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
             if (propertyValues is IProjectTreeCustomizablePropertyValues2 propertyValues2)
             {
                 var isAllowedItemType = propertyContext.ItemType != null 
-                    && AllowedItemTypes.Contains(propertyContext.ItemType);
+                    && _allowedItemTypes.Contains(propertyContext.ItemType);
 
-                // assign disply order to folders and items that have a recognized 
+                // assign display order to folders and items that have a recognized 
                 // item type and appear in order map
                 if ((isAllowedItemType || propertyContext.IsFolder) 
-                    && DisplayOrderMap.TryGetValue(propertyContext.ItemName, out var index))
+                    && _displayOrderMap.TryGetValue(propertyContext.ItemName, out var index))
                 {
                     propertyValues2.DisplayOrder = index;
                 }
@@ -78,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
                 {
                     // move unordered non-folder items at project root to the end 
                     // (this will typically be hidden items visible on "Show All Files")
-                    propertyValues2.DisplayOrder = DisplayOrderMap.Count + 1;
+                    propertyValues2.DisplayOrder = _displayOrderMap.Count + 1;
                 }
             }
         }
