@@ -141,5 +141,46 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             dependency.VerifyAll();
             otherDependency.VerifyAll();
         }
+
+        [Fact]
+        public void WhenThereIsMatchingDependency_WithSubstringCaption()
+        {
+            const string caption = "MyCaption";
+            var dependency = IDependencyFactory.Implement(
+                providerType: "myprovider",
+                id: "mydependency1",
+                caption: caption);
+
+            var otherDependency = IDependencyFactory.Implement(
+                    providerType: "myprovider",
+                    id: "mydependency2",
+                    caption: caption + "X");
+
+            var worldBuilder = new Dictionary<string, IDependency>()
+            {
+                { dependency.Object.Id, dependency.Object }
+            }.ToImmutableDictionary().ToBuilder();
+            var topLevelBuilder = ImmutableHashSet<IDependency>.Empty
+                                                               .Add(dependency.Object)
+                                                               .Add(otherDependency.Object)
+                                                               .ToBuilder();
+
+            var filter = new DuplicatedDependenciesSnapshotFilter();
+
+            var resultDependency = filter.BeforeAdd(
+                null,
+                null,
+                dependency.Object,
+                worldBuilder,
+                topLevelBuilder,
+                null,
+                null,
+                out bool filterAnyChanges);
+
+            Assert.False(worldBuilder.ContainsKey(otherDependency.Object.Id));
+
+            dependency.VerifyAll();
+            otherDependency.VerifyAll();
+        }
     }
 }

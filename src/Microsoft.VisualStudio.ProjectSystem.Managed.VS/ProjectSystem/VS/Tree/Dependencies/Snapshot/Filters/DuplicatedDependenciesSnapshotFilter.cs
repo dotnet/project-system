@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
-using System.Globalization;
-using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
@@ -48,27 +46,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             }
 
             // If found node with same caption, or if there were nodes with same caption but with Alias already applied
-            // NOTE: Performance sensitive, so avoid formatting the Caption with parens if it's possible to avoid it.
-            bool shouldApplyAlias;
-            if (matchingDependency == null)
+            // NOTE: Performance sensitive, so avoid formatting the Caption with parenthesis if it's possible to avoid it.
+            var shouldApplyAlias = matchingDependency != null;
+            if (!shouldApplyAlias)
             {
+                var adjustedLength = dependency.Caption.Length + " (".Length;
                 foreach (var x in topLevelBuilder)
                 {
                     if (!x.Id.Equals(dependency.Id)
                          && x.ProviderType.Equals(dependency.ProviderType, StringComparison.OrdinalIgnoreCase)
                          && x.Caption.StartsWith(dependency.Caption, StringComparison.OrdinalIgnoreCase)
-                         && string.Compare(x.Caption, dependency.Caption.Length + " (".Length, x.OriginalItemSpec, 0, x.OriginalItemSpec.Length, StringComparison.OrdinalIgnoreCase) == 0)
+                         && x.Caption.Length >= adjustedLength
+                         && string.Compare(x.Caption, adjustedLength, x.OriginalItemSpec, 0, x.OriginalItemSpec.Length, StringComparison.OrdinalIgnoreCase) == 0)
                     {
                         shouldApplyAlias = true;
                         break;
                     }
                 }
-
-                shouldApplyAlias = false;
-            }
-            else
-            {
-                shouldApplyAlias = true;
             }
 
             if (shouldApplyAlias)
