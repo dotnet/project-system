@@ -40,14 +40,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                      && x.ProviderType.Equals(dependency.ProviderType, StringComparison.OrdinalIgnoreCase) 
                      && x.Caption.Equals(dependency.Caption, StringComparison.OrdinalIgnoreCase));
             
-            // if found node with same caption, or if there were nodes with same caption but with Alias already applied
+            // If found node with same caption, or if there were nodes with same caption but with Alias already applied
+            // NOTE: Performance sensitive, so avoid formatting the Caption with parens if it's possible to avoid it.
             var shouldApplyAlias = (matchingDependency == null)
                 ? topLevelBuilder.Any(
                     x => !x.Id.Equals(dependency.Id)
                          && x.ProviderType.Equals(dependency.ProviderType, StringComparison.OrdinalIgnoreCase)
-                         && x.Caption.Equals(
-                             string.Format(CultureInfo.CurrentCulture, "{0} ({1})", dependency.Caption, x.OriginalItemSpec),
-                                StringComparison.OrdinalIgnoreCase))
+                         && x.Caption.StartsWith(dependency.Caption, StringComparison.OrdinalIgnoreCase)
+                         && string.Compare(x.Caption, dependency.Caption.Length + " (".Length, x.OriginalItemSpec, 0, x.OriginalItemSpec.Length, StringComparison.OrdinalIgnoreCase) == 0)
                 : true;
 
             if (shouldApplyAlias)

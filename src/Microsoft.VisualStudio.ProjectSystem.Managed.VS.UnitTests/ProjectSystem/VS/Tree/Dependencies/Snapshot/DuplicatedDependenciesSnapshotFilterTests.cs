@@ -23,8 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var otherDependency = IDependencyFactory.Implement(
                     providerType: "myprovider",
                     id: "mydependency2",
-                    caption: "otherCaption",
-                    originalItemSpec: "mydependency2ItemSpec");
+                    caption: "otherCaption");
 
             var worldBuilder = new Dictionary<string, IDependency>()
             {
