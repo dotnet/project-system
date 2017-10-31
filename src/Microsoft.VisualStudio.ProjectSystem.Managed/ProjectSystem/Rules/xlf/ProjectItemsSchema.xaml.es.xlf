@@ -64,17 +64,17 @@
       </trans-unit>
       <trans-unit id="ContentType|Page|DisplayName">
         <source>Page file</source>
-        <target state="new">Page file</target>
+        <target state="translated">Archivo de paginación</target>
         <note />
       </trans-unit>
       <trans-unit id="ItemType|Page|DisplayName">
         <source>Page</source>
-        <target state="new">Page</target>
+        <target state="translated">Página</target>
         <note />
       </trans-unit>
       <trans-unit id="ItemType|ApplicationDefinition|DisplayName">
         <source>Application definition</source>
-        <target state="new">Application definition</target>
+        <target state="translated">Definición de aplicación</target>
         <note />
       </trans-unit>
     </body>

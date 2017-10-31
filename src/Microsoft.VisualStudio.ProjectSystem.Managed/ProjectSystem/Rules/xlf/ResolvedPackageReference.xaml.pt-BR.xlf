@@ -89,7 +89,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|Path|Description">
         <source>Location of the package being referenced.</source>
-        <target state="new">Location of the package being referenced.</target>
+        <target state="translated">Localização do pacote que está sendo referenciado.</target>
         <note />
       </trans-unit>
     </body>
