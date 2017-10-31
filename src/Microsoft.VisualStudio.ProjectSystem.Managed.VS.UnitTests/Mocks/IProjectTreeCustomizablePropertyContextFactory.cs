@@ -1,0 +1,31 @@
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using Moq;
+
+namespace Microsoft.VisualStudio.ProjectSystem.VS
+{
+    internal class IProjectTreeCustomizablePropertyContextFactory
+    {
+        public static IProjectTreeCustomizablePropertyContext Create()
+        {
+            return Mock.Of<IProjectTreeCustomizablePropertyContext>();
+        }
+
+        public static IProjectTreeCustomizablePropertyContext Implement(
+            string itemName = null,
+            string itemType = null,
+            bool isFolder = false,
+            ProjectTreeFlags flags = default(ProjectTreeFlags))
+        {
+            var mock = new Mock<IProjectTreeCustomizablePropertyContext>();
+            mock.Setup(x => x.ItemName).Returns(itemName ?? string.Empty);
+            mock.Setup(x => x.ItemType).Returns(itemType);
+            mock.Setup(x => x.IsFolder).Returns(isFolder);
+            mock.Setup(x => x.ParentNodeFlags).Returns(flags);
+            return mock.Object;
+        }
+
+        public static ProjectTreeFlags CreateNewProjectRoot() =>
+            ProjectTreeFlags.Create(ProjectTreeFlags.Common.ProjectRoot);
+    }
+}
