@@ -14,15 +14,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
     /// </summary>
     internal class TreeItemOrderPropertyProvider : IProjectTreePropertiesProvider
     {
+        private const string FullPathProperty = "FullPath";
         private readonly char[] _separators = new char[]
         {
             Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar
         };
         private Dictionary<string, int> _displayOrderMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+        private Dictionary<string, int> _rootedOrderMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+        private UnconfiguredProject _project;
         private ImmutableHashSet<string> _allowedItemTypes;
 
-        public TreeItemOrderPropertyProvider(IReadOnlyCollection<ProjectItemIdentity> orderedItems)
+        public TreeItemOrderPropertyProvider(IReadOnlyCollection<ProjectItemIdentity> orderedItems, UnconfiguredProject project)
         {
+            _project = project;
             OrderedItems = orderedItems;
 
             _allowedItemTypes = OrderedItems.Select(p => p.ItemType).ToImmutableHashSet();
@@ -37,14 +41,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
         /// </summary>
         private void ComputeIndices()
         {
-            var index = 1;
-            var parts = OrderedItems.SelectMany(p => p.EvaluatedInclude.Split(_separators, StringSplitOptions.RemoveEmptyEntries));
+            var duplicateFiles = OrderedItems
+                .Select(p => Path.GetFileName(p.EvaluatedInclude))
+                .GroupBy(file => file, StringComparer.OrdinalIgnoreCase)
+                .Where(g => g.Count() > 1)
+                .Select(g => g.Key).ToImmutableHashSet();
 
-            foreach (var item in parts)
+            var index = 1;
+            
+            foreach (var item in OrderedItems)
             {
-                if (!_displayOrderMap.ContainsKey(item))
+                var includeParts = item.EvaluatedInclude.Split(_separators, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var part in includeParts)
                 {
-                    _displayOrderMap.Add(item, index++);
+                    var rootedPath = duplicateFiles.Contains(part) ? _project.MakeRooted(item.EvaluatedInclude) : null;
+                    if (rootedPath != null && !_rootedOrderMap.ContainsKey(rootedPath))
+                    {
+                        _rootedOrderMap.Add(rootedPath, index++);
+                    }
+                    else if (!_displayOrderMap.ContainsKey(part))
+                    {
+                        _displayOrderMap.Add(part, index++);
+                    }
                 }
             }
         }
@@ -53,8 +71,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
         /// Assign a display order property to items that have previously been preordered
         /// or other (hidden) items under the project root that are not folders
         /// </summary>
-        /// <param name="propertyContext"></param>
-        /// <param name="propertyValues"></param>
+        /// <param name="propertyContext">context for the tree item being evaluated</param>
+        /// <param name="propertyValues">mutable properties that can be changed to affect display order etc</param>
         public void CalculatePropertyValues(
             IProjectTreeCustomizablePropertyContext propertyContext, 
             IProjectTreeCustomizablePropertyValues propertyValues)
@@ -66,12 +84,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
 
                 // assign display order to folders and items that have a recognized 
                 // item type and appear in order map
-                if ((isAllowedItemType || propertyContext.IsFolder) 
-                    && _displayOrderMap.TryGetValue(propertyContext.ItemName, out var index))
+                bool hasDisplayOrder = false;
+                if (isAllowedItemType || propertyContext.IsFolder)
                 {
-                    propertyValues2.DisplayOrder = index;
+                    if (_displayOrderMap.TryGetValue(propertyContext.ItemName, out var index) 
+                        || (propertyContext.Metadata.TryGetValue(FullPathProperty, out var fullPath)
+                            && _rootedOrderMap.TryGetValue(fullPath, out index)))
+                    {
+                        propertyValues2.DisplayOrder = index;
+                        hasDisplayOrder = true;
+                    }
                 }
-                else if (propertyContext.ParentNodeFlags.Contains(ProjectTreeFlags.ProjectRoot) && !propertyContext.IsFolder)
+
+                if (!hasDisplayOrder && propertyContext.ParentNodeFlags.Contains(ProjectTreeFlags.ProjectRoot) && !propertyContext.IsFolder)
                 {
                     // move unordered non-folder items at project root to the end 
                     // (this will typically be hidden items visible on "Show All Files")

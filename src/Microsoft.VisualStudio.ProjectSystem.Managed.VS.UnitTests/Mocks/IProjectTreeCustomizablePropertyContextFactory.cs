@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.Collections.Immutable;
 using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
@@ -22,6 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             mock.Setup(x => x.ItemType).Returns(itemType);
             mock.Setup(x => x.IsFolder).Returns(isFolder);
             mock.Setup(x => x.ParentNodeFlags).Returns(flags);
+            mock.Setup(x => x.Metadata).Returns(ImmutableDictionary<string,string>.Empty);
             return mock.Object;
         }
 

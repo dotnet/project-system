@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
                 .Select(p => new ProjectItemIdentity(p.type, p.include))
                 .ToList();
 
-            var provider = new TreeItemOrderPropertyProvider(orderedItems);
+            var provider = new TreeItemOrderPropertyProvider(orderedItems, UnconfiguredProjectFactory.Create());
 
             var context = GetContext(itemName, itemType, isFolder, ProjectTreeFlags.ProjectRoot);
             var values = GetInitialValues();
@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
                 .Select(p => new ProjectItemIdentity(p.type, p.include))
                 .ToList();
 
-            var provider = new TreeItemOrderPropertyProvider(orderedItems);
+            var provider = new TreeItemOrderPropertyProvider(orderedItems, UnconfiguredProjectFactory.Create());
 
             var lastOrder = 0;
             solutionTree.ForEach(item =>

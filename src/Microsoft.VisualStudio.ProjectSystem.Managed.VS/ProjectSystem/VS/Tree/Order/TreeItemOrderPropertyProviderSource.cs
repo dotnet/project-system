@@ -15,12 +15,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
     [AppliesTo(ProjectCapability.SortByDisplayOrder)]
     internal class TreeItemOrderPropertyProviderSource : ChainedProjectValueDataSourceBase<IProjectTreePropertiesProvider>, IProjectTreePropertiesProviderDataSource
     {
-        private TreeItemOrderPropertyProvider latestTreeItemOrderPropertyProvider = null;
+        private UnconfiguredProject _project;
+        private TreeItemOrderPropertyProvider latestTreeItemOrderPropertyProvider;
 
         [ImportingConstructor]
         public TreeItemOrderPropertyProviderSource(UnconfiguredProject project)
             : base(project.Services)
         {
+            _project = project;
         }
 
         [Import(ExportContractNames.Scopes.UnconfiguredProject)]
@@ -35,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
                 {
                     if (latestTreeItemOrderPropertyProvider?.OrderedItems != orderedItems.Value)
                     {
-                        latestTreeItemOrderPropertyProvider = new TreeItemOrderPropertyProvider(orderedItems.Value);
+                        latestTreeItemOrderPropertyProvider = new TreeItemOrderPropertyProvider(orderedItems.Value, _project);
                     }
 
                     return new ProjectVersionedValue<IProjectTreePropertiesProvider>(latestTreeItemOrderPropertyProvider, orderedItems.DataSourceVersions);
