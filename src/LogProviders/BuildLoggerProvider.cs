@@ -29,10 +29,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.Providers
 
         public BuildLoggerEvents Events => BuildLoggerEvents.None;
 
-        public ILogger GetLogger(string projectPath, IEnumerable<string> targets, IDictionary<string, string> properties, bool isDesignTimeBuild)
-        {
-            return _dataSource.CreateLogger(isDesignTimeBuild);
-        }
+        public ILogger GetLogger(string projectPath, IEnumerable<string> targets, IDictionary<string, string> properties, bool isDesignTimeBuild) => 
+            _dataSource.IsLogging ? _dataSource.CreateLogger(isDesignTimeBuild) : null;
 
         public Task<IImmutableSet<ILogger>> GetLoggersAsync(IReadOnlyList<string> targets, IImmutableDictionary<string, string> properties, CancellationToken cancellationToken)
         {
