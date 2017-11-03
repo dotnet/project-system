@@ -6,10 +6,14 @@ The way configurations are inferred for a given project is different between the
 In legacy projects configurations of a project are inferred based on conditions in the project file. So if a project had this text,
 ```xml
 <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-…
+  …
+</PropertyGroup>
 <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-…
+  …
+</PropertyGroup>
 <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+  …
+</PropertyGroup>
 ```
 
 the project system would have inferred that the project had two Configurations called Debug and Release and two Platforms called AnyCPU and x86. The old project system would look only in the project and not in any imported props\targets. 
@@ -34,14 +38,27 @@ And these are the same defaults that VS 2017 RTM had. If the user now renames th
 ### TL;DR
 If you had a project that had configurations like this:
 ```xml
-<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MyDebug|AnyCPU' " />
-<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MyDebug|x86' " />
+<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  …
+</PropertyGroup>
+<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  …
+</PropertyGroup>
 ```
 
-change the project to have two properties like this:
+change the project to have two properties in the property group with respective conditions like this:
 ```xml
-<Configurations>MyDebug;Debug;Release</Configurations>
-<Platforms>AnyCPU;x86</Platforms>
+<PropertyGroup>
+  <Configurations>Debug</Configurations>
+  <Platforms>AnyCPU</Platforms>
+  …
+</PropertyGroup>
+<PropertyGroup>
+  <Configurations>Release</Configurations>
+  <Platforms>AnyCPU</Platforms>
+  …
+</PropertyGroup>
+
 ```
 
 ### Details
