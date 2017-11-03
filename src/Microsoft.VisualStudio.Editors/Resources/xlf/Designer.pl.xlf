@@ -2720,47 +2720,47 @@ Czy chcesz zaktualizować wartość w pliku settings?</target>
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_None">
         <source>None</source>
-        <target state="new">None</target>
+        <target state="translated">Brak</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_Prompt">
         <source>Prompt</source>
-        <target state="new">Prompt</target>
+        <target state="translated">Monit</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_Queue">
         <source>Queue</source>
-        <target state="new">Queue</target>
+        <target state="translated">Kolejka</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_Send">
         <source>Send</source>
-        <target state="new">Send</target>
+        <target state="translated">Wyślij</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_Embedded">
         <source>Embedded</source>
-        <target state="new">Embedded</target>
+        <target state="translated">Osadzone</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_Full">
         <source>Full</source>
-        <target state="new">Full</target>
+        <target state="translated">Pełne</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_None">
         <source>None</source>
-        <target state="new">None</target>
+        <target state="translated">Brak</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_PdbOnly">
         <source>Pdb-only</source>
-        <target state="new">Pdb-only</target>
+        <target state="translated">Tylko plik pdb</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_Portable">
         <source>Portable</source>
-        <target state="new">Portable</target>
+        <target state="translated">Przenośne</target>
         <note />
       </trans-unit>
     </body>

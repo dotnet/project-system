@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="AssemblyVersionLabel.Text">
         <source>&amp;Assembly version:</source>
-        <target state="translated">&amp;Bütünleştirilmiş kod sürümü:</target>
+        <target state="translated">Bütünleştirilmiş k&amp;od sürümü:</target>
         <note />
       </trans-unit>
       <trans-unit id="CopyrightLabel.Text">
