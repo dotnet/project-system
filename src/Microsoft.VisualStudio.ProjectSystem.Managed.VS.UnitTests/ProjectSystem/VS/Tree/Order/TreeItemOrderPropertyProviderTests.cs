@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Xunit;
 
@@ -36,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
 
             provider.CalculatePropertyValues(context, values);
 
-            Assert.Equal(values.DisplayOrder, expectedOrder);
+            Assert.Equal(expectedOrder, values.DisplayOrder);
         }
 
         [Theory]
@@ -54,7 +55,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
             var lastOrder = 0;
             solutionTree.ForEach(item =>
             {
-                var context = GetContext(item.itemName, item.itemType, item.isFolder, item.isUnderProjectRoot ? ProjectTreeFlags.ProjectRoot : ProjectTreeFlags.Empty);
+                var context = GetContext(item.itemName, item.itemType, item.isFolder, 
+                    item.isUnderProjectRoot ? ProjectTreeFlags.ProjectRoot : ProjectTreeFlags.Empty);
                 var values = GetInitialValues();
 
                 provider.CalculatePropertyValues(context, values);
@@ -146,12 +148,53 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
             }
         }
 
+        private List<(string type, string include)> _orderedWithDups = new List<(string type, string include)>
+        {
+            ("Compile", "Common.fs"),
+            ("Compile", "Tables\\Order.fs"),
+            ("Compile", "Tables\\Common.fs"),
+            ("Compile", "Program.fs")
+        };
+
+        [Theory]
+        [InlineData("Common.fs",  "Compile", false, "X:\\Project\\Common.fs", 1)]
+        [InlineData("Tables",     "Folder",  true,  null, 2)]
+        [InlineData("Order.fs",   "Compile", false, "X:\\Project\\Tables\\Order.fs", 3)]
+        [InlineData("Common.fs",  "Compile", false, "X:\\Project\\Tables\\Common.fs", 4)] // duplicate and out of alphabetical order
+        [InlineData("Program.fs", "Compile", false, "X:\\Project\\Program.fs", 5)]
+        public void VerifyOrderingWithDuplicateFiles(string itemName, string itemType, bool isFolder, string rootedPath, int expectedOrder)
+        {
+            var orderedItems = _orderedWithDups
+                .Select(p => new ProjectItemIdentity(p.type, p.include))
+                .ToList();
+
+            var provider = new TreeItemOrderPropertyProvider(orderedItems, UnconfiguredProjectFactory.Create(filePath: "X:\\Project\\"));
+
+            bool isUnderProjectRoot = rootedPath?.Contains("Tables") != true;
+            var metadata = rootedPath == null ? null : new Dictionary<string, string>{{"FullPath", rootedPath}}.ToImmutableDictionary();
+
+            var context = GetContext(itemName, itemType, isFolder, 
+                isUnderProjectRoot ? ProjectTreeFlags.ProjectRoot : ProjectTreeFlags.Empty, 
+                metadata);
+            var values = GetInitialValues();
+
+            provider.CalculatePropertyValues(context, values);
+
+            Assert.Equal(expectedOrder, values.DisplayOrder);
+        }
+
         private static IProjectTreeCustomizablePropertyContext GetContext(
             string itemName = null,
             string itemType = null,
             bool isFolder = false,
-            ProjectTreeFlags flags = default(ProjectTreeFlags))
-            => IProjectTreeCustomizablePropertyContextFactory.Implement(itemName, itemType, isFolder, flags);
+            ProjectTreeFlags flags = default(ProjectTreeFlags),
+            IImmutableDictionary<string, string> metadata = null)
+            => IProjectTreeCustomizablePropertyContextFactory.Implement(
+                itemName: itemName, 
+                itemType: itemType, 
+                isFolder: isFolder, 
+                flags: flags, 
+                metadata: metadata);
 
         private static ProjectTreeCustomizablePropertyValues GetInitialValues() =>
             new ProjectTreeCustomizablePropertyValues { DisplayOrder = 0 };
