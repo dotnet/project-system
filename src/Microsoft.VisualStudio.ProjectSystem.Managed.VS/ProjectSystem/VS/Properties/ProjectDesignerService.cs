@@ -16,18 +16,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     internal class ProjectDesignerService : IProjectDesignerService
     {
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
-        private readonly Lazy<bool> _lazySupportsProjectDesigner;
+        private readonly IVsProjectDesignerPageService _vsProjectDesignerPageService;
 
         [ImportingConstructor]
-        public ProjectDesignerService(IUnconfiguredProjectVsServices projectVsServices)
+        public ProjectDesignerService(IUnconfiguredProjectVsServices projectVsServices, IVsProjectDesignerPageService vsProjectDesignerPageService)
         {
             Requires.NotNull(projectVsServices, nameof(projectVsServices));
+            Requires.NotNull(vsProjectDesignerPageService, nameof(vsProjectDesignerPageService));
 
             _projectVsServices = projectVsServices;
-            _lazySupportsProjectDesigner = new Lazy<bool>(() => _projectVsServices.VsHierarchy.GetProperty(VsHierarchyPropID.SupportsProjectDesigner, defaultValue: false), mode: System.Threading.LazyThreadSafetyMode.PublicationOnly);
+            _vsProjectDesignerPageService = vsProjectDesignerPageService;
         }
 
-        public bool SupportsProjectDesigner => _lazySupportsProjectDesigner.Value;
+        public bool SupportsProjectDesigner => _vsProjectDesignerPageService.IsProjectDesignerSupported;
 
         public Task ShowProjectDesignerAsync()
         {
