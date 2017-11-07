@@ -15,22 +15,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
     [AppliesTo(ProjectCapability.SortByDisplayOrder)]
     internal class TreeItemOrderPropertyProviderSource : ChainedProjectValueDataSourceBase<IProjectTreePropertiesProvider>, IProjectTreePropertiesProviderDataSource
     {
-        private UnconfiguredProject _project;
+        private readonly UnconfiguredProject _project;
+        private readonly IOrderedSourceItemsDataSourceService _orderedItemSource;
         private TreeItemOrderPropertyProvider latestTreeItemOrderPropertyProvider;
 
         [ImportingConstructor]
-        public TreeItemOrderPropertyProviderSource(UnconfiguredProject project)
+        public TreeItemOrderPropertyProviderSource(
+            UnconfiguredProject project,
+            [Import(ExportContractNames.Scopes.UnconfiguredProject)] IOrderedSourceItemsDataSourceService orderedItemSource)
             : base(project.Services)
         {
-            _project = project;
-        }
+            Requires.NotNull(project, nameof(project));
+            Requires.NotNull(orderedItemSource, nameof(orderedItemSource));
 
-        [Import(ExportContractNames.Scopes.UnconfiguredProject)]
-        private IOrderedSourceItemsDataSourceService OrderedItemSource { get; set; }
+            _project = project;
+            _orderedItemSource = orderedItemSource;
+        }
 
         protected override IDisposable LinkExternalInput(ITargetBlock<IProjectVersionedValue<IProjectTreePropertiesProvider>> targetBlock)
         {
-            JoinUpstreamDataSources(OrderedItemSource);
+            JoinUpstreamDataSources(_orderedItemSource);
             
             var providerProducerBlock = new TransformBlock<IProjectVersionedValue<IReadOnlyCollection<ProjectItemIdentity>>, IProjectVersionedValue<IProjectTreePropertiesProvider>>(
                 orderedItems =>
@@ -45,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
                 new ExecutionDataflowBlockOptions() { NameFormat= "Ordered Tree Item Input: {1}" });
 
             providerProducerBlock.LinkTo(targetBlock, new DataflowLinkOptions() { PropagateCompletion = true });
-            return OrderedItemSource.SourceBlock.LinkTo(providerProducerBlock, new DataflowLinkOptions() { PropagateCompletion = true });
+            return _orderedItemSource.SourceBlock.LinkTo(providerProducerBlock, new DataflowLinkOptions() { PropagateCompletion = true });
         }
     }
 }

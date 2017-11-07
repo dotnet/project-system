@@ -15,14 +15,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
     internal class TreeItemOrderPropertyProvider : IProjectTreePropertiesProvider
     {
         private const string FullPathProperty = "FullPath";
-        private readonly char[] _separators = new char[]
-        {
-            Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar
-        };
-        private Dictionary<string, int> _displayOrderMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
-        private Dictionary<string, int> _rootedOrderMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
-        private UnconfiguredProject _project;
-        private ImmutableHashSet<string> _allowedItemTypes;
+        private readonly Dictionary<string, int> _displayOrderMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, int> _rootedOrderMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+        private readonly UnconfiguredProject _project;
+        private readonly ImmutableHashSet<string> _allowedItemTypes;
 
         public TreeItemOrderPropertyProvider(IReadOnlyCollection<ProjectItemIdentity> orderedItems, UnconfiguredProject project)
         {
@@ -48,10 +44,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
                 .Select(g => g.Key).ToImmutableHashSet();
 
             var index = 1;
-            
+
+            // This enumerates all the folder names and file names and maps them
+            // against their assigned display index. Any file names that are duplicates
+            // are mapped in in _rootedOrderMap only; everything else is mapped in
+            // _displayOrderMap only.
             foreach (var item in OrderedItems)
             {
-                var includeParts = item.EvaluatedInclude.Split(_separators, StringSplitOptions.RemoveEmptyEntries);
+                var includeParts = item.EvaluatedInclude.Split(CommonConstants.PathSeparators, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var part in includeParts)
                 {
                     var rootedPath = duplicateFiles.Contains(part) ? _project.MakeRooted(item.EvaluatedInclude) : null;
