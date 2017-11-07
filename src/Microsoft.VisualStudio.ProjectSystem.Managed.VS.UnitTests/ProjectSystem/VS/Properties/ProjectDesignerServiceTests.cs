@@ -75,12 +75,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             var designerService = CreateInstance(projectVsServices, vsProjectDesignerPageService);
 
-#pragma warning disable RS0003 // Do not directly await a Task (see https://github.com/dotnet/roslyn/issues/6770)
             await Assert.ThrowsAsync<COMException>(() => {
 
                 return designerService.ShowProjectDesignerAsync();
             });
-#pragma warning restore RS0003 // Do not directly await a Task
         }
 
         [Fact]
@@ -95,12 +93,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             var designerService = CreateInstance(projectVsServices, vsProjectDesignerPageService);
 
-#pragma warning disable RS0003 // Do not directly await a Task (see https://github.com/dotnet/roslyn/issues/6770)
             await Assert.ThrowsAsync<COMException>(() => {
 
                 return designerService.ShowProjectDesignerAsync();
             });
-#pragma warning restore RS0003 // Do not directly await a Task
         }
 
         [Fact]
@@ -120,12 +116,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             var designerService = CreateInstance(projectVsServices, vsProjectDesignerPageService);
 
-#pragma warning disable RS0003 // Do not directly await a Task (see https://github.com/dotnet/roslyn/issues/6770)
             await Assert.ThrowsAsync<COMException>(() => {
 
                 return designerService.ShowProjectDesignerAsync();
             });
-#pragma warning restore RS0003 // Do not directly await a Task
         }
 
         [Fact]
@@ -167,12 +161,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             var designerService = CreateInstance(projectVsServices, vsProjectDesignerPageService);
 
-#pragma warning disable RS0003 // Do not directly await a Task (see https://github.com/dotnet/roslyn/issues/6770)
             await Assert.ThrowsAsync<COMException>(() => {
 
                 return designerService.ShowProjectDesignerAsync();
             });
-#pragma warning restore RS0003 // Do not directly await a Task
         }
 
         [Fact]
@@ -194,9 +186,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             var designerService = CreateInstance(projectVsServices, vsProjectDesignerPageService);
 
-#pragma warning disable RS0003 // Do not directly await a Task (see https://github.com/dotnet/roslyn/issues/6770)
             await designerService.ShowProjectDesignerAsync();
-#pragma warning restore RS0003 // Do not directly await a Task
 
             Assert.Equal(1, callCount);
         }
