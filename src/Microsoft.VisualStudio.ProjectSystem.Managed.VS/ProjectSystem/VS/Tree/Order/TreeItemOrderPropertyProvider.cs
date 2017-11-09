@@ -18,14 +18,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
         private readonly Dictionary<string, int> _displayOrderMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<string, int> _rootedOrderMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
         private readonly UnconfiguredProject _project;
-        private readonly ImmutableHashSet<string> _allowedItemTypes;
 
         public TreeItemOrderPropertyProvider(IReadOnlyCollection<ProjectItemIdentity> orderedItems, UnconfiguredProject project)
         {
             _project = project;
             OrderedItems = orderedItems;
-
-            _allowedItemTypes = OrderedItems.Select(p => p.ItemType).ToImmutableHashSet();
 
             ComputeIndices();
         }
@@ -79,28 +76,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
         {
             if (propertyValues is IProjectTreeCustomizablePropertyValues2 propertyValues2)
             {
-                var isAllowedItemType = propertyContext.ItemType != null 
-                    && _allowedItemTypes.Contains(propertyContext.ItemType);
-
-                // assign display order to folders and items that have a recognized 
-                // item type and appear in order map
-                bool hasDisplayOrder = false;
-                if (isAllowedItemType || propertyContext.IsFolder)
+                // assign display order to folders and items that appear in order map
+                if (_displayOrderMap.TryGetValue(propertyContext.ItemName, out var index)
+                    || (propertyContext.Metadata.TryGetValue(FullPathProperty, out var fullPath)
+                        && _rootedOrderMap.TryGetValue(fullPath, out index)))
                 {
-                    if (_displayOrderMap.TryGetValue(propertyContext.ItemName, out var index) 
-                        || (propertyContext.Metadata.TryGetValue(FullPathProperty, out var fullPath)
-                            && _rootedOrderMap.TryGetValue(fullPath, out index)))
+                    // sometimes these items temporarily have null item type. Ignore these cases
+                    if (propertyContext.ItemType != null)
                     {
                         propertyValues2.DisplayOrder = index;
-                        hasDisplayOrder = true;
                     }
                 }
-
-                if (!hasDisplayOrder && propertyContext.ParentNodeFlags.Contains(ProjectTreeFlags.ProjectRoot) && !propertyContext.IsFolder)
+                else if (!propertyContext.IsFolder)
                 {
-                    // move unordered non-folder items at project root to the end 
+                    // move unordered non-folder items to the end 
                     // (this will typically be hidden items visible on "Show All Files")
-                    propertyValues2.DisplayOrder = _displayOrderMap.Count + 1;
+                    propertyValues2.DisplayOrder = int.MaxValue;
                 }
             }
         }

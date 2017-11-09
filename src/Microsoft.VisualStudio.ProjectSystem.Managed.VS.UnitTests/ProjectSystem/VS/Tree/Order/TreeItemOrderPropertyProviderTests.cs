@@ -21,8 +21,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
         [InlineData("Customer.fs", "Compile", false, 2)]
         [InlineData("order.fs", "Compile", false, 1)] // case insensitive
         [InlineData("Program.fs", "Compile", false, 3)] 
-        [InlineData("Misc.txt", "Content", false, 4)] // unknown type
-        [InlineData("ordered.fsproj", null, false, 4)] // hidden file
+        [InlineData("Misc.txt", "Content", false, int.MaxValue)] // unknown type
+        [InlineData("ordered.fsproj", null, false, int.MaxValue)] // hidden file
         [InlineData("Debug", null, true, 0)] // unknown folder
         public void VerifySimpleOrderedUnderProjectRoot(string itemName, string itemType, bool isFolder, int expectedOrder)
         {
@@ -88,7 +88,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
                             // unknown folders and their nested items
                             ("Debug", null, true, true),
                             ("bin", null, true, false),
-                            ("app.exe", null, false, false),
 
                             // included items
                             ("Order.fs", "Compile", false, true),
@@ -117,15 +116,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
                         },
                         new List<(string itemName, string itemType, bool isFolder, bool isUnderProjectRoot)>
                         {
-                            // unknown folders and their nested items
+                            // unknown folders 
                             (".vs", "Folder", true, false),
                             ("bin", "Folder", true, true),
-                            (".suo", null, false, false),
                             ("netcoreapp2.0", "Folder", true, false),
                             ("obj", "Folder", true, true),
-                            (".suo", null, false, false),
-                            ("app.fsproj.nuget.g.props", null, false, false),
-                            ("app.fsproj.nuget.g.targets", null, false, false),
 
                             // included items
                             ("Order", "Folder", true, true),
