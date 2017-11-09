@@ -39,7 +39,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
             var providerProducerBlock = new TransformBlock<IProjectVersionedValue<IReadOnlyCollection<ProjectItemIdentity>>, IProjectVersionedValue<IProjectTreePropertiesProvider>>(
                 orderedItems =>
                 {
-                    if (latestTreeItemOrderPropertyProvider?.OrderedItems != orderedItems.Value)
+                    // Limit TreeItemOrderPropertyProvider to one instance for now
+                    // to fend off race conditions
+                    if (latestTreeItemOrderPropertyProvider == null)
                     {
                         latestTreeItemOrderPropertyProvider = new TreeItemOrderPropertyProvider(orderedItems.Value, _project);
                     }
