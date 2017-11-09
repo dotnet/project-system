@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -14,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     /// It maintains some light state for each Target Framework to keep track
     /// whether all expected rules have been observed; this information is passed
     /// as a property of the telemetry event and can be used to determine if the
-    /// 'resolved' event is fired to early (so sessions can be appropriately filtered).
+    /// 'resolved' event is fired too early (so sessions can be appropriately filtered).
     /// </summary>
     [Export(typeof(IDependencyTreeTelemetryService))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
@@ -105,8 +106,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 InitializeProjectId();
             }
-
-            _telemetryService.PostProperties($"{TelemetryEventName}/{(hasUnresolvedDependency ? UnresolvedLabel : ResolvedLabel)}",
+            
+            _telemetryService.PostProperties(
+                FormattableString.Invariant($"{TelemetryEventName}/{(hasUnresolvedDependency ? UnresolvedLabel : ResolvedLabel)}"),
                 new List<(string, object)>
                 {
                     (ProjectProperty, _projectId),
