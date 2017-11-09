@@ -21,9 +21,6 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <!-- TODO: Remove suppressions of Xunit warnings: https://github.com/dotnet/project-system/issues/2584 -->
-    <NoWarn>$(NoWarn);xUnit1004;xUnit2000;xUnit2003;xUnit2004;xUnit2009;xUnit2010;xUnit1013</NoWarn>
-    
     <CodeAnalysisRuleSet Condition="'$(IsTestProject)' == 'true'">$(RepoRoot)build\Test.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRuleSet Condition="'$(IsTestProject)' != 'true'">$(RepoRoot)build\Default.ruleset</CodeAnalysisRuleSet>
 
