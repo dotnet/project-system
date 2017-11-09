@@ -31,9 +31,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging
                 case ProjectImageKey.SharedProjectRoot:
                     return KnownMonikers.VBSharedProject.ToProjectSystemType();
 
-                case ProjectImageKey.AppDesignerFolder:
-                    return KnownMonikers.Property.ToProjectSystemType();
-
                 default:
                     return null;
             }
