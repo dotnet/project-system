@@ -32,6 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         IProjectTreeProvider,
         IDependenciesTreeServices
     {
+        private readonly IDependencyTreeTelemetryService _treeTelemetryService;
         private readonly object _treeUpdateLock = new object();
         private Task _treeUpdateQueueTask = null;
 
@@ -45,7 +46,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IDependenciesSnapshotProvider dependenciesSnapshotProvider,
             [Import(DependencySubscriptionsHost.DependencySubscriptionsHostContract)]
             ICrossTargetSubscriptionsHost dependenciesHost,
-            [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService)
+            [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService,
+            IDependencyTreeTelemetryService treeTelemetryService)
             : base(threadingService, unconfiguredProject)
         {
             ProjectTreePropertiesProviders = new OrderPrecedenceImportCollection<IProjectTreePropertiesProvider>(
@@ -59,6 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             DependenciesSnapshotProvider = dependenciesSnapshotProvider;
             DependenciesHost = dependenciesHost;
             TasksService = tasksService;
+            _treeTelemetryService = treeTelemetryService;
 
             unconfiguredProject.ProjectUnloading += OnUnconfiguredProjectUnloading;
         }
@@ -397,6 +400,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     {
                         dependenciesNode = await viewProvider.Value.BuildTreeAsync(dependenciesNode, snapshot, cancellationToken)
                                                                    .ConfigureAwait(false);
+                        
+                        _treeTelemetryService.ObserveTreeUpdateCompleted(snapshot.HasUnresolvedDependency);
                     }
 
                     // TODO We still are getting mismatched data sources and need to figure out better 
