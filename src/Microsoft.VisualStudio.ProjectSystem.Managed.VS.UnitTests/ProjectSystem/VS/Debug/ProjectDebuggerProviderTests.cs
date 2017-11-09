@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             Assert.Equal(_mockWebProvider.Object, debugger.GetLaunchTargetsProvider(new LaunchProfile() {Name = "test", CommandName = "IISExpress"}));
             Assert.Equal(_mockDockerProvider.Object, debugger.GetLaunchTargetsProvider(new LaunchProfile() {Name = "test", CommandName = "Docker"}));
             Assert.Equal(_mockExeProvider.Object, debugger.GetLaunchTargetsProvider(new LaunchProfile() {Name = "test", CommandName = "Project"}));
-            Assert.Equal(null, debugger.GetLaunchTargetsProvider(new LaunchProfile() {Name = "test",CommandName = "IIS"}));
+            Assert.Null(debugger.GetLaunchTargetsProvider(new LaunchProfile() {Name = "test",CommandName = "IIS"}));
         }
 
         [Fact]

@@ -26,8 +26,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test.PropertyPages
             PROPPAGEINFO info = pageInfoArray[0];
             Assert.Equal("MyPage", info.pszTitle);
             Assert.Equal(0u, info.dwHelpContext);
-            Assert.Equal(info.pszDocString,null);
-            Assert.Equal(info.pszHelpFile,null);
+            Assert.Null(info.pszDocString);
+            Assert.Null(info.pszHelpFile);
             Assert.Equal(page.Object.Size.Width, info.SIZE.cx);
             Assert.Equal(page.Object.Size.Height, info.SIZE.cy);
         }
