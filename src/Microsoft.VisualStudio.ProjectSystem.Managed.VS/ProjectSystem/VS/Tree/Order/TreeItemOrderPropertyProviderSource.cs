@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
                 {
                     // Limit TreeItemOrderPropertyProvider to one instance for now
                     // to fend off race conditions
-                    if (_latestTreeItemOrderPropertyProvider?.OrderedItems != orderedItems.Value)
+                    if (_latestTreeItemOrderPropertyProvider == null)
                     {
                         _latestTreeItemOrderPropertyProvider = new TreeItemOrderPropertyProvider(orderedItems.Value, _project);
                     }
