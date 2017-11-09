@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
     {
         private readonly UnconfiguredProject _project;
         private readonly IOrderedSourceItemsDataSourceService _orderedItemSource;
-        private TreeItemOrderPropertyProvider latestTreeItemOrderPropertyProvider;
+        private TreeItemOrderPropertyProvider _latestTreeItemOrderPropertyProvider;
 
         [ImportingConstructor]
         public TreeItemOrderPropertyProviderSource(
@@ -41,12 +41,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
                 {
                     // Limit TreeItemOrderPropertyProvider to one instance for now
                     // to fend off race conditions
-                    if (latestTreeItemOrderPropertyProvider == null)
+                    if (_latestTreeItemOrderPropertyProvider?.OrderedItems != orderedItems.Value)
                     {
-                        latestTreeItemOrderPropertyProvider = new TreeItemOrderPropertyProvider(orderedItems.Value, _project);
+                        _latestTreeItemOrderPropertyProvider = new TreeItemOrderPropertyProvider(orderedItems.Value, _project);
                     }
 
-                    return new ProjectVersionedValue<IProjectTreePropertiesProvider>(latestTreeItemOrderPropertyProvider, orderedItems.DataSourceVersions);
+                    return new ProjectVersionedValue<IProjectTreePropertiesProvider>(_latestTreeItemOrderPropertyProvider, orderedItems.DataSourceVersions);
                 }, 
                 new ExecutionDataflowBlockOptions() { NameFormat= "Ordered Tree Item Input: {1}" });
 
