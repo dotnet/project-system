@@ -7,14 +7,14 @@ using Microsoft.VisualStudio.ProjectSystem.Imaging;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging
 {
     /// <summary>
-    ///     Provides F# project images.
+    ///     Provides the AppDesigner folder image.
     /// </summary>
     [Export(typeof(IProjectImageProvider))]
-    [AppliesTo(ProjectCapability.FSharp)]
-    internal class FSharpProjectImageProvider : IProjectImageProvider
+    [AppliesTo(ProjectCapability.AppDesigner)]
+    internal class AppDesignerFolderProjectImageProvider : IProjectImageProvider
     {
         [ImportingConstructor]
-        public FSharpProjectImageProvider()
+        public AppDesignerFolderProjectImageProvider()
         {
         }
 
@@ -24,8 +24,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging
 
             switch (key)
             {
-                case ProjectImageKey.ProjectRoot:
-                    return KnownMonikers.FSProjectNode.ToProjectSystemType();
+                case ProjectImageKey.AppDesignerFolder:
+                    return KnownMonikers.Property.ToProjectSystemType();
 
                 default:
                     return null;
