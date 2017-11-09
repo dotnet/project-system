@@ -170,13 +170,13 @@ try {
     $env:VSSDKInstall = Join-Path $vsInstallDir "VSSDK\"
   }
 
-  if ($restore) {
-    InstallToolset
-  }
-
   # Preparation of a CI machine
   if ($prepareMachine) {
     Clear-NuGetCache
+  }
+
+  if ($restore) {
+    InstallToolset
   }
 
   Build
