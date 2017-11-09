@@ -26,6 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private const string ResolvedLabel = "Resolved";
         private const string ProjectProperty = "Project";
         private const string ObservedAllRulesProperty = "ObservedAllRules";
+        private const int MaxEventCount = 10;
 
         private readonly UnconfiguredProject _project;
         private readonly ITelemetryService _telemetryService;
@@ -34,6 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private readonly object _stateUpdateLock = new object();
         private string _projectId;
         private bool _stopTelemetry = false;
+        private int eventCount = 0;
 
         [ImportingConstructor]
         public DependencyTreeTelemetryService(
@@ -98,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             lock (_stateUpdateLock)
             {
                 if (_stopTelemetry) return;
-                _stopTelemetry = !hasUnresolvedDependency;
+                _stopTelemetry = !hasUnresolvedDependency || (++eventCount >= MaxEventCount);
                 observedAllRules = ObservedAllRules();
             }
 
