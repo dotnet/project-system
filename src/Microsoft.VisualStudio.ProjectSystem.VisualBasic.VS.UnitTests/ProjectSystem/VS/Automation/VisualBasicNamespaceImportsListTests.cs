@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             var list = VisualBasicNamespaceImportsListFactory.CreateInstance("A", "B");
 
             //Count
-            Assert.Equal(list.Count, 2);
+            Assert.Equal(2, list.Count);
 
             //GetEnumerator
             var enumerator = list.GetEnumerator();
