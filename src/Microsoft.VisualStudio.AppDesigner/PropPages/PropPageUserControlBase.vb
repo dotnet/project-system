@@ -4398,7 +4398,7 @@ NextControl:
             For Each Data As PropertyControlData In ControlData
                 If Data.DispId = DISPID OrElse DISPID = Interop.win.DISPID_UNKNOWN Then
                     OnExternalPropertyChanged(Data, Source)
-                    If Data.DispId <> Interop.win.DISPID_UNKNOWN Then
+                    If DISPID <> Interop.win.DISPID_UNKNOWN Then
                         'If the DISPID was a specific value, we only have one specific property to update, otherwise
                         '  we need to continue for all properties.
                         Return
