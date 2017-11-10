@@ -1,6 +1,8 @@
 ' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+Imports System.Drawing
 Imports System.Windows.Forms
+Imports Microsoft.VisualStudio.Editor
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports VSLangProj80
 
@@ -19,6 +21,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             'Add any initialization after the InitializeComponent() call
             AddChangeHandlers()
+
+            ' Get the Text Editor's font setting from Font and Colors category and set it
+            SetupTextEditorFontSetting()
+
         End Sub
 
         Public Enum Tokens
@@ -65,6 +71,34 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             "ProjectExt",
             "SolutionExt"
         }
+
+        Private prevFontInfo As FontInfo
+
+        Private Sub SetupTextEditorFontSetting()
+            Dim Flags As __FCSTORAGEFLAGS = __FCSTORAGEFLAGS.FCSF_READONLY Or __FCSTORAGEFLAGS.FCSF_LOADDEFAULTS
+            Dim VsConstantResult As Integer
+            Dim FontAndColorStorageService = Shell.ServiceProvider.GlobalProvider.GetService(GetType(SVsFontAndColorStorage))
+            Dim FontColorStorage As IVsFontAndColorStorage = TryCast(FontAndColorStorageService, IVsFontAndColorStorage)
+            If FontColorStorage IsNot Nothing Then
+                VsConstantResult = FontColorStorage.OpenCategory(DefGuidList.guidTextEditorFontCategory, CType(Flags, System.UInt32))
+                If VsConstantResult = VSConstants.S_OK Then
+                    Dim logFontw(1) As LOGFONTW
+                    Dim TextEditorFont(1) As FontInfo
+                    VsConstantResult = FontColorStorage.GetFont(logFontw, TextEditorFont)
+                    If VsConstantResult = VSConstants.S_OK Then
+                        ' Try to set the font..
+                        Dim FontDisplayed As Font
+                        FontDisplayed = New Font(TextEditorFont(0).bstrFaceName, CType(TextEditorFont(0).wPointSize, Single))
+                        txtPreBuildEventCommandLine.Font = FontDisplayed
+                        txtPostBuildEventCommandLine.Font = FontDisplayed
+                    End If
+
+                End If
+                FontColorStorage.CloseCategory()
+
+            End If
+
+        End Sub
 
         Protected Overrides ReadOnly Property ControlData() As PropertyControlData()
             Get
