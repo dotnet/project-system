@@ -3,6 +3,7 @@
   <PropertyGroup>
     <PlatformTarget>x86</PlatformTarget>
     <TargetFramework>net461</TargetFramework>
+    <PublishOutputToSymStore>false</PublishOutputToSymStore>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.IntegrationTests\Microsoft.VisualStudio.ProjectSystem.IntegrationTests.csproj" />

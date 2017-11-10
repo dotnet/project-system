@@ -179,17 +179,17 @@
       </trans-unit>
       <trans-unit id="CancelBtn">
         <source>Cancel</source>
-        <target state="new">Cancel</target>
+        <target state="translated">취소</target>
         <note />
       </trans-unit>
       <trans-unit id="OKBtn">
         <source>OK</source>
-        <target state="new">OK</target>
+        <target state="translated">확인</target>
         <note />
       </trans-unit>
       <trans-unit id="ProfileName">
         <source>Profile name:</source>
-        <target state="new">Profile name:</target>
+        <target state="translated">프로필 이름:</target>
         <note />
       </trans-unit>
     </body>

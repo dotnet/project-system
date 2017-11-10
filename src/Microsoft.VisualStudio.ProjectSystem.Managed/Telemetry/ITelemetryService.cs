@@ -7,8 +7,8 @@ namespace Microsoft.VisualStudio.Telemetry
     internal interface ITelemetryService
     {
         void PostEvent(string eventName);
-        void PostProperty(string eventName, string propertyName, string propertyValue);
-        void PostProperties(string eventName, IEnumerable<(string propertyName, string propertyValue)> properties);
+        void PostProperty(string eventName, string propertyName, object propertyValue);
+        void PostProperties(string eventName, IEnumerable<(string propertyName, object propertyValue)> properties);
         string HashValue(string value);
     }
 }

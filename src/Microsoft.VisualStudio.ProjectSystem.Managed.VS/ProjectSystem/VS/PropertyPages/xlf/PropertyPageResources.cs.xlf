@@ -179,17 +179,17 @@
       </trans-unit>
       <trans-unit id="CancelBtn">
         <source>Cancel</source>
-        <target state="new">Cancel</target>
+        <target state="translated">Zrušit</target>
         <note />
       </trans-unit>
       <trans-unit id="OKBtn">
         <source>OK</source>
-        <target state="new">OK</target>
+        <target state="translated">OK</target>
         <note />
       </trans-unit>
       <trans-unit id="ProfileName">
         <source>Profile name:</source>
-        <target state="new">Profile name:</target>
+        <target state="translated">Název profilu:</target>
         <note />
       </trans-unit>
     </body>

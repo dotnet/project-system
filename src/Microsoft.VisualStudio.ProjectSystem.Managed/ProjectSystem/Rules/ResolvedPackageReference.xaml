@@ -22,6 +22,9 @@
                     ReadOnly="True"
                     DisplayName="Version"
                     Description="Version of dependency.">
+        <StringProperty.DataSource>
+            <DataSource PersistenceStyle="Attribute" SourceOfDefaultValue="AfterContext" />
+        </StringProperty.DataSource>
     </StringProperty>
 
     <StringProperty Name="Name" 

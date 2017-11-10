@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="FormBasedAuth.Text">
         <source>Use &amp;Forms authentication</source>
-        <target state="translated">Проверка подлинности на &amp;основе форм</target>
+        <target state="translated">Проверка подлиннос&amp;ти на основе форм</target>
         <note />
       </trans-unit>
       <trans-unit id="CustomCredentialProviderTypeLabel.Text">

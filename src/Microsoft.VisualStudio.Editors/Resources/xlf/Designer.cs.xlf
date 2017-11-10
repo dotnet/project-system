@@ -2720,47 +2720,47 @@ Chcete aktualizovat hodnotu v souboru .settings?</target>
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_None">
         <source>None</source>
-        <target state="new">None</target>
+        <target state="translated">Žádné</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_Prompt">
         <source>Prompt</source>
-        <target state="new">Prompt</target>
+        <target state="translated">Výzva</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_Queue">
         <source>Queue</source>
-        <target state="new">Queue</target>
+        <target state="translated">Fronta</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_ReportCompilerErrors_Send">
         <source>Send</source>
-        <target state="new">Send</target>
+        <target state="translated">Odeslat</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_Embedded">
         <source>Embedded</source>
-        <target state="new">Embedded</target>
+        <target state="translated">Vložené</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_Full">
         <source>Full</source>
-        <target state="new">Full</target>
+        <target state="translated">Plné</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_None">
         <source>None</source>
-        <target state="new">None</target>
+        <target state="translated">Žádné</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_PdbOnly">
         <source>Pdb-only</source>
-        <target state="new">Pdb-only</target>
+        <target state="translated">Jen PDB</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_Portable">
         <source>Portable</source>
-        <target state="new">Portable</target>
+        <target state="translated">Přenosné</target>
         <note />
       </trans-unit>
     </body>

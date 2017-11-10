@@ -4,7 +4,8 @@
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
     <AssemblyName>ProjectSystem</AssemblyName>
-    
+    <PublishOutputToSymStore>false</PublishOutputToSymStore>
+
     <!-- VSIX -->
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
 
@@ -12,7 +13,7 @@
     <VisualStudioInsertionComponent>Microsoft.VisualStudio.ProjectSystem.Managed</VisualStudioInsertionComponent>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="RoslynDependencies.OptimizationData" Version="$(RoslynDependenciesOptimizationDataVersion)" />
+    <PackageReference Include="RoslynDependencies.ProjectSystem.OptimizationData" Version="$(RoslynDependenciesProjectSystemOptimizationDataVersion)" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.CSharp.VS\Microsoft.VisualStudio.ProjectSystem.CSharp.VS.csproj">

@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="RoleServiceCacheTimeoutLabel.Text">
         <source>Role service cache &amp;timeout:</source>
-        <target state="translated">Tiempo de &amp;espera de caché del servicio de rol:</target>
+        <target state="translated">&amp;Tiempo de espera de caché del servicio de rol:</target>
         <note />
       </trans-unit>
       <trans-unit id="SavePasswordHashLocallyCheckbox.Text">
