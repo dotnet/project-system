@@ -14,6 +14,7 @@
     <RoslynToolsMicrosoftVsixExpInstallerVersion>0.4.1-beta</RoslynToolsMicrosoftVsixExpInstallerVersion>
     <VSWhereVersion>2.1.4</VSWhereVersion>
     <MicrosoftDotNetIBCMergeVersion>4.7.1-alpha-00001</MicrosoftDotNetIBCMergeVersion>
+    <MicrosoftNetCompilersVersion>2.6.0-beta3-62310-01</MicrosoftNetCompilersVersion>
 
     <!-- VS SDK -->
     <MicrosoftVisualStudioComponentModelHostVersion>15.0.26606</MicrosoftVisualStudioComponentModelHostVersion>
@@ -67,7 +68,7 @@
     <MicrosoftVisualStudioLanguageServicesVersion>2.6.0-beta1-62113-02</MicrosoftVisualStudioLanguageServicesVersion>
     <MicrosoftVisualStudioIntegrationTestUtilitiesVersion>2.6.0-beta1-62113-02</MicrosoftVisualStudioIntegrationTestUtilitiesVersion>
     <RoslynIntegrationVsixVersion>2.6.0.6211302</RoslynIntegrationVsixVersion>
-    <MicrosoftNetRoslynDiagnosticsVersion>2.3.0-beta1</MicrosoftNetRoslynDiagnosticsVersion>
+    <MicrosoftNetRoslynDiagnosticsVersion>2.6.0-beta1-62231-02</MicrosoftNetRoslynDiagnosticsVersion>
 
     <!-- NuGet -->
     <NuGetSolutionRestoreManagerInteropVersion>4.3.0</NuGetSolutionRestoreManagerInteropVersion>
