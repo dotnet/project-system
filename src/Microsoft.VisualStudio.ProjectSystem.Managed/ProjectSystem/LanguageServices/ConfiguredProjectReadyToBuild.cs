@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             lock (_configuredProject)
             {
                 var previouslyActive = _activationTask.Task.IsCompleted;
-                var nowActive = _configuredProject.ProjectConfiguration.EqualIgnoringTargetFramework(_activeConfiguredProjectProvider.ActiveProjectConfiguration);
+                var nowActive = IsActive();
                 if (previouslyActive)
                 {
                     if (!nowActive)
@@ -61,7 +61,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         public void Dispose()
         {
             _activationTask.TrySetCanceled();
-            _activeConfiguredProjectProvider.Changed -= ActiveConfiguredProject_Changed;            
+            _activeConfiguredProjectProvider.Changed -= ActiveConfiguredProject_Changed;
+        }
+
+        private bool IsActive()
+        {
+            ProjectConfiguration activeConfig = _activeConfiguredProjectProvider.ActiveProjectConfiguration;
+            if (activeConfig == null)
+                return false;
+
+            return _configuredProject.ProjectConfiguration.EqualIgnoringTargetFramework(activeConfig);
         }
     }
 }
