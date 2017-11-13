@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
-using System.Globalization;
-using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
@@ -33,22 +31,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             out bool filterAnyChanges)
         {
             filterAnyChanges = false;
-            IDependency resultDependency = dependency;
+            var resultDependency = dependency;
 
-            var matchingDependency = topLevelBuilder.FirstOrDefault(
-                x => !x.Id.Equals(dependency.Id, StringComparison.OrdinalIgnoreCase)
-                     && x.ProviderType.Equals(dependency.ProviderType, StringComparison.OrdinalIgnoreCase) 
-                     && x.Caption.Equals(dependency.Caption, StringComparison.OrdinalIgnoreCase));
-            
-            // if found node with same caption, or if there were nodes with same caption but with Alias already applied
-            var shouldApplyAlias = (matchingDependency == null)
-                ? topLevelBuilder.Any(
-                    x => !x.Id.Equals(dependency.Id)
+            IDependency matchingDependency = null;
+            foreach (var x in topLevelBuilder)
+            {
+                if (!x.Id.Equals(dependency.Id, StringComparison.OrdinalIgnoreCase)
+                     && x.ProviderType.Equals(dependency.ProviderType, StringComparison.OrdinalIgnoreCase)
+                     && x.Caption.Equals(dependency.Caption, StringComparison.OrdinalIgnoreCase))
+                {
+                    matchingDependency = x;
+                    break;
+                }
+            }
+
+            // If found node with same caption, or if there were nodes with same caption but with Alias already applied
+            // NOTE: Performance sensitive, so avoid formatting the Caption with parenthesis if it's possible to avoid it.
+            var shouldApplyAlias = matchingDependency != null;
+            if (!shouldApplyAlias)
+            {
+                var adjustedLength = dependency.Caption.Length + " (".Length;
+                foreach (var x in topLevelBuilder)
+                {
+                    if (!x.Id.Equals(dependency.Id)
                          && x.ProviderType.Equals(dependency.ProviderType, StringComparison.OrdinalIgnoreCase)
-                         && x.Caption.Equals(
-                             string.Format(CultureInfo.CurrentCulture, "{0} ({1})", dependency.Caption, x.OriginalItemSpec),
-                                StringComparison.OrdinalIgnoreCase))
-                : true;
+                         && x.Caption.StartsWith(dependency.Caption, StringComparison.OrdinalIgnoreCase)
+                         && x.Caption.Length >= adjustedLength
+                         && string.Compare(x.Caption, adjustedLength, x.OriginalItemSpec, 0, x.OriginalItemSpec.Length, StringComparison.OrdinalIgnoreCase) == 0)
+                    {
+                        shouldApplyAlias = true;
+                        break;
+                    }
+                }
+            }
 
             if (shouldApplyAlias)
             {
