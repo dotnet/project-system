@@ -9,7 +9,7 @@ using Microsoft.Build.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 {
-    internal sealed class BuildTableLogger : ILogger
+    internal sealed class ProjectLogger : ILogger
     {
         private static readonly string[] Dimensions = {"Configuration", "Platform", "TargetFramework"};
 
@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
         public string Parameters { get; set; }
 
-        public BuildTableLogger(BuildTableDataSource dataSource, bool isDesignTime)
+        public ProjectLogger(BuildTableDataSource dataSource, bool isDesignTime)
         {
             _dataSource = dataSource;
             _isDesignTime = isDesignTime;
