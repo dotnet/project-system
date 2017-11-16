@@ -5,7 +5,6 @@
     <Description Package="{52CBD135-1F97-2580-011F-C7CD052E44DE}" ID="522"/>
     <Icon Package="{52CBD135-1F97-2580-011F-C7CD052E44DE}" ID="533"/>
     <ProjectType>VisualBasic</ProjectType>
-    <RequiredFrameworkVersion>2.0</RequiredFrameworkVersion>
     <SortOrder>15</SortOrder>
     <TemplateID>Microsoft.VisualBasic.NETCore.UnitTest</TemplateID>
     <CreateNewFolder>true</CreateNewFolder>
