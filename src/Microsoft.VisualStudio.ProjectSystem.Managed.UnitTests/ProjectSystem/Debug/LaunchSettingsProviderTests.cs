@@ -189,7 +189,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 return new List<ILaunchProfile>()
                 {
                     { new LaunchProfile() { Name = "IIS Express", CommandName="IISExpress", LaunchBrowser=true, DoNotPersist = true } },
-                    { new LaunchProfile() { Name = "InMemory1", DoNotPersist = true} }
+                    { new LaunchProfile() { Name = "InMemory1", DoNotPersist = true} },
+                    { new LaunchProfile() { Name = "ShouldNotBeIncluded", CommandName=LaunchSettingsProvider.ErrorProfileCommandName, DoNotPersist = true} }
                 }.ToImmutableList();
             });
 
