@@ -229,7 +229,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
 
             var newSnapshot = new LaunchSettings(snapshot.Profiles, snapshot.GlobalSettings, activeProfile);
-            FinishUpdate(newSnapshot);
+            await FinishUpdateAsync(newSnapshot, ensureProfileProperty:false).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -245,8 +245,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // If no active profile specified, try to get one
                 if (activeProfile == null)
                 {
-                    var props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync().ConfigureAwait(true);
-                    if (await props.ActiveDebugProfile.GetValueAsync().ConfigureAwait(true) is IEnumValue activeProfileVal)
+                    var props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync().ConfigureAwait(false);
+                    if (await props.ActiveDebugProfile.GetValueAsync().ConfigureAwait(false) is IEnumValue activeProfileVal)
                     {
                         activeProfile = activeProfileVal.Name;
                     }
@@ -271,7 +271,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
                 var newSnapshot = new LaunchSettings(launchSettingData, activeProfile);
 
-                FinishUpdate(newSnapshot);
+                await FinishUpdateAsync(newSnapshot, ensureProfileProperty: true).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -284,20 +284,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     var errorProfile = new LaunchProfile() { Name = Resources.NoActionProfileName, CommandName = ErrorProfileCommandName, DoNotPersist = true};
                     errorProfile.OtherSettings = ImmutableDictionary<string, object>.Empty.Add("ErrorString", ex.Message);
                     var snapshot = new LaunchSettings(new List<ILaunchProfile>() { errorProfile }, null, errorProfile.Name);
-                    FinishUpdate(snapshot);
+                    await FinishUpdateAsync(snapshot, ensureProfileProperty:false).ConfigureAwait(false);
                 }
             }
         }
 
         /// <summary>
-        /// Re-applies in-memory profiles to the newly created snapshot
+        /// Re-applies in-memory profiles to the newly created snapshot. Note that we don't want to merge in the error
+        /// profile
         /// </summary>
         protected void MergeExistingInMemoryProfiles(LaunchSettingsData newSnapshot, ILaunchSettings prevSnapshot)
         {
             for (int i =0; i < prevSnapshot.Profiles.Count; i++)
             {
                 var profile = prevSnapshot.Profiles[i];
-                if(profile.IsInMemoryObject())
+                if(profile.IsInMemoryObject() && !string.Equals(profile.CommandName, ErrorProfileCommandName))
                 {
                     // Does it already have one with this name?
                     if(newSnapshot.Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, profile.Name)) == null)
@@ -354,11 +355,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         /// <summary>
-        /// Helper function to set the new snapshot and post the change to consumers.
+        /// Helper function to set the new snapshot, update the active profile property to match what is in the snapshot,  and post
+        /// the changes to consumers.
         /// </summary>
-        protected void FinishUpdate(ILaunchSettings newSnapshot)
+        protected async Task FinishUpdateAsync(ILaunchSettings newSnapshot, bool ensureProfileProperty)
         {
             CurrentSnapshot = newSnapshot;
+            if(ensureProfileProperty)
+            {
+                var props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync().ConfigureAwait(false);
+                if (await props.ActiveDebugProfile.GetValueAsync().ConfigureAwait(false) is IEnumValue activeProfileVal)
+                {
+                    if(newSnapshot.ActiveProfile?.Name != null && !string.Equals(newSnapshot.ActiveProfile?.Name, activeProfileVal.Name))
+                    {
+                        await props.ActiveDebugProfile.SetValueAsync(newSnapshot.ActiveProfile.Name).ConfigureAwait(false);
+                    }
+                }
+            }
 
             if (_broadcastBlock != null)
             {
@@ -766,7 +779,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 await SaveSettingsToDiskAsync(newSettings).ConfigureAwait(false);
             }
 
-            FinishUpdate(newSnapshot);
+            await FinishUpdateAsync(newSnapshot, ensureProfileProperty: true).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -931,7 +944,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public async Task SetActiveProfileAsync(string profileName)
         {
             var props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync().ConfigureAwait(false);
-            await props.ActiveDebugProfile.SetValueAsync(profileName).ConfigureAwait(true);
+            await props.ActiveDebugProfile.SetValueAsync(profileName).ConfigureAwait(false);
         }
 
         internal async Task<string> GetLaunchSettingsFilePathNoCacheAsync()

@@ -52,7 +52,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging
         [InlineData(ProjectImageKey.ProjectRoot)]
         [InlineData(ProjectImageKey.SharedProjectRoot)]
         [InlineData(ProjectImageKey.SharedItemsImportFile)]
-        [InlineData(ProjectImageKey.AppDesignerFolder)]
         public void GetProjectImage_RecognizedKeyAsKey_ReturnsNonNull(string key)
         {
             var provider = CreateInstance();

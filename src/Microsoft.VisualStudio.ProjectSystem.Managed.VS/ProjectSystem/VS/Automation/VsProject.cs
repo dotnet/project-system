@@ -1,7 +1,10 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.ComponentModel.Composition;
 using EnvDTE;
+using Microsoft.VisualStudio.OLE.Interop;
+using Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint;
 using VSLangProj;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
@@ -19,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
     [Export(ExportContractNames.VsTypes.VSProject, typeof(VSLangProj.VSProject))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasic)]
     [Order(Order.Default)]
-    public partial class VSProject : VSLangProj.VSProject
+    public partial class VSProject : VSLangProj.VSProject, IConnectionPointContainer, IEventSource<IPropertyNotifySink>
     {
         private readonly VSLangProj.VSProject _vsProject;
         private readonly IProjectThreadingService _threadingService;
@@ -131,5 +134,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             return _vsProject.GetUniqueFilename(pDispatch, bstrRoot, bstrDesiredExt);
         }
+
+        #region IConnectionPointContainer
+
+        public void EnumConnectionPoints(out IEnumConnectionPoints ppEnum)
+        {
+            ppEnum = null;
+            (_vsProject as IConnectionPointContainer)?.EnumConnectionPoints(out ppEnum);
+        }
+
+        public void FindConnectionPoint(ref Guid riid, out IConnectionPoint ppCP)
+        {
+            ppCP = null;
+            (_vsProject as IConnectionPointContainer)?.FindConnectionPoint(ref riid, out ppCP);
+        }
+
+        #endregion IConnectionPointContainer
+
+        #region IEventSource<IPropertyNotifySink>
+
+        public void OnSinkAdded(IPropertyNotifySink sink)
+        {
+            (_vsProject as IEventSource<IPropertyNotifySink>)?.OnSinkAdded(sink);
+        }
+
+        public void OnSinkRemoved(IPropertyNotifySink sink)
+        {
+            (_vsProject as IEventSource<IPropertyNotifySink>)?.OnSinkRemoved(sink);
+        }
+
+        #endregion IEventSource<IPropertyNotifySink>
     }
 }

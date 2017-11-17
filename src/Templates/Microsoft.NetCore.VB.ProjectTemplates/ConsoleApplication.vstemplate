@@ -5,7 +5,6 @@
     <Description Package="{860A27C0-B665-47F3-BC12-637E16A1050A}" ID="4"/>
     <Icon>ConsoleApplication.png</Icon>
     <ProjectType>VisualBasic</ProjectType>
-    <RequiredFrameworkVersion>2.0</RequiredFrameworkVersion>
     <SortOrder>12</SortOrder>
     <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
     <TemplateID>Microsoft.VisualBasic.NETCore.ConsoleApplication</TemplateID>

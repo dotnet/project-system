@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var testProfiles = new Mock<ILaunchSettings>();
             testProfiles.Setup(m => m.ActiveProfile).Returns(new LaunchProfile() { Name = activeProfile });
             var provider = GetLaunchSettingsProvider(null);
-            Assert.Equal(null, provider.ActiveProfile);
+            Assert.Null(provider.ActiveProfile);
 
             provider.SetCurrentSnapshot(testProfiles.Object);
             Assert.Equal(activeProfile, provider.ActiveProfile.Name);
@@ -189,7 +189,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 return new List<ILaunchProfile>()
                 {
                     { new LaunchProfile() { Name = "IIS Express", CommandName="IISExpress", LaunchBrowser=true, DoNotPersist = true } },
-                    { new LaunchProfile() { Name = "InMemory1", DoNotPersist = true} }
+                    { new LaunchProfile() { Name = "InMemory1", DoNotPersist = true} },
+                    { new LaunchProfile() { Name = "ShouldNotBeIncluded", CommandName=LaunchSettingsProvider.ErrorProfileCommandName, DoNotPersist = true} }
                 }.ToImmutableList();
             });
 
@@ -198,8 +199,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             await provider.UpdateProfilesAsyncTest(null);
             Assert.Equal(5, provider.CurrentSnapshot.Profiles.Count);
             Assert.Equal("InMemory1", provider.CurrentSnapshot.Profiles[1].Name);
-            Assert.Equal(true, provider.CurrentSnapshot.Profiles[1].IsInMemoryObject());
-            Assert.Equal(false, provider.CurrentSnapshot.Profiles[0].IsInMemoryObject());
+            Assert.True(provider.CurrentSnapshot.Profiles[1].IsInMemoryObject());
+            Assert.False(provider.CurrentSnapshot.Profiles[0].IsInMemoryObject());
         }
 
         [Fact]
@@ -228,7 +229,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             await provider.UpdateProfilesAsyncTest(null);
             Assert.Equal(5, provider.CurrentSnapshot.Profiles.Count);
             Assert.Equal("InMemory1", provider.CurrentSnapshot.Profiles[provider.CurrentSnapshot.Profiles.Count - 1].Name);
-            Assert.Equal(true, provider.CurrentSnapshot.Profiles[provider.CurrentSnapshot.Profiles.Count - 1].IsInMemoryObject());
+            Assert.True(provider.CurrentSnapshot.Profiles[provider.CurrentSnapshot.Profiles.Count - 1].IsInMemoryObject());
         }
 
         [Fact]
@@ -261,8 +262,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             await provider.UpdateProfilesAsyncTest(null);
             Assert.Equal(2, provider.CurrentSnapshot.GlobalSettings.Count);
-            Assert.Equal(false, provider.CurrentSnapshot.GlobalSettings["iisSettings"].IsInMemoryObject());
-            Assert.Equal(true, provider.CurrentSnapshot.GlobalSettings["InMemoryUnique"].IsInMemoryObject());
+            Assert.False(provider.CurrentSnapshot.GlobalSettings["iisSettings"].IsInMemoryObject());
+            Assert.True(provider.CurrentSnapshot.GlobalSettings["InMemoryUnique"].IsInMemoryObject());
         }
 
         [Fact]

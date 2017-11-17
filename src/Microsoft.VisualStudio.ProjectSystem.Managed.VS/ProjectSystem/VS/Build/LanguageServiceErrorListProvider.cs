@@ -111,11 +111,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         /// <param name="result">The extracted details, or <c>null</c> if <paramref name="eventArgs"/> was <c>null</c> or of an unrecognized type.</param>
         internal static bool TryExtractErrorListDetails(BuildEventArgs eventArgs, out ErrorListDetails result)
         {
-            BuildErrorEventArgs errorMessage;
-            BuildWarningEventArgs warningMessage;
-            CriticalBuildMessageEventArgs criticalMessage;
 
-            if ((errorMessage = eventArgs as BuildErrorEventArgs) != null)
+            if (eventArgs is BuildErrorEventArgs errorMessage)
             {
                 result = new ErrorListDetails()
                 {
@@ -133,7 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 return true;
             }
 
-            if ((warningMessage = eventArgs as BuildWarningEventArgs) != null)
+            if (eventArgs is BuildWarningEventArgs warningMessage)
             {
                 result = new ErrorListDetails()
                 {
@@ -151,7 +148,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 return true;
             }
 
-            if ((criticalMessage = eventArgs as CriticalBuildMessageEventArgs) != null)
+            if (eventArgs is CriticalBuildMessageEventArgs criticalMessage)
             {
                 result = new ErrorListDetails()
                 {
