@@ -245,8 +245,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // If no active profile specified, try to get one
                 if (activeProfile == null)
                 {
-                    var props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync().ConfigureAwait(true);
-                    if (await props.ActiveDebugProfile.GetValueAsync().ConfigureAwait(true) is IEnumValue activeProfileVal)
+                    var props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync().ConfigureAwait(false);
+                    if (await props.ActiveDebugProfile.GetValueAsync().ConfigureAwait(false) is IEnumValue activeProfileVal)
                     {
                         activeProfile = activeProfileVal.Name;
                     }
@@ -363,12 +363,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             CurrentSnapshot = newSnapshot;
             if(ensureProfileProperty)
             {
-                var props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync().ConfigureAwait(true);
-                if (await props.ActiveDebugProfile.GetValueAsync().ConfigureAwait(true) is IEnumValue activeProfileVal)
+                var props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync().ConfigureAwait(false);
+                if (await props.ActiveDebugProfile.GetValueAsync().ConfigureAwait(false) is IEnumValue activeProfileVal)
                 {
                     if(newSnapshot.ActiveProfile?.Name != null && !string.Equals(newSnapshot.ActiveProfile?.Name, activeProfileVal.Name))
                     {
-                        await props.ActiveDebugProfile.SetValueAsync(newSnapshot.ActiveProfile.Name).ConfigureAwait(true);
+                        await props.ActiveDebugProfile.SetValueAsync(newSnapshot.ActiveProfile.Name).ConfigureAwait(false);
                     }
                 }
             }
@@ -944,7 +944,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public async Task SetActiveProfileAsync(string profileName)
         {
             var props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync().ConfigureAwait(false);
-            await props.ActiveDebugProfile.SetValueAsync(profileName).ConfigureAwait(true);
+            await props.ActiveDebugProfile.SetValueAsync(profileName).ConfigureAwait(false);
         }
 
         internal async Task<string> GetLaunchSettingsFilePathNoCacheAsync()
