@@ -67,6 +67,13 @@
         </Strings>
       </Button>
     </Buttons>
+    <Combos>
+      <Combo guid="CommandSetGuid" id="BuildTypeComboCommandId" defaultWidth="150" type="DropDownCombo" idCommandList="BuildTypeComboGetListCommandId">
+        <Strings>
+          <ButtonText>Choose build types</ButtonText>
+        </Strings>
+      </Combo>
+    </Combos>
   </Commands>
   <CommandPlacements>
     <CommandPlacement guid="CommandSetGuid" id="BuildLoggingCommandId" priority="0x0100">
@@ -79,6 +86,9 @@
       <Parent guid="UIGuid" id="BuildLoggingToolbarGroupId" />
     </CommandPlacement>
     <CommandPlacement guid="CommandSetGuid" id="ClearCommandId" priority="0x0000">
+      <Parent guid="UIGuid" id="BuildLoggingToolbarGroupId" />
+    </CommandPlacement>
+    <CommandPlacement guid="CommandSetGuid" id="BuildTypeComboCommandId" priority="0x0000">
       <Parent guid="UIGuid" id="BuildLoggingToolbarGroupId" />
     </CommandPlacement>
     <CommandPlacement guid="CommandSetGuid" id="SaveLogsCommandId" priority="0x0000">
@@ -97,6 +107,8 @@
       <IDSymbol name="ClearCommandId" value="0x0103" />
       <IDSymbol name="SaveLogsCommandId" value="0x0107" />
       <IDSymbol name="OpenLogsCommandId" value="0x0108" />
+      <IDSymbol name="BuildTypeComboCommandId" value="0x0109"/>
+      <IDSymbol name="BuildTypeComboGetListCommandId" value="0x010a"/>
     </GuidSymbol>
     <GuidSymbol name="UIGuid" value="{629080DF-2A44-40E5-9AF4-371D4B727D16}">
       <IDSymbol name="BuildLoggingToolbarMenuId" value="0x0100" />

@@ -7,11 +7,6 @@
         <target state="new">Cannot set property.</target>
         <note />
       </trans-unit>
-      <trans-unit id="DesignTimeHeaderLabel">
-        <source>Design-Time</source>
-        <target state="new">Design-Time</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DimensionsHeaderLabel">
         <source>Dimensions</source>
         <target state="new">Dimensions</target>
@@ -55,6 +50,31 @@
       <trans-unit id="ProjectTypeHeaderLabel">
         <source>Type</source>
         <target state="new">Type</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BuildTypeHeaderLabel">
+        <source>Type</source>
+        <target state="new">Type</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FilterBuildAll">
+        <source>All</source>
+        <target state="new">All</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FilterBuildBuilds">
+        <source>Builds</source>
+        <target state="new">Builds</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FilterBuildDesignTimeBuilds">
+        <source>Design-time Builds</source>
+        <target state="new">Design-time Builds</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FilterBuildEvaluations">
+        <source>Evaluation</source>
+        <target state="new">Evaluation</target>
         <note />
       </trans-unit>
     </body>

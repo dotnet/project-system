@@ -9,39 +9,39 @@ using Microsoft.Build.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 {
-    internal sealed class ProjectLogger : ILogger
+    internal sealed class ProjectLogger : LoggerBase
     {
         private static readonly string[] Dimensions = {"Configuration", "Platform", "TargetFramework"};
 
-        private readonly BuildTableDataSource _dataSource;
         private readonly bool _isDesignTime;
         private int _projectInstanceId;
-        private Build _build;
         private readonly string _logPath;
         private readonly BinaryLogger _binaryLogger;
+        private Build _build;
 
-        public LoggerVerbosity Verbosity { get => LoggerVerbosity.Diagnostic; set {} }
-
-        public string Parameters { get; set; }
-
-        public ProjectLogger(BuildTableDataSource dataSource, bool isDesignTime)
+        public ProjectLogger(BuildTableDataSource dataSource, bool isDesignTime) :
+            base(dataSource)
         {
-            _dataSource = dataSource;
-            _isDesignTime = isDesignTime;
             _logPath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.binlog");
             _binaryLogger = new BinaryLogger
             {
                 Parameters = _logPath,
-                Verbosity =  LoggerVerbosity.Diagnostic,
+                Verbosity = LoggerVerbosity.Diagnostic,
                 CollectProjectImports = BinaryLogger.ProjectImportsCollectionMode.None
             };
+            _isDesignTime = isDesignTime;
         }
 
-        public void Initialize(IEventSource eventSource)
+        public override void Initialize(IEventSource eventSource)
         {
             eventSource.ProjectStarted += ProjectStarted;
             eventSource.ProjectFinished += ProjectFinished;
             _binaryLogger.Initialize(eventSource);
+        }
+
+        public override void Shutdown()
+        {
+            _binaryLogger.Shutdown();
         }
 
         private void ProjectFinished(object sender, ProjectFinishedEventArgs e)
@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
             }
 
             _build.Finish(e.Succeeded, e.Timestamp, _logPath);
-            _dataSource.NotifyChange();
+            DataSource.NotifyChange();
         }
 
         private static IEnumerable<string> GatherDimensions(IDictionary<string, string> globalProperties)
@@ -69,22 +69,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
         private void ProjectStarted(object sender, ProjectStartedEventArgs e)
         {
             // We only want to register the outermost project build
-            if (!_dataSource.IsLogging || e.ParentProjectBuildEventContext.ProjectInstanceId != -1)
+            if (!DataSource.IsLogging || e.ParentProjectBuildEventContext.ProjectInstanceId != -1)
             {
                 return;
             }
 
             var dimensions = GatherDimensions(e.GlobalProperties);
 
-            var build = new Build(e.ProjectFile, dimensions.ToArray(), e.TargetNames?.Split(';'), _isDesignTime, e.Timestamp);
+            var build = new Build(e.ProjectFile, dimensions.ToArray(), e.TargetNames?.Split(';'), _isDesignTime ? BuildType.DesignTimeBuild : BuildType.Build, e.Timestamp);
             _build = build;
             _projectInstanceId = e.BuildEventContext.ProjectInstanceId;
-            _dataSource.AddEntry(_build);
-        }
-
-        public void Shutdown()
-        {
-            _binaryLogger.Shutdown();
+            DataSource.AddEntry(_build);
         }
     }
 }

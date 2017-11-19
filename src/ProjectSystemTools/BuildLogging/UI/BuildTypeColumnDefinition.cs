@@ -3,18 +3,19 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Windows;
+using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model;
 using Microsoft.VisualStudio.Shell.TableControl;
 using Microsoft.VisualStudio.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI
 {
     [Export(typeof(ITableColumnDefinition))]
-    [Name(TableColumnNames.DesignTime)]
-    internal sealed class DesignTimeColumnDefinition : TableColumnDefinitionBase
+    [Name(TableColumnNames.BuildType)]
+    internal sealed class BuildTypeColumnDefinition : TableColumnDefinitionBase
     {
-        public override string Name => TableColumnNames.DesignTime;
+        public override string Name => TableColumnNames.BuildType;
 
-        public override string DisplayName => Resources.DesignTimeHeaderLabel;
+        public override string DisplayName => Resources.BuildTypeHeaderLabel;
 
         public override StringComparer Comparer => StringComparer.Ordinal;
 
@@ -24,9 +25,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI
 
         public override bool TryCreateStringContent(ITableEntryHandle entry, bool truncatedText, bool singleColumnView, out string content)
         {
-            if (entry.TryGetValue(TableKeyNames.DesignTime, out var value) && value != null && value is bool isDesignTime)
+            if (entry.TryGetValue(TableKeyNames.BuildType, out var value) && value != null && value is BuildType buildType)
             {
-                content = isDesignTime.ToString();
+                content = buildType.ToString();
                 return true;
             }
 

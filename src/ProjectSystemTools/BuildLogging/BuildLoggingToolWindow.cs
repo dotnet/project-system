@@ -42,6 +42,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
         private const string ColumnGroupingPriority = "GroupingPriority";
         private const string ColumnsKey = "ProjectSystemTools\\BuildLogging\\Columns";
 
+        private readonly string[] _buildFilterComboItems = { Resources.FilterBuildAll, Resources.FilterBuildEvaluations, Resources.FilterBuildDesignTimeBuilds, Resources.FilterBuildBuilds };
+
         private static readonly Guid BuildLoggingToolWindowSearchCategory = new Guid("6D3BC803-1271-4909-BA24-2921AF7F029B");
 
         private readonly IBuildTableDataSource _dataSource;
@@ -49,6 +51,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
         private readonly ContentWrapper _contentWrapper;
         private IWpfTableControl2 _tableControl;
         private bool _isDisposed;
+
+        private BuildType _filterType = BuildType.Evaluation | BuildType.DesignTimeBuild | BuildType.Build;
 
         bool IVsWindowSearch.SearchEnabled => true;
 
@@ -93,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                             new ColumnState2(TableColumnNames.ProjectType, isVisible: true, width: 50),
                             new ColumnState2(TableColumnNames.Dimensions, isVisible: true, width: 100),
                             new ColumnState2(TableColumnNames.Targets, isVisible: true, width: 700),
-                            new ColumnState2(TableColumnNames.DesignTime, isVisible: true, width: 100),
+                            new ColumnState2(TableColumnNames.BuildType, isVisible: true, width: 100),
                             new ColumnState2(TableColumnNames.StartTime, isVisible: true, width: 125),
                             new ColumnState2(TableColumnNames.Elapsed, isVisible: true, width: 100),
                             new ColumnState2(TableColumnNames.Status, isVisible: true, width: 100)
@@ -142,7 +146,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                 TableColumnNames.ProjectType,
                 TableColumnNames.Dimensions,
                 TableColumnNames.Targets,
-                TableColumnNames.DesignTime,
+                TableColumnNames.BuildType,
                 TableColumnNames.StartTime,
                 TableColumnNames.Elapsed,
                 TableColumnNames.Status
@@ -223,8 +227,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
             }
         }
 
-        private static void OnFiltersChanged(object sender, FiltersChangedEventArgs e) =>
+        private void OnFiltersChanged(object sender, FiltersChangedEventArgs e)
+        {
+            if (e.Key == TableColumnNames.BuildType && e.NewFilter is ColumnHashSetFilter filter)
+            {
+                switch (filter.ExcludedCount)
+                {
+                    case 0:
+                        _filterType = BuildType.Build | BuildType.DesignTimeBuild | BuildType.Evaluation;
+                        break;
+                    case 1:
+                        _filterType = BuildType.None;
+                        break;
+                    default:
+                        if (!filter.ExcludedContains("Build"))
+                        {
+                            _filterType = BuildType.Build;
+                        }
+                        else if (!filter.ExcludedContains("DesignTimeBuild"))
+                        {
+                            _filterType = BuildType.DesignTimeBuild;
+                        }
+                        else if (!filter.ExcludedContains("Evaluation"))
+                        {
+                            _filterType = BuildType.Evaluation;
+                        }
+                        break;
+                }
+            }
+
             ProjectSystemToolsPackage.UpdateQueryStatus();
+        }
 
         private static void OnGroupingsChanged(object sender, EventArgs e) =>
             ProjectSystemToolsPackage.UpdateQueryStatus();
@@ -420,6 +453,59 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
                 case ProjectSystemToolsPackage.OpenLogsCommandId:
                     OpenLogs();
+                    break;
+
+                case ProjectSystemToolsPackage.BuildTypeComboCommandId:
+                    var selectedType = string.Empty;
+                    if (pvaOut != IntPtr.Zero)
+                    {
+                        switch (_filterType)
+                        {
+                            case BuildType.Evaluation | BuildType.DesignTimeBuild | BuildType.Build:
+                                selectedType = Resources.FilterBuildAll;
+                                break;
+                            case BuildType.Evaluation:
+                                selectedType = Resources.FilterBuildEvaluations;
+                                break;
+                            case BuildType.DesignTimeBuild:
+                                selectedType = Resources.FilterBuildDesignTimeBuilds;
+                                break;
+                            case BuildType.Build:
+                                selectedType = Resources.FilterBuildBuilds;
+                                break;
+                        }
+
+                        Marshal.GetNativeVariantForObject(selectedType, pvaOut);
+                    }
+                    else
+                    {
+                        var selectedItem = Marshal.GetObjectForNativeVariant(pvaIn);
+
+                        selectedType = selectedItem.ToString();
+                        var column = _tableControl.ColumnDefinitionManager.GetColumnDefinition(TableColumnNames.BuildType);
+                        if (selectedType.Equals(Resources.FilterBuildAll))
+                        {
+                            _tableControl.SetFilter(TableColumnNames.BuildType, null);
+                        }
+                        else if (selectedType.Equals(Resources.FilterBuildEvaluations))
+                        {
+                            _tableControl.SetFilter(TableColumnNames.BuildType, new ColumnHashSetFilter(column, "Build", "DesignTimeBuild"));
+                        }
+                        else if (selectedType.Equals(Resources.FilterBuildDesignTimeBuilds))
+                        {
+                            _tableControl.SetFilter(TableColumnNames.BuildType, new ColumnHashSetFilter(column, "Evaluation", "Build"));
+                        }
+                        else if (selectedType.Equals(Resources.FilterBuildBuilds))
+                        {
+                            _tableControl.SetFilter(TableColumnNames.BuildType, new ColumnHashSetFilter(column, "Evaluation", "DesignTimeBuild"));
+                        }
+                    }
+
+                    break;
+
+                case ProjectSystemToolsPackage.BuildTypeComboGetListCommandId:
+                    var outParam = pvaOut;
+                    Marshal.GetNativeVariantForObject(_buildFilterComboItems, outParam);
                     break;
 
                 default:

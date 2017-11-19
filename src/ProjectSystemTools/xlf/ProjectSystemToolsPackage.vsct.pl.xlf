@@ -57,6 +57,11 @@
         <target state="new">Open Logs...</target>
         <note />
       </trans-unit>
+      <trans-unit id="BuildTypeComboCommandId|ButtonText">
+        <source>Choose build types</source>
+        <target state="new">Choose build types</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>
