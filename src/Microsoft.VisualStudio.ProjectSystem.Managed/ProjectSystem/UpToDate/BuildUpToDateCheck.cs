@@ -25,6 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private const string PreserveNewest = "PreserveNewest";
         private const string Always = "Always";
         private const string TelemetryEventName = "UpToDateCheck";
+        private const string Link = "Link";
 
         private static readonly HashSet<string> KnownOutputGroups = new HashSet<string>
         {
@@ -71,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private readonly HashSet<string> _imports = new HashSet<string>(StringComparers.Paths);
         private readonly HashSet<string> _itemTypes = new HashSet<string>(StringComparers.Paths);
-        private readonly Dictionary<string, HashSet<(string Path, CopyToOutputDirectoryType CopyType)>> _items = new Dictionary<string, HashSet<(string Path, CopyToOutputDirectoryType CopyType)>>();
+        private readonly Dictionary<string, HashSet<(string Path, string Link, CopyToOutputDirectoryType CopyType)>> _items = new Dictionary<string, HashSet<(string, string, CopyToOutputDirectoryType)>>();
         private readonly HashSet<string> _customInputs = new HashSet<string>(StringComparers.Paths);
         private readonly HashSet<string> _customOutputs = new HashSet<string>(StringComparers.Paths);
         private readonly HashSet<string> _analyzerReferences = new HashSet<string>(StringComparers.Paths);
@@ -179,6 +180,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             AddImports(e.Value);
         }
 
+        private static string GetLink(IImmutableDictionary<string, string> itemMetadata) =>
+            itemMetadata.TryGetValue(Link, out var link) ? link : null;
+
         private static CopyToOutputDirectoryType GetCopyType(IImmutableDictionary<string, string> itemMetadata)
         {
             if (itemMetadata.TryGetValue(CopyToOutputDirectory, out var value))
@@ -211,8 +215,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             foreach (var itemType in e.ProjectChanges.Where(changes => (itemTypesChanged || changes.Value.Difference.AnyChanges) && _itemTypes.Contains(changes.Key)))
             {
-                var items = itemType.Value.After.Items.Select(item => (item.Value[FullPath], GetCopyType(item.Value)));
-                _items[itemType.Key] = new HashSet<(string Path, CopyToOutputDirectoryType CopyType)>(items, UpToDateCheckItemComparer.Instance);
+                var items = itemType.Value.After.Items.Select(item => (item.Value[FullPath], GetLink(item.Value), GetCopyType(item.Value)));
+                _items[itemType.Key] = new HashSet<(string, string, CopyToOutputDirectoryType)>(items, UpToDateCheckItemComparer.Instance);
                 _itemsChangedSinceLastCheck = true;
             }
 
@@ -471,31 +475,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private bool CheckCopyToOutputDirectoryFiles(BuildUpToDateCheckLogger logger, IDictionary<string, DateTime> timestampCache)
         {
-            var items = _items.SelectMany(kvp => kvp.Value).Where(item => item.CopyType == CopyToOutputDirectoryType.CopyIfNewer)
-                .Select(item => item.Path);
+            var items = _items.SelectMany(kvp => kvp.Value).Where(item => item.CopyType == CopyToOutputDirectoryType.CopyIfNewer);
 
             string outputFullPath = Path.Combine(_msBuildProjectDirectory, _outputRelativeOrFullPath);
 
             foreach (var item in items)
             {
-                var filename = Path.GetFileName(item);
+                var filename = item.Link ?? Path.GetFileName(item.Path);
 
                 if (string.IsNullOrEmpty(filename))
                 {
                     continue;
                 }
 
-                logger.Info("Checking PreserveNewest file '{0}':", item);
+                logger.Info("Checking PreserveNewest file '{0}':", item.Path);
 
-                var itemTime = GetTimestamp(item, timestampCache);
+                var itemTime = GetTimestamp(item.Path, timestampCache);
 
                 if (itemTime != null)
                 {
-                    logger.Info("    Write {0}: '{1}'.", itemTime, item);
+                    logger.Info("    Write {0}: '{1}'.", itemTime, item.Path);
                 }
                 else
                 {
-                    logger.Info("    '{0}' does not exist.", item);
+                    logger.Info("    '{0}' does not exist.", item.Path);
                     return false;
                 }
 
