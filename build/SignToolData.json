@@ -58,6 +58,18 @@
         "VSSetup/Insertion/Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.vsix",
         "VSSetup/Insertion/Microsoft.VisualStudio.NetCore.ProjectTemplates.1.x.vsix"
       ]
+    },
+    {
+      "certificate": null,
+      "strongName": null,
+      "values": [
+        "packages/*.nupkg"
+      ]
     }
+  ],
+
+  "exclude": [
+    "Microsoft.DotNet.Common.ProjectTemplates.1.x.1.0.0.nupkg",
+    "Microsoft.DotNet.Test.ProjectTemplates.1.x.1.0.0.nupkg"
   ]
 }
