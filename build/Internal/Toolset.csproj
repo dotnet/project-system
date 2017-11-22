@@ -3,6 +3,8 @@
   <Import Project="..\Versions.props" />
   <PropertyGroup>
     <TargetFramework>net46</TargetFramework>
+    <!-- Clear restore sources. The feeds are provided by MicroBuild. -->
+    <RestoreSources/>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.DotNet.IBCMerge" Version="[$(MicrosoftDotNetIBCMergeVersion)]" />
