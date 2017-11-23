@@ -109,7 +109,7 @@
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ConfigurationGeneralFile.xaml">
-      <Context>File</Context>
+      <Context>Invisible</Context>
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)SourceControl.xaml">
