@@ -117,17 +117,29 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BuildTypeHeaderLabel" xml:space="preserve">
+    <value>Type</value>
+  </data>
   <data name="CannotSetProperty" xml:space="preserve">
     <value>Cannot set property.</value>
-  </data>
-  <data name="DesignTimeHeaderLabel" xml:space="preserve">
-    <value>Design-Time</value>
   </data>
   <data name="DimensionsHeaderLabel" xml:space="preserve">
     <value>Dimensions</value>
   </data>
   <data name="ElapsedHeaderLabel" xml:space="preserve">
     <value>Elapsed</value>
+  </data>
+  <data name="FilterBuildAll" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="FilterBuildBuilds" xml:space="preserve">
+    <value>Builds</value>
+  </data>
+  <data name="FilterBuildDesignTimeBuilds" xml:space="preserve">
+    <value>Design-time Builds</value>
+  </data>
+  <data name="FilterBuildEvaluations" xml:space="preserve">
+    <value>Evaluation</value>
   </data>
   <data name="LogFolderDescription" xml:space="preserve">
     <value>Save logs to:</value>

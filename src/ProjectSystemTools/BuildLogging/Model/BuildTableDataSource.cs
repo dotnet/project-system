@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using Microsoft.Build.Evaluation;
 using Microsoft.Build.Framework;
 using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI;
 using Microsoft.VisualStudio.ProjectSystem.Tools.Providers;
@@ -18,6 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
         private const string BuildTableDataSourceSourceTypeIdentifier = nameof(BuildTableDataSourceSourceTypeIdentifier);
 
         private readonly object _gate = new object();
+        private readonly EvaluationLogger _evaluationLogger;
 
         private ITableManager _manager;
         private ITableDataSink _tableDataSink;
@@ -45,9 +47,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
             }
         }
 
-        public void Start() => IsLogging = true;
+        public BuildTableDataSource()
+        {
+            _evaluationLogger = new EvaluationLogger(this);
+        }
 
-        public void Stop() => IsLogging = false;
+        public void Start()
+        {
+            IsLogging = true;
+            ProjectCollection.GlobalProjectCollection.RegisterLogger(_evaluationLogger);
+        }
+
+        public void Stop()
+        {
+            IsLogging = false;
+            ProjectCollection.GlobalProjectCollection.UnregisterAllLoggers();
+        }
 
         public void Clear()
         {
@@ -60,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
             NotifyChange();
         }
 
-        public ILogger CreateLogger(bool isDesignTime) => new BuildTableLogger(this, isDesignTime);
+        public ILogger CreateLogger(bool isDesignTime) => new ProjectLogger(this, isDesignTime);
 
         public IDisposable Subscribe(ITableDataSink sink)
         {

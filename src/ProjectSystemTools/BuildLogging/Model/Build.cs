@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 {
     internal sealed class Build : IComparable<Build>, IDisposable
     {
-        public bool DesignTime { get; }
+        public BuildType BuildType { get; }
 
         public IEnumerable<string> Dimensions { get; }
 
@@ -27,14 +27,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
         public string LogPath { get; private set; }
 
-        public string Filename => $"{Path.GetFileNameWithoutExtension(ProjectPath)}_{Dimensions.Aggregate((c, n) => string.IsNullOrEmpty(n) ? c : $"{c}_{n}")}_{(DesignTime ? "design" : "")}_{StartTime:s}.binlog".Replace(':', '_');
+        private string DimensionsString =>
+            Dimensions.Any()
+                ? $"{Dimensions.Aggregate((c, n) => string.IsNullOrEmpty(n) ? c : $"{c}_{n}")}_"
+                : string.Empty;
 
-        public Build(string projectPath, IEnumerable<string> dimensions, IEnumerable<string> targets, bool designTime, DateTime startTime)
+        public string Filename => $"{Path.GetFileNameWithoutExtension(ProjectPath)}_{DimensionsString}{BuildType}_{StartTime:o}.binlog".Replace(':', '_');
+
+        public Build(string projectPath, IEnumerable<string> dimensions, IEnumerable<string> targets, BuildType buildType, DateTime startTime)
         {
             ProjectPath = projectPath;
             Dimensions = dimensions.ToArray();
             Targets = targets?.ToArray() ?? Enumerable.Empty<string>();
-            DesignTime = designTime;
+            BuildType = buildType;
             StartTime = startTime;
         }
 
@@ -66,8 +71,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
                     content = Elapsed;
                     break;
 
-                case TableKeyNames.DesignTime:
-                    content = DesignTime;
+                case TableKeyNames.BuildType:
+                    content = BuildType;
                     break;
 
                 case TableKeyNames.Status:
@@ -115,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
             }
 
             var startComparison = StartTime.CompareTo(other.StartTime);
-            return startComparison != 0 ? startComparison : String.Compare(ProjectPath, other.ProjectPath, StringComparison.Ordinal);
+            return startComparison != 0 ? startComparison : string.Compare(ProjectPath, other.ProjectPath, StringComparison.Ordinal);
         }
 
         public void Dispose()
