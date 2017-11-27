@@ -132,21 +132,40 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         #endregion
 
         #region IDisposable
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // Build manager APIs require UI thread access.
+                    _threadingService.ExecuteSynchronously(async () =>
+                    {
+                        await _threadingService.SwitchToUIThread();
+
+                        if (_buildManager != null)
+                        {
+                            // Unregister solution build events.
+                            _buildManager.UnadviseUpdateSolutionEvents(_solutionEventsCookie);
+                            _buildManager = null;
+                        }
+                    });
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        // This code added to correctly implement the disposable pattern.
         public void Dispose()
         {
-            // Build manager APIs require UI thread access.
-            _threadingService.ExecuteSynchronously(async() =>
-            {
-                await _threadingService.SwitchToUIThread();
-
-                if (_buildManager != null)
-                {
-                    // Unregister solution build events.
-                    _buildManager.UnadviseUpdateSolutionEvents(_solutionEventsCookie);
-                    _buildManager = null;
-                }
-            });
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
+
         #endregion
     }
 }
