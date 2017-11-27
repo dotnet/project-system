@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.IO
     /// <summary>
     /// Simple wrapper around the FilesystemWatcher.
     /// </summary>
-    internal class SimpleFileWatcher : IDisposable
+    internal sealed class SimpleFileWatcher : IDisposable
     {
         private FileSystemWatcher FileWatcher { get; set; }
         private FileSystemEventHandler _handler;

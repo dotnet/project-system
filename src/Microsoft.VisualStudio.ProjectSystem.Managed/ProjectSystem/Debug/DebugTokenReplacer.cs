@@ -138,7 +138,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         Task<Microsoft.Build.Evaluation.Project>  GetProjectAsync();
     }
 
-    internal class ProjectReadAccessor : IProjectReadAccess
+    internal sealed class ProjectReadAccessor : IProjectReadAccess
     {
         IProjectLockService ProjectLockService { get; set; }
         ConfiguredProject ConfiguredProject { get; set; }

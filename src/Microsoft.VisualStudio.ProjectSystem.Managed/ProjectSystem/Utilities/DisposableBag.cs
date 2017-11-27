@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
     /// A class that tracks a set of disposable objects and a cancellation token for purposes
     /// of managing the lifetime of a version-sync'd block join.
     /// </summary>
-    internal class DisposableBag : IDisposableObservable
+    internal sealed class DisposableBag : IDisposableObservable
     {
         /// <summary>
         /// The source of the cancellation token exposed to the join.
