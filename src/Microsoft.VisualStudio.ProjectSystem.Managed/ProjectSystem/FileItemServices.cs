@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Requires.NotNull(metadata, nameof(metadata));
 
             // This mimic's CPS's handling of Link metadata
-            if (metadata.TryGetValue(ConfigurationGeneralFile.LinkProperty, out string linkFilePath) && !string.IsNullOrWhiteSpace(linkFilePath))
+            if (metadata.TryGetValue(Compile.LinkProperty, out string linkFilePath) && !string.IsNullOrWhiteSpace(linkFilePath))
             {
                 return linkFilePath.TrimEnd(PathSeparatorCharacters);
             }
