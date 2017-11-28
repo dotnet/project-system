@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         public object ENCProjectConfig => _configuredProjectContextsByTargetFramework[_activeTargetFramework];
 
-        public bool IsCrossTargeting => _activeTargetFramework.Length > 0;
+        public bool IsCrossTargeting => _configuredProjectContextsByTargetFramework.Count > 1;
         
         public void SetProjectFilePathAndDisplayName(string projectFilePath, string displayName)
         {
