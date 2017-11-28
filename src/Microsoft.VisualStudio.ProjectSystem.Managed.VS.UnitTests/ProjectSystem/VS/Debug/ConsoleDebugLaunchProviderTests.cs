@@ -158,7 +158,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             Assert.Single(targets);
             Assert.Equal(@"c:\program files\dotnet\dotnet.exe", targets[0].Executable);
             Assert.Equal(DebugLaunchOperation.CreateProcess, targets[0].LaunchOperation);
-            Assert.Equal((DebugLaunchOptions.StopDebuggingOnEnd), targets[0].LaunchOptions);
             Assert.Equal(DebuggerEngines.ManagedCoreEngine, targets[0].LaunchDebugEngineGuid);
             Assert.Equal(0, targets[0].AdditionalDebugEngines.Count);
             Assert.Equal("exec \"c:\\test\\project\\bin\\project.dll\" --someArgs", targets[0].Arguments);
@@ -183,7 +182,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             Assert.Single(targets);
             Assert.Equal(@"c:\program files\dotnet\dotnet.exe", targets[0].Executable);
             Assert.Equal(DebugLaunchOperation.CreateProcess, targets[0].LaunchOperation);
-            Assert.Equal((DebugLaunchOptions.StopDebuggingOnEnd), targets[0].LaunchOptions);
             Assert.Equal(DebuggerEngines.ManagedCoreEngine, targets[0].LaunchDebugEngineGuid);
             Assert.Single(targets[0].AdditionalDebugEngines);
             Assert.Equal(DebuggerEngines.NativeOnlyEngine, targets[0].AdditionalDebugEngines[0]);
@@ -203,7 +201,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             Assert.Single(targets);
             Assert.EndsWith(@"\cmd.exe", targets[0].Executable, StringComparison.OrdinalIgnoreCase);
             Assert.Equal(DebugLaunchOperation.CreateProcess, targets[0].LaunchOperation);
-            Assert.Equal((DebugLaunchOptions.NoDebug | DebugLaunchOptions.StopDebuggingOnEnd | DebugLaunchOptions.MergeEnvironment), targets[0].LaunchOptions);
+            Assert.Equal((DebugLaunchOptions.NoDebug | DebugLaunchOptions.MergeEnvironment), targets[0].LaunchOptions);
             Assert.Equal(DebuggerEngines.ManagedCoreEngine, targets[0].LaunchDebugEngineGuid);
             Assert.True(targets[0].Environment.ContainsKey("var1"));
             Assert.Equal("/c \"\"c:\\program files\\dotnet\\dotnet.exe\" exec \"c:\\test\\project\\bin\\project.dll\" --someArgs & pause\"", targets[0].Arguments);
@@ -220,7 +218,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             var targets = await debugger.QueryDebugTargetsAsync(DebugLaunchOptions.NoDebug | DebugLaunchOptions.Profiling, activeProfile);
             Assert.True(targets.Count == 1);
             Assert.Equal("c:\\program files\\dotnet\\dotnet.exe", targets[0].Executable);
-            Assert.Equal((DebugLaunchOptions.NoDebug | DebugLaunchOptions.StopDebuggingOnEnd | DebugLaunchOptions.Profiling), targets[0].LaunchOptions);
+            Assert.Equal((DebugLaunchOptions.NoDebug | DebugLaunchOptions.Profiling), targets[0].LaunchOptions);
         }
 
         [Fact]
@@ -233,7 +231,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             Assert.Single(targets);
             Assert.Equal(activeProfile.ExecutablePath, targets[0].Executable);
             Assert.Equal(DebugLaunchOperation.CreateProcess, targets[0].LaunchOperation);
-            Assert.Equal((DebugLaunchOptions.StopDebuggingOnEnd), targets[0].LaunchOptions);
             Assert.Equal(DebuggerEngines.ManagedCoreEngine, targets[0].LaunchDebugEngineGuid);
             Assert.Equal("--someArgs", targets[0].Arguments);
         }
@@ -251,7 +248,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             Assert.Single(targets);
             Assert.Equal(activeProfile.ExecutablePath, targets[0].Executable);
             Assert.Equal(DebugLaunchOperation.CreateProcess, targets[0].LaunchOperation);
-            Assert.Equal((DebugLaunchOptions.NoDebug | DebugLaunchOptions.StopDebuggingOnEnd | DebugLaunchOptions.MergeEnvironment), targets[0].LaunchOptions);
+            Assert.Equal((DebugLaunchOptions.NoDebug | DebugLaunchOptions.MergeEnvironment), targets[0].LaunchOptions);
             Assert.Equal(DebuggerEngines.ManagedCoreEngine, targets[0].LaunchDebugEngineGuid);
             Assert.Equal("--someArgs", targets[0].Arguments);
         }

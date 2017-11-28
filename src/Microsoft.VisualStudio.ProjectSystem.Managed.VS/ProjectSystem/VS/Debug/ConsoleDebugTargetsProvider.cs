@@ -264,7 +264,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 settings.AdditionalDebugEngines.Add(DebuggerEngines.NativeOnlyEngine);
             }
 
-            settings.LaunchOptions = launchOptions | DebugLaunchOptions.StopDebuggingOnEnd;
             if (settings.Environment.Count > 0)
             {
                 settings.LaunchOptions = settings.LaunchOptions | DebugLaunchOptions.MergeEnvironment;
