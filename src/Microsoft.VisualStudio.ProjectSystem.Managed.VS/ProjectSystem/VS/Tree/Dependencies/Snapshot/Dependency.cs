@@ -272,6 +272,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             return false;
         }
 
+        public static bool operator ==(Dependency left, Dependency right)
+            => left is null ? right is null : left.Equals(right);
+
+        public static bool operator !=(Dependency left, Dependency right)
+            => !(left == right);
+
+        public static bool operator <(Dependency left, Dependency right)
+            => left is null ? !(right is null) : left.CompareTo(right) < 0;
+
+        public static bool operator <=(Dependency left, Dependency right)
+            => left is null || left.CompareTo(right) <= 0;
+
+        public static bool operator >(Dependency left, Dependency right)
+            => !(left is null) && left.CompareTo(right) > 0;
+
+        public static bool operator >=(Dependency left, Dependency right)
+            => left is null ? right is null : left.CompareTo(right) >= 0;
+
         public int CompareTo(IDependency other)
         {
             if (other == null)
