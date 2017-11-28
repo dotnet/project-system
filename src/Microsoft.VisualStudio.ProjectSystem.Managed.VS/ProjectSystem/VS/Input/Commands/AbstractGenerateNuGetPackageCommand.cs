@@ -132,11 +132,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         #endregion
 
         #region IDisposable
-        private bool disposedValue = false; // To detect redundant calls
+        private bool _disposedValue = false;
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!_disposedValue)
             {
                 if (disposing)
                 {
@@ -154,18 +154,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                     });
                 }
 
-                disposedValue = true;
+                _disposedValue = true;
             }
         }
 
-        // This code added to correctly implement the disposable pattern.
         public void Dispose()
         {
-            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
         #endregion
     }
 }
