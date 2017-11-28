@@ -2,7 +2,6 @@
 
 using System;
 using System.Runtime.Versioning;
-using BCLDebug = System.Diagnostics.Debug;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
@@ -105,6 +104,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
             return false;
         }
+
+        public static bool operator ==(TargetFramework left, TargetFramework right)
+            => left is null ? right is null : left.Equals(right);
+
+        public static bool operator !=(TargetFramework left, TargetFramework right)
+            => !(left == right);
+
+        public static bool operator <(TargetFramework left, TargetFramework right)
+            => left is null ? !(right is null) : left.CompareTo(right) < 0;
+
+        public static bool operator <=(TargetFramework left, TargetFramework right)
+            => left is null || left.CompareTo(right) <= 0;
+
+        public static bool operator >(TargetFramework left, TargetFramework right)
+            => !(left is null) && left.CompareTo(right) > 0;
+
+        public static bool operator >=(TargetFramework left, TargetFramework right)
+            => left is null ? right is null : left.CompareTo(right) >= 0;
 
         /// <summary>
         ///  Need to override this to ensure it can be hashed correctly
