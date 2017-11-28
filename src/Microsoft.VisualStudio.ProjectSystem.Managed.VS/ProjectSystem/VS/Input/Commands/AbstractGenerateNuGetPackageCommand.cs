@@ -138,7 +138,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         {
             if (!_disposedValue)
             {
-                if (disposing)
+                if (disposing && _buildManager != null)
                 {
                     // Build manager APIs require UI thread access.
                     _threadingService.ExecuteSynchronously(async () =>
