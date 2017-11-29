@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
     /// "schedule" subsequent tasks to start after the previous one is completed. The Task containing the callers function is returned so that
     /// the caller can await for their specific task to complete. When disposed unprocessed tasks are cancelled.
     /// </summary>
-    internal class SequencialTaskExecutor : IDisposable
+    internal sealed class SequencialTaskExecutor : IDisposable
     {
         private bool _disposed;
         private Task _taskAdded = Task.CompletedTask;

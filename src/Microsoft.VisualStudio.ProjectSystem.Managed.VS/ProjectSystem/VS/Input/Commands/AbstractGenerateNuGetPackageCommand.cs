@@ -132,20 +132,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         #endregion
 
         #region IDisposable
+        private bool _disposedValue = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing && _buildManager != null)
+                {
+                    // Build manager APIs require UI thread access.
+                    _threadingService.ExecuteSynchronously(async () =>
+                    {
+                        await _threadingService.SwitchToUIThread();
+
+                        if (_buildManager != null)
+                        {
+                            // Unregister solution build events.
+                            _buildManager.UnadviseUpdateSolutionEvents(_solutionEventsCookie);
+                            _buildManager = null;
+                        }
+                    });
+                }
+
+                _disposedValue = true;
+            }
+        }
+
         public void Dispose()
         {
-            // Build manager APIs require UI thread access.
-            _threadingService.ExecuteSynchronously(async() =>
-            {
-                await _threadingService.SwitchToUIThread();
-
-                if (_buildManager != null)
-                {
-                    // Unregister solution build events.
-                    _buildManager.UnadviseUpdateSolutionEvents(_solutionEventsCookie);
-                    _buildManager = null;
-                }
-            });
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
         #endregion
     }

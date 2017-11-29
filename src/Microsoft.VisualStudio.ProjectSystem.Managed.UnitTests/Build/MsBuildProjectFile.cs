@@ -6,7 +6,7 @@ using Microsoft.Build.Construction;
 
 namespace Microsoft.VisualStudio.Build
 {
-    public class MsBuildProjectFile : IDisposable
+    public sealed class MsBuildProjectFile : IDisposable
     {
         public string Filename { get; }
 
