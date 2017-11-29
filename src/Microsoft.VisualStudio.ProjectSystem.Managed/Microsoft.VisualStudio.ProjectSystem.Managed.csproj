@@ -79,9 +79,6 @@
     <Compile Update="ProjectSystem\Rules\COMReference.cs">
       <DependentUpon>COMReference.xaml</DependentUpon>
     </Compile>
-    <Compile Update="ProjectSystem\Rules\ConfigurationGeneralFile.cs">
-      <DependentUpon>ConfigurationGeneralFile.xaml</DependentUpon>
-    </Compile>
     <Compile Update="ProjectSystem\Rules\Content.cs">
       <DependentUpon>Content.xaml</DependentUpon>
     </Compile>
@@ -209,10 +206,6 @@
       <SubType>Designer</SubType>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\ConfigurationGeneral.xaml">
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
-    </XamlPropertyRule>
-    <XamlPropertyRule Include="ProjectSystem\Rules\ConfigurationGeneralFile.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
