@@ -271,7 +271,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         }
 
         [Fact]
-        public async Task QueryDebugTargets_ExeProfileAsyncExeRelativeTooWorkingDir()
+        public async Task QueryDebugTargets_ExeProfileAsyncExeRelativeToWorkingDir()
         {
             var debugger = GetDebugTargetsProvider();
 
@@ -283,6 +283,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             Assert.Single(targets);
             Assert.Equal(@"c:\WorkingDir\mytest.exe", targets[0].Executable);
             Assert.Equal(@"c:\WorkingDir", targets[0].CurrentDirectory);
+        }
+
+        [Theory]
+        [InlineData("dotnet")]
+        [InlineData("dotnet.exe")]
+        public async Task QueryDebugTargets_ExeProfileExeRelativeToPath(string exeName)
+        {
+            var debugger = GetDebugTargetsProvider();
+
+            // Exe relative to path
+            var activeProfile = new LaunchProfile(){Name="run", ExecutablePath=exeName};
+            var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
+            Assert.Single(targets);
+            Assert.Equal(@"c:\program files\dotnet\dotnet.exe", targets[0].Executable);
+        }
+
+        [Theory]
+        [InlineData("myexe")]
+        [InlineData("myexe.exe")]
+        public async Task QueryDebugTargets_ExeProfileExeRelativeToCurrentDirectory(string exeName)
+        {
+            var debugger = GetDebugTargetsProvider();
+            _mockFS.WriteAllText(@"c:\CurrentDirectory\myexe.exe", string.Empty);
+            _mockFS.SetCurrentDirectory(@"c:\CurrentDirectory");
+
+            // Exe relative to path
+            var activeProfile = new LaunchProfile(){Name="run", ExecutablePath=exeName};
+            var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
+            Assert.Single(targets);
+            Assert.Equal(@"c:\CurrentDirectory\myexe.exe", targets[0].Executable);
         }
 
         [Fact]

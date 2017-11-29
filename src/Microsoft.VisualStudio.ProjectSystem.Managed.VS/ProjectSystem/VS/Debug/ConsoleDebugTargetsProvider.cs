@@ -230,12 +230,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
 
             // IF the executable is not rooted, we want to make is relative to the workingDir unless is doesn't contain
-            // any path elements. In that case we are going to assume it is on the path
+            // any path elements. In that case we are going to assume it is in the current directory of the VS process, or on
+            // the environment path. If we can't find it, we just launch it as before.
             if (!string.IsNullOrWhiteSpace(executable))
             {
-                if (!Path.IsPathRooted(executable) && executable.IndexOf(Path.DirectorySeparatorChar) != -1)
+                if (!Path.IsPathRooted(executable))
                 {
-                    executable = Path.GetFullPath(Path.Combine(workingDir, executable));
+                    if (executable.IndexOf(Path.DirectorySeparatorChar) != -1)
+                    {
+                        // Combine with the working directory used by the profile
+                        executable = Path.GetFullPath(Path.Combine(workingDir, executable));
+                    }
+                    else
+                    {
+                        // Try to resolve against the current working directory (for compat) and failing that, the environment path.
+                        var exeName = executable.EndsWith(".exe", StringComparison.OrdinalIgnoreCase)? executable : executable + ".exe";
+                        var fullPath = Path.Combine(TheFileSystem.GetCurrentDirectory(), exeName);
+                        if (TheFileSystem.FileExists(fullPath))
+                        {
+                            executable = fullPath;
+                        }
+                        else
+                        {
+                            fullPath = GetFullPathOfExeFromEnvironmentPath(exeName);
+                            if (fullPath != null)
+                            {
+                                executable = fullPath;
+                            }
+                        }
+                    }
                 }
             }
 

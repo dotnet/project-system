@@ -27,6 +27,8 @@ namespace Microsoft.VisualStudio.IO
         Dictionary<string, FileData> _files = new Dictionary<string, FileData>(StringComparer.OrdinalIgnoreCase);
         HashSet<string> _folders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
+        string _currentDirectory;
+
         public Dictionary<string, FileData> Files { get => _files; }
 
         public Stream Create(string path)
@@ -132,6 +134,17 @@ namespace Microsoft.VisualStudio.IO
             }
         }
 
+        public void SetCurrentDirectory(string directory)
+        {
+            CreateDirectory(directory);
+            _currentDirectory = directory;
+        }
+
+        public string GetCurrentDirectory()
+        {
+            return _currentDirectory;
+        }
+        
         public void RemoveFile(string path)
         {
             if (!FileExists(path))
