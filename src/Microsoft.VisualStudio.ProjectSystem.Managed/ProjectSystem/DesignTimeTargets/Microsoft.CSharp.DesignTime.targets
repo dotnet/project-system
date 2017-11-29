@@ -22,25 +22,27 @@
     <DefineCSharpItemSchemas>false</DefineCSharpItemSchemas>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)CSharp.ProjectItemsSchema.xaml;"/>
+
+    <ProjectCapability Include="
+                          CSharp;
+                          Managed;
+                          ClassDesigner;" />
+  </ItemGroup>
+
+  <!-- Targets -->
+
+  <!-- Returns Csc command-line arguments for the language service -->
+  <Target Name="CompileDesignTime"
+          Returns="@(_CompilerCommandLineArgs)"
+          DependsOnTargets="_CheckCompileDesignTimePrerequisite;Compile"
+          Condition="'$(IsCrossTargetingBuild)' != 'true'">
+
     <ItemGroup>
-     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)CSharp.ProjectItemsSchema.xaml;"/>
-
-     <ProjectCapability Include="CSharp;Managed"/>
+      <_CompilerCommandLineArgs Include="@(CscCommandLineArgs)"/>
     </ItemGroup>
-
-    <!-- Targets -->
-
-    <!-- Returns Csc command-line arguments for the language service -->
-    <Target Name="CompileDesignTime"
-            Returns="@(_CompilerCommandLineArgs)"
-            DependsOnTargets="_CheckCompileDesignTimePrerequisite;Compile"
-            Condition="'$(IsCrossTargetingBuild)' != 'true'"
-          >
-
-      <ItemGroup>
-        <_CompilerCommandLineArgs Include="@(CscCommandLineArgs)"/>
-      </ItemGroup>
       
-    </Target>
+  </Target>
 
 </Project>

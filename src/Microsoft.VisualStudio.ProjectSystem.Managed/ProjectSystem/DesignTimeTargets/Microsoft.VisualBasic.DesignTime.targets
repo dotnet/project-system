@@ -30,7 +30,10 @@
         <Context>ProjectSubscriptionService</Context>
       </PropertyPageSchema>
 
-     <ProjectCapability Include="VB;Managed"/>
+     <ProjectCapability Include="
+                          VB;
+                          Managed;
+                          ClassDesigner;" />
   </ItemGroup>
 
   <!-- Targets -->
@@ -39,8 +42,7 @@
   <Target Name="CompileDesignTime"
           Returns="@(_CompilerCommandLineArgs)"
           DependsOnTargets="_CheckCompileDesignTimePrerequisite;Compile"
-          Condition="'$(IsCrossTargetingBuild)' != 'true'"
-        >
+          Condition="'$(IsCrossTargetingBuild)' != 'true'">
 
     <!-- VB Framework projects needs core library references. In the case of Command line scenario, the vbc injects this reference. -->
     <PropertyGroup Condition="'$(FrameworkPathOverride)' != ''">
