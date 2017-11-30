@@ -221,7 +221,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 // If the working directory is not rooted we assume it is relative to the project directory
                 if (Path.IsPathRooted(resolvedProfile.WorkingDirectory))
                 {
-                    workingDir = resolvedProfile.WorkingDirectory;
+                    workingDir = resolvedProfile.WorkingDirectory.Replace("/", "\\");
                 }
                 else
                 {
