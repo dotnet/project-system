@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         /// <summary>
         /// Gets the full moniker (TFM).
         /// </summary>
-        string Moniker { get; }
+        string FullName { get; }
 
         /// <summary>
         /// Gets the short name.

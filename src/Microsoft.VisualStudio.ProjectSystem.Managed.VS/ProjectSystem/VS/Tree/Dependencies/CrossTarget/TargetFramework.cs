@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             Requires.NotNull(frameworkName, nameof(frameworkName));
 
             FrameworkName = frameworkName;
-            Moniker = frameworkName.FullName;
+            FullName = frameworkName.FullName;
             ShortName = shortName ?? string.Empty;
             FriendlyName = $"{frameworkName.Identifier} {frameworkName.Version}";
         }
@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         {
             Requires.NotNull(moniker, nameof(moniker));
 
-            Moniker = moniker;
+            FullName = moniker;
             ShortName = moniker;
             FriendlyName = moniker;
         }
@@ -41,9 +41,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         public FrameworkName FrameworkName { get; }
 
         /// <summary>
-        /// Gets the full moniker (TFM).
+        /// Gets the full name of the target framework.
         /// </summary>
-        public string Moniker { get; }
+        public string FullName { get; }
 
         /// <summary>
         /// Gets the short name.
@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         {
             if (obj != null)
             {
-                return Moniker.Equals(obj.Moniker, StringComparison.OrdinalIgnoreCase);
+                return FullName.Equals(obj.FullName, StringComparison.OrdinalIgnoreCase);
             }
 
             return false;
@@ -90,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         {
             if (obj != null)
             {
-                return string.Equals(Moniker, obj, StringComparison.OrdinalIgnoreCase)
+                return string.Equals(FullName, obj, StringComparison.OrdinalIgnoreCase)
                         || string.Equals(ShortName, obj, StringComparison.OrdinalIgnoreCase);
             }
 
@@ -108,19 +108,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         /// </summary>
         public override int GetHashCode()
         {
-            if (Moniker == null)
+            if (FullName == null)
             {
                 return string.Empty.GetHashCode();
             }
             else
             {
-                return StringComparer.OrdinalIgnoreCase.GetHashCode(Moniker);
+                return StringComparer.OrdinalIgnoreCase.GetHashCode(FullName);
             }
         }
 
         public override string ToString()
         {
-            return Moniker ?? string.Empty;
+            return FullName ?? string.Empty;
         }
     }
 }

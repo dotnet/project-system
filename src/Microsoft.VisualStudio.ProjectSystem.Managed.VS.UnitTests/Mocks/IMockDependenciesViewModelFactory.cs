@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 {
                     mock.Setup(x => x.CreateTargetViewModel(
                             It.Is<ITargetedDependenciesSnapshot>(
-                                (t) => string.Equals(t.TargetFramework.Moniker, d.Caption, System.StringComparison.OrdinalIgnoreCase))))
+                                (t) => string.Equals(t.TargetFramework.FullName, d.Caption, System.StringComparison.OrdinalIgnoreCase))))
                         .Returns(((IDependencyModel)d).ToViewModel(false));
                 }
             }

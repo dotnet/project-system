@@ -157,7 +157,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 FireDependenciesChanged(
                     new DependenciesChangedEventArgs(
                         this, 
-                        dependency.TargetFramework.Moniker, 
+                        dependency.TargetFramework.FullName, 
                         changes, 
                         catalogs:null, 
                         dataSourceVersions:null));
