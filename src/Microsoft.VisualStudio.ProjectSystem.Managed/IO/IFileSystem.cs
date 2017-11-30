@@ -31,6 +31,7 @@ namespace Microsoft.VisualStudio.IO
         void SetDirectoryAttribute(string path, FileAttributes newAttribute);
         string GetCurrentDirectory();
         void SetCurrentDirectory(string directory);
+        string GetFullPath(string path);
 
         IEnumerable<string> EnumerateDirectories(string path);
         IEnumerable<string> EnumerateDirectories(string path, string searchPattern, SearchOption searchOption);

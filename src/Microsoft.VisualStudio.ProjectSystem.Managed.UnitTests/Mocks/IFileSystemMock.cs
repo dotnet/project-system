@@ -145,6 +145,16 @@ namespace Microsoft.VisualStudio.IO
             return _currentDirectory;
         }
         
+        public string GetFullPath(string path)
+        {
+            if(_currentDirectory != null && !Path.IsPathRooted(path))
+            {
+                return Path.Combine(_currentDirectory, path);
+            }
+
+            return path;
+        }
+
         public void RemoveFile(string path)
         {
             if (!FileExists(path))

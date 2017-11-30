@@ -107,6 +107,11 @@ namespace Microsoft.VisualStudio.IO
             Directory.SetCurrentDirectory(directory);
         }
 
+        public string GetFullPath(string path)
+        {
+            return Path.GetFullPath(path);
+        }
+
         public IEnumerable<string> EnumerateDirectories(string path)
         {
             return Directory.EnumerateDirectories(path);

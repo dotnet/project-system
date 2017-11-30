@@ -225,7 +225,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 }
                 else
                 {
-                    workingDir = Path.GetFullPath(Path.Combine(projectFolder, resolvedProfile.WorkingDirectory));
+                    workingDir = Path.GetFullPath(Path.Combine(projectFolder, resolvedProfile.WorkingDirectory.Replace("/", "\\")));
                 }
             }
 
@@ -236,16 +236,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             {
                 if (!Path.IsPathRooted(executable))
                 {
-                    if (executable.IndexOf(Path.DirectorySeparatorChar) != -1)
+                    if (executable.Contains("/") || executable.Contains("\\"))
                     {
                         // Combine with the working directory used by the profile
-                        executable = Path.GetFullPath(Path.Combine(workingDir, executable));
+                        executable = Path.GetFullPath(Path.Combine(workingDir, executable.Replace("/", "\\")));
                     }
                     else
                     {
                         // Try to resolve against the current working directory (for compat) and failing that, the environment path.
                         var exeName = executable.EndsWith(".exe", StringComparison.OrdinalIgnoreCase)? executable : executable + ".exe";
-                        var fullPath = Path.Combine(TheFileSystem.GetCurrentDirectory(), exeName);
+                        var fullPath = TheFileSystem.GetFullPath(exeName);
                         if (TheFileSystem.FileExists(fullPath))
                         {
                             executable = fullPath;
@@ -265,7 +265,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             // Now validate the executable path and working directory exist
             ValidateSettings(executable, workingDir, resolvedProfile.Name);
             GetExeAndArguments(useCmdShell, executable, arguments, out string finalExecutable, out string finalArguments);
-
 
             // Apply environment variables.
             if (resolvedProfile.EnvironmentVariables != null && resolvedProfile.EnvironmentVariables.Count > 0)
