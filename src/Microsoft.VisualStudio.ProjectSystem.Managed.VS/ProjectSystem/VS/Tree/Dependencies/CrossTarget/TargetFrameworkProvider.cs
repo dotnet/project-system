@@ -8,7 +8,6 @@ using NuGet.VisualStudio;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
     [Export(typeof(ITargetFrameworkProvider))]
-    [AppliesTo(ProjectCapability.DependenciesTree)]
     internal class TargetFrameworkProvider : ITargetFrameworkProvider
     {
         private readonly IVsFrameworkCompatibility _nuGetComparer;
