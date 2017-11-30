@@ -227,7 +227,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     {
                         // Get the target path for the configured project.
                         var targetPath = (string)await configurationGeneralProperties.TargetPath.GetValueAsync().ConfigureAwait(true);
-                        var displayName = GetDisplayName(configuredProject, projectData, targetFramework.Moniker);
+                        var displayName = GetDisplayName(configuredProject, projectData, targetFramework.FullName);
 
                         targetedProjectContext = new TargetedProjectContext(targetFramework, projectData.FullPath, displayName, targetPath)
                         {

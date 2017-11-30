@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var result = factory.CreateTargetViewModel(targetedSnapshot);
 
             Assert.NotNull(result);
-            Assert.Equal(targetFramework.Moniker, result.Caption);
+            Assert.Equal(targetFramework.FullName, result.Caption);
             Assert.Equal(KnownMonikers.Library, result.Icon);
             Assert.Equal(KnownMonikers.Library, result.ExpandedIcon);
             Assert.True(result.Flags.Contains(DependencyTreeFlags.TargetNodeFlags));
@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var result = factory.CreateTargetViewModel(targetedSnapshot);
 
             Assert.NotNull(result);
-            Assert.Equal(targetFramework.Moniker, result.Caption);
+            Assert.Equal(targetFramework.FullName, result.Caption);
             Assert.Equal(ManagedImageMonikers.LibraryWarning, result.Icon);
             Assert.Equal(ManagedImageMonikers.LibraryWarning, result.ExpandedIcon);
             Assert.True(result.Flags.Contains(DependencyTreeFlags.TargetNodeFlags));

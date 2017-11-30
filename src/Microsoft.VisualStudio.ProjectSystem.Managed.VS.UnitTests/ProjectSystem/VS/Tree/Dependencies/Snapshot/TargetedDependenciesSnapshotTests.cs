@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 catalogs);
 
             Assert.NotNull(snapshot.TargetFramework);
-            Assert.Equal("tfm1", snapshot.TargetFramework.Moniker);
+            Assert.Equal("tfm1", snapshot.TargetFramework.FullName);
             Assert.Equal(projectPath, snapshot.ProjectPath);
             Assert.Equal(catalogs, snapshot.Catalogs);
             Assert.Equal(previousSnapshot.TopLevelDependencies, snapshot.TopLevelDependencies);
@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 out bool anyChanges);
 
             Assert.NotNull(snapshot.TargetFramework);
-            Assert.Equal("tfm1", snapshot.TargetFramework.Moniker);
+            Assert.Equal("tfm1", snapshot.TargetFramework.FullName);
             Assert.Equal(projectPath, snapshot.ProjectPath);
             Assert.Equal(catalogs, snapshot.Catalogs);
             Assert.False(anyChanges);
@@ -142,7 +142,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 out bool anyChanges);
 
             Assert.NotNull(snapshot.TargetFramework);
-            Assert.Equal("tfm1", snapshot.TargetFramework.Moniker);
+            Assert.Equal("tfm1", snapshot.TargetFramework.FullName);
             Assert.Equal(projectPath, snapshot.ProjectPath);
             Assert.Equal(catalogs, snapshot.Catalogs);
             Assert.False(anyChanges);
@@ -204,7 +204,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 out bool anyChanges);
 
             Assert.NotNull(snapshot.TargetFramework);
-            Assert.Equal("tfm1", snapshot.TargetFramework.Moniker);
+            Assert.Equal("tfm1", snapshot.TargetFramework.FullName);
             Assert.Equal(projectPath, snapshot.ProjectPath);
             Assert.Equal(catalogs, snapshot.Catalogs);
             Assert.False(anyChanges);
@@ -277,7 +277,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 out bool anyChanges);
 
             Assert.NotNull(snapshot.TargetFramework);
-            Assert.Equal("tfm1", snapshot.TargetFramework.Moniker);
+            Assert.Equal("tfm1", snapshot.TargetFramework.FullName);
             Assert.Equal(projectPath, snapshot.ProjectPath);
             Assert.Equal(catalogs, snapshot.Catalogs);
             Assert.True(anyChanges);
@@ -348,7 +348,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 out bool anyChanges);
 
             Assert.NotNull(snapshot.TargetFramework);
-            Assert.Equal("tfm1", snapshot.TargetFramework.Moniker);
+            Assert.Equal("tfm1", snapshot.TargetFramework.FullName);
             Assert.Equal(projectPath, snapshot.ProjectPath);
             Assert.Equal(catalogs, snapshot.Catalogs);
             Assert.False(anyChanges);
@@ -420,7 +420,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 out bool anyChanges);
 
             Assert.NotNull(snapshot.TargetFramework);
-            Assert.Equal("tfm1", snapshot.TargetFramework.Moniker);
+            Assert.Equal("tfm1", snapshot.TargetFramework.FullName);
             Assert.Equal(projectPath, snapshot.ProjectPath);
             Assert.Equal(catalogs, snapshot.Catalogs);
             Assert.True(anyChanges);
@@ -556,7 +556,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 out bool anyChanges);
 
             Assert.NotNull(snapshot.TargetFramework);
-            Assert.Equal("tfm1", snapshot.TargetFramework.Moniker);
+            Assert.Equal("tfm1", snapshot.TargetFramework.FullName);
             Assert.Equal(projectPath, snapshot.ProjectPath);
             Assert.Equal(catalogs, snapshot.Catalogs);
             Assert.True(anyChanges);

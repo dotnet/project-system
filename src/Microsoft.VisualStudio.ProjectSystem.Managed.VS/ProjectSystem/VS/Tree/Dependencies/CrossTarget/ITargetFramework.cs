@@ -5,8 +5,7 @@ using System.Runtime.Versioning;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
-    internal interface ITargetFramework : IComparable<ITargetFramework>, 
-                                          IEquatable<ITargetFramework>, 
+    internal interface ITargetFramework : IEquatable<ITargetFramework>, 
                                           IEquatable<string>
     {
         /// <summary>
@@ -17,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         /// <summary>
         /// Gets the full moniker (TFM).
         /// </summary>
-        string Moniker { get; }
+        string FullName { get; }
 
         /// <summary>
         /// Gets the short name.
@@ -28,7 +27,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         /// Gets the display name.
         /// </summary>
         string FriendlyName { get; }
-
-        string Version { get; }
     }
 }

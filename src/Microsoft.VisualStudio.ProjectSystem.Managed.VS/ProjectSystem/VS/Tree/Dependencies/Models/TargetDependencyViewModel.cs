@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             Caption = snapshot.TargetFramework.FriendlyName;
             Icon = snapshot.HasUnresolvedDependency ? ManagedImageMonikers.LibraryWarning : KnownMonikers.Library;
             ExpandedIcon = Icon;
-            Flags = DependencyTreeFlags.TargetNodeFlags.Add($"$TFM:{snapshot.TargetFramework.Moniker}");
+            Flags = DependencyTreeFlags.TargetNodeFlags.Add($"$TFM:{snapshot.TargetFramework.FullName}");
         }
     }
 }

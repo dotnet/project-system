@@ -19,9 +19,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             Requires.NotNull(frameworkName, nameof(frameworkName));
 
             FrameworkName = frameworkName;
-            Moniker = frameworkName.FullName;
+            FullName = frameworkName.FullName;
             ShortName = shortName ?? string.Empty;
-            FriendlyName = $"{frameworkName.Identifier} {Version}";
+            FriendlyName = $"{frameworkName.Identifier} {frameworkName.Version}";
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         {
             Requires.NotNull(moniker, nameof(moniker));
 
-            Moniker = moniker;
+            FullName = moniker;
             ShortName = moniker;
             FriendlyName = moniker;
         }
@@ -41,9 +41,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         public FrameworkName FrameworkName { get; }
 
         /// <summary>
-        /// Gets the full moniker (TFM).
+        /// Gets the full name of the target framework.
         /// </summary>
-        public string Moniker { get; }
+        public string FullName { get; }
 
         /// <summary>
         /// Gets the short name.
@@ -54,14 +54,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         /// Gets the display name.
         /// </summary>
         public string FriendlyName { get; }
-
-        public string Version
-        {
-            get
-            {
-                return FrameworkName?.Version.ToString();
-            }
-        }
 
         /// <summary>
         /// Override Equals to handle equivalency correctly. They are equal if the 
@@ -88,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         {
             if (obj != null)
             {
-                return Moniker.Equals(obj.Moniker, StringComparison.OrdinalIgnoreCase);
+                return FullName.Equals(obj.FullName, StringComparison.OrdinalIgnoreCase);
             }
 
             return false;
@@ -98,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         {
             if (obj != null)
             {
-                return string.Equals(Moniker, obj, StringComparison.OrdinalIgnoreCase)
+                return string.Equals(FullName, obj, StringComparison.OrdinalIgnoreCase)
                         || string.Equals(ShortName, obj, StringComparison.OrdinalIgnoreCase);
             }
 
@@ -111,46 +103,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         public static bool operator !=(TargetFramework left, TargetFramework right)
             => !(left == right);
 
-        public static bool operator <(TargetFramework left, TargetFramework right)
-            => left is null ? !(right is null) : left.CompareTo(right) < 0;
-
-        public static bool operator <=(TargetFramework left, TargetFramework right)
-            => left is null || left.CompareTo(right) <= 0;
-
-        public static bool operator >(TargetFramework left, TargetFramework right)
-            => !(left is null) && left.CompareTo(right) > 0;
-
-        public static bool operator >=(TargetFramework left, TargetFramework right)
-            => left is null ? right is null : left.CompareTo(right) >= 0;
-
         /// <summary>
         ///  Need to override this to ensure it can be hashed correctly
         /// </summary>
         public override int GetHashCode()
         {
-            if (Moniker == null)
-            {
-                return string.Empty.GetHashCode();
-            }
-            else
-            {
-                return StringComparer.OrdinalIgnoreCase.GetHashCode(Moniker);
-            }
-        }
-
-        public int CompareTo(ITargetFramework other)
-        {
-            if (other == null)
-            {
-                return 1;
-            }
-
-            return StringComparer.OrdinalIgnoreCase.Compare(Moniker, other.Moniker);
+            return StringComparer.OrdinalIgnoreCase.GetHashCode(FullName);
         }
 
         public override string ToString()
         {
-            return Moniker ?? string.Empty;
+            return FullName;
         }
     }
 }
