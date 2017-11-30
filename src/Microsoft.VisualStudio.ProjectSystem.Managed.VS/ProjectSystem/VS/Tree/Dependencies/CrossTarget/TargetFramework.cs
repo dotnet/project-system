@@ -108,19 +108,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         /// </summary>
         public override int GetHashCode()
         {
-            if (FullName == null)
-            {
-                return string.Empty.GetHashCode();
-            }
-            else
-            {
-                return StringComparer.OrdinalIgnoreCase.GetHashCode(FullName);
-            }
+            return StringComparer.OrdinalIgnoreCase.GetHashCode(FullName);
         }
 
         public override string ToString()
         {
-            return FullName ?? string.Empty;
+            return FullName;
         }
     }
 }
