@@ -28,7 +28,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         /// Gets the display name.
         /// </summary>
         string FriendlyName { get; }
-
-        string Version { get; }
     }
 }

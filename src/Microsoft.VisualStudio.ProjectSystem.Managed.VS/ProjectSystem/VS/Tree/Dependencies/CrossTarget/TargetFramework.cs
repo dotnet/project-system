@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             FrameworkName = frameworkName;
             Moniker = frameworkName.FullName;
             ShortName = shortName ?? string.Empty;
-            FriendlyName = $"{frameworkName.Identifier} {Version}";
+            FriendlyName = $"{frameworkName.Identifier} {frameworkName.Version}";
         }
 
         /// <summary>
@@ -54,14 +54,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         /// Gets the display name.
         /// </summary>
         public string FriendlyName { get; }
-
-        public string Version
-        {
-            get
-            {
-                return FrameworkName?.Version.ToString();
-            }
-        }
 
         /// <summary>
         /// Override Equals to handle equivalency correctly. They are equal if the 
