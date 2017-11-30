@@ -5,8 +5,7 @@ using System.Runtime.Versioning;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
-    internal interface ITargetFramework : IComparable<ITargetFramework>, 
-                                          IEquatable<ITargetFramework>, 
+    internal interface ITargetFramework : IEquatable<ITargetFramework>, 
                                           IEquatable<string>
     {
         /// <summary>

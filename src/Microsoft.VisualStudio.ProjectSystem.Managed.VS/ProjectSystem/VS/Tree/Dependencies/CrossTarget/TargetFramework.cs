@@ -103,18 +103,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         public static bool operator !=(TargetFramework left, TargetFramework right)
             => !(left == right);
 
-        public static bool operator <(TargetFramework left, TargetFramework right)
-            => left is null ? !(right is null) : left.CompareTo(right) < 0;
-
-        public static bool operator <=(TargetFramework left, TargetFramework right)
-            => left is null || left.CompareTo(right) <= 0;
-
-        public static bool operator >(TargetFramework left, TargetFramework right)
-            => !(left is null) && left.CompareTo(right) > 0;
-
-        public static bool operator >=(TargetFramework left, TargetFramework right)
-            => left is null ? right is null : left.CompareTo(right) >= 0;
-
         /// <summary>
         ///  Need to override this to ensure it can be hashed correctly
         /// </summary>
@@ -128,16 +116,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             {
                 return StringComparer.OrdinalIgnoreCase.GetHashCode(Moniker);
             }
-        }
-
-        public int CompareTo(ITargetFramework other)
-        {
-            if (other == null)
-            {
-                return 1;
-            }
-
-            return StringComparer.OrdinalIgnoreCase.Compare(Moniker, other.Moniker);
         }
 
         public override string ToString()
