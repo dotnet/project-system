@@ -270,15 +270,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             Assert.Equal(@"c:\test\project", targets[0].CurrentDirectory);
         }
 
-        [Fact]
-        public async Task QueryDebugTargets_ExeProfileAsyncExeRelativeToWorkingDir()
+        [Theory]
+        [InlineData(@"c:\WorkingDir")]
+        [InlineData(@"\WorkingDir")]
+        public async Task QueryDebugTargets_ExeProfileAsyncExeRelativeToWorkingDir(string workingDir)
         {
             var debugger = GetDebugTargetsProvider();
 
             // Exe relative to full working dir
             _mockFS.WriteAllText(@"c:\WorkingDir\mytest.exe", string.Empty);
+            _mockFS.SetCurrentDirectory(@"c:\Test");
             _mockFS.CreateDirectory(@"c:\WorkingDir");
-            var activeProfile = new LaunchProfile(){Name="run", ExecutablePath=".\\mytest.exe", WorkingDirectory=@"c:\WorkingDir"};
+            var activeProfile = new LaunchProfile(){Name="run", ExecutablePath=".\\mytest.exe", WorkingDirectory=workingDir};
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
             Assert.Equal(@"c:\WorkingDir\mytest.exe", targets[0].Executable);
@@ -328,6 +331,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
             Assert.Equal(@"c:\CurrentDirectory\myexe.exe", targets[0].Executable);
+        }
+
+        [Fact]
+        public async Task QueryDebugTargets_ExeProfileExeIsRootedWithNoDrive()
+        {
+            var debugger = GetDebugTargetsProvider();
+            _mockFS.WriteAllText(@"e:\myexe.exe", string.Empty);
+            _mockFS.SetCurrentDirectory(@"e:\CurrentDirectory");
+
+            // Exe relative to path
+            var activeProfile = new LaunchProfile(){Name="run", ExecutablePath=@"\myexe.exe"};
+            var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
+            Assert.Single(targets);
+            Assert.Equal(@"e:\myexe.exe", targets[0].Executable);
         }
 
         [Fact]

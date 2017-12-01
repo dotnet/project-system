@@ -219,13 +219,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             else
             {
                 // If the working directory is not rooted we assume it is relative to the project directory
-                if (Path.IsPathRooted(resolvedProfile.WorkingDirectory))
+                workingDir = resolvedProfile.WorkingDirectory.Replace("/", "\\");
+                if (Path.GetPathRoot(workingDir) == "\\")
                 {
-                    workingDir = resolvedProfile.WorkingDirectory.Replace("/", "\\");
+                    // Root of current drive, no drive specified
+                    workingDir = TheFileSystem.GetFullPath(workingDir);
                 }
-                else
+                else if (!Path.IsPathRooted(workingDir))
                 {
-                    workingDir = Path.GetFullPath(Path.Combine(projectFolder, resolvedProfile.WorkingDirectory.Replace("/", "\\")));
+                    workingDir = TheFileSystem.GetFullPath(Path.Combine(projectFolder, workingDir));
                 }
             }
 
@@ -234,12 +236,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             // the environment path. If we can't find it, we just launch it as before.
             if (!string.IsNullOrWhiteSpace(executable))
             {
-                if (!Path.IsPathRooted(executable))
+                executable = executable.Replace("/", "\\");
+                if (Path.GetPathRoot(executable) == "\\")
                 {
-                    if (executable.Contains("/") || executable.Contains("\\"))
+                    // Root of current drive
+                    executable = TheFileSystem.GetFullPath(executable);
+                }
+                else if (!Path.IsPathRooted(executable))
+                {
+                    if (executable.Contains("\\"))
                     {
                         // Combine with the working directory used by the profile
-                        executable = Path.GetFullPath(Path.Combine(workingDir, executable.Replace("/", "\\")));
+                        executable = TheFileSystem.GetFullPath(Path.Combine(workingDir, executable));
                     }
                     else
                     {

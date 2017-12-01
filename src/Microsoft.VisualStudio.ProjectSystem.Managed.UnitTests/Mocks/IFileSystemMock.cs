@@ -147,12 +147,20 @@ namespace Microsoft.VisualStudio.IO
         
         public string GetFullPath(string path)
         {
-            if(_currentDirectory != null && !Path.IsPathRooted(path))
+            if (_currentDirectory != null)
             {
-                return Path.Combine(_currentDirectory, path);
+                var pathRoot = Path.GetPathRoot(path);
+                if (pathRoot == @"\")
+                {
+                    return Path.GetPathRoot(_currentDirectory) + path.Substring(1);
+                }
+                else if (!Path.IsPathRooted(path))
+                {
+                    return Path.Combine(_currentDirectory, path);
+                }
             }
 
-            return path;
+            return Path.GetFullPath(path);
         }
 
         public void RemoveFile(string path)
