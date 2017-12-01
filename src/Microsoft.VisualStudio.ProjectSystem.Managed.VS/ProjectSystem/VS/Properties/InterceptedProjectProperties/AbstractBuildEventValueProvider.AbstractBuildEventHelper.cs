@@ -140,7 +140,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                 }
                 else
                 {
-                    var target = projectXml.AddTarget(this.TargetName);
+                    var target = projectXml.AddTarget(TargetName);
                     SetTargetDependencies(target);
                     var execTask = target.AddTask(ExecTask);
                     SetExecParameter(execTask, unevaluatedPropertyValue);
