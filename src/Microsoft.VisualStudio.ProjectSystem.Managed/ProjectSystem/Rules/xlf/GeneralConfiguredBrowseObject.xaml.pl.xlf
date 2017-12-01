@@ -19,7 +19,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|PlatformTarget|DisplayName">
         <source>Platform Target</source>
-        <target state="translated">Miejsce docelowe platformy</target>
+        <target state="translated">Platforma docelowa</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Prefer32Bit|DisplayName">
