@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             if (_addedPathsWithMetadata.TryGetValue(fullPath, out var existingProperties))
             {
-                logger.WriteLine("Removing existing reference with '{0}' so we can update the aliases.", fullPath);
+                logger.WriteLine("Removing existing {0} '{1}' so we can update the aliases.", properties.EmbedInteropTypes ? "link" : "reference", fullPath);
 
                 // The reference has already been added previously. The current implementation of IWorkspaceProjectContext
                 // presumes that we'll only called AddMetadataReference once for a given path. Thus we have to remove the
@@ -68,7 +68,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 properties = properties.WithAliases(combinedAliases);
             }
 
-            logger.WriteLine("Adding reference '{0}'", fullPath);
+            logger.WriteLine("Adding {0} '{1}'", properties.EmbedInteropTypes ? "link" : "reference", fullPath);
+
             _context.AddMetadataReference(fullPath, properties);
             _addedPathsWithMetadata[fullPath] = properties;
         }
@@ -77,7 +78,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             if (_addedPathsWithMetadata.TryGetValue(fullPath, out var existingProperties))
             {
-                logger.WriteLine("Removing reference '{0}'", fullPath);
+                logger.WriteLine("Removing {0} '{1}'", properties.EmbedInteropTypes ? "link" : "reference", fullPath);
+
                 _context.RemoveMetadataReference(fullPath);
 
                 // Subtract any existing aliases out. This will be an empty list if we should remove the reference entirely
@@ -93,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                     // resultantAliases might be the global alias. In that case, let's remove it again.
                     resultantAliases = GetEmptyIfGlobalAlias(resultantAliases);
                     properties = properties.WithAliases(resultantAliases);
-                    logger.WriteLine("Adding reference '{0}' back with remaining aliases", fullPath);
+                    logger.WriteLine("Adding {0} '{1}' back with remaining aliases", properties.EmbedInteropTypes ? "link" : "reference", fullPath);
                     _context.AddMetadataReference(fullPath, properties);
                     _addedPathsWithMetadata[fullPath] = properties;
                 }
