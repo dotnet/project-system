@@ -345,7 +345,7 @@ Please select a valid folder path.</source>
       </trans-unit>
       <trans-unit id="PPG_Application_AppEventsCommentLine7">
         <source>NetworkAvailabilityChanged: Raised when the network connection is connected or disconnected.</source>
-        <target state="translated">NetworkAvailabilityChanged:在連接或中斷網路連線時引發。</target>
+        <target state="translated">NetworkAvailabilityChanged:在建立或中斷網路連線時引發。</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_InvalidBaseAddress">

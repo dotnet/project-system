@@ -119,7 +119,7 @@
       </trans-unit>
       <trans-unit id="lblPlatformTarget.Text">
         <source>Platform tar&amp;get:</source>
-        <target state="translated">Miejsce &amp;docelowe platformy:</target>
+        <target state="translated">Platforma doce&amp;lowa:</target>
         <note />
       </trans-unit>
       <trans-unit id="lblSGenOption.Text">
