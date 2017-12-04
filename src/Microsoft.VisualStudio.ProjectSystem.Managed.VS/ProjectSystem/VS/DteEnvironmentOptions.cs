@@ -2,7 +2,6 @@
 
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Composition;
-using EnvDTE;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
