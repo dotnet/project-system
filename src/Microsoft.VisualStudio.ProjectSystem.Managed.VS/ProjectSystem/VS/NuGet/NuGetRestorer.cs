@@ -16,7 +16,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
     using TIdentityDictionary = IImmutableDictionary<NamedIdentity, IComparable>;
 
-    internal class NuGetRestorer : OnceInitializedOnceDisposedAsync
+    [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectDynamicLoadComponent))]
+    [AppliesTo(ProjectCapabilities.PackageReferences)]
+    internal class NuGetRestorer : OnceInitializedOnceDisposedAsync, IProjectDynamicLoadComponent
     {
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IVsSolutionRestoreService _solutionRestoreService;
@@ -26,6 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private IDisposable _targetFrameworkSubscriptionLink;
         private DisposableBag _designTimeBuildSubscriptionLink;
         private const int perfPackageRestoreEnd = 7343;
+        private bool hasBeenUnloaded = false;
 
         private static ImmutableHashSet<string> _targetFrameworkWatchedRules = Empty.OrdinalIgnoreCaseStringSet
             .Add(NuGetRestore.SchemaName);
@@ -37,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             .Add(DotNetCliToolReference.SchemaName);
 
         // Remove the ConfiguredProjectIdentity key because it is unique to each configured project - so it won't match across projects by design.
-        // Remove the ConfiguredProjectVersion key because each configuredproject manages it's own version and generally they don't match. 
+        // Remove the ConfiguredProjectVersion key because each configuredproject manages it's own version and generally they don't match.
         private readonly static ImmutableArray<NamedIdentity> _keysToDrop = ImmutableArray.Create(ProjectDataSources.ConfiguredProjectIdentity, ProjectDataSources.ConfiguredProjectVersion);
 
         [ImportingConstructor]
@@ -46,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             IVsSolutionRestoreService solutionRestoreService,
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
             IActiveProjectConfigurationRefreshService activeProjectConfigurationRefreshService,
-            IActiveConfiguredProjectsProvider activeConfiguredProjectsProvider) 
+            IActiveConfiguredProjectsProvider activeConfiguredProjectsProvider)
             : base(projectVsServices.ThreadingService.JoinableTaskContext)
         {
             _projectVsServices = projectVsServices;
@@ -56,8 +59,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             _activeConfiguredProjectsProvider = activeConfiguredProjectsProvider;
         }
 
+        // In order for the initial project restore to work, we need to wait for the project to be configured
+        // hence startAfter: ProjectLoadCheckpoint.ProjectFactoryCompleted.
         [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
-        [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
+        [AppliesTo(ProjectCapabilities.PackageReferences)]
         internal Task OnProjectFactoryCompletedAsync()
         {
             // set up a subscription to listen for target framework changes
@@ -67,14 +72,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 ruleNames: _targetFrameworkWatchedRules,
                 initialDataAsNew: false, // only reset on subsequent changes
                 suppressVersionOnlyUpdates: true);
+            return Task.CompletedTask;
+        }
+
+        public Task LoadAsync()
+        {
+            // This method can only be run if this is a project that has been unloaded previously.
+            if (hasBeenUnloaded)
+            {
+                return OnProjectFactoryCompletedAsync();
+            }
 
             return Task.CompletedTask;
+        }
+
+        public async Task UnloadAsync()
+        {
+            await DisposeCoreAsync(true).ConfigureAwait(false);
+            hasBeenUnloaded = true;
         }
 
         private async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update)
         {
             if (IsDisposing || IsDisposed)
+            {
                 return;
+            }
 
             await InitializeAsync().ConfigureAwait(false);
 
@@ -119,10 +142,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 var disposableBag = new DisposableBag(CancellationToken.None);
                 // We are taking source blocks from multiple configured projects and creating a SyncLink to combine the sources.
                 // The SyncLink will only publish data when the versions of the sources match. There is a problem with that.
-                // The sources have some version components that will make this impossible to match across TFMs. We introduce a 
-                // intermediate block here that will remove those version components so that the synclink can actually sync versions. 
+                // The sources have some version components that will make this impossible to match across TFMs. We introduce a
+                // intermediate block here that will remove those version components so that the synclink can actually sync versions.
                 var sourceBlocks = currentProjects.Objects.Select(
-                    cp => 
+                    cp =>
                     {
                         var sourceBlock = cp.Services.ProjectSubscription.JointRuleSource.SourceBlock;
                         var versionDropper = CreateVersionDropperBlock();
@@ -149,7 +172,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             return transformBlock;
         }
-        
+
         private async Task RefreshActiveConfigurationAsync()
         {
             // Force refresh the CPS active project configuration (needs UI thread).
