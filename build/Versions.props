@@ -62,7 +62,7 @@
     <VsWebSiteInteropVersion>8.0.0-alpha</VsWebSiteInteropVersion>
     
     <!-- CPS -->
-    <MicrosoftVisualStudioProjectSystemSDKVersion>15.5.293-pre</MicrosoftVisualStudioProjectSystemSDKVersion>
+    <MicrosoftVisualStudioProjectSystemSDKVersion>15.6.57-pre</MicrosoftVisualStudioProjectSystemSDKVersion>
     
     <!-- Roslyn -->
     <MicrosoftVisualStudioLanguageServicesVersion>2.6.0-beta1-62113-02</MicrosoftVisualStudioLanguageServicesVersion>
@@ -75,7 +75,7 @@
     <NuGetVisualStudioVersion>4.3.0</NuGetVisualStudioVersion>
     
     <!-- Msbuild -->
-    <MicrosoftBuildVersion>15.3.409</MicrosoftBuildVersion>
+    <MicrosoftBuildVersion>15.5.0-preview-000153-1054696</MicrosoftBuildVersion>
     
     <!-- Libs -->
     <NewtonsoftJsonVersion>9.0.1</NewtonsoftJsonVersion>
