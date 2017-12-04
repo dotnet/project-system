@@ -219,16 +219,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             else
             {
                 // If the working directory is not rooted we assume it is relative to the project directory
-                workingDir = resolvedProfile.WorkingDirectory.Replace("/", "\\");
-                if (Path.GetPathRoot(workingDir) == "\\")
-                {
-                    // Root of current drive, no drive specified
-                    workingDir = TheFileSystem.GetFullPath(workingDir);
-                }
-                else if (!Path.IsPathRooted(workingDir))
-                {
-                    workingDir = TheFileSystem.GetFullPath(Path.Combine(projectFolder, workingDir));
-                }
+                workingDir = TheFileSystem.GetFullPath(Path.Combine(projectFolder, resolvedProfile.WorkingDirectory.Replace("/", "\\")));
             }
 
             // IF the executable is not rooted, we want to make is relative to the workingDir unless is doesn't contain
