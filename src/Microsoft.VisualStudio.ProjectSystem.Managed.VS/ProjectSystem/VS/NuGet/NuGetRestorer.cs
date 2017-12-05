@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private readonly IActiveProjectConfigurationRefreshService _activeProjectConfigurationRefreshService;
         private IDisposable _targetFrameworkSubscriptionLink;
         private DisposableBag _designTimeBuildSubscriptionLink;
-        private const int perfPackageRestoreEnd = 7343;
+        
 
         private static ImmutableHashSet<string> _targetFrameworkWatchedRules = Empty.OrdinalIgnoreCaseStringSet
             .Add(NuGetRestore.SchemaName);
@@ -171,7 +171,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                                     _projectVsServices.Project.Services.ProjectAsynchronousTasks.UnloadCancellationToken)
                                .ConfigureAwait(false);
 
-                        CodeMarkers.Instance.CodeMarker(perfPackageRestoreEnd);
+                        CodeMarkers.Instance.CodeMarker(CodeMarkerTimerId.PerfPackageRestoreEnd);
 
                     }),
                     ProjectCriticalOperation.Build | ProjectCriticalOperation.Unload | ProjectCriticalOperation.Rename,
