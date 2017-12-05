@@ -219,30 +219,51 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             else
             {
                 // If the working directory is not rooted we assume it is relative to the project directory
-                if (Path.IsPathRooted(resolvedProfile.WorkingDirectory))
-                {
-                    workingDir = resolvedProfile.WorkingDirectory;
-                }
-                else
-                {
-                    workingDir = Path.GetFullPath(Path.Combine(projectFolder, resolvedProfile.WorkingDirectory));
-                }
+                workingDir = TheFileSystem.GetFullPath(Path.Combine(projectFolder, resolvedProfile.WorkingDirectory.Replace("/", "\\")));
             }
 
             // IF the executable is not rooted, we want to make is relative to the workingDir unless is doesn't contain
-            // any path elements. In that case we are going to assume it is on the path
+            // any path elements. In that case we are going to assume it is in the current directory of the VS process, or on
+            // the environment path. If we can't find it, we just launch it as before.
             if (!string.IsNullOrWhiteSpace(executable))
             {
-                if (!Path.IsPathRooted(executable) && executable.IndexOf(Path.DirectorySeparatorChar) != -1)
+                executable = executable.Replace("/", "\\");
+                if (Path.GetPathRoot(executable) == "\\")
                 {
-                    executable = Path.GetFullPath(Path.Combine(workingDir, executable));
+                    // Root of current drive
+                    executable = TheFileSystem.GetFullPath(executable);
+                }
+                else if (!Path.IsPathRooted(executable))
+                {
+                    if (executable.Contains("\\"))
+                    {
+                        // Combine with the working directory used by the profile
+                        executable = TheFileSystem.GetFullPath(Path.Combine(workingDir, executable));
+                    }
+                    else
+                    {
+                        // Try to resolve against the current working directory (for compat) and failing that, the environment path.
+                        var exeName = executable.EndsWith(".exe", StringComparison.OrdinalIgnoreCase)? executable : executable + ".exe";
+                        var fullPath = TheFileSystem.GetFullPath(exeName);
+                        if (TheFileSystem.FileExists(fullPath))
+                        {
+                            executable = fullPath;
+                        }
+                        else
+                        {
+                            fullPath = GetFullPathOfExeFromEnvironmentPath(exeName);
+                            if (fullPath != null)
+                            {
+                                executable = fullPath;
+                            }
+                        }
+                    }
                 }
             }
 
             // Now validate the executable path and working directory exist
             ValidateSettings(executable, workingDir, resolvedProfile.Name);
             GetExeAndArguments(useCmdShell, executable, arguments, out string finalExecutable, out string finalArguments);
-
 
             // Apply environment variables.
             if (resolvedProfile.EnvironmentVariables != null && resolvedProfile.EnvironmentVariables.Count > 0)
