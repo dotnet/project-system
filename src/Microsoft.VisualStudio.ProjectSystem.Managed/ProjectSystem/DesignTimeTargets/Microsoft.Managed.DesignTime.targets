@@ -255,6 +255,16 @@
     </PropertyPageSchema>
   </ItemGroup>
 
+  <!--
+    EmbeddedFiles are source files to be embedded to the PDB. 
+    We need to set Visible to false in order to not display duplicate entries in project UI.
+  -->
+  <ItemDefinitionGroup>
+    <EmbeddedFiles>
+      <Visible>false</Visible>
+    </EmbeddedFiles>
+  </ItemDefinitionGroup>
+
   <!-- Targets -->
 
   <!-- For a newly created project with no packages restored, Design time build complains that there is no ResolvePackageDependenciesDesignTime
