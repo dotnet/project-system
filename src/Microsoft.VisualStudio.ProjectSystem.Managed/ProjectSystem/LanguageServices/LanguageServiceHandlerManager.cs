@@ -104,9 +104,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 // If nothing changed (even another failed design-time build), don't do anything
                 if (projectChange.Difference.AnyChanges)
                 {
-                    ProcessDesignTimeBuildFailure(projectChange, context, logger);
                     ProcessOptions(projectChange, context, logger);
                     ProcessItems(version, projectChange, context, isActiveContext, logger);
+                    ProcessDesignTimeBuildFailure(projectChange, context, logger);
                 }
                 else
                 {
