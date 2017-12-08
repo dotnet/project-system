@@ -10,6 +10,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 {
     internal sealed class EvaluationLogger : LoggerBase
     {
+        private sealed class Evaluation
+        {
+            public EventWrapper Wrapper { get; set; }
+            public Build Build { get; set; }
+            public string LogPath { get; set; }
+        }
+
         private sealed class EventWrapper : IEventSource
         {
             public BinaryLogger BinaryLogger { get; }
@@ -38,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
             public void RaiseEvent(object sender, BuildEventArgs args) => AnyEventRaised?.Invoke(sender, args);
         }
 
-        private readonly Dictionary<int, (EventWrapper, Build, string)> _evaluations = new Dictionary<int, (EventWrapper, Build, string)>();
+        private readonly Dictionary<int, Evaluation> _evaluations = new Dictionary<int, Evaluation>();
 
         public EvaluationLogger(BuildTableDataSource dataSource) :
             base(dataSource)
@@ -76,7 +83,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
                         var wrapper = new EventWrapper(binaryLogger);
                         var build = new Build(evaluationStarted.ProjectFile, Array.Empty<string>(), Array.Empty<string>(), 
                             BuildType.Evaluation, args.Timestamp);
-                        _evaluations[evaluationStarted.BuildEventContext.EvaluationId] = (wrapper, build, logPath);
+                        _evaluations[evaluationStarted.BuildEventContext.EvaluationId] = new Evaluation
+                        {
+                            Wrapper = wrapper,
+                            Build = build,
+                            LogPath = logPath
+                        };
                         wrapper.RaiseEvent(sender, args);
                         DataSource.AddEntry(build);
                     }
@@ -84,12 +96,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
                 case ProjectEvaluationFinishedEventArgs evaluationFinished:
                     {
-                        if (_evaluations.TryGetValue(args.BuildEventContext.EvaluationId, out var tuple))
+                        if (_evaluations.TryGetValue(args.BuildEventContext.EvaluationId, out var evaluation))
                         {
-                            var (wrapper, build, logPath) = tuple;
-                            build.Finish(true, args.Timestamp, logPath);
-                            wrapper.RaiseEvent(sender, args);
-                            wrapper.BinaryLogger.Shutdown();
+                            evaluation.Build.Finish(true, args.Timestamp, evaluation.LogPath);
+                            evaluation.Wrapper.RaiseEvent(sender, args);
+                            evaluation.Wrapper.BinaryLogger.Shutdown();
                             DataSource.NotifyChange();
                         }
                     }
@@ -97,10 +108,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
                 default:
                     {
-                        if (_evaluations.TryGetValue(args.BuildEventContext.EvaluationId, out var tuple))
+                        if (_evaluations.TryGetValue(args.BuildEventContext.EvaluationId, out var evaluation))
                         {
-                            var (wrapper, build, logPath) = tuple;
-                            wrapper.RaiseEvent(sender, args);
+                            evaluation.Wrapper.RaiseEvent(sender, args);
                         }
                     }
                     break;
