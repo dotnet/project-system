@@ -481,11 +481,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             foreach (var item in items)
             {
-                var filename = item.Link ?? Path.GetFileName(item.Path);
+                var filename = string.IsNullOrEmpty(item.Link) ? item.Path : item.Link;
 
                 if (string.IsNullOrEmpty(filename))
                 {
                     continue;
+                }
+
+                if (Path.IsPathRooted(filename))
+                {
+                    filename = filename.StartsWith(_msBuildProjectDirectory)
+                        // Remove project directory + trailing slash
+                        ? filename.Substring(_msBuildProjectDirectory.Length + 1)
+                        : Path.GetFileName(filename);
                 }
 
                 logger.Info("Checking PreserveNewest file '{0}':", item.Path);
