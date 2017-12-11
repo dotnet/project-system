@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private bool _useJoinableTaskFactory = true;
         private IVsDebugger _debugger;
         private uint _debuggerCookie;
-        private bool isActivated = false;
+        private bool _isActivated = false;
         internal IProjectThreadingService _threadHandling;
 
         // WIN32 Constants
@@ -112,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             // any changes that happen during initialization
             Win32Methods.SetParent(Handle, hWndParent);
             ResumeLayout();
-            isActivated = true;
+            _isActivated = true;
 
         }
 
@@ -135,13 +135,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         ///--------------------------------------------------------------------------------------------
         public void Deactivate()
         {
-            if (isActivated)
+            if (_isActivated)
             {
                 WaitForAsync(OnDeactivate);
                 UnadviseDebugger();
             }
 
-            isActivated = false;
+            _isActivated = false;
             Dispose(true);
         }
 
