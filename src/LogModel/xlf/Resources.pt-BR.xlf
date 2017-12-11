@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="pt-BR" original="../Resources.resx">
+    <body>
+      <trans-unit id="BadMetadataContinuation">
+        <source>Bad metadata continuation.</source>
+        <target state="new">Bad metadata continuation.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BadState">
+        <source>Bad state.</source>
+        <target state="new">Bad state.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CannotFindEvaluatedProject">
+        <source>Cannot find evaluated project.</source>
+        <target state="new">Cannot find evaluated project.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CannotFindItem">
+        <source>Cannot find item.</source>
+        <target state="new">Cannot find item.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CannotFindProject">
+        <source>Cannot find project.</source>
+        <target state="new">Cannot find project.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CannotFindTarget">
+        <source>Cannot find target.</source>
+        <target state="new">Cannot find target.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CannotFindTask">
+        <source>Cannot find task.</source>
+        <target state="new">Cannot find task.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DoubleCreationOfProject">
+        <source>Double creation of project.</source>
+        <target state="new">Double creation of project.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DoubleEvaluation">
+        <source>Double evaluation.</source>
+        <target state="new">Double evaluation.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DuplicateTarget">
+        <source>Duplicate target.</source>
+        <target state="new">Duplicate target.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DuplicateTask">
+        <source>Duplicate task.</source>
+        <target state="new">Duplicate task.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ExpectedItemGroupName">
+        <source>Expected item group name.</source>
+        <target state="new">Expected item group name.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OverwritingMetadata">
+        <source>Overwriting metadata.</source>
+        <target state="new">Overwriting metadata.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OverwritingProperty">
+        <source>Overwriting property.</source>
+        <target state="new">Overwriting property.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnexpectedMessage">
+        <source>Unexpected message.</source>
+        <target state="new">Unexpected message.</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

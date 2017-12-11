@@ -47,6 +47,7 @@
       <ManifestResourceName>VSPackage</ManifestResourceName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <ProjectReference Include="..\LogModel\LogModel.csproj" />
     <ProjectReference Include="..\LogProviders\LogProviders.csproj">
       <Name>LogProviders</Name>
     </ProjectReference>
