@@ -16,9 +16,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     /// </summary>
     internal class WatermarkTextBox : TextBox
     {
-        private const string c_WatermarkPropertyName = "Watermark";
-        private const string c_HasInputtedTextPropertyName = "HasInputtedText";
-        private const string c_WatermarkVerticalAlignmentPropertyName = "WatermarkVerticalAlignment";
+        private const string WatermarkPropertyName = "Watermark";
+        private const string HasInputtedTextPropertyName = "HasInputtedText";
+        private const string WatermarkVerticalAlignmentPropertyName = "WatermarkVerticalAlignment";
 
         /// <summary>
         /// Primarily, this static constructor will register the metadata overrides, for such things as
@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         }
 
         public static readonly DependencyProperty WatermarkVerticalAlignmentProperty = DependencyProperty.Register(
-            c_WatermarkVerticalAlignmentPropertyName,
+            WatermarkVerticalAlignmentPropertyName,
             typeof(VerticalAlignment),
             typeof(WatermarkTextBox),
             new PropertyMetadata(VerticalAlignment.Center));
@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         }
 
         public static readonly DependencyProperty WatermarkProperty = DependencyProperty.Register(
-            c_WatermarkPropertyName,
+            WatermarkPropertyName,
             typeof(string),
             typeof(WatermarkTextBox),
             new PropertyMetadata(string.Empty));
@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         }
 
         static readonly DependencyPropertyKey HasInputtedTextPropertyKey = DependencyProperty.RegisterReadOnly(
-            c_HasInputtedTextPropertyName,
+            HasInputtedTextPropertyName,
             typeof(bool),
             typeof(WatermarkTextBox),
             new PropertyMetadata(false));
