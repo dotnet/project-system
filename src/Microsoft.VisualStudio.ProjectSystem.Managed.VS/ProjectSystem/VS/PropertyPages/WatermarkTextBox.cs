@@ -16,9 +16,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     /// </summary>
     internal class WatermarkTextBox : TextBox
     {
-        const string c_WatermarkPropertyName = "Watermark";
-        const string c_HasInputtedTextPropertyName = "HasInputtedText";
-        const string c_WatermarkVerticalAlignmentPropertyName = "WatermarkVerticalAlignment";
+        private const string c_WatermarkPropertyName = "Watermark";
+        private const string c_HasInputtedTextPropertyName = "HasInputtedText";
+        private const string c_WatermarkVerticalAlignmentPropertyName = "WatermarkVerticalAlignment";
 
         /// <summary>
         /// Primarily, this static constructor will register the metadata overrides, for such things as
