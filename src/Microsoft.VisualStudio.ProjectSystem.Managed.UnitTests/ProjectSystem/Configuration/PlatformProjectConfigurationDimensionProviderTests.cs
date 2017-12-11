@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     [ProjectSystemTrait]
     public class PlatformProjectConfigurationDimensionProviderTests
     {
-        const string Platforms = nameof(Platforms);
+        private const string Platforms = nameof(Platforms);
 
         private string projectXml =
 @"<Project Sdk=""Microsoft.NET.Sdk"">

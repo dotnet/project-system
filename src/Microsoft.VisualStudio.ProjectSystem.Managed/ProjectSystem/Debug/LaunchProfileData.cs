@@ -15,13 +15,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     internal class LaunchProfileData
     {
         // Well known properties
-        const string Prop_commandName = "commandName";
-        const string Prop_executablePath = "executablePath";
-        const string Prop_commandLineArgs = "commandLineArgs";
-        const string Prop_workingDirectory = "workingDirectory";
-        const string Prop_launchBrowser = "launchBrowser";
-        const string Prop_launchUrl = "launchUrl";
-        const string Prop_environmentVariables = "environmentVariables";
+        private const string Prop_commandName = "commandName";
+        private const string Prop_executablePath = "executablePath";
+        private const string Prop_commandLineArgs = "commandLineArgs";
+        private const string Prop_workingDirectory = "workingDirectory";
+        private const string Prop_launchBrowser = "launchBrowser";
+        private const string Prop_launchUrl = "launchUrl";
+        private const string Prop_environmentVariables = "environmentVariables";
 
         private static readonly HashSet<string> s_knownProfileProperties = new HashSet<string>(StringComparer.Ordinal)
         {

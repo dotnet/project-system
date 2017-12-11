@@ -127,7 +127,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             Assert.True(command.Enabled);
         }
 
-        class TestDebugFrameworkPropertyMenuTextUpdater : DebugFrameworkPropertyMenuTextUpdater
+        private class TestDebugFrameworkPropertyMenuTextUpdater : DebugFrameworkPropertyMenuTextUpdater
         {
             public TestDebugFrameworkPropertyMenuTextUpdater(IStartupProjectHelper startupHelper)
                 : base(startupHelper)

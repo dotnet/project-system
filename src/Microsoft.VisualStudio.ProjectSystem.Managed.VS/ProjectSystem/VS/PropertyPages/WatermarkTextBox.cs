@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             set { SetValue(WatermarkProperty, value); }
         }
 
-        static readonly DependencyPropertyKey s_hasInputtedTextPropertyKey = DependencyProperty.RegisterReadOnly(
+        private static readonly DependencyPropertyKey s_hasInputtedTextPropertyKey = DependencyProperty.RegisterReadOnly(
             HasInputtedTextPropertyName,
             typeof(bool),
             typeof(WatermarkTextBox),
@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
-        static void TextPropertyChanged(object sender, DependencyPropertyChangedEventArgs args)
+        private static void TextPropertyChanged(object sender, DependencyPropertyChangedEventArgs args)
         {
             WatermarkTextBox source = sender as WatermarkTextBox;
             if (source == null)

@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     internal class IActiveDebugFrameworkServicesFactory
     {
-        Mock<IActiveDebugFrameworkServices> _mock;
+        private Mock<IActiveDebugFrameworkServices> _mock;
         public IActiveDebugFrameworkServicesFactory(MockBehavior mockBehavior = MockBehavior.Strict)
         {
             _mock = new Mock<IActiveDebugFrameworkServices>(mockBehavior);

@@ -140,9 +140,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
     internal sealed class ProjectReadAccessor : IProjectReadAccess
     {
-        IProjectLockService ProjectLockService { get; set; }
-        ConfiguredProject ConfiguredProject { get; set; }
-        ProjectLockReleaser? Access { get; set; }
+        private IProjectLockService ProjectLockService { get; set; }
+        private ConfiguredProject ConfiguredProject { get; set; }
+        private ProjectLockReleaser? Access { get; set; }
 
         public ProjectReadAccessor(IProjectLockService lockService, ConfiguredProject configuredProject)
         {

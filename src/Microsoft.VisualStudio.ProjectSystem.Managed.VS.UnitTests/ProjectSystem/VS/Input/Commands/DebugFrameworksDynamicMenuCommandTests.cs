@@ -132,7 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             activeDebugFrameworkSvcs.Verify();
         }
 
-        class TestDebugFrameworksDynamicMenuCommand : DebugFrameworksDynamicMenuCommand
+        private class TestDebugFrameworksDynamicMenuCommand : DebugFrameworksDynamicMenuCommand
         {
             public TestDebugFrameworksDynamicMenuCommand(IStartupProjectHelper startupHelper)
                 : base(startupHelper)

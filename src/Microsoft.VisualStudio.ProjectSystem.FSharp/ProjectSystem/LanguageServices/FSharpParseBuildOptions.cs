@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly UnconfiguredProject _project;
 
         [ImportMany]
-        IEnumerable<Action<string, ImmutableArray<CommandLineSourceFile>, ImmutableArray<CommandLineReference>, ImmutableArray<string>>> _handlers =  null;
+        private IEnumerable<Action<string, ImmutableArray<CommandLineSourceFile>, ImmutableArray<CommandLineReference>, ImmutableArray<string>>> _handlers =  null;
 
         [ImportingConstructor]
         public FSharpParseBuildOptions(UnconfiguredProject project)
