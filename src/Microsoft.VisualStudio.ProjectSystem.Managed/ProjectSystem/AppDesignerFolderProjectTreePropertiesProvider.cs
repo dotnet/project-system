@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     [AppliesTo(ProjectCapability.AppDesigner)]
     internal class AppDesignerFolderProjectTreePropertiesProvider : AbstractSpecialFolderProjectTreePropertiesProvider, IProjectTreeSettingsProvider
     {
-        private static readonly ProjectTreeFlags DefaultFolderFlags = ProjectTreeFlags.Create(ProjectTreeFlags.Common.AppDesignerFolder | ProjectTreeFlags.Common.BubbleUp);
+        private static readonly ProjectTreeFlags s_defaultFolderFlags = ProjectTreeFlags.Create(ProjectTreeFlags.Common.AppDesignerFolder | ProjectTreeFlags.Common.BubbleUp);
 
         private readonly IProjectDesignerService _designerService;
 
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public override ProjectTreeFlags FolderFlags
         {
-            get { return DefaultFolderFlags; }
+            get { return s_defaultFolderFlags; }
         }
 
         public override string FolderImageKey

@@ -58,13 +58,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             set { SetValue(WatermarkProperty, value); }
         }
 
-        static readonly DependencyPropertyKey HasInputtedTextPropertyKey = DependencyProperty.RegisterReadOnly(
+        static readonly DependencyPropertyKey s_hasInputtedTextPropertyKey = DependencyProperty.RegisterReadOnly(
             HasInputtedTextPropertyName,
             typeof(bool),
             typeof(WatermarkTextBox),
             new PropertyMetadata(false));
 
-        public static readonly DependencyProperty HasInputtedTextProperty = HasInputtedTextPropertyKey.DependencyProperty;
+        public static readonly DependencyProperty HasInputtedTextProperty = s_hasInputtedTextPropertyKey.DependencyProperty;
 
         /// <summary>
         /// If there is text, that has been inputted, then this value will change to indicate that
@@ -95,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             bool hasInputtedText = !string.IsNullOrEmpty(source.Text.Trim());
             if (hasInputtedText != source.HasInputtedText)
             {
-                source.SetValue(HasInputtedTextPropertyKey, hasInputtedText);
+                source.SetValue(s_hasInputtedTextPropertyKey, hasInputtedText);
             }
         }
     }

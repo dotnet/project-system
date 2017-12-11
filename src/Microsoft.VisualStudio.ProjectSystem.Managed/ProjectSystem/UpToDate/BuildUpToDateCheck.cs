@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private const string TelemetryEventName = "UpToDateCheck";
         private const string Link = "Link";
 
-        private static readonly HashSet<string> KnownOutputGroups = new HashSet<string>
+        private static readonly HashSet<string> s_knownOutputGroups = new HashSet<string>
         {
             "Symbols",
             "Built",
@@ -230,7 +230,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private void OnOutputGroupChanged(IImmutableDictionary<string, IOutputGroup> e)
         {
-            foreach (var outputGroupPair in e.Where(pair => KnownOutputGroups.Contains(pair.Key)))
+            foreach (var outputGroupPair in e.Where(pair => s_knownOutputGroups.Contains(pair.Key)))
             {
                 var outputs = outputGroupPair.Value.Outputs.Select(output => output.Key);
                 _outputGroups[outputGroupPair.Key] = new HashSet<string>(outputs, StringComparers.Paths);

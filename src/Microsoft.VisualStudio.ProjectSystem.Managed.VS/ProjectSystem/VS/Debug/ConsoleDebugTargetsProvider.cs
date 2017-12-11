@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     [Order(Order.Default)] // The higher the number the higher priority and we want this one last
     internal class ConsoleDebugTargetsProvider : IDebugProfileLaunchTargetsProvider
     {
-        private static readonly char[] EscapedChars = new[] { '^', '<', '>', '&' };
+        private static readonly char[] s_escapedChars = new[] { '^', '<', '>', '&' };
 
         [ImportingConstructor]
         public ConsoleDebugTargetsProvider(ConfiguredProject configuredProject,
@@ -143,7 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             if (useCmdShell)
             {
                 // Escape the characters ^<>& so that they are passed to the application rather than interpreted by cmd.exe.
-                string escapedArgs = EscapeString(debugArgs, EscapedChars);
+                string escapedArgs = EscapeString(debugArgs, s_escapedChars);
                 finalArguments = $"/c \"\"{debugExe}\" {escapedArgs} & pause\"";
                 finalExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
             }
