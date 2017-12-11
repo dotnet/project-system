@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             var sourceFiles = new List<CommandLineSourceFile>();
             var metadataReferences = new List<CommandLineReference>();
-            var commandLineOptions = new List<String>();
+            var commandLineOptions = new List<string>();
 
             foreach (var commandLineArgument in commandLineArgs)
             {
