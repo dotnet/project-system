@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     [ProjectSystemTrait]
     public class ConfigurationProjectConfigurationDimensionProviderTests
     {
-        const string Configurations = nameof(Configurations);
+        private const string Configurations = nameof(Configurations);
 
         private string projectXml =
 @"<Project Sdk=""Microsoft.NET.Sdk"">

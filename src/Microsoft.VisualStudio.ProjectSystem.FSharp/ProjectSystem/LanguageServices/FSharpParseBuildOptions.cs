@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly UnconfiguredProject _project;
 
         [ImportMany]
-        IEnumerable<Action<string, ImmutableArray<CommandLineSourceFile>, ImmutableArray<CommandLineReference>, ImmutableArray<string>>> Handlers =  null;
+        private IEnumerable<Action<string, ImmutableArray<CommandLineSourceFile>, ImmutableArray<CommandLineReference>, ImmutableArray<string>>> _handlers =  null;
 
         [ImportingConstructor]
         public FSharpParseBuildOptions(UnconfiguredProject project)
@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             var sourceFiles = new List<CommandLineSourceFile>();
             var metadataReferences = new List<CommandLineReference>();
-            var commandLineOptions = new List<String>();
+            var commandLineOptions = new List<string>();
 
             foreach (var commandLineArgument in commandLineArgs)
             {
@@ -95,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             if (added is FSharpBuildOptions fscAdded)
             {
-                foreach (var handler in Handlers)
+                foreach (var handler in _handlers)
                 {
                     handler?.Invoke(_project.FullPath, fscAdded.SourceFiles, fscAdded.MetadataReferences, fscAdded.CompileOptions);
                 }

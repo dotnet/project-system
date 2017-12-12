@@ -19,14 +19,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
     [ProjectSystemTrait]
     public class ConsoleDebugLaunchProviderTest
     {
-        string _ProjectFile = @"c:\test\project\project.csproj";
-        string _Path = @"c:\program files\dotnet;c:\program files\SomeDirectory";
+        private string _ProjectFile = @"c:\test\project\project.csproj";
+        private string _Path = @"c:\program files\dotnet;c:\program files\SomeDirectory";
+        private Mock<IEnvironmentHelper> _mockEnvironment = new Mock<IEnvironmentHelper>();
+        private IFileSystemMock _mockFS = new IFileSystemMock();
+        private Mock<IDebugTokenReplacer> _mockTokenReplace = new Mock<IDebugTokenReplacer>();
 
-        Mock<IEnvironmentHelper> _mockEnvironment = new Mock<IEnvironmentHelper>();
-        IFileSystemMock _mockFS = new IFileSystemMock();
-        Mock<IDebugTokenReplacer> _mockTokenReplace = new Mock<IDebugTokenReplacer>();
-
-        ConsoleDebugTargetsProvider GetDebugTargetsProvider(string outputType = "exe", Dictionary<string, string> properties = null)
+        private ConsoleDebugTargetsProvider GetDebugTargetsProvider(string outputType = "exe", Dictionary<string, string> properties = null)
         {
             _mockFS.WriteAllText(@"c:\test\Project\someapp.exe", "");
             _mockFS.CreateDirectory(@"c:\test\Project");
@@ -267,19 +266,81 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             Assert.Equal(@"c:\test\project", targets[0].CurrentDirectory);
         }
 
+        [Theory]
+        [InlineData(@"c:\WorkingDir")]
+        [InlineData(@"\WorkingDir")]
+        public async Task QueryDebugTargets_ExeProfileAsyncExeRelativeToWorkingDir(string workingDir)
+        {
+            var debugger = GetDebugTargetsProvider();
+
+            // Exe relative to full working dir
+            _mockFS.WriteAllText(@"c:\WorkingDir\mytest.exe", string.Empty);
+            _mockFS.SetCurrentDirectory(@"c:\Test");
+            _mockFS.CreateDirectory(@"c:\WorkingDir");
+            var activeProfile = new LaunchProfile(){Name="run", ExecutablePath=".\\mytest.exe", WorkingDirectory=workingDir};
+            var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
+            Assert.Single(targets);
+            Assert.Equal(@"c:\WorkingDir\mytest.exe", targets[0].Executable);
+            Assert.Equal(@"c:\WorkingDir", targets[0].CurrentDirectory);
+        }
+
         [Fact]
-        public async Task QueryDebugTargets_ExeProfileAsyncExeRelativeTooWorkingDir()
+        public async Task QueryDebugTargets_ExeProfileAsyncExeRelativeToWorkingDir_AlternateSlash()
         {
             var debugger = GetDebugTargetsProvider();
 
             // Exe relative to full working dir
             _mockFS.WriteAllText(@"c:\WorkingDir\mytest.exe", string.Empty);
             _mockFS.CreateDirectory(@"c:\WorkingDir");
-            var activeProfile = new LaunchProfile(){Name="run", ExecutablePath=".\\mytest.exe", WorkingDirectory=@"c:\WorkingDir"};
+            var activeProfile = new LaunchProfile(){Name="run", ExecutablePath="./mytest.exe", WorkingDirectory=@"c:/WorkingDir"};
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
             Assert.Equal(@"c:\WorkingDir\mytest.exe", targets[0].Executable);
             Assert.Equal(@"c:\WorkingDir", targets[0].CurrentDirectory);
+        }
+
+        [Theory]
+        [InlineData("dotnet")]
+        [InlineData("dotnet.exe")]
+        public async Task QueryDebugTargets_ExeProfileExeRelativeToPath(string exeName)
+        {
+            var debugger = GetDebugTargetsProvider();
+
+            // Exe relative to path
+            var activeProfile = new LaunchProfile(){Name="run", ExecutablePath=exeName};
+            var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
+            Assert.Single(targets);
+            Assert.Equal(@"c:\program files\dotnet\dotnet.exe", targets[0].Executable);
+        }
+
+        [Theory]
+        [InlineData("myexe")]
+        [InlineData("myexe.exe")]
+        public async Task QueryDebugTargets_ExeProfileExeRelativeToCurrentDirectory(string exeName)
+        {
+            var debugger = GetDebugTargetsProvider();
+            _mockFS.WriteAllText(@"c:\CurrentDirectory\myexe.exe", string.Empty);
+            _mockFS.SetCurrentDirectory(@"c:\CurrentDirectory");
+
+            // Exe relative to path
+            var activeProfile = new LaunchProfile(){Name="run", ExecutablePath=exeName};
+            var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
+            Assert.Single(targets);
+            Assert.Equal(@"c:\CurrentDirectory\myexe.exe", targets[0].Executable);
+        }
+
+        [Fact]
+        public async Task QueryDebugTargets_ExeProfileExeIsRootedWithNoDrive()
+        {
+            var debugger = GetDebugTargetsProvider();
+            _mockFS.WriteAllText(@"e:\myexe.exe", string.Empty);
+            _mockFS.SetCurrentDirectory(@"e:\CurrentDirectory");
+
+            // Exe relative to path
+            var activeProfile = new LaunchProfile(){Name="run", ExecutablePath=@"\myexe.exe"};
+            var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
+            Assert.Single(targets);
+            Assert.Equal(@"e:\myexe.exe", targets[0].Executable);
         }
 
         [Fact]

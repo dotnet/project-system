@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.IO
     /// <summary>
     ///     Provides static methods for the creation, copying, deletion, moving of files and directories.
     /// </summary>
-    interface IFileSystem
+    internal interface IFileSystem
     {
         Stream Create(string path);
 
@@ -29,6 +29,10 @@ namespace Microsoft.VisualStudio.IO
         void CreateDirectory(string path);
         void RemoveDirectory(string path, bool recursive);
         void SetDirectoryAttribute(string path, FileAttributes newAttribute);
+        string GetCurrentDirectory();
+        void SetCurrentDirectory(string directory);
+        string GetFullPath(string path);
+
         IEnumerable<string> EnumerateDirectories(string path);
         IEnumerable<string> EnumerateDirectories(string path, string searchPattern, SearchOption searchOption);
         IEnumerable<string> EnumerateFiles(string path, string searchPattern, SearchOption searchOption);

@@ -24,8 +24,10 @@ namespace Microsoft.VisualStudio.IO
             public Encoding FileEncoding = Encoding.Default;
         };
 
-        Dictionary<string, FileData> _files = new Dictionary<string, FileData>(StringComparer.OrdinalIgnoreCase);
-        HashSet<string> _folders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        private Dictionary<string, FileData> _files = new Dictionary<string, FileData>(StringComparer.OrdinalIgnoreCase);
+        private HashSet<string> _folders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        string _currentDirectory;
 
         public Dictionary<string, FileData> Files { get => _files; }
 
@@ -130,6 +132,35 @@ namespace Microsoft.VisualStudio.IO
             {
                 _folders.Add(path);
             }
+        }
+
+        public void SetCurrentDirectory(string directory)
+        {
+            CreateDirectory(directory);
+            _currentDirectory = directory;
+        }
+
+        public string GetCurrentDirectory()
+        {
+            return _currentDirectory;
+        }
+        
+        public string GetFullPath(string path)
+        {
+            if (_currentDirectory != null)
+            {
+                var pathRoot = Path.GetPathRoot(path);
+                if (pathRoot == @"\")
+                {
+                    return Path.GetPathRoot(_currentDirectory) + path.Substring(1);
+                }
+                else if (!Path.IsPathRooted(path))
+                {
+                    return Path.Combine(_currentDirectory, path);
+                }
+            }
+
+            return Path.GetFullPath(path);
         }
 
         public void RemoveFile(string path)

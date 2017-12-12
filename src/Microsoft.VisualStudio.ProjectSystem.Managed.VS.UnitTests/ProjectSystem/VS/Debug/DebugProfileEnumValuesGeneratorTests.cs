@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     [ProjectSystemTrait]
     public class DebugProfileEnumValuesGenerator_Tests
     {
-        List<ILaunchProfile> _profiles = new List<ILaunchProfile>() {
+        private List<ILaunchProfile> _profiles = new List<ILaunchProfile>() {
             {new LaunchProfile() {Name="Profile1", LaunchBrowser=true}},
             {new LaunchProfile() { Name = "MyCommand"} },
             {new LaunchProfile() { Name = "Foo"} },

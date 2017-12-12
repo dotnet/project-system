@@ -65,10 +65,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 return PropertyPageResources.NewProfileCaption;
             }
         }
+
         //------------------------------------------------------------------------------
         // Called when window loads. Use it to set focus on the text box correctly.
         //------------------------------------------------------------------------------
-        delegate void SetFocusCallback();
+        private delegate void SetFocusCallback();
         private void GetProfileNameDialogWindow_Loaded(object sender, RoutedEventArgs e)
         {
             // We need to schedule this to occur later after databinding has completed, otherwise

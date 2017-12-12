@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         private IActiveDebugFrameworkServices ActiveDebugFrameworkService { get; }
 
         // Regular expression string to extract $(sometoken) elements from a string
-        private static Regex MatchTokenRegex = new Regex(@"(\$\((?<token>[^\)]+)\))", RegexOptions.IgnoreCase);
+        private static Regex s_matchTokenRegex = new Regex(@"(\$\((?<token>[^\)]+)\))", RegexOptions.IgnoreCase);
 
         /// <summary>
         /// Walks the profile and returns a new one where all the tokens have been replaced. Tokens can consist of 
@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             string updatedString = expandEnvironmentVars? EnvironmentHelper.ExpandEnvironmentVariables(rawString) : rawString;
 
-            var matches = MatchTokenRegex.Matches(updatedString);
+            var matches = s_matchTokenRegex.Matches(updatedString);
             if(matches.Count > 0)
             {
                 using (var access = await AccessProject().ConfigureAwait(true))
@@ -140,9 +140,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
     internal sealed class ProjectReadAccessor : IProjectReadAccess
     {
-        IProjectLockService ProjectLockService { get; set; }
-        ConfiguredProject ConfiguredProject { get; set; }
-        ProjectLockReleaser? Access { get; set; }
+        private IProjectLockService ProjectLockService { get; set; }
+        private ConfiguredProject ConfiguredProject { get; set; }
+        private ProjectLockReleaser? Access { get; set; }
 
         public ProjectReadAccessor(IProjectLockService lockService, ConfiguredProject configuredProject)
         {

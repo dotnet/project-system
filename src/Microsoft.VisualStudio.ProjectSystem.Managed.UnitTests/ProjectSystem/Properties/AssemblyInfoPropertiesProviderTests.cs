@@ -98,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             // Configure whether AssemblyInfo properties are generated in project file or not.
             var saveInProjectFileStr = saveInProjectFile.ToString();
-            foreach (var kvp in AssemblyInfoProperties.s_assemblyPropertyInfoMap)
+            foreach (var kvp in AssemblyInfoProperties.AssemblyPropertyInfoMap)
             {
                 var generatePropertyInProjectFileName = kvp.Value.generatePropertyInProjectFileName;
                 additionalProps[generatePropertyInProjectFileName] = saveInProjectFileStr;

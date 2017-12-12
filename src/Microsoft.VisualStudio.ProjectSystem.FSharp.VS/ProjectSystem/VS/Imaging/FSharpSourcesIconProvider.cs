@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging
     [Order(Order.Default)]
     internal class FSharpSourcesIconProvider : IProjectTreePropertiesProvider
     {
-        private static readonly Dictionary<string, ProjectImageMoniker> FileExtensionImageMap = new Dictionary<string, ProjectImageMoniker>(StringComparer.OrdinalIgnoreCase)
+        private static readonly Dictionary<string, ProjectImageMoniker> s_fileExtensionImageMap = new Dictionary<string, ProjectImageMoniker>(StringComparer.OrdinalIgnoreCase)
         {
             { ".fs",   KnownMonikers.FSFileNode.ToProjectSystemType() },
             { ".fsi",  KnownMonikers.FSSignatureFile.ToProjectSystemType() },
@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging
 
         private ProjectImageMoniker GetIconForItem(string itemName)
         {
-            if (FileExtensionImageMap.TryGetValue(Path.GetExtension(itemName), out ProjectImageMoniker moniker))
+            if (s_fileExtensionImageMap.TryGetValue(Path.GetExtension(itemName), out ProjectImageMoniker moniker))
             {
                 return moniker;
             }

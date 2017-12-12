@@ -12,8 +12,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     [Export(typeof(IContextHandlerProvider))]
     internal partial class ContextHandlerProvider : IContextHandlerProvider
     {
-        private static readonly ImmutableArray<(HandlerFactory factory, string evaluationRuleName)> HandlerFactories = CreateHandlerFactories();
-        private static readonly ImmutableArray<string> AllEvaluationRuleNames = GetEvaluationRuleNames();
+        private static readonly ImmutableArray<(HandlerFactory factory, string evaluationRuleName)> s_handlerFactories = CreateHandlerFactories();
+        private static readonly ImmutableArray<string> s_allEvaluationRuleNames = GetEvaluationRuleNames();
         private readonly ConcurrentDictionary<IWorkspaceProjectContext, Handlers> _contextToHandlers = new ConcurrentDictionary<IWorkspaceProjectContext, Handlers>();
         private readonly UnconfiguredProject _project;
 
@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         public ImmutableArray<string> EvaluationRuleNames
         {
-            get { return AllEvaluationRuleNames; }
+            get { return s_allEvaluationRuleNames; }
         }
 
         public ImmutableArray<(IEvaluationHandler handler, string evaluationRuleName)> GetEvaluationHandlers(IWorkspaceProjectContext context)
@@ -57,10 +57,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private Handlers CreateHandlers(IWorkspaceProjectContext context)
         {
-            var evaluationHandlers = ImmutableArray.CreateBuilder<(IEvaluationHandler handler, string evaluationRuleName)>(HandlerFactories.Length);
-            var commandLineHandlers = ImmutableArray.CreateBuilder<ICommandLineHandler>(HandlerFactories.Length);
+            var evaluationHandlers = ImmutableArray.CreateBuilder<(IEvaluationHandler handler, string evaluationRuleName)>(s_handlerFactories.Length);
+            var commandLineHandlers = ImmutableArray.CreateBuilder<ICommandLineHandler>(s_handlerFactories.Length);
 
-            foreach (var factory in HandlerFactories)
+            foreach (var factory in s_handlerFactories)
             {
                 object handler = factory.factory(_project, context);
 
@@ -100,10 +100,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private static ImmutableArray<string> GetEvaluationRuleNames()
         {
-            return HandlerFactories.Select(e => e.evaluationRuleName)
-                                   .Where(name => !string.IsNullOrEmpty(name))
-                                   .Distinct(StringComparers.RuleNames)
-                                   .ToImmutableArray();
+            return s_handlerFactories.Select(e => e.evaluationRuleName)
+                                     .Where(name => !string.IsNullOrEmpty(name))
+                                     .Distinct(StringComparers.RuleNames)
+                                     .ToImmutableArray();
         }
 
         private delegate object HandlerFactory(UnconfiguredProject project, IWorkspaceProjectContext context);

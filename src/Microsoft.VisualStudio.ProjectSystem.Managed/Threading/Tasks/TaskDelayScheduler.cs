@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
     /// </summary>
     internal sealed class TaskDelayScheduler : ITaskDelayScheduler
     {
-        private object SyncObject = new object();
+        private object _syncObject = new object();
         private readonly IProjectThreadingService _threadingService;
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         /// </summary>
         public JoinableTask ScheduleAsyncTask(Func<CancellationToken, Task> asyncFnctionToCall)
         {
-            lock (SyncObject)
+            lock (_syncObject)
             {
                 // A new submission is being requested to be scheduled, cancel previous
                 // submissions first.
@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                 await Task.Delay(TaskDelayTime).ConfigureAwait(true);
 
                 bool isCanceled = token.IsCancellationRequested;
-                lock (SyncObject)
+                lock (_syncObject)
                 {
                     // We want to clear any existing cancelation token IF it matches our token
                     if (PendingUpdateTokenSource != null && PendingUpdateTokenSource.Token == token)
@@ -112,7 +112,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         /// </summary>
         private void ClearPendingUpdates(bool cancel)
         {
-            lock (SyncObject)
+            lock (_syncObject)
             {
                 if (PendingUpdateTokenSource != null)
                 {

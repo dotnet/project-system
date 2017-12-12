@@ -15,15 +15,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     internal class LaunchProfileData
     {
         // Well known properties
-        const string Prop_commandName = "commandName";
-        const string Prop_executablePath = "executablePath";
-        const string Prop_commandLineArgs = "commandLineArgs";
-        const string Prop_workingDirectory = "workingDirectory";
-        const string Prop_launchBrowser = "launchBrowser";
-        const string Prop_launchUrl = "launchUrl";
-        const string Prop_environmentVariables = "environmentVariables";
+        private const string Prop_commandName = "commandName";
+        private const string Prop_executablePath = "executablePath";
+        private const string Prop_commandLineArgs = "commandLineArgs";
+        private const string Prop_workingDirectory = "workingDirectory";
+        private const string Prop_launchBrowser = "launchBrowser";
+        private const string Prop_launchUrl = "launchUrl";
+        private const string Prop_environmentVariables = "environmentVariables";
 
-        static readonly HashSet<string> KnownProfileProperties = new HashSet<string>(StringComparer.Ordinal)
+        private static readonly HashSet<string> s_knownProfileProperties = new HashSet<string>(StringComparer.Ordinal)
         {
             {Prop_commandName},
             {Prop_executablePath},
@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         public static bool IsKnownProfileProperty(string propertyName)
         {
-            return KnownProfileProperties.Contains(propertyName);
+            return s_knownProfileProperties.Contains(propertyName);
         }
 
         // We don't serialize the name as it the dictionary index

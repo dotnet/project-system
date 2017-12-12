@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     [ValueConversion(typeof(bool), typeof(Visibility))]
     internal class InvertableBooleanToVisibilityConverter : IValueConverter
     {
-        enum Parameters
+        private enum Parameters
         {
             Normal, Inverted
         }

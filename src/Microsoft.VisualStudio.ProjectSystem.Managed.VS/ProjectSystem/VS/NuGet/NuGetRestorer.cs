@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.Internal.Performance;
+using Microsoft.VisualStudio.ProjectSystem.Logging;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using NuGet.SolutionRestoreManager;
@@ -23,14 +24,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private readonly IActiveConfiguredProjectsProvider _activeConfiguredProjectsProvider;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IActiveProjectConfigurationRefreshService _activeProjectConfigurationRefreshService;
+        private readonly IProjectLogger _logger;
         private IDisposable _targetFrameworkSubscriptionLink;
         private DisposableBag _designTimeBuildSubscriptionLink;
-        private const int perfPackageRestoreEnd = 7343;
+        
 
-        private static ImmutableHashSet<string> _targetFrameworkWatchedRules = Empty.OrdinalIgnoreCaseStringSet
+        private static ImmutableHashSet<string> s_targetFrameworkWatchedRules = Empty.OrdinalIgnoreCaseStringSet
             .Add(NuGetRestore.SchemaName);
 
-        private static ImmutableHashSet<string> _designTimeBuildWatchedRules = Empty.OrdinalIgnoreCaseStringSet
+        private static ImmutableHashSet<string> s_designTimeBuildWatchedRules = Empty.OrdinalIgnoreCaseStringSet
             .Add(NuGetRestore.SchemaName)
             .Add(ProjectReference.SchemaName)
             .Add(PackageReference.SchemaName)
@@ -38,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
         // Remove the ConfiguredProjectIdentity key because it is unique to each configured project - so it won't match across projects by design.
         // Remove the ConfiguredProjectVersion key because each configuredproject manages it's own version and generally they don't match. 
-        private readonly static ImmutableArray<NamedIdentity> _keysToDrop = ImmutableArray.Create(ProjectDataSources.ConfiguredProjectIdentity, ProjectDataSources.ConfiguredProjectVersion);
+        private readonly static ImmutableArray<NamedIdentity> s_keysToDrop = ImmutableArray.Create(ProjectDataSources.ConfiguredProjectIdentity, ProjectDataSources.ConfiguredProjectVersion);
 
         [ImportingConstructor]
         public NuGetRestorer(
@@ -46,7 +48,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             IVsSolutionRestoreService solutionRestoreService,
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
             IActiveProjectConfigurationRefreshService activeProjectConfigurationRefreshService,
-            IActiveConfiguredProjectsProvider activeConfiguredProjectsProvider) 
+            IActiveConfiguredProjectsProvider activeConfiguredProjectsProvider,
+            IProjectLogger logger) 
             : base(projectVsServices.ThreadingService.JoinableTaskContext)
         {
             _projectVsServices = projectVsServices;
@@ -54,6 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
             _activeProjectConfigurationRefreshService = activeProjectConfigurationRefreshService;
             _activeConfiguredProjectsProvider = activeConfiguredProjectsProvider;
+            _logger = logger;
         }
 
         [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
@@ -64,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             var target = new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedAsync(e));
             _targetFrameworkSubscriptionLink = _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
                 target: target,
-                ruleNames: _targetFrameworkWatchedRules,
+                ruleNames: s_targetFrameworkWatchedRules,
                 initialDataAsNew: false, // only reset on subsequent changes
                 suppressVersionOnlyUpdates: true);
 
@@ -112,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             {
                 var sourceLinkOptions = new StandardRuleDataflowLinkOptions
                 {
-                    RuleNames = _designTimeBuildWatchedRules,
+                    RuleNames = s_designTimeBuildWatchedRules,
                     PropagateCompletion = true
                 };
 
@@ -144,7 +148,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         {
             var transformBlock = new TransformBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>, IProjectVersionedValue<IProjectSubscriptionUpdate>>(data =>
             {
-                return new ProjectVersionedValue<IProjectSubscriptionUpdate>(data.Value, data.DataSourceVersions.RemoveRange(_keysToDrop));
+                return new ProjectVersionedValue<IProjectSubscriptionUpdate>(data.Value, data.DataSourceVersions.RemoveRange(s_keysToDrop));
             });
 
             return transformBlock;
@@ -166,13 +170,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 _projectVsServices.Project.Services.ProjectAsynchronousTasks
                     .RegisterAsyncTask(JoinableFactory.RunAsync(async () =>
                     {
+                        LogProjectRestoreInfo(_projectVsServices.Project.FullPath, projectRestoreInfo);
+
                         await _solutionRestoreService
                                .NominateProjectAsync(_projectVsServices.Project.FullPath, projectRestoreInfo,
                                     _projectVsServices.Project.Services.ProjectAsynchronousTasks.UnloadCancellationToken)
                                .ConfigureAwait(false);
 
-                        CodeMarkers.Instance.CodeMarker(perfPackageRestoreEnd);
+                        CodeMarkers.Instance.CodeMarker(CodeMarkerTimerId.PerfPackageRestoreEnd);
 
+                        CompleteLogProjectRestoreInfo(_projectVsServices.Project.FullPath);
                     }),
                     ProjectCriticalOperation.Build | ProjectCriticalOperation.Unload | ProjectCriticalOperation.Rename,
                     registerFaultHandler: true);
@@ -192,5 +199,91 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             }
             return false;
         }
+
+        #region ProjectRestoreInfo Logging
+
+        private void LogProjectRestoreInfo(string fullPath, IVsProjectRestoreInfo projectRestoreInfo)
+        {
+            if (_logger.IsEnabled)
+            {
+                using (IProjectLoggerBatch logger = _logger.BeginBatch())
+                {
+                    logger.WriteLine();
+                    logger.WriteLine("------------------------------------------");
+                    logger.WriteLine($"BEGIN Nominate Restore for {fullPath}");
+                    logger.IndentLevel++;
+
+                    logger.WriteLine($"BaseIntermediatePath:     {projectRestoreInfo.BaseIntermediatePath}");
+                    logger.WriteLine($"OriginalTargetFrameworks: {projectRestoreInfo.OriginalTargetFrameworks}");
+                    LogTargetFrameworks(logger, projectRestoreInfo.TargetFrameworks as TargetFrameworks);
+                    LogReferenceItems(logger, "Tool References", projectRestoreInfo.ToolReferences as ReferenceItems);
+
+                    logger.IndentLevel--;
+                    logger.WriteLine();
+                }
+            }
+        }
+
+        private void CompleteLogProjectRestoreInfo(string fullPath)
+        {
+            if (_logger.IsEnabled)
+            {
+                using (IProjectLoggerBatch logger = _logger.BeginBatch())
+                {
+                    logger.WriteLine();
+                    logger.WriteLine("------------------------------------------");
+                    logger.WriteLine($"COMPLETED Nominate Restore for {fullPath}");
+                    logger.WriteLine();
+                }
+            }
+        }
+
+        private void LogTargetFrameworks(IProjectLoggerBatch logger, TargetFrameworks targetFrameworks)
+        {
+            logger.WriteLine($"Target Frameworks ({targetFrameworks.Count})");
+            logger.IndentLevel++;
+
+            foreach (var tf in targetFrameworks)
+            {
+                LogTargetFramework(logger, tf as TargetFrameworkInfo);
+            }
+            logger.IndentLevel--;
+        }
+
+        private void LogTargetFramework(IProjectLoggerBatch logger, TargetFrameworkInfo targetFrameworkInfo)
+        {
+            logger.WriteLine(targetFrameworkInfo.TargetFrameworkMoniker);
+            logger.IndentLevel++;
+
+            LogReferenceItems(logger, "Project References", targetFrameworkInfo.ProjectReferences as ReferenceItems);
+            LogReferenceItems(logger, "Package References", targetFrameworkInfo.PackageReferences as ReferenceItems);
+            LogProperties(logger, "Target Framework Properties", targetFrameworkInfo.Properties as ProjectProperties);
+
+            logger.IndentLevel--;
+        }
+
+        private void LogProperties(IProjectLoggerBatch logger, string heading, ProjectProperties projectProperties)
+        {
+            var properties = projectProperties.Cast<ProjectProperty>()
+                    .Select(prop => $"{prop.Name}:{prop.Value}");
+            logger.WriteLine($"{heading} -- ({string.Join(" | ", properties)})");
+        }
+
+        private void LogReferenceItems(IProjectLoggerBatch logger, string heading, ReferenceItems references)
+        {
+            logger.WriteLine(heading);
+            logger.IndentLevel++;
+
+            foreach (var reference in references)
+            {
+                var properties = reference.Properties.Cast<ReferenceProperty>()
+                    .Select(prop => $"{prop.Name}:{prop.Value}");
+                logger.WriteLine($"{reference.Name} -- ({string.Join(" | ", properties)})");
+            }
+
+            logger.IndentLevel--;
+        }
+
+        #endregion
     }
 }

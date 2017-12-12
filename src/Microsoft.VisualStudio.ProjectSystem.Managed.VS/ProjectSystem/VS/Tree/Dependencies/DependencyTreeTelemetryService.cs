@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private readonly object _stateUpdateLock = new object();
         private string _projectId;
         private bool _stopTelemetry = false;
-        private int eventCount = 0;
+        private int _eventCount = 0;
 
         [ImportingConstructor]
         public DependencyTreeTelemetryService(
@@ -100,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             lock (_stateUpdateLock)
             {
                 if (_stopTelemetry) return;
-                _stopTelemetry = !hasUnresolvedDependency || (++eventCount >= MaxEventCount);
+                _stopTelemetry = !hasUnresolvedDependency || (++_eventCount >= MaxEventCount);
                 observedAllRules = ObservedAllRules();
             }
 

@@ -12,11 +12,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     internal class LaunchProfilesDebugPageGuidProvider : IDebugPageGuidProvider
     {
         // This is the Guid of C#, VB and F# Debug property page
-        private static readonly Task<Guid> Guid = Task.FromResult(new Guid("{0273C280-1882-4ED0-9308-52914672E3AA}"));
+        private static readonly Task<Guid> s_guid = Task.FromResult(new Guid("{0273C280-1882-4ED0-9308-52914672E3AA}"));
 
         public Task<Guid> GetDebugPropertyPageGuidAsync()
         {
-            return Guid;
+            return s_guid;
         }
     }
 }
