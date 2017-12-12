@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             var referenceEvents = Mock.Of<ReferencesEvents>();
             var buildManagerEvents = Mock.Of<BuildManagerEvents>();
 
-            var projectEventsMock = new Mock<VSLangProj.VSProjectEvents>();
+            var projectEventsMock = new Mock<VSProjectEvents>();
             projectEventsMock.Setup(e => e.ReferencesEvents)
                              .Returns(referenceEvents);
             projectEventsMock.Setup(e => e.BuildManagerEvents)

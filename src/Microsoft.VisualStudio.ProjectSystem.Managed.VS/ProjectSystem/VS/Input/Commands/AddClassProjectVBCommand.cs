@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
     [ProjectCommand(CommandGroup.VisualStudioStandard97, VisualStudioStandard97CommandId.AddClass)]
     [AppliesTo(ProjectCapability.VisualBasic)]
-    class AddClassProjectVBCommand : AbstractAddClassProjectCommand
+    internal class AddClassProjectVBCommand : AbstractAddClassProjectCommand
     {
         [ImportingConstructor]
         public AddClassProjectVBCommand(IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, SVsServiceProvider serviceProvider) : base(projectTree, projectVsServices, serviceProvider)

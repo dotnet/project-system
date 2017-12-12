@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
     [Export(typeof(IProjectOutputWindowPaneProvider))]
     internal class ProjectOutputWindowPaneProvider : IProjectOutputWindowPaneProvider
     {
-        private static readonly Guid ProjectOutputWindowPaneGuid = new Guid("{A18568CC-CA90-4AEE-9D14-A7E9D753B544}");
+        private static readonly Guid s_projectOutputWindowPaneGuid = new Guid("{A18568CC-CA90-4AEE-9D14-A7E9D753B544}");
 
         private readonly IProjectThreadingService _threadingService;
         private readonly IVsOptionalService<IVsOutputWindow> _outputWindow;
@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
 
         private IVsOutputWindowPane CreateProjectOutputWindowPane(IVsOutputWindow outputWindow)
         {
-            Guid paneGuid = ProjectOutputWindowPaneGuid;
+            Guid paneGuid = s_projectOutputWindowPaneGuid;
             HResult hr = outputWindow.CreatePane(ref paneGuid, VSResources.OutputWindowPaneTitle, fInitVisible: 1, fClearWithSolution: 0);
             if (hr.Failed)
                 throw hr.Exception;

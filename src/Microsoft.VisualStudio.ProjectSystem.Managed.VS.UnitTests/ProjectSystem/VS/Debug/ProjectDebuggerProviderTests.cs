@@ -12,20 +12,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     [ProjectSystemTrait]
     public class ProjectDebuggerProviderTests
     {
-        Mock<IDebugProfileLaunchTargetsProvider> _mockWebProvider =  new Mock<IDebugProfileLaunchTargetsProvider>();
-        Mock<IDebugProfileLaunchTargetsProvider> _mockDockerProvider =  new Mock<IDebugProfileLaunchTargetsProvider>();
-        Mock<IDebugProfileLaunchTargetsProvider> _mockExeProvider =  new Mock<IDebugProfileLaunchTargetsProvider>();
-        OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider> _launchProviders = 
+        private Mock<IDebugProfileLaunchTargetsProvider> _mockWebProvider =  new Mock<IDebugProfileLaunchTargetsProvider>();
+        private Mock<IDebugProfileLaunchTargetsProvider> _mockDockerProvider =  new Mock<IDebugProfileLaunchTargetsProvider>();
+        private Mock<IDebugProfileLaunchTargetsProvider> _mockExeProvider =  new Mock<IDebugProfileLaunchTargetsProvider>();
+        private OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider> _launchProviders = 
             new OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst);
-        Mock<ConfiguredProject> _configuredProjectMoq = new Mock<ConfiguredProject>();
-        Mock<ILaunchSettingsProvider> _LaunchSettingsProviderMoq = new Mock<ILaunchSettingsProvider>();
-
-        List<IDebugLaunchSettings> _webProviderSettings = new List<IDebugLaunchSettings>();
-        List<IDebugLaunchSettings> _dockerProviderSettings = new List<IDebugLaunchSettings>();
-        List<IDebugLaunchSettings> _exeProviderSettings = new List<IDebugLaunchSettings>();
+        private Mock<ConfiguredProject> _configuredProjectMoq = new Mock<ConfiguredProject>();
+        private Mock<ILaunchSettingsProvider> _LaunchSettingsProviderMoq = new Mock<ILaunchSettingsProvider>();
+        private List<IDebugLaunchSettings> _webProviderSettings = new List<IDebugLaunchSettings>();
+        private List<IDebugLaunchSettings> _dockerProviderSettings = new List<IDebugLaunchSettings>();
+        private List<IDebugLaunchSettings> _exeProviderSettings = new List<IDebugLaunchSettings>();
 
         // Set this to have ILaunchSettingsProvider return this profile (null by default)
-        ILaunchProfile _activeProfile;
+        private ILaunchProfile _activeProfile;
 
         public ProjectDebuggerProviderTests()
         {

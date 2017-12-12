@@ -8,9 +8,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     internal abstract partial class WpfBasedPropertyPage : PropertyPage
     {
-        private PropertyPageElementHost host;
-        private PropertyPageControl control;
-        private PropertyPageViewModel viewModel;
+        private PropertyPageElementHost _host;
+        private PropertyPageControl _control;
+        private PropertyPageViewModel _viewModel;
 
         public WpfBasedPropertyPage()
         {
@@ -31,27 +31,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             if (isClosing)
             {
-                control.DetachViewModel();
+                _control.DetachViewModel();
                 return;
             }
             else
             {
                 //viewModel can be non-null when the configuration is chaged. 
-                if (control == null)
+                if (_control == null)
                 {
-                    control = CreatePropertyPageControl();
+                    _control = CreatePropertyPageControl();
                 }
             }
 
-            viewModel = CreatePropertyPageViewModel();
-            viewModel.UnconfiguredProject = UnconfiguredProject;
-            await viewModel.Initialize().ConfigureAwait(false);
-            control.InitializePropertyPage(viewModel);
+            _viewModel = CreatePropertyPageViewModel();
+            _viewModel.UnconfiguredProject = UnconfiguredProject;
+            await _viewModel.Initialize().ConfigureAwait(false);
+            _control.InitializePropertyPage(_viewModel);
         }
 
         protected async override Task<int> OnApply()
         {
-            return await control.Apply().ConfigureAwait(false);
+            return await _control.Apply().ConfigureAwait(false);
         }
 
         protected async override Task OnDeactivate()
@@ -66,13 +66,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             SuspendLayout();
 
-            host = new PropertyPageElementHost();
-            host.AutoSize = false;
-            host.Dock = DockStyle.Fill;
+            _host = new PropertyPageElementHost();
+            _host.AutoSize = false;
+            _host.Dock = DockStyle.Fill;
 
-            if (control == null)
+            if (_control == null)
             {
-                control = CreatePropertyPageControl();
+                _control = CreatePropertyPageControl();
             }
 
             ScrollViewer viewer = new ScrollViewer
@@ -81,21 +81,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 HorizontalScrollBarVisibility = ScrollBarVisibility.Auto
             };
 
-            viewer.Content = control;
-            host.Child = viewer;
+            viewer.Content = _control;
+            _host.Child = viewer;
 
             wpfHostPanel.Dock = DockStyle.Fill;
-            wpfHostPanel.Controls.Add(host);
+            wpfHostPanel.Controls.Add(_host);
 
             ResumeLayout(true);
-            control.StatusChanged += OnControlStatusChanged;
+            _control.StatusChanged += OnControlStatusChanged;
         }
 
         private void OnControlStatusChanged(object sender, EventArgs e)
         {
-            if (IsDirty != control.IsDirty)
+            if (IsDirty != _control.IsDirty)
             {
-                IsDirty = control.IsDirty;
+                IsDirty = _control.IsDirty;
             }
         }
     }

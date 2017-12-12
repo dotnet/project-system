@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                                     ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast);
         }
 
-        private static readonly GraphCommand[] ContainsGraphCommand = new[] { new GraphCommand(
+        private static readonly GraphCommand[] s_containsGraphCommand = new[] { new GraphCommand(
                 GraphCommandDefinition.Contains,
                 targetCategories: null,
                 linkCategories: new[] { GraphCommonSchema.Contains },
@@ -126,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         /// </summary>
         public IEnumerable<GraphCommand> GetCommands(IEnumerable<GraphNode> nodes)
         {
-            return ContainsGraphCommand;
+            return s_containsGraphCommand;
         }
 
         /// <summary>

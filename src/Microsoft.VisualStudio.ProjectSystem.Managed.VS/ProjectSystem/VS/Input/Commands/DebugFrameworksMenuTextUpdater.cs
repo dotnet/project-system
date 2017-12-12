@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             StartupProjectHelper = startupProjectHelper;
         }
 
-        IStartupProjectHelper StartupProjectHelper { get; }
+        private IStartupProjectHelper StartupProjectHelper { get; }
 
         /// <summary>
         /// Exec handler called when one of the menu items is selected. Does some

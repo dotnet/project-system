@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.ProjectSystem;
 
 namespace Microsoft.VisualStudio.Packaging
 {
-    partial class ManagedProjectSystemPackage
+    internal partial class ManagedProjectSystemPackage
     {
         private class DebuggerTraceListener : TraceListener
         {

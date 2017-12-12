@@ -19,14 +19,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
     [ProjectSystemTrait]
     public class ConsoleDebugLaunchProviderTest
     {
-        string _ProjectFile = @"c:\test\project\project.csproj";
-        string _Path = @"c:\program files\dotnet;c:\program files\SomeDirectory";
+        private string _ProjectFile = @"c:\test\project\project.csproj";
+        private string _Path = @"c:\program files\dotnet;c:\program files\SomeDirectory";
+        private Mock<IEnvironmentHelper> _mockEnvironment = new Mock<IEnvironmentHelper>();
+        private IFileSystemMock _mockFS = new IFileSystemMock();
+        private Mock<IDebugTokenReplacer> _mockTokenReplace = new Mock<IDebugTokenReplacer>();
 
-        Mock<IEnvironmentHelper> _mockEnvironment = new Mock<IEnvironmentHelper>();
-        IFileSystemMock _mockFS = new IFileSystemMock();
-        Mock<IDebugTokenReplacer> _mockTokenReplace = new Mock<IDebugTokenReplacer>();
-
-        ConsoleDebugTargetsProvider GetDebugTargetsProvider(string outputType = "exe", Dictionary<string, string> properties = null)
+        private ConsoleDebugTargetsProvider GetDebugTargetsProvider(string outputType = "exe", Dictionary<string, string> properties = null)
         {
             _mockFS.WriteAllText(@"c:\test\Project\someapp.exe", "");
             _mockFS.CreateDirectory(@"c:\test\Project");

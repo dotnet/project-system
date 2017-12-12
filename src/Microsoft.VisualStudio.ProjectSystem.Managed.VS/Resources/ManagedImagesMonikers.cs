@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     /// </summary>
     public static class ManagedImageMonikers
     {
-        private static readonly Guid ManifestGuid = new Guid("{259567C1-AA6B-46BF-811C-C145DD9F3B48}");
+        private static readonly Guid s_manifestGuid = new Guid("{259567C1-AA6B-46BF-811C-C145DD9F3B48}");
 
         private const int ApplicationPrivateId = 0;
         private const int ApplicationWarningId = 1;
@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             get
             {
-                return new ImageMoniker { Guid = ManifestGuid, Id = ApplicationPrivateId };
+                return new ImageMoniker { Guid = s_manifestGuid, Id = ApplicationPrivateId };
             }
         }
 
@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             get
             {
-                return new ImageMoniker { Guid = ManifestGuid, Id = ApplicationWarningId };
+                return new ImageMoniker { Guid = s_manifestGuid, Id = ApplicationWarningId };
             }
         }
 
@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             get
             {
-                return new ImageMoniker { Guid = ManifestGuid, Id = CodeInformationPrivateId };
+                return new ImageMoniker { Guid = s_manifestGuid, Id = CodeInformationPrivateId };
             }
         }
 
@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             get
             {
-                return new ImageMoniker { Guid = ManifestGuid, Id = CodeInformationWarningId };
+                return new ImageMoniker { Guid = s_manifestGuid, Id = CodeInformationWarningId };
             }
         }
 
@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             get
             {
-                return new ImageMoniker { Guid = ManifestGuid, Id = ComponentId };
+                return new ImageMoniker { Guid = s_manifestGuid, Id = ComponentId };
             }
         }
 
@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             get
             {
-                return new ImageMoniker { Guid = ManifestGuid, Id = ComponentPrivateId };
+                return new ImageMoniker { Guid = s_manifestGuid, Id = ComponentPrivateId };
             }
         }
 
@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             get
             {
-                return new ImageMoniker { Guid = ManifestGuid, Id = ComponentWarningId };
+                return new ImageMoniker { Guid = s_manifestGuid, Id = ComponentWarningId };
             }
         }
 
@@ -96,7 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             get
             {
-                return new ImageMoniker { Guid = ManifestGuid, Id = ErrorSmallId };
+                return new ImageMoniker { Guid = s_manifestGuid, Id = ErrorSmallId };
             }
         }
 
@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             get
             {
-                return new ImageMoniker { Guid = ManifestGuid, Id = LibraryWarningId };
+                return new ImageMoniker { Guid = s_manifestGuid, Id = LibraryWarningId };
             }
         }
 
@@ -112,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             get
             {
-                return new ImageMoniker { Guid = ManifestGuid, Id = NuGetGreyId };
+                return new ImageMoniker { Guid = s_manifestGuid, Id = NuGetGreyId };
             }
         }
 
@@ -120,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             get
             {
-                return new ImageMoniker { Guid = ManifestGuid, Id = NuGetGreyPrivateId };
+                return new ImageMoniker { Guid = s_manifestGuid, Id = NuGetGreyPrivateId };
             }
         }
 
@@ -128,7 +128,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             get
             {
-                return new ImageMoniker { Guid = ManifestGuid, Id = NuGetGreyWarningId };
+                return new ImageMoniker { Guid = s_manifestGuid, Id = NuGetGreyWarningId };
             }
         }
 
@@ -136,7 +136,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             get
             {
-                return new ImageMoniker { Guid = ManifestGuid, Id = ReferenceGroupId };
+                return new ImageMoniker { Guid = s_manifestGuid, Id = ReferenceGroupId };
             }
         }
 
@@ -144,7 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             get
             {
-                return new ImageMoniker { Guid = ManifestGuid, Id = ReferencePrivateId };
+                return new ImageMoniker { Guid = s_manifestGuid, Id = ReferencePrivateId };
             }
         }
 
@@ -152,7 +152,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             get
             {
-                return new ImageMoniker { Guid = ManifestGuid, Id = ReferenceGroupWarningId };
+                return new ImageMoniker { Guid = s_manifestGuid, Id = ReferenceGroupWarningId };
             }
         }
 
@@ -160,7 +160,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             get
             {
-                return new ImageMoniker { Guid = ManifestGuid, Id = SdkId };
+                return new ImageMoniker { Guid = s_manifestGuid, Id = SdkId };
             }
         }
 
@@ -168,7 +168,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             get
             {
-                return new ImageMoniker { Guid = ManifestGuid, Id = SdkPrivateId };
+                return new ImageMoniker { Guid = s_manifestGuid, Id = SdkPrivateId };
             }
         }
 
@@ -176,7 +176,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             get
             {
-                return new ImageMoniker { Guid = ManifestGuid, Id = SdkWarningId };
+                return new ImageMoniker { Guid = s_manifestGuid, Id = SdkWarningId };
             }
         }
 
@@ -184,7 +184,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             get
             {
-                return new ImageMoniker { Guid = ManifestGuid, Id = SharedProjectId };
+                return new ImageMoniker { Guid = s_manifestGuid, Id = SharedProjectId };
             }
         }
 
@@ -192,7 +192,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             get
             {
-                return new ImageMoniker { Guid = ManifestGuid, Id = SharedProjectPrivateId };
+                return new ImageMoniker { Guid = s_manifestGuid, Id = SharedProjectPrivateId };
             }
         }
 
@@ -200,7 +200,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             get
             {
-                return new ImageMoniker { Guid = ManifestGuid, Id = SharedProjectWarningId };
+                return new ImageMoniker { Guid = s_manifestGuid, Id = SharedProjectWarningId };
             }
         }
 
@@ -208,7 +208,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             get
             {
-                return new ImageMoniker { Guid = ManifestGuid, Id = WarningSmallId };
+                return new ImageMoniker { Guid = s_manifestGuid, Id = WarningSmallId };
             }
         }
     }

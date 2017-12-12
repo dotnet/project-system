@@ -12,10 +12,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     internal class UserFileInterceptedProjectPropertiesProvider : InterceptedProjectPropertiesProviderBase
     {
-        private const string userSuffix = ".user";
+        private const string UserSuffix = ".user";
 
         public override string DefaultProjectPath {
-            get { return base.DefaultProjectPath + userSuffix; }
+            get { return base.DefaultProjectPath + UserSuffix; }
         }
 
         [ImportingConstructor]

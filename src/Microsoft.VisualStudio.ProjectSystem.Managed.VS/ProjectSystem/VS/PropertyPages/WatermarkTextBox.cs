@@ -16,9 +16,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     /// </summary>
     internal class WatermarkTextBox : TextBox
     {
-        const string c_WatermarkPropertyName = "Watermark";
-        const string c_HasInputtedTextPropertyName = "HasInputtedText";
-        const string c_WatermarkVerticalAlignmentPropertyName = "WatermarkVerticalAlignment";
+        private const string WatermarkPropertyName = "Watermark";
+        private const string HasInputtedTextPropertyName = "HasInputtedText";
+        private const string WatermarkVerticalAlignmentPropertyName = "WatermarkVerticalAlignment";
 
         /// <summary>
         /// Primarily, this static constructor will register the metadata overrides, for such things as
@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         }
 
         public static readonly DependencyProperty WatermarkVerticalAlignmentProperty = DependencyProperty.Register(
-            c_WatermarkVerticalAlignmentPropertyName,
+            WatermarkVerticalAlignmentPropertyName,
             typeof(VerticalAlignment),
             typeof(WatermarkTextBox),
             new PropertyMetadata(VerticalAlignment.Center));
@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         }
 
         public static readonly DependencyProperty WatermarkProperty = DependencyProperty.Register(
-            c_WatermarkPropertyName,
+            WatermarkPropertyName,
             typeof(string),
             typeof(WatermarkTextBox),
             new PropertyMetadata(string.Empty));
@@ -58,13 +58,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             set { SetValue(WatermarkProperty, value); }
         }
 
-        static readonly DependencyPropertyKey HasInputtedTextPropertyKey = DependencyProperty.RegisterReadOnly(
-            c_HasInputtedTextPropertyName,
+        private static readonly DependencyPropertyKey s_hasInputtedTextPropertyKey = DependencyProperty.RegisterReadOnly(
+            HasInputtedTextPropertyName,
             typeof(bool),
             typeof(WatermarkTextBox),
             new PropertyMetadata(false));
 
-        public static readonly DependencyProperty HasInputtedTextProperty = HasInputtedTextPropertyKey.DependencyProperty;
+        public static readonly DependencyProperty HasInputtedTextProperty = s_hasInputtedTextPropertyKey.DependencyProperty;
 
         /// <summary>
         /// If there is text, that has been inputted, then this value will change to indicate that
@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
-        static void TextPropertyChanged(object sender, DependencyPropertyChangedEventArgs args)
+        private static void TextPropertyChanged(object sender, DependencyPropertyChangedEventArgs args)
         {
             WatermarkTextBox source = sender as WatermarkTextBox;
             if (source == null)
@@ -95,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             bool hasInputtedText = !string.IsNullOrEmpty(source.Text.Trim());
             if (hasInputtedText != source.HasInputtedText)
             {
-                source.SetValue(HasInputtedTextPropertyKey, hasInputtedText);
+                source.SetValue(s_hasInputtedTextPropertyKey, hasInputtedText);
             }
         }
     }

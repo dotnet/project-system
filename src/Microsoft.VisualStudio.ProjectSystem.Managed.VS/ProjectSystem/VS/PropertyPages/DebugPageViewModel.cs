@@ -1008,8 +1008,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
             PropertyChanged -= ViewModel_PropertyChanged;
         }
-        
-        ILaunchSettingsProvider _launchSettingsProvider;
+
+        private ILaunchSettingsProvider _launchSettingsProvider;
         protected virtual ILaunchSettingsProvider GetDebugProfileProvider()
         {
             if(_launchSettingsProvider == null)
