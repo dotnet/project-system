@@ -154,20 +154,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 
         internal virtual void OnImportAdded(string importNamespace)
         {
-            var importAdded = ImportAdded;
-            if (importAdded != null)
-            {
-                importAdded(importNamespace);
-            }
+            ImportAdded?.Invoke(importNamespace);
         }
 
         internal virtual void OnImportRemoved(string importNamespace)
         {
-            var importRemoved = ImportRemoved;
-            if (importRemoved != null)
-            {
-                importRemoved(importNamespace);
-            }
+            ImportRemoved?.Invoke(importNamespace);
         }
 
         public void OnSinkAdded(_dispImportsEvents sink)
