@@ -7,18 +7,19 @@ We use the same coding style conventions as outlined in [.NET Framework Coding S
 - We put one type per file, including nested types. Files containing a nested type, should follow the `Parent.NestedType.cs` convention. Generic types should follow the ``GenericWithOneTypeParameter`1.cs``, ``GenericWithTwoTypeParameters`2.cs`` convention.
 - We avoid using regions.
 - We sort members in classes in the following order; fields, constructors, events, properties and then methods.
-- We favor private fields over private properties
+- We favor private fields over private properties.
+- Internal fields are `PascalCased` not `_camelCased`.
 
 ## MEF
 
 - For MEF parts/components, we favor constructor injection over property/field injection.
 - We flavor `IVsService<T>` and `IVsService<TService, TInterface>` over usage of `SVsServiceProvider`.
-- We favor importing components over usage of `IComponentModel`
+- We favor importing components over usage of `IComponentModel`.
 
 ## Tests
 
 - We favor a single Assert per unit test.
-- We use the `Method_Setup_Behavior` naming style for unit tests, for example, `GetProperty_NullAsName_ThrowsArgument` or `CalculateValues_WhenDisposed_ReturnsNull`
+- We use the `Method_Setup_Behavior` naming style for unit tests, for example, `GetProperty_NullAsName_ThrowsArgument` or `CalculateValues_WhenDisposed_ReturnsNull`.
 
 # Guidelines
 
