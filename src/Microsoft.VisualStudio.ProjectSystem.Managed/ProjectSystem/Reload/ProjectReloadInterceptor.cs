@@ -35,23 +35,23 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var oldTargets = ComputeProjectTargets(oldProperties);
             var newTargets = ComputeProjectTargets(newProperties);
 
-            return oldTargets.HasTargetFramework != newTargets.HasTargetFramework || oldTargets.HasTargetFrameworks != newTargets.HasTargetFrameworks;
+            return oldTargets.hasTargetFramework != newTargets.hasTargetFramework || oldTargets.hasTargetFrameworks != newTargets.hasTargetFrameworks;
         }
 
-        private static (bool HasTargetFramework, bool HasTargetFrameworks) ComputeProjectTargets(ImmutableArray<ProjectPropertyElement> properties)
+        private static (bool hasTargetFramework, bool hasTargetFrameworks) ComputeProjectTargets(ImmutableArray<ProjectPropertyElement> properties)
         {
-            (bool HasTargetFramework, bool HasTargetFrameworks) targets = (false, false);
+            (bool hasTargetFramework, bool hasTargetFrameworks) targets = (false, false);
 
             foreach (var property in properties)
             {
                 if (property.Name.Equals(ConfigurationGeneral.TargetFrameworkProperty, StringComparison.OrdinalIgnoreCase))
                 {
-                    targets.HasTargetFramework = true;
+                    targets.hasTargetFramework = true;
                 }
 
                 if (property.Name.Equals(ConfigurationGeneral.TargetFrameworksProperty, StringComparison.OrdinalIgnoreCase))
                 {
-                    targets.HasTargetFrameworks = true;
+                    targets.hasTargetFrameworks = true;
                 }
             }
 
