@@ -100,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var saveInProjectFileStr = saveInProjectFile.ToString();
             foreach (var kvp in AssemblyInfoProperties.AssemblyPropertyInfoMap)
             {
-                var generatePropertyInProjectFileName = kvp.Value.GeneratePropertyInProjectFileName;
+                var generatePropertyInProjectFileName = kvp.Value.generatePropertyInProjectFileName;
                 additionalProps[generatePropertyInProjectFileName] = saveInProjectFileStr;
             }
 
