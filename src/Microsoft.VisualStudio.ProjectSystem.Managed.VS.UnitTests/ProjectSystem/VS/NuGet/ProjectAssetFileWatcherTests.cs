@@ -106,7 +106,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
             watcher.DataFlow_Changed(IProjectVersionedValueFactory<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>.Create((Tuple.Create(IProjectTreeSnapshotFactory.Create(secondTree), projectUpdate))));
 
             // If fileToWatch is null then we expect to not register any filewatcher.
-            Mock<IVsFileChangeEx> fileChangeServiceMock = Mock.Get(fileChangeService);
+            var fileChangeServiceMock = Mock.Get(fileChangeService);
             fileChangeServiceMock.Verify(s => s.AdviseFileChange(It.IsAny<string>(), It.IsAny<uint>(), watcher, out adviseCookie),
                                          Times.Exactly(numRegisterCalls));
             fileChangeServiceMock.Verify(s => s.UnadviseFileChange(adviseCookie), Times.Exactly(numUnregisterCalls));
@@ -139,7 +139,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
             watcher.Load();
             watcher.DataFlow_Changed(IProjectVersionedValueFactory<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>.Create((Tuple.Create(IProjectTreeSnapshotFactory.Create(tree), projectUpdate))));
 
-            Mock<IVsFileChangeEx> fileChangeServiceMock = Mock.Get(fileChangeService);
+            var fileChangeServiceMock = Mock.Get(fileChangeService);
             uint cookie;
             fileChangeServiceMock.Verify(s => s.AdviseFileChange(It.IsAny<string>(), It.IsAny<uint>(), watcher, out cookie),
                                          Times.Never());

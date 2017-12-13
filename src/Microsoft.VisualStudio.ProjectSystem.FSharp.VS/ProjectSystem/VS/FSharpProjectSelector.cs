@@ -20,13 +20,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public void GetProjectFactoryGuid(Guid guidProjectType, string pszFilename, out Guid guidProjectFactory)
         {
-            XDocument doc = XDocument.Load(pszFilename);
+            var doc = XDocument.Load(pszFilename);
             GetProjectFactoryGuid(doc, out guidProjectFactory);
         }
 
         internal static void GetProjectFactoryGuid(XDocument doc, out Guid guidProjectFactory)
         {
-            XmlNamespaceManager nsm = new XmlNamespaceManager(new NameTable());
+            var nsm = new XmlNamespaceManager(new NameTable());
             nsm.AddNamespace("msb", MSBuildXmlNamespace);
 
             // If the project has either a Project-level SDK attribute or an Import-level SDK attribute, we'll open it with the new project system.

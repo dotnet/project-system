@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.Telemetry
         {
             Requires.NotNullOrEmpty(eventName, nameof(eventName));
 
-            TelemetryEvent telemetryEvent = new TelemetryEvent(GetEventName(eventName));
+            var telemetryEvent = new TelemetryEvent(GetEventName(eventName));
             TelemetryService.DefaultSession.PostEvent(telemetryEvent);
         }
 
@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.Telemetry
             Requires.NotNullOrEmpty(propertyName, nameof(propertyName));
             Requires.NotNull(propertyValue, nameof(propertyValue));
 
-            TelemetryEvent telemetryEvent = new TelemetryEvent(GetEventName(eventName));
+            var telemetryEvent = new TelemetryEvent(GetEventName(eventName));
             telemetryEvent.Properties.Add(BuildPropertyName(eventName, propertyName), propertyValue);
             TelemetryService.DefaultSession.PostEvent(telemetryEvent);
         }
@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.Telemetry
             Requires.NotNullOrEmpty(eventName, nameof(eventName));
             Requires.NotNullOrEmpty(properties, nameof(properties));
 
-            TelemetryEvent telemetryEvent = new TelemetryEvent(GetEventName(eventName));
+            var telemetryEvent = new TelemetryEvent(GetEventName(eventName));
             foreach (var property in properties)
             {
                 telemetryEvent.Properties.Add(GetPropertyName(eventName, property.propertyName), property.propertyValue);

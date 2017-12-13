@@ -27,12 +27,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         private void CallPropertyPageControl()
         {
-            Mock<PropertyPageViewModel> ppvm = new Mock<PropertyPageViewModel>();
+            var ppvm = new Mock<PropertyPageViewModel>();
             ppvm.Setup(m => m.Save()).Returns(Task.FromResult(VSConstants.S_OK));
             ppvm.Setup(m => m.Initialize()).Returns(new Task(() => { }));
             ppvm.CallBase = true;
 
-            Mock<PropertyPageControl> ppc = new Mock<PropertyPageControl>(MockBehavior.Loose);
+            var ppc = new Mock<PropertyPageControl>(MockBehavior.Loose);
             ppc.CallBase = true;
 
             ppc.Object.InitializePropertyPage(ppvm.Object);

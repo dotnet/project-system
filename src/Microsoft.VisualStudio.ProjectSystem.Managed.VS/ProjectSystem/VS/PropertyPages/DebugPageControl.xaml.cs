@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             if (e.OldValue != null && e.OldValue is DebugPageViewModel)
             {
-                DebugPageViewModel viewModel = e.OldValue as DebugPageViewModel;
+                var viewModel = e.OldValue as DebugPageViewModel;
                 viewModel.FocusEnvironmentVariablesGridRow -= OnFocusEnvironmentVariableGridRow;
                 viewModel.ClearEnvironmentVariablesGridError -= OnClearEnvironmentVariableGridError;
                 viewModel.PropertyChanged -= ViewModel_PropertyChanged;
@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
             if (e.NewValue != null && e.NewValue is DebugPageViewModel)
             {
-                DebugPageViewModel viewModel = e.NewValue as DebugPageViewModel;
+                var viewModel = e.NewValue as DebugPageViewModel;
                 viewModel.FocusEnvironmentVariablesGridRow += OnFocusEnvironmentVariableGridRow;
                 viewModel.ClearEnvironmentVariablesGridError += OnClearEnvironmentVariableGridError;
                 viewModel.PropertyChanged += ViewModel_PropertyChanged;

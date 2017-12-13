@@ -17,8 +17,8 @@ namespace Microsoft.VisualStudio.Threading.Tasks
             const int NumberOfTasks = 25;
             var sequencer = new SequencialTaskExecutor();
 
-            List<Task> tasks = new List<Task>();
-            List<int> sequences = new List<int>();
+            var tasks = new List<Task>();
+            var sequences = new List<int>();
             for (int i = 0; i < NumberOfTasks; i++)
             {
                 int num = i;
@@ -46,8 +46,8 @@ namespace Microsoft.VisualStudio.Threading.Tasks
             const int NumberOfTasks = 10;
             var sequencer = new SequencialTaskExecutor();
 
-            List<Task> tasks = new List<Task>();
-            List<int> sequences = new List<int>();
+            var tasks = new List<Task>();
+            var sequences = new List<int>();
             for (int i = 0; i < NumberOfTasks; i++)
             {
                 int num = i;
@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
             const int NumberOfTasks = 10;
             var sequencer = new SequencialTaskExecutor();
 
-            List<Task> tasks = new List<Task>();
+            var tasks = new List<Task>();
             for (int i = 0; i < NumberOfTasks; i++)
             {
                 int num = i;

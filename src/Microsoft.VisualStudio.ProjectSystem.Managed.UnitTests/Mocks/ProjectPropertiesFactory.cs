@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private static Dictionary<string, IRule> CreateCatalogLookup(PropertyPageData[] data)
         {
-            Dictionary<string, IRule> catalog = new Dictionary<string, IRule>();
+            var catalog = new Dictionary<string, IRule>();
 
             foreach (var category in data.GroupBy(p => p.Category))
             {

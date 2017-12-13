@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         [Fact]
         public async Task DebugPageViewModel_NoProfiles()
         {
-            TestUnconfiguredPropertyProvider unconfiguredProvider = new TestUnconfiguredPropertyProvider();
+            var unconfiguredProvider = new TestUnconfiguredPropertyProvider();
             var profiles = new List<ILaunchProfile>();
 
             var viewModelData = new ViewModelData()
@@ -107,7 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         [Fact]
         public async Task DebugPageViewModel_PropertyChange()
         {
-            TestUnconfiguredPropertyProvider unconfiguredProvider = new TestUnconfiguredPropertyProvider();
+            var unconfiguredProvider = new TestUnconfiguredPropertyProvider();
             var profiles = new List<ILaunchProfile>()
             {
                 {new LaunchProfile() {Name="p1", CommandName="test", DoNotPersist = true}}

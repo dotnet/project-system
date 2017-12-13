@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                                                  .ConfigureAwait(false);
 
 
-            IEnumValue outputType = (IEnumValue)await configuration.OutputType.GetValueAsync()
+            var outputType = (IEnumValue)await configuration.OutputType.GetValueAsync()
                                                                       .ConfigureAwait(false);
 
             return StringComparers.PropertyValues.Equals(outputType.Name, ConfigurationGeneral.OutputTypeValues.Library);
@@ -98,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </summary>
         public async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile)
         {
-            List<DebugLaunchSettings> launchSettings = new List<DebugLaunchSettings>();
+            var launchSettings = new List<DebugLaunchSettings>();
 
             // Resolve the tokens in the profile
             ILaunchProfile resolvedProfile = await TokenReplacer.ReplaceTokensInProfileAsync(activeProfile).ConfigureAwait(false);

@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             {
                 _threadingService.VerifyOnUIThread();
 
-                T service = (T)_serviceProvider.GetService(_serviceType);
+                var service = (T)_serviceProvider.GetService(_serviceType);
 
                 Assumes.Present(service);
 
