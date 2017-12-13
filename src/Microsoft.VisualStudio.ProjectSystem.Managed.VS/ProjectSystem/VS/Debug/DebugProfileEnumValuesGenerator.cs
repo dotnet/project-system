@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         internal static ICollection<IEnumValue> GetEnumeratorEnumValues(ILaunchSettings profiles)
         {
-            Collection<IEnumValue> result = new Collection<IEnumValue>(
+            var result = new Collection<IEnumValue>(
             (
                 from profile in profiles.Profiles
                 let value = new EnumValue { Name = profile.Name, DisplayName = profile.Name }

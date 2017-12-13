@@ -585,7 +585,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         private void EnvironmentVariables_ValidationStatusChanged(object sender, EventArgs e)
         {
-            ValidationStatusChangedEventArgs args = e as ValidationStatusChangedEventArgs;
+            var args = e as ValidationStatusChangedEventArgs;
             EnvironmentVariablesValid = args.ValidationStatus;
         }
 
@@ -762,7 +762,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 return LazyInitializer.EnsureInitialized(ref _addEnironmentVariableRowCommand, () =>
                     new DelegateCommand((state) =>
                     {
-                        NameValuePair newRow = new NameValuePair(PropertyPageResources.EnvVariableNameWatermark, PropertyPageResources.EnvVariableValueWatermark, EnvironmentVariables);
+                        var newRow = new NameValuePair(PropertyPageResources.EnvVariableNameWatermark, PropertyPageResources.EnvVariableValueWatermark, EnvironmentVariables);
                         EnvironmentVariables.Add(newRow);
                         EnvironmentVariablesRowSelectedIndex = EnvironmentVariables.Count - 1;
                         //Raise event to focus on 

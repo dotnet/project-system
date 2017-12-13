@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         public void GetProjectFactoryGuid(string projectFile, string expectedGuid)
         {
             var selector = new FSharpProjectSelector();
-            XDocument doc = XDocument.Parse(projectFile);
+            var doc = XDocument.Parse(projectFile);
             FSharpProjectSelector.GetProjectFactoryGuid(doc, out var resultGuid);
 
             Assert.Equal(expectedGuid, resultGuid.ToString(), ignoreCase:true);

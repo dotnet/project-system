@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public async Task<ILaunchProfile> ReplaceTokensInProfileAsync(ILaunchProfile profile)
         {
-            LaunchProfile resolvedProfile = new LaunchProfile(profile);
+            var resolvedProfile = new LaunchProfile(profile);
             if(!string.IsNullOrWhiteSpace(resolvedProfile.ExecutablePath))
             {
                 resolvedProfile.ExecutablePath = await ReplaceTokensInStringAsync(resolvedProfile.ExecutablePath, true).ConfigureAwait(false);

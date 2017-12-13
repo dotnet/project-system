@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             }
             
             bool boolVal = (bool)value;
-            Parameters direction = (Parameters)Enum.Parse(typeof(Parameters), (string)parameter);
+            var direction = (Parameters)Enum.Parse(typeof(Parameters), (string)parameter);
 
             if (direction == Parameters.Normal)
             {

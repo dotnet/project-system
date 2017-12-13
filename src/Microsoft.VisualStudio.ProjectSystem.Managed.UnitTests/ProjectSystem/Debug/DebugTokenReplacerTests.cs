@@ -136,7 +136,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 };
                 using (var reader = XmlReader.Create(new System.IO.StringReader(projectFile), settings))
                 {
-                    ProjectRootElement importFile = ProjectRootElement.Create(reader); 
+                    var importFile = ProjectRootElement.Create(reader); 
                     return new Microsoft.Build.Evaluation.Project(importFile);
                 }
             }

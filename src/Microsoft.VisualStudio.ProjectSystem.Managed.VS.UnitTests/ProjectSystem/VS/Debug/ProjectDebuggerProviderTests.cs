@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _mockExeProvider.Setup(x => x.SupportsProfile(It.IsAny<ILaunchProfile>())).Returns<ILaunchProfile>((p) => string.IsNullOrEmpty(p.CommandName) || p.CommandName == "Project");
             _mockExeProvider.Setup(x => x.QueryDebugTargetsAsync(It.IsAny<DebugLaunchOptions>(), It.IsAny<ILaunchProfile>())).Returns<DebugLaunchOptions, ILaunchProfile>((o, p) => {return Task.FromResult((IReadOnlyList<IDebugLaunchSettings>)_exeProviderSettings);});
 
-            Mock<IOrderPrecedenceMetadataView> mockMetadata  = new Mock<IOrderPrecedenceMetadataView>();
+            var mockMetadata  = new Mock<IOrderPrecedenceMetadataView>();
            _launchProviders.Add(new Lazy<IDebugProfileLaunchTargetsProvider, IOrderPrecedenceMetadataView>(() => _mockWebProvider.Object, mockMetadata.Object));
             _launchProviders.Add(new Lazy<IDebugProfileLaunchTargetsProvider, IOrderPrecedenceMetadataView>(() => _mockDockerProvider.Object, mockMetadata.Object));
             _launchProviders.Add(new Lazy<IDebugProfileLaunchTargetsProvider, IOrderPrecedenceMetadataView>(() => _mockExeProvider.Object, mockMetadata.Object));
@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [Fact]
         public async Task CanLaunchAsyncTests()
         {
-            Mock<ConfiguredProject> configuredProjectMoq = new Mock<ConfiguredProject>();
+            var configuredProjectMoq = new Mock<ConfiguredProject>();
             var debugger = new ProjectDebuggerProvider(configuredProjectMoq.Object, new Mock<ILaunchSettingsProvider>().Object);
 
             bool result = await debugger.CanLaunchAsync(DebugLaunchOptions.NoDebug);

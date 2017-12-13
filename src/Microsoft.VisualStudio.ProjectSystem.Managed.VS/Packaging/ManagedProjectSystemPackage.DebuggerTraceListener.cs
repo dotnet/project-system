@@ -36,10 +36,10 @@ namespace Microsoft.VisualStudio.Packaging
                 // non-public trace source, so we need to use reflection
                 string assemblyName = typeof(AppliesToAttribute).Assembly.FullName;
 
-                Type type = Type.GetType($"Microsoft.VisualStudio.ProjectSystem.TraceUtilities, {assemblyName}");
+                var type = Type.GetType($"Microsoft.VisualStudio.ProjectSystem.TraceUtilities, {assemblyName}");
                 FieldInfo field = type.GetField("Source", BindingFlags.NonPublic | BindingFlags.Static);
 
-                TraceSource source = (TraceSource)field.GetValue(null);
+                var source = (TraceSource)field.GetValue(null);
 
                 source.Switch.Level = SourceLevels.Warning;
                 source.Listeners.Add(new DebuggerTraceListener());

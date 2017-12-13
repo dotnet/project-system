@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.Shell
         {
             service = null;
 
-            Type serviceType = Type.GetTypeFromCLSID(riid, throwOnError: true); // Should only throw on OOM according to MSDN
+            var serviceType = Type.GetTypeFromCLSID(riid, throwOnError: true); // Should only throw on OOM according to MSDN
 
             service = _serviceProvider.GetService(serviceType);
             if (service == null)

@@ -89,10 +89,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 LaunchProfileData profileData = JsonConvert.DeserializeObject<LaunchProfileData>(profile.Value.ToString());
 
                 // Now pick up any custom properties. Handle string, int, boolean
-                Dictionary<string, object> customSettings = new Dictionary<string, object>(StringComparer.Ordinal);
+                var customSettings = new Dictionary<string, object>(StringComparer.Ordinal);
                 foreach (var data in profile.Value.Children())
                 {
-                    JProperty dataProperty = data as JProperty;
+                    var dataProperty = data as JProperty;
                     if (dataProperty == null)
                     {
                         continue;

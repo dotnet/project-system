@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint
 
         public void Advise(object pUnkSink, out uint pdwCookie)
         {
-            TSinkType sink = pUnkSink as TSinkType;
+            var sink = pUnkSink as TSinkType;
             if (null == sink)
             {
                 Marshal.ThrowExceptionForHR(VSConstants.E_NOINTERFACE);

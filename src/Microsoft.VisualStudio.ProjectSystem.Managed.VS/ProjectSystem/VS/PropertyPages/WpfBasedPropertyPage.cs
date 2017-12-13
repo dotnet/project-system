@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 _control = CreatePropertyPageControl();
             }
 
-            ScrollViewer viewer = new ScrollViewer
+            var viewer = new ScrollViewer
             {
                 VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
                 HorizontalScrollBarVisibility = ScrollBarVisibility.Auto
