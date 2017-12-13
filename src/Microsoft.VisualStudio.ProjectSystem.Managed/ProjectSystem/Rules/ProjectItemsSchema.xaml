@@ -55,7 +55,6 @@
       Name="EmbeddedResource"
       DisplayName="Embedded resource"
       ItemType="EmbeddedResource">
-      <NameValuePair Name="DefaultMetadata_Generator" Value="ResXFileCodeGenerator" />
     </ContentType>
 
     <ContentType
