@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             string newName = ProfileName;
             newName = newName?.Trim();
-            UserNotificationServices notifyService = new UserNotificationServices(_serviceProvider, _threadingService);
+            var notifyService = new UserNotificationServices(_serviceProvider, _threadingService);
 
             if (string.IsNullOrEmpty(newName))
             {

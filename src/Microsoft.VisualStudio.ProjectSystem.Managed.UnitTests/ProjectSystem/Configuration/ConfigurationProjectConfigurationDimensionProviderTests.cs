@@ -92,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
 
                 // On ChangeEventStage.After nothing should be changed
-                ProjectConfigurationDimensionValueChangedEventArgs args = new ProjectConfigurationDimensionValueChangedEventArgs(
+                var args = new ProjectConfigurationDimensionValueChangedEventArgs(
                     unconfiguredProject,
                     ConfigurationDimensionChange.Add,
                     ChangeEventStage.After,
@@ -127,7 +127,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
 
                 // On ChangeEventStage.After nothing should be changed
-                ProjectConfigurationDimensionValueChangedEventArgs args = new ProjectConfigurationDimensionValueChangedEventArgs(
+                var args = new ProjectConfigurationDimensionValueChangedEventArgs(
                     unconfiguredProject,
                     ConfigurationDimensionChange.Delete,
                     ChangeEventStage.After,
@@ -161,7 +161,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 var provider = new ConfigurationProjectConfigurationDimensionProvider(_projectXmlAccessor);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
 
-                ProjectConfigurationDimensionValueChangedEventArgs args = new ProjectConfigurationDimensionValueChangedEventArgs(
+                var args = new ProjectConfigurationDimensionValueChangedEventArgs(
                     unconfiguredProject,
                     ConfigurationDimensionChange.Delete,
                     ChangeEventStage.Before,
@@ -184,7 +184,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
 
                 // On ChangeEventStage.Before nothing should be changed
-                ProjectConfigurationDimensionValueChangedEventArgs args = new ProjectConfigurationDimensionValueChangedEventArgs(
+                var args = new ProjectConfigurationDimensionValueChangedEventArgs(
                     unconfiguredProject,
                     ConfigurationDimensionChange.Rename,
                     ChangeEventStage.Before,
@@ -220,7 +220,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 var provider = new ConfigurationProjectConfigurationDimensionProvider(_projectXmlAccessor);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
 
-                ProjectConfigurationDimensionValueChangedEventArgs args = new ProjectConfigurationDimensionValueChangedEventArgs(
+                var args = new ProjectConfigurationDimensionValueChangedEventArgs(
                     unconfiguredProject,
                     ConfigurationDimensionChange.Rename,
                     ChangeEventStage.After,

@@ -30,11 +30,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 return _profiles.ToImmutableList();
             });
 
-            Mock<ILaunchSettingsProvider> moqProfileProvider = new Mock<ILaunchSettingsProvider>();
+            var moqProfileProvider = new Mock<ILaunchSettingsProvider>();
             moqProfileProvider.Setup(p => p.CurrentSnapshot).Returns(testProfiles.Object);
             var threadingService = new IProjectThreadingServiceMock();
 
-            DebugProfileEnumValuesGenerator generator =  
+            var generator =  
                 new DebugProfileEnumValuesGenerator(moqProfileProvider.Object, threadingService); 
             ICollection<IEnumValue> results = await generator.GetListedValuesAsync();
             Assert.True(results.Count == 4);
@@ -54,11 +54,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 return _profiles.ToImmutableList();
             });
 
-            Mock<ILaunchSettingsProvider> moqProfileProvider = new Mock<ILaunchSettingsProvider>();
+            var moqProfileProvider = new Mock<ILaunchSettingsProvider>();
             moqProfileProvider.Setup(p => p.CurrentSnapshot).Returns(testProfiles.Object);
             var threadingService = new IProjectThreadingServiceMock();
 
-            DebugProfileEnumValuesGenerator generator = 
+            var generator = 
                 new DebugProfileEnumValuesGenerator(moqProfileProvider.Object, threadingService); 
 
             Assert.False(generator.AllowCustomValues);

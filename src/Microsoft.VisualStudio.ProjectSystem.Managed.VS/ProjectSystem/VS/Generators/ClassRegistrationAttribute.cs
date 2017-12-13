@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 
         public override void Register(RegistrationContext context)
         {
-            Type _classType = Type.GetType(_classInfo);
+            var _classType = Type.GetType(_classInfo);
             using (Key childKey = context.CreateKey($"CLSID\\{_clsId}"))
             {
                 

@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public void LaunchProfile_CtorTests()
         {
-            LaunchProfileData data =  new LaunchProfileData()
+            var data =  new LaunchProfileData()
             {
                 Name = "Test", 
                 ExecutablePath ="c:\\this\\is\\a\\exe\\path",
@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 InMemoryProfile = true
             };
 
-           LaunchProfile profile = new LaunchProfile(data);
+           var profile = new LaunchProfile(data);
            Assert.Equal(data.Name, profile.Name);
            Assert.Equal(data.ExecutablePath, profile.ExecutablePath);
            Assert.Equal(data.CommandLineArgs, profile.CommandLineArgs); 
@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
            Assert.Equal(data.InMemoryProfile, profile.DoNotPersist);
            
            // Test overload
-           LaunchProfile profile2 = new LaunchProfile(profile);
+           var profile2 = new LaunchProfile(profile);
            Assert.Equal(profile.Name, profile2.Name);
            Assert.Equal(profile.ExecutablePath, profile2.ExecutablePath);
            Assert.Equal(profile.CommandLineArgs, profile2.CommandLineArgs); 

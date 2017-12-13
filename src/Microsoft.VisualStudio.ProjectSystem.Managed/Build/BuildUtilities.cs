@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.Build
             Requires.NotNullOrEmpty(propertyName, nameof(propertyName));
 
             ProjectPropertyElement property = GetOrAddProperty(project, propertyName);
-            StringBuilder newValue = new StringBuilder();
+            var newValue = new StringBuilder();
             foreach (var value in GetPropertyValues(evaluatedPropertyValue, delimiter))
             {
                 newValue.Append(value);
@@ -97,7 +97,7 @@ namespace Microsoft.VisualStudio.Build
             Requires.NotNullOrEmpty(propertyName, nameof(propertyName));
 
             var property = GetOrAddProperty(project, propertyName);
-            StringBuilder newValue = new StringBuilder();
+            var newValue = new StringBuilder();
             bool valueFound = false;
             foreach (string value in GetPropertyValues(evaluatedPropertyValue, delimiter))
             {
@@ -140,7 +140,7 @@ namespace Microsoft.VisualStudio.Build
             Requires.NotNullOrEmpty(propertyName, nameof(propertyName));
 
             var property = GetOrAddProperty(project, propertyName);
-            StringBuilder value = new StringBuilder();
+            var value = new StringBuilder();
             bool valueFound = false;
             foreach (string propertyValue in GetPropertyValues(evaluatedPropertyValue, delimiter))
             {

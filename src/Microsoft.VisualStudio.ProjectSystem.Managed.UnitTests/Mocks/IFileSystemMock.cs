@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.IO
             }
             else
             {
-                Regex regex = new Regex(WildcardToRegex(searchPattern), RegexOptions.IgnoreCase);
+                var regex = new Regex(WildcardToRegex(searchPattern), RegexOptions.IgnoreCase);
                 string ext = searchPattern.Substring(1);
                 return files.Where(filePath => regex.IsMatch(Path.GetFileName(filePath)));
             }

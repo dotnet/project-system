@@ -156,7 +156,7 @@ Root (flags: {ProjectRoot})
             string dirFilter = "";
             string templateFilter = "";
             string browseLocations = "";
-            Guid g = new Guid();
+            var g = new Guid();
             string folder = "folderName";
 
             var dlg = IVsAddProjectItemDlgFactory.ImplementWithParams((id, guid, project, flags, dFilter, tFilter, browseLocs, filter, showAgain) =>

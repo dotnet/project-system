@@ -438,7 +438,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // Since the sections in the settings file are extensible we iterate through each one and have the appropriate provider
                 // serialize their section. Unfortunately, this means the data is string to object which is messy to deal with
                 var launchSettingsData = new LaunchSettingsData() { OtherSettings = new Dictionary<string, object>(StringComparer.Ordinal) };
-                JObject jsonObject = JObject.Parse(jsonString);
+                var jsonObject = JObject.Parse(jsonString);
                 foreach (var pair in jsonObject)
                 {
                     if (pair.Key.Equals(ProfilesSectionName, StringComparison.Ordinal) && pair.Value is JObject)
@@ -504,7 +504,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 return null;
             }
 
-            List<LaunchProfileData> validProfiles = new List<LaunchProfileData>();
+            var validProfiles = new List<LaunchProfileData>();
             foreach (var kvp in profilesData)
             {
                 if (!string.IsNullOrWhiteSpace(kvp.Key))
@@ -554,7 +554,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 await EnsureSettingsFolderAsync().ConfigureAwait(false);
 
                 // We don't want to write null values. We want to keep the file as small as possible
-                JsonSerializerSettings settings = new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore };
+                var settings = new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore };
                 string jsonString = JsonConvert.SerializeObject(serializationData, Formatting.Indented, settings);
 
                 IgnoreFileChanges = true;
@@ -591,7 +591,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 }
             }
 
-            Dictionary<string, object> dataToSave = new Dictionary<string, object>(StringComparer.Ordinal);
+            var dataToSave = new Dictionary<string, object>(StringComparer.Ordinal);
 
             foreach (var setting in curSettings.GlobalSettings)
             {

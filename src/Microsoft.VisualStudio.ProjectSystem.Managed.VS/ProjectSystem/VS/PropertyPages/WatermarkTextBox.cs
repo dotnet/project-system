@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// <param name="args"></param>
         private static void TextPropertyChanged(object sender, DependencyPropertyChangedEventArgs args)
         {
-            WatermarkTextBox source = sender as WatermarkTextBox;
+            var source = sender as WatermarkTextBox;
             if (source == null)
             {
                 return;

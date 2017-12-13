@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             var capabilities = IProjectCapabilitiesScopeFactory.Create(capabilities: new string[] { ProjectCapability.ReferenceManagerBrowse });
             var project = ConfiguredProjectFactory.Create(capabilities: capabilities);
 
-            AddFileContextProvider context = new AddFileContextProvider(project);
+            var context = new AddFileContextProvider(project);
             Assert.True(context.IsApplicable());
         }
 
@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             var capabilities = IProjectCapabilitiesScopeFactory.Create();
             var project = ConfiguredProjectFactory.Create(capabilities: capabilities);
 
-            AddFileContextProvider context = new AddFileContextProvider(project);
+            var context = new AddFileContextProvider(project);
             Assert.False(context.IsApplicable());
         }
 
@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             var capabilities = IProjectCapabilitiesScopeFactory.Create(capabilities: new string[] { ProjectCapability.ReferenceManagerAssemblies });
             var project = ConfiguredProjectFactory.Create(capabilities: capabilities);
 
-            AssemblyReferencesProviderContext context = new AssemblyReferencesProviderContext(project);
+            var context = new AssemblyReferencesProviderContext(project);
             Assert.True(context.IsApplicable());
         }
 
@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             var capabilities = IProjectCapabilitiesScopeFactory.Create();
             var project = ConfiguredProjectFactory.Create(capabilities: capabilities);
 
-            AssemblyReferencesProviderContext context = new AssemblyReferencesProviderContext(project);
+            var context = new AssemblyReferencesProviderContext(project);
             Assert.False(context.IsApplicable());
         }
 
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             var capabilities = IProjectCapabilitiesScopeFactory.Create(capabilities: new string[] { ProjectCapability.ReferenceManagerCOM });
             var project = ConfiguredProjectFactory.Create(capabilities: capabilities);
 
-            ComReferencesProviderContext context = new ComReferencesProviderContext(project);
+            var context = new ComReferencesProviderContext(project);
             Assert.True(context.IsApplicable());
         }
 
@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             var capabilities = IProjectCapabilitiesScopeFactory.Create();
             var project = ConfiguredProjectFactory.Create(capabilities: capabilities);
 
-            ComReferencesProviderContext context = new ComReferencesProviderContext(project);
+            var context = new ComReferencesProviderContext(project);
             Assert.False(context.IsApplicable());
         }
 
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             var capabilities = IProjectCapabilitiesScopeFactory.Create(capabilities: new string[] { ProjectCapability.ReferenceManagerProjects });
             var project = ConfiguredProjectFactory.Create(capabilities: capabilities);
 
-            ProjectReferencesProviderContext context = new ProjectReferencesProviderContext(project);
+            var context = new ProjectReferencesProviderContext(project);
             Assert.True(context.IsApplicable());
         }
 
@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             var capabilities = IProjectCapabilitiesScopeFactory.Create();
             var project = ConfiguredProjectFactory.Create(capabilities: capabilities);
 
-            ProjectReferencesProviderContext context = new ProjectReferencesProviderContext(project);
+            var context = new ProjectReferencesProviderContext(project);
             Assert.False(context.IsApplicable());
         }
 
@@ -93,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             var capabilities = IProjectCapabilitiesScopeFactory.Create(capabilities: new string[] { ProjectCapability.ReferenceManagerSharedProjects });
             var project = ConfiguredProjectFactory.Create(capabilities: capabilities);
 
-            SharedProjectReferencesProviderContext context = new SharedProjectReferencesProviderContext(project);
+            var context = new SharedProjectReferencesProviderContext(project);
             Assert.True(context.IsApplicable());
         }
 
@@ -103,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             var capabilities = IProjectCapabilitiesScopeFactory.Create();
             var project = ConfiguredProjectFactory.Create(capabilities: capabilities);
 
-            SharedProjectReferencesProviderContext context = new SharedProjectReferencesProviderContext(project);
+            var context = new SharedProjectReferencesProviderContext(project);
             Assert.False(context.IsApplicable());
         }
 
@@ -119,7 +119,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 
             var project = ConfiguredProjectFactory.Create(capabilities: capabilities);
 
-            WinRTReferencesProviderContext context = new WinRTReferencesProviderContext(project);
+            var context = new WinRTReferencesProviderContext(project);
             Assert.True(context.IsApplicable());
         }
 
@@ -129,7 +129,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             var capabilities = IProjectCapabilitiesScopeFactory.Create();
             var project = ConfiguredProjectFactory.Create(capabilities: capabilities);
 
-            WinRTReferencesProviderContext context = new WinRTReferencesProviderContext(project);
+            var context = new WinRTReferencesProviderContext(project);
             Assert.False(context.IsApplicable());
         }
     }

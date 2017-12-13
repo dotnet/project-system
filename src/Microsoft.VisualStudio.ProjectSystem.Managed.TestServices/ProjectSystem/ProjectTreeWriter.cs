@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public static string WriteToString(IProjectTree tree)
         {
-            ProjectTreeWriter writer = new ProjectTreeWriter(tree, ProjectTreeWriterOptions.AllProperties);
+            var writer = new ProjectTreeWriter(tree, ProjectTreeWriterOptions.AllProperties);
             return writer.WriteToString();
         }
 

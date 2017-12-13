@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
        [Fact]
         public void EnumMatchToBooleanConverter_ConvertTests()
         {
-            EnumMatchToBooleanConverter converter = new EnumMatchToBooleanConverter();
+            var converter = new EnumMatchToBooleanConverter();
 
             Assert.False((bool)converter.Convert(null, typeof(MyEnum), null, CultureInfo.CurrentCulture));
             Assert.True((bool)converter.Convert(MyEnum.Value12, typeof(MyEnum), "Value12", CultureInfo.CurrentCulture));
@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         [Fact]
         public void EnumMatchToBooleanConverter_ConvertBackTests()
         {
-            EnumMatchToBooleanConverter converter = new EnumMatchToBooleanConverter();
+            var converter = new EnumMatchToBooleanConverter();
 
             Assert.Null(converter.ConvertBack(null, typeof(MyEnum), null, CultureInfo.CurrentCulture));
             Assert.Equal(MyEnum.Value12, converter.ConvertBack(true, typeof(MyEnum), "Value12", CultureInfo.CurrentCulture));
