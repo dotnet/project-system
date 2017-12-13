@@ -32,11 +32,11 @@ namespace Microsoft.VisualStudio.Telemetry
 
         private string GetPropertyName(string eventName, string propertyName)
         {
-            var eventInfo = GetEventInfo(eventName);
-            if (!eventInfo.Properties.TryGetValue(propertyName, out var fullPropertyName))
+            (string Event, ConcurrentDictionary<string, string> Properties) = GetEventInfo(eventName);
+            if (!Properties.TryGetValue(propertyName, out var fullPropertyName))
             {
                 fullPropertyName = BuildPropertyName(eventName, propertyName);
-                eventInfo.Properties[propertyName] = fullPropertyName;
+                Properties[propertyName] = fullPropertyName;
             }
 
             return fullPropertyName;
@@ -82,9 +82,9 @@ namespace Microsoft.VisualStudio.Telemetry
             Requires.NotNullOrEmpty(properties, nameof(properties));
 
             TelemetryEvent telemetryEvent = new TelemetryEvent(GetEventName(eventName));
-            foreach (var property in properties)
+            foreach ((string propertyName, object propertyValue) in properties)
             {
-                telemetryEvent.Properties.Add(GetPropertyName(eventName, property.propertyName), property.propertyValue);
+                telemetryEvent.Properties.Add(GetPropertyName(eventName, propertyName), propertyValue);
             }
 
             TelemetryService.DefaultSession.PostEvent(telemetryEvent);

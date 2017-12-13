@@ -32,10 +32,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private static bool NeedsForcedReload(ImmutableArray<ProjectPropertyElement> oldProperties, ImmutableArray<ProjectPropertyElement> newProperties)
         {
             // If user added or removed TargetFramework/TargetFrameworks property, then force a full project reload.
-            var oldTargets = ComputeProjectTargets(oldProperties);
+            (bool hasTargetFramework, bool hasTargetFrameworks) = ComputeProjectTargets(oldProperties);
             var newTargets = ComputeProjectTargets(newProperties);
 
-            return oldTargets.hasTargetFramework != newTargets.hasTargetFramework || oldTargets.hasTargetFrameworks != newTargets.hasTargetFrameworks;
+            return hasTargetFramework != newTargets.hasTargetFramework || hasTargetFrameworks != newTargets.hasTargetFrameworks;
         }
 
         private static (bool hasTargetFramework, bool hasTargetFrameworks) ComputeProjectTargets(ImmutableArray<ProjectPropertyElement> properties)

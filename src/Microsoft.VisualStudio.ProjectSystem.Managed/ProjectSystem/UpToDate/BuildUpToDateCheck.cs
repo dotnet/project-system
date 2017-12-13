@@ -449,12 +449,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             logger.Verbose("Adding output reference copy marker:");
             logger.Verbose("    '{0}'", _markerFile);
 
-            var latestInputMarker = GetLatestInput(_copyReferenceInputs, timestampCache, true);
+            (DateTime? inputMarkerTime, string inputMarkerPath) = GetLatestInput(_copyReferenceInputs, timestampCache, true);
             var outputMarkerTime = GetTimestamp(_markerFile, timestampCache);
 
-            if (latestInputMarker.path != null)
+            if (inputMarkerPath != null)
             {
-                logger.Info("Latest write timestamp on input marker is {0} on '{1}'.", latestInputMarker.time.Value, latestInputMarker.path);
+                logger.Info("Latest write timestamp on input marker is {0} on '{1}'.", inputMarkerTime.Value, inputMarkerPath);
             }
             else
             {
@@ -470,7 +470,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 logger.Info("Output marker '{0}' does not exist, skipping marker check.", _markerFile);
             }
 
-            return latestInputMarker.path == null || outputMarkerTime == null || outputMarkerTime > latestInputMarker.time;
+            return inputMarkerPath == null || outputMarkerTime == null || outputMarkerTime > inputMarkerTime;
         }
 
         private bool CheckCopyToOutputDirectoryFiles(BuildUpToDateCheckLogger logger, IDictionary<string, DateTime> timestampCache)
@@ -541,30 +541,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             var timestampCache = _fileTimestampCache.Value.TimestampCache ??
                     new Dictionary<string, DateTime>(StringComparer.OrdinalIgnoreCase);
-            var latestInput = GetLatestInput(CollectInputs(logger), timestampCache);
-            var earliestOutput = GetEarliestOutput(CollectOutputs(logger), timestampCache);
+            (DateTime? inputTime, string inputPath) = GetLatestInput(CollectInputs(logger), timestampCache);
+            (DateTime? outputTime, string outputPath) = GetEarliestOutput(CollectOutputs(logger), timestampCache);
             
-            if (latestInput.time != null)
+            if (inputTime != null)
             {
-                logger.Info("Latest write timestamp on input is {0} on '{1}'.", latestInput.time.Value, latestInput.path);
+                logger.Info("Latest write timestamp on input is {0} on '{1}'.", inputTime.Value, inputPath);
             }
             else
             {
-                logger.Info("Input '{0}' does not exist.", latestInput.path);
+                logger.Info("Input '{0}' does not exist.", inputPath);
             }
 
-            if (earliestOutput.time != null)
+            if (outputTime != null)
             {
-                logger.Info("Earliest write timestamp on output is {0} on '{1}'.", earliestOutput.time.Value, earliestOutput.path);
+                logger.Info("Earliest write timestamp on output is {0} on '{1}'.", outputTime.Value, outputPath);
             }
             else
             {
-                logger.Info("Output '{0}' does not exist.", earliestOutput.path);
+                logger.Info("Output '{0}' does not exist.", outputPath);
             }
 
             // We are up to date if the earliest output write happened after the latest input write
             var markersUpToDate = CheckMarkers(logger, timestampCache);
-            var outputsUpToDate = latestInput.time != null && earliestOutput.time != null && earliestOutput.time > latestInput.time;
+            var outputsUpToDate = inputTime != null && outputTime != null && outputTime > inputTime;
             var copyToOutputDirectoryUpToDate = CheckCopyToOutputDirectoryFiles(logger, timestampCache);
             var isUpToDate = outputsUpToDate && markersUpToDate && copyToOutputDirectoryUpToDate;
 

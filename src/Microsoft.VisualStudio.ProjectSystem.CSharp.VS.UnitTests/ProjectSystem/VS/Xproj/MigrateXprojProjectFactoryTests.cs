@@ -180,9 +180,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             var loggedMessages = new List<LogMessage>();
             var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
 
-            var migrateResults = migrator.MigrateProject(SlnLocation, RootLocation, XprojLocation, "XprojMigrationTests", logger);
+            (string logFile, int exitCode) = migrator.MigrateProject(SlnLocation, RootLocation, XprojLocation, "XprojMigrationTests", logger);
 
-            Assert.Equal(0, migrateResults.exitCode);
+            Assert.Equal(0, exitCode);
             Assert.Empty(loggedMessages);
         }
 
@@ -223,9 +223,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
             var loggedMessages = new List<LogMessage>();
             var logger = IVsUpgradeLoggerFactory.CreateLogger(loggedMessages);
-            var migrateResults = migrator.MigrateProject(SlnLocation, RootLocation, XprojLocation, "XprojMigrationTests", logger);
-            Assert.Equal(VSConstants.E_FAIL, migrateResults.exitCode);
-            Assert.Equal(LogFileLocation, migrateResults.logFile);
+            (string logFile, int exitCode) = migrator.MigrateProject(SlnLocation, RootLocation, XprojLocation, "XprojMigrationTests", logger);
+            Assert.Equal(VSConstants.E_FAIL, exitCode);
+            Assert.Equal(LogFileLocation, logFile);
         }
 
         [Fact]
