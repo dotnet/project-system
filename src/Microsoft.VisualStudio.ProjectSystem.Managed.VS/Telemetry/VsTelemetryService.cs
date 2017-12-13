@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.Telemetry
 
         private string GetPropertyName(string eventName, string propertyName)
         {
-            (string @eventPath, ConcurrentDictionary<string, string> properties) = GetEventInfo(eventName);
+            (_, ConcurrentDictionary<string, string> properties) = GetEventInfo(eventName);
             if (!properties.TryGetValue(propertyName, out var fullPropertyName))
             {
                 fullPropertyName = BuildPropertyName(eventName, propertyName);
