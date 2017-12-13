@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.Telemetry
 
         private readonly ConcurrentDictionary<string, (string Event, ConcurrentDictionary<string, string> Properties)> _eventCache = new ConcurrentDictionary<string, (string, ConcurrentDictionary<string, string>)>();
 
-        private (string Event, ConcurrentDictionary<string, string> Properties) GetEventInfo(string eventName)
+        private (string eventPath, ConcurrentDictionary<string, string> properties) GetEventInfo(string eventName)
         {
             if (!_eventCache.TryGetValue(eventName, out var eventInfo))
             {
@@ -28,15 +28,15 @@ namespace Microsoft.VisualStudio.Telemetry
             return eventInfo;
         }
 
-        private string GetEventName(string eventName) => GetEventInfo(eventName).Event;
+        private string GetEventName(string eventName) => GetEventInfo(eventName).eventPath;
 
         private string GetPropertyName(string eventName, string propertyName)
         {
-            (string Event, ConcurrentDictionary<string, string> Properties) = GetEventInfo(eventName);
-            if (!Properties.TryGetValue(propertyName, out var fullPropertyName))
+            (string @eventPath, ConcurrentDictionary<string, string> properties) = GetEventInfo(eventName);
+            if (!properties.TryGetValue(propertyName, out var fullPropertyName))
             {
                 fullPropertyName = BuildPropertyName(eventName, propertyName);
-                Properties[propertyName] = fullPropertyName;
+                properties[propertyName] = fullPropertyName;
             }
 
             return fullPropertyName;
