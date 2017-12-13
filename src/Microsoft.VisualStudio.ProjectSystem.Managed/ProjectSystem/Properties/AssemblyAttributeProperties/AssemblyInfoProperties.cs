@@ -113,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         private async Task<bool> IsAssemblyInfoPropertyGeneratedByBuild(string propertyName)
         {
-            var info = AssemblyPropertyInfoMap[propertyName];
+            (string attributeName, string generatePropertyInProjectFileName) = AssemblyPropertyInfoMap[propertyName];
 
             // Generate property in project file only if:
             // 1. "GenerateAssemblyInfo" is true AND
@@ -124,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 return false;
             }
 
-            propertyValue = await base.GetEvaluatedPropertyValueAsync(info.generatePropertyInProjectFileName).ConfigureAwait(true);
+            propertyValue = await base.GetEvaluatedPropertyValueAsync(generatePropertyInProjectFileName).ConfigureAwait(true);
             if (!bool.TryParse(propertyValue, out value) || !value)
             {
                 return false;
