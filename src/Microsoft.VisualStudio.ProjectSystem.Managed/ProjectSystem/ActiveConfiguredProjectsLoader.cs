@@ -13,8 +13,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
     /// </summary>
     internal class ActiveConfiguredProjectsLoader : OnceInitializedOnceDisposed
     {
-        private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
         private readonly UnconfiguredProject _project;
+        private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
+        private ActionBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> _targetBlock;
         private IDisposable _subscription;
 
         [ImportingConstructor]
@@ -22,22 +23,26 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             _project = project;
             _activeConfigurationGroupService = activeConfigurationGroupService;
+            _targetBlock = new ActionBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>>(OnActiveConfigurationsChanged);
         }
 
         [ProjectAutoLoad(ProjectLoadCheckpoint.ProjectInitialCapabilitiesEstablished)]
         [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
-        private Task OnProjectFactoryCompletedAsync()
+        public Task InitializeAsync()
         {
             Initialize();
             return Task.CompletedTask;
         }
 
+        public ITargetBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> TargetBlock
+        {
+            get { return _targetBlock; }
+        }
+
         protected override void Initialize()
         {
-            Action<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> target = OnActiveConfigurationsChanged;
-
             _subscription = _activeConfigurationGroupService.ActiveConfigurationGroupSource.SourceBlock.LinkTo(
-                target: new ActionBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>>(target),
+                target: _targetBlock,
                 linkOptions: new DataflowLinkOptions() { PropagateCompletion = true });
         }
 
@@ -49,11 +54,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
         }
 
-        private void OnActiveConfigurationsChanged(IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>> e)
+        private async Task OnActiveConfigurationsChanged(IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>> e)
         {
             foreach (ProjectConfiguration configuration in e.Value)
             {
-                _project.LoadConfiguredProjectAsync(configuration);
+                await _project.LoadConfiguredProjectAsync(configuration)
+                              .ConfigureAwait(false);
             }
         }
     }
