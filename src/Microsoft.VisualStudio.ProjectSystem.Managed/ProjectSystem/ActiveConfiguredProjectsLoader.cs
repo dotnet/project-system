@@ -11,14 +11,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
     ///     Force loads the active <see cref="ConfiguredProject"/> objects so that any configured project-level 
     ///     services, such as evaluation and build services, are started.
     /// </summary>
-    internal class ForceLoadActiveConfiguredProjects : OnceInitializedOnceDisposed
+    internal class ActiveConfiguredProjectsLoader : OnceInitializedOnceDisposed
     {
         private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
         private readonly UnconfiguredProject _project;
         private IDisposable _subscription;
 
         [ImportingConstructor]
-        public ForceLoadActiveConfiguredProjects(UnconfiguredProject project, IActiveConfigurationGroupService activeConfigurationGroupService)
+        public ActiveConfiguredProjectsLoader(UnconfiguredProject project, IActiveConfigurationGroupService activeConfigurationGroupService)
         {
             _project = project;
             _activeConfigurationGroupService = activeConfigurationGroupService;
