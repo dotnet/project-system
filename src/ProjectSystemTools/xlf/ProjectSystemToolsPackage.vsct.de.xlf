@@ -62,6 +62,11 @@
         <target state="new">Choose build types</target>
         <note />
       </trans-unit>
+      <trans-unit id="BuildLogExplorerCommandId|ButtonText">
+        <source>Build Log Explorer</source>
+        <target state="new">Build Log Explorer</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -8,6 +8,7 @@ using Task = System.Threading.Tasks.Task;
 using System.ComponentModel.Design;
 using Microsoft.Internal.VisualStudio.Shell.TableControl;
 using Microsoft.VisualStudio.ComponentModelHost;
+using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogExplorer;
 using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Shell.TableManager;
@@ -20,6 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools
     [Guid(PackageGuidString)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [ProvideToolWindow(typeof(BuildLoggingToolWindow), Style = VsDockStyle.Tabbed, Window = ToolWindowGuids.Outputwindow)]
+    [ProvideToolWindow(typeof(BuildLogExplorerToolWindow), Style = VsDockStyle.MDI)]
     public sealed class ProjectSystemToolsPackage : AsyncPackage
     {
         public const string PackageGuidString = "e3bfb509-b8fd-4692-b4c4-4b2f6ed62bc7";
@@ -34,6 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools
         public const int OpenLogsCommandId = 0x0108;
         public const int BuildTypeComboCommandId = 0x0109;
         public const int BuildTypeComboGetListCommandId = 0x010a;
+        public const int BuildLogExplorerCommandId = 0x010b;
 
         public static readonly Guid UIGuid = new Guid("629080DF-2A44-40E5-9AF4-371D4B727D16");
 
@@ -62,6 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools
 
             var mcs = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
             mcs?.AddCommand(new MenuCommand(ShowBuildLoggingToolWindow, new CommandID(CommandSetGuid, BuildLoggingCommandId)));
+            mcs?.AddCommand(new MenuCommand(ShowBuildLogExplorerToolWindow, new CommandID(CommandSetGuid, BuildLogExplorerCommandId)));
 
             Instance = this;
         }
@@ -83,6 +87,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools
             }
 
             var windowFrame = (IVsWindowFrame)window.Frame;
+            ErrorHandler.ThrowOnFailure(windowFrame.Show());
+        }
+
+        private void ShowBuildLogExplorerToolWindow(object sender, EventArgs e)
+        {
+            var window = FindToolWindow(typeof(BuildLogExplorerToolWindow), 0, true);
+            if (window?.Frame == null)
+            {
+                throw new NotSupportedException("Cannot create tool window");
+            }
+
+            var windowFrame = (IVsWindowFrame) window.Frame;
             ErrorHandler.ThrowOnFailure(windowFrame.Show());
         }
     }
