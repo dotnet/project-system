@@ -52,6 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             if (disposing)
             {
                 _subscription?.Dispose();
+                _targetBlock.Complete();
             }
         }
 
