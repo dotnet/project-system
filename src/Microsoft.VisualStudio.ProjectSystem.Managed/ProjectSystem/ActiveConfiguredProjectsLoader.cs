@@ -20,6 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         [ImportingConstructor]
         public ActiveConfiguredProjectsLoader(UnconfiguredProject project, IActiveConfigurationGroupService activeConfigurationGroupService)
+            : base(synchronousDisposal:true)
         {
             _project = project;
             _activeConfigurationGroupService = activeConfigurationGroupService;
