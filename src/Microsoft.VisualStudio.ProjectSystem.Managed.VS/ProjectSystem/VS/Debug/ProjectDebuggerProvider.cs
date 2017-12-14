@@ -98,14 +98,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         /// <summary>
-        /// This is called on F5 to return the list of debug targets.What we return depends on the type
-        /// of project.  
+        /// This is called to query the list of debug targets  
         /// </summary>
-        public override async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions)
+        public override Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions)
+        {
+            return QueryDebugTargetsInternalAsync(launchOptions, fromDebugLaunch: false);
+        }
+
+        /// <summary>
+        /// This is called on F5 to return the list of debug targets. What is returned depends on the debug provider extensions
+        /// which understands how to launch the currently active profile type. 
+        /// </summary>
+        private async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsInternalAsync(DebugLaunchOptions launchOptions, bool fromDebugLaunch)
         {
             // Get the active debug profile (timeout of 5s, though in reality is should never take this long as even in error conditions
             // a snapshot is produced).
-            var currentProfiles = await LaunchSettingsProvider.WaitForFirstSnapshot(5000).ConfigureAwait(true);
+            var currentProfiles = await LaunchSettingsProvider.WaitForFirstSnapshot(5000).ConfigureAwait(false);
             ILaunchProfile activeProfile = currentProfiles?.ActiveProfile;
 
             // Should have a profile
@@ -118,7 +126,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var launchProvider = GetLaunchTargetsProvider(activeProfile) ??
                 throw new Exception(string.Format(VSResources.DontKnowHowToRunProfile, activeProfile.Name));
 
-            var launchSettings = await launchProvider.QueryDebugTargetsAsync(launchOptions, activeProfile).ConfigureAwait(true);
+            IReadOnlyList<IDebugLaunchSettings> launchSettings;
+            if (fromDebugLaunch && launchProvider is IDebugProfileLaunchTargetsProvider2 launchProvider2)
+            {
+                launchSettings = await launchProvider2.QueryDebugTargetsForDebugLaunchAsync(launchOptions, activeProfile).ConfigureAwait(false);
+            }
+            else
+            {
+                launchSettings = await launchProvider.QueryDebugTargetsAsync(launchOptions, activeProfile).ConfigureAwait(false);
+            }
+
             LastLaunchProvider = launchProvider;
             return launchSettings;
         }
@@ -141,46 +158,48 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         /// <summary>
-        /// Override the launch of the debugger so that we can wait for the process to connect to the port prior
-        /// to launching the browser.
+        /// Overridden to direct the launch to the current active provider as determined by the active launch profile
         /// </summary>
         public override async Task LaunchAsync(DebugLaunchOptions launchOptions)
         {
-            var targets = await QueryDebugTargetsAsync(launchOptions).ConfigureAwait(true);
+            var targets = await QueryDebugTargetsInternalAsync(launchOptions, fromDebugLaunch: true).ConfigureAwait(false);
 
             ILaunchProfile activeProfile = LaunchSettingsProvider.ActiveProfile;
 
             var targetProfile = GetLaunchTargetsProvider(activeProfile);
             if (targetProfile != null)
             {
-                await targetProfile.OnBeforeLaunchAsync(launchOptions, activeProfile).ConfigureAwait(true);
+                await targetProfile.OnBeforeLaunchAsync(launchOptions, activeProfile).ConfigureAwait(false);
             }
 
-            await DoLaunchAsync(targets.ToArray()).ConfigureAwait(true);
+            await DoLaunchAsync(targets.ToArray()).ConfigureAwait(false);
 
             if (targetProfile != null)
             {
-                await targetProfile.OnAfterLaunchAsync(launchOptions, activeProfile).ConfigureAwait(true);
+                await targetProfile.OnAfterLaunchAsync(launchOptions, activeProfile).ConfigureAwait(false);
             }
         }
 
         /// <summary>
         /// Launches the Visual Studio debugger.
         /// </summary>
-        protected Task<IReadOnlyList<VsDebugTargetProcessInfo>> DoLaunchAsync(params IDebugLaunchSettings[] launchSettings)
+        protected async Task<IReadOnlyList<VsDebugTargetProcessInfo>> DoLaunchAsync(params IDebugLaunchSettings[] launchSettings)
         {
             VsDebugTargetInfo4[] launchSettingsNative = launchSettings.Select(GetDebuggerStruct4).ToArray();
             if (launchSettingsNative.Length == 0)
             {
-                return Task.FromResult<IReadOnlyList<VsDebugTargetProcessInfo>>(new VsDebugTargetProcessInfo[0]);
+                return new VsDebugTargetProcessInfo[0];
             }
 
             try
             {
+                // The debugger needs to be called on the UI thread
+                await ThreadingService.SwitchToUIThread();
+
                 var shellDebugger = ServiceProvider.GetService(typeof(SVsShellDebugger)) as IVsDebugger4;
                 var launchResults = new VsDebugTargetProcessInfo[launchSettingsNative.Length];
                 shellDebugger.LaunchDebugTargets4((uint)launchSettingsNative.Length, launchSettingsNative, launchResults);
-                return Task.FromResult<IReadOnlyList<VsDebugTargetProcessInfo>>(launchResults);
+                return launchResults;
             }
             finally
             {
@@ -211,7 +230,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             debugInfo.bstrEnv = GetSerializedEnvironmentString(info.Environment);
             debugInfo.guidLaunchDebugEngine = info.LaunchDebugEngineGuid;
 
-            List<Guid> guids = new List<Guid>(1);
+            var guids = new List<Guid>(1);
             guids.Add(info.LaunchDebugEngineGuid);
             if (info.AdditionalDebugEngines != null)
             {
@@ -236,7 +255,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             if (info.StandardErrorHandle != IntPtr.Zero || info.StandardInputHandle != IntPtr.Zero || info.StandardOutputHandle != IntPtr.Zero)
             {
-                VsDebugStartupInfo processStartupInfo = new VsDebugStartupInfo
+                var processStartupInfo = new VsDebugStartupInfo
                 {
                     hStdInput = unchecked((uint)info.StandardInputHandle.ToInt32()),
                     hStdOutput = unchecked((uint)info.StandardOutputHandle.ToInt32()),
@@ -283,7 +302,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
 
             // Collect all the variables as a null delimited list of key=value pairs.
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
             foreach (var pair in environment)
             {
                 result.Append(pair.Key);
@@ -331,6 +350,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             {
                 return deployedItemMapper.TryGetProjectItemPathFromDeployedPath(deployedPath, out localPath);
             }
+
             // Return false to allow normal processing
             return false;
         }

@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     internal class IActiveConfiguredProjectsProviderFactory
     {
-        Mock<IActiveConfiguredProjectsProvider> _mock;
+        private Mock<IActiveConfiguredProjectsProvider> _mock;
         public IActiveConfiguredProjectsProviderFactory(MockBehavior mockBehavior = MockBehavior.Strict)
         {
             _mock = new Mock<IActiveConfiguredProjectsProvider>(mockBehavior);

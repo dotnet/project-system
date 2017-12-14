@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             if (e.OldValue != null && e.OldValue is DebugPageViewModel)
             {
-                DebugPageViewModel viewModel = e.OldValue as DebugPageViewModel;
+                var viewModel = e.OldValue as DebugPageViewModel;
                 viewModel.FocusEnvironmentVariablesGridRow -= OnFocusEnvironmentVariableGridRow;
                 viewModel.ClearEnvironmentVariablesGridError -= OnClearEnvironmentVariableGridError;
                 viewModel.PropertyChanged -= ViewModel_PropertyChanged;
@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
             if (e.NewValue != null && e.NewValue is DebugPageViewModel)
             {
-                DebugPageViewModel viewModel = e.NewValue as DebugPageViewModel;
+                var viewModel = e.NewValue as DebugPageViewModel;
                 viewModel.FocusEnvironmentVariablesGridRow += OnFocusEnvironmentVariableGridRow;
                 viewModel.ClearEnvironmentVariablesGridError += OnClearEnvironmentVariableGridError;
                 viewModel.PropertyChanged += ViewModel_PropertyChanged;
@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// Called when a property changes on the view model. Used to detect when the custom UI changes so that
         /// the size of its grids can be determined
         /// </summary>
-        private void ViewModel_PropertyChanged(Object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName.Equals(nameof(DebugPageViewModel.ActiveProviderUserControl)))
             {
@@ -96,7 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// Used to make sure the custom controls layout matches the rest of the dialog. Assumes the custom control has a 3 column
         /// grid just like the main dialog page. If it doesn't no layout update is done.
         /// </summary>
-        private void DebugPageControl_LayoutUpdated(Object sender, EventArgs e)
+        private void DebugPageControl_LayoutUpdated(object sender, EventArgs e)
         {
             if (_customControlLayoutUpdateRequired && _mainGrid != null && DataContext != null)
             {

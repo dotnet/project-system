@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     [ProjectSystemTrait]
     public class PlatformProjectConfigurationDimensionProviderTests
     {
-        const string Platforms = nameof(Platforms);
+        private const string Platforms = nameof(Platforms);
 
         private string projectXml =
 @"<Project Sdk=""Microsoft.NET.Sdk"">
@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
 
                 // On ChangeEventStage.After nothing should be changed
-                ProjectConfigurationDimensionValueChangedEventArgs args = new ProjectConfigurationDimensionValueChangedEventArgs(
+                var args = new ProjectConfigurationDimensionValueChangedEventArgs(
                     unconfiguredProject,
                     ConfigurationDimensionChange.Add,
                     ChangeEventStage.After,
@@ -100,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
 
                 // On ChangeEventStage.After nothing should be changed
-                ProjectConfigurationDimensionValueChangedEventArgs args = new ProjectConfigurationDimensionValueChangedEventArgs(
+                var args = new ProjectConfigurationDimensionValueChangedEventArgs(
                     unconfiguredProject,
                     ConfigurationDimensionChange.Delete,
                     ChangeEventStage.After,
@@ -135,7 +135,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
 
                 // Nothing should happen on platform rename as it's unsupported
-                ProjectConfigurationDimensionValueChangedEventArgs args = new ProjectConfigurationDimensionValueChangedEventArgs(
+                var args = new ProjectConfigurationDimensionValueChangedEventArgs(
                     unconfiguredProject,
                     ConfigurationDimensionChange.Rename,
                     ChangeEventStage.Before,

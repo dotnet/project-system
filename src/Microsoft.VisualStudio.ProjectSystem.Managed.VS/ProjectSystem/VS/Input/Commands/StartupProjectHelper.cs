@@ -22,8 +22,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             ProjectExportProvider = projectExportProvider;
         }
 
-        IProjectExportProvider ProjectExportProvider { get; }
-        IServiceProvider ServiceProvider { get; }
+        private IProjectExportProvider ProjectExportProvider { get; }
+        private IServiceProvider ServiceProvider { get; }
 
         /// <summary>
         /// Returns the export T of the startup project if that project supports the specified capabilities

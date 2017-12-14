@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Managed.VS.EditAndContinue
         // AbstractProject implements IVsENCRebuildableProjectCfg2 and IVsENCRebuildableProjectCfg4 only
         [ExportProjectNodeComService(typeof(EncInterop.IVsENCRebuildableProjectCfg2), typeof(EncInterop.IVsENCRebuildableProjectCfg4))]
         [AppliesTo(ProjectCapability.EditAndContinue)]
-        internal Object EditAndContinueService
+        internal object EditAndContinueService
         {
             get
             {

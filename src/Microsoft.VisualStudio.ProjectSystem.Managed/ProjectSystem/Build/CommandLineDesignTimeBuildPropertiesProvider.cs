@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     internal class CommandLineDesignTimeBuildPropertiesProvider : StaticGlobalPropertiesProviderBase
     {
-        private static readonly Task<IImmutableDictionary<string, string>> BuildProperties = Task.FromResult<IImmutableDictionary<string, string>>(
+        private static readonly Task<IImmutableDictionary<string, string>> s_buildProperties = Task.FromResult<IImmutableDictionary<string, string>>(
             Empty.PropertiesMap.Add(BuildProperty.SkipCompilerExecution, "true")     // Don't run the compiler
                                .Add(BuildProperty.ProvideCommandLineArgs, "true"));  // Get csc/vbc to output command-line args
 
@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
 
         public override Task<IImmutableDictionary<string, string>> GetGlobalPropertiesAsync(CancellationToken cancellationToken)
         {
-            return BuildProperties;
+            return s_buildProperties;
         }
     }
 }

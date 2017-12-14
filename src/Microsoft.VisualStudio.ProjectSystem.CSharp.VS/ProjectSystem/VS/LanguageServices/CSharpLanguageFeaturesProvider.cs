@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     [AppliesTo(ProjectCapabilities.CSharp)]
     internal class CSharpLanguageFeaturesProvider : ILanguageFeaturesProvider
     {
-        private static readonly ImmutableHashSet<UnicodeCategory> IdentifierCharCategories = ImmutableHashSet<UnicodeCategory>.Empty
+        private static readonly ImmutableHashSet<UnicodeCategory> s_identifierCharCategories = ImmutableHashSet<UnicodeCategory>.Empty
             .Add(UnicodeCategory.UppercaseLetter)
             .Add(UnicodeCategory.LowercaseLetter)
             .Add(UnicodeCategory.TitlecaseLetter)
@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             .Add(UnicodeCategory.EnclosingMark)
             .Add(UnicodeCategory.NonSpacingMark);
 
-        private static readonly ImmutableHashSet<UnicodeCategory> FirstIdentifierCharCategories = ImmutableHashSet<UnicodeCategory>.Empty
+        private static readonly ImmutableHashSet<UnicodeCategory> s_firstIdentifierCharCategories = ImmutableHashSet<UnicodeCategory>.Empty
             .Add(UnicodeCategory.UppercaseLetter)
             .Add(UnicodeCategory.LowercaseLetter)
             .Add(UnicodeCategory.TitlecaseLetter)
@@ -123,13 +123,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         private static bool IsValidIdentifierChar(char c)
         {
             var category = CharUnicodeInfo.GetUnicodeCategory(c);
-            return IdentifierCharCategories.Contains(category);
+            return s_identifierCharCategories.Contains(category);
         }
 
         private static bool IsValidFirstIdentifierChar(char c)
         {
             var category = CharUnicodeInfo.GetUnicodeCategory(c);
-            return FirstIdentifierCharCategories.Contains(category);
+            return s_firstIdentifierCharCategories.Contains(category);
         }
     }
 }

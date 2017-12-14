@@ -13,12 +13,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [InlineData(true)]
         public void IsInMemoryProfile_ILaunchProfile(bool isInMemory)
         {
-            LaunchProfile data =  new LaunchProfile()
+            var data =  new LaunchProfile()
             {
                 DoNotPersist = isInMemory
             };
             
-            ILaunchProfile lp = (ILaunchProfile)data;
+            var lp = (ILaunchProfile)data;
             Assert.Equal(isInMemory, lp.IsInMemoryObject());
         }
 
@@ -27,12 +27,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [InlineData(true)]
         public void IsInMemoryProfile_IWritableLaunchProfile(bool isInMemory)
         {
-            WritableLaunchProfile data =  new WritableLaunchProfile()
+            var data =  new WritableLaunchProfile()
             {
                 DoNotPersist = isInMemory
             };
 
-            IWritableLaunchProfile lp = (IWritableLaunchProfile)data;
+            var lp = (IWritableLaunchProfile)data;
             Assert.Equal(isInMemory, lp.IsInMemoryObject());
         }
 
@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public void IsInMemoryProfile_NativeDebuggingIsEnabled(bool? nativeDebugging)
         {
             bool isUsingNativeDebugging = nativeDebugging == null? false : nativeDebugging.Value;
-            LaunchProfile data =  new LaunchProfile()
+            var data =  new LaunchProfile()
             {
                 OtherSettings = nativeDebugging == null? null : ImmutableDictionary<string, object>.Empty.Add(LaunchProfileExtensions.NativeDebuggingProperty, nativeDebugging.Value)
             };

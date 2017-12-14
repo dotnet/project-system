@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private readonly ImmutableDictionary<string, SourceAssemblyAttributePropertyValueProvider> _attributeValueProviderMap;
 
         // See https://github.com/dotnet/sdk/blob/master/src/Tasks/Microsoft.NET.Build.Tasks/build/Microsoft.NET.GenerateAssemblyInfo.targets
-        internal static readonly ImmutableDictionary<string, (string AttributeName, string GeneratePropertyInProjectFileName)> s_assemblyPropertyInfoMap = new Dictionary<string, (string AttributeName, string GeneratePropertyInProjectFileName)>
+        internal static readonly ImmutableDictionary<string, (string attributeName, string generatePropertyInProjectFileName)> AssemblyPropertyInfoMap = new Dictionary<string, (string AttributeName, string GeneratePropertyInProjectFileName)>
         {
             { "Description",           ( AttributeName: "System.Reflection.AssemblyDescriptionAttribute", GeneratePropertyInProjectFileName: "GenerateAssemblyDescriptionAttribute" ) },
             { "Company",               ( AttributeName: "System.Reflection.AssemblyCompanyAttribute", GeneratePropertyInProjectFileName: "GenerateAssemblyCompanyAttribute" ) },
@@ -44,9 +44,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             IProjectThreadingService threadingService)
         {
             var builder = ImmutableDictionary.CreateBuilder<string, SourceAssemblyAttributePropertyValueProvider>();
-            foreach (var kvp in s_assemblyPropertyInfoMap)
+            foreach (var kvp in AssemblyPropertyInfoMap)
             {
-                var provider = new SourceAssemblyAttributePropertyValueProvider(kvp.Value.AttributeName, getActiveProjectId, workspace, threadingService);
+                var provider = new SourceAssemblyAttributePropertyValueProvider(kvp.Value.attributeName, getActiveProjectId, workspace, threadingService);
                 builder.Add(kvp.Key, provider);
             }
 
@@ -113,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         private async Task<bool> IsAssemblyInfoPropertyGeneratedByBuild(string propertyName)
         {
-            var info = s_assemblyPropertyInfoMap[propertyName];
+            (string attributeName, string generatePropertyInProjectFileName) = AssemblyPropertyInfoMap[propertyName];
 
             // Generate property in project file only if:
             // 1. "GenerateAssemblyInfo" is true AND
@@ -124,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 return false;
             }
 
-            propertyValue = await base.GetEvaluatedPropertyValueAsync(info.GeneratePropertyInProjectFileName).ConfigureAwait(true);
+            propertyValue = await base.GetEvaluatedPropertyValueAsync(generatePropertyInProjectFileName).ConfigureAwait(true);
             if (!bool.TryParse(propertyValue, out value) || !value)
             {
                 return false;

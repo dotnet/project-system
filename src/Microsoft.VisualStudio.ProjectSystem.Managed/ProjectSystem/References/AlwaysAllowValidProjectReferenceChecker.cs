@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.References
     [Order(Order.Default)] // Before the default checker, which delegates onto normal P-2-P rules
     internal class AlwaysAllowValidProjectReferenceChecker : IValidProjectReferenceChecker
     {
-        private static readonly Task<SupportedCheckResult> Supported = Task.FromResult(SupportedCheckResult.Supported);
+        private static readonly Task<SupportedCheckResult> s_supported = Task.FromResult(SupportedCheckResult.Supported);
 
         [ImportingConstructor]
         public AlwaysAllowValidProjectReferenceChecker()
@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.References
         {
             Requires.NotNull(referencedProject, nameof(referencedProject));
 
-            return Supported;
+            return s_supported;
         }
 
         public Task<CanAddProjectReferencesResult> CanAddProjectReferencesAsync(IImmutableSet<object> referencedProjects)
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.References
         {
             Requires.NotNull(referencingProject, nameof(referencingProject));
 
-            return Supported;
+            return s_supported;
         }
     }
 }

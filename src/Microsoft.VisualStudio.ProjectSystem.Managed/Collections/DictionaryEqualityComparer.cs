@@ -71,8 +71,7 @@ namespace Microsoft.VisualStudio.Collections
                 return true;
             }
 
-            var concreteDictionary1 = dictionary1 as ImmutableDictionary<TKey, TValue>;
-            IEqualityComparer<TValue> valueComparer = concreteDictionary1 != null ? concreteDictionary1.ValueComparer : EqualityComparer<TValue>.Default;
+            IEqualityComparer<TValue> valueComparer = dictionary1 is ImmutableDictionary<TKey, TValue> concreteDictionary1 ? concreteDictionary1.ValueComparer : EqualityComparer<TValue>.Default;
             return AreEquivalent((IReadOnlyDictionary<TKey, TValue>)dictionary1, (IReadOnlyDictionary<TKey, TValue>)dictionary2, valueComparer);
         }
 

@@ -52,9 +52,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 var enumValues = new List<IEnumValue>();
                 var items = await _projectXmlAccessor.GetItems(_configuredProject, itemType: SupportedTargetFrameworkItemName, metadataName: DisplayNameMetadataName).ConfigureAwait(false);
 
-                foreach (var item in items)
+                foreach ((string evaluatedInclude, string metadataValue) in items)
                 {
-                    var val = new PageEnumValue(new EnumValue { Name = item.evaluatedInclude, DisplayName = item.metadataValue });
+                    var val = new PageEnumValue(new EnumValue { Name = evaluatedInclude, DisplayName = metadataValue });
                     enumValues.Add(val);
                 }
 

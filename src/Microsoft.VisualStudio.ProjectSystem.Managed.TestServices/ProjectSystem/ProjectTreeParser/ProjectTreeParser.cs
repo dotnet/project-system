@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             value = value.Trim(new char[] { '\r', '\n' });
 
-            ProjectTreeParser parser = new ProjectTreeParser(value);
+            var parser = new ProjectTreeParser(value);
 
             return parser.Parse();
         }
@@ -118,7 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private MutableProjectTree ReadProjectItem()
         {
-            MutableProjectTree tree = new MutableProjectTree();
+            var tree = new MutableProjectTree();
             ReadProjectItemProperties(tree);
 
             return tree;

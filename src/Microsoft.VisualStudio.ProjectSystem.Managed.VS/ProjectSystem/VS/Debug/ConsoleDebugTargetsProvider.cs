@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     [Order(Order.Default)] // The higher the number the higher priority and we want this one last
     internal class ConsoleDebugTargetsProvider : IDebugProfileLaunchTargetsProvider
     {
-        private static readonly char[] EscapedChars = new[] { '^', '<', '>', '&' };
+        private static readonly char[] s_escapedChars = new[] { '^', '<', '>', '&' };
 
         [ImportingConstructor]
         public ConsoleDebugTargetsProvider(ConfiguredProject configuredProject,
@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                                                  .ConfigureAwait(false);
 
 
-            IEnumValue outputType = (IEnumValue)await configuration.OutputType.GetValueAsync()
+            var outputType = (IEnumValue)await configuration.OutputType.GetValueAsync()
                                                                       .ConfigureAwait(false);
 
             return StringComparers.PropertyValues.Equals(outputType.Name, ConfigurationGeneral.OutputTypeValues.Library);
@@ -98,10 +98,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </summary>
         public async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile)
         {
-            List<DebugLaunchSettings> launchSettings = new List<DebugLaunchSettings>();
+            var launchSettings = new List<DebugLaunchSettings>();
 
             // Resolve the tokens in the profile
-            ILaunchProfile resolvedProfile = await TokenReplacer.ReplaceTokensInProfileAsync(activeProfile).ConfigureAwait(true);
+            ILaunchProfile resolvedProfile = await TokenReplacer.ReplaceTokensInProfileAsync(activeProfile).ConfigureAwait(false);
 
             // For "run project", we want to launch the process via the command shell when not debugging, except when this debug session is being
             // launched for profiling.
@@ -109,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                     IsRunProjectCommand(resolvedProfile) &&
                     (launchOptions & (DebugLaunchOptions.NoDebug | DebugLaunchOptions.Profiling)) == DebugLaunchOptions.NoDebug;
 
-            var consoleTarget = await GetConsoleTargetForProfile(resolvedProfile, launchOptions, useCmdShell).ConfigureAwait(true);
+            var consoleTarget = await GetConsoleTargetForProfile(resolvedProfile, launchOptions, useCmdShell).ConfigureAwait(false);
 
             launchSettings.Add(consoleTarget);
 
@@ -143,7 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             if (useCmdShell)
             {
                 // Escape the characters ^<>& so that they are passed to the application rather than interpreted by cmd.exe.
-                string escapedArgs = EscapeString(debugArgs, EscapedChars);
+                string escapedArgs = EscapeString(debugArgs, s_escapedChars);
                 finalArguments = $"/c \"\"{debugExe}\" {escapedArgs} & pause\"";
                 finalExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
             }

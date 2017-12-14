@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                                Imports,
                                ImportsEvents
     {
-        private const string importItemTypeName = "Import";
+        private const string ImportItemTypeName = "Import";
 
         private readonly ActiveConfiguredProject<ConfiguredProject> _activeConfiguredProject;
         private readonly IProjectThreadingService _threadingService;
@@ -74,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                     {
                         var project = await access.GetProjectAsync(ConfiguredProject).ConfigureAwait(true);
                         await access.CheckoutAsync(project.Xml.ContainingProject.FullPath).ConfigureAwait(true);
-                        project.AddItem(importItemTypeName, bstrImport);
+                        project.AddItem(ImportItemTypeName, bstrImport);
                     }
                 });
 
@@ -102,12 +102,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                         await access.CheckoutAsync(project.Xml.ContainingProject.FullPath).ConfigureAwait(true);
                         if (index is string removeImport1)
                         {
-                            importProjectItem = project.GetItems(importItemTypeName)
+                            importProjectItem = project.GetItems(ImportItemTypeName)
                                                        .First(i => string.Compare(removeImport1, i.EvaluatedInclude, StringComparison.OrdinalIgnoreCase) == 0);
                         }
                         else if (index is int indexInt1)
                         {
-                            importProjectItem = project.GetItems(importItemTypeName)
+                            importProjectItem = project.GetItems(ImportItemTypeName)
                                                        .OrderBy(i => i.EvaluatedInclude)
                                                        .ElementAt((indexInt1 - 1));
                         }
@@ -154,20 +154,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 
         internal virtual void OnImportAdded(string importNamespace)
         {
-            var importAdded = ImportAdded;
-            if (importAdded != null)
-            {
-                importAdded(importNamespace);
-            }
+            ImportAdded?.Invoke(importNamespace);
         }
 
         internal virtual void OnImportRemoved(string importNamespace)
         {
-            var importRemoved = ImportRemoved;
-            if (importRemoved != null)
-            {
-                importRemoved(importNamespace);
-            }
+            ImportRemoved?.Invoke(importNamespace);
         }
 
         public void OnSinkAdded(_dispImportsEvents sink)

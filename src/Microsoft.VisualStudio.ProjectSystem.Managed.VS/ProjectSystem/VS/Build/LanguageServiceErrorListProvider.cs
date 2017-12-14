@@ -18,8 +18,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
     [Order(Order.Default)]
     internal partial class LanguageServiceErrorListProvider : IVsErrorListProvider
     {
-        private readonly static Task<AddMessageResult> HandledAndStopProcessing = Task.FromResult(AddMessageResult.HandledAndStopProcessing);
-        private readonly static Task<AddMessageResult> NotHandled = Task.FromResult(AddMessageResult.NotHandled);
+        private readonly static Task<AddMessageResult> s_handledAndStopProcessing = Task.FromResult(AddMessageResult.HandledAndStopProcessing);
+        private readonly static Task<AddMessageResult> s_notHandled = Task.FromResult(AddMessageResult.NotHandled);
         private readonly ILanguageServiceHost _host;
         private IVsLanguageServiceBuildErrorReporter2 _languageServiceBuildErrorReporter;
 
@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             // We only want to pass compiler, analyzers, etc to the language 
             // service, so we skip tasks that do not have a code
             if (!TryExtractErrorListDetails(error.BuildEventArgs, out ErrorListDetails details) || string.IsNullOrEmpty(details.Code))
-                return await NotHandled.ConfigureAwait(false);
+                return await s_notHandled.ConfigureAwait(false);
 
             InitializeBuildErrorReporter();
 
@@ -77,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 }
             }
 
-            return handled ? await HandledAndStopProcessing.ConfigureAwait(false) : await NotHandled.ConfigureAwait(false);
+            return handled ? await s_handledAndStopProcessing.ConfigureAwait(false) : await s_notHandled.ConfigureAwait(false);
         }
 
         public Task ClearMessageFromTargetAsync(string targetName)

@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
     internal abstract class BaseVersionValueProvider : InterceptingPropertyValueProviderBase
     {
         private const string PackageVersionMSBuildProperty = "Version";
-        protected static readonly Version s_DefaultVersion = new Version(1, 0, 0);
+        protected static readonly Version DefaultVersion = new Version(1, 0, 0);
 
         protected abstract string PropertyName { get; }
 
@@ -19,12 +19,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
             var versionStr = await defaultProperties.GetEvaluatedPropertyValueAsync(PackageVersionMSBuildProperty).ConfigureAwait(true);
             if (string.IsNullOrEmpty(versionStr))
             {
-                return s_DefaultVersion;
+                return DefaultVersion;
             }
 
             // Ignore the semantic version suffix (e.g. "1.0.0-beta1" => "1.0.0")
             versionStr = versionStr.Split('-')[0];
-            return Version.TryParse(versionStr, out Version version) ? version : s_DefaultVersion;
+            return Version.TryParse(versionStr, out Version version) ? version : DefaultVersion;
         }
 
         public override async Task<string> OnGetEvaluatedPropertyValueAsync(string evaluatedPropertyValue, IProjectProperties defaultProperties)

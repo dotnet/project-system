@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     {
         internal LaunchSettingsUnderTest GetLaunchSettingsProvider(IFileSystem fileSystem, string appDesignerFolder = @"c:\test\Project1\Properties", string activeProfile = "")
         {
-            Mock<IEnumValue> activeProfileValue = new Mock<IEnumValue>();
+            var activeProfileValue = new Mock<IEnumValue>();
             activeProfileValue.Setup(s => s.Name).Returns(activeProfile);
             var debuggerData = new PropertyPageData() {
                 Category = ProjectDebugger.SchemaName,
@@ -97,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public async Task UpdateProfiles_NoSettingsFile()
         {
 
-            IFileSystemMock moqFS = new IFileSystemMock();
+            var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
 
             // No settings  file, should add the default profile
@@ -109,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public async Task UpdateProfilesBasicSettingsFile()
         {
-            IFileSystemMock moqFS = new IFileSystemMock();
+            var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
             moqFS.WriteAllText(provider.LaunchSettingsFile, JsonString1);
 
@@ -122,7 +122,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public async Task UpdateProfilesSetActiveProfileFromProperty()
         {
-            IFileSystemMock moqFS = new IFileSystemMock();
+            var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
             moqFS.WriteAllText(provider.LaunchSettingsFile, JsonString1);
 
@@ -136,7 +136,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public async Task UpdateProfiles_ChangeActiveProfileOnly()
         {
-            IFileSystemMock moqFS = new IFileSystemMock();
+            var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
             moqFS.WriteAllText(provider.LaunchSettingsFile, JsonString1);
             await provider.UpdateProfilesAsyncTest(null);
@@ -151,7 +151,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public async Task UpdateProfiles_BadJsonShouldLeaveProfilesStable()
         {
-            IFileSystemMock moqFS = new IFileSystemMock();
+            var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
             moqFS.WriteAllText(provider.LaunchSettingsFile, JsonString1);
             await provider.UpdateProfilesAsyncTest(null);
@@ -166,7 +166,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public async Task UpdateProfiles_SetsErrorProfileTests()
         {
-            IFileSystemMock moqFS = new IFileSystemMock();
+            var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
             moqFS.WriteAllText(provider.LaunchSettingsFile, BadJsonString);
 
@@ -179,7 +179,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public async Task UpdateProfiles_MergeInMemroyProfiles()
         {
-            IFileSystemMock moqFS = new IFileSystemMock();
+            var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
             moqFS.WriteAllText(provider.LaunchSettingsFile, JsonString1);
 
@@ -206,7 +206,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public async Task UpdateProfiles_MergeInMemroyProfiles_AddProfileAtAend()
         {
-            IFileSystemMock moqFS = new IFileSystemMock();
+            var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
             moqFS.WriteAllText(provider.LaunchSettingsFile, JsonString1);
 
@@ -235,7 +235,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public async Task UpdateProfiles_MergeInMemroyGlobalSettings()
         {
-            IFileSystemMock moqFS = new IFileSystemMock();
+            var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
             moqFS.WriteAllText(provider.LaunchSettingsFile, JsonStringWithWebSettings);
 
@@ -269,7 +269,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public async Task SettingsFileHasChangedTests()
         {
-            IFileSystemMock moqFS = new IFileSystemMock();
+            var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
 
             // No settings  file
@@ -286,7 +286,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public async Task ReadProfilesFromDisk_NoFile()
         {
 
-            IFileSystemMock moqFS = new IFileSystemMock();
+            var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
 
             // Test without an existing file. Should throw
@@ -306,7 +306,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public async Task ReadProfilesFromDisk_GoodFile()
         {
 
-            IFileSystemMock moqFS = new IFileSystemMock();
+            var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
 
             // write a good file
@@ -319,7 +319,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public async Task ReadProfilesFromDisk_BadJsonFile()
         {
-            IFileSystemMock moqFS = new IFileSystemMock();
+            var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
 
             moqFS.WriteAllText(provider.LaunchSettingsFile, BadJsonString);
@@ -336,7 +336,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public async Task ReadProfilesFromDisk_JsonWithExtensionsNoProvider()
         {
-            IFileSystemMock moqFS = new IFileSystemMock();
+            var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
 
             // Write a json file containing extension settings
@@ -350,7 +350,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public async Task ReadProfilesFromDisk_JsonWithExtensionsWithProvider()
         {
-            IFileSystemMock moqFS = new IFileSystemMock();
+            var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
 
             // Write a json file containing extension settings
@@ -368,7 +368,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public async Task SaveProfilesToDiskTests()
         {
-            IFileSystemMock moqFS = new IFileSystemMock();
+            var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
 
             var profiles = new List<ILaunchProfile>()
@@ -385,7 +385,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             });
             testSettings.Setup(m => m.GlobalSettings).Returns(() =>
             {
-                IISSettingsData iisSettings = new IISSettingsData()
+                var iisSettings = new IISSettingsData()
                 {
                     AnonymousAuthentication = false,
                     WindowsAuthentication = true,
@@ -410,7 +410,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public async Task LaunchSettingsFile_Changed()
         {
-            IFileSystemMock moqFS = new IFileSystemMock();
+            var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
 
             // Write file and generate disk change
@@ -427,7 +427,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public async Task LaunchSettingsFile_TestIgnoreFlag()
         {
-            IFileSystemMock moqFS = new IFileSystemMock();
+            var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
 
             string fileName = await provider.GetLaunchSettingsFilePathNoCacheAsync();
@@ -453,7 +453,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public async Task LaunchSettingsFile_TestTimeStampFlag()
         {
-            IFileSystemMock moqFS = new IFileSystemMock();
+            var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
 
             // Write file and generate disk change
@@ -480,7 +480,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public void DisposeTests()
         {
-            IFileSystemMock moqFS = new IFileSystemMock();
+            var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
             Assert.False(provider.DisposeObjectsAreNull());
             provider.CallDispose();
@@ -491,7 +491,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public async Task UpdateAndSaveProfilesAsync()
         {
-            IFileSystemMock moqFS = new IFileSystemMock();
+            var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
 
             var profiles = new List<ILaunchProfile>()
@@ -509,7 +509,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             testSettings.Setup(m => m.GlobalSettings).Returns(() =>
             {
-                IISSettingsData iisSettings = new IISSettingsData()
+                var iisSettings = new IISSettingsData()
                 {
                     AnonymousAuthentication = false,
                     WindowsAuthentication = true,
@@ -538,7 +538,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public async Task UpdateAndSaveProfilesAsync_ActiveProfilePreserved()
         {
-            IFileSystemMock moqFS = new IFileSystemMock();
+            var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS, "Properties", "bar");
 
             var existingSettings = new Mock<ILaunchSettings>();
@@ -571,7 +571,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [InlineData(false, 2, true)]
         public async Task AddOrUpdateProfileAsync_ProfileDoesntExist(bool addToFront, int expectedIndex, bool isInMemory)
         {
-            IFileSystemMock moqFS = new IFileSystemMock();
+            var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
 
             var profiles = new List<ILaunchProfile>()
@@ -605,7 +605,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [InlineData(false, 1, true, true)]
         public async Task AddOrUpdateProfileAsync_ProfileExists(bool addToFront, int expectedIndex, bool isInMemory, bool existingIsInMemory)
         {
-            IFileSystemMock moqFS = new IFileSystemMock();
+            var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
 
             var profiles = new List<ILaunchProfile>()
@@ -639,7 +639,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [InlineData(true)]
         public async Task RemoveProfileAsync_ProfileExists(bool isInMemory)
         {
-            IFileSystemMock moqFS = new IFileSystemMock();
+            var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
 
             var profiles = new List<ILaunchProfile>()
@@ -667,7 +667,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public async Task RemoveProfileAsync_ProfileDoesntExists()
         {
-            IFileSystemMock moqFS = new IFileSystemMock();
+            var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
 
             var profiles = new List<ILaunchProfile>()
@@ -695,7 +695,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [InlineData(true)]
         public async Task AddOrUpdateGlobalSettingAsync_SettingDoesntExist(bool isInMemory)
         {
-            IFileSystemMock moqFS = new IFileSystemMock();
+            var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
 
             // Set the serialization provider
@@ -728,7 +728,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [InlineData(true, true)]
         public async Task AddOrUpdateGlobalSettingAsync_SettingExists(bool isInMemory, bool existingIsInMemory)
         {
-            IFileSystemMock moqFS = new IFileSystemMock();
+            var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
 
             // Set the serialization provider
@@ -759,7 +759,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public async Task RemoveGlobalSettingAsync_SettingDoesntExist()
         {
-            IFileSystemMock moqFS = new IFileSystemMock();
+            var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
 
             // Set the serialization provider
@@ -785,7 +785,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public async Task RemoveGlobalSettingAsync_SettingExists()
         {
-            IFileSystemMock moqFS = new IFileSystemMock();
+            var moqFS = new IFileSystemMock();
             var provider = GetLaunchSettingsProvider(moqFS);
 
             // Set the serialization provider
@@ -811,7 +811,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.False(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out object updatedSettings));
         }
 
-string JsonString1 = @"{
+        private string JsonString1 = @"{
   ""profiles"": {
   ""IIS Express"":
     {
@@ -846,8 +846,7 @@ string JsonString1 = @"{
     }
   }
 }";
-
-        string JsonStringWithWebSettings = @"{
+        private string JsonStringWithWebSettings = @"{
   ""iisSettings"": {
     ""windowsAuthentication"": true,
     ""anonymousAuthentication"": false,
@@ -867,8 +866,7 @@ string JsonString1 = @"{
     }
   }
 }";
-
-        string BadJsonString = @"{
+        private string BadJsonString = @"{
   ""profiles"": {
     {
       ""name"": ""IIS Express"",

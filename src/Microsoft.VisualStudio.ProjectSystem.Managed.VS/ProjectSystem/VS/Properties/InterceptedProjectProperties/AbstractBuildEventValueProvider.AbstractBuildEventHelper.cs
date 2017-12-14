@@ -55,10 +55,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 
                 if (OnlyWhitespaceCharacters(unevaluatedPropertyValue))
                 {
-                    var result = FindTargetToRemove(projectXml);
-                    if (result.success)
+                    (bool success, ProjectTargetElement target) = FindTargetToRemove(projectXml);
+                    if (success)
                     {
-                        projectXml.RemoveChild(result.target);
+                        projectXml.RemoveChild(target);
                         return;
                     }
                 }
@@ -68,14 +68,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 
             private string GetFromTargets(ProjectRootElement projectXml)
             {
-                var result = FindExecTaskInTargets(projectXml);
+                (bool success, ProjectTaskElement execTask) = FindExecTaskInTargets(projectXml);
 
-                if (!result.success)
+                if (!success)
                 {
                     return null;
                 }
 
-                if (result.execTask.Parameters.TryGetValue(Command, out var commandText))
+                if (execTask.Parameters.TryGetValue(Command, out var commandText))
                 {
                     return commandText;
                 }

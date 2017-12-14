@@ -19,21 +19,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
     [ProjectSystemTrait]
     public class ConsoleDebugLaunchProviderTest
     {
-        string _ProjectFile = @"c:\test\project\project.csproj";
-        string _Path = @"c:\program files\dotnet;c:\program files\SomeDirectory";
+        private string _ProjectFile = @"c:\test\project\project.csproj";
+        private string _Path = @"c:\program files\dotnet;c:\program files\SomeDirectory";
+        private Mock<IEnvironmentHelper> _mockEnvironment = new Mock<IEnvironmentHelper>();
+        private IFileSystemMock _mockFS = new IFileSystemMock();
+        private Mock<IDebugTokenReplacer> _mockTokenReplace = new Mock<IDebugTokenReplacer>();
 
-        Mock<IEnvironmentHelper> _mockEnvironment = new Mock<IEnvironmentHelper>();
-        IFileSystemMock _mockFS = new IFileSystemMock();
-        Mock<IDebugTokenReplacer> _mockTokenReplace = new Mock<IDebugTokenReplacer>();
-
-        ConsoleDebugTargetsProvider GetDebugTargetsProvider(string outputType = "exe", Dictionary<string, string> properties = null)
+        private ConsoleDebugTargetsProvider GetDebugTargetsProvider(string outputType = "exe", Dictionary<string, string> properties = null)
         {
             _mockFS.WriteAllText(@"c:\test\Project\someapp.exe", "");
             _mockFS.CreateDirectory(@"c:\test\Project");
             _mockFS.CreateDirectory(@"c:\test\Project\bin\");
             _mockFS.WriteAllText(@"c:\program files\dotnet\dotnet.exe", "");
 
-            LaunchProfile activeProfile = new LaunchProfile() { Name = "MyApplication",  CommandLineArgs = "--someArgs", ExecutablePath=@"c:\test\Project\someapp.exe" };
+            var activeProfile = new LaunchProfile() { Name = "MyApplication",  CommandLineArgs = "--someArgs", ExecutablePath=@"c:\test\Project\someapp.exe" };
 
             _mockEnvironment.Setup(s => s.GetEnvironmentVariable("Path")).Returns(() => _Path);
 
@@ -153,7 +152,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             _mockFS.WriteAllText(@"c:\program files\dotnet\dotnet.exe", "");
             _mockFS.CreateDirectory(@"c:\test\project");
 
-            LaunchProfile activeProfile = new LaunchProfile() { Name = "MyApplication", CommandName = "Project", CommandLineArgs = "--someArgs" };
+            var activeProfile = new LaunchProfile() { Name = "MyApplication", CommandName = "Project", CommandLineArgs = "--someArgs" };
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
             Assert.Equal(@"c:\program files\dotnet\dotnet.exe", targets[0].Executable);
@@ -171,7 +170,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             _mockFS.WriteAllText(@"c:\program files\dotnet\dotnet.exe", "");
             _mockFS.CreateDirectory(@"c:\test\project");
 
-            LaunchProfile activeProfile = new LaunchProfile() 
+            var activeProfile = new LaunchProfile() 
             { 
                 Name = "MyApplication", 
                 CommandName = "Project", 
@@ -193,7 +192,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         {
             var debugger = GetDebugTargetsProvider();
 
-            LaunchProfile activeProfile = new LaunchProfile() { Name = "MyApplication", CommandName = "Project", CommandLineArgs = "--someArgs" };
+            var activeProfile = new LaunchProfile() { Name = "MyApplication", CommandName = "Project", CommandLineArgs = "--someArgs" };
 
             // Now control-F5, add env
             activeProfile.EnvironmentVariables = new Dictionary<string, string>() { { "var1", "Value1" } }.ToImmutableDictionary();
@@ -212,7 +211,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         {
             var debugger = GetDebugTargetsProvider();
 
-            LaunchProfile activeProfile = new LaunchProfile() { Name = "MyApplication", CommandName = "Project", CommandLineArgs = "--someArgs" };
+            var activeProfile = new LaunchProfile() { Name = "MyApplication", CommandName = "Project", CommandLineArgs = "--someArgs" };
 
             // Validate that when the DLO_Profiling is set we don't run the cmd.exe
             var targets = await debugger.QueryDebugTargetsAsync(DebugLaunchOptions.NoDebug | DebugLaunchOptions.Profiling, activeProfile);
@@ -226,7 +225,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         {
             var debugger = GetDebugTargetsProvider();
 
-            LaunchProfile activeProfile = new LaunchProfile() { Name = "MyApplication",  CommandLineArgs = "--someArgs", ExecutablePath=@"c:\test\Project\someapp.exe" };
+            var activeProfile = new LaunchProfile() { Name = "MyApplication",  CommandLineArgs = "--someArgs", ExecutablePath=@"c:\test\Project\someapp.exe" };
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
             Assert.Equal(activeProfile.ExecutablePath, targets[0].Executable);
@@ -240,7 +239,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         {
             var debugger = GetDebugTargetsProvider();
 
-            LaunchProfile activeProfile = new LaunchProfile() { Name = "MyApplication",  CommandLineArgs = "--someArgs", ExecutablePath=@"c:\test\Project\someapp.exe" };
+            var activeProfile = new LaunchProfile() { Name = "MyApplication",  CommandLineArgs = "--someArgs", ExecutablePath=@"c:\test\Project\someapp.exe" };
 
             // Now control-F5, add env vars
             activeProfile.EnvironmentVariables = new Dictionary<string, string>() { { "var1", "Value1" } }.ToImmutableDictionary();
