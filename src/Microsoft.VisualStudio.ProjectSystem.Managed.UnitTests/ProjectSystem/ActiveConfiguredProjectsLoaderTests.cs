@@ -31,6 +31,30 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             Assert.Equal(configurationNames, results);
         }
+        
+        [Fact]
+        public async Task InitializeAsync_CanNotInitializeTwice()
+        {
+            var results = new List<string>();
+            var project = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync(configuration => {
+
+                results.Add(configuration.Name);
+                return Task.FromResult<ConfiguredProject>(null);
+            });
+
+            var loader = CreateInstance(project, out var source);
+
+            await loader.InitializeAsync();
+            await loader.InitializeAsync();
+
+            var configurationGroups = IConfigurationGroupFactory.CreateFromConfigurationNames("Debug|AnyCPU");
+
+            // Change the active configurations
+            await source.SendAndCompleteAsync(configurationGroups, loader.TargetBlock);
+
+            Assert.Equal(new string[] { "Debug|AnyCPU" }, results);
+        }
+
 
         [Fact]
         public void Dispose_WhenNotInitialized_DoesNotThrow()

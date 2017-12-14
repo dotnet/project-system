@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
         public Task InitializeAsync()
         {
-            Initialize();
+            EnsureInitialized();
             return Task.CompletedTask;
         }
 
