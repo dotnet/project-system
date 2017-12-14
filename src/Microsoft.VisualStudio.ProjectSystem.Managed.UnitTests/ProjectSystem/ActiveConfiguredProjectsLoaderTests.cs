@@ -17,8 +17,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var configurationGroups = IConfigurationGroupFactory.CreateFromConfigurationNames(configurationNames);
 
             var results = new List<string>();
-            var project = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync(configuration =>  {
-
+            var project = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync(configuration =>  
+            {
                 results.Add(configuration.Name);
                 return Task.FromResult<ConfiguredProject>(null);
             });
