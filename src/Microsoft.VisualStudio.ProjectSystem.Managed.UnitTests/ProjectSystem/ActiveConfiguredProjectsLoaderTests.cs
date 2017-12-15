@@ -31,7 +31,31 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             Assert.Equal(configurationNames, results);
         }
-        
+
+        [Fact]
+        public async Task WhenProjectUnloading_DoesNotLoadConfiguredProject()
+        {
+            var tasksService = IUnconfiguredProjectTasksServiceFactory.CreateWithUnloadedProject<ConfiguredProject>();
+
+            int callCount = 0;
+            UnconfiguredProject project = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync(configuration => {
+
+                callCount++;
+                return Task.FromResult<ConfiguredProject>(null);
+            });
+
+            var loader = CreateInstance(project, tasksService, out ProjectValueDataSource <IConfigurationGroup<ProjectConfiguration>> source);
+            await loader.InitializeAsync();
+
+            var configurationGroups = IConfigurationGroupFactory.CreateFromConfigurationNames("Debug|AnyCPU");
+
+            // Change the active configurations
+            await source.SendAndCompleteAsync(configurationGroups, loader.TargetBlock);
+
+            // Should not be listening
+            Assert.Equal(0, callCount);
+        }
+
         [Fact]
         public async Task InitializeAsync_CanNotInitializeTwice()
         {
@@ -89,21 +113,27 @@ namespace Microsoft.VisualStudio.ProjectSystem
             // Should not be listening
             Assert.Equal(0, callCount);
         }
-
         private static ActiveConfiguredProjectsLoader CreateInstance(UnconfiguredProject project, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source)
+        {
+            return CreateInstance(project, null, out source);
+        }
+
+        private static ActiveConfiguredProjectsLoader CreateInstance(UnconfiguredProject project, IUnconfiguredProjectTasksService tasksService, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source)
         {
             var services = IProjectCommonServicesFactory.CreateWithDefaultThreadingPolicy();
             source = ProjectValueDataSourceFactory.Create<IConfigurationGroup<ProjectConfiguration>>(services);
             var activeConfigurationGroupService = IActiveConfigurationGroupServiceFactory.Implement(source);
 
-            var loader = CreateInstance(project, activeConfigurationGroupService);
+            var loader = CreateInstance(project, activeConfigurationGroupService, tasksService);
 
             return loader;
         }
 
-        private static ActiveConfiguredProjectsLoader CreateInstance(UnconfiguredProject project, IActiveConfigurationGroupService activeConfigurationGroupService)
+        private static ActiveConfiguredProjectsLoader CreateInstance(UnconfiguredProject project, IActiveConfigurationGroupService activeConfigurationGroupService, IUnconfiguredProjectTasksService tasksService)
         {
-            return new ActiveConfiguredProjectsLoader(project, activeConfigurationGroupService);
+            tasksService = tasksService ?? IUnconfiguredProjectTasksServiceFactory.ImplementLoadedProjectAsync<ConfiguredProject>(t => t());
+
+            return new ActiveConfiguredProjectsLoader(project, activeConfigurationGroupService, tasksService);
         }
     }
 }

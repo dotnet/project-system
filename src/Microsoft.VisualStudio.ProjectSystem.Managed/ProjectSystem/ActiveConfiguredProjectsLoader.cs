@@ -15,15 +15,17 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         private readonly UnconfiguredProject _project;
         private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
+        private readonly IUnconfiguredProjectTasksService _tasksService;
         private ActionBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> _targetBlock;
         private IDisposable _subscription;
 
         [ImportingConstructor]
-        public ActiveConfiguredProjectsLoader(UnconfiguredProject project, IActiveConfigurationGroupService activeConfigurationGroupService)
+        public ActiveConfiguredProjectsLoader(UnconfiguredProject project, IActiveConfigurationGroupService activeConfigurationGroupService, IUnconfiguredProjectTasksService tasksService)
             : base(synchronousDisposal:true)
         {
             _project = project;
             _activeConfigurationGroupService = activeConfigurationGroupService;
+            _tasksService = tasksService;
             _targetBlock = new ActionBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>>(OnActiveConfigurationsChanged);
         }
 
@@ -60,8 +62,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             foreach (ProjectConfiguration configuration in e.Value)
             {
-                await _project.LoadConfiguredProjectAsync(configuration)
-                              .ConfigureAwait(false);
+                // Make sure we aren't currently unloading, or we don't unload while we load the configuration
+                await _tasksService.LoadedProjectAsync(() =>
+                {
+                    return _project.LoadConfiguredProjectAsync(configuration);
+
+                }).ConfigureAwait(false);
             }
         }
     }
