@@ -93,7 +93,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 OnDeactivated();
             }
-             
         }
 
         private void OnActivated()
