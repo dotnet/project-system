@@ -21,6 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private TaskCompletionSource<object> _isActiveCompletionSource = new TaskCompletionSource<object>();
         private IDisposable _subscription;
 
+        [ImportingConstructor]
         public ActiveConfiguredProjectService(ConfiguredProject project, IActiveConfigurationGroupService activeConfigurationGroupService, [Import(ExportContractNames.Scopes.ConfiguredProject)]IProjectAsynchronousTasksService tasksService)
         {
             _project = project;
