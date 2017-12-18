@@ -5,11 +5,14 @@ using Microsoft.VisualStudio.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
+    /// <summary>
+    ///     Provides properties and events to track activation of an <see cref="ConfiguredProject"/>.
+    /// </summary>
     [ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IActiveConfiguredProjectService
     {
         /// <summary>
-        ///     Gets a value indicating whether the configuration group  containing the 
+        ///     Gets a value indicating whether the configuration group containing the 
         ///     current <see cref="ConfiguredProject"/> is active.
         /// </summary>
         /// <exception cref="ObjectDisposedException">
