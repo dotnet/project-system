@@ -78,14 +78,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
             if (IsDisposing || IsDisposed)
                 return;
 
-            bool currentlyActive = e.Value.Contains(_project.ProjectConfiguration);
+            bool nowActive = e.Value.Contains(_project.ProjectConfiguration);
             bool previouslyActive = _isActiveCompletionSource.Task.IsCompleted;
 
             // Are there any changes for my configuration?
-            if (currentlyActive == previouslyActive)
+            if (nowActive == previouslyActive)
                 return;
 
-            if (currentlyActive)
+            if (nowActive)
             {
                 OnActivated();
             }
