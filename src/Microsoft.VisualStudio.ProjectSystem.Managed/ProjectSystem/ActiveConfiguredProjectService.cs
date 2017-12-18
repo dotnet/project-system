@@ -79,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return;
 
             bool nowActive = e.Value.Contains(_project.ProjectConfiguration);
-            bool previouslyActive = _isActiveCompletionSource.Task.IsCompleted;
+            bool previouslyActive = IsActive;
 
             // Are there any changes for my configuration?
             if (nowActive == previouslyActive)
