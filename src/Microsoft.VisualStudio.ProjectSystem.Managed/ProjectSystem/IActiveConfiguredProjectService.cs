@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     current <see cref="ConfiguredProject"/> is active.
         /// </summary>
         /// <exception cref="ObjectDisposedException">
-        ///     The <see cref="IActiveConfigurationGroupService"/> has been disposed of.
+        ///     The <see cref="IActiveConfiguredProjectService"/> has been disposed of.
         /// </exception>
         bool IsActive
         {
@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     current <see cref="ConfiguredProject"/> becomes active.
         /// </summary>
         /// <exception cref="ObjectDisposedException">
-        ///     The <see cref="IActiveConfigurationGroupService"/> has been disposed of.
+        ///     The <see cref="IActiveConfiguredProjectService"/> has been disposed of.
         /// </exception>
         /// <remarks>
         ///     The returned <see cref="Task"/> is cancelled when the 
