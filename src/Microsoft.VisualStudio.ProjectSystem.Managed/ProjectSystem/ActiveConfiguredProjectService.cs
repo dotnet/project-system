@@ -87,15 +87,25 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             if (currentlyActive)
             {
-                // Our configuration has become active
-                _isActiveCompletionSource.TrySetResult(null);
+                OnActivated();
             }
             else
             {
-                // Our configuration has become in-active
-                _isActiveCompletionSource = new TaskCompletionSource<object>();
-                Thread.MemoryBarrier();
+                OnDeactivated();
             }
+             
+        }
+
+        private void OnActivated()
+        {
+            _isActiveCompletionSource.TrySetResult(null);
+        }
+
+        private void OnDeactivated()
+        {
+            // Our configuration has become in-active
+            _isActiveCompletionSource = new TaskCompletionSource<object>();
+            Thread.MemoryBarrier();
         }
     }
 }
