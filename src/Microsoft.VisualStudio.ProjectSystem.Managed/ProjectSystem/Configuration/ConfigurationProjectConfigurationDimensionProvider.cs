@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// </summary>
         /// <param name="args">Information about the configuration dimension value change.</param>
         /// <returns>A task for the async operation.</returns>
-        public override async Task OnDimensionValueChangedAsync(ProjectConfigurationDimensionValueChangedEventArgs args)
+        public override Task OnDimensionValueChangedAsync(ProjectConfigurationDimensionValueChangedEventArgs args)
         {
             if (StringComparers.ConfigurationDimensionNames.Equals(args.DimensionName, DimensionName))
             {
@@ -40,11 +40,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                     switch (args.Change)
                     {
                         case ConfigurationDimensionChange.Add:
-                            await OnConfigurationAddedAsync(args.Project, args.DimensionValue).ConfigureAwait(true);
-                            break;
+                            return OnConfigurationAddedAsync(args.Project, args.DimensionValue);
+
                         case ConfigurationDimensionChange.Delete:
-                            await OnConfigurationRemovedAsync(args.Project, args.DimensionValue).ConfigureAwait(true);
-                            break;
+                            return OnConfigurationRemovedAsync(args.Project, args.DimensionValue);
+
                         case ConfigurationDimensionChange.Rename:
                             // Need to wait until the core rename changes happen before renaming the property.
                             break;
@@ -56,10 +56,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                     // of the core changes to rename existing conditions have executed.
                     if (args.Change == ConfigurationDimensionChange.Rename)
                     {
-                        await OnConfigurationRenamedAsync(args.Project, args.OldDimensionValue, args.DimensionValue).ConfigureAwait(true);
+                        return OnConfigurationRenamedAsync(args.Project, args.OldDimensionValue, args.DimensionValue);
                     }
                 }
             }
+
+            return Task.CompletedTask;
         }
 
         /// <summary>
