@@ -21,11 +21,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private TaskCompletionSource<object> _isActiveCompletionSource = new TaskCompletionSource<object>();
         private IDisposable _subscription;
 
-        public ActiveConfiguredProjectService(ConfiguredProject project, [Import(ExportContractNames.Scopes.ConfiguredProject)]IProjectAsynchronousTasksService tasksService, IActiveConfigurationGroupService activeConfigurationGroupService)
+        public ActiveConfiguredProjectService(ConfiguredProject project, IActiveConfigurationGroupService activeConfigurationGroupService, [Import(ExportContractNames.Scopes.ConfiguredProject)]IProjectAsynchronousTasksService tasksService)
         {
             _project = project;
-            _tasksService = tasksService;
             _activeConfigurationGroupService = activeConfigurationGroupService;
+            _tasksService = tasksService;
             _targetBlock = new ActionBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>>((Action<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>>)OnActiveConfigurationsChanged);
         }
 
