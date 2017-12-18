@@ -13,8 +13,8 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         None,
 
         /// <summary>
-        ///     Execute the specified callback immediately if the <see cref="CancellationToken"/> is already disposed.
+        ///     Execute the specified callback immediately if the <see cref="CancellationToken"/> is already canceled and disposed.
         /// </summary>
-        ExecuteImmediatelyIfAlreadyCanceled,
+        ExecuteImmediatelyIfAlreadyCanceledAndDisposed,
     }
 }

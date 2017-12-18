@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 target: _targetBlock,
                 linkOptions: new DataflowLinkOptions() { PropagateCompletion = true });
 
-            _tasksService.UnloadCancellationToken.Register(RegisterOptions.ExecuteImmediatelyIfAlreadyCanceled, () =>
+            _tasksService.UnloadCancellationToken.Register(RegisterOptions.ExecuteImmediatelyIfAlreadyCanceledAndDisposed, () =>
             {
                 /// Unloading, notify anyone listening that we're never going to be active
                 OnCanceled();
