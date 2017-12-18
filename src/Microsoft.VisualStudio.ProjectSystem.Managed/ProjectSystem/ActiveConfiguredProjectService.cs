@@ -102,7 +102,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private void OnDeactivated()
         {
-            // Our configuration has become in-active
             _isActiveCompletionSource = new TaskCompletionSource<object>();
             Thread.MemoryBarrier();
         }
