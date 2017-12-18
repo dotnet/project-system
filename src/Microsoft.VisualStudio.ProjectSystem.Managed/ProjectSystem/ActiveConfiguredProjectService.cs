@@ -59,8 +59,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             _tasksService.UnloadCancellationToken.Register(RegisterOptions.ExecuteImmediatelyIfAlreadyCanceled, () =>
             {
-                // Unloading, notify anyone listening that we're never going to be active
-                _isActiveCompletionSource.TrySetCanceled();
+                /// Unloading, notify anyone listening that we're never going to be active
+                OnCanceled();
             });
         }
 
@@ -69,8 +69,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _subscription?.Dispose();
             _targetBlock.Complete();
 
-            // Notify anyone listening that we're never going to be active
-            _isActiveCompletionSource.TrySetCanceled();
+            // Disposed, notify anyone listening that we're never going to be active
+            OnCanceled();
         }
 
         private void OnActiveConfigurationsChanged(IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>> e)
@@ -104,6 +104,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             _isActiveCompletionSource = new TaskCompletionSource<object>();
             Thread.MemoryBarrier();
+        }
+
+        private void OnCanceled()
+        {
+            // Notify anyone listening that we're never going to be active
+            _isActiveCompletionSource.TrySetCanceled();
         }
     }
 }
