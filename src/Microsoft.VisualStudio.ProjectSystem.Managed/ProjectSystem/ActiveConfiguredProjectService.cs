@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 EnsureInitialized();
 
-                return _isActiveCompletionSource.Task.IsCompleted;
+                return _isActiveCompletionSource.Task.Status == TaskStatus.RanToCompletion;
             }
         }
 
