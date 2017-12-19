@@ -28,8 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
     /// Note: when dependency has ProjectTreeFlags.Common.BrokenReference flag, GraphProvider API are not 
     /// called for that node.
     /// </summary>
-    [GraphProvider(Name = "Microsoft.VisualStudio.ProjectSystem.VS.Tree.DependenciesNodeGraphProvider",
-                   ProjectCapability = ProjectCapability.DependenciesTree)]
+    [Export(typeof(DependenciesGraphProvider))]
     [Export(typeof(IDependenciesGraphBuilder))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal class DependenciesGraphProvider : OnceInitializedOnceDisposedAsync, IGraphProvider, IDependenciesGraphBuilder
@@ -125,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         /// <summary>
         /// IGraphProvider.GetExtension
         /// </summary>
-        T IGraphProvider.GetExtension<T>(GraphObject graphObject, T previous)
+        public T GetExtension<T>(GraphObject graphObject, T previous) where T : class
         {
             return null;
         }
@@ -133,7 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         /// <summary>
         /// IGraphProvider.Schema
         /// </summary>
-        Graph IGraphProvider.Schema
+        public Graph Schema
         {
             get
             {
@@ -281,6 +280,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             GraphNode parentNode, 
             IDependencyViewModel viewModel)
         {
+            Assumes.True(IsInitialized);
+
             var modelId = viewModel.OriginalModel == null ? viewModel.Caption : viewModel.OriginalModel.Id;
             var newNodeId = GetGraphNodeId(projectPath, parentNode, modelId);
             return DoAddGraphNode(newNodeId, graphContext, projectPath, parentNode, viewModel);
@@ -291,6 +292,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             string projectPath,
             IDependencyViewModel viewModel)
         {
+
+            Assumes.True(IsInitialized);
+
             var newNodeId = GetTopLevelGraphNodeId(projectPath, viewModel.OriginalModel.GetTopLevelId());
             return DoAddGraphNode(newNodeId, graphContext, projectPath, parentNode: null, viewModel:viewModel);
         }
@@ -332,6 +336,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                                      string modelId,
                                      GraphNode parentNode)
         {
+            Assumes.True(IsInitialized);
+
             var id = GetGraphNodeId(projectPath, parentNode, modelId);
             var nodeToRemove = graphContext.Graph.Nodes.Get(id);
 
