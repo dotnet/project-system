@@ -265,13 +265,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
         private void RegisterIcons(IEnumerable<ImageMoniker> icons)
         {
+            Assumes.NotNull(icons);
+
             lock (_knownIconsLock)
             {
-                if (icons == null)
-                {
-                    return;
-                }
-
                 icons = icons.Where(x => !KnownIcons.Contains(x)).ToList();
                 if (!icons.Any())
                 {
