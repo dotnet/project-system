@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 
@@ -13,68 +12,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
     [Export(typeof(IConfiguredProjectReadyToBuild))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
     [Order(Order.Default)]
-    internal sealed class ImplicitlyActiveConfiguredProjectReadyToBuild : IConfiguredProjectReadyToBuild, IDisposable
+    internal sealed class ImplicitlyActiveConfiguredProjectReadyToBuild : IConfiguredProjectReadyToBuild
     {
-        private readonly ConfiguredProject _configuredProject;
-        private readonly IActiveConfiguredProjectProvider _activeConfiguredProjectProvider;
-        
-        private TaskCompletionSource<object> _activationTask;
+        private readonly IConfiguredProjectImplicitActivationTracking _implicitActivationTracking;
 
         [ImportingConstructor]
-        public ImplicitlyActiveConfiguredProjectReadyToBuild(
-            ConfiguredProject configuredProject,
-            IActiveConfiguredProjectProvider activeConfiguredProjectProvider)
+        public ImplicitlyActiveConfiguredProjectReadyToBuild(IConfiguredProjectImplicitActivationTracking implicitActivationTracking)
         {
-            Requires.NotNull(configuredProject, nameof(configuredProject));
-            Requires.NotNull(activeConfiguredProjectProvider, nameof(activeConfiguredProjectProvider));
-
-            _configuredProject = configuredProject;
-            _activeConfiguredProjectProvider = activeConfiguredProjectProvider;
-            _activationTask = new TaskCompletionSource<object>();
-
-            _activeConfiguredProjectProvider.Changed += ActiveConfiguredProject_Changed;
+            _implicitActivationTracking = implicitActivationTracking;
         }
 
-        private void ActiveConfiguredProject_Changed(object sender, ActiveConfigurationChangedEventArgs e) => GetLatestActivationTask();
+        public bool IsValidToBuild => _implicitActivationTracking.IsImplicitlyActive;
 
-        public bool IsValidToBuild => GetLatestActivationTask().IsCompleted;
-        public async Task WaitReadyToBuildAsync() => await GetLatestActivationTask().ConfigureAwait(false);
-
-        private Task GetLatestActivationTask()
-        {
-            lock (_configuredProject)
-            {
-                var previouslyActive = _activationTask.Task.IsCompleted;
-                var nowActive = IsActive();
-                if (previouslyActive)
-                {
-                    if (!nowActive)
-                    {
-                        _activationTask = new TaskCompletionSource<object>();
-                    }
-                }
-                else if (nowActive)
-                {
-                    _activationTask.TrySetResult(null);
-                }
-
-                return _activationTask.Task;
-            }
-        }
-
-        public void Dispose()
-        {
-            _activationTask.TrySetCanceled();
-            _activeConfiguredProjectProvider.Changed -= ActiveConfiguredProject_Changed;
-        }
-
-        private bool IsActive()
-        {
-            ProjectConfiguration activeConfig = _activeConfiguredProjectProvider.ActiveProjectConfiguration;
-            if (activeConfig == null)
-                return false;
-
-            return _configuredProject.ProjectConfiguration.EqualIgnoringTargetFramework(activeConfig);
-        }
+        public Task WaitReadyToBuildAsync() => _implicitActivationTracking.IsImplicitlyActiveTask;
     }
 }
