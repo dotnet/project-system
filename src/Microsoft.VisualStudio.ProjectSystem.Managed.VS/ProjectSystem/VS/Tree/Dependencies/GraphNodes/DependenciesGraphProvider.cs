@@ -20,6 +20,7 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 using Task = System.Threading.Tasks.Task;
+using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 {
@@ -34,16 +35,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
     internal class DependenciesGraphProvider : OnceInitializedOnceDisposedAsync, IGraphProvider, IDependenciesGraphBuilder
     {
         [ImportingConstructor]
-        public DependenciesGraphProvider(IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider,
-                                         SVsServiceProvider serviceProvider)
+        public DependenciesGraphProvider(IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider)
             : this(aggregateSnapshotProvider,
-                   serviceProvider,
+                   AsyncServiceProvider.GlobalProvider,
                    new JoinableTaskContextNode(ThreadHelper.JoinableTaskContext))
         {
         }
 
         public DependenciesGraphProvider(IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider,
-                                         SVsServiceProvider serviceProvider,
+                                         IAsyncServiceProvider serviceProvider,
                                          JoinableTaskContextNode joinableTaskContextNode)
             : base(joinableTaskContextNode)
         {
@@ -81,14 +81,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
         private IAggregateDependenciesSnapshotProvider AggregateSnapshotProvider { get; }
 
-        private SVsServiceProvider ServiceProvider { get; }
+        private IAsyncServiceProvider ServiceProvider { get; }
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
             AggregateSnapshotProvider.SnapshotChanged += OnSnapshotChanged;
 
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-            _imageService = ServiceProvider.GetService<IVsImageService2, SVsImageService>();
+            _imageService = (IVsImageService2)await ServiceProvider.GetServiceAsync(typeof(SVsImageService))
+                                                                   .ConfigureAwait(false); // Want to get off UI thread if switch to it
         }
 
         protected override Task DisposeCoreAsync(bool initialized)
@@ -144,7 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         {
             try
             {
-                await InitializeAsync().ConfigureAwait(true);   // InitializeAsync switches to the UI thread, we want to get off it
+                await InitializeAsync().ConfigureAwait(false);
 
                 var actionHandlers = GraphActionHandlers.Where(x => x.Value.CanHandleRequest(context));
                 var shouldTrackChanges = actionHandlers.Aggregate(
