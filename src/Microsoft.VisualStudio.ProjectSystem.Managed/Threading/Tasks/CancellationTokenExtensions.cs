@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
             catch (ObjectDisposedException) when (options == RegisterOptions.ExecuteImmediatelyIfAlreadyCanceledAndDisposed)
             {
                 // The CancellationTokenSource has already been disposed.  It rejected the register.
-                // But now we know the CancellationToken is in its final state (either cancelled or not).
+                // But now we know the CancellationToken is in its final state (either canceled or not).
                 // So simulate the right behavior by invoking the callback or not, based on whether it was
                 // already canceled.
                 if (token.IsCancellationRequested)

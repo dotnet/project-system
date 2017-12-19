@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     The <see cref="IConfiguredProjectImplicitActivationTracking"/> has been disposed of.
         /// </exception>
         /// <remarks>
-        ///     The returned <see cref="Task"/> is cancelled when the 
+        ///     The returned <see cref="Task"/> is canceled when the 
         ///     <see cref="ConfiguredProject"/> is unloaded.
         /// </remarks>
         Task IsImplicitlyActiveTask
