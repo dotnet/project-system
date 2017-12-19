@@ -4,7 +4,7 @@ using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 
-namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
+namespace Microsoft.VisualStudio.ProjectSystem.Build
 {
     [Export(typeof(IConfiguredProjectReadyToBuild))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
