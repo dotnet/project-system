@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
@@ -59,12 +60,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                 linkCategories: new[] { GraphCommonSchema.Contains },
                 trackChanges: true) };
 
-        private readonly object _knownIconsLock = new object();
-
         /// <summary>
         /// All icons that are used tree graph, register their monikers once to avoid extra UI thread switches.
         /// </summary>
-        private HashSet<ImageMoniker> KnownIcons { get; } = new HashSet<ImageMoniker>();
+        private ImmutableHashSet<ImageMoniker> _knownIcons = ImmutableHashSet<ImageMoniker>.Empty;
 
         [ImportMany]
         private OrderPrecedenceImportCollection<IDependenciesGraphActionHandler> GraphActionHandlers { get; }
@@ -267,20 +266,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         {
             Assumes.NotNull(icons);
 
-            lock (_knownIconsLock)
+            foreach (ImageMoniker icon in icons)
             {
-                icons = icons.Where(x => !KnownIcons.Contains(x)).ToList();
-                if (!icons.Any())
+                if (ThreadingTools.ApplyChangeOptimistically(ref _knownIcons, knownIcons => knownIcons.Add(icon)))
                 {
-                    return;
+                    _imageService.TryAssociateNameWithMoniker(GetIconStringName(icon), icon);
                 }
-
-                KnownIcons.AddRange(icons);
-            }
-
-            foreach (var icon in icons)
-            {
-                _imageService.TryAssociateNameWithMoniker(GetIconStringName(icon), icon);
             }
         }
 
