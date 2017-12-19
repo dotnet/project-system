@@ -98,14 +98,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             return Task.CompletedTask;
         }
 
-        private async Task EnsureInitializedAsync()
-        {
-            if (!IsInitializing || !IsInitialized)
-            {
-                await InitializeAsync().ConfigureAwait(false);
-            }
-        }
-
         /// <summary>
         /// IGraphProvider.BeginGetGraphData
         /// Entry point for progression. Gets called everytime when progression
@@ -152,7 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         {
             try
             {
-                await EnsureInitializedAsync().ConfigureAwait(false);
+                await InitializeAsync().ConfigureAwait(false);
 
                 var actionHandlers = GraphActionHandlers.Where(x => x.Value.CanHandleRequest(context));
                 var shouldTrackChanges = actionHandlers.Aggregate(
