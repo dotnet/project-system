@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
     [Export(typeof(IConfiguredProjectReadyToBuild))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
     [Order(Order.Default)]
-    internal sealed class ConfiguredProjectReadyToBuild : IConfiguredProjectReadyToBuild, IDisposable
+    internal sealed class ImplicitlyActiveConfiguredProjectReadyToBuild : IConfiguredProjectReadyToBuild, IDisposable
     {
         private readonly ConfiguredProject _configuredProject;
         private readonly IActiveConfiguredProjectProvider _activeConfiguredProjectProvider;
@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         private TaskCompletionSource<object> _activationTask;
 
         [ImportingConstructor]
-        public ConfiguredProjectReadyToBuild(
+        public ImplicitlyActiveConfiguredProjectReadyToBuild(
             ConfiguredProject configuredProject,
             IActiveConfiguredProjectProvider activeConfiguredProjectProvider)
         {
