@@ -11,18 +11,18 @@ using Microsoft.VisualStudio.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    [Export(typeof(IActiveConfiguredProjectService))]
-    internal class ActiveConfiguredProjectService : OnceInitializedOnceDisposed, IActiveConfiguredProjectService
+    [Export(typeof(IConfiguredProjectImplicitActivationTracking))]
+    internal class ConfiguredProjectImplicitActivationTracking : OnceInitializedOnceDisposed, IConfiguredProjectImplicitActivationTracking
     {
         private readonly ConfiguredProject _project;
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
         private readonly ActionBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> _targetBlock;
-        private TaskCompletionSource<object> _isActiveCompletionSource = new TaskCompletionSource<object>();
+        private TaskCompletionSource<object> _isImplicitlyActiveSource = new TaskCompletionSource<object>();
         private IDisposable _subscription;
 
         [ImportingConstructor]
-        public ActiveConfiguredProjectService(ConfiguredProject project, IActiveConfigurationGroupService activeConfigurationGroupService, [Import(ExportContractNames.Scopes.ConfiguredProject)]IProjectAsynchronousTasksService tasksService)
+        public ConfiguredProjectImplicitActivationTracking(ConfiguredProject project, IActiveConfigurationGroupService activeConfigurationGroupService, [Import(ExportContractNames.Scopes.ConfiguredProject)]IProjectAsynchronousTasksService tasksService)
         {
             _project = project;
             _activeConfigurationGroupService = activeConfigurationGroupService;
@@ -32,23 +32,23 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public ITargetBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> TargetBlock => _targetBlock;
 
-        public bool IsActive
+        public bool IsImplicitlyActive
         {
             get
             {
                 EnsureInitialized();
 
-                return _isActiveCompletionSource.Task.Status == TaskStatus.RanToCompletion;
+                return _isImplicitlyActiveSource.Task.Status == TaskStatus.RanToCompletion;
             }
         }
 
-        public Task IsActiveTask
+        public Task IsImplicitlyActiveTask
         {
             get
             {
                 EnsureInitialized();
 
-                return _isActiveCompletionSource.Task;
+                return _isImplicitlyActiveSource.Task;
             }
         }
 
@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return;
 
             bool nowActive = e.Value.Contains(_project.ProjectConfiguration);
-            bool previouslyActive = IsActive;
+            bool previouslyActive = IsImplicitlyActive;
 
             // Are there any changes for my configuration?
             if (nowActive == previouslyActive)
@@ -88,29 +88,29 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             if (nowActive)
             {
-                OnActivated();
+                OnImplicitlyActivated();
             }
             else if (previouslyActive)
             {
-                OnDeactivated();
+                OnImplicitlyDeactivated();
             }
         }
 
-        private void OnActivated()
+        private void OnImplicitlyActivated()
         {
-            _isActiveCompletionSource.TrySetResult(null);
+            _isImplicitlyActiveSource.TrySetResult(null);
         }
 
-        private void OnDeactivated()
+        private void OnImplicitlyDeactivated()
         {
-            _isActiveCompletionSource = new TaskCompletionSource<object>();
+            _isImplicitlyActiveSource = new TaskCompletionSource<object>();
             Thread.MemoryBarrier();
         }
 
         private void OnCanceled()
         {
             // Notify anyone listening that we're never going to be active
-            _isActiveCompletionSource.TrySetCanceled();
+            _isImplicitlyActiveSource.TrySetCanceled();
         }
     }
 }

@@ -6,35 +6,35 @@ using Microsoft.VisualStudio.Composition;
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
-    ///     Provides properties and events to track activation of an <see cref="ConfiguredProject"/>.
+    ///     Provides properties and events to track the implicit activation of an <see cref="ConfiguredProject"/>.
     /// </summary>
     [ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
-    internal interface IActiveConfiguredProjectService
+    internal interface IConfiguredProjectImplicitActivationTracking
     {
         /// <summary>
-        ///     Gets a value indicating whether the configuration group containing the 
-        ///     current <see cref="ConfiguredProject"/> is active.
+        ///     Gets a value indicating whether the current <see cref="ConfiguredProject"/> 
+        ///     is implicitly active.
         /// </summary>
         /// <exception cref="ObjectDisposedException">
-        ///     The <see cref="IActiveConfiguredProjectService"/> has been disposed of.
+        ///     The <see cref="IConfiguredProjectImplicitActivationTracking"/> has been disposed of.
         /// </exception>
-        bool IsActive
+        bool IsImplicitlyActive
         {
             get;
         }
 
         /// <summary>
-        ///     Gets a task that is completed when the configuration group containing the
-        ///     current <see cref="ConfiguredProject"/> becomes active.
+        ///     Gets a task that is completed when current <see cref="ConfiguredProject"/> becomes 
+        ///     implicitly active.
         /// </summary>
         /// <exception cref="ObjectDisposedException">
-        ///     The <see cref="IActiveConfiguredProjectService"/> has been disposed of.
+        ///     The <see cref="IConfiguredProjectImplicitActivationTracking"/> has been disposed of.
         /// </exception>
         /// <remarks>
         ///     The returned <see cref="Task"/> is cancelled when the 
         ///     <see cref="ConfiguredProject"/> is unloaded.
         /// </remarks>
-        Task IsActiveTask
+        Task IsImplicitlyActiveTask
         {
             get;
         }

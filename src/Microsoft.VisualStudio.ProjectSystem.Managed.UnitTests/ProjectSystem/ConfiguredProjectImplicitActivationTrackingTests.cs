@@ -7,80 +7,80 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    public class ActiveConfiguredProjectServicesTests
+    public class ConfiguredProjectImplicitActivationTrackingTests
     {
         [Fact]
-        public async Task IsActive_WhenDisposed_ThrowsObjectDisposed()
+        public async Task IsImplicitlyActive_WhenDisposed_ThrowsObjectDisposed()
         {
             var service = CreateInstance();
             await service.DisposeAsync();
 
             Assert.Throws<ObjectDisposedException>(() =>
             {
-                var ignored = service.IsActive;
+                var ignored = service.IsImplicitlyActive;
             });
         }
 
         [Fact]
-        public async Task IsActiveTask_WhenDisposed_ThrowsObjectDisposed()
+        public async Task IsImplicitlyActiveTask_WhenDisposed_ThrowsObjectDisposed()
         {
             var service = CreateInstance();
             await service.DisposeAsync();
 
             Assert.Throws<ObjectDisposedException>(() =>
             {
-                var ignored = service.IsActiveTask;
+                var ignored = service.IsImplicitlyActiveTask;
             });
         }
 
         [Fact]
-        public void IsActive_WhenActiveConfigurationHasNotFired_ReturnsFalse()
+        public void IsImplicitlyActive_WhenActiveConfigurationHasNotFired_ReturnsFalse()
         {
             var service = CreateInstance();
 
-            var result = service.IsActive;
+            var result = service.IsImplicitlyActive;
 
             Assert.False(result);
         }
 
         [Fact]
-        public void IsActiveTask_WhenActiveConfiguredHasNotFired_ReturnsNonCompletedTask()
+        public void IsImplicitlyActiveTask_WhenActiveConfiguredHasNotFired_ReturnsNonCompletedTask()
         {
             var service = CreateInstance();
 
-            var result = service.IsActiveTask;
+            var result = service.IsImplicitlyActiveTask;
 
             Assert.False(result.IsCompleted);
         }
 
         [Fact]
-        public void IsActive_WhenProjectHasUnloaded_ReturnsFalse()
+        public void IsImplicitlyActive_WhenProjectHasUnloaded_ReturnsFalse()
         {
             var cancellationToken = new CancellationToken(canceled: true);
             var tasksService = IProjectAsynchronousTasksServiceFactory.ImplementUnloadCancellationToken(cancellationToken);
 
             var service = CreateInstance(tasksService);
 
-            var result = service.IsActive;
+            var result = service.IsImplicitlyActive;
 
             Assert.False(result);
         }
 
         [Fact]
-        public void IsActiveTask_WhenProjectHasUnloaded_ReturnsCanceledTask()
+        public void IsImplicitlyActiveTask_WhenProjectHasUnloaded_ReturnsCanceledTask()
         {
             var cancellationToken = new CancellationToken(canceled: true);
             var tasksService = IProjectAsynchronousTasksServiceFactory.ImplementUnloadCancellationToken(cancellationToken);
 
             var service = CreateInstance(tasksService);
 
-            var result = service.IsActiveTask;
+            var result = service.IsImplicitlyActiveTask;
 
             Assert.True(result.IsCanceled);
         }
 
         [Fact]
-        public void IsActive_WhenProjectUnloadCancellationTokenSourceHasBeenDisposed_ReturnsFalse()
+        public void IsImplicitlyActive_WhenProjectUnloadCancellationTokenSourceHasBeenDisposed_ReturnsFalse()
         {
             var cancellationTokenSource = new CancellationTokenSource();
             var tasksService = IProjectAsynchronousTasksServiceFactory.ImplementUnloadCancellationToken(cancellationTokenSource.Token);
@@ -88,13 +88,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             var service = CreateInstance(tasksService);
 
-            var result = service.IsActive;
+            var result = service.IsImplicitlyActive;
 
             Assert.False(result);
         }
 
         [Fact]
-        public void IsActiveTask_WhenProjectUnloadCancellationTokenSourceHasBeenDisposed_ReturnsNonCompletedTask()
+        public void IsImplicitlyActiveTask_WhenProjectUnloadCancellationTokenSourceHasBeenDisposed_ReturnsNonCompletedTask()
         {
             var cancellationTokenSource = new CancellationTokenSource();
             var tasksService = IProjectAsynchronousTasksServiceFactory.ImplementUnloadCancellationToken(cancellationTokenSource.Token);
@@ -102,13 +102,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             var service = CreateInstance(tasksService);
 
-            var result = service.IsActiveTask;
+            var result = service.IsImplicitlyActiveTask;
 
             Assert.False(result.IsCompleted);
         }
 
         [Fact]
-        public void IsActive_WhenProjectUnloadCancellationTokenSourceHasBeenCanceledAndDisposed_ReturnsFalse()
+        public void IsImplicitlyActive_WhenProjectUnloadCancellationTokenSourceHasBeenCanceledAndDisposed_ReturnsFalse()
         {
             var cancellationTokenSource = new CancellationTokenSource();
             var tasksService = IProjectAsynchronousTasksServiceFactory.ImplementUnloadCancellationToken(cancellationTokenSource.Token);
@@ -117,13 +117,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             var service = CreateInstance(tasksService);
 
-            var result = service.IsActive;
+            var result = service.IsImplicitlyActive;
 
             Assert.False(result);
         }
 
         [Fact]
-        public void IsActiveTask_WhenProjectUnloadCancellationTokenSourceHasBeenCanceledAndDisposed_ReturnsCanceledTask()
+        public void IsImplicitlyActiveTask_WhenProjectUnloadCancellationTokenSourceHasBeenCanceledAndDisposed_ReturnsCanceledTask()
         {
             var cancellationTokenSource = new CancellationTokenSource();
             var tasksService = IProjectAsynchronousTasksServiceFactory.ImplementUnloadCancellationToken(cancellationTokenSource.Token);
@@ -132,7 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             var service = CreateInstance(tasksService);
 
-            var result = service.IsActiveTask;
+            var result = service.IsImplicitlyActiveTask;
 
             Assert.True(result.IsCanceled);
         }
@@ -155,17 +155,17 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [InlineData(new object[] { new[] { "Debug|x86|net46" },                                                      "Debug|x86|net46" })]
         [InlineData(new object[] { new[] { "Debug|x86|net46", "Release|x86|net46" },                                 "Debug|x86|net46" })]
         [InlineData(new object[] { new[] { "Debug|x86|net46", "Release|x86|net46", "Release|AnyCPU|net46" },         "Debug|x86|net46" })]
-        public async Task IsActive_WhenActionConfigurationChangesAndMatches_ReturnsTrue(string[] configurations, string currentConfiguration)
+        public async Task IsImplicitlyActive_WhenActionConfigurationChangesAndMatches_ReturnsTrue(string[] configurations, string currentConfiguration)
         {
             var project = ConfiguredProjectFactory.ImplementProjectConfiguration(currentConfiguration);
             var service = CreateInstance(project, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source);
 
-            Assert.False(service.IsActive); // Just to init
+            Assert.False(service.IsImplicitlyActive); // Just to init
 
             var configurationGroups = IConfigurationGroupFactory.CreateFromConfigurationNames(configurations);
             await source.SendAndCompleteAsync(configurationGroups, service.TargetBlock);
 
-            Assert.True(service.IsActive);
+            Assert.True(service.IsImplicitlyActive);
         }
 
         [Theory]                           // Active configs                                                         Current
@@ -177,12 +177,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [InlineData(new object[] { new[] { "Debug|x86|net46" },                                                      "Debug|x86|net46" })]
         [InlineData(new object[] { new[] { "Debug|x86|net46", "Release|x86|net46" },                                 "Debug|x86|net46" })]
         [InlineData(new object[] { new[] { "Debug|x86|net46", "Release|x86|net46", "Release|AnyCPU|net46" },         "Debug|x86|net46" })]
-        public async Task IsActiveTask_WhenActionConfigurationChangesAndMatches_ReturnsCompletedTask(string[] configurations, string currentConfiguration)
+        public async Task IsImplicitlyActiveTask_WhenActionConfigurationChangesAndMatches_ReturnsCompletedTask(string[] configurations, string currentConfiguration)
         {
             var project = ConfiguredProjectFactory.ImplementProjectConfiguration(currentConfiguration);
             var service = CreateInstance(project, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source);
 
-            var result = service.IsActiveTask;
+            var result = service.IsImplicitlyActiveTask;
 
             var configurationGroups = IConfigurationGroupFactory.CreateFromConfigurationNames(configurations);
             await source.SendAndCompleteAsync(configurationGroups, service.TargetBlock);
@@ -191,42 +191,42 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [Fact]
-        public async Task IsActiveTask_CompletedStateChangesOverLifetime()
+        public async Task IsImplicitlyActiveTask_CompletedStateChangesOverLifetime()
         {
             var project = ConfiguredProjectFactory.ImplementProjectConfiguration("Debug|AnyCPU");
             var service = CreateInstance(project, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source);
 
-            Assert.False(service.IsActive);
+            Assert.False(service.IsImplicitlyActive);
 
             // Should now be considered active
             var configurationGroups = IConfigurationGroupFactory.CreateFromConfigurationNames("Debug|AnyCPU");
             await source.SendAsync(configurationGroups);
 
-            Assert.True(service.IsActiveTask.Wait(500));
+            Assert.True(service.IsImplicitlyActiveTask.Wait(500));
 
             configurationGroups = IConfigurationGroupFactory.CreateFromConfigurationNames("Debug|x86");
             await source.SendAndCompleteAsync(configurationGroups, service.TargetBlock);
 
             // Should now be considered in-active
-            Assert.False(service.IsActiveTask.IsCompleted);
+            Assert.False(service.IsImplicitlyActiveTask.IsCompleted);
         }
 
-        private static ActiveConfiguredProjectService CreateInstance()
+        private static ConfiguredProjectImplicitActivationTracking CreateInstance()
         {
             return CreateInstance(null, null, out _);
         }
 
-        private static ActiveConfiguredProjectService CreateInstance(ConfiguredProject project, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source)
+        private static ConfiguredProjectImplicitActivationTracking CreateInstance(ConfiguredProject project, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source)
         {
             return CreateInstance(project, null, out source);
         }
 
-        private static ActiveConfiguredProjectService CreateInstance(IProjectAsynchronousTasksService tasksService)
+        private static ConfiguredProjectImplicitActivationTracking CreateInstance(IProjectAsynchronousTasksService tasksService)
         {
             return CreateInstance(null, tasksService, out _);
         }
 
-        private static ActiveConfiguredProjectService CreateInstance(ConfiguredProject project, IProjectAsynchronousTasksService tasksService, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source)
+        private static ConfiguredProjectImplicitActivationTracking CreateInstance(ConfiguredProject project, IProjectAsynchronousTasksService tasksService, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source)
         {
             project = project ?? ConfiguredProjectFactory.Create();
             var services = IProjectCommonServicesFactory.CreateWithDefaultThreadingPolicy();
@@ -235,7 +235,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             tasksService= tasksService ?? IProjectAsynchronousTasksServiceFactory.Create();
 
-            return new ActiveConfiguredProjectService(project, activeConfigurationGroupService, tasksService);
+            return new ConfiguredProjectImplicitActivationTracking(project, activeConfigurationGroupService, tasksService);
         }
     }
 }
