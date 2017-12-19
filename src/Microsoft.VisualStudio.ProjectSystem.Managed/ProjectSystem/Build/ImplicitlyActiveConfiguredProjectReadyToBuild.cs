@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Build
 {
+    /// <summary>
+    ///     Provides an implementation of <see cref="IConfiguredProjectReadyToBuild"/> that allows
+    ///     implicitly active <see cref="ConfiguredProject"/> objects to perform design-time builds.
+    /// </summary>
     [Export(typeof(IConfiguredProjectReadyToBuild))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
     [Order(Order.Default)]
