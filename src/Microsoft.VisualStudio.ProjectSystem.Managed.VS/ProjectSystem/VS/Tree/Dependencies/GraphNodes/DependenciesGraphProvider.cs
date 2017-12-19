@@ -73,6 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         private Dictionary<string, SnapshotChangedEventArgs> _changedContextsQueue =
             new Dictionary<string, SnapshotChangedEventArgs>(StringComparer.OrdinalIgnoreCase);
         private Task _trackChangesTask;
+        private IVsImageService2 _imageService;
         private readonly object _expandedGraphContextsLock = new object();
 
         /// <summary>
@@ -84,11 +85,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
         private SVsServiceProvider ServiceProvider { get; }
 
-        protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
+        protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
             AggregateSnapshotProvider.SnapshotChanged += OnSnapshotChanged;
 
-            return Task.CompletedTask;
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            _imageService = ServiceProvider.GetService<IVsImageService2, SVsImageService>();
         }
 
         protected override Task DisposeCoreAsync(bool initialized)
@@ -144,7 +146,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         {
             try
             {
-                await InitializeAsync().ConfigureAwait(false);
+                await InitializeAsync().ConfigureAwait(true);   // InitializeAsync switches to the UI thread, we want to get off it
 
                 var actionHandlers = GraphActionHandlers.Where(x => x.Value.CanHandleRequest(context));
                 var shouldTrackChanges = actionHandlers.Aggregate(
@@ -279,22 +281,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                 KnownIcons.AddRange(icons);
             }
 
-            ThreadHelper.JoinableTaskFactory.Run(async () =>
+            foreach (var icon in icons)
             {
-                IVsImageService2 imageService = null;
-                foreach (var icon in icons)
-                {
-                    // register icon 
-                    if (imageService == null)
-                    {
-                        await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
-                        imageService = ServiceProvider.GetService<IVsImageService2, SVsImageService>();
-                    }
-
-                    imageService.TryAssociateNameWithMoniker(GetIconStringName(icon), icon);
-                }
-            });
+                _imageService.TryAssociateNameWithMoniker(GetIconStringName(icon), icon);
+            }
         }
 
         public GraphNode AddGraphNode(
