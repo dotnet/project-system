@@ -103,8 +103,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private void OnImplicitlyDeactivated()
         {
-            _isImplicitlyActiveSource = new TaskCompletionSource<object>();
-            Thread.MemoryBarrier();
+            var source = new TaskCompletionSource<object>();
+
+            // Make sure the writes in constructor don't 
+            // move to after we publish the value
+            Thread.MemoryBarrier(); 
+
+            _isImplicitlyActiveSource = source;
         }
 
         private void OnCanceled()
