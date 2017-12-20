@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
@@ -19,6 +20,7 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 using Task = System.Threading.Tasks.Task;
+using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 {
@@ -33,16 +35,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
     internal class DependenciesGraphProvider : OnceInitializedOnceDisposedAsync, IGraphProvider, IDependenciesGraphBuilder
     {
         [ImportingConstructor]
-        public DependenciesGraphProvider(IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider,
-                                         SVsServiceProvider serviceProvider)
+        public DependenciesGraphProvider(IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider)
             : this(aggregateSnapshotProvider,
-                   serviceProvider,
+                   AsyncServiceProvider.GlobalProvider,
                    new JoinableTaskContextNode(ThreadHelper.JoinableTaskContext))
         {
         }
 
         public DependenciesGraphProvider(IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider,
-                                         SVsServiceProvider serviceProvider,
+                                         IAsyncServiceProvider serviceProvider,
                                          JoinableTaskContextNode joinableTaskContextNode)
             : base(joinableTaskContextNode)
         {
@@ -58,12 +59,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
                 linkCategories: new[] { GraphCommonSchema.Contains },
                 trackChanges: true) };
 
-        private readonly object _knownIconsLock = new object();
-
         /// <summary>
         /// All icons that are used tree graph, register their monikers once to avoid extra UI thread switches.
         /// </summary>
-        private HashSet<ImageMoniker> KnownIcons { get; } = new HashSet<ImageMoniker>();
+        private ImmutableHashSet<ImageMoniker> _knownIcons = ImmutableHashSet<ImageMoniker>.Empty;
 
         [ImportMany]
         private OrderPrecedenceImportCollection<IDependenciesGraphActionHandler> GraphActionHandlers { get; }
@@ -72,6 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         private Dictionary<string, SnapshotChangedEventArgs> _changedContextsQueue =
             new Dictionary<string, SnapshotChangedEventArgs>(StringComparer.OrdinalIgnoreCase);
         private Task _trackChangesTask;
+        private IVsImageService2 _imageService;
         private readonly object _expandedGraphContextsLock = new object();
 
         /// <summary>
@@ -81,13 +81,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
         private IAggregateDependenciesSnapshotProvider AggregateSnapshotProvider { get; }
 
-        private SVsServiceProvider ServiceProvider { get; }
+        private IAsyncServiceProvider ServiceProvider { get; }
 
-        protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
+        protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
             AggregateSnapshotProvider.SnapshotChanged += OnSnapshotChanged;
 
-            return Task.CompletedTask;
+            _imageService = (IVsImageService2)await ServiceProvider.GetServiceAsync(typeof(SVsImageService))
+                                                                   .ConfigureAwait(false); // Want to get off UI thread if switch to it
         }
 
         protected override Task DisposeCoreAsync(bool initialized)
@@ -95,14 +96,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             AggregateSnapshotProvider.SnapshotChanged -= OnSnapshotChanged;
 
             return Task.CompletedTask;
-        }
-
-        private async Task EnsureInitializedAsync()
-        {
-            if (!IsInitializing || !IsInitialized)
-            {
-                await InitializeAsync().ConfigureAwait(false);
-            }
         }
 
         /// <summary>
@@ -151,7 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         {
             try
             {
-                await EnsureInitializedAsync().ConfigureAwait(false);
+                await InitializeAsync().ConfigureAwait(false);
 
                 var actionHandlers = GraphActionHandlers.Where(x => x.Value.CanHandleRequest(context));
                 var shouldTrackChanges = actionHandlers.Aggregate(
@@ -270,38 +263,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 
         private void RegisterIcons(IEnumerable<ImageMoniker> icons)
         {
-            lock (_knownIconsLock)
+            Assumes.NotNull(icons);
+
+            foreach (ImageMoniker icon in icons)
             {
-                if (icons == null)
+                if (ThreadingTools.ApplyChangeOptimistically(ref _knownIcons, knownIcons => knownIcons.Add(icon)))
                 {
-                    return;
+                    _imageService.TryAssociateNameWithMoniker(GetIconStringName(icon), icon);
                 }
-
-                icons = icons.Where(x => !KnownIcons.Contains(x)).ToList();
-                if (!icons.Any())
-                {
-                    return;
-                }
-
-                KnownIcons.AddRange(icons);
             }
-
-            ThreadHelper.JoinableTaskFactory.Run(async () =>
-            {
-                IVsImageService2 imageService = null;
-                foreach (var icon in icons)
-                {
-                    // register icon 
-                    if (imageService == null)
-                    {
-                        await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
-                        imageService = ServiceProvider.GetService<IVsImageService2, SVsImageService>();
-                    }
-
-                    imageService.TryAssociateNameWithMoniker(GetIconStringName(icon), icon);
-                }
-            });
         }
 
         public GraphNode AddGraphNode(
