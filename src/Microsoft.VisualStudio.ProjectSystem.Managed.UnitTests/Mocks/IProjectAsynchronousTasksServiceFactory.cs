@@ -7,11 +7,17 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IProjectAsynchronousTasksServiceFactory
     {
-        public static IProjectAsynchronousTasksService Create(CancellationToken cancelToken)
+        public static IProjectAsynchronousTasksService Create()
+        {
+            return ImplementUnloadCancellationToken(CancellationToken.None);
+        }
+
+        public static IProjectAsynchronousTasksService ImplementUnloadCancellationToken(CancellationToken cancellationToken)
         {
             var mock = new Mock<IProjectAsynchronousTasksService>();
 
-            mock.Setup(s => s.UnloadCancellationToken).Returns(cancelToken);
+            mock.Setup(s => s.UnloadCancellationToken)
+                .Returns(cancellationToken);
 
             return mock.Object;
         }

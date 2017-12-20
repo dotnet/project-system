@@ -2,7 +2,6 @@
 
 using System.Linq;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -10,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         public static IConfigurationGroup<ProjectConfiguration> CreateFromConfigurationNames(params string[] configurationNames)
         {
-            IEnumerable<StandardProjectConfiguration> configurations = configurationNames.Select(name => new StandardProjectConfiguration(name, ImmutableDictionary<string, string>.Empty));
+            IEnumerable<ProjectConfiguration> configurations = configurationNames.Select(name => ProjectConfigurationFactory.Create(name));
 
             return Create(configurations);
         }

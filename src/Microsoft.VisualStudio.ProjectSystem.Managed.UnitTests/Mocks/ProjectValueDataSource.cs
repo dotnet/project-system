@@ -7,7 +7,7 @@ using System.Threading.Tasks.Dataflow;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal class ProjectValueDataSource<T> : ProjectValueDataSourceBase<T> 
+    internal class ProjectValueDataSource<T> : ProjectValueDataSourceBase<T>
         where T : class
     {
         private BroadcastBlock<IProjectVersionedValue<T>> _broadcastBlock;
@@ -44,12 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public async Task SendAndCompleteAsync(T value, ITargetBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> targetBlock)
         {
-            EnsureInitialized(true);
-
-            _version++;
-            await _broadcastBlock.SendAsync(new ProjectVersionedValue<T>(
-                     value,
-                     ImmutableDictionary<NamedIdentity, IComparable>.Empty.Add(DataSourceKey, _version)));
+            await SendAsync(value);
 
             _broadcastBlock.Complete();
 
@@ -57,6 +52,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
             // the Completion of the source block doesn't mean that the target 
             // block has finished.
             await Task.WhenAll(_broadcastBlock.Completion, targetBlock.Completion);
+        }
+
+        public async Task SendAsync(T value)
+        {
+            EnsureInitialized(true);
+
+            _version++;
+            await _broadcastBlock.SendAsync(new ProjectVersionedValue<T>(
+                     value,
+                     ImmutableDictionary<NamedIdentity, IComparable>.Empty.Add(DataSourceKey, _version)));
         }
     }
 }
