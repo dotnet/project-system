@@ -99,9 +99,7 @@
     <Rule Id="CA1308" Action="None" />
     <Rule Id="CA1810" Action="None" />
     <Rule Id="CA1816" Action="None" />
-
-    <!--CA1825 has a bug that fires on compiler generated code and is very noisy in this repo. Reenable this rule when we move to a new version of analyzers.' -->
-    <Rule Id="CA1825" Action="None" />
+    <Rule Id="CA1825" Action="Warning" />
     <Rule Id="CA2002" Action="None" />
     <Rule Id="CA2207" Action="None" />
     <Rule Id="CA2208" Action="None" />

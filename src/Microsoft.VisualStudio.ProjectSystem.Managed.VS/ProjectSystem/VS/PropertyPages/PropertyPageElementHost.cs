@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 filterKeys.TranslateAcceleratorEx(new OLE.Interop.MSG[] { oleMSG },
                                                   (uint)(__VSTRANSACCELEXFLAGS.VSTAEXF_NoFireCommand | __VSTRANSACCELEXFLAGS.VSTAEXF_UseGlobalKBScope | __VSTRANSACCELEXFLAGS.VSTAEXF_AllowModalState),
                                                   0 /*scope count*/,
-                                                  new Guid[0] /*scopes*/,
+                                                  Array.Empty<Guid>() /*scopes*/,
                                                   out Guid cmdGuid,
                                                   out uint cmdId,
                                                   out int fTranslated,
