@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.Composition;
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
-    ///     Provides properties and events to track the implicit activation of an <see cref="ConfiguredProject"/>.
+    ///     Provides properties and events to track the implicit activation of a <see cref="ConfiguredProject"/>.
     /// </summary>
     [ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IConfiguredProjectImplicitActivationTracking
