@@ -178,9 +178,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             string projectFolder = Path.GetDirectoryName(UnconfiguredProject.FullPath);
             var configuredProject = await GetConfiguredProjectForDebugAsync().ConfigureAwait(false);
 
-            // If no working directory specified in the profile, we default to the one returned from GetRunnableProjectInformationAsync (if running
-            // the project), or the project folder.
-            string defaultWorkingDir = projectFolder;
+            // If no working directory specified in the profile, we default to output directory.
+            string defaultWorkingDir = await GetOutputDirectoryAsync(configuredProject).ConfigureAwait(false);
+            if(!Path.IsPathRooted(defaultWorkingDir))
+            {
+                defaultWorkingDir = TheFileSystem.GetFullPath(Path.Combine(projectFolder, defaultWorkingDir));
+            }
 
             // Is this profile just running the project? If so we ignore the exe
             if (IsRunProjectCommand(resolvedProfile))
@@ -333,6 +336,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 runWorkingDirectory = Path.Combine(Path.GetDirectoryName(UnconfiguredProject.FullPath), runWorkingDirectory);
             }
             return new Tuple<string, string, string>(runCommand, runArguments, runWorkingDirectory);
+        }
+
+        private async Task<string> GetOutputDirectoryAsync(ConfiguredProject configuredProject)
+        {
+            var properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
+            var outdir = await properties.GetEvaluatedPropertyValueAsync("OutDir").ConfigureAwait(false);
+
+            return outdir;
         }
 
         private async Task<Guid> GetDebuggingEngineAsync(ConfiguredProject configuredProject)

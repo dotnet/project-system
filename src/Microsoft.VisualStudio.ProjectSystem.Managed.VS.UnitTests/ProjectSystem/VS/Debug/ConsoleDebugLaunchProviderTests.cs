@@ -52,7 +52,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
                     {"RunCommand", @"dotnet"},
                     {"RunArguments", "exec " + "\"" + @"c:\test\project\bin\project.dll"+ "\""},
                     {"RunWorkingDirectory",  @"bin\"},
-                    { "TargetFrameworkIdentifier", @".NetCoreApp" }
+                    { "TargetFrameworkIdentifier", @".NetCoreApp" },
+                    { "OutDir", @"c:\test\project\bin\" }
                 };
             }
             var delegatePropertiesMock = IProjectPropertiesFactory
@@ -252,18 +253,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             Assert.Equal("--someArgs", targets[0].Arguments);
         }
 
-        [Fact]
-        public async Task QueryDebugTargets_ExeProfileAsyncExeRelativeNoWorkingDir()
+        [Theory]
+        [InlineData(@"c:\test\project\bin\")]
+        [InlineData(@"bin\")]
+        public async Task QueryDebugTargets_ExeProfileAsyncExeRelativeNoWorkingDir(string outdir)
         {
-            var debugger = GetDebugTargetsProvider();
+          var properties = new Dictionary<string, string>() {
+                    {"RunCommand", @"dotnet"},
+                    {"RunArguments", "exec " + "\"" + @"c:\test\project\bin\project.dll"+ "\""},
+                    {"RunWorkingDirectory",  @"bin\"},
+                    { "TargetFrameworkIdentifier", @".NetCoreApp" },
+                    { "OutDir", outdir }
+                };
+
+            var debugger = GetDebugTargetsProvider("exe", properties);
 
             // Exe relative, no working dir
-            _mockFS.WriteAllText(@"c:\test\project\test.exe", string.Empty);
+            _mockFS.WriteAllText(@"c:\test\project\bin\test.exe", string.Empty);
             var activeProfile = new LaunchProfile(){Name="run", ExecutablePath=".\\test.exe"};
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
-            Assert.Equal(@"c:\test\project\test.exe", targets[0].Executable);
-            Assert.Equal(@"c:\test\project", targets[0].CurrentDirectory);
+            Assert.Equal(@"c:\test\project\bin\test.exe", targets[0].Executable);
+            Assert.Equal(@"c:\test\project\bin\", targets[0].CurrentDirectory);
         }
 
         [Theory]
