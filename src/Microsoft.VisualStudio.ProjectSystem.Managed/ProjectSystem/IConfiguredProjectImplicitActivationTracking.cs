@@ -2,6 +2,7 @@
 
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Composition;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -11,6 +12,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
     [ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IConfiguredProjectImplicitActivationTracking
     {
+        /// <summary>
+        ///     Occurs when the current <see cref="ConfiguredProject"/> becomes implicitly active.
+        /// </summary>
+        event AsyncEventHandler ImplicitlyActivated;
+
+        /// <summary>
+        ///     Occurs when the current <see cref="ConfiguredProject"/> is no longer implicitly active.
+        /// </summary>
+        event AsyncEventHandler ImplicitlyDeactivated;
+
         /// <summary>
         ///     Gets a value indicating whether the current <see cref="ConfiguredProject"/> 
         ///     is implicitly active.
@@ -31,8 +42,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     The <see cref="IConfiguredProjectImplicitActivationTracking"/> has been disposed of.
         /// </exception>
         /// <remarks>
-        ///     The returned <see cref="Task"/> is canceled when the 
-        ///     <see cref="ConfiguredProject"/> is unloaded.
+        ///     The returned <see cref="Task"/> is canceled when the <see cref="ConfiguredProject"/> 
+        ///     is unloaded.
         /// </remarks>
         Task IsImplicitlyActiveTask
         {
