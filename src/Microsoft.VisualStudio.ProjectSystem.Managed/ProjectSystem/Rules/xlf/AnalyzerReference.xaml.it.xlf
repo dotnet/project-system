@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="Rule|AnalyzerReference|DisplayName">
         <source>Analyzer Reference</source>
-        <target state="translated">Riferimento ad analizzatore</target>
+        <target state="translated">Riferimento dell'analizzatore</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|AnalyzerReference|Description">
