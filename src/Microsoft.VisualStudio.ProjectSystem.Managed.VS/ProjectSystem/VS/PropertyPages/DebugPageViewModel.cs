@@ -1068,7 +1068,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             {
                 if (obj is LaunchType oth)
                 {
-                    return CommandName.Equals(oth.CommandName);
+                    return CommandName?.Equals(oth.CommandName) ?? oth.CommandName == null;
                 }
 
                 return false;
@@ -1076,7 +1076,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
             public override int GetHashCode()
             {
-                return CommandName.GetHashCode();
+                return CommandName?.GetHashCode() ?? 0;
             }
         }
     }
