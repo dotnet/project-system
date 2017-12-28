@@ -149,7 +149,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                                  && unresolvedChanges.Contains(metadata.Name));
                 isTarget = metadata.IsTarget;
                 var packageTargetFramework = TargetFrameworkProvider.GetTargetFramework(metadata.Target);
-                if (packageTargetFramework != targetFramework)
+                if (!(packageTargetFramework?.Equals(targetFramework) == true))
                 {
                     return null;
                 }
