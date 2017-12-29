@@ -269,8 +269,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             debugInfo.AppPackageLaunchInfo = info.AppPackageLaunchInfo;
             debugInfo.project = info.Project;
 
+            if (IsRemoteDebugging(info))
+            {
+                debugInfo.fSendToOutputWindow = 1;
+            }
+
             return debugInfo;
         }
+
+        private static bool IsRemoteDebugging(IDebugLaunchSettings info)
+            => !string.IsNullOrEmpty(info.RemoteMachine) &&
+               !string.IsNullOrEmpty(info.PortName);
 
         /// <summary>
         /// Frees memory allocated by GetDebuggerStruct.
