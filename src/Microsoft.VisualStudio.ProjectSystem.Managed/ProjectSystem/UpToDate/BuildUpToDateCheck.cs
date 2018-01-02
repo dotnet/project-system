@@ -488,13 +488,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     continue;
                 }
 
-                if (Path.IsPathRooted(filename))
-                {
-                    filename = filename.StartsWith(_msBuildProjectDirectory)
-                        // Remove project directory + trailing slash
-                        ? filename.Substring(_msBuildProjectDirectory.Length + 1)
-                        : Path.GetFileName(filename);
-                }
+                filename = _configuredProject.UnconfiguredProject.MakeRelative(filename);
 
                 logger.Info("Checking PreserveNewest file '{0}':", item.Path);
 
