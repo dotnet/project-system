@@ -27,13 +27,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private const string TelemetryEventName = "UpToDateCheck";
         private const string Link = "Link";
 
-        private static readonly HashSet<string> s_knownOutputGroups = new HashSet<string>
-        {
-            "Symbols",
-            "Built",
-            "Documentation",
-            "LocalizedResourceDlls"
-        };
+        private static ImmutableHashSet<string> KnownOutputGroups => ImmutableHashSet<string>.Empty
+            .Add("Symbols")
+            .Add("Built")
+            .Add("Documentation")
+            .Add("LocalizedResourceDlls");
 
         private static ImmutableHashSet<string> ReferenceSchemas => ImmutableHashSet<string>.Empty
             .Add(ResolvedAnalyzerReference.SchemaName)
@@ -103,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 _configuredProject.Services.ProjectSubscription.JointRuleSource.SourceBlock.SyncLinkOptions(new StandardRuleDataflowLinkOptions { RuleNames = ProjectPropertiesSchemas }),
                 _configuredProject.Services.ProjectSubscription.ImportTreeSource.SourceBlock.SyncLinkOptions(),
                 _configuredProject.Services.ProjectSubscription.SourceItemsRuleSource.SourceBlock.SyncLinkOptions(),
-                _configuredProject.Services.OutputGroups.SourceBlock.SyncLinkOptions(),
+                _configuredProject.Services.OutputGroups.SourceBlock.SyncLinkOptions(new StandardRuleDataflowLinkOptions {RuleNames = KnownOutputGroups}),
                 _projectItemSchemaService.SourceBlock.SyncLinkOptions(),
                 target: new ActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectImportTreeSnapshot, IProjectSubscriptionUpdate, IImmutableDictionary<string, IOutputGroup>, IProjectItemSchema>>>(e => OnChanged(e)),
                 linkOptions: new DataflowLinkOptions { PropagateCompletion = true });
@@ -230,7 +228,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private void OnOutputGroupChanged(IImmutableDictionary<string, IOutputGroup> e)
         {
-            foreach (var outputGroupPair in e.Where(pair => s_knownOutputGroups.Contains(pair.Key)))
+            foreach (var outputGroupPair in e)
             {
                 var outputs = outputGroupPair.Value.Outputs.Select(output => output.Key);
                 _outputGroups[outputGroupPair.Key] = new HashSet<string>(outputs, StringComparers.Paths);
