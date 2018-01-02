@@ -188,7 +188,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             VsDebugTargetInfo4[] launchSettingsNative = launchSettings.Select(GetDebuggerStruct4).ToArray();
             if (launchSettingsNative.Length == 0)
             {
-                return new VsDebugTargetProcessInfo[0];
+                return Array.Empty<VsDebugTargetProcessInfo>();
             }
 
             try
@@ -230,7 +230,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             debugInfo.bstrEnv = GetSerializedEnvironmentString(info.Environment);
             debugInfo.guidLaunchDebugEngine = info.LaunchDebugEngineGuid;
 
-            List<Guid> guids = new List<Guid>(1);
+            var guids = new List<Guid>(1);
             guids.Add(info.LaunchDebugEngineGuid);
             if (info.AdditionalDebugEngines != null)
             {
@@ -255,7 +255,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             if (info.StandardErrorHandle != IntPtr.Zero || info.StandardInputHandle != IntPtr.Zero || info.StandardOutputHandle != IntPtr.Zero)
             {
-                VsDebugStartupInfo processStartupInfo = new VsDebugStartupInfo
+                var processStartupInfo = new VsDebugStartupInfo
                 {
                     hStdInput = unchecked((uint)info.StandardInputHandle.ToInt32()),
                     hStdOutput = unchecked((uint)info.StandardOutputHandle.ToInt32()),
@@ -302,7 +302,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
 
             // Collect all the variables as a null delimited list of key=value pairs.
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
             foreach (var pair in environment)
             {
                 result.Append(pair.Key);

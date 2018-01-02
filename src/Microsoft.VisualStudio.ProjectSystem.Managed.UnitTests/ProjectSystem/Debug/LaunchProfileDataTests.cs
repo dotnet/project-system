@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [InlineData(true)]
         public void LaunchProfileData_FromILaunchProfileTests(bool isInMemory)
         {
-            LaunchProfile profile = new LaunchProfile()
+            var profile = new LaunchProfile()
             {
                 Name = "Test",
                 CommandName = "Test",
@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 DoNotPersist = isInMemory
             };
 
-            LaunchProfileData data = LaunchProfileData.FromILaunchProfile(profile);
+            var data = LaunchProfileData.FromILaunchProfile(profile);
 
             Assert.True(data.Name == profile.Name);
             Assert.True(data.ExecutablePath == profile.ExecutablePath);
@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public void LaunchProfileData_DeserializeProfilesTests()
         {
-            JObject jsonObject = JObject.Parse(JsonString1);
+            var jsonObject = JObject.Parse(JsonString1);
 
             var profiles = LaunchProfileData.DeserializeProfiles((JObject)jsonObject["profiles"]);
             Assert.Equal(4, profiles.Count);
@@ -110,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public void LaunchProfileData_DeserializeEmptyProfilesTests()
         {
-            JObject jsonObject = JObject.Parse(JsonString2);
+            var jsonObject = JObject.Parse(JsonString2);
             var profiles = LaunchProfileData.DeserializeProfiles((JObject)jsonObject["profiles"]);
             Assert.Empty(profiles);
         }
@@ -118,7 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public void LaunchProfileData_ToSerializableFormTests()
         {
-            JObject jsonObject = JObject.Parse(JsonString1);
+            var jsonObject = JObject.Parse(JsonString1);
             var profiles = LaunchProfileData.DeserializeProfiles((JObject)jsonObject["profiles"]);
 
             var profile = profiles["IIS Express"];
@@ -157,7 +157,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         // Json string data
-string JsonString1 = @"{
+        private string JsonString1 = @"{
   ""profiles"": {
   ""IIS Express"" :
     {
@@ -192,8 +192,7 @@ string JsonString1 = @"{
     }
   }
 }";
-
-string JsonString2 = @"{
+        private string JsonString2 = @"{
   ""profiles"": {
   }
 }";

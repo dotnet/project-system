@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
         {
             UIThreadHelper.VerifyOnUIThread();
 
-            IVsBrowseObjectContext context = hierarchy as IVsBrowseObjectContext;
+            var context = hierarchy as IVsBrowseObjectContext;
             if (context == null)
             {
                 EnvDTE.Project dteProject = hierarchy.GetDTEProject();

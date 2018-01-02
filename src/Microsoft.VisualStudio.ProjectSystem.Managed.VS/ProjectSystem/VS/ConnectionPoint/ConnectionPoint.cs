@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint
         private readonly ConnectionPointContainer _container;
         private readonly IEventSource<TSinkType> _source;
 
-        private uint nextCookie;
+        private uint _nextCookie;
 
         internal ConnectionPoint(ConnectionPointContainer container, IEventSource<TSinkType> source)
         {
@@ -26,21 +26,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint
 
             _container = container;
             _source = source;
-            nextCookie = 1;
+            _nextCookie = 1;
         }
 
         public void Advise(object pUnkSink, out uint pdwCookie)
         {
-            TSinkType sink = pUnkSink as TSinkType;
+            var sink = pUnkSink as TSinkType;
             if (null == sink)
             {
                 Marshal.ThrowExceptionForHR(VSConstants.E_NOINTERFACE);
             }
 
-            _sinks.Add(nextCookie, sink);
-            pdwCookie = nextCookie;
+            _sinks.Add(_nextCookie, sink);
+            pdwCookie = _nextCookie;
             _source.OnSinkAdded(sink);
-            nextCookie += 1;
+            _nextCookie += 1;
         }
 
         public void EnumConnections(out IEnumConnections ppEnum)

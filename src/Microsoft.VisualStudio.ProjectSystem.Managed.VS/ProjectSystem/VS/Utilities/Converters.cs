@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     [ValueConversion(typeof(bool), typeof(Visibility))]
     internal class InvertableBooleanToVisibilityConverter : IValueConverter
     {
-        enum Parameters
+        private enum Parameters
         {
             Normal, Inverted
         }
@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             }
             
             bool boolVal = (bool)value;
-            Parameters direction = (Parameters)Enum.Parse(typeof(Parameters), (string)parameter);
+            var direction = (Parameters)Enum.Parse(typeof(Parameters), (string)parameter);
 
             if (direction == Parameters.Normal)
             {

@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         internal DispatchThread()
         {
-            using (AutoResetEvent resetEvent = new AutoResetEvent(false))
+            using (var resetEvent = new AutoResetEvent(false))
             {
                 _thread = new Thread(delegate()
                 {

@@ -13,10 +13,10 @@ namespace Microsoft.VisualStudio
         // Sentinel fixed-length arrays eliminate the need for a "count" field keeping this
         // struct down to just 4 fields. These are only used for their "Length" property,
         // that is, their elements are never set or referenced.
-        private static readonly object[] ZeroArgumentArray = Array.Empty<object>();
-        private static readonly object[] OneArgumentArray = new object[1];
-        private static readonly object[] TwoArgumentArray = new object[2];
-        private static readonly object[] ThreeArgumentArray = new object[3];
+        private static readonly object[] s_zeroArgumentArray = Array.Empty<object>();
+        private static readonly object[] s_oneArgumentArray = new object[1];
+        private static readonly object[] s_twoArgumentArray = new object[2];
+        private static readonly object[] s_threeArgumentArray = new object[3];
         private readonly string _format;
         private readonly object _argument1;
         private readonly object _argument2;
@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio
             _argument1 = null;
             _argument2 = null;
             _argument3 = null;
-            _arguments = ZeroArgumentArray;
+            _arguments = s_zeroArgumentArray;
         }
 
         public StringFormat(string format, object argument)
@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio
             _argument1 = argument;
             _argument2 = null;
             _argument3 = null;
-            _arguments = OneArgumentArray;
+            _arguments = s_oneArgumentArray;
         }
 
         public StringFormat(string format, object argument1, object argument2)
@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio
             _argument1 = argument1;
             _argument2 = argument2;
             _argument3 = null;
-            _arguments = TwoArgumentArray;
+            _arguments = s_twoArgumentArray;
         }
 
         public StringFormat(string format, object argument1, object argument2, object argument3)
@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio
             _argument1 = argument1;
             _argument2 = argument2;
             _argument3 = argument3;
-            _arguments = ThreeArgumentArray;
+            _arguments = s_threeArgumentArray;
         }
 
         public StringFormat(string format, object[] arguments)

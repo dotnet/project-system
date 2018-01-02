@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// </summary>
         /// <param name="args">Information about the configuration dimension value change.</param>
         /// <returns>A task for the async operation.</returns>
-        public override async Task OnDimensionValueChangedAsync(ProjectConfigurationDimensionValueChangedEventArgs args)
+        public override Task OnDimensionValueChangedAsync(ProjectConfigurationDimensionValueChangedEventArgs args)
         {
             if (StringComparers.ConfigurationDimensionNames.Equals(args.DimensionName, DimensionName))
             {
@@ -40,17 +40,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                     switch (args.Change)
                     {
                         case ConfigurationDimensionChange.Add:
-                            await OnPlatformAddedAsync(args.Project, args.DimensionValue).ConfigureAwait(false);
-                            break;
+                            return OnPlatformAddedAsync(args.Project, args.DimensionValue);
+
                         case ConfigurationDimensionChange.Delete:
-                            await OnPlatformDeletedAsync(args.Project, args.DimensionValue).ConfigureAwait(false);
-                            break;
+                            return OnPlatformDeletedAsync(args.Project, args.DimensionValue);
+
                         case ConfigurationDimensionChange.Rename:
                             // Platform doesn't currently supports rename, this should never be called.
                             break;
                     }
                 }
             }
+
+            return Task.CompletedTask;
         }
 
         /// <summary>

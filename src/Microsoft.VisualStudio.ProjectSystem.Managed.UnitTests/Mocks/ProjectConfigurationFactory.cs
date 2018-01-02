@@ -8,8 +8,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class ProjectConfigurationFactory
     {
-
-
         public static ProjectConfiguration Create(string name, IImmutableDictionary<string, string> dimensions)
         {
             return new StandardProjectConfiguration(name, dimensions);

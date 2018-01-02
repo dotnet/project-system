@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         {
             var vsProjectDesignerPageService = IVsProjectDesignerPageServiceFactory.ImplementIsProjectDesignerSupported(() => true);
 
-            Guid editorGuid = Guid.NewGuid();
+            var editorGuid = Guid.NewGuid();
 
             var hierarchy = IVsHierarchyFactory.Create();
             hierarchy.ImplementGetGuid(VsHierarchyPropID.ProjectDesignerEditor, result: editorGuid);
@@ -128,7 +128,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             var vsProjectDesignerPageService = IVsProjectDesignerPageServiceFactory.ImplementIsProjectDesignerSupported(() => true);
 
-            Guid editorGuid = Guid.NewGuid();
+            var editorGuid = Guid.NewGuid();
 
             var hierarchy = IVsHierarchyFactory.Create();
             hierarchy.ImplementGetGuid(VsHierarchyPropID.ProjectDesignerEditor, result: editorGuid);
@@ -148,7 +148,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         {
             var vsProjectDesignerPageService = IVsProjectDesignerPageServiceFactory.ImplementIsProjectDesignerSupported(() => true);
 
-            Guid editorGuid = Guid.NewGuid();
+            var editorGuid = Guid.NewGuid();
 
             var hierarchy = IVsHierarchyFactory.Create();
             hierarchy.ImplementGetGuid(VsHierarchyPropID.ProjectDesignerEditor, result: editorGuid);
@@ -172,7 +172,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         {
             var vsProjectDesignerPageService = IVsProjectDesignerPageServiceFactory.ImplementIsProjectDesignerSupported(() => true);
 
-            Guid editorGuid = Guid.NewGuid();
+            var editorGuid = Guid.NewGuid();
             
             var hierarchy = IVsHierarchyFactory.Create();
             hierarchy.ImplementGetGuid(VsHierarchyPropID.ProjectDesignerEditor, result: editorGuid);

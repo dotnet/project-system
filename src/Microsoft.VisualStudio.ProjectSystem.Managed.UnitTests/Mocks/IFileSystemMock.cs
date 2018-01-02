@@ -24,8 +24,8 @@ namespace Microsoft.VisualStudio.IO
             public Encoding FileEncoding = Encoding.Default;
         };
 
-        Dictionary<string, FileData> _files = new Dictionary<string, FileData>(StringComparer.OrdinalIgnoreCase);
-        HashSet<string> _folders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        private Dictionary<string, FileData> _files = new Dictionary<string, FileData>(StringComparer.OrdinalIgnoreCase);
+        private HashSet<string> _folders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
         string _currentDirectory;
 
@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.IO
             }
             else
             {
-                Regex regex = new Regex(WildcardToRegex(searchPattern), RegexOptions.IgnoreCase);
+                var regex = new Regex(WildcardToRegex(searchPattern), RegexOptions.IgnoreCase);
                 string ext = searchPattern.Substring(1);
                 return files.Where(filePath => regex.IsMatch(Path.GetFileName(filePath)));
             }

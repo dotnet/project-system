@@ -79,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private string ReadIdentifierCore(IdentifierParseOptions options)
         {
-            StringBuilder identifier = new StringBuilder();
+            var identifier = new StringBuilder();
 
             Token? token;
             while ((token = PeekToken()) != null)

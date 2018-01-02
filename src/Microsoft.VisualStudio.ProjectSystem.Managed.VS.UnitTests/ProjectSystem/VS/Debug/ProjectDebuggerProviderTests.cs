@@ -12,20 +12,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     [ProjectSystemTrait]
     public class ProjectDebuggerProviderTests
     {
-        Mock<IDebugProfileLaunchTargetsProvider> _mockWebProvider =  new Mock<IDebugProfileLaunchTargetsProvider>();
-        Mock<IDebugProfileLaunchTargetsProvider> _mockDockerProvider =  new Mock<IDebugProfileLaunchTargetsProvider>();
-        Mock<IDebugProfileLaunchTargetsProvider> _mockExeProvider =  new Mock<IDebugProfileLaunchTargetsProvider>();
-        OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider> _launchProviders = 
+        private Mock<IDebugProfileLaunchTargetsProvider> _mockWebProvider =  new Mock<IDebugProfileLaunchTargetsProvider>();
+        private Mock<IDebugProfileLaunchTargetsProvider> _mockDockerProvider =  new Mock<IDebugProfileLaunchTargetsProvider>();
+        private Mock<IDebugProfileLaunchTargetsProvider> _mockExeProvider =  new Mock<IDebugProfileLaunchTargetsProvider>();
+        private OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider> _launchProviders = 
             new OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst);
-        Mock<ConfiguredProject> _configuredProjectMoq = new Mock<ConfiguredProject>();
-        Mock<ILaunchSettingsProvider> _LaunchSettingsProviderMoq = new Mock<ILaunchSettingsProvider>();
-
-        List<IDebugLaunchSettings> _webProviderSettings = new List<IDebugLaunchSettings>();
-        List<IDebugLaunchSettings> _dockerProviderSettings = new List<IDebugLaunchSettings>();
-        List<IDebugLaunchSettings> _exeProviderSettings = new List<IDebugLaunchSettings>();
+        private Mock<ConfiguredProject> _configuredProjectMoq = new Mock<ConfiguredProject>();
+        private Mock<ILaunchSettingsProvider> _LaunchSettingsProviderMoq = new Mock<ILaunchSettingsProvider>();
+        private List<IDebugLaunchSettings> _webProviderSettings = new List<IDebugLaunchSettings>();
+        private List<IDebugLaunchSettings> _dockerProviderSettings = new List<IDebugLaunchSettings>();
+        private List<IDebugLaunchSettings> _exeProviderSettings = new List<IDebugLaunchSettings>();
 
         // Set this to have ILaunchSettingsProvider return this profile (null by default)
-        ILaunchProfile _activeProfile;
+        private ILaunchProfile _activeProfile;
 
         public ProjectDebuggerProviderTests()
         {
@@ -36,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _mockExeProvider.Setup(x => x.SupportsProfile(It.IsAny<ILaunchProfile>())).Returns<ILaunchProfile>((p) => string.IsNullOrEmpty(p.CommandName) || p.CommandName == "Project");
             _mockExeProvider.Setup(x => x.QueryDebugTargetsAsync(It.IsAny<DebugLaunchOptions>(), It.IsAny<ILaunchProfile>())).Returns<DebugLaunchOptions, ILaunchProfile>((o, p) => {return Task.FromResult((IReadOnlyList<IDebugLaunchSettings>)_exeProviderSettings);});
 
-            Mock<IOrderPrecedenceMetadataView> mockMetadata  = new Mock<IOrderPrecedenceMetadataView>();
+            var mockMetadata  = new Mock<IOrderPrecedenceMetadataView>();
            _launchProviders.Add(new Lazy<IDebugProfileLaunchTargetsProvider, IOrderPrecedenceMetadataView>(() => _mockWebProvider.Object, mockMetadata.Object));
             _launchProviders.Add(new Lazy<IDebugProfileLaunchTargetsProvider, IOrderPrecedenceMetadataView>(() => _mockDockerProvider.Object, mockMetadata.Object));
             _launchProviders.Add(new Lazy<IDebugProfileLaunchTargetsProvider, IOrderPrecedenceMetadataView>(() => _mockExeProvider.Object, mockMetadata.Object));
@@ -68,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [Fact]
         public async Task CanLaunchAsyncTests()
         {
-            Mock<ConfiguredProject> configuredProjectMoq = new Mock<ConfiguredProject>();
+            var configuredProjectMoq = new Mock<ConfiguredProject>();
             var debugger = new ProjectDebuggerProvider(configuredProjectMoq.Object, new Mock<ILaunchSettingsProvider>().Object);
 
             bool result = await debugger.CanLaunchAsync(DebugLaunchOptions.NoDebug);

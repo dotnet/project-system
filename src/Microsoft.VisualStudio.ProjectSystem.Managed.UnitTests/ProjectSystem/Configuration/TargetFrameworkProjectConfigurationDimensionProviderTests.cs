@@ -115,7 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                 var property = BuildUtilities.GetProperty(projectFile.Project, ConfigurationGeneral.TargetFrameworksProperty);
                 string expectedTFMs = property.Value;
 
-                ProjectConfigurationDimensionValueChangedEventArgs args = new ProjectConfigurationDimensionValueChangedEventArgs(
+                var args = new ProjectConfigurationDimensionValueChangedEventArgs(
                     unconfiguredProject,
                     change,
                     stage,

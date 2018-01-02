@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var projectFile = string.Format(projectFileFormat, targetFrameworkProperty, targetFrameworksProperty);
 
             using (Stream str = new MemoryStream(Encoding.UTF8.GetBytes(projectFile)))
-            using (XmlReader xr = XmlReader.Create(str))
+            using (var xr = XmlReader.Create(str))
             {
                 return ProjectRootElement.Create(xr).Properties.ToImmutableArray();
             }

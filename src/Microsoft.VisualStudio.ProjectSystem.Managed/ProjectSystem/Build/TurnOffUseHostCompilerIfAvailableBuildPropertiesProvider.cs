@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
     internal class TurnOffUseHostCompilerIfAvailableBuildPropertiesProvider : StaticGlobalPropertiesProviderBase
     {
-        private static readonly Task<IImmutableDictionary<string, string>> BuildProperties = Task.FromResult<IImmutableDictionary<string, string>>(
+        private static readonly Task<IImmutableDictionary<string, string>> s_buildProperties = Task.FromResult<IImmutableDictionary<string, string>>(
             Empty.PropertiesMap.Add(BuildProperty.UseHostCompilerIfAvailable, "false"));
 
         [ImportingConstructor]
@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
 
         public override Task<IImmutableDictionary<string, string>> GetGlobalPropertiesAsync(CancellationToken cancellationToken)
         {
-            return BuildProperties;
+            return s_buildProperties;
         }
     }
 }

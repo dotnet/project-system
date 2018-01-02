@@ -1,8 +1,8 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <VersionBase Condition="'$(UseVisualStudioVersion)' == 'true'">15.5.0</VersionBase>
-    <VersionBase Condition="'$(UseVisualStudioVersion)' != 'true'">2.5.0</VersionBase>
-    <PreReleaseVersionLabel>beta2</PreReleaseVersionLabel>
+    <VersionBase Condition="'$(UseVisualStudioVersion)' == 'true'">15.6.0</VersionBase>
+    <VersionBase Condition="'$(UseVisualStudioVersion)' != 'true'">2.6.0</VersionBase>
+    <PreReleaseVersionLabel>beta3</PreReleaseVersionLabel>
 
     <!-- Opt-in repo features -->
     <UsingToolVSSDK>true</UsingToolVSSDK>
@@ -62,7 +62,7 @@
     <VsWebSiteInteropVersion>8.0.0-alpha</VsWebSiteInteropVersion>
     
     <!-- CPS -->
-    <MicrosoftVisualStudioProjectSystemSDKVersion>15.5.293-pre</MicrosoftVisualStudioProjectSystemSDKVersion>
+    <MicrosoftVisualStudioProjectSystemSDKVersion>15.6.98-pre</MicrosoftVisualStudioProjectSystemSDKVersion>
     
     <!-- Roslyn -->
     <MicrosoftVisualStudioLanguageServicesVersion>2.6.0-beta1-62113-02</MicrosoftVisualStudioLanguageServicesVersion>
@@ -75,7 +75,7 @@
     <NuGetVisualStudioVersion>4.3.0</NuGetVisualStudioVersion>
     
     <!-- Msbuild -->
-    <MicrosoftBuildVersion>15.3.409</MicrosoftBuildVersion>
+    <MicrosoftBuildVersion>15.6.0-preview-000010-1174357</MicrosoftBuildVersion>
     
     <!-- Libs -->
     <NewtonsoftJsonVersion>9.0.1</NewtonsoftJsonVersion>

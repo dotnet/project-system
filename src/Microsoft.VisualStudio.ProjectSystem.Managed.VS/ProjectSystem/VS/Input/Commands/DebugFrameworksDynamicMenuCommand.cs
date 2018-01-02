@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     [Export(typeof(DebugFrameworksDynamicMenuCommand))]
     internal class DebugFrameworksDynamicMenuCommand : DynamicMenuCommand
     {
-        const int MaxFrameworks = 20;
+        private const int MaxFrameworks = 20;
 
         [ImportingConstructor]
         public DebugFrameworksDynamicMenuCommand(IStartupProjectHelper startupProjectHelper)
@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             StartupProjectHelper = startupProjectHelper;
         }
 
-        IStartupProjectHelper StartupProjectHelper { get; }
+        private IStartupProjectHelper StartupProjectHelper { get; }
 
         /// <summary>
         /// CAlled by the base when one if our menu ids is clicked. Need to return true if the command was handled

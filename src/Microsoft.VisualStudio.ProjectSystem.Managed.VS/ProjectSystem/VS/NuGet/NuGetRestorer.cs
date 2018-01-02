@@ -29,10 +29,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private DisposableBag _designTimeBuildSubscriptionLink;
         
 
-        private static ImmutableHashSet<string> _targetFrameworkWatchedRules = Empty.OrdinalIgnoreCaseStringSet
+        private static ImmutableHashSet<string> s_targetFrameworkWatchedRules = Empty.OrdinalIgnoreCaseStringSet
             .Add(NuGetRestore.SchemaName);
 
-        private static ImmutableHashSet<string> _designTimeBuildWatchedRules = Empty.OrdinalIgnoreCaseStringSet
+        private static ImmutableHashSet<string> s_designTimeBuildWatchedRules = Empty.OrdinalIgnoreCaseStringSet
             .Add(NuGetRestore.SchemaName)
             .Add(ProjectReference.SchemaName)
             .Add(PackageReference.SchemaName)
@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
         // Remove the ConfiguredProjectIdentity key because it is unique to each configured project - so it won't match across projects by design.
         // Remove the ConfiguredProjectVersion key because each configuredproject manages it's own version and generally they don't match. 
-        private readonly static ImmutableArray<NamedIdentity> _keysToDrop = ImmutableArray.Create(ProjectDataSources.ConfiguredProjectIdentity, ProjectDataSources.ConfiguredProjectVersion);
+        private readonly static ImmutableArray<NamedIdentity> s_keysToDrop = ImmutableArray.Create(ProjectDataSources.ConfiguredProjectIdentity, ProjectDataSources.ConfiguredProjectVersion);
 
         [ImportingConstructor]
         public NuGetRestorer(
@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             var target = new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedAsync(e));
             _targetFrameworkSubscriptionLink = _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
                 target: target,
-                ruleNames: _targetFrameworkWatchedRules,
+                ruleNames: s_targetFrameworkWatchedRules,
                 initialDataAsNew: false, // only reset on subsequent changes
                 suppressVersionOnlyUpdates: true);
 
@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             {
                 var sourceLinkOptions = new StandardRuleDataflowLinkOptions
                 {
-                    RuleNames = _designTimeBuildWatchedRules,
+                    RuleNames = s_designTimeBuildWatchedRules,
                     PropagateCompletion = true
                 };
 
@@ -148,7 +148,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         {
             var transformBlock = new TransformBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>, IProjectVersionedValue<IProjectSubscriptionUpdate>>(data =>
             {
-                return new ProjectVersionedValue<IProjectSubscriptionUpdate>(data.Value, data.DataSourceVersions.RemoveRange(_keysToDrop));
+                return new ProjectVersionedValue<IProjectSubscriptionUpdate>(data.Value, data.DataSourceVersions.RemoveRange(s_keysToDrop));
             });
 
             return transformBlock;

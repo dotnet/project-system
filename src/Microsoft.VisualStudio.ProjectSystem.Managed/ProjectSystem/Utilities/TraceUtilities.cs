@@ -24,8 +24,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         /// <summary>
         /// Buffer to preserve lastest set of error messages to help diagnosing Watson bugs.
         /// </summary>
-        private static readonly string[] CriticalTraceBuffer = new string[CriticalTraceBufferSize];
-        private static volatile int currentTraceIndex = 0;
+        private static readonly string[] s_criticalTraceBuffer = new string[CriticalTraceBufferSize];
+        private static volatile int s_currentTraceIndex = 0;
 
         /// <summary>
         /// Gives the current Travel Level setting for the CPS tracing
@@ -136,13 +136,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
             // Allocate the next index.  We use CompareExchange here to prevent the race condition between two threads.
             do
             {
-                currentValue = currentTraceIndex;
+                currentValue = s_currentTraceIndex;
             }
-            while (Interlocked.CompareExchange(ref currentTraceIndex, currentValue, (currentValue + 1) % CriticalTraceBufferSize) != currentValue);
+            while (Interlocked.CompareExchange(ref s_currentTraceIndex, currentValue, (currentValue + 1) % CriticalTraceBufferSize) != currentValue);
 
             // possible to override, if the buffer is written heavily
             // but this is just to help us to gather information, so performance is more important here.
-            CriticalTraceBuffer[currentValue] = message;
+            s_criticalTraceBuffer[currentValue] = message;
         }
     }
 }

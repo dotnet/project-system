@@ -16,13 +16,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     [ProjectSystemTrait]
     public class DebugTokenReplacerTests
     {
-        Dictionary<string, string> _envVars = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
+        private Dictionary<string, string> _envVars = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
             { "%env1%","envVariable1" },
             { "%env2%","envVariable2" },
             { "%env3%","$(msbuildProperty6)" }
         };
-        
-        Mock<IEnvironmentHelper> _envHelper = new Mock<IEnvironmentHelper>();
+        private Mock<IEnvironmentHelper> _envHelper = new Mock<IEnvironmentHelper>();
         public DebugTokenReplacerTests()
         {
             _envHelper.Setup(x => x.ExpandEnvironmentVariables(It.IsAny<string>())).Returns<string>((str) =>
@@ -108,7 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             return Task.FromResult((IProjectReadAccess)new TestProjectReadAccessor());
         }
 
-        class TestProjectReadAccessor : IProjectReadAccess
+        private class TestProjectReadAccessor : IProjectReadAccess
         {
             public TestProjectReadAccessor() { }
             public Task<Microsoft.Build.Evaluation.Project> GetProjectAsync() {return Task.FromResult(CreateMsBuildProject());}
@@ -137,7 +136,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 };
                 using (var reader = XmlReader.Create(new System.IO.StringReader(projectFile), settings))
                 {
-                    ProjectRootElement importFile = ProjectRootElement.Create(reader); 
+                    var importFile = ProjectRootElement.Create(reader); 
                     return new Microsoft.Build.Evaluation.Project(importFile);
                 }
             }
