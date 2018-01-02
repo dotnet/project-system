@@ -97,6 +97,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _telemetryService = telemetryService;
         }
 
+        /// <summary>
+        /// Called on project load.
+        /// </summary>
+        [ConfiguredProjectAutoLoad]
+        [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
+        internal void Load()
+        {
+            EnsureInitialized();
+        }
+
         protected override void Initialize()
         {
             _link = ProjectDataSources.SyncLinkTo(
