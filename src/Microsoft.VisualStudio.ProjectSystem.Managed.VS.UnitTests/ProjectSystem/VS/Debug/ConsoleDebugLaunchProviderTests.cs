@@ -256,6 +256,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         [Theory]
         [InlineData(@"c:\test\project\bin\")]
         [InlineData(@"bin\")]
+        [InlineData(@"doesntExist\")]
+        [InlineData(null)]
         public async Task QueryDebugTargets_ExeProfileAsyncExeRelativeNoWorkingDir(string outdir)
         {
           var properties = new Dictionary<string, string>() {
@@ -270,11 +272,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
 
             // Exe relative, no working dir
             _mockFS.WriteAllText(@"c:\test\project\bin\test.exe", string.Empty);
+            _mockFS.WriteAllText(@"c:\test\project\test.exe", string.Empty);
             var activeProfile = new LaunchProfile(){Name="run", ExecutablePath=".\\test.exe"};
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
-            Assert.Equal(@"c:\test\project\bin\test.exe", targets[0].Executable);
-            Assert.Equal(@"c:\test\project\bin\", targets[0].CurrentDirectory);
+            if(outdir == null || outdir == @"doesntExist\")
+            {
+                Assert.Equal(@"c:\test\project\test.exe", targets[0].Executable);
+                Assert.Equal(@"c:\test\project", targets[0].CurrentDirectory);
+            }
+            else
+            {
+                Assert.Equal(@"c:\test\project\bin\test.exe", targets[0].Executable);
+                Assert.Equal(@"c:\test\project\bin\", targets[0].CurrentDirectory);
+            }
         }
 
         [Theory]
