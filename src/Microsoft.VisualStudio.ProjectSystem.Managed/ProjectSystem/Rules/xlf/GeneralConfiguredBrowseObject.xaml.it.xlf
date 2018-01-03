@@ -69,7 +69,7 @@
       </trans-unit>
       <trans-unit id="EnumValue|GenerateSerializationAssemblies.Off|DisplayName">
         <source>Off</source>
-        <target state="translated">Off</target>
+        <target state="translated">No</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|LanguageVersion|DisplayName">
@@ -144,12 +144,12 @@
       </trans-unit>
       <trans-unit id="EnumValue|OptionExplicit.Off|DisplayName">
         <source>Off</source>
-        <target state="translated">Off</target>
+        <target state="translated">No</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionExplicit.On|DisplayName">
         <source>On</source>
-        <target state="translated">On</target>
+        <target state="translated">Sì</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OptionCompare|DisplayName">
@@ -174,12 +174,12 @@
       </trans-unit>
       <trans-unit id="EnumValue|OptionInfer.Off|DisplayName">
         <source>Off</source>
-        <target state="translated">Off</target>
+        <target state="translated">No</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OptionInfer.On|DisplayName">
         <source>On</source>
-        <target state="translated">On</target>
+        <target state="translated">Sì</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|OptionStrict|DisplayName">

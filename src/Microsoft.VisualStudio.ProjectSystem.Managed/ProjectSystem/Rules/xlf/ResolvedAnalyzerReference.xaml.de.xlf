@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="Rule|ResolvedAnalyzerReference|DisplayName">
         <source>Resolved Analyzer Reference</source>
-        <target state="translated">Aufgelöster Analyseverweis</target>
+        <target state="translated">Aufgelöster Analysetoolverweis</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedAnalyzerReference|Description">
         <source>Analyzer Properties</source>
-        <target state="translated">Analyseeigenschaften</target>
+        <target state="translated">Eigenschaften von Analysetools</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OriginalItemSpec|Description">
@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|Description">
         <source>Location of the analyzer assembly.</source>
-        <target state="translated">Der Speicherort der Analyseassembly.</target>
+        <target state="translated">Der Speicherort der Assembly des Analysetools.</target>
         <note />
       </trans-unit>
     </body>

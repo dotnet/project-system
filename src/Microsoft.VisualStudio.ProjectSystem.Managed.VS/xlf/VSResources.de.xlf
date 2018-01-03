@@ -154,7 +154,7 @@ Klicken Sie auf "Ignorieren", um die externen Änderungen zu ignorieren. Wenn Si
       </trans-unit>
       <trans-unit id="AnalyzersNodeName">
         <source>Analyzers</source>
-        <target state="translated">Analysen</target>
+        <target state="translated">Analysetools</target>
         <note />
       </trans-unit>
       <trans-unit id="DotNetCoreProjectsNotSupported">
