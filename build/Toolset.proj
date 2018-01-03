@@ -9,8 +9,8 @@
     <RestoreSources>https://dotnet.myget.org/F/roslyn-tools/api/v3/index.json</RestoreSources>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="RoslynTools.Microsoft.RepoToolset" Version="$(RoslynToolsMicrosoftRepoToolsetVersion)" />
-    <PackageReference Include="RoslynTools.Microsoft.VsixExpInstaller" Version="$(RoslynToolsMicrosoftVsixExpInstallerVersion)" />
+    <PackageReference Include="RoslynTools.RepoToolset" Version="$(RoslynToolsRepoToolsetVersion)" />
+    <PackageReference Include="RoslynTools.VsixExpInstaller" Version="$(RoslynToolsVsixExpInstallerVersion)" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -21,7 +21,7 @@
     
     <PropertyGroup>
       <VsInstallDir>$([System.IO.Path]::GetFullPath('$(MSBuildBinPath)\..\..\..'))</VsInstallDir>
-      <VsixExpInstallerExe>$(NuGetPackageRoot)\RoslynTools.Microsoft.VsixExpInstaller\$(RoslynToolsMicrosoftVsixExpInstallerVersion)\tools\VsixExpInstaller.exe</VsixExpInstallerExe>
+      <VsixExpInstallerExe>$(NuGetPackageRoot)\roslyntools.vsixexpinstaller\$(RoslynToolsVsixExpInstallerVersion)\tools\VsixExpInstaller.exe</VsixExpInstallerExe>
       <VsixExpInstallerArgs>-rootSuffix:$(VSSDKTargetPlatformRegRootSuffix) -vsInstallDir:"$(VsInstallDir)"</VsixExpInstallerArgs>
 
       <RoslynVsixUrl>https://dotnet.myget.org/F/roslyn/vsix</RoslynVsixUrl>
