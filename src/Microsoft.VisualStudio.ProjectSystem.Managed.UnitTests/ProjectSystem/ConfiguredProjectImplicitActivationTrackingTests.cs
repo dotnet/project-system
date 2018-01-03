@@ -261,6 +261,52 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [Fact]
+        public async Task IsImplicitlyActive_WhenAccessedInImplicitlyActivatedHandler_ReturnsTrue()
+        {
+            var project = ConfiguredProjectFactory.ImplementProjectConfiguration("Debug|AnyCPU");
+            var service = CreateInstance(project, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source);
+
+            bool? result = null;
+            service.ImplicitlyActivated += (object sender, EventArgs e) =>
+            {
+                result = ((ConfiguredProjectImplicitActivationTracking)sender).IsImplicitlyActive;
+                return Task.CompletedTask;
+            };
+
+            var configurationGroups = IConfigurationGroupFactory.CreateFromConfigurationNames("Debug|AnyCPU");
+            await source.SendAndCompleteAsync(configurationGroups, service.TargetBlock);
+
+            Assert.True(result);
+        }
+
+        [Fact]
+        public async Task IsImplicitlyActive_WhenAccessedInImplicitlyDeactivatedHandler_ReturnsFalse()
+        {
+            var project = ConfiguredProjectFactory.ImplementProjectConfiguration("Debug|AnyCPU");
+            var service = CreateInstance(project, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source);
+
+            Assert.False(service.IsImplicitlyActive);
+
+            var configurationGroups = IConfigurationGroupFactory.CreateFromConfigurationNames("Debug|AnyCPU");
+            await source.SendAsync(configurationGroups);
+            await Task.Delay(500);  // Wait for data to be sent
+
+            Assert.True(service.IsImplicitlyActive);
+
+            bool? result = null;
+            service.ImplicitlyDeactivated += (object sender, EventArgs e) =>
+            {
+                result = ((ConfiguredProjectImplicitActivationTracking)sender).IsImplicitlyActive;
+                return Task.CompletedTask;
+            };
+
+            configurationGroups = IConfigurationGroupFactory.CreateFromConfigurationNames("Debug|x86");
+            await source.SendAndCompleteAsync(configurationGroups, service.TargetBlock);
+
+            Assert.False(result);
+        }
+
+        [Fact]
         public async Task ImplicitlyDeactivated_WhenActiveConfigurationChangesAndNoLongerMatches_Fires()
         {
             var project = ConfiguredProjectFactory.ImplementProjectConfiguration("Debug|AnyCPU");
