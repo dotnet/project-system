@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
         /// <summary>
         /// Get the display path for an item. The display path is what you see visually in solution explorer.
         /// </summary>
-        public static string GetDisplayPath(UnconfiguredProject project, ProjectItemIdentity item)
+        private static string GetDisplayPath(UnconfiguredProject project, ProjectItemIdentity item)
         {
             var linkPath = item.LinkPath;
             
