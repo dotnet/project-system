@@ -491,12 +491,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             foreach (var item in items)
             {
-                var filename = item.Link ?? Path.GetFileName(item.Path);
+                var filename = string.IsNullOrEmpty(item.Link) ? item.Path : item.Link;
 
                 if (string.IsNullOrEmpty(filename))
                 {
                     continue;
                 }
+
+                filename = _configuredProject.UnconfiguredProject.MakeRelative(filename);
 
                 logger.Info("Checking PreserveNewest file '{0}':", item.Path);
 
