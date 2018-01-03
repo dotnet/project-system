@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
+using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -23,6 +24,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly ActionBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> _targetBlock;
         private TaskCompletionSource<object> _isImplicitlyActiveSource = new TaskCompletionSource<object>();
         private IDisposable _subscription;
+        private event AsyncEventHandler _implicitlyActivated;
+        private event AsyncEventHandler _implicitlyDeactivated;
 
         [ImportingConstructor]
         public ConfiguredProjectImplicitActivationTracking(ConfiguredProject project, IActiveConfigurationGroupService activeConfigurationGroupService, [Import(ExportContractNames.Scopes.ConfiguredProject)]IProjectAsynchronousTasksService tasksService)
@@ -30,7 +33,35 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _project = project;
             _activeConfigurationGroupService = activeConfigurationGroupService;
             _tasksService = tasksService;
-            _targetBlock = new ActionBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>>((Action<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>>)OnActiveConfigurationsChanged);
+            _targetBlock = new ActionBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>>(OnActiveConfigurationsChanged);
+        }
+
+        public event AsyncEventHandler ImplicitlyActivated
+        {
+            add
+            {
+                EnsureInitialized();
+
+                _implicitlyActivated += value;
+            }
+            remove
+            {
+                _implicitlyActivated -= value;
+            }
+        }
+
+        public event AsyncEventHandler ImplicitlyDeactivated
+        {
+            add
+            {
+                EnsureInitialized();
+
+                _implicitlyDeactivated += value;
+            }
+            remove
+            {
+                _implicitlyDeactivated -= value;
+            }
         }
 
         public ITargetBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> TargetBlock => _targetBlock;
@@ -77,34 +108,38 @@ namespace Microsoft.VisualStudio.ProjectSystem
             OnCanceled();
         }
 
-        private void OnActiveConfigurationsChanged(IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>> e)
+        private Task OnActiveConfigurationsChanged(IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>> e)
         {
             if (IsDisposing || IsDisposed)
-                return;
+                return Task.CompletedTask;
 
             bool nowActive = e.Value.Contains(_project.ProjectConfiguration);
             bool previouslyActive = IsImplicitlyActive;
 
             // Are there any changes for my configuration?
             if (nowActive == previouslyActive)
-                return;
+                return Task.CompletedTask;
 
             if (nowActive)
             {
-                OnImplicitlyActivated();
+                return OnImplicitlyActivated();
             }
             else if (previouslyActive)
             {
-                OnImplicitlyDeactivated();
+                return OnImplicitlyDeactivated();
             }
+
+            return Task.CompletedTask;
         }
 
-        private void OnImplicitlyActivated()
+        private Task OnImplicitlyActivated()
         {
             _isImplicitlyActiveSource.TrySetResult(null);
+
+            return _implicitlyActivated.RaiseAsync(this, EventArgs.Empty);
         }
 
-        private void OnImplicitlyDeactivated()
+        private Task OnImplicitlyDeactivated()
         {
             var source = new TaskCompletionSource<object>();
 
@@ -113,6 +148,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Thread.MemoryBarrier(); 
 
             _isImplicitlyActiveSource = source;
+
+            return _implicitlyDeactivated.RaiseAsync(this, EventArgs.Empty);
         }
 
         private void OnCanceled()
