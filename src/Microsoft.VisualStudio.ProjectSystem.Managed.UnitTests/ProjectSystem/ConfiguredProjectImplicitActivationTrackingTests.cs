@@ -8,6 +8,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
+    [ProjectSystemTrait]
     public class ConfiguredProjectImplicitActivationTrackingTests
     {
         [Fact]
