@@ -29,6 +29,12 @@ By default when you build inside Visual Studio or the command-line, the project 
 From the command-line, after you've run `build.cmd`, you can launch a Visual Studio instance with your recently built bits by running the following from a Visual Studio Command Prompt:
 
 ```
+REM Set these to make sure we respect the rules/targets from the repo instead of the product (replacing `[RepoRoot]`)
+set VisualStudioXamlRulesDir=[RepoRoot]\artifacts\Debug\VSSetup\Rules\
+set VisualBasicDesignTimeTargetsPath=%VisualStudioXamlRulesDir%Microsoft.VisualBasic.DesignTime.targets
+set FSharpDesignTimeTargetsPath=%VisualStudioXamlRulesDir%Microsoft.FSharp.DesignTime.targets
+set CSharpDesignTimeTargetsPath%VisualStudioXamlRulesDir%Microsoft.CSharp.DesignTime.targets
+
 devenv /rootsuffix ProjectSystem
 ```
 
