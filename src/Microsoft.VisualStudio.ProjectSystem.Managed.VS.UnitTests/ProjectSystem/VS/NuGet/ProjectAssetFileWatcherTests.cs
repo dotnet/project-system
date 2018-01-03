@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.Shell.Interop;
 using Moq;
 using Xunit;
@@ -30,7 +31,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
         [InlineData(@"
 Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
     foo.project.json, FilePath: ""C:\Foo\foo.project.json""", @"C:\Foo\foo.project.lock.json")]
-        public void VerifyFileWatcherRegistration(string inputTree, string fileToWatch)
+        public async Task VerifyFileWatcherRegistration(string inputTree, string fileToWatch)
         {
             var spMock = new IServiceProviderMoq();
             uint adviseCookie = 100;
@@ -45,7 +46,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
 
             var tree = ProjectTreeParser.Parse(inputTree);
             var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(ProjectCurrentStateJson);
-            watcher.Load();
+            await watcher.LoadAsync();
             watcher.DataFlow_Changed(IProjectVersionedValueFactory<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>.Create((Tuple.Create(IProjectTreeSnapshotFactory.Create(tree), projectUpdate))));
 
             // If fileToWatch is null then we expect to not register any filewatcher.
@@ -84,7 +85,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
     project.json, FilePath: ""C:\Foo\project.json""
     somefile.json, FilePath: ""C:\Foo\somefile.json""", 1, 0)]
 
-        public void VerifyFileWatcherRegistrationOnTreeChange(string inputTree, string changedTree, int numRegisterCalls, int numUnregisterCalls)
+        public async Task VerifyFileWatcherRegistrationOnTreeChange(string inputTree, string changedTree, int numRegisterCalls, int numUnregisterCalls)
         {
             var spMock = new IServiceProviderMoq();
             uint adviseCookie = 100;
@@ -96,7 +97,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
                                                      IUnconfiguredProjectCommonServicesFactory.Create(),
                                                      IProjectLockServiceFactory.Create(),
                                                      IActiveConfiguredProjectSubscriptionServiceFactory.CreateInstance());
-            watcher.Load();
+            await watcher.LoadAsync();
             var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(ProjectCurrentStateJson);
 
             var firstTree = ProjectTreeParser.Parse(inputTree);
@@ -113,7 +114,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
         }
 
         [Fact]
-        public void WhenBaseIntermediateOutputPathNotSet_DoesNotAttemptToAdviseFileChange()
+        public async Task WhenBaseIntermediateOutputPathNotSet_DoesNotAttemptToAdviseFileChange()
         {
             var spMock = new IServiceProviderMoq();
             var fileChangeService = IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(100);
@@ -136,7 +137,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
     }
 }");
 
-            watcher.Load();
+            await watcher.LoadAsync();
             watcher.DataFlow_Changed(IProjectVersionedValueFactory<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>.Create((Tuple.Create(IProjectTreeSnapshotFactory.Create(tree), projectUpdate))));
 
             var fileChangeServiceMock = Mock.Get(fileChangeService);

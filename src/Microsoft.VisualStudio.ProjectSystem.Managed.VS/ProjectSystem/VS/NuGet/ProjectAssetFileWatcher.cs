@@ -7,6 +7,7 @@ using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
@@ -50,9 +51,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         /// </summary>
         [ConfiguredProjectAutoLoad(RequiresUIThread = true)]
         [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
-        internal void Load()
+        internal async Task LoadAsync()
         {
             EnsureInitialized();
+
+            await Task.Run(() =>
+            {
+                // The tree source to get changes to the tree so that we can identify when the assets file changes.
+                var treeSource = _fileSystemTreeProvider.Tree.SyncLinkOptions();
+
+                // The property source used to get the value of the $ProjectAssetsFile property so that we can identify the location of the assets file.
+                var sourceLinkOptions = new StandardRuleDataflowLinkOptions
+                {
+                    RuleNames = Empty.OrdinalIgnoreCaseStringSet.Add(ConfigurationGeneral.SchemaName),
+                    PropagateCompletion = true
+                };
+                var propertySource = _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(sourceLinkOptions);
+                var target = new ActionBlock<IProjectVersionedValue<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>>(new Action<IProjectVersionedValue<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>>(DataFlow_Changed));
+
+                // Join the two sources so that we get synchronized versions of the data.
+                _treeWatcher = ProjectDataSources.SyncLinkTo(treeSource, propertySource, target);
+            }).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -61,21 +80,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         protected override void Initialize()
         {
             _fileChangeService = _serviceProvider.GetService<IVsFileChangeEx, SVsFileChangeEx>();
-
-            // The tree source to get changes to the tree so that we can identify when the assets file changes.
-            var treeSource = _fileSystemTreeProvider.Tree.SyncLinkOptions();
-
-            // The property source used to get the value of the $ProjectAssetsFile property so that we can identify the location of the assets file.
-            var sourceLinkOptions = new StandardRuleDataflowLinkOptions
-            {
-                RuleNames = Empty.OrdinalIgnoreCaseStringSet.Add(ConfigurationGeneral.SchemaName),
-                PropagateCompletion = true
-            };
-            var propertySource = _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(sourceLinkOptions);
-            var target = new ActionBlock<IProjectVersionedValue<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>>(new Action<IProjectVersionedValue<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>>(DataFlow_Changed));
-
-            // Join the two sources so that we get synchronized versions of the data.
-            _treeWatcher = ProjectDataSources.SyncLinkTo(treeSource, propertySource, target);
         }
 
         /// <summary>
