@@ -27,10 +27,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private IDisposable _configurationsSubscription;
         private DisposableBag _designTimeBuildSubscriptionLink;
         
-
-        private static ImmutableHashSet<string> s_targetFrameworkWatchedRules = Empty.OrdinalIgnoreCaseStringSet
-            .Add(NuGetRestore.SchemaName);
-
         private static ImmutableHashSet<string> s_designTimeBuildWatchedRules = Empty.OrdinalIgnoreCaseStringSet
             .Add(NuGetRestore.SchemaName)
             .Add(ProjectReference.SchemaName)
