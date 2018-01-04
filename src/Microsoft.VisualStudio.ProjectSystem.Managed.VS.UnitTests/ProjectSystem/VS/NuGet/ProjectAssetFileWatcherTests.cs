@@ -46,8 +46,8 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
 
             var tree = ProjectTreeParser.Parse(inputTree);
             var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(ProjectCurrentStateJson);
-            await watcher.LoadAsync();
-            watcher.DataFlow_Changed(IProjectVersionedValueFactory<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>.Create((Tuple.Create(IProjectTreeSnapshotFactory.Create(tree), projectUpdate))));
+            watcher.Load();
+            await watcher.DataFlow_Changed(IProjectVersionedValueFactory<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>.Create((Tuple.Create(IProjectTreeSnapshotFactory.Create(tree), projectUpdate))));
 
             // If fileToWatch is null then we expect to not register any filewatcher.
             var times = fileToWatch == null ? Times.Never() : Times.Once();
@@ -97,14 +97,14 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
                                                      IUnconfiguredProjectCommonServicesFactory.Create(),
                                                      IProjectLockServiceFactory.Create(),
                                                      IActiveConfiguredProjectSubscriptionServiceFactory.CreateInstance());
-            await watcher.LoadAsync();
+            watcher.Load();
             var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(ProjectCurrentStateJson);
 
             var firstTree = ProjectTreeParser.Parse(inputTree);
-            watcher.DataFlow_Changed(IProjectVersionedValueFactory<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>.Create((Tuple.Create(IProjectTreeSnapshotFactory.Create(firstTree), projectUpdate))));
+            await watcher.DataFlow_Changed(IProjectVersionedValueFactory<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>.Create((Tuple.Create(IProjectTreeSnapshotFactory.Create(firstTree), projectUpdate))));
 
             var secondTree = ProjectTreeParser.Parse(changedTree);
-            watcher.DataFlow_Changed(IProjectVersionedValueFactory<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>.Create((Tuple.Create(IProjectTreeSnapshotFactory.Create(secondTree), projectUpdate))));
+            await watcher.DataFlow_Changed(IProjectVersionedValueFactory<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>.Create((Tuple.Create(IProjectTreeSnapshotFactory.Create(secondTree), projectUpdate))));
 
             // If fileToWatch is null then we expect to not register any filewatcher.
             var fileChangeServiceMock = Mock.Get(fileChangeService);
@@ -137,8 +137,8 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
     }
 }");
 
-            await watcher.LoadAsync();
-            watcher.DataFlow_Changed(IProjectVersionedValueFactory<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>.Create((Tuple.Create(IProjectTreeSnapshotFactory.Create(tree), projectUpdate))));
+            watcher.Load();
+            await watcher.DataFlow_Changed(IProjectVersionedValueFactory<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>.Create((Tuple.Create(IProjectTreeSnapshotFactory.Create(tree), projectUpdate))));
 
             var fileChangeServiceMock = Mock.Get(fileChangeService);
             uint cookie;
