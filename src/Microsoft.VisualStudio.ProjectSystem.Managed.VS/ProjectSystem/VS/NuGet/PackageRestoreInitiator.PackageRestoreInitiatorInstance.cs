@@ -103,7 +103,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                             return versionDropper.SyncLinkOptions<IProjectValueVersions>(sourceLinkOptions);
                         });
 
-                    var target = new ActionBlock<Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary>>(ProjectPropertyChangedAsync);
+                    Action<Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary>> action = ProjectPropertyChanged;
+                    var target = new ActionBlock<Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary>>(action);
 
                     var targetLinkOptions = new DataflowLinkOptions { PropagateCompletion = true };
 
@@ -123,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 return transformBlock;
             }
 
-            private Task ProjectPropertyChangedAsync(Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary> sources)
+            private void ProjectPropertyChanged(Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary> sources)
             {
                 IVsProjectRestoreInfo projectRestoreInfo = ProjectRestoreInfoBuilder.Build(sources.Item1, _projectVsServices.Project);
 
@@ -146,8 +147,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                         ProjectCriticalOperation.Build | ProjectCriticalOperation.Unload | ProjectCriticalOperation.Rename,
                         registerFaultHandler: true);
                 }
-
-                return Task.CompletedTask;
             }
 
             #region ProjectRestoreInfo Logging
