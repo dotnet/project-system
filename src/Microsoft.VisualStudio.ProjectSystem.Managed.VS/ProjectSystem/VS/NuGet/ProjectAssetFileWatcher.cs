@@ -22,13 +22,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private readonly IProjectLockService _projectLockService;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IProjectTreeProvider _fileSystemTreeProvider;
-        private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         private IVsFileChangeEx _fileChangeService;
         private IDisposable _treeWatcher;
         private uint _filechangeCookie;
         private string _fileBeingWatched;
-
-        private Task _task;
 
         [ImportingConstructor]
         public ProjectAssetFileWatcher([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
@@ -58,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
         internal void Load()
         {
-            _task = InitializeAsync(_cancellationTokenSource.Token);
+            InitializeAsync();
         }
 
         /// <summary>
@@ -89,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         /// </summary>
         internal async Task DataFlow_Changed(IProjectVersionedValue<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>> dataFlowUpdate)
         {
-            await _task.ConfigureAwait(false);
+            await InitializeAsync().ConfigureAwait(false);
 
             var treeSnapshot = dataFlowUpdate.Value.Item1;
             var newTree = treeSnapshot.Tree;
@@ -183,23 +180,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             }
         }
 
-        protected override async Task DisposeCoreAsync(bool disposing)
+        protected override Task DisposeCoreAsync(bool initialized)
         {
-            if (disposing)
+            if (initialized)
             {
-                _cancellationTokenSource.Cancel();
-                try
-                {
-                    await _task.ConfigureAwait(false);
-                }
-                catch (OperationCanceledException)
-                {
-                    // It's okay - we're disposing anyway.
-                }
-
-                _treeWatcher?.Dispose();
+                _treeWatcher.Dispose();
                 UnregisterFileWatcherIfAny();
             }
+
+            return Task.CompletedTask;
         }
 
         /// <summary>
