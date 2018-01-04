@@ -17,9 +17,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
     using TIdentityDictionary = IImmutableDictionary<NamedIdentity, IComparable>;
 
-    partial class NuGetRestorer
+    partial class PackageRestoreInitiator
     {
-        private class NuGetRestorerInstance : AbstractProjectDynamicLoadInstance
+        private class PackageRestoreInitiatorInstance : AbstractProjectDynamicLoadInstance
         {
             private readonly IUnconfiguredProjectVsServices _projectVsServices;
             private readonly IVsSolutionRestoreService _solutionRestoreService;
@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             private readonly static ImmutableArray<NamedIdentity> s_keysToDrop = ImmutableArray.Create(ProjectDataSources.ConfiguredProjectIdentity, ProjectDataSources.ConfiguredProjectVersion);
 
             [ImportingConstructor]
-            public NuGetRestorerInstance(
+            public PackageRestoreInitiatorInstance(
                 IUnconfiguredProjectVsServices projectVsServices,
                 IVsSolutionRestoreService solutionRestoreService,
                 IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,

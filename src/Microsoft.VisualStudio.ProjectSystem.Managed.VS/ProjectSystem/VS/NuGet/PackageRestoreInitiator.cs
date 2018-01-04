@@ -6,9 +6,13 @@ using NuGet.SolutionRestoreManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
+    /// <summary>
+    ///     Responsible for pushing ("nominating") project data such as referenced packages and 
+    ///     target frameworks to NuGet so that it can perform a package restore.
+    /// </summary>
     [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectDynamicLoadComponent))]
     [AppliesTo(ProjectCapability.PackageReferences)]
-    internal partial class NuGetRestorer : AbstractProjectDynamicLoadComponent
+    internal partial class PackageRestoreInitiator : AbstractProjectDynamicLoadComponent
     {
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IVsSolutionRestoreService _solutionRestoreService;
@@ -17,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private readonly IProjectLogger _logger;
         
         [ImportingConstructor]
-        public NuGetRestorer(
+        public PackageRestoreInitiator(
             IUnconfiguredProjectVsServices projectVsServices,
             IVsSolutionRestoreService solutionRestoreService,
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
@@ -34,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
         protected override AbstractProjectDynamicLoadInstance CreateInstance()
         {
-            return new NuGetRestorerInstance(_projectVsServices, _solutionRestoreService, _activeConfiguredProjectSubscriptionService, _activeConfigurationGroupService, _logger);
+            return new PackageRestoreInitiatorInstance(_projectVsServices, _solutionRestoreService, _activeConfiguredProjectSubscriptionService, _activeConfigurationGroupService, _logger);
         }
     }
 }
