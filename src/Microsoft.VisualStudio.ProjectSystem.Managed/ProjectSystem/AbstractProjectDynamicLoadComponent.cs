@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -8,12 +10,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
     ///     An <see langword="abstract"/> base class that simplifies the lifetime of a
     ///     <see cref="IProjectDynamicLoadComponent"/> implementation.
     /// </summary>
-    internal abstract partial class AbstractProjectDynamicLoadComponent : IProjectDynamicLoadComponent
+    internal abstract partial class AbstractProjectDynamicLoadComponent : OnceInitializedOnceDisposedAsync, IProjectDynamicLoadComponent
     {
         private readonly object _lock = new object();
         private AbstractProjectDynamicLoadInstance _instance;
 
-        protected AbstractProjectDynamicLoadComponent()
+        protected AbstractProjectDynamicLoadComponent(JoinableTaskContextNode joinableTaskContextNode) 
+            : base(joinableTaskContextNode)
         {
         }
 
@@ -32,8 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             return instance.InitializeAsync();
         }
-
-        
+                
         public Task UnloadAsync()
         {
             AbstractProjectDynamicLoadInstance instance = null;
@@ -52,6 +54,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return instance.DisposeAsync();
             }
 
+            return Task.CompletedTask;
+        }
+
+        protected override Task DisposeCoreAsync(bool initialized)
+        {
+            return UnloadAsync();
+        }
+
+        protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
+        {
             return Task.CompletedTask;
         }
 
