@@ -6,6 +6,10 @@ using NuGet.SolutionRestoreManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
+    /// <summary>
+    ///     Responsible for pushing ("nominating") project data such as referenced packages and 
+    ///     target frameworks to NuGet so that it can perform a package restore.
+    /// </summary>
     [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectDynamicLoadComponent))]
     [AppliesTo(ProjectCapability.PackageReferences)]
     internal partial class PackageRestoreInitiator : AbstractProjectDynamicLoadComponent
