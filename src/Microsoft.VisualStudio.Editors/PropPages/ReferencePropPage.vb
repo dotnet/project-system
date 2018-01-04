@@ -788,29 +788,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 pCallback:=cancellationCallback)
 
             Try
-                Dim componentModel = DirectCast(ServiceProvider.GetService(GetType(SComponentModel)), IComponentModel)
-                Dim visualStudioWorkspace = componentModel.GetService(Of VisualStudioWorkspace)
-                Dim solution = visualStudioWorkspace.CurrentSolution
-
-                For Each project In solution.Projects
-
-                    ' We need to find the project that matches by project file path
-                    If project.FilePath IsNot Nothing AndAlso String.Compare(project.FilePath, DTEProject.FullName, ignoreCase:=True) = 0 Then
-                        Dim compilationTask = project.GetCompilationAsync(cancellationTokenSource.Token)
-                        compilationTask.Wait(cancellationTokenSource.Token)
-                        Dim compilation = compilationTask.Result
-                        Dim compilationOptions = CType(compilation.Options, VisualBasicCompilationOptions)
-                        If (compilationOptions IsNot Nothing) Then
-                            Dim result As New List(Of String)(compilationOptions.GlobalImports.Length)
-                            result.AddRange(compilationOptions.GlobalImports.Select(Function(gi) gi.Name))
-                            result.Sort(CaseInsensitiveComparison.Comparer)
-                            Return result.ToArray()
-                        End If
-                    End If
-                Next
-
-                ' Return empty list if an error occurred
-                Return New String() {}
+                Dim vsImports As VSLangProj.Imports = CType(DTEProject.Object, VSLangProj.VSProject).Imports
+                Dim result As New List(Of String)(vsImports.Count)
+                result.AddRange(vsImports.Cast(Of String)())
+                result.Sort(CaseInsensitiveComparison.Comparer)
+                Return result.ToArray()
 
             Catch ex As OperationCanceledException
                 ' Return empty list if we canceled
