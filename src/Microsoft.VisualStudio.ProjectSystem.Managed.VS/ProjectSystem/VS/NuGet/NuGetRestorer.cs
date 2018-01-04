@@ -21,17 +21,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     {
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IVsSolutionRestoreService _solutionRestoreService;
-        private readonly IActiveConfiguredProjectsProvider _activeConfiguredProjectsProvider;
+        private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
-        private readonly IActiveProjectConfigurationRefreshService _activeProjectConfigurationRefreshService;
         private readonly IProjectLogger _logger;
-        private IDisposable _targetFrameworkSubscriptionLink;
+        private IDisposable _configurationsSubscription;
         private DisposableBag _designTimeBuildSubscriptionLink;
         
-
-        private static ImmutableHashSet<string> s_targetFrameworkWatchedRules = Empty.OrdinalIgnoreCaseStringSet
-            .Add(NuGetRestore.SchemaName);
-
         private static ImmutableHashSet<string> s_designTimeBuildWatchedRules = Empty.OrdinalIgnoreCaseStringSet
             .Add(NuGetRestore.SchemaName)
             .Add(ProjectReference.SchemaName)
@@ -47,16 +42,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             IUnconfiguredProjectVsServices projectVsServices,
             IVsSolutionRestoreService solutionRestoreService,
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
-            IActiveProjectConfigurationRefreshService activeProjectConfigurationRefreshService,
-            IActiveConfiguredProjectsProvider activeConfiguredProjectsProvider,
+            IActiveConfigurationGroupService activeConfigurationGroupService,
             IProjectLogger logger) 
             : base(projectVsServices.ThreadingService.JoinableTaskContext)
         {
             _projectVsServices = projectVsServices;
             _solutionRestoreService = solutionRestoreService;
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
-            _activeProjectConfigurationRefreshService = activeProjectConfigurationRefreshService;
-            _activeConfiguredProjectsProvider = activeConfiguredProjectsProvider;
+            _activeConfigurationGroupService = activeConfigurationGroupService;
             _logger = logger;
         }
 
@@ -64,55 +57,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
         internal Task OnProjectFactoryCompletedAsync()
         {
-            // set up a subscription to listen for target framework changes
-            var target = new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedAsync(e));
-            _targetFrameworkSubscriptionLink = _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
-                target: target,
-                ruleNames: s_targetFrameworkWatchedRules,
-                initialDataAsNew: false, // only reset on subsequent changes
-                suppressVersionOnlyUpdates: true);
+            return InitializeAsync();
+        }
+
+        protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
+        {
+            Action<IProjectVersionedValue<IConfigurationGroup<ConfiguredProject>>> target = OnActiveConfigurationsChanged;
+
+            _configurationsSubscription = _activeConfigurationGroupService.ActiveConfiguredProjectGroupSource.SourceBlock.LinkTo(
+                target: new ActionBlock<IProjectVersionedValue<IConfigurationGroup<ConfiguredProject>>>(target),
+                linkOptions: new DataflowLinkOptions() { PropagateCompletion = true });
 
             return Task.CompletedTask;
-        }
-
-        private async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update)
-        {
-            if (IsDisposing || IsDisposed)
-                return;
-
-            await InitializeAsync().ConfigureAwait(false);
-
-            // when TargetFrameworks or TargetFrameworkMoniker changes, reset subscriptions so that
-            // any new configured projects are picked up
-            if (HasTargetFrameworkChanged(update))
-            {
-                await ResetSubscriptionsAsync().ConfigureAwait(false);
-            }
-        }
-
-        protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
-        {
-            await ResetSubscriptionsAsync().ConfigureAwait(false);
         }
 
         protected override Task DisposeCoreAsync(bool initialized)
         {
             _designTimeBuildSubscriptionLink?.Dispose();
-            _targetFrameworkSubscriptionLink?.Dispose();
+            _configurationsSubscription?.Dispose();
             return Task.CompletedTask;
         }
 
-        private async Task ResetSubscriptionsAsync()
+        private void OnActiveConfigurationsChanged(IProjectVersionedValue<IConfigurationGroup<ConfiguredProject>> e)
         {
-            // active configuration should be updated before resetting subscriptions
-            await RefreshActiveConfigurationAsync().ConfigureAwait(false);
-
+            if (IsDisposing || IsDisposed)
+                return;
+  
+            // Clean up past subscriptions
             _designTimeBuildSubscriptionLink?.Dispose();
 
-            var currentProjects = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsAsync()
-                                                                         .ConfigureAwait(false);
-
-            if (currentProjects != null)
+            if (e.Value.Count > 0)
             {
                 var sourceLinkOptions = new StandardRuleDataflowLinkOptions
                 {
@@ -125,8 +99,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 // The SyncLink will only publish data when the versions of the sources match. There is a problem with that.
                 // The sources have some version components that will make this impossible to match across TFMs. We introduce a 
                 // intermediate block here that will remove those version components so that the synclink can actually sync versions. 
-                var sourceBlocks = currentProjects.Objects.Select(
-                    cp => 
+                var sourceBlocks = e.Value.Select(
+                    cp =>
                     {
                         var sourceBlock = cp.Services.ProjectSubscription.JointRuleSource.SourceBlock;
                         var versionDropper = CreateVersionDropperBlock();
@@ -152,13 +126,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             });
 
             return transformBlock;
-        }
-        
-        private async Task RefreshActiveConfigurationAsync()
-        {
-            // Force refresh the CPS active project configuration (needs UI thread).
-            await _projectVsServices.ThreadingService.SwitchToUIThread();
-            await _activeProjectConfigurationRefreshService.RefreshActiveProjectConfigurationAsync().ConfigureAwait(false);
         }
 
         private Task ProjectPropertyChangedAsync(Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary> sources)
@@ -186,18 +153,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             }
 
             return Task.CompletedTask;
-        }
-
-        private static bool HasTargetFrameworkChanged(IProjectVersionedValue<IProjectSubscriptionUpdate> update)
-        {
-            if (update.Value.ProjectChanges.TryGetValue(NuGetRestore.SchemaName, out IProjectChangeDescription projectChange))
-            {
-                var changedProperties = projectChange.Difference.ChangedProperties;
-                return changedProperties.Contains(NuGetRestore.TargetFrameworksProperty)
-                    || changedProperties.Contains(NuGetRestore.TargetFrameworkProperty)
-                    || changedProperties.Contains(NuGetRestore.TargetFrameworkMonikerProperty);
-            }
-            return false;
         }
 
         #region ProjectRestoreInfo Logging
