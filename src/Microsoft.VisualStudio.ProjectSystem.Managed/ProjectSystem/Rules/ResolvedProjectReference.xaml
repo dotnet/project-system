@@ -74,16 +74,6 @@
                     DisplayName="Exclude Assets"
                     Description="Assets to exclude from this reference" />
 
-    <StringProperty Name="Identity"
-                    ReadOnly="True"
-                    DisplayName="Identity"
-                    Description="Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).">
-        <StringProperty.DataSource>
-            <DataSource PersistedName="{}{Identity}"
-                        SourceOfDefaultValue="AfterContext" />
-        </StringProperty.DataSource>
-    </StringProperty>
-
     <StringProperty Name="IncludeAssets" 
                     Visible="True"
                     DisplayName="Include Assets"

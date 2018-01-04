@@ -17,11 +17,6 @@
         <target state="translated">完整路径</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|FileNameAndExtension|DisplayName">
-        <source>Folder Name</source>
-        <target state="translated">文件夹名称</target>
-        <note />
-      </trans-unit>
     </body>
   </file>
 </xliff>

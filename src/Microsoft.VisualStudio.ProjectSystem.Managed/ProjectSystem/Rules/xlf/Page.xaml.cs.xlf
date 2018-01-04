@@ -77,11 +77,6 @@
         <target state="translated">Obor názvů, do kterého se umístí výstup vlastního nástroje</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Identity|Description">
-        <source>The item specified in the Include attribute.</source>
-        <target state="translated">Položka zadaná v atributu Include</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">
         <source>Full Path</source>
         <target state="translated">Úplná cesta</target>
@@ -90,16 +85,6 @@
       <trans-unit id="StringProperty|FullPath|Description">
         <source>Location of the file.</source>
         <target state="translated">Umístění souboru</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|FileNameAndExtension|DisplayName">
-        <source>File Name</source>
-        <target state="translated">Název souboru</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|FileNameAndExtension|Description">
-        <source>Name of the file or folder.</source>
-        <target state="translated">Název souboru nebo složky</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|LastGenOutput|Description">

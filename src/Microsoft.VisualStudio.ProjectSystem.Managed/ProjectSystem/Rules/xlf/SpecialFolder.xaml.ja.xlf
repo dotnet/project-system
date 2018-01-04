@@ -17,11 +17,6 @@
         <target state="translated">完全パス</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|FileNameAndExtension|DisplayName">
-        <source>Folder Name</source>
-        <target state="translated">フォルダー名</target>
-        <note />
-      </trans-unit>
     </body>
   </file>
 </xliff>

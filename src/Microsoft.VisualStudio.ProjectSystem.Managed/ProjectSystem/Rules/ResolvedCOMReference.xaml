@@ -66,15 +66,6 @@
         <EnumValue Name="Native Assembly" DisplayName="Native Assembly" />
     </EnumProperty>
 
-    <StringProperty Name="Identity"
-                    ReadOnly="True"
-                    DisplayName="Identity"
-                    Description="Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).">
-        <StringProperty.DataSource>
-            <DataSource PersistedName="{}{Identity}" SourceOfDefaultValue="AfterContext" />
-        </StringProperty.DataSource>
-    </StringProperty>
-
     <StringProperty Name="ResolvedPath"
                     ReadOnly="True"
                     DisplayName="Path"

@@ -97,16 +97,6 @@
         <target state="translated">네이티브 어셈블리</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Identity|DisplayName">
-        <source>Identity</source>
-        <target state="translated">ID</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Identity|Description">
-        <source>Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</source>
-        <target state="translated">참조된 어셈블리의 보안 ID입니다(System.Reflection.Assembly.Evidence 또는 System.Security.Policy.Evidence 참조).</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|DisplayName">
         <source>Path</source>
         <target state="translated">경로</target>

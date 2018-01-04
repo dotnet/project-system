@@ -17,11 +17,6 @@
         <target state="translated">Pełna ścieżka</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|FileNameAndExtension|DisplayName">
-        <source>Folder Name</source>
-        <target state="translated">Nazwa folderu</target>
-        <note />
-      </trans-unit>
     </body>
   </file>
 </xliff>

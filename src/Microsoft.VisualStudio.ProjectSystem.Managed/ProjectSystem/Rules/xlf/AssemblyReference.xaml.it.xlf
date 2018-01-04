@@ -67,16 +67,6 @@
         <target state="translated">Versione del runtime CLR di destinazione dell'assembly.</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Identity|DisplayName">
-        <source>Identity</source>
-        <target state="translated">Identità</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Identity|Description">
-        <source>Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</source>
-        <target state="translated">Identità di sicurezza dell'assembly a cui viene fatto riferimento (vedere System.Reflection.Assembly.Evidence o System.Security.Policy.Evidence).</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|DisplayName">
         <source>Path</source>
         <target state="translated">Percorso</target>

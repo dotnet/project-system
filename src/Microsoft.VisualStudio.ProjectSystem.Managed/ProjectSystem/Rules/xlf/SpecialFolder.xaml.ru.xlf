@@ -17,11 +17,6 @@
         <target state="translated">Полный путь</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|FileNameAndExtension|DisplayName">
-        <source>Folder Name</source>
-        <target state="translated">Имя папки</target>
-        <note />
-      </trans-unit>
     </body>
   </file>
 </xliff>
