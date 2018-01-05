@@ -25,214 +25,196 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         public async Task GetDefaultValuesForDimensionsAsync()
         {
             var project = ProjectRootElementFactory.Create(projectXml);
-            {
-                var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
-                var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
-                var unconfiguredProject = UnconfiguredProjectFactory.Create();
-                var values = await provider.GetDefaultValuesForDimensionsAsync(unconfiguredProject);
-                Assert.Single(values);
-                var value = values.First();
-                Assert.Equal(ConfigurationGeneral.ConfigurationProperty, value.Key);
-                Assert.Equal("Debug", value.Value);
-            }
+            var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
+            var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
+            var unconfiguredProject = UnconfiguredProjectFactory.Create();
+            var values = await provider.GetDefaultValuesForDimensionsAsync(unconfiguredProject);
+            Assert.Single(values);
+            var value = values.First();
+            Assert.Equal(ConfigurationGeneral.ConfigurationProperty, value.Key);
+            Assert.Equal("Debug", value.Value);
         }
 
         [Fact]
         public async Task GetDefaultValuesForDimensionsAsync_NoPropertyValue()
         {
             var project = ProjectRootElementFactory.Create(projectXml);
-            {
-                var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
-                var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
-                var unconfiguredProject = UnconfiguredProjectFactory.Create();
-                var values = await provider.GetDefaultValuesForDimensionsAsync(unconfiguredProject);
-                Assert.Empty(values);
-            }
+            var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
+            var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
+            var unconfiguredProject = UnconfiguredProjectFactory.Create();
+            var values = await provider.GetDefaultValuesForDimensionsAsync(unconfiguredProject);
+            Assert.Empty(values);
         }
 
         [Fact]
         public async Task GetProjectConfigurationDimensionsAsync()
         {
             var project = ProjectRootElementFactory.Create(projectXml);
-            {
-                var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
-                var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
-                var unconfiguredProject = UnconfiguredProjectFactory.Create();
-                var values = await provider.GetProjectConfigurationDimensionsAsync(unconfiguredProject);
-                Assert.Single(values);
-                var value = values.First();
-                Assert.Equal(ConfigurationGeneral.ConfigurationProperty, value.Key);
-                string[] dimensionValues = value.Value.ToArray();
-                Assert.Equal(3, dimensionValues.Length);
-                Assert.Equal("Debug", dimensionValues[0]);
-                Assert.Equal("Release", dimensionValues[1]);
-                Assert.Equal("CustomConfiguration", dimensionValues[2]);
-            }
+            var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
+            var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
+            var unconfiguredProject = UnconfiguredProjectFactory.Create();
+            var values = await provider.GetProjectConfigurationDimensionsAsync(unconfiguredProject);
+            Assert.Single(values);
+            var value = values.First();
+            Assert.Equal(ConfigurationGeneral.ConfigurationProperty, value.Key);
+            string[] dimensionValues = value.Value.ToArray();
+            Assert.Equal(3, dimensionValues.Length);
+            Assert.Equal("Debug", dimensionValues[0]);
+            Assert.Equal("Release", dimensionValues[1]);
+            Assert.Equal("CustomConfiguration", dimensionValues[2]);
         }
 
         [Fact]
         public async Task GetProjectConfigurationDimensionsAsync_NoPropertyValue()
         {
             var project = ProjectRootElementFactory.Create(projectXml);
-            {
-                var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
-                var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
-                var unconfiguredProject = UnconfiguredProjectFactory.Create();
-                var values = await provider.GetProjectConfigurationDimensionsAsync(unconfiguredProject);
-                Assert.Empty(values);
-            }
+            var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
+            var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
+            var unconfiguredProject = UnconfiguredProjectFactory.Create();
+            var values = await provider.GetProjectConfigurationDimensionsAsync(unconfiguredProject);
+            Assert.Empty(values);
         }
 
         [Fact]
         public async Task OnDimensionValueChanged_Add()
         {
             var project = ProjectRootElementFactory.Create(projectXml);
-            {
-                var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
-                var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
-                var unconfiguredProject = UnconfiguredProjectFactory.Create();
+            var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
+            var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
+            var unconfiguredProject = UnconfiguredProjectFactory.Create();
 
-                // On ChangeEventStage.After nothing should be changed
-                var args = new ProjectConfigurationDimensionValueChangedEventArgs(
-                    unconfiguredProject,
-                    ConfigurationDimensionChange.Add,
-                    ChangeEventStage.After,
-                    ConfigurationGeneral.ConfigurationProperty,
-                    "CustomConfig");
-                await provider.OnDimensionValueChangedAsync(args);
-                var property = BuildUtilities.GetProperty(project, Configurations);
-                Assert.NotNull(property);
-                Assert.Equal("Debug;Release;CustomConfiguration", property.Value);
+            // On ChangeEventStage.After nothing should be changed
+            var args = new ProjectConfigurationDimensionValueChangedEventArgs(
+                unconfiguredProject,
+                ConfigurationDimensionChange.Add,
+                ChangeEventStage.After,
+                ConfigurationGeneral.ConfigurationProperty,
+                "CustomConfig");
+            await provider.OnDimensionValueChangedAsync(args);
+            var property = BuildUtilities.GetProperty(project, Configurations);
+            Assert.NotNull(property);
+            Assert.Equal("Debug;Release;CustomConfiguration", property.Value);
 
-                // On ChangeEventStage.Before the property should be added
-                args = new ProjectConfigurationDimensionValueChangedEventArgs(
-                    unconfiguredProject,
-                    ConfigurationDimensionChange.Add,
-                    ChangeEventStage.Before,
-                    ConfigurationGeneral.ConfigurationProperty,
-                    "CustomConfig");
-                await provider.OnDimensionValueChangedAsync(args);
-                property = BuildUtilities.GetProperty(project, Configurations);
-                Assert.NotNull(property);
-                Assert.Equal("Debug;Release;CustomConfiguration;CustomConfig", property.Value);
-            }
+            // On ChangeEventStage.Before the property should be added
+            args = new ProjectConfigurationDimensionValueChangedEventArgs(
+                unconfiguredProject,
+                ConfigurationDimensionChange.Add,
+                ChangeEventStage.Before,
+                ConfigurationGeneral.ConfigurationProperty,
+                "CustomConfig");
+            await provider.OnDimensionValueChangedAsync(args);
+            property = BuildUtilities.GetProperty(project, Configurations);
+            Assert.NotNull(property);
+            Assert.Equal("Debug;Release;CustomConfiguration;CustomConfig", property.Value);
         }
 
         [Fact]
         public async Task OnDimensionValueChanged_Remove()
         {
             var project = ProjectRootElementFactory.Create(projectXml);
-            {
-                var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
-                var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
-                var unconfiguredProject = UnconfiguredProjectFactory.Create();
+            var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
+            var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
+            var unconfiguredProject = UnconfiguredProjectFactory.Create();
 
-                // On ChangeEventStage.After nothing should be changed
-                var args = new ProjectConfigurationDimensionValueChangedEventArgs(
-                    unconfiguredProject,
-                    ConfigurationDimensionChange.Delete,
-                    ChangeEventStage.After,
-                    ConfigurationGeneral.ConfigurationProperty,
-                    "CustomConfiguration");
-                await provider.OnDimensionValueChangedAsync(args);
-                var property = BuildUtilities.GetProperty(project, Configurations);
-                Assert.NotNull(property);
-                Assert.Equal("Debug;Release;CustomConfiguration", property.Value);
+            // On ChangeEventStage.After nothing should be changed
+            var args = new ProjectConfigurationDimensionValueChangedEventArgs(
+                unconfiguredProject,
+                ConfigurationDimensionChange.Delete,
+                ChangeEventStage.After,
+                ConfigurationGeneral.ConfigurationProperty,
+                "CustomConfiguration");
+            await provider.OnDimensionValueChangedAsync(args);
+            var property = BuildUtilities.GetProperty(project, Configurations);
+            Assert.NotNull(property);
+            Assert.Equal("Debug;Release;CustomConfiguration", property.Value);
 
-                // On ChangeEventStage.Before the property should be removed
-                args = new ProjectConfigurationDimensionValueChangedEventArgs(
-                    unconfiguredProject,
-                    ConfigurationDimensionChange.Delete,
-                    ChangeEventStage.Before,
-                    ConfigurationGeneral.ConfigurationProperty,
-                    "CustomConfiguration");
-                await provider.OnDimensionValueChangedAsync(args);
-                property = BuildUtilities.GetProperty(project, Configurations);
-                Assert.NotNull(property);
-                Assert.Equal("Debug;Release", property.Value);
-            }
+            // On ChangeEventStage.Before the property should be removed
+            args = new ProjectConfigurationDimensionValueChangedEventArgs(
+                unconfiguredProject,
+                ConfigurationDimensionChange.Delete,
+                ChangeEventStage.Before,
+                ConfigurationGeneral.ConfigurationProperty,
+                "CustomConfiguration");
+            await provider.OnDimensionValueChangedAsync(args);
+            property = BuildUtilities.GetProperty(project, Configurations);
+            Assert.NotNull(property);
+            Assert.Equal("Debug;Release", property.Value);
         }
 
         [Fact]
         public async Task OnDimensionValueChanged_Remove_MissingValue()
         {
             var project = ProjectRootElementFactory.Create(projectXml);
-            {
-                var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
-                var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
-                var unconfiguredProject = UnconfiguredProjectFactory.Create();
+            var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
+            var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
+            var unconfiguredProject = UnconfiguredProjectFactory.Create();
 
-                var args = new ProjectConfigurationDimensionValueChangedEventArgs(
-                    unconfiguredProject,
-                    ConfigurationDimensionChange.Delete,
-                    ChangeEventStage.Before,
-                    ConfigurationGeneral.ConfigurationProperty,
-                    "NonExistantConfiguration");
-                await Assert.ThrowsAsync<ArgumentException>(() => provider.OnDimensionValueChangedAsync(args));
-                var property = BuildUtilities.GetProperty(project, Configurations);
-                Assert.NotNull(property);
-                Assert.Equal("Debug;Release;CustomConfiguration", property.Value);
-            }
+            var args = new ProjectConfigurationDimensionValueChangedEventArgs(
+                unconfiguredProject,
+                ConfigurationDimensionChange.Delete,
+                ChangeEventStage.Before,
+                ConfigurationGeneral.ConfigurationProperty,
+                "NonExistantConfiguration");
+            await Assert.ThrowsAsync<ArgumentException>(() => provider.OnDimensionValueChangedAsync(args));
+            var property = BuildUtilities.GetProperty(project, Configurations);
+            Assert.NotNull(property);
+            Assert.Equal("Debug;Release;CustomConfiguration", property.Value);
         }
 
         [Fact]
         public async Task OnDimensionValueChanged_Rename()
         {
             var project = ProjectRootElementFactory.Create(projectXml);
-            {
-                var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
-                var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
-                var unconfiguredProject = UnconfiguredProjectFactory.Create();
+            var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
+            var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
+            var unconfiguredProject = UnconfiguredProjectFactory.Create();
 
-                // On ChangeEventStage.Before nothing should be changed
-                var args = new ProjectConfigurationDimensionValueChangedEventArgs(
-                    unconfiguredProject,
-                    ConfigurationDimensionChange.Rename,
-                    ChangeEventStage.Before,
-                    ConfigurationGeneral.ConfigurationProperty,
-                    "RenamedConfiguration",
-                    "CustomConfiguration");
-                await provider.OnDimensionValueChangedAsync(args);
-                var property = BuildUtilities.GetProperty(project, Configurations);
-                Assert.NotNull(property);
-                Assert.Equal("Debug;Release;CustomConfiguration", property.Value);
+            // On ChangeEventStage.Before nothing should be changed
+            var args = new ProjectConfigurationDimensionValueChangedEventArgs(
+                unconfiguredProject,
+                ConfigurationDimensionChange.Rename,
+                ChangeEventStage.Before,
+                ConfigurationGeneral.ConfigurationProperty,
+                "RenamedConfiguration",
+                "CustomConfiguration");
+            await provider.OnDimensionValueChangedAsync(args);
+            var property = BuildUtilities.GetProperty(project, Configurations);
+            Assert.NotNull(property);
+            Assert.Equal("Debug;Release;CustomConfiguration", property.Value);
 
-                // On ChangeEventStage.Before the property should be renamed
-                args = new ProjectConfigurationDimensionValueChangedEventArgs(
-                    unconfiguredProject,
-                    ConfigurationDimensionChange.Rename,
-                    ChangeEventStage.After,
-                    ConfigurationGeneral.ConfigurationProperty,
-                    "RenamedConfiguration",
-                    "CustomConfiguration");
-                await provider.OnDimensionValueChangedAsync(args);
-                property = BuildUtilities.GetProperty(project, Configurations);
-                Assert.NotNull(property);
-                Assert.Equal("Debug;Release;RenamedConfiguration", property.Value);
-            }
+            // On ChangeEventStage.Before the property should be renamed
+            args = new ProjectConfigurationDimensionValueChangedEventArgs(
+                unconfiguredProject,
+                ConfigurationDimensionChange.Rename,
+                ChangeEventStage.After,
+                ConfigurationGeneral.ConfigurationProperty,
+                "RenamedConfiguration",
+                "CustomConfiguration");
+            await provider.OnDimensionValueChangedAsync(args);
+            property = BuildUtilities.GetProperty(project, Configurations);
+            Assert.NotNull(property);
+            Assert.Equal("Debug;Release;RenamedConfiguration", property.Value);
         }
 
         [Fact]
         public async Task OnDimensionValueChanged_Rename_MissingValue()
         {
             var project = ProjectRootElementFactory.Create(projectXml);
-            {
-                var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
-                var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
-                var unconfiguredProject = UnconfiguredProjectFactory.Create();
+            var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
+            var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
+            var unconfiguredProject = UnconfiguredProjectFactory.Create();
 
-                var args = new ProjectConfigurationDimensionValueChangedEventArgs(
-                    unconfiguredProject,
-                    ConfigurationDimensionChange.Rename,
-                    ChangeEventStage.After,
-                    ConfigurationGeneral.ConfigurationProperty,
-                    "RenamedConfiguration",
-                    "NonExistantConfiguration");
-                await Assert.ThrowsAsync<ArgumentException>(() => provider.OnDimensionValueChangedAsync(args));
-                var property = BuildUtilities.GetProperty(project, Configurations);
-                Assert.NotNull(property);
-                Assert.Equal("Debug;Release;CustomConfiguration", property.Value);
-            }
+            var args = new ProjectConfigurationDimensionValueChangedEventArgs(
+                unconfiguredProject,
+                ConfigurationDimensionChange.Rename,
+                ChangeEventStage.After,
+                ConfigurationGeneral.ConfigurationProperty,
+                "RenamedConfiguration",
+                "NonExistantConfiguration");
+            await Assert.ThrowsAsync<ArgumentException>(() => provider.OnDimensionValueChangedAsync(args));
+            var property = BuildUtilities.GetProperty(project, Configurations);
+            Assert.NotNull(property);
+            Assert.Equal("Debug;Release;CustomConfiguration", property.Value);
         }
     }
 }

@@ -109,7 +109,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         {
             // No changes should happen for TFM so verify that the property is the same before and after
             var project = ProjectRootElementFactory.Create(ProjectXmlTFMs);
-            {
                 var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
                 var provider = new TargetFrameworkProjectConfigurationDimensionProvider(projectXmlAccessor);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create();
@@ -126,7 +125,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 
                 Assert.NotNull(property);
                 Assert.Equal(expectedTFMs, property.Value);
-            }
         }
     }
 }
