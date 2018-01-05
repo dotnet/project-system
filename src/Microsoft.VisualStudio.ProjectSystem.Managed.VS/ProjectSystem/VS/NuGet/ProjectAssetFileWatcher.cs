@@ -8,6 +8,8 @@ using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+
+using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
@@ -17,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     /// </summary>
     internal class ProjectAssetFileWatcher : OnceInitializedOnceDisposedAsync, IVsFileChangeEvents
     {
-        private readonly IServiceProvider _serviceProvider;
+        private readonly IAsyncServiceProvider _asyncServiceProvider;
         private readonly IUnconfiguredProjectCommonServices _projectServices;
         private readonly IProjectLockService _projectLockService;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
@@ -28,20 +30,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private string _fileBeingWatched;
 
         [ImportingConstructor]
-        public ProjectAssetFileWatcher([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
-                                      [Import(ContractNames.ProjectTreeProviders.FileSystemDirectoryTree)] IProjectTreeProvider fileSystemTreeProvider,
-                                      IUnconfiguredProjectCommonServices projectServices,
-                                      IProjectLockService projectLockService,
-                                      IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService)
+        public ProjectAssetFileWatcher(
+            [Import(ContractNames.ProjectTreeProviders.FileSystemDirectoryTree)] IProjectTreeProvider fileSystemTreeProvider,
+            IUnconfiguredProjectCommonServices projectServices,
+            IProjectLockService projectLockService,
+            IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService)
+            : this(
+                  AsyncServiceProvider.GlobalProvider,
+                  fileSystemTreeProvider,
+                  projectServices,
+                  projectLockService,
+                  activeConfiguredProjectSubscriptionService)
+        {
+        }
+
+        public ProjectAssetFileWatcher(
+            IAsyncServiceProvider asyncServiceProvider,
+            IProjectTreeProvider fileSystemTreeProvider,
+            IUnconfiguredProjectCommonServices projectServices,
+            IProjectLockService projectLockService,
+            IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService)
             : base(projectServices.ThreadingService.JoinableTaskContext)
         {
-            Requires.NotNull(serviceProvider, nameof(serviceProvider));
+            Requires.NotNull(asyncServiceProvider, nameof(asyncServiceProvider));
             Requires.NotNull(fileSystemTreeProvider, nameof(fileSystemTreeProvider));
             Requires.NotNull(projectServices, nameof(projectServices));
             Requires.NotNull(projectLockService, nameof(projectLockService));
             Requires.NotNull(activeConfiguredProjectSubscriptionService, nameof(activeConfiguredProjectSubscriptionService));
 
-            _serviceProvider = serviceProvider;
+            _asyncServiceProvider = asyncServiceProvider;
             _fileSystemTreeProvider = fileSystemTreeProvider;
             _projectServices = projectServices;
             _projectLockService = projectLockService;
@@ -63,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         /// </summary>
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            _fileChangeService = (IVsFileChangeEx)(await AsyncServiceProvider.GlobalProvider.GetServiceAsync(typeof(SVsFileChangeEx)).ConfigureAwait(false));
+            _fileChangeService = (IVsFileChangeEx)(await _asyncServiceProvider.GetServiceAsync(typeof(SVsFileChangeEx)).ConfigureAwait(false));
 
             // The tree source to get changes to the tree so that we can identify when the assets file changes.
             var treeSource = _fileSystemTreeProvider.Tree.SyncLinkOptions();
