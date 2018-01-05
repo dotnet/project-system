@@ -2,6 +2,7 @@
 
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Build.Construction;
 using Microsoft.VisualStudio.Build;
 using Xunit;
 
@@ -22,9 +23,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         [Fact]
         public async Task PlatformProjectConfigurationDimensionProvider_GetDefaultValuesForDimensionsAsync()
         {
-            using (var projectFile = new MsBuildProjectFile(projectXml))
+            var project = ProjectRootElementFactory.Create(projectXml);
             {
-                var projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
+                var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
                 var provider = new PlatformProjectConfigurationDimensionProvider(projectXmlAccessor);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create();
                 var values = await provider.GetDefaultValuesForDimensionsAsync(unconfiguredProject);
@@ -38,9 +39,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         [Fact]
         public async Task PlatformProjectConfigurationDimensionProvider_GetProjectConfigurationDimensionsAsync()
         {
-            using (var projectFile = new MsBuildProjectFile(projectXml))
+            var project = ProjectRootElementFactory.Create(projectXml);
             {
-                var projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
+                var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
                 var provider = new PlatformProjectConfigurationDimensionProvider(projectXmlAccessor);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create();
                 var values = await provider.GetProjectConfigurationDimensionsAsync(unconfiguredProject);
@@ -58,9 +59,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         [Fact]
         public async Task PlatformProjectConfigurationDimensionProvider_OnDimensionValueChanged_Add()
         {
-            using (var projectFile = new MsBuildProjectFile(projectXml))
+            var project = ProjectRootElementFactory.Create(projectXml);
             {
-                var projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
+                var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
                 var provider = new PlatformProjectConfigurationDimensionProvider(projectXmlAccessor);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create();
 
@@ -72,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                     ConfigurationGeneral.PlatformProperty,
                     "ARM");
                 await provider.OnDimensionValueChangedAsync(args);
-                var property = BuildUtilities.GetProperty(projectFile.Project, Platforms);
+                var property = BuildUtilities.GetProperty(project, Platforms);
                 Assert.NotNull(property);
                 Assert.Equal("AnyCPU;x64;x86", property.Value);
 
@@ -84,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                     ConfigurationGeneral.PlatformProperty,
                     "ARM");
                 await provider.OnDimensionValueChangedAsync(args);
-                property = BuildUtilities.GetProperty(projectFile.Project, Platforms);
+                property = BuildUtilities.GetProperty(project, Platforms);
                 Assert.NotNull(property);
                 Assert.Equal("AnyCPU;x64;x86;ARM", property.Value);
             }
@@ -93,9 +94,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         [Fact]
         public async Task PlatformProjectConfigurationDimensionProvider_OnDimensionValueChanged_Remove()
         {
-            using (var projectFile = new MsBuildProjectFile(projectXml))
+            var project = ProjectRootElementFactory.Create(projectXml);
             {
-                var projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
+                var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
                 var provider = new PlatformProjectConfigurationDimensionProvider(projectXmlAccessor);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create();
 
@@ -107,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                     ConfigurationGeneral.PlatformProperty,
                     "x86");
                 await provider.OnDimensionValueChangedAsync(args);
-                var property = BuildUtilities.GetProperty(projectFile.Project, Platforms);
+                var property = BuildUtilities.GetProperty(project, Platforms);
                 Assert.NotNull(property);
                 Assert.Equal("AnyCPU;x64;x86", property.Value);
 
@@ -119,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                     ConfigurationGeneral.PlatformProperty,
                     "x86");
                 await provider.OnDimensionValueChangedAsync(args);
-                property = BuildUtilities.GetProperty(projectFile.Project, Platforms);
+                property = BuildUtilities.GetProperty(project, Platforms);
                 Assert.NotNull(property);
                 Assert.Equal("AnyCPU;x64", property.Value);
             }
@@ -128,9 +129,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         [Fact]
         public async Task PlatformProjectConfigurationDimensionProvider_OnDimensionValueChanged_Rename()
         {
-            using (var projectFile = new MsBuildProjectFile(projectXml))
+            var project = ProjectRootElementFactory.Create(projectXml);
             {
-                var projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
+                var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
                 var provider = new PlatformProjectConfigurationDimensionProvider(projectXmlAccessor);
                 var unconfiguredProject = UnconfiguredProjectFactory.Create();
 
@@ -143,7 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                     "RenamedPlatform",
                     "x86");
                 await provider.OnDimensionValueChangedAsync(args);
-                var property = BuildUtilities.GetProperty(projectFile.Project, Platforms);
+                var property = BuildUtilities.GetProperty(project, Platforms);
                 Assert.NotNull(property);
                 Assert.Equal("AnyCPU;x64;x86", property.Value);
 
@@ -156,7 +157,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                     "RenamedPlatform",
                     "x86");
                 await provider.OnDimensionValueChangedAsync(args);
-                property = BuildUtilities.GetProperty(projectFile.Project, Platforms);
+                property = BuildUtilities.GetProperty(project, Platforms);
                 Assert.NotNull(property);
                 Assert.Equal("AnyCPU;x64;x86", property.Value);
             }
