@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// Called on project load.
         /// </summary>
         [ConfiguredProjectAutoLoad]
-        [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
+        [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp + "+ !" + ProjectCapabilities.SharedAssetsProject)]
         internal void Load()
         {
             EnsureInitialized();
