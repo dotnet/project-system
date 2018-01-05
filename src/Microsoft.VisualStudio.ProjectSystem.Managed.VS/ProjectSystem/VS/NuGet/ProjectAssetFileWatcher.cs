@@ -4,10 +4,12 @@ using System;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Threading;
 
 using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
 using Task = System.Threading.Tasks.Task;
@@ -81,6 +83,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
             _fileChangeService = (IVsFileChangeEx)(await _asyncServiceProvider.GetServiceAsync(typeof(SVsFileChangeEx)).ConfigureAwait(false));
+
+            // Explicitly get back to the thread pool for the rest of this method so we don't tie up the UI thread;
+            await TaskScheduler.Default;
 
             // The tree source to get changes to the tree so that we can identify when the assets file changes.
             var treeSource = _fileSystemTreeProvider.Tree.SyncLinkOptions();
