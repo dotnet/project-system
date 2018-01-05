@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             {
                 var projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
                 var provider = new PlatformProjectConfigurationDimensionProvider(projectXmlAccessor);
-                var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
+                var unconfiguredProject = UnconfiguredProjectFactory.Create();
                 var values = await provider.GetDefaultValuesForDimensionsAsync(unconfiguredProject);
                 Assert.Single(values);
                 var value = values.First();
@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             {
                 var projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
                 var provider = new PlatformProjectConfigurationDimensionProvider(projectXmlAccessor);
-                var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
+                var unconfiguredProject = UnconfiguredProjectFactory.Create();
                 var values = await provider.GetProjectConfigurationDimensionsAsync(unconfiguredProject);
                 Assert.Single(values);
                 var value = values.First();
@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             {
                 var projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
                 var provider = new PlatformProjectConfigurationDimensionProvider(projectXmlAccessor);
-                var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
+                var unconfiguredProject = UnconfiguredProjectFactory.Create();
 
                 // On ChangeEventStage.After nothing should be changed
                 var args = new ProjectConfigurationDimensionValueChangedEventArgs(
@@ -97,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             {
                 var projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
                 var provider = new PlatformProjectConfigurationDimensionProvider(projectXmlAccessor);
-                var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
+                var unconfiguredProject = UnconfiguredProjectFactory.Create();
 
                 // On ChangeEventStage.After nothing should be changed
                 var args = new ProjectConfigurationDimensionValueChangedEventArgs(
@@ -132,7 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             {
                 var projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
                 var provider = new PlatformProjectConfigurationDimensionProvider(projectXmlAccessor);
-                var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
+                var unconfiguredProject = UnconfiguredProjectFactory.Create();
 
                 // Nothing should happen on platform rename as it's unsupported
                 var args = new ProjectConfigurationDimensionValueChangedEventArgs(

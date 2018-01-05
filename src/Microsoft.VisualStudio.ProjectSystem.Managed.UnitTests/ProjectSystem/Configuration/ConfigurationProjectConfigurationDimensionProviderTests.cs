@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             {
                 var projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
                 var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
-                var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
+                var unconfiguredProject = UnconfiguredProjectFactory.Create();
                 var values = await provider.GetDefaultValuesForDimensionsAsync(unconfiguredProject);
                 Assert.Single(values);
                 var value = values.First();
@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             {
                 var projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
                 var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
-                var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
+                var unconfiguredProject = UnconfiguredProjectFactory.Create();
                 var values = await provider.GetDefaultValuesForDimensionsAsync(unconfiguredProject);
                 Assert.Empty(values);
             }
@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             {
                 var projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
                 var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
-                var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
+                var unconfiguredProject = UnconfiguredProjectFactory.Create();
                 var values = await provider.GetProjectConfigurationDimensionsAsync(unconfiguredProject);
                 Assert.Single(values);
                 var value = values.First();
@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             {
                 var projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
                 var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
-                var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
+                var unconfiguredProject = UnconfiguredProjectFactory.Create();
                 var values = await provider.GetProjectConfigurationDimensionsAsync(unconfiguredProject);
                 Assert.Empty(values);
             }
@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             {
                 var projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
                 var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
-                var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
+                var unconfiguredProject = UnconfiguredProjectFactory.Create();
 
                 // On ChangeEventStage.After nothing should be changed
                 var args = new ProjectConfigurationDimensionValueChangedEventArgs(
@@ -124,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             {
                 var projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
                 var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
-                var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
+                var unconfiguredProject = UnconfiguredProjectFactory.Create();
 
                 // On ChangeEventStage.After nothing should be changed
                 var args = new ProjectConfigurationDimensionValueChangedEventArgs(
@@ -159,7 +159,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             {
                 var projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
                 var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
-                var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
+                var unconfiguredProject = UnconfiguredProjectFactory.Create();
 
                 var args = new ProjectConfigurationDimensionValueChangedEventArgs(
                     unconfiguredProject,
@@ -181,7 +181,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             {
                 var projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
                 var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
-                var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
+                var unconfiguredProject = UnconfiguredProjectFactory.Create();
 
                 // On ChangeEventStage.Before nothing should be changed
                 var args = new ProjectConfigurationDimensionValueChangedEventArgs(
@@ -218,7 +218,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             {
                 var projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
                 var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
-                var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
+                var unconfiguredProject = UnconfiguredProjectFactory.Create();
 
                 var args = new ProjectConfigurationDimensionValueChangedEventArgs(
                     unconfiguredProject,
