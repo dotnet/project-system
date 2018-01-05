@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         [Fact]
         public async Task GetDefaultValuesForDimensionsAsync_NoPropertyValue()
         {
-            var project = ProjectRootElementFactory.Create(projectXml);
+            var project = ProjectRootElementFactory.Create();
             var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
             var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
             var unconfiguredProject = UnconfiguredProjectFactory.Create();
@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         [Fact]
         public async Task GetProjectConfigurationDimensionsAsync_NoPropertyValue()
         {
-            var project = ProjectRootElementFactory.Create(projectXml);
+            var project = ProjectRootElementFactory.Create();
             var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
             var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
             var unconfiguredProject = UnconfiguredProjectFactory.Create();
