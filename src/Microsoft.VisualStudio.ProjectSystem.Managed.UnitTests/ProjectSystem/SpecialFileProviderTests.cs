@@ -9,7 +9,7 @@ using System.IO;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class SpecialFileProviderTests
     {
         [Fact]

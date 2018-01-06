@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class ProjectRestoreInfoBuilderTests
     {
         [Fact]

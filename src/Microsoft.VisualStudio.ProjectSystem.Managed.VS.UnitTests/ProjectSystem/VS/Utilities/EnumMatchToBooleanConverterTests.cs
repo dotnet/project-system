@@ -6,7 +6,7 @@ using Xunit;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 {
 
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class EnumMatchToBooleanConverterTests
     {
        [Fact]

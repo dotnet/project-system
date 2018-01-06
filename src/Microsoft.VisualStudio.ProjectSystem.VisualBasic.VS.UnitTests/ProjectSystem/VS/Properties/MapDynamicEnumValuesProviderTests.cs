@@ -9,7 +9,7 @@ using VSLangProj;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class MapDynamicEnumValuesProviderTests
     {
         [Fact]

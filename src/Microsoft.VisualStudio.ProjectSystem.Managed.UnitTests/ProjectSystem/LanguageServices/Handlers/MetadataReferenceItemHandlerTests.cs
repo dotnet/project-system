@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class MetadataReferenceItemHandlerTests
     {
         [Fact]

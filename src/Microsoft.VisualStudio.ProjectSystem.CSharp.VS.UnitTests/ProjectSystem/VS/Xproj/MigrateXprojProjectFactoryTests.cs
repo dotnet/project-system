@@ -19,7 +19,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class MigrateXprojProjectFactoryTests
     {
         private const string SlnLocation = @"C:\Temp";

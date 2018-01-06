@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class VisualBasicSimpleRenameTests : SimpleRenamerTestsBase
     {
         protected override string ProjectFileExtension => "vbproj";

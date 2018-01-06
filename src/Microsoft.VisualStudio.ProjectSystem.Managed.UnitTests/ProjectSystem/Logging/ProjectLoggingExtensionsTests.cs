@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Logging
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class ProjectLoggingExtensionsTests
     {
         [Fact]

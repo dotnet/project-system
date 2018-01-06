@@ -9,7 +9,7 @@ using Tasks = System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class StartupProjectRegistrarTests
     {
         [Fact]

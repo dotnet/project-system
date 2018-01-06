@@ -12,7 +12,7 @@ using Microsoft.VisualStudio.IO;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class GlobalJsonRemoverTests
     {
         private const string Directory = @"C:\Temp";

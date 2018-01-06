@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.Telemetry
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class VsTelemetryServiceTests
     {
         [Fact]

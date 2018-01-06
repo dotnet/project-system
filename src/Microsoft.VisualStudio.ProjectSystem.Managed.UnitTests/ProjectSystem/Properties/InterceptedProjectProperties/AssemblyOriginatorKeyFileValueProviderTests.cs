@@ -9,7 +9,7 @@ using System;
 
 namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class AssemblyOriginatorKeyFileValueProviderTests
     {
         private const string AssemblyOriginatorKeyFilePropertyName = "AssemblyOriginatorKeyFile";

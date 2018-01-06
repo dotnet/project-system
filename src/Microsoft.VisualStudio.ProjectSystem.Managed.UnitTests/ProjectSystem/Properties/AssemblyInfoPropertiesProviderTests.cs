@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         }
     }
 
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class AssemblyInfoPropertiesProviderTests
     {
         private TestProjectFileOrAssemblyInfoPropertiesProvider CreateProviderForSourceFileValidation(

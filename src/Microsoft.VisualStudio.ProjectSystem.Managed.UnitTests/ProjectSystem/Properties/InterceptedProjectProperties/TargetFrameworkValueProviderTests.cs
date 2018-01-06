@@ -6,7 +6,7 @@ using System.Runtime.Versioning;
 
 namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class TargetFrameworkValueProviderTests
     {
         private const string TargetFrameworkPropertyName = "TargetFramework";
