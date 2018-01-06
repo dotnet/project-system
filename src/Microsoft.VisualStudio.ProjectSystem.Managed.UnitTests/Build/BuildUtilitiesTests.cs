@@ -2,6 +2,7 @@
 
 using System;
 using System.Linq;
+using Microsoft.Build.Construction;
 using Xunit;
 
 namespace Microsoft.VisualStudio.Build
@@ -19,11 +20,9 @@ namespace Microsoft.VisualStudio.Build
   </PropertyGroup>
 </Project>";
 
-            using (var project = new MsBuildProjectFile(projectXml))
-            {
-                var property = BuildUtilities.GetProperty(project.Project, "NonExistantProperty");
-                Assert.Null(property);
-            }
+            var project = ProjectRootElementFactory.Create(projectXml);
+            var property = BuildUtilities.GetProperty(project, "NonExistantProperty");
+            Assert.Null(property);
         }
 
         [Fact]
@@ -36,11 +35,9 @@ namespace Microsoft.VisualStudio.Build
   </PropertyGroup>
 </Project>";
 
-            using (var project = new MsBuildProjectFile(projectXml))
-            {
-                var property = BuildUtilities.GetProperty(project.Project, "MyProperty");
-                Assert.NotNull(property);
-            }
+            var project = ProjectRootElementFactory.Create(projectXml);
+            var property = BuildUtilities.GetProperty(project, "MyProperty");
+            Assert.NotNull(property);
         }
 
         [Fact]
@@ -54,7 +51,7 @@ namespace Microsoft.VisualStudio.Build
         public void GetPropertyValues_MultipleValues()
         {
             var values = BuildUtilities.GetPropertyValues("1;2");
-            Assert.Collection(values, 
+            Assert.Collection(values,
                 firstValue => Assert.Equal("1", firstValue),
                 secondValue => Assert.Equal("2", secondValue));
         }
@@ -80,14 +77,12 @@ namespace Microsoft.VisualStudio.Build
         [Fact]
         public void GetOrAddProperty_NoGroups()
         {
-            using (var project = new MsBuildProjectFile())
-            {
-                BuildUtilities.GetOrAddProperty(project.Project, "MyProperty");
-                Assert.Single(project.Project.Properties);
-                Assert.Collection(project.Project.PropertyGroups, 
-                    group => Assert.Collection(group.Properties,
-                        firstProperty => Assert.Equal(string.Empty, firstProperty.Value)));
-            }
+            var project = ProjectRootElementFactory.Create();
+            BuildUtilities.GetOrAddProperty(project, "MyProperty");
+            Assert.Single(project.Properties);
+            Assert.Collection(project.PropertyGroups,
+                group => Assert.Collection(group.Properties,
+                    firstProperty => Assert.Equal(string.Empty, firstProperty.Value)));
         }
 
         [Fact]
@@ -99,18 +94,16 @@ namespace Microsoft.VisualStudio.Build
   <PropertyGroup/>
 </Project>";
 
-            using (var project = new MsBuildProjectFile(projectXml))
-            {
-                BuildUtilities.GetOrAddProperty(project.Project, "MyProperty");
-                Assert.Single(project.Project.Properties);
-                AssertEx.CollectionLength(project.Project.PropertyGroups, 2);
+            var project = ProjectRootElementFactory.Create(projectXml);
+            BuildUtilities.GetOrAddProperty(project, "MyProperty");
+            Assert.Single(project.Properties);
+            AssertEx.CollectionLength(project.PropertyGroups, 2);
 
-                var group = project.Project.PropertyGroups.First();
-                Assert.Single(group.Properties);
+            var group = project.PropertyGroups.First();
+            Assert.Single(group.Properties);
 
-                var property = group.Properties.First();
-                Assert.Equal(string.Empty, property.Value);
-            }
+            var property = group.Properties.First();
+            Assert.Equal(string.Empty, property.Value);
         }
 
         [Fact]
@@ -123,18 +116,16 @@ namespace Microsoft.VisualStudio.Build
   </PropertyGroup>
 </Project>";
 
-            using (var project = new MsBuildProjectFile(projectXml))
-            {
-                BuildUtilities.GetOrAddProperty(project.Project, "MyProperty");
-                Assert.Single(project.Project.Properties);
-                Assert.Single(project.Project.PropertyGroups);
+            var project = ProjectRootElementFactory.Create(projectXml);
+            BuildUtilities.GetOrAddProperty(project, "MyProperty");
+            Assert.Single(project.Properties);
+            Assert.Single(project.PropertyGroups);
 
-                var group = project.Project.PropertyGroups.First();
-                Assert.Single(group.Properties);
+            var group = project.PropertyGroups.First();
+            Assert.Single(group.Properties);
 
-                var property = group.Properties.First();
-                Assert.Equal("1", property.Value);
-            }
+            var property = group.Properties.First();
+            Assert.Equal("1", property.Value);
         }
 
         [Fact]
@@ -147,13 +138,11 @@ namespace Microsoft.VisualStudio.Build
   </PropertyGroup>
 </Project>";
 
-            using (var project = new MsBuildProjectFile(projectXml))
-            {
-                BuildUtilities.AppendPropertyValue(project.Project, "1;2", "MyProperty", "3");
-                var property = BuildUtilities.GetProperty(project.Project, "MyProperty");
-                Assert.NotNull(property);
-                Assert.Equal("1;2;3", property.Value);
-            }
+            var project = ProjectRootElementFactory.Create(projectXml);
+            BuildUtilities.AppendPropertyValue(project, "1;2", "MyProperty", "3");
+            var property = BuildUtilities.GetProperty(project, "MyProperty");
+            Assert.NotNull(property);
+            Assert.Equal("1;2;3", property.Value);
         }
 
         [Fact]
@@ -166,37 +155,31 @@ namespace Microsoft.VisualStudio.Build
   </PropertyGroup>
 </Project>";
 
-            using (var project = new MsBuildProjectFile(projectXml))
-            {
-                BuildUtilities.AppendPropertyValue(project.Project, "", "MyProperty", "1");
-                var property = BuildUtilities.GetProperty(project.Project, "MyProperty");
-                Assert.NotNull(property);
-                Assert.Equal("1", property.Value);
-            }
+            var project = ProjectRootElementFactory.Create(projectXml);
+            BuildUtilities.AppendPropertyValue(project, "", "MyProperty", "1");
+            var property = BuildUtilities.GetProperty(project, "MyProperty");
+            Assert.NotNull(property);
+            Assert.Equal("1", property.Value);
         }
 
         [Fact]
         public void AppendPropertyValue_InheritedValue()
         {
-            using (var project = new MsBuildProjectFile())
-            {
-                BuildUtilities.AppendPropertyValue(project.Project, "1;2", "MyProperty", "3");
-                var property = BuildUtilities.GetProperty(project.Project, "MyProperty");
-                Assert.NotNull(property);
-                Assert.Equal("1;2;3", property.Value);
-            }
+            var project = ProjectRootElementFactory.Create();
+            BuildUtilities.AppendPropertyValue(project, "1;2", "MyProperty", "3");
+            var property = BuildUtilities.GetProperty(project, "MyProperty");
+            Assert.NotNull(property);
+            Assert.Equal("1;2;3", property.Value);
         }
 
         [Fact]
         public void AppendPropertyValue_MissingProperty()
         {
-            using (var project = new MsBuildProjectFile())
-            {
-                BuildUtilities.AppendPropertyValue(project.Project, "", "MyProperty", "1");
-                var property = BuildUtilities.GetProperty(project.Project, "MyProperty");
-                Assert.NotNull(property);
-                Assert.Equal("1", property.Value);
-            }
+            var project = ProjectRootElementFactory.Create();
+            BuildUtilities.AppendPropertyValue(project, "", "MyProperty", "1");
+            var property = BuildUtilities.GetProperty(project, "MyProperty");
+            Assert.NotNull(property);
+            Assert.Equal("1", property.Value);
         }
 
         [Fact]
@@ -209,13 +192,11 @@ namespace Microsoft.VisualStudio.Build
   </PropertyGroup>
 </Project>";
 
-            using (var project = new MsBuildProjectFile(projectXml))
-            {
-                BuildUtilities.AppendPropertyValue(project.Project, "1", "MyProperty", "2", '|');
-                var property = BuildUtilities.GetProperty(project.Project, "MyProperty");
-                Assert.NotNull(property);
-                Assert.Equal("1|2", property.Value);
-            }
+            var project = ProjectRootElementFactory.Create(projectXml);
+            BuildUtilities.AppendPropertyValue(project, "1", "MyProperty", "2", '|');
+            var property = BuildUtilities.GetProperty(project, "MyProperty");
+            Assert.NotNull(property);
+            Assert.Equal("1|2", property.Value);
         }
 
         [Fact]
@@ -228,13 +209,11 @@ namespace Microsoft.VisualStudio.Build
   </PropertyGroup>
 </Project>";
 
-            using (var project = new MsBuildProjectFile(projectXml))
-            {
-                BuildUtilities.RemovePropertyValue(project.Project, "1;2", "MyProperty", "2");
-                var property = BuildUtilities.GetProperty(project.Project, "MyProperty");
-                Assert.NotNull(property);
-                Assert.Equal("1", property.Value);
-            }
+            var project = ProjectRootElementFactory.Create(projectXml);
+            BuildUtilities.RemovePropertyValue(project, "1;2", "MyProperty", "2");
+            var property = BuildUtilities.GetProperty(project, "MyProperty");
+            Assert.NotNull(property);
+            Assert.Equal("1", property.Value);
         }
 
         [Fact]
@@ -247,13 +226,11 @@ namespace Microsoft.VisualStudio.Build
   </PropertyGroup>
 </Project>";
 
-            using (var project = new MsBuildProjectFile(projectXml))
-            {
-                BuildUtilities.RemovePropertyValue(project.Project, "1|2|3", "MyProperty", "2", '|');
-                var property = BuildUtilities.GetProperty(project.Project, "MyProperty");
-                Assert.NotNull(property);
-                Assert.Equal("1|3", property.Value);
-            }
+            var project = ProjectRootElementFactory.Create(projectXml);
+            BuildUtilities.RemovePropertyValue(project, "1|2|3", "MyProperty", "2", '|');
+            var property = BuildUtilities.GetProperty(project, "MyProperty");
+            Assert.NotNull(property);
+            Assert.Equal("1|3", property.Value);
         }
 
         [Fact]
@@ -266,37 +243,31 @@ namespace Microsoft.VisualStudio.Build
   </PropertyGroup>
 </Project>";
 
-            using (var project = new MsBuildProjectFile(projectXml))
-            {
-                BuildUtilities.RemovePropertyValue(project.Project, "1", "MyProperty", "1");
-                var property = BuildUtilities.GetProperty(project.Project, "MyProperty");
-                Assert.NotNull(property);
-                Assert.Equal(string.Empty, property.Value);
-            }
+            var project = ProjectRootElementFactory.Create(projectXml);
+            BuildUtilities.RemovePropertyValue(project, "1", "MyProperty", "1");
+            var property = BuildUtilities.GetProperty(project, "MyProperty");
+            Assert.NotNull(property);
+            Assert.Equal(string.Empty, property.Value);
         }
 
         [Fact]
         public void RemovePropertyValue_InheritedValue()
         {
-            using (var project = new MsBuildProjectFile())
-            {
-                BuildUtilities.RemovePropertyValue(project.Project, "1;2", "MyProperty", "1");
-                var property = BuildUtilities.GetProperty(project.Project, "MyProperty");
-                Assert.NotNull(property);
-                Assert.Equal("2", property.Value);
-            }
+            var project = ProjectRootElementFactory.Create();
+            BuildUtilities.RemovePropertyValue(project, "1;2", "MyProperty", "1");
+            var property = BuildUtilities.GetProperty(project, "MyProperty");
+            Assert.NotNull(property);
+            Assert.Equal("2", property.Value);
         }
 
         [Fact]
         public void RemovePropertyValue_MissingProperty()
         {
-            using (var project = new MsBuildProjectFile())
-            {
-                Assert.Throws<ArgumentException>("valueToRemove", () => BuildUtilities.RemovePropertyValue(project.Project, "", "MyProperty", "1"));
-                var property = BuildUtilities.GetProperty(project.Project, "MyProperty");
-                Assert.NotNull(property);
-                Assert.Equal(string.Empty, property.Value);
-            }
+            var project = ProjectRootElementFactory.Create();
+            Assert.Throws<ArgumentException>("valueToRemove", () => BuildUtilities.RemovePropertyValue(project, "", "MyProperty", "1"));
+            var property = BuildUtilities.GetProperty(project, "MyProperty");
+            Assert.NotNull(property);
+            Assert.Equal(string.Empty, property.Value);
         }
 
         [Fact]
@@ -309,13 +280,11 @@ namespace Microsoft.VisualStudio.Build
   </PropertyGroup>
 </Project>";
 
-            using (var project = new MsBuildProjectFile(projectXml))
-            {
-                BuildUtilities.RenamePropertyValue(project.Project, "1;2", "MyProperty", "2", "5");
-                var property = BuildUtilities.GetProperty(project.Project, "MyProperty");
-                Assert.NotNull(property);
-                Assert.Equal("1;5", property.Value);
-            }
+            var project = ProjectRootElementFactory.Create(projectXml);
+            BuildUtilities.RenamePropertyValue(project, "1;2", "MyProperty", "2", "5");
+            var property = BuildUtilities.GetProperty(project, "MyProperty");
+            Assert.NotNull(property);
+            Assert.Equal("1;5", property.Value);
         }
 
         [Fact]
@@ -328,37 +297,31 @@ namespace Microsoft.VisualStudio.Build
   </PropertyGroup>
 </Project>";
 
-            using (var project = new MsBuildProjectFile(projectXml))
-            {
-                BuildUtilities.RenamePropertyValue(project.Project, "1|2|3", "MyProperty", "2", "5", '|');
-                var property = BuildUtilities.GetProperty(project.Project, "MyProperty");
-                Assert.NotNull(property);
-                Assert.Equal("1|5|3", property.Value);
-            }
+            var project = ProjectRootElementFactory.Create(projectXml);
+            BuildUtilities.RenamePropertyValue(project, "1|2|3", "MyProperty", "2", "5", '|');
+            var property = BuildUtilities.GetProperty(project, "MyProperty");
+            Assert.NotNull(property);
+            Assert.Equal("1|5|3", property.Value);
         }
 
         [Fact]
         public void RenamePropertyValue_InheritedValue()
         {
-            using (var project = new MsBuildProjectFile())
-            {
-                BuildUtilities.RenamePropertyValue(project.Project, "1;2", "MyProperty", "1", "3");
-                var property = BuildUtilities.GetProperty(project.Project, "MyProperty");
-                Assert.NotNull(property);
-                Assert.Equal("3;2", property.Value);
-            }
+            var project = ProjectRootElementFactory.Create();
+            BuildUtilities.RenamePropertyValue(project, "1;2", "MyProperty", "1", "3");
+            var property = BuildUtilities.GetProperty(project, "MyProperty");
+            Assert.NotNull(property);
+            Assert.Equal("3;2", property.Value);
         }
 
         [Fact]
         public void RenamePropertyValue_MissingProperty()
         {
-            using (var project = new MsBuildProjectFile())
-            {
-                Assert.Throws<ArgumentException>("oldValue", () => BuildUtilities.RenamePropertyValue(project.Project, "", "MyProperty", "1", "2"));
-                var property = BuildUtilities.GetProperty(project.Project, "MyProperty");
-                Assert.NotNull(property);
-                Assert.Equal(string.Empty, property.Value);
-            }
+            var project = ProjectRootElementFactory.Create();
+            Assert.Throws<ArgumentException>("oldValue", () => BuildUtilities.RenamePropertyValue(project, "", "MyProperty", "1", "2"));
+            var property = BuildUtilities.GetProperty(project, "MyProperty");
+            Assert.NotNull(property);
+            Assert.Equal(string.Empty, property.Value);
         }
     }
 }

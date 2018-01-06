@@ -2,6 +2,7 @@
 
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Build.Construction;
 using Microsoft.VisualStudio.Build;
 using Xunit;
 
@@ -35,11 +36,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         [Fact]
         public async Task GetDefaultValuesForDimensionsAsync_TFM()
         {
-            using (var projectFile = new MsBuildProjectFile(ProjectXmlTFM))
+            var project = ProjectRootElementFactory.Create(ProjectXmlTFM);
             {
-                IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
-                var provider = new TargetFrameworkProjectConfigurationDimensionProvider(_projectXmlAccessor);
-                var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
+                var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
+                var provider = new TargetFrameworkProjectConfigurationDimensionProvider(projectXmlAccessor);
+                var unconfiguredProject = UnconfiguredProjectFactory.Create();
                 var values = await provider.GetDefaultValuesForDimensionsAsync(unconfiguredProject);
                 Assert.Empty(values);
             }
@@ -50,11 +51,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         [InlineData(ProjectXmlTFMAndTFMs)]
         public async Task GetDefaultValuesForDimensionsAsync_TFMs(string projectXml)
         {
-            using (var projectFile = new MsBuildProjectFile(projectXml))
+            var project = ProjectRootElementFactory.Create(projectXml);
             {
-                IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
-                var provider = new TargetFrameworkProjectConfigurationDimensionProvider(_projectXmlAccessor);
-                var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
+                var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
+                var provider = new TargetFrameworkProjectConfigurationDimensionProvider(projectXmlAccessor);
+                var unconfiguredProject = UnconfiguredProjectFactory.Create();
                 var values = await provider.GetDefaultValuesForDimensionsAsync(unconfiguredProject);
                 Assert.Single(values);
                 var value = values.First();
@@ -66,11 +67,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         [Fact]
         public async Task GetProjectConfigurationDimensionsAsync_TFM()
         {
-            using (var projectFile = new MsBuildProjectFile(ProjectXmlTFM))
+            var project = ProjectRootElementFactory.Create(ProjectXmlTFM);
             {
-                IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
-                var provider = new TargetFrameworkProjectConfigurationDimensionProvider(_projectXmlAccessor);
-                var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
+                var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
+                var provider = new TargetFrameworkProjectConfigurationDimensionProvider(projectXmlAccessor);
+                var unconfiguredProject = UnconfiguredProjectFactory.Create();
                 var values = await provider.GetProjectConfigurationDimensionsAsync(unconfiguredProject);
                 Assert.Empty(values);
             }
@@ -81,11 +82,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         [InlineData(ProjectXmlTFMAndTFMs)]
         public async Task GetProjectConfigurationDimensionsAsync_TFMs(string projectXml)
         {
-            using (var projectFile = new MsBuildProjectFile(projectXml))
+            var project = ProjectRootElementFactory.Create(projectXml);
             {
-                IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
-                var provider = new TargetFrameworkProjectConfigurationDimensionProvider(_projectXmlAccessor);
-                var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
+                var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
+                var provider = new TargetFrameworkProjectConfigurationDimensionProvider(projectXmlAccessor);
+                var unconfiguredProject = UnconfiguredProjectFactory.Create();
                 var values = await provider.GetProjectConfigurationDimensionsAsync(unconfiguredProject);
                 Assert.Single(values);
                 var value = values.First();
@@ -107,12 +108,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         public async Task OnDimensionValueChanged(ConfigurationDimensionChange change, ChangeEventStage stage)
         {
             // No changes should happen for TFM so verify that the property is the same before and after
-            using (var projectFile = new MsBuildProjectFile(ProjectXmlTFMs))
-            {
-                IProjectXmlAccessor _projectXmlAccessor = IProjectXmlAccessorFactory.Create(projectFile.Project);
-                var provider = new TargetFrameworkProjectConfigurationDimensionProvider(_projectXmlAccessor);
-                var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFile.Filename);
-                var property = BuildUtilities.GetProperty(projectFile.Project, ConfigurationGeneral.TargetFrameworksProperty);
+            var project = ProjectRootElementFactory.Create(ProjectXmlTFMs);
+                var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
+                var provider = new TargetFrameworkProjectConfigurationDimensionProvider(projectXmlAccessor);
+                var unconfiguredProject = UnconfiguredProjectFactory.Create();
+                var property = BuildUtilities.GetProperty(project, ConfigurationGeneral.TargetFrameworksProperty);
                 string expectedTFMs = property.Value;
 
                 var args = new ProjectConfigurationDimensionValueChangedEventArgs(
@@ -125,7 +125,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 
                 Assert.NotNull(property);
                 Assert.Equal(expectedTFMs, property.Value);
-            }
         }
     }
 }
