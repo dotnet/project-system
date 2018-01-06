@@ -6,6 +6,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
+    [ProjectSystemTrait]
     public class ActiveConfiguredProjectsLoaderTests
     {
         [Theory]
