@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class TreeItemOrderPropertyProviderTests
     {
         private List<(string type, string include)> _simpleOrderFile = new List<(string type, string include)>

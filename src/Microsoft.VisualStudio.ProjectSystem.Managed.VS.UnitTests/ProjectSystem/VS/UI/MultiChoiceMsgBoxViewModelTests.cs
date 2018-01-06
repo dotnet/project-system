@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class MultiChoiceMsgBoxViewModelTests
     {
         [Fact]

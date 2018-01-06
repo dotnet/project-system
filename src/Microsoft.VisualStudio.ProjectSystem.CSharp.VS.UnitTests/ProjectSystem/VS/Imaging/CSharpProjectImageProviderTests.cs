@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class CSharpProjectImageProviderTests
     {
         [Fact]

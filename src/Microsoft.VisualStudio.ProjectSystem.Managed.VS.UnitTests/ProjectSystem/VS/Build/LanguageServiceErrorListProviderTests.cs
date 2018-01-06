@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class LanguageServiceErrorListProviderTests
     {
         [Fact]

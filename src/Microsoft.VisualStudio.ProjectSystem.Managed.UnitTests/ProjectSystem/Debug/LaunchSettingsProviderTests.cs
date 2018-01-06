@@ -20,7 +20,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class LaunchSettingsProviderTests
     {
         internal LaunchSettingsUnderTest GetLaunchSettingsProvider(IFileSystem fileSystem, string appDesignerFolder = @"c:\test\Project1\Properties", string activeProfile = "")

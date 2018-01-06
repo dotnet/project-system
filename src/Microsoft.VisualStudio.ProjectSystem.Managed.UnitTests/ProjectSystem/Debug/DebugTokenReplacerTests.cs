@@ -13,7 +13,7 @@ using Xunit;
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
 
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class DebugTokenReplacerTests
     {
         private Dictionary<string, string> _envVars = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {

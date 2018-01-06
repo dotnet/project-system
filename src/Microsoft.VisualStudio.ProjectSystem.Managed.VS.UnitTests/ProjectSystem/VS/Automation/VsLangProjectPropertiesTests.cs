@@ -10,7 +10,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class VSProject_VSLangProjectPropertiesTests
     {
         [Fact]

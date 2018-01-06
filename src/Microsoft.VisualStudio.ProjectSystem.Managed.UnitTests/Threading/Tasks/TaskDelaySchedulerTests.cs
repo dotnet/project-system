@@ -8,7 +8,7 @@ using Task = System.Threading.Tasks.Task;
 namespace Microsoft.VisualStudio.Threading.Tasks
 {
 
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class TaskDelaySchedulerTests
     {
         [Fact]

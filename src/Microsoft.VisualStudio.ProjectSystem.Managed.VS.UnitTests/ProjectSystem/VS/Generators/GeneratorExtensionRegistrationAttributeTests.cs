@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class GeneratorExtensionRegistrationAttributeTests
     {
         private const string testGuid = "DB18C134-E0E3-4065-9079-2D6B00F4E639";

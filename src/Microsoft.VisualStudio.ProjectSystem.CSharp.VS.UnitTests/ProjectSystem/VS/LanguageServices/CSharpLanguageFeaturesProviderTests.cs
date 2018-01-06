@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class CSharpLanguageFeaturesProviderTests
     {
         [Fact]

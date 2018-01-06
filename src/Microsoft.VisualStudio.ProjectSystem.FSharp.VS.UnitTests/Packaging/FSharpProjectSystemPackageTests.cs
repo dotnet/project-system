@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.Packaging
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class FSharpProjectSystemPackageTests
     {
         [Fact]

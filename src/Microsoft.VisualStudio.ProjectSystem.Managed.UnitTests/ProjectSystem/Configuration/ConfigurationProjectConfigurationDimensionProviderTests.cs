@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class ConfigurationProjectConfigurationDimensionProviderTests
     {
         private const string Configurations = nameof(Configurations);

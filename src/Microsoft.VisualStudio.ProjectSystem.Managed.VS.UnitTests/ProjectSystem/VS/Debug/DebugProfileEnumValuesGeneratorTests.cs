@@ -10,7 +10,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class DebugProfileEnumValuesGenerator_Tests
     {
         private List<ILaunchProfile> _profiles = new List<ILaunchProfile>() {

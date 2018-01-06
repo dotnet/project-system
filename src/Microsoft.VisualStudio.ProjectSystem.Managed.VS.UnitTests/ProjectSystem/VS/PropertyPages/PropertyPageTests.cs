@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test.PropertyPages
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class PropertyPageTests
     {
         [Fact]

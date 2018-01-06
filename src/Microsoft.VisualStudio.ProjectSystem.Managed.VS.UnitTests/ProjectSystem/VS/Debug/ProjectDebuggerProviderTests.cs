@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class ProjectDebuggerProviderTests
     {
         private Mock<IDebugProfileLaunchTargetsProvider> _mockWebProvider =  new Mock<IDebugProfileLaunchTargetsProvider>();

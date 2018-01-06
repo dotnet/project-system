@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 {
-    [ProjectSystemTrait]
+    [Trait("UnitTest", "ProjectSystem")]
     public class SingleFileGeneratorFactoryAggregatorTests
     {
         public static Guid PackageGuid = Guid.Parse("860A27C0-B665-47F3-BC12-637E16A1050A");
