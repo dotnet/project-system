@@ -38,6 +38,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     </para>
         ///     <paramref name="action"/> is <see langword="null"/>.
         /// </exception>
+        /// <remarks>
+        ///     NOTE: To avoid deadlocks, do not call arbitrary services or asynchronous code within <paramref name="action"/>.
+        /// </remarks>
         Task<TResult> OpenProjectXmlForReadAsync<TResult>(UnconfiguredProject project, Func<ProjectRootElement, TResult> action, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
@@ -62,6 +65,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     </para>
         ///     <paramref name="action"/> is <see langword="null"/>.
         /// </exception>
+        /// <remarks>
+        ///     NOTE: To avoid deadlocks, do not call arbitrary services or asynchronous code within <paramref name="action"/>.
+        /// </remarks>
         Task OpenProjectXmlForWriteAsync(UnconfiguredProject project, Action<ProjectRootElement> action, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
@@ -86,6 +92,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     </para>
         ///     <paramref name="action"/> is <see langword="null"/>.
         /// </exception>
+        /// <remarks>
+        ///     NOTE: To avoid deadlocks, do not call arbitrary services or asynchronous code within <paramref name="action"/>.
+        /// </remarks>
         Task<TResult> OpenProjectForReadAsync<TResult>(ConfiguredProject project, Func<Project, TResult> action, CancellationToken cancellationToken = default(CancellationToken));
     }
 }
