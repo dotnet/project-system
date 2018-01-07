@@ -13,12 +13,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal interface IProjectXmlAccessor
     {
         /// <summary>
-        /// Gets the XML for a given unconfigured project.
-        /// </summary>
-        /// <returns>XML content of the project.</returns>
-        Task<string> GetProjectXmlAsync();
-
-        /// <summary>
         /// Gets the evaluated property value for the specified property.
         /// </summary>
         /// <param name="unconfiguredProject"></param>

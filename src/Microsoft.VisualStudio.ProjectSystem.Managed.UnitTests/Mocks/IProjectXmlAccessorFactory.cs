@@ -16,15 +16,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public static IProjectXmlAccessor Create() => Mock.Of<IProjectXmlAccessor>();
 
-        public static IProjectXmlAccessor ImplementGetProjectXml(string xml) => Implement(() => xml);
-
-        public static IProjectXmlAccessor Implement(Func<string> xmlFunc)
-        {
-            var mock = new Mock<IProjectXmlAccessor>();
-            mock.Setup(m => m.GetProjectXmlAsync()).Returns(() => Task.FromResult(xmlFunc()));
-            return mock.Object;
-        }
-
         public static IProjectXmlAccessor Create(ProjectRootElement msbuildProject)
         {
             var mock = new Mock<IProjectXmlAccessor>();
