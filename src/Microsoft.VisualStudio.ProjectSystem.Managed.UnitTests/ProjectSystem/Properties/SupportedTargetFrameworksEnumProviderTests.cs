@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     public class SupportedTargetFrameworksEnumProviderTests
     {
         [Fact]
-        public void Constructor_NullProjectAccessor_ThrowsArgumentNullException()
+        public void Constructor_NullProjectAccessor_ThrowsArgumentNull()
         {
             var configuredProject = ConfiguredProjectFactory.Create();
             Assert.Throws<ArgumentNullException>("projectAccessor", () =>
@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         }
 
         [Fact]
-        public void Constructor_NullConfiguredProject_ThrowsArgumentNullException()
+        public void Constructor_NullConfiguredProject_ThrowsArgumentNull()
         {
             var projectAccessor = IProjectAccessorFactory.Create();
 
@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         }
 
         [Fact]
-        public async Task Constructor()
+        public async Task GetProviderAsync_ReturnsNonNullGenerator()
         {
             var projectAccessor = IProjectAccessorFactory.Create();
             var configuredProject = ConfiguredProjectFactory.Create();
@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         }
 
         [Fact]
-        public async Task GetListedValues()
+        public async Task GetListedValuesAsync_ReturnsSupportedTargetFrameworksItems()
         {
             string project = 
 @"<Project>
@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         }
 
         [Fact]
-        public async Task TryCreateEnumValue()
+        public async Task TryCreateEnumValueAsync_ThrowsNotImplemented()
         {
             var projectAccessor = IProjectAccessorFactory.Create();
             var configuredProject = ConfiguredProjectFactory.Create();
