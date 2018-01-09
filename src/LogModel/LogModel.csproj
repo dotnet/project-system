@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.3</TargetFramework>
+    <TargetFramework>net46</TargetFramework>
     <RootNamespace>Microsoft.VisualStudio.ProjectSystem.LogModel</RootNamespace>
     <AssemblyName>Microsoft.VisualStudio.ProjectSystem.LogModel</AssemblyName>
     <IsProductComponent>false</IsProductComponent>
@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Build.Framework" Version="$(MicrosoftBuildFrameworkVersion)" />
-    <PackageReference Include="System.Collections.Immutable" Version="1.4.0" />
+    <PackageReference Include="System.Collections.Immutable" Version="1.1.37" />
   </ItemGroup>
 
   <ItemGroup>
