@@ -23,6 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     {
         private readonly IAsyncServiceProvider _asyncServiceProvider;
         private readonly IUnconfiguredProjectCommonServices _projectServices;
+        private readonly IUnconfiguredProjectTasksService _projectTasksService;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IProjectTreeProvider _fileSystemTreeProvider;
         private IVsFileChangeEx _fileChangeService;
@@ -34,11 +35,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         public ProjectAssetFileWatcher(
             [Import(ContractNames.ProjectTreeProviders.FileSystemDirectoryTree)] IProjectTreeProvider fileSystemTreeProvider,
             IUnconfiguredProjectCommonServices projectServices,
+            IUnconfiguredProjectTasksService projectTasksService,
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService)
             : this(
                   AsyncServiceProvider.GlobalProvider,
                   fileSystemTreeProvider,
                   projectServices,
+                  projectTasksService,
                   activeConfiguredProjectSubscriptionService)
         {
         }
@@ -47,17 +50,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             IAsyncServiceProvider asyncServiceProvider,
             IProjectTreeProvider fileSystemTreeProvider,
             IUnconfiguredProjectCommonServices projectServices,
+            IUnconfiguredProjectTasksService projectTasksService,
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService)
             : base(projectServices.ThreadingService.JoinableTaskContext)
         {
             Requires.NotNull(asyncServiceProvider, nameof(asyncServiceProvider));
             Requires.NotNull(fileSystemTreeProvider, nameof(fileSystemTreeProvider));
             Requires.NotNull(projectServices, nameof(projectServices));
+            Requires.NotNull(projectTasksService, nameof(projectTasksService));
             Requires.NotNull(activeConfiguredProjectSubscriptionService, nameof(activeConfiguredProjectSubscriptionService));
 
             _asyncServiceProvider = asyncServiceProvider;
             _fileSystemTreeProvider = fileSystemTreeProvider;
             _projectServices = projectServices;
+            _projectTasksService = projectTasksService;
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
         }
 
@@ -81,20 +87,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             // Explicitly get back to the thread pool for the rest of this method so we don't tie up the UI thread;
             await TaskScheduler.Default;
 
-            // The tree source to get changes to the tree so that we can identify when the assets file changes.
-            var treeSource = _fileSystemTreeProvider.Tree.SyncLinkOptions();
+            await _projectTasksService.LoadedProjectAsync(() =>
+                {
+                    // The tree source to get changes to the tree so that we can identify when the assets file changes.
+                    var treeSource = _fileSystemTreeProvider.Tree.SyncLinkOptions();
 
-            // The property source used to get the value of the $ProjectAssetsFile property so that we can identify the location of the assets file.
-            var sourceLinkOptions = new StandardRuleDataflowLinkOptions
-            {
-                RuleNames = Empty.OrdinalIgnoreCaseStringSet.Add(ConfigurationGeneral.SchemaName),
-                PropagateCompletion = true
-            };
-            var propertySource = _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(sourceLinkOptions);
-            var target = new ActionBlock<IProjectVersionedValue<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>>(DataFlow_ChangedAsync);
+                    // The property source used to get the value of the $ProjectAssetsFile property so that we can identify the location of the assets file.
+                    var sourceLinkOptions = new StandardRuleDataflowLinkOptions
+                    {
+                        RuleNames = Empty.OrdinalIgnoreCaseStringSet.Add(ConfigurationGeneral.SchemaName),
+                        PropagateCompletion = true
+                    };
+                    var propertySource = _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(sourceLinkOptions);
+                    var target = new ActionBlock<IProjectVersionedValue<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>>(DataFlow_ChangedAsync);
 
-            // Join the two sources so that we get synchronized versions of the data.
-            _treeWatcher = ProjectDataSources.SyncLinkTo(treeSource, propertySource, target);
+                    // Join the two sources so that we get synchronized versions of the data.
+                    _treeWatcher = ProjectDataSources.SyncLinkTo(treeSource, propertySource, target);
+
+                    return Task.CompletedTask;
+                }).ConfigureAwait(false);
         }
 
         /// <summary>
