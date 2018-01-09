@@ -185,6 +185,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
             Assert.Equal(expectedOrder, values.DisplayOrder);
         }
 
+        private List<(string type, string include, string linkPath)> _orderedWithLinkPaths = new List<(string type, string include, string linkPath)>
+        {
+            ("Compile", "Common.fs", "Tables/Test.fs"),
+            ("Compile", "Tables\\Order.fs", null),
+            ("Compile", "Tables\\Common.fs", null),
+            ("Compile", "Program.fs", null)
+        };
+
+        [Theory]
+        [InlineData("Common.fs", "Compile", false, "X:\\Project\\Common.fs", "Tables/Test.fs", 2)] // Our link path
+        [InlineData("Tables", "Folder", true, null, null, 1)]
+        [InlineData("Order.fs", "Compile", false, "X:\\Project\\Tables\\Order.fs", null, 3)]
+        [InlineData("Common.fs", "Compile", false, "X:\\Project\\Tables\\Common.fs", null, 4)] // duplicate and out of alphabetical order
+        [InlineData("Program.fs", "Compile", false, "X:\\Project\\Program.fs", null, 5)]
+        public void VerifyOrderingWithLinkPaths(string itemName, string itemType, bool isFolder, string rootedPath, string linkPath, int expectedOrder)
+        {
+            var orderedItems = _orderedWithLinkPaths
+                .Select(p => new ProjectItemIdentity(p.type, p.include, p.linkPath))
+                .ToList();
+
+            var provider = new TreeItemOrderPropertyProvider(orderedItems, UnconfiguredProjectFactory.Create(filePath: "X:\\Project\\"));
+
+            bool isUnderProjectRoot = rootedPath?.Contains("Tables") != true;
+            var metadata = rootedPath == null ? null : new Dictionary<string, string> { { "FullPath", rootedPath }, { "Link", linkPath } }.ToImmutableDictionary();
+
+            var context = GetContext(itemName, itemType, isFolder,
+                isUnderProjectRoot ? ProjectTreeFlags.ProjectRoot : ProjectTreeFlags.Empty,
+                metadata);
+            var values = GetInitialValues();
+
+            provider.CalculatePropertyValues(context, values);
+
+            Assert.Equal(expectedOrder, values.DisplayOrder);
+        }
+
         private static IProjectTreeCustomizablePropertyContext GetContext(
             string itemName = null,
             string itemType = null,
