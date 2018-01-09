@@ -97,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 PropagateCompletion = true
             };
             var propertySource = _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(sourceLinkOptions);
-            var target = new ActionBlock<IProjectVersionedValue<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>>(DataFlow_Changed);
+            var target = new ActionBlock<IProjectVersionedValue<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>>(DataFlow_ChangedAsync);
 
             // Join the two sources so that we get synchronized versions of the data.
             _treeWatcher = ProjectDataSources.SyncLinkTo(treeSource, propertySource, target);
@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         /// <summary>
         /// Called on changes to the project tree.
         /// </summary>
-        internal async Task DataFlow_Changed(IProjectVersionedValue<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>> dataFlowUpdate)
+        internal async Task DataFlow_ChangedAsync(IProjectVersionedValue<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>> dataFlowUpdate)
         {
             await InitializeAsync().ConfigureAwait(false);
 
