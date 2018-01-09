@@ -23,7 +23,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     {
         private readonly IAsyncServiceProvider _asyncServiceProvider;
         private readonly IUnconfiguredProjectCommonServices _projectServices;
-        private readonly IProjectLockService _projectLockService;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IProjectTreeProvider _fileSystemTreeProvider;
         private IVsFileChangeEx _fileChangeService;
@@ -35,13 +34,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         public ProjectAssetFileWatcher(
             [Import(ContractNames.ProjectTreeProviders.FileSystemDirectoryTree)] IProjectTreeProvider fileSystemTreeProvider,
             IUnconfiguredProjectCommonServices projectServices,
-            IProjectLockService projectLockService,
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService)
             : this(
                   AsyncServiceProvider.GlobalProvider,
                   fileSystemTreeProvider,
                   projectServices,
-                  projectLockService,
                   activeConfiguredProjectSubscriptionService)
         {
         }
@@ -50,20 +47,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             IAsyncServiceProvider asyncServiceProvider,
             IProjectTreeProvider fileSystemTreeProvider,
             IUnconfiguredProjectCommonServices projectServices,
-            IProjectLockService projectLockService,
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService)
             : base(projectServices.ThreadingService.JoinableTaskContext)
         {
             Requires.NotNull(asyncServiceProvider, nameof(asyncServiceProvider));
             Requires.NotNull(fileSystemTreeProvider, nameof(fileSystemTreeProvider));
             Requires.NotNull(projectServices, nameof(projectServices));
-            Requires.NotNull(projectLockService, nameof(projectLockService));
             Requires.NotNull(activeConfiguredProjectSubscriptionService, nameof(activeConfiguredProjectSubscriptionService));
 
             _asyncServiceProvider = asyncServiceProvider;
             _fileSystemTreeProvider = fileSystemTreeProvider;
             _projectServices = projectServices;
-            _projectLockService = projectLockService;
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
         }
 
@@ -226,7 +220,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 {
                     await _projectServices.Project.Services.ProjectAsynchronousTasks.LoadedProjectAsync(async () =>
                     {
-                        using (var access = await _projectLockService.WriteLockAsync())
+                        using (var access = await _projectServices.ProjectLockService.WriteLockAsync())
                         {
                             // notify all the loaded configured projects
                             var currentProjects = _projectServices.Project.LoadedConfiguredProjects;

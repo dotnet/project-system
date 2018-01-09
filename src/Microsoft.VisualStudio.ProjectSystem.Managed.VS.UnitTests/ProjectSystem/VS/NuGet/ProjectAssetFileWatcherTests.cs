@@ -41,7 +41,6 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
             var watcher = new ProjectAssetFileWatcher(spMock,
                                                      IProjectTreeProviderFactory.Create(),
                                                      IUnconfiguredProjectCommonServicesFactory.Create(threadingService: new IProjectThreadingServiceMock()),
-                                                     IProjectLockServiceFactory.Create(),
                                                      IActiveConfiguredProjectSubscriptionServiceFactory.CreateInstance());
 
             var tree = ProjectTreeParser.Parse(inputTree);
@@ -95,7 +94,6 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
             var watcher = new ProjectAssetFileWatcher(spMock,
                                                      IProjectTreeProviderFactory.Create(),
                                                      IUnconfiguredProjectCommonServicesFactory.Create(threadingService: new IProjectThreadingServiceMock()),
-                                                     IProjectLockServiceFactory.Create(),
                                                      IActiveConfiguredProjectSubscriptionServiceFactory.CreateInstance());
             watcher.Load();
             var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(ProjectCurrentStateJson);
@@ -123,7 +121,6 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
             var watcher = new ProjectAssetFileWatcher(spMock,
                                                      IProjectTreeProviderFactory.Create(),
                                                      IUnconfiguredProjectCommonServicesFactory.Create(threadingService: new IProjectThreadingServiceMock()),
-                                                     IProjectLockServiceFactory.Create(),
                                                      IActiveConfiguredProjectSubscriptionServiceFactory.CreateInstance());
 
             var tree = ProjectTreeParser.Parse(@"Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""");
