@@ -3,21 +3,27 @@
 using System;
 using System.ComponentModel.Composition;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Threading;
+
+using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
+using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
     /// <summary>
     ///     Watches for writes to the project.assets.json, triggering a evaluation if it changes.
     /// </summary>
-    internal class ProjectAssetFileWatcher : OnceInitializedOnceDisposed, IVsFileChangeEvents
+    internal class ProjectAssetFileWatcher : OnceInitializedOnceDisposedAsync, IVsFileChangeEvents
     {
-        private readonly IServiceProvider _serviceProvider;
+        private readonly IAsyncServiceProvider _asyncServiceProvider;
         private readonly IUnconfiguredProjectCommonServices _projectServices;
-        private readonly IProjectLockService _projectLockService;
+        private readonly IUnconfiguredProjectTasksService _projectTasksService;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IProjectTreeProvider _fileSystemTreeProvider;
         private IVsFileChangeEx _fileChangeService;
@@ -26,63 +32,89 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private string _fileBeingWatched;
 
         [ImportingConstructor]
-        public ProjectAssetFileWatcher([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
-                                      [Import(ContractNames.ProjectTreeProviders.FileSystemDirectoryTree)] IProjectTreeProvider fileSystemTreeProvider,
-                                      IUnconfiguredProjectCommonServices projectServices,
-                                      IProjectLockService projectLockService,
-                                      IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService)
+        public ProjectAssetFileWatcher(
+            [Import(ContractNames.ProjectTreeProviders.FileSystemDirectoryTree)] IProjectTreeProvider fileSystemTreeProvider,
+            IUnconfiguredProjectCommonServices projectServices,
+            IUnconfiguredProjectTasksService projectTasksService,
+            IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService)
+            : this(
+                  AsyncServiceProvider.GlobalProvider,
+                  fileSystemTreeProvider,
+                  projectServices,
+                  projectTasksService,
+                  activeConfiguredProjectSubscriptionService)
         {
-            Requires.NotNull(serviceProvider, nameof(serviceProvider));
+        }
+
+        public ProjectAssetFileWatcher(
+            IAsyncServiceProvider asyncServiceProvider,
+            IProjectTreeProvider fileSystemTreeProvider,
+            IUnconfiguredProjectCommonServices projectServices,
+            IUnconfiguredProjectTasksService projectTasksService,
+            IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService)
+            : base(projectServices.ThreadingService.JoinableTaskContext)
+        {
+            Requires.NotNull(asyncServiceProvider, nameof(asyncServiceProvider));
             Requires.NotNull(fileSystemTreeProvider, nameof(fileSystemTreeProvider));
             Requires.NotNull(projectServices, nameof(projectServices));
-            Requires.NotNull(projectLockService, nameof(projectLockService));
+            Requires.NotNull(projectTasksService, nameof(projectTasksService));
             Requires.NotNull(activeConfiguredProjectSubscriptionService, nameof(activeConfiguredProjectSubscriptionService));
 
-            _serviceProvider = serviceProvider;
+            _asyncServiceProvider = asyncServiceProvider;
             _fileSystemTreeProvider = fileSystemTreeProvider;
             _projectServices = projectServices;
-            _projectLockService = projectLockService;
+            _projectTasksService = projectTasksService;
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
         }
 
         /// <summary>
         /// Called on project load.
         /// </summary>
-        [ConfiguredProjectAutoLoad(RequiresUIThread = true)]
+        [ConfiguredProjectAutoLoad(RequiresUIThread = false)]
         [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
         internal void Load()
         {
-            EnsureInitialized();
+            InitializeAsync();
         }
 
         /// <summary>
         /// Initialize the watcher.
         /// </summary>
-        protected override void Initialize()
+        protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            _fileChangeService = _serviceProvider.GetService<IVsFileChangeEx, SVsFileChangeEx>();
+            _fileChangeService = (IVsFileChangeEx)(await _asyncServiceProvider.GetServiceAsync(typeof(SVsFileChangeEx)).ConfigureAwait(false));
 
-            // The tree source to get changes to the tree so that we can identify when the assets file changes.
-            var treeSource = _fileSystemTreeProvider.Tree.SyncLinkOptions();
+            // Explicitly get back to the thread pool for the rest of this method so we don't tie up the UI thread;
+            await TaskScheduler.Default;
 
-            // The property source used to get the value of the $ProjectAssetsFile property so that we can identify the location of the assets file.
-            var sourceLinkOptions = new StandardRuleDataflowLinkOptions
-            {
-                RuleNames = Empty.OrdinalIgnoreCaseStringSet.Add(ConfigurationGeneral.SchemaName),
-                PropagateCompletion = true
-            };
-            var propertySource = _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(sourceLinkOptions);
-            var target = new ActionBlock<IProjectVersionedValue<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>>(new Action<IProjectVersionedValue<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>>(DataFlow_Changed));
+            await _projectTasksService.LoadedProjectAsync(() =>
+                {
+                    // The tree source to get changes to the tree so that we can identify when the assets file changes.
+                    var treeSource = _fileSystemTreeProvider.Tree.SyncLinkOptions();
 
-            // Join the two sources so that we get synchronized versions of the data.
-            _treeWatcher = ProjectDataSources.SyncLinkTo(treeSource, propertySource, target);
+                    // The property source used to get the value of the $ProjectAssetsFile property so that we can identify the location of the assets file.
+                    var sourceLinkOptions = new StandardRuleDataflowLinkOptions
+                    {
+                        RuleNames = Empty.OrdinalIgnoreCaseStringSet.Add(ConfigurationGeneral.SchemaName),
+                        PropagateCompletion = true
+                    };
+                    var propertySource = _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(sourceLinkOptions);
+                    var target = new ActionBlock<IProjectVersionedValue<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>>(DataFlow_ChangedAsync);
+
+                    // Join the two sources so that we get synchronized versions of the data.
+                    _treeWatcher = ProjectDataSources.SyncLinkTo(treeSource, propertySource, target);
+
+                    return Task.CompletedTask;
+                }).ConfigureAwait(false);
         }
 
         /// <summary>
         /// Called on changes to the project tree.
         /// </summary>
-        internal void DataFlow_Changed(IProjectVersionedValue<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>> dataFlowUpdate)
+        internal async Task DataFlow_ChangedAsync(IProjectVersionedValue<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>> dataFlowUpdate)
         {
+            await InitializeAsync().ConfigureAwait(false);
+
             var treeSnapshot = dataFlowUpdate.Value.Item1;
             var newTree = treeSnapshot.Tree;
             if (newTree == null)
@@ -175,13 +207,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             }
         }
 
-        protected override void Dispose(bool disposing)
+        protected override Task DisposeCoreAsync(bool initialized)
         {
-            if (disposing)
+            if (initialized)
             {
                 _treeWatcher.Dispose();
                 UnregisterFileWatcherIfAny();
             }
+
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -197,7 +231,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 {
                     await _projectServices.Project.Services.ProjectAsynchronousTasks.LoadedProjectAsync(async () =>
                     {
-                        using (var access = await _projectLockService.WriteLockAsync())
+                        using (var access = await _projectServices.ProjectLockService.WriteLockAsync())
                         {
                             // notify all the loaded configured projects
                             var currentProjects = _projectServices.Project.LoadedConfiguredProjects;
