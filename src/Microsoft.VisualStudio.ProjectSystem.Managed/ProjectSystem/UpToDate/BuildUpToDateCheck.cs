@@ -111,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 _configuredProject.Services.ProjectSubscription.JointRuleSource.SourceBlock.SyncLinkOptions(new StandardRuleDataflowLinkOptions { RuleNames = ProjectPropertiesSchemas }),
                 _configuredProject.Services.ProjectSubscription.ImportTreeSource.SourceBlock.SyncLinkOptions(),
                 _configuredProject.Services.ProjectSubscription.SourceItemsRuleSource.SourceBlock.SyncLinkOptions(),
-                _configuredProject.Services.OutputGroups.SourceBlock.SyncLinkOptions(new StandardRuleDataflowLinkOptions {RuleNames = KnownOutputGroups}),
+                _configuredProject.Services.OutputGroups.SourceBlock.SyncLinkOptions(new OutputGroupDataflowLinkOptions {OutputGroupNames = KnownOutputGroups}),
                 _projectItemSchemaService.SourceBlock.SyncLinkOptions(),
                 target: new ActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectImportTreeSnapshot, IProjectSubscriptionUpdate, IImmutableDictionary<string, IOutputGroup>, IProjectItemSchema>>>(e => OnChanged(e)),
                 linkOptions: new DataflowLinkOptions { PropagateCompletion = true });
