@@ -53,7 +53,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private readonly IProjectSystemOptions _projectSystemOptions;
         private readonly ConfiguredProject _configuredProject;
-        private readonly Lazy<IFileTimestampCache> _fileTimestampCache;
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IProjectItemSchemaService _projectItemSchemaService;
         private readonly ITelemetryService _telemetryService;
@@ -82,14 +81,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         public BuildUpToDateCheck(
             IProjectSystemOptions projectSystemOptions,
             ConfiguredProject configuredProject,
-            Lazy<IFileTimestampCache> fileTimestampCache,
             [Import(ExportContractNames.Scopes.ConfiguredProject)] IProjectAsynchronousTasksService tasksService,
             IProjectItemSchemaService projectItemSchemaService,
             ITelemetryService telemetryService)
         {
             _projectSystemOptions = projectSystemOptions;
             _configuredProject = configuredProject;
-            _fileTimestampCache = fileTimestampCache;
             _tasksService = tasksService;
             _projectItemSchemaService = projectItemSchemaService;
             _telemetryService = telemetryService;
@@ -549,8 +546,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return false;
             }
 
-            var timestampCache = _fileTimestampCache.Value.TimestampCache ??
-                    new Dictionary<string, DateTime>(StringComparer.OrdinalIgnoreCase);
+            var timestampCache = new Dictionary<string, DateTime>(StringComparer.OrdinalIgnoreCase);
             (DateTime? inputTime, string inputPath) = GetLatestInput(CollectInputs(logger), timestampCache);
             (DateTime? outputTime, string outputPath) = GetEarliestOutput(CollectOutputs(logger), timestampCache);
             
