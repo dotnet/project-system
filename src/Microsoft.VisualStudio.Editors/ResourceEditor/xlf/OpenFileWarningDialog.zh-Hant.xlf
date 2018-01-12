@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="messageLabel.Text">
         <source>The Managed Resource Editor does not support the requested file type. Would you like to open the default editor for "{0}"?</source>
-        <target state="translated">Managed 資源編輯器不支援要求的檔案類型。要開啟 " {0}" 的預設編輯器嗎?</target>
+        <target state="translated">受控資源編輯器不支援要求的檔案類型。要開啟 " {0}" 的預設編輯器嗎?</target>
         <note />
       </trans-unit>
       <trans-unit id="buttonOK.Text">
