@@ -132,6 +132,10 @@
       <Context>File</Context>
     </PropertyPageSchema>
 
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)UpToDateCheckBuilt.xaml">
+      <Context>File</Context>
+    </PropertyPageSchema>
+
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)CopyUpToDateMarker.xaml">
       <Context>File</Context>
     </PropertyPageSchema>
@@ -292,5 +296,23 @@
   
   <!-- This target collects all the resolved references that are used to actually compile. -->
   <Target Name="CollectResolvedCompilationReferencesDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(ReferencePathWithRefAssemblies)" />
+  
+  <!-- This target collects all the things built by the project for the up to date check. -->
+  <!-- See CopyFileToOutputDirectory target -->
+  <Target Name="CollectBuiltDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(UpToDateCheckBuilt)">
+    <ItemGroup>
+      <!-- Assembly output, bin and obj -->
+      <UpToDateCheckBuilt Condition="'$(CopyBuildOutputToOutputDirectory)' != 'false' and '$(SkipCopyBuildProduct)' != 'true'" Include="$(TargetPath)"/>
+      <UpToDateCheckBuilt Include="@(IntermediateAssembly)"/>
+
+      <!-- Documentation file, bin and obj -->
+      <UpToDateCheckBuilt Condition="'$(_DocumentationFileProduced)'=='true'" Include="@(FinalDocFile)"/>
+      <UpToDateCheckBuilt Condition="'$(_DocumentationFileProduced)'=='true'" Include="@(DocFileItem)"/>
+
+      <!-- Symbols, bin and obj -->
+      <UpToDateCheckBuilt Condition="'$(_DebugSymbolsProduced)'=='true'" Include="@(_DebugSymbolsIntermediatePath)"/>
+      <UpToDateCheckBuilt Condition="'$(_DebugSymbolsProduced)'=='true' and '$(SkipCopyingSymbolsToOutputDirectory)' != 'true' and '$(CopyOutputSymbolsToOutputDirectory)' != 'false'" Include="@(_DebugSymbolsOutputPath)"/>
+    </ItemGroup>
+  </Target>
 
 </Project>
