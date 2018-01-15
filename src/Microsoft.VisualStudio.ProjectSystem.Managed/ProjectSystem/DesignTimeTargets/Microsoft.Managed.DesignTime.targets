@@ -312,6 +312,9 @@
       <!-- Symbols, bin and obj -->
       <UpToDateCheckBuilt Condition="'$(_DebugSymbolsProduced)'=='true'" Include="@(_DebugSymbolsIntermediatePath)"/>
       <UpToDateCheckBuilt Condition="'$(_DebugSymbolsProduced)'=='true' and '$(SkipCopyingSymbolsToOutputDirectory)' != 'true' and '$(CopyOutputSymbolsToOutputDirectory)' != 'false'" Include="@(_DebugSymbolsOutputPath)"/>
+      
+      <!-- app.config -->
+      <UpToDateCheckBuilt Condition=" '@(AppConfigWithTargetPath)' != '' " Include="@(AppConfigWithTargetPath->'$(OutDir)%(TargetPath)')" Original="@(AppConfigWithTargetPath)"/>
     </ItemGroup>
   </Target>
 

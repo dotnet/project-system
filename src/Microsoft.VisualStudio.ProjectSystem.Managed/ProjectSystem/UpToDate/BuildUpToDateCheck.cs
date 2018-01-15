@@ -68,6 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private readonly HashSet<string> _customInputs = new HashSet<string>(StringComparers.Paths);
         private readonly HashSet<string> _customOutputs = new HashSet<string>(StringComparers.Paths);
         private readonly HashSet<string> _builtOutputs = new HashSet<string>(StringComparers.Paths);
+        private readonly Dictionary<string, string> _copiedOutputFiles = new Dictionary<string, string>();
         private readonly HashSet<string> _analyzerReferences = new HashSet<string>(StringComparers.Paths);
         private readonly HashSet<string> _compilationReferences = new HashSet<string>(StringComparers.Paths);
         private readonly HashSet<string> _copyReferenceInputs = new HashSet<string>(StringComparers.Paths);
@@ -161,7 +162,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 built.Difference.AnyChanges)
             {
                 _builtOutputs.Clear();
-                _builtOutputs.AddRange(built.After.Items.Select(item => item.Value[UpToDateCheckBuilt.IdentityProperty]));
+
+                foreach (var item in built.After.Items)
+                {
+                    var destination = item.Value[UpToDateCheckBuilt.IdentityProperty];
+
+                    if (item.Value.TryGetValue(UpToDateCheckBuilt.OriginalProperty, out var source) &&
+                        !string.IsNullOrEmpty(source))
+                    {
+                        _copiedOutputFiles[destination] = source;
+                    }
+                    else
+                    {
+                        _builtOutputs.Add(destination);
+                    }
+                }
             }
 
             if (e.ProjectChanges.TryGetValue(CopyUpToDateMarker.SchemaName, out var upToDateMarkers) &&
@@ -377,7 +392,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var outputs = new HashSet<string>(StringComparers.Paths);
 
             AddOutputs(logger, outputs, _customOutputs, UpToDateCheckOutput.SchemaName);
-
             AddOutputs(logger, outputs, _builtOutputs.Select(_configuredProject.UnconfiguredProject.MakeRooted), UpToDateCheckBuilt.SchemaName);
 
             return outputs;
@@ -464,6 +478,48 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
 
             return inputMarkerPath == null || outputMarkerTime == null || outputMarkerTime > inputMarkerTime;
+        }
+
+        private bool CheckCopiedOutputFiles(BuildUpToDateCheckLogger logger, IDictionary<string, DateTime> timestampCache)
+        {
+            foreach (var kvp in _copiedOutputFiles)
+            {
+                var source = _configuredProject.UnconfiguredProject.MakeRooted(kvp.Value);
+                var destination = _configuredProject.UnconfiguredProject.MakeRooted(kvp.Key);
+
+                logger.Info("Checking build output file '{0}':", source);
+
+                var itemTime = GetTimestamp(source, timestampCache);
+
+                if (itemTime != null)
+                {
+                    logger.Info("    Write {0}: '{1}'.", itemTime, source);
+                }
+                else
+                {
+                    logger.Info("    '{0}' does not exist.", source);
+                    return false;
+                }
+
+                var outputItemTime = GetTimestamp(destination, timestampCache);
+
+                if (outputItemTime != null)
+                {
+                    logger.Info("    Output file write {0}: '{1}'.", outputItemTime, destination);
+                }
+                else
+                {
+                    logger.Info("    Output file '{0}' does not exist.", destination);
+                    return false;
+                }
+
+                if (outputItemTime < itemTime)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private bool CheckCopyToOutputDirectoryFiles(BuildUpToDateCheckLogger logger, IDictionary<string, DateTime> timestampCache)
@@ -559,7 +615,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var markersUpToDate = CheckMarkers(logger, timestampCache);
             var outputsUpToDate = inputTime != null && outputTime != null && outputTime > inputTime;
             var copyToOutputDirectoryUpToDate = CheckCopyToOutputDirectoryFiles(logger, timestampCache);
-            var isUpToDate = outputsUpToDate && markersUpToDate && copyToOutputDirectoryUpToDate;
+            var copiedOutputUpToDate = CheckCopiedOutputFiles(logger, timestampCache);
+            var isUpToDate = outputsUpToDate && markersUpToDate && copyToOutputDirectoryUpToDate && copiedOutputUpToDate;
 
             if (!markersUpToDate)
             {
@@ -572,6 +629,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             else if (!copyToOutputDirectoryUpToDate)
             {
                 _telemetryService.PostProperty($"{TelemetryEventName}/Fail", "Reason", "CopyToOutputDirectory");
+            }
+            else if (!copiedOutputUpToDate)
+            {
+                _telemetryService.PostProperty($"{TelemetryEventName}/Fail", "Reason", "CopyOutput");
             }
             else
             {

@@ -17,6 +17,11 @@
         <target state="new">The item specified in the Include attribute.</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|Original|Description">
+        <source>If set, specifies that this built output comes from this source file.</source>
+        <target state="new">If set, specifies that this built output comes from this source file.</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>
