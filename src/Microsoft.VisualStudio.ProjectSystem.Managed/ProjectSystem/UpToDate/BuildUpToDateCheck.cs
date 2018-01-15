@@ -27,12 +27,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private const string TelemetryEventName = "UpToDateCheck";
         private const string Link = "Link";
 
-        private static ImmutableHashSet<string> KnownOutputGroups => ImmutableHashSet<string>.Empty
-            .Add("Symbols")
-            .Add("Built")
-            .Add("Documentation")
-            .Add("LocalizedResourceDlls");
-
         private static ImmutableHashSet<string> ReferenceSchemas => ImmutableHashSet<string>.Empty
             .Add(ResolvedAnalyzerReference.SchemaName)
             .Add(ResolvedCompilationReference.SchemaName);
@@ -40,7 +34,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private static ImmutableHashSet<string> UpToDateSchemas => ImmutableHashSet<string>.Empty
             .Add(CopyUpToDateMarker.SchemaName)
             .Add(UpToDateCheckInput.SchemaName)
-            .Add(UpToDateCheckOutput.SchemaName);
+            .Add(UpToDateCheckOutput.SchemaName)
+            .Add(UpToDateCheckBuilt.SchemaName);
 
         private static ImmutableHashSet<string> ProjectPropertiesSchemas => ImmutableHashSet<string>.Empty
             .Add(ConfigurationGeneral.SchemaName)
@@ -72,10 +67,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private readonly Dictionary<string, HashSet<(string Path, string Link, CopyToOutputDirectoryType CopyType)>> _items = new Dictionary<string, HashSet<(string, string, CopyToOutputDirectoryType)>>();
         private readonly HashSet<string> _customInputs = new HashSet<string>(StringComparers.Paths);
         private readonly HashSet<string> _customOutputs = new HashSet<string>(StringComparers.Paths);
+        private readonly HashSet<string> _builtOutputs = new HashSet<string>(StringComparers.Paths);
         private readonly HashSet<string> _analyzerReferences = new HashSet<string>(StringComparers.Paths);
         private readonly HashSet<string> _compilationReferences = new HashSet<string>(StringComparers.Paths);
         private readonly HashSet<string> _copyReferenceInputs = new HashSet<string>(StringComparers.Paths);
-        private readonly Dictionary<string, HashSet<string>> _outputGroups = new Dictionary<string, HashSet<string>>();
 
         [ImportingConstructor]
         public BuildUpToDateCheck(
@@ -108,9 +103,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 _configuredProject.Services.ProjectSubscription.JointRuleSource.SourceBlock.SyncLinkOptions(new StandardRuleDataflowLinkOptions { RuleNames = ProjectPropertiesSchemas }),
                 _configuredProject.Services.ProjectSubscription.ImportTreeSource.SourceBlock.SyncLinkOptions(),
                 _configuredProject.Services.ProjectSubscription.SourceItemsRuleSource.SourceBlock.SyncLinkOptions(),
-                _configuredProject.Services.OutputGroups.SourceBlock.SyncLinkOptions(new StandardRuleDataflowLinkOptions {RuleNames = KnownOutputGroups}),
                 _projectItemSchemaService.SourceBlock.SyncLinkOptions(),
-                target: new ActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectImportTreeSnapshot, IProjectSubscriptionUpdate, IImmutableDictionary<string, IOutputGroup>, IProjectItemSchema>>>(e => OnChanged(e)),
+                target: new ActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectImportTreeSnapshot, IProjectSubscriptionUpdate, IProjectItemSchema>>>(e => OnChanged(e)),
                 linkOptions: new DataflowLinkOptions { PropagateCompletion = true });
         }
 
@@ -161,6 +155,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 _customOutputs.Clear();
                 _customOutputs.AddRange(outputs.After.Items.Select(item => item.Value[UpToDateCheckOutput.FullPathProperty]));
+            }
+
+            if (e.ProjectChanges.TryGetValue(UpToDateCheckBuilt.SchemaName, out var built) &&
+                built.Difference.AnyChanges)
+            {
+                _builtOutputs.Clear();
+                _builtOutputs.AddRange(built.After.Items.Select(item => item.Value[UpToDateCheckBuilt.IdentityProperty]));
             }
 
             if (e.ProjectChanges.TryGetValue(CopyUpToDateMarker.SchemaName, out var upToDateMarkers) &&
@@ -233,21 +234,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
         }
 
-        private void OnOutputGroupChanged(IImmutableDictionary<string, IOutputGroup> e)
-        {
-            foreach (var outputGroupPair in e)
-            {
-                var outputs = outputGroupPair.Value.Outputs.Select(output => output.Key);
-                _outputGroups[outputGroupPair.Key] = new HashSet<string>(outputs, StringComparers.Paths);
-            }
-        }
-
-        private void OnChanged(IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectImportTreeSnapshot, IProjectSubscriptionUpdate, IImmutableDictionary<string, IOutputGroup>, IProjectItemSchema>> e)
+        private void OnChanged(IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectImportTreeSnapshot, IProjectSubscriptionUpdate, IProjectItemSchema>> e)
         {
             OnProjectChanged(e.Value.Item1);
             OnProjectImportsChanged(e.Value.Item2);
-            OnSourceItemChanged(e.Value.Item3, e.Value.Item5);
-            OnOutputGroupChanged(e.Value.Item4);
+            OnSourceItemChanged(e.Value.Item3, e.Value.Item4);
             _lastVersionSeen = e.DataSourceVersions[ProjectDataSources.ConfiguredProjectVersion];
         }
 
@@ -360,7 +351,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return true;
         }
 
-        private HashSet<string> CollectInputs(BuildUpToDateCheckLogger logger)
+        private IEnumerable<string> CollectInputs(BuildUpToDateCheckLogger logger)
         {
             var inputs = new HashSet<string>(StringComparers.Paths);
 
@@ -381,21 +372,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return inputs;
         }
 
-        private HashSet<string> CollectOutputs(BuildUpToDateCheckLogger logger)
+        private IEnumerable<string> CollectOutputs(BuildUpToDateCheckLogger logger)
         {
             var outputs = new HashSet<string>(StringComparers.Paths);
 
-            foreach (var pair in _outputGroups)
-            {
-                AddOutputs(logger, outputs, pair.Value, pair.Key);
-            }
-
             AddOutputs(logger, outputs, _customOutputs, UpToDateCheckOutput.SchemaName);
+
+            AddOutputs(logger, outputs, _builtOutputs.Select(_configuredProject.UnconfiguredProject.MakeRooted), UpToDateCheckBuilt.SchemaName);
 
             return outputs;
         }
 
-        private static (DateTime? time, string path) GetLatestInput(HashSet<string> inputs, IDictionary<string, DateTime> timestampCache, bool ignoreMissing = false)
+        private static (DateTime? time, string path) GetLatestInput(IEnumerable<string> inputs, IDictionary<string, DateTime> timestampCache, bool ignoreMissing = false)
         {
             DateTime? latest = DateTime.MinValue;
             string latestPath = null;
@@ -413,7 +401,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return (latest, latestPath);
         }
 
-        private static (DateTime? time, string path) GetEarliestOutput(HashSet<string> outputs, IDictionary<string, DateTime> timestampCache)
+        private static (DateTime? time, string path) GetEarliestOutput(IEnumerable<string> outputs, IDictionary<string, DateTime> timestampCache)
         { 
             DateTime? earliest = DateTime.MaxValue;
             string earliestPath = null;
@@ -508,7 +496,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     logger.Info("    '{0}' does not exist.", item.Path);
                     return false;
                 }
-
                 
                 var outputItem = Path.Combine(outputFullPath, filename);
                 var outputItemTime = GetTimestamp(outputItem, timestampCache);
