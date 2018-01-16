@@ -42,6 +42,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
         public override void Shutdown()
         {
             _binaryLogger.Shutdown();
+            _build.Close(_logPath);
+            DataSource.NotifyChange();
         }
 
         private void ProjectFinished(object sender, ProjectFinishedEventArgs e)
@@ -51,8 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
                 return;
             }
 
-            _build.Finish(e.Succeeded, e.Timestamp, _logPath);
-            DataSource.NotifyChange();
+            _build.Finish(e.Succeeded, e.Timestamp);
         }
 
         private static IEnumerable<string> GatherDimensions(IDictionary<string, string> globalProperties)

@@ -98,9 +98,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
                     {
                         if (_evaluations.TryGetValue(args.BuildEventContext.EvaluationId, out var evaluation))
                         {
-                            evaluation.Build.Finish(true, args.Timestamp, evaluation.LogPath);
+                            evaluation.Build.Finish(true, args.Timestamp);
                             evaluation.Wrapper.RaiseEvent(sender, args);
                             evaluation.Wrapper.BinaryLogger.Shutdown();
+                            evaluation.Build.Close(evaluation.LogPath);
                             DataSource.NotifyChange();
                         }
                     }
