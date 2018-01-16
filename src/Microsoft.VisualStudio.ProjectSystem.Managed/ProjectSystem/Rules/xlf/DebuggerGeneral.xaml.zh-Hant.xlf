@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|ImageClrType|Description">
         <source>The 'hidden' property we pass to debuggers to let them know if this is a managed project.</source>
-        <target state="translated">我們傳遞至偵錯工具的 'hidden' 屬性，讓偵錯工具知道這是否為 Managed 專案。</target>
+        <target state="translated">我們傳遞至偵錯工具的 'hidden' 屬性，讓偵錯工具知道這是否為受控專案。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ImageClrType.Native|DisplayName">
@@ -49,17 +49,17 @@
       </trans-unit>
       <trans-unit id="EnumValue|ImageClrType.Mixed|Description">
         <source>The executable image to debug is a mixture of native and managed code.</source>
-        <target state="translated">要偵錯的可執行映像是機器碼與 Managed 程式碼的混合物。</target>
+        <target state="translated">要偵錯的可執行映像是機器碼與受控程式碼的混合物。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ImageClrType.Managed|DisplayName">
         <source>Managed Image</source>
-        <target state="translated">Managed 映像</target>
+        <target state="translated">受控映像</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ImageClrType.Managed|Description">
         <source>The executable image to debug is a fully managed application.</source>
-        <target state="translated">要偵錯的可執行映像完全是一個 Managed 應用程式。</target>
+        <target state="translated">要偵錯的可執行映像完全是一個受控應用程式。</target>
         <note />
       </trans-unit>
     </body>
