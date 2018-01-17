@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
                 ? $"{Dimensions.Aggregate((c, n) => string.IsNullOrEmpty(n) ? c : $"{c}_{n}")}_"
                 : string.Empty;
 
-        public string Filename => $"{Path.GetFileNameWithoutExtension(ProjectPath)}_{DimensionsString}{BuildType}_{StartTime:o}.binlog".Replace(':', '_');
+        private string Filename => $"{Path.GetFileNameWithoutExtension(ProjectPath)}_{DimensionsString}{BuildType}_{StartTime:o}.binlog".Replace(':', '_');
 
         public Build(string projectPath, IEnumerable<string> dimensions, IEnumerable<string> targets, BuildType buildType, DateTime startTime)
         {
@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
             StartTime = startTime;
         }
 
-        public void Finish(bool succeeded, DateTime time, string logPath)
+        public void Finish(bool succeeded, DateTime time)
         {
             if (Status != BuildStatus.Running)
             {
@@ -52,7 +52,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
             Status = succeeded ? BuildStatus.Finished : BuildStatus.Failed;
             Elapsed = time - StartTime;
-            LogPath = logPath;
+        }
+
+        public void Close(string logPath)
+        {
+            LogPath = Path.Combine(Path.GetTempPath(), Filename);
+            File.Copy(logPath, LogPath, true);
         }
 
         public bool TryGetValue(string keyName, out object content)
@@ -93,10 +98,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
                 case TableKeyNames.LogPath:
                     content = LogPath;
-                    break;
-
-                case TableKeyNames.Filename:
-                    content = Filename;
                     break;
 
                 default:

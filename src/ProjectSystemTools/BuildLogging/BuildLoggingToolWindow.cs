@@ -300,11 +300,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
             foreach (var entry in _tableControl.SelectedEntries)
             {
-                if (!entry.TryGetValue(TableKeyNames.LogPath, out string logPath) ||
-                    !entry.TryGetValue(TableKeyNames.Filename, out string filename))
+                if (!entry.TryGetValue(TableKeyNames.LogPath, out string logPath))
                 {
                     continue;
                 }
+
+                var filename = Path.GetFileName(logPath);
+
+                if (filename == null)
+                {
+                    continue;
+                }
+
                 try
                 {
                     File.Copy(logPath, Path.Combine(folderBrowser.SelectedPath, filename));
