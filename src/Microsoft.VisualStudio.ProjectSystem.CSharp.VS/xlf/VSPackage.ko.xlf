@@ -24,12 +24,12 @@
       </trans-unit>
       <trans-unit id="5">
         <source>Class Library (.NET Standard)</source>
-        <target state="translated">클래스 라이브러리(.NET 표준)</target>
+        <target state="translated">클래스 라이브러리(.NET Standard)</target>
         <note />
       </trans-unit>
       <trans-unit id="6">
         <source>A project for creating a class library that targets .NET Standard.</source>
-        <target state="translated">.NET 표준을 대상으로 하는 클래스 라이브러리를 만드는 프로젝트입니다.</target>
+        <target state="translated">.NET Standard를 대상으로 하는 클래스 라이브러리를 만드는 프로젝트입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="7">
