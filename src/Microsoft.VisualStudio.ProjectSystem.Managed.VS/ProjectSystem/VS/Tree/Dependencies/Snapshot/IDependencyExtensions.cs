@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
     internal static class IDependencyExtensions
     {
         /// <summary>
-        /// Specifies if there is unresolved child somwhere in the dependency graph
+        /// Specifies if there is unresolved child somewhere in the dependency graph
         /// </summary>
         public static bool HasUnresolvedDependency(this IDependency self, ITargetedDependenciesSnapshot snapshot)
         {
