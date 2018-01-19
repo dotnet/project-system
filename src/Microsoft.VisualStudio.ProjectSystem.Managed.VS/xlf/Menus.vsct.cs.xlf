@@ -47,6 +47,26 @@
         <target state="translated">Architektura</target>
         <note />
       </trans-unit>
+      <trans-unit id="cmdidMoveUp|ButtonText">
+        <source>&amp;Move Up</source>
+        <target state="new">&amp;Move Up</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidMoveUp|CommandName">
+        <source>MoveUp</source>
+        <target state="new">MoveUp</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidMoveDown|ButtonText">
+        <source>&amp;Move Down</source>
+        <target state="new">&amp;Move Down</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidMoveDown|CommandName">
+        <source>MoveDown</source>
+        <target state="new">MoveDown</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>
