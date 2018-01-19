@@ -65,9 +65,40 @@
       <Group guid="guidManagedProjectSystemCommandSet" id="DebugTargetMenuDebugFrameworkGroup" priority="0x0100">
         <Parent guid="guidManagedProjectSystemCommandSet" id="DebugTargetMenuDebugFrameworkMenu"/>
       </Group>
+     <!-- This is the ordering group. Handles ordering files. -->
+      <Group guid="guidManagedProjectSystemOrderCommandSet" id="OrderingGroup" priority="0x100">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_ITEMNODE" />
+      </Group>
+      <Group guid="guidManagedProjectSystemOrderCommandSet" id="OrderingGroup" priority="0x100">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_FOLDERNODE" />
+      </Group>
     </Groups>
 
     <Buttons>
+      <Button guid="guidManagedProjectSystemOrderCommandSet" id="cmdidMoveUp" priority="0x100">
+        <Parent guid="guidManagedProjectSystemOrderCommandSet" id="OrderingGroup" />
+        <CommandFlag>TextChanges</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DefaultDisabled</CommandFlag>
+        <Strings>
+          <ButtonText>&amp;Move Up</ButtonText>
+          <CommandName>MoveUp</CommandName>
+        </Strings>
+      </Button>
+
+      <Button guid="guidManagedProjectSystemOrderCommandSet" id="cmdidMoveDown" priority="0x101">
+        <Parent guid="guidManagedProjectSystemOrderCommandSet" id="OrderingGroup" />
+        <CommandFlag>TextChanges</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DefaultDisabled</CommandFlag>
+        <Strings>
+          <ButtonText>&amp;Move Down</ButtonText>
+          <CommandName>MoveDown</CommandName>
+        </Strings>
+      </Button>
+      
       <Button guid="guidManagedProjectSystemCommandSet" id="cmdidGenerateNuGetPackageProjectContextMenu" priority="0x450">
         <Parent guid="guidSHLMainMenu" id="IDG_VS_CTXT_PROJECT_BUILD" />
         <CommandFlag>TextChanges</CommandFlag>
@@ -108,6 +139,11 @@
     </Buttons>
   </Commands>
 
+  <KeyBindings>
+    <KeyBinding guid="guidManagedProjectSystemOrderCommandSet" id="cmdidMoveUp" editor="SlnExplorerGuid" key1="VK_UP" mod1="Alt" />
+    <KeyBinding guid="guidManagedProjectSystemOrderCommandSet" id="cmdidMoveDown" editor="SlnExplorerGuid" key1="VK_DOWN" mod1="Alt" />    
+  </KeyBindings>
+
   <Symbols>
     <!-- This is out managed package guid. -->
     <GuidSymbol name="PackageGuidString" value="{A4F9D880-9492-4072-8BF3-2B5EEEDC9E68}" />
@@ -127,6 +163,14 @@
       <IDSymbol name="DebugTargetMenuDebugFrameworkGroup" value="0x3001" />
       <IDSymbol name="cmdidDebugFrameworks" value="0x3050" />        <!--needs space to grow-->
     </GuidSymbol>
+
+    <GuidSymbol name="guidManagedProjectSystemOrderCommandSet" value="{6C4806E9-034E-4B64-99DE-29A6F837B993}">
+      <IDSymbol name="OrderingGroup" value="0x0100" />
+      <IDSymbol name="cmdidMoveUp" value="0x2000" />
+      <IDSymbol name="cmdidMoveDown" value="0x2001" />
+    </GuidSymbol>
+  
+    <GuidSymbol name="SlnExplorerGuid" value="{3AE79031-E1BC-11D0-8F78-00A0C9110057}" />
   </Symbols>
 
 </CommandTable>
