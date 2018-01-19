@@ -67,6 +67,11 @@
         <target state="new">Build Log Explorer</target>
         <note />
       </trans-unit>
+      <trans-unit id="ExploreLogsCommandId|ButtonText">
+        <source>Explore Logs</source>
+        <target state="new">Explore Logs</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

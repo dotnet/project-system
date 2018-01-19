@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.LogModel;
@@ -53,12 +54,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogExplorer.ViewModel
 
             var allActions =
                 _target.ItemActions.Select(action =>
-                        ((BaseViewModel) new ListViewModel<Item>(
+                        Tuple.Create((BaseViewModel) new ListViewModel<Item>(
                             action.IsAddition ? $"Add {action.ItemGroup.Name}" : $"Remove {action.ItemGroup.Name}",
                             action.ItemGroup.Items, item => new ItemViewModel(item)), action.Time))
                     .Union(_target.PropertySets.Select(propertySet =>
-                        ((BaseViewModel) new PropertyViewModel($"Set Property {propertySet.Name}", propertySet.Value), propertySet.Time)))
-                    .Union(_target.Tasks.Select(task => ((BaseViewModel) new TaskViewModel(task), task.StartTime)))
+                        Tuple.Create((BaseViewModel) new PropertyViewModel($"Set Property {propertySet.Name}", propertySet.Value), propertySet.Time)))
+                    .Union(_target.Tasks.Select(task => Tuple.Create((BaseViewModel) new TaskViewModel(task), task.StartTime)))
                     .OrderBy(pair => pair.Item2)
                     .Select(pair => pair.Item1)
                     .ToList();

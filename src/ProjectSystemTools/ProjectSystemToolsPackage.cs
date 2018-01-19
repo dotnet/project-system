@@ -37,11 +37,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools
         public const int BuildTypeComboCommandId = 0x0109;
         public const int BuildTypeComboGetListCommandId = 0x010a;
         public const int BuildLogExplorerCommandId = 0x010b;
+        public const int ExploreLogsCommandId = 0x010c;
 
         public static readonly Guid UIGuid = new Guid("629080DF-2A44-40E5-9AF4-371D4B727D16");
 
         public const int BuildLoggingToolbarMenuId = 0x0100;
         public const int BuildLoggingContextMenuId = 0x0105;
+
+        private BuildLoggingToolWindow _buildLoggingToolWindow;
+        private BuildLogExplorerToolWindow _buildLogExplorerToolWindow;
+
+        public BuildLoggingToolWindow BuildLoggingToolWindow => _buildLoggingToolWindow ?? (_buildLoggingToolWindow = (BuildLoggingToolWindow)FindToolWindow(typeof(BuildLoggingToolWindow), 0, true));
+        public BuildLogExplorerToolWindow BuildLogExplorerToolWindow => _buildLogExplorerToolWindow ?? (_buildLogExplorerToolWindow = (BuildLogExplorerToolWindow)FindToolWindow(typeof(BuildLogExplorerToolWindow), 0, true));
 
         public static IVsUIShell VsUIShell { get; private set; }
 
@@ -80,25 +87,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools
 
         private void ShowBuildLoggingToolWindow(object sender, EventArgs e)
         {
-            var window = FindToolWindow(typeof(BuildLoggingToolWindow), 0, true);
-            if (window?.Frame == null)
-            {
-                throw new NotSupportedException("Cannot create tool window");
-            }
-
-            var windowFrame = (IVsWindowFrame)window.Frame;
+            var windowFrame = (IVsWindowFrame)BuildLoggingToolWindow.Frame;
             ErrorHandler.ThrowOnFailure(windowFrame.Show());
         }
 
         private void ShowBuildLogExplorerToolWindow(object sender, EventArgs e)
         {
-            var window = FindToolWindow(typeof(BuildLogExplorerToolWindow), 0, true);
-            if (window?.Frame == null)
-            {
-                throw new NotSupportedException("Cannot create tool window");
-            }
-
-            var windowFrame = (IVsWindowFrame) window.Frame;
+            var windowFrame = (IVsWindowFrame)BuildLogExplorerToolWindow.Frame;
             ErrorHandler.ThrowOnFailure(windowFrame.Show());
         }
     }

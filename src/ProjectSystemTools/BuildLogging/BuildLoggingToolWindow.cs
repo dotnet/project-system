@@ -13,6 +13,7 @@ using Microsoft.Internal.VisualStudio.Shell;
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.PlatformUI;
+using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogExplorer;
 using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model;
 using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI;
 using Microsoft.VisualStudio.ProjectSystem.Tools.Providers;
@@ -345,6 +346,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
             }
         }
 
+        private void ExploreLogs()
+        {
+            var window = ProjectSystemToolsPackage.Instance.BuildLogExplorerToolWindow;
+            var windowFrame = (IVsWindowFrame)window.Frame;
+            ErrorHandler.ThrowOnFailure(windowFrame.Show());
+
+            foreach (var entry in _tableControl.SelectedEntries)
+            {
+                if (!entry.TryGetValue(TableKeyNames.LogPath, out string logPath))
+                {
+                    continue;
+                }
+
+                window.AddLog(logPath);
+            }
+        }
+
+        public void ExploreLog(ITableEntryHandle tableEntry)
+        {
+            if (!tableEntry.TryGetValue(TableKeyNames.LogPath, out string logPath))
+            {
+                return;
+            }
+
+            var window = ProjectSystemToolsPackage.Instance.BuildLogExplorerToolWindow;
+            var windowFrame = (IVsWindowFrame)window.Frame;
+            ErrorHandler.ThrowOnFailure(windowFrame.Show());
+
+            window.AddLog(logPath);
+        }
+
         private static void ShowExceptionMessageDialog(Exception e, string title)
         {
             var message = $@"{e.GetType().FullName}
@@ -390,6 +422,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                 case ProjectSystemToolsPackage.ClearCommandId:
                 case ProjectSystemToolsPackage.SaveLogsCommandId:
                 case ProjectSystemToolsPackage.OpenLogsCommandId:
+                case ProjectSystemToolsPackage.ExploreLogsCommandId:
                     visible = true;
                     enabled = true;
                     break;
@@ -460,6 +493,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
                 case ProjectSystemToolsPackage.OpenLogsCommandId:
                     OpenLogs();
+                    break;
+
+                case ProjectSystemToolsPackage.ExploreLogsCommandId:
+                    ExploreLogs();
                     break;
 
                 case ProjectSystemToolsPackage.BuildTypeComboCommandId:

@@ -1,44 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogExplorer.ViewModel
 {
     internal sealed class RootViewModel
     {
-        private readonly LogModel.Build _build;
-        private readonly IEnumerable<Exception> _exceptions;
-        private IEnumerable<object> _children;
+        public ObservableCollection<LogViewModel> Children { get; }
 
-        public IEnumerable<object> Children => _children ?? (_children = GetChildren());
-
-        public RootViewModel(LogModel.Build build)
+        public RootViewModel(ObservableCollection<LogViewModel> logs)
         {
-            _build = build;
-        }
-
-        public RootViewModel(IEnumerable<Exception> exceptions)
-        {
-            _exceptions = exceptions;
-        }
-
-        private List<object> GetChildren()
-        {
-            List<object> list;
-
-            if (_build != null)
-            {
-                list = new List<object>
-                {
-                    new BuildViewModel(_build)
-                };
-            }
-            else
-            {
-                list = _exceptions.Select(ex => (object)new ExceptionViewModel(ex)).ToList();
-            }
-
-            return list;
+            Children = logs;
         }
     }
 }

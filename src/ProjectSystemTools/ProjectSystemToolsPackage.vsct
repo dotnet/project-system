@@ -66,6 +66,11 @@
           <ButtonText>Open Logs...</ButtonText>
         </Strings>
       </Button>
+      <Button guid="CommandSetGuid" id="ExploreLogsCommandId" type="Button">
+        <Strings>
+          <ButtonText>Explore Logs</ButtonText>
+        </Strings>
+      </Button>
       <Button guid="CommandSetGuid" id="BuildLogExplorerCommandId" type="Button">
         <Strings>
           <ButtonText>Build Log Explorer</ButtonText>
@@ -102,6 +107,9 @@
     <CommandPlacement guid="CommandSetGuid" id="OpenLogsCommandId" priority="0x0010">
       <Parent guid="UIGuid" id="BuildLoggingContextGroupId" />
     </CommandPlacement>
+    <CommandPlacement guid="CommandSetGuid" id="ExploreLogsCommandId" priority="0x0020">
+      <Parent guid="UIGuid" id="BuildLoggingContextGroupId"/>
+    </CommandPlacement>
     <CommandPlacement guid="CommandSetGuid" id="BuildLogExplorerCommandId" priority="0x0100">
       <Parent guid="guidSHLMainMenu" id="IDG_VS_WNDO_OTRWNDWS1" />
     </CommandPlacement>
@@ -118,6 +126,7 @@
       <IDSymbol name="BuildTypeComboCommandId" value="0x0109"/>
       <IDSymbol name="BuildTypeComboGetListCommandId" value="0x010a"/>
       <IDSymbol name="BuildLogExplorerCommandId" value="0x010b"/>
+      <IDSymbol name="ExploreLogsCommandId" value="0x010c"/>
     </GuidSymbol>
     <GuidSymbol name="UIGuid" value="{629080DF-2A44-40E5-9AF4-371D4B727D16}">
       <IDSymbol name="BuildLoggingToolbarMenuId" value="0x0100" />

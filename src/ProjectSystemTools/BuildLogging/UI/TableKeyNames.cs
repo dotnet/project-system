@@ -13,5 +13,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI
         public const string Targets = "targets";
         public const string LogPath = "logpath";
         public const string ProjectType = "projecttype";
+        public const string Time = "time";
     }
 }

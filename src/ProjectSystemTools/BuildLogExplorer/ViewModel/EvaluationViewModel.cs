@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogExplorer.ViewModel
 
         public override string Text => _text ?? (_text = "Evaluation");
 
-        public override SelectedObjectWrapper Properties => _properties ?? (_properties = new SelectedObjectWrapper("Evaluation", "Evaluation", _evaluation.Messages));
+        public override SelectedObjectWrapper Properties => _properties ?? (_properties = new SelectedObjectWrapper("Evaluation", "Evaluation", _evaluation.Messages, null));
 
         public EvaluationViewModel(Evaluation evaluation)
         {
