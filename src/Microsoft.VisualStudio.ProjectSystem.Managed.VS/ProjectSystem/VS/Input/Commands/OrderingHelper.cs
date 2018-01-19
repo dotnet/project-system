@@ -112,6 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                     {
                         // Technically it is possible to have more than one of the same item names.
                         // We only want to add one of them.
+                        // Sanity check
                         if (hashSet.Add(tree2.Item.ItemName))
                         {
                             includes.Add(tree2.DisplayOrder, tree2.Item.ItemName);
@@ -278,6 +279,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                 return false;
             }
 
+            // Sanity check
             var atLeastOneElementMoved = false;
 
             switch (moveAction)
@@ -285,9 +287,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                 case MoveAction.Up:
                     foreach (var element in elements)
                     {
-                        parent.RemoveChild(element);
-                        parent.InsertBeforeChild(element, referenceElement);
-                        atLeastOneElementMoved = true;
+                        var elementParent = element.Parent;
+                        if (elementParent != null)
+                        {
+                            elementParent.RemoveChild(element);
+                            parent.InsertBeforeChild(element, referenceElement);
+                            atLeastOneElementMoved = true;
+                        }
                     }
                     break;
 
@@ -298,9 +304,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                     {
                         var element = elements[i];
 
-                        parent.RemoveChild(element);
-                        parent.InsertAfterChild(element, referenceElement);
-                        atLeastOneElementMoved = true;
+                        var elementParent = element.Parent;
+                        if (elementParent != null)
+                        {
+                            elementParent.RemoveChild(element);
+                            parent.InsertAfterChild(element, referenceElement);
+                            atLeastOneElementMoved = true;
+                        }
                     }
                     break;
             }
