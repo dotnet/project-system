@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
         private const string ColumnGroupingPriority = "GroupingPriority";
         private const string ColumnsKey = "ProjectSystemTools\\BuildLogging\\Columns";
 
-        private readonly string[] _buildFilterComboItems = { Resources.FilterBuildAll, Resources.FilterBuildEvaluations, Resources.FilterBuildDesignTimeBuilds, Resources.FilterBuildBuilds };
+        private readonly string[] _buildFilterComboItems = { BuildLoggingResources.FilterBuildAll, BuildLoggingResources.FilterBuildEvaluations, BuildLoggingResources.FilterBuildDesignTimeBuilds, BuildLoggingResources.FilterBuildBuilds };
 
         private static readonly Guid BuildLoggingToolWindowSearchCategory = new Guid("6D3BC803-1271-4909-BA24-2921AF7F029B");
 
@@ -291,7 +291,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
         {
             FolderBrowserDialog folderBrowser = new FolderBrowserDialog()
             {
-                Description = Resources.LogFolderDescription
+                Description = BuildLoggingResources.LogFolderDescription
             };
 
             if (folderBrowser.ShowDialog() != DialogResult.OK)
@@ -506,16 +506,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                         switch (_filterType)
                         {
                             case BuildType.Evaluation | BuildType.DesignTimeBuild | BuildType.Build:
-                                selectedType = Resources.FilterBuildAll;
+                                selectedType = BuildLoggingResources.FilterBuildAll;
                                 break;
                             case BuildType.Evaluation:
-                                selectedType = Resources.FilterBuildEvaluations;
+                                selectedType = BuildLoggingResources.FilterBuildEvaluations;
                                 break;
                             case BuildType.DesignTimeBuild:
-                                selectedType = Resources.FilterBuildDesignTimeBuilds;
+                                selectedType = BuildLoggingResources.FilterBuildDesignTimeBuilds;
                                 break;
                             case BuildType.Build:
-                                selectedType = Resources.FilterBuildBuilds;
+                                selectedType = BuildLoggingResources.FilterBuildBuilds;
                                 break;
                         }
 
@@ -527,19 +527,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
                         selectedType = selectedItem.ToString();
                         var column = _tableControl.ColumnDefinitionManager.GetColumnDefinition(TableColumnNames.BuildType);
-                        if (selectedType.Equals(Resources.FilterBuildAll))
+                        if (selectedType.Equals(BuildLoggingResources.FilterBuildAll))
                         {
                             _tableControl.SetFilter(TableColumnNames.BuildType, null);
                         }
-                        else if (selectedType.Equals(Resources.FilterBuildEvaluations))
+                        else if (selectedType.Equals(BuildLoggingResources.FilterBuildEvaluations))
                         {
                             _tableControl.SetFilter(TableColumnNames.BuildType, new ColumnHashSetFilter(column, "Build", "DesignTimeBuild"));
                         }
-                        else if (selectedType.Equals(Resources.FilterBuildDesignTimeBuilds))
+                        else if (selectedType.Equals(BuildLoggingResources.FilterBuildDesignTimeBuilds))
                         {
                             _tableControl.SetFilter(TableColumnNames.BuildType, new ColumnHashSetFilter(column, "Evaluation", "Build"));
                         }
-                        else if (selectedType.Equals(Resources.FilterBuildBuilds))
+                        else if (selectedType.Equals(BuildLoggingResources.FilterBuildBuilds))
                         {
                             _tableControl.SetFilter(TableColumnNames.BuildType, new ColumnHashSetFilter(column, "Evaluation", "DesignTimeBuild"));
                         }
@@ -593,7 +593,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
             // IVsUIDataSource.SetData returns S_FALSE if the new value is the same as the old value
             if (!ErrorHandler.Succeeded(result))
             {
-                throw new COMException(Resources.CannotSetProperty, result);
+                throw new COMException(BuildLoggingResources.CannotSetProperty, result);
             }
         }
 
@@ -620,7 +620,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
             SetValue(pSearchSettings, SearchSettingsDataSource.PropertyNames.SearchUseMRU, true);
             SetValue(pSearchSettings, SearchSettingsDataSource.PropertyNames.PrefixFilterMRUItems, false);
             SetValue(pSearchSettings, SearchSettingsDataSource.PropertyNames.MaximumMRUItems, 25);
-            SetValue(pSearchSettings, SearchSettingsDataSource.PropertyNames.SearchWatermark, Resources.SearchWatermark);
+            SetValue(pSearchSettings, SearchSettingsDataSource.PropertyNames.SearchWatermark, BuildLoggingResources.SearchWatermark);
             SetValue(pSearchSettings, SearchSettingsDataSource.PropertyNames.SearchPopupAutoDropdown, false);
             SetValue(pSearchSettings, SearchSettingsDataSource.PropertyNames.ControlBorderThickness, "1");
             SetValue(pSearchSettings, SearchSettingsDataSource.PropertyNames.SearchProgressType, (uint)VSSEARCHPROGRESSTYPE.SPT_INDETERMINATE);

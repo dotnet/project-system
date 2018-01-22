@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI
     {
         public override string Name => TableColumnNames.StartTime;
 
-        public override string DisplayName => Resources.StartTimeHeaderLabel;
+        public override string DisplayName => BuildLoggingResources.StartTimeHeaderLabel;
 
         public override StringComparer Comparer => StringComparer.Ordinal;
 

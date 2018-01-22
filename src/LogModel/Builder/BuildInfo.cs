@@ -7,12 +7,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
 {
     internal sealed class BuildInfo : BaseInfo
     {
-        public DateTime StartTime { get; }
+        public DateTime StartTime { get; private set; }
         public DateTime EndTime { get; private set; }
-        public ImmutableDictionary<string, string> Environment { get; }
+        public ImmutableDictionary<string, string> Environment { get; private set; }
         public Result Result { get; private set; }
 
-        public BuildInfo(DateTime startTime, ImmutableDictionary<string, string> environment)
+        public void Start(DateTime startTime, ImmutableDictionary<string, string> environment)
         {
             StartTime = startTime;
             Environment = environment;

@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
         private static readonly Regex UsingTaskRegex = new Regex("Using \"(?<task>.+)\" task from (assembly|the task factory) \"(?<assembly>.+)\"\\.", RegexOptions.Compiled);
 
         private bool _done;
-        private BuildInfo _buildInfo;
+        private BuildInfo _buildInfo = new BuildInfo();
         private readonly ConcurrentBag<Exception> _exceptions = new ConcurrentBag<Exception>();
         private Dictionary<int, EvaluationInfo> _evaluationInfos;
         private readonly ConcurrentDictionary<int, ProjectInfo> _projectInfos = new ConcurrentDictionary<int, ProjectInfo>();
@@ -213,7 +213,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
                 throw new LoggerException(Resources.BadState);
             }
 
-            _buildInfo = new BuildInfo(args.Timestamp, args.BuildEnvironment.ToImmutableDictionary());
+            _buildInfo.Start(args.Timestamp, args.BuildEnvironment.ToImmutableDictionary());
             AddMessage(_buildInfo, args);
         }
 
@@ -1085,11 +1085,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
                     evaluations = _evaluationInfos.Values.Select(ConstructEvaluation).ToImmutableList();
                 }
 
-                if (_buildInfo != null)
-                {
-                    ConnectBuildTasks();
-                    build = ConstructBuild();
-                }
+                ConnectBuildTasks();
+                build = ConstructBuild();
             }
             catch (Exception ex)
             {

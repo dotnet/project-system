@@ -38,11 +38,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools
         public const int BuildTypeComboGetListCommandId = 0x010a;
         public const int BuildLogExplorerCommandId = 0x010b;
         public const int ExploreLogsCommandId = 0x010c;
+        public const int AddLogCommandId = 0x010d;
 
         public static readonly Guid UIGuid = new Guid("629080DF-2A44-40E5-9AF4-371D4B727D16");
 
         public const int BuildLoggingToolbarMenuId = 0x0100;
         public const int BuildLoggingContextMenuId = 0x0105;
+        public const int BuildLogExplorerToolbarMenuId = 0x0107;
 
         private BuildLoggingToolWindow _buildLoggingToolWindow;
         private BuildLogExplorerToolWindow _buildLogExplorerToolWindow;

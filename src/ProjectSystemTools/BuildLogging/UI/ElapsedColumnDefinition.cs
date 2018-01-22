@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI
     {
         public override string Name => TableColumnNames.Elapsed;
 
-        public override string DisplayName => Resources.ElapsedHeaderLabel;
+        public override string DisplayName => BuildLoggingResources.ElapsedHeaderLabel;
 
         public override StringComparer Comparer => StringComparer.Ordinal;
 

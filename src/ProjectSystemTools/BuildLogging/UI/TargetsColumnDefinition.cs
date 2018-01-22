@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI
     {
         public override string Name => TableColumnNames.Targets;
 
-        public override string DisplayName => Resources.TargetsHeaderLabel;
+        public override string DisplayName => BuildLoggingResources.TargetsHeaderLabel;
 
         public override StringComparer Comparer => StringComparer.Ordinal;
 
