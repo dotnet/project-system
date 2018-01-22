@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
@@ -37,20 +38,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             {
                 lock (_targetsLock)
                 {
-                    // use linear search here, since there not many target frameworks and it would most efficient.
-                    targetFramework = _cachedTargetFrameworks.FirstOrDefault(x => x.Equals(shortOrFullName));
-                    if (targetFramework != null)
+                    if (!TryGetCachedTargetFramework(shortOrFullName, out targetFramework))
                     {
-                        return targetFramework;
-                    }
-
-                    var frameworkName = _nuGetFrameworkParser.ParseFrameworkName(shortOrFullName);
-                    if (frameworkName != null)
-                    {
-                        var shortName = _nuGetFrameworkParser.GetShortFrameworkName(frameworkName);
-                        targetFramework = new TargetFramework(frameworkName, shortName);
-                        // remember target framework - there can not bee too many of them across the solution.
-                        _cachedTargetFrameworks.Add(targetFramework);
+                        var frameworkName = _nuGetFrameworkParser.ParseFrameworkName(shortOrFullName);
+                        if (frameworkName != null && 
+                            !TryGetCachedTargetFramework(frameworkName.FullName, out targetFramework))
+                        {
+                            var shortName = _nuGetFrameworkParser.GetShortFrameworkName(frameworkName);
+                            targetFramework = new TargetFramework(frameworkName, shortName);
+                            // remember target framework - there can not be too many of them across the solution.
+                            _cachedTargetFrameworks.Add(targetFramework);
+                        }
                     }
                 }
             }
@@ -61,6 +59,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             }
 
             return targetFramework;
+        }
+
+        private bool TryGetCachedTargetFramework(string shortOrFullName, out ITargetFramework targetFramework)
+        {
+            // use linear search here, since there not many target frameworks and it would most efficient.
+            targetFramework = _cachedTargetFrameworks.FirstOrDefault(x => x.Equals(shortOrFullName));
+            return targetFramework != null;
         }
 
         public ITargetFramework GetNearestFramework(ITargetFramework targetFramework,
