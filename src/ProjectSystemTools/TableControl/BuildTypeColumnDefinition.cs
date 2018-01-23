@@ -1,22 +1,22 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Linq;
 using System.Windows;
+using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging;
+using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model;
 using Microsoft.VisualStudio.Shell.TableControl;
 using Microsoft.VisualStudio.Utilities;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI
+namespace Microsoft.VisualStudio.ProjectSystem.Tools.TableControl
 {
     [Export(typeof(ITableColumnDefinition))]
-    [Name(TableColumnNames.Dimensions)]
-    internal sealed class DimensionsColumnDefinition : TableColumnDefinitionBase
+    [Name(TableColumnNames.BuildType)]
+    internal sealed class BuildTypeColumnDefinition : TableColumnDefinitionBase
     {
-        public override string Name => TableColumnNames.Dimensions;
+        public override string Name => TableColumnNames.BuildType;
 
-        public override string DisplayName => BuildLoggingResources.DimensionsHeaderLabel;
+        public override string DisplayName => TableControlResources.BuildTypeHeaderLabel;
 
         public override StringComparer Comparer => StringComparer.Ordinal;
 
@@ -26,11 +26,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI
 
         public override bool TryCreateStringContent(ITableEntryHandle entry, bool truncatedText, bool singleColumnView, out string content)
         {
-            if (entry.TryGetValue(TableKeyNames.Dimensions, out var value) && value != null && 
-                value is IEnumerable<string> dimensions &&
-                dimensions.Any())
+            if (entry.TryGetValue(TableKeyNames.BuildType, out var value) && value != null && value is BuildType buildType)
             {
-                content = dimensions.Aggregate((current, next) => $"{current}|{next}");
+                content = buildType.ToString();
                 return true;
             }
 

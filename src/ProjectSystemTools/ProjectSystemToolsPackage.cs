@@ -12,6 +12,7 @@ using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogExplorer;
 using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Shell.TableManager;
+using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.TextManager.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools
@@ -22,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [ProvideToolWindow(typeof(BuildLoggingToolWindow), Style = VsDockStyle.Tabbed, Window = ToolWindowGuids.Outputwindow)]
     [ProvideToolWindow(typeof(BuildLogExplorerToolWindow), Style = VsDockStyle.MDI)]
-    public sealed class ProjectSystemToolsPackage : AsyncPackage
+    internal sealed class ProjectSystemToolsPackage : AsyncPackage
     {
         public const string PackageGuidString = "e3bfb509-b8fd-4692-b4c4-4b2f6ed62bc7";
 
@@ -65,11 +66,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools
         internal static ITableManagerProvider TableManagerProvider { get; private set; }
         public static IWpfTableControlProvider TableControlProvider { get; private set; }
 
+        private static JoinableTaskCollection PackageTaskCollection { get; set; }
+        public static JoinableTaskFactory PackageTaskFactory { get; private set; }
+
+        public static bool IsDisposed { get; private set; }
+
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
             ServiceProvider = this;
+
+            PackageTaskCollection = ThreadHelper.JoinableTaskContext.CreateCollection();
+            PackageTaskFactory = ThreadHelper.JoinableTaskContext.CreateFactory(PackageTaskCollection);
 
             VsUIShell = GetService(typeof(IVsUIShell)) as IVsUIShell;
             VsFindManager = GetService(typeof(SVsFindManager)) as IVsFindManager;
@@ -84,6 +93,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools
             mcs?.AddCommand(new MenuCommand(ShowMessageListToolWindow, new CommandID(CommandSetGuid, MessageListCommandId)));
 
             Instance = this;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                IsDisposed = true;
+            }
+
+            base.Dispose(disposing);
         }
 
         public static void UpdateQueryStatus()

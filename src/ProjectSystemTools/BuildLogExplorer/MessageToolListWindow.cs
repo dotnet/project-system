@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.Internal.VisualStudio.Shell.TableControl;
 using Microsoft.VisualStudio.OLE.Interop;
-using Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor.ViewModel;
+using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogExplorer.ViewModel;
 using Microsoft.VisualStudio.ProjectSystem.Tools.TableControl;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;

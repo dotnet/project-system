@@ -46,10 +46,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogExplorer.ViewModel
             {
                 if (_log?.Evaluations.Any() == true)
                 {
-                    list.Add(new ListViewModel<Evaluation>("Evaluations", _log.Evaluations, evaluation => new EvaluationViewModel(evaluation)));
+                    list.Add(new ListViewModel<Evaluation>("Evaluations", _log.Evaluations, e => e.EvaluatedProjects.Count == 1 ? (BaseViewModel)new EvaluatedProjectViewModel(e) : new EvaluationViewModel(e)));
                 }
 
-                if (_log.Build != null)
+                if (_log.Build != null && _log.Build.Project != null)
                 {
                     list.Add(new BuildViewModel(_log.Build));
                 }

@@ -1005,7 +1005,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
                 projectInfo.Result);
 
         private Build ConstructBuild() =>
-            new Build(ConstructProject(_projectInfos.Values.Single(p => p.ParentProject == BuildEventContext.InvalidProjectContextId)),
+            new Build(_projectInfos.Values.Any(p => p.ParentProject == BuildEventContext.InvalidProjectContextId) 
+                    ? ConstructProject(_projectInfos.Values.Single(p => p.ParentProject == BuildEventContext.InvalidProjectContextId))
+                    : null,
                 _buildInfo.Environment,
                 EmptyIfNull(_buildInfo.Messages?.Select(ConstructMessage).OrderBy(OrderMessages).ToImmutableList()), 
                 _buildInfo.StartTime, 
