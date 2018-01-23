@@ -18,6 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
         private readonly List<IDisposable> _evaluationSubscriptionLinks;
         private readonly List<IDisposable> _designTimeBuildSubscriptionLinks;
+        private readonly IUnconfiguredProjectCommonServices _commonServices;
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IDependencyTreeTelemetryService _treeTelemetryService;
         private ICrossTargetSubscriptionsHost _host;
@@ -29,6 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             IDependencyTreeTelemetryService treeTelemetryService)
             : base(commonServices.ThreadingService.JoinableTaskContext)
         {
+            _commonServices = commonServices;
             _tasksService = tasksService;
             _treeTelemetryService = treeTelemetryService;
             _evaluationSubscriptionLinks = new List<IDisposable>();
@@ -47,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             var watchedDesignTimeBuildRules = GetWatchedRules(RuleHandlerType.DesignTimeBuild);
 
             SubscribeToConfiguredProject(
-                subscriptionService, watchedEvaluationRules, watchedDesignTimeBuildRules);
+                _commonServices.ActiveConfiguredProject, subscriptionService, watchedEvaluationRules, watchedDesignTimeBuildRules);
         }
 
         public Task AddSubscriptionsAsync(AggregateCrossTargetProjectContext newProjectContext)
@@ -69,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             foreach (var configuredProject in newProjectContext.InnerConfiguredProjects)
             {
                 SubscribeToConfiguredProject(
-                    configuredProject.Services.ProjectSubscription, watchedEvaluationRules, watchedDesignTimeBuildRules);
+                    configuredProject, configuredProject.Services.ProjectSubscription, watchedEvaluationRules, watchedDesignTimeBuildRules);
             }
 
             return Task.CompletedTask;
@@ -99,6 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         }
 
         private void SubscribeToConfiguredProject(
+            ConfiguredProject configuredProject,
             IProjectSubscriptionService subscriptionService,
             IEnumerable<string> watchedEvaluationRules,
             IEnumerable<string> watchedDesignTimeBuildRules)
@@ -132,16 +135,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     linkOptions: new DataflowLinkOptions { PropagateCompletion = true }));
 
             var actionBlockDesignTimeBuild =
-                new ActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot>>>(
-                    e => OnProjectChangedAsync(e, RuleHandlerType.DesignTimeBuild),
+                new ActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>>(
+                    e => OnProjectChangedAsync(e, configuredProject, RuleHandlerType.DesignTimeBuild),
                     new ExecutionDataflowBlockOptions()
                     {
                         NameFormat = "CrossTarget DesignTime Input: {1}"
                     });
 
             var actionBlockEvaluation =
-                new ActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot>>>(
-                     e => OnProjectChangedAsync(e, RuleHandlerType.Evaluation),
+                new ActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>>>(
+                     e => OnProjectChangedAsync(e, configuredProject, RuleHandlerType.Evaluation),
                      new ExecutionDataflowBlockOptions()
                      {
                          NameFormat = "CrossTarget Evaluation Input: {1}"
@@ -150,12 +153,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             _designTimeBuildSubscriptionLinks.Add(ProjectDataSources.SyncLinkTo(
                 intermediateBlockDesignTime.SyncLinkOptions(),
                 subscriptionService.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
+                configuredProject.Capabilities.SourceBlock.SyncLinkOptions(),
                 actionBlockDesignTimeBuild,
                 linkOptions: new DataflowLinkOptions { PropagateCompletion = true }));
 
             _evaluationSubscriptionLinks.Add(ProjectDataSources.SyncLinkTo(
                 intermediateBlockEvaluation.SyncLinkOptions(),
                 subscriptionService.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
+                configuredProject.Capabilities.SourceBlock.SyncLinkOptions(),
                 actionBlockEvaluation,
                 linkOptions: new DataflowLinkOptions { PropagateCompletion = true }));
         }
@@ -175,7 +180,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         }
 
         private async Task OnProjectChangedAsync(
-            IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot>> e,
+            IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>> e,
+            ConfiguredProject configuredProject,
             RuleHandlerType handlerType)
         {
             if (IsDisposing || IsDisposed)
@@ -189,13 +195,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 {
                     return;
                 }
-
-                await HandleAsync(e, handlerType).ConfigureAwait(false);
+                
+                using (ProjectCapabilitiesContext.CreateIsolatedContext(configuredProject, e.Value.Item3))
+                {
+                    await HandleAsync(e, handlerType).ConfigureAwait(false);
+                }
             });
         }
 
         private async Task HandleAsync(
-                    IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot>> e,
+                    IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>> e,
                     RuleHandlerType handlerType)
         {
             var currentAggregateContext = await _host.GetCurrentAggregateProjectContext().ConfigureAwait(false);

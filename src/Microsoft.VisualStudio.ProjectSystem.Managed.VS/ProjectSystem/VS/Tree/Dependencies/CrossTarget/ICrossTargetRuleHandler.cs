@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         ///     Handles the specified set of changes to a rule, and applies them
         ///     to the given <see cref="ITargetedProjectContext"/>.
         /// </summary>
-        Task HandleAsync(IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot>> e, 
+        Task HandleAsync(IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>> e, 
                          IImmutableDictionary<string, IProjectChangeDescription> projectChange, 
                          ITargetedProjectContext targetedProjectContext,
                          bool isActiveContext,
