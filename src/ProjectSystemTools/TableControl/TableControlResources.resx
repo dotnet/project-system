@@ -117,67 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AddLog" xml:space="preserve">
-    <value>Add Log</value>
+  <data name="DesignTimeHeaderLabel" xml:space="preserve">
+    <value>Design-Time</value>
   </data>
-  <data name="AddLogFilter" xml:space="preserve">
-    <value>MSBuild Binary Log files (*.binlog)|*.binlog</value>
+  <data name="DimensionsHeaderLabel" xml:space="preserve">
+    <value>Dimensions</value>
   </data>
-  <data name="ErrorsCategory" xml:space="preserve">
-    <value>Error</value>
+  <data name="ElapsedHeaderLabel" xml:space="preserve">
+    <value>Elapsed</value>
   </data>
-  <data name="ErrorActiveCategory" xml:space="preserve">
-    <value>Error (active)</value>
+  <data name="StartTimeHeaderLabel" xml:space="preserve">
+    <value>Start</value>
   </data>
-  <data name="ErrorInactiveCategory" xml:space="preserve">
-    <value>Error (inactive)</value>
+  <data name="StatusHeaderLabel" xml:space="preserve">
+    <value>Status</value>
   </data>
-  <data name="WarningsCategory" xml:space="preserve">
-    <value>Warning</value>
+  <data name="TargetsHeaderLabel" xml:space="preserve">
+    <value>Targets</value>
   </data>
-  <data name="WarningActiveCategory" xml:space="preserve">
-    <value>Warning (active)</value>
-  </data>
-  <data name="WarningInactiveCategory" xml:space="preserve">
-    <value>Warning (inactive)</value>
-  </data>
-  <data name="MessagesCategory" xml:space="preserve">
-    <value>Message</value>
-  </data>
-  <data name="MessageActiveCategory" xml:space="preserve">
-    <value>Message (active)</value>
-  </data>
-  <data name="MessageInactiveCategory" xml:space="preserve">
-    <value>Message (inactive)</value>
-  </data>
-  <data name="MessageListSearchWatermark" xml:space="preserve">
-    <value>Search Message List</value>
-  </data>
-  <data name="MessageListWindowTitle" xml:space="preserve">
-    <value>Build Message List</value>
-  </data>
-  <data name="SameLabel" xml:space="preserve">
-    <value>{1} {0}</value>
-  </data>
-  <data name="DifferentLabel" xml:space="preserve">
-    <value>{1} of {2} {0}</value>
-  </data>
-  <data name="ErrorLabel" xml:space="preserve">
-    <value>Error</value>
-  </data>
-  <data name="ErrorsLabel" xml:space="preserve">
-    <value>Errors</value>
-  </data>
-  <data name="WarningLabel" xml:space="preserve">
-    <value>Warning</value>
-  </data>
-  <data name="WarningsLabel" xml:space="preserve">
-    <value>Warnings</value>
-  </data>
-  <data name="MessageLabel" xml:space="preserve">
-    <value>Message</value>
-  </data>
-  <data name="MessagesLabel" xml:space="preserve">
-    <value>Messages</value>
+  <data name="TimeHeaderLabel" xml:space="preserve">
+    <value>Time</value>
   </data>
 </root>

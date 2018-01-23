@@ -87,6 +87,16 @@
         <target state="new">Add log to explorer</target>
         <note />
       </trans-unit>
+      <trans-unit id="MessageListToolbarMenuId|ButtonText">
+        <source>Message List</source>
+        <target state="new">Message List</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MessageListCommandId|ButtonText">
+        <source>Build Log Message List</source>
+        <target state="new">Build Log Message List</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

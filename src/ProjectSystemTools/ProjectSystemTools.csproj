@@ -43,6 +43,7 @@
     <None Include="xlf\*" />
     <EmbeddedResource Include="BuildLogging\BuildLoggingResources.resx" GenerateSource="true" />
     <EmbeddedResource Include="BuildLogExplorer\BuildLogExplorerResources.resx" GenerateSource="true" />
+    <EmbeddedResource Include="TableControl\TableControlResources.resx" GenerateSource="true" />
     <EmbeddedResource Include="VSPackage.resx">
       <MergeWithCTO>true</MergeWithCTO>
       <ManifestResourceName>VSPackage</ManifestResourceName>
