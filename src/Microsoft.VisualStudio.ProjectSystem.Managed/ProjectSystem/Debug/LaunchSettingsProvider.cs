@@ -101,6 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         private TaskCompletionSource<bool> _firstSnapshotCompletionSource = new TaskCompletionSource<bool>();
 
         protected IDisposable ProjectRuleSubscriptionLink { get; set; }
+        protected IDisposable CapabilitiesSubscriptionLink { get; set; }
 
         private SequencialTaskExecutor _sequentialTaskQueue = new SequencialTaskExecutor();
 
@@ -181,12 +182,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // The use of AsyncLazy with dataflow can allow state stored in the execution context to leak through. The downstream affect is 
                 // calls to say, get properties, may fail. To avoid this, we capture the execution context here, and it will be reapplied when
                 // we get new subscription data from the dataflow. 
-                var projectChangesBlock = new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(
-                            DataflowUtilities.CaptureAndApplyExecutionContext<IProjectVersionedValue<IProjectSubscriptionUpdate>>(ProjectRuleBlock_ChangedAsync));
-
-                ProjectRuleSubscriptionLink = ProjectSubscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
+                var projectChangesBlock = new ActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCapabilitiesSnapshot>>>(
+                            DataflowUtilities.CaptureAndApplyExecutionContext<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCapabilitiesSnapshot>>>(ProjectRuleBlock_ChangedAsync));
+                var  evaluationLinkOptions = new StandardRuleDataflowLinkOptions();
+                evaluationLinkOptions.RuleNames = evaluationLinkOptions.RuleNames.Add(ProjectDebugger.SchemaName);
+                            
+                ProjectRuleSubscriptionLink = ProjectDataSources.SyncLinkTo(
+                    ProjectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(evaluationLinkOptions),
+                    CommonProjectServices.ActiveConfiguredProject.Capabilities.SourceBlock.SyncLinkOptions(),
                     projectChangesBlock,
-                    ruleNames: ProjectDebugger.SchemaName,
+                    linkOptions: new DataflowLinkOptions { PropagateCompletion = true });
+
+                var capabilitiesChangeBlock = new ActionBlock<IProjectVersionedValue<IProjectCapabilitiesSnapshot>>(
+                            DataflowUtilities.CaptureAndApplyExecutionContext<IProjectVersionedValue<IProjectCapabilitiesSnapshot>>(Capabilities_ChangedAsync));
+
+                CapabilitiesSubscriptionLink = CommonProjectServices.ActiveConfiguredProject.Capabilities.SourceBlock.LinkTo(
+                    capabilitiesChangeBlock,
                     linkOptions: new DataflowLinkOptions { PropagateCompletion = true });
             }
 
@@ -194,13 +205,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             WatchLaunchSettingsFile();
         }
 
+        private async Task Capabilities_ChangedAsync(IProjectVersionedValue<IProjectCapabilitiesSnapshot> capabilities)
+        {
+            // Updates need to be sequenced
+            await _sequentialTaskQueue.ExecuteTask(async () =>
+            {
+                using (ProjectCapabilitiesContext.CreateIsolatedContext(CommonProjectServices.ActiveConfiguredProject, capabilities.Value))
+                {
+                    await UpdateProfilesAsync(null).ConfigureAwait(false);
+                }
+            }).ConfigureAwait(false);
+        }
+
         /// <summary>
         /// Handles changes to the ProjectDebugger properties. Gets the active profile and generates a launch settings update if it
         /// has changed. The first evaluation generally kicks off the first snapshot
         /// </summary>
-        protected async Task ProjectRuleBlock_ChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> projectSubscriptionUpdate)
+        protected async Task ProjectRuleBlock_ChangedAsync(IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCapabilitiesSnapshot>> projectSnapshot)
         {
-            if (projectSubscriptionUpdate.Value.CurrentState.TryGetValue(ProjectDebugger.SchemaName, out IProjectRuleSnapshot ruleSnapshot))
+            if (projectSnapshot.Value.Item1.CurrentState.TryGetValue(ProjectDebugger.SchemaName, out IProjectRuleSnapshot ruleSnapshot))
             {
                 ruleSnapshot.Properties.TryGetValue(ProjectDebugger.ActiveDebugProfileProperty, out string activeProfile);
                 var snapshot = CurrentSnapshot;
@@ -208,9 +231,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 {
                     // Updates need to be sequenced
                     await _sequentialTaskQueue.ExecuteTask(async () =>
-                                    {
-                                        await UpdateActiveProfileInSnapshotAsync(activeProfile).ConfigureAwait(false);
-                                    }).ConfigureAwait(false);
+                    {
+                        using (ProjectCapabilitiesContext.CreateIsolatedContext(CommonProjectServices.ActiveConfiguredProject, projectSnapshot.Value.Item2))
+                        {
+                            await UpdateActiveProfileInSnapshotAsync(activeProfile).ConfigureAwait(false);
+                        }
+                    }).ConfigureAwait(false);
                 }
             }
         }
@@ -742,6 +768,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 {
                     ProjectRuleSubscriptionLink.Dispose();
                     ProjectRuleSubscriptionLink = null;
+                }
+
+                if (CapabilitiesSubscriptionLink != null)
+                {
+                    CapabilitiesSubscriptionLink.Dispose();
+                    CapabilitiesSubscriptionLink = null;
                 }
             }
         }
