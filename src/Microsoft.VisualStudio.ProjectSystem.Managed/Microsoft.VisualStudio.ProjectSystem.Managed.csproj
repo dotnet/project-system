@@ -1,6 +1,6 @@
 ﻿<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\HostAgnostic.props"/>
+  <Import Project="..\HostAgnostic.props" />
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
     <!-- The value of RuleInjectionClassName of XamlPropertyRule items defined by this project -->
@@ -28,7 +28,7 @@
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.FSharp.VS.UnitTests" />
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests" />
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests" />
-    <InternalsVisibleTo Include="DynamicProxyGenAssembly2" Key="$(MoqPublicKey)"/>
+    <InternalsVisibleTo Include="DynamicProxyGenAssembly2" Key="$(MoqPublicKey)" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="ProjectSystem\Rules\AnalyzerReference.xaml.cs">
@@ -96,6 +96,9 @@
     </Compile>
     <Compile Update="ProjectSystem\Rules\UpToDateCheckOutput.cs">
       <DependentUpon>UpToDateCheckOutput.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\UpToDateCheckBuilt.cs">
+      <DependentUpon>UpToDateCheckBuilt.xaml</DependentUpon>
     </Compile>
     <Compile Update="ProjectSystem\Rules\CopyUpToDateMarker.cs">
       <DependentUpon>CopyUpToDateMarker.xaml</DependentUpon>
@@ -182,6 +185,10 @@
       <SubType>Designer</SubType>
     </XamlPropertyRule>
     <XamlPropertyRule Include="ProjectSystem\Rules\UpToDateCheckOutput.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\UpToDateCheckBuilt.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
@@ -310,6 +317,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <DesignTimeTargetsFile Include="ProjectSystem\DesignTimeTargets\*.targets"/>
+    <DesignTimeTargetsFile Include="ProjectSystem\DesignTimeTargets\*.targets" />
   </ItemGroup>
 </Project>
