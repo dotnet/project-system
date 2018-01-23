@@ -8,5 +8,8 @@
     <VSTemplate Include="Web.vstemplate">
       <OutputSubPath>.NET Core</OutputSubPath>
     </VSTemplate>
+        <VSTemplate Include="Web.vstemplate">
+      <OutputSubPath>Web</OutputSubPath>
+    </VSTemplate>
   </ItemGroup>
 </Project>

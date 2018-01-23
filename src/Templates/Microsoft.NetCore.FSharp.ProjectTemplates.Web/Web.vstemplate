@@ -19,7 +19,7 @@
   <TemplateContent>
     <ProjectCollection/>
     <CustomParameters>
-      <CustomParameter Name="$language$" Value="FSharp" />
+      <CustomParameter Name="$language$" Value="F#" />
       <CustomParameter Name="$uistyle$" Value="oneaspnet" />
       <CustomParameter Name="$tagfilter$" Value="web" />
       <CustomParameter Name="$showAllFrameworks$" Value="true" />
