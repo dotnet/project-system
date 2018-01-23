@@ -353,7 +353,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
             finally
             {
-                s_builderPool.Add(sb);
+                sb.Clear();
+
+                // Prevent holding on to large builders
+                if (sb.Length < 1000)
+                {
+                    s_builderPool.Add(sb);
+                }
             }
         }
 
