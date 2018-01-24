@@ -84,37 +84,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         }
 
         /// <summary>
-        /// Initialize the watcher.
-        /// </summary>
-        protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
-        {
-            _fileChangeService = (IVsFileChangeEx)(await _asyncServiceProvider.GetServiceAsync(typeof(SVsFileChangeEx)).ConfigureAwait(false));
-
-            // Explicitly get back to the thread pool for the rest of this method so we don't tie up the UI thread;
-            await TaskScheduler.Default;
-
-            await _projectTasksService.LoadedProjectAsync(() =>
-            {
-                // The tree source to get changes to the tree so that we can identify when the assets file changes.
-                var treeSource = _fileSystemTreeProvider.Tree.SyncLinkOptions();
-
-                // The property source used to get the value of the $ProjectAssetsFile property so that we can identify the location of the assets file.
-                var sourceLinkOptions = new StandardRuleDataflowLinkOptions
-                {
-                    RuleNames = Empty.OrdinalIgnoreCaseStringSet.Add(ConfigurationGeneral.SchemaName),
-                    PropagateCompletion = true
-                };
-                var propertySource = _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(sourceLinkOptions);
-                var target = new ActionBlock<IProjectVersionedValue<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>>(DataFlow_ChangedAsync);
-
-                // Join the two sources so that we get synchronized versions of the data.
-                _treeWatcher = ProjectDataSources.SyncLinkTo(treeSource, propertySource, target);
-
-                return Task.CompletedTask;
-            }).ConfigureAwait(false);
-        }
-
-        /// <summary>
         /// Called on changes to the project tree.
         /// </summary>
         internal async Task DataFlow_ChangedAsync(IProjectVersionedValue<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>> dataFlowUpdate)
@@ -147,6 +116,49 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             }
         }
 
+        /// <summary>
+        /// Initialize the watcher.
+        /// </summary>
+        protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
+        {
+            _fileChangeService = (IVsFileChangeEx)(await _asyncServiceProvider.GetServiceAsync(typeof(SVsFileChangeEx)).ConfigureAwait(false));
+
+            // Explicitly get back to the thread pool for the rest of this method so we don't tie up the UI thread;
+            await TaskScheduler.Default;
+
+            await _projectTasksService.LoadedProjectAsync(() =>
+                {
+                    // The tree source to get changes to the tree so that we can identify when the assets file changes.
+                    var treeSource = _fileSystemTreeProvider.Tree.SyncLinkOptions();
+
+                    // The property source used to get the value of the $ProjectAssetsFile property so that we can identify the location of the assets file.
+                    var sourceLinkOptions = new StandardRuleDataflowLinkOptions
+                    {
+                        RuleNames = Empty.OrdinalIgnoreCaseStringSet.Add(ConfigurationGeneral.SchemaName),
+                        PropagateCompletion = true
+                    };
+
+                    var propertySource = _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(sourceLinkOptions);
+                    var target = new ActionBlock<IProjectVersionedValue<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>>(DataFlow_ChangedAsync);
+
+                    // Join the two sources so that we get synchronized versions of the data.
+                    _treeWatcher = ProjectDataSources.SyncLinkTo(treeSource, propertySource, target);
+
+                    return Task.CompletedTask;
+                }).ConfigureAwait(false);
+        }
+
+        protected override Task DisposeCoreAsync(bool initialized)
+        {
+            if (initialized)
+            {
+                _treeWatcher.Dispose();
+                UnregisterFileWatcherIfAny();
+            }
+
+            return Task.CompletedTask;
+        }
+
         private string GetProjectAssetsFilePath(IProjectTree newTree, IProjectSubscriptionUpdate projectUpdate)
         {
             var projectFilePath = projectUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, null);
@@ -165,8 +177,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             var objDirectory = projectUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.BaseIntermediateOutputPathProperty, null);
 
             if (string.IsNullOrEmpty(objDirectory))
-            {   // Don't have an intermdiate directory set, probably missing SDK attribute or Microsoft.Common.props
-
+            {
+                // Don't have an intermdiate directory set, probably missing SDK attribute or Microsoft.Common.props
                 return null;
             }
 
@@ -249,20 +261,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 {
                     _previousContents = currentContents;
                     await _projectServices.Project.Services.ProjectAsynchronousTasks.LoadedProjectAsync(async () =>
-                    {
-                        using (var access = await _projectServices.ProjectLockService.WriteLockAsync(cancellationToken))
                         {
-                            // notify all the loaded configured projects
-                            var currentProjects = _projectServices.Project.LoadedConfiguredProjects;
-                            foreach (var configuredProject in currentProjects)
+                            using (var access = await _projectServices.ProjectLockService.WriteLockAsync(cancellationToken))
                             {
-                                // Inside a write lock, we should get back to the same thread.
-                                var project = await access.GetProjectAsync(configuredProject, cancellationToken).ConfigureAwait(true);
-                                project.MarkDirty();
-                                configuredProject.NotifyProjectChange();
+                                // notify all the loaded configured projects
+                                var currentProjects = _projectServices.Project.LoadedConfiguredProjects;
+                                foreach (var configuredProject in currentProjects)
+                                {
+                                    // Inside a write lock, we should get back to the same thread.
+                                    var project = await access.GetProjectAsync(configuredProject, cancellationToken).ConfigureAwait(true);
+                                    project.MarkDirty();
+                                    configuredProject.NotifyProjectChange();
+                                }
                             }
-                        }
-                    });
+                        });
                 }
             }
             catch (OperationCanceledException)
@@ -271,21 +283,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             }
         }
 
-        protected override Task DisposeCoreAsync(bool initialized)
-        {
-            if (initialized)
-            {
-                _treeWatcher.Dispose();
-                UnregisterFileWatcherIfAny();
-            }
-
-            return Task.CompletedTask;
-        }
-
         /// <summary>
         /// Called when a project.lock.json file changes.
         /// </summary>
-        public int FilesChanged(uint cChanges, string[] rgpszFile, uint[] rggrfChange)
+        int IVsFreeThreadedFileChangeEvents.FilesChanged(uint cChanges, string[] rgpszFile, uint[] rggrfChange)
         {
             // Kick off the operation to notify the project change in a different thread irregardless of
             // the kind of change since we are interested in all changes.
@@ -294,12 +295,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             return VSConstants.S_OK;
         }
 
-        public int DirectoryChanged(string pszDirectory)
+        int IVsFreeThreadedFileChangeEvents.DirectoryChanged(string pszDirectory)
         {
             return VSConstants.E_NOTIMPL;
         }
 
-        public int DirectoryChangedEx(string pszDirectory, string pszFile)
+        int IVsFreeThreadedFileChangeEvents.DirectoryChangedEx(string pszDirectory, string pszFile)
         {
             return VSConstants.E_NOTIMPL;
         }
