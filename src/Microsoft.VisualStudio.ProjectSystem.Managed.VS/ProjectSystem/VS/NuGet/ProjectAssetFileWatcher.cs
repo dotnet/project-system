@@ -241,8 +241,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private CancellationToken CreateLinkedCancellationToken()
         {
             // we want to cancel when we switch what file is watched, or when the project is unloaded
-            _watchedFileResetCancellationToken = CancellationTokenSource.CreateLinkedTokenSource(
-                _projectServices.Project.Services.ProjectAsynchronousTasks.UnloadCancellationToken);
+            if (_projectServices?.Project?.Services?.ProjectAsynchronousTasks?.UnloadCancellationToken != null)
+            {
+                _watchedFileResetCancellationToken = CancellationTokenSource.CreateLinkedTokenSource(
+                    _projectServices.Project.Services.ProjectAsynchronousTasks.UnloadCancellationToken);
+            }
+            else
+            {
+                _watchedFileResetCancellationToken = new CancellationTokenSource();
+            }
 
             return _watchedFileResetCancellationToken.Token;
         }
@@ -286,7 +293,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         /// <summary>
         /// Called when a project.lock.json file changes.
         /// </summary>
-        int IVsFreeThreadedFileChangeEvents.FilesChanged(uint cChanges, string[] rgpszFile, uint[] rggrfChange)
+        public int FilesChanged(uint cChanges, string[] rgpszFile, uint[] rggrfChange)
         {
             // Kick off the operation to notify the project change in a different thread irregardless of
             // the kind of change since we are interested in all changes.
@@ -295,12 +302,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             return VSConstants.S_OK;
         }
 
-        int IVsFreeThreadedFileChangeEvents.DirectoryChanged(string pszDirectory)
+        public int DirectoryChanged(string pszDirectory)
         {
             return VSConstants.E_NOTIMPL;
         }
 
-        int IVsFreeThreadedFileChangeEvents.DirectoryChangedEx(string pszDirectory, string pszFile)
+        public int DirectoryChangedEx(string pszDirectory, string pszFile)
         {
             return VSConstants.E_NOTIMPL;
         }
