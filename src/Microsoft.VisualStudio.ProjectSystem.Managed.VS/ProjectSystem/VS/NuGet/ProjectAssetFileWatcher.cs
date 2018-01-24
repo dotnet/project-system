@@ -11,6 +11,7 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Threading.Tasks;
+
 using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
 using Task = System.Threading.Tasks.Task;
 
@@ -35,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private IDisposable _treeWatcher;
         private uint _filechangeCookie;
         private string _fileBeingWatched;
-        private string _previousContents;
+        private int? _previousContentsHash;
 
         [ImportingConstructor]
         public ProjectAssetFileWatcher(
@@ -159,6 +160,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             return Task.CompletedTask;
         }
 
+        private static int? GetFileHashOrNull(string path)
+        {
+            int? hash = null;
+
+            try
+            {
+                hash = File.ReadAllText(path)?.GetHashCode();
+            }
+            catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException)
+            {
+            }
+
+            return hash;
+        }
+
         private string GetProjectAssetsFilePath(IProjectTree newTree, IProjectSubscriptionUpdate projectUpdate)
         {
             var projectFilePath = projectUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, null);
@@ -208,11 +224,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             // Note file change service is free-threaded
             if (_fileChangeService != null && projectLockJsonFilePath != null)
             {
-                if (File.Exists(projectLockJsonFilePath))
-                {
-                    _previousContents = File.ReadAllText(projectLockJsonFilePath);
-                }
-
+                _previousContentsHash = GetFileHashOrNull(projectLockJsonFilePath);
                 _taskDelayScheduler = new TaskDelayScheduler(
                     s_notifyDelay,
                     _projectServices.ThreadingService,
@@ -258,15 +270,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         {
             try
             {
-                string currentContents = null;
-                if (File.Exists(_fileBeingWatched))
+                // Only notify the project if the contents of the watched file have changed.
+                // In the case if we fail to read the contents, we will opt to notify the project.
+                int? newHash = GetFileHashOrNull(_fileBeingWatched);
+                if (newHash == null || _previousContentsHash == null || newHash != _previousContentsHash)
                 {
-                    currentContents = File.ReadAllText(_fileBeingWatched);
-                }
-
-                if (!string.Equals(_previousContents, currentContents, StringComparison.Ordinal))
-                {
-                    _previousContents = currentContents;
+                    _previousContentsHash = newHash;
                     await _projectServices.Project.Services.ProjectAsynchronousTasks.LoadedProjectAsync(async () =>
                         {
                             using (var access = await _projectServices.ProjectLockService.WriteLockAsync(cancellationToken))
@@ -295,7 +304,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         /// </summary>
         public int FilesChanged(uint cChanges, string[] rgpszFile, uint[] rggrfChange)
         {
-            // Kick off the operation to notify the project change in a different thread irregardless of
+            // Kick off the operation to notify the project change in a different thread regardless of
             // the kind of change since we are interested in all changes.
             _taskDelayScheduler.ScheduleAsyncTask(HandleFileChangedAsync);
 
