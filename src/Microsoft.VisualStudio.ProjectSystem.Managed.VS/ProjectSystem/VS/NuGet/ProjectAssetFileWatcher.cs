@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
-
+using Microsoft.VisualStudio.Threading.Tasks;
 using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
 using Task = System.Threading.Tasks.Task;
 
@@ -19,17 +19,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
     /// <summary>
     ///     Watches for writes to the project.assets.json, triggering a evaluation if it changes.
     /// </summary>
-    internal class ProjectAssetFileWatcher : OnceInitializedOnceDisposedAsync, IVsFileChangeEvents
+    internal class ProjectAssetFileWatcher : OnceInitializedOnceDisposedAsync, IVsFreeThreadedFileChangeEvents
     {
+        private static readonly TimeSpan s_notifyDelay = TimeSpan.FromMilliseconds(100);
+
         private readonly IAsyncServiceProvider _asyncServiceProvider;
         private readonly IUnconfiguredProjectCommonServices _projectServices;
         private readonly IUnconfiguredProjectTasksService _projectTasksService;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IProjectTreeProvider _fileSystemTreeProvider;
+
+        private CancellationTokenSource _watchedFileResetCancellationToken;
+        private ITaskDelayScheduler _taskDelayScheduler;
         private IVsFileChangeEx _fileChangeService;
         private IDisposable _treeWatcher;
         private uint _filechangeCookie;
         private string _fileBeingWatched;
+        private string _previousContents;
 
         [ImportingConstructor]
         public ProjectAssetFileWatcher(
@@ -88,24 +94,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             await TaskScheduler.Default;
 
             await _projectTasksService.LoadedProjectAsync(() =>
+            {
+                // The tree source to get changes to the tree so that we can identify when the assets file changes.
+                var treeSource = _fileSystemTreeProvider.Tree.SyncLinkOptions();
+
+                // The property source used to get the value of the $ProjectAssetsFile property so that we can identify the location of the assets file.
+                var sourceLinkOptions = new StandardRuleDataflowLinkOptions
                 {
-                    // The tree source to get changes to the tree so that we can identify when the assets file changes.
-                    var treeSource = _fileSystemTreeProvider.Tree.SyncLinkOptions();
+                    RuleNames = Empty.OrdinalIgnoreCaseStringSet.Add(ConfigurationGeneral.SchemaName),
+                    PropagateCompletion = true
+                };
+                var propertySource = _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(sourceLinkOptions);
+                var target = new ActionBlock<IProjectVersionedValue<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>>(DataFlow_ChangedAsync);
 
-                    // The property source used to get the value of the $ProjectAssetsFile property so that we can identify the location of the assets file.
-                    var sourceLinkOptions = new StandardRuleDataflowLinkOptions
-                    {
-                        RuleNames = Empty.OrdinalIgnoreCaseStringSet.Add(ConfigurationGeneral.SchemaName),
-                        PropagateCompletion = true
-                    };
-                    var propertySource = _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(sourceLinkOptions);
-                    var target = new ActionBlock<IProjectVersionedValue<Tuple<IProjectTreeSnapshot, IProjectSubscriptionUpdate>>>(DataFlow_ChangedAsync);
+                // Join the two sources so that we get synchronized versions of the data.
+                _treeWatcher = ProjectDataSources.SyncLinkTo(treeSource, propertySource, target);
 
-                    // Join the two sources so that we get synchronized versions of the data.
-                    _treeWatcher = ProjectDataSources.SyncLinkTo(treeSource, propertySource, target);
-
-                    return Task.CompletedTask;
-                }).ConfigureAwait(false);
+                return Task.CompletedTask;
+            }).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -137,7 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             if (!PathHelper.IsSamePath(projectLockFilePath, _fileBeingWatched))
             {
                 UnregisterFileWatcherIfAny();
-                RegisterFileWatcherAsync(projectLockFilePath);
+                RegisterFileWatcher(projectLockFilePath);
             }
         }
 
@@ -185,11 +191,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             return null;
         }
 
-        private void RegisterFileWatcherAsync(string projectLockJsonFilePath)
+        private void RegisterFileWatcher(string projectLockJsonFilePath)
         {
             // Note file change service is free-threaded
             if (_fileChangeService != null && projectLockJsonFilePath != null)
             {
+                if (File.Exists(projectLockJsonFilePath))
+                {
+                    _previousContents = File.ReadAllText(projectLockJsonFilePath);
+                }
+
+                _taskDelayScheduler = new TaskDelayScheduler(
+                    s_notifyDelay,
+                    _projectServices.ThreadingService,
+                    CreateLinkedCancellationToken());
+
                 int hr = _fileChangeService.AdviseFileChange(projectLockJsonFilePath, (uint)(_VSFILECHANGEFLAGS.VSFILECHG_Time | _VSFILECHANGEFLAGS.VSFILECHG_Size | _VSFILECHANGEFLAGS.VSFILECHG_Add | _VSFILECHANGEFLAGS.VSFILECHG_Del), this, out _filechangeCookie);
                 ErrorHandler.ThrowOnFailure(hr);
             }
@@ -204,6 +220,54 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             {
                 // There's nothing for us to do if this fails. So ignore the return value.
                 _fileChangeService?.UnadviseFileChange(_filechangeCookie);
+                _watchedFileResetCancellationToken?.Cancel();
+                _watchedFileResetCancellationToken?.Dispose();
+                _taskDelayScheduler?.Dispose();
+            }
+        }
+
+        private CancellationToken CreateLinkedCancellationToken()
+        {
+            // we want to cancel when we switch what file is watched, or when the project is unloaded
+            _watchedFileResetCancellationToken = CancellationTokenSource.CreateLinkedTokenSource(
+                _projectServices.Project.Services.ProjectAsynchronousTasks.UnloadCancellationToken);
+
+            return _watchedFileResetCancellationToken.Token;
+        }
+
+        private async Task HandleFileChangedAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            try
+            {
+                string currentContents = null;
+                if (File.Exists(_fileBeingWatched))
+                {
+                    currentContents = File.ReadAllText(_fileBeingWatched);
+                }
+
+                if (!string.Equals(_previousContents, currentContents, StringComparison.Ordinal))
+                {
+                    _previousContents = currentContents;
+                    await _projectServices.Project.Services.ProjectAsynchronousTasks.LoadedProjectAsync(async () =>
+                    {
+                        using (var access = await _projectServices.ProjectLockService.WriteLockAsync(cancellationToken))
+                        {
+                            // notify all the loaded configured projects
+                            var currentProjects = _projectServices.Project.LoadedConfiguredProjects;
+                            foreach (var configuredProject in currentProjects)
+                            {
+                                // Inside a write lock, we should get back to the same thread.
+                                var project = await access.GetProjectAsync(configuredProject, cancellationToken).ConfigureAwait(true);
+                                project.MarkDirty();
+                                configuredProject.NotifyProjectChange();
+                            }
+                        }
+                    });
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                // Project is already unloaded
             }
         }
 
@@ -225,39 +289,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         {
             // Kick off the operation to notify the project change in a different thread irregardless of
             // the kind of change since we are interested in all changes.
-            _projectServices.ThreadingService.Fork(async () =>
-            {
-                try
-                {
-                    await _projectServices.Project.Services.ProjectAsynchronousTasks.LoadedProjectAsync(async () =>
-                    {
-                        using (var access = await _projectServices.ProjectLockService.WriteLockAsync())
-                        {
-                            // notify all the loaded configured projects
-                            var currentProjects = _projectServices.Project.LoadedConfiguredProjects;
-                            foreach (var configuredProject in currentProjects)
-                            {
-                                // Inside a write lock, we should get back to the same thread.
-                                var project = await access.GetProjectAsync(configuredProject).ConfigureAwait(true);
-                                project.MarkDirty();
-                                configuredProject.NotifyProjectChange();
-                            }
-                        }
-                    });
-                }
-                catch (OperationCanceledException)
-                {
-                    // Project is already unloaded
-                }
-            }, unconfiguredProject: _projectServices.Project,
-               factory: _projectServices.ThreadingService.JoinableTaskFactory);
+            _taskDelayScheduler.ScheduleAsyncTask(HandleFileChangedAsync);
 
             return VSConstants.S_OK;
         }
 
         public int DirectoryChanged(string pszDirectory)
         {
-            return VSConstants.S_OK;
+            return VSConstants.E_NOTIMPL;
+        }
+
+        public int DirectoryChangedEx(string pszDirectory, string pszFile)
+        {
+            return VSConstants.E_NOTIMPL;
         }
     }
 }
