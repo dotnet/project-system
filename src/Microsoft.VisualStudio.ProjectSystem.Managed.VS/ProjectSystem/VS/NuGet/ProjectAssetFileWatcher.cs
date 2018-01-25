@@ -279,9 +279,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 // Only notify the project if the contents of the watched file have changed.
                 // In the case if we fail to read the contents, we will opt to notify the project.
                 byte[] newHash = GetFileHashOrNull(_fileBeingWatched);
-                if (newHash == null || _previousContentsHash == null || newHash.SequenceEqual(_previousContentsHash))
+                if (newHash == null || _previousContentsHash == null || !newHash.SequenceEqual(_previousContentsHash))
                 {
                     _previousContentsHash = newHash;
+                    cancellationToken.ThrowIfCancellationRequested();
                     await _projectServices.Project.Services.ProjectAsynchronousTasks.LoadedProjectAsync(async () =>
                         {
                             using (var access = await _projectServices.ProjectLockService.WriteLockAsync(cancellationToken))
