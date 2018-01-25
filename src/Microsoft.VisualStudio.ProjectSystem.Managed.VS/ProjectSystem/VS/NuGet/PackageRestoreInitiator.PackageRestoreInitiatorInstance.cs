@@ -108,7 +108,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
                     var targetLinkOptions = new DataflowLinkOptions { PropagateCompletion = true };
 
-                    disposableBag.AddDisposable(ProjectDataSources.SyncLinkTo(sourceBlocks.ToImmutableList(), target, targetLinkOptions));
+                    var sourceBlocksAndCapabilitiesOptions = sourceBlocks.ToImmutableList()
+                        .Insert(0, _projectVsServices.Project.Capabilities.SourceBlock.SyncLinkOptions<IProjectValueVersions>());
+
+                    disposableBag.AddDisposable(ProjectDataSources.SyncLinkTo(sourceBlocksAndCapabilitiesOptions, target, targetLinkOptions));
 
                     _designTimeBuildSubscriptionLink = disposableBag;
                 }
@@ -126,7 +129,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             private void ProjectPropertyChanged(Tuple<ImmutableList<IProjectValueVersions>, TIdentityDictionary> sources)
             {
-                IVsProjectRestoreInfo projectRestoreInfo = ProjectRestoreInfoBuilder.Build(sources.Item1, _projectVsServices.Project);
+                var capabilitiesSnapshot = sources.Item1[0] as IProjectVersionedValue<IProjectCapabilitiesSnapshot>;
+                using (ProjectCapabilitiesContext.CreateIsolatedContext(_projectVsServices.Project, capabilitiesSnapshot.Value))
+                {
+                    NominateProject(sources.Item1.RemoveAt(0));
+                }
+            }
+
+            private void NominateProject(ImmutableList<IProjectValueVersions> sources)
+            {
+                IVsProjectRestoreInfo projectRestoreInfo = ProjectRestoreInfoBuilder.Build(sources, _projectVsServices.Project);
 
                 if (projectRestoreInfo != null)
                 {
