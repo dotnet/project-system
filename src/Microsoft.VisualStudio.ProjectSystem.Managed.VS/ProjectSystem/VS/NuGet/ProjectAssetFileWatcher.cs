@@ -3,6 +3,7 @@
 using System;
 using System.ComponentModel.Composition;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
@@ -36,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private IDisposable _treeWatcher;
         private uint _filechangeCookie;
         private string _fileBeingWatched;
-        private int? _previousContentsHash;
+        private byte[] _previousContentsHash;
 
         [ImportingConstructor]
         public ProjectAssetFileWatcher(
@@ -160,13 +161,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             return Task.CompletedTask;
         }
 
-        private static int? GetFileHashOrNull(string path)
+        private static byte[] GetFileHashOrNull(string path)
         {
-            int? hash = null;
+            byte[] hash = null;
 
             try
             {
-                hash = File.ReadAllText(path)?.GetHashCode();
+                using (var hasher = System.Security.Cryptography.SHA256.Create())
+                using (FileStream file = File.OpenRead(path))
+                {
+                    file.Position = 0;
+                    hash = hasher.ComputeHash(file);
+                }
             }
             catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException)
             {
@@ -272,8 +278,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             {
                 // Only notify the project if the contents of the watched file have changed.
                 // In the case if we fail to read the contents, we will opt to notify the project.
-                int? newHash = GetFileHashOrNull(_fileBeingWatched);
-                if (newHash == null || _previousContentsHash == null || newHash != _previousContentsHash)
+                byte[] newHash = GetFileHashOrNull(_fileBeingWatched);
+                if (newHash == null || _previousContentsHash == null || newHash.SequenceEqual(_previousContentsHash))
                 {
                     _previousContentsHash = newHash;
                     await _projectServices.Project.Services.ProjectAsynchronousTasks.LoadedProjectAsync(async () =>
