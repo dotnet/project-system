@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
@@ -281,6 +282,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 byte[] newHash = GetFileHashOrNull(_fileBeingWatched);
                 if (newHash == null || _previousContentsHash == null || !newHash.SequenceEqual(_previousContentsHash))
                 {
+                    TraceUtilities.TraceVerbose("{0} changed on disk. Marking project dirty", _fileBeingWatched);
                     _previousContentsHash = newHash;
                     cancellationToken.ThrowIfCancellationRequested();
                     await _projectServices.Project.Services.ProjectAsynchronousTasks.LoadedProjectAsync(async () =>
@@ -298,6 +300,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                                 }
                             }
                         });
+                }
+                else
+                {
+                    TraceUtilities.TraceWarning("{0} changed on disk, but has no actual content change.", _fileBeingWatched);
                 }
             }
             catch (OperationCanceledException)
