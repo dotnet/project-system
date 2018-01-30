@@ -121,7 +121,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var tree = new MutableProjectTree();
             ReadProjectItemProperties(tree);
 
-            return tree;
+            if (string.IsNullOrWhiteSpace(tree.ItemName))
+            {
+                return tree;
+            }
+            else
+            {
+                // Because we have an evaluated include value (ItemName), this means we have a project item tree.
+                return tree.ToMutableProjectItemTree();
+            }
         }
 
         private void ReadProjectItemProperties(MutableProjectTree tree)
@@ -266,10 +274,38 @@ namespace Microsoft.VisualStudio.ProjectSystem
                         ReadIcon(tree, expandedIcon: true);
                         break;
 
+                    case "DisplayOrder":
+                        tokenizer.Skip(TokenType.Colon);
+                        tokenizer.Skip(TokenType.WhiteSpace);
+                        ReadDisplayOrder(tree);
+                        break;
+
+                    case "ItemName":
+                        tokenizer.Skip(TokenType.Colon);
+                        tokenizer.Skip(TokenType.WhiteSpace);
+                        ReadItemName(tree);
+                        break;
+
                     default:
                         throw _tokenizer.FormatException(ProjectTreeFormatError.UnrecognizedPropertyName, $"Expected 'FilePath', 'Icon' or 'ExpandedIcon', but encountered '{fieldName}'.");
                 }
             }
+        }
+
+        private void ReadDisplayOrder(MutableProjectTree tree)
+        {   // Parses ': 1`
+
+            Tokenizer tokenizer = Tokenizer(Delimiters.PropertyValue);
+
+            var identifier = tokenizer.ReadIdentifier(IdentifierParseOptions.None);
+
+            tree.DisplayOrder = int.Parse(identifier);
+        }
+
+        private void ReadItemName(MutableProjectTree tree)
+        {   // Parses ': "test.fs"'
+
+            tree.ItemName = ReadQuotedPropertyValue();
         }
 
         private void ReadFilePath(MutableProjectTree tree)

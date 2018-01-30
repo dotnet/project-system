@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.Packaging
         new string[] {"SolutionHasProjectCapability:(CSharp | VB) & CPS"}
         )]
 
-    [ProvideMenuResource("Menus.ctmenu", 1)]
+    [ProvideMenuResource("Menus.ctmenu", 2)]
     internal partial class ManagedProjectSystemPackage : AsyncPackage
     {
         public const string ActivationContextGuid = "E7DF1626-44DD-4E8C-A8A0-92EAB6DDC16E";
@@ -32,6 +32,12 @@ namespace Microsoft.VisualStudio.Packaging
         public const long GenerateNuGetPackageTopLevelBuildCmdId = 0x2001;
         public const int DebugTargetMenuDebugFrameworkMenu = 0x3000;
         public const int DebugFrameworksCmdId = 0x3050;
+
+        public const string ManagedProjectSystemOrderCommandSet = "{6C4806E9-034E-4B64-99DE-29A6F837B993}";
+        public const int MoveUpCmdId = 0x2000;
+        public const int MoveDownCmdId = 0x2001;
+
+        public const string SolutionExplorerGuid = "{3AE79031-E1BC-11D0-8F78-00A0C9110057}";
 
         public const string DefaultCapabilities = ProjectCapability.AppDesigner + "; " +
                                                   ProjectCapability.EditAndContinue + "; " +
