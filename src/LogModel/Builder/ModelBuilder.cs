@@ -175,7 +175,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
 
             var targetInfo = projectInfo.GetTarget(args.BuildEventContext.TargetId);
 
-            if (!targetInfo.TaskInfos.TryGetValue(args.BuildEventContext.TaskId, out var taskInfo))
+            if (targetInfo.TaskInfos == null ||
+                !targetInfo.TaskInfos.TryGetValue(args.BuildEventContext.TaskId, out var taskInfo))
             {
                 throw new LoggerException(Resources.CannotFindTask);
             }

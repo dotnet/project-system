@@ -23,6 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [ProvideToolWindow(typeof(BuildLoggingToolWindow), Style = VsDockStyle.Tabbed, Window = ToolWindowGuids.Outputwindow)]
     [ProvideToolWindow(typeof(BuildLogExplorerToolWindow), Style = VsDockStyle.MDI)]
+    [ProvideToolWindow(typeof(MessageListToolWindow), Style = VsDockStyle.Tabbed, Window = ToolWindowGuids.Outputwindow)]
     internal sealed class ProjectSystemToolsPackage : AsyncPackage
     {
         public const string PackageGuidString = "e3bfb509-b8fd-4692-b4c4-4b2f6ed62bc7";

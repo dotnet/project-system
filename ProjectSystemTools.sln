@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectSystemTools", "src\P
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogProviders", "src\LogProviders\LogProviders.csproj", "{14674C3A-71F4-4804-81D9-78B95DED8A93}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogModel", "src\LogModel\LogModel.csproj", "{13C36B51-3D0A-497F-B13F-0E7F1947E024}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogModel", "src\LogModel\LogModel.csproj", "{13C36B51-3D0A-497F-B13F-0E7F1947E024}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

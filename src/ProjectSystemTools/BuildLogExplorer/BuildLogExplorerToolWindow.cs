@@ -45,6 +45,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogExplorer
             Content = _treeControl;
         }
 
+        private void ClearLogs()
+        {
+            _logs.Clear();
+        }
+
         public void AddLog(string filename)
         {
             try
@@ -120,6 +125,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogExplorer
                     enabled = true;
                     break;
 
+                case ProjectSystemToolsPackage.ClearCommandId:
+                    visible = true;
+                    enabled = true;
+                    break;
+
                 default:
                     handled = false;
                     break;
@@ -156,6 +166,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogExplorer
             {
                 case ProjectSystemToolsPackage.AddLogCommandId:
                     AddLog();
+                    break;
+
+                case ProjectSystemToolsPackage.ClearCommandId:
+                    ClearLogs();
                     break;
 
                 default:
