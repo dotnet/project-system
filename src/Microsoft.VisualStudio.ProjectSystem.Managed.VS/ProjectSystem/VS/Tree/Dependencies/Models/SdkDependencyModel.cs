@@ -43,5 +43,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
                                 .FirstOrDefault();
             Caption = string.IsNullOrEmpty(Version) ? baseCaption : $"{baseCaption} ({Version})";
         }
+
+        private string _id;
+        public override string Id
+        {
+            get
+            {
+                if (_id == null)
+                {
+                    _id = OriginalItemSpec;
+                }
+
+                return _id;
+            }
+        }
     }
 }
