@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
         public override void Shutdown()
         {
             _binaryLogger.Shutdown();
-            _build.Close(_logPath);
+            _build.PreserveLogfile(_logPath);
             DataSource.NotifyChange();
         }
 

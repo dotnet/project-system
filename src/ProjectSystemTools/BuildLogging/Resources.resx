@@ -141,6 +141,9 @@
   <data name="FilterBuildEvaluations" xml:space="preserve">
     <value>Evaluation</value>
   </data>
+  <data name="FilterBuildLives" xml:space="preserve">
+    <value>Live</value>
+  </data>
   <data name="LogFolderDescription" xml:space="preserve">
     <value>Save logs to:</value>
   </data>
@@ -149,6 +152,9 @@
   </data>
   <data name="ProjectTypeHeaderLabel" xml:space="preserve">
     <value>Type</value>
+  </data>
+  <data name="RoslynLoggerProjectName_SolutionWide" xml:space="preserve">
+    <value>* solution wide *</value>
   </data>
   <data name="SearchWatermark" xml:space="preserve">
     <value>Search Build Logs</value>

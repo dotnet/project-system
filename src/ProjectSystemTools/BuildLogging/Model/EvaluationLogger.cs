@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
                             evaluation.Build.Finish(true, args.Timestamp);
                             evaluation.Wrapper.RaiseEvent(sender, args);
                             evaluation.Wrapper.BinaryLogger.Shutdown();
-                            evaluation.Build.Close(evaluation.LogPath);
+                            evaluation.Build.PreserveLogfile(evaluation.LogPath);
                             DataSource.NotifyChange();
                         }
                     }

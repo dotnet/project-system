@@ -41,6 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
             Targets = targets?.ToArray() ?? Enumerable.Empty<string>();
             BuildType = buildType;
             StartTime = startTime;
+            Status = BuildStatus.Running;
         }
 
         public void Finish(bool succeeded, DateTime time)
@@ -54,10 +55,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
             Elapsed = time - StartTime;
         }
 
-        public void Close(string logPath)
+        public void PreserveLogfile(string logPath)
         {
             LogPath = Path.Combine(Path.GetTempPath(), Filename);
             File.Copy(logPath, LogPath, true);
+        }
+
+        public void SetLogPath(string logPath)
+        {
+            LogPath = logPath;
         }
 
         public bool TryGetValue(string keyName, out object content)

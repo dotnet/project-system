@@ -77,6 +77,16 @@
         <target state="new">Evaluation</target>
         <note />
       </trans-unit>
+      <trans-unit id="FilterBuildLives">
+        <source>Live</source>
+        <target state="new">Live</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RoslynLoggerProjectName_SolutionWide">
+        <source>* solution wide *</source>
+        <target state="new">* solution wide *</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>
