@@ -42,8 +42,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
         public override void Shutdown()
         {
             _binaryLogger.Shutdown();
-            _build.Close(_logPath);
-            DataSource.NotifyChange();
+            if (_build != null)
+            {
+                _build.Close(_logPath);
+                DataSource.NotifyChange();
+            }
+            else
+            {
+                // Never got project information so just delete the log.
+                File.Delete(_logPath);
+            }
         }
 
         private void ProjectFinished(object sender, ProjectFinishedEventArgs e)
