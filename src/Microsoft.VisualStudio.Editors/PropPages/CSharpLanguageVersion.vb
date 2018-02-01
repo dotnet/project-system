@@ -27,6 +27,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Const s_languageVersion_DisplayNameFor7_1 As String = "C# 7.1"
         Private Const s_languageVersion_7_2 As String = "7.2"
         Private Const s_languageVersion_DisplayNameFor7_2 As String = "C# 7.2"
+        Private Const s_languageVersion_7_3 As String = "7.3"
+        Private Const s_languageVersion_DisplayNameFor7_3 As String = "C# 7.3"
 
         ''' <summary>
         ''' Stores the property value corresponding to the language version
@@ -170,6 +172,16 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public Shared ReadOnly Property Version7_2() As CSharpLanguageVersion
             Get
                 Static value As New CSharpLanguageVersion(s_languageVersion_7_2, s_languageVersion_DisplayNameFor7_2)
+                Return value
+            End Get
+        End Property
+
+        ''' <summary>
+        ''' Return the C# 7.3 language version object
+        ''' </summary>
+        Public Shared ReadOnly Property Version7_3() As CSharpLanguageVersion
+            Get
+                Static value As New CSharpLanguageVersion(s_languageVersion_7_3, s_languageVersion_DisplayNameFor7_3)
                 Return value
             End Get
         End Property
