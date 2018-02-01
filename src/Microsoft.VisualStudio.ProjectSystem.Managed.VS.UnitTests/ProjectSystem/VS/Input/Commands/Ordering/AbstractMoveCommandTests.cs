@@ -3,7 +3,7 @@
 using System;
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
     [Trait("UnitTest", "ProjectSystem")]
     public abstract class AbstractMoveCommandTests

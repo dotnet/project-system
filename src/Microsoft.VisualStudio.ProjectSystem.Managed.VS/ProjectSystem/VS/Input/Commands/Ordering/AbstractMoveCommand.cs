@@ -2,12 +2,12 @@
 
 using System;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.Packaging;
-using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Packaging;
+using Microsoft.VisualStudio.ProjectSystem.Input;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
     internal abstract class AbstractMoveCommand : AbstractSingleNodeProjectCommand
     {

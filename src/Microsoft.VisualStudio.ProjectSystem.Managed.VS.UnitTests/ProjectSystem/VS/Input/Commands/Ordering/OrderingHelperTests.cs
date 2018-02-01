@@ -4,7 +4,7 @@ using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
     [Trait("UnitTest", "ProjectSystem")]
     public class OrderingHelperTests
@@ -338,6 +338,98 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
     <Compile Include=""test/nested/nested.fs"" />
     <Compile Include=""test/test4.fs"" />
     <Compile Include=""test2.fs"" />
+  </ItemGroup>
+</Project>";
+
+            AssertEqualProject(expected, project);
+        }
+
+        [Fact]
+        public void MoveAboveFile_IsSuccessful()
+        {
+            var tree = ProjectTreeParser.Parse(@"
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
+    File (flags: {}), FilePath: ""C:\Foo\test1.fs"", DisplayOrder: 1, ItemName: ""test1.fs""
+    File (flags: {}), FilePath: ""C:\Foo\test2.fs"", DisplayOrder: 2, ItemName: ""test2.fs""
+    File (flags: {}), FilePath: ""C:\Foo\test3.fs"", DisplayOrder: 2, ItemName: ""test3.fs""
+");
+
+            var projectRootElement = @"
+<Project Sdk=""Microsoft.NET.Sdk"">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include=""test1.fs"" />
+    <Compile Include=""test2.fs"" />
+    <Compile Include=""test3.fs"" />
+  </ItemGroup>
+
+</Project>
+".AsProjectRootElement();
+
+            var project = new Project(projectRootElement);
+
+            Assert.True(OrderingHelper.TryMoveAbove(project, tree.Children[0], tree.Children[2]));
+            Assert.True(project.IsDirty);
+
+            var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<Project Sdk=""Microsoft.NET.Sdk"">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include=""test2.fs"" />
+    <Compile Include=""test1.fs"" />
+    <Compile Include=""test3.fs"" />
+  </ItemGroup>
+</Project>";
+
+            AssertEqualProject(expected, project);
+        }
+
+        [Fact]
+        public void MoveBelowFile_IsSuccessful()
+        {
+            var tree = ProjectTreeParser.Parse(@"
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
+    File (flags: {}), FilePath: ""C:\Foo\test1.fs"", DisplayOrder: 1, ItemName: ""test1.fs""
+    File (flags: {}), FilePath: ""C:\Foo\test2.fs"", DisplayOrder: 2, ItemName: ""test2.fs""
+    File (flags: {}), FilePath: ""C:\Foo\test3.fs"", DisplayOrder: 2, ItemName: ""test3.fs""
+");
+
+            var projectRootElement = @"
+<Project Sdk=""Microsoft.NET.Sdk"">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include=""test1.fs"" />
+    <Compile Include=""test2.fs"" />
+    <Compile Include=""test3.fs"" />
+  </ItemGroup>
+
+</Project>
+".AsProjectRootElement();
+
+            var project = new Project(projectRootElement);
+
+            Assert.True(OrderingHelper.TryMoveBelow(project, tree.Children[0], tree.Children[2]));
+            Assert.True(project.IsDirty);
+
+            var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<Project Sdk=""Microsoft.NET.Sdk"">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include=""test2.fs"" />
+    <Compile Include=""test3.fs"" />
+    <Compile Include=""test1.fs"" />
   </ItemGroup>
 </Project>";
 

@@ -6,25 +6,25 @@ using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.Shell;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
-    [ProjectCommand(ManagedProjectSystemPackage.ManagedProjectSystemOrderCommandSet, ManagedProjectSystemPackage.MoveDownCmdId)]
-    [AppliesTo(ProjectCapability.FSharp)]
-    internal class MoveDownCommand : AbstractMoveCommand
+    [ProjectCommand(ManagedProjectSystemPackage.ManagedProjectSystemOrderCommandSet, ManagedProjectSystemPackage.MoveUpCmdId)]
+    [AppliesTo(ProjectCapability.SortByDisplayOrder)]
+    internal class MoveUpCommand : AbstractMoveCommand
     {
         [ImportingConstructor]
-        public MoveDownCommand(IPhysicalProjectTree projectTree, SVsServiceProvider serviceProvider, ConfiguredProject configuredProject) : base(projectTree, serviceProvider, configuredProject)
+        public MoveUpCommand(IPhysicalProjectTree projectTree, SVsServiceProvider serviceProvider, ConfiguredProject configuredProject) : base(projectTree, serviceProvider, configuredProject)
         {
         }
 
         protected override bool CanMove(IProjectTree node)
         {
-            return OrderingHelper.CanMoveDown(node);
+            return OrderingHelper.CanMoveUp(node);
         }
 
         protected override Task<bool> TryMoveAsync(ConfiguredProject configuredProject, IProjectTree node)
         {
-            return OrderingHelper.TryMoveDownAsync(configuredProject, node);
+            return OrderingHelper.TryMoveUpAsync(configuredProject, node);
         }
     }
 }
