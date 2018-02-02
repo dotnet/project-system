@@ -77,16 +77,5 @@ namespace Microsoft.VisualStudio.Packaging
             DebuggerTraceListener.RegisterTraceListener();
 #endif
         }
-
-        protected override void Dispose(bool disposing)
-        {
-            if(disposing && _dotNetCoreCompatibilityDetector is IDisposable disposableDetector)
-            {
-                disposableDetector.Dispose();
-                _dotNetCoreCompatibilityDetector = null;
-            }
-
-            base.Dispose(disposing);
-        }
     }
 }

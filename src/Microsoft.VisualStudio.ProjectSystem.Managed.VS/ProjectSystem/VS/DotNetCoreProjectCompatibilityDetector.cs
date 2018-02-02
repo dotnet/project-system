@@ -41,12 +41,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
         [ImportingConstructor]
         public DotNetCoreProjectCompatibilityDetector([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider, Lazy<IProjectServiceAccessor> projectAccessor, 
-                                                      Lazy<IDialogServices> dialogServices, Lazy<IUserNotificationServices> userNotificationServices, Lazy<IProjectThreadingService> threadHandling)
+                                                      Lazy<IDialogServices> dialogServices, Lazy<IProjectThreadingService> threadHandling)
         {
             _serviceProvider = serviceProvider;
             ProjectServiceAccessor = projectAccessor;
             DialogServices = dialogServices;
-            UserNotificationServices = userNotificationServices;
             ThreadHandling = threadHandling;
         }
 
@@ -64,7 +63,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private Lazy<IProjectServiceAccessor> ProjectServiceAccessor { get; set; }
         private Lazy<IDialogServices> DialogServices { get; set; }
-        private Lazy<IUserNotificationServices> UserNotificationServices { get; set; }
         private Lazy<IProjectThreadingService> ThreadHandling { get; set; }
 
         private readonly IServiceProvider _serviceProvider;
@@ -177,6 +175,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 // Only want to warn once per solution
                 _compatibilityLevelWarnedForThisSolution = compatLevel;
                 
+                IVsUIShell uiShell = _serviceProvider.GetService<IVsUIShell, SVsUIShell>();
+                uiShell.GetAppName(out string caption);
+
                 if(compatLevel == CompatibilityLevel.Partial)
                 {
                     // Get current dontShowAgain value
@@ -189,8 +190,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     
                     if(!suppressPrompt)
                     {
-                        IVsUIShell uiShell = _serviceProvider.GetService<IVsUIShell, SVsUIShell>();
-                        uiShell.GetAppName(out string caption);
                         suppressPrompt= DialogServices.Value.DontShowAgainMessageBox(caption, VSResources.PartialSupportedDotNetCoreProject, VSResources.DontShowAgain, false, VSResources.LearnMore, LearnMoreFwlink);
                         if(suppressPrompt && settingsManager != null)
                         {
@@ -200,8 +199,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 }
                 else
                 {
-                    UserNotificationServices.Value.ShowMessageBox(string.Format(VSResources.NotSupportedDotNetCoreProject, s_partialSupportedVersion.Major, s_partialSupportedVersion.Minor), 
-                                                                  null,  OLEMSGICON.OLEMSGICON_WARNING, OLEMSGBUTTON.OLEMSGBUTTON_OK, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+                    DialogServices.Value.DontShowAgainMessageBox(caption, string.Format(VSResources.NotSupportedDotNetCoreProject, s_partialSupportedVersion.Major, s_partialSupportedVersion.Minor), 
+                                                                 null, false, VSResources.LearnMore, LearnMoreFwlink);
                 }
             }
         }

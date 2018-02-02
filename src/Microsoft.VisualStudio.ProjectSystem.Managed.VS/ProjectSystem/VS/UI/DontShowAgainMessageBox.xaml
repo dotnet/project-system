@@ -52,8 +52,8 @@
                 <Hyperlink Style="{StaticResource BlueHyperlinkStyle}" Command="{Binding LearnMoreCommand}">
                     <Run Text="{Binding Path=LearnMoreText, Mode=OneWay}" />
                 </Hyperlink>
-            </TextBlock>            
-            <CheckBox Margin="6,20,0,0" Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Center" IsChecked="{Binding Path=CheckboxState}" Content="{Binding Path=CheckboxText, Mode=OneWay}" />
+            </TextBlock>
+            <CheckBox Margin="6,20,0,0" x:Name="DontShowAgainCheckBox" Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Center" IsChecked="{Binding Path=CheckboxState}" Content="{Binding Path=CheckboxText, Mode=OneWay}" />
             <Button Grid.Row="3" x:Uid="okButton" Margin="6,10,6,6" Padding="4,4,4,4" MinHeight="23" MinWidth="105" HorizontalAlignment="Right" IsDefault="True" Click="OK_Click" Content="{Binding Path=OkButtonText, Mode=OneWay}"/>
         </Grid>
     </Grid>

@@ -20,14 +20,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
             DataContext = this;
             DialogCaption = caption;
             MessageText = message;
-            CheckboxText = checkboxText;
-            CheckboxState = initialStateOfCheckbox;
             PreviewKeyDown += new KeyEventHandler(CloseOnESCkey);
 
+            DontShowAgainCheckBox.Visibility = Visibility.Collapsed;
+            if(checkboxText != null)
+            {
+                DontShowAgainCheckBox.Visibility = Visibility.Visible;
+                CheckboxText = checkboxText;
+                CheckboxState = initialStateOfCheckbox;
+            }
+
+            LearnMore.Visibility = Visibility.Collapsed;
             if (learnMoreText != null)
             {
                 LearnMoreText = learnMoreText;
-                LearnMore.Visibility = Visibility.Visible;
                 LearnMoreCommand = new RelayCommand((parameter) => 
                 {
                     try
