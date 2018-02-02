@@ -1,0 +1,35 @@
+<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="ProjectGroup">
+  <TemplateData>
+    <Name Package="{0CD94836-1526-4E85-87D3-FB5274C5AFC9}" ID="6001"/>
+    <Description Package="{0CD94836-1526-4E85-87D3-FB5274C5AFC9}" ID="6002"/>
+    <Icon Package="{AAB75614-2F8F-4DA6-B0A6-763C6DBB2969}" ID="4" />
+    <ProjectType>FSharp</ProjectType>
+    <ProjectSubType>Web</ProjectSubType>
+    <TemplateGroupID>Web</TemplateGroupID>
+    <TemplateID>Microsoft.DotNet.FSharp.ASPNET.WebCore</TemplateID>
+    <NumberOfParentCategoriesToRollUp>0</NumberOfParentCategoriesToRollUp>
+    <SortOrder>100</SortOrder>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>WebApplication</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <LocationField>Enabled</LocationField>
+    <PromptForSaveOnCreation>true</PromptForSaveOnCreation>
+    <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
+  </TemplateData>
+  <TemplateContent>
+    <ProjectCollection/>
+    <CustomParameters>
+      <CustomParameter Name="$language$" Value="F#" />
+      <CustomParameter Name="$uistyle$" Value="oneaspnet" />
+      <CustomParameter Name="$tagfilter$" Value="web" />
+      <CustomParameter Name="$showAllFrameworks$" Value="true" />
+      <CustomParameter Name="$enableFrameworkTypeSelection$" Value="false" />
+      <CustomParameter Name="$wizardTitleResource$" Value="{0CD94836-1526-4E85-87D3-FB5274C5AFC9};5001" />
+    </CustomParameters>
+  </TemplateContent>
+  <WizardExtension>
+    <Assembly>Microsoft.VisualStudio.TemplateEngine.Wizard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</Assembly>
+    <FullClassName>Microsoft.VisualStudio.TemplateEngine.Wizard.TemplateEngineWizard</FullClassName>
+  </WizardExtension>
+</VSTemplate>
+
