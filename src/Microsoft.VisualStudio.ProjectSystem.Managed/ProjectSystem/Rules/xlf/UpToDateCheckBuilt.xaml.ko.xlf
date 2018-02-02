@@ -4,22 +4,22 @@
     <body>
       <trans-unit id="Rule|UpToDateCheckBuilt|DisplayName">
         <source>Up-to-date check built artifact</source>
-        <target state="new">Up-to-date check built artifact</target>
+        <target state="translated">최신 검사로 빌드된 아티팩트</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|UpToDateCheckBuilt|Description">
         <source>File Properties</source>
-        <target state="new">File Properties</target>
+        <target state="translated">파일 속성</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Identity|Description">
         <source>The item specified in the Include attribute.</source>
-        <target state="new">The item specified in the Include attribute.</target>
+        <target state="translated">Include 특성에 지정된 항목입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Original|Description">
         <source>If set, specifies that this built output comes from this source file.</source>
-        <target state="new">If set, specifies that this built output comes from this source file.</target>
+        <target state="translated">설정하면 이 빌드된 출력이 이 소스 파일에서 나오도록 지정합니다.</target>
         <note />
       </trans-unit>
     </body>
