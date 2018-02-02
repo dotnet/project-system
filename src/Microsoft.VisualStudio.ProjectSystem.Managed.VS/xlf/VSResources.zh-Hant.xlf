@@ -281,6 +281,31 @@ In order to debug this project, add an executable project to this solution which
         <target state="translated">專案</target>
         <note />
       </trans-unit>
+      <trans-unit id="PartialSupportedDotNetCoreProject">
+        <source>Visual Studio 2017 15.7 or newer is recommended for .NET Core 2.1 projects.</source>
+        <target state="new">Visual Studio 2017 15.7 or newer is recommended for .NET Core 2.1 projects.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NotSupportedDotNetCoreProject">
+        <source>Projects targeting versions newer than .NET Core {0}.{1} are not supported by this version of Visual Studio.</source>
+        <target state="new">Projects targeting versions newer than .NET Core {0}.{1} are not supported by this version of Visual Studio.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DontShowAgain">
+        <source>Don't show again</source>
+        <target state="new">Don't show again</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LearnMore">
+        <source>Learn more</source>
+        <target state="new">Learn more</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OKButtonText">
+        <source>OK</source>
+        <target state="new">OK</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

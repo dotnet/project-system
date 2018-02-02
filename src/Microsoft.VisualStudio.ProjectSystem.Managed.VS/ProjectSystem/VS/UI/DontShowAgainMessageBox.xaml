@@ -1,0 +1,60 @@
+﻿<ui:DialogWindow
+        x:Class="Microsoft.VisualStudio.ProjectSystem.VS.UI.DontShowAgainMessageBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
+        x:ClassModifier="internal" 
+        ShowInTaskbar="False"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"                    
+        Title="{Binding Path=DialogCaption, Mode=OneWay}"
+        Width="500" SizeToContent="Height">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary>
+                    <BitmapImage x:Key="ErrorIcon" UriSource="../../../warning.ico" />
+                </ResourceDictionary>
+                <ResourceDictionary>
+                    <Style x:Key="BlueHyperlinkStyle" TargetType="{x:Type Hyperlink}">
+                        <Setter Property="Foreground" Value="{DynamicResource VsBrush.ControlLinkText}" />
+                        <Setter Property="TextBlock.TextDecorations" Value="{x:Null}" />
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="{DynamicResource VsBrush.ControlLinkTextHover}" />
+                                <Setter Property="TextBlock.TextDecorations" Value="Underline" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="{DynamicResource VsBrush.CommandBarTextInactive}" />
+                                <Setter Property="TextBlock.TextDecorations" Value="{x:Null}" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Image Grid.Column="0" VerticalAlignment="Top" Stretch="None" Source="{StaticResource ErrorIcon}" Margin="10,10,10,0" Visibility="Visible" />
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock Margin="6,10,6,0" Grid.Row="0" TextWrapping="WrapWithOverflow" Text="{Binding Path=MessageText, Mode=OneWay}"/>
+            <TextBlock Margin="6,5,6,0" x:Name="LearnMore" Grid.Row="1" Grid.Column="0" Visibility="Collapsed">
+                <Hyperlink Style="{StaticResource BlueHyperlinkStyle}" Command="{Binding LearnMoreCommand}">
+                    <Run Text="{Binding Path=LearnMoreText, Mode=OneWay}" />
+                </Hyperlink>
+            </TextBlock>            
+            <CheckBox Margin="6,20,0,0" Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Center" IsChecked="{Binding Path=CheckboxState}" Content="{Binding Path=CheckboxText, Mode=OneWay}" />
+            <Button Grid.Row="3" x:Uid="okButton" Margin="6,10,6,6" Padding="4,4,4,4" MinHeight="23" MinWidth="105" HorizontalAlignment="Right" IsDefault="True" Click="OK_Click" Content="{Binding Path=OkButtonText, Mode=OneWay}"/>
+        </Grid>
+    </Grid>
+</ui:DialogWindow>

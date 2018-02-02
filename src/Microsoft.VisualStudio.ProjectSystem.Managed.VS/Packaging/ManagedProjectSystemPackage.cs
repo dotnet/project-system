@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands;
 using Microsoft.VisualStudio.Shell;
 using Task = System.Threading.Tasks.Task;
@@ -47,6 +48,8 @@ namespace Microsoft.VisualStudio.Packaging
                                                   ProjectCapability.ProjectConfigurationsDeclaredDimensions + "; " +
                                                   ProjectCapability.LanguageService;
 
+        private  IDotNetCoreProjectCompatibilityDetector _dotNetCoreCompatibilityDetector;
+
         public ManagedProjectSystemPackage()
         {
         }
@@ -65,9 +68,25 @@ namespace Microsoft.VisualStudio.Packaging
             var debugFrameworksMenuTextUpdater = componentModel.DefaultExportProvider.GetExport<DebugFrameworkPropertyMenuTextUpdater>();
             mcs.AddCommand(debugFrameworksMenuTextUpdater.Value);
 
+            // Need to use the CPS export provider to get the dotnet compatibility detector
+            Lazy<IProjectServiceAccessor> projectServiceAccessor = componentModel.DefaultExportProvider.GetExport<IProjectServiceAccessor>();
+            _dotNetCoreCompatibilityDetector = projectServiceAccessor.Value.GetProjectService().Services.ExportProvider.GetExport<IDotNetCoreProjectCompatibilityDetector>().Value;
+            await _dotNetCoreCompatibilityDetector.InitializeAsync().ConfigureAwait(true);
+
 #if DEBUG
             DebuggerTraceListener.RegisterTraceListener();
 #endif
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if(disposing && _dotNetCoreCompatibilityDetector is IDisposable disposableDetector)
+            {
+                disposableDetector.Dispose();
+                _dotNetCoreCompatibilityDetector = null;
+            }
+
+            base.Dispose(disposing);
         }
     }
 }
