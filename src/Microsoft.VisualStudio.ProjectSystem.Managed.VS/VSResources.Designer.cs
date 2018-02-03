@@ -427,7 +427,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Visual Studio 2017 15.7 or newer is recommended for .NET Core 2.1 projects..
+        ///   Looks up a localized string similar to Visual Studio 2017 version 15.7 or newer is recommended for .NET Core 2.1 projects..
         /// </summary>
         internal static string PartialSupportedDotNetCoreProject {
             get {

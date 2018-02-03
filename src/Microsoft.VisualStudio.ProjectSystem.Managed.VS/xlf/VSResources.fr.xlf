@@ -282,8 +282,8 @@ Pour déboguer ce projet, ajoutez à cette solution un projet exécutable qui fa
         <note />
       </trans-unit>
       <trans-unit id="PartialSupportedDotNetCoreProject">
-        <source>Visual Studio 2017 15.7 or newer is recommended for .NET Core 2.1 projects.</source>
-        <target state="new">Visual Studio 2017 15.7 or newer is recommended for .NET Core 2.1 projects.</target>
+        <source>Visual Studio 2017 version 15.7 or newer is recommended for .NET Core 2.1 projects.</source>
+        <target state="new">Visual Studio 2017 version 15.7 or newer is recommended for .NET Core 2.1 projects.</target>
         <note />
       </trans-unit>
       <trans-unit id="NotSupportedDotNetCoreProject">

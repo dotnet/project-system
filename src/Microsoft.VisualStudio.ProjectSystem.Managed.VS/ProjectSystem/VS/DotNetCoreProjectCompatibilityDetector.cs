@@ -2,11 +2,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.ProjectSystem.References;
 using Microsoft.VisualStudio.ProjectSystem.VS.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.UI;
 using Microsoft.VisualStudio.Settings;
@@ -23,11 +25,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     [Export(typeof(IDotNetCoreProjectCompatibilityDetector))]
     internal sealed class DotNetCoreProjectCompatibilityDetector : IDotNetCoreProjectCompatibilityDetector, IVsSolutionEvents, IVsSolutionLoadEvents, IDisposable
     {
-        // The version's below this are compatible, versions above it are unsupported (stronger warning message and no don't show again option), equal
+        // The versions below this are compatible, versions above it are unsupported (stronger warning message and no don't show again option), equal
         // to are "partial" so tooling should generally work, new features may not have tooling.
-        static Version s_partialSupportedVersion = new Version(2, 1);
+        private static Version s_partialSupportedVersion = new Version(2, 1);
 
-        const string LearnMoreFwlink = "https://go.microsoft.com/fwlink/?linkid=867264";
+        private const string LearnMoreFwlink = "https://go.microsoft.com/fwlink/?linkid=867264";
         private const string SuppressDotNewCoreWarningKey = @"ManagedProjectSystem\SuppressDotNewCoreWarning";
 
         [Guid("9B164E40-C3A2-4363-9BC5-EB4039DEF653")]
@@ -58,6 +60,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             {
                 var solution = _serviceProvider.GetService<IVsSolution, SVsSolution>();
                 Verify.HResult(solution.AdviseSolutionEvents(this, out _solutionCookie));
+
+                // Check to see if a solution is already open. If so we see _solutionOpened to true so that subsequent projects added to 
+                // this solution are processed.
+                if(ErrorHandler.Succeeded(solution.GetProperty((int)__VSPROPID4.VSPROPID_IsSolutionFullyLoaded, out object isFullyLoaded)) && isFullyLoaded is bool && (bool)isFullyLoaded)
+                {
+                    _solutionOpened = true;
+                }
             }
         }
 
@@ -94,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 UnconfiguredProject project = pHierarchy.AsUnconfiguredProject();
                 if (project != null)
                 {
-                    ThreadHandling.Value.JoinableTaskFactory.StartOnIdle(async () =>
+                    ThreadHandling.Value.JoinableTaskFactory.RunAsync(async () =>
                     {
                         // Run on the background
                         await TaskScheduler.Default;
@@ -107,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                             CompatibilityLevel compatLevel = await GetProjectCompatibilityAsync(project).ConfigureAwait(false);
                             if(compatLevel != CompatibilityLevel.Supported)
                             {
-                                await WarnUserOfiIncompatibleProjectAsync(compatLevel).ConfigureAwait(false);
+                                await WarnUserOfIncompatibleProjectAsync(compatLevel).ConfigureAwait(false);
                             }
                         }
                     });
@@ -132,7 +141,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public int OnAfterBackgroundSolutionLoadComplete()
         {
             // Schedule this to run on idle
-            ThreadHandling.Value.JoinableTaskFactory.StartOnIdle(async () =>
+            ThreadHandling.Value.JoinableTaskFactory.RunAsync(async () =>
             {
                 // Run on the background
                 await TaskScheduler.Default;
@@ -153,17 +162,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 if (finalCompatLevel != CompatibilityLevel.Supported)
                 {
                     // Warn the user.
-                    await WarnUserOfiIncompatibleProjectAsync(finalCompatLevel).ConfigureAwait(false);
+                    await WarnUserOfIncompatibleProjectAsync(finalCompatLevel).ConfigureAwait(false);
                }
 
-               // Used to know when to process newly added projects
+               // Used so we know when to process newly added projects
                _solutionOpened = true;
             });
 
             return VSConstants.S_OK;
         }
 
-        private async Task WarnUserOfiIncompatibleProjectAsync(CompatibilityLevel compatLevel)
+        private async Task WarnUserOfIncompatibleProjectAsync(CompatibilityLevel compatLevel)
         {
             // Warn the user.
             await ThreadHandling.Value.SwitchToUIThread();
@@ -211,18 +220,60 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             {
                 IProjectProperties properties = project.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
                 string tfm = await properties.GetEvaluatedPropertyValueAsync("TargetFrameworkMoniker").ConfigureAwait(false);
-                var fw = new FrameworkName(tfm);
-                if ((fw.Identifier.Equals(".NETCore", StringComparison.OrdinalIgnoreCase) || fw.Identifier.Equals(".NETCoreApp", StringComparison.OrdinalIgnoreCase)))
+                if (!string.IsNullOrEmpty(tfm))
                 {
-                    if(fw.Version.Major == s_partialSupportedVersion.Major && fw.Version.Minor == s_partialSupportedVersion.Minor)
+                    var fw = new FrameworkName(tfm);
+                    if (fw.Identifier.Equals(".NETCoreApp", StringComparison.OrdinalIgnoreCase))
                     {
-                        return CompatibilityLevel.Partial;
+                        return GetCompatibilityLevelFromVersion(fw.Version);
                     }
-                    else if(fw.Version.Major > s_partialSupportedVersion.Major || (fw.Version.Major == s_partialSupportedVersion.Major && fw.Version.Minor > s_partialSupportedVersion.Minor))
+                    else if (fw.Identifier.Equals(".NETFramework", StringComparison.OrdinalIgnoreCase))
                     {
-                        return CompatibilityLevel.NotSupported;
+                        // Teh interesting case here is Asp.Net Core on full framework
+                        IImmutableSet<IUnresolvedPackageReference> pkgReferences = await project.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject.Services.PackageReferences.GetUnresolvedReferencesAsync().ConfigureAwait(false);
+
+                        // Look through the package references
+                        foreach (var pkgRef in pkgReferences)
+                        {
+                            if (string.Equals(pkgRef.EvaluatedInclude, "Microsoft.AspNetCore.All", StringComparison.OrdinalIgnoreCase) ||
+                                string.Equals(pkgRef.EvaluatedInclude, "Microsoft.AspNetCore", StringComparison.OrdinalIgnoreCase))
+                            {
+                                string verString = await pkgRef.Metadata.GetEvaluatedPropertyValueAsync("Version").ConfigureAwait(false);
+                                if(!string.IsNullOrWhiteSpace(verString))
+                                {
+                                    // This is a semantic version string. We only care about the non-semantic version part
+                                    int index = verString.IndexOfAny(new char[] {'-', '+'});
+                                    if(index != -1)
+                                    {
+                                        verString = verString.Substring(0, index);
+                                    }
+
+                                    if(Version.TryParse(verString, out Version aspnetVersion))
+                                    {
+                                        return GetCompatibilityLevelFromVersion(aspnetVersion);
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
+            }
+
+            return CompatibilityLevel.Supported;
+        }
+
+        /// <summary>
+        /// Compares the psased in version to the partially supported version and returns the compatability level
+        /// </summary>
+        private CompatibilityLevel GetCompatibilityLevelFromVersion(Version version)
+        {
+            if(version.Major == s_partialSupportedVersion.Major && version.Minor == s_partialSupportedVersion.Minor)
+            {
+                return CompatibilityLevel.Partial;
+            }
+            else if(version.Major > s_partialSupportedVersion.Major || (version.Major == s_partialSupportedVersion.Major && version.Minor > s_partialSupportedVersion.Minor))
+            {
+                return CompatibilityLevel.NotSupported;
             }
 
             return CompatibilityLevel.Supported;
