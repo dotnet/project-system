@@ -9,7 +9,6 @@ using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.References;
-using Microsoft.VisualStudio.ProjectSystem.VS.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.UI;
 using Microsoft.VisualStudio.Settings;
 using Microsoft.VisualStudio.Shell;
@@ -55,18 +54,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             await ThreadHandling.Value.SwitchToUIThread();
 
-            // Do nothing, don't hook into events if not the release channel
-            if(IsReleaseChannel())
-            {
-                var solution = _serviceProvider.GetService<IVsSolution, SVsSolution>();
-                Verify.HResult(solution.AdviseSolutionEvents(this, out _solutionCookie));
+            var solution = _serviceProvider.GetService<IVsSolution, SVsSolution>();
+            Verify.HResult(solution.AdviseSolutionEvents(this, out _solutionCookie));
 
-                // Check to see if a solution is already open. If so we see _solutionOpened to true so that subsequent projects added to 
-                // this solution are processed.
-                if(ErrorHandler.Succeeded(solution.GetProperty((int)__VSPROPID4.VSPROPID_IsSolutionFullyLoaded, out object isFullyLoaded)) && isFullyLoaded is bool && (bool)isFullyLoaded)
-                {
-                    _solutionOpened = true;
-                }
+            // Check to see if a solution is already open. If so we see _solutionOpened to true so that subsequent projects added to 
+            // this solution are processed.
+            if(ErrorHandler.Succeeded(solution.GetProperty((int)__VSPROPID4.VSPROPID_IsSolutionFullyLoaded, out object isFullyLoaded)) && isFullyLoaded is bool && (bool)isFullyLoaded)
+            {
+                _solutionOpened = true;
             }
         }
 
@@ -277,16 +272,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
 
             return CompatibilityLevel.Supported;
-        }
-
-        /// <summary>
-        /// Query the ChannelSuffix property. Will be empty if this is the release channel
-        /// </summary>
-        private bool IsReleaseChannel()
-        {
-            IVsAppId vsAppId = _serviceProvider.GetService<IVsAppId, SVsAppId>();
-            int hr = vsAppId.GetProperty((int)VSAPropID.VSAPROPID_ChannelSuffix, out object value);
-            return ErrorHandler.Succeeded(hr) && value is string && string.IsNullOrEmpty((string)value);
         }
 
         #region Unused
