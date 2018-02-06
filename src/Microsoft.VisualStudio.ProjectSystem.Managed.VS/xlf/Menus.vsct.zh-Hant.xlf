@@ -67,6 +67,56 @@
         <target state="new">MoveDown</target>
         <note />
       </trans-unit>
+      <trans-unit id="AddAboveMenu|ButtonText">
+        <source>&amp;Add Above</source>
+        <target state="new">&amp;Add Above</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidAddNewItemAbove|ButtonText">
+        <source>&amp;Add New Item...</source>
+        <target state="new">&amp;Add New Item...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidAddNewItemAbove|CommandName">
+        <source>AddNewItemAbove</source>
+        <target state="new">AddNewItemAbove</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AddBelowMenu|ButtonText">
+        <source>&amp;Add Below</source>
+        <target state="new">&amp;Add Below</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidAddExistingItemAbove|ButtonText">
+        <source>&amp;Add Existing Item...</source>
+        <target state="new">&amp;Add Existing Item...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidAddExistingItemAbove|CommandName">
+        <source>AddExistingItemAbove</source>
+        <target state="new">AddExistingItemAbove</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidAddNewItemBelow|ButtonText">
+        <source>&amp;Add New Item...</source>
+        <target state="new">&amp;Add New Item...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidAddNewItemBelow|CommandName">
+        <source>AddNewItemBelow</source>
+        <target state="new">AddNewItemBelow</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidAddExistingItemBelow|ButtonText">
+        <source>&amp;Add Existing Item...</source>
+        <target state="new">&amp;Add Existing Item...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidAddExistingItemBelow|CommandName">
+        <source>AddExistingItemBelow</source>
+        <target state="new">AddExistingItemBelow</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>
