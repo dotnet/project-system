@@ -4,22 +4,22 @@
     <body>
       <trans-unit id="Rule|UpToDateCheckBuilt|DisplayName">
         <source>Up-to-date check built artifact</source>
-        <target state="new">Up-to-date check built artifact</target>
+        <target state="translated">Артефакт сборки проверки наличия обновлений</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|UpToDateCheckBuilt|Description">
         <source>File Properties</source>
-        <target state="new">File Properties</target>
+        <target state="translated">Свойства файла</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Identity|Description">
         <source>The item specified in the Include attribute.</source>
-        <target state="new">The item specified in the Include attribute.</target>
+        <target state="translated">Элемент, заданный в атрибуте Include.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Original|Description">
         <source>If set, specifies that this built output comes from this source file.</source>
-        <target state="new">If set, specifies that this built output comes from this source file.</target>
+        <target state="translated">Если он задан, указывает, что сборка получена из этого файла исходного кода.</target>
         <note />
       </trans-unit>
     </body>
