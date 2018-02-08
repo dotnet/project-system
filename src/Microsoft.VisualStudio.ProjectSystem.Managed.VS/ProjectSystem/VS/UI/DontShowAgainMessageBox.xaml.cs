@@ -32,6 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
             LearnMore.Visibility = Visibility.Collapsed;
             if (learnMoreText != null)
             {
+                LearnMore.Visibility = Visibility.Visible;
                 LearnMoreText = learnMoreText;
                 LearnMoreCommand = new RelayCommand((parameter) => 
                 {

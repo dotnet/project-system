@@ -1,0 +1,52 @@
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
+{
+
+    /// <summary>
+    /// Data is looks like the following, Support version is the version at which VS will warn the user and the warning will have a 
+    /// don't show again checkbox. The error version (if specified) indicates the version at which the customer is given a stronger 
+    /// message about support and does not have the don't show again dialog box option. The two versions extablish a range of 
+    /// "supported" versions.
+    /// eg: 
+    /// {
+    ///  "vsVersions": {
+    ///    "15.6": {
+    ///      "supportedVersion": "2.1",
+    ///      "openSupportedMessage": "Warning when targeting 2.1",
+    ///      "unsupportedVersion": "3.0",
+    ///      "openUnsupportedMessage": "error when targeting 3.0 or newer"
+    ///    }
+    ///  }
+    ///}
+    /// </summary>
+    internal class VersionCompatibilityData
+    {
+        [JsonProperty(PropertyName = "supportedVersion")]
+        public Version SupportedVersion { get; set; }
+
+        [JsonProperty(PropertyName = "openSupportedMessage")]
+        public string OpenSupportedMessage { get; set; }
+
+        [JsonProperty(PropertyName = "unsupportedVersion")]
+        public Version UnsupportedVersion { get; set; }
+
+        [JsonProperty(PropertyName = "openUnsupportedMessage")]
+        public string OpenUnsupportedMessage { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static Dictionary<Version, VersionCompatibilityData> DeserializeVersionData(string versionDataString)
+        {
+            var vsVersionsObject = JObject.Parse(versionDataString);
+            JToken vsVersions = vsVersionsObject.GetValue("vsVersions");
+            return JsonConvert.DeserializeObject<Dictionary<Version, VersionCompatibilityData>>(vsVersions.ToString());
+        }
+    }
+}
