@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         // to are "partial" so tooling should generally work, new features may not have tooling.
         private static Version s_partialSupportedVersion = new Version(2, 1);
 
-        private const string SupportedLearnMoreFwlink = "https://go.microsoft.com/fwlink/?linkid= 866848";
+        private const string SupportedLearnMoreFwlink = "https://go.microsoft.com/fwlink/?linkid=866848";
         private const string UnsupportedLearnMoreFwlink = "https://go.microsoft.com/fwlink/?linkid=866796";
         private const string SuppressDotNewCoreWarningKey = @"ManagedProjectSystem\SuppressDotNewCoreWarning";
         private const string VersionCompatibilityFwlink = "https://go.microsoft.com/fwlink/?linkid=866798";
