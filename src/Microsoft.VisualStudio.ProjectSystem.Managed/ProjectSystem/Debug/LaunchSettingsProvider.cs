@@ -189,14 +189,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                             
                 ProjectRuleSubscriptionLink = ProjectDataSources.SyncLinkTo(
                     ProjectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(evaluationLinkOptions),
-                    CommonProjectServices.ActiveConfiguredProject.Capabilities.SourceBlock.SyncLinkOptions(),
+                    CommonProjectServices.Project.Capabilities.SourceBlock.SyncLinkOptions(),
                     projectChangesBlock,
                     linkOptions: new DataflowLinkOptions { PropagateCompletion = true });
 
                 var capabilitiesChangeBlock = new ActionBlock<IProjectVersionedValue<IProjectCapabilitiesSnapshot>>(
                             DataflowUtilities.CaptureAndApplyExecutionContext<IProjectVersionedValue<IProjectCapabilitiesSnapshot>>(Capabilities_ChangedAsync));
 
-                CapabilitiesSubscriptionLink = CommonProjectServices.ActiveConfiguredProject.Capabilities.SourceBlock.LinkTo(
+                CapabilitiesSubscriptionLink = CommonProjectServices.Project.Capabilities.SourceBlock.LinkTo(
                     capabilitiesChangeBlock,
                     linkOptions: new DataflowLinkOptions { PropagateCompletion = true });
             }
@@ -210,7 +210,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Updates need to be sequenced
             await _sequentialTaskQueue.ExecuteTask(async () =>
             {
-                using (ProjectCapabilitiesContext.CreateIsolatedContext(CommonProjectServices.ActiveConfiguredProject, capabilities.Value))
+                using (ProjectCapabilitiesContext.CreateIsolatedContext(CommonProjectServices.Project, capabilities.Value))
                 {
                     await UpdateProfilesAsync(null).ConfigureAwait(false);
                 }
