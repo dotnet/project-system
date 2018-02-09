@@ -48,7 +48,7 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <TextBlock Margin="6,10,6,0" Grid.Row="0" TextWrapping="WrapWithOverflow" Text="{Binding Path=MessageText, Mode=OneWay}"/>
-            <TextBlock Margin="6,5,6,0" x:Name="LearnMore" Grid.Row="1" Grid.Column="0" Visibility="Collapsed">
+            <TextBlock Margin="6,10,6,0" x:Name="LearnMore" Grid.Row="1" Grid.Column="0" Visibility="Collapsed">
                 <Hyperlink Style="{StaticResource BlueHyperlinkStyle}" Command="{Binding LearnMoreCommand}">
                     <Run Text="{Binding Path=LearnMoreText, Mode=OneWay}" />
                 </Hyperlink>

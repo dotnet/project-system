@@ -283,7 +283,7 @@ In order to debug this project, add an executable project to this solution which
     <value>Project</value>
   </data>
   <data name="PartialSupportedDotNetCoreProject" xml:space="preserve">
-    <value>Visual Studio 2017 version 15.7 or newer is recommended for .NET Core 2.1 projects.</value>
+    <value>Visual Studio 2017 version 15.7 or newer is recommended for .NET Core {0}.{1} projects.</value>
   </data>
   <data name="NotSupportedDotNetCoreProject" xml:space="preserve">
     <value>Projects targeting versions newer than .NET Core {0}.{1} are not supported by this version of Visual Studio.</value>

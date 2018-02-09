@@ -27,14 +27,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     [Export(typeof(IDotNetCoreProjectCompatibilityDetector))]
     internal sealed class DotNetCoreProjectCompatibilityDetector : IDotNetCoreProjectCompatibilityDetector, IVsSolutionEvents, IVsSolutionLoadEvents, IDisposable
     {
-        // The versions below this are compatible, versions above it are unsupported (stronger warning message and no don't show again option), equal
-        // to are "partial" so tooling should generally work, new features may not have tooling.
-        private static Version s_partialSupportedVersion = new Version(2, 1);
-
         private const string SupportedLearnMoreFwlink = "https://go.microsoft.com/fwlink/?linkid=866848";
         private const string UnsupportedLearnMoreFwlink = "https://go.microsoft.com/fwlink/?linkid=866796";
         private const string SuppressDotNewCoreWarningKey = @"ManagedProjectSystem\SuppressDotNewCoreWarning";
-        private const string VersionCompatibilityFwlink = "https://go.microsoft.com/fwlink/?linkid=866798";
+        private const string VersionCompatibilityDownloadFwlink = "https://go.microsoft.com/fwlink/?linkid=866798";
         private const string VersionDataFilename = "DotNetVersionCompatibility.json";
         private const int CacheFileValidHours = 24;
 
@@ -50,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [ImportingConstructor]
         public DotNetCoreProjectCompatibilityDetector([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider, Lazy<IProjectServiceAccessor> projectAccessor,
                                                       Lazy<IDialogServices> dialogServices, Lazy<IProjectThreadingService> threadHandling, Lazy<IVsShellUtilitiesHelper> vsShellUtilitiesHelper,
-                                                      Lazy<IFileSystem> fileSystem)
+                                                      Lazy<IFileSystem> fileSystem, Lazy<IHttpClient> httpClient)
         {
             _serviceProvider = serviceProvider;
             _projectServiceAccessor = projectAccessor;
@@ -58,17 +54,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _threadHandling = threadHandling;
             _shellUtilitiesHelper = vsShellUtilitiesHelper;
             _fileSystem = fileSystem;
+            _httpClient = httpClient;
         }
 
         private readonly IServiceProvider _serviceProvider;
         private readonly Lazy<IProjectServiceAccessor> _projectServiceAccessor;
         private readonly Lazy<IDialogServices> _dialogServices;
         private readonly Lazy<IProjectThreadingService> _threadHandling;
-        private readonly Lazy<IFileSystem> _fileSystem;
         private readonly Lazy<IVsShellUtilitiesHelper> _shellUtilitiesHelper;
+        private readonly Lazy<IFileSystem> _fileSystem;
+        private readonly Lazy<IHttpClient> _httpClient;
 
-        private string VersionDataCacheFile { get; set; }
-        private Version OurVSVersion { get; set; }
+        private RemoteCacheFile _versionDataCacheFile;
+        private Version _ourVSVersion;
 
         private uint _solutionCookie = VSConstants.VSCOOKIE_NIL;
         private bool _solutionOpened;
@@ -86,10 +84,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             string appDataFolder = await _shellUtilitiesHelper.Value.GetLocalAppDataFolderAsync(_serviceProvider).ConfigureAwait(true);
             if (appDataFolder != null)
             {
-                VersionDataCacheFile = Path.Combine(appDataFolder, VersionDataFilename);
+                _versionDataCacheFile = new RemoteCacheFile(Path.Combine(appDataFolder, VersionDataFilename), VersionCompatibilityDownloadFwlink, 
+                                                            TimeSpan.FromHours(CacheFileValidHours), _fileSystem.Value, _httpClient);
             }
 
-            OurVSVersion = await _shellUtilitiesHelper.Value.GetVSVersionAsync(_serviceProvider).ConfigureAwait(true);
+            _ourVSVersion = await _shellUtilitiesHelper.Value.GetVSVersionAsync(_serviceProvider).ConfigureAwait(true);
 
             IVsSolution solution = _serviceProvider.GetService<IVsSolution, SVsSolution>();
             Verify.HResult(solution.AdviseSolutionEvents(this, out _solutionCookie));
@@ -131,7 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         // Run on the background
                         await TaskScheduler.Default;
 
-                        VersionCompatibilityData compatData = await GetVersionCmpatibilityDataAsync().ConfigureAwait(false);
+                        VersionCompatibilityData compatData = GetVersionCmpatibilityData();
 
                         // We need to check if this project has been newly created. Our projects will implement IProjectCreationState -we can 
                         // skip any that don't
@@ -171,7 +170,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 // Run on the background
                 await TaskScheduler.Default;
 
-                VersionCompatibilityData compatDataToUse = await GetVersionCmpatibilityDataAsync().ConfigureAwait(false);
+                VersionCompatibilityData compatDataToUse = GetVersionCmpatibilityData();
 
                 CompatibilityLevel finalCompatLevel = CompatibilityLevel.Recommended;
                 IProjectService projectService = _projectServiceAccessor.Value.GetProjectService();
@@ -227,7 +226,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
                     if (!suppressPrompt)
                     {
-                        suppressPrompt = _dialogServices.Value.DontShowAgainMessageBox(caption, compatData.OpenSupportedMessage, VSResources.DontShowAgain, false, VSResources.LearnMore, SupportedLearnMoreFwlink);
+                        var msg = string.Format(compatData.OpenSupportedMessage, compatData.SupportedVersion.Major, compatData.SupportedVersion.Minor);
+                        suppressPrompt = _dialogServices.Value.DontShowAgainMessageBox(caption, msg, VSResources.DontShowAgain, false, VSResources.LearnMore, SupportedLearnMoreFwlink);
                         if (suppressPrompt && settingsManager != null)
                         {
                             await settingsManager.SetValueAsync(SuppressDotNewCoreWarningKey, suppressPrompt, isMachineLocal: true).ConfigureAwait(true);
@@ -236,7 +236,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 }
                 else
                 {
-                    _dialogServices.Value.DontShowAgainMessageBox(caption, compatData.OpenUnsupportedMessage, null, false, VSResources.LearnMore, UnsupportedLearnMoreFwlink);
+                    string msg;
+                    if(compatData.UnsupportedVersion != null)
+                    {
+                        msg = string.Format(compatData.OpenUnsupportedMessage, compatData.UnsupportedVersion.Major, compatData.UnsupportedVersion.Minor);
+                    }
+                    else
+                    {
+                        msg = string.Format(compatData.OpenUnsupportedMessage, compatData.SupportedVersion.Major, compatData.SupportedVersion.Minor);
+                    }
+
+                    _dialogServices.Value.DontShowAgainMessageBox(caption, msg, null, false, VSResources.LearnMore, UnsupportedLearnMoreFwlink);
                 }
             }
         }
@@ -334,57 +344,48 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// less than 24 hours old, it uses that data. Otherwise it downloads from the server. If the download fails it will use the previously cached
         ///  file, or if that file doesn't not exist, it uses the data baked into this class
         /// </summary>
-        private async Task<VersionCompatibilityData> GetVersionCmpatibilityDataAsync()
+        private VersionCompatibilityData GetVersionCmpatibilityData()
         {
+                // Do we need to update our cached data? Note that since the download could take a long time like tens of seconds we don't really want to
+                // start showing messages to the user well after their project is opened and they are interacting with it. Thus we start a task to update the 
+                // file, so that the next time we come here, we have updated data.
+                if (_curVersionCompatibilityData != null && _timeCurVersionDataLastUpdatedUtc.AddHours(CacheFileValidHours).IsLaterThan(DateTime.UtcNow))
+                {
+                    return _curVersionCompatibilityData;
+                }
+                
             try
             {
-                // Do we need to update our cached data?
-                if (_curVersionCompatibilityData == null || _timeCurVersionDataLastUpdatedUtc.AddHours(CacheFileValidHours).IsLaterThan(DateTime.UtcNow))
+                // Try the cache file
+                Dictionary<Version, VersionCompatibilityData> versionCompatData = GetCompabilityDataFromCacheFile();
+
+                // See if the cache file needs refreshing and if so, kick off a task to do so
+                if (_versionDataCacheFile != null && _versionDataCacheFile.CacheFileIsStale())
                 {
-                    string downLoadedVersionData = null;
-
-                    // First try the cache
-                    Dictionary<Version, VersionCompatibilityData> versionCompatData = GetCompabilityDataFromCacheFile(checkTimeStamp: true);
-
-                    if (versionCompatData == null)
+                    Task noWait = _versionDataCacheFile.TryToUpdateCacheFileAsync(() =>
                     {
-                        // Try downloading it 
-                        try
-                        {
-                            var httpClient = new DefaultHttpClient();
-                            downLoadedVersionData = await httpClient.GetStringAsync(new Uri(VersionCompatibilityFwlink)).ConfigureAwait(false);
-                            versionCompatData = VersionCompatibilityData.DeserializeVersionData(downLoadedVersionData);
-                        }
-                        catch
-                        {
-                            // If we have a cached file use it
-                            versionCompatData = GetCompabilityDataFromCacheFile(checkTimeStamp: false);
-                        }
-                    }
+                        // Invalidate the in-memory cached data on success
+                        _timeCurVersionDataLastUpdatedUtc  = DateTime.MinValue;
+                    });
+                }
 
-                    if (versionCompatData != null)
+                if (versionCompatData != null)
+                {
+                    // First try to match exatly on our VS version and if that fails, match on just major, minor
+                    if (versionCompatData.TryGetValue(_ourVSVersion, out VersionCompatibilityData compatData) || versionCompatData.TryGetValue(new Version(_ourVSVersion.Major, _ourVSVersion.Minor), out compatData))
                     {
-                        // Cache the data locally
-                        if (downLoadedVersionData != null && VersionDataCacheFile != null)
+                        // Now fix up missing data
+                        if (string.IsNullOrEmpty(compatData.OpenSupportedMessage))
                         {
-                            _fileSystem.Value.WriteAllText(VersionDataCacheFile, downLoadedVersionData);
+                            compatData.OpenSupportedMessage = VSResources.PartialSupportedDotNetCoreProject;
                         }
 
-                        // First try to match exatly on our VS version and if that fails, match on just major, minor
-                        if (versionCompatData.TryGetValue(OurVSVersion, out VersionCompatibilityData compatData) || versionCompatData.TryGetValue(new Version(OurVSVersion.Major, OurVSVersion.Minor), out compatData))
+                        if (string.IsNullOrEmpty(compatData.OpenUnsupportedMessage))
                         {
-                            // Now fix up missing data
-                            if (string.IsNullOrEmpty(compatData.OpenSupportedMessage))
-                            {
-                                compatData.OpenSupportedMessage = VSResources.PartialSupportedDotNetCoreProject;
-                            }
-
-                            if (string.IsNullOrEmpty(compatData.OpenUnsupportedMessage))
-                            {
-                                compatData.OpenUnsupportedMessage = string.Format(VSResources.NotSupportedDotNetCoreProject, s_partialSupportedVersion.Major, s_partialSupportedVersion.Minor);
-                            }
-                            _curVersionCompatibilityData = compatData;
+                            compatData.OpenUnsupportedMessage = VSResources.NotSupportedDotNetCoreProject;
                         }
+
+                        UpdateInMemoryCachedData(compatData);
                     }
                 }
             }
@@ -395,30 +396,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (_curVersionCompatibilityData == null)
             {
-                // Something failed,  use the compatibility data we shipped with
-                _curVersionCompatibilityData = new VersionCompatibilityData()
+                // Something failed or no remote file,  use the compatibility data we shipped with which does not have any warnings
+                UpdateInMemoryCachedData(new VersionCompatibilityData()
                 {
-                    SupportedVersion = s_partialSupportedVersion,
                     OpenSupportedMessage = VSResources.PartialSupportedDotNetCoreProject,
-                    OpenUnsupportedMessage = string.Format(VSResources.NotSupportedDotNetCoreProject, s_partialSupportedVersion.Major, s_partialSupportedVersion.Minor)
-                };
+                    OpenUnsupportedMessage = VSResources.NotSupportedDotNetCoreProject
+                });
             }
 
             return _curVersionCompatibilityData;
         }
 
+        private void UpdateInMemoryCachedData(VersionCompatibilityData newData)
+        {
+            _curVersionCompatibilityData = newData;
+            _timeCurVersionDataLastUpdatedUtc  = DateTime.UtcNow;
+        }
+
         /// <summary>
-        /// If the cached file is less than CacheFileValidHours hours old, it reads and serializes that data.
+        /// If the cached file exists reads the data and returns it
         /// </summary>
-        private Dictionary<Version, VersionCompatibilityData> GetCompabilityDataFromCacheFile(bool checkTimeStamp)
+        private Dictionary<Version, VersionCompatibilityData> GetCompabilityDataFromCacheFile()
         {
             try
             {
-                // If the cached file exists and is newer than the valid cache time, try to use it
-                if (VersionDataCacheFile != null && _fileSystem.Value.FileExists(VersionDataCacheFile) && 
-                   (!checkTimeStamp || _fileSystem.Value.LastFileWriteTimeUtc(VersionDataCacheFile).AddHours(CacheFileValidHours).IsLaterThan(DateTime.UtcNow)))
+                string data = _versionDataCacheFile?.ReadCacheFile();
+                if (data != null)
                 {
-                    return VersionCompatibilityData.DeserializeVersionData(_fileSystem.Value.ReadAllText(VersionDataCacheFile));
+                    return VersionCompatibilityData.DeserializeVersionData(data);
                 }
             }
             catch
