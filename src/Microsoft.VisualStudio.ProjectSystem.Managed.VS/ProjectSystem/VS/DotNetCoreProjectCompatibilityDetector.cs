@@ -53,19 +53,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                                                       Lazy<IFileSystem> fileSystem)
         {
             _serviceProvider = serviceProvider;
-            ProjectServiceAccessor = projectAccessor;
-            DialogServices = dialogServices;
-            ThreadHandling = threadHandling;
-            ShellUtilitiesHelper = vsShellUtilitiesHelper;
-            FileSystem = fileSystem;
+            _projectServiceAccessor = projectAccessor;
+            _dialogServices = dialogServices;
+            _threadHandling = threadHandling;
+            _shellUtilitiesHelper = vsShellUtilitiesHelper;
+            _fileSystem = fileSystem;
         }
 
         private readonly IServiceProvider _serviceProvider;
-        private Lazy<IProjectServiceAccessor> ProjectServiceAccessor { get; set; }
-        private Lazy<IDialogServices> DialogServices { get; set; }
-        private Lazy<IProjectThreadingService> ThreadHandling { get; set; }
-        private Lazy<IFileSystem> FileSystem { get; set; }
-        private Lazy<IVsShellUtilitiesHelper> ShellUtilitiesHelper { get; set; }
+        private readonly Lazy<IProjectServiceAccessor> _projectServiceAccessor;
+        private readonly Lazy<IDialogServices> _dialogServices;
+        private readonly Lazy<IProjectThreadingService> _threadHandling;
+        private readonly Lazy<IFileSystem> _fileSystem;
+        private readonly Lazy<IVsShellUtilitiesHelper> _shellUtilitiesHelper;
 
         private string VersionDataCacheFile { get; set; }
         private Version OurVSVersion { get; set; }
@@ -80,16 +80,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public async Task InitializeAsync()
         {
-            await ThreadHandling.Value.SwitchToUIThread();
+            await _threadHandling.Value.SwitchToUIThread();
 
             // Initialize our cache file
-            string appDataFolder = await ShellUtilitiesHelper.Value.GetLocalAppDataFolderAsync(_serviceProvider).ConfigureAwait(true);
+            string appDataFolder = await _shellUtilitiesHelper.Value.GetLocalAppDataFolderAsync(_serviceProvider).ConfigureAwait(true);
             if (appDataFolder != null)
             {
                 VersionDataCacheFile = Path.Combine(appDataFolder, VersionDataFilename);
             }
 
-            OurVSVersion = await ShellUtilitiesHelper.Value.GetVSVersionAsync(_serviceProvider).ConfigureAwait(true);
+            OurVSVersion = await _shellUtilitiesHelper.Value.GetVSVersionAsync(_serviceProvider).ConfigureAwait(true);
 
             IVsSolution solution = _serviceProvider.GetService<IVsSolution, SVsSolution>();
             Verify.HResult(solution.AdviseSolutionEvents(this, out _solutionCookie));
@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public void Dispose()
         {
-            ThreadHandling.Value.VerifyOnUIThread();
+            _threadHandling.Value.VerifyOnUIThread();
 
             if (_solutionCookie != VSConstants.VSCOOKIE_NIL)
             {
@@ -126,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 UnconfiguredProject project = pHierarchy.AsUnconfiguredProject();
                 if (project != null)
                 {
-                    ThreadHandling.Value.JoinableTaskFactory.RunAsync(async () =>
+                    _threadHandling.Value.JoinableTaskFactory.RunAsync(async () =>
                     {
                         // Run on the background
                         await TaskScheduler.Default;
@@ -166,7 +166,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public int OnAfterBackgroundSolutionLoadComplete()
         {
             // Schedule this to run on idle
-            ThreadHandling.Value.JoinableTaskFactory.RunAsync(async () =>
+            _threadHandling.Value.JoinableTaskFactory.RunAsync(async () =>
             {
                 // Run on the background
                 await TaskScheduler.Default;
@@ -174,7 +174,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 VersionCompatibilityData compatDataToUse = await GetVersionCmpatibilityDataAsync().ConfigureAwait(false);
 
                 CompatibilityLevel finalCompatLevel = CompatibilityLevel.Recommended;
-                IProjectService projectService = ProjectServiceAccessor.Value.GetProjectService();
+                IProjectService projectService = _projectServiceAccessor.Value.GetProjectService();
                 IEnumerable<UnconfiguredProject> projects = projectService.LoadedUnconfiguredProjects;
                 foreach (var project in projects)
                 {
@@ -203,7 +203,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private async Task WarnUserOfIncompatibleProjectAsync(CompatibilityLevel compatLevel, VersionCompatibilityData compatData)
         {
             // Warn the user.
-            await ThreadHandling.Value.SwitchToUIThread();
+            await _threadHandling.Value.SwitchToUIThread();
 
             // Check if already warned - this could happen in the off chance two projects are added very quickly since the detection work is 
             // scheduled on idle.
@@ -227,7 +227,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
                     if (!suppressPrompt)
                     {
-                        suppressPrompt = DialogServices.Value.DontShowAgainMessageBox(caption, compatData.OpenSupportedMessage, VSResources.DontShowAgain, false, VSResources.LearnMore, SupportedLearnMoreFwlink);
+                        suppressPrompt = _dialogServices.Value.DontShowAgainMessageBox(caption, compatData.OpenSupportedMessage, VSResources.DontShowAgain, false, VSResources.LearnMore, SupportedLearnMoreFwlink);
                         if (suppressPrompt && settingsManager != null)
                         {
                             await settingsManager.SetValueAsync(SuppressDotNewCoreWarningKey, suppressPrompt, isMachineLocal: true).ConfigureAwait(true);
@@ -236,7 +236,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 }
                 else
                 {
-                    DialogServices.Value.DontShowAgainMessageBox(caption, compatData.OpenUnsupportedMessage, null, false, VSResources.LearnMore, UnsupportedLearnMoreFwlink);
+                    _dialogServices.Value.DontShowAgainMessageBox(caption, compatData.OpenUnsupportedMessage, null, false, VSResources.LearnMore, UnsupportedLearnMoreFwlink);
                 }
             }
         }
@@ -338,7 +338,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             try
             {
-                // Do we meed to update our cached data?
+                // Do we need to update our cached data?
                 if (_curVersionCompatibilityData == null || _timeCurVersionDataLastUpdatedUtc.AddHours(CacheFileValidHours).IsLaterThan(DateTime.UtcNow))
                 {
                     string downLoadedVersionData = null;
@@ -365,15 +365,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     if (versionCompatData != null)
                     {
                         // Cache the data locally
-                        if (downLoadedVersionData != null)
+                        if (downLoadedVersionData != null && VersionDataCacheFile != null)
                         {
-                            FileSystem.Value.WriteAllText(VersionDataCacheFile, downLoadedVersionData);
+                            _fileSystem.Value.WriteAllText(VersionDataCacheFile, downLoadedVersionData);
                         }
 
                         // First try to match exatly on our VS version and if that fails, match on just major, minor
                         if (versionCompatData.TryGetValue(OurVSVersion, out VersionCompatibilityData compatData) || versionCompatData.TryGetValue(new Version(OurVSVersion.Major, OurVSVersion.Minor), out compatData))
                         {
-
                             // Now fix up missing data
                             if (string.IsNullOrEmpty(compatData.OpenSupportedMessage))
                             {
@@ -416,9 +415,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             try
             {
                 // If the cached file exists and is newer than the valid cache time, try to use it
-                if (FileSystem.Value.FileExists(VersionDataCacheFile) && (!checkTimeStamp || FileSystem.Value.LastFileWriteTimeUtc(VersionDataCacheFile).AddHours(CacheFileValidHours).IsLaterThan(DateTime.UtcNow)))
+                if (VersionDataCacheFile != null && _fileSystem.Value.FileExists(VersionDataCacheFile) && 
+                   (!checkTimeStamp || _fileSystem.Value.LastFileWriteTimeUtc(VersionDataCacheFile).AddHours(CacheFileValidHours).IsLaterThan(DateTime.UtcNow)))
                 {
-                    return VersionCompatibilityData.DeserializeVersionData(FileSystem.Value.ReadAllText(VersionDataCacheFile));
+                    return VersionCompatibilityData.DeserializeVersionData(_fileSystem.Value.ReadAllText(VersionDataCacheFile));
                 }
             }
             catch

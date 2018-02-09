@@ -47,7 +47,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
             await _threadingService.SwitchToUIThread();
 
             IVsAppId vsAppId = serviceProvider.GetService<IVsAppId, SVsAppId>();
-            if (ErrorHandler.Succeeded(vsAppId.GetProperty((int)VSAPropID.VSAPROPID_ProductSemanticVersion, out object oVersion)) && oVersion is string semVersion)
+            if (ErrorHandler.Succeeded(vsAppId.GetProperty((int)VSAPropID.VSAPROPID_ProductSemanticVersion, out object oVersion)) && 
+                oVersion is string semVersion)
             {
                 // This is a semantic version string. We only care about the non-semantic version part
                 int index = semVersion.IndexOfAny(new char[] {'-', '+'});

@@ -9,11 +9,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 {
 
     /// <summary>
-    /// Data is looks like the following, Support version is the version at which VS will warn the user and the warning will have a 
+    /// Example data shown below. Support version is the version at which VS will warn the user and the warning will have a 
     /// don't show again checkbox. The error version (if specified) indicates the version at which the customer is given a stronger 
-    /// message about support and does not have the don't show again dialog box option. The two versions extablish a range of 
+    /// message about support and does not have the don't show again dialog box option. The two versions establish a range of 
     /// "supported" versions.
     /// eg: 
+    /// <code>
     /// {
     ///  "vsVersions": {
     ///    "15.6": {
@@ -24,6 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     ///    }
     ///  }
     ///}
+    ///</code>
     /// </summary>
     internal class VersionCompatibilityData
     {
@@ -39,9 +41,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         [JsonProperty(PropertyName = "openUnsupportedMessage")]
         public string OpenUnsupportedMessage { get; set; }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public static Dictionary<Version, VersionCompatibilityData> DeserializeVersionData(string versionDataString)
         {
             var vsVersionsObject = JObject.Parse(versionDataString);
