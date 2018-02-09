@@ -24,6 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         {
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Remove("Connection");
+            client.Timeout = TimeSpan.FromSeconds(10);
             return client;
         }
     }

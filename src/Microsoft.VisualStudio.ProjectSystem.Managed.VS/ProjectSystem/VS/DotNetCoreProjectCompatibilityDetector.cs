@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private const string SupportedLearnMoreFwlink = "https://go.microsoft.com/fwlink/?linkid= 866848";
         private const string UnsupportedLearnMoreFwlink = "https://go.microsoft.com/fwlink/?linkid=866796";
         private const string SuppressDotNewCoreWarningKey = @"ManagedProjectSystem\SuppressDotNewCoreWarning";
-        private const string VersionCompatibilityFwlink = "http://billhie1/test.json";   // TODO: test link  "https://go.microsoft.com/fwlink/?linkid=866798";
+        private const string VersionCompatibilityFwlink = "https://go.microsoft.com/fwlink/?linkid=866798";
         private const string VersionDataFilename = "DotNetVersionCompatibility.json";
         private const int CacheFileValidHours = 24;
 
