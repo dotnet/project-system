@@ -280,6 +280,20 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 _button.PerformClick()
             End Sub
 
+            ''' <summary>
+            ''' Calls default action when select is called. Checks for correct flag
+            ''' </summary>
+            Public Overrides Sub [Select](flags As AccessibleSelection)
+                '''AccessibleSelection.TakeSelection is the flag set when an object is selected,
+                '''specfically from SelectionItem.Select If this flag is set, we call the default
+                '''action on the PageTab, which gives the desired behavior of selecting the item.
+                If (flags And AccessibleSelection.TakeSelection) = AccessibleSelection.TakeSelection Then
+                    DoDefaultAction()
+                Else
+                    MyBase.Select(flags)
+                End If
+            End Sub
+
         End Class
 
     End Class
