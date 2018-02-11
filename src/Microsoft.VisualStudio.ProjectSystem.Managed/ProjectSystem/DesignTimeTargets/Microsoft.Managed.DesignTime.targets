@@ -51,7 +51,7 @@
 
   <PropertyGroup>
     <ManagedXamlResourcesDirectory Condition="!HasTrailingSlash('$(ManagedXamlResourcesDirectory)')">$(ManagedXamlResourcesDirectory)\</ManagedXamlResourcesDirectory>
-    <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
+    <DebuggerFlavor Condition = "'$(DebuggerFlavor)' == ''">ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
 
   <!-- Project Capabilities -->
