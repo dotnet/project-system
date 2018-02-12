@@ -282,4 +282,19 @@ In order to debug this project, add an executable project to this solution which
   <data name="OutputWindowPaneTitle" xml:space="preserve">
     <value>Project</value>
   </data>
+  <data name="PartialSupportedDotNetCoreProject" xml:space="preserve">
+    <value>Visual Studio 2017 version 15.7 or newer is recommended for .NET Core {0}.{1} projects.</value>
+  </data>
+  <data name="NotSupportedDotNetCoreProject" xml:space="preserve">
+    <value>Projects targeting versions newer than .NET Core {0}.{1} are not supported by this version of Visual Studio.</value>
+  </data>
+  <data name="DontShowAgain" xml:space="preserve">
+    <value>Don't show again</value>
+  </data>
+  <data name="LearnMore" xml:space="preserve">
+    <value>Learn more</value>
+  </data>
+  <data name="OKButtonText" xml:space="preserve">
+    <value>OK</value>
+  </data>
 </root>

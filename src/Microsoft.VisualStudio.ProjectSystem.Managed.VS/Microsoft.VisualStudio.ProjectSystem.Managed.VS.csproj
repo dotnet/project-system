@@ -33,6 +33,7 @@
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
     <Reference Include="WindowsFormsIntegration" />
+    <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.CSharp.VS" />
@@ -69,6 +70,9 @@
       <DependentUpon>WpfBasedPropertyPage.cs</DependentUpon>
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="ProjectSystem\VS\UI\DontShowAgainMessageBox.xaml.cs">
+      <DependentUpon>DontShowAgainMessageBox.xaml</DependentUpon>
+    </Compile>
     <Compile Update="ProjectSystem\VS\UI\MultiChoiceMsgBox.Xaml.cs">
       <DependentUpon>MultiChoiceMsgBox.xaml</DependentUpon>
     </Compile>
@@ -95,6 +99,9 @@
     <Page Include="ProjectSystem\VS\PropertyPages\WatermarkStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ProjectSystem\VS\UI\DontShowAgainMessageBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ProjectSystem\VS\UI\MultiChoiceMsgBox.xaml">
       <Generator>MSBuild:Compile</Generator>
