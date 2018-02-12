@@ -192,29 +192,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     CommonProjectServices.Project.Capabilities.SourceBlock.SyncLinkOptions(),
                     projectChangesBlock,
                     linkOptions: new DataflowLinkOptions { PropagateCompletion = true });
-
-                var capabilitiesChangeBlock = new ActionBlock<IProjectVersionedValue<IProjectCapabilitiesSnapshot>>(
-                            DataflowUtilities.CaptureAndApplyExecutionContext<IProjectVersionedValue<IProjectCapabilitiesSnapshot>>(Capabilities_ChangedAsync));
-
-                CapabilitiesSubscriptionLink = CommonProjectServices.Project.Capabilities.SourceBlock.LinkTo(
-                    capabilitiesChangeBlock,
-                    linkOptions: new DataflowLinkOptions { PropagateCompletion = true });
             }
 
             // Make sure we are watching the file at this point
             WatchLaunchSettingsFile();
-        }
-
-        private async Task Capabilities_ChangedAsync(IProjectVersionedValue<IProjectCapabilitiesSnapshot> capabilities)
-        {
-            // Updates need to be sequenced
-            await _sequentialTaskQueue.ExecuteTask(async () =>
-            {
-                using (ProjectCapabilitiesContext.CreateIsolatedContext(CommonProjectServices.Project, capabilities.Value))
-                {
-                    await UpdateProfilesAsync(null).ConfigureAwait(false);
-                }
-            }).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -232,7 +213,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     // Updates need to be sequenced
                     await _sequentialTaskQueue.ExecuteTask(async () =>
                     {
-                        using (ProjectCapabilitiesContext.CreateIsolatedContext(CommonProjectServices.ActiveConfiguredProject, projectSnapshot.Value.Item2))
+                        using (ProjectCapabilitiesContext.CreateIsolatedContext(CommonProjectServices.Project, projectSnapshot.Value.Item2))
                         {
                             await UpdateActiveProfileInSnapshotAsync(activeProfile).ConfigureAwait(false);
                         }
