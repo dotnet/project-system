@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         // The version's above this are not supported
         static Version s_lastSupportedVersion = new Version(2, 0); 
 
-        public const string NotSupportedLearnMoreFwlink = "https://go.microsoft.com/fwlink/?linkid=866848";
+        public const string NotSupportedLearnMoreFwlink = "https://go.microsoft.com/fwlink/?linkid=867847";
 
         private enum CompatibilityLevel
         {
