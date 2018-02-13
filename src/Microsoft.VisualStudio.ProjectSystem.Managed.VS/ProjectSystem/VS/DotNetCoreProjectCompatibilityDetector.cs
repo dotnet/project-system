@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     internal sealed class DotNetCoreProjectCompatibilityDetector : IDotNetCoreProjectCompatibilityDetector, IVsSolutionEvents, IVsSolutionLoadEvents, IDisposable
     {
         // The version's above this are not supported
-        static Version s_LastSupportedVersion = new Version(2, 0); 
+        static Version s_lastSupportedVersion = new Version(2, 0); 
 
         public const string NotSupportedLearnMoreFwlink = "https://go.microsoft.com/fwlink/?linkid=866848";
 
@@ -176,7 +176,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 IVsUIShell uiShell = _serviceProvider.GetService<IVsUIShell, SVsUIShell>();
                 uiShell.GetAppName(out string caption);
 
-                _dialogServices.Value.DontShowAgainMessageBox(caption, VSResources.NotSupportedDotNetCoreProject, null, false, VSResources.LearnMore, NotSupportedLearnMoreFwlink);
+                string msg = string.Format(VSResources.NotSupportedDotNetCoreProject, s_lastSupportedVersion.Major, s_lastSupportedVersion.Minor);
+                _dialogServices.Value.DontShowAgainMessageBox(caption, msg, null, false, VSResources.LearnMore, NotSupportedLearnMoreFwlink);
             }
         }
 
@@ -239,7 +240,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 version = new Version(version.Major, version.Minor);
             }
 
-            return version <= s_LastSupportedVersion? CompatibilityLevel.Supported : CompatibilityLevel.NotSupported;
+            return version <= s_lastSupportedVersion? CompatibilityLevel.Supported : CompatibilityLevel.NotSupported;
         }
 
         #region Unused

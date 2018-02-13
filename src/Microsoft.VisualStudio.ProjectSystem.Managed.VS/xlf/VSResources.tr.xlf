@@ -282,8 +282,8 @@ Bu projede hata ayıklamak için bu çözüme, kitaplık projesine başvuran bir
         <note />
       </trans-unit>
       <trans-unit id="NotSupportedDotNetCoreProject">
-        <source>Projects targeting .NET Core 2.1 or newer are not supported by this version of Visual Studio.</source>
-        <target state="new">Projects targeting .NET Core 2.1 or newer are not supported by this version of Visual Studio.</target>
+        <source>Projects targeting versions newer than .NET Core {0}.{1} are not supported by this version of Visual Studio.</source>
+        <target state="new">Projects targeting versions newer than .NET Core {0}.{1} are not supported by this version of Visual Studio.</target>
         <note />
       </trans-unit>
       <trans-unit id="LearnMore">
@@ -294,6 +294,11 @@ Bu projede hata ayıklamak için bu çözüme, kitaplık projesine başvuran bir
       <trans-unit id="OKButtonText">
         <source>OK</source>
         <target state="new">OK</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PartialSupportedDotNetCoreProject">
+        <source>Visual Studio 2017 version 15.7 or newer is recommended for .NET Core {0}.{1} projects.</source>
+        <target state="new">Visual Studio 2017 version 15.7 or newer is recommended for .NET Core {0}.{1} projects.</target>
         <note />
       </trans-unit>
     </body>

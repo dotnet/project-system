@@ -346,7 +346,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Projects targeting .NET Core 2.1 or newer are not supported by this version of Visual Studio..
+        ///   Looks up a localized string similar to Projects targeting versions newer than .NET Core {0}.{1} are not supported by this version of Visual Studio..
         /// </summary>
         internal static string NotSupportedDotNetCoreProject {
             get {
@@ -414,6 +414,15 @@ namespace Microsoft.VisualStudio {
         internal static string PackSelectedProjectCommand {
             get {
                 return ResourceManager.GetString("PackSelectedProjectCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visual Studio 2017 version 15.7 or newer is recommended for .NET Core {0}.{1} projects..
+        /// </summary>
+        internal static string PartialSupportedDotNetCoreProject {
+            get {
+                return ResourceManager.GetString("PartialSupportedDotNetCoreProject", resourceCulture);
             }
         }
         
