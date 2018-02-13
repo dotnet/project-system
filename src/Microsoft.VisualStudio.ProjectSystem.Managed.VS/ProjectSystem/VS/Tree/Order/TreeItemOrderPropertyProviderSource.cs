@@ -17,7 +17,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
     {
         private readonly UnconfiguredProject _project;
         private readonly IOrderedSourceItemsDataSourceService _orderedItemSource;
-        private TreeItemOrderPropertyProvider _latestTreeItemOrderPropertyProvider;
 
         [ImportingConstructor]
         public TreeItemOrderPropertyProviderSource(
@@ -35,20 +34,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
         protected override IDisposable LinkExternalInput(ITargetBlock<IProjectVersionedValue<IProjectTreePropertiesProvider>> targetBlock)
         {
             JoinUpstreamDataSources(_orderedItemSource);
-            
+
             var providerProducerBlock = new TransformBlock<IProjectVersionedValue<IReadOnlyCollection<ProjectItemIdentity>>, IProjectVersionedValue<IProjectTreePropertiesProvider>>(
                 orderedItems =>
                 {
-                    // Limit TreeItemOrderPropertyProvider to one instance for now
-                    // to fend off race conditions
-                    if (_latestTreeItemOrderPropertyProvider == null)
-                    {
-                        _latestTreeItemOrderPropertyProvider = new TreeItemOrderPropertyProvider(orderedItems.Value, _project);
-                    }
-
-                    return new ProjectVersionedValue<IProjectTreePropertiesProvider>(_latestTreeItemOrderPropertyProvider, orderedItems.DataSourceVersions);
-                }, 
-                new ExecutionDataflowBlockOptions() { NameFormat= "Ordered Tree Item Input: {1}" });
+                    return new ProjectVersionedValue<IProjectTreePropertiesProvider>(new TreeItemOrderPropertyProvider(orderedItems.Value, _project), orderedItems.DataSourceVersions);
+                },
+                new ExecutionDataflowBlockOptions() { NameFormat = "Ordered Tree Item Input: {1}" });
 
             providerProducerBlock.LinkTo(targetBlock, new DataflowLinkOptions() { PropagateCompletion = true });
             return _orderedItemSource.SourceBlock.LinkTo(providerProducerBlock, new DataflowLinkOptions() { PropagateCompletion = true });

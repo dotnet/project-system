@@ -17,17 +17,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private const string SlashReferencePrefix  = "/r:";
         private const string LongReferencePrefix   = "--reference:";
 
-        private readonly UnconfiguredProject _project;
-
         [ImportMany]
         private IEnumerable<Action<string, ImmutableArray<CommandLineSourceFile>, ImmutableArray<CommandLineReference>, ImmutableArray<string>>> _handlers =  null;
 
         [ImportingConstructor]
-        public FSharpParseBuildOptions(UnconfiguredProject project)
-        {
-            Requires.NotNull(project, nameof(project));
-            _project = project;
-        }
+        public FSharpParseBuildOptions() { }
 
         public BuildOptions Parse(IEnumerable<string> commandLineArgs, string projectPath)
         {
@@ -91,13 +85,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         [Export]
         [AppliesTo(ProjectCapability.FSharp)]
-        public void HandleCommandLineNotifications(string projectPath, BuildOptions added, BuildOptions removed)
+        public void HandleCommandLineNotifications(string binPath, BuildOptions added, BuildOptions removed)
         {
             if (added is FSharpBuildOptions fscAdded)
             {
                 foreach (var handler in _handlers)
                 {
-                    handler?.Invoke(_project.FullPath, fscAdded.SourceFiles, fscAdded.MetadataReferences, fscAdded.CompileOptions);
+                    handler?.Invoke(binPath, fscAdded.SourceFiles, fscAdded.MetadataReferences, fscAdded.CompileOptions);
                 }
             }
             return;

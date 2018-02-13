@@ -2,9 +2,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.IO;
-using System.Linq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
 {
@@ -15,53 +13,100 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
     internal class TreeItemOrderPropertyProvider : IProjectTreePropertiesProvider
     {
         private const string FullPathProperty = "FullPath";
-        private readonly Dictionary<string, int> _displayOrderMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
-        private readonly Dictionary<string, int> _rootedOrderMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, int> _orderedMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+
         private readonly UnconfiguredProject _project;
 
         public TreeItemOrderPropertyProvider(IReadOnlyCollection<ProjectItemIdentity> orderedItems, UnconfiguredProject project)
         {
             _project = project;
-            OrderedItems = orderedItems;
-
-            ComputeIndices();
+            _orderedMap = CreateOrderedMap(project, orderedItems);
         }
 
-        public IReadOnlyCollection<ProjectItemIdentity> OrderedItems { get; }
+        private static string[] GetPathComponents(string evaluatedInclude)
+        {
+            return evaluatedInclude.Split(CommonConstants.PathSeparators, StringSplitOptions.RemoveEmptyEntries);
+        }
+
+        private static string[] GetPathFolders(string path)
+        {
+            return GetPathComponents(Path.GetDirectoryName(path));
+        }
 
         /// <summary>
-        /// Preorder folders and items that are provided as ordered evaluated includes
+        /// Get the display path for an item. The display path is what you see visually in solution explorer.
         /// </summary>
-        private void ComputeIndices()
+        private static string GetDisplayPath(UnconfiguredProject project, ProjectItemIdentity item)
         {
-            var duplicateFiles = OrderedItems
-                .Select(p => Path.GetFileName(p.EvaluatedInclude))
-                .GroupBy(file => file, StringComparer.OrdinalIgnoreCase)
-                .Where(g => g.Count() > 1)
-                .Select(g => g.Key).ToImmutableHashSet();
-
-            var index = 1;
-
-            // This enumerates all the folder names and file names and maps them
-            // against their assigned display index. Any file names that are duplicates
-            // are mapped in in _rootedOrderMap only; everything else is mapped in
-            // _displayOrderMap only.
-            foreach (var item in OrderedItems)
+            var linkPath = item.LinkPath;
+            
+            if (!string.IsNullOrWhiteSpace(linkPath))
             {
-                var includeParts = item.EvaluatedInclude.Split(CommonConstants.PathSeparators, StringSplitOptions.RemoveEmptyEntries);
-                foreach (var part in includeParts)
+                // This is a linked file.
+                // We use the link path because that is the rendering/display path in solution explorer.
+                return project.MakeRelative(linkPath);
+            }
+
+            return project.MakeRelative(item.EvaluatedInclude);
+        }
+
+        /// <summary>
+        /// Create an ordered map.
+        /// </summary>
+        private static Dictionary<string, int> CreateOrderedMap(UnconfiguredProject project, IReadOnlyCollection<ProjectItemIdentity> orderedItems)
+        {
+            var displayOrder = 1;
+            var orderedMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (var item in orderedItems)
+            {
+                var displayPath = GetDisplayPath(project, item);
+                var folders = GetPathFolders(displayPath);
+
+                // We need assign the display order to folders first before the file.
+                // These folders could be physical or virtual. Virtual coming from link paths.
+                foreach (var folder in folders)
                 {
-                    var rootedPath = duplicateFiles.Contains(part) ? _project.MakeRooted(item.EvaluatedInclude) : null;
-                    if (rootedPath != null && !_rootedOrderMap.ContainsKey(rootedPath))
+                    // Folders are special. 
+                    // FIXME: Due to the lack of metadata/info from property context 
+                    //     in CalculatePropertyValues, we use the folder's name to identify it.
+                    //
+                    // The problem with this approach is this scenario:
+                    //     Foo/Bar/File.fs
+                    //     Test/Bar/File.fs
+                    // In this case, any folder named "Bar" will always have the same display order as other "Bar" folders.
+                    //     Again, this is due to not having enough info in property context.
+                    if (!orderedMap.ContainsKey(folder))
                     {
-                        _rootedOrderMap.Add(rootedPath, index++);
-                    }
-                    else if (!_displayOrderMap.ContainsKey(part))
-                    {
-                        _displayOrderMap.Add(part, index++);
+                        orderedMap.Add(folder, displayOrder++);
                     }
                 }
+
+                var fullPath = project.MakeRooted(item.EvaluatedInclude);
+
+                // We uniquely identify a file by its fullpath.
+                orderedMap.Add(fullPath, displayOrder++);
             }
+
+            return orderedMap;
+        }
+
+        /// <summary>
+        /// Tries to get a display order for a property context.
+        /// </summary>
+        private bool TryGetDisplayOrder(IProjectTreeCustomizablePropertyContext propertyContext, out int displayOrder)
+        {
+            displayOrder = 0;
+
+            if (propertyContext.IsFolder)
+            {
+                // Due to the lack of metadata/info in property context, we can only look up
+                //     a physical/virtual folder by its name alone.
+                return _orderedMap.TryGetValue(propertyContext.ItemName, out displayOrder);
+            }
+
+            return propertyContext.Metadata.TryGetValue(FullPathProperty, out var fullPath) && 
+                _orderedMap.TryGetValue(fullPath, out displayOrder);
         }
 
         /// <summary>
@@ -71,20 +116,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
         /// <param name="propertyContext">context for the tree item being evaluated</param>
         /// <param name="propertyValues">mutable properties that can be changed to affect display order etc</param>
         public void CalculatePropertyValues(
-            IProjectTreeCustomizablePropertyContext propertyContext, 
+            IProjectTreeCustomizablePropertyContext propertyContext,
             IProjectTreeCustomizablePropertyValues propertyValues)
         {
             if (propertyValues is IProjectTreeCustomizablePropertyValues2 propertyValues2)
             {
                 // assign display order to folders and items that appear in order map
-                if (_displayOrderMap.TryGetValue(propertyContext.ItemName, out var index)
-                    || (propertyContext.Metadata.TryGetValue(FullPathProperty, out var fullPath)
-                        && _rootedOrderMap.TryGetValue(fullPath, out index)))
+                if (TryGetDisplayOrder(propertyContext, out var displayOrder))
                 {
                     // sometimes these items temporarily have null item type. Ignore these cases
                     if (propertyContext.ItemType != null)
                     {
-                        propertyValues2.DisplayOrder = index;
+                        propertyValues2.DisplayOrder = displayOrder;
                     }
                 }
                 else if (!propertyContext.IsFolder)

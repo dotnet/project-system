@@ -79,6 +79,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeployTestDependencies", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeployIntegrationDependencies", "src\DeployIntegrationDependencies\DeployIntegrationDependencies.csproj", "{C16993CC-6063-4447-AE16-BE671AFDE08A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.NetCore.FSharp.ProjectTemplates.Web", "src\Templates\Microsoft.NetCore.FSharp.ProjectTemplates.Web\Microsoft.NetCore.FSharp.ProjectTemplates.Web.csproj", "{3EFADEFD-2BC8-4F25-947A-71CBF3FF294D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -230,6 +232,10 @@ Global
 		{C16993CC-6063-4447-AE16-BE671AFDE08A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C16993CC-6063-4447-AE16-BE671AFDE08A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C16993CC-6063-4447-AE16-BE671AFDE08A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EFADEFD-2BC8-4F25-947A-71CBF3FF294D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EFADEFD-2BC8-4F25-947A-71CBF3FF294D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EFADEFD-2BC8-4F25-947A-71CBF3FF294D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EFADEFD-2BC8-4F25-947A-71CBF3FF294D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -245,6 +251,7 @@ Global
 		{DFE95971-3D5C-4474-900A-C1D874B4F323} = {6DE4B49E-AC38-4E35-82CD-D52731503111}
 		{3446B359-058A-4AAD-8414-274458DB9E60} = {6DE4B49E-AC38-4E35-82CD-D52731503111}
 		{5B4A2596-6078-415B-A6D6-08E90FFBF58C} = {6DE4B49E-AC38-4E35-82CD-D52731503111}
+		{3EFADEFD-2BC8-4F25-947A-71CBF3FF294D} = {6DE4B49E-AC38-4E35-82CD-D52731503111}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6B652C28-D1FD-4885-A0CA-4704C54E78E7}

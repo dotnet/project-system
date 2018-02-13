@@ -46,5 +46,29 @@ namespace Microsoft.VisualStudio.Text
                 builder.AppendFormat(format.Format, format.Arguments);
             }
         }
+
+        public static StringBuilder TrimEnd(this StringBuilder builder, params char[] trimChars)
+        {
+            while (builder.Length > 0)
+            {
+                var match = false;
+                foreach (var c in trimChars)
+                {
+                    if (builder[builder.Length - 1] == c)
+                    {
+                        match = true;
+                        builder.Length--;
+                        break;
+                    }
+                }
+
+                if (!match)
+                {
+                    return builder;
+                }
+            }
+
+            return builder;
+        }
     }
 }

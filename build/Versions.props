@@ -1,15 +1,15 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <VersionBase Condition="'$(UseVisualStudioVersion)' == 'true'">15.6.0</VersionBase>
-    <VersionBase Condition="'$(UseVisualStudioVersion)' != 'true'">2.6.0</VersionBase>
-    <PreReleaseVersionLabel>beta3</PreReleaseVersionLabel>
+    <VersionBase Condition="'$(UseVisualStudioVersion)' == 'true'">15.8.0</VersionBase>
+    <VersionBase Condition="'$(UseVisualStudioVersion)' != 'true'">2.8.0</VersionBase>
+    <PreReleaseVersionLabel>beta1</PreReleaseVersionLabel>
 
     <!-- Opt-in repo features -->
     <UsingToolVSSDK>true</UsingToolVSSDK>
     <UsingToolIbcOptimization>true</UsingToolIbcOptimization>
 
     <!-- Toolset -->
-    <RoslynToolsRepoToolsetVersion>1.0.0-beta-62503-02</RoslynToolsRepoToolsetVersion>
+    <RoslynToolsRepoToolsetVersion>1.0.0-beta-62512-01</RoslynToolsRepoToolsetVersion>
     <RoslynToolsVsixExpInstallerVersion>1.0.0-beta-62503-02</RoslynToolsVsixExpInstallerVersion>
     <RoslynDependenciesProjectSystemOptimizationDataVersion>2.6.0-beta1-62205-02</RoslynDependenciesProjectSystemOptimizationDataVersion>
     <VSWhereVersion>2.1.4</VSWhereVersion>
@@ -62,7 +62,7 @@
     <VsWebSiteInteropVersion>8.0.0-alpha</VsWebSiteInteropVersion>
     
     <!-- CPS -->
-    <MicrosoftVisualStudioProjectSystemSDKVersion>15.6.98-pre</MicrosoftVisualStudioProjectSystemSDKVersion>
+    <MicrosoftVisualStudioProjectSystemSDKVersion>15.6.128-pre</MicrosoftVisualStudioProjectSystemSDKVersion>
     
     <!-- Roslyn -->
     <MicrosoftVisualStudioLanguageServicesVersion>2.6.0-beta1-62113-02</MicrosoftVisualStudioLanguageServicesVersion>

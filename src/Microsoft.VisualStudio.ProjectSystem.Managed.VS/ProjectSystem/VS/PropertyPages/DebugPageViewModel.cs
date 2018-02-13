@@ -502,6 +502,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 
                 UpdateLaunchTypes();
 
+                ActiveProvider?.ProfileSelected(CurrentLaunchSettings);
+
                 OnPropertyChanged(nameof(IsProfileSelected));
                 OnPropertyChanged(nameof(DeleteProfileEnabled));
                 

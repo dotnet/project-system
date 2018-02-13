@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         }
 
         public override Task HandleAsync(
-            IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot>> e,
+            IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>> e,
             IImmutableDictionary<string, IProjectChangeDescription> projectChanges,
             ITargetedProjectContext context,
             bool isActiveContext,
@@ -149,7 +149,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                                  && unresolvedChanges.Contains(metadata.Name));
                 isTarget = metadata.IsTarget;
                 var packageTargetFramework = TargetFrameworkProvider.GetTargetFramework(metadata.Target);
-                if (packageTargetFramework != targetFramework)
+                if (!(packageTargetFramework?.Equals(targetFramework) == true))
                 {
                     return null;
                 }

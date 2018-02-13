@@ -1,11 +1,6 @@
 
 [$RootKey$]
 
-[$RootKey$\AutoLoadPackages]
-
-[$RootKey$\AutoLoadPackages\{EF4F870B-7B85-4F29-9D15-CE1ABFBE733B}]
-"{67909B06-91E9-4F3E-AB50-495046BE9A9A}"=dword:00000000
-
 [$RootKey$\CLSID]
 
 [$RootKey$\CLSID\{00aa1f44-2ba3-4eaa-b54a-ce18000e6c5d}]

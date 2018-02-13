@@ -1,20 +1,25 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
+using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     internal class Dependency : IDependency
     {
+        private static ConcurrentBag<StringBuilder> s_builderPool = new ConcurrentBag<StringBuilder>();
+
         // These priorities are for graph nodes only and are used to group graph nodes 
-        // appropriatelly in order groups predefined order instead of alphabetically.
-        // Order is not changed for top dependency nodes only for grpah hierarchies.
+        // appropriately in order groups predefined order instead of alphabetically.
+        // Order is not changed for top dependency nodes only for graph hierarchies.
         public const int DiagnosticsErrorNodePriority = 100;
         public const int DiagnosticsWarningNodePriority = 101;
         public const int UnresolvedReferenceNodePriority = 110;
@@ -331,7 +336,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Requires.NotNullOrEmpty(providerType, nameof(providerType));
             Requires.NotNullOrEmpty(modelId, nameof(modelId));
 
-            return $"{targetFramework.ShortName}\\{providerType}\\{Normalize(modelId)}".TrimEnd(CommonConstants.BackSlashDelimiter);
+            StringBuilder sb = null;
+            try
+            {
+                int length = targetFramework.ShortName.Length + providerType.Length + 2;
+                if (!s_builderPool.TryTake(out sb))
+                {
+                    sb = new StringBuilder(length);
+                }
+
+                sb.Append(targetFramework.ShortName).Append('\\');
+                sb.Append(providerType).Append('\\');
+                sb.Append(Normalize(modelId));
+                sb.TrimEnd(CommonConstants.BackSlashDelimiter);
+                return sb.ToString();
+            }
+            finally
+            {
+                sb.Clear();
+
+                // Prevent holding on to large builders
+                if (sb.Length < 1000)
+                {
+                    s_builderPool.Add(sb);
+                }
+            }
         }
 
         private static string GetFullPath(string originalItemSpec, string containingProjectPath)
