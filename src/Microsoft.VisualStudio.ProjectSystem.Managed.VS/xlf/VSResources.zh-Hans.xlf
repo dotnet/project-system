@@ -281,6 +281,21 @@ In order to debug this project, add an executable project to this solution which
         <target state="translated">项目</target>
         <note />
       </trans-unit>
+      <trans-unit id="NotSupportedDotNetCoreProject">
+        <source>Projects targeting .NET Core 2.1 or newer are not supported by this version of Visual Studio.</source>
+        <target state="new">Projects targeting .NET Core 2.1 or newer are not supported by this version of Visual Studio.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LearnMore">
+        <source>Learn more</source>
+        <target state="new">Learn more</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OKButtonText">
+        <source>OK</source>
+        <target state="new">OK</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -282,4 +282,13 @@ In order to debug this project, add an executable project to this solution which
   <data name="OutputWindowPaneTitle" xml:space="preserve">
     <value>Project</value>
   </data>
+  <data name="NotSupportedDotNetCoreProject" xml:space="preserve">
+    <value>Projects targeting .NET Core 2.1 or newer are not supported by this version of Visual Studio.</value>
+  </data>
+  <data name="LearnMore" xml:space="preserve">
+    <value>Learn more</value>
+  </data>
+  <data name="OKButtonText" xml:space="preserve">
+    <value>OK</value>
+  </data>
 </root>
