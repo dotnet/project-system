@@ -230,11 +230,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         /// <summary>
-        /// Compares the passed in version to the compatibility data to determine the compat level
+        /// Compares the passed in version to our known last supported version to determine the 
+        /// compatibility level
         /// </summary>
         private CompatibilityLevel GetCompatibilityLevelFromVersion(Version version)
         {
-            // Omly compare major, minor. The presence of build with change the comparison. ie: 2.0 != 2.0.0
+            // Only compare major, minor. The presence of build with change the comparison. ie: 2.0 != 2.0.0
             if (version.Build != -1)
             {
                 version = new Version(version.Major, version.Minor);
