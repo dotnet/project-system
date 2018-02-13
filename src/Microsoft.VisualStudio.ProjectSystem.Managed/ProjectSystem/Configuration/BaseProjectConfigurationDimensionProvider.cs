@@ -130,16 +130,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         public abstract Task OnDimensionValueChangedAsync(ProjectConfigurationDimensionValueChangedEventArgs args);
 
         /// <summary>
-        /// Gets the property value for the dimension property of the specified project.
+        /// Gets the value for the specified property of the specified project.
         /// </summary>
         /// <param name="unconfiguredProject">Unconfigured project.</param>
-        /// <returns>Value of the dimension property.</returns>
+        /// <param name="propertyName">The name of the property to get; otherwise, <see langword="null"/> to use <see cref="PropertyName"/>.</param>
+        /// <returns>Value of the property.</returns>
         /// <remarks>
         /// This needs to get the evaluated property in order to get inherited properties defines in props or targets.
         /// </remarks>
-        protected async Task<string> GetPropertyValue(UnconfiguredProject unconfiguredProject)
+        protected async Task<string> GetPropertyValue(UnconfiguredProject unconfiguredProject, string propertyName = null)
         {
-            return await ProjectXmlAccessor.GetEvaluatedPropertyValue(unconfiguredProject, PropertyName).ConfigureAwait(false);
+            return await ProjectXmlAccessor.GetEvaluatedPropertyValue(unconfiguredProject, propertyName ?? PropertyName)
+                                           .ConfigureAwait(false);
         }
     }
 }
