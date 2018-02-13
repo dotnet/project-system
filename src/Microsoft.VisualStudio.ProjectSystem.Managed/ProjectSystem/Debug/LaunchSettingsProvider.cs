@@ -101,7 +101,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         private TaskCompletionSource<bool> _firstSnapshotCompletionSource = new TaskCompletionSource<bool>();
 
         protected IDisposable ProjectRuleSubscriptionLink { get; set; }
-        protected IDisposable CapabilitiesSubscriptionLink { get; set; }
 
         private SequencialTaskExecutor _sequentialTaskQueue = new SequencialTaskExecutor();
 
@@ -749,12 +748,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 {
                     ProjectRuleSubscriptionLink.Dispose();
                     ProjectRuleSubscriptionLink = null;
-                }
-
-                if (CapabilitiesSubscriptionLink != null)
-                {
-                    CapabilitiesSubscriptionLink.Dispose();
-                    CapabilitiesSubscriptionLink = null;
                 }
             }
         }
