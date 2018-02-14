@@ -67,54 +67,55 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
             switch (args)
             {
                 case ProjectEvaluationStartedEventArgs evaluationStarted:
+                {
+                    if (!DataSource.IsLogging || evaluationStarted.ProjectFile == "(null)")
                     {
-                        if (!DataSource.IsLogging || evaluationStarted.ProjectFile == "(null)")
-                        {
-                            return;
-                        }
-
-                        var logPath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.binlog");
-                        var binaryLogger = new BinaryLogger
-                        {
-                            Parameters = logPath,
-                            Verbosity = LoggerVerbosity.Diagnostic,
-                            CollectProjectImports = BinaryLogger.ProjectImportsCollectionMode.None
-                        };
-                        var wrapper = new EventWrapper(binaryLogger);
-                        var build = new Build(evaluationStarted.ProjectFile, Array.Empty<string>(), Array.Empty<string>(), 
-                            BuildType.Evaluation, args.Timestamp);
-                        _evaluations[evaluationStarted.BuildEventContext.EvaluationId] = new Evaluation
-                        {
-                            Wrapper = wrapper,
-                            Build = build,
-                            LogPath = logPath
-                        };
-                        wrapper.RaiseEvent(sender, args);
-                        DataSource.AddEntry(build);
+                        return;
                     }
-                    break;
+
+                    var logPath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.binlog");
+                    var binaryLogger = new BinaryLogger
+                    {
+                        Parameters = logPath,
+                        Verbosity = LoggerVerbosity.Diagnostic,
+                        CollectProjectImports = BinaryLogger.ProjectImportsCollectionMode.None
+                    };
+                    var wrapper = new EventWrapper(binaryLogger);
+                    var build = new Build(evaluationStarted.ProjectFile, Array.Empty<string>(), Array.Empty<string>(),
+                        BuildType.Evaluation, args.Timestamp);
+                    _evaluations[evaluationStarted.BuildEventContext.EvaluationId] = new Evaluation
+                    {
+                        Wrapper = wrapper,
+                        Build = build,
+                        LogPath = logPath
+                    };
+                    wrapper.RaiseEvent(sender, args);
+                    DataSource.AddEntry(build);
+                }
+                break;
 
                 case ProjectEvaluationFinishedEventArgs evaluationFinished:
+                {
+                    if (_evaluations.TryGetValue(args.BuildEventContext.EvaluationId, out var evaluation))
                     {
-                        if (_evaluations.TryGetValue(args.BuildEventContext.EvaluationId, out var evaluation))
-                        {
-                            evaluation.Build.Finish(true, args.Timestamp);
-                            evaluation.Wrapper.RaiseEvent(sender, args);
-                            evaluation.Wrapper.BinaryLogger.Shutdown();
-                            evaluation.Build.PreserveLogfile(evaluation.LogPath);
-                            DataSource.NotifyChange();
-                        }
+                        evaluation.Build.Finish(true, args.Timestamp);
+                        evaluation.Wrapper.RaiseEvent(sender, args);
+                        evaluation.Wrapper.BinaryLogger.Shutdown();
+                        evaluation.Build.SetLogPath(GetLogPath(evaluation.Build));
+                        Copy(evaluation.LogPath, evaluation.Build.LogPath);
+                        DataSource.NotifyChange();
                     }
-                    break;
+                }
+                break;
 
                 default:
+                {
+                    if (_evaluations.TryGetValue(args.BuildEventContext.EvaluationId, out var evaluation))
                     {
-                        if (_evaluations.TryGetValue(args.BuildEventContext.EvaluationId, out var evaluation))
-                        {
-                            evaluation.Wrapper.RaiseEvent(sender, args);
-                        }
+                        evaluation.Wrapper.RaiseEvent(sender, args);
                     }
-                    break;
+                }
+                break;
             }
         }
     }

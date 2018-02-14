@@ -77,14 +77,14 @@
         <target state="new">Evaluation</target>
         <note />
       </trans-unit>
-      <trans-unit id="FilterBuildLives">
-        <source>Live</source>
-        <target state="new">Live</target>
+      <trans-unit id="FilterBuildRoslyn">
+        <source>Roslyn</source>
+        <target state="new">Roslyn</target>
         <note />
       </trans-unit>
-      <trans-unit id="RoslynLoggerProjectName_SolutionWide">
-        <source>* solution wide *</source>
-        <target state="new">* solution wide *</target>
+      <trans-unit id="ProjectSolutionWide">
+        <source>Solution Wide</source>
+        <target state="new">Solution Wide</target>
         <note />
       </trans-unit>
     </body>

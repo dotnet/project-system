@@ -74,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
             }
 
             // add live entry to the toolwindow
-            _build = new Build(Resources.RoslynLoggerProjectName_SolutionWide, Array.Empty<string>(), Array.Empty<string>(), BuildType.Live, DateTime.Now);
+            _build = new Build(Resources.ProjectSolutionWide, Array.Empty<string>(), Array.Empty<string>(), BuildType.Roslyn, DateTime.Now);
             _dataSource.AddEntry(_build);
 
             _roslynTraceSource = new TraceSource("RoslynTraceSource", SourceLevels.Verbose);
@@ -218,9 +218,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
             private void AddLog(string message)
             {
-                lock (_writer)
+                try
                 {
-                    _writer.WriteLine(message);
+                    lock (_writer)
+                    {
+                        _writer.WriteLine(message);
+                    }
+                }
+                catch
+                {
+                    // don't crash VS
                 }
             }
 

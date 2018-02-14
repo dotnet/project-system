@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
         Build = 0x1,
         DesignTimeBuild = 0x2,
         Evaluation = 0x4,
-        Live = 0x8,
-        All = Build | DesignTimeBuild | Evaluation | Live
+        Roslyn = 0x8,
+        All = Build | DesignTimeBuild | Evaluation | Roslyn
     }
 }

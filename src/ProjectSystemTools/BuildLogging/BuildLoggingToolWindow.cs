@@ -247,9 +247,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                         {
                             _filterType = BuildType.Evaluation;
                         }
-                        else if (!filter.ExcludedContains(nameof(BuildType.Live)))
+                        else if (!filter.ExcludedContains(nameof(BuildType.Roslyn)))
                         {
-                            _filterType = BuildType.Live;
+                            _filterType = BuildType.Roslyn;
                         }
                         break;
                 }
@@ -479,8 +479,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                             case BuildType.Build:
                                 selectedType = Resources.FilterBuildBuilds;
                                 break;
-                            case BuildType.Live:
-                                selectedType = Resources.FilterBuildLives;
+                            case BuildType.Roslyn:
+                                selectedType = Resources.FilterBuildRoslyn;
                                 break;
                         }
 
@@ -508,9 +508,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                         {
                             _tableControl.SetFilter(TableColumnNames.BuildType, new ColumnHashSetFilter(column, GetExcluded(nameof(BuildType.Build))));
                         }
-                        else if (selectedType.Equals(Resources.FilterBuildLives))
+                        else if (selectedType.Equals(Resources.FilterBuildRoslyn))
                         {
-                            _tableControl.SetFilter(TableColumnNames.BuildType, new ColumnHashSetFilter(column, GetExcluded(nameof(BuildType.Live))));
+                            _tableControl.SetFilter(TableColumnNames.BuildType, new ColumnHashSetFilter(column, GetExcluded(nameof(BuildType.Roslyn))));
                         }
                     }
 
@@ -532,10 +532,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
         private string[] GetBuildFilterComboItems()
         {
             // check whether Roslyn support live build logging and enable it if it exist
-            var exist = (_dataSource as BuildTableDataSource)?.SupportRoslynLog ?? false;
+            var exist = (_dataSource as BuildTableDataSource)?.SupportRoslynLogging ?? false;
             if (exist)
             {
-                return new string[] { Resources.FilterBuildAll, Resources.FilterBuildEvaluations, Resources.FilterBuildDesignTimeBuilds, Resources.FilterBuildBuilds, Resources.FilterBuildLives };
+                return new string[] { Resources.FilterBuildAll, Resources.FilterBuildEvaluations, Resources.FilterBuildDesignTimeBuilds, Resources.FilterBuildBuilds, Resources.FilterBuildRoslyn };
             }
             else
             {

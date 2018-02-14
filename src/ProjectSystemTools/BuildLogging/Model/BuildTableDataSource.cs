@@ -33,6 +33,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
         public string DisplayName => BuildDataSourceDisplayName;
 
+        public bool SupportRoslynLogging => _roslynLogger.Supported;
+
         public bool IsLogging { get; private set; }
 
         public int CurrentVersionNumber { get; private set; }
@@ -146,7 +148,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
             _entries = _entries.Add(build);
             NotifyChange();
         }
-
-        public bool SupportRoslynLog => _roslynLogger.Supported;
     }
 }
