@@ -828,7 +828,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                         using (var dialog = new System.Windows.Forms.OpenFileDialog())
                         {
                             var file = ExecutablePath;
-                            if ((file.IndexOfAny(Path.GetInvalidPathChars()) == -1) && Path.IsPathRooted(file))
+                            if (!string.IsNullOrEmpty(file) && (file.IndexOfAny(Path.GetInvalidPathChars()) == -1) && Path.IsPathRooted(file))
                             {
                                 dialog.InitialDirectory = Path.GetDirectoryName(file);
                                 dialog.FileName = file;
