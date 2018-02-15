@@ -283,27 +283,27 @@ Pokud chcete projekt ladit, přidejte do řešení spustitelný projekt, který 
       </trans-unit>
       <trans-unit id="PartialSupportedDotNetCoreProject">
         <source>Visual Studio 2017 version 15.7 or newer is recommended for .NET Core {0}.{1} projects.</source>
-        <target state="new">Visual Studio 2017 version 15.7 or newer is recommended for .NET Core {0}.{1} projects.</target>
+        <target state="translated">Pro projekty .NET Core {0}.{1} se doporučuje Visual Studio 2017 verze 15.7 nebo novější.</target>
         <note />
       </trans-unit>
       <trans-unit id="NotSupportedDotNetCoreProject">
         <source>Projects targeting versions newer than .NET Core {0}.{1} are not supported by this version of Visual Studio.</source>
-        <target state="new">Projects targeting versions newer than .NET Core {0}.{1} are not supported by this version of Visual Studio.</target>
+        <target state="translated">Tato verze sady Visual Studio nepodporuje projekty, které cílí na verze novější než .NET Core {0}.{1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="DontShowAgain">
         <source>Don't show again</source>
-        <target state="new">Don't show again</target>
+        <target state="translated">Znovu nezobrazovat</target>
         <note />
       </trans-unit>
       <trans-unit id="LearnMore">
         <source>Learn more</source>
-        <target state="new">Learn more</target>
+        <target state="translated">Další informace</target>
         <note />
       </trans-unit>
       <trans-unit id="OKButtonText">
         <source>OK</source>
-        <target state="new">OK</target>
+        <target state="translated">OK</target>
         <note />
       </trans-unit>
     </body>
