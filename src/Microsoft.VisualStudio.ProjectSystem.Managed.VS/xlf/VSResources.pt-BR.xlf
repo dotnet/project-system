@@ -281,11 +281,6 @@ Para depurar esse projeto, adicione um projeto executável a essa solução que 
         <target state="translated">Projeto</target>
         <note />
       </trans-unit>
-      <trans-unit id="PartialSupportedDotNetCoreProject">
-        <source>Visual Studio 2017 version 15.7 or newer is recommended for .NET Core {0}.{1} projects.</source>
-        <target state="translated">O Visual Studio 2017 versão 15.7 ou mais recente é recomendado para o .NET Core {0}. Projetos {1}.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="NotSupportedDotNetCoreProject">
         <source>Projects targeting versions newer than .NET Core {0}.{1} are not supported by this version of Visual Studio.</source>
         <target state="translated">Projetos que destinam versões mais recentes que o .NET Core {0}. {1} não são compatíveis com esta versão do Visual Studio.</target>
@@ -299,6 +294,11 @@ Para depurar esse projeto, adicione um projeto executável a essa solução que 
       <trans-unit id="OKButtonText">
         <source>OK</source>
         <target state="translated">OK</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PartialSupportedDotNetCoreProject">
+        <source>Visual Studio 2017 version 15.7 or newer is recommended for .NET Core {0}.{1} projects.</source>
+        <target state="translated">O Visual Studio 2017 versão 15.7 ou mais recente é recomendado para o .NET Core {0}. Projetos {1}.</target>
         <note />
       </trans-unit>
     </body>

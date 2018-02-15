@@ -281,11 +281,6 @@ Pour déboguer ce projet, ajoutez à cette solution un projet exécutable qui fa
         <target state="translated">Projet</target>
         <note />
       </trans-unit>
-      <trans-unit id="PartialSupportedDotNetCoreProject">
-        <source>Visual Studio 2017 version 15.7 or newer is recommended for .NET Core {0}.{1} projects.</source>
-        <target state="translated">Visual Studio 2017 version 15.7 ou ultérieur est recommandé pour les projets .NET Core {0}.{1}.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="NotSupportedDotNetCoreProject">
         <source>Projects targeting versions newer than .NET Core {0}.{1} are not supported by this version of Visual Studio.</source>
         <target state="translated">Les projets ciblant des versions plus récentes que .NET Core {0}.{1} ne sont pas pris en charge par cette version de Visual Studio.</target>
@@ -299,6 +294,11 @@ Pour déboguer ce projet, ajoutez à cette solution un projet exécutable qui fa
       <trans-unit id="OKButtonText">
         <source>OK</source>
         <target state="translated">OK</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PartialSupportedDotNetCoreProject">
+        <source>Visual Studio 2017 version 15.7 or newer is recommended for .NET Core {0}.{1} projects.</source>
+        <target state="translated">Visual Studio 2017 version 15.7 ou ultérieur est recommandé pour les projets .NET Core {0}.{1}.</target>
         <note />
       </trans-unit>
     </body>

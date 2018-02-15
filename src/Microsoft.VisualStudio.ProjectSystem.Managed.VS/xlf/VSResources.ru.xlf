@@ -281,11 +281,6 @@ In order to debug this project, add an executable project to this solution which
         <target state="translated">Проект</target>
         <note />
       </trans-unit>
-      <trans-unit id="PartialSupportedDotNetCoreProject">
-        <source>Visual Studio 2017 version 15.7 or newer is recommended for .NET Core {0}.{1} projects.</source>
-        <target state="translated">Для проектов .NET Core {0}.{1} рекомендуем использовать Visual Studio 2017 версии 15.7 или более новую версию.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="NotSupportedDotNetCoreProject">
         <source>Projects targeting versions newer than .NET Core {0}.{1} are not supported by this version of Visual Studio.</source>
         <target state="translated">Эта версия Visual Studio не поддерживает проекты, нацеленные на версии новее .NET Core {0}.{1}.</target>
@@ -299,6 +294,11 @@ In order to debug this project, add an executable project to this solution which
       <trans-unit id="OKButtonText">
         <source>OK</source>
         <target state="translated">ОК</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PartialSupportedDotNetCoreProject">
+        <source>Visual Studio 2017 version 15.7 or newer is recommended for .NET Core {0}.{1} projects.</source>
+        <target state="translated">Для проектов .NET Core {0}.{1} рекомендуем использовать Visual Studio 2017 версии 15.7 или более новую версию.</target>
         <note />
       </trans-unit>
     </body>

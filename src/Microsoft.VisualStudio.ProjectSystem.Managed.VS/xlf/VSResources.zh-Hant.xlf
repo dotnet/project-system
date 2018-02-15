@@ -281,11 +281,6 @@ In order to debug this project, add an executable project to this solution which
         <target state="translated">專案</target>
         <note />
       </trans-unit>
-      <trans-unit id="PartialSupportedDotNetCoreProject">
-        <source>Visual Studio 2017 version 15.7 or newer is recommended for .NET Core {0}.{1} projects.</source>
-        <target state="translated">建議在 .NET Core {0}.{1} 專案使用 Visual Studio 2017 15.7 以上的版本。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="NotSupportedDotNetCoreProject">
         <source>Projects targeting versions newer than .NET Core {0}.{1} are not supported by this version of Visual Studio.</source>
         <target state="translated">這一版本的 Visual Studio 不支援以 .NET Core {0}.{1} 以上版本為目標的專案。</target>
@@ -299,6 +294,11 @@ In order to debug this project, add an executable project to this solution which
       <trans-unit id="OKButtonText">
         <source>OK</source>
         <target state="translated">確定</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PartialSupportedDotNetCoreProject">
+        <source>Visual Studio 2017 version 15.7 or newer is recommended for .NET Core {0}.{1} projects.</source>
+        <target state="translated">建議在 .NET Core {0}.{1} 專案使用 Visual Studio 2017 15.7 以上的版本。</target>
         <note />
       </trans-unit>
     </body>

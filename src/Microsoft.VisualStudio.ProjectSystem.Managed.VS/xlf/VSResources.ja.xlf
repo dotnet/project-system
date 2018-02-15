@@ -281,11 +281,6 @@ In order to debug this project, add an executable project to this solution which
         <target state="translated">プロジェクト</target>
         <note />
       </trans-unit>
-      <trans-unit id="PartialSupportedDotNetCoreProject">
-        <source>Visual Studio 2017 version 15.7 or newer is recommended for .NET Core {0}.{1} projects.</source>
-        <target state="translated">.NET Core {0}.{1} プロジェクトでは、Visual Studio 2017 バージョン 15.7 以降が推奨されています。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="NotSupportedDotNetCoreProject">
         <source>Projects targeting versions newer than .NET Core {0}.{1} are not supported by this version of Visual Studio.</source>
         <target state="translated">.NET Core {0}.{1} 以降のバージョンをターゲットとするプロジェクトは、このバージョンの Visual Studio ではサポートされていません。</target>
@@ -299,6 +294,11 @@ In order to debug this project, add an executable project to this solution which
       <trans-unit id="OKButtonText">
         <source>OK</source>
         <target state="translated">OK</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PartialSupportedDotNetCoreProject">
+        <source>Visual Studio 2017 version 15.7 or newer is recommended for .NET Core {0}.{1} projects.</source>
+        <target state="translated">.NET Core {0}.{1} プロジェクトでは、Visual Studio 2017 バージョン 15.7 以降が推奨されています。</target>
         <note />
       </trans-unit>
     </body>
