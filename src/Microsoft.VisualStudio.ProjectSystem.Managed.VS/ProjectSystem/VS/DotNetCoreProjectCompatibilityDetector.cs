@@ -27,8 +27,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     [Export(typeof(IDotNetCoreProjectCompatibilityDetector))]
     internal sealed class DotNetCoreProjectCompatibilityDetector : IDotNetCoreProjectCompatibilityDetector, IVsSolutionEvents, IVsSolutionLoadEvents, IDisposable
     {
-        private const string SupportedLearnMoreFwlink = "https://go.microsoft.com/fwlink/?linkid=866848";
-        private const string UnsupportedLearnMoreFwlink = "https://go.microsoft.com/fwlink/?linkid=866796";
+        private const string SupportedLearnMoreFwlink = "https://go.microsoft.com/fwlink/?linkid=868064";
+        private const string UnsupportedLearnMoreFwlink = "https://go.microsoft.com/fwlink/?linkid=866797";
         private const string SuppressDotNewCoreWarningKey = @"ManagedProjectSystem\SuppressDotNewCoreWarning";
         private const string VersionCompatibilityDownloadFwlink = "https://go.microsoft.com/fwlink/?linkid=866798";
         private const string VersionDataFilename = "DotNetVersionCompatibility.json";
