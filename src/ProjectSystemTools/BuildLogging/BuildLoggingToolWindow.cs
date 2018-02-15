@@ -42,8 +42,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
         private const string ColumnGroupingPriority = "GroupingPriority";
         private const string ColumnsKey = "ProjectSystemTools\\BuildLogging\\Columns";
 
-        private readonly string[] _buildFilterComboItems = { Resources.FilterBuildAll, Resources.FilterBuildEvaluations, Resources.FilterBuildDesignTimeBuilds, Resources.FilterBuildBuilds };
-
         private static readonly Guid BuildLoggingToolWindowSearchCategory = new Guid("6D3BC803-1271-4909-BA24-2921AF7F029B");
 
         private readonly IBuildTableDataSource _dataSource;
@@ -52,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
         private IWpfTableControl2 _tableControl;
         private bool _isDisposed;
 
-        private BuildType _filterType = BuildType.Evaluation | BuildType.DesignTimeBuild | BuildType.Build;
+        private BuildType _filterType = BuildType.All;
 
         bool IVsWindowSearch.SearchEnabled => true;
 
@@ -234,23 +232,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                 switch (filter.ExcludedCount)
                 {
                     case 0:
-                        _filterType = BuildType.Build | BuildType.DesignTimeBuild | BuildType.Evaluation;
-                        break;
-                    case 1:
-                        _filterType = BuildType.None;
+                        _filterType = BuildType.All;
                         break;
                     default:
-                        if (!filter.ExcludedContains("Build"))
+                        if (!filter.ExcludedContains(nameof(BuildType.Build)))
                         {
                             _filterType = BuildType.Build;
                         }
-                        else if (!filter.ExcludedContains("DesignTimeBuild"))
+                        else if (!filter.ExcludedContains(nameof(BuildType.DesignTimeBuild)))
                         {
                             _filterType = BuildType.DesignTimeBuild;
                         }
-                        else if (!filter.ExcludedContains("Evaluation"))
+                        else if (!filter.ExcludedContains(nameof(BuildType.Evaluation)))
                         {
                             _filterType = BuildType.Evaluation;
+                        }
+                        else if (!filter.ExcludedContains(nameof(BuildType.Roslyn)))
+                        {
+                            _filterType = BuildType.Roslyn;
                         }
                         break;
                 }
@@ -468,7 +467,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                     {
                         switch (_filterType)
                         {
-                            case BuildType.Evaluation | BuildType.DesignTimeBuild | BuildType.Build:
+                            case BuildType.All:
                                 selectedType = Resources.FilterBuildAll;
                                 break;
                             case BuildType.Evaluation:
@@ -479,6 +478,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                                 break;
                             case BuildType.Build:
                                 selectedType = Resources.FilterBuildBuilds;
+                                break;
+                            case BuildType.Roslyn:
+                                selectedType = Resources.FilterBuildRoslyn;
                                 break;
                         }
 
@@ -492,19 +494,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                         var column = _tableControl.ColumnDefinitionManager.GetColumnDefinition(TableColumnNames.BuildType);
                         if (selectedType.Equals(Resources.FilterBuildAll))
                         {
-                            _tableControl.SetFilter(TableColumnNames.BuildType, null);
+                            _tableControl.SetFilter(TableColumnNames.BuildType, new ColumnHashSetFilter(column));
                         }
                         else if (selectedType.Equals(Resources.FilterBuildEvaluations))
                         {
-                            _tableControl.SetFilter(TableColumnNames.BuildType, new ColumnHashSetFilter(column, "Build", "DesignTimeBuild"));
+                            _tableControl.SetFilter(TableColumnNames.BuildType, new ColumnHashSetFilter(column, GetExcluded(nameof(BuildType.Evaluation))));
                         }
                         else if (selectedType.Equals(Resources.FilterBuildDesignTimeBuilds))
                         {
-                            _tableControl.SetFilter(TableColumnNames.BuildType, new ColumnHashSetFilter(column, "Evaluation", "Build"));
+                            _tableControl.SetFilter(TableColumnNames.BuildType, new ColumnHashSetFilter(column, GetExcluded(nameof(BuildType.DesignTimeBuild))));
                         }
                         else if (selectedType.Equals(Resources.FilterBuildBuilds))
                         {
-                            _tableControl.SetFilter(TableColumnNames.BuildType, new ColumnHashSetFilter(column, "Evaluation", "DesignTimeBuild"));
+                            _tableControl.SetFilter(TableColumnNames.BuildType, new ColumnHashSetFilter(column, GetExcluded(nameof(BuildType.Build))));
+                        }
+                        else if (selectedType.Equals(Resources.FilterBuildRoslyn))
+                        {
+                            _tableControl.SetFilter(TableColumnNames.BuildType, new ColumnHashSetFilter(column, GetExcluded(nameof(BuildType.Roslyn))));
                         }
                     }
 
@@ -512,7 +518,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
                 case ProjectSystemToolsPackage.BuildTypeComboGetListCommandId:
                     var outParam = pvaOut;
-                    Marshal.GetNativeVariantForObject(_buildFilterComboItems, outParam);
+                    Marshal.GetNativeVariantForObject(GetBuildFilterComboItems(), outParam);
                     break;
 
                 default:
@@ -521,6 +527,40 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
             }
 
             return handled ? VSConstants.S_OK : (int)Constants.OLECMDERR_E_NOTSUPPORTED;
+        }
+
+        private string[] GetBuildFilterComboItems()
+        {
+            // check whether Roslyn support live build logging and enable it if it exist
+            var exist = (_dataSource as BuildTableDataSource)?.SupportRoslynLogging ?? false;
+            if (exist)
+            {
+                return new string[] { Resources.FilterBuildAll, Resources.FilterBuildEvaluations, Resources.FilterBuildDesignTimeBuilds, Resources.FilterBuildBuilds, Resources.FilterBuildRoslyn };
+            }
+            else
+            {
+                return new string[] { Resources.FilterBuildAll, Resources.FilterBuildEvaluations, Resources.FilterBuildDesignTimeBuilds, Resources.FilterBuildBuilds };
+            }
+        }
+
+        private IEnumerable<string> GetExcluded(string include)
+        {
+            foreach (var name in Enum.GetNames(typeof(BuildType)))
+            {
+                // exclude some known ones
+                if (name == nameof(BuildType.None) ||
+                    name == nameof(BuildType.All))
+                {
+                    continue;
+                }
+
+                if (name == include)
+                {
+                    continue;
+                }
+
+                yield return name;
+            }
         }
 
         IVsSearchTask IVsWindowSearch.CreateSearch([ComAliasName("VsShell.VSCOOKIE")]uint dwCookie, IVsSearchQuery pSearchQuery, IVsSearchCallback pSearchCallback)

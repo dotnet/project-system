@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 {
     internal sealed class ProjectLogger : LoggerBase
     {
-        private static readonly string[] Dimensions = {"Configuration", "Platform", "TargetFramework"};
+        private static readonly string[] Dimensions = { "Configuration", "Platform", "TargetFramework" };
 
         private readonly bool _isDesignTime;
         private int _projectInstanceId;
@@ -42,7 +42,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
         public override void Shutdown()
         {
             _binaryLogger.Shutdown();
-            _build.Close(_logPath);
+            _build.SetLogPath(GetLogPath(_build));
+            Copy(_logPath, _build.LogPath);
             DataSource.NotifyChange();
         }
 

@@ -77,6 +77,16 @@
         <target state="new">Evaluation</target>
         <note />
       </trans-unit>
+      <trans-unit id="FilterBuildRoslyn">
+        <source>Roslyn</source>
+        <target state="new">Roslyn</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ProjectSolutionWide">
+        <source>Solution Wide</source>
+        <target state="new">Solution Wide</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

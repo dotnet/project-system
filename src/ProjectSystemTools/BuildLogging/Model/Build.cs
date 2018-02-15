@@ -27,13 +27,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
         public string LogPath { get; private set; }
 
-        private string DimensionsString =>
-            Dimensions.Any()
-                ? $"{Dimensions.Aggregate((c, n) => string.IsNullOrEmpty(n) ? c : $"{c}_{n}")}_"
-                : string.Empty;
-
-        private string Filename => $"{Path.GetFileNameWithoutExtension(ProjectPath)}_{DimensionsString}{BuildType}_{StartTime:o}.binlog".Replace(':', '_');
-
         public Build(string projectPath, IEnumerable<string> dimensions, IEnumerable<string> targets, BuildType buildType, DateTime startTime)
         {
             ProjectPath = projectPath;
@@ -41,6 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
             Targets = targets?.ToArray() ?? Enumerable.Empty<string>();
             BuildType = buildType;
             StartTime = startTime;
+            Status = BuildStatus.Running;
         }
 
         public void Finish(bool succeeded, DateTime time)
@@ -54,10 +48,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
             Elapsed = time - StartTime;
         }
 
-        public void Close(string logPath)
+        public void SetLogPath(string logPath)
         {
-            LogPath = Path.Combine(Path.GetTempPath(), Filename);
-            File.Copy(logPath, LogPath, true);
+            LogPath = logPath;
         }
 
         public bool TryGetValue(string keyName, out object content)
