@@ -281,24 +281,24 @@ Bu projede hata ayıklamak için bu çözüme, kitaplık projesine başvuran bir
         <target state="translated">Proje</target>
         <note />
       </trans-unit>
+      <trans-unit id="PartialSupportedDotNetCoreProject">
+        <source>Visual Studio 2017 version 15.7 or newer is recommended for .NET Core {0}.{1} projects.</source>
+        <target state="translated">.NET Core {0}.{1} projeleri için Visual Studio 2017 sürüm 15.7 veya daha yeni bir sürüm önerilir.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="NotSupportedDotNetCoreProject">
         <source>Projects targeting versions newer than .NET Core {0}.{1} are not supported by this version of Visual Studio.</source>
-        <target state="new">Projects targeting versions newer than .NET Core {0}.{1} are not supported by this version of Visual Studio.</target>
+        <target state="translated">.NET Core {0}.{1} sürümünden daha yeni sürümleri hedefleyen projeler bu Visual Studio sürümünde desteklenmez.</target>
         <note />
       </trans-unit>
       <trans-unit id="LearnMore">
         <source>Learn more</source>
-        <target state="new">Learn more</target>
+        <target state="translated">Daha fazla bilgi</target>
         <note />
       </trans-unit>
       <trans-unit id="OKButtonText">
         <source>OK</source>
-        <target state="new">OK</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PartialSupportedDotNetCoreProject">
-        <source>Visual Studio 2017 version 15.7 or newer is recommended for .NET Core {0}.{1} projects.</source>
-        <target state="new">Visual Studio 2017 version 15.7 or newer is recommended for .NET Core {0}.{1} projects.</target>
+        <target state="translated">Tamam</target>
         <note />
       </trans-unit>
     </body>
