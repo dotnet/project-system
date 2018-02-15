@@ -20,6 +20,26 @@
     <RemoveIntegerChecks>true</RemoveIntegerChecks>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(OfficialBuild)' == 'true'">
+    <!-- Split the build parts out from the BuildNumber which is given to us by MicroBuild in the format of yyyymmdd.nn
+     where BuildNumberFiveDigitDateStamp is mmmdd (such as 60615) and BuildNumberBuildOfTheDay is nn (which represents the nth build
+     started that day). So the first build of the day, 20160615.1, will produce something similar to BuildNumberFiveDigitDateStamp: 60615,
+     BuildNumberBuildOfTheDayPadded: 01;and the 12th build of the day, 20160615.12, will produce BuildNumberFiveDigitDateStamp: 60615, BuildNumberBuildOfTheDay: 12
+
+     Additionally, in order ensure the value fits in the 16-bit PE header fields, we will only take the last five digits of the BuildNumber, so
+     in the case of 20160615, we will set BuildNumberFiveDigitDateStamp to 60615. Further, if this would result in a number like 71201 or 81201, we
+     decrement the year and add 12 to the month to extend the time. -->
+    <_BuildNumberFiveDigitDateStamp>$([MSBuild]::Subtract($(BUILD_BUILDNUMBER.Split($([System.Convert]::ToString(`.`).ToCharArray())).GetValue($([System.Convert]::ToInt32(0)))), 20100000))</_BuildNumberFiveDigitDateStamp>
+    <_BuildNumberFiveDigitDateStampYearsToOffset>$([System.Math]::Max($([System.Convert]::ToInt32($([MSBuild]::Subtract($([MSBuild]::Divide($(_BuildNumberFiveDigitDateStamp), 10000)), 6)))), 0))</_BuildNumberFiveDigitDateStampYearsToOffset>
+    <_BuildNumberFiveDigitDateStamp>$([MSBuild]::Subtract($([System.Convert]::ToInt32($(_BuildNumberFiveDigitDateStamp))), $([MSBuild]::Multiply($(_BuildNumberFiveDigitDateStampYearsToOffset), 8800))))</_BuildNumberFiveDigitDateStamp>
+    <_BuildNumberBuildOfTheDayPadded>$(BUILD_BUILDNUMBER.Split($([System.Convert]::ToString(`.`).ToCharArray())).GetValue($([System.Convert]::ToInt32(1))).PadLeft($([System.Convert]::ToInt32(2)), $([System.Convert]::ToChar(`0`))))</_BuildNumberBuildOfTheDayPadded>
+    <Version>$(VersionBase)</Version>
+    <Version Condition="'$(PreReleaseVersionLabel)' != ''">$(Version)-$(PreReleaseVersionLabel)-$(_BuildNumberFiveDigitDateStamp)-$(_BuildNumberBuildOfTheDayPadded)</Version>
+    <FileVersion>$(VersionBase).$(_BuildNumberFiveDigitDateStamp)</FileVersion>
+    <VsixVersion>$(VersionBase).$(_BuildNumberFiveDigitDateStamp)$(_BuildNumberBuildOfTheDayPadded)</VsixVersion>
+    <InformationalVersion>$(Version). Commit Hash: $(GitHeadSha)</InformationalVersion>
+  </PropertyGroup>
+  
   <PropertyGroup>
     <!-- TODO: Remove suppressions of Xunit warnings: https://github.com/dotnet/project-system/issues/2584 -->
     <NoWarn>$(NoWarn);xUnit1004;xUnit2000;xUnit2003;xUnit2004;xUnit2009;xUnit2010;xUnit1013</NoWarn>
