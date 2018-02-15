@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         private const string Platforms = nameof(Platforms);
 
         private string projectXml =
-@"<Project Sdk=""Microsoft.NET.Sdk"">
+@"<Project>
   <PropertyGroup>
     <Platforms>AnyCPU;x64;x86</Platforms>
   </PropertyGroup>
