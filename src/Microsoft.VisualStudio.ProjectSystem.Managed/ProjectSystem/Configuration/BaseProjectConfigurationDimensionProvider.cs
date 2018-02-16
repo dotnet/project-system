@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseProjectConfigurationDimensionProvider"/> class.
         /// </summary>
-        /// <param name="projectXmlAccessor">Lock service for the project file.</param>
+        /// <param name="projectAccessor">Lock service for the project file.</param>
         /// <param name="dimensionName">Name of the dimension.</param>
         /// <param name="propertyName">Name of the project property containing the dimension values.</param>
         public BaseProjectConfigurationDimensionProvider(IProjectXmlAccessor projectXmlAccessor, string dimensionName, string propertyName)
