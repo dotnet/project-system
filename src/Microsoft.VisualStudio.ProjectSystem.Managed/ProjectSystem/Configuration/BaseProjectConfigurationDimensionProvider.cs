@@ -19,11 +19,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// <param name="projectXmlAccessor">Lock service for the project file.</param>
         /// <param name="dimensionName">Name of the dimension.</param>
         /// <param name="propertyName">Name of the project property containing the dimension values.</param>
-        public BaseProjectConfigurationDimensionProvider(IProjectXmlAccessor projectXmlAccessor, string dimensionName, string propertyName)
+        public BaseProjectConfigurationDimensionProvider(IProjectAccessor projectAccessor, string dimensionName, string propertyName)
         {
-            Requires.NotNull(projectXmlAccessor, nameof(projectXmlAccessor));
+            Requires.NotNull(projectAccessor, nameof(projectAccessor));
 
-            ProjectXmlAccessor = projectXmlAccessor;
+            ProjectAccessor = projectAccessor;
             DimensionName = dimensionName;
             PropertyName = propertyName;
         }
@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             get;
         }
 
-        public IProjectXmlAccessor ProjectXmlAccessor
+        public IProjectAccessor ProjectAccessor
         {
             get;
         }
@@ -140,8 +140,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// </remarks>
         protected async Task<string> GetPropertyValue(UnconfiguredProject project, string propertyName = null)
         {
-            return await ProjectXmlAccessor.GetEvaluatedPropertyValue(project, propertyName ?? PropertyName)
-                                           .ConfigureAwait(false);
+            var configuredProject = await project.GetSuggestedConfiguredProjectAsync()
+                                                 .ConfigureAwait(false);
+
+            return await ProjectAccessor.OpenProjectForReadAsync(configuredProject, evaluatedProject =>
+            {
+                return evaluatedProject.GetProperty(propertyName ?? PropertyName)?.EvaluatedValue;
+            }).ConfigureAwait(false);
         }
     }
 }

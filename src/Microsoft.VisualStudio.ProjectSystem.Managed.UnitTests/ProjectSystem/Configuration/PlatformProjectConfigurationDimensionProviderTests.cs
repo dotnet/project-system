@@ -23,11 +23,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         [Fact]
         public async Task PlatformProjectConfigurationDimensionProvider_GetDefaultValuesForDimensionsAsync()
         {
-            var project = ProjectRootElementFactory.Create(projectXml);
-            var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
-            var provider = new PlatformProjectConfigurationDimensionProvider(projectXmlAccessor);
+            var projectAccessor = IProjectAccessorFactory.Create(projectXml);
+            var provider = new PlatformProjectConfigurationDimensionProvider(projectAccessor);
+
             var unconfiguredProject = UnconfiguredProjectFactory.Create();
             var values = await provider.GetDefaultValuesForDimensionsAsync(unconfiguredProject);
+
             Assert.Single(values);
             var value = values.First();
             Assert.Equal(ConfigurationGeneral.PlatformProperty, value.Key);
@@ -37,11 +38,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         [Fact]
         public async Task PlatformProjectConfigurationDimensionProvider_GetProjectConfigurationDimensionsAsync()
         {
-            var project = ProjectRootElementFactory.Create(projectXml);
-            var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
-            var provider = new PlatformProjectConfigurationDimensionProvider(projectXmlAccessor);
+            var projectAccessor = IProjectAccessorFactory.Create(projectXml);
+            var provider = new PlatformProjectConfigurationDimensionProvider(projectAccessor);
+
             var unconfiguredProject = UnconfiguredProjectFactory.Create();
             var values = await provider.GetProjectConfigurationDimensionsAsync(unconfiguredProject);
+
             Assert.Single(values);
             var value = values.First();
             Assert.Equal(ConfigurationGeneral.PlatformProperty, value.Key);
@@ -56,8 +58,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         public async Task PlatformProjectConfigurationDimensionProvider_OnDimensionValueChanged_Add()
         {
             var project = ProjectRootElementFactory.Create(projectXml);
-            var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
-            var provider = new PlatformProjectConfigurationDimensionProvider(projectXmlAccessor);
+            var projectAccessor = IProjectAccessorFactory.Create(project);
+            var provider = new PlatformProjectConfigurationDimensionProvider(projectAccessor);
+
             var unconfiguredProject = UnconfiguredProjectFactory.Create();
 
             // On ChangeEventStage.After nothing should be changed
@@ -89,8 +92,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         public async Task PlatformProjectConfigurationDimensionProvider_OnDimensionValueChanged_Remove()
         {
             var project = ProjectRootElementFactory.Create(projectXml);
-            var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
-            var provider = new PlatformProjectConfigurationDimensionProvider(projectXmlAccessor);
+            var projectAccessor = IProjectAccessorFactory.Create(project);
+            var provider = new PlatformProjectConfigurationDimensionProvider(projectAccessor);
+
             var unconfiguredProject = UnconfiguredProjectFactory.Create();
 
             // On ChangeEventStage.After nothing should be changed
@@ -122,8 +126,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         public async Task PlatformProjectConfigurationDimensionProvider_OnDimensionValueChanged_Rename()
         {
             var project = ProjectRootElementFactory.Create(projectXml);
-            var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
-            var provider = new PlatformProjectConfigurationDimensionProvider(projectXmlAccessor);
+            var projectAccessor = IProjectAccessorFactory.Create(project);
+            var provider = new PlatformProjectConfigurationDimensionProvider(projectAccessor);
+
             var unconfiguredProject = UnconfiguredProjectFactory.Create();
 
             // Nothing should happen on platform rename as it's unsupported

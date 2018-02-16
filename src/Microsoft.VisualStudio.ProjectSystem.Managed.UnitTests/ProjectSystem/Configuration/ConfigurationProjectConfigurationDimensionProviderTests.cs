@@ -24,11 +24,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         [Fact]
         public async Task GetDefaultValuesForDimensionsAsync()
         {
-            var project = ProjectRootElementFactory.Create(projectXml);
-            var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
-            var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
+            var projectAccessor = IProjectAccessorFactory.Create(projectXml);
+            var provider = new ConfigurationProjectConfigurationDimensionProvider(projectAccessor);
             var unconfiguredProject = UnconfiguredProjectFactory.Create();
+
             var values = await provider.GetDefaultValuesForDimensionsAsync(unconfiguredProject);
+
             Assert.Single(values);
             var value = values.First();
             Assert.Equal(ConfigurationGeneral.ConfigurationProperty, value.Key);
@@ -38,22 +39,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         [Fact]
         public async Task GetDefaultValuesForDimensionsAsync_NoPropertyValue()
         {
-            var project = ProjectRootElementFactory.Create();
-            var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
-            var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
+            var projectAccessor = IProjectAccessorFactory.Create("<Project />");
+            var provider = new ConfigurationProjectConfigurationDimensionProvider(projectAccessor);
             var unconfiguredProject = UnconfiguredProjectFactory.Create();
+
             var values = await provider.GetDefaultValuesForDimensionsAsync(unconfiguredProject);
+
             Assert.Empty(values);
         }
 
         [Fact]
         public async Task GetProjectConfigurationDimensionsAsync()
         {
-            var project = ProjectRootElementFactory.Create(projectXml);
-            var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
-            var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
+            var projectAccessor = IProjectAccessorFactory.Create(projectXml);
+            var provider = new ConfigurationProjectConfigurationDimensionProvider(projectAccessor);
             var unconfiguredProject = UnconfiguredProjectFactory.Create();
+
             var values = await provider.GetProjectConfigurationDimensionsAsync(unconfiguredProject);
+
             Assert.Single(values);
             var value = values.First();
             Assert.Equal(ConfigurationGeneral.ConfigurationProperty, value.Key);
@@ -67,9 +70,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         [Fact]
         public async Task GetProjectConfigurationDimensionsAsync_NoPropertyValue()
         {
-            var project = ProjectRootElementFactory.Create();
-            var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
-            var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
+            var projectAccessor = IProjectAccessorFactory.Create("<Project />");
+
+            var provider = new ConfigurationProjectConfigurationDimensionProvider(projectAccessor);
+
             var unconfiguredProject = UnconfiguredProjectFactory.Create();
             var values = await provider.GetProjectConfigurationDimensionsAsync(unconfiguredProject);
             Assert.Empty(values);
@@ -79,8 +83,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         public async Task OnDimensionValueChanged_Add()
         {
             var project = ProjectRootElementFactory.Create(projectXml);
-            var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
-            var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
+            var projectAccessor = IProjectAccessorFactory.Create(project);
+
+            var provider = new ConfigurationProjectConfigurationDimensionProvider(projectAccessor);
+
             var unconfiguredProject = UnconfiguredProjectFactory.Create();
 
             // On ChangeEventStage.After nothing should be changed
@@ -112,8 +118,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         public async Task OnDimensionValueChanged_Remove()
         {
             var project = ProjectRootElementFactory.Create(projectXml);
-            var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
-            var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
+            var projectAccessor = IProjectAccessorFactory.Create(project);
+
+            var provider = new ConfigurationProjectConfigurationDimensionProvider(projectAccessor);
+
             var unconfiguredProject = UnconfiguredProjectFactory.Create();
 
             // On ChangeEventStage.After nothing should be changed
@@ -145,8 +153,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         public async Task OnDimensionValueChanged_Remove_MissingValue()
         {
             var project = ProjectRootElementFactory.Create(projectXml);
-            var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
-            var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
+            var projectAccessor = IProjectAccessorFactory.Create(project);
+
+            var provider = new ConfigurationProjectConfigurationDimensionProvider(projectAccessor);
+
             var unconfiguredProject = UnconfiguredProjectFactory.Create();
 
             var args = new ProjectConfigurationDimensionValueChangedEventArgs(
@@ -165,8 +175,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         public async Task OnDimensionValueChanged_Rename()
         {
             var project = ProjectRootElementFactory.Create(projectXml);
-            var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
-            var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
+            var projectAccessor = IProjectAccessorFactory.Create(project);
+
+            var provider = new ConfigurationProjectConfigurationDimensionProvider(projectAccessor);
+
             var unconfiguredProject = UnconfiguredProjectFactory.Create();
 
             // On ChangeEventStage.Before nothing should be changed
@@ -200,8 +212,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         public async Task OnDimensionValueChanged_Rename_MissingValue()
         {
             var project = ProjectRootElementFactory.Create(projectXml);
-            var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
-            var provider = new ConfigurationProjectConfigurationDimensionProvider(projectXmlAccessor);
+            var projectAccessor = IProjectAccessorFactory.Create(project);
+
+            var provider = new ConfigurationProjectConfigurationDimensionProvider(projectAccessor);
+
             var unconfiguredProject = UnconfiguredProjectFactory.Create();
 
             var args = new ProjectConfigurationDimensionValueChangedEventArgs(
