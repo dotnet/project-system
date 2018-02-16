@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     </ItemGroup>
 </Project>";
 
-            var projectAccessor = IProjectAccessorFactory.ImplementOpenProjectForReadAsync<ICollection<IEnumValue>>(project);
+            var projectAccessor = IProjectAccessorFactory.Create(project);
 
             var configuredProject = ConfiguredProjectFactory.Create();
 
