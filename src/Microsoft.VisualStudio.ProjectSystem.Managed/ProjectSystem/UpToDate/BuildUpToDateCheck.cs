@@ -201,6 +201,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             AddImports(e.Value);
         }
 
+        private static string GetFullPath(IImmutableDictionary<string, string> itemMetadata) =>
+            itemMetadata.TryGetValue(FullPath, out var fullPath) ? fullPath : null;
+
         private static string GetLink(IImmutableDictionary<string, string> itemMetadata) =>
             itemMetadata.TryGetValue(Link, out var link) ? link : null;
 
@@ -236,7 +239,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             foreach (var itemType in e.ProjectChanges.Where(changes => (itemTypesChanged || changes.Value.Difference.AnyChanges) && _itemTypes.Contains(changes.Key)))
             {
-                var items = itemType.Value.After.Items.Select(item => (item.Value[FullPath], GetLink(item.Value), GetCopyType(item.Value)));
+                var items = itemType.Value.After.Items
+                    .Select(item => (GetFullPath(item.Value), GetLink(item.Value), GetCopyType(item.Value)))
+                    .Where(tuple => tuple.Item1 != null);
                 _items[itemType.Key] = new HashSet<(string, string, CopyToOutputDirectoryType)>(items, UpToDateCheckItemComparer.Instance);
                 _itemsChangedSinceLastCheck = true;
             }
@@ -339,28 +344,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             if (!_tasksService.IsTaskQueueEmpty(ProjectCriticalOperation.Build))
             {
-                return Fail(logger, "Critical build tasks are running, skipping check.", "CriticalTasks");
+                return Fail(logger, "Critical build tasks are running, failed.", "CriticalTasks");
             }
 
             if (_lastVersionSeen == null || _configuredProject.ProjectVersion.CompareTo(_lastVersionSeen) > 0)
             {
-                return Fail(logger, "Project information is older than current project version, skipping check.", "ProjectInfoOutOfDate");
+                return Fail(logger, "Project information is older than current project version, failed.", "ProjectInfoOutOfDate");
             }
 
             if (itemsChangedSinceLastCheck)
             {
-                return Fail(logger, "The list of source items has changed since the last build.", "ItemInfoOutOfDate");
+                return Fail(logger, "The list of source items has changed since the last build, failed.", "ItemInfoOutOfDate");
             }
 
             if (_isDisabled)
             {
-                return Fail(logger, "The 'DisableFastUpToDateCheckProperty' property is true, skipping check.", "Disabled");
+                return Fail(logger, "The 'DisableFastUpToDateCheckProperty' property is true, failed.", "Disabled");
             }
 
             var copyAlwaysItem = _items.SelectMany(kvp => kvp.Value).FirstOrDefault(item => item.CopyType == CopyToOutputDirectoryType.CopyAlways);
             if (copyAlwaysItem.Path != null)
             {
-                logger.Info("Item '{0}' has CopyToOutputDirectory set to 'Always', skipping check.", copyAlwaysItem.Path);
+                logger.Info("Item '{0}' has CopyToOutputDirectory set to 'Always', failed.", copyAlwaysItem.Path);
             }
 
             return true;
@@ -477,6 +482,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 logger.Info("Output marker '{0}' does not exist, skipping marker check.", _markerFile);
             }
 
+            if (outputMarkerTime <= inputMarkerTime)
+            {
+                logger.Info("Input marker is older than output marker, failed.");
+            }
+
             return inputMarkerPath == null || outputMarkerTime == null || outputMarkerTime > inputMarkerTime;
         }
 
@@ -493,11 +503,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (itemTime != null)
                 {
-                    logger.Info("    Write {0}: '{1}'.", itemTime, source);
+                    logger.Info("    Source {0}: '{1}'.", itemTime, source);
                 }
                 else
                 {
-                    logger.Info("    '{0}' does not exist.", source);
+                    logger.Info("Source '{0}' does not exist, failed.", source);
                     return false;
                 }
 
@@ -505,16 +515,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (outputItemTime != null)
                 {
-                    logger.Info("    Output file write {0}: '{1}'.", outputItemTime, destination);
+                    logger.Info("    Destination {0}: '{1}'.", outputItemTime, destination);
                 }
                 else
                 {
-                    logger.Info("    Output file '{0}' does not exist.", destination);
+                    logger.Info("Destination '{0}' does not exist, failed.", destination);
                     return false;
                 }
 
                 if (outputItemTime < itemTime)
                 {
+                    logger.Info("Build output destination is newer than source, failed.");
                     return false;
                 }
             }
@@ -545,11 +556,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (itemTime != null)
                 {
-                    logger.Info("    Write {0}: '{1}'.", itemTime, item.Path);
+                    logger.Info("    Source {0}: '{1}'.", itemTime, item.Path);
                 }
                 else
                 {
-                    logger.Info("    '{0}' does not exist.", item.Path);
+                    logger.Info("Source '{0}' does not exist, failed.", item.Path);
                     return false;
                 }
                 
@@ -558,16 +569,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (outputItemTime != null)
                 {
-                    logger.Info("    Output file write {0}: '{1}'.", outputItemTime, outputItem);
+                    logger.Info("    Destination {0}: '{1}'.", outputItemTime, outputItem);
                 }
                 else
                 {
-                    logger.Info("    Output file '{0}' does not exist.", outputItem);
+                    logger.Info("Destination '{0}' does not exist, failed.", outputItem);
                     return false;
                 }
 
                 if (outputItemTime < itemTime)
                 {
+                    logger.Info("PreserveNewest destination is newer than source, failed.");
                     return false;
                 }
             }
@@ -599,7 +611,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
             else
             {
-                logger.Info("Input '{0}' does not exist.", inputPath);
+                logger.Info("Input '{0}' does not exist, failed.", inputPath);
             }
 
             if (outputTime != null)
@@ -608,7 +620,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
             else
             {
-                logger.Info("Output '{0}' does not exist.", outputPath);
+                logger.Info("Output '{0}' does not exist, failed.", outputPath);
+            }
+
+            if (outputTime <= inputTime)
+            {
+                logger.Info("Output is newer than input, failed.");
             }
 
             // We are up to date if the earliest output write happened after the latest input write
