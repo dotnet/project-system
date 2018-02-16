@@ -22,8 +22,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     internal class PlatformProjectConfigurationDimensionProvider : BaseProjectConfigurationDimensionProvider
     {
         [ImportingConstructor]
-        public PlatformProjectConfigurationDimensionProvider(IProjectXmlAccessor projectXmlAccessor)
-            : base(projectXmlAccessor, ConfigurationGeneral.PlatformProperty, "Platforms")
+        public PlatformProjectConfigurationDimensionProvider(IProjectAccessor projectAccessor)
+            : base(projectAccessor, ConfigurationGeneral.PlatformProperty, "Platforms")
         {
         }
 
@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         private async Task OnPlatformAddedAsync(UnconfiguredProject project, string platformName)
         {
             string evaluatedPropertyValue = await GetPropertyValue(project).ConfigureAwait(false);
-            await ProjectXmlAccessor.ExecuteInWriteLock(msbuildProject =>
+            await ProjectAccessor.OpenProjectXmlForWriteAsync(project, msbuildProject =>
             {
                 BuildUtilities.AppendPropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, platformName);
             }).ConfigureAwait(false);
@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         private async Task OnPlatformDeletedAsync(UnconfiguredProject project, string platformName)
         {
             string evaluatedPropertyValue = await GetPropertyValue(project).ConfigureAwait(false);
-            await ProjectXmlAccessor.ExecuteInWriteLock(msbuildProject =>
+            await ProjectAccessor.OpenProjectXmlForWriteAsync(project, msbuildProject =>
             {
                 BuildUtilities.RemovePropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, platformName);
             }).ConfigureAwait(false);

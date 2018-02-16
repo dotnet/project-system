@@ -22,8 +22,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     internal class ConfigurationProjectConfigurationDimensionProvider : BaseProjectConfigurationDimensionProvider
     {
         [ImportingConstructor]
-        public ConfigurationProjectConfigurationDimensionProvider(IProjectXmlAccessor projectXmlAccessor)
-            : base(projectXmlAccessor, ConfigurationGeneral.ConfigurationProperty, "Configurations")
+        public ConfigurationProjectConfigurationDimensionProvider(IProjectAccessor projectAccessor)
+            : base(projectAccessor, ConfigurationGeneral.ConfigurationProperty, "Configurations")
         {
         }
 
@@ -74,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         private async Task OnConfigurationAddedAsync(UnconfiguredProject project, string configurationName)
         {
             string evaluatedPropertyValue = await GetPropertyValue(project).ConfigureAwait(false);
-            await ProjectXmlAccessor.ExecuteInWriteLock(msbuildProject =>
+            await ProjectAccessor.OpenProjectXmlForWriteAsync(project, msbuildProject =>
             {
                 BuildUtilities.AppendPropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, configurationName);
             }).ConfigureAwait(false);
@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         private async Task OnConfigurationRemovedAsync(UnconfiguredProject project, string configurationName)
         {
             string evaluatedPropertyValue = await GetPropertyValue(project).ConfigureAwait(false);
-            await ProjectXmlAccessor.ExecuteInWriteLock(msbuildProject =>
+            await ProjectAccessor.OpenProjectXmlForWriteAsync(project, msbuildProject =>
             {
                 BuildUtilities.RemovePropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, configurationName);
             }).ConfigureAwait(false);
@@ -105,7 +105,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         private async Task OnConfigurationRenamedAsync(UnconfiguredProject project, string oldName, string newName)
         {
             string evaluatedPropertyValue = await GetPropertyValue(project).ConfigureAwait(false);
-            await ProjectXmlAccessor.ExecuteInWriteLock(msbuildProject =>
+            await ProjectAccessor.OpenProjectXmlForWriteAsync(project, msbuildProject =>
             {
                 BuildUtilities.RenamePropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, oldName, newName);
             }).ConfigureAwait(false);
