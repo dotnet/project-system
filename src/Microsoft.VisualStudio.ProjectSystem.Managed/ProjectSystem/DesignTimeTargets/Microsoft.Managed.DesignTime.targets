@@ -93,6 +93,9 @@
 
     <!-- Settings page capability -->
     <ProjectCapability Include="AppSettings" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'"/>
+  
+    <!-- Publish capability -->
+    <ProjectCapability Include="Publish"/>
   </ItemGroup>
 
   <!-- Common Project System rules that override rules defined in msbuild. These are exact copy of the rules defined in msbuild. -->
