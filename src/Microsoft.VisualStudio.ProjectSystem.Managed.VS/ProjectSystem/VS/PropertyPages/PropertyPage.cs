@@ -301,7 +301,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 if (_debugger != null)
                 {
                     _debugger.AdviseDebuggerEvents(this, out _debuggerCookie);
-                    DBGMODE[] dbgMode = new DBGMODE[1];
+                    var dbgMode = new DBGMODE[1];
                     _debugger.GetMode(dbgMode);
                     ((IVsDebuggerEvents)this).OnModeChange(dbgMode[0]);
                 }
