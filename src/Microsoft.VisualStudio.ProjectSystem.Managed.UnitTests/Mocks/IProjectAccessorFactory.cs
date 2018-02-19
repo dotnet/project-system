@@ -55,6 +55,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
                 return Task.CompletedTask;
             }
+
+            public Task OpenProjectForWriteAsync(ConfiguredProject project, Action<Project> action, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                action(_evaluationProject);
+
+                return Task.CompletedTask;
+            }
         }
     }
 }
