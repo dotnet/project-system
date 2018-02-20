@@ -2,6 +2,7 @@
 
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.IntegrationTest.Utilities;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests

@@ -4,8 +4,11 @@ using System;
 using System.Collections;
 using System.ComponentModel.Composition;
 using System.Linq;
+
 using EnvDTE;
+
 using Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint;
+
 using VSLangProj;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation

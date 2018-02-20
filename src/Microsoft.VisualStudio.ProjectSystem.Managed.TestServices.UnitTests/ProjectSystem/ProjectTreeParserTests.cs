@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -11,7 +12,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [Fact]
         public void Constructor_NullAsValue_ThrowsArgumentNull()
         {
-            Assert.Throws<ArgumentNullException>("value", () => {
+            Assert.Throws<ArgumentNullException>("value", () =>
+            {
 
                 new ProjectTreeParser((string)null);
             });
@@ -20,7 +22,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [Fact]
         public void Constructor_EmptyAsValue_ThrowsArgument()
         {
-            Assert.Throws<ArgumentException>("value", () => {
+            Assert.Throws<ArgumentException>("value", () =>
+            {
 
                 new ProjectTreeParser("");
             });
@@ -49,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [InlineData(@"Root (flags: {  ")]
         [InlineData(@"Root, Icon: {407FAC73-908A-4477-8176-A3128544AE4F }")]
         public void Parse_IdExpected_EncounteredDelimiter_ThrowsFormat(string input)
-        {   
+        {
             AssertThrows(input, ProjectTreeFormatError.IdExpected_EncounteredDelimiter);
         }
 
@@ -415,7 +418,8 @@ Root
 
             var parser = new ProjectTreeParser(input);
 
-            var exception = Assert.Throws<ProjectTreeFormatException>(() => {
+            var exception = Assert.Throws<ProjectTreeFormatException>(() =>
+            {
 
                 parser.Parse();
             });

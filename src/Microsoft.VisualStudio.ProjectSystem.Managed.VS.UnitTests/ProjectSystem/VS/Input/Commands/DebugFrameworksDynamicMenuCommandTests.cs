@@ -3,8 +3,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.ProjectSystem.Debug;
+
 using Moq;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
@@ -19,17 +22,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         [InlineData(1, true)]
         public void ExecCommand_VerifyCorrectFrameworkSet(int cmdIndex, bool expected)
         {
-            var frameworks = new List<string>(){"net461", "netcoreapp1.0"};
+            var frameworks = new List<string>() { "net461", "netcoreapp1.0" };
             var activeDebugFrameworkSvcs = new IActiveDebugFrameworkServicesFactory()
                                                .ImplementGetActiveDebuggingFrameworkPropertyAsync(null)
                                                .ImplementGetProjectFrameworksAsync(frameworks);
-            if(expected)
+            if (expected)
             {
                 activeDebugFrameworkSvcs.ImplementSetActiveDebuggingFrameworkPropertyAsync(frameworks[cmdIndex]);
             }
             var startupHelper = new Mock<IStartupProjectHelper>();
-                                startupHelper.Setup(x => x.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                                             .Returns(activeDebugFrameworkSvcs.Object);
+            startupHelper.Setup(x => x.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
+                         .Returns(activeDebugFrameworkSvcs.Object);
 
             var command = new TestDebugFrameworksDynamicMenuCommand(startupHelper.Object);
             Assert.Equal(expected, command.ExecCommand(cmdIndex, EventArgs.Empty));
@@ -42,8 +45,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         public void ExecCommand_HandleNullProject()
         {
             var startupHelper = new Mock<IStartupProjectHelper>();
-                                startupHelper.Setup(x => x.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                                             .Returns((IActiveDebugFrameworkServices)null);
+            startupHelper.Setup(x => x.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
+                         .Returns((IActiveDebugFrameworkServices)null);
 
             var command = new TestDebugFrameworksDynamicMenuCommand(startupHelper.Object);
             Assert.False(command.ExecCommand(0, EventArgs.Empty));
@@ -54,8 +57,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         public void QueryStatus_HandleNullProject()
         {
             var startupHelper = new Mock<IStartupProjectHelper>();
-                                startupHelper.Setup(x => x.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                                             .Returns((IActiveDebugFrameworkServices)null);
+            startupHelper.Setup(x => x.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
+                         .Returns((IActiveDebugFrameworkServices)null);
 
             var command = new TestDebugFrameworksDynamicMenuCommand(startupHelper.Object);
             Assert.False(command.QueryStatusCommand(0, EventArgs.Empty));
@@ -88,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         public void QueryStatus_LessThan2Frameworks(bool createList)
         {
             var activeDebugFrameworkSvcs = new IActiveDebugFrameworkServicesFactory()
-                                               .ImplementGetProjectFrameworksAsync(createList? new List<string>(){"netcoreapp1.0"} : null);
+                                               .ImplementGetProjectFrameworksAsync(createList ? new List<string>() { "netcoreapp1.0" } : null);
             var startupHelper = new Mock<IStartupProjectHelper>();
             startupHelper.Setup(x => x.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
                          .Returns(activeDebugFrameworkSvcs.Object);
@@ -111,7 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         [InlineData(2, "net462")]
         public void QueryStatus_TestValidFrameworkIndexes(int cmdIndex, string activeFramework)
         {
-            var frameworks = new List<string>(){"netcoreapp1.0", "net461", "net462"};
+            var frameworks = new List<string>() { "netcoreapp1.0", "net461", "net462" };
 
             var activeDebugFrameworkSvcs = new IActiveDebugFrameworkServicesFactory()
                                                .ImplementGetProjectFrameworksAsync(frameworks)

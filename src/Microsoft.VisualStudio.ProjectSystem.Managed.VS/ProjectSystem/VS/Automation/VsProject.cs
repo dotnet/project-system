@@ -2,9 +2,12 @@
 
 using System;
 using System.ComponentModel.Composition;
+
 using EnvDTE;
+
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint;
+
 using VSLangProj;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation

@@ -2,7 +2,9 @@
 
 using System;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.Shell.Interop;
+
 using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.UI

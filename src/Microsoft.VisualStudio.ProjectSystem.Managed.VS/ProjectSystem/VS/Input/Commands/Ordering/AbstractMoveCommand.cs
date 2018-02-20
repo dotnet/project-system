@@ -2,10 +2,11 @@
 
 using System;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
+
 using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem.Input;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
@@ -57,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                     var window = GetUIHierarchyWindow(_serviceProvider, Guid.Parse(ManagedProjectSystemPackage.SolutionExplorerGuid));
 
                     window.ExpandItem(hierarchy, itemId, EXPANDFLAGS.EXPF_SelectItem);
-                    
+
                     // If we moved a folder, collapse it.
                     if (node.IsFolder)
                     {
@@ -84,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                 throw new ArgumentNullException(nameof(serviceProvider));
             }
 
-            IVsUIShell shell = serviceProvider.GetService(typeof(SVsUIShell)) as IVsUIShell;
+            var shell = serviceProvider.GetService(typeof(SVsUIShell)) as IVsUIShell;
 
             if (shell == null)
             {

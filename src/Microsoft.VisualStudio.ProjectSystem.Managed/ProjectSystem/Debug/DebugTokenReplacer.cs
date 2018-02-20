@@ -4,6 +4,7 @@ using System;
 using System.ComponentModel.Composition;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
@@ -41,42 +42,42 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public async Task<ILaunchProfile> ReplaceTokensInProfileAsync(ILaunchProfile profile)
         {
             var resolvedProfile = new LaunchProfile(profile);
-            if(!string.IsNullOrWhiteSpace(resolvedProfile.ExecutablePath))
+            if (!string.IsNullOrWhiteSpace(resolvedProfile.ExecutablePath))
             {
                 resolvedProfile.ExecutablePath = await ReplaceTokensInStringAsync(resolvedProfile.ExecutablePath, true).ConfigureAwait(false);
             }
-            
-            if(!string.IsNullOrWhiteSpace(resolvedProfile.CommandLineArgs))
+
+            if (!string.IsNullOrWhiteSpace(resolvedProfile.CommandLineArgs))
             {
                 resolvedProfile.CommandLineArgs = await ReplaceTokensInStringAsync(resolvedProfile.CommandLineArgs, true).ConfigureAwait(false);
             }
-            
-            if(!string.IsNullOrWhiteSpace(resolvedProfile.WorkingDirectory))
+
+            if (!string.IsNullOrWhiteSpace(resolvedProfile.WorkingDirectory))
             {
                 resolvedProfile.WorkingDirectory = await ReplaceTokensInStringAsync(resolvedProfile.WorkingDirectory, true).ConfigureAwait(false);
             }
-        
-            if(!string.IsNullOrWhiteSpace(resolvedProfile.LaunchUrl))
+
+            if (!string.IsNullOrWhiteSpace(resolvedProfile.LaunchUrl))
             {
                 resolvedProfile.LaunchUrl = await ReplaceTokensInStringAsync(resolvedProfile.LaunchUrl, true).ConfigureAwait(false);
             }
 
             // Since Env variables are an immutable dictionary they are a little messy to update.
-            if(resolvedProfile.EnvironmentVariables != null)
+            if (resolvedProfile.EnvironmentVariables != null)
             {
-                foreach(var kvp in resolvedProfile.EnvironmentVariables)
+                foreach (var kvp in resolvedProfile.EnvironmentVariables)
                 {
-                    resolvedProfile.EnvironmentVariables = resolvedProfile.EnvironmentVariables.SetItem(kvp.Key,  await ReplaceTokensInStringAsync(kvp.Value, true).ConfigureAwait(false));
+                    resolvedProfile.EnvironmentVariables = resolvedProfile.EnvironmentVariables.SetItem(kvp.Key, await ReplaceTokensInStringAsync(kvp.Value, true).ConfigureAwait(false));
                 }
             }
 
-            if(resolvedProfile.OtherSettings != null)
+            if (resolvedProfile.OtherSettings != null)
             {
-                foreach(var kvp in resolvedProfile.OtherSettings)
+                foreach (var kvp in resolvedProfile.OtherSettings)
                 {
-                    if(kvp.Value is string)
+                    if (kvp.Value is string)
                     {
-                        resolvedProfile.OtherSettings = resolvedProfile.OtherSettings.SetItem(kvp.Key,  await ReplaceTokensInStringAsync((string)kvp.Value, true).ConfigureAwait(false));
+                        resolvedProfile.OtherSettings = resolvedProfile.OtherSettings.SetItem(kvp.Key, await ReplaceTokensInStringAsync((string)kvp.Value, true).ConfigureAwait(false));
                     }
 
                 }
@@ -97,17 +98,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 return rawString;
             }
 
-            string updatedString = expandEnvironmentVars? EnvironmentHelper.ExpandEnvironmentVariables(rawString) : rawString;
+            string updatedString = expandEnvironmentVars ? EnvironmentHelper.ExpandEnvironmentVariables(rawString) : rawString;
 
             var matches = s_matchTokenRegex.Matches(updatedString);
-            if(matches.Count > 0)
+            if (matches.Count > 0)
             {
                 using (var access = await AccessProject().ConfigureAwait(true))
                 {
                     var project = await access.GetProjectAsync().ConfigureAwait(true);
 
                     // For each token we try to get a replacement value.
-                    foreach(Match match in matches)
+                    foreach (Match match in matches)
                     {
                         // Resovlve with msbuild. It will return the empty string if not found
                         updatedString = updatedString.Replace(match.Value, project.ExpandString(match.Value));
@@ -135,7 +136,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// </summary>
     internal interface IProjectReadAccess : IDisposable
     {
-        Task<Microsoft.Build.Evaluation.Project>  GetProjectAsync();
+        Task<Microsoft.Build.Evaluation.Project> GetProjectAsync();
     }
 
     internal sealed class ProjectReadAccessor : IProjectReadAccess
@@ -153,7 +154,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public async Task<Microsoft.Build.Evaluation.Project> GetProjectAsync()
         {
             // If we already have access we can just use it to get an instance of the project
-            if(Access == null)
+            if (Access == null)
             {
                 Access = await ProjectLockService.ReadLockAsync();
 
@@ -164,7 +165,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         public void Dispose()
         {
-            if(Access != null)
+            if (Access != null)
             {
                 Access.Value.Dispose();
                 Access = null;

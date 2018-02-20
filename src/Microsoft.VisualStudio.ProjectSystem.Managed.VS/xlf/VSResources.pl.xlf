@@ -283,27 +283,27 @@ Aby debugować ten projekt, dodaj projekt wykonywalny do tego rozwiązania, któ
       </trans-unit>
       <trans-unit id="PartialSupportedDotNetCoreProject">
         <source>Visual Studio 2017 version 15.7 or newer is recommended for .NET Core {0}.{1} projects.</source>
-        <target state="new">Visual Studio 2017 version 15.7 or newer is recommended for .NET Core {0}.{1} projects.</target>
+        <target state="translated">Dla projektów platformy .NET Core {0}.{1} zalecany jest program Visual Studio 2017 w wersji 15.7 lub nowszej.</target>
         <note />
       </trans-unit>
       <trans-unit id="NotSupportedDotNetCoreProject">
         <source>Projects targeting versions newer than .NET Core {0}.{1} are not supported by this version of Visual Studio.</source>
-        <target state="new">Projects targeting versions newer than .NET Core {0}.{1} are not supported by this version of Visual Studio.</target>
+        <target state="translated">Projekty przeznaczone dla wersji nowszych niż platforma .NET Core {0}.{1} nie są obsługiwane przez tę wersję programu Visual Studio.</target>
         <note />
       </trans-unit>
       <trans-unit id="DontShowAgain">
         <source>Don't show again</source>
-        <target state="new">Don't show again</target>
+        <target state="translated">Nie pokazuj ponownie</target>
         <note />
       </trans-unit>
       <trans-unit id="LearnMore">
         <source>Learn more</source>
-        <target state="new">Learn more</target>
+        <target state="translated">Dowiedz się więcej</target>
         <note />
       </trans-unit>
       <trans-unit id="OKButtonText">
         <source>OK</source>
-        <target state="new">OK</target>
+        <target state="translated">OK</target>
         <note />
       </trans-unit>
     </body>

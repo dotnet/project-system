@@ -7,10 +7,14 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+
 using EnvDTE;
+
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+
 using VSLangProj;
+
 using VSLangProj80;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.References
@@ -90,9 +94,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
                 string resolvedPath = FindResolvedAssemblyPath(references, assemblyName[i]);
                 if (resolvedPath != null)
                 {
-                    assemblyPaths[resolvedReferencesCount] = new VsResolvedAssemblyPath() {
-                            bstrOrigAssemblySpec = originalNames[i],    // Note we use the original name, not the parsed name, as they could be different
-                            bstrResolvedAssemblyPath = resolvedPath
+                    assemblyPaths[resolvedReferencesCount] = new VsResolvedAssemblyPath()
+                    {
+                        bstrOrigAssemblySpec = originalNames[i],    // Note we use the original name, not the parsed name, as they could be different
+                        bstrResolvedAssemblyPath = resolvedPath
                     };
 
                     resolvedReferencesCount++;

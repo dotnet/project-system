@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+
 using Moq;
 
 namespace Microsoft.VisualStudio.Telemetry
@@ -24,7 +25,7 @@ namespace Microsoft.VisualStudio.Telemetry
                 .Callback((string name) => callParameters.EventName = name);
 
             telemetryService.Setup(t => t.PostProperty(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<object>()))
-                .Callback((string e, string p, object v) => 
+                .Callback((string e, string p, object v) =>
                 {
                     callParameters.EventName = e;
                     callParameters.Properties = new List<(string, object)>

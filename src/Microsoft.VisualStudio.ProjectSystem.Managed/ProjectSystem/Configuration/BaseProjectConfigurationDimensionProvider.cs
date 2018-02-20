@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.Build;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Configuration

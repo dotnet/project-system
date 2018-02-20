@@ -5,9 +5,12 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using System.Xml;
+
 using Microsoft.Build.Construction;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+
 using Moq;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
@@ -72,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Equal("envVariable1", resolvedProfile.OtherSettings["setting1"]);
             Assert.True((bool)resolvedProfile.OtherSettings["setting2"]);
         }
-        
+
         [Theory]
         [InlineData("this is msbuild: $(msbuildProperty5) %env1%",                      "this is msbuild: Property5 envVariable1",  true)]
         [InlineData("this is msbuild: $(msbuildProperty5) %env1%",                      "this is msbuild: Property5 %env1%",        false)]
@@ -110,13 +113,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         private class TestProjectReadAccessor : IProjectReadAccess
         {
             public TestProjectReadAccessor() { }
-            public Task<Microsoft.Build.Evaluation.Project> GetProjectAsync() {return Task.FromResult(CreateMsBuildProject());}
+            public Task<Microsoft.Build.Evaluation.Project> GetProjectAsync() { return Task.FromResult(CreateMsBuildProject()); }
             public void Dispose() { }
 
             private Microsoft.Build.Evaluation.Project CreateMsBuildProject()
             {
                 // This is default. Can change it to match needs
-                string projectFile = 
+                string projectFile =
                 @"<?xml version=""1.0"" encoding=""utf-16""?><Project xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
                 <PropertyGroup>
                     <msbuildProperty1>Property1</msbuildProperty1>
@@ -136,7 +139,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 };
                 using (var reader = XmlReader.Create(new System.IO.StringReader(projectFile), settings))
                 {
-                    var importFile = ProjectRootElement.Create(reader); 
+                    var importFile = ProjectRootElement.Create(reader);
                     return new Microsoft.Build.Evaluation.Project(importFile);
                 }
             }

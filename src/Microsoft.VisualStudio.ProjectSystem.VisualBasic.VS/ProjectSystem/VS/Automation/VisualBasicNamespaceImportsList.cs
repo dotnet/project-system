@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 
                     int trackingIndex = 0;
 
-                    while(trackingIndex < oldListCount && trackingIndex < newListCount)
+                    while (trackingIndex < oldListCount && trackingIndex < newListCount)
                     {
                         string incomingItem = sortedItems.ElementAt(trackingIndex);
                         if (string.Compare(_list[trackingIndex], incomingItem, StringComparison.OrdinalIgnoreCase) == 0)
@@ -95,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                     {
                         return;
                     }
-                    else if(oldListCount < newListCount)
+                    else if (oldListCount < newListCount)
                     {
                         _list.AddRange(sortedItems.Skip(trackingIndex));
                     }
@@ -115,7 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                 throw new ArgumentException(string.Format("{0} - Index value is less than One.", lIndex), nameof(lIndex));
             }
 
-            lock(_lock)
+            lock (_lock)
             {
                 if (lIndex > _list.Count)
                 {
@@ -161,7 +161,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             _list = new List<string>();
 
-           //set up a subscription to listen for namespace import changes
+            //set up a subscription to listen for namespace import changes
             var target = new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnNamespaceImportChanged(e));
             _namespaceImportSubscriptionLink = _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
                 target: target,

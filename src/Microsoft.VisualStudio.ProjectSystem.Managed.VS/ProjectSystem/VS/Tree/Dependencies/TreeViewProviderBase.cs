@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.References;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
@@ -28,8 +29,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
 
         public abstract Task<IProjectTree> BuildTreeAsync(
-            IProjectTree dependenciesTree, 
-            IDependenciesSnapshot snapshot, 
+            IProjectTree dependenciesTree,
+            IDependenciesSnapshot snapshot,
             CancellationToken cancellationToken = default(CancellationToken));
 
         public abstract IProjectTree FindByPath(IProjectTree root, string path);

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
+
 using Microsoft.CodeAnalysis;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
@@ -14,11 +15,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     internal class FSharpParseBuildOptions : IParseBuildOptions
     {
         private const string HyphenReferencePrefix = "-r:";
-        private const string SlashReferencePrefix  = "/r:";
-        private const string LongReferencePrefix   = "--reference:";
+        private const string SlashReferencePrefix = "/r:";
+        private const string LongReferencePrefix = "--reference:";
 
         [ImportMany]
-        private IEnumerable<Action<string, ImmutableArray<CommandLineSourceFile>, ImmutableArray<CommandLineReference>, ImmutableArray<string>>> _handlers =  null;
+        private IEnumerable<Action<string, ImmutableArray<CommandLineSourceFile>, ImmutableArray<CommandLineReference>, ImmutableArray<string>>> _handlers = null;
 
         [ImportingConstructor]
         public FSharpParseBuildOptions() { }
@@ -95,6 +96,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 }
             }
             return;
-         }
+        }
     }
 }

@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
+
 using Microsoft.CodeAnalysis.CSharp;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices

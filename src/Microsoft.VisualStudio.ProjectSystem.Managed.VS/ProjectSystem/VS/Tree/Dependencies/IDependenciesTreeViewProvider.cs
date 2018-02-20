@@ -2,6 +2,7 @@
 
 using System.Threading;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
@@ -22,8 +23,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <param name="cancellationToken">Cancellation token if need to stop building the view</param>
         /// <returns>New dependencies node</returns>
         Task<IProjectTree> BuildTreeAsync(
-            IProjectTree dependenciesTree, 
-            IDependenciesSnapshot snapshot, 
+            IProjectTree dependenciesTree,
+            IDependenciesSnapshot snapshot,
             CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>

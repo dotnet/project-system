@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -54,8 +55,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         }
 
         internal UnconfiguredProject UnconfiguredProject { get; set; }
-        
-        
+
+
         ///--------------------------------------------------------------------------------------------
         /// <summary>
         /// Property. Gets or sets whether the page is dirty. Dirty status is pushed to owner property sheet
@@ -179,7 +180,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             return;
         }
 
-        
+
         public int IsPageDirty()
         {
             if (IsDirty)
@@ -214,7 +215,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             Enabled = (dbgmodeNew == DBGMODE.DBGMODE_Design);
             return NativeMethods.S_OK;
         }
-        
+
         /// <summary>
         /// Informs derived classes that configuration has changed
         /// </summary>
@@ -301,7 +302,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 if (_debugger != null)
                 {
                     _debugger.AdviseDebuggerEvents(this, out _debuggerCookie);
-                    DBGMODE[] dbgMode = new DBGMODE[1];
+                    var dbgMode = new DBGMODE[1];
                     _debugger.GetMode(dbgMode);
                     ((IVsDebuggerEvents)this).OnModeChange(dbgMode[0]);
                 }

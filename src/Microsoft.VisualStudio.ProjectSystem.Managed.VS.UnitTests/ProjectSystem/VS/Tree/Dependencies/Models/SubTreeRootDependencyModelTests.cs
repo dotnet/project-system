@@ -2,6 +2,7 @@
 
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
@@ -18,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 "myRoot",
                 KnownMonikers.AboutBox,
                 KnownMonikers.AbsolutePosition,
-                flags:flag);
+                flags: flag);
 
             Assert.Equal("myProvider", model.ProviderType);
             Assert.Equal("myRoot", model.Path);

@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
@@ -37,8 +38,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         ///     Handles the specified set of changes to a rule, and applies them
         ///     to the given <see cref="ITargetedProjectContext"/>.
         /// </summary>
-        Task HandleAsync(IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>> e, 
-                         IImmutableDictionary<string, IProjectChangeDescription> projectChange, 
+        Task HandleAsync(IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>> e,
+                         IImmutableDictionary<string, IProjectChangeDescription> projectChange,
                          ITargetedProjectContext targetedProjectContext,
                          bool isActiveContext,
                          T ruleChangeContext);

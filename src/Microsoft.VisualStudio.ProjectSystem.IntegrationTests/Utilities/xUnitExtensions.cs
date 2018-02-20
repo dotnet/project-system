@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Text;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
@@ -18,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
             }
         }
 
-            public static void ShouldEqualWithDiff(this string actualValue, string expectedValue)
+        public static void ShouldEqualWithDiff(this string actualValue, string expectedValue)
         {
             if (actualValue == null || expectedValue == null)
             {

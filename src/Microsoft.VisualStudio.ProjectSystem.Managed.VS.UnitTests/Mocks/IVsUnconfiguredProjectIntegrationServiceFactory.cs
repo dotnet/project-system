@@ -1,5 +1,6 @@
-﻿using Moq;
-using System;
+﻿using System;
+
+using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {

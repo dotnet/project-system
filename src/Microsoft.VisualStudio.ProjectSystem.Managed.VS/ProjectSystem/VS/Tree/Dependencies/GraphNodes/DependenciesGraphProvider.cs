@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.GraphModel;
 using Microsoft.VisualStudio.GraphModel.CodeSchema;
 using Microsoft.VisualStudio.GraphModel.Schemas;
@@ -19,8 +20,9 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
-using Task = System.Threading.Tasks.Task;
+
 using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
+using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
 {
@@ -275,9 +277,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         }
 
         public GraphNode AddGraphNode(
-            IGraphContext graphContext, 
-            string projectPath, 
-            GraphNode parentNode, 
+            IGraphContext graphContext,
+            string projectPath,
+            GraphNode parentNode,
             IDependencyViewModel viewModel)
         {
             Assumes.True(IsInitialized);
@@ -296,7 +298,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             Assumes.True(IsInitialized);
 
             var newNodeId = GetTopLevelGraphNodeId(projectPath, viewModel.OriginalModel.GetTopLevelId());
-            return DoAddGraphNode(newNodeId, graphContext, projectPath, parentNode: null, viewModel:viewModel);
+            return DoAddGraphNode(newNodeId, graphContext, projectPath, parentNode: null, viewModel: viewModel);
         }
 
         private GraphNode DoAddGraphNode(
