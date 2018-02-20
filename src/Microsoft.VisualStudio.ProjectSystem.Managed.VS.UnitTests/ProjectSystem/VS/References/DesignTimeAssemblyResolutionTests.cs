@@ -1,10 +1,15 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using EnvDTE;
+
 using Microsoft.VisualStudio.Shell.Interop;
+
 using VSLangProj;
+
 using VSLangProj110;
+
 using VSLangProj80;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.References

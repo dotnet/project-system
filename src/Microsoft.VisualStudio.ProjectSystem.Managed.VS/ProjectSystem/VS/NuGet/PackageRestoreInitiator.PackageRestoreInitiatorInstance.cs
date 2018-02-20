@@ -7,10 +7,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+
 using Microsoft.Internal.Performance;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+
 using NuGet.SolutionRestoreManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Text;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests

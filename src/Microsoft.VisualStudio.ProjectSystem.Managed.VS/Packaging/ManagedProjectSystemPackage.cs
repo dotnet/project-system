@@ -5,11 +5,13 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Design;
 using System.Runtime.InteropServices;
 using System.Threading;
+
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands;
 using Microsoft.VisualStudio.Shell;
+
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.Packaging

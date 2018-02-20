@@ -1,11 +1,12 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.Build.Framework;
-using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
-using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
+
+using Microsoft.Build.Framework;
+using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 {

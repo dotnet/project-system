@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -17,6 +18,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
+
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies

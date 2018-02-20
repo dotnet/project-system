@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
+
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers;
 

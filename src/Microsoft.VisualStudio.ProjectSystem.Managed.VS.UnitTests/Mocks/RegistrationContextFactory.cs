@@ -1,5 +1,7 @@
-﻿using Moq;
-using System;
+﻿using System;
+
+using Moq;
+
 using static Microsoft.VisualStudio.Shell.RegistrationAttribute;
 
 namespace Microsoft.VisualStudio.Shell

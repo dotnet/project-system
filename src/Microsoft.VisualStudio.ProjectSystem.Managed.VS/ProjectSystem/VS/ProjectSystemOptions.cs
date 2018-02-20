@@ -2,11 +2,12 @@
 
 using System;
 using System.ComponentModel.Composition;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Settings;
 using Microsoft.VisualStudio.Shell;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {

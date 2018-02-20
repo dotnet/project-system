@@ -2,6 +2,7 @@
 
 using System;
 using System.ComponentModel.Composition;
+
 using Microsoft.VisualStudio.ProjectSystem.VS.Extensibility;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;

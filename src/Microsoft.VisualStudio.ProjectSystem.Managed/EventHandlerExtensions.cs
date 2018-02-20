@@ -2,6 +2,7 @@
 
 using System;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio

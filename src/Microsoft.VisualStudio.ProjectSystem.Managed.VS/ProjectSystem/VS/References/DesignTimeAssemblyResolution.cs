@@ -7,10 +7,14 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+
 using EnvDTE;
+
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+
 using VSLangProj;
+
 using VSLangProj80;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.References

@@ -1,8 +1,10 @@
 ﻿using System;
-using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
-using Xunit;
-using Microsoft.VisualStudio.Shell.Interop;
 using System.Collections.Generic;
+
+using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
+using Microsoft.VisualStudio.Shell.Interop;
+
+using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 {

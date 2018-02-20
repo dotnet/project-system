@@ -2,6 +2,7 @@
 
 using System.Threading;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies

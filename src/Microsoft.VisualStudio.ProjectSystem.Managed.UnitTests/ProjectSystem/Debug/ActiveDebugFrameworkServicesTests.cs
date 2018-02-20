@@ -2,8 +2,11 @@
 
 using System.Collections.Immutable;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.ProjectSystem.Debug;
+
 using Moq;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands

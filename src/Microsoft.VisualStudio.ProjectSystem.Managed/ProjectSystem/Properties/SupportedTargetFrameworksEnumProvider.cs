@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
+
 using Microsoft.Build.Framework.XamlTypes;
-using System;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {

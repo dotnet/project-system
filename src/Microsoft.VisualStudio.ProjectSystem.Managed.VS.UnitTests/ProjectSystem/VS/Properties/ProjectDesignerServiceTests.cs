@@ -2,9 +2,11 @@
 
 using System;
 using System.Runtime.InteropServices;
+
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+
 using Xunit;
 
 using Task = System.Threading.Tasks.Task;

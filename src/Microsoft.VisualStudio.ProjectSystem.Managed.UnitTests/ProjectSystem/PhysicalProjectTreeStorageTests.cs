@@ -2,7 +2,9 @@
 
 using System;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.IO;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem

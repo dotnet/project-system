@@ -3,7 +3,9 @@
 using System;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands

@@ -4,9 +4,11 @@ using System;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
+
 using IOLEServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 using PackageUtilities = Microsoft.VisualStudio.Shell.PackageUtilities;
 using SVsServiceProvider = Microsoft.VisualStudio.Shell.SVsServiceProvider;

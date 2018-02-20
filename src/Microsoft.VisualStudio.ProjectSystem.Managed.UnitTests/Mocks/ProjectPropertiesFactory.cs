@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
+
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+
 using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem

@@ -5,9 +5,12 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using System.Xml;
+
 using Microsoft.Build.Construction;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+
 using Moq;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug

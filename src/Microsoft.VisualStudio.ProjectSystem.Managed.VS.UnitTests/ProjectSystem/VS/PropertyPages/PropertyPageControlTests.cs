@@ -3,8 +3,10 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Moq;
 using Moq.Protected;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages

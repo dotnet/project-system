@@ -2,11 +2,12 @@
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 {
-    using Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages;
     using System;
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Runtime.CompilerServices;
+
+    using Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages;
 
     internal class NameValuePair : INotifyPropertyChanged, IDataErrorInfo
     {

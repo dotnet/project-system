@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using Microsoft.Build.Construction;
 
 namespace Microsoft.VisualStudio.ProjectSystem

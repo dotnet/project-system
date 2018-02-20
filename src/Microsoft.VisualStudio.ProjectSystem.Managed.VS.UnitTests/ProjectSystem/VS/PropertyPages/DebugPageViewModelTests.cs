@@ -5,9 +5,12 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using System.Windows.Controls;
+
 using Microsoft.VisualStudio.ProjectSystem.Debug;
+
 using Moq;
 using Moq.Protected;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages

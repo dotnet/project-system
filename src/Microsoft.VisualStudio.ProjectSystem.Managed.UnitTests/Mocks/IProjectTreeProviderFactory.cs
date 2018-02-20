@@ -4,6 +4,7 @@ using System;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+
 using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem

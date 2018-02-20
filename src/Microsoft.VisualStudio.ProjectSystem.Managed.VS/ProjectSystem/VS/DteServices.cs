@@ -2,8 +2,11 @@
 
 using System;
 using System.ComponentModel.Composition;
+
 using EnvDTE;
+
 using EnvDTE80;
+
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 

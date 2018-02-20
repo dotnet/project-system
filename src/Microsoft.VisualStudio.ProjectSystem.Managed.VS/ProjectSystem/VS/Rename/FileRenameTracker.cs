@@ -13,8 +13,10 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
-using Task = System.Threading.Tasks.Task;
+
 using Microsoft.VisualStudio.LanguageServices;
+
+using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 {

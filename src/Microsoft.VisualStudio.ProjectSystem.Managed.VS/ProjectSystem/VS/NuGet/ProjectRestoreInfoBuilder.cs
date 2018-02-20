@@ -1,11 +1,13 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
-using NuGet.SolutionRestoreManager;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
+
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
+
+using NuGet.SolutionRestoreManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
