@@ -6,8 +6,9 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
+
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices

@@ -3,10 +3,11 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
+
 using Microsoft.VisualStudio.Packaging;
+using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.Shell.Interop;
 
 // We register ourselves as a new CPS "project type"

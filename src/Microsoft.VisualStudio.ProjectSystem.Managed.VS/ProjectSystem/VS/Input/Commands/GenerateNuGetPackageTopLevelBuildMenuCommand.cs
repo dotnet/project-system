@@ -2,6 +2,7 @@
 
 using System.ComponentModel.Composition;
 using System.IO;
+
 using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.Input;
@@ -19,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             IProjectThreadingService threadingService,
             SVsServiceProvider serviceProvider,
             GeneratePackageOnBuildPropertyProvider generatePackageOnBuildPropertyProvider)
-            : base (unconfiguredProject, threadingService, serviceProvider, generatePackageOnBuildPropertyProvider)
+            : base(unconfiguredProject, threadingService, serviceProvider, generatePackageOnBuildPropertyProvider)
         {
         }
 

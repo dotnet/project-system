@@ -1,10 +1,12 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Moq;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+
+using Microsoft.VisualStudio.ProjectSystem.Properties;
+
+using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -42,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return model.FromJson(jsonString);
         }
     }
-    
+
     internal class IProjectSubscriptionUpdateModel : JsonModel<IProjectSubscriptionUpdate>
     {
         public IImmutableDictionary<string, IProjectRuleSnapshotModel> CurrentState { get; set; }

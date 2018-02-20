@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot

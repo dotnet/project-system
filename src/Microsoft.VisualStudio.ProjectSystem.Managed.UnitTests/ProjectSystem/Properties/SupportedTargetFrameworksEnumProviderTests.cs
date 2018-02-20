@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
@@ -47,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task GetListedValuesAsync_ReturnsSupportedTargetFrameworksItems()
         {
-            string project = 
+            string project =
 @"<Project>
     <ItemGroup>
         <SupportedTargetFramework Include="".NETCoreApp,Version=v1.0"" DisplayName="".NET Core 1.0"" />

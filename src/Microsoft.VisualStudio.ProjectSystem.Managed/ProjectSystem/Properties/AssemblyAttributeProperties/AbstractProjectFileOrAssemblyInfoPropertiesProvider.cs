@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+
 using Microsoft.CodeAnalysis;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
@@ -25,13 +26,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             Func<ProjectId> getActiveProjectId,
             Workspace workspace,
             IProjectThreadingService threadingService)
-            : base (delegatedProvider, instanceProvider, unconfiguredProject)
+            : base(delegatedProvider, instanceProvider, unconfiguredProject)
         {
             Requires.NotNull(interceptingValueProviders, nameof(interceptingValueProviders));
             Requires.NotNull(getActiveProjectId, nameof(getActiveProjectId));
             Requires.NotNull(workspace, nameof(workspace));
             Requires.NotNull(threadingService, nameof(threadingService));
-            
+
             _interceptingValueProviders = interceptingValueProviders.ToImmutableArray();
             _getActiveProjectId = getActiveProjectId;
             _workspace = workspace;

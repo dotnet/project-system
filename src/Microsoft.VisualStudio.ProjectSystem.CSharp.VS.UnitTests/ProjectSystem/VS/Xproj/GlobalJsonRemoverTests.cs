@@ -2,13 +2,18 @@
 
 using System;
 using System.IO;
+
 using EnvDTE;
+
 using EnvDTE80;
+
+using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell.Interop;
+
 using Moq;
+
 using Xunit;
-using Microsoft.VisualStudio.IO;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 {

@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
@@ -19,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             // Arrange
             var treeServices = new MockIDependenciesTreeServices();
-            var treeViewModelFactory = IMockDependenciesViewModelFactory.Implement(getDependenciesRootIcon:KnownMonikers.AboutBox);
+            var treeViewModelFactory = IMockDependenciesViewModelFactory.Implement(getDependenciesRootIcon: KnownMonikers.AboutBox);
             var project = UnconfiguredProjectFactory.Create();
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
 
@@ -29,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 FilePath = ""
             };
             var targets = new Dictionary<ITargetFramework, ITargetedDependenciesSnapshot>();
-            var snapshot = IDependenciesSnapshotFactory.Implement(targets: targets, hasUnresolvedDependency:false);
+            var snapshot = IDependenciesSnapshotFactory.Implement(targets: targets, hasUnresolvedDependency: false);
 
             // Act
             var provider = new GroupedByTargetTreeViewProvider(treeServices, treeViewModelFactory, commonServices);
@@ -66,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     ""Caption"":""Dependency1"",
     ""SchemaItemType"":""Xxx"",
     ""Resolved"":""true""
-}", icon:KnownMonikers.Uninstall, expandedIcon:KnownMonikers.Uninstall, targetFramework: tfm1);
+}", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall, targetFramework: tfm1);
 
             var dependencyRootYyy = IDependencyFactory.FromJson(@"
 {
@@ -186,8 +188,8 @@ Caption=Dependency1, FilePath=tfm1\Xxx\dependencyXxxpath, IconHash=325249260, Ex
     ""Caption"":""DependencyExisting"",
     ""SchemaItemType"":""Yyy"",
     ""Resolved"":""true""
-}", icon: KnownMonikers.Uninstall, 
-    expandedIcon: KnownMonikers.Uninstall, 
+}", icon: KnownMonikers.Uninstall,
+    expandedIcon: KnownMonikers.Uninstall,
     flags: DependencyTreeFlags.SupportsHierarchy,
     targetFramework: tfm1);
 
@@ -616,7 +618,7 @@ Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconH
     ""Path"": ""ZzzDependencyAny1path"",
     ""Name"":""ZzzDependencyAny1"",
     ""Caption"":""ZzzDependencyAny1""
-}", targetFramework:tfmAny);
+}", targetFramework: tfmAny);
 
             var dependencies = new List<IDependency>
             {
@@ -680,7 +682,7 @@ Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconH
             var treeViewModelFactory = IMockDependenciesViewModelFactory.Implement(
                 getDependenciesRootIcon: KnownMonikers.AboutBox,
                 createRootViewModel: new[] { dependencyRootXxx, dependencyRootYyy, dependencyRootZzz },
-                createTargetViewModel: new[] { target1 , target2 });
+                createTargetViewModel: new[] { target1, target2 });
 
             var testData = new Dictionary<ITargetFramework, List<IDependency>>
             {
@@ -863,7 +865,7 @@ Caption=Dependency1, FilePath=tfm1\Xxx\dependencyxxxpath, IconHash=325249260, Ex
 
             var treeServices = new MockIDependenciesTreeServices();
             var treeViewModelFactory = IMockDependenciesViewModelFactory.Implement();
-            var project = UnconfiguredProjectFactory.Create(filePath:projectPath);
+            var project = UnconfiguredProjectFactory.Create(filePath: projectPath);
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
 
             var dependenciesRoot = new TestProjectTree

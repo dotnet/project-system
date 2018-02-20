@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Logging;

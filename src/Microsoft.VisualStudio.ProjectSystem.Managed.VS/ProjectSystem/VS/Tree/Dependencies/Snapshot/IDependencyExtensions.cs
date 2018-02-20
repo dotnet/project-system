@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
@@ -103,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 resolved: true,
                 flags: dependency.GetResolvedFlags(),
                 schemaName: schemaName,
-                dependencyIDs:dependencyIDs);
+                dependencyIDs: dependencyIDs);
         }
 
         public static IDependency ToUnresolved(this IDependency dependency,

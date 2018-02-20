@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
+
 using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS

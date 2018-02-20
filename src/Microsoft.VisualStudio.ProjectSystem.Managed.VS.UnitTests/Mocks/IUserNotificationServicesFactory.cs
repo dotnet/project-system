@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public static IUserNotificationServices Implement(bool confirmRename)
         {
             var mock = new Mock<IUserNotificationServices>();
-           
+
             mock.Setup(h => h.Confirm(It.IsAny<string>()))
                 .Returns(confirmRename);
 

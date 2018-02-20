@@ -2,11 +2,12 @@
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 {
-    using Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages;
     using System;
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Runtime.CompilerServices;
+
+    using Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages;
 
     internal class NameValuePair : INotifyPropertyChanged, IDataErrorInfo
     {
@@ -17,12 +18,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
         public NameValuePair(string name, string value, ObservableList<NameValuePair> parentCollection = null)
         {
-            ParentCollection = parentCollection; Name = name; Value = value;
+            ParentCollection = parentCollection;
+            Name = name;
+            Value = value;
         }
 
         public NameValuePair(NameValuePair nvPair, ObservableList<NameValuePair> parentCollection = null)
         {
-            ParentCollection = parentCollection; Name = nvPair.Name; Value = nvPair.Value;
+            ParentCollection = parentCollection;
+            Name = nvPair.Name;
+            Value = nvPair.Value;
         }
 
         private string _name;
@@ -93,7 +98,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
                         }
                     }
                     //We are doing Row Validation - make sure that in addition to Name - Value is valid
-                    if (!HasValidationError) { HasValidationError = IsValuePropertyEmpty(); }
+                    if (!HasValidationError)
+                    { HasValidationError = IsValuePropertyEmpty(); }
                 }
                 if (propertyName.Equals("Value", StringComparison.OrdinalIgnoreCase))
                 {
@@ -103,7 +109,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
                         HasValidationError = true;
                     }
                     //We are doing Row Validation - make sure that in addition to Value - Name is valid
-                    if (!HasValidationError) { HasValidationError = IsNamePropertyEmpty() || IsNamePropertyDuplicate(); }
+                    if (!HasValidationError)
+                    { HasValidationError = IsNamePropertyEmpty() || IsNamePropertyDuplicate(); }
                 }
                 SendNotificationAfterValidation();
                 return error;

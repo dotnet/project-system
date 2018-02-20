@@ -2,7 +2,9 @@
 
 using System;
 using System.Collections.Immutable;
+
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
@@ -21,20 +23,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Throws<ArgumentNullException>("path", () =>
             {
                 new DependencyModel("sometype", null, "", ProjectTreeFlags.Empty, false, false, null);
-            });            
+            });
         }
 
         [Fact]
         public void Constructor_WhenOptionalValuesNotProvided_ShouldSetDefaults()
         {
             var model = new DependencyModel(
-                providerType: "somProvider", 
+                providerType: "somProvider",
                 path: "somePath",
-                originalItemSpec: null, 
-                flags:ProjectTreeFlags.Empty, 
-                resolved:false, 
-                isImplicit:false, 
-                properties:null);
+                originalItemSpec: null,
+                flags: ProjectTreeFlags.Empty,
+                resolved: false,
+                isImplicit: false,
+                properties: null);
 
             Assert.Equal("somePath", model.OriginalItemSpec);
             Assert.Equal(ImmutableDictionary<string, string>.Empty, model.Properties);
@@ -51,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 resolved: false,
                 isImplicit: false,
                 properties: ImmutableDictionary<string, string>.Empty.Add("someProp1", "someVal1"),
-                version:"version1\\");
+                version: "version1\\");
 
             Assert.Equal("SomeItemSpec\\version1", model.Id);
             Assert.Equal("somProvider", model.ProviderType);

@@ -1,11 +1,12 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.VisualStudio.ProjectSystem.VS.Interop;
-using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
+
+using Microsoft.VisualStudio.ProjectSystem.VS.Interop;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
 {
@@ -47,17 +48,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
             await _threadingService.SwitchToUIThread();
 
             IVsAppId vsAppId = serviceProvider.GetService<IVsAppId, SVsAppId>();
-            if (ErrorHandler.Succeeded(vsAppId.GetProperty((int)VSAPropID.VSAPROPID_ProductSemanticVersion, out object oVersion)) && 
+            if (ErrorHandler.Succeeded(vsAppId.GetProperty((int)VSAPropID.VSAPROPID_ProductSemanticVersion, out object oVersion)) &&
                 oVersion is string semVersion)
             {
                 // This is a semantic version string. We only care about the non-semantic version part
-                int index = semVersion.IndexOfAny(new char[] {'-', '+'});
-                if(index != -1)
+                int index = semVersion.IndexOfAny(new char[] { '-', '+' });
+                if (index != -1)
                 {
                     semVersion = semVersion.Substring(0, index);
                 }
 
-                if(Version.TryParse(semVersion, out Version vsVersion))
+                if (Version.TryParse(semVersion, out Version vsVersion))
                 {
                     return vsVersion;
                 }
@@ -66,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
             return null;
         }
 
-        public async Task<string > GetLocalAppDataFolderAsync(IServiceProvider serviceProvider)
+        public async Task<string> GetLocalAppDataFolderAsync(IServiceProvider serviceProvider)
         {
             await _threadingService.SwitchToUIThread();
 

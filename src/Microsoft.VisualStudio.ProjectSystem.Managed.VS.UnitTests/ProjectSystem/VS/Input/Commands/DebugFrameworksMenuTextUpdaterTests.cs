@@ -3,8 +3,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.ProjectSystem.Debug;
+
 using Moq;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
@@ -27,8 +30,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         public void QueryStatusTests_NoActiveProject()
         {
             var startupHelper = new Mock<IStartupProjectHelper>();
-                                startupHelper.Setup(x => x.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                                             .Returns((IActiveDebugFrameworkServices)null);
+            startupHelper.Setup(x => x.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
+                         .Returns((IActiveDebugFrameworkServices)null);
 
             var command = new TestDebugFrameworkPropertyMenuTextUpdater(startupHelper.Object);
             command.QueryStatus();
@@ -45,8 +48,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                                                .ImplementGetActiveDebuggingFrameworkPropertyAsync(null)
                                                .ImplementGetProjectFrameworksAsync(null);
             var startupHelper = new Mock<IStartupProjectHelper>();
-                                startupHelper.Setup(x => x.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                                             .Returns(activeDebugFrameworkSvcs.Object);
+            startupHelper.Setup(x => x.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
+                         .Returns(activeDebugFrameworkSvcs.Object);
 
             var command = new TestDebugFrameworkPropertyMenuTextUpdater(startupHelper.Object);
             command.QueryStatus();
@@ -61,10 +64,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         {
             var activeDebugFrameworkSvcs = new IActiveDebugFrameworkServicesFactory()
                                                .ImplementGetActiveDebuggingFrameworkPropertyAsync(null)
-                                               .ImplementGetProjectFrameworksAsync(new List<string>(){"net45"});
+                                               .ImplementGetProjectFrameworksAsync(new List<string>() { "net45" });
             var startupHelper = new Mock<IStartupProjectHelper>();
-                                startupHelper.Setup(x => x.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                                             .Returns(activeDebugFrameworkSvcs.Object);
+            startupHelper.Setup(x => x.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
+                         .Returns(activeDebugFrameworkSvcs.Object);
 
             var command = new TestDebugFrameworkPropertyMenuTextUpdater(startupHelper.Object);
             command.QueryStatus();
@@ -79,10 +82,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         {
             var activeDebugFrameworkSvcs = new IActiveDebugFrameworkServicesFactory()
                                                .ImplementGetActiveDebuggingFrameworkPropertyAsync(null)
-                                               .ImplementGetProjectFrameworksAsync(new List<string>(){"net461", "netcoreapp1.0"});
+                                               .ImplementGetProjectFrameworksAsync(new List<string>() { "net461", "netcoreapp1.0" });
             var startupHelper = new Mock<IStartupProjectHelper>();
-                                startupHelper.Setup(x => x.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                                             .Returns(activeDebugFrameworkSvcs.Object);
+            startupHelper.Setup(x => x.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
+                         .Returns(activeDebugFrameworkSvcs.Object);
 
             var command = new TestDebugFrameworkPropertyMenuTextUpdater(startupHelper.Object);
             command.QueryStatus();
@@ -96,10 +99,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         {
             var activeDebugFrameworkSvcs = new IActiveDebugFrameworkServicesFactory()
                                                .ImplementGetActiveDebuggingFrameworkPropertyAsync("net45")
-                                               .ImplementGetProjectFrameworksAsync(new List<string>(){"net461", "netcoreapp1.0"});
+                                               .ImplementGetProjectFrameworksAsync(new List<string>() { "net461", "netcoreapp1.0" });
             var startupHelper = new Mock<IStartupProjectHelper>();
-                                startupHelper.Setup(x => x.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                                             .Returns(activeDebugFrameworkSvcs.Object);
+            startupHelper.Setup(x => x.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
+                         .Returns(activeDebugFrameworkSvcs.Object);
 
             var command = new TestDebugFrameworkPropertyMenuTextUpdater(startupHelper.Object);
             command.QueryStatus();
@@ -114,10 +117,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         {
             var activeDebugFrameworkSvcs = new IActiveDebugFrameworkServicesFactory()
                                                .ImplementGetActiveDebuggingFrameworkPropertyAsync("netcoreapp1.0")
-                                               .ImplementGetProjectFrameworksAsync(new List<string>(){"net461", "netcoreapp1.0"});
+                                               .ImplementGetProjectFrameworksAsync(new List<string>() { "net461", "netcoreapp1.0" });
             var startupHelper = new Mock<IStartupProjectHelper>();
-                                startupHelper.Setup(x => x.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
-                                             .Returns(activeDebugFrameworkSvcs.Object);
+            startupHelper.Setup(x => x.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
+                         .Returns(activeDebugFrameworkSvcs.Object);
 
             var command = new TestDebugFrameworkPropertyMenuTextUpdater(startupHelper.Object);
             command.QueryStatus();

@@ -2,7 +2,9 @@
 
 using System;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.IO;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -15,7 +17,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var storage = CreateInstance();
 
-            Assert.Throws<ArgumentNullException>("path", () => {
+            Assert.Throws<ArgumentNullException>("path", () =>
+            {
 
                 var result = storage.CreateFolderAsync((string)null);
             });
@@ -26,7 +29,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var storage = CreateInstance();
 
-            Assert.Throws<ArgumentException>("path", () => {
+            Assert.Throws<ArgumentException>("path", () =>
+            {
 
                 var result = storage.CreateFolderAsync(string.Empty);
             });
@@ -38,7 +42,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var treeService = IProjectTreeServiceFactory.ImplementCurrentTree(() => null);
             var storage = CreateInstance(treeService: treeService);
 
-            Assert.Throws<InvalidOperationException>(() => {
+            Assert.Throws<InvalidOperationException>(() =>
+            {
 
                 var result = storage.CreateFolderAsync("path");
             });
@@ -108,8 +113,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             string result = null;
             var treeProvider = IProjectTreeProviderFactory.ImplementFindByPath((root, path) => { result = path; return null; });
             var currentTree = ProjectTreeParser.Parse(projectPath);
-            
-            var storage = CreateInstance(treeProvider:treeProvider, unconfiguredProject: unconfiguredProject);
+
+            var storage = CreateInstance(treeProvider: treeProvider, unconfiguredProject: unconfiguredProject);
 
             await storage.CreateFolderAsync(input);
 

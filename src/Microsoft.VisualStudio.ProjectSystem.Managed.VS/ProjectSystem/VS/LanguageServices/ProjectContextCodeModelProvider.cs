@@ -2,7 +2,9 @@
 
 using System;
 using System.ComponentModel.Composition;
+
 using EnvDTE;
+
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 

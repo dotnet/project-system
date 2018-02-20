@@ -2,9 +2,11 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
+
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
@@ -86,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 { dependency.Object.Id, dependency.Object }
             }.ToImmutableDictionary().ToBuilder();
-           
+
             var filter = new ImplicitTopLevelDependenciesSnapshotFilter();
 
             var resultDependency = filter.BeforeAdd(

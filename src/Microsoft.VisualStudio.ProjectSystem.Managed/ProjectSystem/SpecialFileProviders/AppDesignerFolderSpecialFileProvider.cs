@@ -44,10 +44,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 
             string path = FindAppDesignerFolder();
             if (path == null)
-            {   
+            {
                 // Not found, let's find the default path and create it if needed
                 path = await GetDefaultAppDesignerFolderPathAsync().ConfigureAwait(false);
-                
+
                 if (path != null && (flags & SpecialFileFlags.CreateIfNotExist) == SpecialFileFlags.CreateIfNotExist)
                 {
                     await _projectTree.Value.TreeStorage.CreateFolderAsync(path)

@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly ActiveConfiguredProject<ProjectProperties> _activeConfiguredProjectProperties;
 
         [ImportingConstructor]
-        public UnconfiguredProjectCommonServices(UnconfiguredProject project, Lazy<IPhysicalProjectTree> projectTree, Lazy<IProjectThreadingService> threadingService, 
+        public UnconfiguredProjectCommonServices(UnconfiguredProject project, Lazy<IPhysicalProjectTree> projectTree, Lazy<IProjectThreadingService> threadingService,
                                                  ActiveConfiguredProject<ConfiguredProject> activeConfiguredProject, ActiveConfiguredProject<ProjectProperties> activeConfiguredProjectProperties,
                                                  Lazy<IProjectLockService> projectLockService)
         {
@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public UnconfiguredProject Project
         {
-            get { return _project;  }
+            get { return _project; }
         }
 
         public IPhysicalProjectTree ProjectTree

@@ -3,6 +3,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
+
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem;
@@ -11,6 +12,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Generators;
 using Microsoft.VisualStudio.ProjectSystem.VS.Xproj;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+
 using Task = System.Threading.Tasks.Task;
 
 // We register ourselves as a new CPS "project type"

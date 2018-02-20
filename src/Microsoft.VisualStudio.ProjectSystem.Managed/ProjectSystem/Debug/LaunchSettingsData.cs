@@ -9,8 +9,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// </summary>
     internal class LaunchSettingsData
     {
-        public  Dictionary<string, object> OtherSettings { get; set; }
-        
+        public Dictionary<string, object> OtherSettings { get; set; }
+
         public List<LaunchProfileData> Profiles { get; set; }
     }
 }

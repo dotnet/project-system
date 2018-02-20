@@ -4,9 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Design;
+
 using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.Shell;
+
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
@@ -20,7 +22,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     {
         [ImportingConstructor]
         public DebugFrameworkPropertyMenuTextUpdater(IStartupProjectHelper startupProjectHelper)
-                :base(ExecHandler, delegate { }, QueryStatusHandler, 
+                : base(ExecHandler, delegate
+                { }, QueryStatusHandler,
                       new CommandID(new Guid(ManagedProjectSystemPackage.ManagedProjectSystemCommandSet), ManagedProjectSystemPackage.DebugTargetMenuDebugFrameworkMenu))
         {
             StartupProjectHelper = startupProjectHelper;
@@ -45,9 +48,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         /// its state
         /// </summary>
         public static void QueryStatusHandler(object sender, EventArgs e)
-        {   
+        {
             var command = sender as DebugFrameworkPropertyMenuTextUpdater;
-            if(command == null)
+            if (command == null)
             {
                 return;
             }
@@ -58,25 +61,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         public void QueryStatus()
         {
             var activeDebugFramework = StartupProjectHelper.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles);
-            if(activeDebugFramework != null)
+            if (activeDebugFramework != null)
             {
                 string activeFramework = null;
                 List<string> frameworks = null;
                 ExecuteSynchronously(async () =>
                 {
                     frameworks = await activeDebugFramework.GetProjectFrameworksAsync().ConfigureAwait(false);
-                    if(frameworks != null && frameworks.Count > 1)
+                    if (frameworks != null && frameworks.Count > 1)
                     {
                         // Only get this if we will need it down below
                         activeFramework = await activeDebugFramework.GetActiveDebuggingFrameworkPropertyAsync().ConfigureAwait(false);
                     }
                 });
 
-                if(frameworks != null && frameworks.Count > 1)
+                if (frameworks != null && frameworks.Count > 1)
                 {
                     // If no active framework or the current active property doesn't match any of the frameworks, then
                     // st it to the first one.
-                    if(!string.IsNullOrEmpty(activeFramework) && frameworks.Contains(activeFramework))
+                    if (!string.IsNullOrEmpty(activeFramework) && frameworks.Contains(activeFramework))
                     {
                         Text = string.Format(VSResources.DebugFrameworkMenuText, activeFramework);
                     }
@@ -97,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         protected virtual void ExecuteSynchronously(Func<Task> asyncFunction)
         {
             ThreadHelper.JoinableTaskFactory.Run(async () =>
-            {   
+            {
                 await asyncFunction().ConfigureAwait(false);
             });
         }

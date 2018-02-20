@@ -3,9 +3,11 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Runtime.InteropServices;
-using Microsoft.VisualStudio.Shell.Interop;
+
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.VS;
+using Microsoft.VisualStudio.Shell.Interop;
+
 using EncInterop = Microsoft.VisualStudio.LanguageServices.Implementation.EditAndContinue.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Managed.VS.EditAndContinue
