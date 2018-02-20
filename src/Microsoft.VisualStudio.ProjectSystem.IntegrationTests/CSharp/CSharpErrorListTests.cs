@@ -66,7 +66,7 @@ class C
             Assert.Equal(expectedContents, actualContents);
         }
 
-        [Fact]
+        [Fact(Skip = "https://github.com/dotnet/project-system/issues/3286")]
         public void ErrorLevelWarning()
         {
             VisualStudio.Editor.SetText(@"
