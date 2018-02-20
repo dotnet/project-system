@@ -23,7 +23,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         private readonly IWorkspaceProjectContext _context;
         private readonly HashSet<string> _paths = new HashSet<string>(StringComparers.Paths);
 
-        [ImportingConstructor]
         public AnalyzerItemHandler(UnconfiguredProject project, IWorkspaceProjectContext context)
         {
             Requires.NotNull(project, nameof(project));
