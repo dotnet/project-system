@@ -2,8 +2,10 @@
 
 using System;
 using System.Threading;
+
 using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
+
 using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
