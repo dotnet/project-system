@@ -14,9 +14,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
     internal class ProjectImageProviderAggregator : IProjectImageProvider
     {
         [ImportingConstructor]
-        public ProjectImageProviderAggregator(UnconfiguredProject unconfiguredProject)
+        public ProjectImageProviderAggregator(UnconfiguredProject project)
         {
-            ImageProviders = new OrderPrecedenceImportCollection<IProjectImageProvider>(projectCapabilityCheckProvider: unconfiguredProject);
+            ImageProviders = new OrderPrecedenceImportCollection<IProjectImageProvider>(projectCapabilityCheckProvider: project);
         }
 
         [ImportMany]

@@ -15,11 +15,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     {
         [ImportingConstructor]
         public GenerateNuGetPackageProjectContextMenuCommand(
-            UnconfiguredProject unconfiguredProject,
+            UnconfiguredProject project,
             IProjectThreadingService threadingService,
             SVsServiceProvider serviceProvider,
             GeneratePackageOnBuildPropertyProvider generatePackageOnBuildPropertyProvider)
-            : base(unconfiguredProject, threadingService, serviceProvider, generatePackageOnBuildPropertyProvider)
+            : base(project, threadingService, serviceProvider, generatePackageOnBuildPropertyProvider)
         {
         }
 

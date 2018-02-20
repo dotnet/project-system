@@ -22,13 +22,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
                                           [Import(ExportContractNames.ProjectTreeProviders.PhysicalViewTree)]Lazy<IProjectTreeProvider> treeProvider,
                                           Lazy<IFileSystem> fileSystem,
                                           ActiveConfiguredProject<IFolderManager> folderManager,
-                                          UnconfiguredProject unconfiguredProject)
+                                          UnconfiguredProject project)
         {
             _treeService = treeService;
             _treeProvider = treeProvider;
             _fileSystem = fileSystem;
             _folderManager = folderManager;
-            _unconfiguredProject = unconfiguredProject;
+            _unconfiguredProject = project;
         }
 
         public Task<IProjectTree> CreateFolderAsync(string path)

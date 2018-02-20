@@ -145,13 +145,13 @@ Root (flags: {ProjectRoot})
             bool cancelBuild = false)
         {
             var hierarchy = IVsHierarchyFactory.Create();
-            var unconfiguredProject = UnconfiguredProjectFactory.Create(hierarchy);
+            var project = UnconfiguredProjectFactory.Create(hierarchy);
             var threadingService = IProjectThreadingServiceFactory.Create();
             buildManager = buildManager ?? IVsSolutionBuildManager2Factory.Create(solutionEventsListener, hierarchy, isBuilding, cancelBuild);
             var serviceProvider = SVsServiceProviderFactory.Create(buildManager);
             generatePackageOnBuildPropertyProvider = generatePackageOnBuildPropertyProvider ?? CreateGeneratePackageOnBuildPropertyProvider();
 
-            return CreateInstanceCore(unconfiguredProject, threadingService, serviceProvider, generatePackageOnBuildPropertyProvider);
+            return CreateInstanceCore(project, threadingService, serviceProvider, generatePackageOnBuildPropertyProvider);
         }
 
         private GeneratePackageOnBuildPropertyProvider CreateGeneratePackageOnBuildPropertyProvider(IProjectService projectService = null)
@@ -161,7 +161,7 @@ Root (flags: {ProjectRoot})
         }
 
         internal abstract AbstractGenerateNuGetPackageCommand CreateInstanceCore(
-            UnconfiguredProject unconfiguredProject,
+            UnconfiguredProject project,
             IProjectThreadingService threadingService,
             Shell.SVsServiceProvider serviceProvider,
             GeneratePackageOnBuildPropertyProvider generatePackageOnBuildPropertyProvider);

@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private static readonly Guid s_fsharpProjectType = new Guid(FSharpProjectSystemPackage.LegacyProjectTypeGuid);
 
         [ImportingConstructor]
-        public FSharpProjectGuidProvider(UnconfiguredProject unconfiguredProject)
+        public FSharpProjectGuidProvider(UnconfiguredProject project)
         {
         }
 

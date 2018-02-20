@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return Create(UnconfiguredProjectFactory.Create());
         }
 
-        public static ProjectProperties Create(UnconfiguredProject unconfiguredProject, params PropertyPageData[] data)
+        public static ProjectProperties Create(UnconfiguredProject project, params PropertyPageData[] data)
         {
             var catalog = CreateCatalog(CreateCatalogLookup(data));
             IPropertyPagesCatalogProvider propertyPagesCatalogProvider = CreateCatalogProvider(
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             var cfg = new StandardProjectConfiguration("Debug|" + "AnyCPU", Empty.PropertiesMap.SetItem("Configuration", "Debug").SetItem("Platform", "AnyCPU"));
             ConfiguredProject configuredProject = Mock.Of<ConfiguredProject>(o =>
-                o.UnconfiguredProject == unconfiguredProject &&
+                o.UnconfiguredProject == project &&
                 o.Services == configuredProjectServices &&
                 o.ProjectConfiguration == cfg);
 

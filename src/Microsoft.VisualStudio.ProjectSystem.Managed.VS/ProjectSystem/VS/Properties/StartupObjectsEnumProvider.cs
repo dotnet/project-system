@@ -21,10 +21,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private readonly UnconfiguredProject _unconfiguredProject;
 
         [ImportingConstructor]
-        public StartupObjectsEnumProvider([Import(typeof(VisualStudioWorkspace))] Workspace workspace, UnconfiguredProject unconfiguredProject)
+        public StartupObjectsEnumProvider([Import(typeof(VisualStudioWorkspace))] Workspace workspace, UnconfiguredProject project)
         {
             _workspace = workspace;
-            _unconfiguredProject = unconfiguredProject;
+            _unconfiguredProject = project;
         }
 
         public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair> options)
@@ -45,10 +45,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private bool SearchForEntryPointsInFormsOnly => false;
 
         [ImportingConstructor]
-        public StartupObjectsEnumGenerator(Workspace workspace, UnconfiguredProject unconfiguredProject)
+        public StartupObjectsEnumGenerator(Workspace workspace, UnconfiguredProject project)
         {
             _workspace = workspace;
-            _unconfiguredProject = unconfiguredProject;
+            _unconfiguredProject = project;
         }
 
         public async Task<ICollection<IEnumValue>> GetListedValuesAsync()

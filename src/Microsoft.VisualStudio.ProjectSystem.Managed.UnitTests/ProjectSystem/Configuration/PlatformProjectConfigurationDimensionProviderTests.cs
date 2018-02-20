@@ -28,8 +28,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             var projectAccessor = IProjectAccessorFactory.Create(projectXml);
             var provider = new PlatformProjectConfigurationDimensionProvider(projectAccessor);
 
-            var unconfiguredProject = UnconfiguredProjectFactory.Create();
-            var values = await provider.GetDefaultValuesForDimensionsAsync(unconfiguredProject);
+            var project = UnconfiguredProjectFactory.Create();
+            var values = await provider.GetDefaultValuesForDimensionsAsync(project);
 
             Assert.Single(values);
             var value = values.First();
@@ -43,8 +43,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             var projectAccessor = IProjectAccessorFactory.Create(projectXml);
             var provider = new PlatformProjectConfigurationDimensionProvider(projectAccessor);
 
-            var unconfiguredProject = UnconfiguredProjectFactory.Create();
-            var values = await provider.GetProjectConfigurationDimensionsAsync(unconfiguredProject);
+            var project = UnconfiguredProjectFactory.Create();
+            var values = await provider.GetProjectConfigurationDimensionsAsync(project);
 
             Assert.Single(values);
             var value = values.First();
@@ -63,11 +63,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             var projectAccessor = IProjectAccessorFactory.Create(rootElement);
             var provider = new PlatformProjectConfigurationDimensionProvider(projectAccessor);
 
-            var unconfiguredProject = UnconfiguredProjectFactory.Create();
+            var project = UnconfiguredProjectFactory.Create();
 
             // On ChangeEventStage.After nothing should be changed
             var args = new ProjectConfigurationDimensionValueChangedEventArgs(
-                unconfiguredProject,
+                project,
                 ConfigurationDimensionChange.Add,
                 ChangeEventStage.After,
                 ConfigurationGeneral.PlatformProperty,
@@ -79,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 
             // On ChangeEventStage.Before the property should be added
             args = new ProjectConfigurationDimensionValueChangedEventArgs(
-                unconfiguredProject,
+                project,
                 ConfigurationDimensionChange.Add,
                 ChangeEventStage.Before,
                 ConfigurationGeneral.PlatformProperty,
@@ -97,11 +97,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             var projectAccessor = IProjectAccessorFactory.Create(rootElement);
             var provider = new PlatformProjectConfigurationDimensionProvider(projectAccessor);
 
-            var unconfiguredProject = UnconfiguredProjectFactory.Create();
+            var project = UnconfiguredProjectFactory.Create();
 
             // On ChangeEventStage.After nothing should be changed
             var args = new ProjectConfigurationDimensionValueChangedEventArgs(
-                unconfiguredProject,
+                project,
                 ConfigurationDimensionChange.Delete,
                 ChangeEventStage.After,
                 ConfigurationGeneral.PlatformProperty,
@@ -113,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 
             // On ChangeEventStage.Before the property should be removed
             args = new ProjectConfigurationDimensionValueChangedEventArgs(
-                unconfiguredProject,
+                project,
                 ConfigurationDimensionChange.Delete,
                 ChangeEventStage.Before,
                 ConfigurationGeneral.PlatformProperty,
@@ -131,11 +131,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             var projectAccessor = IProjectAccessorFactory.Create(rootElement);
             var provider = new PlatformProjectConfigurationDimensionProvider(projectAccessor);
 
-            var unconfiguredProject = UnconfiguredProjectFactory.Create();
+            var project = UnconfiguredProjectFactory.Create();
 
             // Nothing should happen on platform rename as it's unsupported
             var args = new ProjectConfigurationDimensionValueChangedEventArgs(
-                unconfiguredProject,
+                project,
                 ConfigurationDimensionChange.Rename,
                 ChangeEventStage.Before,
                 ConfigurationGeneral.PlatformProperty,
@@ -148,7 +148,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 
             // On ChangeEventStage.Before the property should be renamed
             args = new ProjectConfigurationDimensionValueChangedEventArgs(
-                unconfiguredProject,
+                project,
                 ConfigurationDimensionChange.Rename,
                 ChangeEventStage.After,
                 ConfigurationGeneral.PlatformProperty,

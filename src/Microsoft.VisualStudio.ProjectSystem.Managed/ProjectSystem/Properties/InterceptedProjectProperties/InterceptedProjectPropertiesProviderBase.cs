@@ -18,9 +18,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public InterceptedProjectPropertiesProviderBase(
             IProjectPropertiesProvider provider,
             IProjectInstancePropertiesProvider instanceProvider,
-            UnconfiguredProject unconfiguredProject,
+            UnconfiguredProject project,
             IEnumerable<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> interceptingValueProviders)
-            : base(provider, instanceProvider, unconfiguredProject)
+            : base(provider, instanceProvider, project)
         {
             _interceptingValueProviders = interceptingValueProviders.ToImmutableArray();
         }

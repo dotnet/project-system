@@ -37,8 +37,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             [Import(ContractNames.ProjectPropertyProviders.ProjectFile)] IProjectPropertiesProvider provider,
             [Import(ContractNames.ProjectPropertyProviders.ProjectFile)] IProjectInstancePropertiesProvider instanceProvider,
             ImplicitProjectPropertiesStore<string, string> propertyStore,
-            UnconfiguredProject unconfiguredProject)
-            : base(provider, instanceProvider, unconfiguredProject)
+            UnconfiguredProject project)
+            : base(provider, instanceProvider, project)
         {
             _propertyStore = propertyStore;
         }

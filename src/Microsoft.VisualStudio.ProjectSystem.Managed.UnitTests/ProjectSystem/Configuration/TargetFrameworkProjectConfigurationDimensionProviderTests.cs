@@ -41,8 +41,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             var projectAccessor = IProjectAccessorFactory.Create(ProjectXmlTFM);
             var provider = new TargetFrameworkProjectConfigurationDimensionProvider(projectAccessor);
 
-            var unconfiguredProject = UnconfiguredProjectFactory.Create();
-            var values = await provider.GetDefaultValuesForDimensionsAsync(unconfiguredProject);
+            var project = UnconfiguredProjectFactory.Create();
+            var values = await provider.GetDefaultValuesForDimensionsAsync(project);
 
             Assert.Empty(values);
         }
@@ -55,8 +55,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             var projectAccessor = IProjectAccessorFactory.Create(projectXml);
             var provider = new TargetFrameworkProjectConfigurationDimensionProvider(projectAccessor);
 
-            var unconfiguredProject = UnconfiguredProjectFactory.Create();
-            var values = await provider.GetDefaultValuesForDimensionsAsync(unconfiguredProject);
+            var project = UnconfiguredProjectFactory.Create();
+            var values = await provider.GetDefaultValuesForDimensionsAsync(project);
 
             Assert.Single(values);
             var value = values.First();
@@ -70,8 +70,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             var projectAccessor = IProjectAccessorFactory.Create(ProjectXmlTFM);
             var provider = new TargetFrameworkProjectConfigurationDimensionProvider(projectAccessor);
 
-            var unconfiguredProject = UnconfiguredProjectFactory.Create();
-            var values = await provider.GetProjectConfigurationDimensionsAsync(unconfiguredProject);
+            var project = UnconfiguredProjectFactory.Create();
+            var values = await provider.GetProjectConfigurationDimensionsAsync(project);
 
             Assert.Empty(values);
         }
@@ -84,8 +84,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             var projectAccessor = IProjectAccessorFactory.Create(projectXml);
             var provider = new TargetFrameworkProjectConfigurationDimensionProvider(projectAccessor);
 
-            var unconfiguredProject = UnconfiguredProjectFactory.Create();
-            var values = await provider.GetProjectConfigurationDimensionsAsync(unconfiguredProject);
+            var project = UnconfiguredProjectFactory.Create();
+            var values = await provider.GetProjectConfigurationDimensionsAsync(project);
 
             Assert.Single(values);
             var value = values.First();
@@ -110,12 +110,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             var projectAccessor = IProjectAccessorFactory.Create(rootElement);
             var provider = new TargetFrameworkProjectConfigurationDimensionProvider(projectAccessor);
 
-            var unconfiguredProject = UnconfiguredProjectFactory.Create();
+            var project = UnconfiguredProjectFactory.Create();
             var property = BuildUtilities.GetProperty(rootElement, ConfigurationGeneral.TargetFrameworksProperty);
             string expectedTFMs = property.Value;
 
             var args = new ProjectConfigurationDimensionValueChangedEventArgs(
-                unconfiguredProject,
+                project,
                 change,
                 stage,
                 ConfigurationGeneral.TargetFrameworkProperty,
