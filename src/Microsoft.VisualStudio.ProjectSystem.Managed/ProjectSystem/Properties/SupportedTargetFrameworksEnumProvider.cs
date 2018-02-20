@@ -24,9 +24,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [ImportingConstructor]
         public SupportedTargetFrameworksEnumProvider(IProjectAccessor projectAccessor, ConfiguredProject configuredProject)
         {
-            Requires.NotNull(projectAccessor, nameof(projectAccessor));
-            Requires.NotNull(configuredProject, nameof(configuredProject));
-
             _projectAccessor = projectAccessor;
             _configuredProject = configuredProject;
         }

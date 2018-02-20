@@ -23,9 +23,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [ImportingConstructor]
         public StartupObjectsEnumProvider([Import(typeof(VisualStudioWorkspace))] Workspace workspace, UnconfiguredProject unconfiguredProject)
         {
-            Requires.NotNull(workspace, nameof(workspace));
-            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
-
             _workspace = workspace;
             _unconfiguredProject = unconfiguredProject;
         }
@@ -50,9 +47,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [ImportingConstructor]
         public StartupObjectsEnumGenerator(Workspace workspace, UnconfiguredProject unconfiguredProject)
         {
-            Requires.NotNull(workspace, nameof(workspace));
-            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
-
             _workspace = workspace;
             _unconfiguredProject = unconfiguredProject;
         }

@@ -16,8 +16,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
         [ImportingConstructor]
         public ProjectImageProviderAggregator(UnconfiguredProject unconfiguredProject)
         {
-            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
-
             ImageProviders = new OrderPrecedenceImportCollection<IProjectImageProvider>(projectCapabilityCheckProvider: unconfiguredProject);
         }
 

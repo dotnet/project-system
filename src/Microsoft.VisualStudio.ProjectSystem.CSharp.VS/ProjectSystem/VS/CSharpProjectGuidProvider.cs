@@ -19,7 +19,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [ImportingConstructor]
         public CSharpProjectGuidProvider(UnconfiguredProject unconfiguredProject)
         {
-            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
         }
 
         public Guid ProjectTypeGuid

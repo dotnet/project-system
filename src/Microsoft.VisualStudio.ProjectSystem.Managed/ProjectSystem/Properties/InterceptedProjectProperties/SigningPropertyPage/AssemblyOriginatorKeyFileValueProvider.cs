@@ -15,8 +15,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [ImportingConstructor]
         public AssemblyOriginatorKeyFileValueProvider(UnconfiguredProject unconfiguredProject)
         {
-            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
-
             _unconfiguredProject = unconfiguredProject;
         }
 

@@ -53,12 +53,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                    LanguageServiceHandlerManager languageServiceHandlerManager)
             : base(commonServices.ThreadingService.JoinableTaskContext)
         {
-            Requires.NotNull(contextProvider, nameof(contextProvider));
-            Requires.NotNull(tasksService, nameof(tasksService));
-            Requires.NotNull(activeConfiguredProjectSubscriptionService, nameof(activeConfiguredProjectSubscriptionService));
-            Requires.NotNull(activeProjectConfigurationRefreshService, nameof(activeProjectConfigurationRefreshService));
-            Requires.NotNull(languageServiceHandlerManager, nameof(languageServiceHandlerManager));
-
             _commonServices = commonServices;
             _contextProvider = contextProvider;
             _tasksService = tasksService;

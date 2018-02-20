@@ -22,10 +22,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [ImportingConstructor]
         public CreateFileFromTemplateService(IUnconfiguredProjectVsServices projectVsServices, IDteServices dteServices, ProjectProperties properties)
         {
-            Requires.NotNull(projectVsServices, nameof(projectVsServices));
-            Requires.NotNull(dteServices, nameof(dteServices));
-            Requires.NotNull(properties, nameof(properties));
-
             _projectVsServices = projectVsServices;
             _dteServices = dteServices;
             _properties = properties;

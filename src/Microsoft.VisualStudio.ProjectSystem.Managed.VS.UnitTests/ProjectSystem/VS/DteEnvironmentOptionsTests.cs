@@ -10,16 +10,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     public class DteEnvironmentOptionsTests
     {
         [Fact]
-        public void Constructor_NullAsDteServices_ThrowsArgumentNull()
-        {
-            Assert.Throws<ArgumentNullException>("dteServices", () =>
-            {
-
-                new DteEnvironmentOptions((IDteServices)null);
-            });
-        }
-
-        [Fact]
         public void Constructor_Success()
         {
             var optionnsSettings = new DteEnvironmentOptions(IDteServicesFactory.Create());

@@ -43,13 +43,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             IUnconfiguredProjectVsServices unconfiguredProjectVSServices,
             VisualBasicNamespaceImportsList importsList)
         {
-            Requires.NotNull(vsProject, nameof(vsProject));
-            Requires.NotNull(threadingService, nameof(threadingService));
-            Requires.NotNull(activeConfiguredProject, nameof(activeConfiguredProject));
-            Requires.NotNull(projectAccessor, nameof(projectAccessor));
-            Requires.NotNull(unconfiguredProjectVSServices, nameof(unconfiguredProjectVSServices));
-            Requires.NotNull(importsList, nameof(importsList));
-
             _vsProject = vsProject;
             _activeConfiguredProject = activeConfiguredProject;
             _projectAccessor = projectAccessor;

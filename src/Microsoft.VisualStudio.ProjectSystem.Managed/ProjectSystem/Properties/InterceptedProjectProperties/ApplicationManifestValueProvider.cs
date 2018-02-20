@@ -26,8 +26,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [ImportingConstructor]
         public ApplicationManifestValueProvider(UnconfiguredProject unconfiguredProject)
         {
-            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
-
             _unconfiguredProject = unconfiguredProject;
         }
 

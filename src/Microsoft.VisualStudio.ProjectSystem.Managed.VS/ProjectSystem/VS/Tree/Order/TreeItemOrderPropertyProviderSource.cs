@@ -24,9 +24,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
             [Import(ExportContractNames.Scopes.UnconfiguredProject)] IOrderedSourceItemsDataSourceService orderedItemSource)
             : base(project.Services)
         {
-            Requires.NotNull(project, nameof(project));
-            Requires.NotNull(orderedItemSource, nameof(orderedItemSource));
-
             _project = project;
             _orderedItemSource = orderedItemSource;
         }

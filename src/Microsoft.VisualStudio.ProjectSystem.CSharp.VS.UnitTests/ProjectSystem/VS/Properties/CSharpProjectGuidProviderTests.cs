@@ -10,16 +10,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     public class CSharpProjectGuidProviderTests
     {
         [Fact]
-        public void Constructor_NullAsUnconfiguredProject_ThrowsArgumentNull()
-        {
-            Assert.Throws<ArgumentNullException>("unconfiguredProject", () =>
-            {
-
-                new CSharpProjectGuidProvider((UnconfiguredProject)null);
-            });
-        }
-
-        [Fact]
         public void ProjectTypeGuid_ReturnsNonEmptyGuid()
         {
             var provider = CreateInstance();

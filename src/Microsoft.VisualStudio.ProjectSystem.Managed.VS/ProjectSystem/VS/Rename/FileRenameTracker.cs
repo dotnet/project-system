@@ -34,12 +34,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         [ImportingConstructor]
         public FileRenameTracker(IUnconfiguredProjectVsServices projectVsServices, VisualStudioWorkspace visualStudioWorkspace, IEnvironmentOptions environmentOptions, IUserNotificationServices userNotificationServices, IRoslynServices roslynServices)
         {
-            Requires.NotNull(projectVsServices, nameof(projectVsServices));
-            Requires.NotNull(visualStudioWorkspace, nameof(visualStudioWorkspace));
-            Requires.NotNull(environmentOptions, nameof(environmentOptions));
-            Requires.NotNull(userNotificationServices, nameof(userNotificationServices));
-            Requires.NotNull(roslynServices, nameof(roslynServices));
-
             _projectVsServices = projectVsServices;
             _visualStudioWorkspace = visualStudioWorkspace;
             _environmentOptions = environmentOptions;

@@ -40,15 +40,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
         }
 
         [Fact]
-        public void CreateTargetProvider_WithNullProjectVsServices_ThrowsArgumentNull()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                new TargetFrameworkValueProvider(properties: null);
-            });
-        }
-
-        [Fact]
         public async Task VerifyGetTargetFrameworkPropertyAsync()
         {
             var configuredTargetFramework = new FrameworkName(".NETFramework", new Version(4, 5));

@@ -31,11 +31,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
             ActiveConfiguredProject<DebuggerLaunchProviders> launchProviders)
         {
-            Requires.NotNull(startupProjectsListService, nameof(startupProjectsListService));
-            Requires.NotNull(threadingService, nameof(threadingService));
-            Requires.NotNull(activeConfiguredProjectSubscriptionService, nameof(activeConfiguredProjectSubscriptionService));
-            Requires.NotNull(launchProviders, nameof(launchProviders));
-
             _startupProjectsListService = startupProjectsListService;
             _threadingService = threadingService;
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;

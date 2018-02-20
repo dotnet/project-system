@@ -27,9 +27,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         [ImportingConstructor]
         public LanguageServiceErrorListProvider(UnconfiguredProject unconfiguredProject, ILanguageServiceHost host)
         {
-            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
-            Requires.NotNull(host, nameof(host));
-
             _host = host;
         }
 

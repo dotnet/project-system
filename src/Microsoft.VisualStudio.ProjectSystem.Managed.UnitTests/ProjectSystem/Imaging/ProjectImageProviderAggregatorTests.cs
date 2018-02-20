@@ -9,16 +9,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
     public class ProjectImageProviderAggregatorTests
     {
         [Fact]
-        public void Constructor_NullAsUnconfiguredProject_ThrowsArgumentNull()
-        {
-            Assert.Throws<ArgumentNullException>("unconfiguredProject", () =>
-            {
-
-                new ProjectImageProviderAggregator((UnconfiguredProject)null);
-            });
-        }
-
-        [Fact]
         public void GetImageKey_NullAsKey_ThrowsArgumentNull()
         {
             var aggregator = CreateInstance();

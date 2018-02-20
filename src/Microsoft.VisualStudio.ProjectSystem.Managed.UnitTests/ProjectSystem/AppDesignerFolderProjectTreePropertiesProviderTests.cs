@@ -14,30 +14,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
     public class AppDesignerFolderProjectTreePropertiesProviderTests
     {
         [Fact]
-        public void Constructor_NullAsImageProvider_ThrowsArgumentNull()
-        {
-            var designerService = IProjectDesignerServiceFactory.Create();
-
-            Assert.Throws<ArgumentNullException>("imageProvider", () =>
-            {
-
-                new AppDesignerFolderProjectTreePropertiesProvider((IProjectImageProvider)null, designerService);
-            });
-        }
-
-        [Fact]
-        public void Constructor_NullAsDesignerService_ThrowsArgumentNull()
-        {
-            var imageProvider = IProjectImageProviderFactory.Create();
-
-            Assert.Throws<ArgumentNullException>("designerService", () =>
-            {
-
-                new AppDesignerFolderProjectTreePropertiesProvider(imageProvider, (IProjectDesignerService)null);
-            });
-        }
-
-        [Fact]
         public void ProjectPropertiesRules_ReturnsAppDesigner()
         {
             var propertiesProvider = CreateInstance();

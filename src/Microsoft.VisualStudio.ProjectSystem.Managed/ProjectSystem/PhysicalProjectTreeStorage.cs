@@ -24,12 +24,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
                                           ActiveConfiguredProject<IFolderManager> folderManager,
                                           UnconfiguredProject unconfiguredProject)
         {
-            Requires.NotNull(fileSystem, nameof(fileSystem));
-            Requires.NotNull(folderManager, nameof(folderManager));
-            Requires.NotNull(treeService, nameof(treeService));
-            Requires.NotNull(treeProvider, nameof(treeProvider));
-            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
-
             _treeService = treeService;
             _treeProvider = treeProvider;
             _fileSystem = fileSystem;

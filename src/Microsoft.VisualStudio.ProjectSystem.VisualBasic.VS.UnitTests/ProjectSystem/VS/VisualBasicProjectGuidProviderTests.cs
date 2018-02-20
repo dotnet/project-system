@@ -10,16 +10,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     public class VisualBasicProjectGuidProviderTests
     {
         [Fact]
-        public void Constructor_NullAsUnconfiguredProject_ThrowsArgumentNull()
-        {
-            Assert.Throws<ArgumentNullException>("unconfiguredProject", () =>
-            {
-
-                new VisualBasicProjectGuidProvider((UnconfiguredProject)null);
-            });
-        }
-
-        [Fact]
         public void ProjectTypeGuid_ReturnsNonEmptyGuid()
         {
             var provider = CreateInstance();
