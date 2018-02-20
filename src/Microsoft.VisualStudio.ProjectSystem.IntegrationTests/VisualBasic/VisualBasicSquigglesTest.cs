@@ -38,7 +38,7 @@ End Class");
             actualTags.ShouldEqualWithDiff(expectedTags);
         }
 
-        [Fact]
+        [Fact(Skip = "https://github.com/dotnet/project-system/issues/3286")]
         public void VerifySemanticErrorSquiggles()
         {
             VisualStudio.Editor.SetText(@"Class A

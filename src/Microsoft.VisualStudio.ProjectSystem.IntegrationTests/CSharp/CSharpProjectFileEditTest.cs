@@ -37,7 +37,7 @@ namespace ProjectFileEditTest
 ");
         }
 
-        [Fact, Trait("Integration", "ProjectFileEdit")]
+        [Fact(Skip = "https://github.com/dotnet/project-system/issues/3286")]
         public void EditNetCore10To11()
         {
             VisualStudio.SolutionExplorer.EditProjectFile(Project);
@@ -61,7 +61,7 @@ namespace ProjectFileEditTest
             VisualStudio.SolutionExplorer.BuildSolution(waitForBuildToFinish: true);
         }
 
-        [Fact, Trait("Integration", "ProjectFileEdit")]
+        [Fact(Skip = "https://github.com/dotnet/project-system/issues/3286")]
         public void AddPackageReference()
         {
             VisualStudio.SolutionExplorer.EditProjectFile(Project);

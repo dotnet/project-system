@@ -61,7 +61,7 @@ End Module
             VisualStudio.Editor.Verify.CaretPosition(43);
         }
 
-        [Fact]
+        [Fact(Skip = "https://github.com/dotnet/project-system/issues/3286")]
         public void ErrorsDuringMethodBodyEditing()
         {
             VisualStudio.Editor.SetText(@"

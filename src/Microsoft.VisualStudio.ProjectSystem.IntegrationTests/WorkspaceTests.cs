@@ -66,7 +66,7 @@ End Class");
             VisualStudio.Editor.Verify.CurrentTokenType("identifier");
         }
 
-        [Fact]
+        [Fact(Skip = "https://github.com/dotnet/project-system/issues/3286")]
         public void ProjectReference()
         {
             var project = new ProjectUtils.Project(ProjectName);
