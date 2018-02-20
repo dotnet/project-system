@@ -52,7 +52,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Interop
         ExternalPackage = 0x0020
     };
 
-    public enum VSAPropID {
+    public enum VSAPropID
+    {
         NIL = -1,
         LAST = -8500,  // !!!! NOTE !!!! THIS MUST BE THE SAME AS THE FIRST PROP DEFINED
         GuidAppIDPackage = -8501,  // GUID of the Application ID Package; e.g. this is used to load resource strings.
@@ -249,7 +250,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Interop
         VSAPROPID_BranchName                            = -8649,     // VT_BSTR. The branch name of the build.
     };
 
-    public enum VSASKUEdition {
+    public enum VSASKUEdition
+    {
         None = 0,
         Standard = 1000,
         Professional = 2000,
@@ -268,7 +270,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Interop
         SQL = 9192,
     };
 
-    public enum VSASubSKUEdition {
+    public enum VSASubSKUEdition
+    {
         None = 0x0,
         VC = 0x1,
         VB = 0x2,
