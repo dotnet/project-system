@@ -8,6 +8,7 @@ using Xunit;
 namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
 {
     [Collection(nameof(SharedIntegrationHostFixture))]
+    [Trait("Integration", "Squiggles")]
     public class CSharpSquigglesTests : AbstractIntegrationTest
     {
         protected override string DefaultLanguageName => LanguageNames.CSharp;
@@ -18,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
             VisualStudio.SolutionExplorer.OpenFile(Project, "Class1.cs");
         }
 
-        [Fact(Skip = "https://github.com/dotnet/project-system/issues/2281"), Trait("Integration", "Squiggles")]
+        [Fact(Skip = "https://github.com/dotnet/project-system/issues/2281")]
         public void VerifySyntaxErrorSquiggles()
         {
             VisualStudio.Editor.SetText(@"using System;
@@ -52,7 +53,7 @@ namespace ConsoleApplication1
             Assert.Equal(expectedTags, actualTags);
         }
 
-        [Fact(Skip = "https://github.com/dotnet/project-system/issues/2281"), Trait("Integration", "Squiggles")]
+        [Fact(Skip = "https://github.com/dotnet/project-system/issues/2281")]
         public void VerifySemanticErrorSquiggles()
         {
             VisualStudio.Editor.SetText(@"using System;

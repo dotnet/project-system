@@ -8,6 +8,7 @@ using Xunit;
 namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
 {
     [Collection(nameof(SharedIntegrationHostFixture))]
+    [Trait("Integration", "Squiggles")]
     public class VisualBasicSquigglesTest : AbstractIntegrationTest
     {
         protected override string DefaultLanguageName => LanguageNames.VisualBasic;
@@ -18,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
             VisualStudio.SolutionExplorer.OpenFile(Project, "Class1.vb");
         }
 
-        [Fact(Skip = "Syntax squiggles not showing on VB"), Trait("Integration", "Squiggles")]
+        [Fact(Skip = "Syntax squiggles not showing on VB")]
         public void VerifySyntaxErrorSquiggles()
         {
             VisualStudio.Editor.SetText(@"Class A
@@ -37,7 +38,7 @@ End Class");
             actualTags.ShouldEqualWithDiff(expectedTags);
         }
 
-        [Fact, Trait("Integration", "Squiggles")]
+        [Fact(Skip = "https://github.com/dotnet/project-system/issues/3286")]
         public void VerifySemanticErrorSquiggles()
         {
             VisualStudio.Editor.SetText(@"Class A

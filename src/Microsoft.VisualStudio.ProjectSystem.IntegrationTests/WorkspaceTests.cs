@@ -10,6 +10,7 @@ using ProjectUtils = Microsoft.VisualStudio.IntegrationTest.Utilities.Common.Pro
 namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
 {
     [Collection(nameof(SharedIntegrationHostFixture))]
+    [Trait("Integration", "Workspace")]
     public class WorkspaceTests : AbstractIntegrationTest
     {
         protected override string DefaultLanguageName => LanguageNames.CSharp;
@@ -20,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
             VisualStudio.SolutionExplorer.OpenFile(Project, "Class1.cs");
         }
 
-        [Fact(Skip = "Classification doesn't work when files are loaded in misc workspace"), Trait("Integration", "Workspace")]
+        [Fact(Skip = "Classification doesn't work when files are loaded in misc workspace")]
         public void OpenCSharpThenVBSolution()
         {
             VisualStudio.Editor.SetText(@"using System; class Program { Exception e; }");
@@ -41,7 +42,7 @@ End Class");
             VisualStudio.Editor.Verify.CurrentTokenType(tokenType: "class name");
         }
 
-        [Fact(Skip = "Unload/Reload does not work"), Trait("Integration", "Workspace")]
+        [Fact(Skip = "Unload/Reload does not work")]
         public void MetadataReference()
         {
             var project = new ProjectUtils.Project(ProjectName);
@@ -65,7 +66,7 @@ End Class");
             VisualStudio.Editor.Verify.CurrentTokenType("identifier");
         }
 
-        [Fact, Trait("Integration", "Workspace")]
+        [Fact(Skip = "https://github.com/dotnet/project-system/issues/3286")]
         public void ProjectReference()
         {
             var project = new ProjectUtils.Project(ProjectName);
@@ -82,7 +83,7 @@ End Class");
             VisualStudio.Editor.Verify.CurrentTokenType("identifier");
         }
 
-        [Fact(Skip = "Cannot set 'option infer' from DTE for CPS projects"), Trait("Integration", "Workspace")]
+        [Fact(Skip = "Cannot set 'option infer' from DTE for CPS projects")]
         public void ProjectProperties()
         {
             VisualStudio.SolutionExplorer.CreateSolution(nameof(WorkspaceTests));
