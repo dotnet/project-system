@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.ComponentModel.Composition;
+
 using Microsoft.VisualStudio.ProjectSystem.Logging;
+
 using NuGet.SolutionRestoreManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
@@ -19,14 +21,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IProjectLogger _logger;
-        
+
         [ImportingConstructor]
         public PackageRestoreInitiator(
             IUnconfiguredProjectVsServices projectVsServices,
             IVsSolutionRestoreService solutionRestoreService,
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
             IActiveConfigurationGroupService activeConfigurationGroupService,
-            IProjectLogger logger) 
+            IProjectLogger logger)
             : base(projectVsServices.ThreadingService.JoinableTaskContext)
         {
             _projectVsServices = projectVsServices;

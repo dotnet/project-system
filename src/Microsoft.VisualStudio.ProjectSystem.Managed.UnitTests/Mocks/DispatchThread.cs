@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             using (var resetEvent = new AutoResetEvent(false))
             {
-                _thread = new Thread(delegate()
+                _thread = new Thread(delegate ()
                 {
                     // This is necessary to make sure a dispatcher exists for this thread.
                     Dispatcher unused = Dispatcher.CurrentDispatcher;
@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     {
                         Dispatcher.Run();
                     }
-                    catch(ThreadAbortException)
+                    catch (ThreadAbortException)
                     {
                     }
                 });
@@ -142,7 +142,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 {
                     _thread.Abort();
                 }
-                catch(ThreadAbortException)
+                catch (ThreadAbortException)
                 {
                 }
             }

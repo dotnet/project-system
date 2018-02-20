@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+
 using NuGet.VisualStudio;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     if (!TryGetCachedTargetFramework(shortOrFullName, out targetFramework))
                     {
                         var frameworkName = _nuGetFrameworkParser.ParseFrameworkName(shortOrFullName);
-                        if (frameworkName != null && 
+                        if (frameworkName != null &&
                             !TryGetCachedTargetFramework(frameworkName.FullName, out targetFramework))
                         {
                             var shortName = _nuGetFrameworkParser.GetShortFrameworkName(frameworkName);

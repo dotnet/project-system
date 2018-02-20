@@ -2,9 +2,11 @@
 
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
+
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
+
 using RoslynRenamer = Microsoft.CodeAnalysis.Rename;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
@@ -41,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             return RoslynRenamer.Renamer.RenameSymbolAsync(solution, symbol, newName, solution.Workspace.Options);
         }
-        
+
         public bool ApplyChangesToSolution(Workspace ws, Solution renamedSolution)
         {
             _threadingService.VerifyOnUIThread();

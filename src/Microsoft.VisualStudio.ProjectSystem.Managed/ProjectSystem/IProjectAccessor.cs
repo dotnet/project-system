@@ -3,6 +3,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.Composition;
@@ -96,5 +97,32 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     NOTE: To avoid deadlocks, do not call arbitrary services or asynchronous code within <paramref name="action"/>.
         /// </remarks>
         Task<TResult> OpenProjectForReadAsync<TResult>(ConfiguredProject project, Func<Project, TResult> action, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        ///     Opens the MSBuild project evaluation model for the specified project, passing it to the specified action for writing.
+        /// </summary>
+        /// <param name="project">
+        ///     The <see cref="ConfiguredProject"/> whose underlying MSBuild object model is required.
+        /// </param>
+        /// <param name="action">
+        ///     The <see cref="Action{T}"/> to run while holding the lock.
+        /// </param>
+        /// <param name="cancellationToken">
+        ///     A token whose cancellation signals lost interest in the result.
+        /// </param>
+        /// <returns>
+        ///     The result of executing <paramref name="action"/> over the <see cref="Project"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="project"/> is <see langword="null"/>.
+        ///     <para>
+        ///         -or-
+        ///     </para>
+        ///     <paramref name="action"/> is <see langword="null"/>.
+        /// </exception>
+        /// <remarks>
+        ///     NOTE: To avoid deadlocks, do not call arbitrary services or asynchronous code within <paramref name="action"/>.
+        /// </remarks>
+        Task OpenProjectForWriteAsync(ConfiguredProject project, Action<Project> action, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

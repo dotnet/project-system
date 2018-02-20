@@ -2,13 +2,14 @@
 
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
-    [Export(DependencyRulesSubscriber.DependencyRulesSubscriberContract, 
+    [Export(DependencyRulesSubscriber.DependencyRulesSubscriberContract,
             typeof(ICrossTargetRuleHandler<DependenciesRuleChangeContext>))]
     [Export(typeof(IProjectDependenciesSubTreeProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
@@ -45,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 path,
                 originalItemSpec,
                 DependencyTreeFlags.SdkSubTreeNodeFlags,
-                resolved && !isImplicit, 
+                resolved && !isImplicit,
                 isImplicit,
                 properties);
         }

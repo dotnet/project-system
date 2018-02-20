@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+
 using Microsoft.Build.Construction;
 
 namespace Microsoft.VisualStudio.ProjectSystem

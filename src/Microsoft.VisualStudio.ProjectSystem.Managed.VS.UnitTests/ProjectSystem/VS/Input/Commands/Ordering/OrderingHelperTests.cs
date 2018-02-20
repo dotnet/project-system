@@ -2,6 +2,7 @@
 
 using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering

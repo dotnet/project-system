@@ -4,7 +4,9 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Text;
 using System.Xml;
+
 using Microsoft.Build.Construction;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS

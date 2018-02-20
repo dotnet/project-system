@@ -283,27 +283,27 @@ Um das Projekt zu debuggen, fügen Sie dieser Projektmappe ein ausführbares Pro
       </trans-unit>
       <trans-unit id="PartialSupportedDotNetCoreProject">
         <source>Visual Studio 2017 version 15.7 or newer is recommended for .NET Core {0}.{1} projects.</source>
-        <target state="new">Visual Studio 2017 version 15.7 or newer is recommended for .NET Core {0}.{1} projects.</target>
+        <target state="translated">Für .NET Core {0}.{1}-Projekte wird Visual Studio 2017, Version 15.7 oder höher, empfohlen.</target>
         <note />
       </trans-unit>
       <trans-unit id="NotSupportedDotNetCoreProject">
         <source>Projects targeting versions newer than .NET Core {0}.{1} are not supported by this version of Visual Studio.</source>
-        <target state="new">Projects targeting versions newer than .NET Core {0}.{1} are not supported by this version of Visual Studio.</target>
+        <target state="translated">Projekte für höhere Versionen als .NET Core {0}.{1} werden von dieser Version von Visual Studio nicht unterstützt.</target>
         <note />
       </trans-unit>
       <trans-unit id="DontShowAgain">
         <source>Don't show again</source>
-        <target state="new">Don't show again</target>
+        <target state="translated">Nicht mehr anzeigen</target>
         <note />
       </trans-unit>
       <trans-unit id="LearnMore">
         <source>Learn more</source>
-        <target state="new">Learn more</target>
+        <target state="translated">Weitere Informationen</target>
         <note />
       </trans-unit>
       <trans-unit id="OKButtonText">
         <source>OK</source>
-        <target state="new">OK</target>
+        <target state="translated">OK</target>
         <note />
       </trans-unit>
     </body>

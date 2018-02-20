@@ -2,9 +2,11 @@
 
 using System;
 using System.Runtime.InteropServices;
+
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+
 using Xunit;
 
 using Task = System.Threading.Tasks.Task;
@@ -19,7 +21,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         {
             var vsProjectDesignerPageService = IVsProjectDesignerPageServiceFactory.Create();
 
-            Assert.Throws<ArgumentNullException>("projectVsServices", () => {
+            Assert.Throws<ArgumentNullException>("projectVsServices", () =>
+            {
 
                 new ProjectDesignerService((IUnconfiguredProjectVsServices)null, vsProjectDesignerPageService);
             });
@@ -30,7 +33,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         {
             var projectVsServices = IUnconfiguredProjectVsServicesFactory.Create();
 
-            Assert.Throws<ArgumentNullException>("vsProjectDesignerPageService", () => {
+            Assert.Throws<ArgumentNullException>("vsProjectDesignerPageService", () =>
+            {
 
                 new ProjectDesignerService(projectVsServices, (IVsProjectDesignerPageService)null);
             });
@@ -57,7 +61,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             var designerService = CreateInstance(vsProjectDesignerPageService);
 
-            Assert.Throws<InvalidOperationException>(() => {
+            Assert.Throws<InvalidOperationException>(() =>
+            {
 
                 designerService.ShowProjectDesignerAsync();
             });
@@ -75,7 +80,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             var designerService = CreateInstance(projectVsServices, vsProjectDesignerPageService);
 
-            await Assert.ThrowsAsync<COMException>(() => {
+            await Assert.ThrowsAsync<COMException>(() =>
+            {
 
                 return designerService.ShowProjectDesignerAsync();
             });
@@ -93,7 +99,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             var designerService = CreateInstance(projectVsServices, vsProjectDesignerPageService);
 
-            await Assert.ThrowsAsync<COMException>(() => {
+            await Assert.ThrowsAsync<COMException>(() =>
+            {
 
                 return designerService.ShowProjectDesignerAsync();
             });
@@ -112,11 +119,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             var project = (IVsProject4)hierarchy;
             project.ImplementOpenItemWithSpecific(editorGuid, VSConstants.LOGVIEWID_Primary, VSConstants.E_FAIL);
 
-            var projectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(() => hierarchy, ()=> project);
+            var projectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(() => hierarchy, () => project);
 
             var designerService = CreateInstance(projectVsServices, vsProjectDesignerPageService);
 
-            await Assert.ThrowsAsync<COMException>(() => {
+            await Assert.ThrowsAsync<COMException>(() =>
+            {
 
                 return designerService.ShowProjectDesignerAsync();
             });
@@ -135,7 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             var project = (IVsProject4)hierarchy;
             project.ImplementOpenItemWithSpecific(editorGuid, VSConstants.LOGVIEWID_Primary, (IVsWindowFrame)null);
-               
+
             var projectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(() => hierarchy, () => project);
 
             var designerService = CreateInstance(projectVsServices, vsProjectDesignerPageService);
@@ -161,7 +169,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             var designerService = CreateInstance(projectVsServices, vsProjectDesignerPageService);
 
-            await Assert.ThrowsAsync<COMException>(() => {
+            await Assert.ThrowsAsync<COMException>(() =>
+            {
 
                 return designerService.ShowProjectDesignerAsync();
             });
@@ -173,7 +182,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             var vsProjectDesignerPageService = IVsProjectDesignerPageServiceFactory.ImplementIsProjectDesignerSupported(() => true);
 
             var editorGuid = Guid.NewGuid();
-            
+
             var hierarchy = IVsHierarchyFactory.Create();
             hierarchy.ImplementGetGuid(VsHierarchyPropID.ProjectDesignerEditor, result: editorGuid);
             var project = (IVsProject4)hierarchy;

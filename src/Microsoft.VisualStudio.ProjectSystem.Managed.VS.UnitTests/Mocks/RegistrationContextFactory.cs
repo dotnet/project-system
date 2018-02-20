@@ -1,5 +1,7 @@
-﻿using Moq;
-using System;
+﻿using System;
+
+using Moq;
+
 using static Microsoft.VisualStudio.Shell.RegistrationAttribute;
 
 namespace Microsoft.VisualStudio.Shell
@@ -10,7 +12,7 @@ namespace Microsoft.VisualStudio.Shell
         {
             var moq = new Mock<RegistrationContext>();
 
-            moq.Setup(rc => rc.CreateKey(It.IsAny<string>())).Callback(createKeyAction).Returns(CreateKeyInstance(setValueAction));            
+            moq.Setup(rc => rc.CreateKey(It.IsAny<string>())).Callback(createKeyAction).Returns(CreateKeyInstance(setValueAction));
 
             return moq.Object;
         }

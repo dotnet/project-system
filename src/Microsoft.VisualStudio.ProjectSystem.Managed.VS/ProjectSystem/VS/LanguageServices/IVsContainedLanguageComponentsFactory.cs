@@ -22,9 +22,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         /// <param name="itemid">item id of the given file</param>
         /// <param name="containedLanguageFactory">an instance of IVsContainedLanguageFactory specific for current language service</param>
         /// <returns></returns>
-        int GetContainedLanguageFactoryForFile(string filePath, 
-                                               out IVsHierarchy hierarchy, 
-                                               out uint itemid, 
+        int GetContainedLanguageFactoryForFile(string filePath,
+                                               out IVsHierarchy hierarchy,
+                                               out uint itemid,
                                                out IVsContainedLanguageFactory containedLanguageFactory);
     }
 }

@@ -30,5 +30,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// Returns the configured project which respresents the active framework. This is valid whether multi-targeting or not
         /// </summary>
         Task<ConfiguredProject> GetConfiguredProjectForActiveFrameworkAsync();
-   }
+    }
 }

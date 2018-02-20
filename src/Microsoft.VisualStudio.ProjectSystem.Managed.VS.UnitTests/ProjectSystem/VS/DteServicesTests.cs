@@ -1,10 +1,14 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+
 using EnvDTE;
+
 using EnvDTE80;
+
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
@@ -17,7 +21,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             var projectVsServices = IUnconfiguredProjectVsServicesFactory.Create();
 
-            Assert.Throws<ArgumentNullException>("serviceProvider", () => {
+            Assert.Throws<ArgumentNullException>("serviceProvider", () =>
+            {
                 new DteServices((IServiceProvider)null, projectVsServices);
             });
         }
@@ -27,7 +32,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             var serviceProvider = SVsServiceProviderFactory.Create();
 
-            Assert.Throws<ArgumentNullException>("projectVsServices", () => {
+            Assert.Throws<ArgumentNullException>("projectVsServices", () =>
+            {
                 new DteServices(serviceProvider, (IUnconfiguredProjectVsServices)null);
             });
         }
@@ -40,7 +46,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             var dteServices = CreateInstance(projectVsServices);
 
-            Assert.Throws<InvalidOperationException>(() => {
+            Assert.Throws<InvalidOperationException>(() =>
+            {
 
                 var ignored = dteServices.Dte;
             });
@@ -54,7 +61,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             var dteServices = CreateInstance(projectVsServices);
 
-            Assert.Throws<InvalidOperationException>(() => {
+            Assert.Throws<InvalidOperationException>(() =>
+            {
 
                 var ignored = dteServices.Solution;
             });
@@ -68,7 +76,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             var dteServices = CreateInstance(projectVsServices);
 
-            Assert.Throws<InvalidOperationException>(() => {
+            Assert.Throws<InvalidOperationException>(() =>
+            {
 
                 var ignored = dteServices.Project;
             });

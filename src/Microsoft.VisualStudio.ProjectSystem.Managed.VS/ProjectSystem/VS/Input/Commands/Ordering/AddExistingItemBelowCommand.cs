@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+
 using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.Shell;

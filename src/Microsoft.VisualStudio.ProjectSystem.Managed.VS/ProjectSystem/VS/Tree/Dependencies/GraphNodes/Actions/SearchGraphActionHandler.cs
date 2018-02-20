@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+
 using Microsoft.VisualStudio.GraphModel;
 using Microsoft.VisualStudio.GraphModel.Schemas;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
@@ -211,9 +212,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                 }
 
                 var children = GetMatchingResultsForDependency(
-                    childDependencyMetadata, 
-                    snapshot, 
-                    flatMatchingDependencies, 
+                    childDependencyMetadata,
+                    snapshot,
+                    flatMatchingDependencies,
                     cachedPositiveResults);
 
                 cachedPositiveResults[childDependency] = children;

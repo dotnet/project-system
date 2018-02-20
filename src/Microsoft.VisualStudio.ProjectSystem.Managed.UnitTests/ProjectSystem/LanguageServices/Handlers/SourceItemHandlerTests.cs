@@ -3,10 +3,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
+
 using Moq;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
@@ -118,7 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var added = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"file1.cs", @"..\ProjectFolder\file1.cs" }, baseDirectory: projectDir, sdkDirectory: null));
             var removed = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
 
-            handler.Handle(10, added: added, removed: removed, isActiveContext: true, logger:logger);
+            handler.Handle(10, added: added, removed: removed, isActiveContext: true, logger: logger);
 
             Assert.Single(sourceFilesPushedToWorkspace);
             Assert.Contains(@"C:\ProjectFolder\file1.cs", sourceFilesPushedToWorkspace);

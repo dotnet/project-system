@@ -5,9 +5,12 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using System.Windows.Controls;
+
 using Microsoft.VisualStudio.ProjectSystem.Debug;
+
 using Moq;
 using Moq.Protected;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
@@ -48,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             {
                 return data.Profiles?.ToImmutableList();
             });
-            
+
             data.LaunchProfiles = mockProfiles.Object;
 
             var mockProfileProvider = new Mock<ILaunchSettingsProvider>();
@@ -79,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             Assert.IsType<Utilities.DelegateCommand>(viewModel.NewProfileCommand);
             Assert.IsType<Utilities.DelegateCommand>(viewModel.DeleteProfileCommand);
         }
-        
+
         [Fact]
         public async Task DebugPageViewModel_NoProfiles()
         {
@@ -119,7 +122,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 Profiles = profiles,
                 UIProviders = new List<Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>>()
                 {
-                    {new Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>(() => 
+                    {new Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>(() =>
                     {
                         var uiProvider = new Mock<ILaunchSettingsUIProvider>();
                         uiProvider.Setup(m => m.CustomUI).Returns((UserControl)null);

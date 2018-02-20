@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 using System;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Imaging
@@ -10,7 +11,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
         [Fact]
         public void Constructor_NullAsUnconfiguredProject_ThrowsArgumentNull()
         {
-            Assert.Throws<ArgumentNullException>("unconfiguredProject", () => {
+            Assert.Throws<ArgumentNullException>("unconfiguredProject", () =>
+            {
 
                 new ProjectImageProviderAggregator((UnconfiguredProject)null);
             });
@@ -21,7 +23,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
         {
             var aggregator = CreateInstance();
 
-            Assert.Throws<ArgumentNullException>("key", () => {
+            Assert.Throws<ArgumentNullException>("key", () =>
+            {
 
                 aggregator.GetProjectImage((string)null);
             });
@@ -32,7 +35,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
         {
             var aggregator = CreateInstance();
 
-            Assert.Throws<ArgumentException>("key", () => {
+            Assert.Throws<ArgumentException>("key", () =>
+            {
 
                 aggregator.GetProjectImage(string.Empty);
             });

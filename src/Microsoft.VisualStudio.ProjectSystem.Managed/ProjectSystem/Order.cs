@@ -32,6 +32,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <summary>
         ///     Represents the an order precedence for managed components that is ordered before <see cref="BeforeDefault"/>.
         /// </summary>
-        public const int BeforeBeforeDefault= 30;
+        public const int BeforeBeforeDefault = 30;
     }
 }

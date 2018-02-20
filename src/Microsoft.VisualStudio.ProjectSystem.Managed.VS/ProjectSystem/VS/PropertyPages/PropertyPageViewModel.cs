@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             return OnPropertyChanged(ref propertyRef, value, suppressInvalidation: false, propertyName: propertyName);
         }
-                        
+
         protected void SetBooleanProperty(ref bool property, string value, bool defaultValue, bool invert = false)
         {
             if (!string.IsNullOrEmpty(value))

@@ -2,8 +2,11 @@
 
 using System;
 using System.ComponentModel.Composition;
+
 using EnvDTE;
+
 using EnvDTE80;
+
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -22,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Requires.NotNull(projectVsServices, nameof(projectVsServices));
 
             _serviceProvider = serviceProvider;
-            _projectVsServices = projectVsServices;            
+            _projectVsServices = projectVsServices;
         }
 
         public DTE2 Dte

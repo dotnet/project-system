@@ -1,9 +1,13 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+
 using EnvDTE;
+
 using Moq;
+
 using VSLangProj;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
@@ -43,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         [Fact]
         public void Constructor_NullAsLockService_ThrowsArgumentNull()
         {
-            Assert.Throws<ArgumentNullException>("lockService", () =>
+            Assert.Throws<ArgumentNullException>("projectAccessor", () =>
             {
                 CreateInstance(
                     Mock.Of<VSLangProj.VSProject>(),
@@ -61,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                     Mock.Of<VSLangProj.VSProject>(),
                     Mock.Of<IProjectThreadingService>(),
                     Mock.Of<ActiveConfiguredProject<ConfiguredProject>>(),
-                    Mock.Of<IProjectLockService>());
+                    Mock.Of<IProjectAccessor>());
             });
         }
 
@@ -74,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                     Mock.Of<VSLangProj.VSProject>(),
                     Mock.Of<IProjectThreadingService>(),
                     Mock.Of<ActiveConfiguredProject<ConfiguredProject>>(),
-                    Mock.Of<IProjectLockService>(),
+                    Mock.Of<IProjectAccessor>(),
                     Mock.Of<IUnconfiguredProjectVsServices>());
             });
         }
@@ -86,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                                 Mock.Of<VSLangProj.VSProject>(),
                                 Mock.Of<IProjectThreadingService>(),
                                 Mock.Of<ActiveConfiguredProject<ConfiguredProject>>(),
-                                Mock.Of<IProjectLockService>(),
+                                Mock.Of<IProjectAccessor>(),
                                 Mock.Of<IUnconfiguredProjectVsServices>(),
                                 new VisualBasicNamespaceImportsList());
 
@@ -109,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                                 vsProjectMock.Object,
                                 Mock.Of<IProjectThreadingService>(),
                                 Mock.Of<ActiveConfiguredProject<ConfiguredProject>>(),
-                                Mock.Of<IProjectLockService>(),
+                                Mock.Of<IProjectAccessor>(),
                                 Mock.Of<IUnconfiguredProjectVsServices>(),
                                 Mock.Of<VisualBasicNamespaceImportsList>());
 
@@ -131,7 +135,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                     Mock.Of<VSLangProj.VSProject>(),
                     Mock.Of<IProjectThreadingService>(),
                     Mock.Of<ActiveConfiguredProject<ConfiguredProject>>(),
-                    Mock.Of<IProjectLockService>(),
+                    Mock.Of<IProjectAccessor>(),
                     Mock.Of<IUnconfiguredProjectVsServices>(),
                     VisualBasicNamespaceImportsListFactory.CreateInstance("A", "B"));
 
@@ -157,11 +161,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             VSLangProj.VSProject vsProject = null,
             IProjectThreadingService threadingService = null,
             ActiveConfiguredProject<ConfiguredProject> activeConfiguredProject = null,
-            IProjectLockService lockService = null,
+            IProjectAccessor projectAccessor = null,
             IUnconfiguredProjectVsServices vsServices = null,
             VisualBasicNamespaceImportsList importList = null)
         {
-            return new VisualBasicVSImports(vsProject, threadingService, activeConfiguredProject, lockService, vsServices, importList);
+            return new VisualBasicVSImports(vsProject, threadingService, activeConfiguredProject, projectAccessor, vsServices, importList);
         }
     }
 }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
@@ -28,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
                VisualBasicProjectDesignerPage.Compile,
                VisualBasicProjectDesignerPage.Package,
                VisualBasicProjectDesignerPage.References,
-               VisualBasicProjectDesignerPage.Debug               
+               VisualBasicProjectDesignerPage.Debug
             );
 
             Assert.Equal(expected, result);
