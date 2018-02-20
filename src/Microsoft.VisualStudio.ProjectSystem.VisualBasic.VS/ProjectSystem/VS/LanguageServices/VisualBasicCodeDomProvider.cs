@@ -2,6 +2,7 @@
 
 using System.CodeDom.Compiler;
 using System.ComponentModel.Composition;
+
 using Microsoft.VisualBasic;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices

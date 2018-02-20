@@ -4,6 +4,7 @@ using System;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+
 using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -54,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 .Returns<IProjectTree>(tree => tree.FilePath);
 
             mock.Setup(t => t.RemoveAsync(It.IsAny<IImmutableSet<IProjectTree>>(), It.IsAny<DeleteOptions>()))
-                .Returns<IImmutableSet<IProjectTree>, DeleteOptions>((nodes, options) => 
+                .Returns<IImmutableSet<IProjectTree>, DeleteOptions>((nodes, options) =>
                 {
                     foreach (var node in nodes)
                     {

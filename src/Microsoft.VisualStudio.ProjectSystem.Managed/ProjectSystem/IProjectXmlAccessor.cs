@@ -2,6 +2,7 @@
 
 using System;
 using System.Threading.Tasks;
+
 using Microsoft.Build.Construction;
 
 namespace Microsoft.VisualStudio.ProjectSystem

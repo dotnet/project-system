@@ -1,8 +1,9 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.VisualStudio.Shell;
 using System;
 using System.Globalization;
+
+using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 {
@@ -46,21 +47,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         /// <summary>
         /// Get the Guid representing the project type
         /// </summary>
-        public string ContextGuid {
+        public string ContextGuid
+        {
             get { return _contextGuid; }
         }
 
         /// <summary>
         /// Get the Guid representing the generator type
         /// </summary>
-        public Guid GeneratorGuid {
+        public Guid GeneratorGuid
+        {
             get { return _generatorGuid; }
         }
 
         /// <summary>
         /// Get or Set the GeneratesDesignTimeSource value
         /// </summary>
-        public bool GeneratesDesignTimeSource {
+        public bool GeneratesDesignTimeSource
+        {
             get { return _generatesDesignTimeSource; }
             set { _generatesDesignTimeSource = value; }
         }
@@ -68,7 +72,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         /// <summary>
         /// Get or Set the GeneratesSharedDesignTimeSource value
         /// </summary>
-        public bool GeneratesSharedDesignTimeSource {
+        public bool GeneratesSharedDesignTimeSource
+        {
             get { return _generatesSharedDesignTimeSource; }
             set { _generatesSharedDesignTimeSource = value; }
         }
@@ -77,14 +82,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         /// <summary>
         /// Gets the Generator name 
         /// </summary>
-        public string GeneratorName {
+        public string GeneratorName
+        {
             get { return _generatorName; }
         }
 
         /// <summary>
         /// Gets the Generator reg key name under 
         /// </summary>
-        public string GeneratorRegKeyName {
+        public string GeneratorRegKeyName
+        {
             get { return _generatorRegKeyName; }
             set { _generatorRegKeyName = value; }
         }
@@ -92,7 +99,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         /// <summary>
         /// Property that gets the generator base key name
         /// </summary>
-        private string GeneratorRegKey {
+        private string GeneratorRegKey
+        {
             get { return string.Format(CultureInfo.InvariantCulture, @"Generators\{0}\{1}", ContextGuid, GeneratorRegKeyName); }
         }
         /// <summary>

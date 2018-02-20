@@ -7,6 +7,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Microsoft.Build.Execution;
 using Microsoft.VisualStudio.Build;
 using Microsoft.VisualStudio.ProjectSystem.Properties;

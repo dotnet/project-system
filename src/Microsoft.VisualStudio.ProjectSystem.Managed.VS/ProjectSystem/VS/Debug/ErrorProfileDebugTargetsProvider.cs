@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.ProjectSystem.Debug;
+
 using ExportOrder = Microsoft.VisualStudio.ProjectSystem.OrderAttribute;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
@@ -17,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     [Export(typeof(IDebugProfileLaunchTargetsProvider))]
     [AppliesTo(ProjectCapability.LaunchProfiles)]
     [ExportOrder(1000)] // High number so it called first
-     internal class ErrorProfileDebugTargetsProvider : IDebugProfileLaunchTargetsProvider
+    internal class ErrorProfileDebugTargetsProvider : IDebugProfileLaunchTargetsProvider
     {
 
         [ImportingConstructor]

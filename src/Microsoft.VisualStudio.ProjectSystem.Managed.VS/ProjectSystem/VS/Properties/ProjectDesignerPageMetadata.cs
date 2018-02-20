@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         public bool HasConfigurationCondition
         {
             get;
-        }        
+        }
 
         public Guid PageGuid
         {

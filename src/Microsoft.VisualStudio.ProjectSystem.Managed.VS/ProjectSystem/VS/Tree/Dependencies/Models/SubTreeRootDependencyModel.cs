@@ -7,10 +7,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
     internal class SubTreeRootDependencyModel : DependencyModel
     {
         public SubTreeRootDependencyModel(
-            string providerType, 
-            string name, 
-            ImageMoniker icon, 
-            ImageMoniker unresolvedIcon, 
+            string providerType,
+            string name,
+            ImageMoniker icon,
+            ImageMoniker unresolvedIcon,
             ProjectTreeFlags flags)
             : base(providerType, name, name, flags, true, false, null)
         {

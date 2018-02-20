@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Xml.Linq;
+
 using Microsoft.VisualStudio.Packaging;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
@@ -31,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             var doc = XDocument.Parse(projectFile);
             FSharpProjectSelector.GetProjectFactoryGuid(doc, out var resultGuid);
 
-            Assert.Equal(expectedGuid, resultGuid.ToString(), ignoreCase:true);
+            Assert.Equal(expectedGuid, resultGuid.ToString(), ignoreCase: true);
         }
     }
 }

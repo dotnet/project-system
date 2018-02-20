@@ -2,7 +2,9 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
+
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
+
 using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
@@ -33,6 +35,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
 
             return mock.Object;
-        }        
+        }
     }
 }

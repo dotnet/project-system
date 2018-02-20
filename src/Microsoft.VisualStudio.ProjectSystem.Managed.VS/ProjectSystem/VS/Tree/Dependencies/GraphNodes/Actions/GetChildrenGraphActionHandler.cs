@@ -2,6 +2,7 @@
 
 using System.ComponentModel.Composition;
 using System.Linq;
+
 using Microsoft.VisualStudio.GraphModel;
 using Microsoft.VisualStudio.GraphModel.Schemas;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
@@ -63,10 +64,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                 using (var scope = new GraphTransactionScope())
                 {
                     viewProvider.Value.BuildGraph(
-                        graphContext, 
-                        projectPath, 
-                        dependency, 
-                        inputGraphNode, 
+                        graphContext,
+                        projectPath,
+                        dependency,
+                        inputGraphNode,
                         snapshot.Targets[dependency.TargetFramework]);
 
                     scope.Complete();

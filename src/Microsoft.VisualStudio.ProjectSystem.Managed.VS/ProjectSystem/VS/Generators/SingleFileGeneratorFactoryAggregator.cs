@@ -1,8 +1,9 @@
-﻿using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
+﻿using System;
+using System.ComponentModel.Composition;
+
+using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using System;
-using System.ComponentModel.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 {

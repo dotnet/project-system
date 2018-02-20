@@ -1,9 +1,11 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectProperties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
@@ -304,7 +306,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 </Project>";
 
             var actual = root.SaveAndGetChanges();
-         Assert.Equal(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
         [Fact]

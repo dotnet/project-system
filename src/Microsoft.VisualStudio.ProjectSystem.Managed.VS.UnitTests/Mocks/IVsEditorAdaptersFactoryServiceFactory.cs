@@ -2,6 +2,7 @@
 
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.TextManager.Interop;
+
 using Moq;
 
 namespace Microsoft.VisualStudio.Editor

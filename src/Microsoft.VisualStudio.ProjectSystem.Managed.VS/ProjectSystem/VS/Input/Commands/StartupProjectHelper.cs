@@ -2,6 +2,7 @@
 
 using System;
 using System.ComponentModel.Composition;
+
 using Microsoft.VisualStudio.ProjectSystem.VS.Extensibility;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -31,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         public T GetExportFromSingleDotNetStartupProject<T>(string capabilityMatch) where T : class
         {
             EnvDTE.DTE dte = ServiceProvider.GetService<EnvDTE.DTE, EnvDTE.DTE>();
-            if(dte != null)
+            if (dte != null)
             {
                 if (dte.Solution.SolutionBuild.StartupProjects is Array startupProjects && startupProjects.Length == 1)
                 {
@@ -48,6 +49,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                 }
             }
             return null;
-        }   
+        }
     }
 }

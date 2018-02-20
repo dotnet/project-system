@@ -3,8 +3,10 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Moq;
 using Moq.Protected;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
@@ -22,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             thread.Start();
             thread.Join();
 
-         
+
         }
 
         private void CallPropertyPageControl()

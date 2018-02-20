@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 using System;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.Threading;
+
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -32,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public void VerifyOnUIThread()
         {
-            if(!IsOnMainThread)
+            if (!IsOnMainThread)
             {
                 throw new InvalidOperationException();
             }
@@ -49,9 +51,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Task.Run(asyncAction).Wait();
         }
 
-        public  JoinableTaskContextNode JoinableTaskContext { get; private set; } = new JoinableTaskContextNode(
+        public JoinableTaskContextNode JoinableTaskContext { get; private set; } = new JoinableTaskContextNode(
             new JoinableTaskContext(DispatchThread.Thread, DispatchThread.SyncContext));
-        
+
         public JoinableTaskFactory JoinableTaskFactory
         {
             get

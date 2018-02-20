@@ -1,11 +1,13 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.IO;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders;
+
 using Xunit;
-using System.IO;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -382,11 +384,12 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
             var fileSystem = IFileSystemFactory.Create(path => true);
             var specialFilesManager = ISpecialFilesManagerFactory.Create();
 
-            var properties = ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(), new PropertyPageData {
-                                                                                                                          Category = ConfigurationGeneralBrowseObject.SchemaName,
-                                                                                                                          PropertyName = ConfigurationGeneralBrowseObject.ApplicationManifestProperty,
-                                                                                                                          Value = appManifestPropertyValue
-                                                                                                                       });
+            var properties = ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(), new PropertyPageData
+            {
+                Category = ConfigurationGeneralBrowseObject.SchemaName,
+                PropertyName = ConfigurationGeneralBrowseObject.ApplicationManifestProperty,
+                Value = appManifestPropertyValue
+            });
             var provider = new AppManifestSpecialFileProvider(projectTree, sourceItemsProvider, null, fileSystem, specialFilesManager, properties);
             var filePath = await provider.GetFileAsync(SpecialFiles.AppSettings, SpecialFileFlags.CreateIfNotExist);
 

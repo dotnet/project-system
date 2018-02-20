@@ -5,9 +5,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
     internal sealed class TargetedProjectContext : ITargetedProjectContext
     {
         public TargetedProjectContext(
-            ITargetFramework targetFramework, 
-            string projectFilePath, 
-            string displayName, 
+            ITargetFramework targetFramework,
+            string projectFilePath,
+            string displayName,
             string targetPath)
         {
             TargetFramework = targetFramework;

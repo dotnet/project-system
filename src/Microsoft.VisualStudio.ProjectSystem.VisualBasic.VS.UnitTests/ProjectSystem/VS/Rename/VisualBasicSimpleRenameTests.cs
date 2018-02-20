@@ -1,8 +1,11 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
+
 using Moq;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename

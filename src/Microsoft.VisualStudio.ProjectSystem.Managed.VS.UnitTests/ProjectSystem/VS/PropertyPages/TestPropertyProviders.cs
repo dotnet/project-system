@@ -2,15 +2,17 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     [Trait("UnitTest", "ProjectSystem")]
-    internal class TestPropertyProviderBase 
+    internal class TestPropertyProviderBase
     {
-        private Dictionary<string, Dictionary<string, object>>  _properties = new Dictionary<string,Dictionary<string,object>>();
+        private Dictionary<string, Dictionary<string, object>> _properties = new Dictionary<string, Dictionary<string, object>>();
         internal Dictionary<string, Dictionary<string, object>> Properties
         {
             get { return _properties; }

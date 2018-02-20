@@ -3,7 +3,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Microsoft.VisualStudio.Shell;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators

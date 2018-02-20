@@ -145,7 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             // Make sure the writes in constructor don't 
             // move to after we publish the value
-            Thread.MemoryBarrier(); 
+            Thread.MemoryBarrier();
 
             _isImplicitlyActiveSource = source;
 

@@ -3,6 +3,7 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Linq;
+
 using Microsoft.VisualStudio.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Extensibility

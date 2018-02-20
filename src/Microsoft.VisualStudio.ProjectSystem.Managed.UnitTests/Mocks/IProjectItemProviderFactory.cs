@@ -2,6 +2,7 @@
 
 using System.IO;
 using System.Threading.Tasks;
+
 using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -18,33 +19,33 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var mock = new Mock<IProjectItemProvider>();
 
             mock.Setup(a => a.AddAsync(It.IsAny<string>()))
-                .Returns<string>( path =>
-                {
-                    var fileName = Path.GetFileName(path);
-                    var parentFolder = Path.GetDirectoryName(path);
-                    var newSubTree = ProjectTreeParser.Parse($@"{fileName}, FilePath: ""{path}""");
+                .Returns<string>(path =>
+               {
+                   var fileName = Path.GetFileName(path);
+                   var parentFolder = Path.GetDirectoryName(path);
+                   var newSubTree = ProjectTreeParser.Parse($@"{fileName}, FilePath: ""{path}""");
 
                     // Find the node that has the parent folder and add the new node as a child.
                     foreach (var node in inputTree.GetSelfAndDescendentsBreadthFirst())
-                    {
-                        string nodeFolderPath = node.IsFolder ? node.FilePath : Path.GetDirectoryName(node.FilePath);
-                        if (nodeFolderPath.TrimEnd(Path.DirectorySeparatorChar).Equals(parentFolder))
-                        {
-                            if (node.TryFindImmediateChild(fileName, out IProjectTree child) && !child.Flags.IsIncludedInProject())
-                            {
-                                var newFlags = child.Flags.Remove(ProjectTreeFlags.Common.IncludeInProjectCandidate);
-                                child.SetProperties(flags: newFlags);
-                            }
-                            else
-                            {
-                                node.Add(newSubTree);
-                            }
-                            return Task.FromResult(Mock.Of<IProjectItem>());
-                        }
-                    }
+                   {
+                       string nodeFolderPath = node.IsFolder ? node.FilePath : Path.GetDirectoryName(node.FilePath);
+                       if (nodeFolderPath.TrimEnd(Path.DirectorySeparatorChar).Equals(parentFolder))
+                       {
+                           if (node.TryFindImmediateChild(fileName, out IProjectTree child) && !child.Flags.IsIncludedInProject())
+                           {
+                               var newFlags = child.Flags.Remove(ProjectTreeFlags.Common.IncludeInProjectCandidate);
+                               child.SetProperties(flags: newFlags);
+                           }
+                           else
+                           {
+                               node.Add(newSubTree);
+                           }
+                           return Task.FromResult(Mock.Of<IProjectItem>());
+                       }
+                   }
 
-                    return Task.FromResult<IProjectItem>(null);
-                });
+                   return Task.FromResult<IProjectItem>(null);
+               });
 
             return mock.Object;
         }

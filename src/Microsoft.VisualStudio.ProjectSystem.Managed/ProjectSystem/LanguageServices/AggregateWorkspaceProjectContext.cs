@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
@@ -52,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         public object ENCProjectConfig => _configuredProjectContextsByTargetFramework[_activeTargetFramework];
 
         public bool IsCrossTargeting => _activeTargetFramework.Length > 0;
-        
+
         public void SetProjectFilePathAndDisplayName(string projectFilePath, string displayName)
         {
             // Update the project file path and display name for all the inner project contexts.
@@ -60,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             {
                 var targetFramework = innerProjectContextKvp.Key;
                 var innerProjectContext = innerProjectContextKvp.Value;
-                
+
                 // For cross targeting projects, we ensure that the display name is unique per every target framework.
                 innerProjectContext.DisplayName = IsCrossTargeting ? $"{displayName}({targetFramework})" : displayName;
                 innerProjectContext.ProjectFilePath = projectFilePath;

@@ -34,6 +34,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
             DialogResult = true;
         }
 
-        public MultiChoiceMsgBoxResult SelectedAction { get; private set; } 
+        public MultiChoiceMsgBoxResult SelectedAction { get; private set; }
     }
 }

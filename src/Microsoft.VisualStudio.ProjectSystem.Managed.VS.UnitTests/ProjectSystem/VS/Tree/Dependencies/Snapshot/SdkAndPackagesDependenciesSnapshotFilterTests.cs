@@ -3,9 +3,11 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
@@ -24,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 { dependency.Object.Id, dependency.Object },
             }.ToImmutableDictionary().ToBuilder();
-            
+
             var filter = new SdkAndPackagesDependenciesSnapshotFilter();
 
             var resultDependency = filter.BeforeAdd(
@@ -56,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 name: "mydependency1",
                 topLevel: true,
                 setPropertiesDependencyIDs: dependencyIDs,
-                setPropertiesResolved:true,
+                setPropertiesResolved: true,
                 setPropertiesSchemaName: ResolvedSdkReference.SchemaName,
                 setPropertiesFlags: flags);
 
@@ -148,11 +150,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var sdkDependency = IDependencyFactory.Implement(
                     id: $"tfm\\{SdkRuleHandler.ProviderTypeString}\\mydependency1",
                     flags: DependencyTreeFlags.PackageNodeFlags.Union(DependencyTreeFlags.UnresolvedFlags), // to see if unresolved is fixed
-                    setPropertiesResolved:true,
+                    setPropertiesResolved: true,
                     setPropertiesDependencyIDs: dependencyIDs,
                     setPropertiesFlags: flags,
                     setPropertiesSchemaName: ResolvedSdkReference.SchemaName,
-                    equals:true);
+                    equals: true);
 
             var worldBuilder = new Dictionary<string, IDependency>()
             {
@@ -209,7 +211,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 { dependency.Object.Id, dependency.Object },
                 { sdkDependency.Object.Id, sdkDependency.Object },
             }.ToImmutableDictionary().ToBuilder();
-            
+
             // try to have empty top level hash set - no error should happen when removing sdk and readding 
             var topLevelBuilder = ImmutableHashSet<IDependency>.Empty.ToBuilder();
 

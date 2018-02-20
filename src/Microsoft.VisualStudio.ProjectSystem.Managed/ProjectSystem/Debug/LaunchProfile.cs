@@ -19,9 +19,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Name = data.Name;
             ExecutablePath = data.ExecutablePath;
             CommandName = data.CommandName;
-            CommandLineArgs = data.CommandLineArgs; 
+            CommandLineArgs = data.CommandLineArgs;
             WorkingDirectory = data.WorkingDirectory;
-            LaunchBrowser = data.LaunchBrowser?? false;
+            LaunchBrowser = data.LaunchBrowser ?? false;
             LaunchUrl = data.LaunchUrl;
             EnvironmentVariables = data.EnvironmentVariables == null ? null : ImmutableDictionary<string, string>.Empty.AddRange(data.EnvironmentVariables);
             OtherSettings = data.OtherSettings == null ? null : ImmutableDictionary<string, object>.Empty.AddRange(data.OtherSettings);
@@ -37,13 +37,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Name = existingProfile.Name;
             ExecutablePath = existingProfile.ExecutablePath;
             CommandName = existingProfile.CommandName;
-            CommandLineArgs = existingProfile.CommandLineArgs; 
+            CommandLineArgs = existingProfile.CommandLineArgs;
             WorkingDirectory = existingProfile.WorkingDirectory;
             LaunchBrowser = existingProfile.LaunchBrowser;
             LaunchUrl = existingProfile.LaunchUrl;
             EnvironmentVariables = existingProfile.EnvironmentVariables;
             OtherSettings = existingProfile.OtherSettings;
-            DoNotPersist =existingProfile.IsInMemoryObject();
+            DoNotPersist = existingProfile.IsInMemoryObject();
         }
 
         public LaunchProfile(IWritableLaunchProfile writableProfile)
@@ -51,15 +51,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Name = writableProfile.Name;
             ExecutablePath = writableProfile.ExecutablePath;
             CommandName = writableProfile.CommandName;
-            CommandLineArgs = writableProfile.CommandLineArgs; 
+            CommandLineArgs = writableProfile.CommandLineArgs;
             WorkingDirectory = writableProfile.WorkingDirectory;
             LaunchBrowser = writableProfile.LaunchBrowser;
             LaunchUrl = writableProfile.LaunchUrl;
             DoNotPersist = writableProfile.IsInMemoryObject();
 
             // If there are no env variables or settings we want to set them to null
-            EnvironmentVariables = writableProfile.EnvironmentVariables.Count == 0? null : ImmutableDictionary<string, string>.Empty.AddRange(writableProfile.EnvironmentVariables);
-            OtherSettings = writableProfile.OtherSettings.Count == 0? null : ImmutableDictionary<string, object>.Empty.AddRange(writableProfile.OtherSettings);
+            EnvironmentVariables = writableProfile.EnvironmentVariables.Count == 0 ? null : ImmutableDictionary<string, string>.Empty.AddRange(writableProfile.EnvironmentVariables);
+            OtherSettings = writableProfile.OtherSettings.Count == 0 ? null : ImmutableDictionary<string, object>.Empty.AddRange(writableProfile.OtherSettings);
         }
 
         public string Name { get; set; }
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         public ImmutableDictionary<string, string> EnvironmentVariables { get; set; }
         public ImmutableDictionary<string, object> OtherSettings { get; set; }
-               
+
         /// <summary>
         /// Compares two profile names. Using this function ensures case comparison consistency
         /// </summary>

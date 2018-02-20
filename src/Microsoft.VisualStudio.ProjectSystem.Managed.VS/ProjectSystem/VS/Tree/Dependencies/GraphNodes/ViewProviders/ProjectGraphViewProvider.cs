@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+
 using Microsoft.VisualStudio.GraphModel;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
@@ -67,9 +68,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                 }
 
                 Builder.AddGraphNode(
-                    graphContext, 
-                    dependencyProjectPath, 
-                    dependencyGraphNode, 
+                    graphContext,
+                    dependencyProjectPath,
+                    dependencyGraphNode,
                     childDependency.ToViewModel(otherProjectTargetedSnapshot));
             }
         }
@@ -140,9 +141,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                 }
 
                 Builder.AddGraphNode(
-                    graphContext, 
-                    dependencyProjectPath, 
-                    dependencyGraphNode, 
+                    graphContext,
+                    dependencyProjectPath,
+                    dependencyGraphNode,
                     dependency.ToViewModel(targetedSnapshot));
             }
 
@@ -154,7 +155,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         }
 
         public override bool MatchSearchResults(
-            string projectPath, 
+            string projectPath,
             IDependency topLevelDependency,
             Dictionary<string, HashSet<IDependency>> searchResultsPerContext,
             out HashSet<IDependency> topLevelDependencyMatches)

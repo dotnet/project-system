@@ -3,7 +3,9 @@
 using System;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
@@ -16,7 +18,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         {
             var command = CreateInstance();
 
-            Assert.Throws<ArgumentNullException>("nodes", () => {
+            Assert.Throws<ArgumentNullException>("nodes", () =>
+            {
 
                 command.GetCommandStatusAsync((IImmutableSet<IProjectTree>)null, GetCommandId(), true, "commandText", CommandStatus.Enabled);
             });
@@ -95,7 +98,7 @@ Root (flags: {ProjectRoot})
 #pragma warning disable RS0003 // Do not directly await a Task (see https://github.com/dotnet/roslyn/issues/6770)
             var result = await command.TryHandleCommandAsync(nodes, GetCommandId(), true, 0, IntPtr.Zero, IntPtr.Zero);
 #pragma warning restore RS0003 // Do not directly await a Task
-            
+
             Assert.False(result);
         }
 

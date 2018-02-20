@@ -1,9 +1,11 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.VisualStudio.ProjectSystem.Imaging;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 using System;
 using System.Collections.Immutable;
+
+using Microsoft.VisualStudio.ProjectSystem.Imaging;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -16,7 +18,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var designerService = IProjectDesignerServiceFactory.Create();
 
-            Assert.Throws<ArgumentNullException>("imageProvider", () => {
+            Assert.Throws<ArgumentNullException>("imageProvider", () =>
+            {
 
                 new AppDesignerFolderProjectTreePropertiesProvider((IProjectImageProvider)null, designerService);
             });
@@ -27,7 +30,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var imageProvider = IProjectImageProviderFactory.Create();
 
-            Assert.Throws<ArgumentNullException>("designerService", () => {
+            Assert.Throws<ArgumentNullException>("designerService", () =>
+            {
 
                 new AppDesignerFolderProjectTreePropertiesProvider(imageProvider, (IProjectDesignerService)null);
             });
@@ -47,7 +51,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var propertiesProvider = CreateInstance();
             IImmutableDictionary<string, string> projectTreeSettings = ImmutableDictionary<string, string>.Empty;
 
-            Assert.Throws<ArgumentNullException>("ruleSnapshots", () => {
+            Assert.Throws<ArgumentNullException>("ruleSnapshots", () =>
+            {
                 propertiesProvider.UpdateProjectTreeSettings((IImmutableDictionary<string, IProjectRuleSnapshot>)null, ref projectTreeSettings);
             });
         }
@@ -59,7 +64,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var propertiesProvider = CreateInstance();
             IImmutableDictionary<string, string> projectTreeSettings = null;
 
-            Assert.Throws<ArgumentNullException>("projectTreeSettings", () => {
+            Assert.Throws<ArgumentNullException>("projectTreeSettings", () =>
+            {
                 propertiesProvider.UpdateProjectTreeSettings(ruleSnapsnots, ref projectTreeSettings);
             });
         }
@@ -70,7 +76,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var propertyValues = IProjectTreeCustomizablePropertyValuesFactory.Create();
             var propertiesProvider = CreateInstance();
 
-            Assert.Throws<ArgumentNullException>("propertyContext", () => {
+            Assert.Throws<ArgumentNullException>("propertyContext", () =>
+            {
                 propertiesProvider.CalculatePropertyValues((IProjectTreeCustomizablePropertyContext)null, propertyValues);
             });
         }
@@ -81,7 +88,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var propertyContext = IProjectTreeCustomizablePropertyContextFactory.Create();
             var propertiesProvider = CreateInstance();
 
-            Assert.Throws<ArgumentNullException>("propertyValues", () => {
+            Assert.Throws<ArgumentNullException>("propertyValues", () =>
+            {
                 propertiesProvider.CalculatePropertyValues(propertyContext, (IProjectTreeCustomizablePropertyValues)null);
             });
         }

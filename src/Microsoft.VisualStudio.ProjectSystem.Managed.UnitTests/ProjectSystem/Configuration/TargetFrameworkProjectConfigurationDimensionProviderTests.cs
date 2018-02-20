@@ -2,8 +2,10 @@
 
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.Build.Construction;
 using Microsoft.VisualStudio.Build;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Configuration

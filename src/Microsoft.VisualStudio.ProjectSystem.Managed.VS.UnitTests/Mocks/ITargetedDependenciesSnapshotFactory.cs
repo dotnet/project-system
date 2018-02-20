@@ -2,9 +2,11 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
+
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
+
 using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
@@ -26,11 +28,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             MockBehavior? mockBehavior = null)
         {
             return ImplementMock(
-                targetFramework, 
-                dependenciesWorld, 
-                hasUnresolvedDependency, 
-                catalogs, 
-                topLevelDependencies, 
+                targetFramework,
+                dependenciesWorld,
+                hasUnresolvedDependency,
+                catalogs,
+                topLevelDependencies,
                 checkForUnresolvedDependencies,
                 mockBehavior).Object;
         }
@@ -71,11 +73,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             if (topLevelDependencies != null)
             {
                 var dependencies = ImmutableHashSet<IDependency>.Empty;
-                foreach(var d in topLevelDependencies)
+                foreach (var d in topLevelDependencies)
                 {
                     dependencies = dependencies.Add(d);
                 }
-                
+
                 mock.Setup(x => x.TopLevelDependencies).Returns(dependencies);
             }
 
