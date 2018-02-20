@@ -1,9 +1,11 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using Moq;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
@@ -145,7 +147,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             ""After"": {
                 ""Items"": {";
 
-            for (int i = 0; i < importNames.Length ; i++)
+            for (int i = 0; i < importNames.Length; i++)
             {
                 json += @"                   """ + importNames[i] + @""" : {}";
                 if (i != importNames.Length - 1)
@@ -165,7 +167,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         private static void VerifyList(List<string> list, params string[] expected)
         {
             Assert.Equal(list.Count, expected.Count());
-            for (int i = 0; i < list.Count ; i++)
+            for (int i = 0; i < list.Count; i++)
             {
                 Assert.True(string.Compare(list[i], expected[i]) == 0);
             }

@@ -14,7 +14,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     {
         private const string UserSuffix = ".user";
 
-        public override string DefaultProjectPath {
+        public override string DefaultProjectPath
+        {
             get { return base.DefaultProjectPath + UserSuffix; }
         }
 

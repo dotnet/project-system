@@ -4,12 +4,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     public enum ProjectTreeFormatError
     {
-        IdExpected_EncounteredOnlyWhiteSpace, 
+        IdExpected_EncounteredOnlyWhiteSpace,
         IdExpected_EncounteredDelimiter,
-        IdExpected_EncounteredEndOfString, 
+        IdExpected_EncounteredEndOfString,
         DelimiterExpected,
         DelimiterExpected_EncounteredEndOfString,
-        EndOfStringExpected, 
+        EndOfStringExpected,
         UnrecognizedPropertyName,
         UnrecognizedPropertyValue,
         IndentTooManyLevels,

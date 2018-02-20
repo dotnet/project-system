@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
+
 using Microsoft.CodeAnalysis;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
@@ -33,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             Func<ProjectId> getActiveProjectId,
             Workspace workspace,
             IProjectThreadingService threadingService)
-            : base (delegatedProjectProperties)
+            : base(delegatedProjectProperties)
         {
             _attributeValueProviderMap = CreateAttributeValueProviderMap(getActiveProjectId, workspace, threadingService);
         }

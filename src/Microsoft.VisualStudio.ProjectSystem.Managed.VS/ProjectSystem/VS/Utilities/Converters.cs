@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+
 using static System.Diagnostics.Debug;
 
 
@@ -29,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             {
                 return Visibility.Collapsed;
             }
-            
+
             bool boolVal = (bool)value;
             var direction = (Parameters)Enum.Parse(typeof(Parameters), (string)parameter);
 
@@ -116,8 +117,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(value is string)
-                return string.IsNullOrEmpty((string) value)? Visibility.Collapsed: Visibility.Visible;
+            if (value is string)
+                return string.IsNullOrEmpty((string)value) ? Visibility.Collapsed : Visibility.Visible;
             return Visibility.Collapsed;
         }
 
@@ -200,12 +201,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(value == null || !(value is bool))
+            if (value == null || !(value is bool))
             {
                 return Visibility.Hidden;
-            } 
-            
-            return ((bool)value) ? Visibility.Visible: Visibility.Hidden;
+            }
+
+            return ((bool)value) ? Visibility.Visible : Visibility.Hidden;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -221,7 +222,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             CultureInfo culture)
         {
             if (value is bool)
-                return !(bool)value;    
+                return !(bool)value;
             throw new ArgumentException("The target must be a bool");
         }
 
@@ -237,7 +238,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-           return (value == null) ? Visibility.Collapsed : Visibility.Visible;
+            return (value == null) ? Visibility.Collapsed : Visibility.Visible;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -250,7 +251,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-           return (value == null) ? false : true;
+            return (value == null) ? false : true;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -275,7 +276,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
     internal class TextBlockFormatToHyperlinkConverter : IMultiValueConverter
     {
-               
+
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             if (values.Length >= 3)

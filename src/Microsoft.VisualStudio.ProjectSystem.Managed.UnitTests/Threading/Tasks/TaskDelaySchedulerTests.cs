@@ -1,8 +1,11 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 using System;
 using System.Threading;
+
 using Microsoft.VisualStudio.ProjectSystem;
+
 using Xunit;
+
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.Threading.Tasks
@@ -87,7 +90,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                 task1.Task.Wait();
                 Assert.False(taskRan);
             }
-            catch(OperationCanceledException)
+            catch (OperationCanceledException)
             {
             }
         }
@@ -118,7 +121,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                 task1.Task.Wait();
                 Assert.False(taskRan);
             }
-            catch(OperationCanceledException)
+            catch (OperationCanceledException)
             {
             }
         }

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
@@ -92,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     suppressVersionOnlyUpdates: false,
                     linkOptions: new DataflowLinkOptions { PropagateCompletion = true }));
 
-            var actionBlock = 
+            var actionBlock =
                 new ActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSharedFoldersSnapshot, IProjectCatalogSnapshot>>>
                     (e => OnProjectChangedAsync(e),
                     new ExecutionDataflowBlockOptions()
@@ -118,7 +119,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
             await InitializeAsync().ConfigureAwait(false);
 
-            
+
             await _tasksService.LoadedProjectAsync(async () =>
             {
                 if (_tasksService.UnloadCancellationToken.IsCancellationRequested)
@@ -142,7 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             IProjectSubscriptionUpdate projectUpdate = e.Value.Item1;
             IProjectSharedFoldersSnapshot sharedProjectsUpdate = e.Value.Item2;
             IProjectCatalogSnapshot catalogs = e.Value.Item3;
-            
+
             // We need to process the update within a lock to ensure that we do not release this context during processing.
             // TODO: Enable concurrent execution of updates themeselves, i.e. two separate invocations of HandleAsync
             //       should be able to run concurrently. 
@@ -165,11 +166,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 {
                     DependenciesChanged?.Invoke(this, new DependencySubscriptionChangedEventArgs(dependencyChangeContext));
                 }
-            }            
+            }
         }
 
         private void ProcessSharedProjectsUpdates(
-            IProjectSharedFoldersSnapshot sharedFolders, 
+            IProjectSharedFoldersSnapshot sharedFolders,
             ITargetedProjectContext targetContext,
             DependenciesRuleChangeContext dependencyChangeContext)
         {
@@ -218,7 +219,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     ITargetFramework targetFramework,
                     bool resolved)
         {
-            var properties = ImmutableDictionary<string,string>.Empty;
+            var properties = ImmutableDictionary<string, string>.Empty;
 
             return new SharedProjectDependencyModel(
                 ProjectRuleHandler.ProviderTypeString,

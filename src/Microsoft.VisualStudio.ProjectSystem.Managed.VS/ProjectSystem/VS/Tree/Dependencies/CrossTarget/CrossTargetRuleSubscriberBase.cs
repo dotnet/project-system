@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Threading;
@@ -195,7 +196,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 {
                     return;
                 }
-                
+
                 using (ProjectCapabilitiesContext.CreateIsolatedContext(configuredProject, e.Value.Item3))
                 {
                     await HandleAsync(e, handlerType).ConfigureAwait(false);
@@ -208,7 +209,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     RuleHandlerType handlerType)
         {
             var currentAggregateContext = await _host.GetCurrentAggregateProjectContext().ConfigureAwait(false);
-            if (currentAggregateContext == null|| _currentProjectContext != currentAggregateContext)
+            if (currentAggregateContext == null || _currentProjectContext != currentAggregateContext)
             {
                 return;
             }

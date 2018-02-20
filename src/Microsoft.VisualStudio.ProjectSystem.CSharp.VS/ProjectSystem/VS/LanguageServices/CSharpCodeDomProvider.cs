@@ -2,6 +2,7 @@
 
 using System.CodeDom.Compiler;
 using System.ComponentModel.Composition;
+
 using Microsoft.CSharp;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
@@ -17,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         public CSharpCodeDomProvider()
         {
         }
-        
+
         [Import]
         public UnconfiguredProject UnconfiguredProject   // Put ourselves in the UnconfiguredProject scope
         {

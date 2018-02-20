@@ -3,8 +3,9 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
+
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
@@ -35,9 +36,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 return DependencyRuleHandlers;
             }
         }
-       
+
         protected override DependenciesRuleChangeContext CreateRuleChangeContext(
-            ITargetFramework target, 
+            ITargetFramework target,
             IProjectCatalogSnapshot catalogs)
         {
             return new DependenciesRuleChangeContext(target, catalogs);

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 
@@ -68,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     string ruleName = handler.evaluationRuleName;
 
                     WriteRuleHeader(logger, ruleName);
-                    
+
                     IProjectChangeDescription projectChange = update.Value.ProjectChanges[ruleName];
                     if (projectChange.Difference.AnyChanges)
                     {

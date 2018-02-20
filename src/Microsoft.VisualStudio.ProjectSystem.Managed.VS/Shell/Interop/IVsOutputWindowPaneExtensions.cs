@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
                 noPumpPane.OutputStringNoPump(pszOutputString);
             }
             else
-            { 
+            {
                 HResult hr = pane.OutputStringThreadSafe(pszOutputString);
                 if (hr.Failed)
                     throw hr.Exception;

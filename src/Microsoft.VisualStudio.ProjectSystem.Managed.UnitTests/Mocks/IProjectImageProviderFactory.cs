@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+
 using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Imaging
@@ -23,7 +24,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
 
         public static IProjectImageProvider ImplementGetProjectImage(string key, ProjectImageMoniker moniker)
         {
-            return ImplementGetProjectImage((string k) => {
+            return ImplementGetProjectImage((string k) =>
+            {
 
                 if (k == key)
                 {

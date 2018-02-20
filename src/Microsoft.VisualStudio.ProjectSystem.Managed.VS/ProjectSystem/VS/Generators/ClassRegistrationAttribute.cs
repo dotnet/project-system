@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.VisualStudio.Shell;
 using System;
+
+using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 {
@@ -25,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
             var _classType = Type.GetType(_classInfo);
             using (Key childKey = context.CreateKey($"CLSID\\{_clsId}"))
             {
-                
+
                 childKey.SetValue("Assembly", _classType.Assembly.FullName);
                 childKey.SetValue("Class", _classType.FullName);
                 childKey.SetValue("InprocServer32", "$System$\\mscoree.dll");

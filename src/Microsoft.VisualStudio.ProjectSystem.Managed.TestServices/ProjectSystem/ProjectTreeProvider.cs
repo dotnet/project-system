@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     return child;
             }
 
-            return null;            
+            return null;
         }
 
         public string GetAddNewItemDirectory(IProjectTree target)

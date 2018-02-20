@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -19,7 +20,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var activeConfiguredProjectProperties = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
             var projectLockService = new Lazy<IProjectLockService>(() => IProjectLockServiceFactory.Create());
 
-            Assert.Throws<ArgumentNullException>("project", () => {
+            Assert.Throws<ArgumentNullException>("project", () =>
+            {
                 new UnconfiguredProjectCommonServices((UnconfiguredProject)null, projectTree, threadingService, activeConfiguredProject, activeConfiguredProjectProperties, projectLockService);
             });
         }
@@ -34,7 +36,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var activeConfiguredProjectProperties = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
             var projectLockService = new Lazy<IProjectLockService>(() => IProjectLockServiceFactory.Create());
 
-            Assert.Throws<ArgumentNullException>("projectTree", () => {
+            Assert.Throws<ArgumentNullException>("projectTree", () =>
+            {
                 new UnconfiguredProjectCommonServices(project, (Lazy<IPhysicalProjectTree>)null, threadingService, activeConfiguredProject, activeConfiguredProjectProperties, projectLockService);
             });
         }
@@ -49,7 +52,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var activeConfiguredProjectProperties = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
             var projectLockService = new Lazy<IProjectLockService>(() => IProjectLockServiceFactory.Create());
 
-            Assert.Throws<ArgumentNullException>("threadingService", () => {
+            Assert.Throws<ArgumentNullException>("threadingService", () =>
+            {
                 new UnconfiguredProjectCommonServices(project, projectTree, (Lazy<IProjectThreadingService>)null, activeConfiguredProject, activeConfiguredProjectProperties, projectLockService);
             });
         }
@@ -64,7 +68,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var activeConfiguredProjectProperties = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
             var projectLockService = new Lazy<IProjectLockService>(() => IProjectLockServiceFactory.Create());
 
-            Assert.Throws<ArgumentNullException>("activeConfiguredProject", () => {
+            Assert.Throws<ArgumentNullException>("activeConfiguredProject", () =>
+            {
                 new UnconfiguredProjectCommonServices(project, projectTree, threadingService, (ActiveConfiguredProject<ConfiguredProject>)null, activeConfiguredProjectProperties, projectLockService);
             });
         }
@@ -79,7 +84,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties.ConfiguredProject);
             var projectLockService = new Lazy<IProjectLockService>(() => IProjectLockServiceFactory.Create());
 
-            Assert.Throws<ArgumentNullException>("activeConfiguredProjectProperties", () => {
+            Assert.Throws<ArgumentNullException>("activeConfiguredProjectProperties", () =>
+            {
                 new UnconfiguredProjectCommonServices(project, projectTree, threadingService, activeConfiguredProject, (ActiveConfiguredProject<ProjectProperties>)null, projectLockService);
             });
         }
@@ -94,7 +100,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties.ConfiguredProject);
             var activeConfiguredProjectProperties = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
 
-            Assert.Throws<ArgumentNullException>("projectLockService", () => {
+            Assert.Throws<ArgumentNullException>("projectLockService", () =>
+            {
                 new UnconfiguredProjectCommonServices(project, projectTree, threadingService, activeConfiguredProject, activeConfiguredProjectProperties, null);
             });
         }

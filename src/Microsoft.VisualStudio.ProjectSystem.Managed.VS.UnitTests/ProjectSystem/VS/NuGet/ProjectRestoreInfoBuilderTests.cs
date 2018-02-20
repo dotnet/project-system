@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Immutable;
 using System.Linq;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
@@ -11,7 +12,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         [Fact]
         public void NullUpdate_ThrowsArgumentNull()
         {
-            Assert.Throws<ArgumentNullException>("updates", () => {
+            Assert.Throws<ArgumentNullException>("updates", () =>
+            {
                 ProjectRestoreInfoBuilder.Build(null, GetMockProject());
             });
         }
@@ -19,7 +21,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         [Fact]
         public void NullProject_ThrowsArgumentNull()
         {
-            Assert.Throws<ArgumentNullException>("project", () => {
+            Assert.Throws<ArgumentNullException>("project", () =>
+            {
                 var projectSubscriptionUpdates = GetVersionedUpdatesFromJson(_sampleSubscriptionUpdate);
                 ProjectRestoreInfoBuilder.Build(projectSubscriptionUpdates, null);
             });
@@ -61,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         {
             var projectSubscriptionUpdates = GetVersionedUpdatesFromJson(_sampleSubscriptionUpdate);
             var restoreInfo = ProjectRestoreInfoBuilder.Build(projectSubscriptionUpdates, GetMockProject());
-            
+
             Assert.NotNull(restoreInfo);
             Assert.Equal(@"obj\", restoreInfo.BaseIntermediatePath);
             Assert.Equal("netcoreapp1.0", restoreInfo.OriginalTargetFrameworks);
@@ -625,7 +628,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 }";
 
         private UnconfiguredProject GetMockProject(string projectFullPath = "D:\\Test\\Projects\\UCProject\\UCProject.csproj") =>
-            UnconfiguredProjectFactory.Create(filePath: projectFullPath);        
+            UnconfiguredProjectFactory.Create(filePath: projectFullPath);
 
         private ImmutableList<IProjectVersionedValue<IProjectSubscriptionUpdate>> GetVersionedUpdatesFromJson(
             params string[] jsonStrings) =>

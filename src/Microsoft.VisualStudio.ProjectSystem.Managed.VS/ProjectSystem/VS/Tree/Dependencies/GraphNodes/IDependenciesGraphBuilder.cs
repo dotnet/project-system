@@ -8,9 +8,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
     internal interface IDependenciesGraphBuilder
     {
         GraphNode AddGraphNode(
-            IGraphContext graphContext, 
-            string projectPath, 
-            GraphNode parentNode, 
+            IGraphContext graphContext,
+            string projectPath,
+            GraphNode parentNode,
             IDependencyViewModel viewModel);
 
         GraphNode AddTopLevelGraphNode(

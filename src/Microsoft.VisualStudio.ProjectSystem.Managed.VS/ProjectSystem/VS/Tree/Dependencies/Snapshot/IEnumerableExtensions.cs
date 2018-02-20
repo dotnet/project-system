@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
     {
         public static void ForEach<T>(this IEnumerable<T> self, Action<T> action)
         {
-            foreach(var item in self)
+            foreach (var item in self)
             {
                 action.Invoke(item);
             }

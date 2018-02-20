@@ -4,8 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
+
 using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -54,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var mock = new Mock<IProjectXmlAccessor>();
 
             mock.Setup(m => m.GetItems(
-                It.IsAny<ConfiguredProject>(), 
+                It.IsAny<ConfiguredProject>(),
                 It.Is<string>((t) => string.Equals(t, itemType)),
                 It.Is<string>((t) => string.Equals(t, metadataName))))
                 .Returns<ConfiguredProject, string, string>((configuredProject, innerItemType, innerMetadataName) =>

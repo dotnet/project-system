@@ -5,6 +5,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.Telemetry;
 
@@ -58,7 +59,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             lock (_stateUpdateLock)
             {
-                if (_stopTelemetry) return;
+                if (_stopTelemetry)
+                    return;
 
                 var telemetryState = _telemetryStates.GetOrAdd(targetFramework, (key) => new TelemetryState());
 
@@ -78,7 +80,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             lock (_stateUpdateLock)
             {
-                if (_stopTelemetry) return;
+                if (_stopTelemetry)
+                    return;
 
                 if (_telemetryStates.TryGetValue(targetFramework, out var telemetryState))
                 {
@@ -99,7 +102,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             bool observedAllRules;
             lock (_stateUpdateLock)
             {
-                if (_stopTelemetry) return;
+                if (_stopTelemetry)
+                    return;
                 _stopTelemetry = !hasUnresolvedDependency || (++_eventCount >= MaxEventCount);
                 observedAllRules = ObservedAllRules();
             }
@@ -108,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 InitializeProjectId();
             }
-            
+
             _telemetryService.PostProperties(
                 FormattableString.Invariant($"{TelemetryEventName}/{(hasUnresolvedDependency ? UnresolvedLabel : ResolvedLabel)}"),
                 new List<(string, object)>
@@ -144,7 +148,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             private ConcurrentDictionary<string, bool> _observedRules = new ConcurrentDictionary<string, bool>(StringComparers.RuleNames);
 
-            internal bool InitializeRule(string rule) => 
+            internal bool InitializeRule(string rule) =>
                 _observedRules.TryAdd(rule, false);
 
             internal bool ObserveRule(string rule) =>

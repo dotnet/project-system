@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
@@ -24,8 +25,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         public override IDependencyModel CreateRootDependencyNode()
         {
             return new SubTreeRootDependencyModel(
-                ProviderType, 
-                VSResources.AssembliesNodeName, 
+                ProviderType,
+                VSResources.AssembliesNodeName,
                 KnownMonikers.Reference,
                 KnownMonikers.ReferenceWarning,
                 DependencyTreeFlags.AssemblySubTreeRootNodeFlags);

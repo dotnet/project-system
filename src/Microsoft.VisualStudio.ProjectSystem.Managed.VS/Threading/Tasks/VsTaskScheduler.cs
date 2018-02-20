@@ -2,6 +2,7 @@
 
 using System;
 using System.ComponentModel.Composition;
+
 using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.Threading.Tasks

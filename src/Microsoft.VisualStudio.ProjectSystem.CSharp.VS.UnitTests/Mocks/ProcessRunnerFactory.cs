@@ -1,8 +1,9 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Moq;
 using System;
 using System.Diagnostics;
+
+using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 {
@@ -31,11 +32,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             // Mock standard output and standard error
             processMock.Setup(p => p.AddOutputDataReceivedHandler(It.IsAny<Action<string>>())).Callback<Action<string>>(h =>
             {
-                if (!string.IsNullOrWhiteSpace(outputText)) h(outputText);
+                if (!string.IsNullOrWhiteSpace(outputText))
+                    h(outputText);
             });
             processMock.Setup(p => p.AddErrorDataReceivedHandler(It.IsAny<Action<string>>())).Callback<Action<string>>(h =>
             {
-                if (!string.IsNullOrWhiteSpace(errorText)) h(errorText);
+                if (!string.IsNullOrWhiteSpace(errorText))
+                    h(errorText);
             });
 
             return processMock.Object;
