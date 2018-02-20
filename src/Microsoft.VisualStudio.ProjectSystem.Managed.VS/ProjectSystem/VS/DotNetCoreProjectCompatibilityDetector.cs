@@ -8,6 +8,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.References;
@@ -17,6 +18,7 @@ using Microsoft.VisualStudio.Settings;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
+
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
@@ -84,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             string appDataFolder = await _shellUtilitiesHelper.Value.GetLocalAppDataFolderAsync(_serviceProvider).ConfigureAwait(true);
             if (appDataFolder != null)
             {
-                _versionDataCacheFile = new RemoteCacheFile(Path.Combine(appDataFolder, VersionDataFilename), VersionCompatibilityDownloadFwlink, 
+                _versionDataCacheFile = new RemoteCacheFile(Path.Combine(appDataFolder, VersionDataFilename), VersionCompatibilityDownloadFwlink,
                                                             TimeSpan.FromHours(CacheFileValidHours), _fileSystem.Value, _httpClient);
             }
 
@@ -237,7 +239,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 else
                 {
                     string msg;
-                    if(compatData.UnsupportedVersion != null)
+                    if (compatData.UnsupportedVersion != null)
                     {
                         msg = string.Format(compatData.OpenUnsupportedMessage, compatData.UnsupportedVersion.Major, compatData.UnsupportedVersion.Minor);
                     }
@@ -346,14 +348,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// </summary>
         private VersionCompatibilityData GetVersionCmpatibilityData()
         {
-                // Do we need to update our cached data? Note that since the download could take a long time like tens of seconds we don't really want to
-                // start showing messages to the user well after their project is opened and they are interacting with it. Thus we start a task to update the 
-                // file, so that the next time we come here, we have updated data.
-                if (_curVersionCompatibilityData != null && _timeCurVersionDataLastUpdatedUtc.AddHours(CacheFileValidHours).IsLaterThan(DateTime.UtcNow))
-                {
-                    return _curVersionCompatibilityData;
-                }
-                
+            // Do we need to update our cached data? Note that since the download could take a long time like tens of seconds we don't really want to
+            // start showing messages to the user well after their project is opened and they are interacting with it. Thus we start a task to update the 
+            // file, so that the next time we come here, we have updated data.
+            if (_curVersionCompatibilityData != null && _timeCurVersionDataLastUpdatedUtc.AddHours(CacheFileValidHours).IsLaterThan(DateTime.UtcNow))
+            {
+                return _curVersionCompatibilityData;
+            }
+
             try
             {
                 // Try the cache file
@@ -365,7 +367,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     Task noWait = _versionDataCacheFile.TryToUpdateCacheFileAsync(() =>
                     {
                         // Invalidate the in-memory cached data on success
-                        _timeCurVersionDataLastUpdatedUtc  = DateTime.MinValue;
+                        _timeCurVersionDataLastUpdatedUtc = DateTime.MinValue;
                     });
                 }
 
@@ -410,7 +412,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private void UpdateInMemoryCachedData(VersionCompatibilityData newData)
         {
             _curVersionCompatibilityData = newData;
-            _timeCurVersionDataLastUpdatedUtc  = DateTime.UtcNow;
+            _timeCurVersionDataLastUpdatedUtc = DateTime.UtcNow;
         }
 
         /// <summary>

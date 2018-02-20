@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using System.Windows.Controls;
 using System.Windows.Input;
+
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell;
@@ -25,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         // Unit Tests only
         private TaskCompletionSource<bool> _firstSnapshotCompleteSource = null;
-        
+
         private IProjectThreadingService _projectThreadingService;
         private IProjectThreadingService ProjectThreadingService
         {
@@ -75,13 +76,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             if (!IgnoreEvents)
             {
-                if(SelectedDebugProfile != null && SelectedDebugProfile is IWritablePersistOption writablePersist)
+                if (SelectedDebugProfile != null && SelectedDebugProfile is IWritablePersistOption writablePersist)
                 {
                     writablePersist.DoNotPersist = false;
                 }
             }
         }
-        
+
         private List<LaunchType> _launchTypes;
         public List<LaunchType> LaunchTypes
         {
@@ -94,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 OnPropertyChanged(ref _launchTypes, value);
             }
         }
-        
+
         private LaunchType _selectedLaunchType;
         public LaunchType SelectedLaunchType
         {
@@ -140,7 +141,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 }
             }
         }
-        
+
         /// <summary>
         /// If we have an existing CustomControl, we disconnect from its change notifications
         /// and hook into the new ones. Assumes the activeProvider has already been changed
@@ -161,17 +162,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             // so that we don't get notifications while the control is initializing. Note that this is likely the first time the 
             // custom control is asked for and we want to call it and have it created prior to setting the active profile
             var customControl = ActiveProvider?.CustomUI;
-            if(customControl != null)
+            if (customControl != null)
             {
                 ActiveProvider.ProfileSelected(CurrentLaunchSettings);
 
                 context = customControl.DataContext as INotifyPropertyChanged;
-                if(context != null)
+                if (context != null)
                 {
                     context.PropertyChanged += OnCustomUIStateChanged;
                 }
 
-                if(context is INotifyDataErrorInfo notifyDataErrorInfo)
+                if (context is INotifyDataErrorInfo notifyDataErrorInfo)
                 {
                     notifyDataErrorInfo.ErrorsChanged += OnCustomUIErrorsChanged;
                 }
@@ -294,41 +295,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         public bool SupportsExecutable
         {
-            get 
-            {  
-                return ActiveProviderSupportsProperty(UIProfilePropertyName.Executable); 
+            get
+            {
+                return ActiveProviderSupportsProperty(UIProfilePropertyName.Executable);
             }
         }
 
         public bool SupportsArguments
         {
-            get 
-            {  
-                return ActiveProviderSupportsProperty(UIProfilePropertyName.Arguments); 
+            get
+            {
+                return ActiveProviderSupportsProperty(UIProfilePropertyName.Arguments);
             }
         }
 
         public bool SupportsWorkingDirectory
         {
-            get 
-            {  
-                return ActiveProviderSupportsProperty(UIProfilePropertyName.WorkingDirectory); 
+            get
+            {
+                return ActiveProviderSupportsProperty(UIProfilePropertyName.WorkingDirectory);
             }
         }
 
         public bool SupportsLaunchUrl
         {
-            get 
-            {  
-                return ActiveProviderSupportsProperty(UIProfilePropertyName.LaunchUrl); 
+            get
+            {
+                return ActiveProviderSupportsProperty(UIProfilePropertyName.LaunchUrl);
             }
         }
 
         public bool SupportsEnvironmentVariables
         {
-            get 
-            {  
-                return ActiveProviderSupportsProperty(UIProfilePropertyName.EnvironmentVariables); 
+            get
+            {
+                return ActiveProviderSupportsProperty(UIProfilePropertyName.EnvironmentVariables);
             }
         }
 
@@ -349,7 +350,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-        private  ObservableCollection<IWritableLaunchProfile> _launchProfiles = new ObservableCollection<IWritableLaunchProfile>();
+        private ObservableCollection<IWritableLaunchProfile> _launchProfiles = new ObservableCollection<IWritableLaunchProfile>();
         public ObservableCollection<IWritableLaunchProfile> LaunchProfiles
         {
             get
@@ -366,7 +367,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             OnPropertyChanged(nameof(HasProfiles));
             OnPropertyChanged(nameof(NewProfileEnabled));
         }
-        
+
         public bool HasProfiles
         {
             get
@@ -394,7 +395,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 }
             }
         }
-        
+
         private bool _removeEnvironmentVariablesRow;
         public bool RemoveEnvironmentVariablesRow
         {
@@ -437,8 +438,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             get
             {
-                if (EnvironmentVariables == null) { return true; }
-                else { return _environmentVariablesValid; }
+                if (EnvironmentVariables == null)
+                { return true; }
+                else
+                { return _environmentVariablesValid; }
             }
             set
             {
@@ -472,7 +475,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         public UserControl ActiveProviderUserControl
         {
-            get 
+            get
             {
                 var provider = ActiveProvider;
                 return ActiveProvider?.CustomUI;
@@ -499,14 +502,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 OnPropertyChanged(nameof(LaunchPage));
                 OnPropertyChanged(nameof(HasLaunchOption));
                 OnPropertyChanged(nameof(WorkingDirectory));
-                
+
                 UpdateLaunchTypes();
 
                 ActiveProvider?.ProfileSelected(CurrentLaunchSettings);
 
                 OnPropertyChanged(nameof(IsProfileSelected));
                 OnPropertyChanged(nameof(DeleteProfileEnabled));
-                
+
                 SetEnvironmentGrid(oldProfile);
 
                 UpdateActiveProfile();
@@ -538,7 +541,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             if (EnvironmentVariables != null && EnvironmentVariables.Count > 0 && SelectedDebugProfile != null)
             {
                 SelectedDebugProfile.EnvironmentVariables.Clear();
-                foreach(var kvp in EnvironmentVariables)
+                foreach (var kvp in EnvironmentVariables)
                 {
                     SelectedDebugProfile.EnvironmentVariables.Add(kvp.Name, kvp.Value);
                 }
@@ -558,7 +561,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 if (_environmentVariables.Count > 0)
                 {
                     oldProfile.EnvironmentVariables.Clear();
-                    foreach(var kvp in EnvironmentVariables)
+                    foreach (var kvp in EnvironmentVariables)
                     {
                         oldProfile.EnvironmentVariables.Add(kvp.Name, kvp.Value);
                     }
@@ -621,7 +624,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
                 // Reload the launch profiles collection
                 LaunchProfiles.Clear();
-                foreach(var profile in CurrentLaunchSettings.Profiles)
+                foreach (var profile in CurrentLaunchSettings.Profiles)
                 {
                     LaunchProfiles.Add(profile);
                 }
@@ -659,7 +662,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             finally
             {
                 PopIgnoreEvents();
-                if(_firstSnapshotCompleteSource != null)
+                if (_firstSnapshotCompleteSource != null)
                 {
                     _firstSnapshotCompleteSource.TrySetResult(true);
                 }
@@ -687,7 +690,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 _debugProfileProviderLink = profileProvider.SourceBlock.LinkTo(
                     debugProfilesBlock,
                     linkOptions: new DataflowLinkOptions { PropagateCompletion = true });
-                
+
                 // We need to get the set of UI providers, if any.
                 InitializeUIProviders();
             }
@@ -723,12 +726,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             get
             {
-                if(SelectedLaunchType == null)
+                if (SelectedLaunchType == null)
                 {
                     return null;
                 }
 
-                var activeProvider =  _uiProviders.FirstOrDefault((p) => string.Equals(p.Value.CommandName, SelectedLaunchType.CommandName, StringComparison.OrdinalIgnoreCase));
+                var activeProvider = _uiProviders.FirstOrDefault((p) => string.Equals(p.Value.CommandName, SelectedLaunchType.CommandName, StringComparison.OrdinalIgnoreCase));
                 return activeProvider?.Value;
             }
         }
@@ -745,7 +748,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         public async override Task<int> Save()
         {
-            if(HasErrors)
+            if (HasErrors)
             {
                 throw new Exception(PropertyPageResources.ErrorsMustBeCorrectedPriorToSaving);
             }
@@ -754,8 +757,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
             return VSConstants.S_OK;
         }
-                
-                
+
+
         private ICommand _addEnironmentVariableRowCommand;
         public ICommand AddEnvironmentVariableRowCommand
         {
@@ -844,7 +847,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     }));
             }
         }
-        
+
         public bool NewProfileEnabled
         {
             get
@@ -858,18 +861,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             get
             {
-                 return LazyInitializer.EnsureInitialized(ref _newProfileCommand, () =>
-                  new DelegateCommand(state =>
-                  {
-                      var dialog = new GetProfileNameDialog(UnconfiguredProject.Services.ExportProvider.GetExportedValue<SVsServiceProvider>(),
-                                                             ProjectThreadingService, 
-                                                             GetNewProfileName(), 
-                                                             IsNewProfileNameValid);
-                      if (dialog.ShowModal() == true)
-                      {
-                          CreateProfile(dialog.ProfileName, ProfileCommandNames.Executable);
-                      }
-                  })); 
+                return LazyInitializer.EnsureInitialized(ref _newProfileCommand, () =>
+                 new DelegateCommand(state =>
+                 {
+                     var dialog = new GetProfileNameDialog(UnconfiguredProject.Services.ExportProvider.GetExportedValue<SVsServiceProvider>(),
+                                                            ProjectThreadingService,
+                                                            GetNewProfileName(),
+                                                            IsNewProfileNameValid);
+                     if (dialog.ShowModal() == true)
+                     {
+                         CreateProfile(dialog.ProfileName, ProfileCommandNames.Executable);
+                     }
+                 }));
             }
         }
 
@@ -899,7 +902,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
                         CurrentLaunchSettings.Profiles.Remove(profileToRemove);
                         LaunchProfiles.Remove(profileToRemove);
-                        
+
                         SelectedDebugProfile = LaunchProfiles.Count > 0 ? LaunchProfiles[0] : null;
                         NotifyProfileCollectionChanged();
                     }));
@@ -913,7 +916,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             LaunchProfiles.Add(profile);
 
             NotifyProfileCollectionChanged();
-            
+
             // Fire a property changed so we can get the page to be dirty when we add a new profile
             OnPropertyChanged("_NewProfile");
             SelectedDebugProfile = profile;
@@ -938,7 +941,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
             return string.Empty;
         }
-        
+
         /// <summary>
         /// Called after every profile change to update the list of launch types based on the following:
         /// 
@@ -951,14 +954,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             // Populate the set of unique launch types from the list of providers since there can be duplicates with different priorities. However,
             // the command name will be the same so we can grab the first one for the purposes of populating the list
-            if(_providerLaunchTypes == null)
+            if (_providerLaunchTypes == null)
             {
-                _providerLaunchTypes =  new List<LaunchType>();
-                foreach(var provider in _uiProviders)
+                _providerLaunchTypes = new List<LaunchType>();
+                foreach (var provider in _uiProviders)
                 {
-                    if(_providerLaunchTypes.FirstOrDefault((lt) => lt.CommandName.Equals(provider.Value.CommandName)) == null)
+                    if (_providerLaunchTypes.FirstOrDefault((lt) => lt.CommandName.Equals(provider.Value.CommandName)) == null)
                     {
-                        _providerLaunchTypes.Add(new LaunchType() { CommandName = provider.Value.CommandName, Name = provider.Value.FriendlyName});
+                        _providerLaunchTypes.Add(new LaunchType() { CommandName = provider.Value.CommandName, Name = provider.Value.FriendlyName });
                     }
                 }
             }
@@ -972,9 +975,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 _launchTypes.AddRange(_providerLaunchTypes);
 
                 selectedLaunchType = _launchTypes.FirstOrDefault((launchType) => string.Equals(launchType.CommandName, selectedProfile.CommandName));
-                if(selectedLaunchType == null)
+                if (selectedLaunchType == null)
                 {
-                    selectedLaunchType = new LaunchType() { CommandName = selectedProfile.CommandName, Name = selectedProfile.CommandName};
+                    selectedLaunchType = new LaunchType() { CommandName = selectedProfile.CommandName, Name = selectedProfile.CommandName };
                     _launchTypes.Insert(0, selectedLaunchType);
                 }
             }
@@ -984,7 +987,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
             SelectedLaunchType = selectedLaunchType;
         }
-        
+
         private void EnvironmentVariables_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             // cause the property page to be dirtied when a row is added or removed
@@ -1014,7 +1017,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private ILaunchSettingsProvider _launchSettingsProvider;
         protected virtual ILaunchSettingsProvider GetDebugProfileProvider()
         {
-            if(_launchSettingsProvider == null)
+            if (_launchSettingsProvider == null)
             {
                 _launchSettingsProvider = UnconfiguredProject.Services.ExportProvider.GetExportedValue<ILaunchSettingsProvider>();
             }

@@ -57,8 +57,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 return _projectAccessor.OpenProjectForReadAsync(_configuredProject, project =>
                 {
                     return (ICollection<IEnumValue>)project.GetItems(itemType: SupportedTargetFrameworkItemName)
-                                                           .Select(i => new PageEnumValue(new EnumValue { Name = i.EvaluatedInclude,
-                                                                                                          DisplayName = i.GetMetadataValue(DisplayNameMetadataName)}))
+                                                           .Select(i => new PageEnumValue(new EnumValue
+                                                           {
+                                                               Name = i.EvaluatedInclude,
+                                                               DisplayName = i.GetMetadataValue(DisplayNameMetadataName)
+                                                           }))
                                                            .ToArray<IEnumValue>();
                 });
             }

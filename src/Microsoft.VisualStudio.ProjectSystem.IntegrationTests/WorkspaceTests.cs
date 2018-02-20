@@ -2,7 +2,9 @@
 
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.IntegrationTest.Utilities;
+
 using Xunit;
+
 using ProjectUtils = Microsoft.VisualStudio.IntegrationTest.Utilities.Common.ProjectUtils;
 
 namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
@@ -18,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
             VisualStudio.SolutionExplorer.OpenFile(Project, "Class1.cs");
         }
 
-        [Fact(Skip ="Classification doesn't work when files are loaded in misc workspace"), Trait("Integration", "Workspace")]
+        [Fact(Skip = "Classification doesn't work when files are loaded in misc workspace"), Trait("Integration", "Workspace")]
         public void OpenCSharpThenVBSolution()
         {
             VisualStudio.Editor.SetText(@"using System; class Program { Exception e; }");

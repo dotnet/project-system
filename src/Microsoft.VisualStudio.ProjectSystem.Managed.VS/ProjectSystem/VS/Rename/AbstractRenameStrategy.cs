@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.CodeAnalysis;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename

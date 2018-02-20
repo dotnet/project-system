@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// </summary>
         public static bool HasFlag(this ProjectTreeFlags flags, ProjectTreeFlags.Common flag)
         {
-            return flags.Contains(flag); 
+            return flags.Contains(flag);
         }
 
         /// <summary>

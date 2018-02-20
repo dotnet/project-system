@@ -34,7 +34,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
         public void RaiseValidationStatus(bool validationSuccessful)
         {
-            if (ValidationStatusChanged == null) return;
+            if (ValidationStatusChanged == null)
+                return;
             ValidationStatusChanged(this, new ValidationStatusChangedEventArgs(validationSuccessful));
         }
 

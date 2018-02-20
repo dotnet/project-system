@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal class ProjectTreeWriter
     {
-        private readonly StringBuilder _builder  = new StringBuilder();
+        private readonly StringBuilder _builder = new StringBuilder();
         private readonly ProjectTreeWriterOptions _options;
         private readonly IProjectTree _parent;
 
@@ -115,7 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _builder.Append(", FilePath: ");
             _builder.Append('"');
             _builder.Append(tree.FilePath);
-            
+
             if (TagElements)
             {
                 _builder.Append("[filepath]");
@@ -127,7 +127,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private void WriteVisibility(IProjectTree tree)
         {
             _builder.Append("visibility: ");
-            
+
             if (tree.Visible)
             {
                 _builder.Append("visible");

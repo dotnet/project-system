@@ -4,6 +4,7 @@ using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -41,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _launchProviders = launchProviders;
         }
 
-        [ProjectAutoLoad(startAfter:ProjectLoadCheckpoint.ProjectFactoryCompleted)]
+        [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
         [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
         internal Task Load()
         {

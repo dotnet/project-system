@@ -1,11 +1,13 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
-using NuGet.SolutionRestoreManager;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
+
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
+
+using NuGet.SolutionRestoreManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 {
@@ -14,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private const string DefiningProjectDirectoryProperty = "DefiningProjectDirectory";
         private const string ProjectFileFullPathProperty = "ProjectFileFullPath";
 
-        internal static IVsProjectRestoreInfo Build(IEnumerable<IProjectValueVersions> updates, 
+        internal static IVsProjectRestoreInfo Build(IEnumerable<IProjectValueVersions> updates,
             UnconfiguredProject project)
         {
             Requires.NotNull(updates, nameof(updates));
@@ -47,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     nugetRestoreChanges.After.Properties[NuGetRestore.BaseIntermediateOutputPathProperty];
                 originalTargetFrameworks = originalTargetFrameworks ??
                     nugetRestoreChanges.After.Properties[NuGetRestore.TargetFrameworksProperty];
-                bool noTargetFramework = 
+                bool noTargetFramework =
                     !update.Value.ProjectConfiguration.Dimensions.TryGetValue(NuGetRestore.TargetFrameworkProperty, out string targetFramework) &&
                     !nugetRestoreChanges.After.Properties.TryGetValue(NuGetRestore.TargetFrameworkProperty, out targetFramework);
 
@@ -116,7 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         }
 
         private static IVsReferenceItems GetReferences(IImmutableDictionary<string, IImmutableDictionary<string, string>> items)
-        {            
+        {
             return new ReferenceItems(items.Select(p => GetReferenceItem(p)));
         }
 
@@ -128,15 +130,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             // compute project file full path property for each reference
             foreach (ReferenceItem item in referenceItems)
-            {                
+            {
                 var definingProjectDirectory = item.Properties.Item(DefiningProjectDirectoryProperty);
-                var projectFileFullPath = definingProjectDirectory != null 
+                var projectFileFullPath = definingProjectDirectory != null
                     ? MakeRooted(definingProjectDirectory.Value, item.Name)
                     : project.MakeRooted(item.Name);
 
                 ((ReferenceProperties)item.Properties).Add(new ReferenceProperty
                 {
-                    Name = ProjectFileFullPathProperty, Value = projectFileFullPath
+                    Name = ProjectFileFullPathProperty,
+                    Value = projectFileFullPath
                 });
             }
 

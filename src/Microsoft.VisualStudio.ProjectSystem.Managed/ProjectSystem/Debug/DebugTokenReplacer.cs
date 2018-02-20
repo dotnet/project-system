@@ -3,6 +3,7 @@
 using System.ComponentModel.Composition;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
@@ -42,42 +43,42 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public async Task<ILaunchProfile> ReplaceTokensInProfileAsync(ILaunchProfile profile)
         {
             var resolvedProfile = new LaunchProfile(profile);
-            if(!string.IsNullOrWhiteSpace(resolvedProfile.ExecutablePath))
+            if (!string.IsNullOrWhiteSpace(resolvedProfile.ExecutablePath))
             {
                 resolvedProfile.ExecutablePath = await ReplaceTokensInStringAsync(resolvedProfile.ExecutablePath, true).ConfigureAwait(false);
             }
-            
-            if(!string.IsNullOrWhiteSpace(resolvedProfile.CommandLineArgs))
+
+            if (!string.IsNullOrWhiteSpace(resolvedProfile.CommandLineArgs))
             {
                 resolvedProfile.CommandLineArgs = await ReplaceTokensInStringAsync(resolvedProfile.CommandLineArgs, true).ConfigureAwait(false);
             }
-            
-            if(!string.IsNullOrWhiteSpace(resolvedProfile.WorkingDirectory))
+
+            if (!string.IsNullOrWhiteSpace(resolvedProfile.WorkingDirectory))
             {
                 resolvedProfile.WorkingDirectory = await ReplaceTokensInStringAsync(resolvedProfile.WorkingDirectory, true).ConfigureAwait(false);
             }
-        
-            if(!string.IsNullOrWhiteSpace(resolvedProfile.LaunchUrl))
+
+            if (!string.IsNullOrWhiteSpace(resolvedProfile.LaunchUrl))
             {
                 resolvedProfile.LaunchUrl = await ReplaceTokensInStringAsync(resolvedProfile.LaunchUrl, true).ConfigureAwait(false);
             }
 
             // Since Env variables are an immutable dictionary they are a little messy to update.
-            if(resolvedProfile.EnvironmentVariables != null)
+            if (resolvedProfile.EnvironmentVariables != null)
             {
-                foreach(var kvp in resolvedProfile.EnvironmentVariables)
+                foreach (var kvp in resolvedProfile.EnvironmentVariables)
                 {
-                    resolvedProfile.EnvironmentVariables = resolvedProfile.EnvironmentVariables.SetItem(kvp.Key,  await ReplaceTokensInStringAsync(kvp.Value, true).ConfigureAwait(false));
+                    resolvedProfile.EnvironmentVariables = resolvedProfile.EnvironmentVariables.SetItem(kvp.Key, await ReplaceTokensInStringAsync(kvp.Value, true).ConfigureAwait(false));
                 }
             }
 
-            if(resolvedProfile.OtherSettings != null)
+            if (resolvedProfile.OtherSettings != null)
             {
-                foreach(var kvp in resolvedProfile.OtherSettings)
+                foreach (var kvp in resolvedProfile.OtherSettings)
                 {
-                    if(kvp.Value is string)
+                    if (kvp.Value is string)
                     {
-                        resolvedProfile.OtherSettings = resolvedProfile.OtherSettings.SetItem(kvp.Key,  await ReplaceTokensInStringAsync((string)kvp.Value, true).ConfigureAwait(false));
+                        resolvedProfile.OtherSettings = resolvedProfile.OtherSettings.SetItem(kvp.Key, await ReplaceTokensInStringAsync((string)kvp.Value, true).ConfigureAwait(false));
                     }
 
                 }

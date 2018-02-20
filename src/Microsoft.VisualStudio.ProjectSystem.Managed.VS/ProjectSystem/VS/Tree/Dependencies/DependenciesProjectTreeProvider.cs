@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -17,6 +18,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
+
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
@@ -160,7 +162,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     continue;
                 }
 
-                var dependency = snapshot.FindDependency(filePath, topLevel:true);
+                var dependency = snapshot.FindDependency(filePath, topLevel: true);
                 if (dependency == null || dependency.Implicit)
                 {
                     canRemove = false;
@@ -252,7 +254,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         continue;
                     }
 
-                    var sharedProjectDependency = snapshot.FindDependency(sharedFilePath, topLevel:true);
+                    var sharedProjectDependency = snapshot.FindDependency(sharedFilePath, topLevel: true);
                     if (sharedProjectDependency != null)
                     {
                         sharedFilePath = sharedProjectDependency.Path;
@@ -400,7 +402,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     {
                         dependenciesNode = await viewProvider.Value.BuildTreeAsync(dependenciesNode, snapshot, cancellationToken)
                                                                    .ConfigureAwait(false);
-                        
+
                         _treeTelemetryService.ObserveTreeUpdateCompleted(snapshot.HasUnresolvedDependency);
                     }
 

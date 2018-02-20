@@ -2,6 +2,7 @@
 
 using System;
 using System.Threading.Tasks;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
@@ -72,7 +73,7 @@ Project (flags: {ProjectRoot}), FilePath: ""C:\Project\Project.csproj""
     Folder2 (flags: {Folder})
         My Project (flags: {Folder AppDesignerFolder BubbleUp})
 ",
-@"C:\Project\Folder2\My Project")]  
+@"C:\Project\Folder2\My Project")]
         public async Task GetFile_WhenTreeWithAppDesignerFolder_ReturnsPath(string input, string expected)
         {
             var tree = ProjectTreeParser.Parse(input);

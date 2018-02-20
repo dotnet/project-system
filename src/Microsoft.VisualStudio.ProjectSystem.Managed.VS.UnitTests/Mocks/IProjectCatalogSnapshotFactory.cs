@@ -2,8 +2,10 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
+
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+
 using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
@@ -23,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var mockSnapshot = new Mock<IProjectCatalogSnapshot>(behavior);
             var mockPropertyPageCatalog = new Mock<IPropertyPagesCatalog>(behavior);
 
-            foreach(var kvp in rulesAndItemTypes)
+            foreach (var kvp in rulesAndItemTypes)
             {
                 var ruleName = kvp.Key;
                 var itemType = kvp.Value;

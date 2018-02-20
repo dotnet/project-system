@@ -107,7 +107,7 @@ namespace Microsoft.VisualStudio.Telemetry
             var hashedBytes = new SHA256CryptoServiceProvider().ComputeHash(inputBytes);
             return BitConverter.ToString(hashedBytes);
         }
-        
+
         /// <summary>
         /// Build a fully qualified property name based on it's parent event and the property name
         /// </summary>

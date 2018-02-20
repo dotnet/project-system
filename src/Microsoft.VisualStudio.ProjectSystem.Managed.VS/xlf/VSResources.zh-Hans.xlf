@@ -283,27 +283,27 @@ In order to debug this project, add an executable project to this solution which
       </trans-unit>
       <trans-unit id="PartialSupportedDotNetCoreProject">
         <source>Visual Studio 2017 version 15.7 or newer is recommended for .NET Core {0}.{1} projects.</source>
-        <target state="new">Visual Studio 2017 version 15.7 or newer is recommended for .NET Core {0}.{1} projects.</target>
+        <target state="translated">.NET Core {0}.{1} 项目建议使用 Visual Studio 2017 版本 15.7 或更新版本。</target>
         <note />
       </trans-unit>
       <trans-unit id="NotSupportedDotNetCoreProject">
         <source>Projects targeting versions newer than .NET Core {0}.{1} are not supported by this version of Visual Studio.</source>
-        <target state="new">Projects targeting versions newer than .NET Core {0}.{1} are not supported by this version of Visual Studio.</target>
+        <target state="translated">此版 Visual Studio 不支持面向版本新于 .NET Core {0}.{1} 的项目。</target>
         <note />
       </trans-unit>
       <trans-unit id="DontShowAgain">
         <source>Don't show again</source>
-        <target state="new">Don't show again</target>
+        <target state="translated">不再显示</target>
         <note />
       </trans-unit>
       <trans-unit id="LearnMore">
         <source>Learn more</source>
-        <target state="new">Learn more</target>
+        <target state="translated">了解详细信息</target>
         <note />
       </trans-unit>
       <trans-unit id="OKButtonText">
         <source>OK</source>
-        <target state="new">OK</target>
+        <target state="translated">确定</target>
         <note />
       </trans-unit>
     </body>

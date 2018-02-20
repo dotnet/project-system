@@ -1,12 +1,15 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using Microsoft.VisualStudio.Shell.Interop;
-using Xunit;
+using System.Threading.Tasks;
+
 using Microsoft.Build.Framework;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
+using Microsoft.VisualStudio.Shell.Interop;
+
 using Moq;
-using System.Threading.Tasks;
+
+using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 {
@@ -18,7 +21,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         {
             var host = Mock.Of<ILanguageServiceHost>();
 
-            Assert.Throws<ArgumentNullException>("unconfiguredProject", () => {
+            Assert.Throws<ArgumentNullException>("unconfiguredProject", () =>
+            {
                 new LanguageServiceErrorListProvider((UnconfiguredProject)null, host);
             });
         }
@@ -27,7 +31,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         public void Constructor_NullAsHost_ThrowsArgumentNull()
         {
             var project = UnconfiguredProjectFactory.Create();
-            Assert.Throws<ArgumentNullException>("host", () => {
+            Assert.Throws<ArgumentNullException>("host", () =>
+            {
                 new LanguageServiceErrorListProvider(project, (ILanguageServiceHost)null);
             });
         }
@@ -88,7 +93,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         {
             var provider = CreateInstance();
 
-            await Assert.ThrowsAsync<ArgumentNullException>("error", () => {
+            await Assert.ThrowsAsync<ArgumentNullException>("error", () =>
+            {
                 return provider.AddMessageAsync((TargetGeneratedError)null);
             });
         }
@@ -159,7 +165,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             var provider = CreateInstance(host);
             var task = CreateDefaultTask();
 
-            await Assert.ThrowsAsync<Exception>(() => {
+            await Assert.ThrowsAsync<Exception>(() =>
+            {
                 return provider.AddMessageAsync(task);
             });
         }
@@ -181,7 +188,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         public async Task AddMessageAsync_WarningTaskAsTask_PassesTP_NORMALAsPriority()
         {
             VSTASKPRIORITY? result = null;
-            var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) => {
+            var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) =>
+            {
                 result = nPriority;
             });
             var host = ILanguageServiceHostFactory.ImplementHostSpecificErrorReporter(() => reporter);
@@ -196,7 +204,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         public async Task AddMessageAsync_ErrorTaskAsTask_PassesTP_HIGHAsPriority()
         {
             VSTASKPRIORITY? result = null;
-            var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) => {
+            var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) =>
+            {
                 result = nPriority;
             });
             var host = ILanguageServiceHostFactory.ImplementHostSpecificErrorReporter(() => reporter);
@@ -211,7 +220,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         public async Task AddMessageAsync_CriticalBuildMessageTaskAsTask_PassesTP_LOWAsPriority()
         {
             VSTASKPRIORITY? result = null;
-            var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) => {
+            var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) =>
+            {
                 result = nPriority;
             });
             var host = ILanguageServiceHostFactory.ImplementHostSpecificErrorReporter(() => reporter);

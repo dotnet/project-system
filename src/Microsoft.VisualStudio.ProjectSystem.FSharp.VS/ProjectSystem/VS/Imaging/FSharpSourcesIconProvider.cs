@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
+
 using Microsoft.VisualStudio.Imaging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging

@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
     }
 
-    internal class JsonModelReader 
+    internal class JsonModelReader
     {
         public static M FromJson<T, M>(string jsonString) where T : IJsonModel<M>
         {

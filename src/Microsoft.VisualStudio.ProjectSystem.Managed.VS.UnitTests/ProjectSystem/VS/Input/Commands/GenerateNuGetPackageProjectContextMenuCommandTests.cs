@@ -2,8 +2,10 @@
 
 using System.Collections.Immutable;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem.Build;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands

@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.IntegrationTest.Utilities;
 using Microsoft.VisualStudio.IntegrationTest.Utilities.Common;
 using Microsoft.VisualStudio.IntegrationTest.Utilities.Input;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests

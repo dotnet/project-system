@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
@@ -27,10 +28,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             string caption,
             IProjectPropertiesContext itemContext,
             IPropertySheet propertySheet = null,
-            IRule browseObjectProperties = null, 
-            ProjectImageMoniker icon = null, 
-            ProjectImageMoniker expandedIcon = null, 
-            bool visible = true, 
+            IRule browseObjectProperties = null,
+            ProjectImageMoniker icon = null,
+            ProjectImageMoniker expandedIcon = null,
+            bool visible = true,
             ProjectTreeFlags? flags = default(ProjectTreeFlags?));
 
         /// <summary>

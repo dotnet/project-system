@@ -4,8 +4,11 @@ using System;
 using System.Collections;
 using System.ComponentModel.Composition;
 using System.Linq;
+
 using EnvDTE;
+
 using Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint;
+
 using VSLangProj;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
@@ -23,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 
         private readonly ActiveConfiguredProject<ConfiguredProject> _activeConfiguredProject;
         private readonly IProjectThreadingService _threadingService;
-        private readonly IProjectLockService _lockService;
+        private readonly IProjectAccessor _projectAccessor;
         private readonly VSLangProj.VSProject _vsProject;
         private readonly IUnconfiguredProjectVsServices _unconfiguredProjectVSServices;
         private readonly VisualBasicNamespaceImportsList _importsList;
@@ -36,20 +39,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             [Import(ExportContractNames.VsTypes.CpsVSProject)] VSLangProj.VSProject vsProject,
             IProjectThreadingService threadingService,
             ActiveConfiguredProject<ConfiguredProject> activeConfiguredProject,
-            IProjectLockService lockService,
+            IProjectAccessor projectAccessor,
             IUnconfiguredProjectVsServices unconfiguredProjectVSServices,
             VisualBasicNamespaceImportsList importsList)
         {
             Requires.NotNull(vsProject, nameof(vsProject));
             Requires.NotNull(threadingService, nameof(threadingService));
             Requires.NotNull(activeConfiguredProject, nameof(activeConfiguredProject));
-            Requires.NotNull(lockService, nameof(lockService));
+            Requires.NotNull(projectAccessor, nameof(projectAccessor));
             Requires.NotNull(unconfiguredProjectVSServices, nameof(unconfiguredProjectVSServices));
             Requires.NotNull(importsList, nameof(importsList));
 
             _vsProject = vsProject;
             _activeConfiguredProject = activeConfiguredProject;
-            _lockService = lockService;
+            _projectAccessor = projectAccessor;
             _threadingService = threadingService;
             _unconfiguredProjectVSServices = unconfiguredProjectVSServices;
             _importsList = importsList;
@@ -68,14 +71,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             if (!_importsList.IsPresent(bstrImport))
             {
-                _threadingService.ExecuteSynchronously(async () =>
+                _threadingService.ExecuteSynchronously(() =>
                 {
-                    using (var access = await _lockService.WriteLockAsync())
+                    return _projectAccessor.OpenProjectXmlForWriteAsync(_unconfiguredProjectVSServices.Project, project =>
                     {
-                        var project = await access.GetProjectAsync(ConfiguredProject).ConfigureAwait(true);
-                        await access.CheckoutAsync(project.Xml.ContainingProject.FullPath).ConfigureAwait(true);
                         project.AddItem(ImportItemTypeName, bstrImport);
-                    }
+                    });
                 });
 
                 OnImportAdded(bstrImport);
@@ -93,13 +94,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             if (intIndexPresent || stringIndexPresent)
             {
                 string importRemoved = null;
-                _threadingService.ExecuteSynchronously(async () =>
+                _threadingService.ExecuteSynchronously(() =>
                 {
-                    using (var access = await _lockService.WriteLockAsync())
+                    return _projectAccessor.OpenProjectForWriteAsync(ConfiguredProject, project =>
                     {
                         Microsoft.Build.Evaluation.ProjectItem importProjectItem = null;
-                        var project = await access.GetProjectAsync(ConfiguredProject).ConfigureAwait(true);
-                        await access.CheckoutAsync(project.Xml.ContainingProject.FullPath).ConfigureAwait(true);
                         if (index is string removeImport1)
                         {
                             importProjectItem = project.GetItems(ImportItemTypeName)
@@ -124,7 +123,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 
                         importRemoved = importProjectItem.EvaluatedInclude;
                         project.RemoveItem(importProjectItem);
-                    }
+                    });
                 });
 
                 OnImportRemoved(importRemoved);

@@ -9,11 +9,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// </summary>
     public interface IWritableLaunchSettings
     {
-        IWritableLaunchProfile  ActiveProfile { get; set; }        
+        IWritableLaunchProfile ActiveProfile { get; set; }
 
         List<IWritableLaunchProfile> Profiles { get; }
 
-        Dictionary<string, object>  GlobalSettings { get; }
+        Dictionary<string, object> GlobalSettings { get; }
 
         // Convert back to the immutable form
         ILaunchSettings ToLaunchSettings();

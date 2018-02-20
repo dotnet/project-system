@@ -6,16 +6,20 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Flavor;
 using Microsoft.VisualStudio.Shell.Interop;
-using Newtonsoft.Json;
-using Xunit;
+
 using Moq;
+
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+
+using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 {

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices

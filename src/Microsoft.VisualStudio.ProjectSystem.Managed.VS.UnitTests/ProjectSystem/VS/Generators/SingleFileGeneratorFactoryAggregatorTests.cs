@@ -1,8 +1,10 @@
 ﻿using System;
-using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
-using Xunit;
-using Microsoft.VisualStudio.Shell.Interop;
 using System.Collections.Generic;
+
+using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
+using Microsoft.VisualStudio.Shell.Interop;
+
+using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 {
@@ -102,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         public void SingleFileGeneratorFactoryAggregator_NoGenerators_ReturnsFail()
         {
             UnitTestHelper.IsRunningUnitTests = true;
-             var manager = CreateManagerForPath("");
+            var manager = CreateManagerForPath("");
             var serviceProvider = IServiceProviderFactory.ImplementGetService(type => manager);
 
             var integrationService = IVsUnconfiguredProjectIntegrationServiceFactory.ImplementProjectTypeGuid(PackageGuid);

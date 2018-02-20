@@ -1,8 +1,10 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
+
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
@@ -23,12 +25,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 originalItemSpec: "myOriginalItemSpec",
                 name: "myPath",
                 flags: flag,
-                version:"myVersion",
-                resolved:true,
+                version: "myVersion",
+                resolved: true,
                 isImplicit: false,
                 properties: properties,
                 isTopLevel: true,
-                isVisible:true,
+                isVisible: true,
                 dependenciesIDs: dependencyIDs);
 
             Assert.Equal("myProvider", model.ProviderType);

@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
         private static string GetDisplayPath(UnconfiguredProject project, ProjectItemIdentity item)
         {
             var linkPath = item.LinkPath;
-            
+
             if (!string.IsNullOrWhiteSpace(linkPath))
             {
                 // This is a linked file.
@@ -105,7 +105,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
                 return _orderedMap.TryGetValue(propertyContext.ItemName, out displayOrder);
             }
 
-            return propertyContext.Metadata.TryGetValue(FullPathProperty, out var fullPath) && 
+            return propertyContext.Metadata.TryGetValue(FullPathProperty, out var fullPath) &&
                 _orderedMap.TryGetValue(fullPath, out displayOrder);
         }
 

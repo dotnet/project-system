@@ -2,6 +2,7 @@
 
 using System.Threading;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -15,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly object _lock = new object();
         private AbstractProjectDynamicLoadInstance _instance;
 
-        protected AbstractProjectDynamicLoadComponent(JoinableTaskContextNode joinableTaskContextNode) 
+        protected AbstractProjectDynamicLoadComponent(JoinableTaskContextNode joinableTaskContextNode)
             : base(joinableTaskContextNode)
         {
         }
@@ -35,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             return instance.InitializeAsync();
         }
-                
+
         public Task UnloadAsync()
         {
             AbstractProjectDynamicLoadInstance instance = null;

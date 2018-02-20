@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.CodeAnalysis;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
@@ -84,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
         private IRenameStrategy GetStrategy(Project project, bool isCaseSensitive)
         {
-            IRenameStrategy[] strategies = new IRenameStrategy[] {
+            var strategies = new IRenameStrategy[] {
                 new SimpleRenameStrategy(_threadingService, _userNotificationServices, _environmentOptions, _roslynServices)
             };
 

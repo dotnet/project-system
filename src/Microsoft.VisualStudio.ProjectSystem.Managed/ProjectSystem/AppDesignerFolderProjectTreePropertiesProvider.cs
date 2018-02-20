@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
@@ -42,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public override string FolderImageKey
         {
-            get {  return ProjectImageKey.AppDesignerFolder; }
+            get { return ProjectImageKey.AppDesignerFolder; }
         }
 
         public ICollection<string> ProjectPropertiesRules
