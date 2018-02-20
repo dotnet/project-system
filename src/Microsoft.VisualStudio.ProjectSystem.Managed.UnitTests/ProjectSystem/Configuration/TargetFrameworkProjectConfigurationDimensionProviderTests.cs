@@ -14,21 +14,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     public class TargetFrameworkProjectConfigurationDimensionProviderTests
     {
         private const string ProjectXmlTFM =
-@"<Project Sdk=""Microsoft.NET.Sdk"">
+@"<Project>
   <PropertyGroup>
     <TargetFramework>netcoreapp1.0</TargetFramework>
   </PropertyGroup>
 </Project>";
 
         private const string ProjectXmlTFMs =
-@"<Project Sdk=""Microsoft.NET.Sdk"">
+@"<Project>
   <PropertyGroup>
     <TargetFrameworks>netcoreapp1.0;net45</TargetFrameworks>
   </PropertyGroup>
 </Project>";
 
         private const string ProjectXmlTFMAndTFMs =
-@"<Project Sdk=""Microsoft.NET.Sdk"">
+@"<Project>
   <PropertyGroup>
     <TargetFrameworks>netcoreapp1.0;net45</TargetFrameworks>
     <TargetFramework>netcoreapp1.0</TargetFramework>
@@ -39,13 +39,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         public async Task GetDefaultValuesForDimensionsAsync_TFM()
         {
             var project = ProjectRootElementFactory.Create(ProjectXmlTFM);
-            {
-                var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
-                var provider = new TargetFrameworkProjectConfigurationDimensionProvider(projectXmlAccessor);
-                var unconfiguredProject = UnconfiguredProjectFactory.Create();
-                var values = await provider.GetDefaultValuesForDimensionsAsync(unconfiguredProject);
-                Assert.Empty(values);
-            }
+            var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
+            var provider = new TargetFrameworkProjectConfigurationDimensionProvider(projectXmlAccessor);
+            var unconfiguredProject = UnconfiguredProjectFactory.Create();
+            var values = await provider.GetDefaultValuesForDimensionsAsync(unconfiguredProject);
+            Assert.Empty(values);
         }
 
         [Theory]
@@ -54,29 +52,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         public async Task GetDefaultValuesForDimensionsAsync_TFMs(string projectXml)
         {
             var project = ProjectRootElementFactory.Create(projectXml);
-            {
-                var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
-                var provider = new TargetFrameworkProjectConfigurationDimensionProvider(projectXmlAccessor);
-                var unconfiguredProject = UnconfiguredProjectFactory.Create();
-                var values = await provider.GetDefaultValuesForDimensionsAsync(unconfiguredProject);
-                Assert.Single(values);
-                var value = values.First();
-                Assert.Equal(ConfigurationGeneral.TargetFrameworkProperty, value.Key);
-                Assert.Equal("netcoreapp1.0", value.Value);
-            }
+            var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
+            var provider = new TargetFrameworkProjectConfigurationDimensionProvider(projectXmlAccessor);
+            var unconfiguredProject = UnconfiguredProjectFactory.Create();
+            var values = await provider.GetDefaultValuesForDimensionsAsync(unconfiguredProject);
+            Assert.Single(values);
+            var value = values.First();
+            Assert.Equal(ConfigurationGeneral.TargetFrameworkProperty, value.Key);
+            Assert.Equal("netcoreapp1.0", value.Value);
         }
 
         [Fact]
         public async Task GetProjectConfigurationDimensionsAsync_TFM()
         {
             var project = ProjectRootElementFactory.Create(ProjectXmlTFM);
-            {
-                var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
-                var provider = new TargetFrameworkProjectConfigurationDimensionProvider(projectXmlAccessor);
-                var unconfiguredProject = UnconfiguredProjectFactory.Create();
-                var values = await provider.GetProjectConfigurationDimensionsAsync(unconfiguredProject);
-                Assert.Empty(values);
-            }
+            var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
+            var provider = new TargetFrameworkProjectConfigurationDimensionProvider(projectXmlAccessor);
+            var unconfiguredProject = UnconfiguredProjectFactory.Create();
+            var values = await provider.GetProjectConfigurationDimensionsAsync(unconfiguredProject);
+            Assert.Empty(values);
         }
 
         [Theory]
@@ -85,19 +79,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         public async Task GetProjectConfigurationDimensionsAsync_TFMs(string projectXml)
         {
             var project = ProjectRootElementFactory.Create(projectXml);
-            {
-                var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
-                var provider = new TargetFrameworkProjectConfigurationDimensionProvider(projectXmlAccessor);
-                var unconfiguredProject = UnconfiguredProjectFactory.Create();
-                var values = await provider.GetProjectConfigurationDimensionsAsync(unconfiguredProject);
-                Assert.Single(values);
-                var value = values.First();
-                Assert.Equal(ConfigurationGeneral.TargetFrameworkProperty, value.Key);
-                string[] dimensionValues = value.Value.ToArray();
-                AssertEx.CollectionLength(dimensionValues, 2);
-                Assert.Equal("netcoreapp1.0", dimensionValues[0]);
-                Assert.Equal("net45", dimensionValues[1]);
-            }
+            var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
+            var provider = new TargetFrameworkProjectConfigurationDimensionProvider(projectXmlAccessor);
+            var unconfiguredProject = UnconfiguredProjectFactory.Create();
+            var values = await provider.GetProjectConfigurationDimensionsAsync(unconfiguredProject);
+            Assert.Single(values);
+            var value = values.First();
+            Assert.Equal(ConfigurationGeneral.TargetFrameworkProperty, value.Key);
+            string[] dimensionValues = value.Value.ToArray();
+            AssertEx.CollectionLength(dimensionValues, 2);
+            Assert.Equal("netcoreapp1.0", dimensionValues[0]);
+            Assert.Equal("net45", dimensionValues[1]);
         }
 
         [Theory]

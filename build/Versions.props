@@ -1,8 +1,8 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <VersionBase Condition="'$(UseVisualStudioVersion)' == 'true'">15.6.0</VersionBase>
-    <VersionBase Condition="'$(UseVisualStudioVersion)' != 'true'">2.6.0</VersionBase>
-    <PreReleaseVersionLabel>beta4</PreReleaseVersionLabel>
+    <VersionBase Condition="'$(UseVisualStudioVersion)' == 'true'">15.8.0</VersionBase>
+    <VersionBase Condition="'$(UseVisualStudioVersion)' != 'true'">2.8.0</VersionBase>
+    <PreReleaseVersionLabel>beta1</PreReleaseVersionLabel>
 
     <!-- Opt-in repo features -->
     <UsingToolVSSDK>true</UsingToolVSSDK>

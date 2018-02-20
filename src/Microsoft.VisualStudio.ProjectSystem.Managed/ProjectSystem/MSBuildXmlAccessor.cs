@@ -1,9 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.Build.Construction;
@@ -32,15 +30,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _fileSystem = fileSystem;
         }
 
-        public async Task<string> GetProjectXmlAsync()
-        {
-            using (var access = await _projectLockService.ReadLockAsync())
-            {
-                var projectXml = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
-                return projectXml.RawXml;
-            }
-        }
-
         public async Task<string> GetEvaluatedPropertyValue(UnconfiguredProject unconfiguredProject, string propertyName)
         {
             var configuredProject = await unconfiguredProject.GetSuggestedConfiguredProjectAsync().ConfigureAwait(false);
@@ -58,15 +47,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 await access.CheckoutAsync(_unconfiguredProject.FullPath).ConfigureAwait(true);
                 var msbuildProject = await access.GetProjectXmlAsync(_unconfiguredProject.FullPath).ConfigureAwait(false);
                 action.Invoke(msbuildProject);
-            }
-        }
-
-        public async Task<ICollection<(string evaluatedInclude, string metadataValue)>> GetItems(ConfiguredProject configuredProject, string itemType, string metadataName)
-        {
-            using (var access = await _projectLockService.ReadLockAsync())
-            {
-                var project = await access.GetProjectAsync(configuredProject).ConfigureAwait(true);
-                return project.GetItems(itemType: itemType).Select(i => (i.EvaluatedInclude, i.GetMetadataValue(metadataName))).ToArray();
             }
         }
     }

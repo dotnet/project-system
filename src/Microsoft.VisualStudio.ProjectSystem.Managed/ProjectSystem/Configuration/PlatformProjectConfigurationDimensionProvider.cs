@@ -59,12 +59,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// <summary>
         /// Adds a platform to the project.
         /// </summary>
-        /// <param name="unconfiguredProject">Unconfigured project for which the configuration change.</param>
+        /// <param name="project">Unconfigured project for which the configuration change.</param>
         /// <param name="platformName">Name of the new platform.</param>
         /// <returns>A task for the async operation.</returns>
-        private async Task OnPlatformAddedAsync(UnconfiguredProject unconfiguredProject, string platformName)
+        private async Task OnPlatformAddedAsync(UnconfiguredProject project, string platformName)
         {
-            string evaluatedPropertyValue = await GetPropertyValue(unconfiguredProject).ConfigureAwait(false);
+            string evaluatedPropertyValue = await GetPropertyValue(project).ConfigureAwait(false);
             await ProjectXmlAccessor.ExecuteInWriteLock(msbuildProject =>
             {
                 BuildUtilities.AppendPropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, platformName);
@@ -74,12 +74,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// <summary>
         /// Removes a platform from the project.
         /// </summary>
-        /// <param name="unconfiguredProject">Unconfigured project for which the configuration change.</param>
+        /// <param name="project">Unconfigured project for which the configuration change.</param>
         /// <param name="platformName">Name of the deleted platform.</param>
         /// <returns>A task for the async operation.</returns>
-        private async Task OnPlatformDeletedAsync(UnconfiguredProject unconfiguredProject, string platformName)
+        private async Task OnPlatformDeletedAsync(UnconfiguredProject project, string platformName)
         {
-            string evaluatedPropertyValue = await GetPropertyValue(unconfiguredProject).ConfigureAwait(false);
+            string evaluatedPropertyValue = await GetPropertyValue(project).ConfigureAwait(false);
             await ProjectXmlAccessor.ExecuteInWriteLock(msbuildProject =>
             {
                 BuildUtilities.RemovePropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, platformName);

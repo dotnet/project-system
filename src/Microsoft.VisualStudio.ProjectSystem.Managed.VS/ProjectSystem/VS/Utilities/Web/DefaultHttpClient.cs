@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
         private HttpClient CreateClient()
         {
-            HttpClient client = new HttpClient();
+            var client = new HttpClient();
             client.DefaultRequestHeaders.Remove("Connection");
             return client;
         }
