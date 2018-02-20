@@ -14,7 +14,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public void Constructor_NullAsProjectProperties_ThrowsArgumentNull()
         {
-            Assert.Throws<ArgumentNullException>("projectProperties", () => {
+            Assert.Throws<ArgumentNullException>("projectProperties", () =>
+            {
                 new CSharpProjectConfigurationProperties(null, null);
             });
         }

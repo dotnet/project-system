@@ -20,7 +20,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var dteServices = IDteServicesFactory.Create();
             var properties = ProjectPropertiesFactory.CreateEmpty();
 
-            Assert.Throws<ArgumentNullException>("projectVsServices", () => {
+            Assert.Throws<ArgumentNullException>("projectVsServices", () =>
+            {
                 new CreateFileFromTemplateService((IUnconfiguredProjectVsServices)null, dteServices, properties);
             });
         }
@@ -31,7 +32,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var projectVsServices = IUnconfiguredProjectVsServicesFactory.Create();
             var properties = ProjectPropertiesFactory.CreateEmpty();
 
-            Assert.Throws<ArgumentNullException>("dteServices", () => {
+            Assert.Throws<ArgumentNullException>("dteServices", () =>
+            {
                 new CreateFileFromTemplateService(projectVsServices, (IDteServices)null, properties);
             });
         }
@@ -42,7 +44,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var projectVsServices = IUnconfiguredProjectVsServicesFactory.Create();
             var dteServices = IDteServicesFactory.Create();
 
-            Assert.Throws<ArgumentNullException>("properties", () => {
+            Assert.Throws<ArgumentNullException>("properties", () =>
+            {
                 new CreateFileFromTemplateService(projectVsServices, dteServices, (ProjectProperties)null);
             });
         }
@@ -103,13 +106,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             string fileName = "Settings.settings";
 
             var hierarchy = IVsHierarchyFactory.Create();
-            var solution = SolutionFactory.CreateWithGetProjectItemTemplate((templateFile, language) => 
+            var solution = SolutionFactory.CreateWithGetProjectItemTemplate((templateFile, language) =>
             {
                 Assert.Equal(templateName, templateFile);
                 return templateFilePath;
             });
 
-            
+
             var vsProject = (IVsProject4)IVsHierarchyFactory.Create();
             vsProject.ImplementAddItemWithSpecific((itemId, itemOperation, itemName, cOpen, files, result) =>
             {
@@ -124,7 +127,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             });
 
             var dteServices = IDteServicesFactory.ImplementSolution(() => solution);
-            
+
             var projectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(() => hierarchy, () => vsProject);
             var properties = CreateProperties();
             var service = new CreateFileFromTemplateService(projectVsServices, dteServices, properties);

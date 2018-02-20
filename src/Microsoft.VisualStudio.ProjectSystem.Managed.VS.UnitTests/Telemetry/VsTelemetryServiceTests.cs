@@ -15,7 +15,8 @@ namespace Microsoft.VisualStudio.Telemetry
         {
             var service = CreateInstance();
 
-            Assert.Throws<ArgumentNullException>("eventName", () => {
+            Assert.Throws<ArgumentNullException>("eventName", () =>
+            {
                 service.PostProperty(null, null, null);
             });
         }
@@ -25,7 +26,8 @@ namespace Microsoft.VisualStudio.Telemetry
         {
             var service = CreateInstance();
 
-            Assert.Throws<ArgumentException>("eventName", () => {
+            Assert.Throws<ArgumentException>("eventName", () =>
+            {
                 service.PostProperty(string.Empty, null, null);
             });
         }
@@ -35,7 +37,8 @@ namespace Microsoft.VisualStudio.Telemetry
         {
             var service = CreateInstance();
 
-            Assert.Throws<ArgumentNullException>("propertyName", () => {
+            Assert.Throws<ArgumentNullException>("propertyName", () =>
+            {
                 service.PostProperty("event1", null, null);
             });
         }
@@ -45,7 +48,8 @@ namespace Microsoft.VisualStudio.Telemetry
         {
             var service = CreateInstance();
 
-            Assert.Throws<ArgumentException>("propertyName", () => {
+            Assert.Throws<ArgumentException>("propertyName", () =>
+            {
                 service.PostProperty("event1", string.Empty, null);
             });
         }
@@ -55,7 +59,8 @@ namespace Microsoft.VisualStudio.Telemetry
         {
             var service = CreateInstance();
 
-            Assert.Throws<ArgumentNullException>("propertyValue", () => {
+            Assert.Throws<ArgumentNullException>("propertyValue", () =>
+            {
                 service.PostProperty("event1", "propName", null);
             });
         }
@@ -65,7 +70,8 @@ namespace Microsoft.VisualStudio.Telemetry
         {
             var service = CreateInstance();
 
-            Assert.Throws<ArgumentNullException>("eventName", () => {
+            Assert.Throws<ArgumentNullException>("eventName", () =>
+            {
                 service.PostProperties(null, null);
             });
         }
@@ -75,7 +81,8 @@ namespace Microsoft.VisualStudio.Telemetry
         {
             var service = CreateInstance();
 
-            Assert.Throws<ArgumentException>("eventName", () => {
+            Assert.Throws<ArgumentException>("eventName", () =>
+            {
                 service.PostProperties(string.Empty, null);
             });
         }
@@ -85,7 +92,8 @@ namespace Microsoft.VisualStudio.Telemetry
         {
             var service = CreateInstance();
 
-            Assert.Throws<ArgumentNullException>("properties", () => {
+            Assert.Throws<ArgumentNullException>("properties", () =>
+            {
                 service.PostProperties("event1", null);
             });
         }
@@ -95,7 +103,8 @@ namespace Microsoft.VisualStudio.Telemetry
         {
             var service = CreateInstance();
 
-            Assert.Throws<ArgumentException>("properties", () => {
+            Assert.Throws<ArgumentException>("properties", () =>
+            {
                 service.PostProperties("event1", new List<(string propertyName, object propertyValue)>());
             });
         }

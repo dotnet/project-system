@@ -120,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public async Task GetActiveConfiguredProjects__WhenNoDimensionProviders_LoadsAndReturnsConfiguredProject(string activeConfiguration, string configurations)
         {
             var provider = CreateInstance(activeConfiguration, configurations);
-            
+
             var result = await provider.GetActiveConfiguredProjectsAsync();
 
             Assert.Single(result.Objects);
@@ -135,7 +135,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var configurationsService = IProjectConfigurationsServiceFactory.ImplementGetKnownProjectConfigurationsAsync(configs.ToImmutableHashSet());
             var activeConfiguredProjectProvider = IActiveConfiguredProjectProviderFactory.ImplementActiveProjectConfiguration(() => activeConfig);
             var services = IUnconfiguredProjectServicesFactory.Create(activeConfiguredProjectProvider: activeConfiguredProjectProvider, projectConfigurationsService: configurationsService);
-            var project = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync((projectConfiguration) => {
+            var project = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync((projectConfiguration) =>
+            {
                 return Task.FromResult(ConfiguredProjectFactory.ImplementProjectConfiguration(projectConfiguration));
             });
 

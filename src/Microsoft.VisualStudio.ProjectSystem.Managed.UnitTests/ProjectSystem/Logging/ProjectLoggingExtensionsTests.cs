@@ -12,7 +12,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         [Fact]
         public void BeginBatch_NullAsLogger_ThrowsArgumentNull()
         {
-            Assert.Throws<ArgumentNullException>("logger", () => {
+            Assert.Throws<ArgumentNullException>("logger", () =>
+            {
 
                 ProjectLoggerExtensions.BeginBatch((IProjectLogger)null);
             });
@@ -27,7 +28,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
             var logger = new ProjectLogger();
             var batch = ProjectLoggerExtensions.BeginBatch(logger);
 
-            Assert.Throws<ArgumentOutOfRangeException>("value", () => { 
+            Assert.Throws<ArgumentOutOfRangeException>("value", () =>
+            {
 
                 batch.IndentLevel = indentLevel;
             });
@@ -57,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         public void BeginBatch_IsEnabled_ReturnsLoggerIsEnabled(bool isEnabled)
         {
             var logger = new ProjectLogger() { IsEnabled = isEnabled };
-            
+
             var batch = ProjectLoggerExtensions.BeginBatch(logger);
 
             Assert.Equal(batch.IsEnabled, logger.IsEnabled);
@@ -104,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
             }
 
             // NOTE: No trailing new line, as the logger itself should be adding it
-            Assert.Equal("Line1\r\n    Line2\r\nLine3", logger.Text, ignoreLineEndingDifferences:true);
+            Assert.Equal("Line1\r\n    Line2\r\nLine3", logger.Text, ignoreLineEndingDifferences: true);
         }
 
         private class ProjectLogger : IProjectLogger

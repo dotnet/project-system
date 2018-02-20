@@ -19,47 +19,47 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public LaunchSettings(IEnumerable<ILaunchProfile> profiles, IDictionary<string, object> globalSettings, string activeProfile = null)
         {
             Profiles = ImmutableList<ILaunchProfile>.Empty;
-            foreach(var profile in profiles)
+            foreach (var profile in profiles)
             {
                 Profiles = Profiles.Add(new LaunchProfile(profile));
             }
 
-            GlobalSettings = globalSettings == null? ImmutableDictionary<string, object>.Empty : globalSettings.ToImmutableDictionary();
+            GlobalSettings = globalSettings == null ? ImmutableDictionary<string, object>.Empty : globalSettings.ToImmutableDictionary();
             _activeProfileName = activeProfile;
         }
 
         public LaunchSettings(LaunchSettingsData settingsData, string activeProfile = null)
         {
             Profiles = ImmutableList<ILaunchProfile>.Empty;
-            foreach(var profile in settingsData.Profiles)
+            foreach (var profile in settingsData.Profiles)
             {
                 Profiles = Profiles.Add(new LaunchProfile(profile));
             }
-            
-            GlobalSettings = settingsData.OtherSettings == null? ImmutableDictionary<string, object>.Empty : settingsData.OtherSettings.ToImmutableDictionary();
+
+            GlobalSettings = settingsData.OtherSettings == null ? ImmutableDictionary<string, object>.Empty : settingsData.OtherSettings.ToImmutableDictionary();
             _activeProfileName = activeProfile;
         }
 
         public LaunchSettings(IWritableLaunchSettings settings)
         {
             Profiles = ImmutableList<ILaunchProfile>.Empty;
-            foreach(var profile in settings.Profiles)
+            foreach (var profile in settings.Profiles)
             {
                 Profiles = Profiles.Add(new LaunchProfile(profile));
             }
-            
+
             // For global settings we want to make new copies of each entry so that the snapshot remains immutable. If the object implements 
             // ICloneable that is used, otherwise, it is serialized back to json, and a new object rehydrated from that
             GlobalSettings = ImmutableDictionary<string, object>.Empty;
-            foreach(var kvp in settings.GlobalSettings)
+            foreach (var kvp in settings.GlobalSettings)
             {
-                if(kvp.Value is ICloneable clonableObject)
+                if (kvp.Value is ICloneable clonableObject)
                 {
                     GlobalSettings = GlobalSettings.Add(kvp.Key, clonableObject.Clone());
                 }
                 else
                 {
-                    string jsonString = JsonConvert.SerializeObject(kvp.Value, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore});
+                    string jsonString = JsonConvert.SerializeObject(kvp.Value, Formatting.Indented, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
                     object clonedObject = JsonConvert.DeserializeObject(jsonString, kvp.Value.GetType());
                     GlobalSettings = GlobalSettings.Add(kvp.Key, clonedObject);
                 }
@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             Profiles = ImmutableList<ILaunchProfile>.Empty;
             GlobalSettings = ImmutableDictionary<string, object>.Empty;
-        }        
+        }
 
         public ImmutableList<ILaunchProfile> Profiles { get; }
 
@@ -85,27 +85,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         private ILaunchProfile _activeProfile;
-        public ILaunchProfile ActiveProfile 
-        { 
+        public ILaunchProfile ActiveProfile
+        {
             get
-            {   
-                if(_activeProfile == null)
+            {
+                if (_activeProfile == null)
                 {
                     // If no active profile specifed, or the active one is no longer valid, assume the first one
-                    if(!string.IsNullOrWhiteSpace(_activeProfileName))
+                    if (!string.IsNullOrWhiteSpace(_activeProfileName))
                     {
                         _activeProfile = Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, _activeProfileName));
                     }
 
-                    if(_activeProfile == null)
+                    if (_activeProfile == null)
                     {
-                        _activeProfile =  Profiles.Count > 0 ? Profiles[0] : null;
+                        _activeProfile = Profiles.Count > 0 ? Profiles[0] : null;
                     }
                 }
 
                 return _activeProfile;
             }
-         }
+        }
     }
 
     internal static class LaunchSettingsExtension

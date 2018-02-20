@@ -172,8 +172,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 
         [Fact]
         public void ResolveAssemblyPathInTargetFx_ComReference_SetsResolvedAssemblyPathsToZero()
-        {   
-            var reference = Reference3Factory.CreateAssemblyReference("mscorlib", "1.0.0.0", type: prjReferenceType.prjReferenceTypeActiveX, refType:__PROJECTREFERENCETYPE.PROJREFTYPE_ACTIVEX);
+        {
+            var reference = Reference3Factory.CreateAssemblyReference("mscorlib", "1.0.0.0", type: prjReferenceType.prjReferenceTypeActiveX, refType: __PROJECTREFERENCETYPE.PROJREFTYPE_ACTIVEX);
 
             var resolution = CreateInstance(reference);
 

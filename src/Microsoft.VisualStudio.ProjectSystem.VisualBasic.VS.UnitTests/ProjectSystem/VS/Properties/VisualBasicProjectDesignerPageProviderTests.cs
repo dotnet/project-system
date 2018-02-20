@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
                VisualBasicProjectDesignerPage.Compile,
                VisualBasicProjectDesignerPage.Package,
                VisualBasicProjectDesignerPage.References,
-               VisualBasicProjectDesignerPage.Debug               
+               VisualBasicProjectDesignerPage.Debug
             );
 
             Assert.Equal(expected, result);

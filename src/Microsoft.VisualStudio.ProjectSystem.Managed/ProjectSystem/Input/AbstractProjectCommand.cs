@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Input
         {
             _commandIds = new Lazy<long[]>(() => GetCommandIds(this));
         }
-        
+
         public Task<CommandStatusResult> GetCommandStatusAsync(IImmutableSet<IProjectTree> nodes, long commandId, bool focused, string commandText, CommandStatus progressiveStatus)
         {
             Requires.NotNull(nodes, nameof(nodes));

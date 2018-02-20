@@ -15,11 +15,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.SpecialFilesProviders
         [Fact]
         public async Task GetFiles_WhenUnderlyingGetFilesReturnsOK_ReturnsFileName()
         {
-            var specialFiles = IVsProjectSpecialFilesFactory.ImplementGetFile((int fileId, uint flags, out uint itemId, out string fileName) => {
+            var specialFiles = IVsProjectSpecialFilesFactory.ImplementGetFile((int fileId, uint flags, out uint itemId, out string fileName) =>
+            {
                 itemId = 0;
                 fileName = "FileName";
                 return VSConstants.S_OK;
-                });
+            });
 
             var manager = CreateInstance(specialFiles);
 
@@ -31,7 +32,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.SpecialFilesProviders
         [Fact]
         public async Task GetFiles_WhenUnderlyingGetFilesReturnsNotImpl_ReturnsNull()
         {
-            var specialFiles = IVsProjectSpecialFilesFactory.ImplementGetFile((int fileId, uint flags, out uint itemId, out string fileName) => {
+            var specialFiles = IVsProjectSpecialFilesFactory.ImplementGetFile((int fileId, uint flags, out uint itemId, out string fileName) =>
+            {
                 itemId = 0;
                 fileName = "FileName";
                 return VSConstants.E_NOTIMPL;
@@ -47,7 +49,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.SpecialFilesProviders
         [Fact]
         public async Task GetFiles_WhenUnderlyingGetFilesReturnsHResult_Throws()
         {
-            var specialFiles = IVsProjectSpecialFilesFactory.ImplementGetFile((int fileId, uint flags, out uint itemId, out string fileName) => {
+            var specialFiles = IVsProjectSpecialFilesFactory.ImplementGetFile((int fileId, uint flags, out uint itemId, out string fileName) =>
+            {
                 itemId = 0;
                 fileName = "FileName";
                 return VSConstants.E_OUTOFMEMORY;
@@ -55,7 +58,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.SpecialFilesProviders
 
             var manager = CreateInstance(specialFiles);
 
-            await Assert.ThrowsAsync<OutOfMemoryException>(() => {
+            await Assert.ThrowsAsync<OutOfMemoryException>(() =>
+            {
                 return manager.GetFileAsync(SpecialFiles.AppConfig, SpecialFileFlags.CheckoutIfExists);
             });
         }

@@ -12,7 +12,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Fact]
         public void Constructor_NullAsUnconfiguredProject_ThrowsArgumentNull()
         {
-            Assert.Throws<ArgumentNullException>("unconfiguredProject", () => {
+            Assert.Throws<ArgumentNullException>("unconfiguredProject", () =>
+            {
 
                 new VisualBasicProjectGuidProvider((UnconfiguredProject)null);
             });

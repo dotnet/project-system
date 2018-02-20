@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             var doc = XDocument.Parse(projectFile);
             FSharpProjectSelector.GetProjectFactoryGuid(doc, out var resultGuid);
 
-            Assert.Equal(expectedGuid, resultGuid.ToString(), ignoreCase:true);
+            Assert.Equal(expectedGuid, resultGuid.ToString(), ignoreCase: true);
         }
     }
 }

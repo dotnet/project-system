@@ -14,9 +14,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         bool HasChildren(string projectPath, IDependency dependency);
 
         void BuildGraph(
-            IGraphContext graphContext, 
-            string projectPath, 
-            IDependency dependency, 
+            IGraphContext graphContext,
+            string projectPath,
+            IDependency dependency,
             GraphNode dependencyGraphNode,
             ITargetedDependenciesSnapshot targetedSnapshot);
 

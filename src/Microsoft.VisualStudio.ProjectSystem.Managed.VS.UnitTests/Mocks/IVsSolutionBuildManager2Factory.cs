@@ -21,9 +21,10 @@ namespace Microsoft.VisualStudio.Shell.Interop
 
             if (hierarchyToBuild != null)
             {
-                Func<int> onBuildStartedWithReturn = () => {
+                Func<int> onBuildStartedWithReturn = () =>
+                {
                     solutionEventsListener.UpdateSolution_Begin(It.IsAny<int>());
-                    
+
                     if (cancelBuild)
                     {
                         solutionEventsListener.UpdateSolution_Cancel();

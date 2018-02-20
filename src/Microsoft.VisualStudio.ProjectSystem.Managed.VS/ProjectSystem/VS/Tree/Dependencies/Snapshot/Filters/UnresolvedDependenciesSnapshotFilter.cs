@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         public override IDependency BeforeAdd(
             string projectPath,
             ITargetFramework targetFramework,
-            IDependency dependency, 
+            IDependency dependency,
             ImmutableDictionary<string, IDependency>.Builder worldBuilder,
             ImmutableHashSet<IDependency>.Builder topLevelBuilder,
             Dictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviders,

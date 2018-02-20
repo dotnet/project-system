@@ -25,12 +25,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 originalItemSpec: "myOriginalItemSpec",
                 name: "myPath",
                 flags: flag,
-                version:"myVersion",
-                resolved:true,
+                version: "myVersion",
+                resolved: true,
                 isImplicit: false,
                 properties: properties,
                 isTopLevel: true,
-                isVisible:true,
+                isVisible: true,
                 dependenciesIDs: dependencyIDs);
 
             Assert.Equal("myProvider", model.ProviderType);

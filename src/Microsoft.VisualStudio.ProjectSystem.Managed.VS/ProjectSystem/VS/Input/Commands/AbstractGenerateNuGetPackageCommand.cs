@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             UnconfiguredProject = unconfiguredProject;
             _threadingService = threadingService;
             _serviceProvider = serviceProvider;
-            _generatePackageOnBuildPropertyProvider = generatePackageOnBuildPropertyProvider;            
+            _generatePackageOnBuildPropertyProvider = generatePackageOnBuildPropertyProvider;
         }
 
         protected UnconfiguredProject UnconfiguredProject { get; }

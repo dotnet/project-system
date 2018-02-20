@@ -12,7 +12,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public void Constructor_GuidEmptyAsPageGuid_ThrowsArgumentException()
         {
-            Assert.Throws<ArgumentException>("pageGuid", () => {
+            Assert.Throws<ArgumentException>("pageGuid", () =>
+            {
 
                 new ProjectDesignerPageMetadata(Guid.Empty, 0, hasConfigurationCondition: false);
             });

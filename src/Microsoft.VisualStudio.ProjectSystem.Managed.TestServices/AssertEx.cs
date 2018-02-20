@@ -12,7 +12,8 @@ namespace Xunit
             Action<T>[] lengthArray = new Action<T>[length];
             for (int i = 0; i < length; i++)
             {
-                lengthArray[i] = delegate { };
+                lengthArray[i] = delegate
+                { };
             }
             Assert.Collection(collection, lengthArray);
         }

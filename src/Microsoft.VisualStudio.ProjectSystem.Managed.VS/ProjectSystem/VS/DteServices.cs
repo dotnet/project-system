@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Requires.NotNull(projectVsServices, nameof(projectVsServices));
 
             _serviceProvider = serviceProvider;
-            _projectVsServices = projectVsServices;            
+            _projectVsServices = projectVsServices;
         }
 
         public DTE2 Dte

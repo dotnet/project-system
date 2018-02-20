@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio
                 {
                     var tasks = new Task[invocationList.Length];
 
-                    for (int i = 0;  i < invocationList.Length; i++)
+                    for (int i = 0; i < invocationList.Length; i++)
                     {
                         var asyncHandler = (AsyncEventHandler)invocationList[i];
                         tasks[i] = asyncHandler(sender, e);

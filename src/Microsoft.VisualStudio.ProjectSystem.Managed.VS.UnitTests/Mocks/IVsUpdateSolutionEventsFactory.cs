@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
             solutionEventsListener.Setup(b => b.UpdateSolution_Done(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()))
                     .Callback(() => onUpdateSolutionDone?.Invoke())
                     .Returns(VSConstants.S_OK);
-            
+
             return solutionEventsListener.Object;
         }
     }

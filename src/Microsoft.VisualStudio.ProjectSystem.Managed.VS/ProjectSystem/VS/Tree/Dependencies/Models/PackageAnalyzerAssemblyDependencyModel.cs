@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             bool resolved,
             IImmutableDictionary<string, string> properties,
             IEnumerable<string> dependenciesIDs)
-            : base(providerType, path, originalItemSpec, flags, resolved, isImplicit:false, properties:properties)
+            : base(providerType, path, originalItemSpec, flags, resolved, isImplicit: false, properties: properties)
         {
             Requires.NotNullOrEmpty(name, nameof(name));
 
@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             else
             {
                 Priority = Dependency.UnresolvedReferenceNodePriority;
-            }            
+            }
         }
 
         private string _id;

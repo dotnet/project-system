@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
-    internal class FSharpBuildOptions :BuildOptions
+    internal class FSharpBuildOptions : BuildOptions
     {
         public FSharpBuildOptions(ImmutableArray<CommandLineSourceFile> sourceFiles,
                                   ImmutableArray<CommandLineSourceFile> additionalFiles,

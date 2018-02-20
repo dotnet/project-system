@@ -15,8 +15,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     {
         public int MaxCount { get; protected set; }
 
-        public DynamicMenuCommand(CommandID id, int maxCount) 
-            : base(ExecHandler, delegate { }, QueryStatusHandler, id)
+        public DynamicMenuCommand(CommandID id, int maxCount)
+            : base(ExecHandler, delegate
+            { }, QueryStatusHandler, id)
         {
             MaxCount = maxCount;
         }
@@ -70,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         /// basic validation before calling the commands QueryStatusCommand to update
         /// its state
         /// </summary>
-        protected static  void ExecHandler(object sender, EventArgs e)
+        protected static void ExecHandler(object sender, EventArgs e)
         {
             var command = sender as DynamicMenuCommand;
             if (command == null)
@@ -82,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             if (cmdIndex >= 0 && cmdIndex < command.MaxCount)
             {
                 // Only return if command was handled
-                if(command.ExecCommand(cmdIndex, e))
+                if (command.ExecCommand(cmdIndex, e))
                 {
                     return;
                 }
@@ -110,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             if (cmdIndex >= 0 && cmdIndex < command.MaxCount)
             {
                 // Only return if command was handled
-                if(command.QueryStatusCommand(cmdIndex, e))
+                if (command.QueryStatusCommand(cmdIndex, e))
                 {
                     // We want to make sure to clear the matched commandid.
                     command.MatchedCommandId = 0;

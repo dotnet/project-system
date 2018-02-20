@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 "nu1002",
                 "myMessage",
                 flags: flag,
-                isVisible:true,
+                isVisible: true,
                 properties: properties);
 
             Assert.Equal("myProvider", model.ProviderType);

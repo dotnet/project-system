@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             : base(providerType, path, originalItemSpec, flags, resolved, isImplicit, properties)
         {
             Requires.NotNullOrEmpty(name, nameof(name));
-            
+
             Name = name;
             Version = version;
             Caption = string.IsNullOrEmpty(version) ? name : $"{name} ({version})";

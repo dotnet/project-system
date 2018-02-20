@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     string ruleName = handler.evaluationRuleName;
 
                     WriteRuleHeader(logger, ruleName);
-                    
+
                     IProjectChangeDescription projectChange = update.Value.ProjectChanges[ruleName];
                     if (projectChange.Difference.AnyChanges)
                     {

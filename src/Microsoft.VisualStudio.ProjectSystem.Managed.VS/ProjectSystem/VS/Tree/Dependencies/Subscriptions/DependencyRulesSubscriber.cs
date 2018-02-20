@@ -36,9 +36,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 return DependencyRuleHandlers;
             }
         }
-       
+
         protected override DependenciesRuleChangeContext CreateRuleChangeContext(
-            ITargetFramework target, 
+            ITargetFramework target,
             IProjectCatalogSnapshot catalogs)
         {
             return new DependenciesRuleChangeContext(target, catalogs);

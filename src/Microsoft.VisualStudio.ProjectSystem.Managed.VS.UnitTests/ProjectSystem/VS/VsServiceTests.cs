@@ -14,7 +14,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             var threadingService = IProjectThreadingServiceFactory.Create();
 
-            Assert.Throws<ArgumentNullException>("serviceProvider", () => {
+            Assert.Throws<ArgumentNullException>("serviceProvider", () =>
+            {
                 return new VsService<string, string>((IServiceProvider)null, threadingService);
             });
         }
@@ -24,7 +25,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             var serviceProvider = SVsServiceProviderFactory.Create();
 
-            Assert.Throws<ArgumentNullException>("threadingService", () => {
+            Assert.Throws<ArgumentNullException>("threadingService", () =>
+            {
                 return new VsService<string, string>(serviceProvider, (IProjectThreadingService)null);
             });
         }
@@ -36,7 +38,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             var service = CreateInstance<string, string>(threadingService: threadingService);
 
-            Assert.Throws<InvalidOperationException>(() => {
+            Assert.Throws<InvalidOperationException>(() =>
+            {
                 var value = service.Value;
             });
         }
@@ -50,7 +53,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var service = CreateInstance<string, string>(serviceProvider: serviceProvider, threadingService: threadingService);
 
             // We don't really care about the exception, it's an assertion
-            Assert.ThrowsAny<Exception>(() => {
+            Assert.ThrowsAny<Exception>(() =>
+            {
                 var value = service.Value;
             });
         }
@@ -61,7 +65,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             object input = new object();
 
             var threadingService = IProjectThreadingServiceFactory.ImplementVerifyOnUIThread(() => { });
-            var serviceProvider = IServiceProviderFactory.ImplementGetService(type => {
+            var serviceProvider = IServiceProviderFactory.ImplementGetService(type =>
+            {
                 if (type == typeof(string))
                     return input;
 
@@ -80,7 +85,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public void Value_DoesNotCache()
         {
             var threadingService = IProjectThreadingServiceFactory.ImplementVerifyOnUIThread(() => { });
-            var serviceProvider = IServiceProviderFactory.ImplementGetService(type => {
+            var serviceProvider = IServiceProviderFactory.ImplementGetService(type =>
+            {
                 return new object();
             });
 

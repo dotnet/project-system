@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public override string FolderImageKey
         {
-            get {  return ProjectImageKey.AppDesignerFolder; }
+            get { return ProjectImageKey.AppDesignerFolder; }
         }
 
         public ICollection<string> ProjectPropertiesRules

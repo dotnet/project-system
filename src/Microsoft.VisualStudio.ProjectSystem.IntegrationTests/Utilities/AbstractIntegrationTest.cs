@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
             VisualStudio.WaitForNoErrorsInErrorList();
         }
 
-        public void Dispose() 
+        public void Dispose()
             => _visualStudioContext.Dispose();
 
         protected void Wait(double seconds)

@@ -19,12 +19,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var configurationGroups = IConfigurationGroupFactory.CreateFromConfigurationNames(configurationNames);
 
             var results = new List<string>();
-            var project = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync(configuration =>  
+            var project = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync(configuration =>
             {
                 results.Add(configuration.Name);
                 return Task.FromResult<ConfiguredProject>(null);
             });
-            
+
             var loader = CreateInstance(project, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source);
             await loader.InitializeAsync();
 
@@ -40,13 +40,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var tasksService = IUnconfiguredProjectTasksServiceFactory.CreateWithUnloadedProject<ConfiguredProject>();
 
             int callCount = 0;
-            UnconfiguredProject project = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync(configuration => {
+            UnconfiguredProject project = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync(configuration =>
+            {
 
                 callCount++;
                 return Task.FromResult<ConfiguredProject>(null);
             });
 
-            var loader = CreateInstance(project, tasksService, out ProjectValueDataSource <IConfigurationGroup<ProjectConfiguration>> source);
+            var loader = CreateInstance(project, tasksService, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source);
             await loader.InitializeAsync();
 
             var configurationGroups = IConfigurationGroupFactory.CreateFromConfigurationNames("Debug|AnyCPU");
@@ -62,7 +63,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public async Task InitializeAsync_CanNotInitializeTwice()
         {
             var results = new List<string>();
-            var project = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync(configuration => {
+            var project = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync(configuration =>
+            {
 
                 results.Add(configuration.Name);
                 return Task.FromResult<ConfiguredProject>(null);
@@ -97,7 +99,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public async Task Dispose_WhenInitialized_DisposesSubscription()
         {
             int callCount = 0;
-            UnconfiguredProject project = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync(configuration => {
+            UnconfiguredProject project = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync(configuration =>
+            {
 
                 callCount++;
                 return Task.FromResult<ConfiguredProject>(null);
@@ -108,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             loader.Dispose();
 
             var configurationGroups = IConfigurationGroupFactory.CreateFromConfigurationNames("Debug|AnyCPU");
-            
+
             // Change the active configurations
             await source.SendAndCompleteAsync(configurationGroups, loader.TargetBlock);
 

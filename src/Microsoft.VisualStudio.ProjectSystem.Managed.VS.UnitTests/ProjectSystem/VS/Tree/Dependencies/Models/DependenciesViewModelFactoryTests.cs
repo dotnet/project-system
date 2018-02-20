@@ -68,14 +68,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 }", icon: KnownMonikers.AboutBox);
 
             var subTreeProvider1 = IProjectDependenciesSubTreeProviderFactory.Implement(
-                providerType: "MyProvider1", 
+                providerType: "MyProvider1",
                 createRootDependencyNode: dependency);
             var subTreeProvider2 = IProjectDependenciesSubTreeProviderFactory.Implement(
                 providerType: "MyProvider2");
 
             var factory = new TestableDependenciesViewModelFactory(project, new[] { subTreeProvider1, subTreeProvider2 });
 
-            var result = factory.CreateRootViewModel("MyProvider1", hasUnresolvedDependency:false);
+            var result = factory.CreateRootViewModel("MyProvider1", hasUnresolvedDependency: false);
 
             Assert.NotNull(result);
             Assert.Equal("ZzzDependencyRoot", result.Caption);
@@ -97,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             public TestableDependenciesViewModelFactory(UnconfiguredProject project, IEnumerable<IProjectDependenciesSubTreeProvider> providers)
                 : base(project)
             {
-                foreach(var provider in providers)
+                foreach (var provider in providers)
                 {
                     SubTreeProviders.Add(new Lazy<IProjectDependenciesSubTreeProvider, IOrderPrecedenceMetadataView>(
                         () => { return provider; }, new TestPrecedenceMetadataView()));

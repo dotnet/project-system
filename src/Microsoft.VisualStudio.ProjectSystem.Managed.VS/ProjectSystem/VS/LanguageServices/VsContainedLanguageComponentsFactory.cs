@@ -58,9 +58,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         /// <param name="itemid">item id of the given file</param>
         /// <param name="containedLanguageFactory">an instance of IVsContainedLanguageFactory specific for current language service</param>
         /// <returns></returns>
-        public int GetContainedLanguageFactoryForFile(string filePath, 
-                                                      out IVsHierarchy hierarchy, 
-                                                      out uint itemid, 
+        public int GetContainedLanguageFactoryForFile(string filePath,
+                                                      out IVsHierarchy hierarchy,
+                                                      out uint itemid,
                                                       out IVsContainedLanguageFactory containedLanguageFactory)
         {
             uint myItemId = 0;
@@ -78,15 +78,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                 await _projectVsServices.ThreadingService.JoinableTaskFactory.SwitchToMainThreadAsync();
 
                 var priority = new VSDOCUMENTPRIORITY[1];
-                HResult result = _projectVsServices.VsProject.IsDocumentInProject(filePath, 
-                                                                               out int isFound, 
-                                                                               priority, 
+                HResult result = _projectVsServices.VsProject.IsDocumentInProject(filePath,
+                                                                               out int isFound,
+                                                                               priority,
                                                                                out myItemId);
                 if (result.Failed || isFound == 0)
                 {
                     return;
                 }
-             
+
                 myHierarchy = (IVsHierarchy)_projectHostProvider.UnconfiguredProjectHostObject.ActiveIntellisenseProjectHostObject;
 
                 var oleServiceProvider = _serviceProvider.GetService(typeof(IOLEServiceProvider)) as IOLEServiceProvider;
@@ -104,8 +104,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             itemid = myItemId;
             containedLanguageFactory = myContainedLanguageFactory;
 
-            return (myHierarchy == null || containedLanguageFactory == null) 
-                ? VSConstants.E_FAIL 
+            return (myHierarchy == null || containedLanguageFactory == null)
+                ? VSConstants.E_FAIL
                 : VSConstants.S_OK;
         }
 

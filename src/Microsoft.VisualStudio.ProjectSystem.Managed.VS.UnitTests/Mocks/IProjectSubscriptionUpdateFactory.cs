@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return model.FromJson(jsonString);
         }
     }
-    
+
     internal class IProjectSubscriptionUpdateModel : JsonModel<IProjectSubscriptionUpdate>
     {
         public IImmutableDictionary<string, IProjectRuleSnapshotModel> CurrentState { get; set; }

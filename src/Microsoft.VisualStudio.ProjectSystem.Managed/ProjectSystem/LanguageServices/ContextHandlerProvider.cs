@@ -80,22 +80,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return new Handlers(evaluationHandlers.ToImmutable(), commandLineHandlers.ToImmutable());
         }
 
-        private static ImmutableArray<(HandlerFactory factory, string evaluationRuleName)>  CreateHandlerFactories()
+        private static ImmutableArray<(HandlerFactory factory, string evaluationRuleName)> CreateHandlerFactories()
         {
             return ImmutableArray.Create<(HandlerFactory factory, string evaluationRuleName)>(
-            
+
             // Factory                                                                      EvalautionRuleName                  Description
 
             // Evaluation and Command-line
-            ((project, context) => new SourceItemHandler(project, context),                 Compile.SchemaName),                // <Compile /> item
+            ((project, context) => new SourceItemHandler(project, context), Compile.SchemaName),                // <Compile /> item
 
             // Evaluation only
-            ((project, context) => new ProjectPropertiesItemHandler(context),               ConfigurationGeneral.SchemaName),   // <ProjectGuid>, <TargetPath> properties
+            ((project, context) => new ProjectPropertiesItemHandler(context), ConfigurationGeneral.SchemaName),   // <ProjectGuid>, <TargetPath> properties
 
             // Command-line only
-            ((project, context) => new MetadataReferenceItemHandler(project, context),      null),                              // <ProjectReference />, <Reference /> items
-            ((project, context) => new AnalyzerItemHandler(project, context),               null),                              // <Analyzer /> item
-            ((project, context) => new AdditionalFilesItemHandler(project, context),        null)                               // <AdditionalFiles /> item
+            ((project, context) => new MetadataReferenceItemHandler(project, context), null),                              // <ProjectReference />, <Reference /> items
+            ((project, context) => new AnalyzerItemHandler(project, context), null),                              // <Analyzer /> item
+            ((project, context) => new AdditionalFilesItemHandler(project, context), null)                               // <AdditionalFiles /> item
             );
         }
 

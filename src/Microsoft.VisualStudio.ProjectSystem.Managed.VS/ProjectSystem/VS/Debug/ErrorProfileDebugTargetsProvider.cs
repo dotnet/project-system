@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     [Export(typeof(IDebugProfileLaunchTargetsProvider))]
     [AppliesTo(ProjectCapability.LaunchProfiles)]
     [ExportOrder(1000)] // High number so it called first
-     internal class ErrorProfileDebugTargetsProvider : IDebugProfileLaunchTargetsProvider
+    internal class ErrorProfileDebugTargetsProvider : IDebugProfileLaunchTargetsProvider
     {
 
         [ImportingConstructor]

@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.Packaging
         [Fact]
         public void Constructor_DoesNotThrow()
         {
-            new CSharpProjectSystemPackage();            
+            new CSharpProjectSystemPackage();
         }
     }
 }

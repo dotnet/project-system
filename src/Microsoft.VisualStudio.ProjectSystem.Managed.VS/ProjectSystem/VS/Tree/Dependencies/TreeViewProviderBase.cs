@@ -29,8 +29,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
 
         public abstract Task<IProjectTree> BuildTreeAsync(
-            IProjectTree dependenciesTree, 
-            IDependenciesSnapshot snapshot, 
+            IProjectTree dependenciesTree,
+            IDependenciesSnapshot snapshot,
             CancellationToken cancellationToken = default(CancellationToken));
 
         public abstract IProjectTree FindByPath(IProjectTree root, string path);

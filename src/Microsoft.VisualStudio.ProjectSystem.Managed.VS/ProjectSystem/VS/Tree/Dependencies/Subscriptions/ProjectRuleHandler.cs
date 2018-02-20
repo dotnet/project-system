@@ -112,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             var otherProjectPath = otherProjectSnapshot.ProjectPath;
 
             var dependencyThatNeedChange = new List<IDependency>();
-            foreach(var target in projectSnapshot.Targets)
+            foreach (var target in projectSnapshot.Targets)
             {
                 foreach (var dependency in target.Value.TopLevelDependencies)
                 {
@@ -137,10 +137,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             foreach (var dependency in dependencyThatNeedChange)
             {
                 var model = CreateDependencyModel(
-                                ProviderType, 
-                                dependency.Path, 
-                                dependency.OriginalItemSpec, 
-                                shouldBeResolved, 
+                                ProviderType,
+                                dependency.Path,
+                                dependency.OriginalItemSpec,
+                                shouldBeResolved,
                                 dependency.Implicit,
                                 dependency.Properties);
 
@@ -157,11 +157,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                 FireDependenciesChanged(
                     new DependenciesChangedEventArgs(
-                        this, 
-                        dependency.TargetFramework.FullName, 
-                        changes, 
-                        catalogs:null, 
-                        dataSourceVersions:null));
+                        this,
+                        dependency.TargetFramework.FullName,
+                        changes,
+                        catalogs: null,
+                        dataSourceVersions: null));
             }
         }
 

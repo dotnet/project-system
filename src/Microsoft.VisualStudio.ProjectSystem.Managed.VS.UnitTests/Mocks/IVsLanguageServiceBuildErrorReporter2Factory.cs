@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
             var mock = new Mock<IVsReportExternalErrors>();
 
             var reporter = mock.As<IVsLanguageServiceBuildErrorReporter2>();
-            reporter.Setup(r => r.ReportError2(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<VSTASKPRIORITY>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(),  It.IsAny<int>(), It.IsAny<string>()))                
+            reporter.Setup(r => r.ReportError2(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<VSTASKPRIORITY>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>()))
                     .Callback(action);
 
             return reporter.Object;

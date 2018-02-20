@@ -196,7 +196,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 {
                     return;
                 }
-                
+
                 using (ProjectCapabilitiesContext.CreateIsolatedContext(configuredProject, e.Value.Item3))
                 {
                     await HandleAsync(e, handlerType).ConfigureAwait(false);
@@ -209,7 +209,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     RuleHandlerType handlerType)
         {
             var currentAggregateContext = await _host.GetCurrentAggregateProjectContext().ConfigureAwait(false);
-            if (currentAggregateContext == null|| _currentProjectContext != currentAggregateContext)
+            if (currentAggregateContext == null || _currentProjectContext != currentAggregateContext)
             {
                 return;
             }

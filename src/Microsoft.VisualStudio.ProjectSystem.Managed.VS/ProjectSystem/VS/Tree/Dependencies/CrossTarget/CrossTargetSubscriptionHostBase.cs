@@ -134,7 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             await UpdateProjectContextAndSubscriptionsAsync().ConfigureAwait(false);
         }
 
-        private async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e,  RuleHandlerType handlerType)
+        private async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, RuleHandlerType handlerType)
         {
             if (IsDisposing || IsDisposed)
             {

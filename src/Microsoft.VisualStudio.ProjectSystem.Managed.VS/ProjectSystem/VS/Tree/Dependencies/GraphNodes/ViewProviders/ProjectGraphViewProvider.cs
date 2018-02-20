@@ -68,9 +68,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                 }
 
                 Builder.AddGraphNode(
-                    graphContext, 
-                    dependencyProjectPath, 
-                    dependencyGraphNode, 
+                    graphContext,
+                    dependencyProjectPath,
+                    dependencyGraphNode,
                     childDependency.ToViewModel(otherProjectTargetedSnapshot));
             }
         }
@@ -141,9 +141,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                 }
 
                 Builder.AddGraphNode(
-                    graphContext, 
-                    dependencyProjectPath, 
-                    dependencyGraphNode, 
+                    graphContext,
+                    dependencyProjectPath,
+                    dependencyGraphNode,
                     dependency.ToViewModel(targetedSnapshot));
             }
 
@@ -155,7 +155,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         }
 
         public override bool MatchSearchResults(
-            string projectPath, 
+            string projectPath,
             IDependency topLevelDependency,
             Dictionary<string, HashSet<IDependency>> searchResultsPerContext,
             out HashSet<IDependency> topLevelDependencyMatches)

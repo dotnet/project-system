@@ -117,17 +117,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 mock.Setup(x => x.TargetFramework).Returns(targetFramework);
             }
 
-            if (setPropertiesCaption != null 
-                || setPropertiesDependencyIDs != null 
+            if (setPropertiesCaption != null
+                || setPropertiesDependencyIDs != null
                 || setPropertiesResolved != null
                 || setPropertiesFlags != null
                 || setPropertiesImplicit != null)
             {
                 mock.Setup(x => x.SetProperties(
-                            setPropertiesCaption, 
-                            setPropertiesResolved, 
+                            setPropertiesCaption,
+                            setPropertiesResolved,
                             setPropertiesFlags,
-                            setPropertiesSchemaName, 
+                            setPropertiesSchemaName,
                             setPropertiesDependencyIDs,
                             It.IsAny<ImageMoniker>(),
                             It.IsAny<ImageMoniker>(),
@@ -142,9 +142,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             return mock;
         }
-        
+
         public static IDependency FromJson(
-            string jsonString, 
+            string jsonString,
             ProjectTreeFlags? flags = null,
             ImageMoniker? icon = null,
             ImageMoniker? expandedIcon = null,

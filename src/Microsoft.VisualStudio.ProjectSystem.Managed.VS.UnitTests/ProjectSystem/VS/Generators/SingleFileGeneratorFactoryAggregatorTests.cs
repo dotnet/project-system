@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
         public void SingleFileGeneratorFactoryAggregator_NoGenerators_ReturnsFail()
         {
             UnitTestHelper.IsRunningUnitTests = true;
-             var manager = CreateManagerForPath("");
+            var manager = CreateManagerForPath("");
             var serviceProvider = IServiceProviderFactory.ImplementGetService(type => manager);
 
             var integrationService = IVsUnconfiguredProjectIntegrationServiceFactory.ImplementProjectTypeGuid(PackageGuid);

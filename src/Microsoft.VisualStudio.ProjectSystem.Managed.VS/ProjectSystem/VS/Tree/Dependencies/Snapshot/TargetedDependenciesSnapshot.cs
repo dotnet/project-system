@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     internal class TargetedDependenciesSnapshot : ITargetedDependenciesSnapshot
     {
-        protected TargetedDependenciesSnapshot(string projectPath, 
+        protected TargetedDependenciesSnapshot(string projectPath,
                                              ITargetFramework targetFramework,
                                              ITargetedDependenciesSnapshot previousSnapshot = null,
                                              IProjectCatalogSnapshot catalogs = null)
@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         public IProjectCatalogSnapshot Catalogs { get; }
 
-        public ImmutableHashSet<IDependency> TopLevelDependencies { get; private set; } 
+        public ImmutableHashSet<IDependency> TopLevelDependencies { get; private set; }
             = ImmutableHashSet<IDependency>.Empty;
 
         public ImmutableDictionary<string, IDependency> DependenciesWorld { get; private set; }
@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         private Dictionary<string, IList<IDependency>> _dependenciesChildrenMap
             = new Dictionary<string, IList<IDependency>>(StringComparer.OrdinalIgnoreCase);
 
-        private Dictionary<string, bool> _unresolvedDescendantsMap 
+        private Dictionary<string, bool> _unresolvedDescendantsMap
             = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
 
         private bool? _hasUresolvedDependency;
@@ -152,7 +152,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         private bool MergeChanges(
-            IDependenciesChanges changes, 
+            IDependenciesChanges changes,
             IEnumerable<IDependenciesSnapshotFilter> snapshotFilters,
             IEnumerable<IProjectDependenciesSubTreeProvider> subTreeProviders,
             HashSet<string> projectItemSpecs)
@@ -211,10 +211,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                     foreach (var filter in snapshotFilters)
                     {
                         newDependency = filter.BeforeAdd(
-                            ProjectPath, 
-                            TargetFramework, 
-                            newDependency, 
-                            worldBuilder, 
+                            ProjectPath,
+                            TargetFramework,
+                            newDependency,
+                            worldBuilder,
                             topLevelBuilder,
                             subTreeProvidersMap,
                             projectItemSpecs,
@@ -265,7 +265,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 }
             }
         }
-        
+
         public static TargetedDependenciesSnapshot FromChanges(
             string projectPath,
             ITargetFramework targetFramework,

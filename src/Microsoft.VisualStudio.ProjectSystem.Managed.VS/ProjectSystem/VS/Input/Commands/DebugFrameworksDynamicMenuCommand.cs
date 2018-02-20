@@ -39,12 +39,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         {
             bool handled = false;
             var activeDebugFramework = StartupProjectHelper.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles);
-            if(activeDebugFramework != null)
+            if (activeDebugFramework != null)
             {
                 ExecuteSynchronously(async () =>
                 {
                     var frameworks = await activeDebugFramework.GetProjectFrameworksAsync().ConfigureAwait(false);
-                    if(frameworks != null && cmdIndex >= 0 && cmdIndex < frameworks.Count)
+                    if (frameworks != null && cmdIndex >= 0 && cmdIndex < frameworks.Count)
                     {
                         await activeDebugFramework.SetActiveDebuggingFrameworkPropertyAsync(frameworks[cmdIndex]).ConfigureAwait(false);
                         handled = true;
@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
             return handled;
         }
-        
+
         /// <summary>
         /// Called by the base when one of our menu ids is queried for. If the index is 
         /// is greater than the count we want to return false
@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         public override bool QueryStatusCommand(int cmdIndex, EventArgs e)
         {
             var activeDebugFramework = StartupProjectHelper.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles);
-            if(activeDebugFramework != null)
+            if (activeDebugFramework != null)
             {
                 // See if this project supports at least two runtimes
                 List<string> frameworks = null;
@@ -70,14 +70,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                 ExecuteSynchronously(async () =>
                 {
                     frameworks = await activeDebugFramework.GetProjectFrameworksAsync().ConfigureAwait(false);
-                    if(frameworks != null && frameworks.Count > 1 && cmdIndex < frameworks.Count)
+                    if (frameworks != null && frameworks.Count > 1 && cmdIndex < frameworks.Count)
                     {
                         // Only call this if we will need it down below.
                         activeFramework = await activeDebugFramework.GetActiveDebuggingFrameworkPropertyAsync().ConfigureAwait(false);
                     }
                 });
 
-                if(frameworks == null || frameworks.Count < 2)
+                if (frameworks == null || frameworks.Count < 2)
                 {
                     // Hide and disable the command
                     Visible = false;
@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                     Checked = false;
                     return true;
                 }
-                else if(cmdIndex >= 0 && cmdIndex < frameworks.Count)
+                else if (cmdIndex >= 0 && cmdIndex < frameworks.Count)
                 {
                     Text = frameworks[cmdIndex];
                     Visible = true;
@@ -107,9 +107,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         protected virtual void ExecuteSynchronously(Func<Task> asyncFunction)
         {
             ThreadHelper.JoinableTaskFactory.Run(async () =>
-            {   
+            {
                 await asyncFunction().ConfigureAwait(false);
             });
         }
-   }
+    }
 }

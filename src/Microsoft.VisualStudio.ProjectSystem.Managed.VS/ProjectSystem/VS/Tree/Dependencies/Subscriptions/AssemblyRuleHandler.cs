@@ -25,8 +25,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         public override IDependencyModel CreateRootDependencyNode()
         {
             return new SubTreeRootDependencyModel(
-                ProviderType, 
-                VSResources.AssembliesNodeName, 
+                ProviderType,
+                VSResources.AssembliesNodeName,
                 KnownMonikers.Reference,
                 KnownMonikers.ReferenceWarning,
                 DependencyTreeFlags.AssemblySubTreeRootNodeFlags);

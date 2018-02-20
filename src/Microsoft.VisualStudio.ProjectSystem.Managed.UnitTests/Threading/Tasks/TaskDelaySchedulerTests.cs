@@ -90,7 +90,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                 task1.Task.Wait();
                 Assert.False(taskRan);
             }
-            catch(OperationCanceledException)
+            catch (OperationCanceledException)
             {
             }
         }
@@ -121,7 +121,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                 task1.Task.Wait();
                 Assert.False(taskRan);
             }
-            catch(OperationCanceledException)
+            catch (OperationCanceledException)
             {
             }
         }

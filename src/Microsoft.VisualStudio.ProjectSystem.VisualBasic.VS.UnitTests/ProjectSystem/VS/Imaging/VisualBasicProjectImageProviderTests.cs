@@ -22,7 +22,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging
         {
             var provider = CreateInstance();
 
-            Assert.Throws<ArgumentNullException>("key", () => {
+            Assert.Throws<ArgumentNullException>("key", () =>
+            {
 
                 provider.GetProjectImage((string)null);
             });
@@ -34,7 +35,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging
         {
             var provider = CreateInstance();
 
-            Assert.Throws<ArgumentException>("key", () => {
+            Assert.Throws<ArgumentException>("key", () =>
+            {
 
                 provider.GetProjectImage(string.Empty);
             });

@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// </summary>
         protected abstract class AbstractProjectDynamicLoadInstance : OnceInitializedOnceDisposedAsync
         {
-            protected AbstractProjectDynamicLoadInstance(JoinableTaskContextNode joinableTaskContextNode) 
+            protected AbstractProjectDynamicLoadInstance(JoinableTaskContextNode joinableTaskContextNode)
                 : base(joinableTaskContextNode)
             {
             }

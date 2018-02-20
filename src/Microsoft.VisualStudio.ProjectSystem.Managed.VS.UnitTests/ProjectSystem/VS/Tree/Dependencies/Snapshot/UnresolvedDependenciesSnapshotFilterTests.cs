@@ -18,16 +18,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var dependency = IDependencyFactory.Implement(
                 id: "mydependency2",
-                resolved:false);
+                resolved: false);
 
-            var otherDependency = IDependencyFactory.Implement(                    
+            var otherDependency = IDependencyFactory.Implement(
                     id: "mydependency2");
 
             var worldBuilder = new Dictionary<string, IDependency>()
             {
                 { otherDependency.Object.Id, otherDependency.Object }
             }.ToImmutableDictionary().ToBuilder();
-           
+
             var filter = new UnresolvedDependenciesSnapshotFilter();
 
             var resultDependency = filter.BeforeAdd(

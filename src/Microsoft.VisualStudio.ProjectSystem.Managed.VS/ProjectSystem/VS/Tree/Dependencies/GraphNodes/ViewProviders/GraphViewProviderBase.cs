@@ -30,16 +30,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         }
 
         public virtual void BuildGraph(
-            IGraphContext graphContext, 
-            string projectPath, 
-            IDependency dependency, 
+            IGraphContext graphContext,
+            string projectPath,
+            IDependency dependency,
             GraphNode dependencyGraphNode,
             ITargetedDependenciesSnapshot targetedSnapshot)
         {
             // store refreshed dependency info
             dependencyGraphNode.SetValue(DependenciesGraphSchema.DependencyIdProperty, dependency.Id);
             dependencyGraphNode.SetValue(DependenciesGraphSchema.ResolvedProperty, dependency.Resolved);
-            
+
             var children = targetedSnapshot.GetDependencyChildren(dependency);
             if (children == null)
             {
@@ -54,9 +54,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                 }
 
                 Builder.AddGraphNode(
-                    graphContext, 
-                    projectPath, 
-                    dependencyGraphNode, 
+                    graphContext,
+                    projectPath,
+                    dependencyGraphNode,
                     childDependency.ToViewModel(targetedSnapshot));
             }
         }
@@ -99,8 +99,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                 }
 
                 Builder.AddGraphNode(
-                    graphContext, 
-                    projectPath, 
+                    graphContext,
+                    projectPath,
                     dependencyGraphNode,
                     dependency.ToViewModel(targetedSnapshot));
             }

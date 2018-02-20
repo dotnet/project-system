@@ -277,9 +277,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
         }
 
         public GraphNode AddGraphNode(
-            IGraphContext graphContext, 
-            string projectPath, 
-            GraphNode parentNode, 
+            IGraphContext graphContext,
+            string projectPath,
+            GraphNode parentNode,
             IDependencyViewModel viewModel)
         {
             Assumes.True(IsInitialized);
@@ -298,7 +298,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             Assumes.True(IsInitialized);
 
             var newNodeId = GetTopLevelGraphNodeId(projectPath, viewModel.OriginalModel.GetTopLevelId());
-            return DoAddGraphNode(newNodeId, graphContext, projectPath, parentNode: null, viewModel:viewModel);
+            return DoAddGraphNode(newNodeId, graphContext, projectPath, parentNode: null, viewModel: viewModel);
         }
 
         private GraphNode DoAddGraphNode(

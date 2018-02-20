@@ -417,7 +417,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         }
 
         private static (DateTime? time, string path) GetEarliestOutput(IEnumerable<string> outputs, IDictionary<string, DateTime> timestampCache)
-        { 
+        {
             DateTime? earliest = DateTime.MaxValue;
             string earliestPath = null;
 
@@ -553,7 +553,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     logger.Info("    '{0}' does not exist.", item.Path);
                     return false;
                 }
-                
+
                 var outputItem = Path.Combine(outputFullPath, filename);
                 var outputItemTime = GetTimestamp(outputItem, timestampCache);
 
@@ -593,7 +593,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var timestampCache = new Dictionary<string, DateTime>(StringComparer.OrdinalIgnoreCase);
             (DateTime? inputTime, string inputPath) = GetLatestInput(CollectInputs(logger), timestampCache);
             (DateTime? outputTime, string outputPath) = GetEarliestOutput(CollectOutputs(logger), timestampCache);
-            
+
             if (inputTime != null)
             {
                 logger.Info("Latest write timestamp on input is {0} on '{1}'.", inputTime.Value, inputPath);

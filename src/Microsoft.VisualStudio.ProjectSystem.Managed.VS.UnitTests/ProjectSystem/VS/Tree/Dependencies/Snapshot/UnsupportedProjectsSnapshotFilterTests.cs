@@ -26,14 +26,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             var topLevelDependency = IDependencyFactory.Implement(
                     id: "mydependency2",
-                    topLevel:true,
-                    resolved:false);
+                    topLevel: true,
+                    resolved: false);
 
             var topLevelResolvedDependency = IDependencyFactory.Implement(
                     id: "mydependency3",
                     topLevel: true,
                     resolved: true,
-                    flags:ProjectTreeFlags.Empty);
+                    flags: ProjectTreeFlags.Empty);
 
             var topLevelResolvedSharedProjectDependency = IDependencyFactory.Implement(
                     id: "mydependency4",
@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 { topLevelResolvedSharedProjectDependency.Object.Id, topLevelResolvedSharedProjectDependency.Object },
 
             }.ToImmutableDictionary().ToBuilder();
-            
+
             var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider, targetFRameworkProvider);
 
             var resultDependency = filter.BeforeAdd(
@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 { targetFramework, targetedSnapshot }
             };
-            var snapshot = IDependenciesSnapshotFactory.Implement(targets:targets);
+            var snapshot = IDependenciesSnapshotFactory.Implement(targets: targets);
             var snapshotProvider = IDependenciesSnapshotProviderFactory.Implement(currentSnapshot: snapshot);
             var aggregateSnapshotProvider = IAggregateDependenciesSnapshotProviderFactory.Implement(getSnapshotProvider: snapshotProvider);
             var targetFrameworkProvider = ITargetFrameworkProviderFactory.Implement(getNearestFramework: targetFramework);
@@ -117,8 +117,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     resolved: true,
                     flags: DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.ResolvedFlags),
                     fullPath: @"c:\myproject1\project.csproj",
-                    setPropertiesResolved:false,
-                    setPropertiesSchemaName:ProjectReference.SchemaName,
+                    setPropertiesResolved: false,
+                    setPropertiesSchemaName: ProjectReference.SchemaName,
                     setPropertiesFlags: DependencyTreeFlags.ProjectNodeFlags.Union(DependencyTreeFlags.UnresolvedFlags));
 
             var filter = new UnsupportedProjectsSnapshotFilter(aggregateSnapshotProvider, targetFrameworkProvider);
@@ -131,7 +131,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 null,
                 null,
                 null,
-                out bool filterAnyChanges);            
+                out bool filterAnyChanges);
 
             dependency.VerifyAll();
         }
@@ -213,7 +213,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             };
             var snapshot = IDependenciesSnapshotFactory.Implement(targets: targets);
             var snapshotProvider = IDependenciesSnapshotProviderFactory.Implement(currentSnapshot: snapshot);
-            var aggregateSnapshotProvider = IAggregateDependenciesSnapshotProviderFactory.Implement(getSnapshotProvider:snapshotProvider);
+            var aggregateSnapshotProvider = IAggregateDependenciesSnapshotProviderFactory.Implement(getSnapshotProvider: snapshotProvider);
             var targetFrameworkProvider = ITargetFrameworkProviderFactory.Implement(getNearestFramework: targetFramework);
 
             var dependency = IDependencyFactory.Implement(

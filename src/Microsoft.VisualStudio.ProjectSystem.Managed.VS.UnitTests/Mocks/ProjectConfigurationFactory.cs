@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return model.FromJson(jsonString);
         }
     }
-    
+
     internal class ProjectConfigurationModel : JsonModel<ProjectConfiguration>
     {
         public IImmutableDictionary<string, string> Dimensions { get; set; }

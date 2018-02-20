@@ -5,7 +5,7 @@ using System;
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     [Flags]
-    internal enum ProjectTreeWriterOptions 
+    internal enum ProjectTreeWriterOptions
     {
         None = 0,
         Tags = 1,

@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 "myRoot",
                 KnownMonikers.AboutBox,
                 KnownMonikers.AbsolutePosition,
-                flags:flag);
+                flags: flag);
 
             Assert.Equal("myProvider", model.ProviderType);
             Assert.Equal("myRoot", model.Path);

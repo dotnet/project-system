@@ -18,9 +18,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             const string caption = "MyCaption";
             var dependency = IDependencyFactory.Implement(
-                providerType:"myprovider", 
-                id:"mydependency1", 
-                caption:caption);
+                providerType: "myprovider",
+                id: "mydependency1",
+                caption: caption);
 
             var otherDependency = IDependencyFactory.Implement(
                     providerType: "myprovider",
@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                                                .Add(dependency.Object)
                                                                .Add(otherDependency.Object)
                                                                .ToBuilder();
-            
+
             var filter = new DuplicatedDependenciesSnapshotFilter();
 
             var resultDependency = filter.BeforeAdd(
@@ -71,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     caption: caption,
                     alias: "mydependency2 (mydependency2ItemSpec)",
                     setPropertiesCaption: "mydependency2 (mydependency2ItemSpec)",
-                    equals:true);
+                    equals: true);
 
             var worldBuilder = new Dictionary<string, IDependency>()
             {

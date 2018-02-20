@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     if (!TryGetCachedTargetFramework(shortOrFullName, out targetFramework))
                     {
                         var frameworkName = _nuGetFrameworkParser.ParseFrameworkName(shortOrFullName);
-                        if (frameworkName != null && 
+                        if (frameworkName != null &&
                             !TryGetCachedTargetFramework(frameworkName.FullName, out targetFramework))
                         {
                             var shortName = _nuGetFrameworkParser.GetShortFrameworkName(frameworkName);

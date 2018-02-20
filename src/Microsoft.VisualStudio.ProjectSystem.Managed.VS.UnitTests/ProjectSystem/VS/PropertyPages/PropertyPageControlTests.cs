@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             thread.Start();
             thread.Join();
 
-         
+
         }
 
         private void CallPropertyPageControl()

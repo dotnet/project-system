@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
                 SchemaName = ResolvedProjectReference.SchemaName;
             }
             else
-            {                
+            {
                 SchemaName = ProjectReference.SchemaName;
             }
 

@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
 
         [ImportMany]
         protected OrderPrecedenceImportCollection<IDependenciesGraphViewProvider> ViewProviders { get; }
-       
+
         public virtual bool CanHandleRequest(IGraphContext graphContext)
         {
             return false;
@@ -49,8 +49,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
         }
 
         protected IDependency GetDependency(
-            IGraphContext graphContext, 
-            GraphNode inputGraphNode, 
+            IGraphContext graphContext,
+            GraphNode inputGraphNode,
             out IDependenciesSnapshot snapshot)
         {
             snapshot = null;
@@ -87,8 +87,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
         }
 
         protected IDependency GetDependency(
-            string projectPath, 
-            string dependencyId, 
+            string projectPath,
+            string dependencyId,
             out IDependenciesSnapshot snapshot)
         {
             snapshot = GetSnapshot(projectPath);
@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
             out IDependenciesSnapshot snapshot)
         {
             snapshot = GetSnapshot(projectPath);
-            return snapshot?.FindDependency(dependencyId, topLevel:true);
+            return snapshot?.FindDependency(dependencyId, topLevel: true);
         }
 
         protected IDependenciesSnapshot GetSnapshot(string projectPath)

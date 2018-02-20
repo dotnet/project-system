@@ -38,7 +38,7 @@ namespace VSLangProj80
             mock.SetupGet(r => r.RefType)
               .Returns((uint)refType);
 
-            return mock.Object;            
+            return mock.Object;
         }
     }
 }

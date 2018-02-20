@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 
         [Theory]
         [InlineData(".resx", "ResXCodeFileGenerator", testGuid)]
-        [InlineData(".resx",  "PublicResXCodeFileGenerator", testGuid2)]
+        [InlineData(".resx", "PublicResXCodeFileGenerator", testGuid2)]
         [InlineData(".tt", "TextTemplateFileGenerator", testGuid3)]
         public void ValidRegistration_CreatesCorrectKeys(string extension, string generator, string contextGuid)
         {

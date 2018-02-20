@@ -384,11 +384,12 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.csproj""
             var fileSystem = IFileSystemFactory.Create(path => true);
             var specialFilesManager = ISpecialFilesManagerFactory.Create();
 
-            var properties = ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(), new PropertyPageData {
-                                                                                                                          Category = ConfigurationGeneralBrowseObject.SchemaName,
-                                                                                                                          PropertyName = ConfigurationGeneralBrowseObject.ApplicationManifestProperty,
-                                                                                                                          Value = appManifestPropertyValue
-                                                                                                                       });
+            var properties = ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(), new PropertyPageData
+            {
+                Category = ConfigurationGeneralBrowseObject.SchemaName,
+                PropertyName = ConfigurationGeneralBrowseObject.ApplicationManifestProperty,
+                Value = appManifestPropertyValue
+            });
             var provider = new AppManifestSpecialFileProvider(projectTree, sourceItemsProvider, null, fileSystem, specialFilesManager, properties);
             var filePath = await provider.GetFileAsync(SpecialFiles.AppSettings, SpecialFileFlags.CreateIfNotExist);
 

@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override int GetHashCode()
         {
-            return unchecked(StringComparer.OrdinalIgnoreCase.GetHashCode(Id) 
+            return unchecked(StringComparer.OrdinalIgnoreCase.GetHashCode(Id)
                              + StringComparer.OrdinalIgnoreCase.GetHashCode(ProviderType));
         }
 
@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public bool Equals(IDependencyModel other)
         {
-            if (other != null 
+            if (other != null
                 && other.Id.Equals(Id, StringComparison.OrdinalIgnoreCase)
                 && other.ProviderType.Equals(ProviderType, StringComparison.OrdinalIgnoreCase))
             {

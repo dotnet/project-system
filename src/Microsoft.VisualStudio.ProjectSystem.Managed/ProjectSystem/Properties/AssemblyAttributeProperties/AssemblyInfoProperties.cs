@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             Func<ProjectId> getActiveProjectId,
             Workspace workspace,
             IProjectThreadingService threadingService)
-            : base (delegatedProjectProperties)
+            : base(delegatedProjectProperties)
         {
             _attributeValueProviderMap = CreateAttributeValueProviderMap(getActiveProjectId, workspace, threadingService);
         }

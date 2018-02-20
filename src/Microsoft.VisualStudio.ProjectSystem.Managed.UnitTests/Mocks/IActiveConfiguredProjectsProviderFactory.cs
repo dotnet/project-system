@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             _mock.Verify();
         }
 
-        public IActiveConfiguredProjectsProviderFactory ImplementGetActiveConfiguredProjectsMapAsync(ImmutableDictionary<string, ConfiguredProject> configuredProjects) 
+        public IActiveConfiguredProjectsProviderFactory ImplementGetActiveConfiguredProjectsMapAsync(ImmutableDictionary<string, ConfiguredProject> configuredProjects)
         {
 #pragma warning disable CS0618 // Type or member is obsolete
             _mock.Setup(x => x.GetActiveConfiguredProjectsMapAsync())
@@ -31,14 +31,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             return this;
         }
 
-        public IActiveConfiguredProjectsProviderFactory ImplementGetActiveConfiguredProjectsAsync(ActiveConfiguredObjects<ConfiguredProject> configuredProjects) 
+        public IActiveConfiguredProjectsProviderFactory ImplementGetActiveConfiguredProjectsAsync(ActiveConfiguredObjects<ConfiguredProject> configuredProjects)
         {
             _mock.Setup(x => x.GetActiveConfiguredProjectsAsync())
                               .Returns(Task.FromResult(configuredProjects));
             return this;
         }
 
-        public IActiveConfiguredProjectsProviderFactory ImplementGetProjectFrameworksAsync(ActiveConfiguredObjects<ProjectConfiguration> projectConfigurations) 
+        public IActiveConfiguredProjectsProviderFactory ImplementGetProjectFrameworksAsync(ActiveConfiguredObjects<ProjectConfiguration> projectConfigurations)
         {
             _mock.Setup(x => x.GetActiveProjectConfigurationsAsync())
                               .Returns(Task.FromResult(projectConfigurations));

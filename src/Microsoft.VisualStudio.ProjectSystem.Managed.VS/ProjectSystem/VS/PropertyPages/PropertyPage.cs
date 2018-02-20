@@ -55,8 +55,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         }
 
         internal UnconfiguredProject UnconfiguredProject { get; set; }
-        
-        
+
+
         ///--------------------------------------------------------------------------------------------
         /// <summary>
         /// Property. Gets or sets whether the page is dirty. Dirty status is pushed to owner property sheet
@@ -180,7 +180,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             return;
         }
 
-        
+
         public int IsPageDirty()
         {
             if (IsDirty)
@@ -215,7 +215,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             Enabled = (dbgmodeNew == DBGMODE.DBGMODE_Design);
             return NativeMethods.S_OK;
         }
-        
+
         /// <summary>
         /// Informs derived classes that configuration has changed
         /// </summary>

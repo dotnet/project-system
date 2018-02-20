@@ -45,9 +45,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                 }
 
                 Builder.AddGraphNode(
-                    graphContext, 
-                    projectPath, 
-                    dependencyGraphNode, 
+                    graphContext,
+                    projectPath,
+                    dependencyGraphNode,
                     childDependency.ToViewModel(targetedSnapshot));
             }
         }

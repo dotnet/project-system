@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             return RoslynRenamer.Renamer.RenameSymbolAsync(solution, symbol, newName, solution.Workspace.Options);
         }
-        
+
         public bool ApplyChangesToSolution(Workspace ws, Solution renamedSolution)
         {
             _threadingService.VerifyOnUIThread();

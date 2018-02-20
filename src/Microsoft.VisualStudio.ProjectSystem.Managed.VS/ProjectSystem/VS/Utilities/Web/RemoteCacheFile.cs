@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 {
     internal class RemoteCacheFile
     {
-        internal RemoteCacheFile(string cacheFilePath, string downloadUrl, TimeSpan cacheExpiration, IFileSystem fileSystem, 
+        internal RemoteCacheFile(string cacheFilePath, string downloadUrl, TimeSpan cacheExpiration, IFileSystem fileSystem,
                                  Lazy<IHttpClient> httpClient)
         {
             _downloadUrl = downloadUrl;
@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         /// <summary>
         /// If the cached file exists reads the data and returns it as a string
         /// </summary>
-        public string ReadCacheFile( )
+        public string ReadCacheFile()
         {
             try
             {

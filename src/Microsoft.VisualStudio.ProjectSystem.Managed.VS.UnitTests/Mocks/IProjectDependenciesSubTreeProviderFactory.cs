@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             {
                 mock.Setup(x => x.CreateRootDependencyNode()).Returns(createRootDependencyNode);
             }
-            
+
             return mock.Object;
         }
 

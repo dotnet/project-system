@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         public CSharpCodeDomProvider()
         {
         }
-        
+
         [Import]
         public UnconfiguredProject UnconfiguredProject   // Put ourselves in the UnconfiguredProject scope
         {

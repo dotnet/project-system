@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             : base(projectLockService,
                    unconfiguredProject,
                    new PostBuildEventHelper())
-        {}
+        { }
 
         internal class PostBuildEventHelper : AbstractBuildEventHelper
         {

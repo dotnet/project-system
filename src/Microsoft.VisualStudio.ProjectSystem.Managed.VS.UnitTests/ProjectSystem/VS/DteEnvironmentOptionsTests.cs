@@ -12,7 +12,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Fact]
         public void Constructor_NullAsDteServices_ThrowsArgumentNull()
         {
-            Assert.Throws<ArgumentNullException>("dteServices", () => {
+            Assert.Throws<ArgumentNullException>("dteServices", () =>
+            {
 
                 new DteEnvironmentOptions((IDteServices)null);
             });

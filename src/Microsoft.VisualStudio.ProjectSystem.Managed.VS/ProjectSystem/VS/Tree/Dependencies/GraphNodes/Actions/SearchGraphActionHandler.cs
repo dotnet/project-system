@@ -212,9 +212,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                 }
 
                 var children = GetMatchingResultsForDependency(
-                    childDependencyMetadata, 
-                    snapshot, 
-                    flatMatchingDependencies, 
+                    childDependencyMetadata,
+                    snapshot,
+                    flatMatchingDependencies,
                     cachedPositiveResults);
 
                 cachedPositiveResults[childDependency] = children;

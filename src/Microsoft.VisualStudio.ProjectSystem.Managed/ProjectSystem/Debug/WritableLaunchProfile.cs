@@ -23,18 +23,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Name = profile.Name;
             ExecutablePath = profile.ExecutablePath;
             CommandName = profile.CommandName;
-            CommandLineArgs = profile.CommandLineArgs; 
+            CommandLineArgs = profile.CommandLineArgs;
             WorkingDirectory = profile.WorkingDirectory;
             LaunchBrowser = profile.LaunchBrowser;
             LaunchUrl = profile.LaunchUrl;
             DoNotPersist = profile.IsInMemoryObject();
 
-            if(profile.EnvironmentVariables  != null)
+            if (profile.EnvironmentVariables != null)
             {
                 EnvironmentVariables = new Dictionary<string, string>(profile.EnvironmentVariables, StringComparer.Ordinal);
             }
 
-            if(profile.OtherSettings  != null)
+            if (profile.OtherSettings != null)
             {
                 OtherSettings = new Dictionary<string, object>(profile.OtherSettings, StringComparer.Ordinal);
             }
@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {
                 return false;
             }
-            
+
             // Compare in-memory states
             return debugProfile1.IsInMemoryObject() == debugProfile2.IsInMemoryObject();
         }

@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         [ImportingConstructor]
         public DebugProfileDebugTargetGenerator(
-            UnconfiguredProject unconfiguredProject, 
+            UnconfiguredProject unconfiguredProject,
             ILaunchSettingsProvider launchSettingProvider,
             IProjectThreadingService threadingService)
             : base(unconfiguredProject.Services)
@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
         }
 
-        private ILaunchSettingsProvider LaunchSettingProvider{ get; }
+        private ILaunchSettingsProvider LaunchSettingProvider { get; }
         private IProjectThreadingService ProjectThreadingService { get; }
 
 
@@ -85,20 +85,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 update =>
                 {
                     // Compute the new enum values from the profile provider
-                   var generatedResult = DebugProfileEnumValuesGenerator.GetEnumeratorEnumValues(update).ToImmutableList();
+                    var generatedResult = DebugProfileEnumValuesGenerator.GetEnumeratorEnumValues(update).ToImmutableList();
                     _dataSourceVersion++;
                     var dataSources = ImmutableDictionary<NamedIdentity, IComparable>.Empty.Add(DataSourceKey, DataSourceVersion);
                     return new ProjectVersionedValue<IReadOnlyList<IEnumValue>>(generatedResult, dataSources);
                 });
 
             var broadcastBlock = new BroadcastBlock<IProjectVersionedValue<IReadOnlyList<IEnumValue>>>(b => b);
-            
-            _launchProfileProviderLink  = LaunchSettingProvider.SourceBlock.LinkTo(
+
+            _launchProfileProviderLink = LaunchSettingProvider.SourceBlock.LinkTo(
                 debugProfilesBlock,
                 linkOptions: new DataflowLinkOptions { PropagateCompletion = true });
 
             _debugProviderLink = debugProfilesBlock.LinkTo(broadcastBlock, new DataflowLinkOptions { PropagateCompletion = true });
-            
+
             _publicBlock = broadcastBlock.SafePublicize();
         }
 

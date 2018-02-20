@@ -306,7 +306,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 </Project>";
 
             var actual = root.SaveAndGetChanges();
-         Assert.Equal(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
         [Fact]

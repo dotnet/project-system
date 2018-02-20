@@ -34,7 +34,8 @@ namespace Microsoft.VisualStudio.Shell.Interop
             var mock = new Mock<IVsPersistDocData>();
             var textBufferMock = mock.As<IVsTextBuffer>();
             uint flags = 0;
-            textBufferMock.Setup(t => t.GetStateFlags(out flags)).Returns((out uint f) => {
+            textBufferMock.Setup(t => t.GetStateFlags(out flags)).Returns((out uint f) =>
+            {
                 f = existingFlags;
                 return VSConstants.S_OK;
             });

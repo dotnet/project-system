@@ -9,15 +9,15 @@ namespace Microsoft.VisualStudio.Workspaces
 {
     public class WorkspaceFactory
     {
-        private static readonly MetadataReference s_corlibReference = MetadataReference.CreateFromFile(typeof(object).Assembly.Location);  
-        private static readonly MetadataReference s_systemReference = MetadataReference.CreateFromFile(typeof(System.Diagnostics.Debug).Assembly.Location);  
-        private static readonly MetadataReference s_systemCoreReference = MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location);  
+        private static readonly MetadataReference s_corlibReference = MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
+        private static readonly MetadataReference s_systemReference = MetadataReference.CreateFromFile(typeof(System.Diagnostics.Debug).Assembly.Location);
+        private static readonly MetadataReference s_systemCoreReference = MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location);
 
         public static Workspace Create(string text, string language = LanguageNames.CSharp)
         {
             var workspace = new AdhocWorkspace();
 
-            var projectInfo = ProjectInfo.Create(ProjectId.CreateNewId(), VersionStamp.Create(), "TestProject", "TestProject", language, 
+            var projectInfo = ProjectInfo.Create(ProjectId.CreateNewId(), VersionStamp.Create(), "TestProject", "TestProject", language,
                                                  filePath: "D:\\Test.proj",
                                                  metadataReferences: new[] { s_corlibReference, s_systemCoreReference, s_systemReference });
             var project = workspace.AddProject(projectInfo);

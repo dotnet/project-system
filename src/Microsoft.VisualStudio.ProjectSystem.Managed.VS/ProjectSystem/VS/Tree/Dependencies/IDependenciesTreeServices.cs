@@ -28,10 +28,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             string caption,
             IProjectPropertiesContext itemContext,
             IPropertySheet propertySheet = null,
-            IRule browseObjectProperties = null, 
-            ProjectImageMoniker icon = null, 
-            ProjectImageMoniker expandedIcon = null, 
-            bool visible = true, 
+            IRule browseObjectProperties = null,
+            ProjectImageMoniker icon = null,
+            ProjectImageMoniker expandedIcon = null,
+            bool visible = true,
             ProjectTreeFlags? flags = default(ProjectTreeFlags?));
 
         /// <summary>

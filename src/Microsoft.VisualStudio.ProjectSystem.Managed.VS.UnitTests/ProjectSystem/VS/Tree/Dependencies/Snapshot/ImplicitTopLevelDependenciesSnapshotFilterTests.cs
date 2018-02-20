@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 { dependency.Object.Id, dependency.Object }
             }.ToImmutableDictionary().ToBuilder();
-           
+
             var filter = new ImplicitTopLevelDependenciesSnapshotFilter();
 
             var resultDependency = filter.BeforeAdd(

@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             // We also order the added nodes by their display order.
             var updatedNode = _projectTree.CurrentTree.Find(node.Identity);
             var updatedNodeToAddTo = _projectTree.CurrentTree.Find(nodeToAddTo.Identity);
-            var addedNodes = 
+            var addedNodes =
                 updatedNodeToAddTo.Children.Where(x => !nodeToAddTo.TryFind(x.Identity, out var subtree) && OrderingHelper.HasValidDisplayOrder(x))
                 .OrderBy(OrderingHelper.GetDisplayOrder).ToList();
 

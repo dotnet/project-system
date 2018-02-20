@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         IDependency BeforeAdd(
             string projectPath,
             ITargetFramework targetFramework,
-            IDependency dependency, 
+            IDependency dependency,
             ImmutableDictionary<string, IDependency>.Builder worldBuilder,
             ImmutableHashSet<IDependency>.Builder topLevelBuilder,
             Dictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviders,
@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         IDependency BeforeRemove(
             string projectPath,
             ITargetFramework targetFramework,
-            IDependency dependency, 
+            IDependency dependency,
             ImmutableDictionary<string, IDependency>.Builder worldBuilder,
             ImmutableHashSet<IDependency>.Builder topLevelBuilder,
             out bool filterAnyChanges);

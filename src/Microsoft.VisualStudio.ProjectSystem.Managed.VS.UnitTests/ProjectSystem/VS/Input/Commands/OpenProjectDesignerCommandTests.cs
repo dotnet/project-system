@@ -15,7 +15,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         [Fact]
         public void Constructor_NullAsDesignerService_ThrowsArgumentNull()
         {
-            Assert.Throws<ArgumentNullException>("designerService", () => {
+            Assert.Throws<ArgumentNullException>("designerService", () =>
+            {
 
                 new OpenProjectDesignerCommand((IProjectDesignerService)null);
             });

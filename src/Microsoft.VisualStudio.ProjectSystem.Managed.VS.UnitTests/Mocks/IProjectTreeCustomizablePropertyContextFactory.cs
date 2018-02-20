@@ -18,14 +18,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             string itemType = null,
             bool isFolder = false,
             ProjectTreeFlags flags = default(ProjectTreeFlags),
-            IImmutableDictionary<string,string> metadata = null)
+            IImmutableDictionary<string, string> metadata = null)
         {
             var mock = new Mock<IProjectTreeCustomizablePropertyContext>();
             mock.Setup(x => x.ItemName).Returns(itemName ?? string.Empty);
             mock.Setup(x => x.ItemType).Returns(itemType);
             mock.Setup(x => x.IsFolder).Returns(isFolder);
             mock.Setup(x => x.ParentNodeFlags).Returns(flags);
-            mock.Setup(x => x.Metadata).Returns(metadata ?? ImmutableDictionary<string,string>.Empty);
+            mock.Setup(x => x.Metadata).Returns(metadata ?? ImmutableDictionary<string, string>.Empty);
             return mock.Object;
         }
 

@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                                            IDebugTokenReplacer tokenReplacer,
                                            IFileSystem fileSystem,
                                            IEnvironmentHelper environment,
-                                           IActiveDebugFrameworkServices activeDebugFramework, 
+                                           IActiveDebugFrameworkServices activeDebugFramework,
                                            ProjectProperties properties)
         {
             TokenReplacer = tokenReplacer;
@@ -195,7 +195,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 }
 
                 // If the directory at OutDir doesn't exist, fall back to the project folder
-                if(!TheFileSystem.DirectoryExists(defaultWorkingDir))
+                if (!TheFileSystem.DirectoryExists(defaultWorkingDir))
                 {
                     defaultWorkingDir = projectFolder;
                 }
@@ -262,7 +262,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                     else
                     {
                         // Try to resolve against the current working directory (for compat) and failing that, the environment path.
-                        var exeName = executable.EndsWith(".exe", StringComparison.OrdinalIgnoreCase)? executable : executable + ".exe";
+                        var exeName = executable.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) ? executable : executable + ".exe";
                         var fullPath = TheFileSystem.GetFullPath(exeName);
                         if (TheFileSystem.FileExists(fullPath))
                         {
@@ -411,13 +411,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// <returns>The escaped string.</returns>
         internal static string EscapeString(string unescaped, char[] toEscape)
         {
-            if (string.IsNullOrWhiteSpace(unescaped)) return unescaped;
+            if (string.IsNullOrWhiteSpace(unescaped))
+                return unescaped;
 
             bool ShouldEscape(char c)
             {
                 foreach (var escapeChar in toEscape)
                 {
-                    if (escapeChar == c) return true;
+                    if (escapeChar == c)
+                        return true;
                 }
                 return false;
             }

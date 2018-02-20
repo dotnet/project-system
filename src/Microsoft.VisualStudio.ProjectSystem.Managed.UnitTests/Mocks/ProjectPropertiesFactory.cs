@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             IConfiguredProjectServices configuredProjectServices = Mock.Of<IConfiguredProjectServices>(o =>
                 o.PropertyPagesCatalog == propertyPagesCatalogProvider &&
-                o.AdditionalRuleDefinitions == ruleService);            
+                o.AdditionalRuleDefinitions == ruleService);
 
             var cfg = new StandardProjectConfiguration("Debug|" + "AnyCPU", Empty.PropertiesMap.SetItem("Configuration", "Debug").SetItem("Platform", "AnyCPU"));
             ConfiguredProject configuredProject = Mock.Of<ConfiguredProject>(o =>
@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             foreach (var category in data.GroupBy(p => p.Category))
             {
-                catalog.Add(category.Key, 
+                catalog.Add(category.Key,
                             CreateRule(
                                     category.Select(property => CreateProperty(property.PropertyName, property.Value, property.SetValues))));
             }
@@ -76,11 +76,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var catalog = new Mock<IPropertyPagesCatalog>();
             catalog.Setup(o => o.BindToContext(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                   .Returns((string schemaName, string file, string itemType, string itemName) => {
+                   .Returns((string schemaName, string file, string itemType, string itemName) =>
+                   {
 
                        rulesBySchemaName.TryGetValue(schemaName, out IRule rule);
                        return rule;
-                });
+                   });
 
             return catalog.Object;
         }
@@ -89,7 +90,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var rule = new Mock<IRule>();
             rule.Setup(o => o.GetProperty(It.IsAny<string>()))
-                .Returns((string propertyName) => {
+                .Returns((string propertyName) =>
+                {
 
                     return properties.FirstOrDefault(p => p.Name == propertyName);
                 });

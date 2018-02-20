@@ -35,14 +35,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             _mockFS.CreateDirectory(@"c:\test\Project\bin\");
             _mockFS.WriteAllText(@"c:\program files\dotnet\dotnet.exe", "");
 
-            var activeProfile = new LaunchProfile() { Name = "MyApplication",  CommandLineArgs = "--someArgs", ExecutablePath=@"c:\test\Project\someapp.exe" };
+            var activeProfile = new LaunchProfile() { Name = "MyApplication", CommandLineArgs = "--someArgs", ExecutablePath = @"c:\test\Project\someapp.exe" };
 
             _mockEnvironment.Setup(s => s.GetEnvironmentVariable("Path")).Returns(() => _Path);
 
             var project = UnconfiguredProjectFactory.Create(null, null, _ProjectFile);
 
             var outputTypeEnum = new PageEnumValue(new EnumValue() { Name = outputType });
-            var data = new PropertyPageData() {
+            var data = new PropertyPageData()
+            {
                 Category = ConfigurationGeneral.SchemaName,
                 PropertyName = ConfigurationGeneral.OutputTypeProperty,
                 Value = outputTypeEnum
@@ -72,8 +73,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
                 o.Services == configuredProjectServices);
             _mockTokenReplace.Setup(s => s.ReplaceTokensInProfileAsync(It.IsAny<ILaunchProfile>())).Returns<ILaunchProfile>(p => Task.FromResult(p));
 
-            IActiveDebugFrameworkServices activeDebugFramework = Mock.Of<IActiveDebugFrameworkServices>( o =>
-                o.GetConfiguredProjectForActiveFrameworkAsync() == Task.FromResult(configuredProject));
+            IActiveDebugFrameworkServices activeDebugFramework = Mock.Of<IActiveDebugFrameworkServices>(o =>
+               o.GetConfiguredProjectForActiveFrameworkAsync() == Task.FromResult(configuredProject));
             var debugProvider = new ConsoleDebugTargetsProvider(
                                             configuredProject,
                                            _mockTokenReplace.Object,
@@ -174,10 +175,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             _mockFS.WriteAllText(@"c:\program files\dotnet\dotnet.exe", "");
             _mockFS.CreateDirectory(@"c:\test\project");
 
-            var activeProfile = new LaunchProfile() 
-            { 
-                Name = "MyApplication", 
-                CommandName = "Project", 
+            var activeProfile = new LaunchProfile()
+            {
+                Name = "MyApplication",
+                CommandName = "Project",
                 CommandLineArgs = "--someArgs",
                 OtherSettings = ImmutableDictionary<string, object>.Empty.Add(LaunchProfileExtensions.NativeDebuggingProperty, true)
             };
@@ -229,7 +230,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         {
             var debugger = GetDebugTargetsProvider();
 
-            var activeProfile = new LaunchProfile() { Name = "MyApplication",  CommandLineArgs = "--someArgs", ExecutablePath=@"c:\test\Project\someapp.exe" };
+            var activeProfile = new LaunchProfile() { Name = "MyApplication", CommandLineArgs = "--someArgs", ExecutablePath = @"c:\test\Project\someapp.exe" };
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
             Assert.Equal(activeProfile.ExecutablePath, targets[0].Executable);
@@ -243,7 +244,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         {
             var debugger = GetDebugTargetsProvider();
 
-            var activeProfile = new LaunchProfile() { Name = "MyApplication",  CommandLineArgs = "--someArgs", ExecutablePath=@"c:\test\Project\someapp.exe" };
+            var activeProfile = new LaunchProfile() { Name = "MyApplication", CommandLineArgs = "--someArgs", ExecutablePath = @"c:\test\Project\someapp.exe" };
 
             // Now control-F5, add env vars
             activeProfile.EnvironmentVariables = new Dictionary<string, string>() { { "var1", "Value1" } }.ToImmutableDictionary();
@@ -263,7 +264,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         [InlineData(null)]
         public async Task QueryDebugTargets_ExeProfileAsyncExeRelativeNoWorkingDir(string outdir)
         {
-          var properties = new Dictionary<string, string>() {
+            var properties = new Dictionary<string, string>() {
                     {"RunCommand", @"dotnet"},
                     {"RunArguments", "exec " + "\"" + @"c:\test\project\bin\project.dll"+ "\""},
                     {"RunWorkingDirectory",  @"bin\"},
@@ -276,10 +277,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             // Exe relative, no working dir
             _mockFS.WriteAllText(@"c:\test\project\bin\test.exe", string.Empty);
             _mockFS.WriteAllText(@"c:\test\project\test.exe", string.Empty);
-            var activeProfile = new LaunchProfile(){Name="run", ExecutablePath=".\\test.exe"};
+            var activeProfile = new LaunchProfile() { Name = "run", ExecutablePath = ".\\test.exe" };
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
-            if(outdir == null || outdir == @"doesntExist\")
+            if (outdir == null || outdir == @"doesntExist\")
             {
                 Assert.Equal(@"c:\test\project\test.exe", targets[0].Executable);
                 Assert.Equal(@"c:\test\project", targets[0].CurrentDirectory);
@@ -302,7 +303,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             _mockFS.WriteAllText(@"c:\WorkingDir\mytest.exe", string.Empty);
             _mockFS.SetCurrentDirectory(@"c:\Test");
             _mockFS.CreateDirectory(@"c:\WorkingDir");
-            var activeProfile = new LaunchProfile(){Name="run", ExecutablePath=".\\mytest.exe", WorkingDirectory=workingDir};
+            var activeProfile = new LaunchProfile() { Name = "run", ExecutablePath = ".\\mytest.exe", WorkingDirectory = workingDir };
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
             Assert.Equal(@"c:\WorkingDir\mytest.exe", targets[0].Executable);
@@ -317,7 +318,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             // Exe relative to full working dir
             _mockFS.WriteAllText(@"c:\WorkingDir\mytest.exe", string.Empty);
             _mockFS.CreateDirectory(@"c:\WorkingDir");
-            var activeProfile = new LaunchProfile(){Name="run", ExecutablePath="./mytest.exe", WorkingDirectory=@"c:/WorkingDir"};
+            var activeProfile = new LaunchProfile() { Name = "run", ExecutablePath = "./mytest.exe", WorkingDirectory = @"c:/WorkingDir" };
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
             Assert.Equal(@"c:\WorkingDir\mytest.exe", targets[0].Executable);
@@ -332,7 +333,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             var debugger = GetDebugTargetsProvider();
 
             // Exe relative to path
-            var activeProfile = new LaunchProfile(){Name="run", ExecutablePath=exeName};
+            var activeProfile = new LaunchProfile() { Name = "run", ExecutablePath = exeName };
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
             Assert.Equal(@"c:\program files\dotnet\dotnet.exe", targets[0].Executable);
@@ -348,7 +349,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             _mockFS.SetCurrentDirectory(@"c:\CurrentDirectory");
 
             // Exe relative to path
-            var activeProfile = new LaunchProfile(){Name="run", ExecutablePath=exeName};
+            var activeProfile = new LaunchProfile() { Name = "run", ExecutablePath = exeName };
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
             Assert.Equal(@"c:\CurrentDirectory\myexe.exe", targets[0].Executable);
@@ -362,7 +363,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
             _mockFS.SetCurrentDirectory(@"e:\CurrentDirectory");
 
             // Exe relative to path
-            var activeProfile = new LaunchProfile(){Name="run", ExecutablePath=@"\myexe.exe"};
+            var activeProfile = new LaunchProfile() { Name = "run", ExecutablePath = @"\myexe.exe" };
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
             Assert.Equal(@"e:\myexe.exe", targets[0].Executable);
@@ -372,15 +373,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         public void ValidateSettingsNoExe()
         {
             string executable = null;
-            string workingDir= null;
+            string workingDir = null;
             var debugger = GetDebugTargetsProvider();
-            var profileName="run";
+            var profileName = "run";
             try
             {
                 debugger.ValidateSettings(executable, workingDir, profileName);
                 Assert.True(false);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Assert.Equal(ex.Message, string.Format(VSResources.NoDebugExecutableSpecified, profileName));
             }
@@ -391,16 +392,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         public void ValidateSettingsExeNotFound()
         {
             string executable = null;
-            string workingDir= null;
+            string workingDir = null;
             var debugger = GetDebugTargetsProvider();
-            var profileName="run";
+            var profileName = "run";
             try
             {
                 executable = @"c:\foo\bar.exe";
                 debugger.ValidateSettings(executable, workingDir, profileName);
                 Assert.True(false);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Assert.Equal(ex.Message, string.Format(VSResources.DebugExecutableNotFound, executable, profileName));
                 _mockFS.WriteAllText(executable, "");
@@ -414,9 +415,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         public void ValidateSettingsWorkingDir()
         {
             string executable = null;
-            string workingDir= null;
+            string workingDir = null;
             var debugger = GetDebugTargetsProvider();
-            var profileName="run";
+            var profileName = "run";
 
             // No path elements should be ok. Expect it to be on the path
             executable = @"bar.exe";
@@ -428,7 +429,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
                 debugger.ValidateSettings(executable, workingDir, profileName);
                 Assert.True(false);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Assert.Equal(ex.Message, string.Format(VSResources.WorkingDirecotryInvalid, workingDir, profileName));
                 _mockFS.AddFolder(workingDir);

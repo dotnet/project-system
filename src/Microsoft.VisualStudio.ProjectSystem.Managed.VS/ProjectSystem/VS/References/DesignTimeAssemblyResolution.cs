@@ -94,9 +94,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
                 string resolvedPath = FindResolvedAssemblyPath(references, assemblyName[i]);
                 if (resolvedPath != null)
                 {
-                    assemblyPaths[resolvedReferencesCount] = new VsResolvedAssemblyPath() {
-                            bstrOrigAssemblySpec = originalNames[i],    // Note we use the original name, not the parsed name, as they could be different
-                            bstrResolvedAssemblyPath = resolvedPath
+                    assemblyPaths[resolvedReferencesCount] = new VsResolvedAssemblyPath()
+                    {
+                        bstrOrigAssemblySpec = originalNames[i],    // Note we use the original name, not the parsed name, as they could be different
+                        bstrResolvedAssemblyPath = resolvedPath
                     };
 
                     resolvedReferencesCount++;

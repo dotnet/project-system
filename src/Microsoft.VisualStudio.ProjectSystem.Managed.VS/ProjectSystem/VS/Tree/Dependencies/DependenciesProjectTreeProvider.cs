@@ -162,7 +162,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     continue;
                 }
 
-                var dependency = snapshot.FindDependency(filePath, topLevel:true);
+                var dependency = snapshot.FindDependency(filePath, topLevel: true);
                 if (dependency == null || dependency.Implicit)
                 {
                     canRemove = false;
@@ -254,7 +254,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         continue;
                     }
 
-                    var sharedProjectDependency = snapshot.FindDependency(sharedFilePath, topLevel:true);
+                    var sharedProjectDependency = snapshot.FindDependency(sharedFilePath, topLevel: true);
                     if (sharedProjectDependency != null)
                     {
                         sharedFilePath = sharedProjectDependency.Path;
@@ -402,7 +402,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     {
                         dependenciesNode = await viewProvider.Value.BuildTreeAsync(dependenciesNode, snapshot, cancellationToken)
                                                                    .ConfigureAwait(false);
-                        
+
                         _treeTelemetryService.ObserveTreeUpdateCompleted(snapshot.HasUnresolvedDependency);
                     }
 

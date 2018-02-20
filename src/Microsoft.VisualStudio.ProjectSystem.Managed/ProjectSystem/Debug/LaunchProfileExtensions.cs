@@ -24,8 +24,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public static bool NativeDebuggingIsEnabled(this ILaunchProfile profile)
         {
-            if (profile.OtherSettings != null 
-                && profile.OtherSettings.TryGetValue(NativeDebuggingProperty,  out object nativeDebugging) 
+            if (profile.OtherSettings != null
+                && profile.OtherSettings.TryGetValue(NativeDebuggingProperty, out object nativeDebugging)
                 && nativeDebugging is bool)
             {
                 return (bool)nativeDebugging;

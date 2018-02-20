@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             IProjectThreadingService threadingService,
             SVsServiceProvider serviceProvider,
             GeneratePackageOnBuildPropertyProvider generatePackageOnBuildPropertyProvider)
-            : base (unconfiguredProject, threadingService, serviceProvider, generatePackageOnBuildPropertyProvider)
+            : base(unconfiguredProject, threadingService, serviceProvider, generatePackageOnBuildPropertyProvider)
         {
         }
 

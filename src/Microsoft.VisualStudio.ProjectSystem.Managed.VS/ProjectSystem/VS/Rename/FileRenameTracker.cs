@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         private readonly IRoslynServices _roslynServices;
 
         [ImportingConstructor]
-        public FileRenameTracker(IUnconfiguredProjectVsServices projectVsServices, VisualStudioWorkspace visualStudioWorkspace, IEnvironmentOptions environmentOptions,  IUserNotificationServices userNotificationServices, IRoslynServices roslynServices)
+        public FileRenameTracker(IUnconfiguredProjectVsServices projectVsServices, VisualStudioWorkspace visualStudioWorkspace, IEnvironmentOptions environmentOptions, IUserNotificationServices userNotificationServices, IRoslynServices roslynServices)
         {
             Requires.NotNull(projectVsServices, nameof(projectVsServices));
             Requires.NotNull(visualStudioWorkspace, nameof(visualStudioWorkspace));
@@ -85,8 +85,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             {
                 return;
             }
-            
-            var renamer = new Renamer(_visualStudioWorkspace, _projectVsServices.ThreadingService, _userNotificationServices,  _environmentOptions, _roslynServices,  myProject, oldFilePath, newFilePath);
+
+            var renamer = new Renamer(_visualStudioWorkspace, _projectVsServices.ThreadingService, _userNotificationServices, _environmentOptions, _roslynServices, myProject, oldFilePath, newFilePath);
             _visualStudioWorkspace.WorkspaceChanged += renamer.OnWorkspaceChangedAsync;
         }
     }

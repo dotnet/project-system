@@ -21,7 +21,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             var projectVsServices = IUnconfiguredProjectVsServicesFactory.Create();
 
-            Assert.Throws<ArgumentNullException>("serviceProvider", () => {
+            Assert.Throws<ArgumentNullException>("serviceProvider", () =>
+            {
                 new DteServices((IServiceProvider)null, projectVsServices);
             });
         }
@@ -31,7 +32,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             var serviceProvider = SVsServiceProviderFactory.Create();
 
-            Assert.Throws<ArgumentNullException>("projectVsServices", () => {
+            Assert.Throws<ArgumentNullException>("projectVsServices", () =>
+            {
                 new DteServices(serviceProvider, (IUnconfiguredProjectVsServices)null);
             });
         }
@@ -44,7 +46,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             var dteServices = CreateInstance(projectVsServices);
 
-            Assert.Throws<InvalidOperationException>(() => {
+            Assert.Throws<InvalidOperationException>(() =>
+            {
 
                 var ignored = dteServices.Dte;
             });
@@ -58,7 +61,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             var dteServices = CreateInstance(projectVsServices);
 
-            Assert.Throws<InvalidOperationException>(() => {
+            Assert.Throws<InvalidOperationException>(() =>
+            {
 
                 var ignored = dteServices.Solution;
             });
@@ -72,7 +76,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             var dteServices = CreateInstance(projectVsServices);
 
-            Assert.Throws<InvalidOperationException>(() => {
+            Assert.Throws<InvalidOperationException>(() =>
+            {
 
                 var ignored = dteServices.Project;
             });

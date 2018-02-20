@@ -37,8 +37,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = ITargetFrameworkFactory.Implement("tfm1");
             var previousSnapshot = ITargetedDependenciesSnapshotFactory.Implement(
-                dependenciesWorld:new Dictionary<string, IDependency>(),
-                topLevelDependencies:new List<IDependency>());
+                dependenciesWorld: new Dictionary<string, IDependency>(),
+                topLevelDependencies: new List<IDependency>());
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var snapshot = new TestableTargetedDependenciesSnapshot(

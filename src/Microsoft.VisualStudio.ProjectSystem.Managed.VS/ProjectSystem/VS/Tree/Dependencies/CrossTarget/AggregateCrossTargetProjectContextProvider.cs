@@ -156,7 +156,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
             return Task.CompletedTask;
         }
-      
+
 
         private async Task<string> GetTargetPathAsync()
         {
@@ -170,7 +170,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         {
             string filePath = _commonServices.Project.FullPath;
 
-            return new ProjectData() {
+            return new ProjectData()
+            {
                 FullPath = filePath,
                 DisplayName = Path.GetFileNameWithoutExtension(filePath)
             };
@@ -201,11 +202,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         }
 
         private async Task<AggregateCrossTargetProjectContext> CreateProjectContextAsyncCore()
-        {           
+        {
             // Don't initialize until the project has been loaded into the IDE and available in Solution Explorer
             await _asyncLoadDashboard.ProjectLoadedInHostWithCancellation(_commonServices.Project).ConfigureAwait(false);
 
-            return await _taskScheduler.RunAsync(TaskSchedulerPriority.UIThreadBackgroundPriority, async () => 
+            return await _taskScheduler.RunAsync(TaskSchedulerPriority.UIThreadBackgroundPriority, async () =>
             {
                 var projectData = GetProjectData();
 
@@ -236,12 +237,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                             // build succeeds for this project.
                             LastDesignTimeBuildSucceeded = false
                         };
-                        AddConfiguredProjectState(configuredProject, targetedProjectContext);                        
+                        AddConfiguredProjectState(configuredProject, targetedProjectContext);
                     }
 
                     innerProjectContextsBuilder.Add(targetFramework, targetedProjectContext);
 
-                    if (activeTargetFramework.Equals(TargetFramework.Empty) && 
+                    if (activeTargetFramework.Equals(TargetFramework.Empty) &&
                         configuredProject.ProjectConfiguration.Equals(activeProjectConfiguration))
                     {
                         activeTargetFramework = targetFramework;
@@ -250,15 +251,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
                 var isCrossTargeting = !(configuredProjectsMap.Count == 1 && string.IsNullOrEmpty(configuredProjectsMap.First().Key));
                 return new AggregateCrossTargetProjectContext(isCrossTargeting,
-                                                              innerProjectContextsBuilder.ToImmutable(), 
-                                                              configuredProjectsMap, 
+                                                              innerProjectContextsBuilder.ToImmutable(),
+                                                              configuredProjectsMap,
                                                               activeTargetFramework,
                                                               _targetFrameworkProvider);
             });
         }
 
         private async Task<ITargetFramework> GetTargetFrameworkAsync(
-            string shortOrFullName, 
+            string shortOrFullName,
             ConfigurationGeneral configurationGeneralProperties)
         {
             if (string.IsNullOrEmpty(shortOrFullName))

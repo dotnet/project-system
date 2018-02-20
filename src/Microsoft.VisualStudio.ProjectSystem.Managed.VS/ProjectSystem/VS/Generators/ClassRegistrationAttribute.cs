@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
             var _classType = Type.GetType(_classInfo);
             using (Key childKey = context.CreateKey($"CLSID\\{_clsId}"))
             {
-                
+
                 childKey.SetValue("Assembly", _classType.Assembly.FullName);
                 childKey.SetValue("Class", _classType.FullName);
                 childKey.SetValue("InprocServer32", "$System$\\mscoree.dll");

@@ -349,7 +349,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 tree.Icon = moniker;
             }
-            
+
             tokenizer.Skip(TokenType.RightBrace);
         }
 

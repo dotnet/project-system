@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         public override IDependency BeforeAdd(
             string projectPath,
             ITargetFramework targetFramework,
-            IDependency dependency, 
+            IDependency dependency,
             ImmutableDictionary<string, IDependency>.Builder worldBuilder,
             ImmutableHashSet<IDependency>.Builder topLevelBuilder,
             Dictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviders,
@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             IDependency resultDependency = dependency;
 
             if (resultDependency.TopLevel
-                && resultDependency.Resolved                
+                && resultDependency.Resolved
                 && resultDependency.Flags.Contains(DependencyTreeFlags.ProjectNodeFlags)
                 && !resultDependency.Flags.Contains(DependencyTreeFlags.SharedProjectFlags))
             {

@@ -22,9 +22,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 "myProvider",
                 "c:\\myPath.dll",
                 "myOriginalItemSpec",
-                flags:flag,
-                resolved:true,
-                isImplicit:false,
+                flags: flag,
+                resolved: true,
+                isImplicit: false,
                 properties: properties);
 
             Assert.Equal("myProvider", model.ProviderType);

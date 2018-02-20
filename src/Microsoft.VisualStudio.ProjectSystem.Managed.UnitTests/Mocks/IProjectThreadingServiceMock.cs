@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public void VerifyOnUIThread()
         {
-            if(!IsOnMainThread)
+            if (!IsOnMainThread)
             {
                 throw new InvalidOperationException();
             }
@@ -51,9 +51,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Task.Run(asyncAction).Wait();
         }
 
-        public  JoinableTaskContextNode JoinableTaskContext { get; private set; } = new JoinableTaskContextNode(
+        public JoinableTaskContextNode JoinableTaskContext { get; private set; } = new JoinableTaskContextNode(
             new JoinableTaskContext(DispatchThread.Thread, DispatchThread.SyncContext));
-        
+
         public JoinableTaskFactory JoinableTaskFactory
         {
             get

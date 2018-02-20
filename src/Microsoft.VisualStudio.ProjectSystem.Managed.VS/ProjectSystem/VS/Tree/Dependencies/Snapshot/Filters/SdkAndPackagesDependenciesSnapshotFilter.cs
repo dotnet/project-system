@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         public override IDependency BeforeAdd(
             string projectPath,
             ITargetFramework targetFramework,
-            IDependency dependency, 
+            IDependency dependency,
             ImmutableDictionary<string, IDependency>.Builder worldBuilder,
             ImmutableHashSet<IDependency>.Builder topLevelBuilder,
             Dictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviders,
@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                     filterAnyChanges = true;
                     resultDependency = dependency.ToResolved(
                         schemaName: ResolvedSdkReference.SchemaName,
-                        dependencyIDs:package.DependencyIDs);
+                        dependencyIDs: package.DependencyIDs);
                 }
             }
             else if (dependency.Flags.Contains(DependencyTreeFlags.PackageNodeFlags) && dependency.Resolved)
@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
         public override IDependency BeforeRemove(
             string projectPath,
             ITargetFramework targetFramework,
-            IDependency dependency, 
+            IDependency dependency,
             ImmutableDictionary<string, IDependency>.Builder worldBuilder,
             ImmutableHashSet<IDependency>.Builder topLevelBuilder,
             out bool filterAnyChanges)
@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                     // clean up sdk when corresponding package is removing
                     sdk = sdk.ToUnresolved(
                         schemaName: SdkReference.SchemaName,
-                        dependencyIDs:ImmutableList<string>.Empty);
+                        dependencyIDs: ImmutableList<string>.Empty);
 
                     worldBuilder.Remove(sdk.Id);
                     worldBuilder.Add(sdk.Id, sdk);

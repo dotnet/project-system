@@ -21,8 +21,8 @@ namespace Microsoft.VisualStudio.Packaging
     [ProvideAutoLoad(ActivationContextGuid)]
     [ProvideUIContextRule(ActivationContextGuid, "Load Managed Project Package",
         "dotnetcore",
-        new string[] {"dotnetcore"},
-        new string[] {"SolutionHasProjectCapability:(CSharp | VB) & CPS"}
+        new string[] { "dotnetcore" },
+        new string[] { "SolutionHasProjectCapability:(CSharp | VB) & CPS" }
         )]
 
     [ProvideMenuResource("Menus.ctmenu", 3)]
@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.Packaging
                                                   ProjectCapability.ProjectConfigurationsDeclaredDimensions + "; " +
                                                   ProjectCapability.LanguageService;
 
-        private  IDotNetCoreProjectCompatibilityDetector _dotNetCoreCompatibilityDetector;
+        private IDotNetCoreProjectCompatibilityDetector _dotNetCoreCompatibilityDetector;
 
         public ManagedProjectSystemPackage()
         {

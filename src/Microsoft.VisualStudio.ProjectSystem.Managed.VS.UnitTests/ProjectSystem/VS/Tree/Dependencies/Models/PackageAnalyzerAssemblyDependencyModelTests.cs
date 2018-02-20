@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 originalItemSpec: "myOriginalItemSpec",
                 name: "myPath",
                 flags: flag,
-                resolved:true,
+                resolved: true,
                 properties: properties,
                 dependenciesIDs: dependencyIDs);
 

@@ -34,16 +34,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             SVsServiceProvider serviceProvider,
             IProjectTree target)
         {
-            return ShowAddItemDialogAsync(projectTree, projectVsServices, serviceProvider, target,AddItemAction.ExistingItem);
+            return ShowAddItemDialogAsync(projectTree, projectVsServices, serviceProvider, target, AddItemAction.ExistingItem);
         }
 
         /// <summary>
         /// Show the item dialog window to add new/existing items.
         /// </summary>
         private static async Task ShowAddItemDialogAsync(
-            IPhysicalProjectTree projectTree, 
-            IUnconfiguredProjectVsServices projectVsServices, 
-            SVsServiceProvider serviceProvider, 
+            IPhysicalProjectTree projectTree,
+            IUnconfiguredProjectVsServices projectVsServices,
+            SVsServiceProvider serviceProvider,
             IProjectTree target,
             AddItemAction addItemAction)
         {
@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             ShowAddItemDialog(serviceProvider, target, projectVsServices.VsProject, strBrowseLocations, addItemAction);
         }
 
-        private enum AddItemAction { NewItem=0, ExistingItem=1 }
+        private enum AddItemAction { NewItem = 0, ExistingItem = 1 }
 
         /// <summary>
         /// Direct Vs call to show the add item dialog.

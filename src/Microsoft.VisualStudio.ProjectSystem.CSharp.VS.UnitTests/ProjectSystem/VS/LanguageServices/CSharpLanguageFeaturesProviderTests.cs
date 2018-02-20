@@ -20,7 +20,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             var provider = CreateInstance();
 
-            Assert.Throws<ArgumentNullException>("name", () => {
+            Assert.Throws<ArgumentNullException>("name", () =>
+            {
                 provider.MakeProperIdentifier((string)null);
             });
         }
@@ -30,7 +31,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             var provider = CreateInstance();
 
-            Assert.Throws<ArgumentException>("name", () => {
+            Assert.Throws<ArgumentException>("name", () =>
+            {
                 provider.MakeProperIdentifier("");
             });
         }
@@ -40,7 +42,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             var provider = CreateInstance();
 
-            Assert.Throws<ArgumentNullException>("name", () => {
+            Assert.Throws<ArgumentNullException>("name", () =>
+            {
                 provider.MakeProperNamespace((string)null);
             });
         }
@@ -50,7 +53,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             var provider = CreateInstance();
 
-            Assert.Throws<ArgumentException>("name", () => {
+            Assert.Throws<ArgumentException>("name", () =>
+            {
                 provider.MakeProperNamespace("");
             });
         }
@@ -92,7 +96,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             var provider = CreateInstance();
 
-            Assert.Throws<ArgumentNullException>("namespaceNames", () => {
+            Assert.Throws<ArgumentNullException>("namespaceNames", () =>
+            {
                 provider.ConcatNamespaces((string[])null);
             });
         }
@@ -102,7 +107,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             var provider = CreateInstance();
 
-            Assert.Throws<ArgumentException>("namespaceNames", () => {
+            Assert.Throws<ArgumentException>("namespaceNames", () =>
+            {
                 provider.ConcatNamespaces(new string[0]);
             });
         }
@@ -112,7 +118,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             var provider = CreateInstance();
 
-            Assert.Throws<ArgumentException>("namespaceNames", () => {
+            Assert.Throws<ArgumentException>("namespaceNames", () =>
+            {
                 provider.ConcatNamespaces(new string[] { null });
             });
         }

@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var mock = new Mock<IProjectXmlAccessor>();
 
             mock.Setup(m => m.GetItems(
-                It.IsAny<ConfiguredProject>(), 
+                It.IsAny<ConfiguredProject>(),
                 It.Is<string>((t) => string.Equals(t, itemType)),
                 It.Is<string>((t) => string.Equals(t, metadataName))))
                 .Returns<ConfiguredProject, string, string>((configuredProject, innerItemType, innerMetadataName) =>

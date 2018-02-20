@@ -186,7 +186,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
             var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe((text) => { result = text; });
             var logger = CreateEnabledLogger(pane);
 
-            Assert.Throws<ArgumentNullException>("format", () => {
+            Assert.Throws<ArgumentNullException>("format", () =>
+            {
 
                 logger.WriteLine((string)null, new object());
             });
@@ -199,7 +200,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
             var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe((text) => { result = text; });
             var logger = CreateEnabledLogger(pane);
 
-            Assert.Throws<ArgumentNullException>("format", () => {
+            Assert.Throws<ArgumentNullException>("format", () =>
+            {
 
                 logger.WriteLine((string)null, new object(), new object());
             });
@@ -212,7 +214,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
             var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe((text) => { result = text; });
             var logger = CreateEnabledLogger(pane);
 
-            Assert.Throws<ArgumentNullException>("format", () => {
+            Assert.Throws<ArgumentNullException>("format", () =>
+            {
 
                 logger.WriteLine((string)null, new object(), new object(), new object());
             });
@@ -225,7 +228,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
             var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe((text) => { result = text; });
             var logger = CreateEnabledLogger(pane);
 
-            Assert.Throws<ArgumentNullException>("format", () => {
+            Assert.Throws<ArgumentNullException>("format", () =>
+            {
 
                 logger.WriteLine((string)null, new object(), new object(), new object(), new object());
             });
@@ -238,7 +242,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
             var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe((text) => { result = text; });
             var logger = CreateEnabledLogger(pane);
 
-            Assert.Throws<FormatException>(() => { 
+            Assert.Throws<FormatException>(() =>
+            {
 
                 logger.WriteLine("{0}{1}", new object());
             });
@@ -251,7 +256,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
             var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe((text) => { result = text; });
             var logger = CreateEnabledLogger(pane);
 
-            Assert.Throws<FormatException>(() => {
+            Assert.Throws<FormatException>(() =>
+            {
 
                 logger.WriteLine("{0}{1}{2}", new object(), new object());
             });
@@ -264,7 +270,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
             var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe((text) => { result = text; });
             var logger = CreateEnabledLogger(pane);
 
-            Assert.Throws<FormatException>(() => {
+            Assert.Throws<FormatException>(() =>
+            {
 
                 logger.WriteLine("{0}{1}{2}{4}", new object(), new object(), new object());
             });
@@ -277,7 +284,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
             var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe((text) => { result = text; });
             var logger = CreateEnabledLogger(pane);
 
-            Assert.Throws<FormatException>(() => {
+            Assert.Throws<FormatException>(() =>
+            {
 
                 logger.WriteLine("{0}{1}{2}{4}{5}", new object(), new object(), new object(), new object());
             });

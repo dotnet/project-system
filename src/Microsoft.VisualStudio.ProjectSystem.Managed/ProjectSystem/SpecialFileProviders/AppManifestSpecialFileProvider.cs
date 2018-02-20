@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
                                               [Import(AllowDefault = true)] Lazy<ICreateFileFromTemplateService> templateFileCreationService,
                                               IFileSystem fileSystem,
                                               ISpecialFilesManager specialFilesManager,
-                                              ProjectProperties projectProperties) 
+                                              ProjectProperties projectProperties)
             : base(projectTree, sourceItemsProvider, templateFileCreationService, fileSystem, specialFilesManager)
         {
             Requires.NotNull(projectProperties, nameof(projectProperties));
@@ -40,8 +40,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             var configurationGeneral = await _projectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync().ConfigureAwait(false);
             var appManifestProperty = await configurationGeneral.ApplicationManifest.GetEvaluatedValueAtEndAsync().ConfigureAwait(false) as string;
 
-            if (!string.IsNullOrEmpty(appManifestProperty) && 
-                !appManifestProperty.Equals(DefaultManifestValue, StringComparison.InvariantCultureIgnoreCase) && 
+            if (!string.IsNullOrEmpty(appManifestProperty) &&
+                !appManifestProperty.Equals(DefaultManifestValue, StringComparison.InvariantCultureIgnoreCase) &&
                 !appManifestProperty.Equals(NoManifestValue, StringComparison.InvariantCultureIgnoreCase))
             {
                 return _projectTree.TreeProvider.FindByPath(_projectTree.CurrentTree, appManifestProperty);

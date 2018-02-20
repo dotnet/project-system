@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         public bool IsProjectItem { get; set; }
-        
+
         // for scenario where we need to see if it was recreated or not
         public string CustomTag { get; set; }
 
@@ -144,10 +144,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             return null;
         }
 
-        public IProjectTree SetProperties(string caption = null, string filePath = null, IRule browseObjectProperties = null, 
-                                          ProjectImageMoniker icon = null, ProjectImageMoniker expandedIcon = null, bool? 
-                                          visible = null, ProjectTreeFlags? flags = null, IProjectPropertiesContext context = null, 
-                                          IPropertySheet propertySheet = null, bool? isLinked = null, bool resetFilePath = false, 
+        public IProjectTree SetProperties(string caption = null, string filePath = null, IRule browseObjectProperties = null,
+                                          ProjectImageMoniker icon = null, ProjectImageMoniker expandedIcon = null, bool?
+                                          visible = null, ProjectTreeFlags? flags = null, IProjectPropertiesContext context = null,
+                                          IPropertySheet propertySheet = null, bool? isLinked = null, bool resetFilePath = false,
                                           bool resetBrowseObjectProperties = false, bool resetIcon = false, bool resetExpandedIcon = false)
         {
             Icon = icon ?? Icon;

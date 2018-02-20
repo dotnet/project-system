@@ -12,7 +12,8 @@ namespace Microsoft.VisualStudio
 
         public static IServiceProvider Create(Type type, object instance)
         {
-            return ImplementGetService(t => {
+            return ImplementGetService(t =>
+            {
 
                 if (t == type)
                     return instance;

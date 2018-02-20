@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var mockSnapshot = new Mock<IProjectCatalogSnapshot>(behavior);
             var mockPropertyPageCatalog = new Mock<IPropertyPagesCatalog>(behavior);
 
-            foreach(var kvp in rulesAndItemTypes)
+            foreach (var kvp in rulesAndItemTypes)
             {
                 var ruleName = kvp.Key;
                 var itemType = kvp.Value;

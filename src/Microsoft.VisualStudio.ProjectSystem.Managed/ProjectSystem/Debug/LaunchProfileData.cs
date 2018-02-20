@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         // We don't serialize the name as it the dictionary index
         public string Name { get; set; }
-        
+
         // Or serialize the InMemoryProfile state
         public bool InMemoryProfile { get; set; }
 
@@ -53,21 +53,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public string ExecutablePath { get; set; }
 
         [JsonProperty(PropertyName = Prop_commandLineArgs)]
-        public string CommandLineArgs{ get; set; }
+        public string CommandLineArgs { get; set; }
 
         [JsonProperty(PropertyName = Prop_workingDirectory)]
-        public string WorkingDirectory{ get; set; }
+        public string WorkingDirectory { get; set; }
 
         [JsonProperty(PropertyName = Prop_launchBrowser)]
-        public bool?  LaunchBrowser { get; set; }
+        public bool? LaunchBrowser { get; set; }
 
         [JsonProperty(PropertyName = Prop_launchUrl)]
         public string LaunchUrl { get; set; }
 
-        [JsonProperty(PropertyName=Prop_environmentVariables)]
-        public IDictionary<string, string>  EnvironmentVariables { get; set; }
+        [JsonProperty(PropertyName = Prop_environmentVariables)]
+        public IDictionary<string, string> EnvironmentVariables { get; set; }
 
-        public IDictionary<string, object>  OtherSettings { get; set; }
+        public IDictionary<string, object> OtherSettings { get; set; }
 
         /// <summary>
         /// To handle custom settings, we serialize using LaunchProfileData first and then walk the settings
@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
 
             // We walk the profilesObject and serialize each subobject component as either a string, or a dictionary<string,string>
-            foreach(var profile in profilesObject)
+            foreach (var profile in profilesObject)
             {
                 // Name of profile is the key, value is it's contents. We have specific serializing of the data based on the 
                 // JToken type
@@ -133,16 +133,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                                     }
                             }
                         }
-                        catch 
+                        catch
                         {
                             // TODO: should have message indicating the setting is being ignored. Fix as part of issue
                             //       https://github.com/dotnet/roslyn-project-system/issues/424
                         }
                     }
                 }
-                
+
                 // Only add custom settings if we actually picked some up
-                if(customSettings.Count > 0)
+                if (customSettings.Count > 0)
                 {
                     profileData.OtherSettings = customSettings;
                 }
@@ -162,44 +162,44 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var data = new Dictionary<string, object>(StringComparer.Ordinal);
 
             // Don't write out empty elements
-            if(!string.IsNullOrEmpty(profile.CommandName))
+            if (!string.IsNullOrEmpty(profile.CommandName))
             {
                 data.Add(Prop_commandName, profile.CommandName);
             }
 
-            if(!string.IsNullOrEmpty(profile.ExecutablePath))
+            if (!string.IsNullOrEmpty(profile.ExecutablePath))
             {
                 data.Add(Prop_executablePath, profile.ExecutablePath);
             }
-            
-            if(!string.IsNullOrEmpty(profile.CommandLineArgs))
+
+            if (!string.IsNullOrEmpty(profile.CommandLineArgs))
             {
                 data.Add(Prop_commandLineArgs, profile.CommandLineArgs);
             }
-            
-            if(!string.IsNullOrEmpty(profile.WorkingDirectory))
+
+            if (!string.IsNullOrEmpty(profile.WorkingDirectory))
             {
                 data.Add(Prop_workingDirectory, profile.WorkingDirectory);
             }
-            
-            if(profile.LaunchBrowser)
+
+            if (profile.LaunchBrowser)
             {
                 data.Add(Prop_launchBrowser, profile.LaunchBrowser);
             }
-            
-            if(!string.IsNullOrEmpty(profile.LaunchUrl))
+
+            if (!string.IsNullOrEmpty(profile.LaunchUrl))
             {
                 data.Add(Prop_launchUrl, profile.LaunchUrl);
             }
 
-            if(profile.EnvironmentVariables != null)
+            if (profile.EnvironmentVariables != null)
             {
                 data.Add(Prop_environmentVariables, profile.EnvironmentVariables);
             }
 
-            if(profile.OtherSettings != null)
+            if (profile.OtherSettings != null)
             {
-                foreach(var kvp in profile.OtherSettings)
+                foreach (var kvp in profile.OtherSettings)
                 {
                     data.Add(kvp.Key, kvp.Value);
                 }
@@ -222,7 +222,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 CommandLineArgs = profile.CommandLineArgs,
                 WorkingDirectory = profile.WorkingDirectory,
                 LaunchBrowser = profile.LaunchBrowser,
-                LaunchUrl= profile.LaunchUrl,
+                LaunchUrl = profile.LaunchUrl,
                 EnvironmentVariables = profile.EnvironmentVariables,
                 OtherSettings = profile.OtherSettings,
                 InMemoryProfile = profile.IsInMemoryObject()

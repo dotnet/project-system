@@ -172,7 +172,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// <summary>
         /// Determines if we are moving up or down files or folders.
         /// </summary>
-        private enum MoveAction { Up=0, Down=1 }
+        private enum MoveAction { Up = 0, Down = 1 }
 
         /// <summary>
         /// Gets a read-only collection with the evaluated includes associated with a project tree.
@@ -230,7 +230,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                 // GetItemsByEvaluatedInclude is efficient and uses a MultiDictionary underneath.
                 //     It uses this: new MultiDictionary<string, ProjectItem>(StringComparer.OrdinalIgnoreCase);
                 var item = project.GetItemsByEvaluatedInclude(include).FirstOrDefault();
-                
+
                 // We only care about adding one item associated with the evaluated include.
                 if (item?.Xml is ProjectItemElement element)
                 {

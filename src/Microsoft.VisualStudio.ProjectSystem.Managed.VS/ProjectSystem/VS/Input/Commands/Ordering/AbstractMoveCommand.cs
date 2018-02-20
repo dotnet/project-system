@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                     var window = GetUIHierarchyWindow(_serviceProvider, Guid.Parse(ManagedProjectSystemPackage.SolutionExplorerGuid));
 
                     window.ExpandItem(hierarchy, itemId, EXPANDFLAGS.EXPF_SelectItem);
-                    
+
                     // If we moved a folder, collapse it.
                     if (node.IsFolder)
                     {

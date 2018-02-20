@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public static IProjectProperties CreateWithProperty(string propertyName)
             => MockWithProperty(propertyName).Object;
-        
+
         public static IProjectProperties CreateWithPropertyAndValue(string propertyName, string setValue)
             => MockWithPropertyAndValue(propertyName, setValue).Object;
 

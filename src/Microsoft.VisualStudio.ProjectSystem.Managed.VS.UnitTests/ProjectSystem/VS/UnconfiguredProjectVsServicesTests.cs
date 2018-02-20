@@ -16,7 +16,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             var project = UnconfiguredProjectFactory.Create();
 
-            Assert.Throws<ArgumentNullException>("commonServices", () => {
+            Assert.Throws<ArgumentNullException>("commonServices", () =>
+            {
                 new UnconfiguredProjectVsServices((IUnconfiguredProjectCommonServices)null);
             });
         }
@@ -25,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public void Constructor_ValueAsUnconfiguedProject_SetsVsHierarchyToHostObject()
         {
             var hierarchy = IVsHierarchyFactory.Create();
-            var project = UnconfiguredProjectFactory.Create(hostObject:hierarchy);
+            var project = UnconfiguredProjectFactory.Create(hostObject: hierarchy);
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project: project);
 
             var vsServices = CreateInstance(commonServices);

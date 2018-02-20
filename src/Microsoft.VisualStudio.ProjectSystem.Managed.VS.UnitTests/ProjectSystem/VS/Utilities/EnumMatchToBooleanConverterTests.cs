@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     [Trait("UnitTest", "ProjectSystem")]
     public class EnumMatchToBooleanConverterTests
     {
-       [Fact]
+        [Fact]
         public void EnumMatchToBooleanConverter_ConvertTests()
         {
             var converter = new EnumMatchToBooleanConverter();

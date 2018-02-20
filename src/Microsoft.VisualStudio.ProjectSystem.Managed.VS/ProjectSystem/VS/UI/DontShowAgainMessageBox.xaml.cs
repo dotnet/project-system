@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
     internal partial class DontShowAgainMessageBox : PlatformUI.DialogWindow
     {
 
-        public DontShowAgainMessageBox(string caption, string message, string checkboxText, bool initialStateOfCheckbox, 
+        public DontShowAgainMessageBox(string caption, string message, string checkboxText, bool initialStateOfCheckbox,
                                        string learnMoreText, string learnMoreUrl, IUserNotificationServices userNotificationServices)
         {
             _userNotificationServices = userNotificationServices;
@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
             PreviewKeyDown += new KeyEventHandler(CloseOnESCkey);
 
             DontShowAgainCheckBox.Visibility = Visibility.Collapsed;
-            if(checkboxText != null)
+            if (checkboxText != null)
             {
                 DontShowAgainCheckBox.Visibility = Visibility.Visible;
                 CheckboxText = checkboxText;
@@ -35,13 +35,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
             {
                 LearnMore.Visibility = Visibility.Visible;
                 LearnMoreText = learnMoreText;
-                LearnMoreCommand = new RelayCommand((parameter) => 
+                LearnMoreCommand = new RelayCommand((parameter) =>
                 {
                     try
                     {
                         Process.Start(learnMoreUrl);
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         _userNotificationServices.ShowMessageBox(ex.Message, null, OLEMSGICON.OLEMSGICON_CRITICAL, OLEMSGBUTTON.OLEMSGBUTTON_OK, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
                     }
@@ -50,18 +50,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
         }
 
         private IUserNotificationServices _userNotificationServices;
-        
+
         //Strictly used for databinding, no notifications
-        public string MessageText{ get; }
-        public string DialogCaption{ get; }
-        public string CheckboxText{ get; }
+        public string MessageText { get; }
+        public string DialogCaption { get; }
+        public string CheckboxText { get; }
         public string OkButtonText => VSResources.OKButtonText;
         public string LearnMoreText { get; private set; }
 
         public ICommand LearnMoreCommand { get; set; }
 
         // No notifications required here either
-        public bool CheckboxState{ get; set; }
+        public bool CheckboxState { get; set; }
 
         // Need to hook keyboard event and force it to close on ESC keypress
         private void CloseOnESCkey(object sender, KeyEventArgs e)

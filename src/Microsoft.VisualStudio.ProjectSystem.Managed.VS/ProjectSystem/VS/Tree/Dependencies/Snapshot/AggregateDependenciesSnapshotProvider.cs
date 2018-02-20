@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 return;
             }
 
-            lock(_snapshotProvidersLock)
+            lock (_snapshotProvidersLock)
             {
                 SnapshotProviders[snapshotProvider.ProjectFilePath] = snapshotProvider;
                 snapshotProvider.SnapshotRenamed += OnSnapshotRenamed;
@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 // remove and re-add provider with new project path
                 if (!string.IsNullOrEmpty(e.OldFullPath)
                     && SnapshotProviders.TryRemove(e.OldFullPath, out IDependenciesSnapshotProvider provider)
-                    && provider!= null
+                    && provider != null
                     && !string.IsNullOrEmpty(e.NewFullPath))
                 {
                     SnapshotProviders[e.NewFullPath] = provider;
@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             SnapshotProviderUnloading?.Invoke(this, e);
 
-            lock(_snapshotProvidersLock)
+            lock (_snapshotProvidersLock)
             {
                 SnapshotProviders.TryRemove(snapshotProvider.ProjectFilePath, out IDependenciesSnapshotProvider provider);
                 snapshotProvider.SnapshotRenamed -= OnSnapshotRenamed;
@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 throw new ArgumentException(nameof(projectFilePath));
             }
 
-            lock(_snapshotProvidersLock)
+            lock (_snapshotProvidersLock)
             {
                 if (SnapshotProviders.TryGetValue(projectFilePath, out IDependenciesSnapshotProvider snapshotProvider))
                 {
@@ -118,7 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         public IEnumerable<IDependenciesSnapshotProvider> GetSnapshotProviders()
         {
-            lock(_snapshotProvidersLock)
+            lock (_snapshotProvidersLock)
             {
                 return SnapshotProviders.Values;
             }
