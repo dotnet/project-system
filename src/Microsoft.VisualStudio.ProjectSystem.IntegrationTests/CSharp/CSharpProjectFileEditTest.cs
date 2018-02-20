@@ -8,6 +8,7 @@ using Xunit;
 namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
 {
     [Collection(nameof(SharedIntegrationHostFixture))]
+    [Trait("Integration", "ErrorList")]
     public class CSharpProjectFileEditTest : AbstractIntegrationTest
     {
         protected override string DefaultLanguageName => LanguageNames.CSharp;

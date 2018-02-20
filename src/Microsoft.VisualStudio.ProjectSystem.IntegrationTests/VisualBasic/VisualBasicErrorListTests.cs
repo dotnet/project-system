@@ -10,6 +10,7 @@ using Xunit;
 namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
 {
     [Collection(nameof(SharedIntegrationHostFixture))]
+    [Trait("Integration", "ErrorList")]
     public class VisualBasicErrorListTests : AbstractIntegrationTest
     {
         protected override string DefaultLanguageName => LanguageNames.VisualBasic;
@@ -20,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
             VisualStudio.SolutionExplorer.OpenFile(Project, "Class1.vb");
         }
 
-        [Fact(Skip = "https://github.com/dotnet/project-system/issues/2281"), Trait("Integration", "ErrorList")]
+        [Fact(Skip = "https://github.com/dotnet/project-system/issues/2281")]
         public void ErrorList()
         {
             VisualStudio.Editor.SetText(@"
@@ -60,7 +61,7 @@ End Module
             VisualStudio.Editor.Verify.CaretPosition(43);
         }
 
-        [Fact, Trait("Integration", "ErrorList")]
+        [Fact]
         public void ErrorsDuringMethodBodyEditing()
         {
             VisualStudio.Editor.SetText(@"
