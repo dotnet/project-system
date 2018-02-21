@@ -99,7 +99,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         /// </summary>
         protected virtual void ExecuteSynchronously(Func<Task> asyncFunction)
         {
+#pragma warning disable VSTHRD102 // Only wrapped for test purposes
             ThreadHelper.JoinableTaskFactory.Run(async () =>
+#pragma warning restore VSTHRD102
             {
                 await asyncFunction().ConfigureAwait(false);
             });
