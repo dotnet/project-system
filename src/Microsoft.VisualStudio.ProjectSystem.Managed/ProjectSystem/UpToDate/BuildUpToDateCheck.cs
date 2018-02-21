@@ -344,28 +344,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             if (!_tasksService.IsTaskQueueEmpty(ProjectCriticalOperation.Build))
             {
-                return Fail(logger, "Critical build tasks are running, failed.", "CriticalTasks");
+                return Fail(logger, "Critical build tasks are running, not up to date.", "CriticalTasks");
             }
 
             if (_lastVersionSeen == null || _configuredProject.ProjectVersion.CompareTo(_lastVersionSeen) > 0)
             {
-                return Fail(logger, "Project information is older than current project version, failed.", "ProjectInfoOutOfDate");
+                return Fail(logger, "Project information is older than current project version, not up to date.", "ProjectInfoOutOfDate");
             }
 
             if (itemsChangedSinceLastCheck)
             {
-                return Fail(logger, "The list of source items has changed since the last build, failed.", "ItemInfoOutOfDate");
+                return Fail(logger, "The list of source items has changed since the last build, not up to date.", "ItemInfoOutOfDate");
             }
 
             if (_isDisabled)
             {
-                return Fail(logger, "The 'DisableFastUpToDateCheckProperty' property is true, failed.", "Disabled");
+                return Fail(logger, "The 'DisableFastUpToDateCheckProperty' property is true, not up to date.", "Disabled");
             }
 
             var copyAlwaysItem = _items.SelectMany(kvp => kvp.Value).FirstOrDefault(item => item.CopyType == CopyToOutputDirectoryType.CopyAlways);
             if (copyAlwaysItem.Path != null)
             {
-                logger.Info("Item '{0}' has CopyToOutputDirectory set to 'Always', failed.", copyAlwaysItem.Path);
+                logger.Info("Item '{0}' has CopyToOutputDirectory set to 'Always', not up to date.", copyAlwaysItem.Path);
             }
 
             return true;
@@ -484,7 +484,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             if (outputMarkerTime <= inputMarkerTime)
             {
-                logger.Info("Input marker is older than output marker, failed.");
+                logger.Info("Input marker is older than output marker, not up to date.");
             }
 
             return inputMarkerPath == null || outputMarkerTime == null || outputMarkerTime > inputMarkerTime;
@@ -507,7 +507,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
                 else
                 {
-                    logger.Info("Source '{0}' does not exist, failed.", source);
+                    logger.Info("Source '{0}' does not exist, not up to date.", source);
                     return false;
                 }
 
@@ -519,13 +519,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
                 else
                 {
-                    logger.Info("Destination '{0}' does not exist, failed.", destination);
+                    logger.Info("Destination '{0}' does not exist, not up to date.", destination);
                     return false;
                 }
 
                 if (outputItemTime < itemTime)
                 {
-                    logger.Info("Build output destination is newer than source, failed.");
+                    logger.Info("Build output destination is newer than source, not up to date.");
                     return false;
                 }
             }
@@ -560,7 +560,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
                 else
                 {
-                    logger.Info("Source '{0}' does not exist, failed.", item.Path);
+                    logger.Info("Source '{0}' does not exist, not up to date.", item.Path);
                     return false;
                 }
                 
@@ -573,13 +573,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
                 else
                 {
-                    logger.Info("Destination '{0}' does not exist, failed.", outputItem);
+                    logger.Info("Destination '{0}' does not exist, not up to date.", outputItem);
                     return false;
                 }
 
                 if (outputItemTime < itemTime)
                 {
-                    logger.Info("PreserveNewest destination is newer than source, failed.");
+                    logger.Info("PreserveNewest destination is newer than source, not up to date.");
                     return false;
                 }
             }
@@ -611,7 +611,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
             else
             {
-                logger.Info("Input '{0}' does not exist, failed.", inputPath);
+                logger.Info("Input '{0}' does not exist, not up to date.", inputPath);
             }
 
             if (outputTime != null)
@@ -620,12 +620,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
             else
             {
-                logger.Info("Output '{0}' does not exist, failed.", outputPath);
+                logger.Info("Output '{0}' does not exist, not up to date.", outputPath);
             }
 
             if (outputTime <= inputTime)
             {
-                logger.Info("Output is newer than input, failed.");
+                logger.Info("Output is newer than input, not up to date.");
             }
 
             // We are up to date if the earliest output write happened after the latest input write
