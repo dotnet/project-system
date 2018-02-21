@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         private readonly AsyncLazy<string> _launchSettingsFilePath;
 
         [ImportingConstructor]
-        public LaunchSettingsProvider(UnconfiguredProject unconfiguredProject, IUnconfiguredProjectServices projectServices,
+        public LaunchSettingsProvider(UnconfiguredProject project, IUnconfiguredProjectServices projectServices,
                                       IFileSystem fileSystem, IUnconfiguredProjectCommonServices commonProjectServices,
                                       IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
                                       ActiveConfiguredProject<AppDesignerFolderSpecialFileProvider> appDesignerSpecialFileProvider)
@@ -43,8 +43,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             FileManager = fileSystem;
             CommonProjectServices = commonProjectServices;
             JsonSerializationProviders = new OrderPrecedenceImportCollection<ILaunchSettingsSerializationProvider, IJsonSection>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst,
-                                                                                                                    unconfiguredProject);
-            SourceControlIntegrations = new OrderPrecedenceImportCollection<ISourceCodeControlIntegration>(projectCapabilityCheckProvider: unconfiguredProject);
+                                                                                                                    project);
+            SourceControlIntegrations = new OrderPrecedenceImportCollection<ISourceCodeControlIntegration>(projectCapabilityCheckProvider: project);
 
             ProjectSubscriptionService = projectSubscriptionService;
             _appDesignerSpecialFileProvider = appDesignerSpecialFileProvider;

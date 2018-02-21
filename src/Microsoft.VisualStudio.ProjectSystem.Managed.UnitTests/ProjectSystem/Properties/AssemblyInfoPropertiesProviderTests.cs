@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     internal class TestProjectFileOrAssemblyInfoPropertiesProvider : AbstractProjectFileOrAssemblyInfoPropertiesProvider
     {
         public TestProjectFileOrAssemblyInfoPropertiesProvider(
-            UnconfiguredProject unconfiguredProject = null,
+            UnconfiguredProject project = null,
             Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata> interceptingProvider = null,
             Workspace workspace = null,
             IProjectThreadingService threadingService = null,
@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             IProjectInstancePropertiesProvider instanceProvider = null,
             Func<ProjectId> getActiveProjectId = null)
             : this(workspace ?? WorkspaceFactory.Create(""),
-                  unconfiguredProject: unconfiguredProject ?? UnconfiguredProjectFactory.Create(),
+                  project: project ?? UnconfiguredProjectFactory.Create(),
                   interceptingProvider: interceptingProvider,
                   threadingService: threadingService,
                   defaultProperties: defaultProperties,
@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public TestProjectFileOrAssemblyInfoPropertiesProvider(
             Workspace workspace,
-            UnconfiguredProject unconfiguredProject,
+            UnconfiguredProject project,
             Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata> interceptingProvider = null,
             IProjectThreadingService threadingService = null,
             IProjectProperties defaultProperties = null,
@@ -48,13 +48,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                         () => IInterceptingPropertyValueProviderFactory.Create(),
                         IInterceptingPropertyValueProviderMetadataFactory.Create("")) } :
                     new[] { interceptingProvider },
-                  unconfiguredProject: unconfiguredProject,
+                  project: project,
                   getActiveProjectId: getActiveProjectId ?? (() => workspace.CurrentSolution.ProjectIds.SingleOrDefault()),
                   workspace: workspace,
                   threadingService: threadingService ?? IProjectThreadingServiceFactory.Create())
         {
             Requires.NotNull(workspace, nameof(workspace));
-            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
+            Requires.NotNull(project, nameof(project));
         }
     }
 
@@ -71,9 +71,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var language = code.Contains("[") ? LanguageNames.CSharp : LanguageNames.VisualBasic;
             workspace = WorkspaceFactory.Create(code, language);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
-            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFilePath);
+            var project = UnconfiguredProjectFactory.Create(filePath: projectFilePath);
             var defaultProperties = CreateProjectProperties(additionalProps, saveInProjectFile: false);
-            return new TestProjectFileOrAssemblyInfoPropertiesProvider(unconfiguredProject, workspace: workspace, defaultProperties: defaultProperties, interceptingProvider: interceptingProvider);
+            return new TestProjectFileOrAssemblyInfoPropertiesProvider(project, workspace: workspace, defaultProperties: defaultProperties, interceptingProvider: interceptingProvider);
         }
 
         private TestProjectFileOrAssemblyInfoPropertiesProvider CreateProviderForProjectFileValidation(
@@ -87,11 +87,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var language = code.Contains("[") ? LanguageNames.CSharp : LanguageNames.VisualBasic;
             workspace = WorkspaceFactory.Create(code, language);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
-            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFilePath);
+            var project = UnconfiguredProjectFactory.Create(filePath: projectFilePath);
             additionalProps = additionalProps ?? new Dictionary<string, string>();
             additionalProps[propertyName] = propertyValueInProjectFile;
             var defaultProperties = CreateProjectProperties(additionalProps, saveInProjectFile: true);
-            return new TestProjectFileOrAssemblyInfoPropertiesProvider(unconfiguredProject, workspace: workspace, defaultProperties: defaultProperties, interceptingProvider: interceptingProvider);
+            return new TestProjectFileOrAssemblyInfoPropertiesProvider(project, workspace: workspace, defaultProperties: defaultProperties, interceptingProvider: interceptingProvider);
         }
 
         private IProjectProperties CreateProjectProperties(Dictionary<string, string> additionalProps, bool saveInProjectFile)

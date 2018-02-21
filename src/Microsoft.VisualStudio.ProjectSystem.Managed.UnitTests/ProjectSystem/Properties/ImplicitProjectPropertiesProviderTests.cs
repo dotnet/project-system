@@ -12,13 +12,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public void Constructor_NullDelegatedProvider_ThrowsArgumentNullException()
         {
-            var unconfiguredProject = UnconfiguredProjectFactory.Create();
+            var project = UnconfiguredProjectFactory.Create();
             Assert.Throws<ArgumentNullException>("provider", () =>
             {
                 new ImplicitProjectPropertiesProvider(null,
                                                       IProjectInstancePropertiesProviderFactory.Create(),
-                                                      new ImplicitProjectPropertiesStore<string, string>(unconfiguredProject),
-                                                      unconfiguredProject);
+                                                      new ImplicitProjectPropertiesStore<string, string>(project),
+                                                      project);
             });
         }
 
@@ -30,14 +30,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             var delegateProperties = delegatePropertiesMock.Object;
             var delegateProvider = IProjectPropertiesProviderFactory.Create(delegateProperties);
-            var unconfiguredProject = UnconfiguredProjectFactory.Create();
+            var project = UnconfiguredProjectFactory.Create();
 
             Assert.Throws<ArgumentNullException>("instanceProvider", () =>
             {
                 new ImplicitProjectPropertiesProvider(delegateProvider,
                                                       null,
-                                                      new ImplicitProjectPropertiesStore<string, string>(unconfiguredProject),
-                                                      unconfiguredProject);
+                                                      new ImplicitProjectPropertiesStore<string, string>(project),
+                                                      project);
             });
         }
 
@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var delegateProperties = delegatePropertiesMock.Object;
             var delegateProvider = IProjectPropertiesProviderFactory.Create(delegateProperties);
 
-            Assert.Throws<ArgumentNullException>("unconfiguredProject", () =>
+            Assert.Throws<ArgumentNullException>("project", () =>
             {
                 new ImplicitProjectPropertiesProvider(delegateProvider,
                                                       IProjectInstancePropertiesProviderFactory.Create(),
@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public void Provider_SetsPropertyIfPresent()
         {
-            var unconfiguredProject = UnconfiguredProjectFactory.Create();
+            var project = UnconfiguredProjectFactory.Create();
             var instanceProvider = IProjectInstancePropertiesProviderFactory.Create();
 
             var delegatePropertiesMock = IProjectPropertiesFactory
@@ -70,9 +70,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             var delegateProperties = delegatePropertiesMock.Object;
             var delegateProvider = IProjectPropertiesProviderFactory.Create(delegateProperties);
-            var propertyStore = new ImplicitProjectPropertiesStore<string, string>(unconfiguredProject);
+            var propertyStore = new ImplicitProjectPropertiesStore<string, string>(project);
 
-            var provider = new ImplicitProjectPropertiesProvider(delegateProvider, instanceProvider, propertyStore, unconfiguredProject);
+            var provider = new ImplicitProjectPropertiesProvider(delegateProvider, instanceProvider, propertyStore, project);
             var properties = provider.GetProperties("path/to/project.testproj", null, null);
 
             // calls delegate above with matching values
@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public void Provider_IgnoresPropertyIfAbsent()
         {
-            var unconfiguredProject = UnconfiguredProjectFactory.Create();
+            var project = UnconfiguredProjectFactory.Create();
             var instanceProvider = IProjectInstancePropertiesProviderFactory.Create();
 
             var delegatePropertiesMock = IProjectPropertiesFactory
@@ -93,9 +93,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             var delegateProperties = delegatePropertiesMock.Object;
             var delegateProvider = IProjectPropertiesProviderFactory.Create(delegateProperties);
-            var propertyStore = new ImplicitProjectPropertiesStore<string, string>(unconfiguredProject);
+            var propertyStore = new ImplicitProjectPropertiesStore<string, string>(project);
 
-            var provider = new ImplicitProjectPropertiesProvider(delegateProvider, instanceProvider, propertyStore, unconfiguredProject);
+            var provider = new ImplicitProjectPropertiesProvider(delegateProvider, instanceProvider, propertyStore, project);
             var properties = provider.GetProperties("path/to/project.testproj", null, null);
 
             // does not call the set property on the delegated property above
@@ -108,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public void Provider_ReturnsImplicitPropertyProvider()
         {
-            var unconfiguredProject = UnconfiguredProjectFactory.Create();
+            var project = UnconfiguredProjectFactory.Create();
             var instanceProvider = IProjectInstancePropertiesProviderFactory.ImplementsGetItemTypeProperties();
 
             var delegatePropertiesMock = IProjectPropertiesFactory
@@ -116,9 +116,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             var delegateProperties = delegatePropertiesMock.Object;
             var delegateProvider = IProjectPropertiesProviderFactory.Create(delegateProperties);
-            var propertyStore = new ImplicitProjectPropertiesStore<string, string>(unconfiguredProject);
+            var propertyStore = new ImplicitProjectPropertiesStore<string, string>(project);
 
-            var provider = new ImplicitProjectPropertiesProvider(delegateProvider, instanceProvider, propertyStore, unconfiguredProject);
+            var provider = new ImplicitProjectPropertiesProvider(delegateProvider, instanceProvider, propertyStore, project);
             var properties = provider.GetItemTypeProperties(null, "");
 
             properties.SetPropertyValueAsync("ProjectGuid", "7259e9ef-87d1-45a5-95c6-3a8432d23776");

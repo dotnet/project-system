@@ -39,11 +39,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             };
 
             var specialFilesManager = ActiveConfiguredProjectFactory.ImplementValue(() => AppDesignerFolderSpecialFileProviderFactory.ImplementGetFile(appDesignerFolder));
-            var unconfiguredProject = UnconfiguredProjectFactory.Create(null, null, @"c:\test\Project1\Project1.csproj");
-            var properties = ProjectPropertiesFactory.Create(unconfiguredProject, new[] { debuggerData });
-            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(unconfiguredProject, null, new IProjectThreadingServiceMock(), null, properties);
+            var project = UnconfiguredProjectFactory.Create(null, null, @"c:\test\Project1\Project1.csproj");
+            var properties = ProjectPropertiesFactory.Create(project, new[] { debuggerData });
+            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project, null, new IProjectThreadingServiceMock(), null, properties);
             var projectServices = IUnconfiguredProjectServicesFactory.Create(IProjectAsynchronousTasksServiceFactory.Create());
-            var provider = new LaunchSettingsUnderTest(unconfiguredProject, projectServices, fileSystem ?? new IFileSystemMock(), commonServices, null, specialFilesManager);
+            var provider = new LaunchSettingsUnderTest(project, projectServices, fileSystem ?? new IFileSystemMock(), commonServices, null, specialFilesManager);
             return provider;
         }
 
@@ -890,10 +890,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     internal class LaunchSettingsUnderTest : LaunchSettingsProvider
     {
         // ECan pass null for all and a default will be crewated
-        public LaunchSettingsUnderTest(UnconfiguredProject unconfiguredProject, IUnconfiguredProjectServices projectServices,
+        public LaunchSettingsUnderTest(UnconfiguredProject project, IUnconfiguredProjectServices projectServices,
                                       IFileSystem fileSystem, IUnconfiguredProjectCommonServices commonProjectServices,
                                       IActiveConfiguredProjectSubscriptionService projectSubscriptionService, ActiveConfiguredProject<AppDesignerFolderSpecialFileProvider> appDesignerFolderSpecialFileProvider)
-          : base(unconfiguredProject, projectServices, fileSystem, commonProjectServices, projectSubscriptionService, appDesignerFolderSpecialFileProvider)
+          : base(project, projectServices, fileSystem, commonProjectServices, projectSubscriptionService, appDesignerFolderSpecialFileProvider)
         {
             // Block the code from setting up one on the real file system. Since we block, it we need to set up the fileChange scheduler manually
             FileWatcher = new SimpleFileWatcher();

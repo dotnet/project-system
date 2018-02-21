@@ -21,11 +21,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         [ImportingConstructor]
         public LanguageServiceHandlerManager(UnconfiguredProject project, ICommandLineParserService commandLineParser, IContextHandlerProvider handlerProvider, IProjectLogger logger)
         {
-            Requires.NotNull(project, nameof(project));
-            Requires.NotNull(commandLineParser, nameof(commandLineParser));
-            Requires.NotNull(handlerProvider, nameof(handlerProvider));
-            Requires.NotNull(logger, nameof(logger));
-
             _project = project;
             _commandLineParser = commandLineParser;
             _handlerProvider = handlerProvider;

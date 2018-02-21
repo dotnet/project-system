@@ -14,8 +14,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [ImportingConstructor]
         public TargetFrameworkValueProvider(ProjectProperties properties)
         {
-            Requires.NotNull(properties, nameof(properties));
-
             _properties = properties;
         }
 

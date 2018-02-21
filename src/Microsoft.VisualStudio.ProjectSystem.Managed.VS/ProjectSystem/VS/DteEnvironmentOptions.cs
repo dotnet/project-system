@@ -17,8 +17,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [ImportingConstructor]
         public DteEnvironmentOptions(IDteServices dteServices)
         {
-            Requires.NotNull(dteServices, nameof(dteServices));
-
             _dteServices = dteServices;
         }
 

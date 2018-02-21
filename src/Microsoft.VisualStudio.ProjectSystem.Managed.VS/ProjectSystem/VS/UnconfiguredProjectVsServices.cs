@@ -19,8 +19,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [ImportingConstructor]
         public UnconfiguredProjectVsServices(IUnconfiguredProjectCommonServices commonServices)
         {
-            Requires.NotNull(commonServices, nameof(commonServices));
-
             _commonServices = commonServices;
         }
 

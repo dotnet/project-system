@@ -28,8 +28,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             var projectAccessor = IProjectAccessorFactory.Create(projectXml);
             var provider = new PlatformProjectConfigurationDimensionProvider(projectAccessor);
 
-            var unconfiguredProject = UnconfiguredProjectFactory.Create();
-            var values = await provider.GetDefaultValuesForDimensionsAsync(unconfiguredProject);
+            var project = UnconfiguredProjectFactory.Create();
+            var values = await provider.GetDefaultValuesForDimensionsAsync(project);
 
             Assert.Single(values);
             var value = values.First();
@@ -43,8 +43,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             var projectAccessor = IProjectAccessorFactory.Create(projectXml);
             var provider = new PlatformProjectConfigurationDimensionProvider(projectAccessor);
 
-            var unconfiguredProject = UnconfiguredProjectFactory.Create();
-            var values = await provider.GetProjectConfigurationDimensionsAsync(unconfiguredProject);
+            var project = UnconfiguredProjectFactory.Create();
+            var values = await provider.GetProjectConfigurationDimensionsAsync(project);
 
             Assert.Single(values);
             var value = values.First();
@@ -59,33 +59,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         [Fact]
         public async Task PlatformProjectConfigurationDimensionProvider_OnDimensionValueChanged_Add()
         {
-            var project = ProjectRootElementFactory.Create(projectXml);
-            var projectAccessor = IProjectAccessorFactory.Create(project);
+            var rootElement = ProjectRootElementFactory.Create(projectXml);
+            var projectAccessor = IProjectAccessorFactory.Create(rootElement);
             var provider = new PlatformProjectConfigurationDimensionProvider(projectAccessor);
 
-            var unconfiguredProject = UnconfiguredProjectFactory.Create();
+            var project = UnconfiguredProjectFactory.Create();
 
             // On ChangeEventStage.After nothing should be changed
             var args = new ProjectConfigurationDimensionValueChangedEventArgs(
-                unconfiguredProject,
+                project,
                 ConfigurationDimensionChange.Add,
                 ChangeEventStage.After,
                 ConfigurationGeneral.PlatformProperty,
                 "ARM");
             await provider.OnDimensionValueChangedAsync(args);
-            var property = BuildUtilities.GetProperty(project, Platforms);
+            var property = BuildUtilities.GetProperty(rootElement, Platforms);
             Assert.NotNull(property);
             Assert.Equal("AnyCPU;x64;x86", property.Value);
 
             // On ChangeEventStage.Before the property should be added
             args = new ProjectConfigurationDimensionValueChangedEventArgs(
-                unconfiguredProject,
+                project,
                 ConfigurationDimensionChange.Add,
                 ChangeEventStage.Before,
                 ConfigurationGeneral.PlatformProperty,
                 "ARM");
             await provider.OnDimensionValueChangedAsync(args);
-            property = BuildUtilities.GetProperty(project, Platforms);
+            property = BuildUtilities.GetProperty(rootElement, Platforms);
             Assert.NotNull(property);
             Assert.Equal("AnyCPU;x64;x86;ARM", property.Value);
         }
@@ -93,33 +93,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         [Fact]
         public async Task PlatformProjectConfigurationDimensionProvider_OnDimensionValueChanged_Remove()
         {
-            var project = ProjectRootElementFactory.Create(projectXml);
-            var projectAccessor = IProjectAccessorFactory.Create(project);
+            var rootElement = ProjectRootElementFactory.Create(projectXml);
+            var projectAccessor = IProjectAccessorFactory.Create(rootElement);
             var provider = new PlatformProjectConfigurationDimensionProvider(projectAccessor);
 
-            var unconfiguredProject = UnconfiguredProjectFactory.Create();
+            var project = UnconfiguredProjectFactory.Create();
 
             // On ChangeEventStage.After nothing should be changed
             var args = new ProjectConfigurationDimensionValueChangedEventArgs(
-                unconfiguredProject,
+                project,
                 ConfigurationDimensionChange.Delete,
                 ChangeEventStage.After,
                 ConfigurationGeneral.PlatformProperty,
                 "x86");
             await provider.OnDimensionValueChangedAsync(args);
-            var property = BuildUtilities.GetProperty(project, Platforms);
+            var property = BuildUtilities.GetProperty(rootElement, Platforms);
             Assert.NotNull(property);
             Assert.Equal("AnyCPU;x64;x86", property.Value);
 
             // On ChangeEventStage.Before the property should be removed
             args = new ProjectConfigurationDimensionValueChangedEventArgs(
-                unconfiguredProject,
+                project,
                 ConfigurationDimensionChange.Delete,
                 ChangeEventStage.Before,
                 ConfigurationGeneral.PlatformProperty,
                 "x86");
             await provider.OnDimensionValueChangedAsync(args);
-            property = BuildUtilities.GetProperty(project, Platforms);
+            property = BuildUtilities.GetProperty(rootElement, Platforms);
             Assert.NotNull(property);
             Assert.Equal("AnyCPU;x64", property.Value);
         }
@@ -127,35 +127,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         [Fact]
         public async Task PlatformProjectConfigurationDimensionProvider_OnDimensionValueChanged_Rename()
         {
-            var project = ProjectRootElementFactory.Create(projectXml);
-            var projectAccessor = IProjectAccessorFactory.Create(project);
+            var rootElement = ProjectRootElementFactory.Create(projectXml);
+            var projectAccessor = IProjectAccessorFactory.Create(rootElement);
             var provider = new PlatformProjectConfigurationDimensionProvider(projectAccessor);
 
-            var unconfiguredProject = UnconfiguredProjectFactory.Create();
+            var project = UnconfiguredProjectFactory.Create();
 
             // Nothing should happen on platform rename as it's unsupported
             var args = new ProjectConfigurationDimensionValueChangedEventArgs(
-                unconfiguredProject,
+                project,
                 ConfigurationDimensionChange.Rename,
                 ChangeEventStage.Before,
                 ConfigurationGeneral.PlatformProperty,
                 "RenamedPlatform",
                 "x86");
             await provider.OnDimensionValueChangedAsync(args);
-            var property = BuildUtilities.GetProperty(project, Platforms);
+            var property = BuildUtilities.GetProperty(rootElement, Platforms);
             Assert.NotNull(property);
             Assert.Equal("AnyCPU;x64;x86", property.Value);
 
             // On ChangeEventStage.Before the property should be renamed
             args = new ProjectConfigurationDimensionValueChangedEventArgs(
-                unconfiguredProject,
+                project,
                 ConfigurationDimensionChange.Rename,
                 ChangeEventStage.After,
                 ConfigurationGeneral.PlatformProperty,
                 "RenamedPlatform",
                 "x86");
             await provider.OnDimensionValueChangedAsync(args);
-            property = BuildUtilities.GetProperty(project, Platforms);
+            property = BuildUtilities.GetProperty(rootElement, Platforms);
             Assert.NotNull(property);
             Assert.Equal("AnyCPU;x64;x86", property.Value);
         }

@@ -40,13 +40,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                                                  IProjectHostProvider projectHostProvider,
                                                  IActiveConfiguredProjectsProvider activeConfiguredProjectsProvider)
         {
-            Requires.NotNull(commonServices, nameof(commonServices));
-            Requires.NotNull(contextFactory, nameof(contextFactory));
-            Requires.NotNull(asyncLoadDashboard, nameof(asyncLoadDashboard));
-            Requires.NotNull(taskScheduler, nameof(taskScheduler));
-            Requires.NotNull(projectHostProvider, nameof(projectHostProvider));
-            Requires.NotNull(activeConfiguredProjectsProvider, nameof(activeConfiguredProjectsProvider));
-
             _commonServices = commonServices;
             _contextFactory = contextFactory;
             _asyncLoadDashboard = asyncLoadDashboard;

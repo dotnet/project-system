@@ -17,9 +17,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private static readonly Guid s_visualBasicProjectType = new Guid(VisualBasicProjectSystemPackage.LegacyProjectTypeGuid);
 
         [ImportingConstructor]
-        public VisualBasicProjectGuidProvider(UnconfiguredProject unconfiguredProject)
+        public VisualBasicProjectGuidProvider(UnconfiguredProject project)
         {
-            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
         }
 
         public Guid ProjectTypeGuid

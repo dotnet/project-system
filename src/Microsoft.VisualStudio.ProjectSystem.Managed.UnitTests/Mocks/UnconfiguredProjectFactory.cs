@@ -27,24 +27,24 @@ namespace Microsoft.VisualStudio.ProjectSystem
             unconfiguredProjectServices.Setup(u => u.ProjectConfigurationsService)
                                        .Returns(projectConfigurationsService);
 
-            var unconfiguredProject = new Mock<UnconfiguredProject>();
-            unconfiguredProject.Setup(u => u.ProjectService)
+            var project = new Mock<UnconfiguredProject>();
+            project.Setup(u => u.ProjectService)
                                .Returns(service);
 
-            unconfiguredProject.Setup(u => u.Services)
+            project.Setup(u => u.Services)
                                .Returns(unconfiguredProjectServices.Object);
 
-            unconfiguredProject.SetupGet(u => u.FullPath)
+            project.SetupGet(u => u.FullPath)
                                 .Returns(filePath);
 
-            unconfiguredProject.Setup(u => u.Capabilities)
+            project.Setup(u => u.Capabilities)
                                .Returns(scope);
 
-            unconfiguredProject.Setup(u => u.GetSuggestedConfiguredProjectAsync()).Returns(Task.FromResult(configuredProject));
+            project.Setup(u => u.GetSuggestedConfiguredProjectAsync()).Returns(Task.FromResult(configuredProject));
 
-            unconfiguredProject.Setup(u => u.GetFileEncodingAsync()).Returns(Task.FromResult(projectEncoding));
+            project.Setup(u => u.GetFileEncodingAsync()).Returns(Task.FromResult(projectEncoding));
 
-            return unconfiguredProject.Object;
+            return project.Object;
         }
 
         public static UnconfiguredProject CreateWithUnconfiguredProjectAdvanced()

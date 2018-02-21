@@ -21,9 +21,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [ImportingConstructor]
         public DteServices([Import(typeof(SVsServiceProvider))]IServiceProvider serviceProvider, IUnconfiguredProjectVsServices projectVsServices)
         {
-            Requires.NotNull(serviceProvider, nameof(serviceProvider));
-            Requires.NotNull(projectVsServices, nameof(projectVsServices));
-
             _serviceProvider = serviceProvider;
             _projectVsServices = projectVsServices;
         }

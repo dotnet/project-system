@@ -26,8 +26,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public AppDesignerFolderProjectTreePropertiesProvider([Import(typeof(ProjectImageProviderAggregator))]IProjectImageProvider imageProvider, IProjectDesignerService designerService)
             : base(imageProvider)
         {
-            Requires.NotNull(designerService, nameof(designerService));
-
             _designerService = designerService;
         }
 

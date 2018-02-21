@@ -13,27 +13,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     public class SupportedTargetFrameworksEnumProviderTests
     {
         [Fact]
-        public void Constructor_NullProjectAccessor_ThrowsArgumentNull()
-        {
-            var configuredProject = ConfiguredProjectFactory.Create();
-            Assert.Throws<ArgumentNullException>("projectAccessor", () =>
-            {
-                new SupportedTargetFrameworksEnumProvider(null, configuredProject);
-            });
-        }
-
-        [Fact]
-        public void Constructor_NullConfiguredProject_ThrowsArgumentNull()
-        {
-            var projectAccessor = IProjectAccessorFactory.Create();
-
-            Assert.Throws<ArgumentNullException>("configuredProject", () =>
-            {
-                new SupportedTargetFrameworksEnumProvider(projectAccessor, null);
-            });
-        }
-
-        [Fact]
         public async Task GetProviderAsync_ReturnsNonNullGenerator()
         {
             var projectAccessor = IProjectAccessorFactory.Create();

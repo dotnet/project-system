@@ -29,8 +29,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [ImportingConstructor]
         private ProjectSystemOptions(IEnvironmentHelper environment, IVsOptionalService<SVsSettingsPersistenceManager, ISettingsManager> settingsManager)
         {
-            Requires.NotNull(environment, nameof(environment));
-
             _environment = environment;
             _settingsManager = settingsManager;
         }
