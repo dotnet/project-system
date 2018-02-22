@@ -94,7 +94,7 @@
     <!-- Settings page capability -->
     <ProjectCapability Include="AppSettings" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'"/>
   
-    <!-- Publish capability -->
+    <!-- Publish capability enables the Publish command for the Project -->
     <ProjectCapability Include="Publish"/>
   </ItemGroup>
 
