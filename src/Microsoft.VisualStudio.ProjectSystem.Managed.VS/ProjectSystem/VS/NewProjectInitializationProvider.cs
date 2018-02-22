@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     /// InitializeNewProject for new projects. Just set a bool to remember this state.
     /// 
     /// </summary>
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
+    [AppliesTo(ProjectCapability.DotNet)]
     [Export(typeof(INewProjectInitializationProvider))]
     [Export(typeof(IProjectCreationState))]
     internal sealed class NewProjectInitializationProvider : INewProjectInitializationProvider, IProjectCreationState

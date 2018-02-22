@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Extensibility
     /// MEF component which has methods for consumers to get to project specific MEF exports
     /// </summary>
     [Export(typeof(IProjectExportProvider))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
+    [AppliesTo(ProjectCapability.DotNet)]
     internal class ProjectExportProvider : IProjectExportProvider
     {
         private IProjectServiceAccessor ProjectServiceAccesspr { get; }

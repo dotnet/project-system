@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 {
     [ExportProjectNodeComService(typeof(IVsSingleFileGeneratorFactory))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
+    [AppliesTo(ProjectCapability.DotNet)]
     internal class SingleFileGeneratorFactoryAggregator : IVsSingleFileGeneratorFactory
     {
         // Constants for the generator information registry keys

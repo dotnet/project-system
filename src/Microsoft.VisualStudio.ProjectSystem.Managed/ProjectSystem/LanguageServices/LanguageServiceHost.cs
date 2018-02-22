@@ -77,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         public object HostSpecificEditAndContinueService => _currentAggregateProjectContext?.ENCProjectConfig;
 
         [ProjectAutoLoad(ProjectLoadCheckpoint.ProjectFactoryCompleted)]
-        [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
+        [AppliesTo(ProjectCapability.DotNetLanguageService)]
         private Task OnProjectFactoryCompletedAsync()
         {
             return InitializeAsync();

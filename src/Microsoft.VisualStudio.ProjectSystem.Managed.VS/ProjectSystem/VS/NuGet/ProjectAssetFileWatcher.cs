@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         /// Called on project load.
         /// </summary>
         [ConfiguredProjectAutoLoad(RequiresUIThread = false)]
-        [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
+        [AppliesTo(ProjectCapability.DotNet)]
         internal void Load()
         {
             InitializeAsync();

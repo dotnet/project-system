@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
     ///     arguments that it would have passed to the compiler, instead of calling it.
     /// </summary>
     [ExportBuildGlobalPropertiesProvider(designTimeBuildProperties: true)]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
+    [AppliesTo(ProjectCapability.DotNet)]
     internal class CommandLineDesignTimeBuildPropertiesProvider : StaticGlobalPropertiesProviderBase
     {
         private static readonly Task<IImmutableDictionary<string, string>> s_buildProperties = Task.FromResult<IImmutableDictionary<string, string>>(

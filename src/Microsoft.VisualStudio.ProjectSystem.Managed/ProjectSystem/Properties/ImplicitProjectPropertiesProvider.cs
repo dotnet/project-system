@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     [Export("ImplicitProjectFile", typeof(IProjectInstancePropertiesProvider))]
     [Export(typeof(IProjectInstancePropertiesProvider))]
     [ExportMetadata("Name", "ImplicitProjectFile")]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
+    [AppliesTo(ProjectCapability.DotNet)]
     internal class ImplicitProjectPropertiesProvider : DelegatedProjectPropertiesProviderBase
     {
         private readonly ImplicitProjectPropertiesStore<string, string> _propertyStore;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Microsoft.VisualStudio.ProjectSystem.Build
 {
     [Export(typeof(IConfiguredProjectReadyToBuild))]
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
+    [AppliesTo(ProjectCapability.DotNetLanguageService)]
     [Order(Order.Default)]
     internal sealed class ImplicitlyActiveConfiguredProjectReadyToBuild : IConfiguredProjectReadyToBuild, IDisposable
     {
