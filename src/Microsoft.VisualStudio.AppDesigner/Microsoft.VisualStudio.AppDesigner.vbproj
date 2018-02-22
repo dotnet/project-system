@@ -5,7 +5,7 @@
     <!-- TODO: Function doesn't return a value on all code paths (https://github.com/dotnet/project-system/issues/2592) -->
     <NoWarn>$(NoWarn);42353</NoWarn>
     <StrongNameKeyId>Microsoft</StrongNameKeyId>
-
+    <TargetFramework>net46</TargetFramework>
     <!-- Nuget -->
     <IsPackable>true</IsPackable>
     <Description>This package implements the AppDesigner, which is the designer host used for project property pages among other things in Visual Studio</Description>
