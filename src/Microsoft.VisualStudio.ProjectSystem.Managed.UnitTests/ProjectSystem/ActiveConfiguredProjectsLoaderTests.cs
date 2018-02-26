@@ -1,5 +1,6 @@
 ﻿// Copyright(c) Microsoft.All Rights Reserved.Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -17,6 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public async Task WhenActiveConfigurationChanges_LoadsConfiguredProject(string[] configurationNames)
         {
             var configurationGroups = IConfigurationGroupFactory.CreateFromConfigurationNames(configurationNames);
+            var e = ProjectVersionedValueFactory.Create(configurationGroups);
 
             var results = new List<string>();
             var project = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync(configuration =>
@@ -25,11 +27,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return Task.FromResult<ConfiguredProject>(null);
             });
 
-            var loader = CreateInstance(project, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source);
+            var loader = CreateInstance(project);
             await loader.InitializeAsync();
 
-            // Change the active configurations
-            await source.SendAndCompleteAsync(configurationGroups, loader.TargetBlock);
+            await loader.OnActiveConfigurationsChangedAsync(e);
 
             Assert.Equal(configurationNames, results);
         }
@@ -42,18 +43,20 @@ namespace Microsoft.VisualStudio.ProjectSystem
             int callCount = 0;
             UnconfiguredProject project = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync(configuration =>
             {
-
                 callCount++;
                 return Task.FromResult<ConfiguredProject>(null);
             });
 
-            var loader = CreateInstance(project, tasksService, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source);
+            var loader = CreateInstance(project, tasksService);
             await loader.InitializeAsync();
 
             var configurationGroups = IConfigurationGroupFactory.CreateFromConfigurationNames("Debug|AnyCPU");
+            var e = ProjectVersionedValueFactory.Create(configurationGroups);
 
-            // Change the active configurations
-            await source.SendAndCompleteAsync(configurationGroups, loader.TargetBlock);
+            await Assert.ThrowsAsync<OperationCanceledException>(() =>
+            {
+                return loader.OnActiveConfigurationsChangedAsync(e);
+            });
 
             // Should not be listening
             Assert.Equal(0, callCount);
@@ -70,63 +73,59 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return Task.FromResult<ConfiguredProject>(null);
             });
 
-            var loader = CreateInstance(project, out var source);
+            var loader = CreateInstance(project);
 
             await loader.InitializeAsync();
             await loader.InitializeAsync();
 
             var configurationGroups = IConfigurationGroupFactory.CreateFromConfigurationNames("Debug|AnyCPU");
+            var e = ProjectVersionedValueFactory.Create(configurationGroups);
 
-            // Change the active configurations
-            await source.SendAndCompleteAsync(configurationGroups, loader.TargetBlock);
+            await loader.OnActiveConfigurationsChangedAsync(e);
 
             Assert.Equal(new string[] { "Debug|AnyCPU" }, results);
         }
-
 
         [Fact]
         public void Dispose_WhenNotInitialized_DoesNotThrow()
         {
             var project = UnconfiguredProjectFactory.Create();
 
-            var loader = CreateInstance(project, out _);
+            var loader = CreateInstance(project);
             loader.Dispose();
 
             Assert.True(loader.IsDisposed);
         }
 
         [Fact]
-        public async Task Dispose_WhenInitialized_DisposesSubscription()
+        public async Task WhenDisposed_DoesNotLoadConfiguredProjec()
         {
+            var tasksService = IUnconfiguredProjectTasksServiceFactory.CreateWithUnloadedProject<ConfiguredProject>();
+
             int callCount = 0;
             UnconfiguredProject project = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync(configuration =>
             {
-
                 callCount++;
                 return Task.FromResult<ConfiguredProject>(null);
             });
 
-            var loader = CreateInstance(project, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source);
+            var loader = CreateInstance(project, tasksService);
             await loader.InitializeAsync();
             loader.Dispose();
 
             var configurationGroups = IConfigurationGroupFactory.CreateFromConfigurationNames("Debug|AnyCPU");
+            var e = ProjectVersionedValueFactory.Create(configurationGroups);
 
-            // Change the active configurations
-            await source.SendAndCompleteAsync(configurationGroups, loader.TargetBlock);
+            await loader.OnActiveConfigurationsChangedAsync(e);
 
-            // Should not be listening
             Assert.Equal(0, callCount);
-        }
-        private static ActiveConfiguredProjectsLoader CreateInstance(UnconfiguredProject project, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source)
-        {
-            return CreateInstance(project, null, out source);
+
         }
 
-        private static ActiveConfiguredProjectsLoader CreateInstance(UnconfiguredProject project, IUnconfiguredProjectTasksService tasksService, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source)
+        private static ActiveConfiguredProjectsLoader CreateInstance(UnconfiguredProject project, IUnconfiguredProjectTasksService tasksService = null)
         {
             var services = IProjectCommonServicesFactory.CreateWithDefaultThreadingPolicy();
-            source = ProjectValueDataSourceFactory.Create<IConfigurationGroup<ProjectConfiguration>>(services);
+            var source = ProjectValueDataSourceFactory.Create<IConfigurationGroup<ProjectConfiguration>>(services);
             var activeConfigurationGroupService = IActiveConfigurationGroupServiceFactory.Implement(source);
 
             var loader = CreateInstance(project, activeConfigurationGroupService, tasksService);

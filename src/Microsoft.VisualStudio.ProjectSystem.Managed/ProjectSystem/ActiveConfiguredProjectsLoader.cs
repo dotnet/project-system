@@ -16,7 +16,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly UnconfiguredProject _project;
         private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
         private readonly IUnconfiguredProjectTasksService _tasksService;
-        private ActionBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> _targetBlock;
         private IDisposable _subscription;
 
         [ImportingConstructor]
@@ -26,7 +25,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _project = project;
             _activeConfigurationGroupService = activeConfigurationGroupService;
             _tasksService = tasksService;
-            _targetBlock = new ActionBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>>(OnActiveConfigurationsChangedAsync);
         }
 
         [ProjectAutoLoad(ProjectLoadCheckpoint.ProjectInitialCapabilitiesEstablished)]
@@ -37,12 +35,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return Task.CompletedTask;
         }
 
-        public ITargetBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> TargetBlock => _targetBlock;
-
         protected override void Initialize()
         {
             _subscription = _activeConfigurationGroupService.ActiveConfigurationGroupSource.SourceBlock.LinkTo(
-                target: _targetBlock,
+                target: new ActionBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>>(OnActiveConfigurationsChangedAsync),
                 linkOptions: new DataflowLinkOptions() { PropagateCompletion = true });
         }
 
@@ -51,12 +47,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
             if (disposing)
             {
                 _subscription?.Dispose();
-                _targetBlock.Complete();
             }
         }
 
-        private async Task OnActiveConfigurationsChangedAsync(IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>> e)
+        internal async Task OnActiveConfigurationsChangedAsync(IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>> e)
         {
+            if (IsDisposing || IsDisposed)
+                return;
+
             foreach (ProjectConfiguration configuration in e.Value)
             {
                 // Make sure we aren't currently unloading, or we don't unload while we load the configuration
