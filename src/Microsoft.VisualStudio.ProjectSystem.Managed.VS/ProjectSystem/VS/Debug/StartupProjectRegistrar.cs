@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
         [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
-        internal Task Load()
+        public Task OnProjectFactoryCompleted()
         {
             return InitializeAsync();
         }
@@ -71,9 +71,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _startupProjectsListService = (IVsStartupProjectsListService)await _serviceProvider.GetServiceAsync(typeof(SVsStartupProjectsListService))
                                                                                                .ConfigureAwait(false);
 
+            Assumes.Present(_startupProjectsListService);
+
             _subscription = _projectSubscriptionService.ProjectRuleSource.SourceBlock.LinkTo(
                 target: new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(OnProjectChangedAsync),
-                suppressVersionOnlyUpdates: true);
+                suppressVersionOnlyUpdates: true,
+                linkOptions: new DataflowLinkOptions() { PropagateCompletion = true });
         }
 
         protected override Task DisposeCoreAsync(bool initialized)
