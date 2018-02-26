@@ -39,7 +39,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
             var spMock = new IAsyncServiceProviderMoq();
             uint adviseCookie = 100;
             var fileChangeService = IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(adviseCookie);
-            spMock.AddService(typeof(IVsFileChangeEx), typeof(SVsFileChangeEx), fileChangeService);
+            spMock.AddService(typeof(SVsFileChangeEx), fileChangeService);
             var tasksService = IUnconfiguredProjectTasksServiceFactory.ImplementLoadedProjectAsync<ConfiguredProject>(t => t());
 
             var watcher = new ProjectAssetFileWatcher(spMock,
@@ -94,7 +94,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
             var spMock = new IAsyncServiceProviderMoq();
             uint adviseCookie = 100;
             var fileChangeService = IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(adviseCookie);
-            spMock.AddService(typeof(IVsFileChangeEx), typeof(SVsFileChangeEx), fileChangeService);
+            spMock.AddService(typeof(SVsFileChangeEx), fileChangeService);
             var tasksService = IUnconfiguredProjectTasksServiceFactory.ImplementLoadedProjectAsync<ConfiguredProject>(t => t());
 
             var watcher = new ProjectAssetFileWatcher(spMock,
@@ -123,7 +123,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
         {
             var spMock = new IAsyncServiceProviderMoq();
             var fileChangeService = IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(100);
-            spMock.AddService(typeof(IVsFileChangeEx), typeof(SVsFileChangeEx), fileChangeService);
+            spMock.AddService(typeof(SVsFileChangeEx), fileChangeService);
             var tasksService = IUnconfiguredProjectTasksServiceFactory.ImplementLoadedProjectAsync<ConfiguredProject>(t => t());
 
             var watcher = new ProjectAssetFileWatcher(spMock,

@@ -14,23 +14,19 @@ namespace Microsoft.VisualStudio.ProjectSystem
     public class IAsyncServiceProviderMoq : IAsyncServiceProvider
     {
         // Usage. Create a new IAsyncServiceProviderMoq and add your service moqs to it.
-        private Dictionary<Type, object> Services = new Dictionary<Type, object>();
+        private Dictionary<Type, object> _services = new Dictionary<Type, object>();
 
         // Returns null if it can't get it
         public Task<object> GetServiceAsync(Type serviceType)
         {
-            Services.TryGetValue(serviceType, out object retVal);
+            _services.TryGetValue(serviceType, out object retVal);
 
             return Task.FromResult(retVal);
         }
 
-        public void AddService(Type interfaceType, Type serviceType, object serviceMock)
+        public void AddService<T>(Type serviceType, T serviceMock)
         {
-            Services.Add(serviceType, serviceMock);
-            if (serviceType != interfaceType)
-            {
-                Services.Add(interfaceType, serviceMock);
-            }
+            _services.Add(serviceType, serviceMock);
         }
     }
 }
