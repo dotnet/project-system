@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _project = project;
             _activeConfigurationGroupService = activeConfigurationGroupService;
             _tasksService = tasksService;
-            _targetBlock = new ActionBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>>(OnActiveConfigurationsChanged);
+            _targetBlock = new ActionBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>>(OnActiveConfigurationsChangedAsync);
         }
 
         [ProjectAutoLoad(ProjectLoadCheckpoint.ProjectInitialCapabilitiesEstablished)]
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
         }
 
-        private async Task OnActiveConfigurationsChanged(IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>> e)
+        private async Task OnActiveConfigurationsChangedAsync(IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>> e)
         {
             foreach (ProjectConfiguration configuration in e.Value)
             {
