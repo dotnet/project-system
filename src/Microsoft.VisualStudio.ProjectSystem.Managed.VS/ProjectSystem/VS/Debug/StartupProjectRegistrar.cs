@@ -56,9 +56,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
         [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
-        internal Task OnProjectFactoryCompleted()
+        public Task InitializeAsync()
         {
-            return InitializeAsync();
+            return InitializeAsync(CancellationToken.None);
         }
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
