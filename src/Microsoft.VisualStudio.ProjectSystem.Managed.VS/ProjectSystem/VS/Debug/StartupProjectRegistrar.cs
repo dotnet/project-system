@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
         [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
-        public Task OnProjectFactoryCompleted()
+        internal Task OnProjectFactoryCompleted()
         {
             return InitializeAsync();
         }
@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             return Task.CompletedTask;
         }
 
-        private async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
+        internal async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
         {
             bool isDebuggable = await _launchProviders.Value.IsDebuggableAsync()
                                                             .ConfigureAwait(false);
