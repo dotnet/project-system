@@ -46,7 +46,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
                                                      IProjectTreeProviderFactory.Create(),
                                                      IUnconfiguredProjectCommonServicesFactory.Create(threadingService: new IProjectThreadingServiceMock()),
                                                      tasksService,
-                                                     IActiveConfiguredProjectSubscriptionServiceFactory.CreateInstance());
+                                                     IActiveConfiguredProjectSubscriptionServiceFactory.Create());
 
             var tree = ProjectTreeParser.Parse(inputTree);
             var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(ProjectCurrentStateJson);
@@ -101,7 +101,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
                                                      IProjectTreeProviderFactory.Create(),
                                                      IUnconfiguredProjectCommonServicesFactory.Create(threadingService: new IProjectThreadingServiceMock()),
                                                      tasksService,
-                                                     IActiveConfiguredProjectSubscriptionServiceFactory.CreateInstance());
+                                                     IActiveConfiguredProjectSubscriptionServiceFactory.Create());
             watcher.Load();
             var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(ProjectCurrentStateJson);
 
@@ -130,7 +130,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
                                                      IProjectTreeProviderFactory.Create(),
                                                      IUnconfiguredProjectCommonServicesFactory.Create(threadingService: new IProjectThreadingServiceMock()),
                                                      tasksService,
-                                                     IActiveConfiguredProjectSubscriptionServiceFactory.CreateInstance());
+                                                     IActiveConfiguredProjectSubscriptionServiceFactory.Create());
 
             var tree = ProjectTreeParser.Parse(@"Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""");
             var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(@"{
