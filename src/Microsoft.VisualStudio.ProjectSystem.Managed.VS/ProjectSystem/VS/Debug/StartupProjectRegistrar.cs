@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             return Task.CompletedTask;
         }
 
-        internal async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
+        internal async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e = null)
         {
             bool isDebuggable = await _launchProviders.Value.IsDebuggableAsync()
                                                             .ConfigureAwait(false);
