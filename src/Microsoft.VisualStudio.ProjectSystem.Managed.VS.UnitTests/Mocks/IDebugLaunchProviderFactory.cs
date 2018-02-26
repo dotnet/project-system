@@ -8,12 +8,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     public class IDebugLaunchProviderFactory
     {
-        public static IDebugLaunchProvider ImplementCanLaunchAsync(bool debugs)
+        public static IDebugLaunchProvider ImplementCanLaunchAsync(bool result)
         {
             var mock = new Mock<IDebugLaunchProvider>();
 
             mock.Setup(d => d.CanLaunchAsync(It.IsAny<DebugLaunchOptions>()))
-                                .Returns(() => Task.FromResult(debugs));
+                                .Returns(() => Task.FromResult(result));
 
             return mock.Object;
         }
