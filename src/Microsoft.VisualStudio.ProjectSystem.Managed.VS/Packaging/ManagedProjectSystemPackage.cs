@@ -52,7 +52,8 @@ namespace Microsoft.VisualStudio.Packaging
                                                   ProjectCapability.OpenProjectFile + "; " +
                                                   ProjectCapability.PreserveFormatting + "; " +
                                                   ProjectCapability.ProjectConfigurationsDeclaredDimensions + "; " +
-                                                  ProjectCapability.LanguageService;
+                                                  ProjectCapability.LanguageService + "; " +
+                                                  ProjectCapability.DotNet;
 
         private IDotNetCoreProjectCompatibilityDetector _dotNetCoreCompatibilityDetector;
 

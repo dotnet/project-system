@@ -12,5 +12,8 @@
     <ItemType Name="Compile" DisplayName="F# compiler"/>
     
     <FileExtension Name=".fs" ContentType="FSharpFile"/>
+    <FileExtension Name=".fsi" ContentType="FSharpFile"/>
+    <FileExtension Name=".ml" ContentType="FSharpFile"/>
+    <FileExtension Name=".mli" ContentType="FSharpFile"/>
 </ProjectSchemaDefinitions>
 
