@@ -35,7 +35,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
         protected abstract Task OnAddingNodesAsync(IProjectTree nodeToAddTo);
 
-        protected abstract Task OnAddedNodesAsync(ConfiguredProject configuredProject, IEnumerable<IProjectTree> addedNodes, IProjectTree target);
+        protected virtual Task OnAddedNodesAsync(ConfiguredProject configuredProject, IProjectTree target, IEnumerable<IProjectTree> addedNodes, IProjectTree updatedTarget)
+        {
+            // We are not using the updated target so we don't step over the added nodes.
+            return OrderingHelper.TryMoveNodesToTopAsync(configuredProject, addedNodes, target);
+        }
 
         protected Task ShowAddNewFileDialogAsync(IProjectTree target)
         {
@@ -63,25 +67,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
             var nodeToAddTo = GetNodeToAddTo(node);
 
-            // Publish any existing changes that could potentially be here.
-            // Then call OnAddingNodesAsync.
+            // Call OnAddingNodesAsync.
             // Then publish changes that could have taken place in OnAddingNodesAsync.
-            await _projectTree.TreeService.PublishLatestTreeAsync(waitForFileSystemUpdates: true).ConfigureAwait(true);
             await OnAddingNodesAsync(nodeToAddTo).ConfigureAwait(true);
             await _projectTree.TreeService.PublishLatestTreeAsync(waitForFileSystemUpdates: true).ConfigureAwait(true);
 
-            // Get the difference to see what was added.
-            // We do a sanity check to make sure they have a valid display order.
-            // We also order the added nodes by their display order.
             var updatedNode = _projectTree.CurrentTree.Find(node.Identity);
             var updatedNodeToAddTo = _projectTree.CurrentTree.Find(nodeToAddTo.Identity);
-            var addedNodes =
-                updatedNodeToAddTo.Children.Where(x => !nodeToAddTo.TryFind(x.Identity, out var subtree) && OrderingHelper.HasValidDisplayOrder(x))
-                .OrderBy(OrderingHelper.GetDisplayOrder).ToList();
+            var addedNodes = OrderingHelper.GetAddedNodes(nodeToAddTo, updatedNodeToAddTo);
 
             if (addedNodes.Any())
             {
-                await OnAddedNodesAsync(_projectVsServices.ActiveConfiguredProject, addedNodes, updatedNode).ConfigureAwait(true);
+                // Make sure to change ConfigureAwait to "true" if we need switch back.
+                await OnAddedNodesAsync(_projectVsServices.ActiveConfiguredProject, node, addedNodes, updatedNode).ConfigureAwait(false);
             }
 
             return true;

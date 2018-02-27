@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -156,6 +157,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// </summary>
         public static IProjectTree GetLastChild(IProjectTree projectTree)
         {
+            Requires.NotNull(projectTree, nameof(projectTree));
+
             return GetChildren(projectTree).LastOrDefault();
         }
 
@@ -166,7 +169,79 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// </summary>
         public static IProjectTree GetFirstChild(IProjectTree projectTree)
         {
+            Requires.NotNull(projectTree, nameof(projectTree));
+
             return GetChildren(projectTree).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Get the difference to see what was added.
+        /// We do a sanity check to make sure they have a valid display order.
+        /// We also order the added nodes by their display order.
+        /// </summary>
+        public static ImmutableArray<IProjectTree> GetAddedNodes(IProjectTree previousTarget, IProjectTree currentTarget)
+        {
+            Requires.NotNull(previousTarget, nameof(previousTarget));
+            Requires.NotNull(currentTarget, nameof(currentTarget));
+
+            return currentTarget.Children
+                .Where(updatedChild => IsAddedNode(previousTarget, updatedChild))
+                .OrderBy(GetDisplayOrder)
+                .ToImmutableArray();
+        }
+
+        /// <summary>
+        /// This moves the nodes above the target's first child. 
+        /// If there are no children with a valid display order of the target or the target is an empty folder, it will try the parent target's first child.
+        /// </summary>
+        public static bool TryMoveNodesToTop(Project project, IEnumerable<IProjectTree> nodes, IProjectTree target)
+        {
+            Requires.NotNull(project, nameof(project));
+            Requires.NotNull(nodes, nameof(nodes));
+            Requires.NotNull(target, nameof(target));
+
+            // Move added nodes to the top. 
+            var nodeToAddAbove = GetFirstChild(target);
+
+            // This could have been an empty folder and nodeToAddAbove is null, therefore
+            //     get the first child of the target's parent.
+            // Empty folders do not have a valid display order.
+            // In the future, if we want to order empty folders, meaning they have a valid display order, 
+            //     this will need to be extended to handle that behavior.
+
+            // This recursively tries to find a node to work with. If there is none at all, this will break on project root.
+            var currentTarget = target;
+            while(nodeToAddAbove == null && currentTarget.IsFolder && !GetChildren(currentTarget).Any())
+            {
+                currentTarget = currentTarget.Parent;
+                nodeToAddAbove = GetFirstChild(currentTarget);
+            }
+
+            if (nodeToAddAbove != null && nodes.Any())
+            {
+                var didAllMoveSuccessfully = true;
+
+                foreach (var node in nodes)
+                {
+                    if (!TryMoveAbove(project, node, nodeToAddAbove))
+                    {
+                        didAllMoveSuccessfully = false;
+                    }
+                }
+
+                return didAllMoveSuccessfully;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// This moves the nodes above the target's first child. 
+        /// If there are no children with a valid display order of the target or the target is an empty folder, it will try the parent target's first child.
+        /// </summary>
+        public static Task<bool> TryMoveNodesToTopAsync(ConfiguredProject configuredProject, IEnumerable<IProjectTree> nodes, IProjectTree target)
+        {
+            return ModifyProjectAsync(configuredProject, project => TryMoveNodesToTop(project, nodes, target));
         }
 
         /// <summary>
@@ -178,7 +253,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// Gets a read-only collection with the evaluated includes associated with a project tree.
         /// Evaluated includes will be in order by their display order.
         /// </summary>
-        private static ReadOnlyCollection<string> GetEvaluatedIncludes(IProjectTree projectTree)
+        private static ImmutableArray<string> GetEvaluatedIncludes(IProjectTree projectTree)
         {
             var treeQueue = new Queue<IProjectTree>();
 
@@ -212,7 +287,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                 }
             }
 
-            return includes.Select(x => x.Value).ToList().AsReadOnly();
+            return includes.Select(x => x.Value).ToImmutableArray();
         }
 
         /// <summary>
@@ -250,12 +325,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         }
 
         /// <summary>
+        /// Checks to see if the target child is a node that was added based on the target tree.
+        /// </summary>
+        private static bool IsAddedNode(IProjectTree target, IProjectTree targetChild)
+        {
+            var hasChild = target.TryFind(targetChild.Identity, out var child);
+            var hasValidTargetChild = HasValidDisplayOrder(targetChild);
+
+            return (!hasChild || (hasChild && !HasValidDisplayOrder(child))) && hasValidTargetChild;
+        }
+
+        /// <summary>
         /// Gets a collection a project tree's children. 
         /// The children will only have a valid display order, and the collection will be in order by their display order.
         /// </summary>
-        private static ReadOnlyCollection<IProjectTree> GetChildren(IProjectTree projectTree)
+        private static ImmutableArray<IProjectTree> GetChildren(IProjectTree projectTree)
         {
-            return projectTree.Children.Where(x => HasValidDisplayOrder(x)).OrderBy(x => GetDisplayOrder(x)).ToList().AsReadOnly();
+            return projectTree.Children.Where(x => HasValidDisplayOrder(x)).OrderBy(x => GetDisplayOrder(x)).ToImmutableArray();
         }
 
         /// <summary>
@@ -264,7 +350,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// <param name="projectTree">the given project tree</param>
         /// <param name="returnSibling">passes the index of the given project tree from the given ordered sequence, expecting to return a sibling</param>
         /// <returns>a sibling</returns>
-        private static IProjectTree2 GetSiblingByDisplayOrder(IProjectTree projectTree, Func<int, ReadOnlyCollection<IProjectTree>, IProjectTree2> returnSibling)
+        private static IProjectTree2 GetSiblingByDisplayOrder(IProjectTree projectTree, Func<int, ImmutableArray<IProjectTree>, IProjectTree2> returnSibling)
         {
             var parent = projectTree.Parent;
             var displayOrder = GetDisplayOrder(projectTree);
@@ -275,7 +361,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
             var orderedChildren = GetChildren(parent);
 
-            for (var i = 0; i < orderedChildren.Count; ++i)
+            for (var i = 0; i < orderedChildren.Length; ++i)
             {
                 var sibling = orderedChildren[i];
                 if (GetDisplayOrder(sibling) == displayOrder)
@@ -310,7 +396,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
             return GetSiblingByDisplayOrder(projectTree, (i, orderedChildren) =>
             {
-                if (i == (orderedChildren.Count - 1))
+                if (i == (orderedChildren.Length - 1))
                 {
                     return null;
                 }
