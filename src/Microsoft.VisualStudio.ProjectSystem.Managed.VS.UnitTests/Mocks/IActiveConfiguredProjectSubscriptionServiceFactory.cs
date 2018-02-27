@@ -6,7 +6,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     public class IActiveConfiguredProjectSubscriptionServiceFactory
     {
-        public static IActiveConfiguredProjectSubscriptionService CreateInstance()
+        public static IActiveConfiguredProjectSubscriptionService Create()
         {
             var mock = new Mock<IActiveConfiguredProjectSubscriptionService>();
 
