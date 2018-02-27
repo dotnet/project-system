@@ -7,7 +7,7 @@ using Xunit;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
     [Trait("UnitTest", "ProjectSystem")]
-    public class CSharpProjectGuidProviderTests
+    public class CSharpProjectTypeGuidProviderTests
     {
         [Fact]
         public void ProjectTypeGuid_ReturnsNonEmptyGuid()
@@ -19,11 +19,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             Assert.NotEqual(Guid.Empty, provider.ProjectTypeGuid);
         }
 
-        private static CSharpProjectGuidProvider CreateInstance()
+        private static CSharpProjectTypeGuidProvider CreateInstance()
         {
             var unconfiguedProject = UnconfiguredProjectFactory.Create();
 
-            return new CSharpProjectGuidProvider(unconfiguedProject);
+            return new CSharpProjectTypeGuidProvider(unconfiguedProject);
         }
     }
 }
