@@ -23,8 +23,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             WorkingDirectory = data.WorkingDirectory;
             LaunchBrowser = data.LaunchBrowser ?? false;
             LaunchUrl = data.LaunchUrl;
-            EnvironmentVariables = data.EnvironmentVariables == null ? null : ImmutableDictionary<string, string>.Empty.AddRange(data.EnvironmentVariables);
-            OtherSettings = data.OtherSettings == null ? null : ImmutableDictionary<string, object>.Empty.AddRange(data.OtherSettings);
+            EnvironmentVariables = data.EnvironmentVariables == null ? null : ImmutableStringDictionary<string>.EmptyOrdinal.AddRange(data.EnvironmentVariables);
+            OtherSettings = data.OtherSettings == null ? null : ImmutableStringDictionary<object>.EmptyOrdinal.AddRange(data.OtherSettings);
             DoNotPersist = data.InMemoryProfile;
         }
 
@@ -58,8 +58,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             DoNotPersist = writableProfile.IsInMemoryObject();
 
             // If there are no env variables or settings we want to set them to null
-            EnvironmentVariables = writableProfile.EnvironmentVariables.Count == 0 ? null : ImmutableDictionary<string, string>.Empty.AddRange(writableProfile.EnvironmentVariables);
-            OtherSettings = writableProfile.OtherSettings.Count == 0 ? null : ImmutableDictionary<string, object>.Empty.AddRange(writableProfile.OtherSettings);
+            EnvironmentVariables = writableProfile.EnvironmentVariables.Count == 0 ? null : ImmutableStringDictionary<string>.EmptyOrdinal.AddRange(writableProfile.EnvironmentVariables);
+            OtherSettings = writableProfile.OtherSettings.Count == 0 ? null : ImmutableStringDictionary<object>.EmptyOrdinal.AddRange(writableProfile.OtherSettings);
         }
 
         public string Name { get; set; }

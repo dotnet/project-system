@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public IImmutableDictionary<string, string> RenamedItems
         {
-            get { return ImmutableDictionary<string, string>.Empty; }
+            get { return ImmutableStringDictionary<string>.EmptyOrdinal; }
         }
 
         public IImmutableSet<string> ChangedProperties

@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void Resolved()
         {
-            var properties = ImmutableDictionary<string, string>.Empty.Add("myProp", "myVal");
+            var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
 
             var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new ProjectDependencyModel(
@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void Unresolved()
         {
-            var properties = ImmutableDictionary<string, string>.Empty.Add("myProp", "myVal");
+            var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
 
             var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new ProjectDependencyModel(
@@ -82,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void Implicit()
         {
-            var properties = ImmutableDictionary<string, string>.Empty.Add("myProp", "myVal");
+            var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
 
             var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new ProjectDependencyModel(

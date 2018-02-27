@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void Resolved_NoFusionName()
         {
-            var properties = ImmutableDictionary<string, string>.Empty.Add("myProp", "myVal");
+            var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
 
             var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new AssemblyDependencyModel(
@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void Resolved_WithFusionName()
         {
-            var properties = ImmutableDictionary<string, string>.Empty.Add(ResolvedAssemblyReference.FusionNameProperty, "myAssembly.dll");
+            var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add(ResolvedAssemblyReference.FusionNameProperty, "myAssembly.dll");
 
             var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new AssemblyDependencyModel(
@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void Unresolved()
         {
-            var properties = ImmutableDictionary<string, string>.Empty.Add("myProp", "myVal");
+            var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
 
             var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new AssemblyDependencyModel(
@@ -112,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void Implicit()
         {
-            var properties = ImmutableDictionary<string, string>.Empty.Add("myProp", "myVal");
+            var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
 
             var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new AssemblyDependencyModel(

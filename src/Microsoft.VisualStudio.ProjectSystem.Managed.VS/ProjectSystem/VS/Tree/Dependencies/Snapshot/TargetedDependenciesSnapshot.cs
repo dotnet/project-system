@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             = ImmutableHashSet<IDependency>.Empty;
 
         public ImmutableDictionary<string, IDependency> DependenciesWorld { get; private set; }
-            = ImmutableDictionary<string, IDependency>.Empty.WithComparers(StringComparer.OrdinalIgnoreCase);
+            = ImmutableStringDictionary<IDependency>.EmptyOrdinalIgnoreCase;
 
         private readonly object _snapshotLock = new object();
 
