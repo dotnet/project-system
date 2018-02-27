@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 properties: null);
 
             Assert.Equal("somePath", model.OriginalItemSpec);
-            Assert.Equal(ImmutableDictionary<string, string>.Empty, model.Properties);
+            Assert.Equal(ImmutableStringDictionary<string>.EmptyOrdinal, model.Properties);
         }
 
         [Fact]
@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 flags: ProjectTreeFlags.HiddenProjectItem,
                 resolved: false,
                 isImplicit: false,
-                properties: ImmutableDictionary<string, string>.Empty.Add("someProp1", "someVal1"),
+                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"),
                 version: "version1\\");
 
             Assert.Equal("SomeItemSpec\\version1", model.Id);
@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 flags: ProjectTreeFlags.HiddenProjectItem,
                 resolved: true,
                 isImplicit: false,
-                properties: ImmutableDictionary<string, string>.Empty.Add("someProp1", "someVal1"),
+                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"),
                 version: "version1\\");
 
             Assert.Equal("SomeItemSpec\\version1", model.Id);
@@ -100,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 flags: ProjectTreeFlags.HiddenProjectItem,
                 resolved: true,
                 isImplicit: true,
-                properties: ImmutableDictionary<string, string>.Empty.Add("someProp1", "someVal1"),
+                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"),
                 version: "version1\\");
 
             Assert.Equal("SomeItemSpec\\version1", model.Id);
@@ -125,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 flags: ProjectTreeFlags.HiddenProjectItem,
                 resolved: true,
                 isImplicit: true,
-                properties: ImmutableDictionary<string, string>.Empty.Add("someProp1", "someVal1"),
+                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"),
                 version: "versio1\\");
 
             var model2 = new TestableDependencyModel(
@@ -135,7 +135,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 flags: ProjectTreeFlags.HiddenProjectItem,
                 resolved: true,
                 isImplicit: true,
-                properties: ImmutableDictionary<string, string>.Empty.Add("someProp1", "someVal1"),
+                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"),
                 version: "versio1\\");
 
             var model3 = new TestableDependencyModel(
@@ -145,7 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 flags: ProjectTreeFlags.HiddenProjectItem,
                 resolved: true,
                 isImplicit: true,
-                properties: ImmutableDictionary<string, string>.Empty.Add("someProp1", "someVal1"),
+                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"),
                 version: "versio1\\");
 
             Assert.Equal(model1, model2);
@@ -165,7 +165,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 flags: ProjectTreeFlags.Empty,
                 resolved: true,
                 isImplicit: false,
-                properties: ImmutableDictionary<string, string>.Empty.Add("Visible", "true"));
+                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("Visible", "true"));
 
             Assert.True(dependencyModel.Visible);
         }
@@ -180,7 +180,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 flags: ProjectTreeFlags.Empty,
                 resolved: true,
                 isImplicit: false,
-                properties: ImmutableDictionary<string, string>.Empty.Add("Visible", "false"));
+                properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("Visible", "false"));
 
             Assert.False(dependencyModel.Visible);
         }

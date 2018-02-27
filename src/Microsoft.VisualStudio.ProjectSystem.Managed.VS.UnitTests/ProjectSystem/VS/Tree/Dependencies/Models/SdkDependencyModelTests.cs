@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void SdkDependencyModelTests_Resolved()
         {
-            var properties = ImmutableDictionary<string, string>.Empty.Add("Version", "2.0.0");
+            var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("Version", "2.0.0");
 
             var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new SdkDependencyModel(
@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void SdkDependencyModelTests_Unresolved()
         {
-            var properties = ImmutableDictionary<string, string>.Empty.Add("Version", "2.0.0");
+            var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("Version", "2.0.0");
 
             var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new SdkDependencyModel(
@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void SdkDependencyModelTests_Implicit()
         {
-            var properties = ImmutableDictionary<string, string>.Empty.Add("Version", "2.0.0");
+            var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("Version", "2.0.0");
 
             var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new SdkDependencyModel(
