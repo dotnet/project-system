@@ -11,19 +11,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     ///     Provides the Visual Basic implementation of <see cref="IItemTypeGuidProvider"/>.
     /// </summary>
     [Export(typeof(IItemTypeGuidProvider))]
-    [AppliesTo(ProjectCapabilities.VB)]
-    internal class VisualBasicProjectGuidProvider : IItemTypeGuidProvider
+    [AppliesTo(ProjectCapability.FSharp)]
+    internal class FSharpProjectTypeGuidProvider : IItemTypeGuidProvider
     {
-        private static readonly Guid s_visualBasicProjectType = new Guid(VisualBasicProjectSystemPackage.LegacyProjectTypeGuid);
+        private static readonly Guid s_fsharpProjectType = new Guid(FSharpProjectSystemPackage.LegacyProjectTypeGuid);
 
         [ImportingConstructor]
-        public VisualBasicProjectGuidProvider(UnconfiguredProject project)
+        public FSharpProjectTypeGuidProvider(UnconfiguredProject project)
         {
         }
 
         public Guid ProjectTypeGuid
         {
-            get { return s_visualBasicProjectType; }
+            get { return s_fsharpProjectType; }
         }
+
     }
 }
