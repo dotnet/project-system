@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             = ImmutableHashSet<IDependency>.Empty;
 
         public ImmutableDictionary<string, IDependency> DependenciesWorld { get; private set; }
-            = ImmutableDictionary<string, IDependency>.Empty;
+            = ImmutableDictionary<string, IDependency>.Empty.WithComparers(StringComparer.OrdinalIgnoreCase);
 
         private readonly object _snapshotLock = new object();
 
@@ -157,11 +157,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             IEnumerable<IProjectDependenciesSubTreeProvider> subTreeProviders,
             HashSet<string> projectItemSpecs)
         {
-            var worldBuilder = ImmutableDictionary.CreateBuilder<string, IDependency>(
-                                    StringComparer.OrdinalIgnoreCase);
-            worldBuilder.AddRange(DependenciesWorld);
-            var topLevelBuilder = ImmutableHashSet.CreateBuilder<IDependency>();
-            topLevelBuilder.AddRange(TopLevelDependencies);
+            var worldBuilder = DependenciesWorld.ToBuilder();
+            var topLevelBuilder = TopLevelDependencies.ToBuilder();
 
             var anyChanges = false;
 
