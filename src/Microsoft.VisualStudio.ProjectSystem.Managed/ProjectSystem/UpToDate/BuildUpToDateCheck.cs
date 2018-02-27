@@ -28,22 +28,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private const string TelemetryEventName = "UpToDateCheck";
         private const string Link = "Link";
 
-        private static ImmutableHashSet<string> ReferenceSchemas => ImmutableHashSet<string>.Empty
+        private static ImmutableHashSet<string> ReferenceSchemas => ImmutableStringHashSet.EmptyOrdinal
             .Add(ResolvedAnalyzerReference.SchemaName)
             .Add(ResolvedCompilationReference.SchemaName);
 
-        private static ImmutableHashSet<string> UpToDateSchemas => ImmutableHashSet<string>.Empty
+        private static ImmutableHashSet<string> UpToDateSchemas => ImmutableStringHashSet.EmptyOrdinal
             .Add(CopyUpToDateMarker.SchemaName)
             .Add(UpToDateCheckInput.SchemaName)
             .Add(UpToDateCheckOutput.SchemaName)
             .Add(UpToDateCheckBuilt.SchemaName);
 
-        private static ImmutableHashSet<string> ProjectPropertiesSchemas => ImmutableHashSet<string>.Empty
+        private static ImmutableHashSet<string> ProjectPropertiesSchemas => ImmutableStringHashSet.EmptyOrdinal
             .Add(ConfigurationGeneral.SchemaName)
             .Union(ReferenceSchemas)
             .Union(UpToDateSchemas);
 
-        private static ImmutableHashSet<string> NonCompilationItemTypes => ImmutableHashSet<string>.Empty
+        private static ImmutableHashSet<string> NonCompilationItemTypes => ImmutableStringHashSet.EmptyOrdinal
             .Add(None.SchemaName)
             .Add(Content.SchemaName);
 

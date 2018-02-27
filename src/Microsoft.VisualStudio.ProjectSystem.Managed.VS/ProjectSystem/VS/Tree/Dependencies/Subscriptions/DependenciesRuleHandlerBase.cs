@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public ImmutableHashSet<string> GetRuleNames(RuleHandlerType handlerType)
         {
-            ImmutableHashSet<string> resultRules = ImmutableHashSet<string>.Empty;
+            ImmutableHashSet<string> resultRules = ImmutableStringHashSet.EmptyOrdinal;
             if (handlerType == RuleHandlerType.Evaluation)
             {
                 resultRules = resultRules.Add(UnresolvedRuleName);

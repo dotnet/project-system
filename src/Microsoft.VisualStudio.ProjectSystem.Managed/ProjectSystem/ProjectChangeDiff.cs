@@ -11,9 +11,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         public ProjectChangeDiff(IImmutableSet<string> addedItems = null, IImmutableSet<string> removedItems = null, IImmutableSet<string> changedItems = null)
         {
-            AddedItems = addedItems ?? ImmutableHashSet<string>.Empty;
-            RemovedItems = removedItems ?? ImmutableHashSet<string>.Empty;
-            ChangedItems = changedItems ?? ImmutableHashSet<string>.Empty;
+            AddedItems = addedItems ?? ImmutableStringHashSet.EmptyOrdinal;
+            RemovedItems = removedItems ?? ImmutableStringHashSet.EmptyOrdinal;
+            ChangedItems = changedItems ?? ImmutableStringHashSet.EmptyOrdinal;
         }
 
         public IImmutableSet<string> AddedItems
@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public IImmutableSet<string> ChangedProperties
         {
-            get { return ImmutableHashSet<string>.Empty; }
+            get { return ImmutableStringHashSet.EmptyOrdinal; }
         }
 
         public bool AnyChanges
