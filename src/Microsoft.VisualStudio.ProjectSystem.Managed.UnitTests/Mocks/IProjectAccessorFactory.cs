@@ -62,6 +62,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
                 return Task.CompletedTask;
             }
+
+            public Task OpenProjectXmlForUpgradeableReadAsync(UnconfiguredProject project, Func<ProjectRootElement, CancellationToken, Task> action, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                return action(_rootElement, cancellationToken);
+            }
         }
     }
 }
