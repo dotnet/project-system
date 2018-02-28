@@ -171,10 +171,6 @@ Root (flags: {ProjectRoot})
                 return 0;
             }, g, folder, string.Empty, 0);
 
-            var projectProperties = ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(), new[] {
-                    new PropertyPageData { Category = ConfigurationGeneral.SchemaName, PropertyName = ConfigurationGeneral.ProjectGuidProperty, Value = g.ToString() }
-                });
-
             var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(folder), dlg: dlg);
 
             var tree = ProjectTreeParser.Parse(@"

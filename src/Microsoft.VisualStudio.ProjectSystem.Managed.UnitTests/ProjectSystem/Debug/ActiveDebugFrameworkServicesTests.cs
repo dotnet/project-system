@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                 Value = "net462;net461;netcoreapp1.0"
             };
 
-            var projects = ImmutableDictionary<string, ConfiguredProject>.Empty
+            var projects = ImmutableStringDictionary<ConfiguredProject>.EmptyOrdinal
                             .Add("net461", ConfiguredProjectFactory.Create(null, new StandardProjectConfiguration("Debug|AnyCPU|net461", Empty.PropertiesMap
                                                                                     .Add("Configuration", "Debug")
                                                                                     .Add("Platform", "AnyCPU")

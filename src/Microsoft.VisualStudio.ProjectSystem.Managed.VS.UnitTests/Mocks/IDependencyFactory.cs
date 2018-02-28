@@ -189,7 +189,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (properties != null)
             {
-                data.Properties = ImmutableDictionary<string, string>.Empty.AddRange(properties);
+                data.Properties = ImmutableStringDictionary<string>.EmptyOrdinal.AddRange(properties);
             }
 
             if (dependenciesIds != null)

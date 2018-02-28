@@ -400,7 +400,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                         SSLPort = 44301
                     }
                 };
-                return ImmutableDictionary<string, object>.Empty.Add("iisSettings", iisSettings);
+                return ImmutableStringDictionary<object>.EmptyOrdinal.Add("iisSettings", iisSettings);
             });
 
             await provider.SaveSettingsToDiskAsyncTest(testSettings.Object);
@@ -524,7 +524,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                         SSLPort = 44301
                     }
                 };
-                return ImmutableDictionary<string, object>.Empty.Add("iisSettings", iisSettings);
+                return ImmutableStringDictionary<object>.EmptyOrdinal.Add("iisSettings", iisSettings);
             });
 
             await provider.UpdateAndSaveSettingsAsync(testSettings.Object).ConfigureAwait(true);
@@ -562,7 +562,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 return profiles.ToImmutableList();
             });
 
-            testSettings.Setup(m => m.GlobalSettings).Returns(() => ImmutableDictionary<string, object>.Empty);
+            testSettings.Setup(m => m.GlobalSettings).Returns(() => ImmutableStringDictionary<object>.EmptyOrdinal);
 
             await provider.UpdateAndSaveSettingsAsync(testSettings.Object).ConfigureAwait(true);
 
@@ -706,7 +706,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Set the serialization provider
             SetJsonSerializationProviders(provider);
 
-            var globalSettings = ImmutableDictionary<string, object>.Empty.Add("test", new LaunchProfile());
+            var globalSettings = ImmutableStringDictionary<object>.EmptyOrdinal.Add("test", new LaunchProfile());
 
             var testSettings = new Mock<ILaunchSettings>();
             testSettings.Setup(m => m.GlobalSettings).Returns(globalSettings);
@@ -739,7 +739,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Set the serialization provider
             SetJsonSerializationProviders(provider);
 
-            var globalSettings = ImmutableDictionary<string, object>.Empty
+            var globalSettings = ImmutableStringDictionary<object>.EmptyOrdinal
                                                     .Add("test", new LaunchProfile())
                                                     .Add("iisSettings", new IISSettingsData() { DoNotPersist = existingIsInMemory });
 
@@ -770,7 +770,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Set the serialization provider
             SetJsonSerializationProviders(provider);
 
-            var globalSettings = ImmutableDictionary<string, object>.Empty.Add("test", new LaunchProfile());
+            var globalSettings = ImmutableStringDictionary<object>.EmptyOrdinal.Add("test", new LaunchProfile());
 
             var testSettings = new Mock<ILaunchSettings>();
             testSettings.Setup(m => m.GlobalSettings).Returns(globalSettings);
@@ -796,7 +796,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Set the serialization provider
             SetJsonSerializationProviders(provider);
 
-            var globalSettings = ImmutableDictionary<string, object>.Empty
+            var globalSettings = ImmutableStringDictionary<object>.EmptyOrdinal
                                                     .Add("test", new LaunchProfile())
                                                     .Add("iisSettings", new IISSettingsData());
 

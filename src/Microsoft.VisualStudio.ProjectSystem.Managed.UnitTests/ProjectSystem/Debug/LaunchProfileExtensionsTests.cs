@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             bool isUsingNativeDebugging = nativeDebugging == null ? false : nativeDebugging.Value;
             var data = new LaunchProfile()
             {
-                OtherSettings = nativeDebugging == null ? null : ImmutableDictionary<string, object>.Empty.Add(LaunchProfileExtensions.NativeDebuggingProperty, nativeDebugging.Value)
+                OtherSettings = nativeDebugging == null ? null : ImmutableStringDictionary<object>.EmptyOrdinal.Add(LaunchProfileExtensions.NativeDebuggingProperty, nativeDebugging.Value)
             };
 
             Assert.Equal(isUsingNativeDebugging, data.NativeDebuggingIsEnabled());

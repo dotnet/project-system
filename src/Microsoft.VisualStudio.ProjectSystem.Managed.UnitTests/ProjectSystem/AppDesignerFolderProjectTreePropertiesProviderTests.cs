@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public void UpdateProjectTreeSettings_NullAsRuleSnapshots_ThrowsArgumentNull()
         {
             var propertiesProvider = CreateInstance();
-            IImmutableDictionary<string, string> projectTreeSettings = ImmutableDictionary<string, string>.Empty;
+            IImmutableDictionary<string, string> projectTreeSettings = ImmutableStringDictionary<string>.EmptyOrdinal;
 
             Assert.Throws<ArgumentNullException>("ruleSnapshots", () =>
             {
@@ -611,7 +611,7 @@ Root (flags: {ProjectRoot})
 
         internal void Verify(AppDesignerFolderProjectTreePropertiesProvider provider, IProjectTree expected, IProjectTree input, string folderName = null, bool? contentOnlyVisibleInShowAllFiles = null)
         {
-            IImmutableDictionary<string, string> projectTreeSettings = ImmutableDictionary<string, string>.Empty;
+            IImmutableDictionary<string, string> projectTreeSettings = ImmutableStringDictionary<string>.EmptyOrdinal;
             IImmutableDictionary<string, IProjectRuleSnapshot> ruleSnapshots = IProjectRuleSnapshotsFactory.Create();
 
             if (folderName != null)

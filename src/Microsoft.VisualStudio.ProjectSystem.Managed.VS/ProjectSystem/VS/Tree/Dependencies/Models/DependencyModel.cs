@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             OriginalItemSpec = originalItemSpec ?? Path;
             Resolved = resolved;
             Implicit = isImplicit;
-            Properties = properties ?? ImmutableDictionary<string, string>.Empty;
+            Properties = properties ?? ImmutableStringDictionary<string>.EmptyOrdinal;
             Caption = Name;
 
             if (resolved)

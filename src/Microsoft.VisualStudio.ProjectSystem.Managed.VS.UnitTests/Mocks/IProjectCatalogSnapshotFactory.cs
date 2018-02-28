@@ -37,8 +37,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
 
             mockSnapshot.Setup(x => x.NamedCatalogs).Returns(
-                ImmutableDictionary<string, IPropertyPagesCatalog>
-                    .Empty
+                ImmutableStringDictionary<IPropertyPagesCatalog>
+                    .EmptyOrdinal
                     .Add(PropertyPageContexts.Project, mockPropertyPageCatalog.Object));
 
             return mockSnapshot.Object;

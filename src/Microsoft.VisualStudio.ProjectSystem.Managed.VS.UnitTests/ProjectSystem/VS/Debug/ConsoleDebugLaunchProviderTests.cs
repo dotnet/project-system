@@ -180,7 +180,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
                 Name = "MyApplication",
                 CommandName = "Project",
                 CommandLineArgs = "--someArgs",
-                OtherSettings = ImmutableDictionary<string, object>.Empty.Add(LaunchProfileExtensions.NativeDebuggingProperty, true)
+                OtherSettings = ImmutableStringDictionary<object>.EmptyOrdinal.Add(LaunchProfileExtensions.NativeDebuggingProperty, true)
             };
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
