@@ -37,13 +37,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
             Assert.Equal(keyFileFullPath, propertyValue);
 
             // Verify relative path key file value from intercepted key file provider.
-            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: projectFullPath);
+            var project = UnconfiguredProjectFactory.Create(filePath: projectFullPath);
             var instanceProvider = IProjectInstancePropertiesProviderFactory.Create();
-            var keyFileProvider = new AssemblyOriginatorKeyFileValueProvider(unconfiguredProject);
+            var keyFileProvider = new AssemblyOriginatorKeyFileValueProvider(project);
             var providerMetadata = IInterceptingPropertyValueProviderMetadataFactory.Create(AssemblyOriginatorKeyFilePropertyName);
             var lazyArray = new[] { new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>(
                 () => keyFileProvider, providerMetadata) };
-            var interceptedProvider = new ProjectFileInterceptedProjectPropertiesProvider(delegateProvider, instanceProvider, unconfiguredProject, lazyArray);
+            var interceptedProvider = new ProjectFileInterceptedProjectPropertiesProvider(delegateProvider, instanceProvider, project, lazyArray);
             var propertyNames = await properties.GetPropertyNamesAsync();
             Assert.Single(propertyNames);
             Assert.Equal(AssemblyOriginatorKeyFilePropertyName, propertyNames.First());

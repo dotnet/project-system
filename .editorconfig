@@ -142,3 +142,8 @@ csharp_new_line_before_catch = true
 csharp_new_line_before_finally = true
 csharp_new_line_before_members_in_object_initializers = true
 csharp_new_line_before_members_in_anonymous_types = true
+
+[src/*Tests/**/*.cs]
+# We allow usage of "var" inside tests as it reduces churn as we remove/rename types
+csharp_style_var_for_built_in_types = true:none
+csharp_style_var_elsewhere = true:none

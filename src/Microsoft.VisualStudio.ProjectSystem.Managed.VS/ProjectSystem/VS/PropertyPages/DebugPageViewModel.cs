@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             {
                 if (_projectThreadingService == null)
                 {
-                    IUnconfiguredProjectVsServices _projectVsServices = UnconfiguredProject.Services.ExportProvider.GetExportedValue<IUnconfiguredProjectVsServices>();
+                    IUnconfiguredProjectVsServices _projectVsServices = Project.Services.ExportProvider.GetExportedValue<IUnconfiguredProjectVsServices>();
                     _projectThreadingService = _projectVsServices.ThreadingService;
 
                 }
@@ -61,10 +61,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
 
         // for unit testing
-        internal DebugPageViewModel(TaskCompletionSource<bool> snapshotComplete, UnconfiguredProject unconfiguredProject)
+        internal DebugPageViewModel(TaskCompletionSource<bool> snapshotComplete, UnconfiguredProject project)
         {
             _firstSnapshotCompleteSource = snapshotComplete;
-            UnconfiguredProject = unconfiguredProject;
+            Project = project;
             PropertyChanged += ViewModel_PropertyChanged;
         }
 
@@ -702,7 +702,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private void InitializeUIProviders()
         {
             // We need to get the set of UI providers, if any.
-            _uiProviders = new OrderPrecedenceImportCollection<ILaunchSettingsUIProvider>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, UnconfiguredProject);
+            _uiProviders = new OrderPrecedenceImportCollection<ILaunchSettingsUIProvider>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, Project);
             var uiProviders = GetUIProviders();
             foreach (var uiProvider in uiProviders)
             {
@@ -715,7 +715,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         protected virtual IEnumerable<Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>> GetUIProviders()
         {
-            return UnconfiguredProject.Services.ExportProvider.GetExports<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>();
+            return Project.Services.ExportProvider.GetExports<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>();
         }
 
         /// <summary>
@@ -864,7 +864,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 return LazyInitializer.EnsureInitialized(ref _newProfileCommand, () =>
                  new DelegateCommand(state =>
                  {
-                     var dialog = new GetProfileNameDialog(UnconfiguredProject.Services.ExportProvider.GetExportedValue<SVsServiceProvider>(),
+                     var dialog = new GetProfileNameDialog(Project.Services.ExportProvider.GetExportedValue<SVsServiceProvider>(),
                                                             ProjectThreadingService,
                                                             GetNewProfileName(),
                                                             IsNewProfileNameValid);
@@ -1019,7 +1019,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             if (_launchSettingsProvider == null)
             {
-                _launchSettingsProvider = UnconfiguredProject.Services.ExportProvider.GetExportedValue<ILaunchSettingsProvider>();
+                _launchSettingsProvider = Project.Services.ExportProvider.GetExportedValue<ILaunchSettingsProvider>();
             }
 
             return _launchSettingsProvider;

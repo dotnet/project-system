@@ -18,8 +18,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [ImportingConstructor]
         public UserNotificationServices(SVsServiceProvider serviceProvider, IProjectThreadingService threadingService)
         {
-            Requires.NotNull(serviceProvider, nameof(serviceProvider));
-            Requires.NotNull(threadingService, nameof(threadingService));
             _serviceProvider = serviceProvider;
             _threadingService = threadingService;
         }

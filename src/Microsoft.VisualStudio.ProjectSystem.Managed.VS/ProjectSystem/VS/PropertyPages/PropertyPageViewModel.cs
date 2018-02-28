@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public UnconfiguredProject UnconfiguredProject { get; set; }
+        public UnconfiguredProject Project { get; set; }
         public PropertyPageControl ParentControl { get; set; }
 
         /// <summary>

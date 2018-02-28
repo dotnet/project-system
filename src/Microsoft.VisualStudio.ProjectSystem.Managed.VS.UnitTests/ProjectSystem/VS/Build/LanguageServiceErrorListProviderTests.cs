@@ -17,27 +17,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
     public class LanguageServiceErrorListProviderTests
     {
         [Fact]
-        public void Constructor_NullAsUnconfiguedProject_ThrowsArgumentNull()
-        {
-            var host = Mock.Of<ILanguageServiceHost>();
-
-            Assert.Throws<ArgumentNullException>("unconfiguredProject", () =>
-            {
-                new LanguageServiceErrorListProvider((UnconfiguredProject)null, host);
-            });
-        }
-
-        [Fact]
-        public void Constructor_NullAsHost_ThrowsArgumentNull()
-        {
-            var project = UnconfiguredProjectFactory.Create();
-            Assert.Throws<ArgumentNullException>("host", () =>
-            {
-                new LanguageServiceErrorListProvider(project, (ILanguageServiceHost)null);
-            });
-        }
-
-        [Fact]
         public void SuspendRefresh_DoesNotThrow()
         {
             var provider = CreateInstance();

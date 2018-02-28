@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             TheEnvironment = environment;
             ActiveDebugFramework = activeDebugFramework;
             Properties = properties;
-            UnconfiguredProject = configuredProject.UnconfiguredProject;
+            Project = configuredProject.UnconfiguredProject;
         }
 
         private IDebugTokenReplacer TokenReplacer { get; }
@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private IEnvironmentHelper TheEnvironment { get; }
         private IActiveDebugFrameworkServices ActiveDebugFramework { get; }
         private ProjectProperties Properties { get; }
-        private UnconfiguredProject UnconfiguredProject { get; }
+        private UnconfiguredProject Project { get; }
 
         private async Task<ConfiguredProject> GetConfiguredProjectForDebugAsync()
         {
@@ -177,7 +177,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             string executable, arguments;
 
-            string projectFolder = Path.GetDirectoryName(UnconfiguredProject.FullPath);
+            string projectFolder = Path.GetDirectoryName(Project.FullPath);
             var configuredProject = await GetConfiguredProjectForDebugAsync().ConfigureAwait(false);
 
             // If no working directory specified in the profile, we default to output directory. If for some reason the output directory
@@ -349,7 +349,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             // If the working directory is relative, it will be relative to the project root so make it a full path
             if (!string.IsNullOrWhiteSpace(runWorkingDirectory) && !Path.IsPathRooted(runWorkingDirectory))
             {
-                runWorkingDirectory = Path.Combine(Path.GetDirectoryName(UnconfiguredProject.FullPath), runWorkingDirectory);
+                runWorkingDirectory = Path.Combine(Path.GetDirectoryName(Project.FullPath), runWorkingDirectory);
             }
             return new Tuple<string, string, string>(runCommand, runArguments, runWorkingDirectory);
         }
