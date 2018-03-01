@@ -33,7 +33,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
 ");
 
             var projectRootElement = @"
-<Project Sdk=""Microsoft.NET.Sdk"">
+<Project>
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -53,7 +53,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
             Assert.True(project.IsDirty);
 
             var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
-<Project Sdk=""Microsoft.NET.Sdk"">
+<Project>
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
@@ -76,7 +76,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
 ");
 
             var projectRootElement = @"
-<Project Sdk=""Microsoft.NET.Sdk"">
+<Project>
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -96,7 +96,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
             Assert.False(project.IsDirty);
 
             var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
-<Project Sdk=""Microsoft.NET.Sdk"">
+<Project>
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
@@ -121,7 +121,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
         File (flags: {}), FilePath: ""C:\Foo\test\test4.fs"", DisplayOrder: 5, ItemName: ""test/test4.fs""
 ");
             var projectRootElement = @"
-<Project Sdk=""Microsoft.NET.Sdk"">
+<Project>
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -143,7 +143,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
             Assert.True(project.IsDirty);
 
             var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
-<Project Sdk=""Microsoft.NET.Sdk"">
+<Project>
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
@@ -168,7 +168,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
 ");
 
             var projectRootElement = @"
-<Project Sdk=""Microsoft.NET.Sdk"">
+<Project>
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -188,7 +188,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
             Assert.True(project.IsDirty);
 
             var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
-<Project Sdk=""Microsoft.NET.Sdk"">
+<Project>
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
@@ -211,7 +211,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
 ");
 
             var projectRootElement = @"
-<Project Sdk=""Microsoft.NET.Sdk"">
+<Project>
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -231,7 +231,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
             Assert.False(project.IsDirty);
 
             var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
-<Project Sdk=""Microsoft.NET.Sdk"">
+<Project>
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
@@ -256,7 +256,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
     File (flags: {}), FilePath: ""C:\Foo\test2.fs"", DisplayOrder: 5, ItemName: ""test2.fs""
 ");
             var projectRootElement = @"
-<Project Sdk=""Microsoft.NET.Sdk"">
+<Project>
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -278,7 +278,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
             Assert.True(project.IsDirty);
 
             var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
-<Project Sdk=""Microsoft.NET.Sdk"">
+<Project>
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
@@ -307,7 +307,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
     File (flags: {}), FilePath: ""C:\Foo\test2.fs"", DisplayOrder: 7, ItemName: ""test2.fs""
 ");
             var projectRootElement = @"
-<Project Sdk=""Microsoft.NET.Sdk"">
+<Project>
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -330,7 +330,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
             Assert.True(project.IsDirty);
 
             var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
-<Project Sdk=""Microsoft.NET.Sdk"">
+<Project>
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
@@ -357,7 +357,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
 ");
 
             var projectRootElement = @"
-<Project Sdk=""Microsoft.NET.Sdk"">
+<Project>
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -378,7 +378,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
             Assert.True(project.IsDirty);
 
             var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
-<Project Sdk=""Microsoft.NET.Sdk"">
+<Project>
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
@@ -403,7 +403,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
 ");
 
             var projectRootElement = @"
-<Project Sdk=""Microsoft.NET.Sdk"">
+<Project>
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -424,7 +424,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
             Assert.True(project.IsDirty);
 
             var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
-<Project Sdk=""Microsoft.NET.Sdk"">
+<Project>
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
@@ -460,7 +460,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
             addedNodes.Add(updatedTree.Children[2]);
 
             var projectRootElement = @"
-<Project Sdk=""Microsoft.NET.Sdk"">
+<Project>
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -482,7 +482,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
             Assert.True(project.IsDirty);
 
             var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
-<Project Sdk=""Microsoft.NET.Sdk"">
+<Project>
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
@@ -521,7 +521,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
             addedNodes.Add(updatedTree.Children[3]);
 
             var projectRootElement = @"
-<Project Sdk=""Microsoft.NET.Sdk"">
+<Project>
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -544,7 +544,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
             Assert.True(project.IsDirty);
 
             var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
-<Project Sdk=""Microsoft.NET.Sdk"">
+<Project>
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
@@ -588,7 +588,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
             addedNodes.Add(updatedTree.Children[2].Children[0].Children[1]);
 
             var projectRootElement = @"
-<Project Sdk=""Microsoft.NET.Sdk"">
+<Project>
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -611,7 +611,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
             Assert.True(project.IsDirty);
 
             var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
-<Project Sdk=""Microsoft.NET.Sdk"">
+<Project>
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
