@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
@@ -144,7 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             difference = NormalizeDifferences(difference);
             difference = ResolveDesignTimeConflicts(version, difference);
 
-            ApplyChangesToContext(version, difference, ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty, isActiveContext, logger);
+            ApplyChangesToContext(version, difference, ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal, isActiveContext, logger);
         }
 
         protected abstract void AddToContext(string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext, IProjectLogger logger);
@@ -195,7 +194,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             // other reason, that our state of the world remains consistent
             if (!_paths.Contains(fullPath))
             {
-                var itemMetadata = metadata.GetValueOrDefault(includePath, ImmutableDictionary<string, string>.Empty);
+                var itemMetadata = metadata.GetValueOrDefault(includePath, ImmutableStringDictionary<string>.EmptyOrdinal);
                 AddToContext(fullPath, itemMetadata, isActiveContext, logger);
                 bool added = _paths.Add(fullPath);
                 Assumes.True(added);

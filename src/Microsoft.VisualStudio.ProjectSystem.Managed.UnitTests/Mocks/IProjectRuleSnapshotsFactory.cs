@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     {
         public static IImmutableDictionary<string, IProjectRuleSnapshot> Create()
         {
-            return ImmutableDictionary<string, IProjectRuleSnapshot>.Empty;
+            return ImmutableStringDictionary<IProjectRuleSnapshot>.EmptyOrdinal;
         }
 
         public static IImmutableDictionary<string, IProjectRuleSnapshot> Add(this IImmutableDictionary<string, IProjectRuleSnapshot> snapshots, string ruleName, string propertyName, string propertyValue)

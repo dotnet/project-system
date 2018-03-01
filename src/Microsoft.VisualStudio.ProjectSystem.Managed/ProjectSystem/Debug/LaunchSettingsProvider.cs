@@ -291,7 +291,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 if (CurrentSnapshot == null)
                 {
                     var errorProfile = new LaunchProfile() { Name = Resources.NoActionProfileName, CommandName = ErrorProfileCommandName, DoNotPersist = true };
-                    errorProfile.OtherSettings = ImmutableDictionary<string, object>.Empty.Add("ErrorString", ex.Message);
+                    errorProfile.OtherSettings = ImmutableStringDictionary<object>.EmptyOrdinal.Add("ErrorString", ex.Message);
                     var snapshot = new LaunchSettings(new List<ILaunchProfile>() { errorProfile }, null, errorProfile.Name);
                     await FinishUpdateAsync(snapshot, ensureProfileProperty: false).ConfigureAwait(false);
                 }
@@ -894,7 +894,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             await _sequentialTaskQueue.ExecuteTask(async () =>
             {
                 var currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
-                ImmutableDictionary<string, object> globalSettings = ImmutableDictionary<string, object>.Empty;
+                ImmutableDictionary<string, object> globalSettings = ImmutableStringDictionary<object>.EmptyOrdinal;
                 if (currentSettings.GlobalSettings.TryGetValue(settingName, out var currentValue))
                 {
                     globalSettings = currentSettings.GlobalSettings.Remove(settingName);

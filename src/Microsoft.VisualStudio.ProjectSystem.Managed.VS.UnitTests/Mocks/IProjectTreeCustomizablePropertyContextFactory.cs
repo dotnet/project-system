@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             mock.Setup(x => x.ItemType).Returns(itemType);
             mock.Setup(x => x.IsFolder).Returns(isFolder);
             mock.Setup(x => x.ParentNodeFlags).Returns(flags);
-            mock.Setup(x => x.Metadata).Returns(metadata ?? ImmutableDictionary<string, string>.Empty);
+            mock.Setup(x => x.Metadata).Returns(metadata ?? ImmutableStringDictionary<string>.EmptyOrdinal);
             return mock.Object;
         }
 

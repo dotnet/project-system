@@ -6,7 +6,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class OrderPrecedenceImportCollectionExtensions
     {
-        public static void Add<T>(this OrderPrecedenceImportCollection<T> collection, T value, string appliesTo, int orderPrecedence = 0)
+        public static void Add<T>(this OrderPrecedenceImportCollection<T> collection, T value, string appliesTo = null, int orderPrecedence = 0)
         {
             var metadata = IOrderPrecedenceMetadataViewFactory.Create(appliesTo, orderPrecedence);
 

@@ -50,8 +50,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 WorkingDirectory = "c:\\test\\%env3%",
                 LaunchBrowser = false,
                 LaunchUrl = "http://localhost:8080/$(unknownproperty)",
-                EnvironmentVariables = ImmutableDictionary<string, string>.Empty.Add("var1", "%env1%").Add("var2", "$(msbuildProperty3)"),
-                OtherSettings = ImmutableDictionary<string, object>.Empty.Add("setting1", "%env1%").Add("setting2", true),
+                EnvironmentVariables = ImmutableStringDictionary<string>.EmptyOrdinal.Add("var1", "%env1%").Add("var2", "$(msbuildProperty3)"),
+                OtherSettings = ImmutableStringDictionary<object>.EmptyOrdinal.Add("setting1", "%env1%").Add("setting2", true),
             };
 
             var resolvedProfile = await replacer.ReplaceTokensInProfileAsync(launchProfile);

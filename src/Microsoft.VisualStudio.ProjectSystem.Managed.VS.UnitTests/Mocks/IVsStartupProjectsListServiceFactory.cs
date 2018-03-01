@@ -8,6 +8,11 @@ namespace Microsoft.VisualStudio.Shell.Interop
 {
     public static class IVsStartupProjectsListServiceFactory
     {
+        public static IVsStartupProjectsListService Create()
+        {
+            return Mock.Of<IVsStartupProjectsListService>();
+        }
+
         public static Mock<IVsStartupProjectsListService> CreateMockInstance(Guid projectGuid)
         {
             var mock = new Mock<IVsStartupProjectsListService>();

@@ -28,6 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         private readonly List<AggregateWorkspaceProjectContext> _contexts = new List<AggregateWorkspaceProjectContext>();
         private readonly IProjectHostProvider _projectHostProvider;
         private readonly IActiveConfiguredProjectsProvider _activeConfiguredProjectsProvider;
+        private readonly IProjectGuidService2 _projectGuidService;
         private readonly IUnconfiguredProjectHostObject _unconfiguredProjectHostObject;
         private readonly Dictionary<ConfiguredProject, IWorkspaceProjectContext> _configuredProjectContextsMap = new Dictionary<ConfiguredProject, IWorkspaceProjectContext>();
         private readonly Dictionary<ConfiguredProject, IConfiguredProjectHostObject> _configuredProjectHostObjectsMap = new Dictionary<ConfiguredProject, IConfiguredProjectHostObject>();
@@ -38,7 +39,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                                                  IProjectAsyncLoadDashboard asyncLoadDashboard,
                                                  ITaskScheduler taskScheduler,
                                                  IProjectHostProvider projectHostProvider,
-                                                 IActiveConfiguredProjectsProvider activeConfiguredProjectsProvider)
+                                                 IActiveConfiguredProjectsProvider activeConfiguredProjectsProvider,
+                                                 [Import(typeof(IProjectGuidService))]IProjectGuidService2 projectGuidService)
         {
             _commonServices = commonServices;
             _contextFactory = contextFactory;
@@ -46,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             _taskScheduler = taskScheduler;
             _projectHostProvider = projectHostProvider;
             _activeConfiguredProjectsProvider = activeConfiguredProjectsProvider;
-
+            _projectGuidService = projectGuidService;
             _unconfiguredProjectHostObject = _projectHostProvider.UnconfiguredProjectHostObject;
         }
 
@@ -160,15 +162,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                                                                .ConfigureAwait(false);
         }
 
-        private async Task<Guid> GetProjectGuidAsync()
-        {
-            ConfigurationGeneral properties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync()
-                                                                                                     .ConfigureAwait(false);
-            Guid.TryParse((string)await properties.ProjectGuid.GetValueAsync().ConfigureAwait(false), out Guid guid);
-
-            return guid;
-        }
-
         private async Task<string> GetTargetPathAsync()
         {
             ConfigurationGeneral properties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync()
@@ -221,7 +214,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             if (string.IsNullOrEmpty(languageName))
                 return null;
 
-            Guid projectGuid = await GetProjectGuidAsync().ConfigureAwait(false);
+            Guid projectGuid = await _projectGuidService.GetProjectGuidAsync()
+                                                        .ConfigureAwait(false);
+
             string targetPath = await GetTargetPathAsync().ConfigureAwait(false);
             if (string.IsNullOrEmpty(targetPath))
                 return null;

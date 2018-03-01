@@ -219,7 +219,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     ITargetFramework targetFramework,
                     bool resolved)
         {
-            var properties = ImmutableDictionary<string, string>.Empty;
+            var properties = ImmutableStringDictionary<string>.EmptyOrdinal;
 
             return new SharedProjectDependencyModel(
                 ProjectRuleHandler.ProviderTypeString,

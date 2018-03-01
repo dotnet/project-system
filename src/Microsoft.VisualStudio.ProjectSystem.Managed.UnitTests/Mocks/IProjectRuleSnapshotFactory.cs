@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             mock.SetupGet(r => r.RuleName)
                 .Returns(ruleName);
 
-            var dictionary = ImmutableDictionary<string, string>.Empty.Add(propertyName, propertyValue);
+            var dictionary = ImmutableStringDictionary<string>.EmptyOrdinal.Add(propertyName, propertyValue);
 
             mock.SetupGet(r => r.Properties)
                 .Returns(dictionary);

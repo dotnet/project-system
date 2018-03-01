@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void PackageAssemblyDependencyModelTests_Resolved()
         {
-            var properties = ImmutableDictionary<string, string>.Empty.Add("myProp", "myVal");
+            var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
             var dependencyIDs = new[] { "id1", "id2" };
 
             var flag = ProjectTreeFlags.Create("MyCustomFlag");
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void PackageAssemblyDependencyModelTests_Unresolved()
         {
-            var properties = ImmutableDictionary<string, string>.Empty.Add("myProp", "myVal");
+            var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
             var dependencyIDs = new[] { "id1", "id2" };
 
             var flag = ProjectTreeFlags.Create("MyCustomFlag");
