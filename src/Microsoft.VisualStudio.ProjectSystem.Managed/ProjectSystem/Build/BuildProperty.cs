@@ -22,5 +22,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         ///     Indicates whether Csc/Vbc tasks should call into the in-proc host compiler.
         /// </summary>
         public static string UseHostCompilerIfAvailable = nameof(UseHostCompilerIfAvailable);
+
+        /// <summary>
+        ///     Represents the GUID of the project used for uniqueness.
+        /// </summary>
+        public static string ProjectGuid = nameof(ProjectGuid);
     }
 }
