@@ -1,14 +1,20 @@
 <!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
 <Project>
-  <Import Project="..\Directory.Build.props"/>
-
-  <Import Project="$(RepoToolsetDir)Settings.props" />
-
-  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+  <PropertyGroup Condition="'$(OutDirName)' == ''">
+    <OutDirName Condition="'$(OutDirName)' == ''">Dlls</OutDirName>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+  <Import Project="..\Directory.Build.props"/>
+  <Import Project="$(RepoToolsetDir)Settings.props" Condition="'$(RepoToolsetDir)' != ''" />
+
+  <PropertyGroup Condition="'$(Language)' == 'C#'">
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <UseCommonOutputDirectory Condition="'$(UseCommonOutputDirectory)' == ''">true</UseCommonOutputDirectory>
+
+    <!-- Prevent vsix manifests from being copied to the shared output directory, makes build more deterministic -->
+    <CopyVsixManifestToOutput>false</CopyVsixManifestToOutput>
   </PropertyGroup>
 </Project>
