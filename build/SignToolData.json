@@ -4,9 +4,9 @@
       "certificate": "MicrosoftSHA2",
       "strongName": "MsSharedLib72",
       "values": [
-        "bin/Dlls/ProjectSystemTools/net46/Microsoft.VisualStudio.ProjectSystem.Tools.Providers.dll",
-        "bin/Dlls/ProjectSystemTools/net46/Microsoft.VisualStudio.ProjectSystem.Tools.dll",
-        "bin/Dlls/ProjectSystemTools/net46/*/Microsoft.VisualStudio.ProjectSystem.Tools.resources.dll",
+        "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Tools.Providers.dll",
+        "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Tools.dll",
+        "bin/Dlls/*/Microsoft.VisualStudio.ProjectSystem.Tools.resources.dll",
       ]
     },
     {
