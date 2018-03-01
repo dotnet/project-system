@@ -15,42 +15,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     public class CreateFileFromTemplateServiceTests
     {
         [Fact]
-        public void Constructor_NullAsProjectVsServices_ThrowsArgumentNull()
-        {
-            var dteServices = IDteServicesFactory.Create();
-            var properties = ProjectPropertiesFactory.CreateEmpty();
-
-            Assert.Throws<ArgumentNullException>("projectVsServices", () =>
-            {
-                new CreateFileFromTemplateService((IUnconfiguredProjectVsServices)null, dteServices, properties);
-            });
-        }
-
-        [Fact]
-        public void Constructor_NullAsDteServices_ThrowsArgumentNull()
-        {
-            var projectVsServices = IUnconfiguredProjectVsServicesFactory.Create();
-            var properties = ProjectPropertiesFactory.CreateEmpty();
-
-            Assert.Throws<ArgumentNullException>("dteServices", () =>
-            {
-                new CreateFileFromTemplateService(projectVsServices, (IDteServices)null, properties);
-            });
-        }
-
-        [Fact]
-        public void Constructor_NullAsProjectProperties_ThrowsArgumentNull()
-        {
-            var projectVsServices = IUnconfiguredProjectVsServicesFactory.Create();
-            var dteServices = IDteServicesFactory.Create();
-
-            Assert.Throws<ArgumentNullException>("properties", () =>
-            {
-                new CreateFileFromTemplateService(projectVsServices, dteServices, (ProjectProperties)null);
-            });
-        }
-
-        [Fact]
         public async Task CreateFile_NullTemplateFile_ThrowsArgumentNull()
         {
             var service = CreateInstance();

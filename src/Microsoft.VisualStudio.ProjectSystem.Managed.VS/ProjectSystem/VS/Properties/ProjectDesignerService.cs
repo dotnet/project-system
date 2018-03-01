@@ -23,9 +23,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [ImportingConstructor]
         public ProjectDesignerService(IUnconfiguredProjectVsServices projectVsServices, IVsProjectDesignerPageService vsProjectDesignerPageService)
         {
-            Requires.NotNull(projectVsServices, nameof(projectVsServices));
-            Requires.NotNull(vsProjectDesignerPageService, nameof(vsProjectDesignerPageService));
-
             _projectVsServices = projectVsServices;
             _vsProjectDesignerPageService = vsProjectDesignerPageService;
         }

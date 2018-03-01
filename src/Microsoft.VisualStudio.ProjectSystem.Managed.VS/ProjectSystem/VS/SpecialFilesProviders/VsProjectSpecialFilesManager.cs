@@ -19,8 +19,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.SpecialFilesProviders
         [ImportingConstructor]
         public VsProjectSpecialFilesManager(IUnconfiguredProjectVsServices projectVsServices)
         {
-            Requires.NotNull(projectVsServices, nameof(projectVsServices));
-
             _projectVsServices = projectVsServices;
         }
 

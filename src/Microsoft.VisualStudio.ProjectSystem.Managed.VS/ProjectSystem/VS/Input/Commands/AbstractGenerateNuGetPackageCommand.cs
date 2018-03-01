@@ -21,23 +21,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         private uint _solutionEventsCookie;
 
         protected AbstractGenerateNuGetPackageCommand(
-            UnconfiguredProject unconfiguredProject,
+            UnconfiguredProject project,
             IProjectThreadingService threadingService,
             SVsServiceProvider serviceProvider,
             GeneratePackageOnBuildPropertyProvider generatePackageOnBuildPropertyProvider)
         {
-            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
+            Requires.NotNull(project, nameof(project));
             Requires.NotNull(threadingService, nameof(threadingService));
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
             Requires.NotNull(generatePackageOnBuildPropertyProvider, nameof(generatePackageOnBuildPropertyProvider));
 
-            UnconfiguredProject = unconfiguredProject;
+            Project = project;
             _threadingService = threadingService;
             _serviceProvider = serviceProvider;
             _generatePackageOnBuildPropertyProvider = generatePackageOnBuildPropertyProvider;
         }
 
-        protected UnconfiguredProject UnconfiguredProject { get; }
+        protected UnconfiguredProject Project { get; }
 
         protected abstract string GetCommandText();
         protected abstract bool ShouldHandle(IProjectTree node);
@@ -90,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                 await _threadingService.SwitchToUIThread();
 
                 // Save documents before build.
-                var projectVsHierarchy = (IVsHierarchy)UnconfiguredProject.Services.HostObject;
+                var projectVsHierarchy = (IVsHierarchy)Project.Services.HostObject;
                 ErrorHandler.ThrowOnFailure(_buildManager.SaveDocumentsBeforeBuild(projectVsHierarchy, (uint)VSConstants.VSITEMID.Root, 0 /*docCookie*/));
 
                 // Enable generating package on build ("GeneratePackageOnBuild") for all projects being built.

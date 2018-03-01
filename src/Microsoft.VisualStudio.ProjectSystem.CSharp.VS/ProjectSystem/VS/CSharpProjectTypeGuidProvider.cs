@@ -12,14 +12,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     /// </summary>
     [Export(typeof(IItemTypeGuidProvider))]
     [AppliesTo(ProjectCapabilities.CSharp)]
-    internal class CSharpProjectGuidProvider : IItemTypeGuidProvider
+    internal class CSharpProjectTypeGuidProvider : IItemTypeGuidProvider
     {
         private static readonly Guid s_csharpProjectType = new Guid(CSharpProjectSystemPackage.LegacyProjectTypeGuid);
 
         [ImportingConstructor]
-        public CSharpProjectGuidProvider(UnconfiguredProject unconfiguredProject)
+        public CSharpProjectTypeGuidProvider(UnconfiguredProject project)
         {
-            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
         }
 
         public Guid ProjectTypeGuid

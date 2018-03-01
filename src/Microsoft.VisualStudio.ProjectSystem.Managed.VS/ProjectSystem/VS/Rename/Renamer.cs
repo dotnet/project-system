@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
         private IRenameStrategy GetStrategy(Project project, bool isCaseSensitive)
         {
-            IRenameStrategy[] strategies = new IRenameStrategy[] {
+            var strategies = new IRenameStrategy[] {
                 new SimpleRenameStrategy(_threadingService, _userNotificationServices, _environmentOptions, _roslynServices)
             };
 

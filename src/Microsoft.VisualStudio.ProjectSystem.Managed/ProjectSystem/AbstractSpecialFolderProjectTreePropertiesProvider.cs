@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         protected AbstractSpecialFolderProjectTreePropertiesProvider(IProjectImageProvider imageProvider)
         {
-            Requires.NotNull(imageProvider, nameof(imageProvider));
+            Assumes.NotNull(imageProvider);
 
             _imageProvider = imageProvider;
         }

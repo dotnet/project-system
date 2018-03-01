@@ -22,8 +22,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     internal class PlatformProjectConfigurationDimensionProvider : BaseProjectConfigurationDimensionProvider
     {
         [ImportingConstructor]
-        public PlatformProjectConfigurationDimensionProvider(IProjectXmlAccessor projectXmlAccessor)
-            : base(projectXmlAccessor, ConfigurationGeneral.PlatformProperty, "Platforms")
+        public PlatformProjectConfigurationDimensionProvider(IProjectAccessor projectAccessor)
+            : base(projectAccessor, ConfigurationGeneral.PlatformProperty, "Platforms")
         {
         }
 
@@ -59,13 +59,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// <summary>
         /// Adds a platform to the project.
         /// </summary>
-        /// <param name="unconfiguredProject">Unconfigured project for which the configuration change.</param>
+        /// <param name="project">Unconfigured project for which the configuration change.</param>
         /// <param name="platformName">Name of the new platform.</param>
         /// <returns>A task for the async operation.</returns>
-        private async Task OnPlatformAddedAsync(UnconfiguredProject unconfiguredProject, string platformName)
+        private async Task OnPlatformAddedAsync(UnconfiguredProject project, string platformName)
         {
-            string evaluatedPropertyValue = await GetPropertyValue(unconfiguredProject).ConfigureAwait(false);
-            await ProjectXmlAccessor.ExecuteInWriteLock(msbuildProject =>
+            string evaluatedPropertyValue = await GetPropertyValue(project).ConfigureAwait(false);
+            await ProjectAccessor.OpenProjectXmlForWriteAsync(project, msbuildProject =>
             {
                 BuildUtilities.AppendPropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, platformName);
             }).ConfigureAwait(false);
@@ -74,13 +74,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// <summary>
         /// Removes a platform from the project.
         /// </summary>
-        /// <param name="unconfiguredProject">Unconfigured project for which the configuration change.</param>
+        /// <param name="project">Unconfigured project for which the configuration change.</param>
         /// <param name="platformName">Name of the deleted platform.</param>
         /// <returns>A task for the async operation.</returns>
-        private async Task OnPlatformDeletedAsync(UnconfiguredProject unconfiguredProject, string platformName)
+        private async Task OnPlatformDeletedAsync(UnconfiguredProject project, string platformName)
         {
-            string evaluatedPropertyValue = await GetPropertyValue(unconfiguredProject).ConfigureAwait(false);
-            await ProjectXmlAccessor.ExecuteInWriteLock(msbuildProject =>
+            string evaluatedPropertyValue = await GetPropertyValue(project).ConfigureAwait(false);
+            await ProjectAccessor.OpenProjectXmlForWriteAsync(project, msbuildProject =>
             {
                 BuildUtilities.RemovePropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, platformName);
             }).ConfigureAwait(false);

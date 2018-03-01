@@ -44,28 +44,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [ImportingConstructor]
         public DependenciesProjectTreeProvider(
             IProjectThreadingService threadingService,
-            UnconfiguredProject unconfiguredProject,
+            UnconfiguredProject project,
             IDependenciesSnapshotProvider dependenciesSnapshotProvider,
             [Import(DependencySubscriptionsHost.DependencySubscriptionsHostContract)]
             ICrossTargetSubscriptionsHost dependenciesHost,
             [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService,
             IDependencyTreeTelemetryService treeTelemetryService)
-            : base(threadingService, unconfiguredProject)
+            : base(threadingService, project)
         {
             ProjectTreePropertiesProviders = new OrderPrecedenceImportCollection<IProjectTreePropertiesProvider>(
                 ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast,
-                projectCapabilityCheckProvider: unconfiguredProject);
+                projectCapabilityCheckProvider: project);
 
             ViewProviders = new OrderPrecedenceImportCollection<IDependenciesTreeViewProvider>(
                                     ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst,
-                                    projectCapabilityCheckProvider: unconfiguredProject);
+                                    projectCapabilityCheckProvider: project);
 
             DependenciesSnapshotProvider = dependenciesSnapshotProvider;
             DependenciesHost = dependenciesHost;
             TasksService = tasksService;
             _treeTelemetryService = treeTelemetryService;
 
-            unconfiguredProject.ProjectUnloading += OnUnconfiguredProjectUnloading;
+            project.ProjectUnloading += OnUnconfiguredProjectUnloading;
         }
 
         /// <summary>

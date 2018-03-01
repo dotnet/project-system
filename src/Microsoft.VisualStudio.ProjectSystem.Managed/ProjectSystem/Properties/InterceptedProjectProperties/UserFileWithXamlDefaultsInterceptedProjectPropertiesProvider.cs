@@ -20,9 +20,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             // We use project file here because in CPS, the UserFileWithXamlDefaults instance provider is implemented by the same
             // provider as the ProjectFile, and is exported as the ProjectFile provider.
             [Import(ContractNames.ProjectPropertyProviders.ProjectFile)] IProjectInstancePropertiesProvider instanceProvider,
-            UnconfiguredProject unconfiguredProject,
+            UnconfiguredProject project,
             [ImportMany(ContractNames.ProjectPropertyProviders.UserFileWithXamlDefaults)]IEnumerable<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> interceptingValueProviders)
-            : base(provider, instanceProvider, unconfiguredProject, interceptingValueProviders)
+            : base(provider, instanceProvider, project, interceptingValueProviders)
         {
         }
     }

@@ -42,8 +42,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <summary>
         /// Initializes a new instance of the <see cref="ProjectProperties"/> class.
         /// </summary>
-        public ProjectProperties(ConfiguredProject configuredProject, UnconfiguredProject unconfiguredProject)
-            : base(configuredProject, unconfiguredProject)
+        public ProjectProperties(ConfiguredProject configuredProject, UnconfiguredProject project)
+            : base(configuredProject, project)
         {
         }
 
