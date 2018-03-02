@@ -36,7 +36,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     {
         private readonly IDependencyTreeTelemetryService _treeTelemetryService;
         private readonly object _treeUpdateLock = new object();
-        private Task _treeUpdateQueueTask = null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DependenciesProjectTreeProvider"/> class.
@@ -48,7 +47,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             IDependenciesSnapshotProvider dependenciesSnapshotProvider,
             [Import(DependencySubscriptionsHost.DependencySubscriptionsHostContract)]
             ICrossTargetSubscriptionsHost dependenciesHost,
-            [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService,
             IDependencyTreeTelemetryService treeTelemetryService)
             : base(threadingService, unconfiguredProject)
         {
@@ -62,7 +60,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             DependenciesSnapshotProvider = dependenciesSnapshotProvider;
             DependenciesHost = dependenciesHost;
-            TasksService = tasksService;
             _treeTelemetryService = treeTelemetryService;
 
             unconfiguredProject.ProjectUnloading += OnUnconfiguredProjectUnloading;
@@ -81,8 +78,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         private ICrossTargetSubscriptionsHost DependenciesHost { get; }
 
         private IDependenciesSnapshotProvider DependenciesSnapshotProvider { get; }
-
-        private IProjectAsynchronousTasksService TasksService { get; }
 
         /// <summary>
         /// Keeps latest updated snapshot of all rules schema catalogs
@@ -366,32 +361,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             lock (_treeUpdateLock)
             {
-                if (_treeUpdateQueueTask == null || _treeUpdateQueueTask.IsCompleted)
-                {
-                    _treeUpdateQueueTask = ThreadingService.JoinableTaskFactory.RunAsync(async () =>
-                    {
-                        if (TasksService.UnloadCancellationToken.IsCancellationRequested)
-                        {
-                            return;
-                        }
-
-                        await BuildTreeForSnapshotAsync(snapshot).ConfigureAwait(false);
-                    }).Task;
-                }
-                else
-                {
-                    _treeUpdateQueueTask = _treeUpdateQueueTask.ContinueWith(
-                        t => BuildTreeForSnapshotAsync(snapshot), TaskScheduler.Default);
-                }
+                BuildTreeForSnapshot(snapshot);
             }
         }
 
-        private Task BuildTreeForSnapshotAsync(IDependenciesSnapshot snapshot)
+        private void BuildTreeForSnapshot(IDependenciesSnapshot snapshot)
         {
             var viewProvider = ViewProviders.FirstOrDefault();
             if (viewProvider == null)
             {
-                return Task.CompletedTask;
+                return;
             }
 
             var nowait = SubmitTreeUpdateAsync(
@@ -411,7 +390,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     return new TreeUpdateResult(dependenciesNode, false, null);
                 });
 
-            return Task.CompletedTask;
+            return;
         }
 
         /// <summary>
