@@ -22,16 +22,6 @@
         <target state="translated">その他</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|FullPath|DisplayName">
-        <source>Full Path</source>
-        <target state="translated">完全パス</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|FullPath|Description">
-        <source>Location of the file.</source>
-        <target state="translated">ファイルの場所。</target>
-        <note />
-      </trans-unit>
     </body>
   </file>
 </xliff>

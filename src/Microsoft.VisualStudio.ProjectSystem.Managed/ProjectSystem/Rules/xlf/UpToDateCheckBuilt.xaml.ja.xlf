@@ -12,11 +12,6 @@
         <target state="translated">ファイルのプロパティ</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Identity|Description">
-        <source>The item specified in the Include attribute.</source>
-        <target state="translated">Include 属性に指定された項目です。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Original|Description">
         <source>If set, specifies that this built output comes from this source file.</source>
         <target state="translated">設定される場合、このビルド出力はこのソース ファイルから派生することを指定します。</target>

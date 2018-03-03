@@ -20,7 +20,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
     [ExportMetadata("BeforeDrainCriticalTasks", true)]
     internal sealed class BuildUpToDateCheck : OnceInitializedOnceDisposed, IBuildUpToDateCheckProvider
     {
-        private const string FullPath = "FullPath";
         private const string CopyToOutputDirectory = "CopyToOutputDirectory";
         private const string PreserveNewest = "PreserveNewest";
         private const string Always = "Always";
@@ -148,14 +147,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 inputs.Difference.AnyChanges)
             {
                 _customInputs.Clear();
-                _customInputs.AddRange(inputs.After.Items.Select(item => item.Value[UpToDateCheckInput.FullPathProperty]));
+                _customInputs.AddRange(inputs.After.Items.Select(item => _configuredProject.UnconfiguredProject.MakeRooted(item.Key)));
             }
 
             if (e.ProjectChanges.TryGetValue(UpToDateCheckOutput.SchemaName, out var outputs) &&
                 outputs.Difference.AnyChanges)
             {
                 _customOutputs.Clear();
-                _customOutputs.AddRange(outputs.After.Items.Select(item => item.Value[UpToDateCheckOutput.FullPathProperty]));
+                _customOutputs.AddRange(outputs.After.Items.Select(item => _configuredProject.UnconfiguredProject.MakeRooted(item.Key)));
             }
 
             if (e.ProjectChanges.TryGetValue(UpToDateCheckBuilt.SchemaName, out var built) &&
@@ -165,7 +164,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 foreach (var item in built.After.Items)
                 {
-                    var destination = item.Value[UpToDateCheckBuilt.IdentityProperty];
+                    var destination = item.Key;
 
                     if (item.Value.TryGetValue(UpToDateCheckBuilt.OriginalProperty, out var source) &&
                         !string.IsNullOrEmpty(source))
@@ -182,7 +181,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             if (e.ProjectChanges.TryGetValue(CopyUpToDateMarker.SchemaName, out var upToDateMarkers) &&
                 upToDateMarkers.Difference.AnyChanges)
             {
-                _markerFile = upToDateMarkers.After.Items.Count == 1 ? upToDateMarkers.After.Items.Single().Value[CopyUpToDateMarker.FullPathProperty] : null;
+                _markerFile = upToDateMarkers.After.Items.Count == 1 ? _configuredProject.UnconfiguredProject.MakeRooted(upToDateMarkers.After.Items.Single().Key) : null;
             }
         }
 
@@ -200,9 +199,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _imports.Clear();
             AddImports(e.Value);
         }
-
-        private static string GetFullPath(IImmutableDictionary<string, string> itemMetadata) =>
-            itemMetadata.TryGetValue(FullPath, out var fullPath) ? fullPath : null;
 
         private static string GetLink(IImmutableDictionary<string, string> itemMetadata) =>
             itemMetadata.TryGetValue(Link, out var link) ? link : null;
@@ -240,7 +236,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             foreach (var itemType in e.ProjectChanges.Where(changes => (itemTypesChanged || changes.Value.Difference.AnyChanges) && _itemTypes.Contains(changes.Key)))
             {
                 var items = itemType.Value.After.Items
-                    .Select(item => (GetFullPath(item.Value), GetLink(item.Value), GetCopyType(item.Value)))
+                    .Select(item => (_configuredProject.UnconfiguredProject.MakeRooted(item.Key), GetLink(item.Value), GetCopyType(item.Value)))
                     .Where(tuple => tuple.Item1 != null);
                 _items[itemType.Key] = new HashSet<(string, string, CopyToOutputDirectoryType)>(items, UpToDateCheckItemComparer.Instance);
                 _itemsChangedSinceLastCheck = true;
@@ -250,7 +246,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 outputs.Difference.AnyChanges)
             {
                 _customOutputs.Clear();
-                _customOutputs.AddRange(outputs.After.Items.Select(item => item.Value[UpToDateCheckOutput.FullPathProperty]));
+                _customOutputs.AddRange(outputs.After.Items.Select(item => _configuredProject.UnconfiguredProject.MakeRooted(item.Key)));
             }
         }
 
@@ -484,7 +480,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             if (outputMarkerTime <= inputMarkerTime)
             {
-                logger.Info("Input marker is older than output marker, not up to date.");
+                logger.Info("Input marker is newer than output marker, not up to date.");
             }
 
             return inputMarkerPath == null || outputMarkerTime == null || outputMarkerTime > inputMarkerTime;
