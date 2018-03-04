@@ -197,7 +197,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         public new void Move(RECT[] pRect)
         {
             if (pRect == null || pRect.Length <= 0)
-                throw new ArgumentNullException("pRect");
+                throw new ArgumentNullException(nameof(pRect));
 
             RECT r = pRect[0];
 
@@ -362,7 +362,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
 
             if (ppunk.Length < cObjects)
-                throw new ArgumentOutOfRangeException("cObjects");
+                throw new ArgumentOutOfRangeException(nameof(cObjects));
 
             var configurations = new List<string>();
             // Look for an IVsBrowseObject
