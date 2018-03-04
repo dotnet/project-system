@@ -6,7 +6,9 @@
          thread where ConfigureAwait(false) does nothing, or we're running the workload from an STA thread
          where we want to marshal the continuations back to it. -->
     <Rule Id="CA1822" Action="None" />
+    <Rule Id="CA2000" Action="None" />
     <Rule Id="CA2007" Action="None" />
+    <Rule Id="CA2009" Action="None" />
   </Rules>
   <Rules AnalyzerId="System.Runtime.Analyzers" RuleNamespace="System.Runtime.Analyzers">
     <!-- Avoid zero length allocations - suppress for non-shipping/test projects (originally RS0007) -->
