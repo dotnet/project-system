@@ -10,7 +10,7 @@
     <Rule Id="CA1824" Action="None" />
     <Rule Id="CA2200" Action="None" />
   </Rules>
-  <Rules AnalyzerId="Microsoft.ApiDesignGuidelines.Analyzers" RuleNamespace="Microsoft.ApiDesignGuidelines.Analyzers">
+  <Rules AnalyzerId="Microsoft.CodeQuality.Analyzers" RuleNamespace="Microsoft.CodeQuality.Analyzers">
     <Rule Id="CA1000" Action="None" />
     <Rule Id="CA1001" Action="None" />
     <Rule Id="CA1010" Action="None" />
