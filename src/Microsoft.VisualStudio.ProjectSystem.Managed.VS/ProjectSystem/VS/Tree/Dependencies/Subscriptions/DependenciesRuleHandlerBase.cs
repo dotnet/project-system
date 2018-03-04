@@ -125,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
         }
 
-        protected bool DoesUnresolvedProjectItemExist(string itemSpec, IProjectChangeDescription unresolvedChanges)
+        protected static bool DoesUnresolvedProjectItemExist(string itemSpec, IProjectChangeDescription unresolvedChanges)
         {
             return unresolvedChanges != null && unresolvedChanges.After.Items.ContainsKey(itemSpec);
         }

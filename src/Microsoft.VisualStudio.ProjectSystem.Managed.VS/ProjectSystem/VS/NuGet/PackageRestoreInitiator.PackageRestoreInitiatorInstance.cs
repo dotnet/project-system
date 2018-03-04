@@ -201,7 +201,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 }
             }
 
-            private void LogTargetFrameworks(IProjectLoggerBatch logger, TargetFrameworks targetFrameworks)
+            private static void LogTargetFrameworks(IProjectLoggerBatch logger, TargetFrameworks targetFrameworks)
             {
                 logger.WriteLine($"Target Frameworks ({targetFrameworks.Count})");
                 logger.IndentLevel++;
@@ -213,7 +213,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 logger.IndentLevel--;
             }
 
-            private void LogTargetFramework(IProjectLoggerBatch logger, TargetFrameworkInfo targetFrameworkInfo)
+            private static void LogTargetFramework(IProjectLoggerBatch logger, TargetFrameworkInfo targetFrameworkInfo)
             {
                 logger.WriteLine(targetFrameworkInfo.TargetFrameworkMoniker);
                 logger.IndentLevel++;
@@ -225,14 +225,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 logger.IndentLevel--;
             }
 
-            private void LogProperties(IProjectLoggerBatch logger, string heading, ProjectProperties projectProperties)
+            private static void LogProperties(IProjectLoggerBatch logger, string heading, ProjectProperties projectProperties)
             {
                 var properties = projectProperties.Cast<ProjectProperty>()
                         .Select(prop => $"{prop.Name}:{prop.Value}");
                 logger.WriteLine($"{heading} -- ({string.Join(" | ", properties)})");
             }
 
-            private void LogReferenceItems(IProjectLoggerBatch logger, string heading, ReferenceItems references)
+            private static void LogReferenceItems(IProjectLoggerBatch logger, string heading, ReferenceItems references)
             {
                 logger.WriteLine(heading);
                 logger.IndentLevel++;

@@ -350,7 +350,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             }
         }
 
-        private GraphNodeId GetGraphNodeId(string projectPath, GraphNode parentNode, string modelId)
+        private static GraphNodeId GetGraphNodeId(string projectPath, GraphNode parentNode, string modelId)
         {
             var partialValues = new List<GraphNodeId>
             {
@@ -382,7 +382,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes
             return GraphNodeId.GetNested(partialValues.ToArray());
         }
 
-        private GraphNodeId GetTopLevelGraphNodeId(string projectPath, string modelId)
+        private static GraphNodeId GetTopLevelGraphNodeId(string projectPath, string modelId)
         {
             var partialValues = new List<GraphNodeId>
             {

@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             return null;
         }
 
-        private string GetLinkedParentFolder(IImmutableDictionary<string, string> metadata)
+        private static string GetLinkedParentFolder(IImmutableDictionary<string, string> metadata)
         {
             string linkFilePath = FileItemServices.GetLinkFilePath(metadata);
             if (linkFilePath != null)

@@ -520,7 +520,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-        private void UpdateActiveProfile()
+        private static void UpdateActiveProfile()
         {
             // need to set it dirty so Apply() actually saves the profile
             // Billhie: this causes hangs. Disabling for now

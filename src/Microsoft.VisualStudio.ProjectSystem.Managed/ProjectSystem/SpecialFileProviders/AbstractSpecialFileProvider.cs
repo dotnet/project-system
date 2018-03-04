@@ -148,7 +148,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         /// <summary>
         /// Find a file with the given filename within the given node.
         /// </summary>
-        private IProjectTree FindFileWithinNode(IProjectTree parentNode, string fileName)
+        private static IProjectTree FindFileWithinNode(IProjectTree parentNode, string fileName)
         {
             parentNode.TryFindImmediateChild(fileName, out IProjectTree fileNode);
 

@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
             return pane;
         }
 
-        private IVsOutputWindowPane CreateProjectOutputWindowPane(IVsOutputWindow outputWindow)
+        private static IVsOutputWindowPane CreateProjectOutputWindowPane(IVsOutputWindow outputWindow)
         {
             Guid paneGuid = s_projectOutputWindowPaneGuid;
             HResult hr = outputWindow.CreatePane(ref paneGuid, VSResources.OutputWindowPaneTitle, fInitVisible: 1, fClearWithSolution: 0);

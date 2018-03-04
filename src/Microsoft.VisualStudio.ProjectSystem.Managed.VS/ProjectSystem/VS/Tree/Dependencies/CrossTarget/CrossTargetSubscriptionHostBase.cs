@@ -285,7 +285,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     suppressVersionOnlyUpdates: true));
         }
 
-        private bool HasTargetFrameworksChanged(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
+        private static bool HasTargetFrameworksChanged(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
         {
             // remember actual property value and compare
             return e.Value.ProjectChanges.TryGetValue(

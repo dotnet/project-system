@@ -140,7 +140,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return new string[] { CompilerCommandLineArgs.SchemaName };
         }
 
-        private void ProcessDesignTimeBuildFailure(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, IProjectLogger logger)
+        private static void ProcessDesignTimeBuildFailure(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, IProjectLogger logger)
         {
             // If 'CompileDesignTime' didn't run due to a preceeding failed target, or a failure in itself, CPS will send us an empty IProjectChangeDescription
             // that represents as if 'CompileDesignTime' ran but returned zero results.

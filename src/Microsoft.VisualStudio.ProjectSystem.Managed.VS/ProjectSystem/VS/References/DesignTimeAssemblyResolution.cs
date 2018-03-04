@@ -107,7 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             return resolvedReferencesCount;
         }
 
-        private string FindResolvedAssemblyPath(IDictionary<string, ResolvedReference> references, AssemblyName assemblyName)
+        private static string FindResolvedAssemblyPath(IDictionary<string, ResolvedReference> references, AssemblyName assemblyName)
         {
             // NOTE: We mimic the behavior of the legacy project system when in "DTARUseReferencesFromProject" mode, it matches 
             // only on version, and only against currently referenced assemblies, nothing more. 
@@ -158,7 +158,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             return project.Object as VSProject;
         }
 
-        private bool TryParseAssemblyNames(string[] assemblyNames, out AssemblyName[] result)
+        private static bool TryParseAssemblyNames(string[] assemblyNames, out AssemblyName[] result)
         {
             result = new AssemblyName[assemblyNames.Length];
 
@@ -182,7 +182,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             return true;
         }
 
-        private Version TryParseVersionOrNull(string version)
+        private static Version TryParseVersionOrNull(string version)
         {
             if (Version.TryParse(version, out Version result))
             {

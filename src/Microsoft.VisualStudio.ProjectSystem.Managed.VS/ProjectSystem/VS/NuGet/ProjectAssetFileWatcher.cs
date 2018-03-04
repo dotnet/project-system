@@ -183,7 +183,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             return hash;
         }
 
-        private string GetProjectAssetsFilePath(IProjectTree newTree, IProjectSubscriptionUpdate projectUpdate)
+        private static string GetProjectAssetsFilePath(IProjectTree newTree, IProjectSubscriptionUpdate projectUpdate)
         {
             var projectFilePath = projectUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, null);
 
@@ -211,7 +211,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             return projectAssetsFilePath;
         }
 
-        private IProjectTree FindProjectJsonNode(IProjectTree newTree, string projectFilePath)
+        private static IProjectTree FindProjectJsonNode(IProjectTree newTree, string projectFilePath)
         {
             if (newTree.TryFindImmediateChild("project.json", out IProjectTree projectJsonNode))
             {

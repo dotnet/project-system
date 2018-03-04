@@ -140,7 +140,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// <summary>
         /// Helper returns cmd.exe as the launcher for Ctrl-F5 (useCmdShell == true), otherwise just the exe and args passed in.
         /// </summary>
-        public void GetExeAndArguments(bool useCmdShell, string debugExe, string debugArgs, out string finalExePath, out string finalArguments)
+        public static void GetExeAndArguments(bool useCmdShell, string debugExe, string debugArgs, out string finalExePath, out string finalArguments)
         {
             if (useCmdShell)
             {
@@ -354,7 +354,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             return new Tuple<string, string, string>(runCommand, runArguments, runWorkingDirectory);
         }
 
-        private async Task<string> GetOutputDirectoryAsync(ConfiguredProject configuredProject)
+        private static async Task<string> GetOutputDirectoryAsync(ConfiguredProject configuredProject)
         {
             var properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
             var outdir = await properties.GetEvaluatedPropertyValueAsync("OutDir").ConfigureAwait(false);
@@ -362,7 +362,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             return outdir;
         }
 
-        private async Task<Guid> GetDebuggingEngineAsync(ConfiguredProject configuredProject)
+        private static async Task<Guid> GetDebuggingEngineAsync(ConfiguredProject configuredProject)
         {
             var properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
             var framework = await properties.GetEvaluatedPropertyValueAsync("TargetFrameworkIdentifier").ConfigureAwait(false);

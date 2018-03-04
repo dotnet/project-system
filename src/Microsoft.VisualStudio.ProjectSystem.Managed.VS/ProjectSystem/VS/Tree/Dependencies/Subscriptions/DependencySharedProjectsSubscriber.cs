@@ -214,7 +214,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             }
         }
 
-        private IDependencyModel CreateDependencyModel(
+        private static IDependencyModel CreateDependencyModel(
                     string itemSpec,
                     ITargetFramework targetFramework,
                     bool resolved)
