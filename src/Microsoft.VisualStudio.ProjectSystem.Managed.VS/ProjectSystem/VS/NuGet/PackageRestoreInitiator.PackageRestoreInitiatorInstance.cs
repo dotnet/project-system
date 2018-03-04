@@ -28,8 +28,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
             private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
             private readonly IProjectLogger _logger;
+#pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked corretly by the IDisposeable analyzer
             private IDisposable _configurationsSubscription;
             private DisposableBag _designTimeBuildSubscriptionLink;
+#pragma warning restore CA2213
 
             private static ImmutableHashSet<string> s_designTimeBuildWatchedRules = Empty.OrdinalIgnoreCaseStringSet
                 .Add(NuGetRestore.SchemaName)

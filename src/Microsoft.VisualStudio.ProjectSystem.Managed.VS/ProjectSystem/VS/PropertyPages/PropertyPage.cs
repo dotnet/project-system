@@ -324,9 +324,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         internal static T GetExport<T>(IVsHierarchy hier)
         {
-            System.IServiceProvider sp = new Shell.ServiceProvider((OLE.Interop.IServiceProvider)hier.GetDTEProject().DTE);
-            IComponentModel compMode = sp.GetService<IComponentModel, SComponentModel>();
-            return compMode.DefaultExportProvider.GetExport<T>().Value;
+            using (var sp = new Shell.ServiceProvider((OLE.Interop.IServiceProvider)hier.GetDTEProject().DTE))
+            {
+                IComponentModel compMode = sp.GetService<IComponentModel, SComponentModel>();
+                return compMode.DefaultExportProvider.GetExport<T>().Value;
+            }
         }
 
         ///--------------------------------------------------------------------------------------------

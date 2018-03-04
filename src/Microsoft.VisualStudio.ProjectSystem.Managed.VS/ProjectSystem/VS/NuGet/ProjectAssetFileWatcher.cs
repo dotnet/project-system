@@ -33,10 +33,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IProjectTreeProvider _fileSystemTreeProvider;
 
+#pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked corretly by the IDisposeable analyzer
         private CancellationTokenSource _watchedFileResetCancellationToken;
         private ITaskDelayScheduler _taskDelayScheduler;
-        private IVsFileChangeEx _fileChangeService;
         private IDisposable _treeWatcher;
+#pragma warning restore CA2213
+        private IVsFileChangeEx _fileChangeService;
         private uint _filechangeCookie;
         private string _fileBeingWatched;
         private byte[] _previousContentsHash;

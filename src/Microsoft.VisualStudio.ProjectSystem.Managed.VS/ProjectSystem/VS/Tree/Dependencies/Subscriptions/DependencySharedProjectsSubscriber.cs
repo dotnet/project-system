@@ -21,7 +21,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal class DependencySharedProjectsSubscriber : OnceInitializedOnceDisposedAsync, IDependencyCrossTargetSubscriber
     {
+#pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked corretly by the IDisposeable analyzer
         private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
+#pragma warning restore CA2213
         private readonly List<IDisposable> _subscriptionLinks;
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IDependenciesSnapshotProvider _dependenciesSnapshotProvider;
@@ -243,6 +245,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             if (initialized)
             {
                 await ReleaseSubscriptionsAsync().ConfigureAwait(false);
+                _gate?.Dispose();
             }
         }
     }
