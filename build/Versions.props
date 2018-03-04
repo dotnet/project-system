@@ -60,10 +60,10 @@
     <MicrosoftVisualStudioXmlEditorVersion>15.0.26606-alpha</MicrosoftVisualStudioXmlEditorVersion>
     <MicrosoftVsDesignerVersion>15.0.26606-alpha</MicrosoftVsDesignerVersion>
     <VsWebSiteInteropVersion>8.0.0-alpha</VsWebSiteInteropVersion>
-    
+
     <!-- CPS -->
     <MicrosoftVisualStudioProjectSystemSDKVersion>15.6.128-pre</MicrosoftVisualStudioProjectSystemSDKVersion>
-    
+
     <!-- Roslyn -->
     <MicrosoftVisualStudioLanguageServicesVersion>2.6.0-beta1-62113-02</MicrosoftVisualStudioLanguageServicesVersion>
     <MicrosoftVisualStudioIntegrationTestUtilitiesVersion>2.6.0-beta1-62113-02</MicrosoftVisualStudioIntegrationTestUtilitiesVersion>
@@ -73,10 +73,10 @@
     <!-- NuGet -->
     <NuGetSolutionRestoreManagerInteropVersion>4.3.0</NuGetSolutionRestoreManagerInteropVersion>
     <NuGetVisualStudioVersion>4.3.0</NuGetVisualStudioVersion>
-    
+
     <!-- Msbuild -->
     <MicrosoftBuildVersion>15.6.0-preview-000010-1174357</MicrosoftBuildVersion>
-    
+
     <!-- Libs -->
     <NewtonsoftJsonVersion>9.0.1</NewtonsoftJsonVersion>
 
@@ -85,7 +85,7 @@
 
     <!-- Tests -->
     <MoqVersion>4.7.99</MoqVersion>
-    <XUnitAnalyzersVersion>0.7.0</XUnitAnalyzersVersion>
+    <XUnitAnalyzersVersion>0.8.0</XUnitAnalyzersVersion>
   </PropertyGroup>
 
   <PropertyGroup>
