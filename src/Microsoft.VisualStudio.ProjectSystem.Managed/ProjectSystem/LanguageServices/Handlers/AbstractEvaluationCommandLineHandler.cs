@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     /// </summary>
     internal abstract partial class AbstractEvaluationCommandLineHandler
     {
-        // This class is not thread-safe, and the assumption is that the caller will mkaes sure that evaluations and design-time builds do 
+        // This class is not thread-safe, and the assumption is that the caller will make sure that evaluations and design-time builds do 
         // overlap inside the class at the same time.
         //
         // In the ideal world, we would simply wait for a design-time build to get the command-line arguments that would have been passed
