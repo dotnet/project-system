@@ -15,6 +15,11 @@ namespace Microsoft.VisualStudio
             get { return StringComparer.OrdinalIgnoreCase; }
         }
 
+        public static IEqualityComparer<string> PropertyNames
+        {
+            get { return StringComparer.OrdinalIgnoreCase; }
+        }
+
         public static IEqualityComparer<string> PropertyValues
         {
             get { return StringComparer.OrdinalIgnoreCase; }
