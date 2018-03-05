@@ -13,6 +13,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             mock.Setup(s => s.GetProjectGuidAsync())
                 .ReturnsAsync(result);
 
+            mock.As<IProjectGuidService>()
+                .Setup(s => s.ProjectGuid)
+                .Returns(result);
 
             return mock.Object;
         }
