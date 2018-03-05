@@ -60,6 +60,22 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
         }
 
+        public async Task OpenProjectXmlForUpgradeableReadAsync(UnconfiguredProject project, Func<ProjectRootElement, CancellationToken, Task> action, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            Requires.NotNull(project, nameof(project));
+            Requires.NotNull(project, nameof(action));
+
+            using (ProjectLockReleaser access = await _projectLockService.UpgradeableReadLockAsync(cancellationToken))
+            {
+                ProjectRootElement rootElement = await access.GetProjectXmlAsync(project.FullPath, cancellationToken)
+                                                             .ConfigureAwait(true);
+
+                // Only async to let the caller upgrade to a 
+                // write lock via OpenProjectXmlForWriteAsync
+                await action(rootElement, cancellationToken).ConfigureAwait(true);
+            }
+        }
+
         public async Task OpenProjectXmlForWriteAsync(UnconfiguredProject project, Action<ProjectRootElement> action, CancellationToken cancellationToken = default(CancellationToken))
         {
             Requires.NotNull(project, nameof(project));
