@@ -287,7 +287,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                         await _contextProvider.Value.ReleaseProjectContextAsync(_currentAggregateProjectContext).ConfigureAwait(false);
                     }
                 }).ConfigureAwait(false);
-                _gate?.Dispose();
             }
         }
 

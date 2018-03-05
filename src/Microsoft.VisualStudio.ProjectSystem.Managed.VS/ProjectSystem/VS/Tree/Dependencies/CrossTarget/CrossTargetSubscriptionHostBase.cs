@@ -309,8 +309,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                         await _contextProvider.Value.ReleaseProjectContextAsync(_currentAggregateProjectContext).ConfigureAwait(false);
                     }
                 }).ConfigureAwait(false);
-
-                _gate?.Dispose();
             }
         }
 

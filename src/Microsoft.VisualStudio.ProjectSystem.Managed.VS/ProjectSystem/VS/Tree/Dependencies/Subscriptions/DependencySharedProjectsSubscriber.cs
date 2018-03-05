@@ -148,7 +148,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
             // We need to process the update within a lock to ensure that we do not release this context during processing.
             // TODO: Enable concurrent execution of updates themeselves, i.e. two separate invocations of HandleAsync
-            //       should be able to run concurrently. 
+            //       should be able to run concurrently.
             using (await _gate.DisposableWaitAsync().ConfigureAwait(true))
             {
                 // Get the inner workspace project context to update for this change.
@@ -245,7 +245,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             if (initialized)
             {
                 await ReleaseSubscriptionsAsync().ConfigureAwait(false);
-                _gate?.Dispose();
             }
         }
     }

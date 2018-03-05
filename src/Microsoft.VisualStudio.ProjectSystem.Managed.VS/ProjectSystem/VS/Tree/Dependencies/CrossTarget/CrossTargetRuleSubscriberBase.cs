@@ -293,7 +293,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             if (initialized)
             {
                 await ReleaseSubscriptionsAsync().ConfigureAwait(false);
-                _gate?.Dispose();
             }
         }
     }
