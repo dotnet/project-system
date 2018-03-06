@@ -326,6 +326,40 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Assert.Equal(handler.Files.OrderBy(f => f), expectedFiles.OrderBy(f => f));
         }
 
+        [Fact]
+        public void ApplyDesignTimeChanges_WhenNewerEvaluationChangesWithAddedConflict_EvaluationWinsOut()
+        {
+            var handler = CreateInstance(@"C:\Project\Project.cs");
+
+            int evaluationVersion = 1;
+
+            // Setup the "current state"
+            ApplyEvaluationChanges(handler, evaluationVersion, IProjectChangeDiffFactory.WithAddedItems("Source.cs"));
+
+            int designTimeVersion = 0;
+
+            ApplyDesignTimeChanges(handler, designTimeVersion, IProjectChangeDiffFactory.WithRemovedItems("Source.cs"));
+
+            Assert.Single(handler.Files, @"C:\Project\Source.cs");
+        }
+
+        [Fact]
+        public void ApplyDesignTimeChanges_WhenNewerEvaluationChangesWithRemovedConflict_EvaluationWinsOut()
+        {
+            var handler = CreateInstance(@"C:\Project\Project.cs");
+
+            int evaluationVersion = 1;
+
+            // Setup the "current state"
+            ApplyEvaluationChanges(handler, evaluationVersion, IProjectChangeDiffFactory.WithRemovedItems("Source.cs"));
+
+            int designTimeVersion = 0;
+
+            ApplyDesignTimeChanges(handler, designTimeVersion, IProjectChangeDiffFactory.WithAddedItems("Source.cs"));
+
+            Assert.Empty(handler.Files);
+        }
+
         private static void ApplyEvaluationChanges(AbstractEvaluationCommandLineHandler handler, IComparable version, IProjectChangeDiff difference)
         {
             var metadata = ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
