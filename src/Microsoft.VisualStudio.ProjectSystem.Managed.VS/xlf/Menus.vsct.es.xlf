@@ -47,26 +47,6 @@
         <target state="translated">Plataforma</target>
         <note />
       </trans-unit>
-      <trans-unit id="cmdidMoveUp|ButtonText">
-        <source>&amp;Move Up</source>
-        <target state="translated">&amp;Subir</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="cmdidMoveUp|CommandName">
-        <source>MoveUp</source>
-        <target state="translated">Subir</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="cmdidMoveDown|ButtonText">
-        <source>&amp;Move Down</source>
-        <target state="translated">&amp;Bajar</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="cmdidMoveDown|CommandName">
-        <source>MoveDown</source>
-        <target state="translated">Bajar</target>
-        <note />
-      </trans-unit>
       <trans-unit id="AddAboveMenu|ButtonText">
         <source>&amp;Add Above</source>
         <target state="translated">Agregar &amp;encima</target>
