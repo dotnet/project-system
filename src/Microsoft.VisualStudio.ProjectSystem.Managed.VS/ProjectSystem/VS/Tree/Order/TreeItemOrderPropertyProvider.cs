@@ -85,7 +85,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
                 var fullPath = project.MakeRooted(item.EvaluatedInclude);
 
                 // We uniquely identify a file by its fullpath.
-                orderedMap.Add(fullPath, displayOrder++);
+                if (!orderedMap.ContainsKey(fullPath))
+                {
+                    orderedMap.Add(fullPath, displayOrder++);
+                }
             }
 
             return orderedMap;
