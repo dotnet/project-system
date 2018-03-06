@@ -12,11 +12,6 @@
         <target state="translated">Свойства файла</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Identity|Description">
-        <source>The item specified in the Include attribute.</source>
-        <target state="translated">Элемент, заданный в атрибуте Include.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Original|Description">
         <source>If set, specifies that this built output comes from this source file.</source>
         <target state="translated">Если он задан, указывает, что сборка получена из этого файла исходного кода.</target>

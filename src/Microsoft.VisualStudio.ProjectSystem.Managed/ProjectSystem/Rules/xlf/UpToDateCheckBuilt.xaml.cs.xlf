@@ -12,11 +12,6 @@
         <target state="translated">Vlastnosti souboru</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Identity|Description">
-        <source>The item specified in the Include attribute.</source>
-        <target state="translated">Položka zadaná v atributu Include</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Original|Description">
         <source>If set, specifies that this built output comes from this source file.</source>
         <target state="translated">Pokud je možnost nastavená, určuje, že tento sestavený výstup pochází z tohoto zdrojového souboru.</target>

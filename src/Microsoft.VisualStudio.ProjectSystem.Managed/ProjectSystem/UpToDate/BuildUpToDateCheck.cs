@@ -21,7 +21,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
     [ExportMetadata("BeforeDrainCriticalTasks", true)]
     internal sealed class BuildUpToDateCheck : OnceInitializedOnceDisposed, IBuildUpToDateCheckProvider
     {
-        private const string FullPath = "FullPath";
         private const string CopyToOutputDirectory = "CopyToOutputDirectory";
         private const string PreserveNewest = "PreserveNewest";
         private const string Always = "Always";
@@ -149,14 +148,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 inputs.Difference.AnyChanges)
             {
                 _customInputs.Clear();
-                _customInputs.AddRange(inputs.After.Items.Select(item => item.Value[UpToDateCheckInput.FullPathProperty]));
+                _customInputs.AddRange(inputs.After.Items.Select(item => _configuredProject.UnconfiguredProject.MakeRooted(item.Key)));
             }
 
             if (e.ProjectChanges.TryGetValue(UpToDateCheckOutput.SchemaName, out var outputs) &&
                 outputs.Difference.AnyChanges)
             {
                 _customOutputs.Clear();
-                _customOutputs.AddRange(outputs.After.Items.Select(item => item.Value[UpToDateCheckOutput.FullPathProperty]));
+                _customOutputs.AddRange(outputs.After.Items.Select(item => _configuredProject.UnconfiguredProject.MakeRooted(item.Key)));
             }
 
             if (e.ProjectChanges.TryGetValue(UpToDateCheckBuilt.SchemaName, out var built) &&
@@ -166,7 +165,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 foreach (var item in built.After.Items)
                 {
-                    var destination = item.Value[UpToDateCheckBuilt.IdentityProperty];
+                    var destination = item.Key;
 
                     if (item.Value.TryGetValue(UpToDateCheckBuilt.OriginalProperty, out var source) &&
                         !string.IsNullOrEmpty(source))
@@ -183,7 +182,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             if (e.ProjectChanges.TryGetValue(CopyUpToDateMarker.SchemaName, out var upToDateMarkers) &&
                 upToDateMarkers.Difference.AnyChanges)
             {
-                _markerFile = upToDateMarkers.After.Items.Count == 1 ? upToDateMarkers.After.Items.Single().Value[CopyUpToDateMarker.FullPathProperty] : null;
+                _markerFile = upToDateMarkers.After.Items.Count == 1 ? _configuredProject.UnconfiguredProject.MakeRooted(upToDateMarkers.After.Items.Single().Key) : null;
             }
         }
 
@@ -237,7 +236,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             foreach (var itemType in e.ProjectChanges.Where(changes => (itemTypesChanged || changes.Value.Difference.AnyChanges) && _itemTypes.Contains(changes.Key)))
             {
-                var items = itemType.Value.After.Items.Select(item => (item.Value[FullPath], GetLink(item.Value), GetCopyType(item.Value)));
+                var items = itemType.Value.After.Items
+                    .Select(item => (_configuredProject.UnconfiguredProject.MakeRooted(item.Key), GetLink(item.Value), GetCopyType(item.Value)))
+                    .Where(tuple => tuple.Item1 != null);
                 _items[itemType.Key] = new HashSet<(string, string, CopyToOutputDirectoryType)>(items, UpToDateCheckItemComparer.Instance);
                 _itemsChangedSinceLastCheck = true;
             }
@@ -246,7 +247,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 outputs.Difference.AnyChanges)
             {
                 _customOutputs.Clear();
-                _customOutputs.AddRange(outputs.After.Items.Select(item => item.Value[UpToDateCheckOutput.FullPathProperty]));
+                _customOutputs.AddRange(outputs.After.Items.Select(item => _configuredProject.UnconfiguredProject.MakeRooted(item.Key)));
             }
         }
 
@@ -340,28 +341,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             if (!_tasksService.IsTaskQueueEmpty(ProjectCriticalOperation.Build))
             {
-                return Fail(logger, "Critical build tasks are running, skipping check.", "CriticalTasks");
+                return Fail(logger, "Critical build tasks are running, not up to date.", "CriticalTasks");
             }
 
             if (_lastVersionSeen == null || _configuredProject.ProjectVersion.CompareTo(_lastVersionSeen) > 0)
             {
-                return Fail(logger, "Project information is older than current project version, skipping check.", "ProjectInfoOutOfDate");
+                return Fail(logger, "Project information is older than current project version, not up to date.", "ProjectInfoOutOfDate");
             }
 
             if (itemsChangedSinceLastCheck)
             {
-                return Fail(logger, "The list of source items has changed since the last build.", "ItemInfoOutOfDate");
+                return Fail(logger, "The list of source items has changed since the last build, not up to date.", "ItemInfoOutOfDate");
             }
 
             if (_isDisabled)
             {
-                return Fail(logger, "The 'DisableFastUpToDateCheckProperty' property is true, skipping check.", "Disabled");
+                return Fail(logger, "The 'DisableFastUpToDateCheckProperty' property is true, not up to date.", "Disabled");
             }
 
             var copyAlwaysItem = _items.SelectMany(kvp => kvp.Value).FirstOrDefault(item => item.CopyType == CopyToOutputDirectoryType.CopyAlways);
             if (copyAlwaysItem.Path != null)
             {
-                logger.Info("Item '{0}' has CopyToOutputDirectory set to 'Always', skipping check.", copyAlwaysItem.Path);
+                logger.Info("Item '{0}' has CopyToOutputDirectory set to 'Always', not up to date.", copyAlwaysItem.Path);
             }
 
             return true;
@@ -478,6 +479,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 logger.Info("Output marker '{0}' does not exist, skipping marker check.", _markerFile);
             }
 
+            if (outputMarkerTime <= inputMarkerTime)
+            {
+                logger.Info("Input marker is newer than output marker, not up to date.");
+            }
+
             return inputMarkerPath == null || outputMarkerTime == null || outputMarkerTime > inputMarkerTime;
         }
 
@@ -494,11 +500,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (itemTime != null)
                 {
-                    logger.Info("    Write {0}: '{1}'.", itemTime, source);
+                    logger.Info("    Source {0}: '{1}'.", itemTime, source);
                 }
                 else
                 {
-                    logger.Info("    '{0}' does not exist.", source);
+                    logger.Info("Source '{0}' does not exist, not up to date.", source);
                     return false;
                 }
 
@@ -506,16 +512,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (outputItemTime != null)
                 {
-                    logger.Info("    Output file write {0}: '{1}'.", outputItemTime, destination);
+                    logger.Info("    Destination {0}: '{1}'.", outputItemTime, destination);
                 }
                 else
                 {
-                    logger.Info("    Output file '{0}' does not exist.", destination);
+                    logger.Info("Destination '{0}' does not exist, not up to date.", destination);
                     return false;
                 }
 
                 if (outputItemTime < itemTime)
                 {
+                    logger.Info("Build output destination is newer than source, not up to date.");
                     return false;
                 }
             }
@@ -546,11 +553,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (itemTime != null)
                 {
-                    logger.Info("    Write {0}: '{1}'.", itemTime, item.Path);
+                    logger.Info("    Source {0}: '{1}'.", itemTime, item.Path);
                 }
                 else
                 {
-                    logger.Info("    '{0}' does not exist.", item.Path);
+                    logger.Info("Source '{0}' does not exist, not up to date.", item.Path);
                     return false;
                 }
 
@@ -559,16 +566,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (outputItemTime != null)
                 {
-                    logger.Info("    Output file write {0}: '{1}'.", outputItemTime, outputItem);
+                    logger.Info("    Destination {0}: '{1}'.", outputItemTime, outputItem);
                 }
                 else
                 {
-                    logger.Info("    Output file '{0}' does not exist.", outputItem);
+                    logger.Info("Destination '{0}' does not exist, not up to date.", outputItem);
                     return false;
                 }
 
                 if (outputItemTime < itemTime)
                 {
+                    logger.Info("PreserveNewest destination is newer than source, not up to date.");
                     return false;
                 }
             }
@@ -600,7 +608,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
             else
             {
-                logger.Info("Input '{0}' does not exist.", inputPath);
+                logger.Info("Input '{0}' does not exist, not up to date.", inputPath);
             }
 
             if (outputTime != null)
@@ -609,7 +617,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
             else
             {
-                logger.Info("Output '{0}' does not exist.", outputPath);
+                logger.Info("Output '{0}' does not exist, not up to date.", outputPath);
+            }
+
+            if (outputTime <= inputTime)
+            {
+                logger.Info("Output is newer than input, not up to date.");
             }
 
             // We are up to date if the earliest output write happened after the latest input write

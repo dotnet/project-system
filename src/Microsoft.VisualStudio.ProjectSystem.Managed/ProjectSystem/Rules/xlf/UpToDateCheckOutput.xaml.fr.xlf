@@ -22,16 +22,6 @@
         <target state="translated">Divers</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|FullPath|DisplayName">
-        <source>Full Path</source>
-        <target state="translated">Chemin d'accès complet</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|FullPath|Description">
-        <source>Location of the file.</source>
-        <target state="translated">Emplacement du fichier.</target>
-        <note />
-      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -12,11 +12,6 @@
         <target state="translated">檔案屬性</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Identity|Description">
-        <source>The item specified in the Include attribute.</source>
-        <target state="translated">Include 屬性中指定的項目。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Original|Description">
         <source>If set, specifies that this built output comes from this source file.</source>
         <target state="translated">如有設定，會指定這個建置輸出來自這個來源檔案。</target>
