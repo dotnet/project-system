@@ -77,7 +77,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             Assert.Equal(projectGuid, vsStartupProjectsListService.ProjectGuid);
         }
 
-
         [Fact]
         public async Task OnProjectChanged_WhenProjectNotRegisteredAndNotDebuggable_RemainsUnregistered()
         {
@@ -167,6 +166,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         private async Task<StartupProjectRegistrar> CreateInitializedInstanceAsync(
+            UnconfiguredProject project = null,
            IAsyncServiceProvider serviceProvider = null,
            IVsStartupProjectsListService vsStartupProjectsListService = null,
            IProjectThreadingService threadingService = null,
@@ -174,13 +174,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
            IActiveConfiguredProjectSubscriptionService projectSubscriptionService = null,
            ActiveConfiguredProject<DebuggerLaunchProviders> launchProviders = null)
         {
-            var instance = CreateInstance(serviceProvider, vsStartupProjectsListService, threadingService, projectGuidService, projectSubscriptionService, launchProviders);
+            var instance = CreateInstance(project, serviceProvider, vsStartupProjectsListService, threadingService, projectGuidService, projectSubscriptionService, launchProviders);
             await instance.InitializeAsync();
 
             return instance;
         }
 
         private StartupProjectRegistrar CreateInstance(
+            UnconfiguredProject project = null,
             IAsyncServiceProvider serviceProvider = null,
             IVsStartupProjectsListService vsStartupProjectsListService = null,
             IProjectThreadingService threadingService = null,
@@ -196,12 +197,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 serviceProvider = sp;
             }
 
-            return new StartupProjectRegistrar(
+            var instance = new StartupProjectRegistrar(
+                project ?? UnconfiguredProjectFactory.Create(),
                 serviceProvider,
                 threadingService ?? new IProjectThreadingServiceMock(),
-                projectGuidService ?? IProjectGuidService2Factory.ImplementGetProjectGuidAsync(Guid.NewGuid()),
                 projectSubscriptionService ?? IActiveConfiguredProjectSubscriptionServiceFactory.Create(),
                 launchProviders);
+
+            if (projectGuidService != null)
+            {
+                instance.ProjectGuidServices.Add((IProjectGuidService)projectGuidService);
+            }
+
+            return instance;
         }
     }
 }
