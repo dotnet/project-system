@@ -10,16 +10,6 @@
         <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="UpToDateCheckBuilt" SourceOfDefaultValue="AfterContext" 
                     SourceType="TargetResults" MSBuildTarget="CollectBuiltDesignTime"/>
     </Rule.DataSource>
-    <StringProperty
-        Name="Identity"
-        Visible="false"
-        ReadOnly="true"
-        Category="Misc"
-        Description="The item specified in the Include attribute.">
-        <StringProperty.DataSource>
-            <DataSource Persistence="Intrinsic" ItemType="UpToDateCheckBuilt" PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
-        </StringProperty.DataSource>
-    </StringProperty>
     <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
     <StringProperty
         Name="Original"
