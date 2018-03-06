@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         [Theory]
         [InlineData("MyBuildMacro", "MyBuildMacroValue", VSConstants.S_OK)]
         [InlineData("NonExistantMacro", "", VSConstants.E_FAIL)]
-        public void BuildMacroInfoTests_GetBuildMacroValue(string macroName, string expectedValue, int expectedRetVal)
+        public void GetBuildMacroValue(string macroName, string expectedValue, int expectedRetVal)
         {
             var projectProperties = IProjectPropertiesFactory.CreateWithPropertyAndValue("MyBuildMacro", "MyBuildMacroValue");
             var propertiesProvider = IProjectPropertiesProviderFactory.Create(commonProps: projectProperties);
