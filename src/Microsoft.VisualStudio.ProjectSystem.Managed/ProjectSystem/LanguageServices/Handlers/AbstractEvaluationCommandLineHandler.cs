@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
@@ -103,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         public void ApplyEvaluationChanges(IComparable version, IProjectChangeDiff difference, IImmutableDictionary<string, IImmutableDictionary<string, string>> metadata, bool isActiveContext, IProjectLogger logger)
         {
             Requires.NotNull(version, nameof(version));
-            Requires.NotNull(version, nameof(version));
+            Requires.NotNull(difference, nameof(difference));
             Requires.NotNull(metadata, nameof(metadata));
             Requires.NotNull(logger, nameof(logger));
 
