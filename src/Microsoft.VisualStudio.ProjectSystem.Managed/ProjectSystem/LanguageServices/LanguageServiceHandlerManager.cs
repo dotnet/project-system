@@ -4,7 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
-
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 
@@ -17,6 +18,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly ICommandLineParserService _commandLineParser;
         private readonly IContextHandlerProvider _handlerProvider;
         private readonly IProjectLogger _logger;
+
+        private Task _currentHandlerTask = Task.CompletedTask;
 
         [ImportingConstructor]
         public LanguageServiceHandlerManager(UnconfiguredProject project, ICommandLineParserService commandLineParser, IContextHandlerProvider handlerProvider, IProjectLogger logger)
@@ -82,7 +85,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     IProjectChangeDescription projectChange = update.Value.ProjectChanges[ruleName];
                     if (projectChange.Difference.AnyChanges)
                     {
-                        handler.handler.Handle(version, projectChange, isActiveContext, logger);
+                        _currentHandlerTask = _currentHandlerTask.ContinueWith(
+                            _ => handler.handler.Handle(version, projectChange, isActiveContext, logger),
+                            CancellationToken.None,
+                            TaskContinuationOptions.None,
+                            TaskScheduler.Default);
                     }
                     else
                     {
@@ -114,9 +121,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 // If nothing changed (even another failed design-time build), don't do anything
                 if (projectChange.Difference.AnyChanges)
                 {
-                    ProcessOptions(projectChange, context, logger);
+                    _currentHandlerTask = _currentHandlerTask.ContinueWith(
+                        _ => ProcessOptions(projectChange, context, logger),
+                        CancellationToken.None,
+                        TaskContinuationOptions.None,
+                        TaskScheduler.Default);
+
                     ProcessItems(version, projectChange, context, isActiveContext, logger);
-                    ProcessDesignTimeBuildFailure(projectChange, context, logger);
+
+                    _currentHandlerTask = _currentHandlerTask.ContinueWith(
+                        _ => ProcessDesignTimeBuildFailure(projectChange, context, logger),
+                        CancellationToken.None,
+                        TaskContinuationOptions.None,
+                        TaskScheduler.Default);
                 }
                 else
                 {
@@ -189,7 +206,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             foreach (ICommandLineHandler handler in handlers)
             {
-                handler.Handle(version, addedItems, removedItems, isActiveContext, logger);
+                _currentHandlerTask = _currentHandlerTask.ContinueWith(
+                    _ => handler.Handle(version, addedItems, removedItems, isActiveContext, logger),
+                    CancellationToken.None,
+                    TaskContinuationOptions.None,
+                    TaskScheduler.Default);
             }
 
             CommandLineNotifications.FirstOrDefault()?.Value.Invoke(context.BinOutputPath, addedItems, removedItems);

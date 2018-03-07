@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 
@@ -20,7 +18,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     {
         private readonly UnconfiguredProject _project;
         private readonly IWorkspaceProjectContext _context;
-        private Task _currentApplicationTask = Task.CompletedTask;
 
         public SourceItemHandler(UnconfiguredProject project, IWorkspaceProjectContext context)
             : base(project)
@@ -38,11 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Requires.NotNull(projectChange, nameof(projectChange));
             Requires.NotNull(logger, nameof(logger));
 
-            _currentApplicationTask = _currentApplicationTask.ContinueWith(_ =>
-                ApplyEvaluationChanges(version, projectChange.Difference, projectChange.After.Items, isActiveContext, logger),
-                CancellationToken.None,
-                TaskContinuationOptions.None,
-                TaskScheduler.Default);
+            ApplyEvaluationChanges(version, projectChange.Difference, projectChange.After.Items, isActiveContext, logger);
         }
 
         public void Handle(IComparable version, BuildOptions added, BuildOptions removed, bool isActiveContext, IProjectLogger logger)
@@ -54,11 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             IProjectChangeDiff difference = ConvertToProjectDiff(added, removed);
 
-            _currentApplicationTask = _currentApplicationTask.ContinueWith(_ =>
-                ApplyDesignTimeChanges(version, difference, isActiveContext, logger),
-                CancellationToken.None,
-                TaskContinuationOptions.None,
-                TaskScheduler.Default);
+            ApplyDesignTimeChanges(version, difference, isActiveContext, logger);
         }
 
         protected override void AddToContext(string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext, IProjectLogger logger)
