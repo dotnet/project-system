@@ -47,26 +47,6 @@
         <target state="translated">Framework</target>
         <note />
       </trans-unit>
-      <trans-unit id="cmdidMoveUp|ButtonText">
-        <source>&amp;Move Up</source>
-        <target state="translated">&amp;Monter</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="cmdidMoveUp|CommandName">
-        <source>MoveUp</source>
-        <target state="translated">MoveUp</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="cmdidMoveDown|ButtonText">
-        <source>&amp;Move Down</source>
-        <target state="translated">&amp;Descendre</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="cmdidMoveDown|CommandName">
-        <source>MoveDown</source>
-        <target state="translated">MoveDown</target>
-        <note />
-      </trans-unit>
       <trans-unit id="AddAboveMenu|ButtonText">
         <source>&amp;Add Above</source>
         <target state="translated">&amp;Ajouter au-dessus</target>
