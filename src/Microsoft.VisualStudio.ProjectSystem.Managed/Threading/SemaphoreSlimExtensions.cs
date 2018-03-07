@@ -57,5 +57,19 @@ namespace Microsoft.VisualStudio.Threading
                 }
             }
         }
+
+        public static async Task ExecuteWithinLockAsync(this SemaphoreSlim semaphore, JoinableTaskCollection collection, JoinableTaskFactory factory, Action action)
+        {
+            // Join the caller to our collection, so that if the lock is already held by another task that needs UI 
+            // thread access we don't deadlock if we're also being waited on by the UI thread. For example, when CPS
+            // is draining critical tasks and is waiting us.
+            using (collection.Join())
+            {
+                using (await semaphore.DisposableWaitAsync().ConfigureAwait(false))
+                {
+                    action();
+                }
+            }
+        }
     }
 }

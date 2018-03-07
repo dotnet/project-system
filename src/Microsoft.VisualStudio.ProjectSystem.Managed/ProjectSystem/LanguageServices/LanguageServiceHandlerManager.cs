@@ -39,14 +39,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             Requires.NotNull(update, nameof(update));
             Requires.NotNull(context, nameof(context));
 
-            if (handlerType == RuleHandlerType.Evaluation)
+            try
             {
-                HandleEvaluation(update, context, isActiveContext);
+                InvokeMethodIfFound(context, "StartBatch");
+                if (handlerType == RuleHandlerType.Evaluation)
+                {
+                    HandleEvaluation(update, context, isActiveContext);
+                }
+                else
+                {
+                    HandleDesignTime(update, context, isActiveContext);
+                }
             }
-            else
+            finally
             {
-                HandleDesignTime(update, context, isActiveContext);
+                InvokeMethodIfFound(context, "EndBatch");
             }
+        }
+
+        private static void InvokeMethodIfFound(object o, string methodName)
+        {
+            var method = o.GetType().GetMethod(methodName);
+            method?.Invoke(o, null);
         }
 
         private void HandleEvaluation(IProjectVersionedValue<IProjectSubscriptionUpdate> update, IWorkspaceProjectContext context, bool isActiveContext)

@@ -140,6 +140,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return _gate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, task);
         }
 
+        private Task ExecuteWithinLockAsync(Action action)
+        {
+            return _gate.ExecuteWithinLockAsync(JoinableCollection, JoinableFactory, action);
+        }
+
         /// <summary>
         /// Ensures that <see cref="_currentAggregateProjectContext"/> is updated for the latest target frameworks from the project properties
         /// and returns this value.
@@ -255,13 +260,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private async Task HandleAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, RuleHandlerType handlerType)
         {
             // We need to process the update within a lock to ensure that we do not release this context during processing.
-            // TODO: Enable concurrent execution of updates themeselves, i.e. two separate invocations of HandleAsync
+            // TODO: Enable concurrent execution of updates themselves, i.e. two separate invocations of HandleAsync
             //       should be able to run concurrently.
-            await ExecuteWithinLockAsync(async () =>
+            await ExecuteWithinLockAsync(() =>
             {
-                // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
-                await _commonServices.ThreadingService.SwitchToUIThread();
-
                 // Get the inner workspace project context to update for this change.
                 IWorkspaceProjectContext projectContextToUpdate = _currentAggregateProjectContext.GetInnerProjectContext(update.Value.ProjectConfiguration, out bool isActiveContext);
                 if (projectContextToUpdate == null)
