@@ -48,6 +48,7 @@
     </EmbeddedResource>
     <ProjectReference Include="..\LogProviders\LogProviders.csproj">
       <Name>LogProviders</Name>
+      <Private>true</Private>
     </ProjectReference>
     <VSCTCompile Include="ProjectSystemToolsPackage.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
