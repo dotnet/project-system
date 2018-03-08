@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public void GetProjectGuidAsync_WhenProjectAlreadyUnloaded_ReturnsCancelledTask()
         {
             var tasksService = IProjectAsynchronousTasksServiceFactory.ImplementUnloadCancellationToken(new CancellationToken(canceled: true));
-            var loadDashboard = IProjectAsyncLoadDashboardFactory.ImplementProjectLoadedInHost(() => Task.Delay(-1));
+            var loadDashboard = IProjectAsyncLoadDashboardFactory.ImplementProjectLoadedInHost(() => Task.Delay(Timeout.Infinite));
 
             var accessor = CreateInstance(tasksService, loadDashboard);
 
@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             var projectUnloaded = new CancellationTokenSource();
             var tasksService = IProjectAsynchronousTasksServiceFactory.ImplementUnloadCancellationToken(projectUnloaded.Token);
-            var loadDashboard = IProjectAsyncLoadDashboardFactory.ImplementProjectLoadedInHost(() => Task.Delay(-1));
+            var loadDashboard = IProjectAsyncLoadDashboardFactory.ImplementProjectLoadedInHost(() => Task.Delay(Timeout.Infinite));
 
             var accessor = CreateInstance(tasksService, loadDashboard);
 
