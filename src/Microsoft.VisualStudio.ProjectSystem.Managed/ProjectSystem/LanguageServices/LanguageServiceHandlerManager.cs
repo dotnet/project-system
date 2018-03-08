@@ -173,7 +173,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private static void ProcessDesignTimeBuildFailure(IProjectChangeDescription projectChange, IWorkspaceProjectContext context, IProjectLogger logger)
         {
-            // If 'CompileDesignTime' didn't run due to a preceeding failed target, or a failure in itself, CPS will send us an empty IProjectChangeDescription
+            // If 'CompileDesignTime' didn't run due to a preceding failed target, or a failure in itself, CPS will send us an empty IProjectChangeDescription
             // that represents as if 'CompileDesignTime' ran but returned zero results.
             //
             // We still forward those 'removes' of references, sources, etc onto Roslyn to avoid duplicate/incorrect results when the next
@@ -254,7 +254,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             if (succeeded)
             {
-                logger.WriteLine("Last design-time build suceeeded, turning semantic errors back on.");
+                logger.WriteLine("Last design-time build succeeded, turning semantic errors back on.");
             }
             else
             {
