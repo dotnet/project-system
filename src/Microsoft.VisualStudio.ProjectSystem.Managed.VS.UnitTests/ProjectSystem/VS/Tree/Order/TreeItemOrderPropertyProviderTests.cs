@@ -43,6 +43,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
             Assert.Equal(expectedOrder, values.DisplayOrder);
         }
 
+        private List<(string type, string include)> _simpleOrderFileDuplicate = new List<(string type, string include)>
+        {
+            ("Compile", "Order.fs"),
+            ("Compile", "Customer.fs"),
+            ("Compile", "Program.fs"),
+            ("Compile", "Program.fs")
+        };
+
+        [Theory]
+        [InlineData("Customer.fs", "Compile", false, "X:\\Project\\Customer.fs", 2)]
+        [InlineData("order.fs", "Compile", false, "X:\\Project\\order.fs", 1)] // case insensitive
+        [InlineData("Program.fs", "Compile", false, "X:\\Project\\Program.fs", 3)]
+        [InlineData("Misc.txt", "Content", false, "X:\\Project\\Misc.txt", int.MaxValue)] // unknown type
+        [InlineData("ordered.fsproj", null, false, "X:\\Project\\ordered.fsproj", int.MaxValue)] // hidden file
+        [InlineData("Debug", null, true, null, 0)] // unknown folder
+        public void VerifySimpleOrderedUnderProjectRootDuplicate(string itemName, string itemType, bool isFolder, string rootedPath, int expectedOrder)
+        {
+            var orderedItems = _simpleOrderFileDuplicate
+                .Select(p => new ProjectItemIdentity(p.type, p.include))
+                .ToList();
+
+            var provider = new TreeItemOrderPropertyProvider(orderedItems, UnconfiguredProjectFactory.Create(filePath: "X:\\Project\\"));
+
+            var metadata = rootedPath == null ? null : new Dictionary<string, string> { { "FullPath", rootedPath } }.ToImmutableDictionary();
+
+            var context = GetContext(itemName, itemType, isFolder, ProjectTreeFlags.ProjectRoot, metadata);
+            var values = GetInitialValues();
+
+            provider.CalculatePropertyValues(context, values);
+
+            Assert.Equal(expectedOrder, values.DisplayOrder);
+        }
+
         [Theory]
         [MemberData(nameof(TestTreeItems))]
         public void VerifyOrderIncreasesMonotonically(
