@@ -7,17 +7,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     internal static class IProjectGuidService2Factory
     {
-        public static IProjectGuidService2 ImplementGetProjectGuidAsync(Guid result)
+        public static IProjectGuidService ImplementGetProjectGuidAsync(Guid result)
+        {
+            return ImplementGetProjectGuidAsync(() => result);
+        }
+
+        public static IProjectGuidService ImplementGetProjectGuidAsync(Func<Guid> action)
         {
             var mock = new Mock<IProjectGuidService2>();
             mock.Setup(s => s.GetProjectGuidAsync())
-                .ReturnsAsync(result);
+                .ReturnsAsync(action);
 
-            mock.As<IProjectGuidService>()
-                .Setup(s => s.ProjectGuid)
-                .Returns(result);
-
-            return mock.Object;
+            // All IProjectGuidService2 have to be IProjectGuidService instances
+            return mock.As<IProjectGuidService>().Object;
         }
     }
 }

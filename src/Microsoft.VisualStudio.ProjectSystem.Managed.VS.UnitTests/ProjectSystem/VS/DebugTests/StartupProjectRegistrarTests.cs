@@ -170,7 +170,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
            IAsyncServiceProvider serviceProvider = null,
            IVsStartupProjectsListService vsStartupProjectsListService = null,
            IProjectThreadingService threadingService = null,
-           IProjectGuidService2 projectGuidService = null,
+           IProjectGuidService projectGuidService = null,
            IActiveConfiguredProjectSubscriptionService projectSubscriptionService = null,
            ActiveConfiguredProject<DebuggerLaunchProviders> launchProviders = null)
         {
@@ -185,7 +185,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             IAsyncServiceProvider serviceProvider = null,
             IVsStartupProjectsListService vsStartupProjectsListService = null,
             IProjectThreadingService threadingService = null,
-            IProjectGuidService2 projectGuidService = null,
+            IProjectGuidService projectGuidService = null,
             IActiveConfiguredProjectSubscriptionService projectSubscriptionService = null,
             ActiveConfiguredProject<DebuggerLaunchProviders> launchProviders = null)
         {
@@ -206,7 +206,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             if (projectGuidService != null)
             {
-                instance.ProjectGuidServices.Add((IProjectGuidService)projectGuidService);
+                instance.ProjectGuidServices.Add(projectGuidService);
             }
 
             return instance;
