@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
-    ///     An implementation of <see cref="IProjectGuidSafeAccessor"/> that waits until the project
+    ///     An implementation of <see cref="ISafeProjectGuidService"/> that waits until the project
     ///     has been loaded into the host environment before returning the project GUID.
     /// </summary>
     [Export(typeof(ISafeProjectGuidService))]
