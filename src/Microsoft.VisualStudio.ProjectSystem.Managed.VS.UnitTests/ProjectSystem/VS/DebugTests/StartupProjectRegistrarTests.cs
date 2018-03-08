@@ -151,7 +151,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         private Task<StartupProjectRegistrar> CreateInitializedInstanceAsync(Guid projectGuid, IVsStartupProjectsListService vsStartupProjectsListService, params IDebugLaunchProvider[] launchProviders)
         {
-            var projectGuidService = IProjectGuidService2Factory.ImplementGetProjectGuidAsync(projectGuid);
+            var projectGuidService = ISafeProjectGuidServiceFactory.ImplementGetProjectGuidAsync(projectGuid);
             var debuggerLaunchProviders = new DebuggerLaunchProviders(ConfiguredProjectFactory.Create());
 
             int orderPrecedence = 0;
@@ -166,11 +166,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         private async Task<StartupProjectRegistrar> CreateInitializedInstanceAsync(
-            UnconfiguredProject project = null,
+           UnconfiguredProject project = null,
            IAsyncServiceProvider serviceProvider = null,
            IVsStartupProjectsListService vsStartupProjectsListService = null,
            IProjectThreadingService threadingService = null,
-           IProjectGuidService projectGuidService = null,
+           ISafeProjectGuidService projectGuidService = null,
            IActiveConfiguredProjectSubscriptionService projectSubscriptionService = null,
            ActiveConfiguredProject<DebuggerLaunchProviders> launchProviders = null)
         {
@@ -185,7 +185,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             IAsyncServiceProvider serviceProvider = null,
             IVsStartupProjectsListService vsStartupProjectsListService = null,
             IProjectThreadingService threadingService = null,
-            IProjectGuidService projectGuidService = null,
+            ISafeProjectGuidService projectGuidService = null,
             IActiveConfiguredProjectSubscriptionService projectSubscriptionService = null,
             ActiveConfiguredProject<DebuggerLaunchProviders> launchProviders = null)
         {
@@ -201,13 +201,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 project ?? UnconfiguredProjectFactory.Create(),
                 serviceProvider,
                 threadingService ?? new IProjectThreadingServiceMock(),
+                projectGuidService ?? ISafeProjectGuidServiceFactory.ImplementGetProjectGuidAsync(Guid.NewGuid()),
                 projectSubscriptionService ?? IActiveConfiguredProjectSubscriptionServiceFactory.Create(),
                 launchProviders);
-
-            if (projectGuidService != null)
-            {
-                instance.ProjectGuidServices.Add(projectGuidService);
-            }
 
             return instance;
         }
