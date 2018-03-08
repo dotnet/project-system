@@ -12,7 +12,7 @@ using Microsoft.VisualStudio.Shell.TableManager;
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 {
     [Export(typeof(IBuildTableDataSource))]
-    internal sealed class BuildTableDataSource: ITableDataSource, ITableEntriesSnapshotFactory, IBuildTableDataSource
+    internal sealed class BuildTableDataSource : ITableDataSource, ITableEntriesSnapshotFactory, IBuildTableDataSource
     {
         private const string BuildDataSourceDisplayName = "Build Data Source";
         private const string BuildTableDataSourceIdentifier = nameof(BuildTableDataSourceIdentifier);
@@ -20,6 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
         private readonly object _gate = new object();
         private readonly EvaluationLogger _evaluationLogger;
+        private readonly RoslynLogger _roslynLogger;
 
         private ITableManager _manager;
         private ITableDataSink _tableDataSink;
@@ -31,6 +32,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
         public string Identifier => BuildTableDataSourceIdentifier;
 
         public string DisplayName => BuildDataSourceDisplayName;
+
+        public bool SupportRoslynLogging => _roslynLogger.Supported;
 
         public bool IsLogging { get; private set; }
 
@@ -50,18 +53,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
         public BuildTableDataSource()
         {
             _evaluationLogger = new EvaluationLogger(this);
+            _roslynLogger = new RoslynLogger(this);
         }
 
         public void Start()
         {
             IsLogging = true;
             ProjectCollection.GlobalProjectCollection.RegisterLogger(_evaluationLogger);
+            _roslynLogger.Start();
         }
 
         public void Stop()
         {
             IsLogging = false;
             ProjectCollection.GlobalProjectCollection.UnregisterAllLoggers();
+            _roslynLogger.Stop();
         }
 
         public void Clear()

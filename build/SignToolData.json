@@ -4,11 +4,11 @@
       "certificate": "MicrosoftSHA2",
       "strongName": "MsSharedLib72",
       "values": [
-        "bin/ProjectSystemTools/net46/Microsoft.VisualStudio.ProjectSystem.LogModel.dll",
-        "bin/ProjectSystemTools/net46/*/Microsoft.VisualStudio.ProjectSystem.LogModel.resources.dll",
-        "bin/ProjectSystemTools/net46/Microsoft.VisualStudio.ProjectSystem.Tools.Providers.dll",
-        "bin/ProjectSystemTools/net46/Microsoft.VisualStudio.ProjectSystem.Tools.dll",
-        "bin/ProjectSystemTools/net46/*/Microsoft.VisualStudio.ProjectSystem.Tools.resources.dll",
+        "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.LogModel.dll",
+        "bin/Dlls/*/Microsoft.VisualStudio.ProjectSystem.LogModel.resources.dll",
+        "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Tools.Providers.dll",
+        "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Tools.dll",
+        "bin/Dlls/*/Microsoft.VisualStudio.ProjectSystem.Tools.resources.dll",
       ]
     },
     {

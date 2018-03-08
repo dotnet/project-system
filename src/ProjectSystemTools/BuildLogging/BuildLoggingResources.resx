@@ -132,6 +132,9 @@
   <data name="FilterBuildEvaluations" xml:space="preserve">
     <value>Evaluation</value>
   </data>
+  <data name="FilterBuildRoslyn" xml:space="preserve">
+    <value>Roslyn</value>
+  </data>
   <data name="LogFolderDescription" xml:space="preserve">
     <value>Save logs to:</value>
   </data>

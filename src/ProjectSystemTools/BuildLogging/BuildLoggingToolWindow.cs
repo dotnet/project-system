@@ -34,11 +34,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
         public const string BuildLogging = "BuildLogging";
         public const string BuildLoggingToolWindowGuidString = "391238ea-dad7-488c-94d1-e2b6b5172bf3";
 
-        private readonly string[] _buildFilterComboItems = { BuildLoggingResources.FilterBuildAll, BuildLoggingResources.FilterBuildEvaluations, BuildLoggingResources.FilterBuildDesignTimeBuilds, BuildLoggingResources.FilterBuildBuilds };
-
         private readonly IBuildTableDataSource _dataSource;
 
-        private BuildType _filterType = BuildType.Evaluation | BuildType.DesignTimeBuild | BuildType.Build;
+        private BuildType _filterType = BuildType.All;
 
         protected override string SearchWatermark => BuildLoggingResources.SearchWatermark;
 
@@ -127,23 +125,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                 switch (filter.ExcludedCount)
                 {
                     case 0:
-                        _filterType = BuildType.Build | BuildType.DesignTimeBuild | BuildType.Evaluation;
-                        break;
-                    case 1:
-                        _filterType = BuildType.None;
+                        _filterType = BuildType.All;
                         break;
                     default:
-                        if (!filter.ExcludedContains("Build"))
+                        if (!filter.ExcludedContains(nameof(BuildType.Build)))
                         {
                             _filterType = BuildType.Build;
                         }
-                        else if (!filter.ExcludedContains("DesignTimeBuild"))
+                        else if (!filter.ExcludedContains(nameof(BuildType.DesignTimeBuild)))
                         {
                             _filterType = BuildType.DesignTimeBuild;
                         }
-                        else if (!filter.ExcludedContains("Evaluation"))
+                        else if (!filter.ExcludedContains(nameof(BuildType.Evaluation)))
                         {
                             _filterType = BuildType.Evaluation;
+                        }
+                        else if (!filter.ExcludedContains(nameof(BuildType.Roslyn)))
+                        {
+                            _filterType = BuildType.Roslyn;
                         }
                         break;
                 }
@@ -384,7 +383,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                     {
                         switch (_filterType)
                         {
-                            case BuildType.Evaluation | BuildType.DesignTimeBuild | BuildType.Build:
+                            case BuildType.All:
                                 selectedType = BuildLoggingResources.FilterBuildAll;
                                 break;
                             case BuildType.Evaluation:
@@ -395,6 +394,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                                 break;
                             case BuildType.Build:
                                 selectedType = BuildLoggingResources.FilterBuildBuilds;
+                                break;
+                            case BuildType.Roslyn:
+                                selectedType = Resources.FilterBuildRoslyn;
                                 break;
                         }
 
@@ -408,19 +410,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                         var column = TableControl.ColumnDefinitionManager.GetColumnDefinition(TableColumnNames.BuildType);
                         if (selectedType.Equals(BuildLoggingResources.FilterBuildAll))
                         {
-                            TableControl.SetFilter(TableColumnNames.BuildType, null);
+                            TableControl.SetFilter(TableColumnNames.BuildType, new ColumnHashSetFilter(column));
                         }
                         else if (selectedType.Equals(BuildLoggingResources.FilterBuildEvaluations))
                         {
-                            TableControl.SetFilter(TableColumnNames.BuildType, new ColumnHashSetFilter(column, "Build", "DesignTimeBuild"));
+                            TableControl.SetFilter(TableColumnNames.BuildType, new ColumnHashSetFilter(column, GetExcluded(nameof(BuildType.Evaluation))));
                         }
                         else if (selectedType.Equals(BuildLoggingResources.FilterBuildDesignTimeBuilds))
                         {
-                            TableControl.SetFilter(TableColumnNames.BuildType, new ColumnHashSetFilter(column, "Evaluation", "Build"));
+                            TableControl.SetFilter(TableColumnNames.BuildType, new ColumnHashSetFilter(column, GetExcluded(nameof(BuildType.DesignTimeBuild))));
                         }
                         else if (selectedType.Equals(BuildLoggingResources.FilterBuildBuilds))
                         {
-                            TableControl.SetFilter(TableColumnNames.BuildType, new ColumnHashSetFilter(column, "Evaluation", "DesignTimeBuild"));
+                            TableControl.SetFilter(TableColumnNames.BuildType, new ColumnHashSetFilter(column, GetExcluded(nameof(BuildType.Build))));
+                        }
+                        else if (selectedType.Equals(BuildLoggingResources.FilterBuildRoslyn))
+                        {
+                            TableControl.SetFilter(TableColumnNames.BuildType, new ColumnHashSetFilter(column, GetExcluded(nameof(BuildType.Roslyn))));
                         }
                     }
 
@@ -428,7 +434,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
                 case ProjectSystemToolsPackage.BuildTypeComboGetListCommandId:
                     var outParam = pvaOut;
-                    Marshal.GetNativeVariantForObject(_buildFilterComboItems, outParam);
+                    Marshal.GetNativeVariantForObject(GetBuildFilterComboItems(), outParam);
                     break;
 
                 default:

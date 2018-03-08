@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net46</TargetFramework>
     <AssemblyName>Microsoft.VisualStudio.ProjectSystem.Tools.Providers</AssemblyName>
     <RootNamespace>Microsoft.VisualStudio.ProjectSystem.Tools.Providers</RootNamespace>
     <IsProductComponent>false</IsProductComponent>

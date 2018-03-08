@@ -7,8 +7,9 @@
     <UsingToolVSSDK>true</UsingToolVSSDK>
     
     <!-- Toolset -->
-    <RoslynToolsMicrosoftRepoToolsetVersion>1.0.0-alpha40</RoslynToolsMicrosoftRepoToolsetVersion>
-    <VSWhereVersion>1.0.47</VSWhereVersion>
+    <RoslynToolsRepoToolsetVersion>1.0.0-beta-62615-02</RoslynToolsRepoToolsetVersion>
+    <VSWhereVersion>2.1.4</VSWhereVersion>
+    <MicrosoftNetCompilersVersion>2.6.0-beta3-62310-01</MicrosoftNetCompilersVersion>
 
     <!-- MSBuild -->
     <MicrosoftBuildVersion>15.4.8</MicrosoftBuildVersion>
