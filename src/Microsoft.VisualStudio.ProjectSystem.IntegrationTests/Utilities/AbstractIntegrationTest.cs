@@ -7,12 +7,13 @@ using System.Threading;
 
 using Microsoft.VisualStudio.IntegrationTest.Utilities;
 using Microsoft.VisualStudio.IntegrationTest.Utilities.Input;
-
+using Xunit;
 using ProjectUtils = Microsoft.VisualStudio.IntegrationTest.Utilities.Common.ProjectUtils;
 
 namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
 {
     [CaptureTestName]
+    [Trait("Category", "SkipWhenLiveUnitTesting")]
     public abstract class AbstractIntegrationTest : IDisposable
     {
         private const string XamlRulesDirRelativeToTestAssemblyConfigKey = "ProjectSystem.XamlRulesDirRelativeToTestAssembly";
