@@ -54,14 +54,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _projectGuidService = projectGuidService;
             _projectSubscriptionService = projectSubscriptionService;
             _launchProviders = launchProviders;
-
-            ProjectGuidServices = new OrderPrecedenceImportCollection<IProjectGuidService>(projectCapabilityCheckProvider: project);
-        }
-
-        [ImportMany]
-        public OrderPrecedenceImportCollection<IProjectGuidService> ProjectGuidServices
-        {
-            get;
         }
 
         [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
