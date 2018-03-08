@@ -15,11 +15,6 @@
     </Rule.DataSource>
     <StringProperty Name="ApplicationIcon" DisplayName="Application Icon" />
     <StringListProperty Name="ProjectTypeGuids" Visible="False" />
-    <StringProperty Name="ProjectGuid" Visible="False">
-        <StringProperty.DataSource>
-            <DataSource Persistence="ImplicitProjectFile" Label="Globals" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
-        </StringProperty.DataSource>
-    </StringProperty>
     <StringProperty Name="TargetFrameworkIdentifier" DisplayName="Target Framework Identifier">
         <StringProperty.DataSource>
             <DataSource Persistence="ProjectFile" PersistedName="TargetFrameworkIdentifier" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" />
