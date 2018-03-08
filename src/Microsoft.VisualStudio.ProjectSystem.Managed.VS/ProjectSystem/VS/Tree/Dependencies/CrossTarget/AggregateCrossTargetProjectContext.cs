@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             Requires.NotNullOrEmpty(configuredProjectContextsByTargetFramework, nameof(configuredProjectContextsByTargetFramework));
             Requires.NotNullOrEmpty(configuredProjectsByTargetFramework, nameof(configuredProjectsByTargetFramework));
             Requires.NotNull(activeTargetFramework, nameof(activeTargetFramework));
-            Requires.Argument(configuredProjectContextsByTargetFramework.ContainsKey(activeTargetFramework), 
+            Requires.Argument(configuredProjectContextsByTargetFramework.ContainsKey(activeTargetFramework),
                               nameof(configuredProjectContextsByTargetFramework), "Missing ICrossTargetProjectContext for activeTargetFramework");
 
             IsCrossTargeting = isCrossTargeting;
@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         public ITargetedProjectContext ActiveProjectContext => _configuredProjectContextsByTargetFramework[_activeTargetFramework];
 
         public bool IsCrossTargeting { get; }
-        
+
         public void SetProjectFilePathAndDisplayName(string projectFilePath, string displayName)
         {
             // Update the project file path and display name for all the inner project contexts.
@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             {
                 var targetFramework = innerProjectContextKvp.Key;
                 var innerProjectContext = innerProjectContextKvp.Value;
-                
+
                 // For cross targeting projects, we ensure that the display name is unique per every target framework.
                 innerProjectContext.DisplayName = IsCrossTargeting ? $"{displayName}({targetFramework})" : displayName;
                 innerProjectContext.ProjectFilePath = projectFilePath;
@@ -68,14 +68,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         {
             if (projectConfiguration.IsCrossTargeting())
             {
-                var targetFrameworkMoniker = 
+                var targetFrameworkMoniker =
                     projectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty];
                 var targetFramework = TargetFrameworkProvider.GetTargetFramework(targetFrameworkMoniker);
 
                 isActiveConfiguration = _activeTargetFramework.Equals(targetFramework);
 
-                return _configuredProjectContextsByTargetFramework.TryGetValue(targetFramework, out ITargetedProjectContext projectContext) 
-                    ? projectContext 
+                return _configuredProjectContextsByTargetFramework.TryGetValue(targetFramework, out ITargetedProjectContext projectContext)
+                    ? projectContext
                     : null;
             }
             else
@@ -98,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         /// <summary>
         /// Returns true if this cross-targeting aggregate project context has the same set of target frameworks and active target framework as the given active and known configurations.
         /// </summary>
-        public bool HasMatchingTargetFrameworks(ProjectConfiguration activeProjectConfiguration, 
+        public bool HasMatchingTargetFrameworks(ProjectConfiguration activeProjectConfiguration,
                                                 IEnumerable<ProjectConfiguration> knownProjectConfigurations)
         {
             Assumes.True(IsCrossTargeting);

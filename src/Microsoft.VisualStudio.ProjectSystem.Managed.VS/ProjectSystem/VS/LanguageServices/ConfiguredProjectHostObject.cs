@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         private readonly string _targetFrameworkMoniker;
 
         public ConfiguredProjectHostObject(UnconfiguredProjectHostObject unconfiguredProjectHostObject, string projectDisplayName, string targetFrameworkMoniker)
-            : base (innerHierarchy: unconfiguredProjectHostObject, innerVsProject: unconfiguredProjectHostObject)
+            : base(innerHierarchy: unconfiguredProjectHostObject, innerVsProject: unconfiguredProjectHostObject)
         {
             Requires.NotNull(unconfiguredProjectHostObject, nameof(unconfiguredProjectHostObject));
             Requires.NotNullOrEmpty(projectDisplayName, nameof(projectDisplayName));

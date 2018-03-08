@@ -12,11 +12,6 @@
         <target state="translated">Dosya Özellikleri</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Identity|Description">
-        <source>The item specified in the Include attribute.</source>
-        <target state="translated">Include özniteliğinde belirtilen öğe.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Original|Description">
         <source>If set, specifies that this built output comes from this source file.</source>
         <target state="translated">Ayarlanırsa, bu derleme çıkışının bu kaynak dosyadan geldiğini belirtir.</target>

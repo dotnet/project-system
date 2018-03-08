@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
@@ -12,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
     internal class TargetedDependenciesSnapshot : ITargetedDependenciesSnapshot
     {
-        protected TargetedDependenciesSnapshot(string projectPath, 
+        protected TargetedDependenciesSnapshot(string projectPath,
                                              ITargetFramework targetFramework,
                                              ITargetedDependenciesSnapshot previousSnapshot = null,
                                              IProjectCatalogSnapshot catalogs = null)
@@ -37,11 +38,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         public IProjectCatalogSnapshot Catalogs { get; }
 
-        public ImmutableHashSet<IDependency> TopLevelDependencies { get; private set; } 
+        public ImmutableHashSet<IDependency> TopLevelDependencies { get; private set; }
             = ImmutableHashSet<IDependency>.Empty;
 
         public ImmutableDictionary<string, IDependency> DependenciesWorld { get; private set; }
-            = ImmutableDictionary<string, IDependency>.Empty;
+            = ImmutableStringDictionary<IDependency>.EmptyOrdinalIgnoreCase;
 
         private readonly object _snapshotLock = new object();
 
@@ -51,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         private Dictionary<string, IList<IDependency>> _dependenciesChildrenMap
             = new Dictionary<string, IList<IDependency>>(StringComparer.OrdinalIgnoreCase);
 
-        private Dictionary<string, bool> _unresolvedDescendantsMap 
+        private Dictionary<string, bool> _unresolvedDescendantsMap
             = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
 
         private bool? _hasUresolvedDependency;
@@ -151,16 +152,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         private bool MergeChanges(
-            IDependenciesChanges changes, 
+            IDependenciesChanges changes,
             IEnumerable<IDependenciesSnapshotFilter> snapshotFilters,
             IEnumerable<IProjectDependenciesSubTreeProvider> subTreeProviders,
             HashSet<string> projectItemSpecs)
         {
-            var worldBuilder = ImmutableDictionary.CreateBuilder<string, IDependency>(
-                                    StringComparer.OrdinalIgnoreCase);
-            worldBuilder.AddRange(DependenciesWorld);
-            var topLevelBuilder = ImmutableHashSet.CreateBuilder<IDependency>();
-            topLevelBuilder.AddRange(TopLevelDependencies);
+            var worldBuilder = DependenciesWorld.ToBuilder();
+            var topLevelBuilder = TopLevelDependencies.ToBuilder();
 
             var anyChanges = false;
 
@@ -210,10 +208,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                     foreach (var filter in snapshotFilters)
                     {
                         newDependency = filter.BeforeAdd(
-                            ProjectPath, 
-                            TargetFramework, 
-                            newDependency, 
-                            worldBuilder, 
+                            ProjectPath,
+                            TargetFramework,
+                            newDependency,
+                            worldBuilder,
                             topLevelBuilder,
                             subTreeProvidersMap,
                             projectItemSpecs,
@@ -264,7 +262,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 }
             }
         }
-        
+
         public static TargetedDependenciesSnapshot FromChanges(
             string projectPath,
             ITargetFramework targetFramework,

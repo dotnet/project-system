@@ -5,11 +5,13 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Design;
 using System.Runtime.InteropServices;
 using System.Threading;
+
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands;
 using Microsoft.VisualStudio.Shell;
+
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.Packaging
@@ -19,8 +21,8 @@ namespace Microsoft.VisualStudio.Packaging
     [ProvideAutoLoad(ActivationContextGuid)]
     [ProvideUIContextRule(ActivationContextGuid, "Load Managed Project Package",
         "dotnetcore",
-        new string[] {"dotnetcore"},
-        new string[] {"SolutionHasProjectCapability:(CSharp | VB) & CPS"}
+        new string[] { "dotnetcore" },
+        new string[] { "SolutionHasProjectCapability:(CSharp | VB) & CPS" }
         )]
 
     [ProvideMenuResource("Menus.ctmenu", 3)]
@@ -53,9 +55,10 @@ namespace Microsoft.VisualStudio.Packaging
                                                   ProjectCapability.OpenProjectFile + "; " +
                                                   ProjectCapability.PreserveFormatting + "; " +
                                                   ProjectCapability.ProjectConfigurationsDeclaredDimensions + "; " +
-                                                  ProjectCapability.LanguageService;
+                                                  ProjectCapability.LanguageService + "; " +
+                                                  ProjectCapability.DotNet;
 
-        private  IDotNetCoreProjectCompatibilityDetector _dotNetCoreCompatibilityDetector;
+        private IDotNetCoreProjectCompatibilityDetector _dotNetCoreCompatibilityDetector;
 
         public ManagedProjectSystemPackage()
         {

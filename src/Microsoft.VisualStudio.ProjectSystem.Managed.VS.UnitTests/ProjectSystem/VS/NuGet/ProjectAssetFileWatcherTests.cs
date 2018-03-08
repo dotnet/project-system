@@ -2,8 +2,11 @@
 
 using System;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.Shell.Interop;
+
 using Moq;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
@@ -36,14 +39,14 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
             var spMock = new IAsyncServiceProviderMoq();
             uint adviseCookie = 100;
             var fileChangeService = IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(adviseCookie);
-            spMock.AddService(typeof(IVsFileChangeEx), typeof(SVsFileChangeEx), fileChangeService);
+            spMock.AddService(typeof(SVsFileChangeEx), fileChangeService);
             var tasksService = IUnconfiguredProjectTasksServiceFactory.ImplementLoadedProjectAsync<ConfiguredProject>(t => t());
 
             var watcher = new ProjectAssetFileWatcher(spMock,
                                                      IProjectTreeProviderFactory.Create(),
                                                      IUnconfiguredProjectCommonServicesFactory.Create(threadingService: new IProjectThreadingServiceMock()),
                                                      tasksService,
-                                                     IActiveConfiguredProjectSubscriptionServiceFactory.CreateInstance());
+                                                     IActiveConfiguredProjectSubscriptionServiceFactory.Create());
 
             var tree = ProjectTreeParser.Parse(inputTree);
             var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(ProjectCurrentStateJson);
@@ -91,14 +94,14 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
             var spMock = new IAsyncServiceProviderMoq();
             uint adviseCookie = 100;
             var fileChangeService = IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(adviseCookie);
-            spMock.AddService(typeof(IVsFileChangeEx), typeof(SVsFileChangeEx), fileChangeService);
+            spMock.AddService(typeof(SVsFileChangeEx), fileChangeService);
             var tasksService = IUnconfiguredProjectTasksServiceFactory.ImplementLoadedProjectAsync<ConfiguredProject>(t => t());
 
             var watcher = new ProjectAssetFileWatcher(spMock,
                                                      IProjectTreeProviderFactory.Create(),
                                                      IUnconfiguredProjectCommonServicesFactory.Create(threadingService: new IProjectThreadingServiceMock()),
                                                      tasksService,
-                                                     IActiveConfiguredProjectSubscriptionServiceFactory.CreateInstance());
+                                                     IActiveConfiguredProjectSubscriptionServiceFactory.Create());
             watcher.Load();
             var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(ProjectCurrentStateJson);
 
@@ -120,14 +123,14 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""
         {
             var spMock = new IAsyncServiceProviderMoq();
             var fileChangeService = IVsFileChangeExFactory.CreateWithAdviseUnadviseFileChange(100);
-            spMock.AddService(typeof(IVsFileChangeEx), typeof(SVsFileChangeEx), fileChangeService);
+            spMock.AddService(typeof(SVsFileChangeEx), fileChangeService);
             var tasksService = IUnconfiguredProjectTasksServiceFactory.ImplementLoadedProjectAsync<ConfiguredProject>(t => t());
 
             var watcher = new ProjectAssetFileWatcher(spMock,
                                                      IProjectTreeProviderFactory.Create(),
                                                      IUnconfiguredProjectCommonServicesFactory.Create(threadingService: new IProjectThreadingServiceMock()),
                                                      tasksService,
-                                                     IActiveConfiguredProjectSubscriptionServiceFactory.CreateInstance());
+                                                     IActiveConfiguredProjectSubscriptionServiceFactory.Create());
 
             var tree = ProjectTreeParser.Parse(@"Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\foo.proj""");
             var projectUpdate = IProjectSubscriptionUpdateFactory.FromJson(@"{

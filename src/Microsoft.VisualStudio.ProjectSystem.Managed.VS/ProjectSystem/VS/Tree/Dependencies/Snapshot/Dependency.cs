@@ -3,9 +3,11 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
@@ -13,6 +15,7 @@ using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
+    [DebuggerDisplay("{" + nameof(Id) +",nq}")]
     internal class Dependency : IDependency
     {
         private static ConcurrentBag<StringBuilder> s_builderPool = new ConcurrentBag<StringBuilder>();
@@ -77,9 +80,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             UnresolvedIcon = dependencyModel.UnresolvedIcon;
             UnresolvedExpandedIcon = dependencyModel.UnresolvedExpandedIcon;
             Properties = dependencyModel.Properties ??
-                            ImmutableDictionary<string, string>.Empty
-                                                               .Add(Folder.IdentityProperty, Caption)
-                                                               .Add(Folder.FullPathProperty, Path);
+                            ImmutableStringDictionary<string>.EmptyOrdinal
+                                                             .Add(Folder.IdentityProperty, Caption)
+                                                             .Add(Folder.FullPathProperty, Path);
             if (dependencyModel.DependencyIDs == null)
             {
                 DependencyIDs = ImmutableList<string>.Empty;

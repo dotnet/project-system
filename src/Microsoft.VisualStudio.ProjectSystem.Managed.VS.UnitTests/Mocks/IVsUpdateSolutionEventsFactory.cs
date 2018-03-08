@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Moq;
 using System;
+
+using Moq;
 
 namespace Microsoft.VisualStudio.Shell.Interop
 {
@@ -23,7 +24,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
             solutionEventsListener.Setup(b => b.UpdateSolution_Done(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()))
                     .Callback(() => onUpdateSolutionDone?.Invoke())
                     .Returns(VSConstants.S_OK);
-            
+
             return solutionEventsListener.Object;
         }
     }

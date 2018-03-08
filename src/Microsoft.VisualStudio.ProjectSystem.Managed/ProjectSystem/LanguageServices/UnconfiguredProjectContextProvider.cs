@@ -6,8 +6,9 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
+
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
@@ -52,8 +53,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             _taskScheduler = taskScheduler;
             _projectHostProvider = projectHostProvider;
             _activeConfiguredProjectsProvider = activeConfiguredProjectsProvider;
-
             _unconfiguredProjectHostObject = _projectHostProvider.UnconfiguredProjectHostObject;
+
+            ProjectGuidServices = new OrderPrecedenceImportCollection<IProjectGuidService>(projectCapabilityCheckProvider: commonServices.Project);
+        }
+
+        [ImportMany]
+        public OrderPrecedenceImportCollection<IProjectGuidService> ProjectGuidServices
+        {
+            get;
         }
 
         public async Task<AggregateWorkspaceProjectContext> CreateProjectContextAsync()
@@ -156,6 +164,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             return Task.CompletedTask;
         }
 
+        private Task<Guid> GetProjectGuidAsync()
+        {
+            if (ProjectGuidServices.FirstOrDefault()?.Value is IProjectGuidService2 projectGuidService)
+                return projectGuidService.GetProjectGuidAsync();
+
+            return Task.FromResult(Guid.Empty);
+        }
+
         // Returns the name that is the handshake between Roslyn and the csproj/vbproj
         private async Task<string> GetLanguageServiceName()
         {
@@ -164,15 +180,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
             return (string)await properties.LanguageServiceName.GetValueAsync()
                                                                .ConfigureAwait(false);
-        }
-
-        private async Task<Guid> GetProjectGuidAsync()
-        {
-            ConfigurationGeneral properties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync()
-                                                                                                     .ConfigureAwait(false);
-            Guid.TryParse((string)await properties.ProjectGuid.GetValueAsync().ConfigureAwait(false), out Guid guid);
-
-            return guid;
         }
 
         private async Task<string> GetTargetPathAsync()
@@ -228,6 +235,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                 return null;
 
             Guid projectGuid = await GetProjectGuidAsync().ConfigureAwait(false);
+
             string targetPath = await GetTargetPathAsync().ConfigureAwait(false);
             if (string.IsNullOrEmpty(targetPath))
                 return null;

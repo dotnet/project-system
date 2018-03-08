@@ -3,6 +3,7 @@
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectProperties

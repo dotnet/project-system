@@ -1,10 +1,12 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.VisualStudio.Input;
-using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
+
+using Microsoft.VisualStudio.Input;
+using Microsoft.VisualStudio.Shell.Interop;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
@@ -169,10 +171,6 @@ Root (flags: {ProjectRoot})
                 return 0;
             }, g, folder, string.Empty, 0);
 
-            var projectProperties = ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(), new[] {
-                    new PropertyPageData { Category = ConfigurationGeneral.SchemaName, PropertyName = ConfigurationGeneral.ProjectGuidProperty, Value = g.ToString() }
-                });
-
             var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(folder), dlg: dlg);
 
             var tree = ProjectTreeParser.Parse(@"
@@ -193,10 +191,6 @@ Root (flags: {ProjectRoot})
         [Fact]
         public async Task TryHandleCommand_FolderAsNodes_ReturnsTrueWhenUserClicksCancel()
         {
-            var projectProperties = ProjectPropertiesFactory.Create(UnconfiguredProjectFactory.Create(), new[] {
-                    new PropertyPageData { Category = ConfigurationGeneral.SchemaName, PropertyName = ConfigurationGeneral.ProjectGuidProperty, Value = Guid.NewGuid().ToString() }
-                });
-
             var command = CreateInstance(provider: IProjectTreeProviderFactory.Create(""), dlg:
                 IVsAddProjectItemDlgFactory.Create(VSConstants.OLE_E_PROMPTSAVECANCELLED));
 

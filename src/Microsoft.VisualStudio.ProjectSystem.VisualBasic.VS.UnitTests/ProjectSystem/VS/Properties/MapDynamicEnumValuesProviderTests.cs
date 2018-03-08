@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Xunit;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+
 using VSLangProj;
+
+using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {

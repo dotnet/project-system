@@ -12,11 +12,6 @@
         <target state="translated">파일 속성</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Identity|Description">
-        <source>The item specified in the Include attribute.</source>
-        <target state="translated">Include 특성에 지정된 항목입니다.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Original|Description">
         <source>If set, specifies that this built output comes from this source file.</source>
         <target state="translated">설정하면 이 빌드된 출력이 이 소스 파일에서 나오도록 지정합니다.</target>

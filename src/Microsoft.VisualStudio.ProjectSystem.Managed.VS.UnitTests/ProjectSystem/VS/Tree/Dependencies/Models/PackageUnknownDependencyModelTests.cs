@@ -1,9 +1,11 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
+
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
@@ -14,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void Resolved()
         {
-            var properties = ImmutableDictionary<string, string>.Empty.Add("myProp", "myVal");
+            var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
             var dependencyIDs = new[] { "id1", "id2" };
 
             var flag = ProjectTreeFlags.Create("MyCustomFlag");
@@ -24,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 originalItemSpec: "myOriginalItemSpec",
                 name: "myPath",
                 flags: flag,
-                resolved:true,
+                resolved: true,
                 properties: properties,
                 dependenciesIDs: dependencyIDs);
 

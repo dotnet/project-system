@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         internal static readonly ProjectTreeFlags ProjectSubTreeRootNodeFlags = ProjectTreeFlags.Create("ProjectSubTreeRootNode");
         internal static readonly ProjectTreeFlags ProjectNodeFlags = ProjectTreeFlags.Create("ProjectDependency");
-        internal static readonly ProjectTreeFlags SharedProjectFlags 
+        internal static readonly ProjectTreeFlags SharedProjectFlags
             = ProjectTreeFlags.Create("SharedProjectDependency")
                               .Add(ProjectTreeFlags.Common.SharedProjectImportReference);
 

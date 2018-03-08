@@ -4,13 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 {
-    internal class DependenciesSnapshot: IDependenciesSnapshot 
+    internal class DependenciesSnapshot : IDependenciesSnapshot
     {
         private DependenciesSnapshot(string projectPath,
                                      ITargetFramework activeTarget = null,
@@ -105,13 +106,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             var anyChanges = false;
             var builder = _targets.ToBuilder();
-            foreach(var change in changes)
+            foreach (var change in changes)
             {
                 builder.TryGetValue(change.Key, out ITargetedDependenciesSnapshot previousSnapshot);
                 var newTargetedSnapshot = TargetedDependenciesSnapshot.FromChanges(
                                             ProjectPath,
-                                            change.Key, 
-                                            previousSnapshot, 
+                                            change.Key,
+                                            previousSnapshot,
                                             change.Value,
                                             catalogs,
                                             snapshotFilters,
@@ -127,7 +128,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
 
             // now get rid of empty target frameworks (if there no any dependencies for them)
-            foreach(var targetKvp in builder.ToList())
+            foreach (var targetKvp in builder.ToList())
             {
                 if (targetKvp.Value.DependenciesWorld.Count <= 0)
                 {

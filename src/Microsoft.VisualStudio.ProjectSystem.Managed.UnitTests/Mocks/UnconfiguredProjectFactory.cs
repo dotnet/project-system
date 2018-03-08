@@ -1,16 +1,22 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using Moq;
-using System;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class UnconfiguredProjectFactory
     {
+        public static UnconfiguredProject ImplementFullPath(string fullPath)
+        {
+            return Create(filePath: fullPath);
+        }
+
         public static UnconfiguredProject Create(object hostObject = null, IEnumerable<string> capabilities = null, string filePath = null,
             IProjectConfigurationsService projectConfigurationsService = null, ConfiguredProject configuredProject = null, Encoding projectEncoding = null,
             IProjectCapabilitiesScope scope = null)

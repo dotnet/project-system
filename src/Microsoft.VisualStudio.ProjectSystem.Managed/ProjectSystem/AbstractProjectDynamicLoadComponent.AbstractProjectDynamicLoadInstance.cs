@@ -2,6 +2,7 @@
 
 using System.Threading;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -15,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// </summary>
         protected abstract class AbstractProjectDynamicLoadInstance : OnceInitializedOnceDisposedAsync
         {
-            protected AbstractProjectDynamicLoadInstance(JoinableTaskContextNode joinableTaskContextNode) 
+            protected AbstractProjectDynamicLoadInstance(JoinableTaskContextNode joinableTaskContextNode)
                 : base(joinableTaskContextNode)
             {
             }

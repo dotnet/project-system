@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
@@ -19,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             bool resolved,
             IImmutableDictionary<string, string> properties,
             IEnumerable<string> dependenciesIDs)
-            : base(providerType, path, originalItemSpec, flags, resolved, isImplicit:false, properties: properties)
+            : base(providerType, path, originalItemSpec, flags, resolved, isImplicit: false, properties: properties)
         {
             Requires.NotNullOrEmpty(name, nameof(name));
 
@@ -33,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
             if (dependenciesIDs != null && dependenciesIDs.Any())
             {
-                DependencyIDs = ImmutableList<string>.Empty.AddRange(dependenciesIDs);
+                DependencyIDs = ImmutableList.CreateRange(dependenciesIDs);
             }
 
             if (resolved)

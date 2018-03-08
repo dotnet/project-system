@@ -79,7 +79,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeployTestDependencies", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeployIntegrationDependencies", "src\DeployIntegrationDependencies\DeployIntegrationDependencies.csproj", "{C16993CC-6063-4447-AE16-BE671AFDE08A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.NetCore.FSharp.ProjectTemplates.Web", "src\Templates\Microsoft.NetCore.FSharp.ProjectTemplates.Web\Microsoft.NetCore.FSharp.ProjectTemplates.Web.csproj", "{3EFADEFD-2BC8-4F25-947A-71CBF3FF294D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.NetCore.FSharp.ProjectTemplates.Web", "src\Templates\Microsoft.NetCore.FSharp.ProjectTemplates.Web\Microsoft.NetCore.FSharp.ProjectTemplates.Web.csproj", "{3EFADEFD-2BC8-4F25-947A-71CBF3FF294D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

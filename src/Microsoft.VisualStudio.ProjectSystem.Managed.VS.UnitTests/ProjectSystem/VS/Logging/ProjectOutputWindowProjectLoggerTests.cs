@@ -1,8 +1,10 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 using Microsoft.VisualStudio.Shell.Interop;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
@@ -184,7 +186,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
             var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe((text) => { result = text; });
             var logger = CreateEnabledLogger(pane);
 
-            Assert.Throws<ArgumentNullException>("format", () => {
+            Assert.Throws<ArgumentNullException>("format", () =>
+            {
 
                 logger.WriteLine((string)null, new object());
             });
@@ -197,7 +200,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
             var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe((text) => { result = text; });
             var logger = CreateEnabledLogger(pane);
 
-            Assert.Throws<ArgumentNullException>("format", () => {
+            Assert.Throws<ArgumentNullException>("format", () =>
+            {
 
                 logger.WriteLine((string)null, new object(), new object());
             });
@@ -210,7 +214,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
             var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe((text) => { result = text; });
             var logger = CreateEnabledLogger(pane);
 
-            Assert.Throws<ArgumentNullException>("format", () => {
+            Assert.Throws<ArgumentNullException>("format", () =>
+            {
 
                 logger.WriteLine((string)null, new object(), new object(), new object());
             });
@@ -223,7 +228,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
             var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe((text) => { result = text; });
             var logger = CreateEnabledLogger(pane);
 
-            Assert.Throws<ArgumentNullException>("format", () => {
+            Assert.Throws<ArgumentNullException>("format", () =>
+            {
 
                 logger.WriteLine((string)null, new object(), new object(), new object(), new object());
             });
@@ -236,7 +242,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
             var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe((text) => { result = text; });
             var logger = CreateEnabledLogger(pane);
 
-            Assert.Throws<FormatException>(() => { 
+            Assert.Throws<FormatException>(() =>
+            {
 
                 logger.WriteLine("{0}{1}", new object());
             });
@@ -249,7 +256,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
             var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe((text) => { result = text; });
             var logger = CreateEnabledLogger(pane);
 
-            Assert.Throws<FormatException>(() => {
+            Assert.Throws<FormatException>(() =>
+            {
 
                 logger.WriteLine("{0}{1}{2}", new object(), new object());
             });
@@ -262,7 +270,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
             var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe((text) => { result = text; });
             var logger = CreateEnabledLogger(pane);
 
-            Assert.Throws<FormatException>(() => {
+            Assert.Throws<FormatException>(() =>
+            {
 
                 logger.WriteLine("{0}{1}{2}{4}", new object(), new object(), new object());
             });
@@ -275,7 +284,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
             var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe((text) => { result = text; });
             var logger = CreateEnabledLogger(pane);
 
-            Assert.Throws<FormatException>(() => {
+            Assert.Throws<FormatException>(() =>
+            {
 
                 logger.WriteLine("{0}{1}{2}{4}{5}", new object(), new object(), new object(), new object());
             });

@@ -4,8 +4,8 @@ using System;
 using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 {

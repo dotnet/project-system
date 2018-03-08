@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.Collections.Generic;
 using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
@@ -351,7 +353,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
 Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
     File (flags: {}), FilePath: ""C:\Foo\test1.fs"", DisplayOrder: 1, ItemName: ""test1.fs""
     File (flags: {}), FilePath: ""C:\Foo\test2.fs"", DisplayOrder: 2, ItemName: ""test2.fs""
-    File (flags: {}), FilePath: ""C:\Foo\test3.fs"", DisplayOrder: 2, ItemName: ""test3.fs""
+    File (flags: {}), FilePath: ""C:\Foo\test3.fs"", DisplayOrder: 3, ItemName: ""test3.fs""
 ");
 
             var projectRootElement = @"
@@ -397,7 +399,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
 Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
     File (flags: {}), FilePath: ""C:\Foo\test1.fs"", DisplayOrder: 1, ItemName: ""test1.fs""
     File (flags: {}), FilePath: ""C:\Foo\test2.fs"", DisplayOrder: 2, ItemName: ""test2.fs""
-    File (flags: {}), FilePath: ""C:\Foo\test3.fs"", DisplayOrder: 2, ItemName: ""test3.fs""
+    File (flags: {}), FilePath: ""C:\Foo\test3.fs"", DisplayOrder: 3, ItemName: ""test3.fs""
 ");
 
             var projectRootElement = @"
@@ -430,6 +432,195 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
     <Compile Include=""test2.fs"" />
     <Compile Include=""test3.fs"" />
     <Compile Include=""test1.fs"" />
+  </ItemGroup>
+</Project>";
+
+            AssertEqualProject(expected, project);
+        }
+
+        [Fact]
+        public void AddItem_IsSuccessful()
+        {
+            var tree = ProjectTreeParser.Parse(@"
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
+    File (flags: {}), FilePath: ""C:\Foo\test1.fs"", DisplayOrder: 1, ItemName: ""test1.fs""
+    File (flags: {}), FilePath: ""C:\Foo\test2.fs"", DisplayOrder: 2, ItemName: ""test2.fs""
+    File (flags: {}), FilePath: ""C:\Foo\test3.fs"", DisplayOrder: 3, ItemName: ""test3.fs""
+");
+
+            var updatedTree = ProjectTreeParser.Parse(@"
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
+    File (flags: {}), FilePath: ""C:\Foo\test1.fs"", DisplayOrder: 1, ItemName: ""test1.fs""
+    File (flags: {}), FilePath: ""C:\Foo\test2.fs"", DisplayOrder: 2, ItemName: ""test2.fs""
+    File (flags: {}), FilePath: ""C:\Foo\test4.fs"", DisplayOrder: 3, ItemName: ""test4.fs""
+    File (flags: {}), FilePath: ""C:\Foo\test3.fs"", DisplayOrder: 4, ItemName: ""test3.fs""
+");
+
+            var addedNodes = new List<IProjectTree>();
+            addedNodes.Add(updatedTree.Children[2]);
+
+            var projectRootElement = @"
+<Project>
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include=""test1.fs"" />
+    <Compile Include=""test2.fs"" />
+    <Compile Include=""test4.fs"" />
+    <Compile Include=""test3.fs"" />
+  </ItemGroup>
+
+</Project>
+".AsProjectRootElement();
+
+            var project = new Project(projectRootElement);
+
+            Assert.True(OrderingHelper.TryMoveNodesToTop(project, addedNodes, tree), "TryMoveNodesToTop returned false.");
+            Assert.True(project.IsDirty);
+
+            var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<Project>
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include=""test4.fs"" />
+    <Compile Include=""test1.fs"" />
+    <Compile Include=""test2.fs"" />
+    <Compile Include=""test3.fs"" />
+  </ItemGroup>
+</Project>";
+
+            AssertEqualProject(expected, project);
+        }
+
+        [Fact]
+        public void AddItems_IsSuccessful()
+        {
+            var tree = ProjectTreeParser.Parse(@"
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
+    File (flags: {}), FilePath: ""C:\Foo\test1.fs"", DisplayOrder: 1, ItemName: ""test1.fs""
+    File (flags: {}), FilePath: ""C:\Foo\test2.fs"", DisplayOrder: 2, ItemName: ""test2.fs""
+    File (flags: {}), FilePath: ""C:\Foo\test3.fs"", DisplayOrder: 3, ItemName: ""test3.fs""
+");
+
+            var updatedTree = ProjectTreeParser.Parse(@"
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
+    File (flags: {}), FilePath: ""C:\Foo\test1.fs"", DisplayOrder: 1, ItemName: ""test1.fs""
+    File (flags: {}), FilePath: ""C:\Foo\test2.fs"", DisplayOrder: 2, ItemName: ""test2.fs""
+    File (flags: {}), FilePath: ""C:\Foo\test4.fs"", DisplayOrder: 3, ItemName: ""test4.fs""
+    File (flags: {}), FilePath: ""C:\Foo\test5.fs"", DisplayOrder: 4, ItemName: ""test5.fs""
+    File (flags: {}), FilePath: ""C:\Foo\test3.fs"", DisplayOrder: 5, ItemName: ""test3.fs""
+");
+
+            var addedNodes = new List<IProjectTree>();
+            addedNodes.Add(updatedTree.Children[2]);
+            addedNodes.Add(updatedTree.Children[3]);
+
+            var projectRootElement = @"
+<Project>
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include=""test1.fs"" />
+    <Compile Include=""test2.fs"" />
+    <Compile Include=""test4.fs"" />
+    <Compile Include=""test5.fs"" />
+    <Compile Include=""test3.fs"" />
+  </ItemGroup>
+
+</Project>
+".AsProjectRootElement();
+
+            var project = new Project(projectRootElement);
+
+            Assert.True(OrderingHelper.TryMoveNodesToTop(project, addedNodes, tree), "TryMoveNodesToTop returned false.");
+            Assert.True(project.IsDirty);
+
+            var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<Project>
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include=""test4.fs"" />
+    <Compile Include=""test5.fs"" />
+    <Compile Include=""test1.fs"" />
+    <Compile Include=""test2.fs"" />
+    <Compile Include=""test3.fs"" />
+  </ItemGroup>
+</Project>";
+
+            AssertEqualProject(expected, project);
+        }
+
+        [Fact]
+        public void AddItemsInNestedFolder_IsSuccessful()
+        {
+            var tree = ProjectTreeParser.Parse(@"
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
+    Folder (flags: {Folder}), FilePath: ""C:\Foo\test""
+        Folder (flags: {Folder}), FilePath: ""C:\Foo\test\nested""
+    File (flags: {}), FilePath: ""C:\Foo\test1.fs"", DisplayOrder: 1, ItemName: ""test1.fs""
+    File (flags: {}), FilePath: ""C:\Foo\test2.fs"", DisplayOrder: 2, ItemName: ""test2.fs""
+    File (flags: {}), FilePath: ""C:\Foo\test3.fs"", DisplayOrder: 3, ItemName: ""test3.fs""
+");
+
+            var updatedTree = ProjectTreeParser.Parse(@"
+Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
+    File (flags: {}), FilePath: ""C:\Foo\test1.fs"", DisplayOrder: 1, ItemName: ""test1.fs""
+    File (flags: {}), FilePath: ""C:\Foo\test2.fs"", DisplayOrder: 2, ItemName: ""test2.fs""
+    Folder (flags: {Folder}), FilePath: ""C:\Foo\test"", DisplayOrder: 3
+        Folder (flags: {Folder}), FilePath: ""C:\Foo\test\nested"", DisplayOrder: 4
+            File (flags: {}), FilePath: ""C:\Foo\test\nested\test4.fs"", DisplayOrder: 5, ItemName: ""test\nested\test4.fs""
+            File (flags: {}), FilePath: ""C:\Foo\test\tested\test5.fs"", DisplayOrder: 6, ItemName: ""test\nested\test5.fs""
+    File (flags: {}), FilePath: ""C:\Foo\test3.fs"", DisplayOrder: 7, ItemName: ""test3.fs""
+");
+
+            var addedNodes = new List<IProjectTree>();
+            addedNodes.Add(updatedTree.Children[2].Children[0].Children[0]);
+            addedNodes.Add(updatedTree.Children[2].Children[0].Children[1]);
+
+            var projectRootElement = @"
+<Project>
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include=""test1.fs"" />
+    <Compile Include=""test2.fs"" />
+    <Compile Include=""test\nested\test4.fs"" />
+    <Compile Include=""test\nested\test5.fs"" />
+    <Compile Include=""test3.fs"" />
+  </ItemGroup>
+
+</Project>
+".AsProjectRootElement();
+
+            var project = new Project(projectRootElement);
+
+            Assert.True(OrderingHelper.TryMoveNodesToTop(project, addedNodes, tree.Children[0].Children[0]), "TryMoveNodesToTop returned false.");
+            Assert.True(project.IsDirty);
+
+            var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<Project>
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include=""test\nested\test4.fs"" />
+    <Compile Include=""test\nested\test5.fs"" />
+    <Compile Include=""test1.fs"" />
+    <Compile Include=""test2.fs"" />
+    <Compile Include=""test3.fs"" />
   </ItemGroup>
 </Project>";
 

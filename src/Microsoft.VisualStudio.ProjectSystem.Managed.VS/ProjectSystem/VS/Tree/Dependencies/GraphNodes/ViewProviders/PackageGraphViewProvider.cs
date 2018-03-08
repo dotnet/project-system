@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+
 using Microsoft.VisualStudio.GraphModel;
 using Microsoft.VisualStudio.GraphModel.Schemas;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
@@ -27,9 +28,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         }
 
         public override void BuildGraph(
-            IGraphContext graphContext, 
-            string projectPath, 
-            IDependency dependency, 
+            IGraphContext graphContext,
+            string projectPath,
+            IDependency dependency,
             GraphNode dependencyGraphNode,
             ITargetedDependenciesSnapshot targetedSnapshot)
         {
@@ -68,9 +69,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                 foreach (var fxAssembly in fxAssembliesChildren)
                 {
                     Builder.AddGraphNode(
-                        graphContext, 
-                        projectPath, 
-                        dependencyGraphNode, 
+                        graphContext,
+                        projectPath,
+                        dependencyGraphNode,
                         fxAssembly.ToViewModel(targetedSnapshot));
                 }
             }
@@ -79,9 +80,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                 foreach (var childDependency in regularChildren)
                 {
                     Builder.AddGraphNode(
-                        graphContext, 
-                        projectPath, 
-                        dependencyGraphNode, 
+                        graphContext,
+                        projectPath,
+                        dependencyGraphNode,
                         childDependency.ToViewModel(targetedSnapshot));
                 }
 

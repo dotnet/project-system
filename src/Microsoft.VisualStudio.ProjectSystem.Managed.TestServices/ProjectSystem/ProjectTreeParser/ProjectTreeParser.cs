@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+
 using static Microsoft.VisualStudio.ProjectSystem.Tokenizer;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -348,7 +349,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 tree.Icon = moniker;
             }
-            
+
             tokenizer.Skip(TokenType.RightBrace);
         }
 

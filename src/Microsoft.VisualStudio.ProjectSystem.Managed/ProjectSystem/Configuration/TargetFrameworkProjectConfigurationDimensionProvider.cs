@@ -3,6 +3,7 @@
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.Build;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Configuration
@@ -20,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     [Export(typeof(IActiveConfiguredProjectsDimensionProvider))]
     [AppliesTo(ProjectCapabilities.ProjectConfigurationsDeclaredDimensions)]
     [Order(DimensionProviderOrder.TargetFramework)]
-    [ConfigurationDimensionDescription(ConfigurationGeneral.TargetFrameworkProperty, isVariantDimension:true)]
+    [ConfigurationDimensionDescription(ConfigurationGeneral.TargetFrameworkProperty, isVariantDimension: true)]
     internal class TargetFrameworkProjectConfigurationDimensionProvider : BaseProjectConfigurationDimensionProvider, IActiveConfiguredProjectsDimensionProvider
     {
         [ImportingConstructor]

@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -14,7 +16,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var imageProvider = IProjectImageProviderFactory.Create();
 
-            Assert.Throws<ArgumentNullException>("capabilities", () => {
+            Assert.Throws<ArgumentNullException>("capabilities", () =>
+            {
                 new ProjectRootImageProjectTreePropertiesProvider((IProjectCapabilitiesService)null, imageProvider);
             });
         }
@@ -24,7 +27,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var capabilities = IProjectCapabilitiesServiceFactory.Create();
 
-            Assert.Throws<ArgumentNullException>("imageProvider", () => {
+            Assert.Throws<ArgumentNullException>("imageProvider", () =>
+            {
                 new ProjectRootImageProjectTreePropertiesProvider(capabilities, (IProjectImageProvider)null);
             });
         }
@@ -35,7 +39,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var propertyValues = IProjectTreeCustomizablePropertyValuesFactory.Create();
             var propertiesProvider = CreateInstance();
 
-            Assert.Throws<ArgumentNullException>("propertyContext", () => {
+            Assert.Throws<ArgumentNullException>("propertyContext", () =>
+            {
                 propertiesProvider.CalculatePropertyValues((IProjectTreeCustomizablePropertyContext)null, propertyValues);
             });
         }
@@ -46,7 +51,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var propertyContext = IProjectTreeCustomizablePropertyContextFactory.Create();
             var propertiesProvider = CreateInstance();
 
-            Assert.Throws<ArgumentNullException>("propertyValues", () => {
+            Assert.Throws<ArgumentNullException>("propertyValues", () =>
+            {
                 propertiesProvider.CalculatePropertyValues(propertyContext, (IProjectTreeCustomizablePropertyValues)null);
             });
         }
@@ -106,7 +112,8 @@ Root (flags: {ProjectRoot}), Icon: {A140CD9F-FF94-483C-87B1-9EF5BE9F469A 1}, Exp
 ")]
         public void CalculatePropertyValues_WhenSharedProjectRootAsTree_SetsIconToSharedProjectRoot(string input, string expected)
         {
-            var capabilities = IProjectCapabilitiesServiceFactory.ImplementsContains(capability => {
+            var capabilities = IProjectCapabilitiesServiceFactory.ImplementsContains(capability =>
+            {
                 return capability == ProjectCapabilities.SharedAssetsProject;
             });
 
@@ -138,7 +145,8 @@ Root (flags: {ProjectRoot})
 ")]
         public void CalculatePropertyValues_WhenSharedItemsImportFileAsTree_SetsIconToSharedItemsImportFile(string input, string expected)
         {
-            var capabilities = IProjectCapabilitiesServiceFactory.ImplementsContains(capability => {
+            var capabilities = IProjectCapabilitiesServiceFactory.ImplementsContains(capability =>
+            {
                 return capability == ProjectCapabilities.SharedAssetsProject;
             });
 

@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -10,7 +11,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
 {
-    internal abstract class DependenciesRuleHandlerBase : 
+    internal abstract class DependenciesRuleHandlerBase :
         ICrossTargetRuleHandler<DependenciesRuleChangeContext>,
         IProjectDependenciesSubTreeProviderInternal
     {
@@ -18,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         public ImmutableHashSet<string> GetRuleNames(RuleHandlerType handlerType)
         {
-            ImmutableHashSet<string> resultRules = ImmutableHashSet<string>.Empty;
+            ImmutableHashSet<string> resultRules = ImmutableStringHashSet.EmptyOrdinal;
             if (handlerType == RuleHandlerType.Evaluation)
             {
                 resultRules = resultRules.Add(UnresolvedRuleName);
@@ -143,7 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
 
             var isImplicit = false;
-            if (properties != null 
+            if (properties != null
                 && properties.TryGetValue(ProjectItemMetadata.IsImplicitlyDefined, out string isImplicitlyDefinedString)
                 && bool.TryParse(isImplicitlyDefinedString, out bool isImplicitlyDefined))
             {
@@ -217,8 +218,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             Requires.NotNullOrEmpty(itemSpec, nameof(itemSpec));
 
             projectRuleSnapshot.Items.TryGetValue(itemSpec, out IImmutableDictionary<string, string> properties);
-            
-            return properties;            
+
+            return properties;
         }
     }
 }

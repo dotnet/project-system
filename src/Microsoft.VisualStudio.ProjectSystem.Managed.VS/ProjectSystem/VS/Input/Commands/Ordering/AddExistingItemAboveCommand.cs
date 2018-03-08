@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+
 using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.Shell;
@@ -29,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             return ShowAddExistingFilesDialogAsync(nodeToAddTo);
         }
 
-        protected override async Task OnAddedNodesAsync(ConfiguredProject configuredProject, IEnumerable<IProjectTree> addedNodes, IProjectTree target)
+        protected override async Task OnAddedNodesAsync(ConfiguredProject configuredProject, IProjectTree target, IEnumerable<IProjectTree> addedNodes, IProjectTree updatedTarget)
         {
             foreach (var addedNode in addedNodes)
             {

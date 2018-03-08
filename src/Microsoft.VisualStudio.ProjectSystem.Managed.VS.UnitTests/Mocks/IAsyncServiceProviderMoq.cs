@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.Shell;
 
 using Task = System.Threading.Tasks.Task;
@@ -13,23 +14,19 @@ namespace Microsoft.VisualStudio.ProjectSystem
     public class IAsyncServiceProviderMoq : IAsyncServiceProvider
     {
         // Usage. Create a new IAsyncServiceProviderMoq and add your service moqs to it.
-        private Dictionary<Type, object> Services = new Dictionary<Type, object>();
+        private Dictionary<Guid, object> _services = new Dictionary<Guid, object>();
 
         // Returns null if it can't get it
         public Task<object> GetServiceAsync(Type serviceType)
         {
-            Services.TryGetValue(serviceType, out object retVal);
+            _services.TryGetValue(serviceType.GUID, out object retVal);
 
             return Task.FromResult(retVal);
         }
 
-        public void AddService(Type interfaceType, Type serviceType, object serviceMock)
+        public void AddService<T>(Type serviceType, T serviceMock)
         {
-            Services.Add(serviceType, serviceMock);
-            if (serviceType != interfaceType)
-            {
-                Services.Add(interfaceType, serviceMock);
-            }
+            _services.Add(serviceType.GUID, serviceMock);
         }
     }
 }

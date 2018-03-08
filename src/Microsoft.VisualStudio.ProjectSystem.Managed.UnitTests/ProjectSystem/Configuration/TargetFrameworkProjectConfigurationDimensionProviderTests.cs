@@ -2,8 +2,10 @@
 
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.Build.Construction;
 using Microsoft.VisualStudio.Build;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Configuration
@@ -109,22 +111,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         {
             // No changes should happen for TFM so verify that the property is the same before and after
             var project = ProjectRootElementFactory.Create(ProjectXmlTFMs);
-                var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
-                var provider = new TargetFrameworkProjectConfigurationDimensionProvider(projectXmlAccessor);
-                var unconfiguredProject = UnconfiguredProjectFactory.Create();
-                var property = BuildUtilities.GetProperty(project, ConfigurationGeneral.TargetFrameworksProperty);
-                string expectedTFMs = property.Value;
+            var projectXmlAccessor = IProjectXmlAccessorFactory.Create(project);
+            var provider = new TargetFrameworkProjectConfigurationDimensionProvider(projectXmlAccessor);
+            var unconfiguredProject = UnconfiguredProjectFactory.Create();
+            var property = BuildUtilities.GetProperty(project, ConfigurationGeneral.TargetFrameworksProperty);
+            string expectedTFMs = property.Value;
 
-                var args = new ProjectConfigurationDimensionValueChangedEventArgs(
-                    unconfiguredProject,
-                    change,
-                    stage,
-                    ConfigurationGeneral.TargetFrameworkProperty,
-                    "NewTFM");
-                await provider.OnDimensionValueChangedAsync(args);
+            var args = new ProjectConfigurationDimensionValueChangedEventArgs(
+                unconfiguredProject,
+                change,
+                stage,
+                ConfigurationGeneral.TargetFrameworkProperty,
+                "NewTFM");
+            await provider.OnDimensionValueChangedAsync(args);
 
-                Assert.NotNull(property);
-                Assert.Equal(expectedTFMs, property.Value);
+            Assert.NotNull(property);
+            Assert.Equal(expectedTFMs, property.Value);
         }
     }
 }

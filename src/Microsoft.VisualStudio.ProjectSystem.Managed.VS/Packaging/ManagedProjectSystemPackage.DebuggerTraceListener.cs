@@ -5,6 +5,7 @@
 using System;
 using System.Diagnostics;
 using System.Reflection;
+
 using Microsoft.VisualStudio.ProjectSystem;
 
 namespace Microsoft.VisualStudio.Packaging

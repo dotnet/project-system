@@ -144,7 +144,7 @@ namespace Microsoft.VisualStudio.IO
         {
             return _currentDirectory;
         }
-        
+
         public string GetFullPath(string path)
         {
             if (_currentDirectory != null)

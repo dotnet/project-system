@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
+
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
@@ -23,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             ProjectTreeFlags flags,
             bool isVisible,
             IImmutableDictionary<string, string> properties)
-            : base(providerType, originalItemSpec, originalItemSpec, flags, resolved:false, isImplicit:false, properties:properties)
+            : base(providerType, originalItemSpec, originalItemSpec, flags, resolved: false, isImplicit: false, properties: properties)
         {
             Requires.NotNullOrEmpty(originalItemSpec, nameof(originalItemSpec));
             Requires.NotNullOrEmpty(message, nameof(message));

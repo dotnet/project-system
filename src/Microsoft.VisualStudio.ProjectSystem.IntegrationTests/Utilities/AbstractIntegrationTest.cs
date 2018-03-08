@@ -1,16 +1,19 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.VisualStudio.IntegrationTest.Utilities;
-using Microsoft.VisualStudio.IntegrationTest.Utilities.Input;
 using System;
 using System.Configuration;
 using System.IO;
 using System.Threading;
+
+using Microsoft.VisualStudio.IntegrationTest.Utilities;
+using Microsoft.VisualStudio.IntegrationTest.Utilities.Input;
+using Xunit;
 using ProjectUtils = Microsoft.VisualStudio.IntegrationTest.Utilities.Common.ProjectUtils;
 
 namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
 {
     [CaptureTestName]
+    [Trait("Category", "SkipWhenLiveUnitTesting")]
     public abstract class AbstractIntegrationTest : IDisposable
     {
         private const string XamlRulesDirRelativeToTestAssemblyConfigKey = "ProjectSystem.XamlRulesDirRelativeToTestAssembly";
@@ -76,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
             VisualStudio.WaitForNoErrorsInErrorList();
         }
 
-        public void Dispose() 
+        public void Dispose()
             => _visualStudioContext.Dispose();
 
         protected void Wait(double seconds)

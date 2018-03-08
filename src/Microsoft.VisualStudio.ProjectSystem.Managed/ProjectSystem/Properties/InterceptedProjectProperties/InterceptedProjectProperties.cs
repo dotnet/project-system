@@ -1,10 +1,11 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using Microsoft.Build.Framework.XamlTypes;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
+
+using Microsoft.Build.Framework.XamlTypes;
 
 // CPS calls the IProjectPropertiesProvider under a write lock. If we try to read a property from the 
 // project, we will try to acquire a read lock. Taking a read lock from the same thread as the write lock

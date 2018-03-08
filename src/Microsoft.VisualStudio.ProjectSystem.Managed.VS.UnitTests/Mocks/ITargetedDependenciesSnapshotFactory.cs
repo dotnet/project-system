@@ -1,10 +1,13 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
+
 using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
@@ -26,11 +29,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             MockBehavior? mockBehavior = null)
         {
             return ImplementMock(
-                targetFramework, 
-                dependenciesWorld, 
-                hasUnresolvedDependency, 
-                catalogs, 
-                topLevelDependencies, 
+                targetFramework,
+                dependenciesWorld,
+                hasUnresolvedDependency,
+                catalogs,
+                topLevelDependencies,
                 checkForUnresolvedDependencies,
                 mockBehavior).Object;
         }
@@ -55,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             if (dependenciesWorld != null)
             {
                 mock.Setup(x => x.DependenciesWorld)
-                    .Returns(ImmutableDictionary<string, IDependency>.Empty.AddRange(dependenciesWorld));
+                    .Returns(ImmutableStringDictionary<IDependency>.EmptyOrdinalIgnoreCase.AddRange(dependenciesWorld));
             }
 
             if (hasUnresolvedDependency != null && hasUnresolvedDependency.HasValue)
@@ -71,11 +74,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             if (topLevelDependencies != null)
             {
                 var dependencies = ImmutableHashSet<IDependency>.Empty;
-                foreach(var d in topLevelDependencies)
+                foreach (var d in topLevelDependencies)
                 {
                     dependencies = dependencies.Add(d);
                 }
-                
+
                 mock.Setup(x => x.TopLevelDependencies).Returns(dependencies);
             }
 

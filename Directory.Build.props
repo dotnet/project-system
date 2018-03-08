@@ -27,13 +27,7 @@
     <PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
 
     <!-- All projects in this repository target the same framework by default -->
-    <TargetFramework Condition="'$(IsTestProject)' != 'true'">net46</TargetFramework>
-
-    <!--
-      All tests projects in this repository target another. This includes the DeployTestDependencies
-      and DeployIntegrationDependencies projects which must be updated independently.
-    -->
-    <TargetFramework Condition="$(MSBuildProjectName.EndsWith('.UnitTests')) or $(MSBuildProjectName.EndsWith('.IntegrationTests'))">net461</TargetFramework>
+    <TargetFramework>net461</TargetFramework>
 
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 

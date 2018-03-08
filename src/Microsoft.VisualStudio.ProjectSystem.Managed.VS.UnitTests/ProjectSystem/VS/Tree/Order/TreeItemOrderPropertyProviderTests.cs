@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
@@ -20,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
         [Theory]
         [InlineData("Customer.fs", "Compile", false, "X:\\Project\\Customer.fs", 2)]
         [InlineData("order.fs", "Compile", false, "X:\\Project\\order.fs", 1)] // case insensitive
-        [InlineData("Program.fs", "Compile", false, "X:\\Project\\Program.fs", 3)] 
+        [InlineData("Program.fs", "Compile", false, "X:\\Project\\Program.fs", 3)]
         [InlineData("Misc.txt", "Content", false, "X:\\Project\\Misc.txt", int.MaxValue)] // unknown type
         [InlineData("ordered.fsproj", null, false, "X:\\Project\\ordered.fsproj", int.MaxValue)] // hidden file
         [InlineData("Debug", null, true, null, 0)] // unknown folder
@@ -93,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
                 var rootedPath = item.rootedPath;
                 var metadata = rootedPath == null ? null : new Dictionary<string, string> { { "FullPath", rootedPath } }.ToImmutableDictionary();
 
-                var context = GetContext(item.itemName, item.itemType, item.isFolder, 
+                var context = GetContext(item.itemName, item.itemType, item.isFolder,
                     item.isUnderProjectRoot ? ProjectTreeFlags.ProjectRoot : ProjectTreeFlags.Empty, metadata);
                 var values = GetInitialValues();
 
@@ -206,10 +207,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
             var provider = new TreeItemOrderPropertyProvider(orderedItems, UnconfiguredProjectFactory.Create(filePath: "X:\\Project\\"));
 
             bool isUnderProjectRoot = rootedPath?.Contains("Tables") != true;
-            var metadata = rootedPath == null ? null : new Dictionary<string, string>{{"FullPath", rootedPath}}.ToImmutableDictionary();
+            var metadata = rootedPath == null ? null : new Dictionary<string, string> { { "FullPath", rootedPath } }.ToImmutableDictionary();
 
-            var context = GetContext(itemName, itemType, isFolder, 
-                isUnderProjectRoot ? ProjectTreeFlags.ProjectRoot : ProjectTreeFlags.Empty, 
+            var context = GetContext(itemName, itemType, isFolder,
+                isUnderProjectRoot ? ProjectTreeFlags.ProjectRoot : ProjectTreeFlags.Empty,
                 metadata);
             var values = GetInitialValues();
 
@@ -260,17 +261,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
             ProjectTreeFlags flags = default(ProjectTreeFlags),
             IImmutableDictionary<string, string> metadata = null)
             => IProjectTreeCustomizablePropertyContextFactory.Implement(
-                itemName: itemName, 
-                itemType: itemType, 
-                isFolder: isFolder, 
-                flags: flags, 
+                itemName: itemName,
+                itemType: itemType,
+                isFolder: isFolder,
+                flags: flags,
                 metadata: metadata);
 
         private static ProjectTreeCustomizablePropertyValues GetInitialValues() =>
             new ProjectTreeCustomizablePropertyValues { DisplayOrder = 0 };
 
-        private class ProjectTreeCustomizablePropertyValues : 
-            IProjectTreeCustomizablePropertyValues, 
+        private class ProjectTreeCustomizablePropertyValues :
+            IProjectTreeCustomizablePropertyValues,
             IProjectTreeCustomizablePropertyValues2
         {
             public ProjectTreeFlags Flags { get; set; }

@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.CodeAnalysis;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
@@ -24,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         {
             var oldNameBase = Path.GetFileNameWithoutExtension(oldFileName);
             var newNameBase = Path.GetFileNameWithoutExtension(newFileName);
-            return _roslynServices.IsValidIdentifier(oldNameBase) && _roslynServices.IsValidIdentifier(newNameBase) && (!string.Equals(Path.GetFileName(oldNameBase), Path.GetFileName(newNameBase), isCaseSensitive?StringComparison.Ordinal:StringComparison.OrdinalIgnoreCase));
+            return _roslynServices.IsValidIdentifier(oldNameBase) && _roslynServices.IsValidIdentifier(newNameBase) && (!string.Equals(Path.GetFileName(oldNameBase), Path.GetFileName(newNameBase), isCaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase));
         }
 
         public override async Task RenameAsync(Project myNewProject, string oldFileName, string newFileName, bool isCaseSensitive)
@@ -49,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         {
             var project = myNewProject;
             Solution renamedSolution = null;
-            
+
             while (project != null)
             {
                 var newDocument = GetDocument(project, newFileName);

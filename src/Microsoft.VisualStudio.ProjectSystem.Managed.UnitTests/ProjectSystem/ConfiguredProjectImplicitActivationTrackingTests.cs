@@ -3,7 +3,9 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.Threading;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -25,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         [Fact]
         public async Task ImplicitlyActivated_Remove_WhenDisposed_DoesNotThrow()
-        {   
+        {
             var service = CreateInstance();
             await service.DisposeAsync();
 
@@ -254,7 +256,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 callCount++;
                 return Task.CompletedTask;
             };
-            
+
             var configurationGroups = IConfigurationGroupFactory.CreateFromConfigurationNames(configurations);
             await source.SendAndCompleteAsync(configurationGroups, service.TargetBlock);
 
@@ -377,7 +379,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             source = ProjectValueDataSourceFactory.Create<IConfigurationGroup<ProjectConfiguration>>(services);
             var activeConfigurationGroupService = IActiveConfigurationGroupServiceFactory.Implement(source);
 
-            tasksService= tasksService ?? IProjectAsynchronousTasksServiceFactory.Create();
+            tasksService = tasksService ?? IProjectAsynchronousTasksServiceFactory.Create();
 
             return new ConfiguredProjectImplicitActivationTracking(project, activeConfigurationGroupService, tasksService);
         }

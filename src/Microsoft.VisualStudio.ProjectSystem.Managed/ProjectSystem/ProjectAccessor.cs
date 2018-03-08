@@ -4,6 +4,7 @@ using System;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 
@@ -59,6 +60,22 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
         }
 
+        public async Task OpenProjectXmlForUpgradeableReadAsync(UnconfiguredProject project, Func<ProjectRootElement, CancellationToken, Task> action, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            Requires.NotNull(project, nameof(project));
+            Requires.NotNull(project, nameof(action));
+
+            using (ProjectLockReleaser access = await _projectLockService.UpgradeableReadLockAsync(cancellationToken))
+            {
+                ProjectRootElement rootElement = await access.GetProjectXmlAsync(project.FullPath, cancellationToken)
+                                                             .ConfigureAwait(true);
+
+                // Only async to let the caller upgrade to a 
+                // write lock via OpenProjectXmlForWriteAsync
+                await action(rootElement, cancellationToken).ConfigureAwait(true);
+            }
+        }
+
         public async Task OpenProjectXmlForWriteAsync(UnconfiguredProject project, Action<ProjectRootElement> action, CancellationToken cancellationToken = default(CancellationToken))
         {
             Requires.NotNull(project, nameof(project));
@@ -75,6 +92,25 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 // Deliberately not async to reduce the type of
                 // code you can run while holding the lock.
                 action(rootElement);
+            }
+        }
+
+        public async Task OpenProjectForWriteAsync(ConfiguredProject project, Action<Project> action, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            Requires.NotNull(project, nameof(project));
+            Requires.NotNull(project, nameof(action));
+
+            using (ProjectWriteLockReleaser access = await _projectLockService.WriteLockAsync(cancellationToken))
+            {
+                await access.CheckoutAsync(project.UnconfiguredProject.FullPath)
+                            .ConfigureAwait(true);
+
+                Project evaluatedProject = await access.GetProjectAsync(project, cancellationToken)
+                                                       .ConfigureAwait(true);
+
+                // Deliberately not async to reduce the type of
+                // code you can run while holding the lock.
+                action(evaluatedProject);
             }
         }
     }

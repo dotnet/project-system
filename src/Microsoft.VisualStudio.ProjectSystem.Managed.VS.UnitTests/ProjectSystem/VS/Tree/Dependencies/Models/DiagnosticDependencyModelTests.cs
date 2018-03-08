@@ -1,8 +1,10 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
+
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
@@ -13,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void Error()
         {
-            var properties = ImmutableDictionary<string, string>.Empty.Add("myProp", "myVal");
+            var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
 
             var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new DiagnosticDependencyModel(
@@ -23,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 "nu1002",
                 "myMessage",
                 flags: flag,
-                isVisible:true,
+                isVisible: true,
                 properties: properties);
 
             Assert.Equal("myProvider", model.ProviderType);
@@ -50,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         [Fact]
         public void Warning()
         {
-            var properties = ImmutableDictionary<string, string>.Empty.Add("myProp", "myVal");
+            var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
 
             var flag = ProjectTreeFlags.Create("MyCustomFlag");
             var model = new DiagnosticDependencyModel(

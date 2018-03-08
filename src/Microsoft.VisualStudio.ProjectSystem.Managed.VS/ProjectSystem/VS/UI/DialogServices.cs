@@ -24,10 +24,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
         private readonly IUserNotificationServices _userNotificationServices;
 
         public MultiChoiceMsgBoxResult ShowMultiChoiceMsgBox(string dialogTitle, string errorText, string[] buttons)
-        { 
+        {
             var dlg = new MultiChoiceMsgBox(dialogTitle, errorText, buttons);
             var result = dlg.ShowModal();
-            if(result == true)
+            if (result == true)
             {
                 return dlg.SelectedAction;
             }
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
         {
             var dlg = new DontShowAgainMessageBox(caption, message, checkboxText, initialStateOfCheckbox, learnMoreText, learnMoreUrl, _userNotificationServices);
             var result = dlg.ShowModal();
-            if(result == true)
+            if (result == true)
             {
                 return dlg.CheckboxState;
             }

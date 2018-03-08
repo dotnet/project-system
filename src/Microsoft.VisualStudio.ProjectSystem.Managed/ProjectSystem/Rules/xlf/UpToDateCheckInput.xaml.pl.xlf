@@ -22,16 +22,6 @@
         <target state="translated">Różne</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|FullPath|DisplayName">
-        <source>Full Path</source>
-        <target state="translated">Pełna ścieżka</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|FullPath|Description">
-        <source>Location of the file.</source>
-        <target state="translated">Lokalizacja pliku.</target>
-        <note />
-      </trans-unit>
     </body>
   </file>
 </xliff>

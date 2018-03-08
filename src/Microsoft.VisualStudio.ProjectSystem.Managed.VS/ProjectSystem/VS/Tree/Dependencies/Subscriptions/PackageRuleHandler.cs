@@ -6,6 +6,7 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
@@ -51,10 +52,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 && unresolvedChanges.Difference.AnyChanges)
             {
                 HandleChangesForRule(
-                    unresolvedChanges, 
+                    unresolvedChanges,
                     ruleChangeContext,
                     context.TargetFramework,
-                    resolved:false);
+                    resolved: false);
             }
 
             var caseInsensitiveUnresolvedChanges = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -64,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 && resolvedChanges.Difference.AnyChanges)
             {
                 HandleChangesForRule(
-                    resolvedChanges, 
+                    resolvedChanges,
                     ruleChangeContext,
                     context.TargetFramework,
                     resolved: true,
@@ -91,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             foreach (var removedItem in projectChange.Difference.RemovedItems)
             {
                 var properties = GetProjectItemProperties(projectChange.Before, removedItem);
-                var model = GetDependencyModel(removedItem, resolved, 
+                var model = GetDependencyModel(removedItem, resolved,
                                             properties, projectChange, unresolvedChanges, targetFramework);
                 if (model == null)
                 {
@@ -104,7 +105,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             foreach (var changedItem in projectChange.Difference.ChangedItems)
             {
                 var properties = GetProjectItemProperties(projectChange.After, changedItem);
-                var model = GetDependencyModel(changedItem, resolved, 
+                var model = GetDependencyModel(changedItem, resolved,
                                             properties, projectChange, unresolvedChanges, targetFramework);
                 if (model == null)
                 {
@@ -118,7 +119,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             foreach (var addedItem in projectChange.Difference.AddedItems)
             {
                 var properties = GetProjectItemProperties(projectChange.After, addedItem);
-                var model = GetDependencyModel(addedItem, resolved, 
+                var model = GetDependencyModel(addedItem, resolved,
                                             properties, projectChange, unresolvedChanges, targetFramework);
                 if (model == null)
                 {
@@ -136,16 +137,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IProjectChangeDescription projectChange,
             HashSet<string> unresolvedChanges,
             ITargetFramework targetFramework)
-        {            
+        {
             PackageDependencyMetadata metadata;
             var isTopLevel = true;
             var isTarget = false;
             if (resolved)
             {
                 metadata = new PackageDependencyMetadata(itemSpec, properties);
-                isTopLevel = metadata.IsImplicitlyDefined 
-                             || (metadata.DependencyType == DependencyType.Package 
-                                 && unresolvedChanges != null 
+                isTopLevel = metadata.IsImplicitlyDefined
+                             || (metadata.DependencyType == DependencyType.Package
+                                 && unresolvedChanges != null
                                  && unresolvedChanges.Contains(metadata.Name));
                 isTarget = metadata.IsTarget;
                 var packageTargetFramework = TargetFrameworkProvider.GetTargetFramework(metadata.Target);
@@ -171,7 +172,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
 
             IDependencyModel dependencyModel = null;
-            switch(metadata.DependencyType)
+            switch (metadata.DependencyType)
             {
                 case DependencyType.Package:
                     dependencyModel = new PackageDependencyModel(
@@ -219,8 +220,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                         metadata.DiagnosticCode,
                         metadata.Name,
                         DependencyTreeFlags.NuGetSubTreeNodeFlags,
-                        isVisible:true,
-                        properties:properties);
+                        isVisible: true,
+                        properties: properties);
                     break;
                 default:
                     dependencyModel = new PackageUnknownDependencyModel(
@@ -237,7 +238,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             return dependencyModel;
         }
-        
+
         public override IDependencyModel CreateRootDependencyNode()
         {
             return new SubTreeRootDependencyModel(
@@ -293,12 +294,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             public DiagnosticMessageSeverity Severity { get; private set; }
             public string DiagnosticCode { get; private set; }
-            
+
             public void SetProperties(IImmutableDictionary<string, string> properties)
             {
                 Requires.NotNull(properties, nameof(properties));
                 Properties = properties;
-                
+
                 DependencyType = GetEnumMetadata(ProjectItemMetadata.Type, DependencyType.Unknown);
                 Name = GetStringMetadata(ProjectItemMetadata.Name);
                 if (string.IsNullOrEmpty(Name))
@@ -312,7 +313,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 IsImplicitlyDefined = GetBoolMetadata(ProjectItemMetadata.IsImplicitlyDefined, false);
 
                 var dependenciesHashSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-                if (properties.ContainsKey(ProjectItemMetadata.Dependencies) 
+                if (properties.ContainsKey(ProjectItemMetadata.Dependencies)
                     && properties[ProjectItemMetadata.Dependencies] != null)
                 {
                     var dependencyIds = properties[ProjectItemMetadata.Dependencies]
@@ -327,7 +328,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 DependenciesItemSpecs = dependenciesHashSet;
 
                 if (DependencyType == DependencyType.Diagnostic)
-                {                    
+                {
                     Severity = GetEnumMetadata(ProjectItemMetadata.Severity, DiagnosticMessageSeverity.Info);
                     DiagnosticCode = GetStringMetadata(ProjectItemMetadata.DiagnosticCode);
                 }
@@ -348,7 +349,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 var enumString = GetStringMetadata(metadataName);
                 T enumValue = defaultValue;
                 Enum.TryParse(enumString ?? string.Empty, /*ignoreCase */ true, out enumValue);
-                
+
                 return enumValue;
             }
 

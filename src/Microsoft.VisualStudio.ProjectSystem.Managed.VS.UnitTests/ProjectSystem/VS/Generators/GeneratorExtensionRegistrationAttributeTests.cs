@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+
 using Microsoft.VisualStudio.Shell;
+
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
@@ -34,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 
         [Theory]
         [InlineData(".resx", "ResXCodeFileGenerator", testGuid)]
-        [InlineData(".resx",  "PublicResXCodeFileGenerator", testGuid2)]
+        [InlineData(".resx", "PublicResXCodeFileGenerator", testGuid2)]
         [InlineData(".tt", "TextTemplateFileGenerator", testGuid3)]
         public void ValidRegistration_CreatesCorrectKeys(string extension, string generator, string contextGuid)
         {

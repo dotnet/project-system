@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
@@ -25,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             : base(providerType, path, originalItemSpec, flags, resolved, isImplicit, properties)
         {
             Requires.NotNullOrEmpty(name, nameof(name));
-            
+
             Name = name;
             Version = version;
             Caption = string.IsNullOrEmpty(version) ? name : $"{name} ({version})";
@@ -39,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
             if (dependenciesIDs != null && dependenciesIDs.Any())
             {
-                DependencyIDs = ImmutableList<string>.Empty.AddRange(dependenciesIDs);
+                DependencyIDs = ImmutableList.CreateRange(dependenciesIDs);
             }
 
             Flags = Flags.Union(DependencyTreeFlags.PackageNodeFlags)

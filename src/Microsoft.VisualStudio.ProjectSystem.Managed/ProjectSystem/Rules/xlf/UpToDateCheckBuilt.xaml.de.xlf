@@ -12,11 +12,6 @@
         <target state="translated">Dateieigenschaften</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Identity|Description">
-        <source>The item specified in the Include attribute.</source>
-        <target state="translated">Das im Include-Attribut angegebene Element.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Original|Description">
         <source>If set, specifies that this built output comes from this source file.</source>
         <target state="translated">Gibt bei Festlegung an, dass die Ausgabe aus dieser Quelldatei stammt.</target>

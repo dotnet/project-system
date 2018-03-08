@@ -6,6 +6,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.References;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
@@ -41,8 +42,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// Builds Dependencies tree for given dependencies snapshot
         /// </summary>
         public override async Task<IProjectTree> BuildTreeAsync(
-            IProjectTree dependenciesTree, 
-            IDependenciesSnapshot snapshot, 
+            IProjectTree dependenciesTree,
+            IDependenciesSnapshot snapshot,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             var originalTree = dependenciesTree;
@@ -85,10 +86,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                     if (target.Key.Equals(TargetFramework.Any))
                     {
-                        dependenciesTree = await BuildSubTreesAsync(dependenciesTree, 
-                                                         snapshot.ActiveTarget, 
-                                                         target.Value, 
-                                                         target.Value.Catalogs, 
+                        dependenciesTree = await BuildSubTreesAsync(dependenciesTree,
+                                                         snapshot.ActiveTarget,
+                                                         target.Value,
+                                                         target.Value.Catalogs,
                                                          rememberNewNodes).ConfigureAwait(false);
                     }
                     else
@@ -97,10 +98,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         var shouldAddTargetNode = node == null;
                         var targetViewModel = ViewModelFactory.CreateTargetViewModel(target.Value);
 
-                        node = CreateOrUpdateNode(node, 
-                                                  targetViewModel, 
-                                                  rule:null, 
-                                                  isProjectItem:false, 
+                        node = CreateOrUpdateNode(node,
+                                                  targetViewModel,
+                                                  rule: null,
+                                                  isProjectItem: false,
                                                   additionalFlags: ProjectTreeFlags.Create(ProjectTreeFlags.Common.BubbleUp));
                         node = await BuildSubTreesAsync(node, snapshot.ActiveTarget, target.Value, target.Value.Catalogs, CleanupOldNodes).ConfigureAwait(false);
 
@@ -174,7 +175,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var currentNodes = new List<IProjectTree>();
             var grouppedByProviderType = new Dictionary<string, List<IDependency>>(StringComparer.OrdinalIgnoreCase);
-            foreach(var dependency in targetedSnapshot.TopLevelDependencies)
+            foreach (var dependency in targetedSnapshot.TopLevelDependencies)
             {
                 if (!dependency.Visible)
                 {
@@ -212,11 +213,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 }
 
                 subTreeNode = CreateOrUpdateNode(
-                    subTreeNode, 
-                    subTreeViewModel, 
-                    rule:null, 
-                    isProjectItem:false, 
-                    excludedFlags:excludedFlags);
+                    subTreeNode,
+                    subTreeViewModel,
+                    rule: null,
+                    isProjectItem: false,
+                    excludedFlags: excludedFlags);
 
                 subTreeNode = await BuildSubTreeAsync(
                     subTreeNode,
@@ -225,7 +226,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     catalogs,
                     isActiveTarget,
                     shouldCleanup: !isNewSubTreeNode).ConfigureAwait(false);
-                
+
                 currentNodes.Add(subTreeNode);
 
                 if (isNewSubTreeNode)
@@ -369,7 +370,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                         additionalFlags,
                                         excludedFlags);
                 var filePath = (viewModel.OriginalModel != null && viewModel.OriginalModel.TopLevel && viewModel.OriginalModel.Resolved)
-                                ? viewModel.OriginalModel.GetTopLevelId() 
+                                ? viewModel.OriginalModel.GetTopLevelId()
                                 : viewModel.FilePath;
 
                 node = TreeServices.CreateTree(
@@ -402,7 +403,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             if (node == null)
             {
                 var flags = FilterFlags(viewModel.Flags, additionalFlags, excludedFlags);
-                var filePath = (viewModel.OriginalModel != null && viewModel.OriginalModel.TopLevel && viewModel.OriginalModel.Resolved) 
+                var filePath = (viewModel.OriginalModel != null && viewModel.OriginalModel.TopLevel && viewModel.OriginalModel.Resolved)
                                     ? viewModel.OriginalModel.GetTopLevelId()
                                     : viewModel.FilePath;
 
@@ -439,7 +440,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var updatedValues = new ReferencesProjectTreeCustomizablePropertyValues
             {
                 Caption = viewModel.Caption,
-                Flags = viewModel.Flags,                
+                Flags = viewModel.Flags,
                 Icon = viewModel.Icon.ToProjectSystemType(),
                 ExpandedIcon = viewModel.ExpandedIcon.ToProjectSystemType()
             };

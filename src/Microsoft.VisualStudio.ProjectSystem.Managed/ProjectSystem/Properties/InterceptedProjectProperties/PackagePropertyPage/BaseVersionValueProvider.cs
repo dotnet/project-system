@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
                         return null;
                     }
                 }
-            }            
+            }
 
             return await base.OnSetPropertyValueAsync(unevaluatedPropertyValue, defaultProperties, dimensionalConditions).ConfigureAwait(true);
         }

@@ -18,9 +18,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         [Obsolete("Use ILaunchSettingsProvider2.GetLaunchSettingsFilePathAsync instead.")]
         string LaunchSettingsFile { get; }
-        
+
         ILaunchProfile ActiveProfile { get; }
-            
+
         // Replaces the current set of profiles with the contents of profiles. If changes were
         // made, the file will be checked out and updated. If the active profile is different, the
         // active profile property is updated.

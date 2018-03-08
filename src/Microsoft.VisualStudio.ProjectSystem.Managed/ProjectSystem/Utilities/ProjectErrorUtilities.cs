@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         {
             throw ThrowProjectExceptionHelper(null, message, arg0);
         }
-                
+
         /// <summary>
         /// Throws a ProjectException.
         ///

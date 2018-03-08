@@ -2,9 +2,12 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
+
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
+
 using Moq;
+
 using Newtonsoft.Json.Linq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
@@ -18,15 +21,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public static IDependencyModel Implement(string providerType = null,
                                                  string id = null,
-                                                 string originalItemSpec = null, 
-                                                 string path = null, 
+                                                 string originalItemSpec = null,
+                                                 string path = null,
                                                  string caption = null,
                                                  IEnumerable<string> dependencyIDs = null,
                                                  bool? resolved = null,
                                                  MockBehavior? mockBehavior = null)
         {
             var behavior = mockBehavior ?? MockBehavior.Default;
-            var mock = new Mock<IDependencyModel>(behavior);            
+            var mock = new Mock<IDependencyModel>(behavior);
 
             if (providerType != null)
             {
@@ -65,9 +68,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             return mock.Object;
         }
-        
+
         public static IDependencyModel FromJson(
-            string jsonString, 
+            string jsonString,
             ProjectTreeFlags? flags = null,
             ImageMoniker? icon = null,
             ImageMoniker? expandedIcon = null,
@@ -111,7 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (properties != null)
             {
-                data.Properties = ImmutableDictionary<string, string>.Empty.AddRange(properties);
+                data.Properties = ImmutableStringDictionary<string>.EmptyOrdinal.AddRange(properties);
             }
 
             if (dependenciesIds != null)

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
@@ -14,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     /// </summary>
     internal abstract partial class AbstractEvaluationCommandLineHandler
     {
-        // This class is not thread-safe, and the assumption is that the caller will mkaes sure that evaluations and design-time builds do 
+        // This class is not thread-safe, and the assumption is that the caller will make sure that evaluations and design-time builds do 
         // overlap inside the class at the same time.
         //
         // In the ideal world, we would simply wait for a design-time build to get the command-line arguments that would have been passed
@@ -103,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         public void ApplyEvaluationChanges(IComparable version, IProjectChangeDiff difference, IImmutableDictionary<string, IImmutableDictionary<string, string>> metadata, bool isActiveContext, IProjectLogger logger)
         {
             Requires.NotNull(version, nameof(version));
-            Requires.NotNull(version, nameof(version));
+            Requires.NotNull(difference, nameof(difference));
             Requires.NotNull(metadata, nameof(metadata));
             Requires.NotNull(logger, nameof(logger));
 
@@ -143,7 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             difference = NormalizeDifferences(difference);
             difference = ResolveDesignTimeConflicts(version, difference);
 
-            ApplyChangesToContext(version, difference, ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty, isActiveContext, logger);
+            ApplyChangesToContext(version, difference, ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal, isActiveContext, logger);
         }
 
         protected abstract void AddToContext(string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext, IProjectLogger logger);
@@ -194,7 +195,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             // other reason, that our state of the world remains consistent
             if (!_paths.Contains(fullPath))
             {
-                var itemMetadata = metadata.GetValueOrDefault(includePath, ImmutableDictionary<string, string>.Empty);
+                var itemMetadata = metadata.GetValueOrDefault(includePath, ImmutableStringDictionary<string>.EmptyOrdinal);
                 AddToContext(fullPath, itemMetadata, isActiveContext, logger);
                 bool added = _paths.Add(fullPath);
                 Assumes.True(added);
@@ -236,10 +237,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             while (_evaluations.Count > 0)
             {
                 VersionedProjectChangeDiff evaluation = _evaluations.Peek();
-                if (evaluation.Version.IsEarlierThanOrEqualTo(version))
-                {
-                    _evaluations.Dequeue();
-                }
+                if (!evaluation.Version.IsEarlierThanOrEqualTo(version))
+                    break;
+                
+                _evaluations.Dequeue();
             }
         }
 
