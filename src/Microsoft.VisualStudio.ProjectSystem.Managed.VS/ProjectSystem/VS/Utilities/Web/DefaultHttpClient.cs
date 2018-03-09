@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             }
         }
 
-        private HttpClient CreateClient()
+        private static HttpClient CreateClient()
         {
             var client = new HttpClient();
             client.DefaultRequestHeaders.Remove("Connection");

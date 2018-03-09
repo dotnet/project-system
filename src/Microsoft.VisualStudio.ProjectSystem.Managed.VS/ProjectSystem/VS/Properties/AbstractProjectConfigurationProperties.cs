@@ -137,6 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         public string CodeAnalysisModuleSuppressionsFile { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public bool UseVSHostingProcess { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public sgenGenerationOption GenerateSerializationAssemblies { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+#pragma warning disable CA1822 // Mark members as static
         public bool CodeAnalysisIgnoreGeneratedCode { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public bool CodeAnalysisOverrideRuleVisibilities { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public string CodeAnalysisDictionaries { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
@@ -147,5 +148,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         public bool CodeAnalysisIgnoreBuiltInRules { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public bool CodeAnalysisFailOnMissingRules { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public bool Prefer32Bit { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+#pragma warning restore CA1822 // Mark members as static
     }
 }

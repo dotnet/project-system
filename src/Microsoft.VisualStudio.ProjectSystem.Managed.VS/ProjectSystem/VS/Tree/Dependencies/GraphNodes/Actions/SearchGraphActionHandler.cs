@@ -164,7 +164,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
         /// <summary>
         /// Does flat search among dependency world lists to find any dependencies that match search criteria.
         /// </summary>
-        private HashSet<IDependency> SearchFlat(
+        private static HashSet<IDependency> SearchFlat(
             string projectPath,
             string searchTerm,
             IGraphContext graphContext,

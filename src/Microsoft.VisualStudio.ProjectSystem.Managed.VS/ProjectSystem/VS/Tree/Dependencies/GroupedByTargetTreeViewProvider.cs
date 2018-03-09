@@ -151,7 +151,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             return FindByPathInternal(dependenciesNode, path);
         }
 
-        private IProjectTree FindByPathInternal(IProjectTree root, string path)
+        private static IProjectTree FindByPathInternal(IProjectTree root, string path)
         {
             foreach (IProjectTree node in root.GetSelfAndDescendentsBreadthFirst())
             {
@@ -297,7 +297,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <summary>
         /// Removes nodes that don't exist anymore
         /// </summary>
-        private IProjectTree CleanupOldNodes(IProjectTree rootNode, IEnumerable<IProjectTree> currentNodes)
+        private static IProjectTree CleanupOldNodes(IProjectTree rootNode, IEnumerable<IProjectTree> currentNodes)
         {
             foreach (var nodeToRemove in rootNode.Children.Except(currentNodes))
             {
@@ -454,7 +454,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     expandedIcon: viewModel.ExpandedIcon.ToProjectSystemType());
         }
 
-        private ProjectTreeFlags FilterFlags(
+        private static ProjectTreeFlags FilterFlags(
             ProjectTreeFlags flags,
             ProjectTreeFlags? additionalFlags,
             ProjectTreeFlags? excludedFlags)

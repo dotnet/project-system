@@ -197,7 +197,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         public new void Move(RECT[] pRect)
         {
             if (pRect == null || pRect.Length <= 0)
-                throw new ArgumentNullException("pRect");
+                throw new ArgumentNullException(nameof(pRect));
 
             RECT r = pRect[0];
 
@@ -324,9 +324,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         internal static T GetExport<T>(IVsHierarchy hier)
         {
-            System.IServiceProvider sp = new Shell.ServiceProvider((OLE.Interop.IServiceProvider)hier.GetDTEProject().DTE);
-            IComponentModel compMode = sp.GetService<IComponentModel, SComponentModel>();
-            return compMode.DefaultExportProvider.GetExport<T>().Value;
+            using (var sp = new Shell.ServiceProvider((OLE.Interop.IServiceProvider)hier.GetDTEProject().DTE))
+            {
+                IComponentModel compMode = sp.GetService<IComponentModel, SComponentModel>();
+                return compMode.DefaultExportProvider.GetExport<T>().Value;
+            }
         }
 
         ///--------------------------------------------------------------------------------------------
@@ -362,7 +364,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
 
             if (ppunk.Length < cObjects)
-                throw new ArgumentOutOfRangeException("cObjects");
+                throw new ArgumentOutOfRangeException(nameof(cObjects));
 
             var configurations = new List<string>();
             // Look for an IVsBrowseObject

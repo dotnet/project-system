@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             if (parent == null)
 #pragma warning disable IDE0016 // Use 'throw' expression
-                throw _tokenizer.FormatException(ProjectTreeFormatError.MultipleRoots, "Encountered another project root, when tree can only have one.");
+                throw FormatException(ProjectTreeFormatError.MultipleRoots, "Encountered another project root, when tree can only have one.");
 #pragma warning restore IDE0016 // Use 'throw' expression
 
             var tree = ReadProjectItem();
@@ -100,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
 
             if (indentLevel > previousIndentLevel + 1)
-                throw _tokenizer.FormatException(ProjectTreeFormatError.IndentTooManyLevels, "Project item has been indented too many levels");
+                throw FormatException(ProjectTreeFormatError.IndentTooManyLevels, "Project item has been indented too many levels");
 
             return _indentLevel = indentLevel;
         }
@@ -191,7 +191,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     break;
 
                 default:
-                    throw _tokenizer.FormatException(ProjectTreeFormatError.UnrecognizedPropertyName, $"Expected 'visibility' or 'flags', but encountered '{propertyName}'.");
+                    throw FormatException(ProjectTreeFormatError.UnrecognizedPropertyName, $"Expected 'visibility' or 'flags', but encountered '{propertyName}'.");
             }
         }
 
@@ -212,7 +212,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     break;
 
                 default:
-                    throw _tokenizer.FormatException(ProjectTreeFormatError.UnrecognizedPropertyValue, $"Expected 'visible' or 'invisible', but encountered '{visibility}'.");
+                    throw FormatException(ProjectTreeFormatError.UnrecognizedPropertyValue, $"Expected 'visible' or 'invisible', but encountered '{visibility}'.");
             }
         }
 
@@ -288,7 +288,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                         break;
 
                     default:
-                        throw _tokenizer.FormatException(ProjectTreeFormatError.UnrecognizedPropertyName, $"Expected 'FilePath', 'Icon' or 'ExpandedIcon', but encountered '{fieldName}'.");
+                        throw FormatException(ProjectTreeFormatError.UnrecognizedPropertyName, $"Expected 'FilePath', 'Icon' or 'ExpandedIcon', but encountered '{fieldName}'.");
                 }
             }
         }
@@ -360,14 +360,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
             string guidAsString = tokenizer.ReadIdentifier(IdentifierParseOptions.Required);
 
             if (!Guid.TryParseExact(guidAsString, "D", out Guid guid))
-                throw _tokenizer.FormatException(ProjectTreeFormatError.GuidExpected, $"Expected GUID, but encountered '{guidAsString}'");
+                throw FormatException(ProjectTreeFormatError.GuidExpected, $"Expected GUID, but encountered '{guidAsString}'");
 
             tokenizer.Skip(TokenType.WhiteSpace);
 
             string idAsString = tokenizer.ReadIdentifier(IdentifierParseOptions.Required);
 
             if (!int.TryParse(idAsString, out int id))
-                throw _tokenizer.FormatException(ProjectTreeFormatError.IntegerExpected, $"Expected integer, but encountered '{idAsString}'");
+                throw FormatException(ProjectTreeFormatError.IntegerExpected, $"Expected integer, but encountered '{idAsString}'");
 
             return new ProjectImageMoniker(guid, id);
         }

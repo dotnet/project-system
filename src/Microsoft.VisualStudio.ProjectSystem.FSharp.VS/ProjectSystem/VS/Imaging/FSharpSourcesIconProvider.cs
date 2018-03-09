@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Imaging
             }
         }
 
-        private ProjectImageMoniker GetIconForItem(string itemName)
+        private static ProjectImageMoniker GetIconForItem(string itemName)
         {
             if (s_fileExtensionImageMap.TryGetValue(Path.GetExtension(itemName), out ProjectImageMoniker moniker))
             {

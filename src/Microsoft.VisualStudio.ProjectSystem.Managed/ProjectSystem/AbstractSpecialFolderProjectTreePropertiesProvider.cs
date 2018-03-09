@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
         }
 
-        private void ApplySpecialFolderItemProperties(IProjectTreeCustomizablePropertyValues propertyValues)
+        private static void ApplySpecialFolderItemProperties(IProjectTreeCustomizablePropertyValues propertyValues)
         {
             propertyValues.Flags = propertyValues.Flags.Add(ProjectTreeFlags.Common.VisibleOnlyInShowAllFiles);
         }

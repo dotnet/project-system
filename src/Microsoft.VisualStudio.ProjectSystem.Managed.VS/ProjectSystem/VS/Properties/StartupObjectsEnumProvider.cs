@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <summary>
         /// When we implement WinForms support, we need to set this for VB winforms projects
         /// </summary>
-        private bool SearchForEntryPointsInFormsOnly => false;
+        private static bool SearchForEntryPointsInFormsOnly => false;
 
         [ImportingConstructor]
         public StartupObjectsEnumGenerator(Workspace workspace, UnconfiguredProject project)

@@ -253,7 +253,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
         }
 
-        private async Task<CompatibilityLevel> GetProjectCompatibilityAsync(UnconfiguredProject project, VersionCompatibilityData compatData)
+        private static async Task<CompatibilityLevel> GetProjectCompatibilityAsync(UnconfiguredProject project, VersionCompatibilityData compatData)
         {
             if (project.Capabilities.AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp))
             {
@@ -304,7 +304,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <summary>
         /// Compares the passed in version to the compatibility data to determine the compat level
         /// </summary>
-        private CompatibilityLevel GetCompatibilityLevelFromVersion(Version version, VersionCompatibilityData compatData)
+        private static CompatibilityLevel GetCompatibilityLevelFromVersion(Version version, VersionCompatibilityData compatData)
         {
             // Omly compare major, minor. The presence of build with change the comparison. ie: 2.0 != 2.0.0
             if (version.Build != -1)
