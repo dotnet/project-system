@@ -24,7 +24,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogExplorer
 
         public const string BuildLogExplorerToolWindowCaption = "Build Log Explorer";
 
-        private readonly BuildTreeViewControl _treeControl;
         private readonly SelectionContainer _selectionContainer;
         private readonly ObservableCollection<LogViewModel> _logs;
 
@@ -37,12 +36,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogExplorer
 
             _logs = new ObservableCollection<LogViewModel>();
 
-            _treeControl = new BuildTreeViewControl(_logs);
-            _treeControl.SelectedItemChanged += SelectionChanged;
+            var treeControl = new BuildTreeViewControl(_logs);
+            treeControl.SelectedItemChanged += SelectionChanged;
 
             _selectionContainer = new SelectionContainer(true, true);
 
-            Content = _treeControl;
+            Content = treeControl;
         }
 
         private void ClearLogs()

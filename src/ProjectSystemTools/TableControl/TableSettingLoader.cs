@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.Shell;
@@ -84,19 +86,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.TableControl
 
                         using (var columnSubKey = columnsSubKey.CreateSubKey(column.Name))
                         {
-                            if (columnSubKey != null)
+                            if (columnSubKey == null)
                             {
-                                columnSubKey.SetValue(ColumnOrder, i, RegistryValueKind.DWord);
-                                columnSubKey.SetValue(ColumnVisibility, column.IsVisible ? 1 : 0, RegistryValueKind.DWord);
-                                columnSubKey.SetValue(ColumnWidth, (int)column.Width, RegistryValueKind.DWord);
+                                continue;
+                            }
 
-                                columnSubKey.SetValue(ColumnSortDown, column.DescendingSort ? 1 : 0, RegistryValueKind.DWord);
-                                columnSubKey.SetValue(ColumnSortPriority, column.SortPriority, RegistryValueKind.DWord);
+                            columnSubKey.SetValue(ColumnOrder, i, RegistryValueKind.DWord);
+                            columnSubKey.SetValue(ColumnVisibility, column.IsVisible ? 1 : 0, RegistryValueKind.DWord);
+                            columnSubKey.SetValue(ColumnWidth, (int)column.Width, RegistryValueKind.DWord);
 
-                                if (column is ColumnState2 cs2)
-                                {
-                                    columnSubKey.SetValue(ColumnGroupingPriority, cs2.GroupingPriority, RegistryValueKind.DWord);
-                                }
+                            columnSubKey.SetValue(ColumnSortDown, column.DescendingSort ? 1 : 0, RegistryValueKind.DWord);
+                            columnSubKey.SetValue(ColumnSortPriority, column.SortPriority, RegistryValueKind.DWord);
+
+                            if (column is ColumnState2 cs2)
+                            {
+                                columnSubKey.SetValue(ColumnGroupingPriority, cs2.GroupingPriority, RegistryValueKind.DWord);
                             }
                         }
                     }
@@ -112,14 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.TableControl
             {
                 using (var settingsSubKey = rootKey.OpenSubKey(CreateSettingsKey(window), writable: false))
                 {
-                    if (settingsSubKey == null)
-                    {
-                        value = defaultValue;
-                    }
-                    else
-                    {
-                        value = (int)settingsSubKey.GetValue(name, 0) != 0;
-                    }
+                    value = settingsSubKey == null ? defaultValue : (int) settingsSubKey.GetValue(name, 0) != 0;
                 }
             }
         }

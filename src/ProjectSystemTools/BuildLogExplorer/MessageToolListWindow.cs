@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -134,7 +136,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogExplorer
 
         protected override void Dispose(bool disposing)
         {
-            if (_isDisposed)
+            if (IsDisposed)
             {
                 return;
             }
@@ -419,7 +421,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogExplorer
                 }
             }
 
-            lastHandle.IsSelected = true;
+            if (lastHandle != null)
+            {
+                lastHandle.IsSelected = true;
+            }
         }
 
         private static bool ColumnStatesAreDifferent(IReadOnlyList<ColumnState> oldColumnStates,
@@ -429,10 +434,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogExplorer
 
         public int Compare(ITableEntryHandle left, ITableEntryHandle right)
         {
-            // The default sort is to compare: project name -- document name -- line -- column
-            // Compare string names outside the method above (project K does odd things with projects so we can't assume errors with the same
-            // "project" will have the same project name).
-
             left.TryGetValue(StandardTableKeyNames.ErrorSeverity, out var leftCategory, __VSERRORCATEGORY.EC_MESSAGE);
             right.TryGetValue(StandardTableKeyNames.ErrorSeverity, out var rightCategory, __VSERRORCATEGORY.EC_MESSAGE);
             var compare = (int)leftCategory - (int)rightCategory;
@@ -598,26 +599,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogExplorer
         public int OnSelectionChanged(IVsHierarchy oldHierarchy, uint oldItemid, IVsMultiItemSelect oldItemSelect, ISelectionContainer oldSelectionContainer,
             IVsHierarchy pHierNew, uint newItemid, IVsMultiItemSelect newItemSelect, ISelectionContainer newSelectionContainer)
         {
-            if (newSelectionContainer != null)
+            if (newSelectionContainer == null)
             {
-                if (_dataSource != null)
-                {
-                    TableControl?.Manager?.RemoveSource(_dataSource);
-                }
-
-                if (newSelectionContainer.CountObjects(SelectionContainer.SELECTED, out var count) ==
-                    VSConstants.S_OK && count == 1)
-                {
-                    var objects = new object[1];
-
-                    if (newSelectionContainer.GetObjects(SelectionContainer.SELECTED, 1, objects) == VSConstants.S_OK &&
-                        objects[0] is SelectedObjectWrapper selectedObjectWrapper)
-                    {
-                        _dataSource = selectedObjectWrapper;
-                        TableControl?.Manager?.AddSource(_dataSource);
-                    }
-                }
+                return VSConstants.S_OK;
             }
+
+            if (_dataSource != null)
+            {
+                TableControl?.Manager?.RemoveSource(_dataSource);
+            }
+
+            if (newSelectionContainer.CountObjects(SelectionContainer.SELECTED, out var count) != VSConstants.S_OK ||
+                count != 1)
+            {
+                return VSConstants.S_OK;
+            }
+
+            var objects = new object[1];
+
+            if (newSelectionContainer.GetObjects(SelectionContainer.SELECTED, 1, objects) != VSConstants.S_OK ||
+                !(objects[0] is SelectedObjectWrapper selectedObjectWrapper))
+            {
+                return VSConstants.S_OK;
+            }
+
+            _dataSource = selectedObjectWrapper;
+            TableControl?.Manager?.AddSource(_dataSource);
 
             return VSConstants.S_OK;
         }

@@ -12,7 +12,7 @@ using Microsoft.VisualStudio.Shell.TableManager;
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 {
     [Export(typeof(IBuildTableDataSource))]
-    internal sealed class BuildTableDataSource : ITableDataSource, ITableEntriesSnapshotFactory, IBuildTableDataSource
+    internal sealed class BuildTableDataSource : ITableEntriesSnapshotFactory, IBuildTableDataSource
     {
         private const string BuildDataSourceDisplayName = "Build Data Source";
         private const string BuildTableDataSourceIdentifier = nameof(BuildTableDataSourceIdentifier);

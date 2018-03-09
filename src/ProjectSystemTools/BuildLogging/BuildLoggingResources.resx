@@ -144,4 +144,7 @@
   <data name="SearchWatermark" xml:space="preserve">
     <value>Search Build Logs</value>
   </data>
+  <data name="ProjectSolutionWide" xml:space="preserve">
+    <value>Solution Wide</value>
+  </data>
 </root>

@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -49,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogExplorer.ViewModel
                     list.Add(new ListViewModel<Evaluation>("Evaluations", _log.Evaluations, e => e.EvaluatedProjects.Count == 1 ? (BaseViewModel)new EvaluatedProjectViewModel(e) : new EvaluationViewModel(e)));
                 }
 
-                if (_log.Build != null && _log.Build.Project != null)
+                if (_log.Build?.Project != null)
                 {
                     list.Add(new BuildViewModel(_log.Build));
                 }

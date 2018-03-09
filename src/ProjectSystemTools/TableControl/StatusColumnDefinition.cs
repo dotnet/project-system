@@ -4,7 +4,6 @@ using System;
 using System.ComponentModel.Composition;
 using System.Windows;
 using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model;
-using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI;
 using Microsoft.VisualStudio.Shell.TableControl;
 using Microsoft.VisualStudio.Utilities;
 

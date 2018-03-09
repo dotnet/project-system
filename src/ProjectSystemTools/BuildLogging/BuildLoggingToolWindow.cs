@@ -2,34 +2,27 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using Microsoft.Internal.VisualStudio.PlatformUI;
-using Microsoft.Internal.VisualStudio.Shell;
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.PlatformUI;
-using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogExplorer;
 using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model;
-using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI;
 using Microsoft.VisualStudio.ProjectSystem.Tools.Providers;
 using Microsoft.VisualStudio.ProjectSystem.Tools.TableControl;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Shell.TableControl;
 using Microsoft.VisualStudio.Shell.TableManager;
-using Microsoft.Win32;
 using Constants = Microsoft.VisualStudio.OLE.Interop.Constants;
 using DialogResult = System.Windows.Forms.DialogResult;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 {
     [Guid(BuildLoggingToolWindowGuidString)]
-    internal sealed class BuildLoggingToolWindow : TableToolWindow, IOleCommandTarget 
+    internal sealed class BuildLoggingToolWindow : TableToolWindow 
     {
         public const string BuildLogging = "BuildLogging";
         public const string BuildLoggingToolWindowGuidString = "391238ea-dad7-488c-94d1-e2b6b5172bf3";
@@ -176,7 +169,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
         protected override void Dispose(bool disposing)
         {
-            if (_isDisposed)
+            if (IsDisposed)
             {
                 return;
             }
@@ -347,6 +340,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
             return handled ? VSConstants.S_OK : (int)Constants.OLECMDERR_E_NOTSUPPORTED;
         }
 
+        private string[] GetBuildFilterComboItems() =>
+            (_dataSource as BuildTableDataSource)?.SupportRoslynLogging ?? false
+                ? new[]
+                {
+                    BuildLoggingResources.FilterBuildAll, BuildLoggingResources.FilterBuildEvaluations,
+                    BuildLoggingResources.FilterBuildDesignTimeBuilds, BuildLoggingResources.FilterBuildBuilds,
+                    BuildLoggingResources.FilterBuildRoslyn
+                }
+                : new[]
+                {
+                    BuildLoggingResources.FilterBuildAll, BuildLoggingResources.FilterBuildEvaluations,
+                    BuildLoggingResources.FilterBuildDesignTimeBuilds, BuildLoggingResources.FilterBuildBuilds
+                };
+
+        private IEnumerable<string> GetExcluded(string include) => Enum.GetNames(typeof(BuildType))
+            .Where(name => name != nameof(BuildType.None) && name != nameof(BuildType.All))
+            .Where(name => name != include);
+
         protected override int InnerExec(ref Guid commandGroupGuid, uint commandId, uint commandExecOption, IntPtr pvaIn, IntPtr pvaOut)
         {
             var handled = true;
@@ -396,7 +407,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                                 selectedType = BuildLoggingResources.FilterBuildBuilds;
                                 break;
                             case BuildType.Roslyn:
-                                selectedType = Resources.FilterBuildRoslyn;
+                                selectedType = BuildLoggingResources.FilterBuildRoslyn;
                                 break;
                         }
 

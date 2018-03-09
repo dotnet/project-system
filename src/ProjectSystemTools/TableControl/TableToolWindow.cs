@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System;
 using System.ComponentModel.Design;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -16,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.TableControl
         public const string SearchFilterKey = "SearchFilter";
 
         private readonly ContentWrapper _contentWrapper;
-        protected bool _isDisposed;
+        protected bool IsDisposed;
 
         protected IWpfTableControl2 TableControl { get; private set; }
 
@@ -152,7 +154,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.TableControl
 
         protected override void Dispose(bool disposing)
         {
-            if (_isDisposed)
+            if (IsDisposed)
             {
                 return;
             }
@@ -168,7 +170,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.TableControl
             }
             finally
             {
-                _isDisposed = true;
+                IsDisposed = true;
             }
         }
     }

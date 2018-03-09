@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
         private static readonly Regex UsingTaskRegex = new Regex("Using \"(?<task>.+)\" task from (assembly|the task factory) \"(?<assembly>.+)\"\\.", RegexOptions.Compiled);
 
         private bool _done;
-        private BuildInfo _buildInfo = new BuildInfo();
+        private readonly BuildInfo _buildInfo = new BuildInfo();
         private readonly ConcurrentBag<Exception> _exceptions = new ConcurrentBag<Exception>();
         private Dictionary<int, EvaluationInfo> _evaluationInfos;
         private readonly ConcurrentDictionary<int, ProjectInfo> _projectInfos = new ConcurrentDictionary<int, ProjectInfo>();
@@ -186,23 +186,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
 
         private EvaluationInfo FindEvaluationContext(BuildEventArgs args)
         {
-            if (_evaluationInfos == null ||
-                !_evaluationInfos.TryGetValue(args.BuildEventContext.EvaluationId, out var evaluationInfo))
+            if (_evaluationInfos != null &&
+                _evaluationInfos.TryGetValue(args.BuildEventContext.EvaluationId, out var evaluationInfo))
             {
-                evaluationInfo = new EvaluationInfo();
-
-                if (_evaluationInfos == null)
-                {
-                    _evaluationInfos = new Dictionary<int, EvaluationInfo>();
-                }
-
-                if (_evaluationInfos.ContainsKey(args.BuildEventContext.EvaluationId))
-                {
-                    throw new LoggerException(Resources.DoubleEvaluation);
-                }
-
-                _evaluationInfos[args.BuildEventContext.EvaluationId] = evaluationInfo;
+                return evaluationInfo;
             }
+
+            evaluationInfo = new EvaluationInfo();
+
+            if (_evaluationInfos == null)
+            {
+                _evaluationInfos = new Dictionary<int, EvaluationInfo>();
+            }
+
+            if (_evaluationInfos.ContainsKey(args.BuildEventContext.EvaluationId))
+            {
+                throw new LoggerException(Resources.DoubleEvaluation);
+            }
+
+            _evaluationInfos[args.BuildEventContext.EvaluationId] = evaluationInfo;
 
             return evaluationInfo;
         }
