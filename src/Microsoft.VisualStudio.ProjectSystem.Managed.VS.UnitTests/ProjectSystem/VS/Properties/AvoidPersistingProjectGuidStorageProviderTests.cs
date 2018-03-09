@@ -8,6 +8,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
+    [Trait("UnitTest", "ProjectSystem")]
     public class AvoidPersistingProjectGuidStorageProviderTests
     {
         [Theory]
