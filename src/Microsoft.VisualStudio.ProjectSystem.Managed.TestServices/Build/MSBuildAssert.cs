@@ -24,11 +24,12 @@ namespace Microsoft.Build
 
         private static string ProjectXmlToString(ProjectRootElement projectXml)
         {
-        
-            var writer = new StringWriterWithUtf8Encoding();
-            projectXml.Save(writer);
+            using (var writer = new StringWriterWithUtf8Encoding())
+            {
+                projectXml.Save(writer);
 
-            return writer.ToString();
+                return writer.ToString();
+            }
         }
 
         // MSBuild will write out the XML declaration if the encoding isn't UTF8, 
