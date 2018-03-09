@@ -24,34 +24,40 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private readonly IProjectThreadingService _threadingService;
         private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
         private readonly ActiveConfiguredProject<DebuggerLaunchProviders> _launchProviders;
-        private readonly IProjectGuidService2 _projectGuidService;
         private IVsStartupProjectsListService _startupProjectsListService;
         private Guid _projectGuid;
         private IDisposable _subscription;
 
         [ImportingConstructor]
         public StartupProjectRegistrar(
+            UnconfiguredProject project,
             IProjectThreadingService threadingService,
-            [Import(typeof(IProjectGuidService))]IProjectGuidService2 projectGuidService,
             IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
             ActiveConfiguredProject<DebuggerLaunchProviders> launchProviders)
-            : this(AsyncServiceProvider.GlobalProvider, threadingService, projectGuidService, projectSubscriptionService, launchProviders)
+            : this(project, AsyncServiceProvider.GlobalProvider, threadingService, projectSubscriptionService, launchProviders)
         {
         }
 
         public StartupProjectRegistrar(
+            UnconfiguredProject project,
             IAsyncServiceProvider serviceProvider,
             IProjectThreadingService threadingService,
-            IProjectGuidService2 projectGuidService,
             IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
             ActiveConfiguredProject<DebuggerLaunchProviders> launchProviders)
         : base(threadingService.JoinableTaskContext)
         {
             _serviceProvider = serviceProvider;
             _threadingService = threadingService;
-            _projectGuidService = projectGuidService;
             _projectSubscriptionService = projectSubscriptionService;
             _launchProviders = launchProviders;
+
+            ProjectGuidServices = new OrderPrecedenceImportCollection<IProjectGuidService>(projectCapabilityCheckProvider: project);
+        }
+
+        [ImportMany]
+        public OrderPrecedenceImportCollection<IProjectGuidService> ProjectGuidServices
+        {
+            get;
         }
 
         [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
@@ -63,8 +69,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            _projectGuid = await _projectGuidService.GetProjectGuidAsync()
-                                                    .ConfigureAwait(false);
+            IProjectGuidService2 projectGuidService = ProjectGuidServices.FirstOrDefault()?.Value as IProjectGuidService2;
+            if (projectGuidService == null)
+                return;
+
+            _projectGuid = await projectGuidService.GetProjectGuidAsync()
+                                                   .ConfigureAwait(false);
 
             Assumes.False(_projectGuid == Guid.Empty);
 
@@ -83,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             if (initialized)
             {
-                _subscription.Dispose();
+                _subscription?.Dispose();
             }
 
             return Task.CompletedTask;

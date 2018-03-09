@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
-    [ProjectCommand(ManagedProjectSystemPackage.ManagedProjectSystemOrderCommandSet, ManagedProjectSystemPackage.MoveUpCmdId)]
+    [ProjectCommand(ManagedProjectSystemPackage.FSharpProjectCmdSet, ManagedProjectSystemPackage.MoveUpCmdId)]
     [AppliesTo(ProjectCapability.SortByDisplayOrder)]
     internal class MoveUpCommand : AbstractMoveCommand
     {

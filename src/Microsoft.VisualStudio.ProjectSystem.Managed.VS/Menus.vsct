@@ -97,30 +97,6 @@
     </Groups>
 
     <Buttons>
-      <Button guid="guidManagedProjectSystemOrderCommandSet" id="cmdidMoveUp" priority="0x100">
-        <Parent guid="guidManagedProjectSystemOrderCommandSet" id="OrderingGroup" />
-        <CommandFlag>TextChanges</CommandFlag>
-        <CommandFlag>DynamicVisibility</CommandFlag>
-        <CommandFlag>DefaultInvisible</CommandFlag>
-        <CommandFlag>DefaultDisabled</CommandFlag>
-        <Strings>
-          <ButtonText>&amp;Move Up</ButtonText>
-          <CommandName>MoveUp</CommandName>
-        </Strings>
-      </Button>
-
-      <Button guid="guidManagedProjectSystemOrderCommandSet" id="cmdidMoveDown" priority="0x101">
-        <Parent guid="guidManagedProjectSystemOrderCommandSet" id="OrderingGroup" />
-        <CommandFlag>TextChanges</CommandFlag>
-        <CommandFlag>DynamicVisibility</CommandFlag>
-        <CommandFlag>DefaultInvisible</CommandFlag>
-        <CommandFlag>DefaultDisabled</CommandFlag>
-        <Strings>
-          <ButtonText>&amp;Move Down</ButtonText>
-          <CommandName>MoveDown</CommandName>
-        </Strings>
-      </Button>
-
       <Button guid="guidManagedProjectSystemOrderCommandSet" id="cmdidAddNewItemAbove" priority="0x102">
         <Parent guid="guidManagedProjectSystemOrderCommandSet" id="AddAboveGroup"/>
         <Icon guid="guidSHLMainMenu" id="1"/>
@@ -212,11 +188,6 @@
       </Button>
     </Buttons>
   </Commands>
-
-  <KeyBindings>
-    <KeyBinding guid="guidManagedProjectSystemOrderCommandSet" id="cmdidMoveUp" editor="SlnExplorerGuid" key1="VK_UP" mod1="Alt" />
-    <KeyBinding guid="guidManagedProjectSystemOrderCommandSet" id="cmdidMoveDown" editor="SlnExplorerGuid" key1="VK_DOWN" mod1="Alt" />    
-  </KeyBindings>
 
   <Symbols>
     <!-- This is out managed package guid. -->

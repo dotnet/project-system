@@ -12,6 +12,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class UnconfiguredProjectFactory
     {
+        public static UnconfiguredProject ImplementFullPath(string fullPath)
+        {
+            return Create(filePath: fullPath);
+        }
+
         public static UnconfiguredProject Create(object hostObject = null, IEnumerable<string> capabilities = null, string filePath = null,
             IProjectConfigurationsService projectConfigurationsService = null, ConfiguredProject configuredProject = null, Encoding projectEncoding = null,
             IProjectCapabilitiesScope scope = null)
