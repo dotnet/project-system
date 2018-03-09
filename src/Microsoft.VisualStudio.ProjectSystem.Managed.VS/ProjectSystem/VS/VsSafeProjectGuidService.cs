@@ -16,6 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IProjectAsyncLoadDashboard _loadDashboard;
 
+        [ImportingConstructor]
         public VsSafeProjectGuidService(UnconfiguredProject project, [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService, IProjectAsyncLoadDashboard loadDashboard)
         {
             _tasksService = tasksService;
