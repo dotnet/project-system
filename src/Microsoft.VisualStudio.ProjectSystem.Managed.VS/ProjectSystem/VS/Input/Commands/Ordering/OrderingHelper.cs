@@ -3,10 +3,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-
 using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 
@@ -45,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
             Requires.NotNull(projectTree, nameof(projectTree));
 
-            return GetSiblingByMoveAction(projectTree, MoveAction.Up) != null;
+            return GetSiblingByMoveAction(projectTree, MoveAction.Above) != null;
         }
 
         /// <summary>
@@ -56,42 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(projectTree, nameof(projectTree));
 
-            return TryMove(project, projectTree, MoveAction.Up);
-        }
-
-        /// <summary>
-        /// Move the project tree up over one of its siblings.
-        /// </summary>
-        public static Task<bool> TryMoveUpAsync(ConfiguredProject configuredProject, IProjectTree projectTree)
-        {
-            Requires.NotNull(configuredProject, nameof(configuredProject));
-            Requires.NotNull(projectTree, nameof(projectTree));
-
-            return TryMoveAsync(configuredProject, projectTree, MoveAction.Up);
-        }
-
-        /// <summary>
-        /// Move a project tree above the target project tree.
-        /// </summary>
-        public static bool TryMoveAbove(Project project, IProjectTree projectTree, IProjectTree target)
-        {
-            Requires.NotNull(project, nameof(project));
-            Requires.NotNull(projectTree, nameof(projectTree));
-            Requires.NotNull(target, nameof(target));
-
-            return TryMove(project, projectTree, target, MoveAction.Up);
-        }
-
-        /// <summary>
-        /// Move a project tree above the target project tree.
-        /// </summary>
-        public static Task<bool> TryMoveAboveAsync(ConfiguredProject configuredProject, IProjectTree projectTree, IProjectTree target)
-        {
-            Requires.NotNull(configuredProject, nameof(configuredProject));
-            Requires.NotNull(projectTree, nameof(projectTree));
-            Requires.NotNull(target, nameof(target));
-
-            return TryMoveAsync(configuredProject, projectTree, target, MoveAction.Up);
+            return TryMove(project, projectTree, MoveAction.Above);
         }
 
         /// <summary>
@@ -101,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
             Requires.NotNull(projectTree, nameof(projectTree));
 
-            return GetSiblingByMoveAction(projectTree, MoveAction.Down) != null;
+            return GetSiblingByMoveAction(projectTree, MoveAction.Below) != null;
         }
 
         /// <summary>
@@ -112,142 +75,94 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(projectTree, nameof(projectTree));
 
-            return TryMove(project, projectTree, MoveAction.Down);
+            return TryMove(project, projectTree, MoveAction.Below);
         }
 
         /// <summary>
-        /// Move the project tree down over one of its siblings.
+        /// Move the respective item elements above the target.
         /// </summary>
-        public static Task<bool> TryMoveDownAsync(ConfiguredProject configuredProject, IProjectTree projectTree)
+        public static bool TryMoveElementsAbove(Project project, ImmutableArray<ProjectItemElement> elements, IProjectTree target)
         {
-            Requires.NotNull(configuredProject, nameof(configuredProject));
-            Requires.NotNull(projectTree, nameof(projectTree));
-
-            return TryMoveAsync(configuredProject, projectTree, MoveAction.Down);
+            var referenceElement = GetReferenceElement(project, target, MoveAction.Above);
+            return TryMoveElements(elements, referenceElement, MoveAction.Above);
         }
 
         /// <summary>
-        /// Move a project tree below the target project tree.
+        /// Move the respective item elements below the target.
         /// </summary>
-        public static bool TryMoveBelow(Project project, IProjectTree projectTree, IProjectTree target)
+        public static bool TryMoveElementsBelow(Project project, ImmutableArray<ProjectItemElement> elements, IProjectTree target)
         {
-            Requires.NotNull(project, nameof(project));
-            Requires.NotNull(projectTree, nameof(projectTree));
-            Requires.NotNull(target, nameof(target));
-
-            return TryMove(project, projectTree, target, MoveAction.Down);
+            var referenceElement = GetReferenceElement(project, target, MoveAction.Below);
+            return TryMoveElements(elements, referenceElement, MoveAction.Below);
         }
 
         /// <summary>
-        /// Move a project tree below the project tree.
+        /// Move the respective item elements to the top of the target's children.
         /// </summary>
-        public static Task<bool> TryMoveBelowAsync(ConfiguredProject configuredProject, IProjectTree projectTree, IProjectTree target)
+        public static bool TryMoveElementsToTop(Project project, ImmutableArray<ProjectItemElement> elements, IProjectTree target)
         {
-            Requires.NotNull(configuredProject, nameof(configuredProject));
-            Requires.NotNull(projectTree, nameof(projectTree));
-            Requires.NotNull(target, nameof(target));
-
-            return TryMoveAsync(configuredProject, projectTree, target, MoveAction.Down);
-        }
-
-        /// <summary>
-        /// Gets the last child of a project tree.
-        /// The child will have a valid display order.
-        /// Returns null if there are no children, or no children with a valid display order.
-        /// </summary>
-        public static IProjectTree GetLastChild(IProjectTree projectTree)
-        {
-            Requires.NotNull(projectTree, nameof(projectTree));
-
-            return GetChildren(projectTree).LastOrDefault();
-        }
-
-        /// <summary>
-        /// Gets the first child of a project tree.
-        /// The child will have a valid display order.
-        /// Returns null if there are no children, or no children with a valid display order.
-        /// </summary>
-        public static IProjectTree GetFirstChild(IProjectTree projectTree)
-        {
-            Requires.NotNull(projectTree, nameof(projectTree));
-
-            return GetChildren(projectTree).FirstOrDefault();
-        }
-
-        /// <summary>
-        /// Get the difference to see what was added.
-        /// We do a sanity check to make sure they have a valid display order.
-        /// We also order the added nodes by their display order.
-        /// </summary>
-        public static ImmutableArray<IProjectTree> GetAddedNodes(IProjectTree previousTarget, IProjectTree currentTarget)
-        {
-            Requires.NotNull(previousTarget, nameof(previousTarget));
-            Requires.NotNull(currentTarget, nameof(currentTarget));
-
-            return currentTarget.Children
-                .Where(updatedChild => IsAddedNode(previousTarget, updatedChild))
-                .OrderBy(GetDisplayOrder)
-                .ToImmutableArray();
-        }
-
-        /// <summary>
-        /// This moves the nodes above the target's first child. 
-        /// If there are no children with a valid display order of the target or the target is an empty folder, it will try the parent target's first child.
-        /// </summary>
-        public static bool TryMoveNodesToTop(Project project, IEnumerable<IProjectTree> nodes, IProjectTree target)
-        {
-            Requires.NotNull(project, nameof(project));
-            Requires.NotNull(nodes, nameof(nodes));
-            Requires.NotNull(target, nameof(target));
-
-            // Move added nodes to the top. 
-            var nodeToAddAbove = GetFirstChild(target);
-
-            // This could have been an empty folder and nodeToAddAbove is null, therefore
-            //     get the first child of the target's parent.
-            // Empty folders do not have a valid display order.
-            // In the future, if we want to order empty folders, meaning they have a valid display order, 
-            //     this will need to be extended to handle that behavior.
-
-            // This recursively tries to find a node to work with. If there is none at all, this will break on project root.
-            var currentTarget = target;
-            while(nodeToAddAbove == null && currentTarget.IsFolder && !GetChildren(currentTarget).Any())
+            var targetChild = GetChildren(target).FirstOrDefault();
+            if (targetChild == null)
             {
-                currentTarget = currentTarget.Parent;
-                nodeToAddAbove = GetFirstChild(currentTarget);
-            }
-
-            if (nodeToAddAbove != null && nodes.Any())
-            {
-                var didAllMoveSuccessfully = true;
-
-                foreach (var node in nodes)
+                targetChild = GetChildren(target.Parent).FirstOrDefault();
+                if (targetChild == null)
                 {
-                    if (!TryMoveAbove(project, node, nodeToAddAbove))
-                    {
-                        didAllMoveSuccessfully = false;
-                    }
+                    return false;
                 }
-
-                return didAllMoveSuccessfully;
             }
 
-            return false;
+            var referenceElement = GetReferenceElement(project, targetChild, MoveAction.Above);
+            return TryMoveElements(elements, referenceElement, MoveAction.Above);
         }
 
         /// <summary>
-        /// This moves the nodes above the target's first child. 
-        /// If there are no children with a valid display order of the target or the target is an empty folder, it will try the parent target's first child.
+        /// Get project item elements based on the project tree.
+        /// Project tree can be a folder or item.
         /// </summary>
-        public static Task<bool> TryMoveNodesToTopAsync(ConfiguredProject configuredProject, IEnumerable<IProjectTree> nodes, IProjectTree target)
+        public static ImmutableArray<ProjectItemElement> GetElements(Project project, IProjectTree projectTree)
         {
-            return ModifyProjectAsync(configuredProject, project => TryMoveNodesToTop(project, nodes, target));
+            var includes = GetEvaluatedIncludes(projectTree);
+
+            var elements = new List<ProjectItemElement>();
+
+            foreach (var include in includes)
+            {
+                // GetItemsByEvaluatedInclude is efficient and uses a MultiDictionary underneath.
+                //     It uses this: new MultiDictionary<string, ProjectItem>(StringComparer.OrdinalIgnoreCase);
+                var item = project.GetItemsByEvaluatedInclude(include).FirstOrDefault();
+
+                // We only care about adding one item associated with the evaluated include.
+                if (item?.Xml is ProjectItemElement element)
+                {
+                    elements.Add(element);
+                }
+            }
+
+            return elements.ToImmutableArray();
+        }
+
+        /// <summary>
+        /// If the project gets any additional items from the callback, this will return those added items.
+        /// </summary>
+        public static async Task<ImmutableArray<ProjectItemElement>> AddItems(ConfiguredProject configuredProject, IProjectLockService projectLockService, Func<Task> addItems)
+        {
+            var accessor = new ProjectAccessor(projectLockService);
+
+            var previousIncludes = await accessor.OpenProjectForReadAsync(configuredProject, project =>
+            {
+                return project.AllEvaluatedItems.Select(x => x.EvaluatedInclude).ToImmutableHashSet(StringComparer.OrdinalIgnoreCase);
+            }).ConfigureAwait(true);
+
+            await addItems().ConfigureAwait(true);
+
+            return 
+                await accessor.OpenProjectForReadAsync(configuredProject, project => GetAddedElements(previousIncludes, project)).ConfigureAwait(true);
         }
 
         /// <summary>
         /// Determines if we are moving up or down files or folders.
         /// </summary>
-        private enum MoveAction { Up = 0, Down = 1 }
+        private enum MoveAction { Above = 0, Below = 1 }
 
         /// <summary>
         /// Gets a read-only collection with the evaluated includes associated with a project tree.
@@ -291,48 +206,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         }
 
         /// <summary>
-        /// Get project item elements based on the project tree.
-        /// Project tree can be a folder or item.
-        /// </summary>
-        private static ReadOnlyCollection<ProjectItemElement> GetElements(Project project, IProjectTree projectTree)
-        {
-            var includes = GetEvaluatedIncludes(projectTree);
-
-            var elements = new List<ProjectItemElement>();
-
-            foreach (var include in includes)
-            {
-                // GetItemsByEvaluatedInclude is efficient and uses a MultiDictionary underneath.
-                //     It uses this: new MultiDictionary<string, ProjectItem>(StringComparer.OrdinalIgnoreCase);
-                var item = project.GetItemsByEvaluatedInclude(include).FirstOrDefault();
-
-                // We only care about adding one item associated with the evaluated include.
-                if (item?.Xml is ProjectItemElement element)
-                {
-                    elements.Add(element);
-                }
-            }
-
-            return elements.AsReadOnly();
-        }
-
-        /// <summary>
         /// Checks to see if the display order is valid.
         /// </summary>
         private static bool IsValidDisplayOrder(int displayOrder)
         {
             return displayOrder > 0 && displayOrder != int.MaxValue;
-        }
-
-        /// <summary>
-        /// Checks to see if the target child is a node that was added based on the target tree.
-        /// </summary>
-        private static bool IsAddedNode(IProjectTree target, IProjectTree targetChild)
-        {
-            var hasChild = target.TryFind(targetChild.Identity, out var child);
-            var hasValidTargetChild = HasValidDisplayOrder(targetChild);
-
-            return (!hasChild || (hasChild && !HasValidDisplayOrder(child))) && hasValidTargetChild;
         }
 
         /// <summary>
@@ -412,10 +290,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
             switch (moveAction)
             {
-                case MoveAction.Up:
+                case MoveAction.Above:
                     return GetPreviousSibling(projectTree);
 
-                case MoveAction.Down:
+                case MoveAction.Below:
                     return GetNextSibling(projectTree);
             }
 
@@ -430,10 +308,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
             switch (moveAction)
             {
-                case MoveAction.Up:
+                case MoveAction.Above:
                     return GetElements(project, projectTree).FirstOrDefault();
 
-                case MoveAction.Down:
+                case MoveAction.Below:
                     return GetElements(project, projectTree).LastOrDefault();
             }
 
@@ -444,7 +322,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// Moves child elements based on the reference element and move action.
         /// </summary>
         /// <param name="referenceElement">element for which moved items will be above or below it</param>
-        private static bool TryMoveElements(ReadOnlyCollection<ProjectItemElement> elements, ProjectItemElement referenceElement, MoveAction moveAction)
+        private static bool TryMoveElements(ImmutableArray<ProjectItemElement> elements, ProjectItemElement referenceElement, MoveAction moveAction)
         {
             var parent = referenceElement.Parent;
             if (parent == null || !elements.Any())
@@ -453,11 +331,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             }
 
             // Sanity check
-            var atLeastOneElementMoved = false;
+            var didAllElementsMove = true;
 
             switch (moveAction)
             {
-                case MoveAction.Up:
+                case MoveAction.Above:
                     foreach (var element in elements)
                     {
                         var elementParent = element.Parent;
@@ -465,15 +343,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                         {
                             elementParent.RemoveChild(element);
                             parent.InsertBeforeChild(element, referenceElement);
-                            atLeastOneElementMoved = true;
+                        }
+                        else
+                        {
+                            didAllElementsMove = false;
                         }
                     }
                     break;
 
-                case MoveAction.Down:
+                case MoveAction.Below:
                     // Iterate in reverse order when we are wanting to move elements down.
                     // If we didn't do this, the end result would be the moved elements are reversed.
-                    for (var i = elements.Count - 1; i >= 0; --i)
+                    for (var i = elements.Length - 1; i >= 0; --i)
                     {
                         var element = elements[i];
 
@@ -482,13 +363,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                         {
                             elementParent.RemoveChild(element);
                             parent.InsertAfterChild(element, referenceElement);
-                            atLeastOneElementMoved = true;
+                        }
+                        else
+                        {
+                            didAllElementsMove = false;
                         }
                     }
                     break;
             }
 
-            return atLeastOneElementMoved;
+            return didAllElementsMove;
         }
 
         /// <summary>
@@ -534,40 +418,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         }
 
         /// <summary>
-        /// Call to get a callback that allows modifying the project.
+        /// Gets the difference between the previous evaluated includes and the project's evaluated includes to find what items were added.
         /// </summary>
-        private static async Task<bool> ModifyProjectAsync(ConfiguredProject configuredProject, Func<Project, bool> modify)
+        private static ImmutableArray<ProjectItemElement> GetAddedElements(ImmutableHashSet<string> previousIncludes, Project project)
         {
-            var projectLockService = configuredProject.UnconfiguredProject.ProjectService.Services.ProjectLockService;
-
-            // Do a write lock.
-            using (var writeLock = await projectLockService.WriteLockAsync())
-            {
-                // Grab the project.
-                var project = await writeLock.GetProjectAsync(configuredProject).ConfigureAwait(true);
-
-                // We must perform a checkout of the project file before we can modify it.
-                await writeLock.CheckoutAsync(project.FullPath).ConfigureAwait(true);
-
-                return modify(project);
-            }
-        }
-
-        /// <summary>
-        /// Move project elements based on the given project tree and move action. 
-        /// </summary>
-        private static Task<bool> TryMoveAsync(ConfiguredProject configuredProject, IProjectTree projectTree, MoveAction moveAction)
-        {
-            return ModifyProjectAsync(configuredProject, project => TryMove(project, projectTree, moveAction));
-        }
-
-
-        /// <summary>
-        /// Move project elements based on the given project tree and move action. 
-        /// </summary>
-        private static Task<bool> TryMoveAsync(ConfiguredProject configuredProject, IProjectTree projectTree, IProjectTree referenceProjectTree, MoveAction moveAction)
-        {
-            return ModifyProjectAsync(configuredProject, project => TryMove(project, projectTree, referenceProjectTree, moveAction));
+            return project.AllEvaluatedItems
+                .Where(x => !previousIncludes.Contains(x.EvaluatedInclude))
+                .Select(x => x.Xml)
+                .ToImmutableArray();
         }
     }
 }

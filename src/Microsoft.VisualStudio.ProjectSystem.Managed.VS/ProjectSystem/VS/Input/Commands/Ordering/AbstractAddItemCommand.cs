@@ -1,14 +1,16 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Microsoft.Build.Construction;
+using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.Shell;
-
+using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
+using IOleServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
@@ -35,10 +37,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
         protected abstract Task OnAddingNodesAsync(IProjectTree nodeToAddTo);
 
-        protected virtual Task OnAddedNodesAsync(ConfiguredProject configuredProject, IProjectTree target, IEnumerable<IProjectTree> addedNodes, IProjectTree updatedTarget)
+        protected virtual void OnAddedElements(Project project, ImmutableArray<ProjectItemElement> elements, IProjectTree target, IProjectTree nodeToAddTo)
         {
-            // We are not using the updated target so we don't step over the added nodes.
-            return OrderingHelper.TryMoveNodesToTopAsync(configuredProject, addedNodes, target);
+            OrderingHelper.TryMoveElementsToTop(project, elements, nodeToAddTo);
         }
 
         protected Task ShowAddNewFileDialogAsync(IProjectTree target)
@@ -67,19 +68,53 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
             var nodeToAddTo = GetNodeToAddTo(node);
 
-            // Call OnAddingNodesAsync.
-            // Then publish changes that could have taken place in OnAddingNodesAsync.
-            await OnAddingNodesAsync(nodeToAddTo).ConfigureAwait(true);
-            await _projectTree.TreeService.PublishLatestTreeAsync(waitForFileSystemUpdates: true).ConfigureAwait(true);
+            var addedElements = await OrderingHelper.AddItems(_projectVsServices.ActiveConfiguredProject, _projectVsServices.ProjectLockService, () => OnAddingNodesAsync(nodeToAddTo)).ConfigureAwait(true);
 
-            var updatedNode = _projectTree.CurrentTree.Find(node.Identity);
-            var updatedNodeToAddTo = _projectTree.CurrentTree.Find(nodeToAddTo.Identity);
-            var addedNodes = OrderingHelper.GetAddedNodes(nodeToAddTo, updatedNodeToAddTo);
-
-            if (addedNodes.Any())
+            if (addedElements.Any())
             {
-                // Make sure to change ConfigureAwait to "true" if we need switch back.
-                await OnAddedNodesAsync(_projectVsServices.ActiveConfiguredProject, node, addedNodes, updatedNode).ConfigureAwait(false);
+                await new ProjectAccessor(_projectVsServices.ProjectLockService).OpenProjectForWriteAsync(_projectVsServices.ActiveConfiguredProject, project => OnAddedElements(project, addedElements, node, nodeToAddTo)).ConfigureAwait(true);
+
+                // Re-select the node that was the target.
+                await _projectTree.TreeService.PublishLatestTreeAsync(waitForFileSystemUpdates: true).ConfigureAwait(true);
+                HACK_NodeHelper.Select(_projectVsServices.ActiveConfiguredProject, _serviceProvider, node);
+
+                // If the node we wanted to add to is a folder, make sure it is expanded.
+                if (nodeToAddTo.IsFolder)
+                {
+                    HACK_NodeHelper.ExpandFolder(_projectVsServices.ActiveConfiguredProject, _serviceProvider, nodeToAddTo);
+                }
+
+                await Task.Delay(1000).ConfigureAwait(true);
+
+                if (addedElements.Length == 1)
+                {
+                    var unconfiguredProject = _projectVsServices.ActiveConfiguredProject.UnconfiguredProject;
+                    var filePath = unconfiguredProject.MakeRooted(addedElements[0].Include);
+                    var addedNode = _projectTree.CurrentTree.FindImmediateChildByPath(filePath);
+
+                    Assumes.NotNull(addedNode);
+
+                    var uiShellOpenDocument = _serviceProvider.GetService(typeof(SVsUIShellOpenDocument)) as IVsUIShellOpenDocument;
+
+                    var sp = (IOleServiceProvider)_serviceProvider.GetService(typeof(IOleServiceProvider));
+                    var docDataExisting = IntPtr.Zero;
+                    var logicalView = VSConstants.LOGVIEWID.Code_guid;
+                    var openFlags = __VSOSEFLAGS.OSE_ChooseBestStdEditor;
+                    var caption = "%2";  // %2 tells the IDE to call GetProperty(itemid, VSHPROPID_Caption, ...) to get the caption for the window.
+                    Verify.HResult(uiShellOpenDocument.OpenStandardEditor(
+                        (uint)openFlags,
+                        filePath,
+                        ref logicalView,
+                        caption,
+                        (IVsUIHierarchy)unconfiguredProject.Services.HostObject,
+                        addedNode.GetHierarchyId(),
+                        docDataExisting,
+                        sp,
+                        out var windowFrame));
+                    //Guid projectDesignerGuid = new Guid("8a5aa6cf-46e3-4520-a70a-7393d15233e9");//_projectVsServices.VsHierarchy.GetGuidProperty(VsHierarchyPropID.ProjectDesignerEditor);
+
+                 //   VsShellUtilities.OpenDocument(_serviceProvider, filePath, VSConstants.LOGVIEWID.Code_guid, out var hierarchy, out var itemId, out var windowFrame);
+                }
             }
 
             return true;
