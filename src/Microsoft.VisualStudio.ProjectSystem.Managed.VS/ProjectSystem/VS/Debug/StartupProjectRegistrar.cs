@@ -22,6 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     {
         private readonly IAsyncServiceProvider _serviceProvider;
         private readonly IProjectThreadingService _threadingService;
+        private readonly ISafeProjectGuidService _projectGuidService;
         private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
         private readonly ActiveConfiguredProject<DebuggerLaunchProviders> _launchProviders;
         private IVsStartupProjectsListService _startupProjectsListService;
@@ -34,9 +35,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         public StartupProjectRegistrar(
             UnconfiguredProject project,
             IProjectThreadingService threadingService,
+            ISafeProjectGuidService projectGuidService,
             IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
             ActiveConfiguredProject<DebuggerLaunchProviders> launchProviders)
-            : this(project, AsyncServiceProvider.GlobalProvider, threadingService, projectSubscriptionService, launchProviders)
+            : this(project, AsyncServiceProvider.GlobalProvider, threadingService, projectGuidService, projectSubscriptionService, launchProviders)
         {
         }
 
@@ -44,22 +46,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             UnconfiguredProject project,
             IAsyncServiceProvider serviceProvider,
             IProjectThreadingService threadingService,
+            ISafeProjectGuidService projectGuidService,
             IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
             ActiveConfiguredProject<DebuggerLaunchProviders> launchProviders)
         : base(threadingService.JoinableTaskContext)
         {
             _serviceProvider = serviceProvider;
             _threadingService = threadingService;
+            _projectGuidService = projectGuidService;
             _projectSubscriptionService = projectSubscriptionService;
             _launchProviders = launchProviders;
-
-            ProjectGuidServices = new OrderPrecedenceImportCollection<IProjectGuidService>(projectCapabilityCheckProvider: project);
-        }
-
-        [ImportMany]
-        public OrderPrecedenceImportCollection<IProjectGuidService> ProjectGuidServices
-        {
-            get;
         }
 
         [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
@@ -71,12 +67,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            IProjectGuidService2 projectGuidService = ProjectGuidServices.FirstOrDefault()?.Value as IProjectGuidService2;
-            if (projectGuidService == null)
-                return;
-
-            _projectGuid = await projectGuidService.GetProjectGuidAsync()
-                                                   .ConfigureAwait(false);
+            _projectGuid = await _projectGuidService.GetProjectGuidAsync()
+                                                    .ConfigureAwait(false);
 
             Assumes.False(_projectGuid == Guid.Empty);
 
