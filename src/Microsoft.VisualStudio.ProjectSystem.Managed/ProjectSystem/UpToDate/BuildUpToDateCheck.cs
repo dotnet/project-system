@@ -102,10 +102,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             _link = ProjectDataSources.SyncLinkTo(
                 _configuredProject.Services.ProjectSubscription.JointRuleSource.SourceBlock.SyncLinkOptions(new StandardRuleDataflowLinkOptions { RuleNames = ProjectPropertiesSchemas }),
-                _configuredProject.Services.ProjectSubscription.ImportTreeSource.SourceBlock.SyncLinkOptions(),
                 _configuredProject.Services.ProjectSubscription.SourceItemsRuleSource.SourceBlock.SyncLinkOptions(),
                 _projectItemSchemaService.SourceBlock.SyncLinkOptions(),
-                target: new ActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectImportTreeSnapshot, IProjectSubscriptionUpdate, IProjectItemSchema>>>(e => OnChanged(e)),
+                target: new ActionBlock<IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectItemSchema>>>(e => OnChanged(e)),
                 linkOptions: new DataflowLinkOptions { PropagateCompletion = true });
         }
 
@@ -116,6 +115,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _msBuildProjectFullPath = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, _msBuildProjectFullPath);
             _msBuildProjectDirectory = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectDirectoryProperty, _msBuildProjectDirectory);
             _outputRelativeOrFullPath = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputPathProperty, _outputRelativeOrFullPath);
+
+            var allProjects = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildAllProjectsProperty, string.Empty)
+                .Split(';')
+                .Where(path => !string.IsNullOrWhiteSpace(path));
+            _imports.Clear();
+            _imports.AddRange(allProjects);
 
             if (e.ProjectChanges.TryGetValue(ResolvedAnalyzerReference.SchemaName, out var changes) &&
                 changes.Difference.AnyChanges)
@@ -186,21 +191,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
         }
 
-        private void OnProjectImportsChanged(IProjectImportTreeSnapshot e)
-        {
-            void AddImports(IReadOnlyList<IProjectImportSnapshot> value)
-            {
-                foreach (var import in value)
-                {
-                    _imports.Add(import.ProjectPath);
-                    AddImports(import.Imports);
-                }
-            }
-
-            _imports.Clear();
-            AddImports(e.Value);
-        }
-
         private static string GetLink(IImmutableDictionary<string, string> itemMetadata) =>
             itemMetadata.TryGetValue(Link, out var link) ? link : null;
 
@@ -251,11 +241,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
         }
 
-        private void OnChanged(IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectImportTreeSnapshot, IProjectSubscriptionUpdate, IProjectItemSchema>> e)
+        private void OnChanged(IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectItemSchema>> e)
         {
             OnProjectChanged(e.Value.Item1);
-            OnProjectImportsChanged(e.Value.Item2);
-            OnSourceItemChanged(e.Value.Item3, e.Value.Item4);
+            OnSourceItemChanged(e.Value.Item2, e.Value.Item3);
             _lastVersionSeen = e.DataSourceVersions[ProjectDataSources.ConfiguredProjectVersion];
         }
 
