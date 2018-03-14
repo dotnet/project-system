@@ -14,6 +14,9 @@ indent_size = 4
 insert_final_newline = true
 charset = utf-8-bom
 
+[*.ps1]
+indent_size = 2
+
 # Xml project files
 [*.{csproj,vbproj,vcxproj,vcxproj.filters,proj,projitems,shproj}]
 indent_size = 2
