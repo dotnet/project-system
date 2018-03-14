@@ -5,7 +5,6 @@ using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.ProjectSystem.VS.Interop;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
@@ -22,22 +21,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
         public VsShellUtilitiesHelper(IProjectThreadingService threadingService)
         {
             _threadingService = threadingService;
-        }
-
-        public async Task<(IVsHierarchy hierarchy, uint itemid, IVsPersistDocData docData, uint docCookie)> GetRDTDocumentInfoAsync(
-            IServiceProvider serviceProvider,
-            string fullPath)
-        {
-            await _threadingService.SwitchToUIThread();
-            VsShellUtilities.GetRDTDocumentInfo(serviceProvider, fullPath, out IVsHierarchy hierarchy, out uint itemid, out IVsPersistDocData persistDocData, out uint docCookie);
-            return (hierarchy, itemid, persistDocData, docCookie);
-        }
-
-        public async Task<IVsWindowFrame> OpenDocumentWithSpecificEditorAsync(IServiceProvider serviceProvider, string fullPath, Guid editorType, Guid logicalView)
-        {
-            await _threadingService.SwitchToUIThread();
-            return VsShellUtilities.OpenDocumentWithSpecificEditor(serviceProvider, fullPath, editorType, logicalView);
-
         }
 
         /// <summary>
