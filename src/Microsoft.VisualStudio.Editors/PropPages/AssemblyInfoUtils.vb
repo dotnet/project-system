@@ -161,7 +161,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     NeutralLanguageComboBox.Items.Add(_neutralLanguageNoneText)
 
                     'Followed by all possible cultures
-                    Dim AllCultures As CultureInfo() = CultureInfo.GetCultures(CultureTypes.NeutralCultures Or CultureTypes.SpecificCultures Or CultureTypes.InstalledWin32Cultures)
+                    Dim AllCultures As IEnumerable(Of CultureInfo) = CultureInfo.GetCultures(CultureTypes.NeutralCultures Or CultureTypes.SpecificCultures Or CultureTypes.InstalledWin32Cultures).
+                                                                   OrderBy(Function(language) language.DisplayName)
                     For Each Culture As CultureInfo In AllCultures
                         NeutralLanguageComboBox.Items.Add(Culture.DisplayName)
                     Next
