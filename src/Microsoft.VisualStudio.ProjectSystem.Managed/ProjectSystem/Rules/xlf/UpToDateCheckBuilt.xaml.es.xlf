@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="Rule|UpToDateCheckBuilt|DisplayName">
         <source>Up-to-date check built artifact</source>
-        <target state="translated">Actualización de artefacto compilado por comprobaciones</target>
+        <target state="translated">Artefacto de compilación para comprobar el estado de actualización</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|UpToDateCheckBuilt|Description">
