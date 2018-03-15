@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                 throw new ArgumentNullException(nameof(serviceProvider));
             }
 
-            IVsUIShell shell = serviceProvider.GetService(typeof(SVsUIShell)) as IVsUIShell;
+            var shell = serviceProvider.GetService(typeof(SVsUIShell)) as IVsUIShell;
 
             if (shell == null)
             {

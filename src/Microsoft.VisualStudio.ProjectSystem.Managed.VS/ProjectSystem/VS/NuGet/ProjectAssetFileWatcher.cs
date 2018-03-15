@@ -33,10 +33,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IProjectTreeProvider _fileSystemTreeProvider;
 
+#pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked corretly by the IDisposeable analyzer
         private CancellationTokenSource _watchedFileResetCancellationToken;
         private ITaskDelayScheduler _taskDelayScheduler;
-        private IVsFileChangeEx _fileChangeService;
         private IDisposable _treeWatcher;
+#pragma warning restore CA2213
+        private IVsFileChangeEx _fileChangeService;
         private uint _filechangeCookie;
         private string _fileBeingWatched;
         private byte[] _previousContentsHash;
@@ -183,7 +185,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             return hash;
         }
 
-        private string GetProjectAssetsFilePath(IProjectTree newTree, IProjectSubscriptionUpdate projectUpdate)
+        private static string GetProjectAssetsFilePath(IProjectTree newTree, IProjectSubscriptionUpdate projectUpdate)
         {
             var projectFilePath = projectUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectFullPathProperty, null);
 
@@ -211,7 +213,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             return projectAssetsFilePath;
         }
 
-        private IProjectTree FindProjectJsonNode(IProjectTree newTree, string projectFilePath)
+        private static IProjectTree FindProjectJsonNode(IProjectTree newTree, string projectFilePath)
         {
             if (newTree.TryFindImmediateChild("project.json", out IProjectTree projectJsonNode))
             {

@@ -17,10 +17,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
                                    [Import(ExportContractNames.ProjectTreeProviders.PhysicalViewTree)]Lazy<IProjectTreeProvider> treeProvider,
                                    Lazy<IPhysicalProjectTreeStorage> treeStorage)
         {
-            Requires.NotNull(treeService, nameof(treeService));
-            Requires.NotNull(treeProvider, nameof(treeProvider));
-            Requires.NotNull(treeStorage, nameof(treeStorage));
-
             _treeService = treeService;
             _treeProvider = treeProvider;
             _treeStorage = treeStorage;

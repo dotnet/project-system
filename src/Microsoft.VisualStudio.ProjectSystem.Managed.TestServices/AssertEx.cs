@@ -9,7 +9,7 @@ namespace Xunit
     {
         public static void CollectionLength<T>(IEnumerable<T> collection, int length)
         {
-            Action<T>[] lengthArray = new Action<T>[length];
+            var lengthArray = new Action<T>[length];
             for (int i = 0; i < length; i++)
             {
                 lengthArray[i] = delegate

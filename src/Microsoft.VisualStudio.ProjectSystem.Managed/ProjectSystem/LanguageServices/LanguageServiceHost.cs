@@ -19,7 +19,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     [Export(typeof(ILanguageServiceHost))]
     internal partial class LanguageServiceHost : OnceInitializedOnceDisposedAsync, ILanguageServiceHost
     {
+#pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked corretly by the IDisposeable analyzer
         private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
+#pragma warning restore CA2213
         private readonly IUnconfiguredProjectCommonServices _commonServices;
         private readonly Lazy<IProjectContextProvider> _contextProvider;
         private readonly IProjectAsynchronousTasksService _tasksService;
@@ -53,12 +55,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                    LanguageServiceHandlerManager languageServiceHandlerManager)
             : base(commonServices.ThreadingService.JoinableTaskContext)
         {
-            Requires.NotNull(contextProvider, nameof(contextProvider));
-            Requires.NotNull(tasksService, nameof(tasksService));
-            Requires.NotNull(activeConfiguredProjectSubscriptionService, nameof(activeConfiguredProjectSubscriptionService));
-            Requires.NotNull(activeProjectConfigurationRefreshService, nameof(activeProjectConfigurationRefreshService));
-            Requires.NotNull(languageServiceHandlerManager, nameof(languageServiceHandlerManager));
-
             _commonServices = commonServices;
             _contextProvider = contextProvider;
             _tasksService = tasksService;
@@ -272,7 +268,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             }).ConfigureAwait(false);
         }
 
-        private bool HasTargetFrameworksChanged(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
+        private static bool HasTargetFrameworksChanged(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
         {
             return e.Value.ProjectChanges.TryGetValue(ConfigurationGeneral.SchemaName, out IProjectChangeDescription projectChange) &&
                  projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.TargetFrameworksProperty);

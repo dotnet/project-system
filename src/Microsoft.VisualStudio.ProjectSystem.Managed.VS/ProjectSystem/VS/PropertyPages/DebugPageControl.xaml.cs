@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-        private void ClearGridError(DataGrid dataGrid)
+        private static void ClearGridError(DataGrid dataGrid)
         {
             try
             {

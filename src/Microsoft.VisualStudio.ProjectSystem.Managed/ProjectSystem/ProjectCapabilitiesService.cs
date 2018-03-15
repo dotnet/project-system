@@ -16,8 +16,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [ImportingConstructor]
         public ProjectCapabilitiesService(UnconfiguredProject project)
         {
-            Requires.NotNull(project, nameof(project));
-
             _project = project;
         }
 

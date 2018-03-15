@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
     public class DependenciesViewModelFactoryTests
     {
         [Fact]
-        public void DependenciesViewModelFactoryTests_CreateTargetViewModel_NoUnresolvedDependency()
+        public void CreateTargetViewModel_NoUnresolvedDependency()
         {
             var project = UnconfiguredProjectFactory.Create();
             var targetFramework = ITargetFrameworkFactory.Implement(moniker: "tFm1");
@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void DependenciesViewModelFactoryTests_CreateTargetViewModel_HasUnresolvedDependency()
+        public void CreateTargetViewModel_HasUnresolvedDependency()
         {
             var project = UnconfiguredProjectFactory.Create();
             var targetFramework = ITargetFrameworkFactory.Implement(moniker: "tFm1");
@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void DependenciesViewModelFactoryTests_CreateRootViewModel()
+        public void CreateRootViewModel()
         {
             var project = UnconfiguredProjectFactory.Create();
             var dependency = IDependencyFactory.FromJson(@"
@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         }
 
         [Fact]
-        public void DependenciesViewModelFactoryTests_GetDependenciesRootIcon()
+        public void GetDependenciesRootIcon()
         {
             var project = UnconfiguredProjectFactory.Create();
             var factory = new DependenciesViewModelFactory(project);

@@ -16,7 +16,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 {
     internal abstract class CrossTargetRuleSubscriberBase<T> : OnceInitializedOnceDisposedAsync, ICrossTargetSubscriber where T : IRuleChangeContext
     {
+#pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked corretly by the IDisposeable analyzer
         private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
+#pragma warning restore CA2213
         private readonly List<IDisposable> _evaluationSubscriptionLinks;
         private readonly List<IDisposable> _designTimeBuildSubscriptionLinks;
         private readonly IUnconfiguredProjectCommonServices _commonServices;
@@ -221,7 +223,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
             // We need to process the update within a lock to ensure that we do not release this context during processing.
             // TODO: Enable concurrent execution of updates themeselves, i.e. two separate invocations of HandleAsync
-            //       should be able to run concurrently. 
+            //       should be able to run concurrently.
             using (await _gate.DisposableWaitAsync().ConfigureAwait(true))
             {
                 // Get the inner workspace project context to update for this change.

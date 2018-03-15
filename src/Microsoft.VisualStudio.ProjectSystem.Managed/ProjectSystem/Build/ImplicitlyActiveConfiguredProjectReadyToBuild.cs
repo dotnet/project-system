@@ -21,9 +21,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
             ConfiguredProject configuredProject,
             IActiveConfiguredProjectProvider activeConfiguredProjectProvider)
         {
-            Requires.NotNull(configuredProject, nameof(configuredProject));
-            Requires.NotNull(activeConfiguredProjectProvider, nameof(activeConfiguredProjectProvider));
-
             _configuredProject = configuredProject;
             _activeConfiguredProjectProvider = activeConfiguredProjectProvider;
             _activationTask = new TaskCompletionSource<object>();

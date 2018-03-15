@@ -16,12 +16,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         internal override long GetCommandId() => ManagedProjectSystemPackage.GenerateNuGetPackageTopLevelBuildCmdId;
 
         internal override AbstractGenerateNuGetPackageCommand CreateInstanceCore(
-            UnconfiguredProject unconfiguredProject,
+            UnconfiguredProject project,
             IProjectThreadingService threadingService,
             Shell.SVsServiceProvider serviceProvider,
             GeneratePackageOnBuildPropertyProvider generatePackageOnBuildPropertyProvider)
         {
-            return new GenerateNuGetPackageTopLevelBuildMenuCommand(unconfiguredProject, threadingService, serviceProvider, generatePackageOnBuildPropertyProvider);
+            return new GenerateNuGetPackageTopLevelBuildMenuCommand(project, threadingService, serviceProvider, generatePackageOnBuildPropertyProvider);
         }
 
 

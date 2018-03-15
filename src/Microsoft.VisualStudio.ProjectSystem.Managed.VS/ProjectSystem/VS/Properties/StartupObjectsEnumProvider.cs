@@ -21,13 +21,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private readonly UnconfiguredProject _unconfiguredProject;
 
         [ImportingConstructor]
-        public StartupObjectsEnumProvider([Import(typeof(VisualStudioWorkspace))] Workspace workspace, UnconfiguredProject unconfiguredProject)
+        public StartupObjectsEnumProvider([Import(typeof(VisualStudioWorkspace))] Workspace workspace, UnconfiguredProject project)
         {
-            Requires.NotNull(workspace, nameof(workspace));
-            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
-
             _workspace = workspace;
-            _unconfiguredProject = unconfiguredProject;
+            _unconfiguredProject = project;
         }
 
         public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair> options)
@@ -45,16 +42,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <summary>
         /// When we implement WinForms support, we need to set this for VB winforms projects
         /// </summary>
-        private bool SearchForEntryPointsInFormsOnly => false;
+        private static bool SearchForEntryPointsInFormsOnly => false;
 
         [ImportingConstructor]
-        public StartupObjectsEnumGenerator(Workspace workspace, UnconfiguredProject unconfiguredProject)
+        public StartupObjectsEnumGenerator(Workspace workspace, UnconfiguredProject project)
         {
-            Requires.NotNull(workspace, nameof(workspace));
-            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
-
             _workspace = workspace;
-            _unconfiguredProject = unconfiguredProject;
+            _unconfiguredProject = project;
         }
 
         public async Task<ICollection<IEnumValue>> GetListedValuesAsync()

@@ -21,8 +21,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         private static ConcurrentBag<StringBuilder> s_builderPool = new ConcurrentBag<StringBuilder>();
 
         // These priorities are for graph nodes only and are used to group graph nodes 
-        // appropriatelly in order groups predefined order instead of alphabetically.
-        // Order is not changed for top dependency nodes only for grpah hierarchies.
+        // appropriately in order groups predefined order instead of alphabetically.
+        // Order is not changed for top dependency nodes only for graph hierarchies.
         public const int DiagnosticsErrorNodePriority = 100;
         public const int DiagnosticsWarningNodePriority = 101;
         public const int UnresolvedReferenceNodePriority = 110;

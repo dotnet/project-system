@@ -12,17 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     public class UnconfiguredProjectVsServicesTests
     {
         [Fact]
-        public void Constructor_NullAsCommonSevices_ThrowsArgumentNull()
-        {
-            var project = UnconfiguredProjectFactory.Create();
-
-            Assert.Throws<ArgumentNullException>("commonServices", () =>
-            {
-                new UnconfiguredProjectVsServices((IUnconfiguredProjectCommonServices)null);
-            });
-        }
-
-        [Fact]
         public void Constructor_ValueAsUnconfiguedProject_SetsVsHierarchyToHostObject()
         {
             var hierarchy = IVsHierarchyFactory.Create();

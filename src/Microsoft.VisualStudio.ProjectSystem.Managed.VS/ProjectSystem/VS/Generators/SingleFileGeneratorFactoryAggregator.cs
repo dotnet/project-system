@@ -25,8 +25,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
             [Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider,
             IVsUnconfiguredProjectIntegrationService projectIntegrationService)
         {
-            Requires.NotNull(serviceProvider, nameof(serviceProvider));
-            Requires.NotNull(projectIntegrationService, nameof(projectIntegrationService));
             _serviceProvider = serviceProvider;
             _projectIntegrationService = projectIntegrationService;
         }

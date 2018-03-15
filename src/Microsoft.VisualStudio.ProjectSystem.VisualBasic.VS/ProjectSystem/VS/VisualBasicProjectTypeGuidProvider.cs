@@ -12,14 +12,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     /// </summary>
     [Export(typeof(IItemTypeGuidProvider))]
     [AppliesTo(ProjectCapabilities.VB)]
-    internal class VisualBasicProjectGuidProvider : IItemTypeGuidProvider
+    internal class VisualBasicProjectTypeGuidProvider : IItemTypeGuidProvider
     {
         private static readonly Guid s_visualBasicProjectType = new Guid(VisualBasicProjectSystemPackage.LegacyProjectTypeGuid);
 
         [ImportingConstructor]
-        public VisualBasicProjectGuidProvider(UnconfiguredProject unconfiguredProject)
+        public VisualBasicProjectTypeGuidProvider(UnconfiguredProject project)
         {
-            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
         }
 
         public Guid ProjectTypeGuid
