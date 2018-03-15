@@ -3,6 +3,7 @@ using System;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
+    [Obsolete("This interface will be removed in a future release.", true)]
     public interface IPageMetadata
     {
         bool HasConfigurationCondition { get; }
