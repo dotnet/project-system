@@ -117,8 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _outputRelativeOrFullPath = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputPathProperty, _outputRelativeOrFullPath);
 
             var allProjects = e.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildAllProjectsProperty, string.Empty)
-                .Split(';')
-                .Where(path => !string.IsNullOrWhiteSpace(path));
+                .Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
             _imports.Clear();
             _imports.AddRange(allProjects);
 
