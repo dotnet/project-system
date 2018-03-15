@@ -15,12 +15,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Extensibility
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
     internal class ProjectExportProvider : IProjectExportProvider
     {
-        private IProjectServiceAccessor ProjectServiceAccesspr { get; }
+        private readonly IProjectServiceAccessor _projectServiceAccessor;
 
         [ImportingConstructor]
         public ProjectExportProvider(IProjectServiceAccessor serviceAccessor)
         {
-            ProjectServiceAccesspr = serviceAccessor;
+            _projectServiceAccessor = serviceAccessor;
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Extensibility
                 throw new ArgumentNullException(nameof(projectFilePath));
             }
 
-            var projectService = ProjectServiceAccesspr.GetProjectService();
+            var projectService = _projectServiceAccessor.GetProjectService();
             if (projectService == null)
             {
                 return null;
