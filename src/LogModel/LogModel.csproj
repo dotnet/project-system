@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net46</TargetFramework>
     <RootNamespace>Microsoft.VisualStudio.ProjectSystem.LogModel</RootNamespace>
     <AssemblyName>Microsoft.VisualStudio.ProjectSystem.LogModel</AssemblyName>
     <IsProductComponent>false</IsProductComponent>
