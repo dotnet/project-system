@@ -1040,7 +1040,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
                     return;
                 }
 
-                var msBuildTasks = tasks.Where(task => task.Name == "MSBuild");
+                var msBuildTasks = tasks.Where(task => task.Name == "MSBuild" || task.Name == "MsBuild");
 
                 foreach (var taskInfo in msBuildTasks)
                 {
