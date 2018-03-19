@@ -20,7 +20,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     {
         private class ViewModelData
         {
-            public TestUnconfiguredPropertyProvider UnconfiguredProvider { get; set; }
             public IList<ILaunchProfile> Profiles { get; set; }
             public ILaunchSettingsProvider ProfileProvider { get; set; }
             public ILaunchSettings LaunchProfiles { get; set; }
@@ -86,12 +85,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         [Fact]
         public async Task DebugPageViewModel_NoProfiles()
         {
-            var unconfiguredProvider = new TestUnconfiguredPropertyProvider();
             var profiles = new List<ILaunchProfile>();
 
             var viewModelData = new ViewModelData()
             {
-                UnconfiguredProvider = unconfiguredProvider,
                 Profiles = profiles,
             };
 
@@ -110,7 +107,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         [Fact]
         public async Task DebugPageViewModel_PropertyChange()
         {
-            var unconfiguredProvider = new TestUnconfiguredPropertyProvider();
             var profiles = new List<ILaunchProfile>()
             {
                 {new LaunchProfile() {Name="p1", CommandName="test", DoNotPersist = true}}
@@ -118,7 +114,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
             var viewModelData = new ViewModelData()
             {
-                UnconfiguredProvider = unconfiguredProvider,
                 Profiles = profiles,
                 UIProviders = new List<Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>>()
                 {
