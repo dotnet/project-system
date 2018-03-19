@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
     internal class AddExistingItemCommand : AbstractAddItemCommand
     {
         [ImportingConstructor]
-        public AddExistingItemCommand(IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, SVsServiceProvider serviceProvider) : base(projectTree, projectVsServices, serviceProvider)
+        public AddExistingItemCommand(IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, SVsServiceProvider serviceProvider, IProjectAccessor accessor) : base(projectTree, projectVsServices, serviceProvider, accessor)
         {
         }
 

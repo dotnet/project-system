@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Microsoft.Build.Construction;
+using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.Shell;
-
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
@@ -17,8 +17,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         private readonly IPhysicalProjectTree _projectTree;
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly SVsServiceProvider _serviceProvider;
+        private readonly IProjectAccessor _accessor;
 
-        public AbstractAddItemCommand(IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, SVsServiceProvider serviceProvider)
+        public AbstractAddItemCommand(IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, SVsServiceProvider serviceProvider, IProjectAccessor accessor)
         {
             Requires.NotNull(projectTree, nameof(IPhysicalProjectTree));
             Requires.NotNull(projectVsServices, nameof(IUnconfiguredProjectVsServices));
@@ -27,6 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             _projectTree = projectTree;
             _projectVsServices = projectVsServices;
             _serviceProvider = serviceProvider;
+            _accessor = accessor;
         }
 
         protected abstract bool CanAdd(IProjectTree target);
@@ -35,10 +37,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
         protected abstract Task OnAddingNodesAsync(IProjectTree nodeToAddTo);
 
-        protected virtual Task OnAddedNodesAsync(ConfiguredProject configuredProject, IProjectTree target, IEnumerable<IProjectTree> addedNodes, IProjectTree updatedTarget)
+        protected virtual void OnAddedElements(Project project, ImmutableArray<ProjectItemElement> elements, IProjectTree target, IProjectTree nodeToAddTo)
         {
-            // We are not using the updated target so we don't step over the added nodes.
-            return OrderingHelper.TryMoveNodesToTopAsync(configuredProject, addedNodes, target);
+            OrderingHelper.TryMoveElementsToTop(project, elements, nodeToAddTo);
         }
 
         protected Task ShowAddNewFileDialogAsync(IProjectTree target)
@@ -67,19 +68,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
             var nodeToAddTo = GetNodeToAddTo(node);
 
-            // Call OnAddingNodesAsync.
-            // Then publish changes that could have taken place in OnAddingNodesAsync.
-            await OnAddingNodesAsync(nodeToAddTo).ConfigureAwait(true);
-            await _projectTree.TreeService.PublishLatestTreeAsync(waitForFileSystemUpdates: true).ConfigureAwait(true);
+            var addedElements = await OrderingHelper.AddItems(_projectVsServices.ActiveConfiguredProject, _accessor, () => OnAddingNodesAsync(nodeToAddTo)).ConfigureAwait(false);
 
-            var updatedNode = _projectTree.CurrentTree.Find(node.Identity);
-            var updatedNodeToAddTo = _projectTree.CurrentTree.Find(nodeToAddTo.Identity);
-            var addedNodes = OrderingHelper.GetAddedNodes(nodeToAddTo, updatedNodeToAddTo);
-
-            if (addedNodes.Any())
+            if (addedElements.Any())
             {
-                // Make sure to change ConfigureAwait to "true" if we need switch back.
-                await OnAddedNodesAsync(_projectVsServices.ActiveConfiguredProject, node, addedNodes, updatedNode).ConfigureAwait(false);
+                await _accessor.OpenProjectForWriteAsync(_projectVsServices.ActiveConfiguredProject, project => OnAddedElements(project, addedElements, node, nodeToAddTo)).ConfigureAwait(false);
+
+                // Re-select the node that was the target.
+                await _projectTree.TreeService.PublishLatestTreeAsync(waitForFileSystemUpdates: true).ConfigureAwait(false);
+                await HACK_NodeHelper.SelectAsync(_projectVsServices.ActiveConfiguredProject, _serviceProvider, node).ConfigureAwait(false);
+
+                // If the node we wanted to add to is a folder, make sure it is expanded.
+                if (nodeToAddTo.IsFolder)
+                {
+                    await HACK_NodeHelper.ExpandFolderAsync(_projectVsServices.ActiveConfiguredProject, _serviceProvider, nodeToAddTo).ConfigureAwait(false);
+                }
             }
 
             return true;

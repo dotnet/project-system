@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System.Linq;
-using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
-
+using Microsoft.Build.Construction;
+using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.Shell;
@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
     internal class AddNewItemBelowCommand : AbstractAddItemCommand
     {
         [ImportingConstructor]
-        public AddNewItemBelowCommand(IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, SVsServiceProvider serviceProvider) : base(projectTree, projectVsServices, serviceProvider)
+        public AddNewItemBelowCommand(IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, SVsServiceProvider serviceProvider, IProjectAccessor accessor) : base(projectTree, projectVsServices, serviceProvider, accessor)
         {
         }
 
@@ -31,12 +31,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             return ShowAddNewFileDialogAsync(nodeToAddTo);
         }
 
-        protected override async Task OnAddedNodesAsync(ConfiguredProject configuredProject, IProjectTree target, IEnumerable<IProjectTree> addedNodes, IProjectTree updatedTarget)
+        protected override void OnAddedElements(Project project, ImmutableArray<ProjectItemElement> elements, IProjectTree target, IProjectTree nodeToAddTo)
         {
-            foreach (var addedNode in addedNodes.Reverse())
-            {
-                await OrderingHelper.TryMoveBelowAsync(configuredProject, addedNode, target).ConfigureAwait(true);
-            }
+            OrderingHelper.TryMoveElementsBelow(project, elements, target);
         }
 
         protected override bool CanAdd(IProjectTree target)
