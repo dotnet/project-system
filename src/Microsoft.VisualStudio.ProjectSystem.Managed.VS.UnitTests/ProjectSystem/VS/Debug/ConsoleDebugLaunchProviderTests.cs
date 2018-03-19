@@ -11,13 +11,12 @@ using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
-using Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 
 using Moq;
 
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
     [Trait("UnitTest", "ProjectSystem")]
     public class ConsoleDebugLaunchProviderTest

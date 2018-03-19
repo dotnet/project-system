@@ -6,12 +6,13 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.Build.Framework.XamlTypes;
+using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Threading;
 
 using Task = System.Threading.Tasks.Task;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Debug
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
     /// <summary>
     /// Provides the IEnumValue's for the ActiveDebugProfile property. This is what is used to drive

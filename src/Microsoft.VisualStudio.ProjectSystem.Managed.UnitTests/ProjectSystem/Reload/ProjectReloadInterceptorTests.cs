@@ -9,7 +9,7 @@ using Microsoft.Build.Construction;
 
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem
 {
     [Trait("UnitTest", "ProjectSystem")]
     public class ProjectReloadInterceptorTests
