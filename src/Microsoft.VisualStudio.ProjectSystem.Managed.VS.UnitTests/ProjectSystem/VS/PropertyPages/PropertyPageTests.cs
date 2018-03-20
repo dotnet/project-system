@@ -3,14 +3,13 @@
 using System;
 
 using Microsoft.VisualStudio.OLE.Interop;
-using Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages;
 
 using Moq;
 using Moq.Protected;
 
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test.PropertyPages
+namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     [Trait("UnitTest", "ProjectSystem")]
     public class PropertyPageTests
