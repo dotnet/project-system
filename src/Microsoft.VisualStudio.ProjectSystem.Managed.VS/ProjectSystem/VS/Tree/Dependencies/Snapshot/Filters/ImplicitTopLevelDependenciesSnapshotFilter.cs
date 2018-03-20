@@ -56,8 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                     return resultDependency;
                 }
 
-                var internalProvider = provider as IProjectDependenciesSubTreeProviderInternal;
-                if (internalProvider == null)
+                if (!(provider is IProjectDependenciesSubTreeProviderInternal internalProvider))
                 {
                     return resultDependency;
                 }
