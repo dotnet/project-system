@@ -9,7 +9,7 @@ using Moq;
 
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
+namespace Microsoft.VisualStudio.ProjectSystem.Input.Commands
 {
     [Trait("UnitTest", "ProjectSystem")]
     public class ActiveDebugFrameworkServicesTests

@@ -5,13 +5,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
-using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Flavor;
 using Microsoft.VisualStudio.Shell.Interop;
 
 using Moq;
@@ -580,16 +577,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             }
 
             return fileSystem;
-        }
-    }
-
-    internal static class MigrateXprojProjectFactoryExtensions
-    {
-        public static void SetServiceProvider(this MigrateXprojProjectFactory fact, ServiceProvider provider)
-        {
-            var t = typeof(FlavoredProjectFactoryBase);
-            var field = t.GetField("_serviceProvider", BindingFlags.NonPublic | BindingFlags.Instance);
-            field.SetValue(fact, provider);
         }
     }
 }

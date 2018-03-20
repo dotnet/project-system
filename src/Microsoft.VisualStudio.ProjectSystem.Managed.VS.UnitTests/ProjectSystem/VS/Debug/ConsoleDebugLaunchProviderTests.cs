@@ -11,13 +11,12 @@ using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
-using Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 
 using Moq;
 
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
     [Trait("UnitTest", "ProjectSystem")]
     public class ConsoleDebugLaunchProviderTest
@@ -362,72 +361,73 @@ namespace Microsoft.VisualStudio.ProjectSystem.DotNet.Test
         }
 
         [Fact]
-        public void ValidateSettingsNoExe()
+        public void ValidateSettings_WhenNoExe_Throws()
         {
             string executable = null;
             string workingDir = null;
             var debugger = GetDebugTargetsProvider();
             var profileName = "run";
-            try
+
+            Assert.Throws<Exception>(() =>
             {
                 debugger.ValidateSettings(executable, workingDir, profileName);
-                Assert.True(false);
-            }
-            catch (Exception ex)
-            {
-                Assert.Equal(ex.Message, string.Format(VSResources.NoDebugExecutableSpecified, profileName));
-            }
+            });
 
         }
 
         [Fact]
-        public void ValidateSettingsExeNotFound()
+        public void ValidateSettings_WhenExeNotFoundThrows()
         {
-            string executable = null;
+            string executable = @"c:\foo\bar.exe";
             string workingDir = null;
             var debugger = GetDebugTargetsProvider();
             var profileName = "run";
-            try
-            {
-                executable = @"c:\foo\bar.exe";
-                debugger.ValidateSettings(executable, workingDir, profileName);
-                Assert.True(false);
-            }
-            catch (Exception ex)
-            {
-                Assert.Equal(ex.Message, string.Format(VSResources.DebugExecutableNotFound, executable, profileName));
-                _mockFS.WriteAllText(executable, "");
-                debugger.ValidateSettings(executable, workingDir, profileName);
-                Assert.True(true);
-            }
 
+            Assert.Throws<Exception>(() =>
+            {
+                debugger.ValidateSettings(executable, workingDir, profileName);
+            });
         }
 
         [Fact]
-        public void ValidateSettingsWorkingDir()
+        public void ValidateSettings_WhenExeFound_DoesNotThrow()
         {
-            string executable = null;
+            string executable = @"c:\foo\bar.exe";
             string workingDir = null;
             var debugger = GetDebugTargetsProvider();
             var profileName = "run";
+            _mockFS.WriteAllText(executable, "");
 
-            // No path elements should be ok. Expect it to be on the path
-            executable = @"bar.exe";
             debugger.ValidateSettings(executable, workingDir, profileName);
+            Assert.True(true);
+        }
 
-            try
+        [Fact]
+        public void ValidateSettings_WhenWorkingDirNotFound_Throws()
+        {
+            string executable = "bar.exe";
+            string workingDir = "c:\foo";
+            var debugger = GetDebugTargetsProvider();
+            var profileName = "run";
+
+            Assert.Throws<Exception>(() =>
             {
-                workingDir = @"c:\foo";
                 debugger.ValidateSettings(executable, workingDir, profileName);
-                Assert.True(false);
-            }
-            catch (Exception ex)
-            {
-                Assert.Equal(ex.Message, string.Format(VSResources.WorkingDirecotryInvalid, workingDir, profileName));
-                _mockFS.AddFolder(workingDir);
-                debugger.ValidateSettings(executable, workingDir, profileName);
-                Assert.True(true);
-            }
+            });
+        }
+
+        [Fact]
+        public void ValidateSettings_WhenWorkingDirFound_DoesNotThrow()
+        {
+            string executable = "bar.exe";
+            string workingDir = "c:\foo";
+            var debugger = GetDebugTargetsProvider();
+            var profileName = "run";
+
+            _mockFS.AddFolder(workingDir);
+
+            debugger.ValidateSettings(executable, workingDir, profileName);
+            Assert.True(true);
         }
 
         [Theory]

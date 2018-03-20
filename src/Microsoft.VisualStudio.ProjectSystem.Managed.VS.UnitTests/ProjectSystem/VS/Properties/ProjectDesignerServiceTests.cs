@@ -176,11 +176,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             Assert.Equal(1, callCount);
         }
 
-        private static ProjectDesignerService CreateInstance(IUnconfiguredProjectVsServices projectVsServices)
-        {
-            return CreateInstance(projectVsServices, (IVsProjectDesignerPageService)null);
-        }
-
         private static ProjectDesignerService CreateInstance(IVsProjectDesignerPageService vsProjectDesignerPageService)
         {
             return CreateInstance((IUnconfiguredProjectVsServices)null, vsProjectDesignerPageService);
