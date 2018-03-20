@@ -17,6 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     ///     Hosts a <see cref="IWorkspaceProjectContext"/> and handles the interaction between the project system and the language service.
     /// </summary>
     [Export(typeof(ILanguageServiceHost))]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
     internal partial class LanguageServiceHost : OnceInitializedOnceDisposedAsync, ILanguageServiceHost
     {
         private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
