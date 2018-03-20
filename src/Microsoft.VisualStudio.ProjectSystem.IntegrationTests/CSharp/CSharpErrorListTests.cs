@@ -10,6 +10,7 @@ using Xunit;
 namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
 {
     [Collection(nameof(SharedIntegrationHostFixture))]
+    [Trait("Integration", "ErrorList")]
     public class CSharpErrorListTests : AbstractIntegrationTest
     {
         protected override string DefaultLanguageName => LanguageNames.CSharp;
@@ -20,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.IntegrationTests
             VisualStudio.SolutionExplorer.OpenFile(Project, "Class1.cs");
         }
 
-        [Fact(Skip = "https://github.com/dotnet/project-system/issues/2281"), Trait("Integration", "ErrorList")]
+        [Fact(Skip = "https://github.com/dotnet/project-system/issues/2281")]
         public void ErrorList()
         {
             VisualStudio.Editor.SetText(@"
@@ -65,7 +66,7 @@ class C
             Assert.Equal(expectedContents, actualContents);
         }
 
-        [Fact, Trait("Integration", "ErrorList")]
+        [Fact(Skip = "https://github.com/dotnet/project-system/issues/3286")]
         public void ErrorLevelWarning()
         {
             VisualStudio.Editor.SetText(@"
