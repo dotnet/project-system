@@ -108,35 +108,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Fact]
-        public async Task QueryDebugTargetsNoLaunchProfiler()
+        public async Task QueryDebugTargetsAsync_WhenNoLaunchProfile_Throws()
         {
             var debugger = new ProjectDebuggerProvider(_configuredProjectMoq.Object, _LaunchSettingsProviderMoq.Object, _launchProviders);
             _activeProfile = null;
-            try
+
+            var exception = await Assert.ThrowsAsync<Exception>(() =>
             {
-                var result = await debugger.QueryDebugTargetsAsync(0);
-                Assert.False(true);
-            }
-            catch (Exception ex)
-            {
-                Assert.Equal(VSResources.ActiveLaunchProfileNotFound, ex.Message);
-            }
+                return debugger.QueryDebugTargetsAsync(0);
+            });
         }
 
         [Fact]
-        public async Task QueryDebugTargetsNoInstalledProvider()
+        public async Task QueryDebugTargetsAsync_WhenNoInstalledProvider_Throws()
         {
             var debugger = new ProjectDebuggerProvider(_configuredProjectMoq.Object, _LaunchSettingsProviderMoq.Object, _launchProviders);
             _activeProfile = new LaunchProfile() { Name = "NoActionProfile", CommandName = "SomeOtherExtension" };
-            try
+
+            var exception = await Assert.ThrowsAsync<Exception>(() =>
             {
-                var result = await debugger.QueryDebugTargetsAsync(0);
-                Assert.False(true);
-            }
-            catch (Exception ex)
-            {
-                Assert.Equal(string.Format(VSResources.DontKnowHowToRunProfile, _activeProfile.Name), ex.Message);
-            }
+                return debugger.QueryDebugTargetsAsync(0);
+            });
         }
     }
 }
