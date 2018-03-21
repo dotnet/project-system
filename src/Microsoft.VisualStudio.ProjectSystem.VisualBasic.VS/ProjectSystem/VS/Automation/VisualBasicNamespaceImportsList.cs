@@ -9,6 +9,7 @@ using System.Threading.Tasks.Dataflow;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
     [Export(typeof(VisualBasicNamespaceImportsList))]
+    [AppliesTo(ProjectCapability.VisualBasic)]
     internal class VisualBasicNamespaceImportsList : OnceInitializedOnceDisposed
     {
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;

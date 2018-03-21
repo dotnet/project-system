@@ -49,8 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         /// </summary>
         public static void QueryStatusHandler(object sender, EventArgs e)
         {
-            var command = sender as DebugFrameworkPropertyMenuTextUpdater;
-            if (command == null)
+            if (!(sender is DebugFrameworkPropertyMenuTextUpdater command))
             {
                 return;
             }

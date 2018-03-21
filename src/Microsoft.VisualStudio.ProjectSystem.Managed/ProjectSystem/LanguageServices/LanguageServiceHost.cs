@@ -17,6 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     ///     Hosts a <see cref="IWorkspaceProjectContext"/> and handles the interaction between the project system and the language service.
     /// </summary>
     [Export(typeof(ILanguageServiceHost))]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
     internal partial class LanguageServiceHost : OnceInitializedOnceDisposedAsync, ILanguageServiceHost
     {
 #pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked corretly by the IDisposeable analyzer
