@@ -139,7 +139,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// <remarks>
         /// This needs to get the evaluated property in order to get inherited properties defines in props or targets.
         /// </remarks>
-        protected async Task<string> GetPropertyValue(UnconfiguredProject project)
+        protected async Task<string> GetPropertyValue(UnconfiguredProject project, string propertyName = null)
         {
             var configuredProject = await project.GetSuggestedConfiguredProjectAsync()
                                                  .ConfigureAwait(false);
