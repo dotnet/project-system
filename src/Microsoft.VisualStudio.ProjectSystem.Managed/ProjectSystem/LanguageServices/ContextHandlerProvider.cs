@@ -21,8 +21,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         [ImportingConstructor]
         public ContextHandlerProvider(UnconfiguredProject project)
         {
-            Requires.NotNull(project, nameof(project));
-
             _project = project;
         }
 

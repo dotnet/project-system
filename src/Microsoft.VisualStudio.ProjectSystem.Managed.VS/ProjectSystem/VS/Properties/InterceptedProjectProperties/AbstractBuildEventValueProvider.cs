@@ -15,11 +15,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 
         protected AbstractBuildEventValueProvider(
             IProjectLockService projectLockService,
-            UnconfiguredProject unconfiguredProject,
+            UnconfiguredProject project,
             AbstractBuildEventHelper helper)
         {
             _projectLockService = projectLockService;
-            _unconfiguredProject = unconfiguredProject;
+            _unconfiguredProject = project;
             _helper = helper;
         }
 

@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
         public string MessageText { get; }
         public string DialogCaption { get; }
         public string CheckboxText { get; }
-        public string OkButtonText => VSResources.OKButtonText;
+        public static string OkButtonText => VSResources.OKButtonText;
         public string LearnMoreText { get; private set; }
 
         public ICommand LearnMoreCommand { get; set; }

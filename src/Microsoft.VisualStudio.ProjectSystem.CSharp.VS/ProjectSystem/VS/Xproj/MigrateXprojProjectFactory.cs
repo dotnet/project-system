@@ -326,10 +326,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             return VSConstants.S_OK;
         }
 
-        private string GetDotnetArguments(string xprojLocation, string projectDirectory, string logFile) =>
+        private static string GetDotnetArguments(string xprojLocation, string projectDirectory, string logFile) =>
             $"migrate --skip-backup -s -x \"{xprojLocation}\" \"{projectDirectory}\\project.json\" -r \"{logFile}\" --format-report-file-json";
 
-        private string GetDotnetGeneralErrorString(string projectName, string xprojLocation, string projectDirectory, string logFile, int exitCode) =>
+        private static string GetDotnetGeneralErrorString(string projectName, string xprojLocation, string projectDirectory, string logFile, int exitCode) =>
             string.Format(VSResources.XprojMigrationGeneralFailure,
                 projectName,
                 $"dotnet {GetDotnetArguments(xprojLocation, projectDirectory, logFile)}",

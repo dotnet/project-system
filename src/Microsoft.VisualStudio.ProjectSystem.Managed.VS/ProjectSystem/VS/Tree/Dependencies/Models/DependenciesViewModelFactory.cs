@@ -13,12 +13,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
     internal class DependenciesViewModelFactory : IDependenciesViewModelFactory
     {
         [ImportingConstructor]
-        public DependenciesViewModelFactory(UnconfiguredProject unconfiguredProject)
+        public DependenciesViewModelFactory(UnconfiguredProject project)
         {
-            Project = unconfiguredProject;
+            Project = project;
             SubTreeProviders = new OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider>(
                         ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast,
-                        projectCapabilityCheckProvider: unconfiguredProject);
+                        projectCapabilityCheckProvider: project);
         }
 
         private UnconfiguredProject Project { get; }

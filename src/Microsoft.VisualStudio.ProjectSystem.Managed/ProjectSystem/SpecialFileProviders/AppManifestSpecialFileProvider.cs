@@ -25,8 +25,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
                                               ProjectProperties projectProperties)
             : base(projectTree, sourceItemsProvider, templateFileCreationService, fileSystem, specialFilesManager)
         {
-            Requires.NotNull(projectProperties, nameof(projectProperties));
-
             _projectProperties = projectProperties;
         }
 

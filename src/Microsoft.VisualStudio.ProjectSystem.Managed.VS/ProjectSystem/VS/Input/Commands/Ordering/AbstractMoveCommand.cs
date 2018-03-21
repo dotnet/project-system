@@ -85,7 +85,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                 throw new ArgumentNullException(nameof(serviceProvider));
             }
 
-
             if (!(serviceProvider.GetService(typeof(SVsUIShell)) is IVsUIShell shell))
             {
                 throw new InvalidOperationException();

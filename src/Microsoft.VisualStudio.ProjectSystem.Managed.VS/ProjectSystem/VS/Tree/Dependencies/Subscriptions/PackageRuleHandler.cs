@@ -25,8 +25,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         [ImportingConstructor]
         public PackageRuleHandler(ITargetFrameworkProvider targetFrameworkProvider)
         {
-            Requires.NotNull(targetFrameworkProvider, nameof(targetFrameworkProvider));
-
             TargetFrameworkProvider = targetFrameworkProvider;
         }
 

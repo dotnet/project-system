@@ -13,11 +13,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private readonly UnconfiguredProject _unconfiguredProject;
 
         [ImportingConstructor]
-        public AssemblyOriginatorKeyFileValueProvider(UnconfiguredProject unconfiguredProject)
+        public AssemblyOriginatorKeyFileValueProvider(UnconfiguredProject project)
         {
-            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
-
-            _unconfiguredProject = unconfiguredProject;
+            _unconfiguredProject = project;
         }
 
         public override Task<string> OnSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string> dimensionalConditions = null)

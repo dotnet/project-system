@@ -28,8 +28,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
             private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
             private readonly IProjectLogger _logger;
+#pragma warning disable CA2213 // OnceInitializedOnceDisposedAsync are not tracked corretly by the IDisposeable analyzer
             private IDisposable _configurationsSubscription;
             private DisposableBag _designTimeBuildSubscriptionLink;
+#pragma warning restore CA2213
 
             private static ImmutableHashSet<string> s_designTimeBuildWatchedRules = Empty.OrdinalIgnoreCaseStringSet
                 .Add(NuGetRestore.SchemaName)
@@ -201,7 +203,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 }
             }
 
-            private void LogTargetFrameworks(IProjectLoggerBatch logger, TargetFrameworks targetFrameworks)
+            private static void LogTargetFrameworks(IProjectLoggerBatch logger, TargetFrameworks targetFrameworks)
             {
                 logger.WriteLine($"Target Frameworks ({targetFrameworks.Count})");
                 logger.IndentLevel++;
@@ -213,7 +215,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 logger.IndentLevel--;
             }
 
-            private void LogTargetFramework(IProjectLoggerBatch logger, TargetFrameworkInfo targetFrameworkInfo)
+            private static void LogTargetFramework(IProjectLoggerBatch logger, TargetFrameworkInfo targetFrameworkInfo)
             {
                 logger.WriteLine(targetFrameworkInfo.TargetFrameworkMoniker);
                 logger.IndentLevel++;
@@ -225,14 +227,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 logger.IndentLevel--;
             }
 
-            private void LogProperties(IProjectLoggerBatch logger, string heading, ProjectProperties projectProperties)
+            private static void LogProperties(IProjectLoggerBatch logger, string heading, ProjectProperties projectProperties)
             {
                 var properties = projectProperties.Cast<ProjectProperty>()
                         .Select(prop => $"{prop.Name}:{prop.Value}");
                 logger.WriteLine($"{heading} -- ({string.Join(" | ", properties)})");
             }
 
-            private void LogReferenceItems(IProjectLoggerBatch logger, string heading, ReferenceItems references)
+            private static void LogReferenceItems(IProjectLoggerBatch logger, string heading, ReferenceItems references)
             {
                 logger.WriteLine(heading);
                 logger.IndentLevel++;

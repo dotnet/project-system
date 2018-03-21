@@ -21,9 +21,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
         [ImportingConstructor]
         public ProjectOutputWindowPaneProvider(IProjectThreadingService threadingService, IVsOptionalService<SVsOutputWindow, IVsOutputWindow> outputWindow)
         {
-            Requires.NotNull(threadingService, nameof(threadingService));
-            Requires.NotNull(outputWindow, nameof(outputWindow));
-
             _threadingService = threadingService;
             _outputWindow = outputWindow;
             _outputWindowPane = new AsyncLazy<IVsOutputWindowPane>(CreateOutputWindowPaneAsync, threadingService.JoinableTaskFactory);
@@ -53,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
             return pane;
         }
 
-        private IVsOutputWindowPane CreateProjectOutputWindowPane(IVsOutputWindow outputWindow)
+        private static IVsOutputWindowPane CreateProjectOutputWindowPane(IVsOutputWindow outputWindow)
         {
             Guid paneGuid = s_projectOutputWindowPaneGuid;
             HResult hr = outputWindow.CreatePane(ref paneGuid, VSResources.OutputWindowPaneTitle, fInitVisible: 1, fClearWithSolution: 0);

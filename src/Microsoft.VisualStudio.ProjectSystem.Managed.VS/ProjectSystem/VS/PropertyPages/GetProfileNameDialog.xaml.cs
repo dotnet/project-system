@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         // Returns the name of the current product we are instantiated in from the appropriate resource
         // Used for dialog title binding
         //------------------------------------------------------------------------------
-        public string DialogCaption
+        public static string DialogCaption
         {
             get
             {

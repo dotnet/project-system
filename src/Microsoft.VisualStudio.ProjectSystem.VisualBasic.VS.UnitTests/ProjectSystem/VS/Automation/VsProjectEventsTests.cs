@@ -14,24 +14,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
     public class VsProjectEventsTests
     {
         [Fact]
-        public void Constructor_VSProjectAsNull_ThrowsException()
-        {
-            Assert.Throws<ArgumentNullException>("vsProject", () =>
-            {
-                GetVSProjectEvents();
-            });
-        }
-
-        [Fact]
-        public void Constructor_UnconfiguredProjectAsNull_ThrowsException()
-        {
-            Assert.Throws<ArgumentNullException>("project", () =>
-            {
-                GetVSProjectEvents(Mock.Of<VSLangProj.VSProject>());
-            });
-        }
-
-        [Fact]
         public void VSProjectEvents_Properties()
         {
             var referenceEvents = Mock.Of<ReferencesEvents>();

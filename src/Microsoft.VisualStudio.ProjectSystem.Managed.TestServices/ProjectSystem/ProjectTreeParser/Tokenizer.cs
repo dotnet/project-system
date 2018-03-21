@@ -112,13 +112,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
             throw FormatException(ProjectTreeFormatError.IdExpected_EncounteredDelimiter, $"Expected identifier, but encountered '{token.Value.Value}'.");
         }
 
-        private void CheckIdentifierAfterTrim(string identifier, IdentifierParseOptions options)
+        private static void CheckIdentifierAfterTrim(string identifier, IdentifierParseOptions options)
         {
             if (!IsValidIdentifier(identifier, options))
                 throw FormatException(ProjectTreeFormatError.IdExpected_EncounteredOnlyWhiteSpace, "Expected identifier, but encountered only white space.");
         }
 
-        private bool IsValidIdentifier(string identifier, IdentifierParseOptions options)
+        private static bool IsValidIdentifier(string identifier, IdentifierParseOptions options)
         {
             if ((options & IdentifierParseOptions.Required) == IdentifierParseOptions.Required)
             {
@@ -166,7 +166,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return _delimiters.Contains((TokenType)c);
         }
 
-        internal FormatException FormatException(ProjectTreeFormatError errorId, string message)
+        internal static FormatException FormatException(ProjectTreeFormatError errorId, string message)
         {
             return new ProjectTreeFormatException(message,
                                                   errorId);
