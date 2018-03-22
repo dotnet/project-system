@@ -2,6 +2,8 @@
 
 The following is an incomplete list of features differences between the legacy project system and the new project system. 
 
+For a list of behavior differences; see [Compability](compatibility.md).
+
 **Feature**|**Legacy**|**New**|**Notes**
 ---|---|---|---
 **Platforms**                                                               |
