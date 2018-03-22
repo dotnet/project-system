@@ -2,7 +2,7 @@
 
 ***NOTE:** The behaviors listed below are subject to change as we add support for more project types in the new project system.*
 
-## When does a project open with the new project system vs legacy project system?
+## When does a project open with the new project system versus the legacy project system?
 
 Because both the new project system and legacy project systems use the same file extensions (csproj, vbproj and fsproj), two factors determine whether a project will open in one or the other.
 
