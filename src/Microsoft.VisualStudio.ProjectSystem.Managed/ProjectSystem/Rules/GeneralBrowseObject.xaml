@@ -100,6 +100,11 @@
             <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
+    <StringProperty Name="URL" ReadOnly="True" Visible="False">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectFullPath" SourceOfDefaultValue="AfterContext" />
+        </StringProperty.DataSource>
+    </StringProperty>
 
     <!-- Package properties -->
     <BoolProperty Name="GeneratePackageOnBuild" DisplayName="Generate Package On Build" Default="False" Visible="False"/>
