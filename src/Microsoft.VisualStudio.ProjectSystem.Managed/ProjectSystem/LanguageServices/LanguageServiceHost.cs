@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
@@ -27,9 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IActiveProjectConfigurationRefreshService _activeProjectConfigurationRefreshService;
         private readonly LanguageServiceHandlerManager _languageServiceHandlerManager;
-
-        private readonly List<IDisposable> _evaluationSubscriptionLinks;
-        private readonly List<IDisposable> _designTimeBuildSubscriptionLinks;
+        private readonly DisposableBag _subscriptions = new DisposableBag(CancellationToken.None);
         private readonly HashSet<ProjectConfiguration> _projectConfigurationsWithSubscriptions;
 
         /// <summary>
@@ -66,8 +65,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
             _activeProjectConfigurationRefreshService = activeProjectConfigurationRefreshService;
             _languageServiceHandlerManager = languageServiceHandlerManager;
-            _evaluationSubscriptionLinks = new List<IDisposable>();
-            _designTimeBuildSubscriptionLinks = new List<IDisposable>();
             _projectConfigurationsWithSubscriptions = new HashSet<ProjectConfiguration>();
         }
 
@@ -237,11 +234,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                         continue;
                     }
 
-                    _designTimeBuildSubscriptionLinks.Add(configuredProject.Services.ProjectSubscription.JointRuleSource.SourceBlock.LinkTo(
+                    _subscriptions.AddDisposable(configuredProject.Services.ProjectSubscription.JointRuleSource.SourceBlock.LinkTo(
                         new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedCoreAsync(e, RuleHandlerType.DesignTimeBuild)),
                         ruleNames: watchedDesignTimeBuildRules, suppressVersionOnlyUpdates: true));
 
-                    _evaluationSubscriptionLinks.Add(configuredProject.Services.ProjectSubscription.ProjectRuleSource.SourceBlock.LinkTo(
+                    _subscriptions.AddDisposable(configuredProject.Services.ProjectSubscription.ProjectRuleSource.SourceBlock.LinkTo(
                         new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedCoreAsync(e, RuleHandlerType.Evaluation)),
                         ruleNames: watchedEvaluationRules, suppressVersionOnlyUpdates: true));
 
@@ -301,13 +298,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private void DisposeAndClearSubscriptions()
         {
-            foreach (var link in _evaluationSubscriptionLinks.Concat(_designTimeBuildSubscriptionLinks))
-            {
-                link.Dispose();
-            }
-
-            _evaluationSubscriptionLinks.Clear();
-            _designTimeBuildSubscriptionLinks.Clear();
+            _subscriptions.Dispose();
             _projectConfigurationsWithSubscriptions.Clear();
         }
     }
