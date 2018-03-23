@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly IActiveProjectConfigurationRefreshService _activeProjectConfigurationRefreshService;
         private readonly LanguageServiceHandlerManager _languageServiceHandlerManager;
         private readonly DisposableBag _subscriptions = new DisposableBag(CancellationToken.None);
-        private readonly HashSet<ProjectConfiguration> _projectConfigurationsWithSubscriptions;
+        private readonly HashSet<ProjectConfiguration> _projectConfigurationsWithSubscriptions = new HashSet<ProjectConfiguration>();
 
         /// <summary>
         /// Current AggregateWorkspaceProjectContext - accesses to this field must be done with a lock on <see cref="_gate"/>.
@@ -65,7 +65,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
             _activeProjectConfigurationRefreshService = activeProjectConfigurationRefreshService;
             _languageServiceHandlerManager = languageServiceHandlerManager;
-            _projectConfigurationsWithSubscriptions = new HashSet<ProjectConfiguration>();
         }
 
         public object HostSpecificErrorReporter => _currentAggregateProjectContext?.HostSpecificErrorReporter;
