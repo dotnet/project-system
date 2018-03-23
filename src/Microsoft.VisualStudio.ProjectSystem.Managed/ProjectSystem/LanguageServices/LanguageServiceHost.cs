@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.Telemetry;
 using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
@@ -27,6 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IActiveProjectConfigurationRefreshService _activeProjectConfigurationRefreshService;
         private readonly LanguageServiceHandlerManager _languageServiceHandlerManager;
+        private readonly ITelemetryService _telemetryService;
 
         private readonly List<IDisposable> _evaluationSubscriptionLinks;
         private readonly List<IDisposable> _designTimeBuildSubscriptionLinks;
@@ -51,7 +53,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                    [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService,
                                    IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
                                    IActiveProjectConfigurationRefreshService activeProjectConfigurationRefreshService,
-                                   LanguageServiceHandlerManager languageServiceHandlerManager)
+                                   LanguageServiceHandlerManager languageServiceHandlerManager,
+                                   ITelemetryService telemetryService)
             : base(commonServices.ThreadingService.JoinableTaskContext)
         {
             Requires.NotNull(contextProvider, nameof(contextProvider));
@@ -66,6 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
             _activeProjectConfigurationRefreshService = activeProjectConfigurationRefreshService;
             _languageServiceHandlerManager = languageServiceHandlerManager;
+            _telemetryService = telemetryService;
             _evaluationSubscriptionLinks = new List<IDisposable>();
             _designTimeBuildSubscriptionLinks = new List<IDisposable>();
             _projectConfigurationsWithSubscriptions = new HashSet<ProjectConfiguration>();
@@ -81,6 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
         private Task OnProjectFactoryCompletedAsync()
         {
+            LogLanguageServiceHostInitializeStart();
             return InitializeAsync();
         }
 
@@ -94,6 +99,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             // Update project context and subscriptions.
             await UpdateProjectContextAndSubscriptionsAsync().ConfigureAwait(false);
+            LogLanguageServiceHostInitializeStop();
+        }
+
+        private static volatile bool s_isFirstStartEvent = true;
+        private static volatile int s_numberOfTimesInitialized = 0;
+        private static object s_telemetryLock = new object();
+
+        /// <summary>
+        /// Only posts an event the first time this method is called in the VS process
+        /// Also updates a global count so we know how many project hosts have been initialized
+        /// </summary>
+        private void LogLanguageServiceHostInitializeStart()
+        {
+            if (s_isFirstStartEvent)
+            {
+                lock (s_telemetryLock)
+                {
+                    if (s_isFirstStartEvent)
+                    {
+                        s_isFirstStartEvent = false;
+                        _telemetryService.PostEvent("LanguageServiceHost/Start");
+                    }
+                }
+            }
+
+            Interlocked.Increment(ref s_numberOfTimesInitialized);
+        }
+
+        /// <summary>
+        /// Decrements the global count and reports that all hosts have been initialized
+        /// if the count is zero.
+        /// </summary>
+        private void LogLanguageServiceHostInitializeStop()
+        {
+            Interlocked.Decrement(ref s_numberOfTimesInitialized);
+            if (s_numberOfTimesInitialized == 0)
+            {
+                _telemetryService.PostEvent("LanguageServiceHost/Stop");
+            }
         }
 
         Task ILanguageServiceHost.InitializeAsync(CancellationToken cancellationToken)
