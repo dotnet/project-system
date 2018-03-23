@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
@@ -27,10 +28,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IActiveProjectConfigurationRefreshService _activeProjectConfigurationRefreshService;
         private readonly LanguageServiceHandlerManager _languageServiceHandlerManager;
-
-        private readonly List<IDisposable> _evaluationSubscriptionLinks;
-        private readonly List<IDisposable> _designTimeBuildSubscriptionLinks;
-        private readonly HashSet<ProjectConfiguration> _projectConfigurationsWithSubscriptions;
+        private readonly DisposableBag _subscriptions = new DisposableBag(CancellationToken.None);
+        private readonly HashSet<ProjectConfiguration> _projectConfigurationsWithSubscriptions = new HashSet<ProjectConfiguration>();
 
         /// <summary>
         /// Current AggregateWorkspaceProjectContext - accesses to this field must be done with a lock on <see cref="_gate"/>.
@@ -66,9 +65,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
             _activeProjectConfigurationRefreshService = activeProjectConfigurationRefreshService;
             _languageServiceHandlerManager = languageServiceHandlerManager;
-            _evaluationSubscriptionLinks = new List<IDisposable>();
-            _designTimeBuildSubscriptionLinks = new List<IDisposable>();
-            _projectConfigurationsWithSubscriptions = new HashSet<ProjectConfiguration>();
         }
 
         public object HostSpecificErrorReporter => _currentAggregateProjectContext?.HostSpecificErrorReporter;
@@ -232,20 +228,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 foreach (var configuredProject in newProjectContext.InnerConfiguredProjects)
                 {
-                    if (_projectConfigurationsWithSubscriptions.Contains(configuredProject.ProjectConfiguration))
+                    if (_projectConfigurationsWithSubscriptions.Add(configuredProject.ProjectConfiguration))
                     {
-                        continue;
+                        _subscriptions.AddDisposable(configuredProject.Services.ProjectSubscription.JointRuleSource.SourceBlock.LinkTo(
+                            new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedCoreAsync(e, RuleHandlerType.DesignTimeBuild)),
+                            ruleNames: watchedDesignTimeBuildRules, suppressVersionOnlyUpdates: true));
+
+                        _subscriptions.AddDisposable(configuredProject.Services.ProjectSubscription.ProjectRuleSource.SourceBlock.LinkTo(
+                            new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedCoreAsync(e, RuleHandlerType.Evaluation)),
+                            ruleNames: watchedEvaluationRules, suppressVersionOnlyUpdates: true));
                     }
-
-                    _designTimeBuildSubscriptionLinks.Add(configuredProject.Services.ProjectSubscription.JointRuleSource.SourceBlock.LinkTo(
-                        new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedCoreAsync(e, RuleHandlerType.DesignTimeBuild)),
-                        ruleNames: watchedDesignTimeBuildRules, suppressVersionOnlyUpdates: true));
-
-                    _evaluationSubscriptionLinks.Add(configuredProject.Services.ProjectSubscription.ProjectRuleSource.SourceBlock.LinkTo(
-                        new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedCoreAsync(e, RuleHandlerType.Evaluation)),
-                        ruleNames: watchedEvaluationRules, suppressVersionOnlyUpdates: true));
-
-                    _projectConfigurationsWithSubscriptions.Add(configuredProject.ProjectConfiguration);
                 }
 
                 return Task.CompletedTask;
@@ -279,31 +271,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                  projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.TargetFrameworksProperty);
         }
 
-        protected override async Task DisposeCoreAsync(bool initialized)
+        protected override Task DisposeCoreAsync(bool initialized)
         {
             if (initialized)
             {
                 DisposeAndClearSubscriptions();
 
-                await ExecuteWithinLockAsync(async () =>
+                return ExecuteWithinLockAsync(() =>
                 {
                     if (_currentAggregateProjectContext != null)
                     {
-                        await _contextProvider.Value.ReleaseProjectContextAsync(_currentAggregateProjectContext).ConfigureAwait(false);
+                        return _contextProvider.Value.ReleaseProjectContextAsync(_currentAggregateProjectContext);
                     }
-                }).ConfigureAwait(false);
+
+                    return Task.CompletedTask;
+                });
             }
+
+            return Task.CompletedTask;
         }
 
         private void DisposeAndClearSubscriptions()
         {
-            foreach (var link in _evaluationSubscriptionLinks.Concat(_designTimeBuildSubscriptionLinks))
-            {
-                link.Dispose();
-            }
-
-            _evaluationSubscriptionLinks.Clear();
-            _designTimeBuildSubscriptionLinks.Clear();
+            _subscriptions.Dispose();
             _projectConfigurationsWithSubscriptions.Clear();
         }
     }
