@@ -228,20 +228,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 foreach (var configuredProject in newProjectContext.InnerConfiguredProjects)
                 {
-                    if (_projectConfigurationsWithSubscriptions.Contains(configuredProject.ProjectConfiguration))
+                    if (_projectConfigurationsWithSubscriptions.Add(configuredProject.ProjectConfiguration))
                     {
-                        continue;
+                        _subscriptions.AddDisposable(configuredProject.Services.ProjectSubscription.JointRuleSource.SourceBlock.LinkTo(
+                            new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedCoreAsync(e, RuleHandlerType.DesignTimeBuild)),
+                            ruleNames: watchedDesignTimeBuildRules, suppressVersionOnlyUpdates: true));
+
+                        _subscriptions.AddDisposable(configuredProject.Services.ProjectSubscription.ProjectRuleSource.SourceBlock.LinkTo(
+                            new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedCoreAsync(e, RuleHandlerType.Evaluation)),
+                            ruleNames: watchedEvaluationRules, suppressVersionOnlyUpdates: true));
                     }
-
-                    _subscriptions.AddDisposable(configuredProject.Services.ProjectSubscription.JointRuleSource.SourceBlock.LinkTo(
-                        new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedCoreAsync(e, RuleHandlerType.DesignTimeBuild)),
-                        ruleNames: watchedDesignTimeBuildRules, suppressVersionOnlyUpdates: true));
-
-                    _subscriptions.AddDisposable(configuredProject.Services.ProjectSubscription.ProjectRuleSource.SourceBlock.LinkTo(
-                        new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(e => OnProjectChangedCoreAsync(e, RuleHandlerType.Evaluation)),
-                        ruleNames: watchedEvaluationRules, suppressVersionOnlyUpdates: true));
-
-                    _projectConfigurationsWithSubscriptions.Add(configuredProject.ProjectConfiguration);
                 }
 
                 return Task.CompletedTask;
