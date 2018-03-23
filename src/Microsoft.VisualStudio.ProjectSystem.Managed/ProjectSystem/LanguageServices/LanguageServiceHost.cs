@@ -279,20 +279,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                  projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.TargetFrameworksProperty);
         }
 
-        protected override async Task DisposeCoreAsync(bool initialized)
+        protected override Task DisposeCoreAsync(bool initialized)
         {
             if (initialized)
             {
                 DisposeAndClearSubscriptions();
 
-                await ExecuteWithinLockAsync(async () =>
+                return ExecuteWithinLockAsync(() =>
                 {
                     if (_currentAggregateProjectContext != null)
                     {
-                        await _contextProvider.Value.ReleaseProjectContextAsync(_currentAggregateProjectContext).ConfigureAwait(false);
+                        return _contextProvider.Value.ReleaseProjectContextAsync(_currentAggregateProjectContext);
                     }
-                }).ConfigureAwait(false);
+
+                    return Task.CompletedTask;
+                });
             }
+
+            return Task.CompletedTask;
         }
 
         private void DisposeAndClearSubscriptions()
