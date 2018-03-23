@@ -206,15 +206,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             }).ConfigureAwait(false);
         }
 
-        private async Task DisposeAggregateProjectContextAsync(AggregateWorkspaceProjectContext projectContext)
-        {
-            await _contextProvider.Value.ReleaseProjectContextAsync(projectContext).ConfigureAwait(false);
 
-            foreach (var innerContext in projectContext.DisposedInnerProjectContexts)
-            {
-                _languageServiceHandlerManager.OnContextReleased(innerContext);
-            }
-        }
 
         private async Task AddSubscriptionsAsync(AggregateWorkspaceProjectContext newProjectContext)
         {
@@ -275,13 +267,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             if (initialized)
             {
-                DisposeAndClearSubscriptions();
-
                 return ExecuteWithinLockAsync(() =>
                 {
                     if (_currentAggregateProjectContext != null)
                     {
-                        return _contextProvider.Value.ReleaseProjectContextAsync(_currentAggregateProjectContext);
+                        return DisposeAggregateProjectContextAsync(_currentAggregateProjectContext);
                     }
 
                     return Task.CompletedTask;
@@ -289,6 +279,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             }
 
             return Task.CompletedTask;
+        }
+
+        private async Task DisposeAggregateProjectContextAsync(AggregateWorkspaceProjectContext projectContext)
+        {
+            DisposeAndClearSubscriptions();
+
+            await _contextProvider.Value.ReleaseProjectContextAsync(projectContext)
+                                        .ConfigureAwait(false);
+
+            foreach (IWorkspaceProjectContext innerContext in projectContext.DisposedInnerProjectContexts)
+            {
+                _languageServiceHandlerManager.OnContextReleased(innerContext);
+            }
         }
 
         private void DisposeAndClearSubscriptions()
