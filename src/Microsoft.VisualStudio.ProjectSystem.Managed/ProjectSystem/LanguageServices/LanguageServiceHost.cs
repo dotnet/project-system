@@ -102,9 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             LogLanguageServiceHostInitializeStop();
         }
 
-        private static volatile bool s_isFirstStartEvent = true;
         private static volatile int s_numberOfTimesInitialized = 0;
-        private static object s_telemetryLock = new object();
 
         /// <summary>
         /// Only posts an event the first time this method is called in the VS process
@@ -112,19 +110,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// </summary>
         private void LogLanguageServiceHostInitializeStart()
         {
-            if (s_isFirstStartEvent)
+            if(Interlocked.Increment(ref s_numberOfTimesInitialized) == 1)
             {
-                lock (s_telemetryLock)
-                {
-                    if (s_isFirstStartEvent)
-                    {
-                        s_isFirstStartEvent = false;
-                        _telemetryService.PostEvent("LanguageServiceHost/Start");
-                    }
-                }
+                _telemetryService.PostEvent("AbstractProjectCreation/Start");
             }
-
-            Interlocked.Increment(ref s_numberOfTimesInitialized);
         }
 
         /// <summary>
@@ -133,10 +122,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// </summary>
         private void LogLanguageServiceHostInitializeStop()
         {
-            Interlocked.Decrement(ref s_numberOfTimesInitialized);
-            if (s_numberOfTimesInitialized == 0)
+            if (Interlocked.Decrement(ref s_numberOfTimesInitialized) == 0)
             {
-                _telemetryService.PostEvent("LanguageServiceHost/Stop");
+                _telemetryService.PostEvent("AbstractProjectCreation/Stop");
             }
         }
 
