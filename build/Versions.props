@@ -1,7 +1,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <VersionBase Condition="'$(UseVisualStudioVersion)' == 'true'">15.6.0</VersionBase>
-    <VersionBase Condition="'$(UseVisualStudioVersion)' != 'true'">2.6.0</VersionBase>
+    <VersionBase Condition="'$(UseVisualStudioVersion)' == 'true'">15.7.0</VersionBase>
+    <VersionBase Condition="'$(UseVisualStudioVersion)' != 'true'">2.7.0</VersionBase>
     <PreReleaseVersionLabel>beta4</PreReleaseVersionLabel>
 
     <!-- Opt-in repo features -->
