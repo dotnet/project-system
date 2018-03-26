@@ -6,10 +6,11 @@ using Microsoft.VisualStudio.Threading;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
     /// <summary>
-    /// These are helper functions to select items, expand and collapse folders in a IVsUIHierarchy.
+    /// These are helper functions to select items in a IVsUIHierarchy.
     /// This is hack due to CPS not exposing fuctionality to do this. They have it internally though.
+    /// Bug filed here: https://devdiv.visualstudio.com/DevDiv/VS%20IDE%20CPS/_workitems/edit/589115
     /// </summary>
-    internal static class HACK_NodeHelper
+    internal static class NodeHelper
     {
         /// <summary>
         /// Select an item in a IVsIHierarchy.
@@ -29,38 +30,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         }
 
         /// <summary>
-        /// Expand a folder in a IVsUIHierarchy.
-        /// </summary>
-        public static async Task ExpandFolderAsync(ConfiguredProject configuredProject, IServiceProvider serviceProvider, IProjectTree node)
-        {
-            Requires.NotNull(configuredProject, nameof(configuredProject));
-            Requires.NotNull(serviceProvider, nameof(serviceProvider));
-            Requires.NotNull(node, nameof(node));
-
-            await configuredProject.Services.ProjectService.Services.ThreadingPolicy.SwitchToUIThread();
-
-            ExpandFolder(configuredProject, serviceProvider, (uint)node.Identity.ToInt32());
-
-            await TaskScheduler.Default;
-        }
-
-        /// <summary>
-        /// Collapse a folder in a IVsUIHierarchy.
-        /// </summary>
-        public static async Task CollapseFolderAsync(ConfiguredProject configuredProject, IServiceProvider serviceProvider, IProjectTree node)
-        {
-            Requires.NotNull(configuredProject, nameof(configuredProject));
-            Requires.NotNull(serviceProvider, nameof(serviceProvider));
-            Requires.NotNull(node, nameof(node));
-
-            await configuredProject.Services.ProjectService.Services.ThreadingPolicy.SwitchToUIThread();
-
-            CollapseFolder(configuredProject, serviceProvider, (uint)node.Identity.ToInt32());
-
-            await TaskScheduler.Default;
-        }
-
-        /// <summary>
         /// Select an item in a IVsIHierarchy.
         /// </summary>
         private static void Select(ConfiguredProject configuredProject, IServiceProvider serviceProvider, uint itemId)
@@ -70,28 +39,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                 // We need to unselect the item if it is already selected to re-select it correctly.
                 window.ExpandItem(hierarchy, itemId, EXPANDFLAGS.EXPF_UnSelectItem);
                 window.ExpandItem(hierarchy, itemId, EXPANDFLAGS.EXPF_SelectItem);
-            });
-        }
-
-        /// <summary>
-        /// Expand a folder in a IVsUIHierarchy.
-        /// </summary>
-        private static void ExpandFolder(ConfiguredProject configuredProject, IServiceProvider serviceProvider, uint itemId)
-        {
-            UseWindow(configuredProject, serviceProvider, (hierarchy, window) =>
-            {
-                window.ExpandItem(hierarchy, itemId, EXPANDFLAGS.EXPF_ExpandFolder);
-            });
-        }
-
-        /// <summary>
-        /// Collapse a folder in a IVsUIHierarchy.
-        /// </summary>
-        private static void CollapseFolder(ConfiguredProject configuredProject, IServiceProvider serviceProvider, uint itemId)
-        {
-            UseWindow(configuredProject, serviceProvider, (hierarchy, window) =>
-            {
-                window.ExpandItem(hierarchy, itemId, EXPANDFLAGS.EXPF_CollapseFolder);
             });
         }
 

@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 
@@ -162,23 +161,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             }
 
             return elements.ToImmutable();
-        }
-
-        /// <summary>
-        /// If the project gets any additional items from the callback, this will return those added items.
-        /// </summary>
-        public static async Task<ImmutableArray<ProjectItemElement>> AddItems(ConfiguredProject configuredProject, IProjectAccessor accessor, Func<Task> addItems)
-        {
-            Requires.NotNull(configuredProject, nameof(configuredProject));
-            Requires.NotNull(addItems, nameof(addItems));
-
-            var previousIncludes =
-                await accessor.OpenProjectForReadAsync(configuredProject, project =>
-                    project.AllEvaluatedItems.Select(x => x.EvaluatedInclude).ToImmutableHashSet(StringComparer.OrdinalIgnoreCase)).ConfigureAwait(false);
-
-            await addItems().ConfigureAwait(false);
-
-            return await accessor.OpenProjectForReadAsync(configuredProject, project => GetAddedElements(previousIncludes, project)).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -344,6 +326,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// Moves child elements based on the reference element and move action.
         /// </summary>
         /// <param name="referenceElement">element for which moved items will be above or below it</param>
+        /// <returns>true or false; 'true' if all elements were successfully moved. 'false' if just one element was not moved successfully.</returns>
         private static bool TryMoveElements(ImmutableArray<ProjectItemElement> elements, ProjectItemElement referenceElement, MoveAction moveAction)
         {
             var parent = referenceElement.Parent;
@@ -437,17 +420,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             // Determine what sibling we want to look at based on if we are moving up or down.
             var sibling = GetSiblingByMoveAction(projectTree, moveAction);
             return TryMove(project, projectTree, sibling, moveAction);
-        }
-
-        /// <summary>
-        /// Gets the difference between the previous evaluated includes and the project's evaluated includes to find what items were added.
-        /// </summary>
-        private static ImmutableArray<ProjectItemElement> GetAddedElements(ImmutableHashSet<string> previousIncludes, Project project)
-        {
-            return project.AllEvaluatedItems
-                .Where(x => !previousIncludes.Contains(x.EvaluatedInclude, StringComparer.OrdinalIgnoreCase))
-                .Select(x => x.Xml)
-                .ToImmutableArray();
         }
     }
 }

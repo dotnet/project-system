@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                 // Wait for updating to finish before re-selecting the node that moved.
                 // We need to re-select the node after it is moved in order to continuously move the node using hotkeys.
                 await _projectTree.TreeService.PublishLatestTreeAsync(waitForFileSystemUpdates: true).ConfigureAwait(false);
-                await HACK_NodeHelper.SelectAsync(_configuredProject, _serviceProvider, node).ConfigureAwait(false);
+                await NodeHelper.SelectAsync(_configuredProject, _serviceProvider, node).ConfigureAwait(false);
             }
 
             return didMove;
