@@ -12,6 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     /// <summary>
     ///     Handles changes to the  &lt;Analyzer/&gt; item during design-time builds.
     /// </summary>
+    [Export(typeof(IWorkspaceContextHandler))]
     internal class AnalyzerItemHandler : ICommandLineHandler
     {
         // WORKAROUND: To avoid Roslyn throwing when we add duplicate analyzers, we remember what 
@@ -19,15 +20,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         // See: https://github.com/dotnet/project-system/issues/2230
         private readonly UnconfiguredProject _project;
-        private readonly IWorkspaceProjectContext _context;
+        private IWorkspaceProjectContext _context;
         private readonly HashSet<string> _paths = new HashSet<string>(StringComparers.Paths);
+
+        [ImportingConstructor]
+        public AnalyzerItemHandler(UnconfiguredProject project)
+            : this(project, null)
+        {
+        }
 
         public AnalyzerItemHandler(UnconfiguredProject project, IWorkspaceProjectContext context)
         {
             Requires.NotNull(project, nameof(project));
-            Requires.NotNull(context, nameof(context));
 
             _project = project;
+            _context = context;
+        }
+
+        public void Initialize(IWorkspaceProjectContext context)
+        {
             _context = context;
         }
 

@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-
+using System.ComponentModel.Composition;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
@@ -13,6 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
     /// <summary>
     ///     Handles changes to references that are passed to the compiler during design-time builds.
     /// </summary>
+    [Export(typeof(IWorkspaceContextHandler))]
     internal class MetadataReferenceItemHandler : ICommandLineHandler
     {
         // WORKAROUND: The language services through IWorkspaceProjectContext doesn't expect to see AddMetadataReference called more than
@@ -20,15 +21,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         // See: https://github.com/dotnet/project-system/issues/2230
 
         private readonly UnconfiguredProject _project;
-        private readonly IWorkspaceProjectContext _context;
+        private IWorkspaceProjectContext _context;
         private readonly Dictionary<string, MetadataReferenceProperties> _addedPathsWithMetadata = new Dictionary<string, MetadataReferenceProperties>(StringComparers.Paths);
+
+        [ImportingConstructor]
+        public MetadataReferenceItemHandler(UnconfiguredProject project)
+            : this(project, null)
+        {
+        }
 
         public MetadataReferenceItemHandler(UnconfiguredProject project, IWorkspaceProjectContext context)
         {
             Requires.NotNull(project, nameof(project));
-            Requires.NotNull(context, nameof(context));
 
             _project = project;
+            _context = context;
+        }
+
+        public void Initialize(IWorkspaceProjectContext context)
+        {
             _context = context;
         }
 

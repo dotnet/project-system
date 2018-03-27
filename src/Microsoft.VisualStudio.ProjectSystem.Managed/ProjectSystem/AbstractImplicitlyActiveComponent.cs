@@ -9,14 +9,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
     ///     An <see langword="abstract"/> base class that loads, or unloads its inner instance when a 
-    ///     <see cref="ConfiguredProject"/> becomes implicitly activated, or deactivated, respectively.
+    ///     <see cref="ConfiguredProject"/> becomes implicitly activated, or deactivated.
     /// </summary>
     internal abstract class AbstractImplicitlyActiveComponent : AbstractProjectDynamicLoadComponent
     {
         private readonly IConfiguredProjectImplicitActivationTracking _activationTracking;
 
         protected AbstractImplicitlyActiveComponent(IConfiguredProjectImplicitActivationTracking activationTracking, 
-                                                 JoinableTaskContextNode joinableTaskContextNode)
+                                                    JoinableTaskContextNode joinableTaskContextNode)
             : base(joinableTaskContextNode)
         {
             Requires.NotNull(activationTracking, nameof(activationTracking));
