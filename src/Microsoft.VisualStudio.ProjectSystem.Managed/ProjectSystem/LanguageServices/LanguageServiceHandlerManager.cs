@@ -7,6 +7,7 @@ using System.ComponentModel.Composition;
 
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
+using Microsoft.VisualStudio.Telemetry;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
@@ -17,9 +18,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly ICommandLineParserService _commandLineParser;
         private readonly IContextHandlerProvider _handlerProvider;
         private readonly IProjectLogger _logger;
+        private readonly IDesignTimeBuildTelemetryService _designBuildTelemetryService;
 
         [ImportingConstructor]
-        public LanguageServiceHandlerManager(UnconfiguredProject project, ICommandLineParserService commandLineParser, IContextHandlerProvider handlerProvider, IProjectLogger logger)
+        public LanguageServiceHandlerManager(
+            UnconfiguredProject project,
+            ICommandLineParserService commandLineParser,
+            IContextHandlerProvider handlerProvider,
+            IProjectLogger logger,
+            IDesignTimeBuildTelemetryService designBuildTelemetryService)
         {
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(commandLineParser, nameof(commandLineParser));
@@ -30,6 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             _commandLineParser = commandLineParser;
             _handlerProvider = handlerProvider;
             _logger = logger;
+            _designBuildTelemetryService = designBuildTelemetryService;
             CommandLineNotifications = new OrderPrecedenceImportCollection<Action<string, BuildOptions, BuildOptions>>(projectCapabilityCheckProvider: project);
         }
 
@@ -91,6 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             Assumes.False(update.Value.ProjectChanges.Count == 0, "CPS should never send us an empty design-time build data.");
 
+            _designBuildTelemetryService.OnDesignTimeBuildCompleted(_project.FullPath);
             IComparable version = update.DataSourceVersions[ProjectDataSources.ConfiguredProjectVersion];
 
             using (IProjectLoggerBatch logger = _logger.BeginBatch())
@@ -117,6 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 WriteRuleFooter(logger, ruleName);
                 WriteFooter(logger, update);
             }
+            _designBuildTelemetryService.OnLanguageServicePopulated();
         }
 
         /// <summary>

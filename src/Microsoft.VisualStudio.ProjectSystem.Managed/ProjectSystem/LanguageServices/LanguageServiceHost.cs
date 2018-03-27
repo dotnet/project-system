@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IActiveProjectConfigurationRefreshService _activeProjectConfigurationRefreshService;
         private readonly LanguageServiceHandlerManager _languageServiceHandlerManager;
-        private readonly ITelemetryService _telemetryService;
+        private readonly IDesignTimeBuildTelemetryService _designBuildTelemetryService;
 
         private readonly List<IDisposable> _evaluationSubscriptionLinks;
         private readonly List<IDisposable> _designTimeBuildSubscriptionLinks;
@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                    IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
                                    IActiveProjectConfigurationRefreshService activeProjectConfigurationRefreshService,
                                    LanguageServiceHandlerManager languageServiceHandlerManager,
-                                   ITelemetryService telemetryService)
+                                   IDesignTimeBuildTelemetryService designBuildTelemetryService)
             : base(commonServices.ThreadingService.JoinableTaskContext)
         {
             Requires.NotNull(contextProvider, nameof(contextProvider));
@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
             _activeProjectConfigurationRefreshService = activeProjectConfigurationRefreshService;
             _languageServiceHandlerManager = languageServiceHandlerManager;
-            _telemetryService = telemetryService;
+            _designBuildTelemetryService = designBuildTelemetryService;
             _evaluationSubscriptionLinks = new List<IDisposable>();
             _designTimeBuildSubscriptionLinks = new List<IDisposable>();
             _projectConfigurationsWithSubscriptions = new HashSet<ProjectConfiguration>();
@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
         private Task OnProjectFactoryCompletedAsync()
         {
-            LogLanguageServiceHostInitializeStart();
+            _designBuildTelemetryService.OnDesignTimeBuildQueued();
             return InitializeAsync();
         }
 
@@ -99,33 +99,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             // Update project context and subscriptions.
             await UpdateProjectContextAndSubscriptionsAsync().ConfigureAwait(false);
-            LogLanguageServiceHostInitializeStop();
-        }
-
-        private static volatile int s_numberOfTimesInitialized = 0;
-
-        /// <summary>
-        /// Only posts an event the first time this method is called in the VS process
-        /// Also updates a global count so we know how many project hosts have been initialized
-        /// </summary>
-        private void LogLanguageServiceHostInitializeStart()
-        {
-            if(Interlocked.Increment(ref s_numberOfTimesInitialized) == 1)
-            {
-                _telemetryService.PostEvent("AbstractProjectCreation/Start");
-            }
-        }
-
-        /// <summary>
-        /// Decrements the global count and reports that all hosts have been initialized
-        /// if the count is zero.
-        /// </summary>
-        private void LogLanguageServiceHostInitializeStop()
-        {
-            if (Interlocked.Decrement(ref s_numberOfTimesInitialized) == 0)
-            {
-                _telemetryService.PostEvent("AbstractProjectCreation/Stop");
-            }
         }
 
         Task ILanguageServiceHost.InitializeAsync(CancellationToken cancellationToken)
