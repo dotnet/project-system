@@ -94,7 +94,7 @@
   <PropertyGroup>
     <RestoreSources>
       $(RestoreSources);
-      http://www.myget.org/F/vs-devcore/api/v3/index.json;
+      https://vside.myget.org/F/devcore/api/v3/index.json;
       https://dotnet.myget.org/F/msbuild/api/v3/index.json;
       https://dotnet.myget.org/F/nuget-build/api/v3/index.json;
       https://dotnet.myget.org/F/roslyn/api/v3/index.json;
