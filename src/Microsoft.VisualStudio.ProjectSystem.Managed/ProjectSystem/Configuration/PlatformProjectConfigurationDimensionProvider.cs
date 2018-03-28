@@ -19,6 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     [Export(typeof(IProjectConfigurationDimensionsProvider))]
     [AppliesTo(ProjectCapabilities.ProjectConfigurationsDeclaredDimensions)]
     [Order(DimensionProviderOrder.Platform)]
+    [ConfigurationDimensionDescription(ConfigurationGeneral.ConfigurationProperty)]
     internal class PlatformProjectConfigurationDimensionProvider : BaseProjectConfigurationDimensionProvider
     {
         [ImportingConstructor]
