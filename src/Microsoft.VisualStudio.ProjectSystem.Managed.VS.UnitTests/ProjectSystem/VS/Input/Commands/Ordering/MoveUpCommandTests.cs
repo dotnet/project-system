@@ -169,9 +169,9 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
 
         override internal long GetCommandId() => ManagedProjectSystemPackage.MoveUpCmdId;
 
-        override internal AbstractMoveCommand CreateInstance(IPhysicalProjectTree projectTree, Shell.SVsServiceProvider serviceProvider, ConfiguredProject configuredProject)
+        override internal AbstractMoveCommand CreateInstance(IPhysicalProjectTree projectTree, Shell.SVsServiceProvider serviceProvider, ConfiguredProject configuredProject, IProjectAccessor accessor)
         {
-            return new MoveUpCommand(projectTree, serviceProvider, configuredProject);
+            return new MoveUpCommand(projectTree, serviceProvider, configuredProject, accessor);
         }
     }
 }

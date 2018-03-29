@@ -1,13 +1,9 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System.Linq;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
-
 using Microsoft.VisualStudio.Packaging;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.Shell;
-
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
@@ -17,13 +13,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
     internal class AddExistingItemBelowCommand : AbstractAddItemCommand
     {
         [ImportingConstructor]
-        public AddExistingItemBelowCommand(IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, SVsServiceProvider serviceProvider) : base(projectTree, projectVsServices, serviceProvider)
+        public AddExistingItemBelowCommand(
+            IPhysicalProjectTree projectTree,
+            IUnconfiguredProjectVsServices projectVsServices,
+            SVsServiceProvider serviceProvider, 
+            OrderAddItemHintReceiver orderAddItemHintReceiver) :
+            base(projectTree, projectVsServices, serviceProvider, orderAddItemHintReceiver)
         {
-        }
-
-        protected override IProjectTree GetNodeToAddTo(IProjectTree target)
-        {
-            return target.Parent;
         }
 
         protected override Task OnAddingNodesAsync(IProjectTree nodeToAddTo)
@@ -31,17 +27,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             return ShowAddExistingFilesDialogAsync(nodeToAddTo);
         }
 
-        protected override async Task OnAddedNodesAsync(ConfiguredProject configuredProject, IProjectTree target, IEnumerable<IProjectTree> addedNodes, IProjectTree updatedTarget)
-        {
-            foreach (var addedNode in addedNodes.Reverse())
-            {
-                await OrderingHelper.TryMoveBelowAsync(configuredProject, addedNode, target).ConfigureAwait(true);
-            }
-        }
-
         protected override bool CanAdd(IProjectTree target)
         {
             return OrderingHelper.HasValidDisplayOrder(target);
         }
+
+        protected override OrderAddItemHintReceiverAction Action => OrderAddItemHintReceiverAction.MoveBelow;
     }
 }
