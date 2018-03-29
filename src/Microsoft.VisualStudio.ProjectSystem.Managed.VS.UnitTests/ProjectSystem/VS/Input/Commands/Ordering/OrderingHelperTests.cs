@@ -1,9 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System.Collections.Generic;
 using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
@@ -374,7 +372,9 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
 
             var project = new Project(projectRootElement);
 
-            Assert.True(OrderingHelper.TryMoveAbove(project, tree.Children[0], tree.Children[2]));
+            var elements = OrderingHelper.GetElements(project, tree.Children[0]);
+
+            Assert.True(OrderingHelper.TryMoveElementsAbove(project, elements, tree.Children[2]));
             Assert.True(project.IsDirty);
 
             var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
@@ -420,7 +420,9 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
 
             var project = new Project(projectRootElement);
 
-            Assert.True(OrderingHelper.TryMoveBelow(project, tree.Children[0], tree.Children[2]));
+            var elements = OrderingHelper.GetElements(project, tree.Children[0]);
+
+            Assert.True(OrderingHelper.TryMoveElementsBelow(project, elements, tree.Children[2]));
             Assert.True(project.IsDirty);
 
             var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
@@ -456,9 +458,6 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
     File (flags: {}), FilePath: ""C:\Foo\test3.fs"", DisplayOrder: 4, ItemName: ""test3.fs""
 ");
 
-            var addedNodes = new List<IProjectTree>();
-            addedNodes.Add(updatedTree.Children[2]);
-
             var projectRootElement = @"
 <Project>
 
@@ -478,7 +477,9 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
 
             var project = new Project(projectRootElement);
 
-            Assert.True(OrderingHelper.TryMoveNodesToTop(project, addedNodes, tree), "TryMoveNodesToTop returned false.");
+            var elements = OrderingHelper.GetElements(project, updatedTree.Children[2]);
+
+            Assert.True(OrderingHelper.TryMoveElementsToTop(project, elements, tree), "TryMoveElementsToTop returned false.");
             Assert.True(project.IsDirty);
 
             var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
@@ -516,10 +517,6 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
     File (flags: {}), FilePath: ""C:\Foo\test3.fs"", DisplayOrder: 5, ItemName: ""test3.fs""
 ");
 
-            var addedNodes = new List<IProjectTree>();
-            addedNodes.Add(updatedTree.Children[2]);
-            addedNodes.Add(updatedTree.Children[3]);
-
             var projectRootElement = @"
 <Project>
 
@@ -540,7 +537,11 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
 
             var project = new Project(projectRootElement);
 
-            Assert.True(OrderingHelper.TryMoveNodesToTop(project, addedNodes, tree), "TryMoveNodesToTop returned false.");
+            var elements = 
+                OrderingHelper.GetElements(project, updatedTree.Children[2])
+                .AddRange(OrderingHelper.GetElements(project, updatedTree.Children[3]));
+
+            Assert.True(OrderingHelper.TryMoveElementsToTop(project, elements, tree), "TryMoveElementsToTop returned false.");
             Assert.True(project.IsDirty);
 
             var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
@@ -583,10 +584,6 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
     File (flags: {}), FilePath: ""C:\Foo\test3.fs"", DisplayOrder: 7, ItemName: ""test3.fs""
 ");
 
-            var addedNodes = new List<IProjectTree>();
-            addedNodes.Add(updatedTree.Children[2].Children[0].Children[0]);
-            addedNodes.Add(updatedTree.Children[2].Children[0].Children[1]);
-
             var projectRootElement = @"
 <Project>
 
@@ -607,7 +604,11 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
 
             var project = new Project(projectRootElement);
 
-            Assert.True(OrderingHelper.TryMoveNodesToTop(project, addedNodes, tree.Children[0].Children[0]), "TryMoveNodesToTop returned false.");
+            var elements =
+                OrderingHelper.GetElements(project, updatedTree.Children[2].Children[0].Children[0])
+                .AddRange(OrderingHelper.GetElements(project, updatedTree.Children[2].Children[0].Children[1]));
+
+            Assert.True(OrderingHelper.TryMoveElementsToTop(project, elements, tree), "TryMoveElementsToTop returned false.");
             Assert.True(project.IsDirty);
 
             var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>

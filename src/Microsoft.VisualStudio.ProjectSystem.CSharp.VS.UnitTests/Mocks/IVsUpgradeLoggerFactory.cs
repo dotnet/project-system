@@ -39,8 +39,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
                 return false;
             }
 
-            var other = obj as LogMessage;
-            if (other == null)
+            if (!(obj is LogMessage other))
             {
                 return false;
             }

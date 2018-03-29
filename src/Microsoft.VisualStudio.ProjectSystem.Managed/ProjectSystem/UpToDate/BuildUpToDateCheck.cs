@@ -16,7 +16,7 @@ using Microsoft.VisualStudio.Telemetry;
 
 namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
-    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp)]
+    [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharp + "+ !" + ProjectCapabilities.SharedAssetsProject)]
     [Export(typeof(IBuildUpToDateCheckProvider))]
     [ExportMetadata("BeforeDrainCriticalTasks", true)]
     internal sealed class BuildUpToDateCheck : OnceInitializedOnceDisposed, IBuildUpToDateCheckProvider

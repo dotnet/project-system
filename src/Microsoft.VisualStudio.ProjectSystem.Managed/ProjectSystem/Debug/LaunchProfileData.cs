@@ -93,8 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 var customSettings = new Dictionary<string, object>(StringComparer.Ordinal);
                 foreach (var data in profile.Value.Children())
                 {
-                    var dataProperty = data as JProperty;
-                    if (dataProperty == null)
+                    if (!(data is JProperty dataProperty))
                     {
                         continue;
                     }

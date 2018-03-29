@@ -75,8 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 throw new ArgumentException("serviceProvider");
             }
 
-            var uiShell = _serviceProvider.GetService(typeof(IVsUIShell)) as IVsUIShell;
-            if (uiShell == null)
+            if (!(_serviceProvider.GetService(typeof(IVsUIShell)) is IVsUIShell uiShell))
             {
                 throw new InvalidOperationException();
             }

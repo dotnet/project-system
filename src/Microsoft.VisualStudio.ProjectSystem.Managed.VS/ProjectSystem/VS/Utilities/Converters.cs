@@ -172,8 +172,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            string parameterString = parameter as string;
-            if (parameterString == null)
+            if (!(parameter is string parameterString))
                 return DependencyProperty.UnsetValue;
 
             if (Enum.IsDefined(value.GetType(), value) == false)
@@ -186,8 +185,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            string parameterString = parameter as string;
-            if (parameterString == null || value.Equals(false))
+            if (!(parameter is string parameterString) || value.Equals(false))
                 return DependencyProperty.UnsetValue;
 
             return Enum.Parse(targetType, parameterString);
