@@ -28,6 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         {
             var projectAccessor = IProjectAccessorFactory.Create(projectXml);
             var provider = new ConfigurationProjectConfigurationDimensionProvider(projectAccessor);
+
             var project = UnconfiguredProjectFactory.Create();
 
             var values = await provider.GetDefaultValuesForDimensionsAsync(project);
@@ -43,6 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         {
             var projectAccessor = IProjectAccessorFactory.Create("<Project />");
             var provider = new ConfigurationProjectConfigurationDimensionProvider(projectAccessor);
+
             var project = UnconfiguredProjectFactory.Create();
 
             var values = await provider.GetDefaultValuesForDimensionsAsync(project);
@@ -55,6 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         {
             var projectAccessor = IProjectAccessorFactory.Create(projectXml);
             var provider = new ConfigurationProjectConfigurationDimensionProvider(projectAccessor);
+
             var project = UnconfiguredProjectFactory.Create();
 
             var values = await provider.GetProjectConfigurationDimensionsAsync(project);
@@ -76,8 +79,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 
             var provider = new ConfigurationProjectConfigurationDimensionProvider(projectAccessor);
 
+
             var project = UnconfiguredProjectFactory.Create();
             var values = await provider.GetProjectConfigurationDimensionsAsync(project);
+
             Assert.Empty(values);
         }
 

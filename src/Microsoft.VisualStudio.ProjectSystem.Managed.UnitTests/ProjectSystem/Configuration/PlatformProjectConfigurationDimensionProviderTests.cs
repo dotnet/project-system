@@ -31,6 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             var project = UnconfiguredProjectFactory.Create();
             var values = await provider.GetDefaultValuesForDimensionsAsync(project);
 
+
             Assert.Single(values);
             var value = values.First();
             Assert.Equal(ConfigurationGeneral.PlatformProperty, value.Key);

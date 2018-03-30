@@ -4,7 +4,6 @@ using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.Shell;
-
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
@@ -15,13 +14,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
     internal class AddNewItemCommand : AbstractAddItemCommand
     {
         [ImportingConstructor]
-        public AddNewItemCommand(IPhysicalProjectTree projectTree, IUnconfiguredProjectVsServices projectVsServices, SVsServiceProvider serviceProvider) : base(projectTree, projectVsServices, serviceProvider)
+        public AddNewItemCommand(
+            IPhysicalProjectTree projectTree,
+            IUnconfiguredProjectVsServices projectVsServices,
+            SVsServiceProvider serviceProvider,
+            OrderAddItemHintReceiver orderAddItemHintReceiver) :
+            base(projectTree, projectVsServices, serviceProvider, orderAddItemHintReceiver)
         {
-        }
-
-        protected override IProjectTree GetNodeToAddTo(IProjectTree target)
-        {
-            return target;
         }
 
         protected override Task OnAddingNodesAsync(IProjectTree nodeToAddTo)

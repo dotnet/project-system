@@ -16,7 +16,6 @@ namespace Microsoft.Build.Construction
             {
                 return ProjectRootElement.Create(reader);
             }
-
         }
     }
 }
