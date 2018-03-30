@@ -9,10 +9,8 @@ namespace Microsoft.Build.Construction
     {
         public static ProjectRootElement Create(string xml = null)
         {
-            if (string.IsNullOrWhiteSpace(xml))
-            {
+            if (string.IsNullOrEmpty(xml))
                 xml = "<Project/>";
-            }
 
             var reader = XmlReader.Create(new StringReader(xml));
 

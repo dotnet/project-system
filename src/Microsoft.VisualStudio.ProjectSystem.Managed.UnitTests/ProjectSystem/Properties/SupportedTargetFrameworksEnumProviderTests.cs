@@ -13,10 +13,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     public class SupportedTargetFrameworksEnumProviderTests
     {
         [Fact]
-        public void Constructor_NullProjectXmlAccessor_ThrowsArgumentNullException()
+        public void Constructor_NullProjectAccessor_ThrowsArgumentNullException()
         {
             var configuredProject = ConfiguredProjectFactory.Create();
-            Assert.Throws<ArgumentNullException>("projectXmlAccessor", () =>
+            Assert.Throws<ArgumentNullException>("projectAccessor", () =>
             {
                 new SupportedTargetFrameworksEnumProvider(null, configuredProject);
             });
@@ -25,21 +25,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public void Constructor_NullConfiguredProject_ThrowsArgumentNullException()
         {
-            var projectXmlAccessor = IProjectXmlAccessorFactory.Create();
+            var projectAccessor = IProjectAccessorFactory.Create();
 
             Assert.Throws<ArgumentNullException>("configuredProject", () =>
             {
-                new SupportedTargetFrameworksEnumProvider(projectXmlAccessor, null);
+                new SupportedTargetFrameworksEnumProvider(projectAccessor, null);
             });
         }
 
         [Fact]
         public async Task Constructor()
         {
-            var projectXmlAccessor = IProjectXmlAccessorFactory.Create();
+            var projectAccessor = IProjectAccessorFactory.Create();
             var configuredProject = ConfiguredProjectFactory.Create();
 
-            var provider = new SupportedTargetFrameworksEnumProvider(projectXmlAccessor, configuredProject);
+            var provider = new SupportedTargetFrameworksEnumProvider(projectAccessor, configuredProject);
             var generator = await provider.GetProviderAsync(null);
 
             Assert.NotNull(generator);
@@ -48,14 +48,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task GetListedValues()
         {
-            var projectXmlAccessor = IProjectXmlAccessorFactory.WithItems("SupportedTargetFramework", "DisplayName", new[] {
-                (name: ".NETCoreApp,Version=v1.0", metadataValue: ".NET Core 1.0"),
-                (name: ".NETCoreApp,Version=v1.1", metadataValue: ".NET Core 1.1"),
-                (name: ".NETCoreApp,Version=v2.0", metadataValue: ".NET Core 2.0"),
-            });
+            string project = 
+@"<Project>
+    <ItemGroup>
+        <SupportedTargetFramework Include="".NETCoreApp,Version=v1.0"" DisplayName="".NET Core 1.0"" />
+        <SupportedTargetFramework Include="".NETCoreApp,Version=v1.1"" DisplayName="".NET Core 1.1"" />
+        <SupportedTargetFramework Include="".NETCoreApp,Version=v2.0"" DisplayName="".NET Core 2.0"" />
+    </ItemGroup>
+</Project>";
+
+            var projectAccessor = IProjectAccessorFactory.Create(project);
+
             var configuredProject = ConfiguredProjectFactory.Create();
 
-            var provider = new SupportedTargetFrameworksEnumProvider(projectXmlAccessor, configuredProject);
+            var provider = new SupportedTargetFrameworksEnumProvider(projectAccessor, configuredProject);
             var generator = await provider.GetProviderAsync(null);
             var values = await generator.GetListedValuesAsync();
 
@@ -67,10 +73,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task TryCreateEnumValue()
         {
-            var projectXmlAccessor = IProjectXmlAccessorFactory.Create();
+            var projectAccessor = IProjectAccessorFactory.Create();
             var configuredProject = ConfiguredProjectFactory.Create();
 
-            var provider = new SupportedTargetFrameworksEnumProvider(projectXmlAccessor, configuredProject);
+            var provider = new SupportedTargetFrameworksEnumProvider(projectAccessor, configuredProject);
             var generator = await provider.GetProviderAsync(null);
 
             Assert.Throws<NotImplementedException>(() =>
