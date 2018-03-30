@@ -18,48 +18,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
     public class VSProject_VSLangProjectPropertiesTests
     {
         [Fact]
-        public void Constructor_NullAsVsProject_ThrowsArgumentNull()
-        {
-            Assert.Throws<ArgumentNullException>("vsProject", () =>
-            {
-                CreateInstance();
-            });
-        }
-
-        [Fact]
-        public void Constructor_NullAsThreadingService_ThrowsArgumentNull()
-        {
-            Assert.Throws<ArgumentNullException>("threadingService", () =>
-            {
-                CreateInstance(Mock.Of<VSLangProj.VSProject>());
-            });
-        }
-
-        [Fact]
-        public void Constructor_NullAsProjectProperties_ThrowsArgumentNull()
-        {
-            Assert.Throws<ArgumentNullException>("projectProperties", () =>
-            {
-                CreateInstance(
-                    Mock.Of<VSLangProj.VSProject>(),
-                    threadingService: Mock.Of<IProjectThreadingService>());
-            });
-        }
-
-        [Fact]
-        public void Constructor_NullAsProject_ThrowsArgumentNull()
-        {
-            Assert.Throws<ArgumentNullException>("project", () =>
-            {
-                new VSProject(
-                    Mock.Of<VSLangProj.VSProject>(),
-                    threadingService: Mock.Of<IProjectThreadingService>(),
-                    projectProperties: Mock.Of<ActiveConfiguredProject<ProjectProperties>>(),
-                    project: null);
-            });
-        }
-
-        [Fact]
         public void NotNull()
         {
             var unconfiguredProjectMock = new Mock<UnconfiguredProject>();

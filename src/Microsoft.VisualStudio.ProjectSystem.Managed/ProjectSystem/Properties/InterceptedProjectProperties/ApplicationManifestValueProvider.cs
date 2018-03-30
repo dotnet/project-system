@@ -24,11 +24,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private const string DefaultManifestValue = "DefaultManifest";
 
         [ImportingConstructor]
-        public ApplicationManifestValueProvider(UnconfiguredProject unconfiguredProject)
+        public ApplicationManifestValueProvider(UnconfiguredProject project)
         {
-            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
-
-            _unconfiguredProject = unconfiguredProject;
+            _unconfiguredProject = project;
         }
 
         /// <summary>

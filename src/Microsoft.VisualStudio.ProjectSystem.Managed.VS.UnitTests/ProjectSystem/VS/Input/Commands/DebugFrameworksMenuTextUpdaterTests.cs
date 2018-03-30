@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         }
 
         [Fact]
-        public void QueryStatusTests_NoActiveProject()
+        public void QueryStatus_NoActiveProject()
         {
             var startupHelper = new Mock<IStartupProjectHelper>();
             startupHelper.Setup(x => x.GetExportFromSingleDotNetStartupProject<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles))
@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         }
 
         [Fact]
-        public void QueryStatusTests_NullFrameworks()
+        public void QueryStatus_NullFrameworks()
         {
             var activeDebugFrameworkSvcs = new IActiveDebugFrameworkServicesFactory()
                                                .ImplementGetActiveDebuggingFrameworkPropertyAsync(null)
@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         }
 
         [Fact]
-        public void QueryStatusTests_FrameworksLessThan2()
+        public void QueryStatus_FrameworksLessThan2()
         {
             var activeDebugFrameworkSvcs = new IActiveDebugFrameworkServicesFactory()
                                                .ImplementGetActiveDebuggingFrameworkPropertyAsync(null)
@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         }
 
         [Fact]
-        public void QueryStatusTests_FrameworkNoAciive()
+        public void QueryStatus_FrameworkNoAciive()
         {
             var activeDebugFrameworkSvcs = new IActiveDebugFrameworkServicesFactory()
                                                .ImplementGetActiveDebuggingFrameworkPropertyAsync(null)
@@ -95,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             Assert.True(command.Enabled);
         }
         [Fact]
-        public void QueryStatusTests_FrameworkNoMatchingAciive()
+        public void QueryStatus_FrameworkNoMatchingAciive()
         {
             var activeDebugFrameworkSvcs = new IActiveDebugFrameworkServicesFactory()
                                                .ImplementGetActiveDebuggingFrameworkPropertyAsync("net45")
@@ -113,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         }
 
         [Fact]
-        public void QueryStatusTests_FrameworkValidAciive()
+        public void QueryStatus_FrameworkValidAciive()
         {
             var activeDebugFrameworkSvcs = new IActiveDebugFrameworkServicesFactory()
                                                .ImplementGetActiveDebuggingFrameworkPropertyAsync("netcoreapp1.0")

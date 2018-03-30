@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public void Fork(Func<Task> asyncAction,
                   JoinableTaskFactory factory = null,
-                  UnconfiguredProject unconfiguredProject = null,
+                  UnconfiguredProject project = null,
                   ConfiguredProject configuredProject = null,
                   ErrorReportSettings watsonReportSettings = null,
                   ProjectFaultSeverity faultSeverity = ProjectFaultSeverity.Recoverable,

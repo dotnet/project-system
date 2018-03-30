@@ -13,28 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     public class SupportedTargetFrameworksEnumProviderTests
     {
         [Fact]
-        public void Constructor_NullProjectAccessor_ThrowsArgumentNullException()
-        {
-            var configuredProject = ConfiguredProjectFactory.Create();
-            Assert.Throws<ArgumentNullException>("projectAccessor", () =>
-            {
-                new SupportedTargetFrameworksEnumProvider(null, configuredProject);
-            });
-        }
-
-        [Fact]
-        public void Constructor_NullConfiguredProject_ThrowsArgumentNullException()
-        {
-            var projectAccessor = IProjectAccessorFactory.Create();
-
-            Assert.Throws<ArgumentNullException>("configuredProject", () =>
-            {
-                new SupportedTargetFrameworksEnumProvider(projectAccessor, null);
-            });
-        }
-
-        [Fact]
-        public async Task Constructor()
+        public async Task GetProviderAsync_ReturnsNonNullGenerator()
         {
             var projectAccessor = IProjectAccessorFactory.Create();
             var configuredProject = ConfiguredProjectFactory.Create();
@@ -46,9 +25,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         }
 
         [Fact]
-        public async Task GetListedValues()
+        public async Task GetListedValuesAsync_ReturnsSupportedTargetFrameworksItems()
         {
-            string project = 
+            string project =
 @"<Project>
     <ItemGroup>
         <SupportedTargetFramework Include="".NETCoreApp,Version=v1.0"" DisplayName="".NET Core 1.0"" />
@@ -71,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         }
 
         [Fact]
-        public async Task TryCreateEnumValue()
+        public async Task TryCreateEnumValueAsync_ThrowsNotImplemented()
         {
             var projectAccessor = IProjectAccessorFactory.Create();
             var configuredProject = ConfiguredProjectFactory.Create();

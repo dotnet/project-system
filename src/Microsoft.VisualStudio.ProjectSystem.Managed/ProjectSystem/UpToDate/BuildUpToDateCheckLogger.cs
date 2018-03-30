@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 _logger?.WriteLine($"FastUpToDate: {string.Format(message, values)} ({_fileName})");
             }
         }
-        private void ConvertToLocalTimes(object[] values)
+        private static void ConvertToLocalTimes(object[] values)
         {
             for (int i = 0; i < values.Length; i++)
             {

@@ -133,7 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// <summary>
         /// Gets the value for the specified property of the specified project.
         /// </summary>
-        /// <param name="project">Unconfigured project.</param>        
+        /// <param name="project">Unconfigured project.</param>
         /// <param name="propertyName">The name of the property to get; otherwise, <see langword="null"/> to use <see cref="PropertyName"/>.</param>
         /// <returns>Value of the property.</returns>
         /// <remarks>

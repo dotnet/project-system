@@ -148,7 +148,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                 }
             }
 
-            private void SetExecParameter(ProjectTaskElement execTask, string unevaluatedPropertyValue)
+            private static void SetExecParameter(ProjectTaskElement execTask, string unevaluatedPropertyValue)
                 => execTask.SetParameter(Command, unevaluatedPropertyValue);
         }
     }

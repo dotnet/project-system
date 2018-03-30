@@ -10,42 +10,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
     public class PhysicalProjectTreeTests
     {
         [Fact]
-        public void Constructor_NullAsTreeService_ThrowsArgumentNull()
-        {
-            var projectTreeProvider = new Lazy<IProjectTreeProvider>(() => IProjectTreeProviderFactory.Create());
-            var projectTreeStorage = new Lazy<IPhysicalProjectTreeStorage>(() => IPhysicalProjectTreeStorageFactory.Create());
-
-            Assert.Throws<ArgumentNullException>("treeService", () =>
-            {
-                new PhysicalProjectTree((Lazy<IProjectTreeService>)null, projectTreeProvider, projectTreeStorage);
-            });
-        }
-
-        [Fact]
-        public void Constructor_NullAsTreeProvider_ThrowsArgumentNull()
-        {
-            var projectTreeService = new Lazy<IProjectTreeService>(() => IProjectTreeServiceFactory.Create());
-            var projectTreeStorage = new Lazy<IPhysicalProjectTreeStorage>(() => IPhysicalProjectTreeStorageFactory.Create());
-
-            Assert.Throws<ArgumentNullException>("treeProvider", () =>
-            {
-                new PhysicalProjectTree(projectTreeService, (Lazy<IProjectTreeProvider>)null, projectTreeStorage);
-            });
-        }
-
-        [Fact]
-        public void Constructor_NullAsTreeStorage_ThrowsArgumentNull()
-        {
-            var projectTreeService = new Lazy<IProjectTreeService>(() => IProjectTreeServiceFactory.Create());
-            var projectTreeProvider = new Lazy<IProjectTreeProvider>(() => IProjectTreeProviderFactory.Create());
-
-            Assert.Throws<ArgumentNullException>("treeStorage", () =>
-            {
-                new PhysicalProjectTree(projectTreeService, projectTreeProvider, (Lazy<IPhysicalProjectTreeStorage>)null);
-            });
-        }
-
-        [Fact]
         public void Constructor_ValueAsTreeService_SetTreeServiceProperty()
         {
             var projectTreeService = new Lazy<IProjectTreeService>(() => IProjectTreeServiceFactory.Create());

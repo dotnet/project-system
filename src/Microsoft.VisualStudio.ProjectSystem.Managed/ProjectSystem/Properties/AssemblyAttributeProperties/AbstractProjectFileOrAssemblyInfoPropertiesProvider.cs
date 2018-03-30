@@ -22,11 +22,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             IProjectPropertiesProvider delegatedProvider,
             IProjectInstancePropertiesProvider instanceProvider,
             IEnumerable<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> interceptingValueProviders,
-            UnconfiguredProject unconfiguredProject,
+            UnconfiguredProject project,
             Func<ProjectId> getActiveProjectId,
             Workspace workspace,
             IProjectThreadingService threadingService)
-            : base(delegatedProvider, instanceProvider, unconfiguredProject)
+            : base(delegatedProvider, instanceProvider, project)
         {
             Requires.NotNull(interceptingValueProviders, nameof(interceptingValueProviders));
             Requires.NotNull(getActiveProjectId, nameof(getActiveProjectId));

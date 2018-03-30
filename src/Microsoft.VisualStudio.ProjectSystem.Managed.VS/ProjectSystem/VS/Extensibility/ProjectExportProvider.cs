@@ -41,10 +41,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Extensibility
                 return null;
             }
 
-            var unconfiguredProject = projectService.LoadedUnconfiguredProjects
+            var project = projectService.LoadedUnconfiguredProjects
                                                     .FirstOrDefault(x => x.FullPath.Equals(projectFilePath,
                                                                             StringComparison.OrdinalIgnoreCase));
-            return unconfiguredProject?.Services.ExportProvider.GetExportedValueOrDefault<T>();
+            return project?.Services.ExportProvider.GetExportedValueOrDefault<T>();
         }
     }
 }

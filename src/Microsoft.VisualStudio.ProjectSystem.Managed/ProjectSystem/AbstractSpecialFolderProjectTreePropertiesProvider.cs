@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         protected AbstractSpecialFolderProjectTreePropertiesProvider(IProjectImageProvider imageProvider)
         {
-            Requires.NotNull(imageProvider, nameof(imageProvider));
+            Assumes.NotNull(imageProvider);
 
             _imageProvider = imageProvider;
         }
@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
         }
 
-        private void ApplySpecialFolderItemProperties(IProjectTreeCustomizablePropertyValues propertyValues)
+        private static void ApplySpecialFolderItemProperties(IProjectTreeCustomizablePropertyValues propertyValues)
         {
             propertyValues.Flags = propertyValues.Flags.Add(ProjectTreeFlags.Common.VisibleOnlyInShowAllFiles);
         }

@@ -7,18 +7,8 @@ using Xunit;
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     [Trait("UnitTest", "ProjectSystem")]
-    public class VisualBasicProjectGuidProviderTests
+    public class VisualBasicProjectTypeGuidProviderTests
     {
-        [Fact]
-        public void Constructor_NullAsUnconfiguredProject_ThrowsArgumentNull()
-        {
-            Assert.Throws<ArgumentNullException>("unconfiguredProject", () =>
-            {
-
-                new VisualBasicProjectGuidProvider((UnconfiguredProject)null);
-            });
-        }
-
         [Fact]
         public void ProjectTypeGuid_ReturnsNonEmptyGuid()
         {
@@ -29,11 +19,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             Assert.NotEqual(Guid.Empty, provider.ProjectTypeGuid);
         }
 
-        private static VisualBasicProjectGuidProvider CreateInstance()
+        private static VisualBasicProjectTypeGuidProvider CreateInstance()
         {
             var unconfiguedProject = UnconfiguredProjectFactory.Create();
 
-            return new VisualBasicProjectGuidProvider(unconfiguedProject);
+            return new VisualBasicProjectTypeGuidProvider(unconfiguedProject);
         }
     }
 }

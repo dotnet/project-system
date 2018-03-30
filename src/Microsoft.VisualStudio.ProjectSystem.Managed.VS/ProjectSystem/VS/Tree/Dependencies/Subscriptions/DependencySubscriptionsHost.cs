@@ -301,7 +301,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             }
         }
 
-        private HashSet<string> GetProjectItemSpecsFromSnapshot(IProjectCatalogSnapshot catalogs)
+        private static HashSet<string> GetProjectItemSpecsFromSnapshot(IProjectCatalogSnapshot catalogs)
         {
             // We don't have catalog snapshot, we're likely updating because one of our project 
             // dependencies changed. Just return 'no data'

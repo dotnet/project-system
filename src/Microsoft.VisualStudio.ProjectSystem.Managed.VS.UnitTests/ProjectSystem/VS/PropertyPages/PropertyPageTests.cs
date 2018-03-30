@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
             var page = new Mock<PropertyPage>(false);
             page.Protected().Setup<string>("PropertyPageName").Returns("MyPage");
-            PROPPAGEINFO[] pageInfoArray = new PROPPAGEINFO[1];
+            var pageInfoArray = new PROPPAGEINFO[1];
             page.Object.GetPageInfo(pageInfoArray);
             page.Object.Help(string.Empty);
 
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             Castle.DynamicProxy.Generators.AttributesToAvoidReplicating.Add(typeof(System.Security.Permissions.UIPermissionAttribute));
 
-            RECT[] rect = new RECT[] { new RECT() { left = 25, top = 25 } };
+            var rect = new RECT[] { new RECT() { left = 25, top = 25 } };
             var page = new Mock<PropertyPage>(false);
             page.CallBase = true;
             page.Object.Move(rect);

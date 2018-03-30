@@ -12,8 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         [ImportingConstructor]
         public ProjectHostProvider(IUnconfiguredProjectVsServices projectVsServices)
         {
-            Requires.NotNull(projectVsServices, nameof(projectVsServices));
-
             UnconfiguredProjectHostObject = new UnconfiguredProjectHostObject(projectVsServices);
         }
 

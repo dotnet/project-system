@@ -35,10 +35,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         [ImportingConstructor]
         public DebugProfileDebugTargetGenerator(
-            UnconfiguredProject unconfiguredProject,
+            UnconfiguredProject project,
             ILaunchSettingsProvider launchSettingProvider,
             IProjectThreadingService threadingService)
-            : base(unconfiguredProject.Services)
+            : base(project.Services)
         {
             LaunchSettingProvider = launchSettingProvider;
             ProjectThreadingService = threadingService;

@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             get;
         }
 
-        public bool IncludeInherited
+        public static bool IncludeInherited
         {
             get => false;
         }

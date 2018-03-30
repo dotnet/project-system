@@ -37,12 +37,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             IActiveConfiguredProjectsProvider activeConfiguredProjectsProvider,
             ITargetFrameworkProvider targetFrameworkProvider)
         {
-            Requires.NotNull(commonServices, nameof(commonServices));
-            Requires.NotNull(asyncLoadDashboard, nameof(asyncLoadDashboard));
-            Requires.NotNull(taskScheduler, nameof(taskScheduler));
-            Requires.NotNull(activeConfiguredProjectsProvider, nameof(activeConfiguredProjectsProvider));
-            Requires.NotNull(targetFrameworkProvider, nameof(targetFrameworkProvider));
-
             _commonServices = commonServices;
             _asyncLoadDashboard = asyncLoadDashboard;
             _taskScheduler = taskScheduler;

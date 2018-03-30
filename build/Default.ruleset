@@ -10,7 +10,7 @@
     <Rule Id="CA1824" Action="None" />
     <Rule Id="CA2200" Action="None" />
   </Rules>
-  <Rules AnalyzerId="Microsoft.ApiDesignGuidelines.Analyzers" RuleNamespace="Microsoft.ApiDesignGuidelines.Analyzers">
+  <Rules AnalyzerId="Microsoft.CodeQuality.Analyzers" RuleNamespace="Microsoft.CodeQuality.Analyzers">
     <Rule Id="CA1000" Action="None" />
     <Rule Id="CA1001" Action="None" />
     <Rule Id="CA1010" Action="None" />
@@ -129,15 +129,15 @@
     <Rule Id="IDE0012" Action="Error" />                      <!-- Simplify framework names                     System.Int32 value;                                 int value;                            -->
     <Rule Id="IDE0013" Action="Error" />                      <!-- Simplify framework names (member access)     Int32.Parse("1");                                   int.Parse("1");                       -->
     <Rule Id="IDE0018" Action="Error" />                      <!-- Inline variable declaration                  TryParse(value, out result)                         TryParse(value, out int result)       -->
-    <Rule Id="IDE0018WithoutSuggestion" Action="Error" />     
+    <Rule Id="IDE0018WithoutSuggestion" Action="Error" />
     <Rule Id="IDE0019" Action="Error" />                      <!-- Use pattern matching                         if (button != null)                                 if (control is Button button)         -->
     <Rule Id="IDE0019WithoutSuggestion" Action="Error" />
     <Rule Id="IDE0020" Action="Error" />                      <!-- Use pattern matching                         if (control is Button)                              if (control is Button button)         -->
     <Rule Id="IDE0020WithoutSuggestion" Action="Error" />
     <Rule Id="IDE0029" Action="Error" />                      <!-- Use coalesce expression                      string y = x == null ? string.Empty : x;            string y = x ?? string.Empty;         -->
-    <Rule Id="IDE0029WithoutSuggestion" Action="Error" />      
+    <Rule Id="IDE0029WithoutSuggestion" Action="Error" />
     <Rule Id="IDE0030" Action="Error" />                      <!-- Use coalesce expression (nullable)           int? y = x.HasValue ? x.Value : 0                   int? y = x ?? 0;                      -->
-    <Rule Id="IDE0030WithoutSuggestion" Action="Error" />     
+    <Rule Id="IDE0030WithoutSuggestion" Action="Error" />
     <Rule Id="IDE0031" Action="Error" />                      <!-- Use null propagation                         string y = x == null ? null : x.ToLower()           string y = x?.ToLower();              -->
     <Rule Id="IDE0031WithoutSuggestion" Action="Error" />
     <Rule Id="IDE1006" Action="Error" />                      <!-- Naming styles                                Task Open()                                         Task OpenAsync()                      -->
@@ -147,5 +147,6 @@
     <Rule Id="VSTHRD200" Action="None" />                       <!-- Naming styles                              Task Open()                                         Task OpenAsync()                      -->
     <Rule Id="VSTHRD010" Action="None" />                       <!-- Visual Studio service should be used on main thread explicitly.-->
     <Rule Id="VSTHRD103" Action="None" />                       <!-- Call async methods when in an async method.-->
+    <Rule Id="VSTHRD108" Action="None" />                       <!-- Thread affinity checks should be unconditional.-->
   </Rules>
 </RuleSet>

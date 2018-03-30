@@ -38,11 +38,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             ActiveConfiguredProject<ProjectProperties> projectProperties,
             UnconfiguredProject project)
         {
-            Requires.NotNull(vsProject, nameof(vsProject));
-            Requires.NotNull(threadingService, nameof(threadingService));
-            Requires.NotNull(projectProperties, nameof(projectProperties));
-            Requires.NotNull(project, nameof(project));
-
             _vsProject = vsProject;
             _threadingService = threadingService;
             _projectProperties = projectProperties;

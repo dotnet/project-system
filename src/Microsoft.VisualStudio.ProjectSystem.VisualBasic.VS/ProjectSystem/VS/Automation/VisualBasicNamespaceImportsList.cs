@@ -24,8 +24,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         [ImportingConstructor]
         public VisualBasicNamespaceImportsList(IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService)
         {
-            Requires.NotNull(activeConfiguredProjectSubscriptionService, nameof(activeConfiguredProjectSubscriptionService));
-
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
         }
 
