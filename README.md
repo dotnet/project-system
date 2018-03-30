@@ -38,6 +38,6 @@ There are many technologies that come together to make up the .NET project syste
 ![image](https://cloud.githubusercontent.com/assets/1103906/24277819/d1e48eba-1093-11e7-811f-ae5debcc1e6c.png)
 
 ## How do I engage and contribute?
-We welcome you to try things out, [file issues](https://github.com/dotnet/roslyn-project-system/issues), make feature requests and join us in design conversations. If you are looking for something to work on, take a look at our [up-for-grabs issues](https://github.com/dotnet/roslyn-project-system/issues?q=is%3Aopen+is%3Aissue+label%3A%22Up+for+Grabs%22) for a great place to start. Also be sure to check out our [contributing guide](CONTRIBUTING.md).
+We welcome you to try things out, [file issues](https://github.com/dotnet/roslyn-project-system/issues), make feature requests and join us in design conversations. If you are looking for something to work on, take a look at our [help wanted issues](https://github.com/dotnet/roslyn-project-system/issues?q=is%3Aopen+is%3Aissue+label%3A%22Help+Wanted%22) for a great place to start. Also be sure to check out our [contributing guide](CONTRIBUTING.md).
 
 This project has adopted a code of conduct adapted from the [Contributor Covenant](http://contributor-covenant.org/) to clarify expected behavior in our community. This code of conduct has been [adopted by many other projects](http://contributor-covenant.org/adopters/). For more information see [Contributors Code of conduct](https://github.com/dotnet/home/blob/master/guidance/be-nice.md). 
