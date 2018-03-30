@@ -33,7 +33,7 @@ REM Set these to make sure we respect the rules/targets from the repo instead of
 set VisualStudioXamlRulesDir=[RepoRoot]\artifacts\Debug\VSSetup\Rules\
 set VisualBasicDesignTimeTargetsPath=%VisualStudioXamlRulesDir%Microsoft.VisualBasic.DesignTime.targets
 set FSharpDesignTimeTargetsPath=%VisualStudioXamlRulesDir%Microsoft.FSharp.DesignTime.targets
-set CSharpDesignTimeTargetsPath%VisualStudioXamlRulesDir%Microsoft.CSharp.DesignTime.targets
+set CSharpDesignTimeTargetsPath=%VisualStudioXamlRulesDir%Microsoft.CSharp.DesignTime.targets
 
 devenv /rootsuffix ProjectSystem
 ```
