@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -14,6 +15,51 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
     /// </summary>
     internal static class OrderingHelper
     {
+        /// <summary>
+        /// Performs a move on any items that were added based on the previous includes.
+        /// </summary>
+        public static Task Move(ConfiguredProject configuredProject, IProjectAccessor accessor, ImmutableHashSet<string> previousIncludes, IProjectTree target, OrderingMoveAction action)
+        {
+            Requires.NotNull(configuredProject, nameof(configuredProject));
+            Requires.NotNull(accessor, nameof(accessor));
+            Requires.NotNull(previousIncludes, nameof(previousIncludes));
+            Requires.NotNull(target, nameof(target));
+
+            return accessor.OpenProjectForWriteAsync(configuredProject, project =>
+            {
+                // We do a sanity re-evaluation to absolutely ensure changes were met.
+                project.ReevaluateIfNecessary();
+                var addedElements = GetAddedElements(previousIncludes, project);
+
+                switch (action)
+                {
+                    case OrderingMoveAction.MoveToTop:
+                        TryMoveElementsToTop(project, addedElements, target);
+                        break;
+                    case OrderingMoveAction.MoveAbove:
+                        TryMoveElementsAbove(project, addedElements, target);
+                        break;
+                    case OrderingMoveAction.MoveBelow:
+                        TryMoveElementsBelow(project, addedElements, target);
+                        break;
+                    default:
+                        break;
+                }
+            });
+        }
+
+        /// <summary>
+        /// Get all evaluated includes from a project as an immutable hash set. This includes items that aren't for ordering as well.
+        /// </summary>
+        public static Task<ImmutableHashSet<string>> GetAllEvaluatedIncludes(ConfiguredProject configuredProject, IProjectAccessor accessor)
+        {
+            Requires.NotNull(configuredProject, nameof(configuredProject));
+            Requires.NotNull(accessor, nameof(accessor));
+
+            return accessor.OpenProjectForReadAsync(configuredProject, project =>
+                project.AllEvaluatedItems.Select(x => x.EvaluatedInclude).ToImmutableHashSet(StringComparer.OrdinalIgnoreCase));
+        }
+
         /// <summary>
         /// Checks to see if the project tree has a valid display order.
         /// </summary>
@@ -420,6 +466,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             // Determine what sibling we want to look at based on if we are moving up or down.
             var sibling = GetSiblingByMoveAction(projectTree, moveAction);
             return TryMove(project, projectTree, sibling, moveAction);
+        }
+
+        private static ImmutableArray<ProjectItemElement> GetAddedElements(ImmutableHashSet<string> previousIncludes, Project project)
+        {
+            return project.AllEvaluatedItems
+                .Where(x => !previousIncludes.Contains(x.EvaluatedInclude, StringComparer.OrdinalIgnoreCase))
+                .Select(x => x.Xml)
+                .ToImmutableArray();
         }
     }
 }
