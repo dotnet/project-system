@@ -4,13 +4,14 @@ using System;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 {
     internal class RoslynLogger
     {
-        private static readonly ImmutableHashSet<string> s_roslynEventSet;
+        private static readonly ImmutableHashSet<string> RoslynEventSet;
 
         private readonly BuildTableDataSource _dataSource;
 
@@ -24,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
         static RoslynLogger()
         {
-            s_roslynEventSet = ImmutableHashSet.Create<string>(
+            RoslynEventSet = ImmutableHashSet.Create(
                 "WorkCoordinator_DocumentWorker_Enqueue",
                 "WorkCoordinator_ProcessProjectAsync",
                 "WorkCoordinator_ProcessDocumentAsync",
@@ -74,14 +75,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
             }
 
             // add live entry to the toolwindow
-            _build = new Build(Resources.ProjectSolutionWide, Array.Empty<string>(), Array.Empty<string>(), BuildType.Roslyn, DateTime.Now);
+            _build = new Build(BuildLoggingResources.ProjectSolutionWide, Array.Empty<string>(), Array.Empty<string>(), BuildType.Roslyn, DateTime.Now);
             _dataSource.AddEntry(_build);
 
             _roslynTraceSource = new TraceSource("RoslynTraceSource", SourceLevels.Verbose);
 
             // add our own listener
             _roslynTraceSource.Listeners.Clear();
-            _roslynTraceSource.Listeners.Add(new RoslynTraceListener(s_roslynEventSet));
+            _roslynTraceSource.Listeners.Add(new RoslynTraceListener(RoslynEventSet));
 
             _setLoggerCall(_roslynTraceSource);
         }
@@ -148,26 +149,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
             return _setLoggerCall != null;
         }
 
-        private static Assembly GetAssembly(string assemblyName)
-        {
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                // quick check
-                if (assembly.FullName.IndexOf(assemblyName, StringComparison.OrdinalIgnoreCase) < 0)
-                {
-                    continue;
-                }
-
-                // create assembly name and check exact match
-                var current = assembly.GetName();
-                if (string.Equals(current.Name, assemblyName, StringComparison.OrdinalIgnoreCase))
-                {
-                    return assembly;
-                }
-            }
-
-            return null;
-        }
+        private static Assembly GetAssembly(string assemblyName) =>
+            (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                where assembly.FullName.IndexOf(assemblyName, StringComparison.OrdinalIgnoreCase) >= 0
+                let current = assembly.GetName()
+                where string.Equals(current.Name, assemblyName, StringComparison.OrdinalIgnoreCase)
+                select assembly).FirstOrDefault();
 
         private class RoslynTraceListener : TraceListener
         {
@@ -247,8 +234,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
                 try
                 {
-                    _writer.Flush();
-                    _writer.Dispose();
+                    lock (_writer)
+                    {
+                        _writer.Flush();
+                        _writer.Dispose();
+                    }
                 }
                 catch
                 {

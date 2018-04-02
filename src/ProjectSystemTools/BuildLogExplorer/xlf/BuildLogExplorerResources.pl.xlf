@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="pl" original="../BuildLogExplorerResources.resx">
+    <body>
+      <trans-unit id="AddLog">
+        <source>Add Log</source>
+        <target state="new">Add Log</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AddLogFilter">
+        <source>MSBuild Binary Log files (*.binlog)|*.binlog</source>
+        <target state="new">MSBuild Binary Log files (*.binlog)|*.binlog</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrorsCategory">
+        <source>Error</source>
+        <target state="new">Error</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrorActiveCategory">
+        <source>Error (active)</source>
+        <target state="new">Error (active)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrorInactiveCategory">
+        <source>Error (inactive)</source>
+        <target state="new">Error (inactive)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WarningsCategory">
+        <source>Warning</source>
+        <target state="new">Warning</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WarningActiveCategory">
+        <source>Warning (active)</source>
+        <target state="new">Warning (active)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WarningInactiveCategory">
+        <source>Warning (inactive)</source>
+        <target state="new">Warning (inactive)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MessagesCategory">
+        <source>Message</source>
+        <target state="new">Message</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MessageActiveCategory">
+        <source>Message (active)</source>
+        <target state="new">Message (active)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MessageInactiveCategory">
+        <source>Message (inactive)</source>
+        <target state="new">Message (inactive)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MessageListSearchWatermark">
+        <source>Search Message List</source>
+        <target state="new">Search Message List</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MessageListWindowTitle">
+        <source>Build Message List</source>
+        <target state="new">Build Message List</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SameLabel">
+        <source>{1} {0}</source>
+        <target state="new">{1} {0}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DifferentLabel">
+        <source>{1} of {2} {0}</source>
+        <target state="new">{1} of {2} {0}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrorLabel">
+        <source>Error</source>
+        <target state="new">Error</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrorsLabel">
+        <source>Errors</source>
+        <target state="new">Errors</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WarningLabel">
+        <source>Warning</source>
+        <target state="new">Warning</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WarningsLabel">
+        <source>Warnings</source>
+        <target state="new">Warnings</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MessageLabel">
+        <source>Message</source>
+        <target state="new">Message</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MessagesLabel">
+        <source>Messages</source>
+        <target state="new">Messages</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -40,12 +40,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="xlf\*" />
-    <EmbeddedResource Include="BuildLogging\Resources.resx" GenerateSource="true" />
+    <EmbeddedResource Include="BuildLogging\BuildLoggingResources.resx" GenerateSource="true" />
+    <EmbeddedResource Include="BuildLogExplorer\BuildLogExplorerResources.resx" GenerateSource="true" />
+    <EmbeddedResource Include="TableControl\TableControlResources.resx" GenerateSource="true" />
     <EmbeddedResource Include="VSPackage.resx">
       <MergeWithCTO>true</MergeWithCTO>
       <ManifestResourceName>VSPackage</ManifestResourceName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <ProjectReference Include="..\LogModel\LogModel.csproj">
+      <Name>LogModel</Name>
+      <Private>true</Private>
+    </ProjectReference>
     <ProjectReference Include="..\LogProviders\LogProviders.csproj">
       <Name>LogProviders</Name>
       <Private>true</Private>
@@ -60,5 +66,16 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="BuildLogExplorer\BuildTreeViewControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="BuildLogExplorer\BuildTreeViewControl.xaml.cs">
+      <DependentUpon>BuildTreeViewControl.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

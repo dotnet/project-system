@@ -4,6 +4,8 @@
       "certificate": "MicrosoftSHA2",
       "strongName": "MsSharedLib72",
       "values": [
+        "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.LogModel.dll",
+        "bin/Dlls/*/Microsoft.VisualStudio.ProjectSystem.LogModel.resources.dll",
         "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Tools.Providers.dll",
         "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Tools.dll",
         "bin/Dlls/*/Microsoft.VisualStudio.ProjectSystem.Tools.resources.dll",

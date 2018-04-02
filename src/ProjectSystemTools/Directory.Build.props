@@ -1,0 +1,7 @@
+<Project>
+  <PropertyGroup>
+    <Language>C#</Language>
+  </PropertyGroup>
+
+  <Import Project="..\Directory.Build.props"/>
+</Project>

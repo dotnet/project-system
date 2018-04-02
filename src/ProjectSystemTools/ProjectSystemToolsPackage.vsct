@@ -17,6 +17,19 @@
           <ButtonText>Build Logging</ButtonText>
         </Strings>
       </Menu>
+      <Menu guid="UIGuid" id="BuildLogExplorerToolbarMenuId" priority="0x0000" type="ToolWindowToolbar">
+        <Parent guid="UIGuid" id="BuildLogExplorerToolbarMenuId" />
+        <CommandFlag>DontCache</CommandFlag>
+        <Strings>
+          <ButtonText>Build Log Explorer</ButtonText>
+        </Strings>
+      </Menu>
+      <Menu guid="UIGuid" id="MessageListToolbarMenuId" priority="0x0000" type="ToolWindowToolbar">
+        <Parent guid="UIGuid" id="MessageListToolbarMenuId" />
+        <Strings>
+          <ButtonText>Message List</ButtonText>
+        </Strings>
+      </Menu>
     </Menus>
     <Groups>
       <Group guid="UIGuid" id="BuildLoggingToolbarGroupId" priority="0x0000">
@@ -24,6 +37,12 @@
       </Group>
       <Group guid="UIGuid" id="BuildLoggingContextGroupId" priority="0x0000">
         <Parent guid="UIGuid" id="BuildLoggingContextMenuId"/>
+      </Group>
+      <Group guid="UIGuid" id="BuildLogExplorerToolbarGroupId" priority="0x0000">
+        <Parent guid="UIGuid" id="BuildLogExplorerToolbarMenuId"/>
+      </Group>
+      <Group guid="UIGuid" id="MessageListToolbarGroupId" priority="0x0000">
+        <Parent guid="UIGuid" id="MessageListToolbarMenuId"/>
       </Group>
     </Groups>
     <Buttons>
@@ -66,6 +85,29 @@
           <ButtonText>Open Logs...</ButtonText>
         </Strings>
       </Button>
+      <Button guid="CommandSetGuid" id="ExploreLogsCommandId" type="Button">
+        <Strings>
+          <ButtonText>Explore Logs</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="CommandSetGuid" id="BuildLogExplorerCommandId" type="Button">
+        <Strings>
+          <ButtonText>Build Log Explorer</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="CommandSetGuid" id="AddLogCommandId" type="Button">
+        <Icon guid="ImageCatalogGuid" id="Add" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
+        <Strings>
+          <ButtonText>Add log</ButtonText>
+          <ToolTipText>Add log to explorer</ToolTipText>
+        </Strings>
+      </Button>
+      <Button guid="CommandSetGuid" id="MessageListCommandId" type="Button">
+        <Strings>
+          <ButtonText>Build Log Message List</ButtonText>
+        </Strings>
+      </Button>
     </Buttons>
     <Combos>
       <Combo guid="CommandSetGuid" id="BuildTypeComboCommandId" defaultWidth="150" type="DropDownCombo" idCommandList="BuildTypeComboGetListCommandId">
@@ -97,6 +139,30 @@
     <CommandPlacement guid="CommandSetGuid" id="OpenLogsCommandId" priority="0x0010">
       <Parent guid="UIGuid" id="BuildLoggingContextGroupId" />
     </CommandPlacement>
+    <CommandPlacement guid="CommandSetGuid" id="ExploreLogsCommandId" priority="0x0020">
+      <Parent guid="UIGuid" id="BuildLoggingContextGroupId"/>
+    </CommandPlacement>
+    <CommandPlacement guid="CommandSetGuid" id="BuildLogExplorerCommandId" priority="0x0100">
+      <Parent guid="guidSHLMainMenu" id="IDG_VS_WNDO_OTRWNDWS1" />
+    </CommandPlacement>
+    <CommandPlacement guid="CommandSetGuid" id="AddLogCommandId" priority="0x0000">
+      <Parent guid="UIGuid" id="BuildLogExplorerToolbarGroupId" />
+    </CommandPlacement>
+    <CommandPlacement guid="CommandSetGuid" id="ClearCommandId" priority="0x0010">
+      <Parent guid="UIGuid" id="BuildLogExplorerToolbarGroupId" />
+    </CommandPlacement>
+    <CommandPlacement guid="CommandSetGuid" id="MessageListCommandId" priority="0x0100">
+      <Parent guid="guidSHLMainMenu" id="IDG_VS_WNDO_OTRWNDWS1" />
+    </CommandPlacement>
+    <CommandPlacement guid="guidVSStd2K" id="cmdidErrorListShowErrors" priority="0x0100">
+      <Parent guid="UIGuid" id="MessageListToolbarGroupId"/>
+    </CommandPlacement>
+    <CommandPlacement guid="guidVSStd2K" id="cmdidErrorListShowWarnings" priority="0x0100">
+      <Parent guid="UIGuid" id="MessageListToolbarGroupId"/>
+    </CommandPlacement>
+    <CommandPlacement guid="guidVSStd2K" id="cmdidErrorListShowMessages" priority="0x0100">
+      <Parent guid="UIGuid" id="MessageListToolbarGroupId"/>
+    </CommandPlacement>
   </CommandPlacements>
   <Symbols>
     <GuidSymbol name="PackageGuid" value="{e3bfb509-b8fd-4692-b4c4-4b2f6ed62bc7}" />
@@ -105,21 +171,30 @@
       <IDSymbol name="StartLoggingCommandId" value="0x0101" />
       <IDSymbol name="StopLoggingCommandId" value="0x0102" />
       <IDSymbol name="ClearCommandId" value="0x0103" />
-      <IDSymbol name="SaveLogsCommandId" value="0x0107" />
-      <IDSymbol name="OpenLogsCommandId" value="0x0108" />
-      <IDSymbol name="BuildTypeComboCommandId" value="0x0109"/>
-      <IDSymbol name="BuildTypeComboGetListCommandId" value="0x010a"/>
+      <IDSymbol name="SaveLogsCommandId" value="0x0104" />
+      <IDSymbol name="OpenLogsCommandId" value="0x0105" />
+      <IDSymbol name="BuildTypeComboCommandId" value="0x0106"/>
+      <IDSymbol name="BuildTypeComboGetListCommandId" value="0x0107"/>
+      <IDSymbol name="BuildLogExplorerCommandId" value="0x0108"/>
+      <IDSymbol name="ExploreLogsCommandId" value="0x0109"/>
+      <IDSymbol name="AddLogCommandId" value="0x010a"/>
+      <IDSymbol name="MessageListCommandId" value="0x010b" />
     </GuidSymbol>
     <GuidSymbol name="UIGuid" value="{629080DF-2A44-40E5-9AF4-371D4B727D16}">
       <IDSymbol name="BuildLoggingToolbarMenuId" value="0x0100" />
-      <IDSymbol name="BuildLoggingToolbarGroupId" value="0x0104" />
-      <IDSymbol name="BuildLoggingContextMenuId" value="0x0105" />
-      <IDSymbol name="BuildLoggingContextGroupId" value ="0x0106" />
+      <IDSymbol name="BuildLoggingToolbarGroupId" value="0x0101" />
+      <IDSymbol name="BuildLoggingContextMenuId" value="0x0102" />
+      <IDSymbol name="BuildLoggingContextGroupId" value ="0x0103" />
+      <IDSymbol name="BuildLogExplorerToolbarMenuId" value="0x0104" />
+      <IDSymbol name="BuildLogExplorerToolbarGroupId" value="0x0105" />
+      <IDSymbol name="MessageListToolbarMenuId" value="0x0106" />
+      <IDSymbol name="MessageListToolbarGroupId" value="0x0107" />
     </GuidSymbol>
     <GuidSymbol name="ImageCatalogGuid" value="{ae27a6b0-e345-4288-96df-5eaf394ee369}">
       <IDSymbol name="Play" value="2356" />
       <IDSymbol name="Stop" value="2965" />
       <IDSymbol name="ClearWindowContent" value="482" />
+      <IDSymbol name="Add" value="28"/>
     </GuidSymbol>
   </Symbols>
 </CommandTable>

@@ -42,9 +42,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
         public override void Shutdown()
         {
             _binaryLogger.Shutdown();
-            _build.SetLogPath(GetLogPath(_build));
-            Copy(_logPath, _build.LogPath);
-            DataSource.NotifyChange();
+            if (_build != null)
+            {
+                _build.SetLogPath(GetLogPath(_build));
+                Copy(_logPath, _build.LogPath);
+                DataSource.NotifyChange();
+            }
+            else
+            {
+                // Never got project information so just delete the log.
+                File.Delete(_logPath);
+            }
         }
 
         private void ProjectFinished(object sender, ProjectFinishedEventArgs e)

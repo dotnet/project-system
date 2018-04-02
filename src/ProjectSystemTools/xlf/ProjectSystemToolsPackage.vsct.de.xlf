@@ -62,6 +62,41 @@
         <target state="new">Choose build types</target>
         <note />
       </trans-unit>
+      <trans-unit id="BuildLogExplorerCommandId|ButtonText">
+        <source>Build Log Explorer</source>
+        <target state="new">Build Log Explorer</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ExploreLogsCommandId|ButtonText">
+        <source>Explore Logs</source>
+        <target state="new">Explore Logs</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BuildLogExplorerToolbarMenuId|ButtonText">
+        <source>Build Log Explorer</source>
+        <target state="new">Build Log Explorer</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AddLogCommandId|ButtonText">
+        <source>Add log</source>
+        <target state="new">Add log</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AddLogCommandId|ToolTipText">
+        <source>Add log to explorer</source>
+        <target state="new">Add log to explorer</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MessageListToolbarMenuId|ButtonText">
+        <source>Message List</source>
+        <target state="new">Message List</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MessageListCommandId|ButtonText">
+        <source>Build Log Message List</source>
+        <target state="new">Build Log Message List</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

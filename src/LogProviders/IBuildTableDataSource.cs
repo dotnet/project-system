@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.Shell.TableManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.Providers
 {
-    public interface IBuildTableDataSource
+    public interface IBuildTableDataSource : ITableDataSource
     {
         ITableManager Manager { get; set; }
 
