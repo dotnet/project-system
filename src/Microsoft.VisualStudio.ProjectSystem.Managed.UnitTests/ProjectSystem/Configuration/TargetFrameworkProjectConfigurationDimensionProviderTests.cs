@@ -14,21 +14,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     public class TargetFrameworkProjectConfigurationDimensionProviderTests
     {
         private const string ProjectXmlTFM =
-@"<Project Sdk=""Microsoft.NET.Sdk"">
+@"<Project>
   <PropertyGroup>
     <TargetFramework>netcoreapp1.0</TargetFramework>
   </PropertyGroup>
 </Project>";
 
         private const string ProjectXmlTFMs =
-@"<Project Sdk=""Microsoft.NET.Sdk"">
+@"<Project>
   <PropertyGroup>
     <TargetFrameworks>netcoreapp1.0;net45</TargetFrameworks>
   </PropertyGroup>
 </Project>";
 
         private const string ProjectXmlTFMAndTFMs =
-@"<Project Sdk=""Microsoft.NET.Sdk"">
+@"<Project>
   <PropertyGroup>
     <TargetFrameworks>netcoreapp1.0;net45</TargetFrameworks>
     <TargetFramework>netcoreapp1.0</TargetFramework>
