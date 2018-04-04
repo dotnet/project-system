@@ -13,14 +13,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     [Export(typeof(ISafeProjectGuidService))]
     internal class VsSafeProjectGuidService : ISafeProjectGuidService
     {
-        private readonly IProjectAsynchronousTasksService _tasksService;
-        private readonly IProjectAsyncLoadDashboard _loadDashboard;
+        private readonly IUnconfiguredProjectTasksService _tasksService;
 
         [ImportingConstructor]
-        public VsSafeProjectGuidService(UnconfiguredProject project, [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService, IProjectAsyncLoadDashboard loadDashboard)
+        public VsSafeProjectGuidService(UnconfiguredProject project, IUnconfiguredProjectTasksService tasksService)
         {
             _tasksService = tasksService;
-            _loadDashboard = loadDashboard;
 
             ProjectGuidServices = new OrderPrecedenceImportCollection<IProjectGuidService>(projectCapabilityCheckProvider: project);
         }
@@ -33,8 +31,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public async Task<Guid> GetProjectGuidAsync()
         {
-            await _loadDashboard.ProjectLoadedInHostWithCancellation(_tasksService)
-                                .ConfigureAwait(false);
+            await _tasksService.PrioritizedProjectLoadedInHost
+                               .ConfigureAwait(false);
 
             IProjectGuidService projectGuidService = ProjectGuidServices.FirstOrDefault()?.Value;
             if (projectGuidService == null)
