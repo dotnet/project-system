@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         private readonly object _gate = new object();
         private readonly IUnconfiguredProjectCommonServices _commonServices;
         private readonly Lazy<IWorkspaceProjectContextFactory> _contextFactory;
-        private readonly IProjectAsyncLoadDashboard _asyncLoadDashboard;
+        private readonly IUnconfiguredProjectTasksService _tasksService;
         private readonly ITaskScheduler _taskScheduler;
         private readonly List<AggregateWorkspaceProjectContext> _contexts = new List<AggregateWorkspaceProjectContext>();
         private readonly IProjectHostProvider _projectHostProvider;
@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         [ImportingConstructor]
         public UnconfiguredProjectContextProvider(IUnconfiguredProjectCommonServices commonServices,
                                                  Lazy<IWorkspaceProjectContextFactory> contextFactory,
-                                                 IProjectAsyncLoadDashboard asyncLoadDashboard,
+                                                 IUnconfiguredProjectTasksService tasksService,
                                                  ITaskScheduler taskScheduler,
                                                  IProjectHostProvider projectHostProvider,
                                                  IActiveConfiguredProjectsProvider activeConfiguredProjectsProvider,
@@ -44,14 +44,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             Requires.NotNull(commonServices, nameof(commonServices));
             Requires.NotNull(contextFactory, nameof(contextFactory));
-            Requires.NotNull(asyncLoadDashboard, nameof(asyncLoadDashboard));
+            Requires.NotNull(tasksService, nameof(tasksService));
             Requires.NotNull(taskScheduler, nameof(taskScheduler));
             Requires.NotNull(projectHostProvider, nameof(projectHostProvider));
             Requires.NotNull(activeConfiguredProjectsProvider, nameof(activeConfiguredProjectsProvider));
 
             _commonServices = commonServices;
             _contextFactory = contextFactory;
-            _asyncLoadDashboard = asyncLoadDashboard;
+            _tasksService = tasksService;
             _taskScheduler = taskScheduler;
             _projectHostProvider = projectHostProvider;
             _activeConfiguredProjectsProvider = activeConfiguredProjectsProvider;
@@ -229,7 +229,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                 return null;
 
             // Don't initialize until the project has been loaded into the IDE and available in Solution Explorer
-            await _asyncLoadDashboard.ProjectLoadedInHostWithCancellation(_commonServices.Project).ConfigureAwait(false);
+            await _tasksService.PrioritizedProjectLoadedInHost
+                               .ConfigureAwait(false);
 
             // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
             return await _taskScheduler.RunAsync(TaskSchedulerPriority.UIThreadBackgroundPriority, async () =>
