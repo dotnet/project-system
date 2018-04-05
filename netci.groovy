@@ -83,7 +83,7 @@ def imageName = "latest-dev15-3"
 [true, false].each { isPR ->
   ["debug", "release"].each { configName ->
 
-    def platform = "windows_es"
+    def platform = "windows_spanish"
     def manualTrigger = false
     def altTriggerPhrase = ""
 
