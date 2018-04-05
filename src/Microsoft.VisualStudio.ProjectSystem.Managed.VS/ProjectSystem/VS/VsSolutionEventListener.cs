@@ -51,8 +51,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 {
                     await _threadingService.SwitchToUIThread();
 
-                    // Due to synchronous disposable, we should be on UI thread,
-                    // accessing IVsService<T>.Value will enforce that.
                     HResult result = _solution.Value.UnadviseSolutionEvents(_cookie);
                     if (result.Failed)
                         throw result.Exception;
