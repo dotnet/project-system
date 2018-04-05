@@ -62,10 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public int OnAfterOpenProject(IVsHierarchy pHierarchy, int fAdded)
         {
             UnconfiguredProjectTasksService tasksService = GetUnconfiguredProjectTasksServiceIfApplicable(pHierarchy);
-            if (tasksService != null)
-            {
-                tasksService.OnProjectLoadedInHost();
-            }
+            tasksService?.OnProjectLoadedInHost();
 
             return HResult.OK;
         }
@@ -73,10 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public int PrioritizedOnAfterOpenProject(IVsHierarchy pHierarchy, int fAdded)
         {
             UnconfiguredProjectTasksService tasksService = GetUnconfiguredProjectTasksServiceIfApplicable(pHierarchy);
-            if (tasksService != null)
-            {
-                tasksService.OnPrioritizedProjectLoadedInHost();
-            }
+            tasksService?.OnPrioritizedProjectLoadedInHost();
 
             return HResult.OK;
         }
