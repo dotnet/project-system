@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
     {
         private readonly object _gate = new object();
         private readonly IUnconfiguredProjectCommonServices _commonServices;
-        private readonly IProjectAsyncLoadDashboard _asyncLoadDashboard;
+        private readonly IUnconfiguredProjectTasksService _tasksService;
         private readonly ITaskScheduler _taskScheduler;
         private readonly List<AggregateCrossTargetProjectContext> _contexts = new List<AggregateCrossTargetProjectContext>();
         private readonly IActiveConfiguredProjectsProvider _activeConfiguredProjectsProvider;
@@ -32,19 +32,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         [ImportingConstructor]
         public AggregateCrossTargetProjectContextProvider(
             IUnconfiguredProjectCommonServices commonServices,
-            IProjectAsyncLoadDashboard asyncLoadDashboard,
+            IUnconfiguredProjectTasksService tasksService,
             ITaskScheduler taskScheduler,
             IActiveConfiguredProjectsProvider activeConfiguredProjectsProvider,
             ITargetFrameworkProvider targetFrameworkProvider)
         {
             Requires.NotNull(commonServices, nameof(commonServices));
-            Requires.NotNull(asyncLoadDashboard, nameof(asyncLoadDashboard));
+            Requires.NotNull(tasksService, nameof(tasksService));
             Requires.NotNull(taskScheduler, nameof(taskScheduler));
             Requires.NotNull(activeConfiguredProjectsProvider, nameof(activeConfiguredProjectsProvider));
             Requires.NotNull(targetFrameworkProvider, nameof(targetFrameworkProvider));
 
             _commonServices = commonServices;
-            _asyncLoadDashboard = asyncLoadDashboard;
+            _tasksService = tasksService;
             _taskScheduler = taskScheduler;
             _activeConfiguredProjectsProvider = activeConfiguredProjectsProvider;
             _targetFrameworkProvider = targetFrameworkProvider;
@@ -204,7 +204,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         private async Task<AggregateCrossTargetProjectContext> CreateProjectContextAsyncCore()
         {
             // Don't initialize until the project has been loaded into the IDE and available in Solution Explorer
-            await _asyncLoadDashboard.ProjectLoadedInHostWithCancellation(_commonServices.Project).ConfigureAwait(false);
+            await _tasksService.PrioritizedProjectLoadedInHost
+                               .ConfigureAwait(false);
 
             return await _taskScheduler.RunAsync(TaskSchedulerPriority.UIThreadBackgroundPriority, async () =>
             {
