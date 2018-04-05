@@ -87,7 +87,17 @@ def imageName = "latest-dev15-3"
     def manualTrigger = false
     def altTriggerPhrase = ""
 
-    def newJob = createJob(platform, configName, osName, 'Windows.10.Amd64.ClientRS3.ES.Open', isPR, manualTrigger, altTriggerPhrase)
+    def projectName = GithubProject
+    def branchName = GithubBranchName
+    def jobName = "${platform}_${configName}"
+    def newJob = job(Utilities.getFullJobName(projectName, jobName, isPR))
+
+    Utilities.standardJobSetup(newJob, projectName, isPR, "*/${branchName}")
+
+    addGithubTrigger(newJob, isPR, branchName, jobName, manualTrigger, altTriggerPhrase)
+    addArchival(newJob, configName)
+    addXUnitDotNETResults(newJob, configName)
+    Utilities.setMachineAffinity(newJob, 'Windows.10.Amd64.ClientRS3.ES.Open')
 
     newJob.with {
       wrappers {
