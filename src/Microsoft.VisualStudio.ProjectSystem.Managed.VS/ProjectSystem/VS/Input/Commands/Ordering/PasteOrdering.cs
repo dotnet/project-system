@@ -22,15 +22,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
         private IProjectTree _dropTarget;
 
-        private IPasteHandler _pasteHandler;
-        private IPasteDataObjectProcessor _pasteProcessor;
-
         [ImportingConstructor]
         public PasteOrdering(UnconfiguredProject unconfiguredProject, IProjectAccessor accessor)
         {
-            Requires.NotNull(unconfiguredProject, nameof(unconfiguredProject));
-            Requires.NotNull(accessor, nameof(accessor));
-
             _configuredProject = unconfiguredProject.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject;
             _accessor = accessor;
 
@@ -39,26 +33,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         }
 
         [ImportMany]
-        private OrderPrecedenceImportCollection<IPasteHandler> PasteHandlers { get; set; }
+        private OrderPrecedenceImportCollection<IPasteHandler> PasteHandlers { get; }
 
         [ImportMany]
-        private OrderPrecedenceImportCollection<IPasteDataObjectProcessor> PasteProcessors { get; set; }
+        private OrderPrecedenceImportCollection<IPasteDataObjectProcessor> PasteProcessors { get; }
 
         private IPasteHandler PasteHandler
         {
             get
             {
-                if (_pasteHandler == null)
-                {
-                    // Grab the paste handler that has the highest order precedence that is below PasteOrdering's order precedence. 
-                    _pasteHandler =
-                        PasteHandlers.Where(x => x.Metadata.OrderPrecedence < OrderPrecedence)
-                        .OrderByDescending(x => x.Metadata.OrderPrecedence).First().Value;
-                }
+                // Grab the paste handler that has the highest order precedence that is below PasteOrdering's order precedence. 
+                var pasteHandler =
+                    PasteHandlers.Where(x => x.Metadata.OrderPrecedence < OrderPrecedence)
+                    .OrderByDescending(x => x.Metadata.OrderPrecedence).First().Value;
 
-                Assumes.NotNull(_pasteHandler);
-
-                return _pasteHandler;
+                return pasteHandler;
             }
         }
 
@@ -66,17 +55,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
             get
             {
-                if (_pasteProcessor == null)
-                {
-                    // Grab the paste processor that has the highest order precedence that is below PasteOrdering's order precedence. 
-                    _pasteProcessor =
-                        PasteProcessors.Where(x => x.Metadata.OrderPrecedence < OrderPrecedence)
-                        .OrderByDescending(x => x.Metadata.OrderPrecedence).First().Value;
-                }
+                // Grab the paste processor that has the highest order precedence that is below PasteOrdering's order precedence. 
+                var pasteProcessor =
+                    PasteProcessors.Where(x => x.Metadata.OrderPrecedence < OrderPrecedence)
+                    .OrderByDescending(x => x.Metadata.OrderPrecedence).First().Value;
 
-                Assumes.NotNull(_pasteProcessor);
-
-                return _pasteProcessor;
+                return pasteProcessor;
             }
         }
 
@@ -115,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
             Assumes.NotNull(_dropTarget);
 
-            // ConfigureAwait is true because we need to come back for PasteItemsAsync to work.
+            // ConfigureAwait is true because we need to come back for PasteItemsAsync to work. If not, PasteItemsAsync will throw.
             var previousIncludes = await OrderingHelper.GetAllEvaluatedIncludes(_configuredProject, _accessor).ConfigureAwait(true);
             var result = await PasteHandler.PasteItemsAsync(items, effect).ConfigureAwait(false);
 
