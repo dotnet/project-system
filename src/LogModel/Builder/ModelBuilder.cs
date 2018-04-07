@@ -73,6 +73,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
                             OnTargetStarted(targetStartedEventArgs);
                             break;
 
+                        case TargetSkippedEventArgs targetSkippedEventArgs:
+                            OnTargetSkipped(targetSkippedEventArgs);
+                            break;
+
                         case TargetFinishedEventArgs targetFinishedEventArgs:
                             OnTargetFinished(targetFinishedEventArgs);
                             break;
@@ -346,12 +350,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
                 args.BuildEventContext.NodeId,
                 Intern(args.TargetName),
                 Intern(args.TargetFile),
-                args.ParentTarget,
+                Intern(args.ParentTarget),
+                args.BuildReason,
                 args.Timestamp);
             AddMessage(targetInfo, args);
 
             projectInfo.AddTarget(args.BuildEventContext.TargetId, targetInfo);
             projectInfo.AddExecutedTarget(targetInfo.Name, targetInfo);
+        }
+
+        private void OnTargetSkipped(TargetSkippedEventArgs args)
+        {
+            var projectInfo = FindProjectContext(args);
+
+            var targetInfo = new TargetInfo(
+                Intern(args.TargetName), 
+                Intern(args.TargetFile), 
+                Intern(args.ParentTarget),
+                args.BuildReason,
+                args.Timestamp);
+            AddMessage(targetInfo, args);
+            projectInfo.AddExecutedTarget(args.TargetName, targetInfo);
         }
 
         private void OnTargetFinished(TargetFinishedEventArgs args)
@@ -602,23 +621,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
 
         private void ProcessProjectMessage(BuildEventArgs args)
         {
-            var message = args.Message;
             var projectInfo = FindProjectContext(args);
-
-            if (message.StartsWith("Target") && message.Contains("skipped"))
-            {
-                var targetName = Intern(ParseQuotedSubstring(message));
-                if (targetName == null)
-                {
-                    throw new LoggerException(Resources.UnexpectedMessage);
-                }
-
-                var targetInfo = new TargetInfo(targetName, args.Timestamp);
-                AddMessage(targetInfo, args);
-                projectInfo.AddExecutedTarget(targetName, targetInfo);
-                return;
-            }
-
             AddMessage(projectInfo, args);
         }
 
@@ -968,6 +971,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
                 targetInfo.IsRequestedTarget,
                 targetInfo.SourceFilePath,
                 targetInfo.ParentTarget,
+                targetInfo.Reason,
                 EmptyIfNull(targetInfo.ItemActionInfos?.Select(ConstructItemAction).OrderBy(OrderItemActions).ToImmutableList()),
                 EmptyIfNull(targetInfo.PropertySetInfos?.Select(ConstructPropertySet).OrderBy(OrderPropertySets).ToImmutableList()),
                 EmptyIfNull(targetInfo.OutputItems?.Select(ConstructItem).OrderBy(OrderItems).ToImmutableList()),

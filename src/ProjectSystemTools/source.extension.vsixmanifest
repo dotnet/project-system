@@ -9,7 +9,7 @@
     <Tags>project, csproj, vbproj</Tags>
   </Metadata>
   <Installation>
-    <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="[15.0.27004.2002,)" />
+    <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="[15.6.27428.2027,)" />
   </Installation>
   <Dependencies>
     <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
