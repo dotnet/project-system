@@ -47,19 +47,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public event AsyncEventHandler<ProjectPropertyChangedEventArgs> ProjectPropertyChanged
         {
             add { DelegatedProvider.ProjectPropertyChanged += value; }
-            remove { DelegatedProvider.ProjectPropertyChanged += value; }
+            remove { DelegatedProvider.ProjectPropertyChanged -= value; }
         }
 
         public event AsyncEventHandler<ProjectPropertyChangedEventArgs> ProjectPropertyChangedOnWriter
         {
             add { DelegatedProvider.ProjectPropertyChangedOnWriter += value; }
-            remove { DelegatedProvider.ProjectPropertyChangedOnWriter += value; }
+            remove { DelegatedProvider.ProjectPropertyChangedOnWriter -= value; }
         }
 
         public event AsyncEventHandler<ProjectPropertyChangedEventArgs> ProjectPropertyChanging
         {
             add { DelegatedProvider.ProjectPropertyChanging += value; }
-            remove { DelegatedProvider.ProjectPropertyChanging += value; }
+            remove { DelegatedProvider.ProjectPropertyChanging -= value; }
         }
 
         public virtual IProjectProperties GetCommonProperties()
