@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.Build.Framework;
+using Microsoft.Build.Framework.Profiler;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
 {
@@ -816,11 +817,49 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
             evaluationInfo.StartEvaluatingProject(evaluatedProject);
         }
 
+        private static EvaluatedProfileInfo InterpretEvaluationProfile(ProfilerResult profilerResult)
+        {
+            var groups = profilerResult.ProfiledLocations.GroupBy(l => l.Key.ParentId).ToList();
+            var roots = groups.Where(g => g.Key == null).ToArray();
+
+            if (roots.Length != 2 || roots.Any(r => r.Count() != 1))
+            {
+                throw new LoggerException(Resources.UnexpectedProfile);
+            }
+
+            var evaluationRoot = roots[0].Single().Key.Kind == EvaluationLocationKind.Element ? roots[0].Single() : roots[1].Single();
+            var globRoot = roots[0].Single().Key.Kind == EvaluationLocationKind.Glob ? roots[0].Single() : roots[1].Single();
+
+            var passes = groups.Where(g => g.Key == evaluationRoot.Key.Id).ToList();
+
+            if (passes.Any(p => p.Count() != 1))
+            {
+                throw new LoggerException(Resources.UnexpectedProfile);
+            }
+
+            var passInfos = (from pass in passes.OrderBy(p => p.Single().Key.EvaluationPass).Select(p => p.Single())
+                let locations = groups.Single(g => g.Key == pass.Key.Id).Select(location =>
+                    new EvaluatedLocationInfo(location.Key.ElementName, location.Key.ElementDescription,
+                        location.Key.Kind, location.Key.File, location.Key.Line, location.Value.ExclusiveTime,
+                        location.Value.InclusiveTime, location.Value.NumberOfHits)).ToList()
+                select new EvaluatedPassInfo(pass.Key.EvaluationPass, locations, pass.Value.ExclusiveTime,
+                    pass.Value.InclusiveTime, pass.Value.NumberOfHits)).ToList();
+
+            return new EvaluatedProfileInfo(passInfos, evaluationRoot.Value.ExclusiveTime,
+                evaluationRoot.Value.InclusiveTime, evaluationRoot.Value.NumberOfHits, globRoot.Value.ExclusiveTime,
+                globRoot.Value.InclusiveTime, globRoot.Value.NumberOfHits);
+        }
+
         private void OnProjectEvaluationFinished(object sender, ProjectEvaluationFinishedEventArgs args)
         {
             var evaluationInfo = FindEvaluationContext(args);
             var evaluatedProjectInfo = evaluationInfo.EndEvaluatingProject(args.ProjectFile);
-            evaluatedProjectInfo.EndEvaluatedProject(args.Timestamp);
+            EvaluatedProfileInfo evaluationProfileInfo = null;
+            if (args.ProfilerResult != null)
+            {
+                evaluationProfileInfo = InterpretEvaluationProfile(args.ProfilerResult.Value);
+            }
+            evaluatedProjectInfo.EndEvaluatedProject(evaluationProfileInfo, args.Timestamp);
             AddMessage(evaluatedProjectInfo, args);
         }
 
@@ -982,9 +1021,43 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
                 targetInfo.Result
             );
 
+        private static EvaluatedLocation ConstructEvaluatedLocation(EvaluatedLocationInfo evaluatedLocationInfo) =>
+            new EvaluatedLocation(
+                evaluatedLocationInfo.ElementName,
+                evaluatedLocationInfo.ElementDescription,
+                evaluatedLocationInfo.Kind,
+                evaluatedLocationInfo.File,
+                evaluatedLocationInfo.Line,
+                evaluatedLocationInfo.ExclusiveTime,
+                evaluatedLocationInfo.InclusiveTime,
+                evaluatedLocationInfo.NumberOfHits
+            );
+
+        private static EvaluatedPass ConstructEvaluatedPass(EvaluatedPassInfo evaluatedPassInfo) =>
+            new EvaluatedPass(
+                evaluatedPassInfo.Pass,
+                evaluatedPassInfo.Locations.Select(ConstructEvaluatedLocation).ToImmutableArray(),
+                evaluatedPassInfo.ExclusiveTime,
+                evaluatedPassInfo.InclusiveTime,
+                evaluatedPassInfo.NumberOfHits
+            );
+
+
+        private static EvaluatedProfile ConstructEvaluatedProfile(EvaluatedProfileInfo evaluatedProfileInfo) =>
+            new EvaluatedProfile(
+                evaluatedProfileInfo.Passes.Select(ConstructEvaluatedPass).OrderBy(p => p.Pass).ToImmutableArray(),
+                evaluatedProfileInfo.ExclusiveEvaluationTime,
+                evaluatedProfileInfo.InclusiveEvaluationTime,
+                evaluatedProfileInfo.NumberOfEvaluationHits,
+                evaluatedProfileInfo.ExclusiveGlobTime,
+                evaluatedProfileInfo.InclusiveGlobTime,
+                evaluatedProfileInfo.NumberOfGlobHits
+            );
+
         private static EvaluatedProject ConstructEvaluatedProject(EvaluatedProjectInfo evaluatedProjectInfo) =>
             new EvaluatedProject(
                 evaluatedProjectInfo.Name,
+                evaluatedProjectInfo.EvaluationProfile == null ? null : ConstructEvaluatedProfile(evaluatedProjectInfo.EvaluationProfile),
                 evaluatedProjectInfo.StartTime,
                 evaluatedProjectInfo.EndTime,
                 evaluatedProjectInfo.Messages.Select(ConstructMessage).OrderBy(OrderMessages).ToImmutableList()

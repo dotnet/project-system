@@ -77,6 +77,11 @@
         <target state="new">Unexpected message.</target>
         <note />
       </trans-unit>
+      <trans-unit id="UnexpectedProfile">
+        <source>Unexpected profile format.</source>
+        <target state="new">Unexpected profile format.</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

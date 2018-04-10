@@ -7,6 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
     internal sealed class EvaluatedProjectInfo : BaseInfo
     {
         public string Name { get; }
+        public EvaluatedProfileInfo EvaluationProfile { get; private set; }
         public DateTime StartTime { get; }
         public DateTime EndTime { get; private set; }
 
@@ -16,8 +17,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
             StartTime = startTime;
         }
 
-        public void EndEvaluatedProject(DateTime endTime)
+        public void EndEvaluatedProject(EvaluatedProfileInfo evaluationProfile, DateTime endTime)
         {
+            EvaluationProfile = evaluationProfile;
             EndTime = endTime;
         }
     }

@@ -10,7 +10,6 @@
 
 namespace Microsoft.VisualStudio.ProjectSystem.LogModel {
     using System;
-    using System.Reflection;
     
     
     /// <summary>
@@ -40,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Microsoft.VisualStudio.ProjectSystem.LogModel.Resources", typeof(Resources).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Microsoft.VisualStudio.ProjectSystem.LogModel.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -193,6 +192,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel {
         internal static string UnexpectedMessage {
             get {
                 return ResourceManager.GetString("UnexpectedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected profile format..
+        /// </summary>
+        internal static string UnexpectedProfile {
+            get {
+                return ResourceManager.GetString("UnexpectedProfile", resourceCulture);
             }
         }
     }

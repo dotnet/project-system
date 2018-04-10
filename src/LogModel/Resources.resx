@@ -162,4 +162,7 @@
   <data name="UnexpectedMessage" xml:space="preserve">
     <value>Unexpected message.</value>
   </data>
+  <data name="UnexpectedProfile" xml:space="preserve">
+    <value>Unexpected profile format.</value>
+  </data>
 </root>
