@@ -87,9 +87,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             return targetFrameworks.Any()
                 ? new ProjectRestoreInfo
                 {
-                    // NOTE: We pass MSBuildProjectExtensionsPath as BaseIntermediatePath, because people often set
-                    // BaseIntermediatePath too late.  See https://github.com/dotnet/project-system/issues/3466 for
-                    // details.
+                    // NOTE: We pass MSBuildProjectExtensionsPath as BaseIntermediatePath instead of using
+                    // BaseIntermediateOutputPath. This is because NuGet switched from using BaseIntermediateOutputPath
+                    // to MSBuildProjectExtensionsPath, since the value of BaseIntermediateOutputPath is often set too
+                    // late (after *.g.props files would need to have been imported from it). Instead of modifying the
+                    // IVsProjectRestoreInfo interface or introducing something like IVsProjectRestoreInfo with an
+                    // MSBuildProjectExtensionsPath property, we opted to leave the interface the same but change the
+                    // meaning of its BaseIntermediatePath proprtey. See
+                    // https://github.com/dotnet/project-system/issues/3466for for details.
                     BaseIntermediatePath = msbuildProjectExtensionsPath,
                     OriginalTargetFrameworks = originalTargetFrameworks,
                     TargetFrameworks = targetFrameworks,
