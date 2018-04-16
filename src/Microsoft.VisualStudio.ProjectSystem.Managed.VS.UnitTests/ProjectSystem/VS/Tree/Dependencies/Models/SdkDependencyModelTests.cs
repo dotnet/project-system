@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("Version", "2.0.0");
 
             var flag = ProjectTreeFlags.Create("MyCustomFlag");
-            var model = new SdkDependencyModel(
+            var model = new FrameworkDependencyModel(
                 "myProvider",
                 "c:\\myPath.dll",
                 "myOriginalItemSpec",
@@ -32,12 +32,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
             Assert.Equal("c:\\myPath.dll (2.0.0)", model.Caption);
             Assert.Equal("2.0.0", model.Version);
-            Assert.Equal(ResolvedSdkReference.SchemaName, model.SchemaName);
+            Assert.Equal(ResolvedFrameworkReference.SchemaName, model.SchemaName);
             Assert.True(model.Resolved);
             Assert.False(model.Implicit);
             Assert.Equal(properties, model.Properties);
             Assert.Equal(Dependency.SdkNodePriority, model.Priority);
-            Assert.Equal(SdkReference.PrimaryDataSourceItemType, model.SchemaItemType);
+            Assert.Equal(FrameworkReference.PrimaryDataSourceItemType, model.SchemaItemType);
             Assert.Equal(ManagedImageMonikers.Sdk, model.Icon);
             Assert.Equal(ManagedImageMonikers.Sdk, model.ExpandedIcon);
             Assert.Equal(ManagedImageMonikers.SdkWarning, model.UnresolvedIcon);
@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("Version", "2.0.0");
 
             var flag = ProjectTreeFlags.Create("MyCustomFlag");
-            var model = new SdkDependencyModel(
+            var model = new FrameworkDependencyModel(
                 "myProvider",
                 "c:\\myPath.dll",
                 "myOriginalItemSpec",
@@ -66,12 +66,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
             Assert.Equal("c:\\myPath.dll (2.0.0)", model.Caption);
             Assert.Equal("2.0.0", model.Version);
-            Assert.Equal(SdkReference.SchemaName, model.SchemaName);
+            Assert.Equal(FrameworkReference.SchemaName, model.SchemaName);
             Assert.False(model.Resolved);
             Assert.False(model.Implicit);
             Assert.Equal(properties, model.Properties);
             Assert.Equal(Dependency.SdkNodePriority, model.Priority);
-            Assert.Equal(SdkReference.PrimaryDataSourceItemType, model.SchemaItemType);
+            Assert.Equal(FrameworkReference.PrimaryDataSourceItemType, model.SchemaItemType);
             Assert.Equal(ManagedImageMonikers.Sdk, model.Icon);
             Assert.Equal(ManagedImageMonikers.Sdk, model.ExpandedIcon);
             Assert.Equal(ManagedImageMonikers.SdkWarning, model.UnresolvedIcon);
@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("Version", "2.0.0");
 
             var flag = ProjectTreeFlags.Create("MyCustomFlag");
-            var model = new SdkDependencyModel(
+            var model = new FrameworkDependencyModel(
                 "myProvider",
                 "c:\\myPath.dll",
                 "myOriginalItemSpec",
@@ -100,12 +100,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
             Assert.Equal("c:\\myPath.dll (2.0.0)", model.Caption);
             Assert.Equal("2.0.0", model.Version);
-            Assert.Equal(ResolvedSdkReference.SchemaName, model.SchemaName);
+            Assert.Equal(ResolvedFrameworkReference.SchemaName, model.SchemaName);
             Assert.True(model.Resolved);
             Assert.True(model.Implicit);
             Assert.Equal(properties, model.Properties);
             Assert.Equal(Dependency.SdkNodePriority, model.Priority);
-            Assert.Equal(SdkReference.PrimaryDataSourceItemType, model.SchemaItemType);
+            Assert.Equal(FrameworkReference.PrimaryDataSourceItemType, model.SchemaItemType);
             Assert.Equal(ManagedImageMonikers.SdkPrivate, model.Icon);
             Assert.Equal(ManagedImageMonikers.SdkPrivate, model.ExpandedIcon);
             Assert.Equal(ManagedImageMonikers.SdkWarning, model.UnresolvedIcon);

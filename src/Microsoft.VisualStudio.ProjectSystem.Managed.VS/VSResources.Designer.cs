@@ -256,6 +256,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Framework.
+        /// </summary>
+        internal static string FrameworkNodeName {
+            get {
+                return ResourceManager.GetString("FrameworkNodeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dependency.
         /// </summary>
         internal static string GraphNodeCategoryDependency {
@@ -519,15 +528,6 @@ namespace Microsoft.VisualStudio {
         internal static string SaveAs {
             get {
                 return ResourceManager.GetString("SaveAs", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to SDK.
-        /// </summary>
-        internal static string SdkNodeName {
-            get {
-                return ResourceManager.GetString("SdkNodeName", resourceCulture);
             }
         }
         

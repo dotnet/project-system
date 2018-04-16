@@ -13,19 +13,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             typeof(ICrossTargetRuleHandler<DependenciesRuleChangeContext>))]
     [Export(typeof(IProjectDependenciesSubTreeProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal class SdkRuleHandler : DependenciesRuleHandlerBase
+    internal class FrameworkRuleHandler : DependenciesRuleHandlerBase
     {
         public const string ProviderTypeString = "SdkDependency";
 
-        protected override string UnresolvedRuleName { get; } = SdkReference.SchemaName;
-        protected override string ResolvedRuleName { get; } = ResolvedSdkReference.SchemaName;
+        protected override string UnresolvedRuleName { get; } = FrameworkReference.SchemaName;
+        protected override string ResolvedRuleName { get; } = ResolvedFrameworkReference.SchemaName;
         public override string ProviderType { get; } = ProviderTypeString;
 
         public override IDependencyModel CreateRootDependencyNode()
         {
             return new SubTreeRootDependencyModel(
                 ProviderType,
-                VSResources.SdkNodeName,
+                VSResources.FrameworkNodeName,
                 ManagedImageMonikers.Sdk,
                 ManagedImageMonikers.SdkWarning,
                 DependencyTreeFlags.SdkSubTreeRootNodeFlags);
@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         {
             // implicit sdk always mark as unresolved, they will be marked resolved when 
             // snapshot filter matches them to corresponding packages
-            return new SdkDependencyModel(
+            return new FrameworkDependencyModel(
                 providerType,
                 path,
                 originalItemSpec,

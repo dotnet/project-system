@@ -107,11 +107,6 @@ Fare clic su Ignora per ignorare le modifiche esterne. Le modifiche potrebbero a
         <target state="translated">COM</target>
         <note />
       </trans-unit>
-      <trans-unit id="SdkNodeName">
-        <source>SDK</source>
-        <target state="translated">SDK</target>
-        <note />
-      </trans-unit>
       <trans-unit id="AssembliesNodeName">
         <source>Assemblies</source>
         <target state="translated">Assembly</target>
@@ -304,6 +299,11 @@ Per eseguire il debug del progetto, aggiungere a questa soluzione un progetto es
       <trans-unit id="OKButtonText">
         <source>OK</source>
         <target state="translated">OK</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FrameworkNodeName">
+        <source>Framework</source>
+        <target state="new">Framework</target>
         <note />
       </trans-unit>
     </body>

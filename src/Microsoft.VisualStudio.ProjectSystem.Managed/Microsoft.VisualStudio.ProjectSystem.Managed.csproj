@@ -55,11 +55,11 @@
     <Compile Update="ProjectSystem\Rules\ResolvedPackageReference.cs">
       <DependentUpon>ResolvedPackageReference.xaml</DependentUpon>
     </Compile>
-    <Compile Update="ProjectSystem\Rules\ResolvedSdkReference.cs">
-      <DependentUpon>ResolvedSdkReference.xaml</DependentUpon>
+    <Compile Update="ProjectSystem\Rules\ResolvedFrameworkReference.cs">
+      <DependentUpon>ResolvedFrameworkReference.xaml</DependentUpon>
     </Compile>
-    <Compile Update="ProjectSystem\Rules\SdkReference.xaml.cs">
-      <DependentUpon>SdkReference.xaml</DependentUpon>
+    <Compile Update="ProjectSystem\Rules\FrameworkReference.xaml.cs">
+      <DependentUpon>FrameworkReference.xaml</DependentUpon>
     </Compile>
     <Compile Update="ProjectSystem\Rules\PackageReference.cs">
       <DependentUpon>PackageReference.xaml</DependentUpon>
@@ -270,11 +270,11 @@
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
-    <XamlPropertyRule Include="ProjectSystem\Rules\SdkReference.xaml">
+    <XamlPropertyRule Include="ProjectSystem\Rules\FrameworkReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>
-    <XamlPropertyRule Include="ProjectSystem\Rules\ResolvedSdkReference.xaml">
+    <XamlPropertyRule Include="ProjectSystem\Rules\ResolvedFrameworkReference.xaml">
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>

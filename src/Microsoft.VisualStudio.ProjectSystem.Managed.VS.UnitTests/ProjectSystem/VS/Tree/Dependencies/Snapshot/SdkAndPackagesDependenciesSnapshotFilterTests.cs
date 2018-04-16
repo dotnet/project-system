@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 topLevel: true,
                 setPropertiesDependencyIDs: dependencyIDs,
                 setPropertiesResolved: true,
-                setPropertiesSchemaName: ResolvedSdkReference.SchemaName,
+                setPropertiesSchemaName: ResolvedFrameworkReference.SchemaName,
                 setPropertiesFlags: flags);
 
             var otherDependency = IDependencyFactory.Implement(
@@ -148,12 +148,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                            .Union(DependencyTreeFlags.ResolvedFlags)
                                            .Except(DependencyTreeFlags.UnresolvedFlags);
             var sdkDependency = IDependencyFactory.Implement(
-                    id: $"tfm\\{SdkRuleHandler.ProviderTypeString}\\mydependency1",
+                    id: $"tfm\\{FrameworkRuleHandler.ProviderTypeString}\\mydependency1",
                     flags: DependencyTreeFlags.PackageNodeFlags.Union(DependencyTreeFlags.UnresolvedFlags), // to see if unresolved is fixed
                     setPropertiesResolved: true,
                     setPropertiesDependencyIDs: dependencyIDs,
                     setPropertiesFlags: flags,
-                    setPropertiesSchemaName: ResolvedSdkReference.SchemaName,
+                    setPropertiesSchemaName: ResolvedFrameworkReference.SchemaName,
                     equals: true);
 
             var worldBuilder = new Dictionary<string, IDependency>()
@@ -199,11 +199,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                                            .Union(DependencyTreeFlags.UnresolvedFlags)
                                            .Except(DependencyTreeFlags.ResolvedFlags);
             var sdkDependency = IDependencyFactory.Implement(
-                    id: $"tfm\\{SdkRuleHandler.ProviderTypeString}\\mydependency1",
+                    id: $"tfm\\{FrameworkRuleHandler.ProviderTypeString}\\mydependency1",
                     flags: DependencyTreeFlags.SdkSubTreeNodeFlags.Union(DependencyTreeFlags.ResolvedFlags), // to see if resolved is fixed
                     setPropertiesDependencyIDs: dependencyIDs,
                     setPropertiesResolved: false,
-                    setPropertiesSchemaName: SdkReference.SchemaName,
+                    setPropertiesSchemaName: FrameworkReference.SchemaName,
                     setPropertiesFlags: flags);
 
             var worldBuilder = new Dictionary<string, IDependency>()
