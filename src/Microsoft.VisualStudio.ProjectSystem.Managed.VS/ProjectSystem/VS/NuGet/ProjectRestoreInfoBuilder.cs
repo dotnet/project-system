@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 return null;
             }
 
-            string baseIntermediatePath = null;
+            string msbuildProjectExtensionsPath = null;
             string originalTargetFrameworks = null;
             var targetFrameworks = new TargetFrameworks();
             var toolReferences = new ReferenceItems();
@@ -45,8 +45,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             foreach (IProjectVersionedValue<IProjectSubscriptionUpdate> update in updates)
             {
                 var nugetRestoreChanges = update.Value.ProjectChanges[NuGetRestore.SchemaName];
-                baseIntermediatePath = baseIntermediatePath ??
-                    nugetRestoreChanges.After.Properties[NuGetRestore.BaseIntermediateOutputPathProperty];
+                msbuildProjectExtensionsPath = msbuildProjectExtensionsPath ??
+                    nugetRestoreChanges.After.Properties[NuGetRestore.MSBuildProjectExtensionsPathProperty];
                 originalTargetFrameworks = originalTargetFrameworks ??
                     nugetRestoreChanges.After.Properties[NuGetRestore.TargetFrameworksProperty];
                 bool noTargetFramework =
@@ -87,7 +87,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             return targetFrameworks.Any()
                 ? new ProjectRestoreInfo
                 {
-                    BaseIntermediatePath = baseIntermediatePath,
+                    // NOTE: We pass MSBuildProjectExtensionsPath as BaseIntermediatePath, because people often set
+                    // BaseIntermediatePath too late.  See https://github.com/dotnet/project-system/issues/3466 for
+                    // details.
+                    BaseIntermediatePath = msbuildProjectExtensionsPath,
                     OriginalTargetFrameworks = originalTargetFrameworks,
                     TargetFrameworks = targetFrameworks,
                     ToolReferences = toolReferences

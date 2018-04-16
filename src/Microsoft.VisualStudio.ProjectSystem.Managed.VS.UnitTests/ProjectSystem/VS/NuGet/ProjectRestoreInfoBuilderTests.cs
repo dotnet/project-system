@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             var definingProjectFullPath = "C:\\Test\\Projects\\TestProj\\TestProj.csproj";
 
             // properties
-            Assert.Equal("obj\\", tfm.Properties.Item("BaseIntermediateOutputPath").Value);
+            Assert.Equal("obj\\", tfm.Properties.Item("MSBuildProjectExtensionsPath").Value);
             Assert.Equal(".NETCoreApp,Version=v1.0", tfm.Properties.Item("TargetFrameworkMoniker").Value);
             Assert.Equal("netcoreapp1.0", tfm.Properties.Item("TargetFrameworks").Value);
             Assert.Equal("netcoreapp1.0;netstandard16", tfm.Properties.Item("PackageTargetFallback").Value);
@@ -137,7 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             },
             ""After"": {
                 ""Properties"": {
-                   ""BaseIntermediateOutputPath"": ""obj\\"",
+                   ""MSBuildProjectExtensionsPath"": ""obj\\"",
                    ""TargetFrameworkMoniker"": "".NETCoreApp,Version=v1.0"",
                    ""TargetFrameworks"": ""netcoreapp1.0"",
                    ""TargetFramework"": ""netcoreapp1.0""
@@ -195,7 +195,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             },
             ""After"": {
                 ""Properties"": {
-                   ""BaseIntermediateOutputPath"": ""obj\\"",
+                   ""MSBuildProjectExtensionsPath"": ""obj\\"",
                    ""TargetFrameworkMoniker"": "".NETCoreApp,Version=v1.0"",
                    ""TargetFrameworks"": ""netcoreapp1.0"",
                    ""TargetFramework"": """"
@@ -265,7 +265,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             },
             ""After"": {
                 ""Properties"": {
-                   ""BaseIntermediateOutputPath"": ""obj\\"",
+                   ""MSBuildProjectExtensionsPath"": ""obj\\"",
                    ""TargetFrameworks"": """",
                    ""TargetFrameworkMoniker"": "".NETCoreApp,Version=v1.0""
                 }
@@ -312,7 +312,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             },
             ""After"": {
                 ""Properties"": {
-                   ""BaseIntermediateOutputPath"": ""obj\\"",
+                   ""MSBuildProjectExtensionsPath"": ""obj\\"",
                    ""TargetFrameworks"": """",
                    ""TargetFrameworkMoniker"": "".NETStandard,Version=v1.4""
                 }
@@ -371,7 +371,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             },
             ""After"": {
                 ""Properties"": {
-                   ""BaseIntermediateOutputPath"": ""obj\\"",
+                   ""MSBuildProjectExtensionsPath"": ""obj\\"",
                    ""TargetFrameworks"": """",
                    ""TargetFrameworkMoniker"": "".NETCoreApp,Version=v1.0""
                 }
@@ -425,7 +425,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             },
             ""After"": {
                 ""Properties"": {
-                   ""BaseIntermediateOutputPath"": ""obj\\"",
+                   ""MSBuildProjectExtensionsPath"": ""obj\\"",
                    ""TargetFrameworkMoniker"": "".NETStandard,Version=v1.4""
                 }
             }
@@ -492,7 +492,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             },
             ""After"": {
                 ""Properties"": {
-                   ""BaseIntermediateOutputPath"": ""obj\\"",
+                   ""MSBuildProjectExtensionsPath"": ""obj\\"",
                    ""TargetFrameworks"": """",
                    ""TargetFrameworkMoniker"": "".NETCoreApp,Version=v1.0""
                 }
@@ -561,7 +561,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             },
             ""After"": {
                 ""Properties"": {
-                   ""BaseIntermediateOutputPath"": ""obj\\"",
+                   ""MSBuildProjectExtensionsPath"": ""obj\\"",
                    ""TargetFrameworkMoniker"": "".NETCoreApp,Version=v1.0"",
                    ""TargetFrameworkIdentifier"": "".NETCoreApp"",
                    ""TargetFrameworkVersion"": ""v1.0"",
