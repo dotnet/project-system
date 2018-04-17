@@ -268,6 +268,11 @@
     </PropertyPageSchema>
   </ItemGroup>
 
+  <!-- List of external files that trigger design-time builds when they are modified -->
+  <ItemGroup>
+    <AdditionalDesignTimeBuildInput Include="$(ProjectAssetsFile)" />   <!-- NuGet assets file -->
+  </ItemGroup>
+
   <!--
     EmbeddedFiles are source files to be embedded to the PDB. 
     We need to set Visible to false in order to not display duplicate entries in project UI.
