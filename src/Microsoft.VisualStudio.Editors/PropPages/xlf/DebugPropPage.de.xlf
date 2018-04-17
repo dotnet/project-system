@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="EnableDebuggerLabel.Text">
         <source>Debugger engines</source>
-        <target state="translated">Debuggermodule</target>
+        <target state="translated">Debugger-Engines</target>
         <note />
       </trans-unit>
       <trans-unit id="EnableSQLServerDebugging.Text">
