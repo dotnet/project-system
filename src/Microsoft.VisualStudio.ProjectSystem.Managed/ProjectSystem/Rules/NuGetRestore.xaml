@@ -42,11 +42,11 @@
         </StringProperty.DataSource>
     </StringProperty>
 
-    <StringProperty Name="BaseIntermediateOutputPath" 
+    <StringProperty Name="MSBuildProjectDirectory" 
                     Visible="False" 
                     ReadOnly="True" />
 
-    <StringProperty Name="MSBuildProjectDirectory" 
+    <StringProperty Name="MSBuildProjectExtensionsPath" 
                     Visible="False" 
                     ReadOnly="True" />
 
