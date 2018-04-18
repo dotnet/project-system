@@ -1,6 +1,6 @@
 # C#, F# and Visual Basic project system
 
-|Release|Branch|Unit Tests (Debug)|Unit Tests (Release)|Coverage
+|Release|Branch|Unit Tests (Debug)|Unit Tests (Release)|Coverage (Debug)
 |---|---|:--:|:--:|:--:|
 |[15.0.x](https://github.com/dotnet/project-system/milestone/4)|[dev15.0.x](docs/repo/roadmap.md)|[![Build Status](https://ci.dot.net/job/dotnet_project-system/job/dev15.0.x/job/windows_debug/badge/icon)](https://ci.dot.net/job/dotnet_project-system/job/dev15.0.x/job/windows_debug/)|[![Build Status](https://ci.dot.net/job/dotnet_project-system/job/dev15.0.x/job/windows_release/badge/icon)](https://ci.dot.net/job/dotnet_project-system/job/dev15.0.x/job/windows_release/)|
 |[15.6](https://github.com/dotnet/project-system/milestone/19)|[dev15.6.x](docs/repo/roadmap.md)|[![Build Status](https://ci.dot.net/job/dotnet_project-system/job/dev15.6.x/job/windows_debug/badge/icon)](https://ci.dot.net/job/dotnet_project-system/job/dev15.6.x/job/windows_debug/)|[![Build Status](https://ci.dot.net/job/dotnet_project-system/job/dev15.6.x/job/windows_release/badge/icon)](https://ci.dot.net/job/dotnet_project-system/job/dev15.6.x/job/windows_release/)
