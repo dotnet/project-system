@@ -115,6 +115,9 @@ function Build {
   $useOpenCover = $useCodecov
 
   & $MsbuildExe $ToolsetBuildProj /m /nologo /clp:Summary /nodeReuse:$nodeReuse /warnaserror /v:$verbosity $logCmd /p:Configuration=$configuration /p:SolutionPath=$solution /p:Restore=$restore /p:QuietRestore=true /p:DeployDeps=$deployDeps /p:Build=$build /p:Rebuild=$rebuild /p:Deploy=$deploy /p:Test=$test /p:IntegrationTest=$integrationTest /p:Sign=$sign /p:Pack=$pack /p:UseCodecov=$useCodecov /p:UseOpenCover=$useOpenCover /p:CIBuild=$ci /p:NuGetPackageRoot=$NuGetPackageRoot $properties
+  if ((-not $?) -or ($lastExitCode -ne 0)) {
+    throw "Aborting after build failure."
+  }
 
   if ($useCodecov) {
     $CodecovProj = Join-Path $PSScriptRoot 'Codecov.proj'
