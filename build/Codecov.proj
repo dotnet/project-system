@@ -10,6 +10,9 @@
   <Target Name="Codecov">
     <PropertyGroup Condition="'$(UseCodecov)' == 'true'">
       <_CodecovPath>$(NuGetPackageRoot)codecov\$(CodecovVersion)\tools\Codecov.exe</_CodecovPath>
+
+      <_BranchName Condition="'$(_BranchName)' == ''">$(ghprbTargetBranch)</_BranchName>
+      <_BranchName Condition="'$(_BranchName)' == ''">$(BranchName)</_BranchName>
     </PropertyGroup>
 
     <ItemGroup Condition="'$(UseCodecov)' == 'true'">
@@ -19,7 +22,7 @@
       <_CodecovArgs Include="-r;$(QualifiedRepoName)" Condition="'$(QualifiedRepoName)' != ''" />
       <_CodecovArgs Include="--pr;$(ghprbPullId)" Condition="'$(ghprbPullId)' != ''" />
       <_CodecovArgs Include="-b;$(BUILD_NUMBER)" Condition="'$(BUILD_NUMBER)' != ''" />
-      <_CodecovArgs Include="--branch;$(ghprbTargetBranch)" Condition="'$(ghprbTargetBranch)' != ''" />
+      <_CodecovArgs Include="--branch;$(_BranchName)" Condition="'$(_BranchName)' != ''" />
       <_CodecovArgs Include="-c;$(ghprbActualCommit)" Condition="'$(ghprbActualCommit)' != ''" />
       <_CodecovArgs Include="-n;$(JOB_NAME)" Condition="'$(JOB_NAME)' != ''" />
       <_CodecovArgs Include="--flag;$(Configuration)" Condition="'$(Configuration)' != ''" />
