@@ -116,6 +116,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         private bool FindUnresolvedDependenciesRecursive(IDependency dependency, HashSet<string> seenDependencies)
         {
             var result = false;
+<<<<<<< HEAD
+=======
 
             if (!seenDependencies.Contains(dependency.Id))
             {
@@ -126,6 +128,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 return result;
             }
 
+>>>>>>> changed scope of seenDependencies hashSet
             if (dependency.DependencyIDs.Count > 0)
             {
                 foreach (var child in GetDependencyChildren(dependency))

@@ -55,6 +55,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         private Dictionary<string, bool> _unresolvedDescendantsMap
             = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
 
+        private HashSet<string> _seenDependencies = new HashSet<string>();
+
         private bool? _hasUresolvedDependency;
         public bool HasUnresolvedDependency
         {
@@ -80,9 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 return hasUnresolvedDescendants;
             }
 
-            var seenDependencies = new HashSet<string>();
-
-            return FindUnresolvedDependenciesRecursive(dependency, seenDependencies);
+            return FindUnresolvedDependenciesRecursive(dependency);
         }
 
         public bool CheckForUnresolvedDependencies(string providerType)
@@ -113,13 +113,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
         }
 
-        private bool FindUnresolvedDependenciesRecursive(IDependency dependency, HashSet<string> seenDependencies)
+        private bool FindUnresolvedDependenciesRecursive(IDependency dependency)
         {
+
             var result = false;
 
-            if (!seenDependencies.Contains(dependency.Id))
+            if (!_seenDependencies.Contains(dependency.Id))
             {
-                seenDependencies.Add(dependency.Id);
+                _seenDependencies.Add(dependency.Id);
             }
             else
             {
@@ -138,7 +139,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
                     if (!_unresolvedDescendantsMap.TryGetValue(child.Id, out bool depthFirstResult))
                     {
-                        depthFirstResult = FindUnresolvedDependenciesRecursive(child, seenDependencies);
+                        depthFirstResult = FindUnresolvedDependenciesRecursive(child);
                     }
 
                     if (depthFirstResult)

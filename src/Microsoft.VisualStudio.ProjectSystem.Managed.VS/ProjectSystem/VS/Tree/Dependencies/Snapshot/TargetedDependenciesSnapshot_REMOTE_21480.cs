@@ -115,6 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         private bool FindUnresolvedDependenciesRecursive(IDependency dependency, HashSet<string> seenDependencies)
         {
+
             var result = false;
 
             if (!seenDependencies.Contains(dependency.Id))
