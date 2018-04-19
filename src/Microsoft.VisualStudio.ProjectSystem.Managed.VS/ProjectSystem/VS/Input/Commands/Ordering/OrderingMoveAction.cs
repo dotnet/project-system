@@ -2,7 +2,7 @@
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
-    internal enum OrderAddItemHintReceiverAction
+    internal enum OrderingMoveAction
     {
         NoOp = 0,
         MoveToTop = 1,

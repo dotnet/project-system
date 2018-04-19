@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using Microsoft.Build.Execution;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
@@ -28,6 +29,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public override IProjectProperties GetProperties(string file, string itemType, string item)
         {
             var defaultProperties = base.GetProperties(file, itemType, item);
+            return _interceptingValueProviders.IsDefaultOrEmpty ? defaultProperties : new InterceptedProjectProperties(_interceptingValueProviders, defaultProperties);
+        }
+
+        public override IProjectProperties GetCommonProperties()
+        {
+            var defaultProperties = base.GetCommonProperties();
+            return _interceptingValueProviders.IsDefaultOrEmpty ? defaultProperties : new InterceptedProjectProperties(_interceptingValueProviders, defaultProperties);
+        }
+
+        public override IProjectProperties GetCommonProperties(ProjectInstance projectInstance)
+        {
+            var defaultProperties = base.GetCommonProperties(projectInstance);
             return _interceptingValueProviders.IsDefaultOrEmpty ? defaultProperties : new InterceptedProjectProperties(_interceptingValueProviders, defaultProperties);
         }
     }

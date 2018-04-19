@@ -69,7 +69,9 @@
     <PropertyGroup Condition="'$(_UseOpenCover)' == 'true'">
       <_OpenCoverConsoleExe>OpenCover.Console.exe</_OpenCoverConsoleExe>
       <_OpenCoverCommand>$(NuGetPackageRoot)opencover\$(OpenCoverVersion)\tools\$(_OpenCoverConsoleExe)</_OpenCoverCommand>
-      <_OpenCoverCommandArgs>-register:user -returntargetcode -hideskipped:All -filter:"+[*]*" -excludebyattribute:*.ExcludeFromCodeCoverage* -excludebyfile:*\*Designer.cs -output:"$(_TestResultsOpenCoverPath)"</_OpenCoverCommandArgs>
+      <_OpenCoverRegister>user</_OpenCoverRegister>
+      <_OpenCoverRegister Condition="'$(_TestArchitecture)' == 'x86'">path32</_OpenCoverRegister>
+      <_OpenCoverCommandArgs>-register:$(_OpenCoverRegister) -returntargetcode -hideskipped:All -filter:"+[*]*" -excludebyattribute:*.ExcludeFromCodeCoverage* -excludebyfile:*\*Designer.cs -output:"$(_TestResultsOpenCoverPath)"</_OpenCoverCommandArgs>
       <_TestRunnerCommand>"$(_OpenCoverCommand)" $(_OpenCoverCommandArgs) -target:"$(_XUnitRunnerCommand)" -targetargs:"$(_XUnitRunnerCommandArgs.Replace(`"`, `\"`))"</_TestRunnerCommand>
     </PropertyGroup>
 

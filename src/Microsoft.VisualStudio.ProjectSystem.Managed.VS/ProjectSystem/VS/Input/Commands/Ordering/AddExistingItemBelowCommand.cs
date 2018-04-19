@@ -32,6 +32,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             return OrderingHelper.HasValidDisplayOrder(target);
         }
 
-        protected override OrderAddItemHintReceiverAction Action => OrderAddItemHintReceiverAction.MoveBelow;
+        protected override OrderingMoveAction Action => OrderingMoveAction.MoveBelow;
     }
 }
