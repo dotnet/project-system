@@ -2,6 +2,8 @@
 
 The following is a list of known compability issues and behavioral differences between the legacy project system and the new project system.
 
+For a list of feature differences; see [Feature Comparison](feature-comparison.md).
+
 ## Builds
 
 ### Design-time builds are run out-of-process.
