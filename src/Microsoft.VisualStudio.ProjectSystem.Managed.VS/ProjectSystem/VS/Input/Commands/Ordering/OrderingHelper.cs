@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -14,6 +15,51 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
     /// </summary>
     internal static class OrderingHelper
     {
+        /// <summary>
+        /// Performs a move on any items that were added based on the previous includes.
+        /// </summary>
+        public static Task Move(ConfiguredProject configuredProject, IProjectAccessor accessor, ImmutableHashSet<string> previousIncludes, IProjectTree target, OrderingMoveAction action)
+        {
+            Requires.NotNull(configuredProject, nameof(configuredProject));
+            Requires.NotNull(accessor, nameof(accessor));
+            Requires.NotNull(previousIncludes, nameof(previousIncludes));
+            Requires.NotNull(target, nameof(target));
+
+            return accessor.OpenProjectForWriteAsync(configuredProject, project =>
+            {
+                // We do a sanity re-evaluation to absolutely ensure changes were met.
+                project.ReevaluateIfNecessary();
+                var addedElements = GetAddedItemElements(previousIncludes, project);
+
+                switch (action)
+                {
+                    case OrderingMoveAction.MoveToTop:
+                        TryMoveElementsToTop(project, addedElements, target);
+                        break;
+                    case OrderingMoveAction.MoveAbove:
+                        TryMoveElementsAbove(project, addedElements, target);
+                        break;
+                    case OrderingMoveAction.MoveBelow:
+                        TryMoveElementsBelow(project, addedElements, target);
+                        break;
+                    default:
+                        break;
+                }
+            });
+        }
+
+        /// <summary>
+        /// Get all evaluated includes from a project as an immutable hash set. This includes items that aren't for ordering as well.
+        /// </summary>
+        public static Task<ImmutableHashSet<string>> GetAllEvaluatedIncludes(ConfiguredProject configuredProject, IProjectAccessor accessor)
+        {
+            Requires.NotNull(configuredProject, nameof(configuredProject));
+            Requires.NotNull(accessor, nameof(accessor));
+
+            return accessor.OpenProjectForReadAsync(configuredProject, project =>
+                project.AllEvaluatedItems.Select(x => x.EvaluatedInclude).ToImmutableHashSet(StringComparer.OrdinalIgnoreCase));
+        }
+
         /// <summary>
         /// Checks to see if the project tree has a valid display order.
         /// </summary>
@@ -85,7 +131,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(target, nameof(target));
 
-            var referenceElement = GetReferenceElement(project, target, MoveAction.Above);
+            var referenceElement = TryGetReferenceElement(project, target, ImmutableArray<string>.Empty, MoveAction.Above);
             return TryMoveElements(elements, referenceElement, MoveAction.Above);
         }
 
@@ -97,7 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(target, nameof(target));
 
-            var referenceElement = GetReferenceElement(project, target, MoveAction.Below);
+            var referenceElement = TryGetReferenceElement(project, target, ImmutableArray<string>.Empty, MoveAction.Below);
             return TryMoveElements(elements, referenceElement, MoveAction.Below);
         }
 
@@ -130,7 +176,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                 return false;
             }
 
-            var referenceElement = GetReferenceElement(project, targetChild, MoveAction.Above);
+            // Make sure we exclude the moving elements when trying to find a reference element; this prevents us from choosing a reference element that is part of the moving elements.
+            var referenceElement = TryGetReferenceElement(project, targetChild, elements.Select(x => x.Include).ToImmutableArray(), MoveAction.Above);
+
+            // If we couldn't find a reference element, we can't move the elements and we don't need to.
+            if (referenceElement == null)
+            {
+                return false;
+            }
+
             return TryMoveElements(elements, referenceElement, MoveAction.Above);
         }
 
@@ -138,13 +192,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// Get project item elements based on the project tree.
         /// Project tree can be a folder or item.
         /// </summary>
-        public static ImmutableArray<ProjectItemElement> GetElements(Project project, IProjectTree projectTree)
+        public static ImmutableArray<ProjectItemElement> GetItemElements(Project project, IProjectTree projectTree, ImmutableArray<string> excludeIncludes)
         {
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(projectTree, nameof(projectTree));
 
-            var includes = GetEvaluatedIncludes(projectTree);
+            var includes = GetEvaluatedIncludes(projectTree).Except(excludeIncludes, StringComparer.OrdinalIgnoreCase).ToImmutableArray();
+            return GetItemElements(project, includes);
+        }
 
+        /// <summary>
+        /// Determines if we are moving up or down files or folders.
+        /// </summary>
+        private enum MoveAction { Above = 0, Below = 1 }
+
+        private static ImmutableArray<ProjectItemElement> GetItemElements(Project project, ImmutableArray<string> includes)
+        {
             var elements = ImmutableArray.CreateBuilder<ProjectItemElement>();
 
             foreach (var include in includes)
@@ -164,15 +227,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         }
 
         /// <summary>
-        /// Determines if we are moving up or down files or folders.
-        /// </summary>
-        private enum MoveAction { Above = 0, Below = 1 }
-
-        /// <summary>
         /// Gets a read-only collection with the evaluated includes associated with a project tree.
         /// Evaluated includes will be in order by their display order.
         /// </summary>
-        private static ImmutableArray<string> GetEvaluatedIncludes(IProjectTree projectTree)
+        private static IEnumerable<string> GetEvaluatedIncludes(IProjectTree projectTree)
         {
             var treeQueue = new Queue<IProjectTree>();
 
@@ -206,7 +264,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                 }
             }
 
-            return includes.Select(x => x.Value).ToImmutableArray();
+            return includes.Select(x => x.Value);
         }
 
         /// <summary>
@@ -308,15 +366,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// Gets a reference element based on the given project tree and move action. Can return null.
         /// The reference element is the element for which moved items will be above or below it.
         /// </summary>
-        private static ProjectItemElement GetReferenceElement(Project project, IProjectTree projectTree, MoveAction moveAction)
+        private static ProjectItemElement TryGetReferenceElement(Project project, IProjectTree projectTree, ImmutableArray<string> excludeIncludes, MoveAction moveAction)
         {
             switch (moveAction)
             {
                 case MoveAction.Above:
-                    return GetElements(project, projectTree).FirstOrDefault();
+                    return GetItemElements(project, projectTree, excludeIncludes).FirstOrDefault();
 
                 case MoveAction.Below:
-                    return GetElements(project, projectTree).LastOrDefault();
+                    return GetItemElements(project, projectTree, excludeIncludes).LastOrDefault();
             }
 
             return null;
@@ -329,6 +387,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// <returns>true or false; 'true' if all elements were successfully moved. 'false' if just one element was not moved successfully.</returns>
         private static bool TryMoveElements(ImmutableArray<ProjectItemElement> elements, ProjectItemElement referenceElement, MoveAction moveAction)
         {
+            Requires.NotNull(referenceElement, nameof(referenceElement));
+
             var parent = referenceElement.Parent;
             if (parent == null || !elements.Any())
             {
@@ -399,11 +459,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             if (referenceProjectTree != null)
             {
                 // The reference element is the element for which moved items will be above or below it.
-                var referenceElement = GetReferenceElement(project, referenceProjectTree, moveAction);
+                var referenceElement = TryGetReferenceElement(project, referenceProjectTree, ImmutableArray<string>.Empty, moveAction);
 
                 if (referenceElement != null)
                 {
-                    var elements = GetElements(project, projectTree);
+                    var elements = GetItemElements(project, projectTree, ImmutableArray<string>.Empty);
                     return TryMoveElements(elements, referenceElement, moveAction);
                 }
             }
@@ -420,6 +480,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             // Determine what sibling we want to look at based on if we are moving up or down.
             var sibling = GetSiblingByMoveAction(projectTree, moveAction);
             return TryMove(project, projectTree, sibling, moveAction);
+        }
+
+        private static ImmutableArray<ProjectItemElement> GetAddedItemElements(ImmutableHashSet<string> previousIncludes, Project project)
+        {
+            return project.AllEvaluatedItems
+                // We are excluding folder elements until CPS allows empty folders to be part of the order; when they do, we can omit checking the item type for "Folder".
+                // Related changes will also need to happen in TryMoveElementsToTop when CPS allows empty folders in ordering.
+                .Where(x => !previousIncludes.Contains(x.EvaluatedInclude, StringComparer.OrdinalIgnoreCase) && !x.ItemType.Equals("Folder", StringComparison.OrdinalIgnoreCase))
+                .Select(x => x.Xml)
+                .ToImmutableArray();
         }
     }
 }

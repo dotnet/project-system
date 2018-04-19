@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             }
         }
 
-        protected virtual OrderAddItemHintReceiverAction Action => OrderAddItemHintReceiverAction.MoveToTop;
+        protected virtual OrderingMoveAction Action => OrderingMoveAction.MoveToTop;
 
         protected override async Task<bool> TryHandleCommandAsync(IProjectTree node, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
         {
@@ -77,8 +77,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             IProjectTree target;
             switch (Action)
             {
-                case OrderAddItemHintReceiverAction.MoveAbove:
-                case OrderAddItemHintReceiverAction.MoveBelow:
+                case OrderingMoveAction.MoveAbove:
+                case OrderingMoveAction.MoveBelow:
                     target = node.Parent;
                     break;
                 default:
