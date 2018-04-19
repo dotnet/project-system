@@ -146,7 +146,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             Return item
         End Function
 
-        Private _extensionTemplates As List(Of MyExtensionTemplate)
+        Private ReadOnly _extensionTemplates As List(Of MyExtensionTemplate)
         Private _extensionTemplatesToAdd As List(Of MyExtensionTemplate)
         Private _comparer As ListViewComparer
 

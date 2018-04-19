@@ -17,8 +17,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <remarks></remarks>
         Friend Class TargetFramework
-            Private _version As UInteger
-            Private _description As String
+            Private ReadOnly _version As UInteger
+            Private ReadOnly _description As String
 
             Public Sub New(version As UInteger, description As String)
                 If description Is Nothing Then

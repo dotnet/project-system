@@ -25,7 +25,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         'The main view (the ApplicationDesignerView will be a child of this control)
         Private _view As ApplicationDesignerWindowPaneControl
 
-        Private _host As IDesignerHost
+        Private ReadOnly _host As IDesignerHost
         Private _viewHelper As CmdTargetHelper
         Private _UIShellService As IVsUIShell
         Private _UIShell2Service As IVsUIShell2

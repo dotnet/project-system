@@ -98,17 +98,17 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Implements IVsDocDataContainer
 #End If
 
-        Private _formType As Type
+        Private ReadOnly _formType As Type
         Private _propPage As Control
         Private _pageSite As IPropertyPageSite
-        Private _isDirty As Boolean
+        Private ReadOnly _isDirty As Boolean
         Private Const s_SW_HIDE As Integer = 0
         Private _size As Drawing.Size
         Private _defaultSize As Drawing.Size
         Private _docString As String
         Private _helpFile As String
         Private _helpContext As UInteger
-        Private _title As String
+        Private ReadOnly _title As String
         Private _objects As Object()
         Private _prevParent As IntPtr
         Private _dispidFocus As Integer

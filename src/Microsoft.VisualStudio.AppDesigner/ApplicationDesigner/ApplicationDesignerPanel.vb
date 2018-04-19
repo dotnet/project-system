@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Runtime.InteropServices
 Imports System.Windows.Forms
@@ -49,7 +49,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private _hierarchy As IVsHierarchy
         Private _itemId As UInteger
         Private _docCookie As UInteger
-        Private _ownerCaption As String
+        Private ReadOnly _ownerCaption As String
         Private _docData As Object
         'The DocView for the designer, if we were able to retrieve it (if we understood the designer type).  This would
         '  be a PropPageDesignerView for our hosted property pages, ResourceEditorView for the resource editor, etc.

@@ -173,10 +173,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         <DebuggerDisplay("{ActualDefinitionText}, Value={UnescapedValue}")> _
         Friend MustInherit Class XamlProperty
             Protected m_vsTextLines As IVsTextLines
-            Private _definitionIncludesQuotes As Boolean
-            Private _unescapedValue As String 'Unescaped, translated value of the property from the XmlReader
-            Private _startLocation As Location
-            Private _endLocationPlusOne As Location 'Points to the index *after* the last character in the range, just like IVsTextLines expects
+            Private ReadOnly _definitionIncludesQuotes As Boolean
+            Private ReadOnly _unescapedValue As String 'Unescaped, translated value of the property from the XmlReader
+            Private ReadOnly _startLocation As Location
+            Private ReadOnly _endLocationPlusOne As Location 'Points to the index *after* the last character in the range, just like IVsTextLines expects
 
 
             Public Sub New(vsTextLines As IVsTextLines, startLocation As Location, endLocation As Location, unescapedValue As String, definitionIncludesQuotes As Boolean)
@@ -299,7 +299,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             '  e.g. <Application.StartupUri/>
 
 
-            Private _fullyQualifiedPropertyName As String
+            Private ReadOnly _fullyQualifiedPropertyName As String
 
             ''' <summary>
             ''' Constructor.

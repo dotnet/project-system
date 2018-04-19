@@ -98,7 +98,7 @@ Namespace Microsoft.VisualStudio.Editors.Interop
             Private _connectionPoint2 As ComTypes.IConnectionPoint
             Private _cookie As UInteger
 #If DEBUG Then
-            Private _callStack As String
+            Private ReadOnly _callStack As String
             Private _eventInterface As Type
 #End If
 

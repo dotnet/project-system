@@ -121,7 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// Id unique for a particular provider. We append target framework and provider type to it, 
         /// to get a unique id for the whole snapshot.
         /// </summary>
-        private string _modelId;
+        private readonly string _modelId;
         private string _id;
         private readonly string _containingProjectPath;
         private string _fullPath;

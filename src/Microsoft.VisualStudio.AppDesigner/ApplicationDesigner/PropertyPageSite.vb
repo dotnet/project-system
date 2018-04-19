@@ -33,7 +33,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         Private _propPage As OleInterop.IPropertyPage
         Private _appDesView As IPropertyPageSiteOwner
-        Private _isImmediateApply As Boolean = True
+        Private ReadOnly _isImmediateApply As Boolean = True
 
         'The service provider to delegate IServiceProvider calls through
         Private _backingServiceProvider As IServiceProvider

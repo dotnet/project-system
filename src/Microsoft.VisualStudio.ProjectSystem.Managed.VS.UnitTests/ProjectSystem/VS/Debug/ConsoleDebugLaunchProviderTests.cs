@@ -21,8 +21,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     [Trait("UnitTest", "ProjectSystem")]
     public class ConsoleDebugLaunchProviderTest
     {
-        private string _ProjectFile = @"c:\test\project\project.csproj";
-        private string _Path = @"c:\program files\dotnet;c:\program files\SomeDirectory";
+        private readonly string _ProjectFile = @"c:\test\project\project.csproj";
+        private readonly string _Path = @"c:\program files\dotnet;c:\program files\SomeDirectory";
         private Mock<IEnvironmentHelper> _mockEnvironment = new Mock<IEnvironmentHelper>();
         private IFileSystemMock _mockFS = new IFileSystemMock();
         private Mock<IDebugTokenReplacer> _mockTokenReplace = new Mock<IDebugTokenReplacer>();

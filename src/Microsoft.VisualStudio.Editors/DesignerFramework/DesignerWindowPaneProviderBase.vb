@@ -25,7 +25,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Inherits WindowPaneProviderService
 
         ' True if the toolbox should be supported
-        Private _supportToolbox As Boolean
+        Private ReadOnly _supportToolbox As Boolean
 
 
         ''' <summary>
@@ -63,7 +63,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Private _host As IDesignerHost
 
             ' True if toolbox support is to be enabled for this window pane
-            Private _supportToolbox As Boolean
+            Private ReadOnly _supportToolbox As Boolean
 
 
             ''' <summary>

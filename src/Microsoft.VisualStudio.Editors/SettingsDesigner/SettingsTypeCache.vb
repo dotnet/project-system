@@ -14,7 +14,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
         Private _multiTargetService As MultiTargetService
         Private _typeResolutionService As ComponentModel.Design.ITypeResolutionService
-        Private _caseSensitive As Boolean
+        Private ReadOnly _caseSensitive As Boolean
 
         ' The list of types that we always know how to find. 
         Private ReadOnly _wellKnownTypes() As Type = { _

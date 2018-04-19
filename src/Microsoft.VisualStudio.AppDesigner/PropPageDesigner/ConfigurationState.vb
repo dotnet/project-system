@@ -26,7 +26,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         'The active project/hierarchy (with the current design, this can never change for this instance of the 
         '  project designer/configuration state
         Private _project As EnvDTE.Project
-        Private _projectHierarchy As IVsHierarchy
+        Private ReadOnly _projectHierarchy As IVsHierarchy
 
         'The configuration provider for the project
         Private _vsCfgProvider As IVsCfgProvider2

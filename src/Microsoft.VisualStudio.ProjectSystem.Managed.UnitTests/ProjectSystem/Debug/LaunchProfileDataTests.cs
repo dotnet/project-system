@@ -160,7 +160,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         // Json string data
-        private string JsonString1 = @"{
+        private readonly string JsonString1 = @"{
   ""profiles"": {
   ""IIS Express"" :
     {
@@ -195,7 +195,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     }
   }
 }";
-        private string JsonString2 = @"{
+        private readonly string JsonString2 = @"{
   ""profiles"": {
   }
 }";

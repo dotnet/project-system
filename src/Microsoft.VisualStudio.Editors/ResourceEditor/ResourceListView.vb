@@ -56,10 +56,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Const s_defaultSmallImageWidthHeight As Integer = 20
 
         ' The above settings scaled up for High DPI
-        Private _selectionBorderWidth As Integer = DpiHelper.LogicalToDeviceUnitsX(s_defaultSelectionBorderWidth)
-        Private _borderWidth As Integer = DpiHelper.LogicalToDeviceUnitsX(s_defaultBorderWidth)
-        Private _largeImageWidthHeight As Integer = DpiHelper.LogicalToDeviceUnitsX(s_defaultLargeImageWidthHeight)
-        Private _smallImageWidthHeight As Integer = DpiHelper.LogicalToDeviceUnitsX(s_defaultSmallImageWidthHeight)
+        Private ReadOnly _selectionBorderWidth As Integer = DpiHelper.LogicalToDeviceUnitsX(s_defaultSelectionBorderWidth)
+        Private ReadOnly _borderWidth As Integer = DpiHelper.LogicalToDeviceUnitsX(s_defaultBorderWidth)
+        Private ReadOnly _largeImageWidthHeight As Integer = DpiHelper.LogicalToDeviceUnitsX(s_defaultLargeImageWidthHeight)
+        Private ReadOnly _smallImageWidthHeight As Integer = DpiHelper.LogicalToDeviceUnitsX(s_defaultSmallImageWidthHeight)
 
         'The default column width for the "Name" column in "Details" view
         Private Const s_defaultColumnWidthName As Integer = 150 'Includes the size of the thumbnail icon

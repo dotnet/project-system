@@ -221,7 +221,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Implements IDisposable
 
             'The path that we're watching
-            Private _directoryPath As String
+            Private ReadOnly _directoryPath As String
 
             'A list of FileWatcherEntry's, one for each file in this directory being watched.
             Private _fileWatcherEntries As New Hashtable 'Key=FileName, maps to FileWatcherEntry
@@ -470,7 +470,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Implements IDisposable
 
             'The file name (no path) of the file being watched.
-            Private _fileNameOnly As String
+            Private ReadOnly _fileNameOnly As String
 
             'The parent DirectoryWatcher for this file.
             Private _directoryWatcher As DirectoryWatcher

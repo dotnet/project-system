@@ -20,8 +20,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
         Private Shared s_previousSize As Size = Size.Empty
 
-        Private _projectItemid As UInteger
-        Private _vsHierarchy As IVsHierarchy
+        Private ReadOnly _projectItemid As UInteger
+        Private ReadOnly _vsHierarchy As IVsHierarchy
 
         Public Sub New(ServiceProvider As IServiceProvider, vsHierarchy As IVsHierarchy, ItemId As UInteger)
             MyBase.New(ServiceProvider)
@@ -501,7 +501,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private Class TypeTVNode
             Inherits TreeNode
 
-            Private _nodeType As NodeType
+            Private ReadOnly _nodeType As NodeType
 
             Private Const s_DUMMY_ITEM_TEXT As String = " THIS IS THE DUMMY ITEM "
             Private Const s_assemblyImageIndex As Integer = 0

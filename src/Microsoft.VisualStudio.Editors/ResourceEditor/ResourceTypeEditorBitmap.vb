@@ -18,7 +18,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         'All common file extensions handled by this resource type editor
         'We don't include an extension for EXIF, because they're just saved as JPEG files
-        Private _extensions() As String = {
+        Private ReadOnly _extensions() As String = {
             EXT_BMP,
             EXT_GIF,
             EXT_JPEG, EXT_JPG,
@@ -27,7 +27,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         ' Extensions supported in a device project
         ' NOTE: WinCE does not support TIF file...
-        Private _extensionsForDevice() As String = {
+        Private ReadOnly _extensionsForDevice() As String = {
             EXT_BMP,
             EXT_GIF,
             EXT_JPEG, EXT_JPG,

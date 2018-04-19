@@ -516,7 +516,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 #End Region
 
         ' Service provider, current project, project hierarchy and solution.
-        Private _VBPackage As VBPackage
+        Private ReadOnly _VBPackage As VBPackage
         Private _project As Project
         Private _projectHierarchy As IVsHierarchy
         Private _projectTypeID As String

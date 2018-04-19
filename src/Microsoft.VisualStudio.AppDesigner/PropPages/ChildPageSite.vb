@@ -22,7 +22,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private _wrappedInternalSite As IPropertyPageSiteInternal 'May *not* be Nothing
         Private _wrappedUndoSite As IVsProjectDesignerPageSite    'May be Nothing
-        Private _nestedPropertyNamePrefix As String               'Prefix string to be placed at the beginning of PropertyName to distinguish properties from the page hosted by this child page site
+        Private ReadOnly _nestedPropertyNamePrefix As String               'Prefix string to be placed at the beginning of PropertyName to distinguish properties from the page hosted by this child page site
 
 
         ''' <summary>

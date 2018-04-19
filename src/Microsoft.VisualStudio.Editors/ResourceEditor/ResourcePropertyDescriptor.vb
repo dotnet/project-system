@@ -39,13 +39,13 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 
         ' The type of the property
-        Private _propertyType As Type = Nothing
+        Private ReadOnly _propertyType As Type = Nothing
 
         ' Indicates whether this property is read-only or not
-        Private _isReadOnly As Boolean = False
+        Private ReadOnly _isReadOnly As Boolean = False
 
         ' Indicates whether the property can be reset or not
-        Private _canReset As Boolean = False
+        Private ReadOnly _canReset As Boolean = False
 
 
 

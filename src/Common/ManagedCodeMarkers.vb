@@ -85,7 +85,7 @@ Namespace Microsoft.Internal.Performance
 
         ' should CodeMarker events be fired to the test or product CodeMarker DLL
         Private _fShouldUseTestDll As Boolean?
-        Private _regroot As String
+        Private ReadOnly _regroot As String
         Private ReadOnly Property ShouldUseTestDll As Boolean
             Get
                 If Not _fShouldUseTestDll.HasValue Then

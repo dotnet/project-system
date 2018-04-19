@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         /// <summary>
         /// Lazy instance of the next handler in the chain.
         /// </summary>
-        private Lazy<Lazy<IVsReferenceManagerUserAsync, IVsReferenceManagerUserComponentMetadataView>> _nextHandler;
+        private readonly Lazy<Lazy<IVsReferenceManagerUserAsync, IVsReferenceManagerUserComponentMetadataView>> _nextHandler;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseReferenceContextProvider"/> class.

@@ -380,7 +380,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 'Backing for public properties
                 Private _isEntireObject As Boolean
                 Private _propertiesToSerialize As ArrayList 'Of PropertyDescriptor
-                Private _component As PropPageDesignerRootComponent
+                Private ReadOnly _component As PropPageDesignerRootComponent
 
 
 
@@ -480,13 +480,13 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             Private NotInheritable Class SerializedProperty
 
                 'The name of the component from which this was serialized.
-                Private _componentName As String
+                Private ReadOnly _componentName As String
 
                 'The name of the property which was serialized (if it's a property)
-                Private _propertyName As String 'Nothing if entire object
+                Private ReadOnly _propertyName As String 'Nothing if entire object
 
                 'The serialized property (if m_PropertyName <> "") or Component instance
-                Private _serializedValue As Byte()
+                Private ReadOnly _serializedValue As Byte()
 
 
 

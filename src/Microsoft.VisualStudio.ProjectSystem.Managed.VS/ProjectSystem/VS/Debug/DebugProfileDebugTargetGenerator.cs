@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             ProjectThreadingService = threadingService;
         }
 
-        private NamedIdentity _dataSourceKey = new NamedIdentity();
+        private readonly NamedIdentity _dataSourceKey = new NamedIdentity();
         public override NamedIdentity DataSourceKey
         {
             get { return _dataSourceKey; }
