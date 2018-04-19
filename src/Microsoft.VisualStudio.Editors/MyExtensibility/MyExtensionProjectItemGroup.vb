@@ -82,10 +82,10 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         Private Sub New()
         End Sub
 
-        Private _extensionID As String
-        Private _extensionVersion As Version
-        Private _extensionName As String
-        Private _extensionDescription As String
+        Private ReadOnly _extensionID As String
+        Private ReadOnly _extensionVersion As Version
+        Private ReadOnly _extensionName As String
+        Private ReadOnly _extensionDescription As String
         Private _projectItems As List(Of ProjectItem)
     End Class
 

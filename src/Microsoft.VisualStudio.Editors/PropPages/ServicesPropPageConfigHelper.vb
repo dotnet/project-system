@@ -13,9 +13,9 @@ Imports Microsoft.VSDesigner
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Friend NotInheritable Class ServicesPropPageAppConfigHelper
-        Private Shared s_clientRoleManagerType As Type = GetType(Web.ClientServices.Providers.ClientRoleProvider)
-        Private Shared s_clientFormsMembershipProviderType As Type = GetType(Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider)
-        Private Shared s_clientWindowsMembershipProviderType As Type = GetType(Web.ClientServices.Providers.ClientWindowsAuthenticationMembershipProvider)
+        Private Shared ReadOnly s_clientRoleManagerType As Type = GetType(Web.ClientServices.Providers.ClientRoleProvider)
+        Private Shared ReadOnly s_clientFormsMembershipProviderType As Type = GetType(Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider)
+        Private Shared ReadOnly s_clientWindowsMembershipProviderType As Type = GetType(Web.ClientServices.Providers.ClientWindowsAuthenticationMembershipProvider)
 
         Private Const s_systemWeb As String = "system.web"
         Private Const s_roleManager As String = "roleManager"
@@ -38,14 +38,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Const s_honorCookieExpiryDefault As String = "false"
 
         Private Const s_serviceUri As String = "serviceUri"
-        Private Shared s_serviceUriDefault As String = String.Empty
+        Private Shared ReadOnly s_serviceUriDefault As String = String.Empty
 
         Private Const s_connectionStringName As String = "connectionStringName"
         Private Const s_connectionStringNameDefault As String = "DefaultConnection"
         Friend Const connectionStringValueDefault As String = "Data Source = |SQL/CE|"
 
         Private Const s_credentialsProvider As String = "credentialsProvider"
-        Private Shared s_credentialsProviderDefault As String = String.Empty
+        Private Shared ReadOnly s_credentialsProviderDefault As String = String.Empty
 
         Private Const s_savePasswordHashLocally As String = "savePasswordHashLocally"
         Private Const s_savePasswordHashLocallyDefault As String = "true"

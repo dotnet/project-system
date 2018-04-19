@@ -273,7 +273,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Friend Class ResourceEditorAccessModifierCombobox
             Inherits AccessModifierCombobox
 
-            Private _isInDevice20Project As Boolean
+            Private ReadOnly _isInDevice20Project As Boolean
             Private Const s_framework_2_0 As Integer = 2
 
             Public Sub New(useVbMyResXCodeGenerator As Boolean, allowNoCodeGeneration As Boolean, rootDesigner As BaseRootDesigner, serviceProvider As IServiceProvider, projectItem As ProjectItem, namespaceToOverrideIfCustomToolIsEmpty As String)
@@ -2635,7 +2635,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         <Serializable()>
         Private NotInheritable Class ResourcesDataFormat
             'List of resources
-            Private _resources() As Resource
+            Private ReadOnly _resources() As Resource
 
             ''' <summary>
             ''' Constructor
@@ -4840,12 +4840,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         Friend NotInheritable Class CachedResourcesForView
 
-            Private _errorGlyphLarge As Image
-            Private _errorGlyphSmall As Image
-            Private _errorGlyphState As Image
-            Private _sortUpGlyph As Image
-            Private _sortDownGlyph As Image
-            Private _backgroundColor As Color
+            Private ReadOnly _errorGlyphLarge As Image
+            Private ReadOnly _errorGlyphSmall As Image
+            Private ReadOnly _errorGlyphState As Image
+            Private ReadOnly _sortUpGlyph As Image
+            Private ReadOnly _sortDownGlyph As Image
+            Private ReadOnly _backgroundColor As Color
 
             ''' <summary>
             ''' Constructor

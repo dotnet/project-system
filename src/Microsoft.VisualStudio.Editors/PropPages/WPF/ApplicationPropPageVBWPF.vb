@@ -870,8 +870,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <remarks></remarks>
         <Serializable()>
         Friend MustInherit Class StartupObjectOrUri
-            Private _value As String
-            Private _description As String
+            Private ReadOnly _value As String
+            Private ReadOnly _description As String
 
             Public Sub New(value As String, description As String)
                 If value Is Nothing Then
@@ -1346,8 +1346,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' </summary>
         ''' <remarks></remarks>
         Friend Class ShutdownMode
-            Private _value As String
-            Private _description As String
+            Private ReadOnly _value As String
+            Private ReadOnly _description As String
 
             Public Sub New(value As String, description As String)
                 If value Is Nothing Then

@@ -306,7 +306,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         'resulting from the #if DEBUG
         Private Shared s_propPageDesignerViewCount As Integer = 0
         Private Shared s_instanceCount As Integer
-        Private _myInstanceCount As Integer
+        Private ReadOnly _myInstanceCount As Integer
 #End If
 
         ''' <summary>

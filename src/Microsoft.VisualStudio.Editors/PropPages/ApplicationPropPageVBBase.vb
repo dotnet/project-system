@@ -321,10 +321,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         Protected Class ApplicationTypeInfo
 
-            Private _applicationType As ApplicationTypes
-            Private _displayName As String
-            Private _name As String 'Non-localized name
-            Private _supportedInExpress As Boolean
+            Private ReadOnly _applicationType As ApplicationTypes
+            Private ReadOnly _displayName As String
+            Private ReadOnly _name As String 'Non-localized name
+            Private ReadOnly _supportedInExpress As Boolean
 
             ' Basic references need to be added to the project when the user changed the type of the application.
             '  We should maintain it to be the same as the list in the project templates.
@@ -443,7 +443,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 ' Non-localized name to match
                 Private _names As New Dictionary(Of String, Boolean)
-                Private _mustBeSupportedInExpressSKUs As Boolean
+                Private ReadOnly _mustBeSupportedInExpressSKUs As Boolean
 
                 ''' <summary>
                 ''' Create a new filter predicate
@@ -474,7 +474,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ''' Does a given ApplicationTypeInfo instance have the same application type as I was constructed with?
             ''' </summary>
             Private Class AppTypePredicate
-                Private _appTypeToFind As ApplicationTypes
+                Private ReadOnly _appTypeToFind As ApplicationTypes
 
                 Friend Sub New(appType As ApplicationTypes)
                     _appTypeToFind = appType

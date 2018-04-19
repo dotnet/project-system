@@ -22,7 +22,7 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
     Friend NotInheritable Class PermissionSetService
         Implements Interop.IVbPermissionSetService
 
-        Private _serviceProvider As IServiceProvider
+        Private ReadOnly _serviceProvider As IServiceProvider
 
         Friend Sub New(sp As IServiceProvider)
             _serviceProvider = sp

@@ -13,8 +13,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Inherits CustomViewProvider
 
         Private _view As ErrorControl 'The Error control as view
-        Private _errorText As String    'Error text, if given
-        Private _exception As Exception 'Erorr exception, if given
+        Private ReadOnly _errorText As String    'Error text, if given
+        Private ReadOnly _exception As Exception 'Erorr exception, if given
 
 
         ''' <summary>

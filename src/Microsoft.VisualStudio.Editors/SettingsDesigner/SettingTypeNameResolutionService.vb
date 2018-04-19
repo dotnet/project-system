@@ -31,7 +31,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private _fxTypeNameToLanguageSpecific As Dictionary(Of String, String)
 
         ' Is the current language case-sensitive?
-        Private _caseSensitive As Boolean
+        Private ReadOnly _caseSensitive As Boolean
 
 #End Region
 

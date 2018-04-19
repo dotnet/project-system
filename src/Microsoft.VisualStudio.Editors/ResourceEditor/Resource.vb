@@ -83,8 +83,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Friend Class ResourcePersistenceModeEnumConverter
             Inherits EnumConverter
 
-            Private _linkedDisplayValue As String = My.Resources.Designer.RES_PersistenceMode_Linked
-            Private _embeddedDisplayValue As String = My.Resources.Designer.RES_PersistenceMode_Embeded
+            Private ReadOnly _linkedDisplayValue As String = My.Resources.Designer.RES_PersistenceMode_Linked
+            Private ReadOnly _embeddedDisplayValue As String = My.Resources.Designer.RES_PersistenceMode_Embeded
 
             ''' <summary>
             ''' </summary>

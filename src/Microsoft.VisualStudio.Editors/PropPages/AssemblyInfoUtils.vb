@@ -146,7 +146,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #Region "Neutral Language Combobox"
 
-        Private _neutralLanguageNoneText As String = My.Resources.Designer.PPG_NeutralLanguage_None 'Text for "None" in the neutral language combobox (stored in case thread language changes)
+        Private ReadOnly _neutralLanguageNoneText As String = My.Resources.Designer.PPG_NeutralLanguage_None 'Text for "None" in the neutral language combobox (stored in case thread language changes)
 
         ''' <summary>
         ''' Populate the neutral language combobox with cultures

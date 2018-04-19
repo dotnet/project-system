@@ -68,8 +68,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Private _isDisposed As Boolean = False
         Private _rootDesigner As BaseRootDesigner
         Private _projectItem As EnvDTE.ProjectItem
-        Private _serviceProvider As IServiceProvider
-        Private _namespaceToOverrideIfCustomToolIsEmpty As String
+        Private ReadOnly _serviceProvider As IServiceProvider
+        Private ReadOnly _namespaceToOverrideIfCustomToolIsEmpty As String
         Private _codeGeneratorEntries As New List(Of CodeGenerator)
         Private _recognizedCustomToolValues As New List(Of String)
 
@@ -91,7 +91,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 #Region "Nested class CodeGenerator"
 
         Private MustInherit Class CodeGenerator
-            Private _customToolValue As String
+            Private ReadOnly _customToolValue As String
 
             Public Sub New(customToolValue As String)
                 If customToolValue Is Nothing Then
@@ -111,7 +111,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Private Class CodeGeneratorWithName
             Inherits CodeGenerator
 
-            Private _displayName As String
+            Private ReadOnly _displayName As String
 
             Public Sub New(displayName As String, customToolValue As String)
                 MyBase.New(customToolValue)
@@ -132,7 +132,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Private Class CodeGeneratorWithDelayedName
             Inherits CodeGenerator
 
-            Private _accessibility As AccessModifierConverter.Access
+            Private ReadOnly _accessibility As AccessModifierConverter.Access
             Private _serviceProvider As IServiceProvider
 
             Public Sub New(accessibility As AccessModifierConverter.Access, serviceProvider As IServiceProvider, customToolValue As String)

@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Strict On
 Option Explicit On
@@ -32,8 +32,8 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
     Friend NotInheritable Class XmlIntellisenseService
         Implements IXmlIntellisenseService
 
-        Private _container As IServiceContainer
-        Private _schemaService As XmlSchemaService
+        Private ReadOnly _container As IServiceContainer
+        Private ReadOnly _schemaService As XmlSchemaService
 
         '--------------------------------------------------------------------------
         ' New:
@@ -105,7 +105,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
     '   Methods on this class should only be called on the VS foreground
     '   thread.
     '--------------------------------------------------------------------------
-    <ClassInterface(ClassInterfaceType.None)> _
+    <ClassInterface(ClassInterfaceType.None)>
     Friend NotInheritable Class XmlIntellisenseSchemas
         Implements IXmlIntellisenseSchemas
 
@@ -185,7 +185,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
                 ' Reset event and start background thread
                 _data.m_SchemasCompilationCallBackDoneEvent.Reset()
 
-                ThreadPool.QueueUserWorkItem(Sub() CompileCallback(_data))
+                ThreadPool.QueueUserWorkItem(Sub() CompileCallBack(_data))
             End If
 
             If _data.m_CompilationLevel > 0 Then
@@ -303,7 +303,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
             For Each Source As XmlSchemaReference In ProjectSchemas
                 If data.m_ExcludeDirectories IsNot Nothing AndAlso Source.Location.IsFile Then
                     Dim ResultUri As Uri = Nothing
-                    If Uri.TryCreate(Path.GetDirectoryName(Source.Location.LocalPath), UriKind.Absolute, ResultUri) AndAlso _
+                    If Uri.TryCreate(Path.GetDirectoryName(Source.Location.LocalPath), UriKind.Absolute, ResultUri) AndAlso
                        data.m_ExcludeDirectories.ContainsKey(ResultUri) Then
 
                         Continue For
@@ -398,10 +398,10 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         '
         '   Shows element in XSD browser given namespace and local name.
         '--------------------------------------------------------------------------
-        Public Sub ShowInXmlSchemaExplorer( _
-            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String, _
-            <[In](), MarshalAs(UnmanagedType.BStr)> LocalName As String, _
-            <MarshalAs(UnmanagedType.Bool)> ByRef ElementFound As Boolean, _
+        Public Sub ShowInXmlSchemaExplorer(
+            <[In](), MarshalAs(UnmanagedType.BStr)> NamespaceName As String,
+            <[In](), MarshalAs(UnmanagedType.BStr)> LocalName As String,
+            <MarshalAs(UnmanagedType.Bool)> ByRef ElementFound As Boolean,
             <MarshalAs(UnmanagedType.Bool)> ByRef NamespaceFound As Boolean) _
             Implements IXmlIntellisenseSchemas.ShowInXmlSchemaExplorer
 
@@ -455,8 +455,8 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
                     ' Get hold of IXmlSchemaDesignerService
                     Dim packageSP As IServiceProvider = TryCast(package, IServiceProvider)
                     If packageSP IsNot Nothing Then
-                        Dim service As IXmlSchemaDesignerService = TryCast( _
-                            packageSP.GetService(GetType(IXmlSchemaDesignerService)), _
+                        Dim service As IXmlSchemaDesignerService = TryCast(
+                            packageSP.GetService(GetType(IXmlSchemaDesignerService)),
                             IXmlSchemaDesignerService)
                         If service IsNot Nothing Then
                             ' Call the service to show the element or the namespace (whichever is not null).
@@ -493,7 +493,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
     '   Class which represents a list of Xml intellisense member results, in
     '   the form of element and attribute declarations.
     '--------------------------------------------------------------------------
-    <ClassInterface(ClassInterfaceType.None)> _
+    <ClassInterface(ClassInterfaceType.None)>
     Friend Class XmlIntellisenseMember
         Implements IXmlIntellisenseMember
 
@@ -501,7 +501,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
         Private _children As XmlIntellisenseMember
         Private _nextMember As XmlIntellisenseMember
         Private _flags As Flags
-        Private _element As XmlSchemaElement
+        Private ReadOnly _element As XmlSchemaElement
 
         Private Shared s_any As XmlIntellisenseMember
 
@@ -618,15 +618,15 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
     '   in a particular schema set, indexed by name and namespace for fast
     '   query access.
     '--------------------------------------------------------------------------
-    <ClassInterface(ClassInterfaceType.None)> _
+    <ClassInterface(ClassInterfaceType.None)>
     Friend Class IndexedMembers
         Private _targetNamespaces As Dictionary(Of String, String)
         Private _indexedByNamespace As Dictionary(Of String, List(Of XmlIntellisenseMember))
         Private _indexedByName As Dictionary(Of XmlQualifiedName, Object)
-        Private _all As XmlIntellisenseMemberList
-        Private _document As XmlIntellisenseMemberList
-        Private _roots As XmlIntellisenseMemberList
-        Private _elements As XmlIntellisenseMemberList
+        Private ReadOnly _all As XmlIntellisenseMemberList
+        Private ReadOnly _document As XmlIntellisenseMemberList
+        Private ReadOnly _roots As XmlIntellisenseMemberList
+        Private ReadOnly _elements As XmlIntellisenseMemberList
 
         Private Shared ReadOnly s_anyElement As XmlIntellisenseMember = XmlIntellisenseMember.AnyElement()
         Private Shared ReadOnly s_anyAttribute As XmlIntellisenseMember = XmlIntellisenseMember.AnyAttribute()
@@ -895,13 +895,13 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
     '   3. An axis having only a namespace part always propagates Any members
     '      in its input set.
     '--------------------------------------------------------------------------
-    <ClassInterface(ClassInterfaceType.None)> _
+    <ClassInterface(ClassInterfaceType.None)>
     Friend Class XmlIntellisenseMemberList
         Implements IXmlIntellisenseMemberList, IEnumerable(Of XmlIntellisenseMember)
 
         Private _allMembers As IndexedMembers
         Private _previousStep As XmlIntellisenseMemberList
-        Private _axis As Axis
+        Private ReadOnly _axis As Axis
         Private _name As XmlQualifiedName
         Private _members As IEnumerable(Of XmlIntellisenseMember)
 

@@ -660,7 +660,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             ' Control that we are going to set the font on (if any)
             Private _control As Control
 
-            Private _serviceProvider As IServiceProvider
+            Private ReadOnly _serviceProvider As IServiceProvider
 
             ''' <summary>
             ''' Create a new instance...

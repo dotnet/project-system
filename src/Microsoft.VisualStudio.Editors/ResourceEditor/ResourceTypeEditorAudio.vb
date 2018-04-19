@@ -14,7 +14,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         'All common file extensions handled by this resource type editor.
         Public Const EXT_WAV As String = ".wav"
-        Private _extensions() As String = {EXT_WAV}
+        Private ReadOnly _extensions() As String = {EXT_WAV}
 
         'The resource value type that is used for audio files
         Friend Shared ReadOnly AudioFileValueType As Type = GetType(MemoryStream)

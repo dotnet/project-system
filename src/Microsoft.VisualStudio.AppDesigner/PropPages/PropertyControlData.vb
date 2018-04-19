@@ -31,12 +31,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         'For properties which do not correspond to project properties (user-persisted), any unique integer can be used, but it is
         '  best to keep them out of the range of properties implemented by the project system (the VB, C# and J# projects use integers
         '  above 10000).
-        Private _dispId As Integer 'A numeric id for this property
+        Private ReadOnly _dispId As Integer 'A numeric id for this property
 
         'The name of the property in the project system's extensibility.  The name must match the project's property because properties 
         '  are looked up by name (not DISPID).  This allows project flavors to hide one property and add another with the same name but
         '  a different DISPID in order to "override" a property.
-        Private _propertyName As String
+        Private ReadOnly _propertyName As String
 
         'Localized name for UI (used for Undo/Redo units, for example)
         Public DisplayPropertyName As String
@@ -70,7 +70,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         'Used by PropertyDescriptorSetValue to know whether or not the 
         '  OnValueChanged event fired on the property descriptor
-        Private _onValueChangedWasFired As Boolean
+        Private ReadOnly _onValueChangedWasFired As Boolean
 
         'True if the controls associated with this property can be enabled/disabled
         '  (will be false e.g. if the property is hidden or read-only)

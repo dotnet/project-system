@@ -20,13 +20,13 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '  If the user doesn't like these showing up as text files, he can always change
         '  it to a binary file from the properties window.
         Public Const EXT_TXT As String = ".txt"
-        Private _safeExtensions() As String = {
+        Private ReadOnly _safeExtensions() As String = {
             EXT_TXT,
             ".text",
             ".rtf",
             ".xml"
         }
-        Private _allExtensions() As String = {
+        Private ReadOnly _allExtensions() As String = {
             ".asa",
             ".asax",
             ".ascx",

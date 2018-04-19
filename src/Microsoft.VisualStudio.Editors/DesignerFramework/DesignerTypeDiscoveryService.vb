@@ -15,7 +15,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Implements ComponentModel.Design.ITypeDiscoveryService
 
         Private _serviceProvider As IServiceProvider
-        Private _hierarchy As IVsHierarchy
+        Private ReadOnly _hierarchy As IVsHierarchy
 
         ''' <summary>
         ''' Create a new type discovery service associated with the given hierarchy

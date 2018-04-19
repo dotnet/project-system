@@ -225,7 +225,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend WithEvents tableLayoutAddRemoveButtons As TableLayoutPanel
         Friend WithEvents buttonRemove As Button
         Friend WithEvents buttonAdd As Button
-        Private _components As System.ComponentModel.IContainer
+        Private ReadOnly _components As System.ComponentModel.IContainer
         Friend WithEvents colHeaderExtensionVersion As ColumnHeader
         Friend WithEvents colHeaderExtensionDescription As ColumnHeader
 

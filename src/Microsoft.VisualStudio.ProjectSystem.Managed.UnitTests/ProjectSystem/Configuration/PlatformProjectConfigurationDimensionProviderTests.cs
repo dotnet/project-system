@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     {
         private const string Platforms = nameof(Platforms);
 
-        private string projectXml =
+        private readonly string projectXml =
 @"<Project>
   <PropertyGroup>
     <Platforms>AnyCPU;x64;x86</Platforms>

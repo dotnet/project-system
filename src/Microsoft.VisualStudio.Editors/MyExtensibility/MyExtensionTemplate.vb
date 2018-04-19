@@ -161,10 +161,10 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             _template = template
         End Sub
 
-        Private _ID As String ' Extension ID
-        Private _version As Version ' Extension version
+        Private ReadOnly _ID As String ' Extension ID
+        Private ReadOnly _version As Version ' Extension version
         Private _template As Template ' VSCore Template file.
-        Private _assemblyFullName As String ' Full name of the triggering assembly.
+        Private ReadOnly _assemblyFullName As String ' Full name of the triggering assembly.
 
         ' Element and attribute names for extension template information in template's custom data.
         Private Const s_MY_EXTENSION_TEMPLATE_ELEMENT_NAME As String = "VBMyExtensionTemplate"

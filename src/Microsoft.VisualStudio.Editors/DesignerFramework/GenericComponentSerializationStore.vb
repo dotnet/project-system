@@ -350,8 +350,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             'Backing for public properties
             Private _isEntireObject As Boolean
             Private _members As ArrayList
-            Private _value As Object
-            Private _objectName As String
+            Private ReadOnly _value As Object
+            Private ReadOnly _objectName As String
 
             ''' <summary>
             ''' Constructor
@@ -454,8 +454,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Private Class SerializedObjectData
 
             'Backing for public properties
-            Private _objectName As String
-            Private _propertyName As String
+            Private ReadOnly _objectName As String
+            Private ReadOnly _propertyName As String
             Private _serializedValue As Byte()
 
             ''' <summary>
