@@ -573,6 +573,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.True(snapshot.DependenciesWorld.ContainsKey(@"tfm1\xxx\addeddependency3"));
         }
 
+        /// <summary>
+        /// Added because circular dependencies can cause stack overflows
+        /// https://github.com/dotnet/project-system/pull/3474
+        /// </summary>
         [Fact]
         public void TCheckForUnresolvedDependencies_CircularDependency_DoesNotRecurseInfinitely()
         {

@@ -127,7 +127,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         private bool FindUnresolvedDependenciesRecursive(IDependency dependency)
         {
-            var result = false;
+            var unresolved = false;
 
             if (dependency.DependencyIDs.Count > 0)
             {
@@ -135,14 +135,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 {
                     if (!child.Resolved)
                     {
-                        result = true;
+                        unresolved = true;
                         break;
                     }
 
                     //If the dependency is already in the child map, it is resolved
+                    //Checking here will prevent a stack overflow due to rechecking the same dependencies
                     if (_dependenciesChildrenMap.ContainsKey(child.Id))
                     {
-                        result = false;
+                        unresolved = false;
                         break;
                     }
 
@@ -153,14 +154,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
                     if (depthFirstResult)
                     {
-                        result = true;
+                        unresolved = true;
                         break;
                     }
                 }
             }
 
-            _unresolvedDescendantsMap[dependency.Id] = result;
-            return result;
+            _unresolvedDescendantsMap[dependency.Id] = unresolved;
+            return unresolved;
         }
 
         private bool TryToFindDependency(string id, out IDependency dependency)
