@@ -350,7 +350,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
-        private ObservableCollection<IWritableLaunchProfile> _launchProfiles = new ObservableCollection<IWritableLaunchProfile>();
+        private readonly ObservableCollection<IWritableLaunchProfile> _launchProfiles = new ObservableCollection<IWritableLaunchProfile>();
         public ObservableCollection<IWritableLaunchProfile> LaunchProfiles
         {
             get

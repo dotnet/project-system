@@ -16,7 +16,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Implements IDisposable
 
         Private _guid As Guid 'The GUID for the property page
-        Private _isConfigPage As Boolean 'True if the page's properties can have different values in different configurations
+        Private ReadOnly _isConfigPage As Boolean 'True if the page's properties can have different values in different configurations
 
         Private _comPropPageInstance As OleInterop.IPropertyPage
         Private _info As OleInterop.PROPPAGEINFO

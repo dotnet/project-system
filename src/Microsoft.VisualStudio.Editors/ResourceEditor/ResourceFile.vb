@@ -42,14 +42,14 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private _metadataList As ArrayList
 
         'The root component for the resource editor.  Cannot be Nothing.
-        Private _rootComponent As ResourceEditorRootComponent
+        Private ReadOnly _rootComponent As ResourceEditorRootComponent
 
         'A pointer to the task provider service.  Gives us access to the VS task list.
         Private _errorListProvider As ErrorListProvider
 
         'The main thread we're running on.  Used just to verify that idle time processing
         '  is always on the main thread.
-        Private _mainThread As System.Threading.Thread
+        Private ReadOnly _mainThread As System.Threading.Thread
 
         'Holds a set of tasks for each Resource that has any task list entries.
         'Hashes key=Resource to ResourceTaskSet.
@@ -69,7 +69,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         'The base path to use for resolving relative paths in the resx file.  This should be the
         '  directory where the resx file lives.
-        Private _basePath As String
+        Private ReadOnly _basePath As String
 
         ' We get ResourceWrite from this environment service
         '  the reason is some projects (device project) need write the resource file in v1.x format, but other projects write in 2.0 format.
@@ -79,7 +79,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private _alphabetizedOrder As Boolean = True
 
         'The service provider provided by the designer host
-        Private _serviceProvider As IServiceProvider
+        Private ReadOnly _serviceProvider As IServiceProvider
 
         ' Asynchronous flush & run custom tool already posted?
         Private _delayFlushAndRunCustomToolQueued As Boolean
@@ -1091,7 +1091,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             'Backs Tasks property
             '  (could just have well been a hashtable as an array, but an array is more lightweight)
-            Private _tasks() As ResourceTask
+            Private ReadOnly _tasks() As ResourceTask
 
 
 
@@ -1153,7 +1153,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Inherits ErrorTask
 
             'The resource associated with this task list entry.
-            Private _resource As Resource
+            Private ReadOnly _resource As Resource
 
 
             ''' <summary>

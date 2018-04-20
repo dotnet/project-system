@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         [ImportMany]
         private OrderPrecedenceImportCollection<IDependenciesSnapshotFilter> SnapshotFilters { get; }
-        private object _subscribersLock = new object();
+        private readonly object _subscribersLock = new object();
         private IEnumerable<Lazy<ICrossTargetSubscriber>> _subscribers;
         protected override IEnumerable<Lazy<ICrossTargetSubscriber>> Subscribers
         {

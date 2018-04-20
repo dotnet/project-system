@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 Imports System.ComponentModel.Design
@@ -20,7 +20,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         'The view associated with this root designer.
         Private _view As ApplicationDesignerView
-        Private _viewLockObject As Object = New Object()
+        Private ReadOnly _viewLockObject As Object = New Object()
 
         ''' <summary>
         ''' Returns the ApplicationDesignerRootComponent component that is being edited by this designer.

@@ -816,7 +816,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.False(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out object updatedSettings));
         }
 
-        private string JsonString1 = @"{
+        private readonly string JsonString1 = @"{
   ""profiles"": {
   ""IIS Express"":
     {
@@ -851,7 +851,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     }
   }
 }";
-        private string JsonStringWithWebSettings = @"{
+        private readonly string JsonStringWithWebSettings = @"{
   ""iisSettings"": {
     ""windowsAuthentication"": true,
     ""anonymousAuthentication"": false,
@@ -871,7 +871,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     }
   }
 }";
-        private string BadJsonString = @"{
+        private readonly string BadJsonString = @"{
   ""profiles"": {
     {
       ""name"": ""IIS Express"",

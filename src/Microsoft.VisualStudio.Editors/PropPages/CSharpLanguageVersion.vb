@@ -33,12 +33,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Stores the property value corresponding to the language version
         ''' </summary>
-        Private _value As String
+        Private ReadOnly _value As String
 
         ''' <summary>
         ''' Stores the display name of the language version
         ''' </summary>
-        Private _displayName As String
+        Private ReadOnly _displayName As String
 
         ''' <summary>
         ''' Constructor that uses the provided value and display name

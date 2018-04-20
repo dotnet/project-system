@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     {
         private const string Configurations = nameof(Configurations);
 
-        private string projectXml =
+        private readonly string projectXml =
 @"<Project>
   <PropertyGroup>
     <Configurations>Debug;Release;CustomConfiguration</Configurations>

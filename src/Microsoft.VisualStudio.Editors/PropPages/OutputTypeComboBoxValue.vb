@@ -6,8 +6,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
     Friend Class OutputTypeComboBoxValue
 
-        Private _value As UInteger
-        Private _displayName As String
+        Private ReadOnly _value As UInteger
+        Private ReadOnly _displayName As String
 
         Public Sub New(value As UInteger)
             _value = value

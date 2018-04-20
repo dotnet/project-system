@@ -119,7 +119,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private _isShowingUITypeEditor As Boolean
 
         Private _currentEditControl As Control
-        Private _editControls() As Control
+        Private ReadOnly _editControls() As Control
 
         ' Holder window for drop-downs...
         Private _dialog As DropDownHolder

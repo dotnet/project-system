@@ -1175,8 +1175,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         Implements VSDesignerPackage.IRefreshSettingsObject
 
         Private _provider As SettingsGlobalObjectProvider
-        Private _item As ProjectItem
-        Private _hierarchy As IVsHierarchy
+        Private ReadOnly _item As ProjectItem
+        Private ReadOnly _hierarchy As IVsHierarchy
         Private _itemid As UInteger
         Private _typeResolver As ITypeResolutionService
         Private _docData As DocData
@@ -1185,7 +1185,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         Private _namespace As String
         Private _className As String
         Private _ignoreDocLock As Boolean
-        Private _fileName As String
+        Private ReadOnly _fileName As String
         Private _valueCache As SettingsValueCache
         Private _typeCache As SettingsTypeCache
 
@@ -2567,8 +2567,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         Private Class SettingsGlobalObjectValueAttribute
             Inherits Attribute
 
-            Private _globalObject As SettingsFileGlobalObject
-            Private _propertyName As String
+            Private ReadOnly _globalObject As SettingsFileGlobalObject
+            Private ReadOnly _propertyName As String
 
             ''' <summary>
             ''' constructor that takes the params to store

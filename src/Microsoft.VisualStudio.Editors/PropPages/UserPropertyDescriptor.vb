@@ -15,8 +15,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Public Class UserPropertyDescriptor
         Inherits PropertyDescriptor
 
-        Private _propertyType As Type
-        Private _isReadOnly As Boolean
+        Private ReadOnly _propertyType As Type
+        Private ReadOnly _isReadOnly As Boolean
 
         Public Sub New(Name As String, PropertyType As Type)
             MyBase.New(Name, Array.Empty(Of Attribute))

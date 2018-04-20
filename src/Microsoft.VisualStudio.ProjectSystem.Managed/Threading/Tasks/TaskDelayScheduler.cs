@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
     /// </summary>
     internal sealed class TaskDelayScheduler : ITaskDelayScheduler
     {
-        private object _syncObject = new object();
+        private readonly object _syncObject = new object();
         private readonly IProjectThreadingService _threadingService;
 
         /// <summary>

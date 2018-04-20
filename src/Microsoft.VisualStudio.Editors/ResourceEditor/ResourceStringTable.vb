@@ -37,7 +37,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private _resourceFile As ResourceFile
 
         'True if this is the first time the grid is being populated.
-        Private _firstTimeShowingStringTable As Boolean = True
+        Private ReadOnly _firstTimeShowingStringTable As Boolean = True
 
         'A Resource which is created when the user starts entering data, but
         '  hasn't committed any of that data yet.

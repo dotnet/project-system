@@ -18,7 +18,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private _categoryToCategoryOrderHash As New Hashtable
 
         'All categories included in the search
-        Private _categories As CategoryCollection
+        Private ReadOnly _categories As CategoryCollection
 
 
 

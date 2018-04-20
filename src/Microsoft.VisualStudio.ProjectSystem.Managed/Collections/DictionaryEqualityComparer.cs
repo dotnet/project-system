@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.Collections
         /// <summary>
         /// Backing field for the <see cref="Instance"/> static property.
         /// </summary>
-        private static DictionaryEqualityComparer<TKey, TValue> s_defaultInstance = new DictionaryEqualityComparer<TKey, TValue>();
+        private static readonly DictionaryEqualityComparer<TKey, TValue> s_defaultInstance = new DictionaryEqualityComparer<TKey, TValue>();
 
         /// <summary>
         /// Initializes a new instance of the DictionaryEqualityComparer class.

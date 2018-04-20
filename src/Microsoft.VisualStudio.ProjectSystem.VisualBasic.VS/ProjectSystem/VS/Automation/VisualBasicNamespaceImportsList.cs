@@ -14,11 +14,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
     {
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
 
-        private object _lock = new object();
+        private readonly object _lock = new object();
         private List<string> _list;
         private IDisposable _namespaceImportSubscriptionLink;
 
-        private static ImmutableHashSet<string> s_namespaceImportRule = Empty.OrdinalIgnoreCaseStringSet
+        private static readonly ImmutableHashSet<string> s_namespaceImportRule = Empty.OrdinalIgnoreCaseStringSet
             .Add(NamespaceImport.SchemaName);
 
         [ImportingConstructor]

@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         private readonly ITargetFrameworkProvider _targetFrameworkProvider;
         private readonly object _linksLock = new object();
         private readonly List<IDisposable> _evaluationSubscriptionLinks;
-        private object _initializationLock = new object();
+        private readonly object _initializationLock = new object();
         private bool _isInitialized;
 
         /// <summary>

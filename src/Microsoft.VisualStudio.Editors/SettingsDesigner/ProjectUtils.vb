@@ -384,7 +384,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             Implements IFindFilter
 
             Private _className As String
-            Private _classOrModule As ClassOrModule
+            Private ReadOnly _classOrModule As ClassOrModule
 
             Friend Sub New(ClassName As String, Optional ClassOrModule As ClassOrModule = ClassOrModule.ClassOnly)
                 _className = ClassName
@@ -456,7 +456,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             Implements IFindFilter
 
             Private _containtingClass As EnvDTE.CodeElement
-            Private _propertyName As String
+            Private ReadOnly _propertyName As String
 
             Public Sub New(ContainingClass As EnvDTE.CodeElement, PropertyName As String)
                 If ContainingClass Is Nothing Then
@@ -514,7 +514,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             Implements IFindFilter
 
             Private _containtingClass As EnvDTE.CodeElement
-            Private _functionName As String
+            Private ReadOnly _functionName As String
 
             Public Sub New(ContainingClass As EnvDTE.CodeElement, FunctionName As String)
                 If ContainingClass Is Nothing Then

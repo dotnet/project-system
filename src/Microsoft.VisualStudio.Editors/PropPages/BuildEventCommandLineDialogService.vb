@@ -14,7 +14,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Friend NotInheritable Class BuildEventCommandLineDialogService
         Implements Interop.IVsBuildEventCommandLineDialogService
 
-        Private _serviceProvider As IServiceProvider
+        Private ReadOnly _serviceProvider As IServiceProvider
 
         Friend Sub New(sp As IServiceProvider)
             _serviceProvider = sp

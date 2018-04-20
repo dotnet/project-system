@@ -63,7 +63,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 #If DEBUG Then
         Private Shared s_applicationDesignerViewCount As Integer = 0
         Private Shared s_instanceCount As Integer = 0
-        Private _myInstanceCount As Integer
+        Private ReadOnly _myInstanceCount As Integer
 #End If
 
         ' explicitly hard-coding these strings since that's what QA's

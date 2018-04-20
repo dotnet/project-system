@@ -1935,10 +1935,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''  We record Reference/WebReferenc changes with the same class. But only one of the Reference and WebReference property contains value, while the other one contains Nothing
         ''' </Summary>
         Private Class ReferenceUpdateItem
-            Private _updateType As ReferenceUpdateType
-            Private _reference As VSLangProj.Reference
-            Private _webReference As EnvDTE.ProjectItem
-            Private _serviceReference As IVsWCFReferenceGroup
+            Private ReadOnly _updateType As ReferenceUpdateType
+            Private ReadOnly _reference As VSLangProj.Reference
+            Private ReadOnly _webReference As EnvDTE.ProjectItem
+            Private ReadOnly _serviceReference As IVsWCFReferenceGroup
 
             Friend Sub New(updateType As ReferenceUpdateType, reference As VSLangProj.Reference)
                 _updateType = updateType

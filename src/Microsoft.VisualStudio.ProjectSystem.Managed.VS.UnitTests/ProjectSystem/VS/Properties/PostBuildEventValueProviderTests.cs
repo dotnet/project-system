@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         private static PostBuildEventValueProvider.PostBuildEventHelper systemUnderTest =
             new PostBuildEventValueProvider.PostBuildEventHelper();
 
-        private static IProjectProperties emptyProjectProperties =
+        private static readonly IProjectProperties emptyProjectProperties =
             IProjectPropertiesFactory.MockWithProperty(string.Empty).Object;
 
         [Fact]

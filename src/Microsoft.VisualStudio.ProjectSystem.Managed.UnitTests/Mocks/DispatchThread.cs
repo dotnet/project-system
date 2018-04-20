@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         private Thread _thread;
         private Dispatcher _dispatcher;
-        private object _invokeSyncRoot = new object();
+        private readonly object _invokeSyncRoot = new object();
         private Exception _invokeException;
         private bool _isInvoking;
         private bool _isClosed;
