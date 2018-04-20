@@ -314,7 +314,7 @@
   <!-- This target collects all the extra inputs for the up to date check. -->
   <Target Name="CollectUpToDateCheckInputDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(UpToDateCheckInput)">
     <ItemGroup>
-      <!-- MSBuild input cache file, so we can detect deleted glob files -->
+      <!-- MSBuild additional compile file, such as the file input cache file -->
       <UpToDateCheckInput Include="@(CustomAdditionalCompileInputs)"/>
     </ItemGroup>
   </Target>
@@ -340,9 +340,6 @@
       
       <!-- app.config -->
       <UpToDateCheckBuilt Condition=" '@(AppConfigWithTargetPath)' != '' " Include="@(AppConfigWithTargetPath->'$(OutDir)%(TargetPath)')" Original="@(AppConfigWithTargetPath)"/>
-
-      <!-- MSBuild input cache file, so we can detect deleted glob files -->
-      <UpToDateCheckInput Include="@(CustomAdditionalCompileInputs)"/>
     </ItemGroup>
   </Target>
 
