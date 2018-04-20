@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 
+using Microsoft.Build.Construction;
 using Microsoft.VisualStudio.Build;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Configuration
@@ -12,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     /// <summary>
     /// Base project configuration dimension provider
     /// </summary>
-    internal abstract class BaseProjectConfigurationDimensionProvider : IProjectConfigurationDimensionsProvider2
+    internal abstract class BaseProjectConfigurationDimensionProvider : IProjectConfigurationDimensionsProvider3
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseProjectConfigurationDimensionProvider"/> class.
@@ -122,6 +123,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             }
         }
 
+        public async Task<IEnumerable<KeyValuePair<string, string>>> GetBestGuessDefaultValuesForDimensionsAsync(UnconfiguredProject project)
+        {
+            string values = await ProjectAccessor.OpenProjectXmlForReadAsync(project, projectXml =>
+            {
+                ProjectPropertyElement property = FindDimensionProperty(projectXml);
+                if (property != null)
+                    return property.GetUnescapedValue();
+
+                return null;
+            }).ConfigureAwait(false);
+
+            if (string.IsNullOrEmpty(values))
+                return Enumerable.Empty<KeyValuePair<string, string>>();
+
+            string defaultValue = BuildUtilities.GetPropertyValues(values).FirstOrDefault();
+
+            // If this property is derived from another property, just bail, we'll get it when we go
+            // to calculate the real value in GetDefaultValuesForDimensionsAsync.
+            if (defaultValue == null || defaultValue.IndexOf("$(") != -1)
+                return Enumerable.Empty<KeyValuePair<string, string>>();
+
+            return new[] { new KeyValuePair<string, string>(DimensionName, defaultValue) };
+        }
+
         /// <summary>
         /// Modifies the project when there's a configuration change.
         /// </summary>
@@ -148,6 +173,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             {
                 return evaluatedProject.GetProperty(propertyName ?? PropertyName)?.EvaluatedValue;
             }).ConfigureAwait(false);
+        }
+
+        private ProjectPropertyElement FindDimensionProperty(ProjectRootElement projectXml)
+        {
+            // NOTE: We grab the last one to somewhat mimic evaluation, but it doesn't have to be exact.
+            // This is just a guess at what "might" be the default configuration, not what actually is.
+            return projectXml.PropertyGroups.SelectMany(group => group.Properties)
+                                            .LastOrDefault(p => StringComparers.PropertyNames.Equals(PropertyName, p.Name));
         }
     }
 }

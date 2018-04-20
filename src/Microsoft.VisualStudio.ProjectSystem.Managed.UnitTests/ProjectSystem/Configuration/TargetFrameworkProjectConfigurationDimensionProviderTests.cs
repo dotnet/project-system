@@ -125,5 +125,77 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             Assert.NotNull(property);
             Assert.Equal(expectedTFMs, property.Value);
         }
+
+        [Theory]
+        [InlineData("net45",                "net45")]
+        [InlineData(" net45 ",              "net45")]
+        [InlineData("net46",                "net46")]
+        [InlineData("net45;net46",          "net45")]
+        [InlineData(";net45;net46",         "net45")]
+        public async Task GetBestGuessDefaultValuesForDimensionsAsync_ReturnsFirstValue(string frameworks, string expected)
+        {
+            string projectXml =
+$@"<Project>
+  <PropertyGroup>
+    <TargetFrameworks>{frameworks}</TargetFrameworks>
+  </PropertyGroup>
+</Project>";
+
+            var provider = CreateInstance(projectXml);
+
+            var result = await provider.GetBestGuessDefaultValuesForDimensionsAsync(UnconfiguredProjectFactory.Create());
+
+            Assert.Single(result);
+            Assert.Equal("TargetFramework", result.First().Key);
+            Assert.Equal(expected, result.First().Value);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(" ")]
+        [InlineData(";")]
+        [InlineData(" ;")]
+        [InlineData(" ; ")]
+        [InlineData(";;;")]
+        [InlineData("$(Property)")]
+        [InlineData("Foo_$(Property)")]
+        public async Task GetBestGuessDefaultValuesForDimensionsAsync_WhenTargetFrameworksIsEmpty_ReturnsEmpty(string frameworks)
+        {
+            string projectXml =
+$@"<Project>
+  <PropertyGroup>
+    <TargetFrameworks>{frameworks}</TargetFrameworks>
+  </PropertyGroup>
+</Project>";
+
+            var provider = CreateInstance(projectXml);
+
+            var result = await provider.GetBestGuessDefaultValuesForDimensionsAsync(UnconfiguredProjectFactory.Create());
+
+            Assert.Empty(result);
+        }
+
+        [Fact]
+        public async Task GetBestGuessDefaultValuesForDimensionsAsync_WhenTargetFrameworksIsMissing_ReturnsEmpty()
+        {
+            string projectXml =
+$@"<Project>
+  <PropertyGroup>
+  </PropertyGroup>
+</Project>";
+
+            var provider = CreateInstance(projectXml);
+
+            var result = await provider.GetBestGuessDefaultValuesForDimensionsAsync(UnconfiguredProjectFactory.Create());
+
+            Assert.Empty(result);
+        }
+
+        private static TargetFrameworkProjectConfigurationDimensionProvider CreateInstance(string projectXml)
+        {
+            var projectAccessor = IProjectAccessorFactory.Create(projectXml);
+
+            return new TargetFrameworkProjectConfigurationDimensionProvider(projectAccessor);
+        }
     }
 }

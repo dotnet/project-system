@@ -159,5 +159,77 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             Assert.NotNull(property);
             Assert.Equal("AnyCPU;x64;x86", property.Value);
         }
+
+        [Theory]
+        [InlineData("AnyCPU",               "AnyCPU")]
+        [InlineData(" AnyCPU ",             "AnyCPU")]
+        [InlineData("x64",                  "x64")]
+        [InlineData("AnyCPU;x64",           "AnyCPU")]
+        [InlineData(";AnyCPU;x64",          "AnyCPU")]
+        public async Task GetBestGuessDefaultValuesForDimensionsAsync_ReturnsFirstValue(string platforms, string expected)
+        {
+            string projectXml =
+$@"<Project>
+  <PropertyGroup>
+    <Platforms>{platforms}</Platforms>
+  </PropertyGroup>
+</Project>";
+
+            var provider = CreateInstance(projectXml);
+
+            var result = await provider.GetBestGuessDefaultValuesForDimensionsAsync(UnconfiguredProjectFactory.Create());
+
+            Assert.Single(result);
+            Assert.Equal("Platform", result.First().Key);
+            Assert.Equal(expected, result.First().Value);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(" ")]
+        [InlineData(";")]
+        [InlineData(" ;")]
+        [InlineData(" ; ")]
+        [InlineData(";;;")]
+        [InlineData("$(Property)")]
+        [InlineData("Foo_$(Property)")]
+        public async Task GetBestGuessDefaultValuesForDimensionsAsync_WhenPlatformsIsEmpty_ReturnsEmpty(string platforms)
+        {
+            string projectXml =
+$@"<Project>
+  <PropertyGroup>
+    <Platforms>{platforms}</Platforms>
+  </PropertyGroup>
+</Project>";
+
+            var provider = CreateInstance(projectXml);
+
+            var result = await provider.GetBestGuessDefaultValuesForDimensionsAsync(UnconfiguredProjectFactory.Create());
+
+            Assert.Empty(result);
+        }
+
+        [Fact]
+        public async Task GetBestGuessDefaultValuesForDimensionsAsync_WhenPlatformsIsMissing_ReturnsEmpty()
+        {
+            string projectXml =
+$@"<Project>
+  <PropertyGroup>
+  </PropertyGroup>
+</Project>";
+
+            var provider = CreateInstance(projectXml);
+
+            var result = await provider.GetBestGuessDefaultValuesForDimensionsAsync(UnconfiguredProjectFactory.Create());
+
+            Assert.Empty(result);
+        }
+
+        private static PlatformProjectConfigurationDimensionProvider CreateInstance(string projectXml)
+        {
+            var projectAccessor = IProjectAccessorFactory.Create(projectXml);
+
+            return new PlatformProjectConfigurationDimensionProvider(projectAccessor);
+        }
     }
 }

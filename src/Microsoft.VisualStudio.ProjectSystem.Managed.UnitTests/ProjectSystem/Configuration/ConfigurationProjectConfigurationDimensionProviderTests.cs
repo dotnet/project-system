@@ -232,5 +232,77 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             Assert.NotNull(property);
             Assert.Equal("Debug;Release;CustomConfiguration", property.Value);
         }
+
+        [Theory]
+        [InlineData("Debug",               "Debug")]
+        [InlineData(" Debug ",             "Debug")]
+        [InlineData("Release",             "Release")]
+        [InlineData("Debug;Release",       "Debug")]
+        [InlineData(";Debug;Release",      "Debug")]
+        public async Task GetBestGuessDefaultValuesForDimensionsAsync_ReturnsFirstValue(string configurations, string expected)
+        {
+            string projectXml =
+$@"<Project>
+  <PropertyGroup>
+    <Configurations>{configurations}</Configurations>
+  </PropertyGroup>
+</Project>";
+
+            var provider = CreateInstance(projectXml);
+
+            var result = await provider.GetBestGuessDefaultValuesForDimensionsAsync(UnconfiguredProjectFactory.Create());
+
+            Assert.Single(result);
+            Assert.Equal("Configuration", result.First().Key);
+            Assert.Equal(expected, result.First().Value);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(" ")]
+        [InlineData(";")]
+        [InlineData(" ;")]
+        [InlineData(" ; ")]
+        [InlineData(";;;")]
+        [InlineData("$(Property)")]
+        [InlineData("Foo_$(Property)")]
+        public async Task GetBestGuessDefaultValuesForDimensionsAsync_WhenConfigurationsIsEmpty_ReturnsEmpty(string configurations)
+        {
+            string projectXml =
+$@"<Project>
+  <PropertyGroup>
+    <Configurations>{configurations}</Configurations>
+  </PropertyGroup>
+</Project>";
+
+            var provider = CreateInstance(projectXml);
+
+            var result = await provider.GetBestGuessDefaultValuesForDimensionsAsync(UnconfiguredProjectFactory.Create());
+
+            Assert.Empty(result);
+        }
+
+        [Fact]
+        public async Task GetBestGuessDefaultValuesForDimensionsAsync_WhenConfigurationsIsMissing_ReturnsEmpty()
+        {
+            string projectXml =
+$@"<Project>
+  <PropertyGroup>
+  </PropertyGroup>
+</Project>";
+
+            var provider = CreateInstance(projectXml);
+
+            var result = await provider.GetBestGuessDefaultValuesForDimensionsAsync(UnconfiguredProjectFactory.Create());
+
+            Assert.Empty(result);
+        }
+
+        private static ConfigurationProjectConfigurationDimensionProvider CreateInstance(string projectXml)
+        {
+            var projectAccessor = IProjectAccessorFactory.Create(projectXml);
+
+            return new ConfigurationProjectConfigurationDimensionProvider(projectAccessor);
+        }
     }
 }
