@@ -573,6 +573,43 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.True(snapshot.DependenciesWorld.ContainsKey(@"tfm1\xxx\addeddependency3"));
         }
 
+        [Fact]
+        public void TCheckForUnresolvedDependencies_CircularDependency_DoesNotRecurseInfinitely()
+        {
+            var dependencyModelTop1 = IDependencyFactory.FromJson(@"
+            {
+                ""ProviderType"": ""Xxx"",
+                ""Id"": ""tfm1\\xxx\\topdependency1"",
+                ""Name"":""TopDependency1"",
+                ""Caption"":""TopDependency1"",
+                ""SchemaItemType"":""Xxx"",
+                ""Resolved"":""true"",
+                ""DependencyIDs"": [ ""tfm1\\xxx\\topdependency2"" ]
+            }", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+
+            var dependencyModelTop2 = IDependencyFactory.FromJson(@"
+            {
+                ""ProviderType"": ""Xxx"",
+                ""Id"": ""tfm1\\xxx\\topdependency2"",
+                ""Name"":""TopDependency2"",
+                ""Caption"":""TopDependency2"",
+                ""SchemaItemType"":""Xxx"",
+                ""Resolved"":""true"",
+                ""DependencyIDs"": [ ""tfm1\\xxx\\topdependency1"" ]
+            }", icon: KnownMonikers.Uninstall, expandedIcon: KnownMonikers.Uninstall);
+
+            var previousSnapshot = new TargetedDependenciesSnapshot(
+                dependenciesWorld: new Dictionary<string, IDependency>()
+                {
+                    { dependencyModelTop1.Id, dependencyModelTop1 },
+                    { dependencyModelTop2.Id, dependencyModelTop2 },
+                },
+                topLevelDependencies: new List<IDependency>() { dependencyModelTop1 });
+
+            // verify it doesn't stack overflow
+            previousSnapshot.CheckForUnresolvedDependencies(dependencyModelTop1);   
+        }
+
         private class TestableTargetedDependenciesSnapshot : TargetedDependenciesSnapshot
         {
             public TestableTargetedDependenciesSnapshot(
