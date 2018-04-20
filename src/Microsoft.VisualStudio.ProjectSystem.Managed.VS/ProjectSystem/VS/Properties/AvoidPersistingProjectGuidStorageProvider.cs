@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
+using Microsoft.VisualStudio.Build;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
@@ -97,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
         private static bool TryParseGuid(ProjectPropertyElement property, out Guid result)
         {
-            string unescapedValue = ProjectCollection.Unescape(property.Value);
+            string unescapedValue = property.GetUnescapedValue();
 
             return Guid.TryParse(unescapedValue, out result);
         }
