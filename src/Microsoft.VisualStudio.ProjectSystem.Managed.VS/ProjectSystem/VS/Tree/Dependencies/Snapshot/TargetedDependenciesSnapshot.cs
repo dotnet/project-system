@@ -139,8 +139,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                         break;
                     }
 
-                    //If the dependency is already in the child map, it is resolved
-                    //Checking here will prevent a stack overflow due to rechecking the same dependencies
+                    // If the dependency is already in the child map, it is resolved
+                    // Checking here will prevent a stack overflow due to rechecking the same dependencies
                     if (_dependenciesChildrenMap.ContainsKey(child.Id))
                     {
                         unresolved = false;
