@@ -842,7 +842,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
                     new EvaluatedLocationInfo(location.Key.ElementName, location.Key.ElementDescription,
                         location.Key.Kind, location.Key.File, location.Key.Line, location.Value.ExclusiveTime,
                         location.Value.InclusiveTime, location.Value.NumberOfHits)).ToList()
-                select new EvaluatedPassInfo(pass.Key.EvaluationPass, locations, pass.Value.ExclusiveTime,
+                select new EvaluatedPassInfo(pass.Key.EvaluationPass, pass.Key.EvaluationPassDescription, locations, pass.Value.ExclusiveTime,
                     pass.Value.InclusiveTime, pass.Value.NumberOfHits)).ToList();
 
             return new EvaluatedProfileInfo(passInfos, evaluationRoot.Value.ExclusiveTime,
@@ -1036,6 +1036,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
         private static EvaluatedPass ConstructEvaluatedPass(EvaluatedPassInfo evaluatedPassInfo) =>
             new EvaluatedPass(
                 evaluatedPassInfo.Pass,
+                evaluatedPassInfo.Description,
                 evaluatedPassInfo.Locations.Select(ConstructEvaluatedLocation).ToImmutableArray(),
                 evaluatedPassInfo.ExclusiveTime,
                 evaluatedPassInfo.InclusiveTime,

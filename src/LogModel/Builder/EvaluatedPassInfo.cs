@@ -10,14 +10,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
     internal sealed class EvaluatedPassInfo
     {
         public EvaluationPass Pass { get; }
+        public string Description { get; }
         public ImmutableArray<EvaluatedLocationInfo> Locations { get; }
         public TimeSpan ExclusiveTime { get; }
         public TimeSpan InclusiveTime { get; }
         public int NumberOfHits { get; }
 
-        public EvaluatedPassInfo(EvaluationPass pass, IEnumerable<EvaluatedLocationInfo> locations, TimeSpan exclusiveTime, TimeSpan inclusiveTime, int numberOfHits)
+        public EvaluatedPassInfo(EvaluationPass pass, string description, IEnumerable<EvaluatedLocationInfo> locations, TimeSpan exclusiveTime, TimeSpan inclusiveTime, int numberOfHits)
         {
             Pass = pass;
+            Description = description;
             Locations = locations.ToImmutableArray();
             ExclusiveTime = exclusiveTime;
             InclusiveTime = inclusiveTime;

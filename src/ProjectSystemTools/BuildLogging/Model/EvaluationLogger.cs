@@ -94,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
                 }
                 break;
 
-                case ProjectEvaluationFinishedEventArgs evaluationFinished:
+                case ProjectEvaluationFinishedEventArgs _:
                 {
                     if (_evaluations.TryGetValue(args.BuildEventContext.EvaluationId, out var evaluation))
                     {
