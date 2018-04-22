@@ -211,6 +211,136 @@ $@"<Project>
             Assert.Empty(result);
         }
 
+
+        [Theory]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <TargetFrameworks Condition=""'$(BuildingInsideVisualStudio)' != 'true'"">net45</TargetFrameworks>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <TargetFrameworks Condition=""'$(BuildingInsideVisualStudio)' != 'true'"">net45</TargetFrameworks>
+    <TargetFramework>net45</TargetFramework>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <TargetFramework>net45</TargetFramework>
+    <TargetFrameworks Condition=""'$(BuildingInsideVisualStudio)' != 'true'"">net45</TargetFrameworks>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <TargetFrameworks Condition=""'$(OS)' != 'Windows_NT'"">net45</TargetFrameworks>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <TargetFrameworks Condition=""'$(OS)' == 'Unix'"">net45</TargetFrameworks>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <TargetFrameworks Condition=""'$(Foo)' == 'true'"">net45</TargetFrameworks>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <TargetFramework>net45</TargetFramework>
+    <TargetFrameworks Condition=""'$(OS)' != 'Windows_NT'"">net45</TargetFrameworks>
+  </PropertyGroup>
+</Project>")]
+        public async Task GetBestGuessDefaultValuesForDimensionsAsync_WhenTargetFrameworksHasUnrecognizedCondition_ReturnsEmpty(string projectXml)
+        {
+            var provider = CreateInstance(projectXml);
+
+            var result = await provider.GetBestGuessDefaultValuesForDimensionsAsync(UnconfiguredProjectFactory.Create());
+
+            Assert.Empty(result);
+        }
+
+
+        [Theory]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <TargetFrameworks Condition=""'$(BuildingInsideVisualStudio)' == 'true'"">net45</TargetFrameworks>
+    <TargetFrameworks Condition=""'$(BuildingInsideVisualStudio)' != 'true'"">netstandard20</TargetFrameworks>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <TargetFrameworks Condition=""'$(BuildingInsideVisualStudio)' == 'true'"">netstandard20</TargetFrameworks>
+    <TargetFrameworks>net45</TargetFrameworks>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <TargetFrameworks>netstandard20</TargetFrameworks>
+    <TargetFrameworks Condition=""'$(BuildingInsideVisualStudio)' == 'true'"">net45</TargetFrameworks>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <TargetFrameworks Condition=""'$(BuildingInsideVisualStudio)' != 'true'"">netstandard20</TargetFrameworks>
+    <TargetFrameworks>net45</TargetFrameworks>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <TargetFrameworks>net45</TargetFrameworks>
+    <TargetFrameworks Condition=""'$(BuildingInsideVisualStudio)' != 'true'"">netstandard20</TargetFrameworks>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <TargetFrameworks Condition=""'$(OS)' == 'Windows_NT'"">net45</TargetFrameworks>
+    <TargetFrameworks Condition=""'$(OS)' != 'Windows_NT'"">netstandard20</TargetFrameworks>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <TargetFrameworks Condition=""'$(OS)' == 'Windows_NT'"">net45</TargetFrameworks>
+    <TargetFrameworks Condition=""'$(OS)' == 'Unix'"">netstandard20</TargetFrameworks>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <TargetFrameworks Condition=""true"">net45</TargetFrameworks>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <TargetFrameworks Condition="""">net45</TargetFrameworks>
+  </PropertyGroup>
+</Project>")]
+        public async Task GetBestGuessDefaultValuesForDimensionsAsync_WhenTargetFrameworksHasRecognizedCondition_ReturnsValue(string projectXml)
+        {
+            var provider = CreateInstance(projectXml);
+
+            var result = await provider.GetBestGuessDefaultValuesForDimensionsAsync(UnconfiguredProjectFactory.Create());
+
+            Assert.Single(result);
+            Assert.Equal("TargetFramework", result.First().Key);
+            Assert.Equal("net45", result.First().Value);
+        }
+
         private static TargetFrameworkProjectConfigurationDimensionProvider CreateInstance(string projectXml)
         {
             var projectAccessor = IProjectAccessorFactory.Create(projectXml);

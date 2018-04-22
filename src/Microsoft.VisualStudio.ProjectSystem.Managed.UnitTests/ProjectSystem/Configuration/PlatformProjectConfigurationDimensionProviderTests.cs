@@ -245,7 +245,92 @@ $@"<Project>
             Assert.Empty(result);
         }
 
+        [Theory]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <Platforms Condition=""'$(BuildingInsideVisualStudio)' != 'true'"">AnyCPU</Platforms>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <Platforms Condition=""'$(OS)' != 'Windows_NT'"">AnyCPU</Platforms>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <Platforms Condition=""'$(OS)' == 'Unix'"">AnyCPU</Platforms>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <Platforms Condition=""'$(Foo)' == 'true'"">AnyCPU</Platforms>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <Platform>AnyCPU</Platform>
+    <Platforms Condition=""'$(OS)' != 'Windows_NT'"">AnyCPU</Platforms>
+  </PropertyGroup>
+</Project>")]
+        public async Task GetBestGuessDefaultValuesForDimensionsAsync_WhenPlatformsHasUnrecognizedCondition_ReturnsEmpty(string projectXml)
+        {
+            var provider = CreateInstance(projectXml);
 
+            var result = await provider.GetBestGuessDefaultValuesForDimensionsAsync(UnconfiguredProjectFactory.Create());
+
+            Assert.Empty(result);
+        }
+
+
+        [Theory]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <Platforms Condition=""'$(BuildingInsideVisualStudio)' == 'true'"">AnyCPU</Platforms>
+    <Platforms Condition=""'$(BuildingInsideVisualStudio)' != 'true'"">x86</Platforms>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <Platforms Condition=""'$(OS)' == 'Windows_NT'"">AnyCPU</Platforms>
+    <Platforms Condition=""'$(OS)' != 'Windows_NT'"">x86</Platforms>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <Platforms Condition=""'$(OS)' == 'Windows_NT'"">AnyCPU</Platforms>
+    <Platforms Condition=""'$(OS)' == 'Unix'"">x86</Platforms>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <Platforms Condition=""true"">AnyCPU</Platforms>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <Platforms Condition="""">AnyCPU</Platforms>
+  </PropertyGroup>
+</Project>")]
+        public async Task GetBestGuessDefaultValuesForDimensionsAsync_WhenPlatformsHasRecognizedCondition_ReturnsValue(string projectXml)
+        {
+            var provider = CreateInstance(projectXml);
+
+            var result = await provider.GetBestGuessDefaultValuesForDimensionsAsync(UnconfiguredProjectFactory.Create());
+
+            Assert.Single(result);
+            Assert.Equal("Platform", result.First().Key);
+            Assert.Equal("AnyCPU", result.First().Value);
+        }
 
         private static PlatformProjectConfigurationDimensionProvider CreateInstance(string projectXml)
         {

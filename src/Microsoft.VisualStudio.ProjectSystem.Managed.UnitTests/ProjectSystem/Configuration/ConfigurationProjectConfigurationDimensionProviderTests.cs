@@ -318,6 +318,93 @@ $@"<Project>
             Assert.Empty(result);
         }
 
+        [Theory]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <Configurations Condition=""'$(BuildingInsideVisualStudio)' != 'true'"">Debug</Configurations>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <Configurations Condition=""'$(OS)' != 'Windows_NT'"">Debug</Configurations>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <Configurations Condition=""'$(OS)' == 'Unix'"">Debug</Configurations>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <Configurations Condition=""'$(Foo)' == 'true'"">Debug</Configurations>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <Configuration>Debug</Configuration>
+    <Configurations Condition=""'$(OS)' != 'Windows_NT'"">Debug</Configurations>
+  </PropertyGroup>
+</Project>")]
+        public async Task GetBestGuessDefaultValuesForDimensionsAsync_WhenConfigurationsHasUnrecognizedCondition_ReturnsEmpty(string projectXml)
+        {
+            var provider = CreateInstance(projectXml);
+
+            var result = await provider.GetBestGuessDefaultValuesForDimensionsAsync(UnconfiguredProjectFactory.Create());
+
+            Assert.Empty(result);
+        }
+
+
+        [Theory]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <Configurations Condition=""'$(BuildingInsideVisualStudio)' == 'true'"">Debug</Configurations>
+    <Configurations Condition=""'$(BuildingInsideVisualStudio)' != 'true'"">Release</Configurations>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <Configurations Condition=""'$(OS)' == 'Windows_NT'"">Debug</Configurations>
+    <Configurations Condition=""'$(OS)' != 'Windows_NT'"">Release</Configurations>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <Configurations Condition=""'$(OS)' == 'Windows_NT'"">Debug</Configurations>
+    <Configurations Condition=""'$(OS)' == 'Unix'"">Release</Configurations>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <Configurations Condition=""true"">Debug</Configurations>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <Configurations Condition="""">Debug</Configurations>
+  </PropertyGroup>
+</Project>")]
+        public async Task GetBestGuessDefaultValuesForDimensionsAsync_WhenConfigurationsHasRecognizedCondition_ReturnsValue(string projectXml)
+        {
+            var provider = CreateInstance(projectXml);
+
+            var result = await provider.GetBestGuessDefaultValuesForDimensionsAsync(UnconfiguredProjectFactory.Create());
+
+            Assert.Single(result);
+            Assert.Equal("Configuration", result.First().Key);
+            Assert.Equal("Debug", result.First().Value);
+        }
+
         private static ConfigurationProjectConfigurationDimensionProvider CreateInstance(string projectXml)
         {
             var projectAccessor = IProjectAccessorFactory.Create(projectXml);
