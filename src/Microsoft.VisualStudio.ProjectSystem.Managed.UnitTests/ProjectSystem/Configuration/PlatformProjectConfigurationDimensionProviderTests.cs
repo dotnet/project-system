@@ -210,6 +210,26 @@ $@"<Project>
         }
 
         [Fact]
+        public async Task GetBestGuessDefaultValuesForDimensionsAsync_ReturnsFirstValueFromLastPlatformsElement()
+        {
+            string projectXml =
+$@"<Project>
+  <PropertyGroup>
+    <Platforms>x64</Platforms>
+    <Platforms>AnyCPU;x86</Platforms>
+  </PropertyGroup>
+</Project>";
+
+            var provider = CreateInstance(projectXml);
+
+            var result = await provider.GetBestGuessDefaultValuesForDimensionsAsync(UnconfiguredProjectFactory.Create());
+
+            Assert.Single(result);
+            Assert.Equal("Platform", result.First().Key);
+            Assert.Equal("AnyCPU", result.First().Value);
+        }
+
+        [Fact]
         public async Task GetBestGuessDefaultValuesForDimensionsAsync_WhenPlatformsIsMissing_ReturnsEmpty()
         {
             string projectXml =
@@ -224,6 +244,8 @@ $@"<Project>
 
             Assert.Empty(result);
         }
+
+
 
         private static PlatformProjectConfigurationDimensionProvider CreateInstance(string projectXml)
         {

@@ -176,6 +176,26 @@ $@"<Project>
         }
 
         [Fact]
+        public async Task GetBestGuessDefaultValuesForDimensionsAsync_ReturnsFirstValueFromLastTargetFrameworksElement()
+        {
+            string projectXml =
+$@"<Project>
+  <PropertyGroup>
+    <TargetFrameworks>net45</TargetFrameworks>
+    <TargetFrameworks>net46;net47</TargetFrameworks>
+  </PropertyGroup>
+</Project>";
+
+            var provider = CreateInstance(projectXml);
+
+            var result = await provider.GetBestGuessDefaultValuesForDimensionsAsync(UnconfiguredProjectFactory.Create());
+
+            Assert.Single(result);
+            Assert.Equal("TargetFramework", result.First().Key);
+            Assert.Equal("net46", result.First().Value);
+        }
+
+        [Fact]
         public async Task GetBestGuessDefaultValuesForDimensionsAsync_WhenTargetFrameworksIsMissing_ReturnsEmpty()
         {
             string projectXml =

@@ -283,6 +283,26 @@ $@"<Project>
         }
 
         [Fact]
+        public async Task GetBestGuessDefaultValuesForDimensionsAsync_ReturnsFirstValueFromLastConfigurationsElement()
+        {
+            string projectXml =
+$@"<Project>
+  <PropertyGroup>
+    <Configurations>Debug</Configurations>
+    <Configurations>Release;Debug</Configurations>
+  </PropertyGroup>
+</Project>";
+
+            var provider = CreateInstance(projectXml);
+
+            var result = await provider.GetBestGuessDefaultValuesForDimensionsAsync(UnconfiguredProjectFactory.Create());
+
+            Assert.Single(result);
+            Assert.Equal("Configuration", result.First().Key);
+            Assert.Equal("Release", result.First().Value);
+        }
+
+        [Fact]
         public async Task GetBestGuessDefaultValuesForDimensionsAsync_WhenConfigurationsIsMissing_ReturnsEmpty()
         {
             string projectXml =
