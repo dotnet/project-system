@@ -182,31 +182,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             return projectXml.PropertyGroups.SelectMany(group => group.Properties)
                                             .Reverse()
                                             .Where(p => StringComparers.PropertyNames.Equals(PropertyName, p.Name))
-                                            .Where(p => HasRecognizedConditionThatEvaluatesToTrue(p))
+                                            .Where(p => BuildUtilities.HasWellKnownConditionsThatAlwaysEvaluateToTrue(p))
                                             .FirstOrDefault();
-        }
-
-        private bool HasRecognizedConditionThatEvaluatesToTrue(ProjectPropertyElement element)
-        {
-            // We look for known conditions that evaluate to true so that 
-            // projects can have patterns where they opt in/out of target 
-            // frameworks based on whether they are inside Visual Studio or not.
-
-            // For example:
-            // 
-            // <TargetFrameworks>net461;net452</TargetFrameworks>
-            // <TargetFrameworks Condition = "'$(BuildingInsideVisualStudio)' == 'true'">net461</TargetFrameworks>
-
-            switch (element.Condition)
-            {
-                case "":
-                case "true":
-                case "'$(OS)' == 'Windows_NT'":
-                case "'$(BuildingInsideVisualStudio)' == 'true'":
-                    return true;
-            }
-
-            return false;
         }
     }
 }
