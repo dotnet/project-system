@@ -12,18 +12,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
         public EvaluationPass Pass { get; }
         public string Description { get; }
         public ImmutableArray<EvaluatedLocationInfo> Locations { get; }
-        public TimeSpan ExclusiveTime { get; }
-        public TimeSpan InclusiveTime { get; }
-        public int NumberOfHits { get; }
+        public TimeInfo Time { get; }
 
-        public EvaluatedPassInfo(EvaluationPass pass, string description, IEnumerable<EvaluatedLocationInfo> locations, TimeSpan exclusiveTime, TimeSpan inclusiveTime, int numberOfHits)
+        public EvaluatedPassInfo(EvaluationPass pass, string description, IEnumerable<EvaluatedLocationInfo> locations, TimeInfo time)
         {
             Pass = pass;
             Description = description;
             Locations = locations.ToImmutableArray();
-            ExclusiveTime = exclusiveTime;
-            InclusiveTime = inclusiveTime;
-            NumberOfHits = numberOfHits;
+            Time = time;
         }
     }
 }

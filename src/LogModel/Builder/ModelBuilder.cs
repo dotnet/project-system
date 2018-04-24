@@ -622,7 +622,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
 
         private void ProcessProjectMessage(BuildEventArgs args)
         {
+            var message = args.Message;
             var projectInfo = FindProjectContext(args);
+
+            if (message.StartsWith("Target") && message.Contains("skipped"))
+            {
+                var targetName = Intern(ParseQuotedSubstring(message));
+                if (targetName == null)
+                {
+                    throw new LoggerException(Resources.UnexpectedMessage);
+                }
+
+                var targetInfo = new TargetInfo(targetName, args.Timestamp);
+                AddMessage(targetInfo, args);
+                projectInfo.AddExecutedTarget(targetName, targetInfo);
+                return;
+            }
+
             AddMessage(projectInfo, args);
         }
 
@@ -822,32 +838,46 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
             var groups = profilerResult.ProfiledLocations.GroupBy(l => l.Key.ParentId).ToList();
             var roots = groups.Where(g => g.Key == null).ToArray();
 
-            if (roots.Length != 2 || roots.Any(r => r.Count() != 1))
+            if (roots.Length < 1 || roots.Length > 2 || roots.Any(r => r.Count() != 1))
             {
                 throw new LoggerException(Resources.UnexpectedProfile);
             }
 
-            var evaluationRoot = roots[0].Single().Key.Kind == EvaluationLocationKind.Element ? roots[0].Single() : roots[1].Single();
-            var globRoot = roots[0].Single().Key.Kind == EvaluationLocationKind.Glob ? roots[0].Single() : roots[1].Single();
+            KeyValuePair<EvaluationLocation, ProfiledLocation> evaluationRoot = default;
+            KeyValuePair<EvaluationLocation, ProfiledLocation> globRoot = default;
 
-            var passes = groups.Where(g => g.Key == evaluationRoot.Key.Id).ToList();
+            foreach (var root in roots.Select(root => root.Single()))
+            {
+                if (root.Key.Kind == EvaluationLocationKind.Element)
+                {
+                    evaluationRoot = root;
+                }
+                else
+                {
+                    globRoot = root;
+                }
+            }
 
-            if (passes.Any(p => p.Count() != 1))
+            var passes = groups.Single(g => g.Key == evaluationRoot.Key.Id).ToList();
+
+            if (groups.Count != roots.Length + passes.Count * 2)
             {
                 throw new LoggerException(Resources.UnexpectedProfile);
             }
 
-            var passInfos = (from pass in passes.OrderBy(p => p.Single().Key.EvaluationPass).Select(p => p.Single())
-                let locations = groups.Single(g => g.Key == pass.Key.Id).Select(location =>
-                    new EvaluatedLocationInfo(location.Key.ElementName, location.Key.ElementDescription,
-                        location.Key.Kind, location.Key.File, location.Key.Line, location.Value.ExclusiveTime,
-                        location.Value.InclusiveTime, location.Value.NumberOfHits)).ToList()
-                select new EvaluatedPassInfo(pass.Key.EvaluationPass, pass.Key.EvaluationPassDescription, locations, pass.Value.ExclusiveTime,
-                    pass.Value.InclusiveTime, pass.Value.NumberOfHits)).ToList();
+            var passInfos = (from pass in passes.OrderBy(p => p.Key.EvaluationPass)
+                let children = groups.SingleOrDefault(g => g.Key == pass.Key.Id)
+                let locations = children?.Select(location => new EvaluatedLocationInfo(location.Key.ElementName,
+                                        location.Key.ElementDescription, location.Key.Kind, location.Key.File,
+                                        location.Key.Line, new TimeInfo(location.Value.ExclusiveTime, location.Value.InclusiveTime,
+                                        location.Value.NumberOfHits)))
+                                    .ToList() ?? Enumerable.Empty<EvaluatedLocationInfo>()
+                select new EvaluatedPassInfo(pass.Key.EvaluationPass, pass.Key.EvaluationPassDescription, locations,
+                    new TimeInfo(pass.Value.ExclusiveTime, pass.Value.InclusiveTime, pass.Value.NumberOfHits))).ToList();
 
-            return new EvaluatedProfileInfo(passInfos, evaluationRoot.Value.ExclusiveTime,
-                evaluationRoot.Value.InclusiveTime, evaluationRoot.Value.NumberOfHits, globRoot.Value.ExclusiveTime,
-                globRoot.Value.InclusiveTime, globRoot.Value.NumberOfHits);
+            return new EvaluatedProfileInfo(passInfos, 
+                new TimeInfo(evaluationRoot.Value.ExclusiveTime, evaluationRoot.Value.InclusiveTime, evaluationRoot.Value.NumberOfHits),
+                new TimeInfo(globRoot.Value.ExclusiveTime, globRoot.Value.InclusiveTime, globRoot.Value.NumberOfHits));
         }
 
         private void OnProjectEvaluationFinished(object sender, ProjectEvaluationFinishedEventArgs args)
@@ -1028,9 +1058,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
                 evaluatedLocationInfo.Kind,
                 evaluatedLocationInfo.File,
                 evaluatedLocationInfo.Line,
-                evaluatedLocationInfo.ExclusiveTime,
-                evaluatedLocationInfo.InclusiveTime,
-                evaluatedLocationInfo.NumberOfHits
+                new Time(evaluatedLocationInfo.Time.ExclusiveTime, evaluatedLocationInfo.Time.InclusiveTime, evaluatedLocationInfo.Time.NumberOfHits)
             );
 
         private static EvaluatedPass ConstructEvaluatedPass(EvaluatedPassInfo evaluatedPassInfo) =>
@@ -1038,21 +1066,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
                 evaluatedPassInfo.Pass,
                 evaluatedPassInfo.Description,
                 evaluatedPassInfo.Locations.Select(ConstructEvaluatedLocation).ToImmutableArray(),
-                evaluatedPassInfo.ExclusiveTime,
-                evaluatedPassInfo.InclusiveTime,
-                evaluatedPassInfo.NumberOfHits
+                new Time(evaluatedPassInfo.Time.ExclusiveTime, evaluatedPassInfo.Time.InclusiveTime, evaluatedPassInfo.Time.NumberOfHits)
             );
 
 
         private static EvaluatedProfile ConstructEvaluatedProfile(EvaluatedProfileInfo evaluatedProfileInfo) =>
             new EvaluatedProfile(
                 evaluatedProfileInfo.Passes.Select(ConstructEvaluatedPass).OrderBy(p => p.Pass).ToImmutableArray(),
-                evaluatedProfileInfo.ExclusiveEvaluationTime,
-                evaluatedProfileInfo.InclusiveEvaluationTime,
-                evaluatedProfileInfo.NumberOfEvaluationHits,
-                evaluatedProfileInfo.ExclusiveGlobTime,
-                evaluatedProfileInfo.InclusiveGlobTime,
-                evaluatedProfileInfo.NumberOfGlobHits
+                new Time(evaluatedProfileInfo.EvaluationTimeInfo.ExclusiveTime, evaluatedProfileInfo.EvaluationTimeInfo.InclusiveTime, evaluatedProfileInfo.EvaluationTimeInfo.NumberOfHits),
+                new Time(evaluatedProfileInfo.GlobTimeInfo.ExclusiveTime, evaluatedProfileInfo.GlobTimeInfo.InclusiveTime, evaluatedProfileInfo.GlobTimeInfo.NumberOfHits)
             );
 
         private static EvaluatedProject ConstructEvaluatedProject(EvaluatedProjectInfo evaluatedProjectInfo) =>
@@ -1107,7 +1129,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
                     .Where(target => target.TaskInfos != null)
                     .SelectMany(target => target.TaskInfos.Values).ToArray();
 
-                if (Path.GetExtension(projectInfo.ProjectFile) == ".tmp_proj")
+                if (Path.GetExtension(projectInfo.ProjectFile) == ".tmp_proj" ||
+                    Path.GetFileNameWithoutExtension(projectInfo.ProjectFile).EndsWith("_wpftmp"))
                 {
                     parentTask = tasks.SingleOrDefault(task => task.Name == "GenerateTemporaryTargetAssembly");
                 }

@@ -12,20 +12,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
         public EvaluationLocationKind Kind { get; }
         public string File { get; }
         public int? Line { get; }
-        public TimeSpan ExclusiveTime { get; }
-        public TimeSpan InclusiveTime { get; }
-        public int NumberOfHits { get; }
+        public TimeInfo Time { get; }
 
-        public EvaluatedLocationInfo(string elementName, string elementDescription, EvaluationLocationKind kind, string file, int? line, TimeSpan exclusiveTime, TimeSpan inclusiveTime, int numberOfHits)
+        public EvaluatedLocationInfo(string elementName, string elementDescription, EvaluationLocationKind kind, string file, int? line, TimeInfo time)
         {
             ElementName = elementName;
             ElementDescription = elementDescription;
             Kind = kind;
             File = file;
             Line = line;
-            ExclusiveTime = exclusiveTime;
-            InclusiveTime = inclusiveTime;
-            NumberOfHits = numberOfHits;
+            Time = time;
         }
     }
 }

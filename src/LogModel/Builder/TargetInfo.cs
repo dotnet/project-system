@@ -40,6 +40,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
             StartTime = startTime;
         }
 
+        public TargetInfo(string name, DateTime startTime)
+        {
+            Id = BuildEventContext.InvalidTargetId;
+            NodeId = BuildEventContext.InvalidNodeId;
+            Name = name;
+            StartTime = startTime;
+            EndTime = startTime;
+            Result = Result.Skipped;
+        }
+
         public TargetInfo(string name, string sourceFilePath, string parentTarget, TargetBuiltReason reason, DateTime startTime)
         {
             Id = BuildEventContext.InvalidTargetId;
