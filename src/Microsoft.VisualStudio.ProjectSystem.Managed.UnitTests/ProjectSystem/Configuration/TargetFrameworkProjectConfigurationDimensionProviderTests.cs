@@ -127,12 +127,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         }
 
         [Theory]
-        [InlineData("net45",                "net45")]
-        [InlineData(" net45 ",              "net45")]
-        [InlineData("net46",                "net46")]
-        [InlineData("net45;net46",          "net45")]
-        [InlineData(";net45;net46",         "net45")]
-        public async Task GetBestGuessDefaultValuesForDimensionsAsync_ReturnsFirstValue(string frameworks, string expected)
+        [InlineData("net45",                      "net45")]
+        [InlineData(" net45 ",                    "net45")]
+        [InlineData("net46",                      "net46")]
+        [InlineData("net45;",                     "net45")]
+        [InlineData("net45;net46",                "net45")]
+        [InlineData(";net45;net46",               "net45")]
+        [InlineData("$(Foo);net45;net46",         "net45")]
+        [InlineData("$(Foo); net45 ;net46",       "net45")]
+        [InlineData("net45_$(Foo); net45 ;net46", "net45")]
+        public async Task GetBestGuessDefaultValuesForDimensionsAsync_ReturnsFirstParsableValue(string frameworks, string expected)
         {
             string projectXml =
 $@"<Project>

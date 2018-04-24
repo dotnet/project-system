@@ -234,12 +234,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         }
 
         [Theory]
-        [InlineData("Dbg",               "Dbg")]
-        [InlineData(" Dbg ",             "Dbg")]
-        [InlineData("Retail",            "Retail")]
-        [InlineData("Dbg;Retail",        "Dbg")]
-        [InlineData(";Dbg;Retail",       "Dbg")]
-        public async Task GetBestGuessDefaultValuesForDimensionsAsync_ReturnsFirstValue(string configurations, string expected)
+        [InlineData("Dbg",                      "Dbg")]
+        [InlineData(" Dbg ",                    "Dbg")]
+        [InlineData("Retail",                   "Retail")]
+        [InlineData("Dbg;",                     "Dbg")]
+        [InlineData("Dbg;Retail",               "Dbg")]
+        [InlineData(";Dbg;Retail",              "Dbg")]
+        [InlineData("$(Foo);Dbg;Retail",        "Dbg")]
+        [InlineData("$(Foo); Dbg ;Retail",      "Dbg")]
+        [InlineData("Dbg_$(Foo); Dbg ;Retail",  "Dbg")]
+        public async Task GetBestGuessDefaultValuesForDimensionsAsync_ReturnsFirstParsableValue(string configurations, string expected)
         {
             string projectXml =
 $@"<Project>
@@ -266,6 +270,8 @@ $@"<Project>
         [InlineData(";;;")]
         [InlineData("$(Property)")]
         [InlineData("Foo_$(Property)")]
+        [InlineData("Foo_$(Property);")]
+        [InlineData(";Foo_$(Property);")]
         public async Task GetBestGuessDefaultValuesForDimensionsAsync_WhenConfigurationsIsEmpty_ReturnsDefault(string configurations)
         {
             string projectXml =

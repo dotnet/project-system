@@ -161,12 +161,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         }
 
         [Theory]
-        [InlineData("ARM",               "ARM")]
-        [InlineData(" ARM ",             "ARM")]
-        [InlineData("x64",               "x64")]
-        [InlineData("ARM;x64",           "ARM")]
-        [InlineData(";ARM;x64",          "ARM")]
-        public async Task GetBestGuessDefaultValuesForDimensionsAsync_ReturnsFirstValue(string platforms, string expected)
+        [InlineData("ARM",                  "ARM")]
+        [InlineData(" ARM ",                "ARM")]
+        [InlineData("x64",                  "x64")]
+        [InlineData("ARM;",                 "ARM")]
+        [InlineData("ARM;x64",              "ARM")]
+        [InlineData(";ARM;x64",             "ARM")]
+        [InlineData("$(Foo);ARM;x64",       "ARM")]
+        [InlineData("$(Foo); ARM ;x64",     "ARM")]
+        [InlineData("x64_$(Foo); ARM ;x64", "ARM")]
+        public async Task GetBestGuessDefaultValuesForDimensionsAsync_ReturnsFirstParsableValue(string platforms, string expected)
         {
             string projectXml =
 $@"<Project>
@@ -193,6 +197,8 @@ $@"<Project>
         [InlineData(";;;")]
         [InlineData("$(Property)")]
         [InlineData("Foo_$(Property)")]
+        [InlineData("Foo_$(Property);")]
+        [InlineData(";Foo_$(Property);")]
         public async Task GetBestGuessDefaultValuesForDimensionsAsync_WhenPlatformsIsEmpty_ReturnsDefault(string platforms)
         {
             string projectXml =

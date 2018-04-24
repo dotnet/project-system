@@ -173,14 +173,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             if (string.IsNullOrEmpty(values))
                 return null;
 
-            string defaultValue = BuildUtilities.GetPropertyValues(values).FirstOrDefault();
+            foreach (string defaultValue in BuildUtilities.GetPropertyValues(values))
+            {
+                // If this property is derived from another property, skip it and just
+                // pull default from next known values. This is better than picking a 
+                // default that is not actually one of the known configs.
+                if (defaultValue.IndexOf("$(") == -1)
+                    return defaultValue;
+            }
 
-            // If this property is derived from another property, just bail, we'll get it when we go
-            // to calculate the real value in GetDefaultValuesForDimensionsAsync.
-            if (defaultValue == null || defaultValue.IndexOf("$(") != -1)
-                return null;
-
-            return defaultValue;
+            return null;
         }
 
         private Task<string> FindDimensionPropertyAsync(UnconfiguredProject project)
