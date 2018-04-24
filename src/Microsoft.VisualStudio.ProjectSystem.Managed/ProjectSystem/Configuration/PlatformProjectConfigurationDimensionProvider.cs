@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     {
         [ImportingConstructor]
         public PlatformProjectConfigurationDimensionProvider(IProjectAccessor projectAccessor)
-            : base(projectAccessor, ConfigurationGeneral.PlatformProperty, "Platforms")
+            : base(projectAccessor, ConfigurationGeneral.PlatformProperty, "Platforms", "AnyCPU")
         {
         }
 

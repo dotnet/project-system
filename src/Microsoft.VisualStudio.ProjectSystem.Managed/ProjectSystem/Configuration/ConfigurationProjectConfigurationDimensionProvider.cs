@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     {
         [ImportingConstructor]
         public ConfigurationProjectConfigurationDimensionProvider(IProjectAccessor projectAccessor)
-            : base(projectAccessor, ConfigurationGeneral.ConfigurationProperty, "Configurations")
+            : base(projectAccessor, ConfigurationGeneral.ConfigurationProperty, "Configurations", "Debug")
         {
         }
 
