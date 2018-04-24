@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 
+using Microsoft.Build.Construction;
 using Microsoft.VisualStudio.Build;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Configuration
@@ -12,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     /// <summary>
     /// Base project configuration dimension provider
     /// </summary>
-    internal abstract class BaseProjectConfigurationDimensionProvider : IProjectConfigurationDimensionsProvider2
+    internal abstract class BaseProjectConfigurationDimensionProvider : IProjectConfigurationDimensionsProvider3
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseProjectConfigurationDimensionProvider"/> class.
@@ -20,13 +21,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// <param name="projectAccessor">Lock service for the project file.</param>
         /// <param name="dimensionName">Name of the dimension.</param>
         /// <param name="propertyName">Name of the project property containing the dimension values.</param>
-        public BaseProjectConfigurationDimensionProvider(IProjectAccessor projectAccessor, string dimensionName, string propertyName)
+        /// <param name="dimensionDefaultValue">The default value of the dimension, for example "AnyCPU".</param>
+        public BaseProjectConfigurationDimensionProvider(IProjectAccessor projectAccessor, string dimensionName, string propertyName, string dimensionDefaultValue = null)
         {
             Requires.NotNull(projectAccessor, nameof(projectAccessor));
 
             ProjectAccessor = projectAccessor;
             DimensionName = dimensionName;
             PropertyName = propertyName;
+            DimensionDefaultValue = dimensionDefaultValue;
         }
 
         public string DimensionName
@@ -39,6 +42,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             get;
         }
 
+        public string DimensionDefaultValue
+        {
+            get;
+        }
+        
         public IProjectAccessor ProjectAccessor
         {
             get;
@@ -122,6 +130,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             }
         }
 
+        public async Task<IEnumerable<KeyValuePair<string, string>>> GetBestGuessDefaultValuesForDimensionsAsync(UnconfiguredProject project)
+        {
+            string defaultValue = await FindDefaultValueFromDimensionPropertyAsync(project).ConfigureAwait(false) ?? DimensionDefaultValue;
+            if (defaultValue != null)
+                return new[] { new KeyValuePair<string, string>(DimensionName, defaultValue) };
+
+            return Enumerable.Empty<KeyValuePair<string, string>>();
+        }
+
         /// <summary>
         /// Modifies the project when there's a configuration change.
         /// </summary>
@@ -148,6 +165,47 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             {
                 return evaluatedProject.GetProperty(propertyName ?? PropertyName)?.EvaluatedValue;
             }).ConfigureAwait(false);
+        }
+        
+        private async Task<string> FindDefaultValueFromDimensionPropertyAsync(UnconfiguredProject project)
+        {
+            string values = await FindDimensionPropertyAsync(project).ConfigureAwait(false);
+            if (string.IsNullOrEmpty(values))
+                return null;
+
+            foreach (string defaultValue in BuildUtilities.GetPropertyValues(values))
+            {
+                // If this property is derived from another property, skip it and just
+                // pull default from next known values. This is better than picking a 
+                // default that is not actually one of the known configs.
+                if (defaultValue.IndexOf("$(") == -1)
+                    return defaultValue;
+            }
+
+            return null;
+        }
+
+        private Task<string> FindDimensionPropertyAsync(UnconfiguredProject project)
+        {
+            return ProjectAccessor.OpenProjectXmlForReadAsync(project, projectXml =>
+            {
+                ProjectPropertyElement property = FindDimensionProperty(projectXml);
+                if (property != null)
+                    return property.GetUnescapedValue();
+
+                return null;
+            });
+        }
+
+        private ProjectPropertyElement FindDimensionProperty(ProjectRootElement projectXml)
+        {
+            // NOTE: We try to somewhat mimic evaluation, but it doesn't have to be exact; its just a guess
+            // at what "might" be the default configuration, not what it actually is.
+            return projectXml.PropertyGroups.SelectMany(group => group.Properties)
+                                            .Reverse()
+                                            .Where(p => StringComparers.PropertyNames.Equals(PropertyName, p.Name))
+                                            .Where(p => BuildUtilities.HasWellKnownConditionsThatAlwaysEvaluateToTrue(p))
+                                            .FirstOrDefault();
         }
     }
 }
