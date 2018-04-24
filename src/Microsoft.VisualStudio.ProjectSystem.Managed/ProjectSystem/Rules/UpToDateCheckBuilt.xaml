@@ -1,18 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.-->
-<Rule
-    Name="UpToDateCheckBuilt"
-    DisplayName="Up-to-date check built artifact"
-    PageTemplate="generic"
-    Description="File Properties"
-    xmlns="http://schemas.microsoft.com/build/2009/properties">
+<Rule Name="UpToDateCheckBuilt" xmlns="http://schemas.microsoft.com/build/2009/properties">
     <Rule.DataSource>
-        <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" ItemType="UpToDateCheckBuilt" SourceOfDefaultValue="AfterContext" 
-                    SourceType="TargetResults" MSBuildTarget="CollectBuiltDesignTime"/>
+        <DataSource Persistence="ProjectFile" HasConfigurationCondition="False" SourceOfDefaultValue="AfterContext" 
+                    SourceType="TargetResults" MSBuildTarget="CollectUpToDateCheckBuiltDesignTime"/>
     </Rule.DataSource>
     <BoolProperty Name="Visible" Visible="False" ReadOnly="True" />
-    <StringProperty
-        Name="Original"
-        Category="Misc"
-        Description="If set, specifies that this built output comes from this source file." />
+    <StringProperty Name="Original" Category="Misc" Description="If set, specifies that this built output comes from this source file." />
 </Rule>
