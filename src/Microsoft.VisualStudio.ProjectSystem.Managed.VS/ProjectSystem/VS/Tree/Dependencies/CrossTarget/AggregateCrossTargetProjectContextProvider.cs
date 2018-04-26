@@ -203,10 +203,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         private async Task<AggregateCrossTargetProjectContext> CreateProjectContextAsyncCore()
         {
-            //// Don't initialize until the project has been loaded into the IDE and available in Solution Explorer
-            //await _tasksService.PrioritizedProjectLoadedInHost
-            //                   .ConfigureAwait(false);
-
             var projectData = GetProjectData();
 
             // Get the set of active configured projects ignoring target framework.

@@ -92,9 +92,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public void OnPrioritizedProjectLoadedInHost()
         {
-            _threadingService.ExecuteSynchronously(() => _prioritizedTaskQueue.DrainAsync());
-
             _prioritizedProjectLoadedInHost.SetResult(null);
+
+            _threadingService.ExecuteSynchronously(() => _prioritizedTaskQueue.DrainAsync());
         }
     }
 }

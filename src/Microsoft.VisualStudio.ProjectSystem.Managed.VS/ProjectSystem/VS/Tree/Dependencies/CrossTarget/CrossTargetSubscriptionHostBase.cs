@@ -22,6 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IActiveProjectConfigurationRefreshService _activeProjectConfigurationRefreshService;
         private readonly ITargetFrameworkProvider _targetFrameworkProvider;
+        private readonly IUnconfiguredProjectTasksService _unconfiguredProjectTasksService;
         private readonly object _linksLock = new object();
         private readonly List<IDisposable> _evaluationSubscriptionLinks;
         private object _initializationLock = new object();
@@ -38,7 +39,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                                    [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService,
                                    IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
                                    IActiveProjectConfigurationRefreshService activeProjectConfigurationRefreshService,
-                                   ITargetFrameworkProvider targetFrameworkProvider)
+                                   ITargetFrameworkProvider targetFrameworkProvider,
+                                   IUnconfiguredProjectTasksService unconfiguredProjectTasksService)
             : base(commonServices.ThreadingService.JoinableTaskContext)
         {
             Requires.NotNull(contextProvider, nameof(contextProvider));
@@ -53,6 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
             _activeProjectConfigurationRefreshService = activeProjectConfigurationRefreshService;
             _targetFrameworkProvider = targetFrameworkProvider;
+            _unconfiguredProjectTasksService = unconfiguredProjectTasksService;
             _evaluationSubscriptionLinks = new List<IDisposable>();
         }
 
@@ -127,11 +130,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         protected async override Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            // Don't initialize if we're unloading
-            _tasksService.UnloadCancellationToken.ThrowIfCancellationRequested();
-
-            // Update project context and subscriptions.
-            await UpdateProjectContextAndSubscriptionsAsync().ConfigureAwait(false);
+            await _unconfiguredProjectTasksService.PrioritizedProjectLoadedInHostAsync(() =>
+            {
+                // Update project context and subscriptions.
+                return UpdateProjectContextAndSubscriptionsAsync();
+            }).ConfigureAwait(false);
         }
 
         private async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, RuleHandlerType handlerType)
