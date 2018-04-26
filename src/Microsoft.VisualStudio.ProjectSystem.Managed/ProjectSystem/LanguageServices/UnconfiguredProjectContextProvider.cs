@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
-using Microsoft.VisualStudio.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
@@ -23,8 +22,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         private readonly object _gate = new object();
         private readonly IUnconfiguredProjectCommonServices _commonServices;
         private readonly Lazy<IWorkspaceProjectContextFactory> _contextFactory;
-        private readonly IUnconfiguredProjectTasksService _tasksService;
-        private readonly ITaskScheduler _taskScheduler;
         private readonly List<AggregateWorkspaceProjectContext> _contexts = new List<AggregateWorkspaceProjectContext>();
         private readonly IProjectHostProvider _projectHostProvider;
         private readonly IActiveConfiguredProjectsProvider _activeConfiguredProjectsProvider;
@@ -36,23 +33,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         [ImportingConstructor]
         public UnconfiguredProjectContextProvider(IUnconfiguredProjectCommonServices commonServices,
                                                  Lazy<IWorkspaceProjectContextFactory> contextFactory,
-                                                 IUnconfiguredProjectTasksService tasksService,
-                                                 ITaskScheduler taskScheduler,
                                                  IProjectHostProvider projectHostProvider,
                                                  IActiveConfiguredProjectsProvider activeConfiguredProjectsProvider,
                                                  ISafeProjectGuidService projectGuidService)
         {
             Requires.NotNull(commonServices, nameof(commonServices));
             Requires.NotNull(contextFactory, nameof(contextFactory));
-            Requires.NotNull(tasksService, nameof(tasksService));
-            Requires.NotNull(taskScheduler, nameof(taskScheduler));
             Requires.NotNull(projectHostProvider, nameof(projectHostProvider));
             Requires.NotNull(activeConfiguredProjectsProvider, nameof(activeConfiguredProjectsProvider));
 
             _commonServices = commonServices;
             _contextFactory = contextFactory;
-            _tasksService = tasksService;
-            _taskScheduler = taskScheduler;
             _projectHostProvider = projectHostProvider;
             _activeConfiguredProjectsProvider = activeConfiguredProjectsProvider;
             _projectGuidService = projectGuidService;
@@ -228,9 +219,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             if (string.IsNullOrEmpty(targetPath))
                 return null;
 
-            // Don't initialize until the project has been loaded into the IDE and available in Solution Explorer
-            await _tasksService.PrioritizedProjectLoadedInHost
-                               .ConfigureAwait(false);
 
             // TODO: https://github.com/dotnet/roslyn-project-system/issues/353
             await _commonServices.ThreadingService.SwitchToUIThread();
