@@ -35,8 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// </summary>
         /// <remarks>
         ///     This task completes before <see cref="ProjectLoadedInHost"/> and is intended for
-        ///     critical 
-        ///     services that need to do work before non-critical services.
+        ///     critical services that need to do work before non-critical services.
         /// </remarks>
         /// <exception cref="OperationCanceledException">
         ///     Thrown if the project was unloaded.
@@ -70,5 +69,32 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     Thrown if the project was already unloaded before this method was invoked.
         /// </exception>
         Task<T> LoadedProjectAsync<T>(Func<Task<T>> action);
+
+        /// <summary>
+        ///     Provides protection for an operation that the project will not be considered loaded in the host before 
+        ///     the completion of some task.
+        /// </summary>
+        /// <typeparam name="T">
+        ///     The type of value returned by the joinable.
+        /// </typeparam>
+        /// <param name="action">
+        ///     The action to execute before the project is considered loaded in the host.
+        /// </param>
+        /// <exception cref="OperationCanceledException">
+        ///     Thrown if the project was already unloaded before this method was invoked.
+        /// </exception>
+        Task<T> PrioritizedLoadedInHostAsync<T>(Func<Task<T>> action);
+
+        /// <summary>
+        ///     Provides protection for an operation that the project will not be considered loaded in the host before 
+        ///     the completion of some task.
+        /// </summary>
+        /// <param name="action">
+        ///     The action to execute before the project is considered loaded in the host.
+        /// </param>
+        /// <exception cref="OperationCanceledException">
+        ///     Thrown if the project was already unloaded before this method was invoked.
+        /// </exception>
+        Task PrioritizedProjectLoadedInHostAsync(Func<Task> action);
     }
 }

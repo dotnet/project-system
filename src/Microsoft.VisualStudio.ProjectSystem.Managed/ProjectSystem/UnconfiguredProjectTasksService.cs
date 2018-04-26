@@ -1,6 +1,7 @@
 ﻿// Copyright(c) Microsoft.All Rights Reserved.Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Linq;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Threading;
@@ -13,14 +14,18 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal class UnconfiguredProjectTasksService : IUnconfiguredProjectTasksService
     {
         private readonly IProjectAsynchronousTasksService _tasksService;
+        private readonly IProjectThreadingService _threadingService;
         private readonly ILoadedInHostListener _loadedInHostListener;
         private readonly TaskCompletionSource<object> _projectLoadedInHost = new TaskCompletionSource<object>();
         private readonly TaskCompletionSource<object> _prioritizedProjectLoadedInHost = new TaskCompletionSource<object>();
+        private readonly JoinableTaskQueue _prioritizedTaskQueue;
 
         [ImportingConstructor]
-        public UnconfiguredProjectTasksService([Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService, ILoadedInHostListener loadedInHostListener)
+        public UnconfiguredProjectTasksService([Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService, IProjectThreadingService threadingService, ILoadedInHostListener loadedInHostListener)
         {
+            _prioritizedTaskQueue = new JoinableTaskQueue(threadingService.JoinableTaskContext);
             _tasksService = tasksService;
+            _threadingService = threadingService;
             _loadedInHostListener = loadedInHostListener;
         }
 
@@ -55,6 +60,31 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return joinable.Task;
         }
 
+
+        public Task<T> PrioritizedLoadedInHostAsync<T>(Func<Task<T>> action)
+        {
+            Requires.NotNull(action, nameof(action));
+
+            _tasksService.UnloadCancellationToken.ThrowIfCancellationRequested();
+
+            JoinableTask<T> task = _threadingService.JoinableTaskFactory.RunAsync(action);
+            _prioritizedTaskQueue.Register(task);
+
+            return task.Task;
+        }
+
+        public Task PrioritizedProjectLoadedInHostAsync(Func<Task> action)
+        {
+            Requires.NotNull(action, nameof(action));
+
+            _tasksService.UnloadCancellationToken.ThrowIfCancellationRequested();
+
+            JoinableTask task = _threadingService.JoinableTaskFactory.RunAsync(action);
+            _prioritizedTaskQueue.Register(task);
+
+            return task.Task;
+        }
+
         public void OnProjectLoadedInHost()
         {
             _projectLoadedInHost.SetResult(null);
@@ -62,6 +92,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public void OnPrioritizedProjectLoadedInHost()
         {
+            _threadingService.ExecuteSynchronously(() => _prioritizedTaskQueue.DrainAsync());
+
             _prioritizedProjectLoadedInHost.SetResult(null);
         }
     }
