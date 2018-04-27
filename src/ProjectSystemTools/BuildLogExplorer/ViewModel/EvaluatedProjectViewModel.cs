@@ -52,8 +52,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogExplorer.ViewModel
 
             if (_evaluatedProject.EvaluationProfile != null)
             {
-                // TODO: Summary
                 list.AddRange(_evaluatedProject.EvaluationProfile.Passes.Select(pass => new EvaluatedPassViewModel(pass)));
+                if (_evaluatedProject.EvaluationProfile.GlobTime != null)
+                {
+                    list.Add(new TextViewModel($"Glob total ({FormatTime(_evaluatedProject.EvaluationProfile.GlobTime)})"));
+                }
             }
 
             return list;

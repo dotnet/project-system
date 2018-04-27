@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogExplorer.ViewModel
         private List<object> _children;
         //private SelectedObjectWrapper _properties;
 
-        public override string Text => _text ?? (_text = $"{_evaluatedLocation.File}{(_evaluatedLocation.Line == null ? string.Empty : $"{_evaluatedLocation.Line}")}");
+        public override string Text => _text ?? (_text = $"{_evaluatedLocation.File}{(_evaluatedLocation.Line == null ? string.Empty : $" {_evaluatedLocation.Line}")} {FormatTime(_evaluatedLocation.Time)}");
 
         public override IEnumerable<object> Children => _children ?? (_children = GetChildren());
 

@@ -11,25 +11,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogExplorer.ViewModel
         private readonly EvaluatedPass _evaluatedPass;
         private string _text;
         private List<object> _children;
-        //private SelectedObjectWrapper _properties;
 
-        public override string Text => _text ?? (_text = _evaluatedPass.Description);
+        public override string Text => _text ?? (_text = $"{_evaluatedPass.Description} ({FormatTime(_evaluatedPass.Time)})");
 
         public override IEnumerable<object> Children => _children ?? (_children = GetChildren());
-
-        //public override SelectedObjectWrapper Properties => _properties ?? (_properties =
-        //    new SelectedObjectWrapper(
-        //        _evaluatedProject.Name,
-        //        "Evaluated Project",
-        //        _evaluation?.Messages.Union(_evaluatedProject.Messages) ?? _evaluatedProject.Messages,
-        //        new Dictionary<string, IDictionary<string, string>> {
-        //            {"Build", new Dictionary<string, string>
-        //                {
-        //                    {"Started", _evaluatedProject.StartTime.ToString(CultureInfo.InvariantCulture)},
-        //                    {"Finished", _evaluatedProject.EndTime.ToString(CultureInfo.InvariantCulture)}
-        //                }
-        //             }
-        //        }));
 
         public EvaluatedPassViewModel(EvaluatedPass evaluatedPass)
         {

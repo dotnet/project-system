@@ -6,14 +6,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogExplorer.ViewModel
 {
     internal sealed class PropertyViewModel : BaseViewModel
     {
-        private readonly string _name;
         private readonly string _value;
         private SelectedObjectWrapper _properties;
 
-        public override string Text => _name;
+        public override string Text { get; }
 
         public override SelectedObjectWrapper Properties => _properties ?? (_properties = 
-            new SelectedObjectWrapper(_name, "Property", null,
+            new SelectedObjectWrapper(Text, "Property", null,
                 new Dictionary<string, IDictionary<string, string>> {
                     {"Property", new Dictionary<string, string>
                         {
@@ -24,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogExplorer.ViewModel
 
         public PropertyViewModel(string name, string value)
         {
-            _name = name;
+            Text = name;
             _value = value;
         }
     }
