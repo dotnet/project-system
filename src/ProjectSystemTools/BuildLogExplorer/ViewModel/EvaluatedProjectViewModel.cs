@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogExplorer.ViewModel
             if (_evaluatedProject.EvaluationProfile != null)
             {
                 // TODO: Summary
-                list.AddRange(_evaluatedProject.EvaluationProfile.Passes.Select(pass => new EvaluationPassViewModel(pass)));
+                list.AddRange(_evaluatedProject.EvaluationProfile.Passes.Select(pass => new EvaluatedPassViewModel(pass)));
             }
 
             return list;

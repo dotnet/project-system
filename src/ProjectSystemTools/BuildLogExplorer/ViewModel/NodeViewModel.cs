@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogExplorer.ViewModel
 
         public virtual bool IsPrimary => false;
 
-        public string Elapsed => $"{Node.EndTime - Node.StartTime:mm':'ss'.'ff}";
+        public string Elapsed => $"{Node.EndTime - Node.StartTime:mm':'ss'.'ffff}";
 
         public Result Result => Node.Result;
     }

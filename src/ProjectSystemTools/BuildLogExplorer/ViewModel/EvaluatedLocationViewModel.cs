@@ -6,14 +6,14 @@ using Microsoft.VisualStudio.ProjectSystem.LogModel;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogExplorer.ViewModel
 {
-    internal sealed class EvaluatedPassViewModel : BaseViewModel
+    internal sealed class EvaluatedLocationViewModel : BaseViewModel
     {
-        private readonly EvaluatedPass _evaluatedPass;
+        private readonly EvaluatedLocation _evaluatedLocation;
         private string _text;
         private List<object> _children;
         //private SelectedObjectWrapper _properties;
 
-        public override string Text => _text ?? (_text = _evaluatedPass.Description);
+        public override string Text => _text ?? (_text = $"{_evaluatedLocation.File}{(_evaluatedLocation.Line == null ? string.Empty : $"{_evaluatedLocation.Line}")}");
 
         public override IEnumerable<object> Children => _children ?? (_children = GetChildren());
 
@@ -31,11 +31,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogExplorer.ViewModel
         //             }
         //        }));
 
-        public EvaluatedPassViewModel(EvaluatedPass evaluatedPass)
+        public EvaluatedLocationViewModel(EvaluatedLocation evaluatedLocation)
         {
-            _evaluatedPass = evaluatedPass;
+            _evaluatedLocation = evaluatedLocation;
         }
 
-        private List<object> GetChildren() => ((IEnumerable<object>)_evaluatedPass.Locations.Select(location => new EvaluatedLocationViewModel(location))).ToList();
+        private List<object> GetChildren() => ((IEnumerable<object>)_evaluatedLocation.Children.Select(location => new EvaluatedLocationViewModel(location))).ToList();
     }
 }

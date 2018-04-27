@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.Build.Framework.Profiler;
@@ -18,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
         {
             Pass = pass;
             Description = description;
-            Locations = locations.ToImmutableArray();
+            Locations = locations?.ToImmutableArray() ?? ImmutableArray<EvaluatedLocationInfo>.Empty;
             Time = time;
         }
     }

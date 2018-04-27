@@ -833,7 +833,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
             evaluationInfo.StartEvaluatingProject(evaluatedProject);
         }
 
-        private static EvaluatedProfileInfo InterpretEvaluationProfile(ProfilerResult profilerResult)
+        private EvaluatedProfileInfo InterpretEvaluationProfile(ProfilerResult profilerResult)
         {
             var groups = profilerResult.ProfiledLocations.GroupBy(l => l.Key.ParentId).ToList();
             var roots = groups.Where(g => g.Key == null).ToArray();
@@ -858,26 +858,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
                 }
             }
 
-            var passes = groups.Single(g => g.Key == evaluationRoot.Key.Id).ToList();
+            IEnumerable<EvaluatedLocationInfo> CollectChildren(long parentId) => 
+                groups
+                    .SingleOrDefault(g => g.Key == parentId)
+                    ?.Select(location => new EvaluatedLocationInfo(
+                        Intern(location.Key.ElementName),
+                        Intern(location.Key.ElementDescription), 
+                        location.Key.Kind, 
+                        Intern(location.Key.File),
+                        location.Key.Line, 
+                        CollectChildren(location.Key.Id),
+                        new TimeInfo(
+                            location.Value.ExclusiveTime, 
+                            location.Value.InclusiveTime,
+                            location.Value.NumberOfHits)));
 
-            if (groups.Count != roots.Length + passes.Count * 2)
-            {
-                throw new LoggerException(Resources.UnexpectedProfile);
-            }
-
-            var passInfos = (from pass in passes.OrderBy(p => p.Key.EvaluationPass)
-                let children = groups.SingleOrDefault(g => g.Key == pass.Key.Id)
-                let locations = children?.Select(location => new EvaluatedLocationInfo(location.Key.ElementName,
-                                        location.Key.ElementDescription, location.Key.Kind, location.Key.File,
-                                        location.Key.Line, new TimeInfo(location.Value.ExclusiveTime, location.Value.InclusiveTime,
-                                        location.Value.NumberOfHits)))
-                                    .ToList() ?? Enumerable.Empty<EvaluatedLocationInfo>()
-                select new EvaluatedPassInfo(pass.Key.EvaluationPass, pass.Key.EvaluationPassDescription, locations,
-                    new TimeInfo(pass.Value.ExclusiveTime, pass.Value.InclusiveTime, pass.Value.NumberOfHits))).ToList();
-
-            return new EvaluatedProfileInfo(passInfos, 
-                new TimeInfo(evaluationRoot.Value.ExclusiveTime, evaluationRoot.Value.InclusiveTime, evaluationRoot.Value.NumberOfHits),
-                new TimeInfo(globRoot.Value.ExclusiveTime, globRoot.Value.InclusiveTime, globRoot.Value.NumberOfHits));
+            return new EvaluatedProfileInfo(
+                groups
+                    .Single(g => g.Key == evaluationRoot.Key.Id)
+                    .OrderBy(p => p.Key.EvaluationPass)
+                    .Select(p => new EvaluatedPassInfo(
+                        p.Key.EvaluationPass,
+                        Intern(p.Key.EvaluationPassDescription),
+                        CollectChildren(p.Key.Id),
+                        new TimeInfo(
+                            p.Value.ExclusiveTime,
+                            p.Value.InclusiveTime,
+                            p.Value.NumberOfHits))),
+                new TimeInfo(
+                    evaluationRoot.Value.ExclusiveTime, 
+                    evaluationRoot.Value.InclusiveTime, 
+                    evaluationRoot.Value.NumberOfHits),
+                new TimeInfo(
+                    globRoot.Value.ExclusiveTime, 
+                    globRoot.Value.InclusiveTime, 
+                    globRoot.Value.NumberOfHits));
         }
 
         private void OnProjectEvaluationFinished(object sender, ProjectEvaluationFinishedEventArgs args)
@@ -1058,6 +1073,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
                 evaluatedLocationInfo.Kind,
                 evaluatedLocationInfo.File,
                 evaluatedLocationInfo.Line,
+                evaluatedLocationInfo.Children.Select(ConstructEvaluatedLocation),
                 new Time(evaluatedLocationInfo.Time.ExclusiveTime, evaluatedLocationInfo.Time.InclusiveTime, evaluatedLocationInfo.Time.NumberOfHits)
             );
 
@@ -1068,8 +1084,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
                 evaluatedPassInfo.Locations.Select(ConstructEvaluatedLocation).ToImmutableArray(),
                 new Time(evaluatedPassInfo.Time.ExclusiveTime, evaluatedPassInfo.Time.InclusiveTime, evaluatedPassInfo.Time.NumberOfHits)
             );
-
-
+        
         private static EvaluatedProfile ConstructEvaluatedProfile(EvaluatedProfileInfo evaluatedProfileInfo) =>
             new EvaluatedProfile(
                 evaluatedProfileInfo.Passes.Select(ConstructEvaluatedPass).OrderBy(p => p.Pass).ToImmutableArray(),

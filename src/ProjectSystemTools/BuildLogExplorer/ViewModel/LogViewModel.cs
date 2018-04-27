@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogExplorer.ViewModel
             {
                 if (_log?.Evaluations.Any() == true)
                 {
-                    list.Add(new ListViewModel<Evaluation>("Evaluations", _log.Evaluations, e => e.EvaluatedProjects.Count == 1 ? (BaseViewModel)new EvaluatedProjectViewModel(e) : new EvaluationViewModel(e)));
+                    list.Add(new ListViewModel<Evaluation>($"Evaluations ({_log.Evaluations.SelectMany(e => e.EvaluatedProjects).Aggregate(TimeSpan.Zero, (t, p) => t + (p.EndTime - p.StartTime)):mm':'ss'.'ffff})", _log.Evaluations, e => e.EvaluatedProjects.Count == 1 ? (BaseViewModel)new EvaluatedProjectViewModel(e) : new EvaluationViewModel(e)));
                 }
 
                 if (_log.Build?.Project != null)
