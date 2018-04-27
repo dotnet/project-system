@@ -311,9 +311,20 @@
   <!-- This target collects all the resolved references that are used to actually compile. -->
   <Target Name="CollectResolvedCompilationReferencesDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(ReferencePathWithRefAssemblies)" />
   
+  <!-- This target collects all the extra inputs for the up to date check. -->
+  <Target Name="CollectUpToDateCheckInputDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(UpToDateCheckInput)">
+    <ItemGroup>
+      <!-- MSBuild additional compile file, such as the file input cache file -->
+      <UpToDateCheckInput Include="@(CustomAdditionalCompileInputs)"/>
+    </ItemGroup>
+  </Target>
+
+  <!-- This target collects all the extra inputs for the up to date check. -->
+  <Target Name="CollectUpToDateCheckOutputDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(UpToDateCheckOutput)" />
+
   <!-- This target collects all the things built by the project for the up to date check. -->
   <!-- See CopyFileToOutputDirectory target -->
-  <Target Name="CollectBuiltDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(UpToDateCheckBuilt)">
+  <Target Name="CollectUpToDateCheckBuiltDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(UpToDateCheckBuilt)">
     <ItemGroup>
       <!-- Assembly output, bin and obj -->
       <UpToDateCheckBuilt Condition="'$(CopyBuildOutputToOutputDirectory)' != 'false' and '$(SkipCopyBuildProduct)' != 'true'" Include="$(TargetPath)"/>

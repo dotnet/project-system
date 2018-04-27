@@ -237,5 +237,196 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             Assert.NotNull(property);
             Assert.Equal("Debug;Release;CustomConfiguration", property.Value);
         }
+
+        [Theory]
+        [InlineData("Dbg",                      "Dbg")]
+        [InlineData(" Dbg ",                    "Dbg")]
+        [InlineData("Retail",                   "Retail")]
+        [InlineData("Dbg;",                     "Dbg")]
+        [InlineData("Dbg;Retail",               "Dbg")]
+        [InlineData(";Dbg;Retail",              "Dbg")]
+        [InlineData("$(Foo);Dbg;Retail",        "Dbg")]
+        [InlineData("$(Foo); Dbg ;Retail",      "Dbg")]
+        [InlineData("Dbg_$(Foo); Dbg ;Retail",  "Dbg")]
+        public async Task GetBestGuessDefaultValuesForDimensionsAsync_ReturnsFirstParsableValue(string configurations, string expected)
+        {
+            string projectXml =
+$@"<Project>
+  <PropertyGroup>
+    <Configurations>{configurations}</Configurations>
+  </PropertyGroup>
+</Project>";
+
+            var provider = CreateInstance(projectXml);
+
+            var result = await provider.GetBestGuessDefaultValuesForDimensionsAsync(UnconfiguredProjectFactory.Create());
+
+            Assert.Single(result);
+            Assert.Equal("Configuration", result.First().Key);
+            Assert.Equal(expected, result.First().Value);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(" ")]
+        [InlineData(";")]
+        [InlineData(" ;")]
+        [InlineData(" ; ")]
+        [InlineData(";;;")]
+        [InlineData("$(Property)")]
+        [InlineData("Foo_$(Property)")]
+        [InlineData("Foo_$(Property);")]
+        [InlineData(";Foo_$(Property);")]
+        public async Task GetBestGuessDefaultValuesForDimensionsAsync_WhenConfigurationsIsEmpty_ReturnsDefault(string configurations)
+        {
+            string projectXml =
+$@"<Project>
+  <PropertyGroup>
+    <Configurations>{configurations}</Configurations>
+  </PropertyGroup>
+</Project>";
+
+            var provider = CreateInstance(projectXml);
+
+            var result = await provider.GetBestGuessDefaultValuesForDimensionsAsync(UnconfiguredProjectFactory.Create());
+
+            Assert.Single(result);
+            Assert.Equal("Configuration", result.First().Key);
+            Assert.Equal("Debug", result.First().Value);
+        }
+
+        [Fact]
+        public async Task GetBestGuessDefaultValuesForDimensionsAsync_ReturnsFirstValueFromLastConfigurationsElement()
+        {
+            string projectXml =
+$@"<Project>
+  <PropertyGroup>
+    <Configurations>Dbg</Configurations>
+    <Configurations>Retail;Dbg</Configurations>
+  </PropertyGroup>
+</Project>";
+
+            var provider = CreateInstance(projectXml);
+
+            var result = await provider.GetBestGuessDefaultValuesForDimensionsAsync(UnconfiguredProjectFactory.Create());
+
+            Assert.Single(result);
+            Assert.Equal("Configuration", result.First().Key);
+            Assert.Equal("Retail", result.First().Value);
+        }
+
+        [Fact]
+        public async Task GetBestGuessDefaultValuesForDimensionsAsync_WhenConfigurationsIsMissing_ReturnsDefault()
+        {
+            string projectXml =
+$@"<Project>
+  <PropertyGroup>
+  </PropertyGroup>
+</Project>";
+
+            var provider = CreateInstance(projectXml);
+
+            var result = await provider.GetBestGuessDefaultValuesForDimensionsAsync(UnconfiguredProjectFactory.Create());
+
+            Assert.Single(result);
+            Assert.Equal("Configuration", result.First().Key);
+            Assert.Equal("Debug", result.First().Value);
+        }
+
+        [Theory]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <Configurations Condition=""'$(BuildingInsideVisualStudio)' != 'true'"">Dbg</Configurations>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <Configurations Condition=""'$(OS)' != 'Windows_NT'"">Dbg</Configurations>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <Configurations Condition=""'$(OS)' == 'Unix'"">Dbg</Configurations>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <Configurations Condition=""'$(Foo)' == 'true'"">Dbg</Configurations>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <Configuration>Dbg</Configuration>
+    <Configurations Condition=""'$(OS)' != 'Windows_NT'"">Dbg</Configurations>
+  </PropertyGroup>
+</Project>")]
+        public async Task GetBestGuessDefaultValuesForDimensionsAsync_WhenConfigurationsHasUnrecognizedCondition_ReturnsDefault(string projectXml)
+        {
+            var provider = CreateInstance(projectXml);
+
+            var result = await provider.GetBestGuessDefaultValuesForDimensionsAsync(UnconfiguredProjectFactory.Create());
+
+            Assert.Single(result);
+            Assert.Equal("Configuration", result.First().Key);
+            Assert.Equal("Debug", result.First().Value);
+        }
+
+
+        [Theory]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <Configurations Condition=""'$(BuildingInsideVisualStudio)' == 'true'"">Dbg</Configurations>
+    <Configurations Condition=""'$(BuildingInsideVisualStudio)' != 'true'"">Retail</Configurations>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <Configurations Condition=""'$(OS)' == 'Windows_NT'"">Dbg</Configurations>
+    <Configurations Condition=""'$(OS)' != 'Windows_NT'"">Retail</Configurations>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <Configurations Condition=""'$(OS)' == 'Windows_NT'"">Dbg</Configurations>
+    <Configurations Condition=""'$(OS)' == 'Unix'"">Retail</Configurations>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <Configurations Condition=""true"">Dbg</Configurations>
+  </PropertyGroup>
+</Project>")]
+        [InlineData(
+@"<Project>
+  <PropertyGroup>
+    <Configurations Condition="""">Dbg</Configurations>
+  </PropertyGroup>
+</Project>")]
+        public async Task GetBestGuessDefaultValuesForDimensionsAsync_WhenConfigurationsHasRecognizedCondition_ReturnsValue(string projectXml)
+        {
+            var provider = CreateInstance(projectXml);
+
+            var result = await provider.GetBestGuessDefaultValuesForDimensionsAsync(UnconfiguredProjectFactory.Create());
+
+            Assert.Single(result);
+            Assert.Equal("Configuration", result.First().Key);
+            Assert.Equal("Dbg", result.First().Value);
+        }
+
+        private static ConfigurationProjectConfigurationDimensionProvider CreateInstance(string projectXml)
+        {
+            var projectAccessor = IProjectAccessorFactory.Create(projectXml);
+
+            return new ConfigurationProjectConfigurationDimensionProvider(projectAccessor);
+        }
     }
 }

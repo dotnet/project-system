@@ -19,11 +19,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     [Export(typeof(IProjectConfigurationDimensionsProvider))]
     [AppliesTo(ProjectCapabilities.ProjectConfigurationsDeclaredDimensions)]
     [Order(DimensionProviderOrder.Platform)]
+    [ConfigurationDimensionDescription(ConfigurationGeneral.PlatformProperty)]
     internal class PlatformProjectConfigurationDimensionProvider : BaseProjectConfigurationDimensionProvider
     {
         [ImportingConstructor]
         public PlatformProjectConfigurationDimensionProvider(IProjectAccessor projectAccessor)
-            : base(projectAccessor, ConfigurationGeneral.PlatformProperty, "Platforms")
+            : base(projectAccessor, ConfigurationGeneral.PlatformProperty, "Platforms", "AnyCPU")
         {
         }
 
