@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <exception cref="OperationCanceledException">
         ///     Thrown if the project was already unloaded before this method was invoked.
         /// </exception>
-        Task<T> PrioritizedLoadedInHostAsync<T>(Func<Task<T>> action);
+        Task<T> PrioritizedProjectLoadedInHostAsync<T>(Func<Task<T>> action);
 
         /// <summary>
         ///     Provides protection for an operation that the project will not be considered loaded in the host before 

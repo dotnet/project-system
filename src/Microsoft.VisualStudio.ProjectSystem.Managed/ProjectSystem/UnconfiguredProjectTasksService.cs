@@ -60,8 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return joinable.Task;
         }
 
-
-        public Task<T> PrioritizedLoadedInHostAsync<T>(Func<Task<T>> action)
+        public Task<T> PrioritizedProjectLoadedInHostAsync<T>(Func<Task<T>> action)
         {
             Requires.NotNull(action, nameof(action));
 
