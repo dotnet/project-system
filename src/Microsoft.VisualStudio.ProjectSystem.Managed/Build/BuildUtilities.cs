@@ -16,6 +16,35 @@ namespace Microsoft.VisualStudio.Build
     internal static class BuildUtilities
     {
         /// <summary>
+        ///     Returns a value indicating whether the specified property has a condition that 
+        ///     always evaluates to <see langword="true"/>.
+        /// </summary>
+        public static bool HasWellKnownConditionsThatAlwaysEvaluateToTrue(ProjectPropertyElement element)
+        {
+            Requires.NotNull(element, nameof(element));
+
+            // We look for known conditions that evaluate to true so that 
+            // projects can have patterns where they opt in/out of target 
+            // frameworks based on whether they are inside Visual Studio or not.
+
+            // For example:
+            // 
+            // <TargetFrameworks>net461;net452</TargetFrameworks>
+            // <TargetFrameworks Condition = "'$(BuildingInsideVisualStudio)' == 'true'">net461</TargetFrameworks>
+
+            switch (element.Condition)
+            {
+                case "":
+                case "true":
+                case "'$(OS)' == 'Windows_NT'":
+                case "'$(BuildingInsideVisualStudio)' == 'true'":
+                    return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Gets a project property.
         /// </summary>
         /// <param name="project">Xml representation of the MsBuild project.</param>

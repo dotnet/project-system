@@ -19,11 +19,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     [Export(typeof(IProjectConfigurationDimensionsProvider))]
     [AppliesTo(ProjectCapabilities.ProjectConfigurationsDeclaredDimensions)]
     [Order(DimensionProviderOrder.Configuration)]
+    [ConfigurationDimensionDescription(ConfigurationGeneral.ConfigurationProperty)]
     internal class ConfigurationProjectConfigurationDimensionProvider : BaseProjectConfigurationDimensionProvider
     {
         [ImportingConstructor]
-        public ConfigurationProjectConfigurationDimensionProvider(IProjectXmlAccessor projectXmlAccessor)
-            : base(projectXmlAccessor, ConfigurationGeneral.ConfigurationProperty, "Configurations")
+        public ConfigurationProjectConfigurationDimensionProvider(IProjectAccessor projectAccessor)
+            : base(projectAccessor, ConfigurationGeneral.ConfigurationProperty, "Configurations", "Debug")
         {
         }
 
@@ -68,13 +69,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// <summary>
         /// Adds a configuration to the project.
         /// </summary>
-        /// <param name="unconfiguredProject">Unconfigured project for which the configuration change.</param>
+        /// <param name="project">Unconfigured project for which the configuration change.</param>
         /// <param name="configurationName">Name of the new configuration.</param>
         /// <returns>A task for the async operation.</returns>
-        private async Task OnConfigurationAddedAsync(UnconfiguredProject unconfiguredProject, string configurationName)
+        private async Task OnConfigurationAddedAsync(UnconfiguredProject project, string configurationName)
         {
-            string evaluatedPropertyValue = await GetPropertyValue(unconfiguredProject).ConfigureAwait(false);
-            await ProjectXmlAccessor.ExecuteInWriteLock(msbuildProject =>
+            string evaluatedPropertyValue = await GetPropertyValue(project).ConfigureAwait(false);
+            await ProjectAccessor.OpenProjectXmlForWriteAsync(project, msbuildProject =>
             {
                 BuildUtilities.AppendPropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, configurationName);
             }).ConfigureAwait(false);
@@ -83,13 +84,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// <summary>
         /// Removes a configuration from the project.
         /// </summary>
-        /// <param name="unconfiguredProject">Unconfigured project for which the configuration change.</param>
+        /// <param name="project">Unconfigured project for which the configuration change.</param>
         /// <param name="configurationName">Name of the deleted configuration.</param>
         /// <returns>A task for the async operation.</returns>
-        private async Task OnConfigurationRemovedAsync(UnconfiguredProject unconfiguredProject, string configurationName)
+        private async Task OnConfigurationRemovedAsync(UnconfiguredProject project, string configurationName)
         {
-            string evaluatedPropertyValue = await GetPropertyValue(unconfiguredProject).ConfigureAwait(false);
-            await ProjectXmlAccessor.ExecuteInWriteLock(msbuildProject =>
+            string evaluatedPropertyValue = await GetPropertyValue(project).ConfigureAwait(false);
+            await ProjectAccessor.OpenProjectXmlForWriteAsync(project, msbuildProject =>
             {
                 BuildUtilities.RemovePropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, configurationName);
             }).ConfigureAwait(false);
@@ -98,14 +99,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// <summary>
         /// Renames an existing configuration in the project.
         /// </summary>
-        /// <param name="unconfiguredProject">Unconfigured project for which the configuration change.</param>
+        /// <param name="project">Unconfigured project for which the configuration change.</param>
         /// <param name="oldName">Original name of the configuration.</param>
         /// <param name="newName">New name of the configuration.</param>
         /// <returns>A task for the async operation.</returns>
-        private async Task OnConfigurationRenamedAsync(UnconfiguredProject unconfiguredProject, string oldName, string newName)
+        private async Task OnConfigurationRenamedAsync(UnconfiguredProject project, string oldName, string newName)
         {
-            string evaluatedPropertyValue = await GetPropertyValue(unconfiguredProject).ConfigureAwait(false);
-            await ProjectXmlAccessor.ExecuteInWriteLock(msbuildProject =>
+            string evaluatedPropertyValue = await GetPropertyValue(project).ConfigureAwait(false);
+            await ProjectAccessor.OpenProjectXmlForWriteAsync(project, msbuildProject =>
             {
                 BuildUtilities.RenamePropertyValue(msbuildProject, evaluatedPropertyValue, PropertyName, oldName, newName);
             }).ConfigureAwait(false);

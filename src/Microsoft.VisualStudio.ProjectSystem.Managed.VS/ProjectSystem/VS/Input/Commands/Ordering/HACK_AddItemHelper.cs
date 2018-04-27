@@ -1,7 +1,8 @@
 ﻿using System;
-
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Threading;
 
 using Task = System.Threading.Tasks.Task;
 
@@ -52,10 +53,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
             Requires.NotNull(target, nameof(target));
 
-            await projectVsServices.ThreadingService.SwitchToUIThread();
-
             var strBrowseLocations = projectTree.TreeProvider.GetAddNewItemDirectory(target);
+
+            await projectVsServices.ThreadingService.SwitchToUIThread();
             ShowAddItemDialog(serviceProvider, target, projectVsServices.VsProject, strBrowseLocations, addItemAction);
+            await TaskScheduler.Default;
         }
 
         private enum AddItemAction { NewItem = 0, ExistingItem = 1 }

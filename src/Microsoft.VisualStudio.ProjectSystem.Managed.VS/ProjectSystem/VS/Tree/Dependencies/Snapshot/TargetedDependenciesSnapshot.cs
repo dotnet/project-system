@@ -32,6 +32,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
         }
 
+        /// <summary>
+        /// Internal for testing.
+        /// </summary>
+        internal TargetedDependenciesSnapshot(IDictionary<string, IDependency> dependenciesWorld, IEnumerable<IDependency> topLevelDependencies)
+        {
+            DependenciesWorld = ImmutableStringDictionary<IDependency>.EmptyOrdinalIgnoreCase.AddRange(dependenciesWorld);
+            var dependencies = ImmutableHashSet<IDependency>.Empty;
+            foreach (var d in topLevelDependencies)
+            {
+                dependencies = dependencies.Add(d);
+            }
+            TopLevelDependencies = dependencies;
+        }
+
         public string ProjectPath { get; }
 
         public ITargetFramework TargetFramework { get; }
@@ -113,14 +127,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         private bool FindUnresolvedDependenciesRecursive(IDependency dependency)
         {
-            var result = false;
+            var unresolved = false;
+
             if (dependency.DependencyIDs.Count > 0)
             {
                 foreach (var child in GetDependencyChildren(dependency))
                 {
                     if (!child.Resolved)
                     {
-                        result = true;
+                        unresolved = true;
+                        break;
+                    }
+
+                    // If the dependency is already in the child map, it is resolved
+                    // Checking here will prevent a stack overflow due to rechecking the same dependencies
+                    if (_dependenciesChildrenMap.ContainsKey(child.Id))
+                    {
+                        unresolved = false;
                         break;
                     }
 
@@ -131,14 +154,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
                     if (depthFirstResult)
                     {
-                        result = true;
+                        unresolved = true;
                         break;
                     }
                 }
             }
 
-            _unresolvedDescendantsMap[dependency.Id] = result;
-            return result;
+            _unresolvedDescendantsMap[dependency.Id] = unresolved;
+            return unresolved;
         }
 
         private bool TryToFindDependency(string id, out IDependency dependency)
