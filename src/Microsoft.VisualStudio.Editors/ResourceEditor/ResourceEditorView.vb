@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Strict On
 Option Explicit On
@@ -4179,6 +4179,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Try
                 ' If we can't check out the resource file, do not pop up any dialog...
                 RootDesigner.DesignerLoader.ManualCheckOut()
+
+                If String.IsNullOrEmpty(StickyAddExistingFilePath) Then
+                    StickyAddExistingFilePath = ResourceFile.BasePath
+                End If
 
                 'Ask the user to point to the file(s) to add
                 Dim FilesToAdd() As String = ShowOpenFileDialog(UserCanceled, Title, Filter, FilterIndex, MultiSelect:=True, DefaultPath:=StickyAddExistingFilePath)
