@@ -6,11 +6,45 @@ using System.Threading.Tasks;
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
-    ///     Provides methods for that assist in managing project-related background tasks. 
+    ///     Provides methods for that assist in managing project-related background tasks. This interface replaces 
+    ///     <see cref="IProjectAsyncLoadDashboard"/> usage.
     /// </summary>
     [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private)]
     internal interface IUnconfiguredProjectTasksService
-    {   // Provides unit testable versions of CommonProjectSystemTools.LoadedProjectAsync
+    {
+        /// <summary>
+        ///     Gets a task that completes when the host recognizes that the project is loaded, 
+        ///     or is cancelled if the project is unloaded before that occurs.
+        /// </summary>
+        /// <remarks>
+        ///     This task completes after <see cref="PrioritizedProjectLoadedInHost"/> and is intended for
+        ///     non-critical services that need to complete after the project has been loaded, but
+        ///     after critical services.
+        /// </remarks>
+        /// <exception cref="OperationCanceledException">
+        ///     Thrown if the project was unloaded.
+        /// </exception>
+        Task ProjectLoadedInHost
+        {
+            get;
+        }
+
+        /// <summary>
+        ///     Gets a task that completes when the host recognizes that the project is loaded,
+        ///     or is cancelled if the project is unloaded before that occurs.
+        /// </summary>
+        /// <remarks>
+        ///     This task completes before <see cref="ProjectLoadedInHost"/> and is intended for
+        ///     critical 
+        ///     services that need to do work before non-critical services.
+        /// </remarks>
+        /// <exception cref="OperationCanceledException">
+        ///     Thrown if the project was unloaded.
+        /// </exception>
+        Task PrioritizedProjectLoadedInHost
+        {
+            get;
+        }
 
         /// <summary>
         ///     Provides protection for an operation that the project will not close before the completion of some task.
