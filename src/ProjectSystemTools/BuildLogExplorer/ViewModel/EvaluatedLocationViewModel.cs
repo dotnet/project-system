@@ -11,25 +11,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogExplorer.ViewModel
         private readonly EvaluatedLocation _evaluatedLocation;
         private string _text;
         private List<object> _children;
-        //private SelectedObjectWrapper _properties;
+        private SelectedObjectWrapper _properties;
 
-        public override string Text => _text ?? (_text = $"{_evaluatedLocation.File}{(_evaluatedLocation.Line == null ? string.Empty : $" {_evaluatedLocation.Line}")} {FormatTime(_evaluatedLocation.Time)}");
+        public override string Text => _text ?? (_text = $"{_evaluatedLocation.File}{(_evaluatedLocation.Line == null ? string.Empty : $" {_evaluatedLocation.Line}")} [{FormatTime(_evaluatedLocation.Time)}]");
 
         public override IEnumerable<object> Children => _children ?? (_children = GetChildren());
 
-        //public override SelectedObjectWrapper Properties => _properties ?? (_properties =
-        //    new SelectedObjectWrapper(
-        //        _evaluatedProject.Name,
-        //        "Evaluated Project",
-        //        _evaluation?.Messages.Union(_evaluatedProject.Messages) ?? _evaluatedProject.Messages,
-        //        new Dictionary<string, IDictionary<string, string>> {
-        //            {"Build", new Dictionary<string, string>
-        //                {
-        //                    {"Started", _evaluatedProject.StartTime.ToString(CultureInfo.InvariantCulture)},
-        //                    {"Finished", _evaluatedProject.EndTime.ToString(CultureInfo.InvariantCulture)}
-        //                }
-        //             }
-        //        }));
+        public override SelectedObjectWrapper Properties => _properties ?? (_properties =
+            new SelectedObjectWrapper(
+                _evaluatedLocation.ElementName,
+                _evaluatedLocation.Kind.ToString(),
+                null,
+                new Dictionary<string, IDictionary<string, string>> {
+                    {"General", new Dictionary<string, string>
+                        {
+                            {"Description", _evaluatedLocation.ElementDescription},
+                        }
+                     }
+                }));
 
         public EvaluatedLocationViewModel(EvaluatedLocation evaluatedLocation)
         {

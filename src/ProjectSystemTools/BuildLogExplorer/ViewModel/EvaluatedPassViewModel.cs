@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogExplorer.ViewModel
         private string _text;
         private List<object> _children;
 
-        public override string Text => _text ?? (_text = $"{_evaluatedPass.Description} ({FormatTime(_evaluatedPass.Time)})");
+        public override string Text => _text ?? (_text = $"{_evaluatedPass.Description} [{FormatTime(_evaluatedPass.Time)}]");
 
         public override IEnumerable<object> Children => _children ?? (_children = GetChildren());
 
