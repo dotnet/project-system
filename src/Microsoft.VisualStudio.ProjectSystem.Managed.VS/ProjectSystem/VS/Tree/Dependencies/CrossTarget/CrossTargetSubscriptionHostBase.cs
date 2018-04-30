@@ -128,13 +128,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             }
         }
 
-        protected async override Task InitializeCoreAsync(CancellationToken cancellationToken)
+        protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            await _unconfiguredProjectTasksService.PrioritizedProjectLoadedInHostAsync(() =>
-            {
-                // Update project context and subscriptions.
-                return UpdateProjectContextAndSubscriptionsAsync();
-            }).ConfigureAwait(false);
+            // Update project context and subscriptions.
+            return UpdateProjectContextAndSubscriptionsAsync();
         }
 
         private async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, RuleHandlerType handlerType)
