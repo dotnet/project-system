@@ -227,11 +227,11 @@
     </PropertyPageSchema>
 
     <!-- Sdk references -->
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)SdkReference.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)FrameworkReference.xaml">
       <Context>Project;ProjectSubscriptionService;BrowseObject</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedSdkReference.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedFrameworkReference.xaml">
       <Context>ProjectSubscriptionService;BrowseObject</Context>
     </PropertyPageSchema>
 

@@ -107,11 +107,6 @@ Presione Omitir para pasar por alto los cambios externos. Sus cambios pueden per
         <target state="translated">COM</target>
         <note />
       </trans-unit>
-      <trans-unit id="SdkNodeName">
-        <source>SDK</source>
-        <target state="translated">SDK</target>
-        <note />
-      </trans-unit>
       <trans-unit id="AssembliesNodeName">
         <source>Assemblies</source>
         <target state="translated">Ensamblados</target>
@@ -304,6 +299,11 @@ Para depurar este proyecto, agregue un proyecto ejecutable a esta solución con 
       <trans-unit id="OKButtonText">
         <source>OK</source>
         <target state="translated">Aceptar</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FrameworkNodeName">
+        <source>Framework</source>
+        <target state="new">Framework</target>
         <note />
       </trans-unit>
     </body>

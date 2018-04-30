@@ -9,9 +9,9 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
-    internal class SdkDependencyModel : DependencyModel
+    internal class FrameworkDependencyModel : DependencyModel
     {
-        public SdkDependencyModel(
+        public FrameworkDependencyModel(
             string providerType,
             string path,
             string originalItemSpec,
@@ -25,14 +25,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
             if (Resolved)
             {
-                SchemaName = ResolvedSdkReference.SchemaName;
+                SchemaName = ResolvedFrameworkReference.SchemaName;
             }
             else
             {
-                SchemaName = SdkReference.SchemaName;
+                SchemaName = FrameworkReference.SchemaName;
             }
 
-            SchemaItemType = SdkReference.PrimaryDataSourceItemType;
+            SchemaItemType = FrameworkReference.PrimaryDataSourceItemType;
             Priority = Dependency.SdkNodePriority;
             Icon = isImplicit ? ManagedImageMonikers.SdkPrivate : ManagedImageMonikers.Sdk;
             ExpandedIcon = Icon;

@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
                 {
                     filterAnyChanges = true;
                     resultDependency = dependency.ToResolved(
-                        schemaName: ResolvedSdkReference.SchemaName,
+                        schemaName: ResolvedFrameworkReference.SchemaName,
                         dependencyIDs: package.DependencyIDs);
                 }
             }
@@ -59,13 +59,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             {
                 // find sdk with the same name
                 var sdkModelId = dependency.Name;
-                var sdkId = Dependency.GetID(targetFramework, SdkRuleHandler.ProviderTypeString, sdkModelId);
+                var sdkId = Dependency.GetID(targetFramework, FrameworkRuleHandler.ProviderTypeString, sdkModelId);
 
                 if (worldBuilder.TryGetValue(sdkId, out IDependency sdk))
                 {
                     filterAnyChanges = true;
                     sdk = sdk.ToResolved(
-                        schemaName: ResolvedSdkReference.SchemaName,
+                        schemaName: ResolvedFrameworkReference.SchemaName,
                         dependencyIDs: dependency.DependencyIDs);
 
                     worldBuilder.Remove(sdk.Id);
@@ -96,14 +96,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Fil
             {
                 // find sdk with the same name and clean dependencyIDs
                 var sdkModelId = dependency.Name;
-                var sdkId = Dependency.GetID(targetFramework, SdkRuleHandler.ProviderTypeString, sdkModelId);
+                var sdkId = Dependency.GetID(targetFramework, FrameworkRuleHandler.ProviderTypeString, sdkModelId);
 
                 if (worldBuilder.TryGetValue(sdkId, out IDependency sdk))
                 {
                     filterAnyChanges = true;
                     // clean up sdk when corresponding package is removing
                     sdk = sdk.ToUnresolved(
-                        schemaName: SdkReference.SchemaName,
+                        schemaName: FrameworkReference.SchemaName,
                         dependencyIDs: ImmutableList<string>.Empty);
 
                     worldBuilder.Remove(sdk.Id);

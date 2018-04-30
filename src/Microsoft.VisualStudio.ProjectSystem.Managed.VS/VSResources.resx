@@ -178,8 +178,8 @@ Press Ignore to ignore the external changes. Your changes may be lost if you clo
   <data name="ComNodeName" xml:space="preserve">
     <value>COM</value>
   </data>
-  <data name="SdkNodeName" xml:space="preserve">
-    <value>SDK</value>
+  <data name="FrameworkNodeName" xml:space="preserve">
+    <value>Framework</value>
   </data>
   <data name="AssembliesNodeName" xml:space="preserve">
     <value>Assemblies</value>
