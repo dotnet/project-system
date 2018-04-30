@@ -23,7 +23,7 @@ Show build (design-time) errors & warnings in Error List as you make them   |   
 **Debug**|
 Debug multiple frameworks from single project                               |          | ●
 Debug with multiple environments from single project ("launch profiles")    |          | ●
-Debug settings persistence                                                  |project.csproj.user (per user, per machine)|launchsettings.json (source control)
+Debug settings persistence                                                  |project.csproj.user|launchsettings.json
 Modify environment variables on debug                                       |          | ● 
 Launch with native debugging                                                | ●        | ◖ | Need to put `"nativeDebugging": true` in launchsettings.json for new project system
 Launch with SQL Server debugging                                            | ●        |   
