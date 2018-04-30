@@ -7,55 +7,55 @@ For a list of behavior differences; see [Compability](compatibility.md).
 **Feature**|**Legacy**|**New**|**Notes**
 ---|---|---|---
 **Platforms**                                                               |
-.NET Standard                                                               | No       | Yes
-.NET Core                                                                   | No       | Yes
-.NET Framework                                                              | Yes      | Partial  | No designer/AppModel support for new project system
+.NET Standard                                                               |          | ●
+.NET Core                                                                   |          | ●
+.NET Framework                                                              | ●        | ◖  | No designer/AppModel support for new project system
 **App Models**                                                              |
-ASP.NET Core (.NET Framework & .NET Core)                                   | No       | Yes
-ASP.NET                                                                     | Yes      | No
-Xamarin                                                                     | Yes      | No
-Universal Windows Platform (UWP)                                            | Yes      | No
-Windows Presentation Framework (WPF)                                        | Yes      | No
-Windows Forms                                                               | Yes      | No
+ASP.NET Core (.NET Framework & .NET Core)                                   |          | ●
+ASP.NET                                                                     | ●        |   
+Xamarin                                                                     | ●        |   
+Universal Windows Platform (UWP)                                            | ●        |   
+Windows Presentation Framework (WPF)                                        | ●        |   
+Windows Forms                                                               | ●        |   
 **Build**|
-Target multiple frameworks (multi-target) from single project               | No       | Yes
-Show build (design-time) errors & warnings in Error List as you make them   | No       | Yes
+Target multiple frameworks (multi-target) from single project               |          | ●
+Show build (design-time) errors & warnings in Error List as you make them   |          | ●
 **Debug**|
-Debug multiple frameworks from single project                               | No       | Yes
-Debug with multiple environments from single project ("launch profiles")    | No       | Yes
+Debug multiple frameworks from single project                               |          | ●
+Debug with multiple environments from single project ("launch profiles")    |          | ●
 Debug settings persistence                                                  |project.csproj.user (per user, per machine)|launchsettings.json (source control)
-Modify environment variables on debug                                       | No       | Yes
-Launch with native debugging                                                | Yes      | Partial | Need to put `"nativeDebugging": true` in launchsettings.json for new project system
-Launch with SQL Server debugging                                            | Yes      | No
-Launch with remote debugging                                                | Yes      | No
-Launch with Azure Snapshot Debugger                                         | No       | Yes
+Modify environment variables on debug                                       |          | ● 
+Launch with native debugging                                                | ●        | ◖ | Need to put `"nativeDebugging": true` in launchsettings.json for new project system
+Launch with SQL Server debugging                                            | ●        |   
+Launch with remote debugging                                                | ●        |   
+Launch with Azure Snapshot Debugger                                         |          | ●
 **Publish**                                                                 |
-Publish to Azure                                                            | No       | Yes
-ClickOnce Publish                                                           | Yes      | No
+Publish to Azure                                                            |          | ●
+ClickOnce Publish                                                           | ●        |   
 **Project**                                                                 |
-Globbing support                                                            | No       | Yes    | `<Compile Include="*.cs" />`
-Simplified project format                                                   | No       | Yes    | `<Project Sdk="Microsoft.Net.Sdk">`
-Simplified configuration syntax                                             | No       | Yes    | `<Configurations>Debug;Release<Configurations>;<Platforms>AnyCPU;x64</Platforms>`
-Edit project XML while loaded                                               | No       | Yes
-Automatically reload project file with no prompts                           | No       | Yes
-Automatically reload targets files                                          | No       | Yes
-Automatically refresh Solution Explorer to reflect file system              | No       | Yes
-Show items included in imports (.targets/.props)                            | No       | Yes
+Globbing support                                                            |          | ●    | `<Compile Include="*.cs" />`
+Simplified project format                                                   |          | ●    | `<Project Sdk="Microsoft.Net.Sdk">`
+Simplified configuration syntax                                             |          | ●    | `<Configurations>Debug;Release<Configurations>;<Platforms>AnyCPU;x64</Platforms>`
+Edit project XML while loaded                                               |          | ●
+Automatically reload project file with no prompts                           |          | ●
+Automatically reload targets files                                          |          | ●
+Automatically refresh Solution Explorer to reflect file system              |          | ●
+Show items included in imports (.targets/.props)                            |          | ●
 **Dependencies**|
-Auto-restore packages on load and external edit                             | No       | Yes 
-PackageReference support                                                    | Partial  | Yes | Legacy does not reload package targets file without VS restart. Also does not support using MSBuild properties in name, version and metadata.
-Dependency node showing package/project graph                               | No       | Yes 
-Transitive ProjectReference                                                 | No       | Yes
-Generate NuGet package on build                                             | No       | Yes 
+Auto-restore packages on load and external edit                             | No       | ● 
+PackageReference support                                                    | ◖       | ● | Legacy does not reload package targets file without VS restart. Also does not support using MSBuild properties in name, version and metadata.
+Dependency node showing package/project graph                               |          | ● 
+Transitive ProjectReference                                                 |          | ●
+Generate NuGet package on build                                             |          | ● 
 **Features**|
-Add Service Reference                                                       | Yes      | No
-Add Web Reference                                                           | Yes      | No
-Add Data Source                                                             | Yes      | No
-"Initialize Interactive Windows with Project"                               | Yes      | No
-Class Diagrams                                                              | Yes      | Partial
-Code Analysis                                                               | Yes      | No
-Code Metrics                                                                | Yes      | No
-Fakes                                                                       | Yes      | No
-T4 Templates                                                                | Yes      | No
-Zero Impact Projects ("Save new projects when created")                     | Yes      | No
-Simplified configurations ("Show advanced build configurations")            | Yes      | No
+Add Service Reference                                                       | ●        | 
+Add Web Reference                                                           | ●        | 
+Add Data Source                                                             | ●        | 
+"Initialize Interactive Windows with Project"                               | ●        | 
+Class Diagrams                                                              | ●        | ◖
+Code Analysis                                                               | ●        | 
+Code Metrics                                                                | ●        | 
+Fakes                                                                       | ●        | 
+T4 Templates                                                                | ●        | 
+Zero Impact Projects ("Save new projects when created")                     | ●        | 
+Simplified configurations ("Show advanced build configurations")            | ●        | 
