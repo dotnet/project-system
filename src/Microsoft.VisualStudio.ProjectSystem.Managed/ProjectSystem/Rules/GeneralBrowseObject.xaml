@@ -95,6 +95,13 @@
             <DataSource Persistence="ProjectFile" PersistedName="ProjectDir" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
+    <!-- NOTE: csproj.dll does not provide this property on the browse object, but calls it behind the scenes. -->
+    <StringProperty Name="FullProjectFileName" DisplayName="Full Path" ReadOnly="True" Category="Misc" Description="Full name of the project file.">
+        <StringProperty.DataSource>
+            <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectFullPath" SourceOfDefaultValue="AfterContext" />
+        </StringProperty.DataSource>
+    </StringProperty>
+  
     <StringProperty Name="LocalPath" ReadOnly="True" Visible="False">
         <StringProperty.DataSource>
             <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectDirectory" SourceOfDefaultValue="AfterContext" />
