@@ -5,7 +5,7 @@ The following is an incomplete list of features differences between the legacy p
 For a list of behavior differences; see [Compability](compatibility.md).
 
 **Feature**|**Legacy**|**New**|**Notes**
----|---|---|---
+---|:---:|:---:|---
 **Platforms**                                                               |
 .NET Standard                                                               |          | ●
 .NET Core                                                                   |          | ●
@@ -42,7 +42,7 @@ Automatically reload targets files                                          |   
 Automatically refresh Solution Explorer to reflect file system              |          | ●
 Show items included in imports (.targets/.props)                            |          | ●
 **Dependencies**|
-Auto-restore packages on load and external edit                             | No       | ● 
+Auto-restore packages on load and external edit                             |          | ● 
 PackageReference support                                                    | ◖       | ● | Legacy does not reload package targets file without VS restart. Also does not support using MSBuild properties in name, version and metadata.
 Dependency node showing package/project graph                               |          | ● 
 Transitive ProjectReference                                                 |          | ●
