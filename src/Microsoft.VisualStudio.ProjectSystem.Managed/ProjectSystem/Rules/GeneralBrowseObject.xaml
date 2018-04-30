@@ -85,12 +85,12 @@
         <EnumValue Name="OnOutputUpdated" DisplayName="When the build updates the project output" />
     </EnumProperty>
     <StringProperty Name="ReferencePath" DisplayName="Reference Path" Visible="False"/>
-    <StringProperty Name="FileName" DisplayName="File Name" ReadOnly="True" Category="Misc">
+    <StringProperty Name="FileName" DisplayName="File Name" ReadOnly="True" Category="Misc" Description="Name of the project file.">
         <StringProperty.DataSource>
             <DataSource Persistence="ProjectFile" PersistedName="MSBuildProjectFile" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
-    <StringProperty Name="FullPath" DisplayName="Project Folder" ReadOnly="True" Category="Misc">
+    <StringProperty Name="FullPath" DisplayName="Project Folder" ReadOnly="True" Category="Misc" Description="Location of the project file.">
         <StringProperty.DataSource>
             <DataSource Persistence="ProjectFile" PersistedName="ProjectDir" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
