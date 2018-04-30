@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="Rule|ConfigurationGeneralBrowseObject|DisplayName">
         <source>General</source>
-        <target state="translated">General</target>
+        <target state="needs-review-translation">General</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ConfigurationGeneralBrowseObject|Description">
-        <source>General</source>
-        <target state="translated">General</target>
+        <source>Project Properties</source>
+        <target state="needs-review-translation">General</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|DisplayName">

@@ -4,7 +4,7 @@
   Name="ConfigurationGeneralBrowseObject"
   DisplayName="General"
   PageTemplate="generic"
-  Description="General"
+  Description="Project Properties"
   OverrideMode= "Replace"
   xmlns="http://schemas.microsoft.com/build/2009/properties">
 
