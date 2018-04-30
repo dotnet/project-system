@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
     {
         private readonly object _gate = new object();
         private readonly IUnconfiguredProjectCommonServices _commonServices;
-        private readonly IProjectAsyncLoadDashboard _asyncLoadDashboard;
+        private readonly IUnconfiguredProjectTasksService _tasksService;
         private readonly ITaskScheduler _taskScheduler;
         private readonly List<AggregateCrossTargetProjectContext> _contexts = new List<AggregateCrossTargetProjectContext>();
         private readonly IActiveConfiguredProjectsProvider _activeConfiguredProjectsProvider;
@@ -32,19 +32,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         [ImportingConstructor]
         public AggregateCrossTargetProjectContextProvider(
             IUnconfiguredProjectCommonServices commonServices,
-            IProjectAsyncLoadDashboard asyncLoadDashboard,
+            IUnconfiguredProjectTasksService tasksService,
             ITaskScheduler taskScheduler,
             IActiveConfiguredProjectsProvider activeConfiguredProjectsProvider,
             ITargetFrameworkProvider targetFrameworkProvider)
         {
             Requires.NotNull(commonServices, nameof(commonServices));
-            Requires.NotNull(asyncLoadDashboard, nameof(asyncLoadDashboard));
+            Requires.NotNull(tasksService, nameof(tasksService));
             Requires.NotNull(taskScheduler, nameof(taskScheduler));
             Requires.NotNull(activeConfiguredProjectsProvider, nameof(activeConfiguredProjectsProvider));
             Requires.NotNull(targetFrameworkProvider, nameof(targetFrameworkProvider));
 
             _commonServices = commonServices;
-            _asyncLoadDashboard = asyncLoadDashboard;
+            _tasksService = tasksService;
             _taskScheduler = taskScheduler;
             _activeConfiguredProjectsProvider = activeConfiguredProjectsProvider;
             _targetFrameworkProvider = targetFrameworkProvider;
@@ -203,59 +203,53 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         private async Task<AggregateCrossTargetProjectContext> CreateProjectContextAsyncCore()
         {
-            // Don't initialize until the project has been loaded into the IDE and available in Solution Explorer
-            await _asyncLoadDashboard.ProjectLoadedInHostWithCancellation(_commonServices.Project).ConfigureAwait(false);
+            var projectData = GetProjectData();
 
-            return await _taskScheduler.RunAsync(TaskSchedulerPriority.UIThreadBackgroundPriority, async () =>
-            {
-                var projectData = GetProjectData();
-
-                // Get the set of active configured projects ignoring target framework.
+            // Get the set of active configured projects ignoring target framework.
 #pragma warning disable CS0618 // Type or member is obsolete
-                var configuredProjectsMap = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync().ConfigureAwait(true);
+            var configuredProjectsMap = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync().ConfigureAwait(true);
 #pragma warning restore CS0618 // Type or member is obsolete
-                var activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
-                var innerProjectContextsBuilder = ImmutableDictionary.CreateBuilder<ITargetFramework, ITargetedProjectContext>();
-                var activeTargetFramework = TargetFramework.Empty;
+            var activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
+            var innerProjectContextsBuilder = ImmutableDictionary.CreateBuilder<ITargetFramework, ITargetedProjectContext>();
+            var activeTargetFramework = TargetFramework.Empty;
 
-                foreach (var kvp in configuredProjectsMap)
+            foreach (var kvp in configuredProjectsMap)
+            {
+                var configuredProject = kvp.Value;
+                var projectProperties = configuredProject.Services.ExportProvider.GetExportedValue<ProjectProperties>();
+                var configurationGeneralProperties = await projectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
+                var targetFramework = await GetTargetFrameworkAsync(kvp.Key, configurationGeneralProperties).ConfigureAwait(false);
+
+                if (!TryGetConfiguredProjectState(configuredProject, out ITargetedProjectContext targetedProjectContext))
                 {
-                    var configuredProject = kvp.Value;
-                    var projectProperties = configuredProject.Services.ExportProvider.GetExportedValue<ProjectProperties>();
-                    var configurationGeneralProperties = await projectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
-                    var targetFramework = await GetTargetFrameworkAsync(kvp.Key, configurationGeneralProperties).ConfigureAwait(false);
+                    // Get the target path for the configured project.
+                    var targetPath = (string)await configurationGeneralProperties.TargetPath.GetValueAsync().ConfigureAwait(true);
+                    var displayName = GetDisplayName(configuredProject, projectData, targetFramework.FullName);
 
-                    if (!TryGetConfiguredProjectState(configuredProject, out ITargetedProjectContext targetedProjectContext))
+                    targetedProjectContext = new TargetedProjectContext(targetFramework, projectData.FullPath, displayName, targetPath)
                     {
-                        // Get the target path for the configured project.
-                        var targetPath = (string)await configurationGeneralProperties.TargetPath.GetValueAsync().ConfigureAwait(true);
-                        var displayName = GetDisplayName(configuredProject, projectData, targetFramework.FullName);
-
-                        targetedProjectContext = new TargetedProjectContext(targetFramework, projectData.FullPath, displayName, targetPath)
-                        {
-                            // By default, set "LastDesignTimeBuildSucceeded = false" until first design time 
-                            // build succeeds for this project.
-                            LastDesignTimeBuildSucceeded = false
-                        };
-                        AddConfiguredProjectState(configuredProject, targetedProjectContext);
-                    }
-
-                    innerProjectContextsBuilder.Add(targetFramework, targetedProjectContext);
-
-                    if (activeTargetFramework.Equals(TargetFramework.Empty) &&
-                        configuredProject.ProjectConfiguration.Equals(activeProjectConfiguration))
-                    {
-                        activeTargetFramework = targetFramework;
-                    }
+                        // By default, set "LastDesignTimeBuildSucceeded = false" until first design time 
+                        // build succeeds for this project.
+                        LastDesignTimeBuildSucceeded = false
+                    };
+                    AddConfiguredProjectState(configuredProject, targetedProjectContext);
                 }
 
-                var isCrossTargeting = !(configuredProjectsMap.Count == 1 && string.IsNullOrEmpty(configuredProjectsMap.First().Key));
-                return new AggregateCrossTargetProjectContext(isCrossTargeting,
-                                                              innerProjectContextsBuilder.ToImmutable(),
-                                                              configuredProjectsMap,
-                                                              activeTargetFramework,
-                                                              _targetFrameworkProvider);
-            });
+                innerProjectContextsBuilder.Add(targetFramework, targetedProjectContext);
+
+                if (activeTargetFramework.Equals(TargetFramework.Empty) &&
+                    configuredProject.ProjectConfiguration.Equals(activeProjectConfiguration))
+                {
+                    activeTargetFramework = targetFramework;
+                }
+            }
+
+            var isCrossTargeting = !(configuredProjectsMap.Count == 1 && string.IsNullOrEmpty(configuredProjectsMap.First().Key));
+            return new AggregateCrossTargetProjectContext(isCrossTargeting,
+                                                            innerProjectContextsBuilder.ToImmutable(),
+                                                            configuredProjectsMap,
+                                                            activeTargetFramework,
+                                                            _targetFrameworkProvider);
         }
 
         private async Task<ITargetFramework> GetTargetFrameworkAsync(

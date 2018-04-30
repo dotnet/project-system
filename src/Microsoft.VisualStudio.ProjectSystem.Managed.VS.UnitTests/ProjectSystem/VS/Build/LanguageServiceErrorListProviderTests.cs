@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             var result = provider.ClearAllAsync();
 
-            Assert.True(result.IsCompleted);
+            Assert.True(result.Status == TaskStatus.RanToCompletion);
         }
 
         [Fact]
@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             var result = provider.ClearMessageFromTargetAsync("targetName");
 
-            Assert.True(result.IsCompleted);
+            Assert.True(result.Status == TaskStatus.RanToCompletion);
         }
 
         [Fact]

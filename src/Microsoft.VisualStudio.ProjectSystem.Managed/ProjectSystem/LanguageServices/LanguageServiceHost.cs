@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
         private readonly IActiveProjectConfigurationRefreshService _activeProjectConfigurationRefreshService;
         private readonly LanguageServiceHandlerManager _languageServiceHandlerManager;
-
+        private readonly IUnconfiguredProjectTasksService _unconfiguredProjectTasksService;
         private readonly List<IDisposable> _evaluationSubscriptionLinks;
         private readonly List<IDisposable> _designTimeBuildSubscriptionLinks;
         private readonly HashSet<ProjectConfiguration> _projectConfigurationsWithSubscriptions;
@@ -51,7 +51,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                    [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService,
                                    IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
                                    IActiveProjectConfigurationRefreshService activeProjectConfigurationRefreshService,
-                                   LanguageServiceHandlerManager languageServiceHandlerManager)
+                                   LanguageServiceHandlerManager languageServiceHandlerManager,
+                                   IUnconfiguredProjectTasksService unconfiguredProjectTasksService)
             : base(commonServices.ThreadingService.JoinableTaskContext)
         {
             Requires.NotNull(contextProvider, nameof(contextProvider));
@@ -66,6 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
             _activeProjectConfigurationRefreshService = activeProjectConfigurationRefreshService;
             _languageServiceHandlerManager = languageServiceHandlerManager;
+            _unconfiguredProjectTasksService = unconfiguredProjectTasksService;
             _evaluationSubscriptionLinks = new List<IDisposable>();
             _designTimeBuildSubscriptionLinks = new List<IDisposable>();
             _projectConfigurationsWithSubscriptions = new HashSet<ProjectConfiguration>();
@@ -77,23 +79,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         public object HostSpecificEditAndContinueService => _currentAggregateProjectContext?.ENCProjectConfig;
 
-        [ProjectAutoLoad(ProjectLoadCheckpoint.ProjectFactoryCompleted)]
+        [ProjectAutoLoad(completeBy: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
         [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
         private Task OnProjectFactoryCompletedAsync()
         {
             return InitializeAsync();
         }
 
-        protected async override Task InitializeCoreAsync(CancellationToken cancellationToken)
+        protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
             if (IsDisposing || IsDisposed)
-                return;
+                return Task.CompletedTask;
 
-            // Don't initialize if we're unloading
-            _tasksService.UnloadCancellationToken.ThrowIfCancellationRequested();
+            _unconfiguredProjectTasksService.PrioritizedProjectLoadedInHostAsync(() =>
+            {
+                return UpdateProjectContextAndSubscriptionsAsync();
+            }).Forget();
 
-            // Update project context and subscriptions.
-            await UpdateProjectContextAndSubscriptionsAsync().ConfigureAwait(false);
+            return Task.CompletedTask;
         }
 
         Task ILanguageServiceHost.InitializeAsync(CancellationToken cancellationToken)
