@@ -98,8 +98,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FileName|DisplayName">
-        <source>Project File</source>
-        <target state="translated">File di progetto</target>
+        <source>File Name</source>
+        <target state="needs-review-translation">File di progetto</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">
@@ -240,6 +240,26 @@
       <trans-unit id="DynamicEnumProperty|StartupObject|DisplayName">
         <source>Type that contains the entry point</source>
         <target state="translated">Tipo che contiene il punto di ingresso</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FileName|Description">
+        <source>Name of the project file.</source>
+        <target state="new">Name of the project file.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FullPath|Description">
+        <source>Location of the project file.</source>
+        <target state="new">Location of the project file.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FullProjectFileName|DisplayName">
+        <source>Full Path</source>
+        <target state="new">Full Path</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FullProjectFileName|Description">
+        <source>Full name of the project file.</source>
+        <target state="new">Full name of the project file.</target>
         <note />
       </trans-unit>
     </body>
