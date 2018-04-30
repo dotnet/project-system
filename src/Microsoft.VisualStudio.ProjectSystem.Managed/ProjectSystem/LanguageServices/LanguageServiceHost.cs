@@ -79,22 +79,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         public object HostSpecificEditAndContinueService => _currentAggregateProjectContext?.ENCProjectConfig;
 
-        [ProjectAutoLoad(ProjectLoadCheckpoint.ProjectFactoryCompleted)]
+        [ProjectAutoLoad(completeBy: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
         [AppliesTo(ProjectCapability.CSharpOrVisualBasicOrFSharpLanguageService)]
         private Task OnProjectFactoryCompletedAsync()
         {
             return InitializeAsync();
         }
 
-        protected async override Task InitializeCoreAsync(CancellationToken cancellationToken)
+        protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
             if (IsDisposing || IsDisposed)
-                return;
+                return Task.CompletedTask;
 
-            await _unconfiguredProjectTasksService.PrioritizedProjectLoadedInHostAsync(() =>
+            _unconfiguredProjectTasksService.PrioritizedProjectLoadedInHostAsync(() =>
             {
                 return UpdateProjectContextAndSubscriptionsAsync();
-            }).ConfigureAwait(false);
+            }).Forget();
+
+            return Task.CompletedTask;
         }
 
         Task ILanguageServiceHost.InitializeAsync(CancellationToken cancellationToken)
