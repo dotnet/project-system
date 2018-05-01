@@ -7,8 +7,6 @@ using Microsoft.Build.Framework;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Shell.Interop;
 
-using Moq;
-
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
