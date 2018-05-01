@@ -3,9 +3,6 @@
 Imports System.ComponentModel.Design
 Imports System.ComponentModel.Design.Serialization
 Imports System.Diagnostics.CodeAnalysis
-Imports System.Drawing
-Imports System.Text
-Imports System.Windows.Forms
 Imports Microsoft.VisualStudio.Shell.Design
 Imports Microsoft.VisualStudio.Shell.Design.Serialization
 Imports Microsoft.VisualStudio.Shell.Interop

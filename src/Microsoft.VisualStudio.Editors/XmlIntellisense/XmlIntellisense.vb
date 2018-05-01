@@ -7,7 +7,6 @@ Imports System.Runtime.InteropServices
 Imports System.Xml
 Imports System.Xml.Schema
 Imports System.Threading
-Imports System.Threading.Tasks
 Imports System.ComponentModel.Design
 Imports Microsoft.VisualStudio.XmlEditor
 Imports Microsoft.VisualStudio.Shell.Interop

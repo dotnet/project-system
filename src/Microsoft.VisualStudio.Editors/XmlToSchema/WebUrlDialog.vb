@@ -2,7 +2,6 @@
 
 Imports System.ComponentModel.Design
 Imports System.Windows.Forms
-Imports System.Xml.Linq
 
 Namespace Microsoft.VisualStudio.Editors.XmlToSchema
 
