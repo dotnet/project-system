@@ -17,12 +17,13 @@
 15. Add/Rename/Remove file
 16. Add/Rename/Remove folder
 17. DTE Properties/Properties Grid for Projects, folders, files (Expected names and values, editable)
-18. Project Properties pages
-19. Shared Projects
-20. Cross language P2P refs (C# <--> VB)
-21. Cross language P2P refs (C#/VB <--> C++)
-22. Single file generators
-23. Class designer support
+18. CodeModel and other DTE APIs
+19. Project Properties pages
+20. Shared Projects
+21. Cross language P2P refs (C# <--> VB)
+22. Cross language P2P refs (C#/VB <--> C++)
+23. Single file generators
+24. Class designer support
 	
 # CPS Only
 1. Edit project file
@@ -34,15 +35,17 @@
 7. Auto-restore on open
 	
 # CSProj only
-1. Publish to ClickOnce
-2. Sql debugging
-3. Remote debugging
-4. Add Service reference
-5. Add Web reference
-6. Add Data Source
-7. Code Analysis
-8. Code metrics
-9. Fakes
-10. T4 templates
-11. Zero impact projects ("Save new projects when created")
-12. Simplified configurations ("Show advanced build configurations")
+1. Winforms designer
+2. Xaml designer
+3. Publish to ClickOnce
+4. Sql debugging
+5. Remote debugging
+6. Add Service reference
+7. Add Web reference
+8. Add Data Source
+9. Code Analysis
+10. Code metrics
+11. Fakes
+12. T4 templates
+13. Zero impact projects ("Save new projects when created")
+14. Simplified configurations ("Show advanced build configurations")
