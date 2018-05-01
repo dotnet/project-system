@@ -41,8 +41,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         public void DuplicateMetadataReferencesPushedToWorkspace()
         {
             var referencesPushedToWorkspace = new HashSet<string>(StringComparers.Paths);
-            Action<string> onReferenceAdded = s => referencesPushedToWorkspace.Add(s);
-            Action<string> onReferenceRemoved = s => referencesPushedToWorkspace.Remove(s);
+            void onReferenceAdded(string s) => referencesPushedToWorkspace.Add(s);
+            void onReferenceRemoved(string s) => referencesPushedToWorkspace.Remove(s);
 
             var project = UnconfiguredProjectFactory.Create(filePath: @"C:\Myproject.csproj");
             var context = IWorkspaceProjectContextFactory.CreateForMetadataReferences(project, onReferenceAdded, onReferenceRemoved);
@@ -70,8 +70,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         public void RootedReferencesPushedToWorkspace()
         {
             var referencesPushedToWorkspace = new HashSet<string>(StringComparers.Paths);
-            Action<string> onReferenceAdded = s => referencesPushedToWorkspace.Add(s);
-            Action<string> onReferenceRemoved = s => referencesPushedToWorkspace.Remove(s);
+            void onReferenceAdded(string s) => referencesPushedToWorkspace.Add(s);
+            void onReferenceRemoved(string s) => referencesPushedToWorkspace.Remove(s);
 
             var project = UnconfiguredProjectFactory.Create(filePath: @"C:\ProjectFolder\Myproject.csproj");
             var context = IWorkspaceProjectContextFactory.CreateForMetadataReferences(project, onReferenceAdded, onReferenceRemoved);

@@ -94,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             await _commonServices.ThreadingService.SwitchToUIThread();
 
             // We don't want to dispose the inner workspace contexts that are still being used by other active aggregate contexts.
-            Func<IWorkspaceProjectContext, bool> shouldDisposeInnerContext = c => !usedProjectContexts.Contains(c);
+            bool shouldDisposeInnerContext(IWorkspaceProjectContext c) => !usedProjectContexts.Contains(c);
 
             context.Dispose(shouldDisposeInnerContext);
         }

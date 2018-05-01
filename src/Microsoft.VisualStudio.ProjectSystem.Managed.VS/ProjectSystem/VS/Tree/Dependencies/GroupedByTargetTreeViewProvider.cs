@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var originalTree = dependenciesTree;
             var currentTopLevelNodes = new List<IProjectTree>();
-            Func<IProjectTree, IEnumerable<IProjectTree>, IProjectTree> rememberNewNodes = (rootNode, currentNodes) =>
+            IProjectTree rememberNewNodes(IProjectTree rootNode, IEnumerable<IProjectTree> currentNodes)
             {
                 if (currentNodes != null)
                 {
@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 }
 
                 return rootNode;
-            };
+            }
 
             if (snapshot.Targets.Where(x => !x.Key.Equals(TargetFramework.Any)).Count() == 1)
             {
