@@ -206,8 +206,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         {
             IProjectTree rootNode = await GetParentFolderAsync(createIfNotExists: true).ConfigureAwait(false);
 
-            var parentPath = _projectTree.TreeProvider.GetRootedAddNewItemDirectory(rootNode);
-            var specialFilePath = Path.Combine(parentPath, specialFileName);
+            string parentPath = _projectTree.TreeProvider.GetRootedAddNewItemDirectory(rootNode);
+            string specialFilePath = Path.Combine(parentPath, specialFileName);
 
             // If we can create the file from the template do it, otherwise just create an empty file.
             if (_templateFileCreationService != null)

@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public LaunchSettings(IEnumerable<ILaunchProfile> profiles, IDictionary<string, object> globalSettings, string activeProfile = null)
         {
             Profiles = ImmutableList<ILaunchProfile>.Empty;
-            foreach (var profile in profiles)
+            foreach (ILaunchProfile profile in profiles)
             {
                 Profiles = Profiles.Add(new LaunchProfile(profile));
             }
@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public LaunchSettings(LaunchSettingsData settingsData, string activeProfile = null)
         {
             Profiles = ImmutableList<ILaunchProfile>.Empty;
-            foreach (var profile in settingsData.Profiles)
+            foreach (LaunchProfileData profile in settingsData.Profiles)
             {
                 Profiles = Profiles.Add(new LaunchProfile(profile));
             }
@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public LaunchSettings(IWritableLaunchSettings settings)
         {
             Profiles = ImmutableList<ILaunchProfile>.Empty;
-            foreach (var profile in settings.Profiles)
+            foreach (IWritableLaunchProfile profile in settings.Profiles)
             {
                 Profiles = Profiles.Add(new LaunchProfile(profile));
             }
@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // For global settings we want to make new copies of each entry so that the snapshot remains immutable. If the object implements 
             // ICloneable that is used, otherwise, it is serialized back to json, and a new object rehydrated from that
             GlobalSettings = ImmutableStringDictionary<object>.EmptyOrdinal;
-            foreach (var kvp in settings.GlobalSettings)
+            foreach (KeyValuePair<string, object> kvp in settings.GlobalSettings)
             {
                 if (kvp.Value is ICloneable clonableObject)
                 {

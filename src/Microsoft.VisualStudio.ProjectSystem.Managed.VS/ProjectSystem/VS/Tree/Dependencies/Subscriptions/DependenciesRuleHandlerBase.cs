@@ -94,18 +94,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             DependenciesRuleChangeContext ruleChangeContext,
             Func<IDependencyModel, bool> shouldProcess)
         {
-            foreach (var removedItem in projectChange.Difference.RemovedItems)
+            foreach (string removedItem in projectChange.Difference.RemovedItems)
             {
-                var model = CreateDependencyModelForRule(removedItem, resolved, projectChange.Before, context.TargetFramework);
+                IDependencyModel model = CreateDependencyModelForRule(removedItem, resolved, projectChange.Before, context.TargetFramework);
                 if (shouldProcess(model))
                 {
                     ruleChangeContext.IncludeRemovedChange(context.TargetFramework, model);
                 }
             }
 
-            foreach (var changedItem in projectChange.Difference.ChangedItems)
+            foreach (string changedItem in projectChange.Difference.ChangedItems)
             {
-                var model = CreateDependencyModelForRule(changedItem, resolved, projectChange.After, context.TargetFramework);
+                IDependencyModel model = CreateDependencyModelForRule(changedItem, resolved, projectChange.After, context.TargetFramework);
                 if (shouldProcess(model))
                 {
                     // For changes we try to add new dependency. If it is a resolved dependency, it would just override
@@ -115,9 +115,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 }
             }
 
-            foreach (var addedItem in projectChange.Difference.AddedItems)
+            foreach (string addedItem in projectChange.Difference.AddedItems)
             {
-                var model = CreateDependencyModelForRule(addedItem, resolved, projectChange.After, context.TargetFramework);
+                IDependencyModel model = CreateDependencyModelForRule(addedItem, resolved, projectChange.After, context.TargetFramework);
                 if (shouldProcess(model))
                 {
                     ruleChangeContext.IncludeAddedChange(context.TargetFramework, model);
@@ -136,14 +136,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IProjectRuleSnapshot projectRuleSnapshot,
             ITargetFramework targetFramework)
         {
-            var properties = GetProjectItemProperties(projectRuleSnapshot, itemSpec);
-            var originalItemSpec = itemSpec;
+            IImmutableDictionary<string, string> properties = GetProjectItemProperties(projectRuleSnapshot, itemSpec);
+            string originalItemSpec = itemSpec;
             if (resolved)
             {
                 originalItemSpec = GetOriginalItemSpec(properties);
             }
 
-            var isImplicit = false;
+            bool isImplicit = false;
             if (properties != null
                 && properties.TryGetValue(ProjectItemMetadata.IsImplicitlyDefined, out string isImplicitlyDefinedString)
                 && bool.TryParse(isImplicitlyDefinedString, out bool isImplicitlyDefined))

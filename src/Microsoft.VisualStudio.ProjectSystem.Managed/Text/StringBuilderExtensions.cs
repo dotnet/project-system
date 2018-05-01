@@ -51,8 +51,8 @@ namespace Microsoft.VisualStudio.Text
         {
             while (builder.Length > 0)
             {
-                var match = false;
-                foreach (var c in trimChars)
+                bool match = false;
+                foreach (char c in trimChars)
                 {
                     if (builder[builder.Length - 1] == c)
                     {

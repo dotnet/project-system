@@ -43,13 +43,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
         public Task HintedAsync(IImmutableDictionary<Guid, IImmutableSet<IProjectChangeHint>> hints)
         {
-            var files = hints[ProjectChangeFileSystemEntityRenameHint.RenamedFile];
+            IImmutableSet<IProjectChangeHint> files = hints[ProjectChangeFileSystemEntityRenameHint.RenamedFile];
             if (files.Count == 1)
             {
                 var hint = (IProjectChangeFileRenameHint)files.First();
                 if (!hint.ChangeAlreadyOccurred)
                 {
-                    var kvp = hint.RenamedFiles.First();
+                    System.Collections.Generic.KeyValuePair<string, string> kvp = hint.RenamedFiles.First();
                     ScheduleRename(kvp.Key, kvp.Value);
                 }
             }
@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 return;
             }
 
-            var myProject = _visualStudioWorkspace
+            CodeAnalysis.Project myProject = _visualStudioWorkspace
                  .CurrentSolution
                  .Projects.Where(p => StringComparers.Paths.Equals(p.FilePath, _projectVsServices.Project.FullPath))
                  .FirstOrDefault();

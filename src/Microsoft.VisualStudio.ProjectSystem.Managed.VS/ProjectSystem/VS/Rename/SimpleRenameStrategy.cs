@@ -23,8 +23,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         // For the SimpleRename, it can attempt to handle any situtation
         public override bool CanHandleRename(string oldFileName, string newFileName, bool isCaseSensitive)
         {
-            var oldNameBase = Path.GetFileNameWithoutExtension(oldFileName);
-            var newNameBase = Path.GetFileNameWithoutExtension(newFileName);
+            string oldNameBase = Path.GetFileNameWithoutExtension(oldFileName);
+            string newNameBase = Path.GetFileNameWithoutExtension(newFileName);
             return _roslynServices.IsValidIdentifier(oldNameBase) && _roslynServices.IsValidIdentifier(newNameBase) && (!string.Equals(Path.GetFileName(oldNameBase), Path.GetFileName(newNameBase), isCaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase));
         }
 
@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 return;
 
             await _threadingService.SwitchToUIThread();
-            var renamedSolutionApplied = _roslynServices.ApplyChangesToSolution(myNewProject.Solution.Workspace, renamedSolution);
+            bool renamedSolutionApplied = _roslynServices.ApplyChangesToSolution(myNewProject.Solution.Workspace, renamedSolution);
 
             if (!renamedSolutionApplied)
             {
@@ -48,25 +48,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
         private async Task<Solution> GetRenamedSolutionAsync(Project myNewProject, string oldNameBase, string newFileName, bool isCaseSensitive)
         {
-            var project = myNewProject;
+            Project project = myNewProject;
             Solution renamedSolution = null;
 
             while (project != null)
             {
-                var newDocument = GetDocument(project, newFileName);
+                Document newDocument = GetDocument(project, newFileName);
                 if (newDocument == null)
                     return renamedSolution;
 
-                var root = await GetRootNode(newDocument).ConfigureAwait(false);
+                SyntaxNode root = await GetRootNode(newDocument).ConfigureAwait(false);
                 if (root == null)
                     return renamedSolution;
 
-                var semanticModel = await newDocument.GetSemanticModelAsync().ConfigureAwait(false);
+                SemanticModel semanticModel = await newDocument.GetSemanticModelAsync().ConfigureAwait(false);
                 if (semanticModel == null)
                     return renamedSolution;
 
-                var declarations = root.DescendantNodes().Where(n => HasMatchingSyntaxNode(semanticModel, n, oldNameBase, isCaseSensitive));
-                var declaration = declarations.FirstOrDefault();
+                System.Collections.Generic.IEnumerable<SyntaxNode> declarations = root.DescendantNodes().Where(n => HasMatchingSyntaxNode(semanticModel, n, oldNameBase, isCaseSensitive));
+                SyntaxNode declaration = declarations.FirstOrDefault();
                 if (declaration == null)
                     return renamedSolution;
 

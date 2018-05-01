@@ -33,8 +33,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
             if (CanMove() && !_previousIncludes.IsEmpty && hints.ContainsKey(ProjectChangeFileSystemEntityHint.AddedFile))
             {
-                var hint = hints[ProjectChangeFileSystemEntityHint.AddedFile].First();
-                var configuredProject = hint.UnconfiguredProject.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject;
+                IProjectChangeHint hint = hints[ProjectChangeFileSystemEntityHint.AddedFile].First();
+                ConfiguredProject configuredProject = hint.UnconfiguredProject.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject;
                 await OrderingHelper.Move(configuredProject, _accessor, _previousIncludes, _target, _action).ConfigureAwait(false);
             }
 
@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             // However we check to see if we captured the previous includes for sanity to ensure it only gets set once.
             if (CanMove() && _previousIncludes.IsEmpty)
             {
-                var configuredProject = hint.UnconfiguredProject.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject;
+                ConfiguredProject configuredProject = hint.UnconfiguredProject.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject;
 
                 _previousIncludes = await OrderingHelper.GetAllEvaluatedIncludes(configuredProject, _accessor).ConfigureAwait(false);
 

@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
             Requires.NotNull(target, nameof(target));
 
-            var strBrowseLocations = projectTree.TreeProvider.GetAddNewItemDirectory(target);
+            string strBrowseLocations = projectTree.TreeProvider.GetAddNewItemDirectory(target);
 
             await projectVsServices.ThreadingService.SwitchToUIThread();
             ShowAddItemDialog(serviceProvider, target, projectVsServices.VsProject, strBrowseLocations, addItemAction);
@@ -67,16 +67,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// </summary>
         private static int ShowAddItemDialog(SVsServiceProvider serviceProvider, IProjectTree target, IVsProject vsProject, string strBrowseLocations, AddItemAction addItemAction)
         {
-            var addItemDialog = serviceProvider.GetService<IVsAddProjectItemDlg, SVsAddProjectItemDlg>();
+            IVsAddProjectItemDlg addItemDialog = serviceProvider.GetService<IVsAddProjectItemDlg, SVsAddProjectItemDlg>();
             Assumes.Present(addItemDialog);
 
-            var uiFlags = __VSADDITEMFLAGS.VSADDITEM_AddNewItems | __VSADDITEMFLAGS.VSADDITEM_SuggestTemplateName | __VSADDITEMFLAGS.VSADDITEM_AllowHiddenTreeView;
+            __VSADDITEMFLAGS uiFlags = __VSADDITEMFLAGS.VSADDITEM_AddNewItems | __VSADDITEMFLAGS.VSADDITEM_SuggestTemplateName | __VSADDITEMFLAGS.VSADDITEM_AllowHiddenTreeView;
             if (addItemAction == AddItemAction.ExistingItem)
             {
                 uiFlags = __VSADDITEMFLAGS.VSADDITEM_AddExistingItems | __VSADDITEMFLAGS.VSADDITEM_AllowMultiSelect | __VSADDITEMFLAGS.VSADDITEM_AllowStickyFilter | __VSADDITEMFLAGS.VSADDITEM_ProjectHandlesLinks;
             }
 
-            var strFilter = string.Empty;
+            string strFilter = string.Empty;
             Guid addItemTemplateGuid = Guid.Empty;  // Let the dialog ask the hierarchy itself
 
             return addItemDialog.AddProjectItemDlg(target.GetHierarchyId(), ref addItemTemplateGuid, vsProject, (uint)uiFlags,

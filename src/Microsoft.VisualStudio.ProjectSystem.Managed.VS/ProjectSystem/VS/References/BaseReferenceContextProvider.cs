@@ -30,8 +30,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             _nextHandler = new Lazy<Lazy<IVsReferenceManagerUserAsync, IVsReferenceManagerUserComponentMetadataView>>(() =>
             {
                 Type provider = GetType();
-                var order = provider.GetCustomAttribute<OrderAttribute>();
-                var user = provider.GetCustomAttribute<ExportIVsReferenceManagerUserAsyncAttribute>();
+                OrderAttribute order = provider.GetCustomAttribute<OrderAttribute>();
+                ExportIVsReferenceManagerUserAsyncAttribute user = provider.GetCustomAttribute<ExportIVsReferenceManagerUserAsyncAttribute>();
                 return VsReferenceManagerUsers.FirstOrDefault(
                         export =>
                             export.Metadata.OrderPrecedence < order.OrderPrecedence &&

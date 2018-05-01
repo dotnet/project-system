@@ -126,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             get
             {
-                var snapshot = CurrentSnapshot;
+                ILaunchSettings snapshot = CurrentSnapshot;
                 return snapshot?.ActiveProfile;
             }
         }
@@ -209,7 +209,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             if (projectSnapshot.Value.Item1.CurrentState.TryGetValue(ProjectDebugger.SchemaName, out IProjectRuleSnapshot ruleSnapshot))
             {
                 ruleSnapshot.Properties.TryGetValue(ProjectDebugger.ActiveDebugProfileProperty, out string activeProfile);
-                var snapshot = CurrentSnapshot;
+                ILaunchSettings snapshot = CurrentSnapshot;
                 if (snapshot == null || !LaunchProfile.IsSameProfileName(activeProfile, snapshot.ActiveProfile?.Name))
                 {
                     // Updates need to be sequenced
@@ -230,7 +230,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         protected async Task UpdateActiveProfileInSnapshotAsync(string activeProfile)
         {
-            var snapshot = CurrentSnapshot;
+            ILaunchSettings snapshot = CurrentSnapshot;
             if (snapshot == null || await SettingsFileHasChangedAsync().ConfigureAwait(false))
             {
                 await UpdateProfilesAsync(activeProfile).ConfigureAwait(false);
@@ -254,14 +254,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // If no active profile specified, try to get one
                 if (activeProfile == null)
                 {
-                    var props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync().ConfigureAwait(false);
+                    ProjectDebugger props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync().ConfigureAwait(false);
                     if (await props.ActiveDebugProfile.GetValueAsync().ConfigureAwait(false) is IEnumValue activeProfileVal)
                     {
                         activeProfile = activeProfileVal.Name;
                     }
                 }
 
-                var launchSettingData = await GetLaunchSettingsAsync().ConfigureAwait(false);
+                LaunchSettingsData launchSettingData = await GetLaunchSettingsAsync().ConfigureAwait(false);
 
                 // If there are no profiles, we will add a default profile to run the prroject. W/o it our debugger
                 // won't be called on F5 and the user will see a poor error message
@@ -271,7 +271,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 }
 
                 // If we have a previous snapshot merge in in-memory profiles
-                var prevSnapshot = CurrentSnapshot;
+                ILaunchSettings prevSnapshot = CurrentSnapshot;
                 if (prevSnapshot != null)
                 {
                     MergeExistingInMemoryProfiles(launchSettingData, prevSnapshot);
@@ -306,7 +306,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             for (int i = 0; i < prevSnapshot.Profiles.Count; i++)
             {
-                var profile = prevSnapshot.Profiles[i];
+                ILaunchProfile profile = prevSnapshot.Profiles[i];
                 if (profile.IsInMemoryObject() && !string.Equals(profile.CommandName, ErrorProfileCommandName))
                 {
                     // Does it already have one with this name?
@@ -334,7 +334,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             if (prevSnapshot.GlobalSettings != null)
             {
-                foreach (var kvp in prevSnapshot.GlobalSettings)
+                foreach (KeyValuePair<string, object> kvp in prevSnapshot.GlobalSettings)
                 {
                     if (kvp.Value.IsInMemoryObject())
                     {
@@ -343,7 +343,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                             newSnapshot.OtherSettings = new Dictionary<string, object>();
                             newSnapshot.OtherSettings[kvp.Key] = kvp.Value;
                         }
-                        else if (!newSnapshot.OtherSettings.TryGetValue(kvp.Key, out var existingValue))
+                        else if (!newSnapshot.OtherSettings.TryGetValue(kvp.Key, out object existingValue))
                         {
                             newSnapshot.OtherSettings[kvp.Key] = kvp.Value;
                         }
@@ -372,7 +372,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             CurrentSnapshot = newSnapshot;
             if (ensureProfileProperty)
             {
-                var props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync().ConfigureAwait(false);
+                ProjectDebugger props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync().ConfigureAwait(false);
                 if (await props.ActiveDebugProfile.GetValueAsync().ConfigureAwait(false) is IEnumValue activeProfileVal)
                 {
                     if (newSnapshot.ActiveProfile?.Name != null && !string.Equals(newSnapshot.ActiveProfile?.Name, activeProfileVal.Name))
@@ -448,17 +448,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // serialize their section. Unfortunately, this means the data is string to object which is messy to deal with
                 var launchSettingsData = new LaunchSettingsData() { OtherSettings = new Dictionary<string, object>(StringComparer.Ordinal) };
                 var jsonObject = JObject.Parse(jsonString);
-                foreach (var pair in jsonObject)
+                foreach (KeyValuePair<string, JToken> pair in jsonObject)
                 {
                     if (pair.Key.Equals(ProfilesSectionName, StringComparison.Ordinal) && pair.Value is JObject)
                     {
-                        var profiles = LaunchProfileData.DeserializeProfiles((JObject)pair.Value);
+                        Dictionary<string, LaunchProfileData> profiles = LaunchProfileData.DeserializeProfiles((JObject)pair.Value);
                         launchSettingsData.Profiles = FixupProfilesAndLogErrors(profiles);
                     }
                     else
                     {
                         // Find the matching json serialization handler for this section
-                        var handler = JsonSerializationProviders.FirstOrDefault(sp => string.Equals(sp.Metadata.JsonSection, pair.Key));
+                        Lazy<ILaunchSettingsSerializationProvider, IJsonSection> handler = JsonSerializationProviders.FirstOrDefault(sp => string.Equals(sp.Metadata.JsonSection, pair.Key));
                         if (handler != null)
                         {
                             object sectionObject = JsonConvert.DeserializeObject(pair.Value.ToString(), handler.Metadata.SerializationType);
@@ -514,7 +514,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
 
             var validProfiles = new List<LaunchProfileData>();
-            foreach (var kvp in profilesData)
+            foreach (KeyValuePair<string, LaunchProfileData> kvp in profilesData)
             {
                 if (!string.IsNullOrWhiteSpace(kvp.Key))
                 {
@@ -555,7 +555,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             // Clear stale errors since we are saving
             ClearErrors();
-            var serializationData = GetSettingsToSerialize(newSettings);
+            Dictionary<string, object> serializationData = GetSettingsToSerialize(newSettings);
             string fileName = await GetLaunchSettingsFilePathAsync().ConfigureAwait(false);
 
             try
@@ -592,7 +592,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         protected static Dictionary<string, object> GetSettingsToSerialize(ILaunchSettings curSettings)
         {
             var profileData = new Dictionary<string, Dictionary<string, object>>(StringComparer.Ordinal);
-            foreach (var profile in curSettings.Profiles)
+            foreach (ILaunchProfile profile in curSettings.Profiles)
             {
                 if (ProfileShouldBePersisted(profile))
                 {
@@ -602,7 +602,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             var dataToSave = new Dictionary<string, object>(StringComparer.Ordinal);
 
-            foreach (var setting in curSettings.GlobalSettings)
+            foreach (KeyValuePair<string, object> setting in curSettings.GlobalSettings)
             {
                 if (!setting.Value.IsInMemoryObject())
                 {
@@ -631,7 +631,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         protected async Task CheckoutSettingsFileAsync()
         {
-            var sourceControlIntegration = SourceControlIntegrations.FirstOrDefault();
+            Lazy<ISourceCodeControlIntegration, IOrderPrecedenceMetadataView> sourceControlIntegration = SourceControlIntegrations.FirstOrDefault();
             if (sourceControlIntegration != null && sourceControlIntegration.Value != null)
             {
                 string fileName = await GetLaunchSettingsFilePathAsync().ConfigureAwait(false);
@@ -781,7 +781,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             await CheckoutSettingsFileAsync().ConfigureAwait(false);
 
             // Make sure the profiles are copied. We don't want them to mutate.
-            var activeProfileName = ActiveProfile?.Name;
+            string activeProfileName = ActiveProfile?.Name;
 
             ILaunchSettings newSnapshot = new LaunchSettings(newSettings.Profiles, newSettings.GlobalSettings, activeProfileName);
             if (persistToDisk)
@@ -819,10 +819,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Updates need to be sequenced
             await _sequentialTaskQueue.ExecuteTask(async () =>
             {
-                var currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
+                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
                 ILaunchProfile existingProfile = null;
                 int insertionIndex = 0;
-                foreach (var p in currentSettings.Profiles)
+                foreach (ILaunchProfile p in currentSettings.Profiles)
                 {
                     if (LaunchProfile.IsSameProfileName(p.Name, profile.Name))
                     {
@@ -870,11 +870,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Updates need to be sequenced
             await _sequentialTaskQueue.ExecuteTask(async () =>
             {
-                var currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
-                var existingProfile = currentSettings.Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, profileName));
+                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
+                ILaunchProfile existingProfile = currentSettings.Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, profileName));
                 if (existingProfile != null)
                 {
-                    var profiles = currentSettings.Profiles.Remove(existingProfile);
+                    ImmutableList<ILaunchProfile> profiles = currentSettings.Profiles.Remove(existingProfile);
 
                     // If the new profile is in-nmemory only, we don't want to touch the disk
                     bool saveToDisk = !existingProfile.IsInMemoryObject();
@@ -893,9 +893,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Updates need to be sequenced
             await _sequentialTaskQueue.ExecuteTask(async () =>
             {
-                var currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
+                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
                 ImmutableDictionary<string, object> globalSettings = ImmutableStringDictionary<object>.EmptyOrdinal;
-                if (currentSettings.GlobalSettings.TryGetValue(settingName, out var currentValue))
+                if (currentSettings.GlobalSettings.TryGetValue(settingName, out object currentValue))
                 {
                     globalSettings = currentSettings.GlobalSettings.Remove(settingName);
                 }
@@ -919,11 +919,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Updates need to be sequenced
             await _sequentialTaskQueue.ExecuteTask(async () =>
             {
-                var currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
-                if (currentSettings.GlobalSettings.TryGetValue(settingName, out var currentValue))
+                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrors().ConfigureAwait(false);
+                if (currentSettings.GlobalSettings.TryGetValue(settingName, out object currentValue))
                 {
                     bool saveToDisk = !currentValue.IsInMemoryObject();
-                    var globalSettings = currentSettings.GlobalSettings.Remove(settingName);
+                    ImmutableDictionary<string, object> globalSettings = currentSettings.GlobalSettings.Remove(settingName);
                     var newSnapshot = new LaunchSettings(currentSettings.Profiles, globalSettings, currentSettings.ActiveProfile?.Name);
                     await UpdateAndSaveSettingsInternalAsync(newSnapshot, saveToDisk).ConfigureAwait(false);
                 }
@@ -936,7 +936,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public async Task<ILaunchSettings> GetSnapshotThrowIfErrors()
         {
-            var currentSettings = await WaitForFirstSnapshot(WaitForFirstSnapshotDelay).ConfigureAwait(false);
+            ILaunchSettings currentSettings = await WaitForFirstSnapshot(WaitForFirstSnapshotDelay).ConfigureAwait(false);
             if (currentSettings == null || (currentSettings.Profiles.Count == 1 && string.Equals(currentSettings.Profiles[0].CommandName, ErrorProfileCommandName, StringComparison.Ordinal)))
             {
                 string fileName = await GetLaunchSettingsFilePathAsync().ConfigureAwait(false);
@@ -953,7 +953,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public async Task SetActiveProfileAsync(string profileName)
         {
-            var props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync().ConfigureAwait(false);
+            ProjectDebugger props = await CommonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync().ConfigureAwait(false);
             await props.ActiveDebugProfile.SetValueAsync(profileName).ConfigureAwait(false);
         }
 

@@ -75,9 +75,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             {
                 // if top level first try to find by top level id with full path,
                 // if found - return, if not - try regular Id in the DependenciesWorld
-                foreach (var target in Targets)
+                foreach (KeyValuePair<ITargetFramework, ITargetedDependenciesSnapshot> target in Targets)
                 {
-                    var dependency = target.Value.TopLevelDependencies.FirstOrDefault(
+                    IDependency dependency = target.Value.TopLevelDependencies.FirstOrDefault(
                         x => x.GetTopLevelId().Equals(id, StringComparison.OrdinalIgnoreCase));
                     if (dependency != null)
                     {
@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 }
             }
 
-            foreach (var target in Targets)
+            foreach (KeyValuePair<ITargetFramework, ITargetedDependenciesSnapshot> target in Targets)
             {
                 if (target.Value.DependenciesWorld.TryGetValue(id, out IDependency dependency))
                 {
@@ -104,9 +104,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             IEnumerable<IProjectDependenciesSubTreeProvider> subTreeProviders,
             HashSet<string> projectItemSpecs)
         {
-            var anyChanges = false;
+            bool anyChanges = false;
             var builder = _targets.ToBuilder();
-            foreach (var change in changes)
+            foreach (KeyValuePair<ITargetFramework, IDependenciesChanges> change in changes)
             {
                 builder.TryGetValue(change.Key, out ITargetedDependenciesSnapshot previousSnapshot);
                 var newTargetedSnapshot = TargetedDependenciesSnapshot.FromChanges(
@@ -128,7 +128,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
 
             // now get rid of empty target frameworks (if there no any dependencies for them)
-            foreach (var targetKvp in builder.ToList())
+            foreach (KeyValuePair<ITargetFramework, ITargetedDependenciesSnapshot> targetKvp in builder.ToList())
             {
                 if (targetKvp.Value.DependenciesWorld.Count <= 0)
                 {

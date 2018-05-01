@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.Workspaces
             var projectInfo = ProjectInfo.Create(ProjectId.CreateNewId(), VersionStamp.Create(), "TestProject", "TestProject", language,
                                                  filePath: "D:\\Test.proj",
                                                  metadataReferences: new[] { s_corlibReference, s_systemCoreReference, s_systemReference });
-            var project = workspace.AddProject(projectInfo);
+            Project project = workspace.AddProject(projectInfo);
 
             var documentInfo = DocumentInfo.Create(DocumentId.CreateNewId(projectInfo.Id), "TestDocument");
             workspace.AddDocument(project.Id, "TestDocument", SourceText.From(text));

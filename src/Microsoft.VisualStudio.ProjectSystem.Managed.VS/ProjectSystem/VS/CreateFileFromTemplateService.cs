@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             {
                 HierarchyId parentId = _projectVsServices.VsProject.GetHierarchyId(parentDocumentMoniker);
                 var result = new VSADDRESULT[1];
-                var files = new string[] { templateFilePath };
+                string[] files = new string[] { templateFilePath };
                 _projectVsServices.VsProject.AddItemWithSpecific(parentId, VSADDITEMOPERATION.VSADDITEMOP_RUNWIZARD, fileName, (uint)files.Length, files, IntPtr.Zero, 0, Guid.Empty, null, Guid.Empty, result);
 
                 if (result[0] == VSADDRESULT.ADDRESULT_Success)

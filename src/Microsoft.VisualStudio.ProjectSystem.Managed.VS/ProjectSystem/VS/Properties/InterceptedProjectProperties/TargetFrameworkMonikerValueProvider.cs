@@ -31,9 +31,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
         public override async Task<string> OnSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string> dimensionalConditions = null)
         {
-            var configuration = await _properties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
-            var currentTargetFramework = (string)await configuration.TargetFramework.GetValueAsync().ConfigureAwait(true);
-            var currentTargetFrameworks = (string)await configuration.TargetFrameworks.GetValueAsync().ConfigureAwait(true);
+            ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
+            string currentTargetFramework = (string)await configuration.TargetFramework.GetValueAsync().ConfigureAwait(true);
+            string currentTargetFrameworks = (string)await configuration.TargetFrameworks.GetValueAsync().ConfigureAwait(true);
             if (!string.IsNullOrEmpty(currentTargetFrameworks))
             {
                 throw new InvalidOperationException(VSResources.MultiTFEditNotSupported);

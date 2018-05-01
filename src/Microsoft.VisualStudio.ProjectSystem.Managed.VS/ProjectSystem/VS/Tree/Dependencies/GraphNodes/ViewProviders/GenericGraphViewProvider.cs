@@ -31,13 +31,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             dependencyGraphNode.SetValue(DependenciesGraphSchema.DependencyIdProperty, dependency.Id);
             dependencyGraphNode.SetValue(DependenciesGraphSchema.ResolvedProperty, dependency.Resolved);
 
-            var children = targetedSnapshot.GetDependencyChildren(dependency);
+            System.Collections.Generic.IEnumerable<IDependency> children = targetedSnapshot.GetDependencyChildren(dependency);
             if (children == null)
             {
                 return;
             }
 
-            foreach (var childDependency in children)
+            foreach (IDependency childDependency in children)
             {
                 if (!childDependency.Visible)
                 {

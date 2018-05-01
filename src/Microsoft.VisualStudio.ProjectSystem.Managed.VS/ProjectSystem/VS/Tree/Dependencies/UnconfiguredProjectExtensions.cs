@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
     {
         public static string GetRelativePath(this UnconfiguredProject self, string path)
         {
-            var projectFolder = Path.GetDirectoryName(self.FullPath);
+            string projectFolder = Path.GetDirectoryName(self.FullPath);
             if (path.StartsWith(projectFolder, StringComparison.OrdinalIgnoreCase))
             {
                 path = path.Substring(projectFolder.Length).TrimStart('\\');

@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
             try
             {
-                if (ErrorHandler.Succeeded(shell.FindToolWindow(0, ref persistenceSlot, out var frame)) && frame != null)
+                if (ErrorHandler.Succeeded(shell.FindToolWindow(0, ref persistenceSlot, out IVsWindowFrame frame)) && frame != null)
                 {
                     ErrorHandler.ThrowOnFailure(frame.GetProperty((int)__VSFPROPID.VSFPROPID_DocView, out pvar));
                 }

@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// </summary>
         public static bool Contains(this ProjectTreeFlags source, ProjectTreeFlags flags)
         {
-            var newFlags = source.Except(flags);
+            ProjectTreeFlags newFlags = source.Except(flags);
 
             return ((source.Count - newFlags.Count)) == flags.Count;
         }

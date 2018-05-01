@@ -98,11 +98,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     // The SyncLink will only publish data when the versions of the sources match. There is a problem with that.
                     // The sources have some version components that will make this impossible to match across TFMs. We introduce a 
                     // intermediate block here that will remove those version components so that the synclink can actually sync versions. 
-                    var sourceBlocks = e.Value.Select(
+                    System.Collections.Generic.IEnumerable<ProjectDataSources.SourceBlockAndLink<IProjectValueVersions>> sourceBlocks = e.Value.Select(
                         cp =>
                         {
-                            var sourceBlock = cp.Services.ProjectSubscription.JointRuleSource.SourceBlock;
-                            var versionDropper = CreateVersionDropperBlock();
+                            IReceivableSourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> sourceBlock = cp.Services.ProjectSubscription.JointRuleSource.SourceBlock;
+                            IPropagatorBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>, IProjectVersionedValue<IProjectSubscriptionUpdate>> versionDropper = CreateVersionDropperBlock();
                             disposableBag.AddDisposable(sourceBlock.LinkTo(versionDropper, sourceLinkOptions));
                             return versionDropper.SyncLinkOptions<IProjectValueVersions>(sourceLinkOptions);
                         });
@@ -112,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
                     var targetLinkOptions = new DataflowLinkOptions { PropagateCompletion = true };
 
-                    var sourceBlocksAndCapabilitiesOptions = sourceBlocks.ToImmutableList()
+                    ImmutableList<ProjectDataSources.SourceBlockAndLink<IProjectValueVersions>> sourceBlocksAndCapabilitiesOptions = sourceBlocks.ToImmutableList()
                         .Insert(0, _projectVsServices.Project.Capabilities.SourceBlock.SyncLinkOptions<IProjectValueVersions>());
 
                     disposableBag.AddDisposable(ProjectDataSources.SyncLinkTo(sourceBlocksAndCapabilitiesOptions, target, targetLinkOptions));
@@ -208,7 +208,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 logger.WriteLine($"Target Frameworks ({targetFrameworks.Count})");
                 logger.IndentLevel++;
 
-                foreach (var tf in targetFrameworks)
+                foreach (IVsTargetFrameworkInfo tf in targetFrameworks)
                 {
                     LogTargetFramework(logger, tf as TargetFrameworkInfo);
                 }
@@ -229,7 +229,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             private static void LogProperties(IProjectLoggerBatch logger, string heading, ProjectProperties projectProperties)
             {
-                var properties = projectProperties.Cast<ProjectProperty>()
+                System.Collections.Generic.IEnumerable<string> properties = projectProperties.Cast<ProjectProperty>()
                         .Select(prop => $"{prop.Name}:{prop.Value}");
                 logger.WriteLine($"{heading} -- ({string.Join(" | ", properties)})");
             }
@@ -239,9 +239,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                 logger.WriteLine(heading);
                 logger.IndentLevel++;
 
-                foreach (var reference in references)
+                foreach (IVsReferenceItem reference in references)
                 {
-                    var properties = reference.Properties.Cast<ReferenceProperty>()
+                    System.Collections.Generic.IEnumerable<string> properties = reference.Properties.Cast<ReferenceProperty>()
                         .Select(prop => $"{prop.Name}:{prop.Value}");
                     logger.WriteLine($"{reference.Name} -- ({string.Join(" | ", properties)})");
                 }

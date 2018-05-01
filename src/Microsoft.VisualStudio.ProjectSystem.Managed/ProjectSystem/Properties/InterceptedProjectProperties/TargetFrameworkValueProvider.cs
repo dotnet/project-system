@@ -19,17 +19,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override async Task<string> OnGetEvaluatedPropertyValueAsync(string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
-            var configuration = await _properties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
-            var targetFrameworkMoniker = (string)await configuration.TargetFrameworkMoniker.GetValueAsync().ConfigureAwait(false);
+            ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
+            string targetFrameworkMoniker = (string)await configuration.TargetFrameworkMoniker.GetValueAsync().ConfigureAwait(false);
             if (targetFrameworkMoniker != null)
             {
                 var targetFramework = new FrameworkName(targetFrameworkMoniker);
 
                 // define MAKETARGETFRAMEWORKVERSION(maj, min, rev) (TARGETFRAMEWORKVERSION)((maj) << 16 | (rev) << 8 | (min))
-                var maj = targetFramework.Version.Major;
-                var min = targetFramework.Version.Minor;
-                var rev = targetFramework.Version.Revision >= 0 ? targetFramework.Version.Revision : 0;
-                var propertyValue = unchecked((uint)((maj << 16) | (rev << 8) | min));
+                int maj = targetFramework.Version.Major;
+                int min = targetFramework.Version.Minor;
+                int rev = targetFramework.Version.Revision >= 0 ? targetFramework.Version.Revision : 0;
+                uint propertyValue = unchecked((uint)((maj << 16) | (rev << 8) | min));
                 return propertyValue.ToString();
             }
 

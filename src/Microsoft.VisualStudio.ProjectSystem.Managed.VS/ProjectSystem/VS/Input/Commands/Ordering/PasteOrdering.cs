@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             get
             {
                 // Grab the paste handler that has the highest order precedence that is below PasteOrdering's order precedence. 
-                var pasteHandler =
+                IPasteHandler pasteHandler =
                     PasteHandlers.Where(x => x.Metadata.OrderPrecedence < OrderPrecedence)
                     .OrderByDescending(x => x.Metadata.OrderPrecedence).First().Value;
 
@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             get
             {
                 // Grab the paste processor that has the highest order precedence that is below PasteOrdering's order precedence. 
-                var pasteProcessor =
+                IPasteDataObjectProcessor pasteProcessor =
                     PasteProcessors.Where(x => x.Metadata.OrderPrecedence < OrderPrecedence)
                     .OrderByDescending(x => x.Metadata.OrderPrecedence).First().Value;
 
@@ -100,8 +100,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             Assumes.NotNull(_dropTarget);
 
             // ConfigureAwait is true because we need to come back for PasteItemsAsync to work. If not, PasteItemsAsync will throw.
-            var previousIncludes = await OrderingHelper.GetAllEvaluatedIncludes(_configuredProject, _accessor).ConfigureAwait(true);
-            var result = await PasteHandler.PasteItemsAsync(items, effect).ConfigureAwait(false);
+            System.Collections.Immutable.ImmutableHashSet<string> previousIncludes = await OrderingHelper.GetAllEvaluatedIncludes(_configuredProject, _accessor).ConfigureAwait(true);
+            PasteItemsResult result = await PasteHandler.PasteItemsAsync(items, effect).ConfigureAwait(false);
 
             await OrderingHelper.Move(_configuredProject, _accessor, previousIncludes, _dropTarget, OrderingMoveAction.MoveToTop).ConfigureAwait(false);
 

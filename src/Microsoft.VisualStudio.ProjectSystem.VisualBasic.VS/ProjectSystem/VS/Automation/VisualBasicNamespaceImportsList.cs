@@ -71,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             {
                 lock (_lock)
                 {
-                    var sortedItems = projectChange.After.Items.Keys.OrderBy(s => s, StringComparer.OrdinalIgnoreCase);
+                    IOrderedEnumerable<string> sortedItems = projectChange.After.Items.Keys.OrderBy(s => s, StringComparer.OrdinalIgnoreCase);
                     int newListCount = sortedItems.Count();
                     int oldListCount = _list.Count;
 

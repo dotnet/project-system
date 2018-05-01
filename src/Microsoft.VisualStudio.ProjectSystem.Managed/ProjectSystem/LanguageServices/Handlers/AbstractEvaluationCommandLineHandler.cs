@@ -195,7 +195,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             // other reason, that our state of the world remains consistent
             if (!_paths.Contains(fullPath))
             {
-                var itemMetadata = metadata.GetValueOrDefault(includePath, ImmutableStringDictionary<string>.EmptyOrdinal);
+                IImmutableDictionary<string, string> itemMetadata = metadata.GetValueOrDefault(includePath, ImmutableStringDictionary<string>.EmptyOrdinal);
                 AddToContext(fullPath, itemMetadata, isActiveContext, logger);
                 bool added = _paths.Add(fullPath);
                 Assumes.True(added);

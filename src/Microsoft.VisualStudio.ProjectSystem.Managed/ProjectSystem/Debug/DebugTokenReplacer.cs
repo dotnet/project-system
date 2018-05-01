@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Since Env variables are an immutable dictionary they are a little messy to update.
             if (resolvedProfile.EnvironmentVariables != null)
             {
-                foreach (var kvp in resolvedProfile.EnvironmentVariables)
+                foreach (System.Collections.Generic.KeyValuePair<string, string> kvp in resolvedProfile.EnvironmentVariables)
                 {
                     resolvedProfile.EnvironmentVariables = resolvedProfile.EnvironmentVariables.SetItem(kvp.Key, await ReplaceTokensInStringAsync(kvp.Value, true).ConfigureAwait(false));
                 }
@@ -74,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             if (resolvedProfile.OtherSettings != null)
             {
-                foreach (var kvp in resolvedProfile.OtherSettings)
+                foreach (System.Collections.Generic.KeyValuePair<string, object> kvp in resolvedProfile.OtherSettings)
                 {
                     if (kvp.Value is string)
                     {

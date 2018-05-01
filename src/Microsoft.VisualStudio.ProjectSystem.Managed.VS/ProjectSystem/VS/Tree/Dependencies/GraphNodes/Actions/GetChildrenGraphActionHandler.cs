@@ -30,27 +30,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
 
         public override bool HandleRequest(IGraphContext graphContext)
         {
-            var trackChanges = false;
-            foreach (var inputGraphNode in graphContext.InputNodes)
+            bool trackChanges = false;
+            foreach (GraphNode inputGraphNode in graphContext.InputNodes)
             {
                 if (graphContext.CancelToken.IsCancellationRequested)
                 {
                     return trackChanges;
                 }
 
-                var projectPath = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.Assembly);
+                string projectPath = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.Assembly);
                 if (string.IsNullOrEmpty(projectPath))
                 {
                     continue;
                 }
 
-                var dependency = GetDependency(graphContext, inputGraphNode, out IDependenciesSnapshot snapshot);
+                IDependency dependency = GetDependency(graphContext, inputGraphNode, out IDependenciesSnapshot snapshot);
                 if (dependency == null || snapshot == null)
                 {
                     continue;
                 }
 
-                var viewProvider = ViewProviders.FirstOrDefault(x => x.Value.SupportsDependency(dependency));
+                System.Lazy<ViewProviders.IDependenciesGraphViewProvider, IOrderPrecedenceMetadataView> viewProvider = ViewProviders.FirstOrDefault(x => x.Value.SupportsDependency(dependency));
                 if (viewProvider == null)
                 {
                     continue;

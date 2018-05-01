@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             foreach (IProjectVersionedValue<IProjectSubscriptionUpdate> update in updates)
             {
-                var nugetRestoreChanges = update.Value.ProjectChanges[NuGetRestore.SchemaName];
+                IProjectChangeDescription nugetRestoreChanges = update.Value.ProjectChanges[NuGetRestore.SchemaName];
                 msbuildProjectExtensionsPath = msbuildProjectExtensionsPath ??
                     nugetRestoreChanges.After.Properties[NuGetRestore.MSBuildProjectExtensionsPathProperty];
                 originalTargetFrameworks = originalTargetFrameworks ??
@@ -61,8 +61,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
                 if (!targetFrameworks.Contains(targetFramework))
                 {
-                    var projectReferencesChanges = update.Value.ProjectChanges[ProjectReference.SchemaName];
-                    var packageReferencesChanges = update.Value.ProjectChanges[PackageReference.SchemaName];
+                    IProjectChangeDescription projectReferencesChanges = update.Value.ProjectChanges[ProjectReference.SchemaName];
+                    IProjectChangeDescription packageReferencesChanges = update.Value.ProjectChanges[PackageReference.SchemaName];
 
                     targetFrameworks.Add(new TargetFrameworkInfo
                     {
@@ -73,8 +73,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     });
                 }
 
-                var toolReferencesChanges = update.Value.ProjectChanges[DotNetCliToolReference.SchemaName];
-                foreach (var item in toolReferencesChanges.After.Items)
+                IProjectChangeDescription toolReferencesChanges = update.Value.ProjectChanges[DotNetCliToolReference.SchemaName];
+                foreach (KeyValuePair<string, IImmutableDictionary<string, string>> item in toolReferencesChanges.After.Items)
                 {
                     if (!toolReferences.Contains(item.Key))
                     {
@@ -134,13 +134,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
             IImmutableDictionary<string, IImmutableDictionary<string, string>> projectReferenceItems,
             UnconfiguredProject project)
         {
-            var referenceItems = GetReferences(projectReferenceItems);
+            IVsReferenceItems referenceItems = GetReferences(projectReferenceItems);
 
             // compute project file full path property for each reference
             foreach (ReferenceItem item in referenceItems)
             {
-                var definingProjectDirectory = item.Properties.Item(DefiningProjectDirectoryProperty);
-                var projectFileFullPath = definingProjectDirectory != null
+                IVsReferenceProperty definingProjectDirectory = item.Properties.Item(DefiningProjectDirectoryProperty);
+                string projectFileFullPath = definingProjectDirectory != null
                     ? MakeRooted(definingProjectDirectory.Value, item.Name)
                     : project.MakeRooted(item.Name);
 

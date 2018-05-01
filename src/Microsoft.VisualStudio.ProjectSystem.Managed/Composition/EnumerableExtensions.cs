@@ -24,9 +24,9 @@ namespace Microsoft.VisualStudio.Composition
         internal static IEnumerable<T> ExtensionValues<T>(this IEnumerable<Lazy<T>> extensions, bool onlyCreatedValues = false)
         {
             Requires.NotNull(extensions, nameof(extensions));
-            var traceErrorMessage = "Roslyn project system extension rejected due to exception: {0}";
+            string traceErrorMessage = "Roslyn project system extension rejected due to exception: {0}";
 
-            foreach (var extension in extensions)
+            foreach (Lazy<T> extension in extensions)
             {
                 T value;
                 try

@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         {
             Requires.NotNull(collection, nameof(collection));
 
-            foreach (var item in collection)
+            foreach (T item in collection)
             {
                 Add(item);
             }
@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
         {
             if (index is string)
             {
-                TryGetValue((string)index, out var value);
+                TryGetValue((string)index, out T value);
                 return value;
             }
 

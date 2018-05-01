@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             // Used by default Windows debugger to figure out whether to add an extra
             // pause to end of window when CTRL+F5'ing a console application
-            var configuration = await Properties.GetConfigurationGeneralPropertiesAsync()
+            ConfigurationGeneral configuration = await Properties.GetConfigurationGeneralPropertiesAsync()
                                                  .ConfigureAwait(false);
 
 
@@ -111,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                     IsRunProjectCommand(resolvedProfile) &&
                     (launchOptions & (DebugLaunchOptions.NoDebug | DebugLaunchOptions.Profiling)) == DebugLaunchOptions.NoDebug;
 
-            var consoleTarget = await GetConsoleTargetForProfile(resolvedProfile, launchOptions, useCmdShell).ConfigureAwait(false);
+            DebugLaunchSettings consoleTarget = await GetConsoleTargetForProfile(resolvedProfile, launchOptions, useCmdShell).ConfigureAwait(false);
 
             launchSettings.Add(consoleTarget);
 
@@ -178,7 +178,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             string executable, arguments;
 
             string projectFolder = Path.GetDirectoryName(Project.FullPath);
-            var configuredProject = await GetConfiguredProjectForDebugAsync().ConfigureAwait(false);
+            ConfiguredProject configuredProject = await GetConfiguredProjectForDebugAsync().ConfigureAwait(false);
 
             // If no working directory specified in the profile, we default to output directory. If for some reason the output directory
             // is not specified, fall back to the project folder.
@@ -211,7 +211,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 }
 
                 // Get the executable to run, the arguments and the default working directory
-                var runData = await GetRunnableProjectInformationAsync(configuredProject).ConfigureAwait(false);
+                Tuple<string, string, string> runData = await GetRunnableProjectInformationAsync(configuredProject).ConfigureAwait(false);
                 executable = runData.Item1;
                 arguments = runData.Item2;
                 if (!string.IsNullOrWhiteSpace(runData.Item3))
@@ -262,8 +262,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                     else
                     {
                         // Try to resolve against the current working directory (for compat) and failing that, the environment path.
-                        var exeName = executable.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) ? executable : executable + ".exe";
-                        var fullPath = TheFileSystem.GetFullPath(exeName);
+                        string exeName = executable.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) ? executable : executable + ".exe";
+                        string fullPath = TheFileSystem.GetFullPath(exeName);
                         if (TheFileSystem.FileExists(fullPath))
                         {
                             executable = fullPath;
@@ -287,7 +287,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             // Apply environment variables.
             if (resolvedProfile.EnvironmentVariables != null && resolvedProfile.EnvironmentVariables.Count > 0)
             {
-                foreach (var kvp in resolvedProfile.EnvironmentVariables)
+                foreach (KeyValuePair<string, string> kvp in resolvedProfile.EnvironmentVariables)
                 {
                     settings.Environment[kvp.Key] = kvp.Value;
                 }
@@ -318,11 +318,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </summary>
         private async Task<Tuple<string, string, string>> GetRunnableProjectInformationAsync(ConfiguredProject configuredProject)
         {
-            var properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
+            IProjectProperties properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
 
-            var runCommand = await properties.GetEvaluatedPropertyValueAsync("RunCommand").ConfigureAwait(false);
-            var runWorkingDirectory = await properties.GetEvaluatedPropertyValueAsync("RunWorkingDirectory").ConfigureAwait(false);
-            var runArguments = await properties.GetEvaluatedPropertyValueAsync("RunArguments").ConfigureAwait(false);
+            string runCommand = await properties.GetEvaluatedPropertyValueAsync("RunCommand").ConfigureAwait(false);
+            string runWorkingDirectory = await properties.GetEvaluatedPropertyValueAsync("RunWorkingDirectory").ConfigureAwait(false);
+            string runArguments = await properties.GetEvaluatedPropertyValueAsync("RunArguments").ConfigureAwait(false);
 
             if (string.IsNullOrWhiteSpace(runCommand))
             {
@@ -339,7 +339,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             // If the path is just the name of an exe like dotnet.exe then we try to find it on the path
             if (runCommand.IndexOf(Path.DirectorySeparatorChar) == -1)
             {
-                var executable = GetFullPathOfExeFromEnvironmentPath(runCommand);
+                string executable = GetFullPathOfExeFromEnvironmentPath(runCommand);
                 if (executable != null)
                 {
                     runCommand = executable;
@@ -356,16 +356,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         private static async Task<string> GetOutputDirectoryAsync(ConfiguredProject configuredProject)
         {
-            var properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
-            var outdir = await properties.GetEvaluatedPropertyValueAsync("OutDir").ConfigureAwait(false);
+            IProjectProperties properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
+            string outdir = await properties.GetEvaluatedPropertyValueAsync("OutDir").ConfigureAwait(false);
 
             return outdir;
         }
 
         private static async Task<Guid> GetDebuggingEngineAsync(ConfiguredProject configuredProject)
         {
-            var properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
-            var framework = await properties.GetEvaluatedPropertyValueAsync("TargetFrameworkIdentifier").ConfigureAwait(false);
+            IProjectProperties properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
+            string framework = await properties.GetEvaluatedPropertyValueAsync("TargetFrameworkIdentifier").ConfigureAwait(false);
 
             return ProjectDebuggerProvider.GetManagedDebugEngineForFramework(framework);
         }
@@ -383,8 +383,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 return null;
             }
 
-            var paths = pathEnv.Split(CommonConstants.SemicolonDelimiter, StringSplitOptions.RemoveEmptyEntries);
-            foreach (var path in paths)
+            string[] paths = pathEnv.Split(CommonConstants.SemicolonDelimiter, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string path in paths)
             {
                 // We don't want one bad path entry to derail the search
                 try
@@ -416,7 +416,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             bool ShouldEscape(char c)
             {
-                foreach (var escapeChar in toEscape)
+                foreach (char escapeChar in toEscape)
                 {
                     if (escapeChar == c)
                         return true;
@@ -424,9 +424,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 return false;
             }
 
-            var currentState = StringState.NormalCharacter;
+            StringState currentState = StringState.NormalCharacter;
             var finalBuilder = new StringBuilder();
-            foreach (var currentChar in unescaped)
+            foreach (char currentChar in unescaped)
             {
                 switch (currentState)
                 {

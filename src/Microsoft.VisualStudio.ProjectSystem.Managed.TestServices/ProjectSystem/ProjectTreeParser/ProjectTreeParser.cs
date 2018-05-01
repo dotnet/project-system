@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 throw FormatException(ProjectTreeFormatError.MultipleRoots, "Encountered another project root, when tree can only have one.");
 #pragma warning restore IDE0016 // Use 'throw' expression
 
-            var tree = ReadProjectItem();
+            MutableProjectTree tree = ReadProjectItem();
             tree.Parent = parent;
             parent.Children.Add(tree);
             return tree;
@@ -298,7 +298,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             Tokenizer tokenizer = Tokenizer(Delimiters.PropertyValue);
 
-            var identifier = tokenizer.ReadIdentifier(IdentifierParseOptions.None);
+            string identifier = tokenizer.ReadIdentifier(IdentifierParseOptions.None);
 
             tree.DisplayOrder = int.Parse(identifier);
         }
@@ -339,7 +339,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             if (tokenizer.SkipIf(TokenType.RightBrace))
                 return;
 
-            var moniker = ReadProjectImageMoniker();
+            ProjectImageMoniker moniker = ReadProjectImageMoniker();
 
             if (expandedIcon)
             {

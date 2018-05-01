@@ -48,8 +48,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
             await InitializeAsync().ConfigureAwait(false);
 
-            var watchedEvaluationRules = GetWatchedRules(RuleHandlerType.Evaluation);
-            var watchedDesignTimeBuildRules = GetWatchedRules(RuleHandlerType.DesignTimeBuild);
+            IEnumerable<string> watchedEvaluationRules = GetWatchedRules(RuleHandlerType.Evaluation);
+            IEnumerable<string> watchedDesignTimeBuildRules = GetWatchedRules(RuleHandlerType.DesignTimeBuild);
 
             SubscribeToConfiguredProject(
                 _commonServices.ActiveConfiguredProject, subscriptionService, watchedEvaluationRules, watchedDesignTimeBuildRules);
@@ -61,17 +61,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
             _currentProjectContext = newProjectContext;
 
-            var watchedEvaluationRules = GetWatchedRules(RuleHandlerType.Evaluation);
-            var watchedDesignTimeBuildRules = GetWatchedRules(RuleHandlerType.DesignTimeBuild);
+            IEnumerable<string> watchedEvaluationRules = GetWatchedRules(RuleHandlerType.Evaluation);
+            IEnumerable<string> watchedDesignTimeBuildRules = GetWatchedRules(RuleHandlerType.DesignTimeBuild);
 
             // initialize telemetry with all rules for each target framework
-            foreach (var projectContext in newProjectContext.InnerProjectContexts)
+            foreach (ITargetedProjectContext projectContext in newProjectContext.InnerProjectContexts)
             {
                 _treeTelemetryService.InitializeTargetFrameworkRules(projectContext.TargetFramework, watchedEvaluationRules);
                 _treeTelemetryService.InitializeTargetFrameworkRules(projectContext.TargetFramework, watchedDesignTimeBuildRules);
             }
 
-            foreach (var configuredProject in newProjectContext.InnerConfiguredProjects)
+            foreach (ConfiguredProject configuredProject in newProjectContext.InnerConfiguredProjects)
             {
                 SubscribeToConfiguredProject(
                     configuredProject, configuredProject.Services.ProjectSubscription, watchedEvaluationRules, watchedDesignTimeBuildRules);
@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         {
             _currentProjectContext = null;
 
-            foreach (var link in _evaluationSubscriptionLinks.Concat(_designTimeBuildSubscriptionLinks))
+            foreach (IDisposable link in _evaluationSubscriptionLinks.Concat(_designTimeBuildSubscriptionLinks))
             {
                 link.Dispose();
             }
@@ -97,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         public async Task OnContextReleasedAsync(ITargetedProjectContext innerContext)
         {
-            foreach (var handler in Handlers)
+            foreach (Lazy<ICrossTargetRuleHandler<T>, IOrderPrecedenceMetadataView> handler in Handlers)
             {
                 await handler.Value.OnContextReleasedAsync(innerContext).ConfigureAwait(false);
             }
@@ -170,11 +170,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         private IEnumerable<string> GetWatchedRules(RuleHandlerType handlerType)
         {
-            var supportedHandler = Handlers.Where(h => h.Value.SupportsHandlerType(handlerType));
+            IEnumerable<Lazy<ICrossTargetRuleHandler<T>, IOrderPrecedenceMetadataView>> supportedHandler = Handlers.Where(h => h.Value.SupportsHandlerType(handlerType));
             var uniqueRuleNames = new HashSet<string>(StringComparers.RuleNames);
-            foreach (var handler in supportedHandler)
+            foreach (Lazy<ICrossTargetRuleHandler<T>, IOrderPrecedenceMetadataView> handler in supportedHandler)
             {
-                foreach (var ruleName in handler.Value.GetRuleNames(handlerType))
+                foreach (string ruleName in handler.Value.GetRuleNames(handlerType))
                 {
                     uniqueRuleNames.Add(ruleName);
                 }
@@ -210,7 +210,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     IProjectVersionedValue<Tuple<IProjectSubscriptionUpdate, IProjectCatalogSnapshot, IProjectCapabilitiesSnapshot>> e,
                     RuleHandlerType handlerType)
         {
-            var currentAggregateContext = await _host.GetCurrentAggregateProjectContext().ConfigureAwait(false);
+            AggregateCrossTargetProjectContext currentAggregateContext = await _host.GetCurrentAggregateProjectContext().ConfigureAwait(false);
             if (currentAggregateContext == null || _currentProjectContext != currentAggregateContext)
             {
                 return;
@@ -218,7 +218,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
             IProjectSubscriptionUpdate update = e.Value.Item1;
             IProjectCatalogSnapshot catalogs = e.Value.Item2;
-            var handlers = Handlers.Select(h => h.Value)
+            IEnumerable<ICrossTargetRuleHandler<T>> handlers = Handlers.Select(h => h.Value)
                                    .Where(h => h.SupportsHandlerType(handlerType));
 
             // We need to process the update within a lock to ensure that we do not release this context during processing.
@@ -227,7 +227,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             using (await _gate.DisposableWaitAsync().ConfigureAwait(true))
             {
                 // Get the inner workspace project context to update for this change.
-                var projectContextToUpdate = currentAggregateContext
+                ITargetedProjectContext projectContextToUpdate = currentAggregateContext
                     .GetInnerProjectContext(update.ProjectConfiguration, out bool isActiveContext);
                 if (projectContextToUpdate == null)
                 {
@@ -247,15 +247,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                     return;
                 }
 
-                var ruleChangeContext = CreateRuleChangeContext(
+                T ruleChangeContext = CreateRuleChangeContext(
                     currentAggregateContext.ActiveProjectContext.TargetFramework, catalogs);
-                foreach (var handler in handlers)
+                foreach (ICrossTargetRuleHandler<T> handler in handlers)
                 {
-                    var builder = ImmutableDictionary.CreateBuilder<string, IProjectChangeDescription>(StringComparers.RuleNames);
-                    var handlerRules = handler.GetRuleNames(handlerType);
+                    ImmutableDictionary<string, IProjectChangeDescription>.Builder builder = ImmutableDictionary.CreateBuilder<string, IProjectChangeDescription>(StringComparers.RuleNames);
+                    ImmutableHashSet<string> handlerRules = handler.GetRuleNames(handlerType);
                     builder.AddRange(update.ProjectChanges.Where(
                         x => handlerRules.Contains(x.Key)));
-                    var projectChanges = builder.ToImmutable();
+                    ImmutableDictionary<string, IProjectChangeDescription> projectChanges = builder.ToImmutable();
 
                     if (handler.ReceiveUpdatesWithEmptyProjectChange
                         || projectChanges.Any(x => x.Value.Difference.AnyChanges))

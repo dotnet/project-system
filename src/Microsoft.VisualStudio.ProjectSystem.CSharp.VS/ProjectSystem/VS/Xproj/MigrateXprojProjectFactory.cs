@@ -45,8 +45,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         {
             UIThreadHelper.VerifyOnUIThread();
             bool success = false;
-            var projectName = Path.GetFileNameWithoutExtension(xprojLocation);
-            var hr = UpgradeProject_CheckOnly(xprojLocation, logger, out upgradeRequired, out migratedProjectGuid, out uint dummy);
+            string projectName = Path.GetFileNameWithoutExtension(xprojLocation);
+            int hr = UpgradeProject_CheckOnly(xprojLocation, logger, out upgradeRequired, out migratedProjectGuid, out uint dummy);
 
             // This implementation can only return S_OK. Throw if it returned something else.
             Verify.HResult(hr);
@@ -58,10 +58,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
                 return VSConstants.VS_E_PROJECTMIGRATIONFAILED;
             }
 
-            var solution = _serviceProvider.GetService<IVsSolution, SVsSolution>();
+            IVsSolution solution = _serviceProvider.GetService<IVsSolution, SVsSolution>();
             Verify.HResult(solution.GetSolutionInfo(out string solutionDirectory, out string solutionFile, out string userOptsFile));
 
-            var backupResult = BackupAndDeleteGlobalJson(solutionDirectory, solution, backupDirectory, xprojLocation, projectName, logger);
+            HResult backupResult = BackupAndDeleteGlobalJson(solutionDirectory, solution, backupDirectory, xprojLocation, projectName, logger);
             if (!backupResult.Succeeded)
             {
                 migratedProjectGuid = GetType().GUID;
@@ -69,8 +69,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
                 return backupResult;
             }
 
-            var directory = Path.GetDirectoryName(xprojLocation);
-            var (logFile, processExitCode) = MigrateProject(solutionDirectory, directory, xprojLocation, projectName, logger);
+            string directory = Path.GetDirectoryName(xprojLocation);
+            (string logFile, int processExitCode) = MigrateProject(solutionDirectory, directory, xprojLocation, projectName, logger);
 
             if (!string.IsNullOrEmpty(logFile))
             {
@@ -101,15 +101,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
         internal bool BackupProject(string backupLocation, string xprojLocation, string projectName, IVsUpgradeLogger pLogger)
         {
-            var directory = Path.GetDirectoryName(xprojLocation);
+            string directory = Path.GetDirectoryName(xprojLocation);
 
             // Back up the xproj and project.json to the backup location. If it exists, also back up the .xproj.user file.
-            var xprojName = Path.GetFileName(xprojLocation);
-            var backupXprojPath = Path.Combine(backupLocation, xprojName);
-            var projectJsonPath = Path.Combine(directory, "project.json");
-            var backupProjectJsonPath = Path.Combine(backupLocation, "project.json");
-            var xprojUserPath = $"{xprojLocation}.user";
-            var backupXprojUserPath = Path.Combine(backupLocation, $"{xprojName}.user");
+            string xprojName = Path.GetFileName(xprojLocation);
+            string backupXprojPath = Path.Combine(backupLocation, xprojName);
+            string projectJsonPath = Path.Combine(directory, "project.json");
+            string backupProjectJsonPath = Path.Combine(backupLocation, "project.json");
+            string xprojUserPath = $"{xprojLocation}.user";
+            string backupXprojUserPath = Path.Combine(backupLocation, $"{xprojName}.user");
 
             // We don't need to check the xproj path. That's being given to us by VS and was specified in the solution.
             if (!_fileSystem.FileExists(projectJsonPath))
@@ -139,7 +139,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
         internal HResult BackupAndDeleteGlobalJson(string solutionDirectory, IVsSolution solution, string backupLocation, string xprojLocation, string projectName, IVsUpgradeLogger pLogger)
         {
-            var globalJson = Path.Combine(solutionDirectory, "global.json");
+            string globalJson = Path.Combine(solutionDirectory, "global.json");
             if (_fileSystem.FileExists(globalJson))
             {
                 // We want to set up the remover if it hasn't been set up already. If it has been set up already, then we can just return, as backup
@@ -150,8 +150,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
                 // We want to find the root backup directory that VS created for backup. We can't just assume it's solution/Backup, because VS will create
                 // a new directory if that already exists. So just iterate up until we find the correct directory.
                 solutionDirectory = solutionDirectory.TrimEnd(Path.DirectorySeparatorChar);
-                var rootBackupDirectory = backupLocation;
-                var levelUpBackupDirectory = Path.GetDirectoryName(rootBackupDirectory).TrimEnd(Path.DirectorySeparatorChar);
+                string rootBackupDirectory = backupLocation;
+                string levelUpBackupDirectory = Path.GetDirectoryName(rootBackupDirectory).TrimEnd(Path.DirectorySeparatorChar);
                 while (!StringComparers.Paths.Equals(levelUpBackupDirectory, solutionDirectory))
                 {
                     rootBackupDirectory = levelUpBackupDirectory;
@@ -159,13 +159,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
                 }
 
                 // rootBackupDirectory is now the actual root backup directory. Back up the global.json and delete the existing one
-                var globalJsonBackupPath = Path.Combine(rootBackupDirectory, "global.json");
+                string globalJsonBackupPath = Path.Combine(rootBackupDirectory, "global.json");
                 pLogger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_INFORMATIONAL, projectName, globalJson,
                     string.Format(VSResources.MigrationBackupFile, globalJson, globalJsonBackupPath));
                 _fileSystem.CopyFile(globalJson, globalJsonBackupPath, true);
 
                 // Now parse the global.json, and remove the "sdk" element if it exists
-                var json = JsonConvert.DeserializeObject<JObject>(_fileSystem.ReadAllText(globalJson));
+                JObject json = JsonConvert.DeserializeObject<JObject>(_fileSystem.ReadAllText(globalJson));
                 if (json.Remove("sdk"))
                 {
                     try
@@ -184,7 +184,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
         internal (string logFile, int exitCode) MigrateProject(string solutionDirectory, string projectDirectory, string xprojLocation, string projectName, IVsUpgradeLogger pLogger)
         {
-            var logFile = _fileSystem.GetTempDirectoryOrFileName();
+            string logFile = _fileSystem.GetTempDirectoryOrFileName();
 
             // We count on dotnet.exe being on the path
             var pInfo = new ProcessStartInfo("dotnet.exe", GetDotnetArguments(xprojLocation, projectDirectory, logFile))
@@ -200,7 +200,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             // Skip it.
             pInfo.EnvironmentVariables.Add("DOTNET_SKIP_FIRST_TIME_EXPERIENCE", "true");
 
-            var process = _runner.Start(pInfo);
+            ProcessWrapper process = _runner.Start(pInfo);
 
             // Create strings to hold the output and error text
             var outputBuilder = new StringBuilder();
@@ -221,8 +221,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
             process.WaitForExit();
 
-            var output = outputBuilder.ToString().Trim();
-            var err = errBuilder.ToString().Trim();
+            string output = outputBuilder.ToString().Trim();
+            string err = errBuilder.ToString().Trim();
 
             if (!string.IsNullOrEmpty(output))
             {
@@ -254,7 +254,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
                 return LogAndReturnError();
             }
 
-            var mainReport = JsonConvert.DeserializeObject<MigrationReport>(_fileSystem.ReadAllText(logFile));
+            MigrationReport mainReport = JsonConvert.DeserializeObject<MigrationReport>(_fileSystem.ReadAllText(logFile));
             if (mainReport == null)
             {
                 return LogAndReturnError();
@@ -262,19 +262,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
 
             // We're calling migrate on a single project and have don't follow turned on. We shouldn't see any other migration reports.
             Assumes.True(mainReport.ProjectMigrationReports.Count == 1);
-            var report = mainReport.ProjectMigrationReports[0];
+            ProjectMigrationReport report = mainReport.ProjectMigrationReports[0];
             if (report.Failed)
             {
                 pLogger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_ERROR, projectName, xprojLocation,
                     GetDotnetGeneralErrorString(projectName, xprojLocation, report.ProjectDirectory, logFile, processExitCode));
             }
 
-            foreach (var error in report.Errors)
+            foreach (MigrationError error in report.Errors)
             {
                 pLogger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_ERROR, projectName, xprojLocation, error.FormattedErrorMessage);
             }
 
-            foreach (var warn in report.Warnings)
+            foreach (string warn in report.Warnings)
             {
                 pLogger.LogMessage((uint)__VSUL_ERRORLEVEL.VSUL_WARNING, projectName, xprojLocation, warn);
             }
@@ -306,7 +306,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
             out Guid migratedProjectFactory,
             out uint upgradeProjectCapabilityFlags)
         {
-            var isXproj = xprojLocation.EndsWith(".xproj");
+            bool isXproj = xprojLocation.EndsWith(".xproj");
 
             // If the project is an xproj, then we need to one-way upgrade it. If it isn't, then there's nothing we can do with it.
             upgradeRequired = isXproj ? (int)__VSPPROJECTUPGRADEVIAFACTORYREPAIRFLAGS.VSPUVF_PROJECT_ONEWAYUPGRADE :

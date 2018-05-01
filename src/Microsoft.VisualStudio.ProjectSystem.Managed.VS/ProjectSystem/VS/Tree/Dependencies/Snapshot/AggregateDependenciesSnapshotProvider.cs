@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         /// </summary>
         internal void OnSnapshotProviderUnloading(object sender, SnapshotProviderUnloadingEventArgs e)
         {
-            var snapshotProvider = e.SnapshotProvider;
+            IDependenciesSnapshotProvider snapshotProvider = e.SnapshotProvider;
             if (snapshotProvider == null)
             {
                 return;

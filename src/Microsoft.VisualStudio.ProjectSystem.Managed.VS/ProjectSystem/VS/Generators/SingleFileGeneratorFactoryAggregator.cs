@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
 
             // Get the guid of the project
             UIThreadHelper.VerifyOnUIThread();
-            var projectGuid = _projectIntegrationService.ProjectTypeGuid;
+            Guid projectGuid = _projectIntegrationService.ProjectTypeGuid;
 
             if (projectGuid.Equals(Guid.Empty))
             {
@@ -74,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Generators
                 return hr;
             }
 
-            var key = $"Generators\\{projectGuid.ToString("B")}\\{wszProgId}";
+            string key = $"Generators\\{projectGuid.ToString("B")}\\{wszProgId}";
             hr = store.CollectionExists(key, out int exists);
             if (!hr.Succeeded)
             {

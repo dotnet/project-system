@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public T GetOption<T>(string category, string page, string option, T defaultValue)
         {
-            var properties = _dteServices.Dte.Properties[category, page];
+            EnvDTE.Properties properties = _dteServices.Dte.Properties[category, page];
             if (properties != null)
             {
                 return ((T)properties.Item(option).Value);

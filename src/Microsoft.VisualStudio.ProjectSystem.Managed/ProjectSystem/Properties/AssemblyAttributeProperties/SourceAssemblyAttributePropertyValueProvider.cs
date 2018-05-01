@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         private Project GetActiveProject()
         {
-            var activeProjectId = _getActiveProjectId();
+            ProjectId activeProjectId = _getActiveProjectId();
             if (activeProjectId == null)
             {
                 return null;
@@ -51,13 +51,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// </summary>
         public async Task<string> GetPropertyValueAsync()
         {
-            var project = GetActiveProject();
+            Project project = GetActiveProject();
             if (project == null)
             {
                 return null;
             }
 
-            var attribute = await GetAttributeAsync(_assemblyAttributeFullName, project).ConfigureAwait(false);
+            AttributeData attribute = await GetAttributeAsync(_assemblyAttributeFullName, project).ConfigureAwait(false);
             if (attribute == null)
             {
                 return null;
@@ -73,26 +73,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <returns></returns>
         public async Task SetPropertyValueAsync(string value)
         {
-            var project = GetActiveProject();
+            Project project = GetActiveProject();
             if (project == null)
             {
                 return;
             }
 
-            var attribute = await GetAttributeAsync(_assemblyAttributeFullName, project).ConfigureAwait(false);
+            AttributeData attribute = await GetAttributeAsync(_assemblyAttributeFullName, project).ConfigureAwait(false);
             if (attribute == null)
             {
                 return;
             }
 
-            var attributeNode = await attribute.ApplicationSyntaxReference.GetSyntaxAsync().ConfigureAwait(false);
+            SyntaxNode attributeNode = await attribute.ApplicationSyntaxReference.GetSyntaxAsync().ConfigureAwait(false);
             var syntaxGenerator = SyntaxGenerator.GetGenerator(project);
-            var arguments = syntaxGenerator.GetAttributeArguments(attributeNode);
+            System.Collections.Generic.IReadOnlyList<SyntaxNode> arguments = syntaxGenerator.GetAttributeArguments(attributeNode);
 
             // The attributes of interest to us have one argument. If there are more then we have broken code - don't change that.
             if (arguments.Count == 1)
             {
-                var argumentNode = arguments[0];
+                SyntaxNode argumentNode = arguments[0];
                 SyntaxNode newNode;
                 if (attribute.AttributeConstructor.Parameters.FirstOrDefault()?.Type.SpecialType == SpecialType.System_Boolean)
                 {
@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 }
 
                 newNode = newNode.WithTriviaFrom(argumentNode);
-                var editor = await DocumentEditor.CreateAsync(project.GetDocument(attributeNode.SyntaxTree)).ConfigureAwait(false);
+                DocumentEditor editor = await DocumentEditor.CreateAsync(project.GetDocument(attributeNode.SyntaxTree)).ConfigureAwait(false);
                 editor.ReplaceNode(argumentNode, newNode);
 
                 // Apply changes needs to happen on the UI Thread.
@@ -118,10 +118,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// </summary>
         private static async Task<AttributeData> GetAttributeAsync(string assemblyAttributeFullName, Project project)
         {
-            var compilation = await project.GetCompilationAsync().ConfigureAwait(false);
-            var assemblyAttributes = compilation.Assembly.GetAttributes();
+            Compilation compilation = await project.GetCompilationAsync().ConfigureAwait(false);
+            System.Collections.Immutable.ImmutableArray<AttributeData> assemblyAttributes = compilation.Assembly.GetAttributes();
 
-            var attributeTypeSymbol = compilation.GetTypeByMetadataName(assemblyAttributeFullName);
+            INamedTypeSymbol attributeTypeSymbol = compilation.GetTypeByMetadataName(assemblyAttributeFullName);
             if (attributeTypeSymbol == null)
             {
                 return null;

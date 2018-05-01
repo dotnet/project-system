@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         {
             Requires.NotNull(project, nameof(project));
 
-            var values = await GetOrderedPropertyValuesAsync(project).ConfigureAwait(false);
+            ImmutableArray<string> values = await GetOrderedPropertyValuesAsync(project).ConfigureAwait(false);
             if (values.IsEmpty)
             {
                 return ImmutableArray<KeyValuePair<string, string>>.Empty;
@@ -97,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             else
             {
                 // First value is the default one.
-                var defaultValues = ImmutableArray.CreateBuilder<KeyValuePair<string, string>>();
+                ImmutableArray<KeyValuePair<string, string>>.Builder defaultValues = ImmutableArray.CreateBuilder<KeyValuePair<string, string>>();
                 defaultValues.Add(new KeyValuePair<string, string>(DimensionName, values.First()));
                 return defaultValues.ToImmutable();
             }
@@ -117,14 +117,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         {
             Requires.NotNull(project, nameof(project));
 
-            var values = await GetOrderedPropertyValuesAsync(project).ConfigureAwait(false);
+            ImmutableArray<string> values = await GetOrderedPropertyValuesAsync(project).ConfigureAwait(false);
             if (values.IsEmpty)
             {
                 return ImmutableArray<KeyValuePair<string, IEnumerable<string>>>.Empty;
             }
             else
             {
-                var dimensionValues = ImmutableArray.CreateBuilder<KeyValuePair<string, IEnumerable<string>>>();
+                ImmutableArray<KeyValuePair<string, IEnumerable<string>>>.Builder dimensionValues = ImmutableArray.CreateBuilder<KeyValuePair<string, IEnumerable<string>>>();
                 dimensionValues.Add(new KeyValuePair<string, IEnumerable<string>>(DimensionName, values));
                 return dimensionValues.ToImmutable();
             }
@@ -158,7 +158,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// </remarks>
         protected async Task<string> GetPropertyValue(UnconfiguredProject project, string propertyName = null)
         {
-            var configuredProject = await project.GetSuggestedConfiguredProjectAsync()
+            ConfiguredProject configuredProject = await project.GetSuggestedConfiguredProjectAsync()
                                                  .ConfigureAwait(false);
 
             return await ProjectAccessor.OpenProjectForReadAsync(configuredProject, evaluatedProject =>

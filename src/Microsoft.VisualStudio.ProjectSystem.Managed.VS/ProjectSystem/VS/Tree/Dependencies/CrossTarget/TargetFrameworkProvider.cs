@@ -40,11 +40,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 {
                     if (!TryGetCachedTargetFramework(shortOrFullName, out targetFramework))
                     {
-                        var frameworkName = _nuGetFrameworkParser.ParseFrameworkName(shortOrFullName);
+                        System.Runtime.Versioning.FrameworkName frameworkName = _nuGetFrameworkParser.ParseFrameworkName(shortOrFullName);
                         if (frameworkName != null &&
                             !TryGetCachedTargetFramework(frameworkName.FullName, out targetFramework))
                         {
-                            var shortName = _nuGetFrameworkParser.GetShortFrameworkName(frameworkName);
+                            string shortName = _nuGetFrameworkParser.GetShortFrameworkName(frameworkName);
                             targetFramework = new TargetFramework(frameworkName, shortName);
                             // remember target framework - there can not be too many of them across the solution.
                             _cachedTargetFrameworks.Add(targetFramework);
@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 return null;
             }
 
-            var nearestFrameworkName = _nuGetComparer.GetNearest(
+            System.Runtime.Versioning.FrameworkName nearestFrameworkName = _nuGetComparer.GetNearest(
                 targetFramework.FrameworkName, otherFrameworks.Select(x => x.FrameworkName));
             if (nearestFrameworkName == null)
             {

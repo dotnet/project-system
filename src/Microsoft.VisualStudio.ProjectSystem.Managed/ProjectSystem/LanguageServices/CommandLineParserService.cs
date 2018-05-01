@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             if (parser == null)
                 throw new InvalidOperationException();
 
-            var buildOptions = parser.Value.Parse(arguments, _project.FullPath);
+            BuildOptions buildOptions = parser.Value.Parse(arguments, _project.FullPath);
 
             return buildOptions;
         }
