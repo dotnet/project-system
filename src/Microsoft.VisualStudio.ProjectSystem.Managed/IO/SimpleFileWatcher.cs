@@ -22,10 +22,12 @@ namespace Microsoft.VisualStudio.IO
         public SimpleFileWatcher(string dirToWatch, bool includeSubDirs, NotifyFilters notifyFilters, string fileFilter,
                                        FileSystemEventHandler handler, RenamedEventHandler renameHandler)
         {
-            FileWatcher = new FileSystemWatcher(dirToWatch);
-            FileWatcher.IncludeSubdirectories = includeSubDirs;
-            FileWatcher.NotifyFilter = notifyFilters;
-            FileWatcher.Filter = fileFilter;
+            FileWatcher = new FileSystemWatcher(dirToWatch)
+            {
+                IncludeSubdirectories = includeSubDirs,
+                NotifyFilter = notifyFilters,
+                Filter = fileFilter
+            };
 
             if (handler != null)
             {

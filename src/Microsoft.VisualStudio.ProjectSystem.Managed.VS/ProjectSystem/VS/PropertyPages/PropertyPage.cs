@@ -154,13 +154,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         ///--------------------------------------------------------------------------------------------
         public void GetPageInfo(PROPPAGEINFO[] pPageInfo)
         {
-            var info = new PROPPAGEINFO();
-
-            info.cb = (uint)Marshal.SizeOf(typeof(PROPPAGEINFO));
-            info.dwHelpContext = 0;
-            info.pszDocString = null;
-            info.pszHelpFile = null;
-            info.pszTitle = PropertyPageName;
+            var info = new PROPPAGEINFO
+            {
+                cb = (uint)Marshal.SizeOf(typeof(PROPPAGEINFO)),
+                dwHelpContext = 0,
+                pszDocString = null,
+                pszHelpFile = null,
+                pszTitle = PropertyPageName
+            };
             // set the size to 0 so the host doesn't use scroll bars
             // we want to do that within our own container.
             info.SIZE.cx = 0;

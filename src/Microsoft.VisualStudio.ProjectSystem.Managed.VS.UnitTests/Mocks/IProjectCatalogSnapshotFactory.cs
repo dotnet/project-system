@@ -30,8 +30,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 var ruleName = kvp.Key;
                 var itemType = kvp.Value;
 
-                var rule = new Rule();
-                rule.DataSource = new DataSource { ItemType = itemType };
+                var rule = new Rule
+                {
+                    DataSource = new DataSource { ItemType = itemType }
+                };
 
                 mockPropertyPageCatalog.Setup(x => x.GetSchema(ruleName)).Returns(rule);
             }

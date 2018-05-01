@@ -40,8 +40,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             Castle.DynamicProxy.Generators.AttributesToAvoidReplicating.Add(typeof(System.Security.Permissions.UIPermissionAttribute));
 
             var rect = new RECT[] { new RECT() { left = 25, top = 25 } };
-            var page = new Mock<PropertyPage>(false);
-            page.CallBase = true;
+            var page = new Mock<PropertyPage>(false)
+            {
+                CallBase = true
+            };
             page.Object.Move(rect);
 
             Assert.Equal(rect[0].left, page.Object.Location.X);
@@ -70,8 +72,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             Castle.DynamicProxy.Generators.AttributesToAvoidReplicating.Add(typeof(System.Security.Permissions.UIPermissionAttribute));
 
-            var page = new Mock<PropertyPage>(false);
-            page.CallBase = true;
+            var page = new Mock<PropertyPage>(false)
+            {
+                CallBase = true
+            };
 
             page.Object.Move(x);
         }

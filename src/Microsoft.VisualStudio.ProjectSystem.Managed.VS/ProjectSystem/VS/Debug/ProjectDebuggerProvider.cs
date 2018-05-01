@@ -219,21 +219,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// <returns>The native struct.</returns>
         internal static VsDebugTargetInfo4 GetDebuggerStruct4(IDebugLaunchSettings info)
         {
-            var debugInfo = new VsDebugTargetInfo4();
+            var debugInfo = new VsDebugTargetInfo4
+            {
+                // **Begin common section -- keep this in sync with GetDebuggerStruct**
+                dlo = (uint)info.LaunchOperation,
+                LaunchFlags = (uint)info.LaunchOptions,
+                bstrRemoteMachine = info.RemoteMachine,
+                bstrArg = info.Arguments,
+                bstrCurDir = info.CurrentDirectory,
+                bstrExe = info.Executable,
 
-            // **Begin common section -- keep this in sync with GetDebuggerStruct**
-            debugInfo.dlo = (uint)info.LaunchOperation;
-            debugInfo.LaunchFlags = (uint)info.LaunchOptions;
-            debugInfo.bstrRemoteMachine = info.RemoteMachine;
-            debugInfo.bstrArg = info.Arguments;
-            debugInfo.bstrCurDir = info.CurrentDirectory;
-            debugInfo.bstrExe = info.Executable;
+                bstrEnv = GetSerializedEnvironmentString(info.Environment),
+                guidLaunchDebugEngine = info.LaunchDebugEngineGuid
+            };
 
-            debugInfo.bstrEnv = GetSerializedEnvironmentString(info.Environment);
-            debugInfo.guidLaunchDebugEngine = info.LaunchDebugEngineGuid;
-
-            var guids = new List<Guid>(1);
-            guids.Add(info.LaunchDebugEngineGuid);
+            var guids = new List<Guid>(1)
+            {
+                info.LaunchDebugEngineGuid
+            };
             if (info.AdditionalDebugEngines != null)
             {
                 guids.AddRange(info.AdditionalDebugEngines);

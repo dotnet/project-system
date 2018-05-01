@@ -331,8 +331,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
             var provider = CreateInstance(host);
 
-            var args = new BuildErrorEventArgs(null, "Code", file, 0, 0, 0, 0, "ErrorMessage", "HelpKeyword", "Sender");
-            args.ProjectFile = projectFile;
+            var args = new BuildErrorEventArgs(null, "Code", file, 0, 0, 0, 0, "ErrorMessage", "HelpKeyword", "Sender")
+            {
+                ProjectFile = projectFile
+            };
             await provider.AddMessageAsync(new TargetGeneratedError("Test", args));
 
             Assert.Equal(expectedFileName, fileNameResult);
