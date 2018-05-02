@@ -1,6 +1,6 @@
 ﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-Imports System.Windows.Controls
+Imports System.Windows.Controls.Primitives
 Imports System.Windows.Data
 
 Namespace Microsoft.VisualStudio.Editors.OptionPages
@@ -28,7 +28,7 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
                 .UpdateSourceTrigger = UpdateSourceTrigger.Explicit
             }
 
-            Dim bindingExpression = FastUpToDateCheck.SetBinding(CheckBox.IsCheckedProperty, binding)
+            Dim bindingExpression = FastUpToDateCheck.SetBinding(ToggleButton.IsCheckedProperty, binding)
             AddBinding(bindingExpression)
 
             binding = New Binding() With {
@@ -38,7 +38,7 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
                     .Converter = LoggingLevelToInt32Converter.Instance
                     }
 
-            bindingExpression = FastUpToDateLogLevel.SetBinding(ComboBox.SelectedIndexProperty, binding)
+            bindingExpression = FastUpToDateLogLevel.SetBinding(Selector.SelectedIndexProperty, binding)
             AddBinding(bindingExpression)
         End Sub
     End Class

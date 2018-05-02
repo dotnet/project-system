@@ -424,7 +424,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
             SetTypeNameConverter(resourceFile)
             Debug.Assert(TypeResolutionContextProvider IsNot Nothing, "TypeResolutionContextProvider should have been provided - only general exception is deserialization, which does not go through this constructor")
-            Init(NewResXDataNode(Name, Comment, Value), Int32.MaxValue, TypeResolutionContextProvider)
+            Init(NewResXDataNode(Name, Comment, Value), Integer.MaxValue, TypeResolutionContextProvider)
             TryGuessFileEncoding()
         End Sub
 
@@ -445,7 +445,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             SetTypeNameConverter(resourceFile)
             'Leave TextFileEncoding as Nothing so that it will be guessed automatically.
-            Init(NewResXDataNode(Name, Comment, FileNameAndPath, ValueTypeName, Nothing), Int32.MaxValue, TypeResolutionContextProvider)
+            Init(NewResXDataNode(Name, Comment, FileNameAndPath, ValueTypeName, Nothing), Integer.MaxValue, TypeResolutionContextProvider)
             TryGuessFileEncoding()
         End Sub
 
@@ -472,7 +472,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="TypeResolutionContextProvider">An interface from which this resource can query for an ITypeResolutionService for resolving types inside the .resx file.
         '''   May be Nothing, but then it must be provided as soon as possible via SetTypeResolutionContext().</param>
         ''' <remarks></remarks>
-        Private Sub Init(ResXDataNode As ResXDataNode, Optional Order As Integer = Int32.MaxValue, Optional TypeResolutionContextProvider As ITypeResolutionContextProvider = Nothing)
+        Private Sub Init(ResXDataNode As ResXDataNode, Optional Order As Integer = Integer.MaxValue, Optional TypeResolutionContextProvider As ITypeResolutionContextProvider = Nothing)
             _resXDataNode = ResXDataNode
             _orderID = Order
 
@@ -896,7 +896,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         Try
                             _originalFileTimeStamp = File.GetLastWriteTimeUtc(_savedFileName)
                         Catch ex As SystemException
-                            _originalFileTimeStamp = DateTime.UtcNow
+                            _originalFileTimeStamp = Date.UtcNow
                         End Try
 
                         _resXDataNode = NewResXDataNode(Name, Comment, GetValue())

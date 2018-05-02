@@ -937,7 +937,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             For Each strNumber As String In numberString.Split(","c)
                 Dim Number As Double
                 If Double.TryParse(strNumber, Number) Then
-                    If Number >= 0 AndAlso Number < System.Int32.MaxValue Then
+                    If Number >= 0 AndAlso Number < Integer.MaxValue Then
                         result.Add(CInt(Number))
                     End If
                 End If

@@ -411,7 +411,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
 
             ' Find the XmlSchemaElement based on NamespaceName and LocalName provided.
             Dim element As XmlSchemaElement = Nothing
-            Dim ns As Linq.XNamespace = Nothing
+            Dim ns As XNamespace = Nothing
             If NamespaceName Is Nothing Then
                 NamespaceName = String.Empty
             End If
@@ -432,7 +432,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
                 Try
                     ' Get 'ns' even if 'element' is found. Testhook wants
                     ' to know if namespace can be found
-                    ns = Linq.XNamespace.Get(NamespaceName)
+                    ns = XNamespace.Get(NamespaceName)
                     NamespaceFound = ns IsNot Nothing
                 Catch
                     ' ignore any exception coming from there
