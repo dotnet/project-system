@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.Packaging
     [ProvideUIContextRule(ActivationContextGuid, "Load Managed Project Package",
         "dotnetcore",
         new string[] { "dotnetcore" },
-        new string[] { "SolutionHasProjectCapability:(CSharp | VB) & CPS" }
+        new string[] { "SolutionHasProjectCapability:.NET & CPS" }
         )]
 
     [ProvideMenuResource("Menus.ctmenu", 3)]
