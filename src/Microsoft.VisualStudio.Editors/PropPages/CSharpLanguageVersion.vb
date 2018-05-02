@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
@@ -7,7 +7,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     ''' </summary>
     Friend Class CSharpLanguageVersion
 
-        Private Shared ReadOnly _resources As ComponentModel.ComponentResourceManager = New ComponentModel.ComponentResourceManager(GetType(AdvBuildSettingsPropPage))
+        Private Shared ReadOnly s_resources As ComponentModel.ComponentResourceManager = New ComponentModel.ComponentResourceManager(GetType(AdvBuildSettingsPropPage))
 
         Private Const s_languageVersion_Default As String = "default"
         Private Const s_languageVersion_Latest As String = "latest"
@@ -71,7 +71,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         Public Shared ReadOnly Property [Default]() As CSharpLanguageVersion
             Get
-                Static value As New CSharpLanguageVersion(s_languageVersion_Default, _resources.GetString("CSharpLanguageVerison.Default"))
+                Static value As New CSharpLanguageVersion(s_languageVersion_Default, s_resources.GetString("CSharpLanguageVerison.Default"))
                 Return value
             End Get
         End Property
@@ -81,7 +81,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         Public Shared ReadOnly Property Latest() As CSharpLanguageVersion
             Get
-                Static value As New CSharpLanguageVersion(s_languageVersion_Latest, _resources.GetString("CSharpLanguageVerison.Latest"))
+                Static value As New CSharpLanguageVersion(s_languageVersion_Latest, s_resources.GetString("CSharpLanguageVerison.Latest"))
                 Return value
             End Get
         End Property

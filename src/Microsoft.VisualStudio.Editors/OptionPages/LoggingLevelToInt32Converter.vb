@@ -7,11 +7,11 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
     Friend NotInheritable Class LoggingLevelToInt32Converter
         Implements IValueConverter
 
-        Private Shared ReadOnly _instance As New LoggingLevelToInt32Converter()
+        Private Shared ReadOnly s_instance As New LoggingLevelToInt32Converter()
 
         Public Shared ReadOnly Property Instance As LoggingLevelToInt32Converter
             Get
-                Return _instance
+                Return s_instance
             End Get
         End Property
 
