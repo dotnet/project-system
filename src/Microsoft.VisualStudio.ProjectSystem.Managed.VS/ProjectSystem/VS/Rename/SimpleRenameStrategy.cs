@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -65,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 if (semanticModel == null)
                     return renamedSolution;
 
-                System.Collections.Generic.IEnumerable<SyntaxNode> declarations = root.DescendantNodes().Where(n => HasMatchingSyntaxNode(semanticModel, n, oldNameBase, isCaseSensitive));
+                IEnumerable<SyntaxNode> declarations = root.DescendantNodes().Where(n => HasMatchingSyntaxNode(semanticModel, n, oldNameBase, isCaseSensitive));
                 SyntaxNode declaration = declarations.FirstOrDefault();
                 if (declaration == null)
                     return renamedSolution;

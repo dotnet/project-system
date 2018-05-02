@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -35,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return projectConfiguration1.Equals(projectConfiguration2);
             }
 
-            foreach (System.Collections.Generic.KeyValuePair<string, string> dimensionKvp in projectConfiguration1.Dimensions)
+            foreach (KeyValuePair<string, string> dimensionKvp in projectConfiguration1.Dimensions)
             {
                 string dimensionName = dimensionKvp.Key;
                 string dimensionValue = dimensionKvp.Value;

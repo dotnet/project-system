@@ -9,6 +9,7 @@
 // </summary>
 //--------------------------------------------------------------------------------------------
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
@@ -49,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 var hint = (IProjectChangeFileRenameHint)files.First();
                 if (!hint.ChangeAlreadyOccurred)
                 {
-                    System.Collections.Generic.KeyValuePair<string, string> kvp = hint.RenamedFiles.First();
+                    KeyValuePair<string, string> kvp = hint.RenamedFiles.First();
                     ScheduleRename(kvp.Key, kvp.Value);
                 }
             }

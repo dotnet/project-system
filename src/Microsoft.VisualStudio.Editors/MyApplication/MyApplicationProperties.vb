@@ -520,7 +520,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 Return NothingToEmptyString(_myAppData.MainFormNoRootNS)
             End Get
             Set(value As String)
-                If System.String.CompareOrdinal(NothingToEmptyString(_myAppData.MainFormNoRootNS), NothingToEmptyString(value)) <> 0 Then
+                If String.CompareOrdinal(NothingToEmptyString(_myAppData.MainFormNoRootNS), NothingToEmptyString(value)) <> 0 Then
                     CheckOutDocData()
                     _myAppData.MainFormNoRootNS = EmptyStringToNothing(value)
                     FlushToDocData()
@@ -665,7 +665,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 Return NothingToEmptyString(_myAppData.SplashScreenNoRootNS)
             End Get
             Set(value As String)
-                If System.String.CompareOrdinal(NothingToEmptyString(_myAppData.SplashScreenNoRootNS), NothingToEmptyString(value)) <> 0 Then
+                If String.CompareOrdinal(NothingToEmptyString(_myAppData.SplashScreenNoRootNS), NothingToEmptyString(value)) <> 0 Then
                     CheckOutDocData()
                     _myAppData.SplashScreenNoRootNS = EmptyStringToNothing(value)
                     FlushToDocData()

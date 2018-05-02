@@ -7,6 +7,7 @@ using System.Linq;
 
 using Microsoft.VisualStudio.GraphModel;
 using Microsoft.VisualStudio.GraphModel.Schemas;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.ViewProviders;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.Shell;
 
@@ -95,7 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
                         if (!cachedDependencyToMatchingResultsMap
                                 .TryGetValue(topLevelDependency.Id, out HashSet<IDependency> topLevelDependencyMatches))
                         {
-                            Lazy<ViewProviders.IDependenciesGraphViewProvider, IOrderPrecedenceMetadataView> viewProvider = ViewProviders.FirstOrDefault(x => x.Value.SupportsDependency(topLevelDependency));
+                            Lazy<IDependenciesGraphViewProvider, IOrderPrecedenceMetadataView> viewProvider = ViewProviders.FirstOrDefault(x => x.Value.SupportsDependency(topLevelDependency));
                             if (viewProvider == null)
                             {
                                 continue;

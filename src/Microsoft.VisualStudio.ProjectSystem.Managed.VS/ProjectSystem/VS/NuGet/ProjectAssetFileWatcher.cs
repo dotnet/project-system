@@ -1,13 +1,15 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
-
+using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Shell;
@@ -171,7 +173,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             try
             {
-                using (var hasher = System.Security.Cryptography.SHA256.Create())
+                using (var hasher = SHA256.Create())
                 using (FileStream file = File.OpenRead(path))
                 {
                     file.Position = 0;
@@ -293,11 +295,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                             using (ProjectWriteLockReleaser access = await _projectServices.ProjectLockService.WriteLockAsync(cancellationToken))
                             {
                                 // notify all the loaded configured projects
-                                System.Collections.Generic.IEnumerable<ConfiguredProject> currentProjects = _projectServices.Project.LoadedConfiguredProjects;
+                                IEnumerable<ConfiguredProject> currentProjects = _projectServices.Project.LoadedConfiguredProjects;
                                 foreach (ConfiguredProject configuredProject in currentProjects)
                                 {
                                     // Inside a write lock, we should get back to the same thread.
-                                    Microsoft.Build.Evaluation.Project project = await access.GetProjectAsync(configuredProject, cancellationToken).ConfigureAwait(true);
+                                    Project project = await access.GetProjectAsync(configuredProject, cancellationToken).ConfigureAwait(true);
                                     project.MarkDirty();
                                     configuredProject.NotifyProjectChange();
                                 }

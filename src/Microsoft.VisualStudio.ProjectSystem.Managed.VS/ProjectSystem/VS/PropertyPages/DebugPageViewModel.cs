@@ -17,6 +17,8 @@ using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell;
 
+using DialogResult = System.Windows.Forms.DialogResult;
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     internal class DebugPageViewModel : PropertyPageViewModel, INotifyDataErrorInfo
@@ -810,8 +812,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                             {
                                 dialog.SelectedPath = folder;
                             }
-                            System.Windows.Forms.DialogResult result = dialog.ShowDialog();
-                            if (result == System.Windows.Forms.DialogResult.OK)
+                            DialogResult result = dialog.ShowDialog();
+                            if (result == DialogResult.OK)
                             {
                                 WorkingDirectory = dialog.SelectedPath.ToString();
                             }
@@ -838,8 +840,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                             }
                             dialog.Multiselect = false;
                             dialog.Filter = _executableFilter;
-                            System.Windows.Forms.DialogResult result = dialog.ShowDialog();
-                            if (result == System.Windows.Forms.DialogResult.OK)
+                            DialogResult result = dialog.ShowDialog();
+                            if (result == DialogResult.OK)
                             {
                                 ExecutablePath = dialog.FileName.ToString();
                             }

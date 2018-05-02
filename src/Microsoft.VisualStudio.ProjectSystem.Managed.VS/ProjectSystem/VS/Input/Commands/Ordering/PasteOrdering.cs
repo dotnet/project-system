@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
+using System.Collections.Immutable;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
@@ -100,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             Assumes.NotNull(_dropTarget);
 
             // ConfigureAwait is true because we need to come back for PasteItemsAsync to work. If not, PasteItemsAsync will throw.
-            System.Collections.Immutable.ImmutableHashSet<string> previousIncludes = await OrderingHelper.GetAllEvaluatedIncludes(_configuredProject, _accessor).ConfigureAwait(true);
+            ImmutableHashSet<string> previousIncludes = await OrderingHelper.GetAllEvaluatedIncludes(_configuredProject, _accessor).ConfigureAwait(true);
             PasteItemsResult result = await PasteHandler.PasteItemsAsync(items, effect).ConfigureAwait(false);
 
             await OrderingHelper.Move(_configuredProject, _accessor, previousIncludes, _dropTarget, OrderingMoveAction.MoveToTop).ConfigureAwait(false);

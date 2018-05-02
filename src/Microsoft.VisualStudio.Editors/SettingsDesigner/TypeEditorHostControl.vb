@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports Microsoft.VisualStudio.Editors.Common
 Imports System.Drawing
@@ -317,7 +317,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ShowEditorButton_Click(sender As System.Object, e As EventArgs) Handles _showEditorButton.Click
+        Private Sub ShowEditorButton_Click(sender As Object, e As EventArgs) Handles _showEditorButton.Click
             Debug.Assert(Not _typeEditor Is Nothing)
             ShowUITypeEditor()
         End Sub
@@ -326,8 +326,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' Display the associated type editor if not already showing
         ''' </summary>
         ''' <remarks></remarks>
-        <Security.SecurityCritical()> _
-        <System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptions()> _
+        <Security.SecurityCritical()>
+        <System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptions()>
         Private Sub ShowUITypeEditor()
             If _typeEditor IsNot Nothing Then
                 If _isShowingUITypeEditor Then
@@ -367,10 +367,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     AndAlso Not TypeOf Ex Is StackOverflowException
 
                     Dim sp As IServiceProvider = VBPackage.Instance
-                    DesignerFramework.DesignerMessageBox.Show( _
-                                       sp, _
-                                       "", _
-                                       Ex, _
+                    DesignerFramework.DesignerMessageBox.Show(
+                                       sp,
+                                       "",
+                                       Ex,
                                        DesignerFramework.DesignUtil.GetDefaultCaption(sp))
                 Finally
                     _isShowingUITypeEditor = False
@@ -651,7 +651,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ValueComboBox_SelectedIndexChanged(sender As System.Object, e As EventArgs) Handles _valueComboBox.SelectedIndexChanged
+        Private Sub ValueComboBox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles _valueComboBox.SelectedIndexChanged
             _innerValue = _valueComboBox.SelectedItem
             TextValueDirty = False
             OnValueChanged()

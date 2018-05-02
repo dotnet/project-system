@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
@@ -98,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
                     // The SyncLink will only publish data when the versions of the sources match. There is a problem with that.
                     // The sources have some version components that will make this impossible to match across TFMs. We introduce a 
                     // intermediate block here that will remove those version components so that the synclink can actually sync versions. 
-                    System.Collections.Generic.IEnumerable<ProjectDataSources.SourceBlockAndLink<IProjectValueVersions>> sourceBlocks = e.Value.Select(
+                    IEnumerable<ProjectDataSources.SourceBlockAndLink<IProjectValueVersions>> sourceBlocks = e.Value.Select(
                         cp =>
                         {
                             IReceivableSourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> sourceBlock = cp.Services.ProjectSubscription.JointRuleSource.SourceBlock;
@@ -229,7 +230,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
             private static void LogProperties(IProjectLoggerBatch logger, string heading, ProjectProperties projectProperties)
             {
-                System.Collections.Generic.IEnumerable<string> properties = projectProperties.Cast<ProjectProperty>()
+                IEnumerable<string> properties = projectProperties.Cast<ProjectProperty>()
                         .Select(prop => $"{prop.Name}:{prop.Value}");
                 logger.WriteLine($"{heading} -- ({string.Join(" | ", properties)})");
             }
@@ -241,7 +242,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.NuGet
 
                 foreach (IVsReferenceItem reference in references)
                 {
-                    System.Collections.Generic.IEnumerable<string> properties = reference.Properties.Cast<ReferenceProperty>()
+                    IEnumerable<string> properties = reference.Properties.Cast<ReferenceProperty>()
                         .Select(prop => $"{prop.Name}:{prop.Value}");
                     logger.WriteLine($"{reference.Name} -- ({string.Join(" | ", properties)})");
                 }

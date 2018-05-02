@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
@@ -69,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public async Task<ConfiguredProject> GetConfiguredProjectForActiveFrameworkAsync()
         {
 #pragma warning disable CS0618 // Type or member is obsolete
-            System.Collections.Immutable.ImmutableDictionary<string, ConfiguredProject> configProjects = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync().ConfigureAwait(false);
+            ImmutableDictionary<string, ConfiguredProject> configProjects = await _activeConfiguredProjectsProvider.GetActiveConfiguredProjectsMapAsync().ConfigureAwait(false);
 #pragma warning restore CS0618 // Type or member is obsolete
 
             // If there is only one we are done

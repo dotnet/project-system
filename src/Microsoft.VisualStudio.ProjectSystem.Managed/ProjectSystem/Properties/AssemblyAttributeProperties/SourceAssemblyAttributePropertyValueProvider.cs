@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -87,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             SyntaxNode attributeNode = await attribute.ApplicationSyntaxReference.GetSyntaxAsync().ConfigureAwait(false);
             var syntaxGenerator = SyntaxGenerator.GetGenerator(project);
-            System.Collections.Generic.IReadOnlyList<SyntaxNode> arguments = syntaxGenerator.GetAttributeArguments(attributeNode);
+            IReadOnlyList<SyntaxNode> arguments = syntaxGenerator.GetAttributeArguments(attributeNode);
 
             // The attributes of interest to us have one argument. If there are more then we have broken code - don't change that.
             if (arguments.Count == 1)
@@ -119,7 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private static async Task<AttributeData> GetAttributeAsync(string assemblyAttributeFullName, Project project)
         {
             Compilation compilation = await project.GetCompilationAsync().ConfigureAwait(false);
-            System.Collections.Immutable.ImmutableArray<AttributeData> assemblyAttributes = compilation.Assembly.GetAttributes();
+            ImmutableArray<AttributeData> assemblyAttributes = compilation.Assembly.GetAttributes();
 
             INamedTypeSymbol attributeTypeSymbol = compilation.GetTypeByMetadataName(assemblyAttributeFullName);
             if (attributeTypeSymbol == null)

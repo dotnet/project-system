@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
-
+using System.Runtime.Versioning;
 using NuGet.VisualStudio;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 {
                     if (!TryGetCachedTargetFramework(shortOrFullName, out targetFramework))
                     {
-                        System.Runtime.Versioning.FrameworkName frameworkName = _nuGetFrameworkParser.ParseFrameworkName(shortOrFullName);
+                        FrameworkName frameworkName = _nuGetFrameworkParser.ParseFrameworkName(shortOrFullName);
                         if (frameworkName != null &&
                             !TryGetCachedTargetFramework(frameworkName.FullName, out targetFramework))
                         {
@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 return null;
             }
 
-            System.Runtime.Versioning.FrameworkName nearestFrameworkName = _nuGetComparer.GetNearest(
+            FrameworkName nearestFrameworkName = _nuGetComparer.GetNearest(
                 targetFramework.FrameworkName, otherFrameworks.Select(x => x.FrameworkName));
             if (nearestFrameworkName == null)
             {

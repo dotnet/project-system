@@ -8,7 +8,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
-
+using Microsoft.Build.Construction;
+using Microsoft.Build.Evaluation;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -205,7 +206,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             using (ProjectWriteLockReleaser access = await ProjectLockService.WriteLockAsync())
             {
-                Microsoft.Build.Evaluation.Project project = await access.GetProjectAsync(ActiveConfiguredProject).ConfigureAwait(true);
+                Project project = await access.GetProjectAsync(ActiveConfiguredProject).ConfigureAwait(true);
 
                 // Handle the removal of normal reference Item Nodes (this excludes any shared import nodes).
                 foreach (IProjectTree node in referenceItemNodes)
@@ -222,7 +223,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     }
 
                     IProjectPropertiesContext nodeItemContext = node.BrowseObjectProperties.Context;
-                    Microsoft.Build.Evaluation.ProjectItem unresolvedReferenceItem = project.GetItemsByEvaluatedInclude(nodeItemContext.ItemName)
+                    ProjectItem unresolvedReferenceItem = project.GetItemsByEvaluatedInclude(nodeItemContext.ItemName)
                         .FirstOrDefault(item => string.Equals(item.ItemType,
                                                               nodeItemContext.ItemType,
                                                               StringComparison.OrdinalIgnoreCase));
@@ -244,7 +245,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 }
 
                 // Handle the removal of shared import nodes.
-                Microsoft.Build.Construction.ProjectRootElement projectXml = await access.GetProjectXmlAsync(UnconfiguredProject.FullPath)
+                ProjectRootElement projectXml = await access.GetProjectXmlAsync(UnconfiguredProject.FullPath)
                                              .ConfigureAwait(true);
                 foreach (IProjectTree sharedImportNode in sharedImportNodes)
                 {
@@ -262,13 +263,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
                     // Find the import that is included in the evaluation of the specified ConfiguredProject that
                     // imports the project file whose full path matches the specified one.
-                    IEnumerable<Microsoft.Build.Evaluation.ResolvedImport> matchingImports = from import in project.Imports
+                    IEnumerable<ResolvedImport> matchingImports = from import in project.Imports
                                           where import.ImportingElement.ContainingProject == projectXml
                                           where PathHelper.IsSamePath(import.ImportedProject.FullPath, sharedFilePath)
                                           select import;
-                    foreach (Microsoft.Build.Evaluation.ResolvedImport importToRemove in matchingImports)
+                    foreach (ResolvedImport importToRemove in matchingImports)
                     {
-                        Microsoft.Build.Construction.ProjectImportElement importingElementToRemove = importToRemove.ImportingElement;
+                        ProjectImportElement importingElementToRemove = importToRemove.ImportingElement;
                         Report.IfNot(importingElementToRemove != null,
                                      "Cannot find shared project reference to remove.");
                         if (importingElementToRemove != null)
