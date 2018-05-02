@@ -68,9 +68,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             SuspendLayout();
 
-            _host = new PropertyPageElementHost();
-            _host.AutoSize = false;
-            _host.Dock = DockStyle.Fill;
+            _host = new PropertyPageElementHost
+            {
+                AutoSize = false,
+                Dock = DockStyle.Fill
+            };
 
             if (_control == null)
             {

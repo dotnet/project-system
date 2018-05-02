@@ -293,9 +293,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 newTree.DisplayOrder = DisplayOrder;
                 newTree.ItemName = ItemName;
 
-                var projectPropertiesContext = new MutableProjectPropertiesContext();
-
-                projectPropertiesContext.ItemName = ItemName;
+                var projectPropertiesContext = new MutableProjectPropertiesContext
+                {
+                    ItemName = ItemName
+                };
 
                 newItemTree.Item = projectPropertiesContext;
 

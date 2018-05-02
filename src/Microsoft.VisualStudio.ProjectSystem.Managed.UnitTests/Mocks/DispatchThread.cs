@@ -34,10 +34,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     catch (ThreadAbortException)
                     {
                     }
-                });
-
-                _thread.Name = GetType().FullName;
-                _thread.IsBackground = true;
+                })
+                {
+                    Name = GetType().FullName,
+                    IsBackground = true
+                };
                 _thread.SetApartmentState(ApartmentState.STA);
                 _thread.Start();
 

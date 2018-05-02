@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports EnvDTE
 Imports Microsoft.VisualStudio.Editors.Interop
@@ -2328,7 +2328,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         Private Class ConcreteApplicationSettings
             Inherits ApplicationSettingsBase
 
-            Private _globalObject As SettingsFileGlobalObject
+            Private ReadOnly _globalObject As SettingsFileGlobalObject
             Private _properties As SettingsPropertyCollection
 
             ''' <summary>

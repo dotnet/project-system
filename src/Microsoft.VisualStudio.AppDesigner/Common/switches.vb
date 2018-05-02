@@ -1,7 +1,10 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+#If DEBUG Then
 Imports System.Text
 Imports Microsoft.VisualStudio.Editors.AppDesInterop
+#End If
+
 Imports Microsoft.VisualStudio.Editors.PropertyPages
 
 Namespace Microsoft.VisualStudio.Editors.AppDesCommon
