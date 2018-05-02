@@ -316,7 +316,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         internal virtual UnconfiguredProject GetUnconfiguredProject(IVsHierarchy hier)
         {
-            var provider = GetExport<IProjectExportProvider>(hier);
+            IProjectExportProvider provider = GetExport<IProjectExportProvider>(hier);
             return provider.GetExport<UnconfiguredProject>(hier.GetDTEProject().FileName);
         }
 

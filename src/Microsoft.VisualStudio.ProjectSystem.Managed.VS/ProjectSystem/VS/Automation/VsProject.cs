@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             get
             {
-                var imports = ImportsImpl.FirstOrDefault();
+                Lazy<Imports, IOrderPrecedenceMetadataView> imports = ImportsImpl.FirstOrDefault();
                 if (imports != null)
                 {
                     return imports.Value;
@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         {
             get
             {
-                var vsprojectevent = VSProjectEventsImpl.FirstOrDefault();
+                Lazy<VSProjectEvents, IOrderPrecedenceMetadataView> vsprojectevent = VSProjectEventsImpl.FirstOrDefault();
                 if (vsprojectevent != null)
                 {
                     return vsprojectevent.Value;

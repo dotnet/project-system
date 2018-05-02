@@ -1291,7 +1291,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
 
-        Private Sub UnusedReferences_Click(sender As System.Object, e As EventArgs) Handles UnusedReferences.Click
+        Private Sub UnusedReferences_Click(sender As Object, e As EventArgs) Handles UnusedReferences.Click
             ' Take a snapshot of the user imports...
             Dim ImportsSnapshot As IDictionary(Of String, Boolean) = GetUserDefinedImportsSnapshot()
 
@@ -1596,7 +1596,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub AddUserImportButton_Click(sender As System.Object, e As EventArgs) Handles AddUserImportButton.Click
+        Private Sub AddUserImportButton_Click(sender As Object, e As EventArgs) Handles AddUserImportButton.Click
             Debug.Assert(UserImportTextBox.Text.Trim().Length > 0, "Why was the AddUserImportButton enabled when the UserImport text was empty?")
             ' Get the current list
             Dim CurrentImports As String() = GetCurrentImports()
@@ -1637,7 +1637,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub ImportList_SelectedIndexChanged(sender As System.Object, e As EventArgs) Handles ImportList.SelectedIndexChanged
+        Private Sub ImportList_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ImportList.SelectedIndexChanged
 
             If Not _hidingImportListSelectedItem Then
                 _importListSelectedItem = Nothing
@@ -1653,7 +1653,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub UpdateUserImportButton_Click(sender As System.Object, e As EventArgs) Handles UpdateUserImportButton.Click
+        Private Sub UpdateUserImportButton_Click(sender As Object, e As EventArgs) Handles UpdateUserImportButton.Click
 
             Debug.Assert(ImportList.SelectedItems.Count <= 1 AndAlso
                         ImportListSelectedItem IsNot Nothing AndAlso

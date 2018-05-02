@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -66,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Since Env variables are an immutable dictionary they are a little messy to update.
             if (resolvedProfile.EnvironmentVariables != null)
             {
-                foreach (var kvp in resolvedProfile.EnvironmentVariables)
+                foreach (KeyValuePair<string, string> kvp in resolvedProfile.EnvironmentVariables)
                 {
                     resolvedProfile.EnvironmentVariables = resolvedProfile.EnvironmentVariables.SetItem(kvp.Key, await ReplaceTokensInStringAsync(kvp.Value, true).ConfigureAwait(false));
                 }
@@ -74,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             if (resolvedProfile.OtherSettings != null)
             {
-                foreach (var kvp in resolvedProfile.OtherSettings)
+                foreach (KeyValuePair<string, object> kvp in resolvedProfile.OtherSettings)
                 {
                     if (kvp.Value is string)
                     {

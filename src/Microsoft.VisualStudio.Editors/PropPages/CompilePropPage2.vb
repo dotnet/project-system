@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports System.ComponentModel
@@ -784,7 +784,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Make sure we set the Register for COM interop property whenever the
         ''' user checkes the corresponding checkbox on the property page
         ''' </summary>
-        Private Sub RegisterForComInteropCheckBox_CheckedChanged(sender As System.Object, e As EventArgs) Handles RegisterForComInteropCheckBox.CheckedChanged
+        Private Sub RegisterForComInteropCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles RegisterForComInteropCheckBox.CheckedChanged
             If Not m_fInsideInit Then
                 If RegisterForComInteropCheckBox.Checked Then
                     ' Whenever the user checks the register for Com interop, we should also set the COM visible property

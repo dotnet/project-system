@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports Microsoft.VisualStudio.Editors.DesignerFramework
 Imports System.Windows.Forms
@@ -614,7 +614,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             s_previousSize = Size
         End Sub
 
-        Private Sub TypePickerDialog_HelpButtonClicked(sender As System.Object, e As System.ComponentModel.CancelEventArgs) Handles MyBase.HelpButtonClicked
+        Private Sub TypePickerDialog_HelpButtonClicked(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles MyBase.HelpButtonClicked
             e.Cancel = True
             ShowHelp()
         End Sub

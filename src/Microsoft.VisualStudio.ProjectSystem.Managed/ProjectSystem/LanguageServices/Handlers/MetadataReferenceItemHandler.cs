@@ -41,14 +41,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             foreach (CommandLineReference reference in removed.MetadataReferences)
             {
-                var fullPath = _project.MakeRooted(reference.Reference);
+                string fullPath = _project.MakeRooted(reference.Reference);
 
                 RemoveFromContextIfPresent(fullPath, reference.Properties, logger);
             }
 
             foreach (CommandLineReference reference in added.MetadataReferences)
             {
-                var fullPath = _project.MakeRooted(reference.Reference);
+                string fullPath = _project.MakeRooted(reference.Reference);
 
                 AddToContextIfNotPresent(fullPath, reference.Properties, logger);
             }
@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         private void AddToContextIfNotPresent(string fullPath, MetadataReferenceProperties properties, IProjectLogger logger)
         {
-            if (_addedPathsWithMetadata.TryGetValue(fullPath, out var existingProperties))
+            if (_addedPathsWithMetadata.TryGetValue(fullPath, out MetadataReferenceProperties existingProperties))
             {
                 logger.WriteLine("Removing existing {0} '{1}' so we can update the aliases.", properties.EmbedInteropTypes ? "link" : "reference", fullPath);
 
@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 // existing one, compute merged properties, and add the new one.
                 _context.RemoveMetadataReference(fullPath);
 
-                var combinedAliases = GetEmptyIfGlobalAlias(GetGlobalAliasIfEmpty(existingProperties.Aliases).AddRange(GetGlobalAliasIfEmpty(properties.Aliases)));
+                ImmutableArray<string> combinedAliases = GetEmptyIfGlobalAlias(GetGlobalAliasIfEmpty(existingProperties.Aliases).AddRange(GetGlobalAliasIfEmpty(properties.Aliases)));
                 properties = properties.WithAliases(combinedAliases);
             }
 
@@ -77,14 +77,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         private void RemoveFromContextIfPresent(string fullPath, MetadataReferenceProperties properties, IProjectLogger logger)
         {
-            if (_addedPathsWithMetadata.TryGetValue(fullPath, out var existingProperties))
+            if (_addedPathsWithMetadata.TryGetValue(fullPath, out MetadataReferenceProperties existingProperties))
             {
                 logger.WriteLine("Removing {0} '{1}'", properties.EmbedInteropTypes ? "link" : "reference", fullPath);
 
                 _context.RemoveMetadataReference(fullPath);
 
                 // Subtract any existing aliases out. This will be an empty list if we should remove the reference entirely
-                var resultantAliases = GetGlobalAliasIfEmpty(existingProperties.Aliases).RemoveRange(GetGlobalAliasIfEmpty(properties.Aliases));
+                ImmutableArray<string> resultantAliases = GetGlobalAliasIfEmpty(existingProperties.Aliases).RemoveRange(GetGlobalAliasIfEmpty(properties.Aliases));
 
                 if (resultantAliases.IsEmpty)
                 {

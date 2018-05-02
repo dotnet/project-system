@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Strict On
 Option Explicit On
@@ -157,10 +157,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Shared s_defaultAssemblyReferences() As AssemblyName =
             {
                 GetType(CodeDom.MemberAttributes).Assembly.GetName(),
-                GetType(System.Int32).Assembly.GetName(),
+                GetType(Integer).Assembly.GetName(),
                  GetType(Bitmap).Assembly.GetName(),
                 GetType(Form).Assembly.GetName(),
-                GetType(System.Data.DataSet).Assembly.GetName()
+                GetType(DataSet).Assembly.GetName()
             }
 
 

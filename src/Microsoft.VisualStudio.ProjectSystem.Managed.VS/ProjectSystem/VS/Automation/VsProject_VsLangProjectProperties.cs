@@ -21,8 +21,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             {
                 return _threadingService.ExecuteSynchronously(async () =>
                 {
-                    var configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync().ConfigureAwait(true);
-                    var value = await configurationGeneralProperties.OutputType.GetValueAsync().ConfigureAwait(true);
+                    ConfigurationGeneralBrowseObject configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync().ConfigureAwait(true);
+                    object value = await configurationGeneralProperties.OutputType.GetValueAsync().ConfigureAwait(true);
                     return (prjOutputTypeEx)value;
                 });
             }
@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             {
                 _threadingService.ExecuteSynchronously(async () =>
                 {
-                    var configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync().ConfigureAwait(true);
+                    ConfigurationGeneralBrowseObject configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync().ConfigureAwait(true);
                     await configurationGeneralProperties.OutputType.SetValueAsync(value).ConfigureAwait(true);
                 });
             }
@@ -45,8 +45,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             {
                 return _threadingService.ExecuteSynchronously(async () =>
                 {
-                    var configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync().ConfigureAwait(true);
-                    var value = await configurationGeneralProperties.OutputType.GetValueAsync().ConfigureAwait(true);
+                    ConfigurationGeneralBrowseObject configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync().ConfigureAwait(true);
+                    object value = await configurationGeneralProperties.OutputType.GetValueAsync().ConfigureAwait(true);
                     return (prjOutputType)value;
                 });
             }
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             {
                 _threadingService.ExecuteSynchronously(async () =>
                 {
-                    var configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync().ConfigureAwait(true);
+                    ConfigurationGeneralBrowseObject configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync().ConfigureAwait(true);
                     await configurationGeneralProperties.OutputType.SetValueAsync(value).ConfigureAwait(true);
                 });
             }
@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             {
                 return _threadingService.ExecuteSynchronously(async () =>
                 {
-                    var configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
+                    ConfigurationGeneral configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
                     return await configurationGeneralProperties.AssemblyName.GetEvaluatedValueAtEndAsync().ConfigureAwait(true);
                 });
             }
@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             {
                 _threadingService.ExecuteSynchronously(async () =>
                 {
-                    var browseObjectProperties = await ProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
+                    ConfigurationGeneral browseObjectProperties = await ProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
                     await browseObjectProperties.AssemblyName.SetValueAsync(value).ConfigureAwait(true);
                 });
             }
@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             {
                 return _threadingService.ExecuteSynchronously(async () =>
                 {
-                    var configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
+                    ConfigurationGeneral configurationGeneralProperties = await ProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(true);
                     return await configurationGeneralProperties.ProjectDir.GetEvaluatedValueAtEndAsync().ConfigureAwait(true);
                 });
             }
@@ -102,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             {
                 return _threadingService.ExecuteSynchronously(async () =>
                 {
-                    var browseObjectProperties = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync().ConfigureAwait(true);
+                    ConfigurationGeneralBrowseObject browseObjectProperties = await ProjectProperties.GetConfigurationGeneralBrowseObjectPropertiesAsync().ConfigureAwait(true);
                     return await browseObjectProperties.FullPath.GetEvaluatedValueAtEndAsync().ConfigureAwait(true);
                 });
             }

@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 Imports System.Diagnostics.CodeAnalysis
@@ -78,7 +78,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             HelpLabel.LinkArea = New LinkArea(nonlabelText.Length, labelText.Length)
         End Sub
 
-        Private Sub EnableApplicationServices_CheckedChanged(sender As System.Object, e As EventArgs) Handles EnableApplicationServices.CheckedChanged
+        Private Sub EnableApplicationServices_CheckedChanged(sender As Object, e As EventArgs) Handles EnableApplicationServices.CheckedChanged
             If _ignoreCheckedChanged Then
                 _ignoreCheckedChanged = False
                 Exit Sub
@@ -315,7 +315,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-        Private Sub Loaded(sender As System.Object, e As EventArgs) Handles Me.Load
+        Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
             _frameworkVersionNumber = GetProjectTargetFrameworkVersion(ProjectHierarchy)
             EnsureXmlUpToDate()
         End Sub
@@ -335,17 +335,17 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Try
         End Sub
 
-        Private Sub HelpLabel_LinkClicked(sender As System.Object, e As LinkLabelLinkClickedEventArgs) Handles HelpLabel.LinkClicked
+        Private Sub HelpLabel_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles HelpLabel.LinkClicked
             InvokeHelp()
         End Sub
 
-        Private Sub ValidateWhenHidden(sender As System.Object, e As EventArgs) Handles Me.VisibleChanged
+        Private Sub ValidateWhenHidden(sender As Object, e As EventArgs) Handles Me.VisibleChanged
             If Not Visible Then
                 Validate()
             End If
         End Sub
 
-        Private Sub ValidateWhenLostFocus(sender As System.Object, e As EventArgs) Handles AuthenticationServiceUrl.LostFocus, CustomCredentialProviderType.LostFocus, RolesServiceUrl.LostFocus, WebSettingsUrl.LostFocus
+        Private Sub ValidateWhenLostFocus(sender As Object, e As EventArgs) Handles AuthenticationServiceUrl.LostFocus, CustomCredentialProviderType.LostFocus, RolesServiceUrl.LostFocus, WebSettingsUrl.LostFocus
             Validate()
         End Sub
 

@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.Telemetry
 
         private (string eventPath, ConcurrentDictionary<string, string> properties) GetEventInfo(string eventName)
         {
-            if (!_eventCache.TryGetValue(eventName, out var eventInfo))
+            if (!_eventCache.TryGetValue(eventName, out (string Event, ConcurrentDictionary<string, string> Properties) eventInfo))
             {
                 eventInfo = (EventPrefix + eventName.ToLower(), new ConcurrentDictionary<string, string>());
                 _eventCache[eventName] = eventInfo;
@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.Telemetry
         private string GetPropertyName(string eventName, string propertyName)
         {
             (_, ConcurrentDictionary<string, string> properties) = GetEventInfo(eventName);
-            if (!properties.TryGetValue(propertyName, out var fullPropertyName))
+            if (!properties.TryGetValue(propertyName, out string fullPropertyName))
             {
                 fullPropertyName = BuildPropertyName(eventName, propertyName);
                 properties[propertyName] = fullPropertyName;
@@ -103,7 +103,7 @@ namespace Microsoft.VisualStudio.Telemetry
                 return value;
             }
 
-            var inputBytes = Encoding.UTF8.GetBytes(value);
+            byte[] inputBytes = Encoding.UTF8.GetBytes(value);
             using (var cryptoServiceProvider = new SHA256CryptoServiceProvider())
             {
                 return BitConverter.ToString(cryptoServiceProvider.ComputeHash(inputBytes));
@@ -123,7 +123,7 @@ namespace Microsoft.VisualStudio.Telemetry
         /// </remarks>
         private static string BuildPropertyName(string eventName, string propertyName)
         {
-            var name = PropertyPrefix + eventName.Replace('/', '.');
+            string name = PropertyPrefix + eventName.Replace('/', '.');
 
             if (!name.EndsWith("."))
             {

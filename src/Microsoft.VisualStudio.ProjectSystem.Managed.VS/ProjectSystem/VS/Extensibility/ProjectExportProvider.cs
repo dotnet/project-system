@@ -35,13 +35,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Extensibility
                 throw new ArgumentNullException(nameof(projectFilePath));
             }
 
-            var projectService = _projectServiceAccessor.GetProjectService();
+            IProjectService projectService = _projectServiceAccessor.GetProjectService();
             if (projectService == null)
             {
                 return null;
             }
 
-            var project = projectService.LoadedUnconfiguredProjects
+            UnconfiguredProject project = projectService.LoadedUnconfiguredProjects
                                                     .FirstOrDefault(x => x.FullPath.Equals(projectFilePath,
                                                                             StringComparison.OrdinalIgnoreCase));
             return project?.Services.ExportProvider.GetExportedValueOrDefault<T>();

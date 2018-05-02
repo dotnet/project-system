@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     if ((DataContext as DebugPageViewModel).EnvironmentVariables.Count > 0)
                     {
                         // get the new cell, set focus, then open for edit
-                        var cell = WpfHelper.GetCell(dataGridEnvironmentVariables, (DataContext as DebugPageViewModel).EnvironmentVariables.Count - 1, 0);
+                        DataGridCell cell = WpfHelper.GetCell(dataGridEnvironmentVariables, (DataContext as DebugPageViewModel).EnvironmentVariables.Count - 1, 0);
                         cell.Focus();
                         dataGridEnvironmentVariables.BeginEdit();
                     }
@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 _customControlLayoutUpdateRequired = false;
 
                 // Get the control that was added to the grid
-                var customControl = ((DebugPageViewModel)DataContext).ActiveProviderUserControl;
+                UserControl customControl = ((DebugPageViewModel)DataContext).ActiveProviderUserControl;
                 if (customControl != null)
                 {
                     if (customControl.Content is Grid childGrid && childGrid.ColumnDefinitions.Count == _mainGrid.ColumnDefinitions.Count)

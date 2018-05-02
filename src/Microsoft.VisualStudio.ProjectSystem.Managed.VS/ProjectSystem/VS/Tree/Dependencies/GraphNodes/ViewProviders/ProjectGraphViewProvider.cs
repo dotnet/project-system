@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
 
         public override bool HasChildren(string projectPath, IDependency dependency)
         {
-            var targetedSnapshot = GetSnapshot(projectPath, dependency, out string dependencyProjectPath);
+            ITargetedDependenciesSnapshot targetedSnapshot = GetSnapshot(projectPath, dependency, out string dependencyProjectPath);
 
             return targetedSnapshot?.TopLevelDependencies.Count > 0;
         }
@@ -54,13 +54,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             dependencyGraphNode.SetValue(DependenciesGraphSchema.DependencyIdProperty, dependency.Id);
             dependencyGraphNode.SetValue(DependenciesGraphSchema.ResolvedProperty, dependency.Resolved);
 
-            var otherProjectTargetedSnapshot = GetSnapshot(projectPath, dependency, out string dependencyProjectPath);
+            ITargetedDependenciesSnapshot otherProjectTargetedSnapshot = GetSnapshot(projectPath, dependency, out string dependencyProjectPath);
             if (otherProjectTargetedSnapshot == null)
             {
                 return;
             }
 
-            foreach (var childDependency in otherProjectTargetedSnapshot.TopLevelDependencies)
+            foreach (IDependency childDependency in otherProjectTargetedSnapshot.TopLevelDependencies)
             {
                 if (!childDependency.Visible)
                 {
@@ -79,19 +79,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
         {
             dependencyProjectPath = dependency.FullPath;
 
-            var snapshotProvider = AggregateSnapshotProvider.GetSnapshotProvider(dependencyProjectPath);
+            IDependenciesSnapshotProvider snapshotProvider = AggregateSnapshotProvider.GetSnapshotProvider(dependencyProjectPath);
             if (snapshotProvider == null)
             {
                 return null;
             }
 
-            var snapshot = snapshotProvider.CurrentSnapshot;
+            IDependenciesSnapshot snapshot = snapshotProvider.CurrentSnapshot;
             if (snapshot == null)
             {
                 return null;
             }
 
-            var targetFramework = TargetFrameworkProvider.GetNearestFramework(
+            ITargetFramework targetFramework = TargetFrameworkProvider.GetNearestFramework(
                                     dependency.TargetFramework, snapshot.Targets.Keys);
             if (targetFramework == null)
             {
@@ -103,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
 
         public override bool ShouldTrackChanges(string projectPath, string updatedProjectPath, IDependency dependency)
         {
-            var dependencyProjectPath = dependency.FullPath;
+            string dependencyProjectPath = dependency.FullPath;
             return !string.IsNullOrEmpty(dependencyProjectPath)
                     && dependencyProjectPath.Equals(updatedProjectPath, StringComparison.OrdinalIgnoreCase);
         }
@@ -127,14 +127,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                 return false;
             }
 
-            foreach (var nodeToRemove in nodesToRemove)
+            foreach (DependencyNodeInfo nodeToRemove in nodesToRemove)
             {
                 Builder.RemoveGraphNode(graphContext, dependencyProjectPath, nodeToRemove.Id, dependencyGraphNode);
             }
 
-            foreach (var nodeToAdd in nodesToAdd)
+            foreach (DependencyNodeInfo nodeToAdd in nodesToAdd)
             {
-                var dependency = updatedChildren.FirstOrDefault(x => x.Id.Equals(nodeToAdd.Id));
+                IDependency dependency = updatedChildren.FirstOrDefault(x => x.Id.Equals(nodeToAdd.Id));
                 if (dependency == null || !dependency.Visible)
                 {
                     continue;
@@ -172,14 +172,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                 return true;
             }
 
-            var projectFullPath = topLevelDependency.FullPath;
+            string projectFullPath = topLevelDependency.FullPath;
             if (!searchResultsPerContext.TryGetValue(projectFullPath, out HashSet<IDependency> contextResults)
                 || contextResults.Count == 0)
             {
                 return true;
             }
 
-            var nearestTargetFramework = TargetFrameworkProvider.GetNearestFramework(
+            ITargetFramework nearestTargetFramework = TargetFrameworkProvider.GetNearestFramework(
                 topLevelDependency.TargetFramework,
                 contextResults.Select(x => x.TargetFramework));
             if (nearestTargetFramework == null)
@@ -187,7 +187,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                 return true;
             }
 
-            var targetedResultsFromContext =
+            IEnumerable<IDependency> targetedResultsFromContext =
                 contextResults.Where(x => nearestTargetFramework.Equals(x.TargetFramework));
             if (targetedResultsFromContext != null)
             {
@@ -207,7 +207,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             out IEnumerable<IDependency> updatedChildren,
             out string dependencyProjectPath)
         {
-            var snapshot = GetSnapshot(projectPath, updatedDependency, out dependencyProjectPath);
+            ITargetedDependenciesSnapshot snapshot = GetSnapshot(projectPath, updatedDependency, out dependencyProjectPath);
             if (snapshot == null)
             {
                 nodesToAdd = Enumerable.Empty<DependencyNodeInfo>();
@@ -218,8 +218,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             }
 
             updatedChildren = snapshot.TopLevelDependencies;
-            var existingChildren = GetExistingChildren(dependencyGraphNode);
-            var updatedChildrenInfo = updatedChildren.Select(x => DependencyNodeInfo.FromDependency(x));
+            IEnumerable<DependencyNodeInfo> existingChildren = GetExistingChildren(dependencyGraphNode);
+            IEnumerable<DependencyNodeInfo> updatedChildrenInfo = updatedChildren.Select(x => DependencyNodeInfo.FromDependency(x));
 
             return AnyChanges(existingChildren, updatedChildrenInfo, out nodesToAdd, out nodesToRemove);
         }

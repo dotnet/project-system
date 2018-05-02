@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         {
             Requires.Range(!DisposingConfiguredProjectHostObjects, nameof(DisposingConfiguredProjectHostObjects));
 
-            foreach (var itemId in _pendingItemIds)
+            foreach (uint itemId in _pendingItemIds)
             {
                 OnPropertyChanged(itemId, (int)__VSHPROPID7.VSHPROPID_SharedItemContextHierarchy);
             }
@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         public override int AdviseHierarchyEvents(IVsHierarchyEvents pEventSink, out uint pdwCookie)
         {
-            var hr = base.AdviseHierarchyEvents(pEventSink, out pdwCookie);
+            int hr = base.AdviseHierarchyEvents(pEventSink, out pdwCookie);
             if (hr == VSConstants.S_OK)
             {
                 _hierEventSinks.Add(pdwCookie, pEventSink);
@@ -96,7 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                 return;
             }
 
-            foreach (var eventSinkKvp in _hierEventSinks)
+            foreach (KeyValuePair<uint, IVsHierarchyEvents> eventSinkKvp in _hierEventSinks)
             {
                 eventSinkKvp.Value.OnPropertyChanged(itemid, propid, flags);
             }

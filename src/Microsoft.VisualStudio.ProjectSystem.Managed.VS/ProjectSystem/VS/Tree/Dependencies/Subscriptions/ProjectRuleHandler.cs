@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
         /// </param>
         private void OnOtherProjectDependenciesChanged(IDependenciesSnapshot otherProjectSnapshot, bool shouldBeResolved)
         {
-            var projectSnapshot = SnapshotProvider.CurrentSnapshot;
+            IDependenciesSnapshot projectSnapshot = SnapshotProvider.CurrentSnapshot;
 
             if (otherProjectSnapshot == null || projectSnapshot == null || projectSnapshot.Equals(otherProjectSnapshot))
             {
@@ -109,12 +109,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 return;
             }
 
-            var otherProjectPath = otherProjectSnapshot.ProjectPath;
+            string otherProjectPath = otherProjectSnapshot.ProjectPath;
 
             var dependencyThatNeedChange = new List<IDependency>();
-            foreach (var target in projectSnapshot.Targets)
+            foreach (KeyValuePair<ITargetFramework, ITargetedDependenciesSnapshot> target in projectSnapshot.Targets)
             {
-                foreach (var dependency in target.Value.TopLevelDependencies)
+                foreach (IDependency dependency in target.Value.TopLevelDependencies)
                 {
                     // We're only interested in project dependencies
                     if (!StringComparers.DependencyProviderTypes.Equals(dependency.ProviderType, ProviderTypeString))
@@ -134,9 +134,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 return;
             }
 
-            foreach (var dependency in dependencyThatNeedChange)
+            foreach (IDependency dependency in dependencyThatNeedChange)
             {
-                var model = CreateDependencyModel(
+                IDependencyModel model = CreateDependencyModel(
                                 ProviderType,
                                 dependency.Path,
                                 dependency.OriginalItemSpec,

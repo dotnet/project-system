@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                         IProjectTreeCustomizablePropertyContext context,
                         ReferencesProjectTreeCustomizablePropertyValues values)
         {
-            foreach (var provider in ProjectTreePropertiesProviders.ExtensionValues())
+            foreach (IProjectTreePropertiesProvider provider in ProjectTreePropertiesProviders.ExtensionValues())
             {
                 provider.CalculatePropertyValues(context, values);
             }

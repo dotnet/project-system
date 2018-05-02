@@ -53,12 +53,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public async Task<ICollection<IEnumValue>> GetListedValuesAsync()
         {
-            var project = _workspace.CurrentSolution.Projects.Where(p => PathHelper.IsSamePath(p.FilePath, _unconfiguredProject.FullPath)).First();
-            var compilation = await project.GetCompilationAsync().ConfigureAwait(false);
+            Project project = _workspace.CurrentSolution.Projects.Where(p => PathHelper.IsSamePath(p.FilePath, _unconfiguredProject.FullPath)).First();
+            Compilation compilation = await project.GetCompilationAsync().ConfigureAwait(false);
 
-            var entryPointFinderService = project.LanguageServices.GetService<IEntryPointFinderService>();
-            var entryPoints = entryPointFinderService.FindEntryPoints(compilation.GlobalNamespace, SearchForEntryPointsInFormsOnly);
-            var entryPointNames = entryPoints.Select(e => e.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted)));
+            IEntryPointFinderService entryPointFinderService = project.LanguageServices.GetService<IEntryPointFinderService>();
+            IEnumerable<INamedTypeSymbol> entryPoints = entryPointFinderService.FindEntryPoints(compilation.GlobalNamespace, SearchForEntryPointsInFormsOnly);
+            IEnumerable<string> entryPointNames = entryPoints.Select(e => e.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted)));
 
             return entryPointNames.Select(name => (IEnumValue)new PageEnumValue(new EnumValue { Name = name, DisplayName = name })).ToArray();
         }

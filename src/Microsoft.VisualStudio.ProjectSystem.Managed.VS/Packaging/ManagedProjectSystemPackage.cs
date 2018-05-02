@@ -70,12 +70,12 @@ namespace Microsoft.VisualStudio.Packaging
 
             var componentModel = (IComponentModel)(await GetServiceAsync(typeof(SComponentModel)).ConfigureAwait(true));
             ICompositionService compositionService = componentModel.DefaultCompositionService;
-            var debugFrameworksCmd = componentModel.DefaultExportProvider.GetExport<DebugFrameworksDynamicMenuCommand>();
+            Lazy<DebugFrameworksDynamicMenuCommand> debugFrameworksCmd = componentModel.DefaultExportProvider.GetExport<DebugFrameworksDynamicMenuCommand>();
 
             var mcs = (await GetServiceAsync(typeof(IMenuCommandService)).ConfigureAwait(true)) as OleMenuCommandService;
             mcs.AddCommand(debugFrameworksCmd.Value);
 
-            var debugFrameworksMenuTextUpdater = componentModel.DefaultExportProvider.GetExport<DebugFrameworkPropertyMenuTextUpdater>();
+            Lazy<DebugFrameworkPropertyMenuTextUpdater> debugFrameworksMenuTextUpdater = componentModel.DefaultExportProvider.GetExport<DebugFrameworkPropertyMenuTextUpdater>();
             mcs.AddCommand(debugFrameworksMenuTextUpdater.Value);
 
             // Need to use the CPS export provider to get the dotnet compatibility detector

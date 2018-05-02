@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             {
                 try
                 {
-                    var value = id.GetNestedValueByName<Uri>(idPartName);
+                    Uri value = id.GetNestedValueByName<Uri>(idPartName);
 
                     // for idPartName == CodeGraphNodeIdName.File it can be null, avoid unnecessary exception
                     if (value == null)

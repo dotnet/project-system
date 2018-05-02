@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
         protected override async Task<bool> TryHandleCommandAsync(IProjectTree node, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
         {
-            var nodeToAddTo = GetNodeToAddTo(node);
+            IProjectTree nodeToAddTo = GetNodeToAddTo(node);
 
             // We use a hint receiver that listens for when a file gets added.
             // The reason is so we can modify the MSBuild project inside the same write lock of when a file gets added internally in CPS.

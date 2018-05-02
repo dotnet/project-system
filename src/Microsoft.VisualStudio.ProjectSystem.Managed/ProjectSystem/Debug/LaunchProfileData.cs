@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
 
             // We walk the profilesObject and serialize each subobject component as either a string, or a dictionary<string,string>
-            foreach (var profile in profilesObject)
+            foreach (KeyValuePair<string, JToken> profile in profilesObject)
             {
                 // Name of profile is the key, value is it's contents. We have specific serializing of the data based on the 
                 // JToken type
@@ -91,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
                 // Now pick up any custom properties. Handle string, int, boolean
                 var customSettings = new Dictionary<string, object>(StringComparer.Ordinal);
-                foreach (var data in profile.Value.Children())
+                foreach (JToken data in profile.Value.Children())
                 {
                     if (!(data is JProperty dataProperty))
                     {
@@ -117,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                                     }
                                 case JTokenType.Object:
                                     {
-                                        var value = JsonConvert.DeserializeObject<Dictionary<string, string>>(dataProperty.Value.ToString());
+                                        Dictionary<string, string> value = JsonConvert.DeserializeObject<Dictionary<string, string>>(dataProperty.Value.ToString());
                                         customSettings.Add(dataProperty.Name, value);
                                         break;
                                     }
@@ -198,7 +198,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             if (profile.OtherSettings != null)
             {
-                foreach (var kvp in profile.OtherSettings)
+                foreach (KeyValuePair<string, object> kvp in profile.OtherSettings)
                 {
                     data.Add(kvp.Key, kvp.Value);
                 }

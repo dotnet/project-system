@@ -89,8 +89,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             }
             else
             {
-                var normalizedDependencyIDs = ImmutableList.CreateBuilder<string>();
-                foreach (var id in dependencyModel.DependencyIDs)
+                ImmutableList<string>.Builder normalizedDependencyIDs = ImmutableList.CreateBuilder<string>();
+                foreach (string id in dependencyModel.DependencyIDs)
                 {
                     normalizedDependencyIDs.Add(GetID(TargetFramework, ProviderType, id));
                 }
@@ -168,7 +168,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 // Thus always set predefined itemType for all custom nodes.
                 // TODO: generate specific xaml rule for generic Dependency nodes
                 // tracking issue: https://github.com/dotnet/roslyn-project-system/issues/1102
-                var isGenericNodeType = Flags.Contains(DependencyTreeFlags.GenericDependencyFlags);
+                bool isGenericNodeType = Flags.Contains(DependencyTreeFlags.GenericDependencyFlags);
                 return isGenericNodeType ? _schemaItemType : Folder.PrimaryDataSourceItemType;
             }
             protected set
@@ -315,7 +315,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
         private static string GetAlias(IDependency dependency)
         {
-            var path = dependency.OriginalItemSpec ?? dependency.Path;
+            string path = dependency.OriginalItemSpec ?? dependency.Path;
             if (string.IsNullOrEmpty(path) || path.Equals(dependency.Caption, StringComparison.OrdinalIgnoreCase))
             {
                 return dependency.Caption;

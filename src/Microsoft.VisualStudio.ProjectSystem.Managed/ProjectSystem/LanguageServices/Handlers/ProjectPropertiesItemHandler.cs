@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             if (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.TargetPathProperty))
             {
-                var newBinOutputPath = projectChange.After.Properties[ConfigurationGeneral.TargetPathProperty];
+                string newBinOutputPath = projectChange.After.Properties[ConfigurationGeneral.TargetPathProperty];
                 if (!string.IsNullOrEmpty(newBinOutputPath))
                 {
                     logger.WriteLine("BinOutputPath: {0}", newBinOutputPath);

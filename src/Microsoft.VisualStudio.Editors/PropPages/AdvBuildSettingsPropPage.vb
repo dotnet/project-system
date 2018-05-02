@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 Imports System.Windows.Forms
@@ -269,7 +269,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
-        Private Sub DebugInfo_SelectedIndexChanged(sender As System.Object, e As EventArgs) Handles cboDebugInfo.SelectedIndexChanged
+        Private Sub DebugInfo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboDebugInfo.SelectedIndexChanged
             If cboDebugInfo.SelectedIndex = 0 Then
                 '// user selected none
                 m_bDebugSymbols = False

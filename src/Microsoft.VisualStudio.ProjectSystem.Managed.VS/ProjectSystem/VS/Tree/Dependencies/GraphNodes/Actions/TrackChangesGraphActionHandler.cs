@@ -30,33 +30,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.A
 
         public override bool HandleChanges(IGraphContext graphContext, SnapshotChangedEventArgs changes)
         {
-            var snapshot = changes.Snapshot;
+            IDependenciesSnapshot snapshot = changes.Snapshot;
             if (snapshot == null)
             {
                 return false;
             }
 
-            foreach (var inputGraphNode in graphContext.InputNodes.ToList())
+            foreach (GraphNode inputGraphNode in graphContext.InputNodes.ToList())
             {
-                var existingDependencyId = inputGraphNode.GetValue<string>(DependenciesGraphSchema.DependencyIdProperty);
+                string existingDependencyId = inputGraphNode.GetValue<string>(DependenciesGraphSchema.DependencyIdProperty);
                 if (string.IsNullOrEmpty(existingDependencyId))
                 {
                     continue;
                 }
 
-                var projectPath = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.Assembly);
+                string projectPath = inputGraphNode.Id.GetValue(CodeGraphNodeIdName.Assembly);
                 if (string.IsNullOrEmpty(projectPath))
                 {
                     continue;
                 }
 
-                var updatedDependency = GetDependency(projectPath, existingDependencyId, out IDependenciesSnapshot updatedSnapshot);
+                IDependency updatedDependency = GetDependency(projectPath, existingDependencyId, out IDependenciesSnapshot updatedSnapshot);
                 if (updatedDependency == null)
                 {
                     continue;
                 }
 
-                var viewProvider = ViewProviders.FirstOrDefault(x => x.Value.SupportsDependency(updatedDependency));
+                System.Lazy<ViewProviders.IDependenciesGraphViewProvider, IOrderPrecedenceMetadataView> viewProvider = ViewProviders.FirstOrDefault(x => x.Value.SupportsDependency(updatedDependency));
                 if (viewProvider == null)
                 {
                     continue;

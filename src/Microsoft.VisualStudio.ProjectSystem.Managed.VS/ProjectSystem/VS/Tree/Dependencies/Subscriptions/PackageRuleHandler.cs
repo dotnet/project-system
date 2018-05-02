@@ -87,10 +87,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 return;
             }
 
-            foreach (var removedItem in projectChange.Difference.RemovedItems)
+            foreach (string removedItem in projectChange.Difference.RemovedItems)
             {
-                var properties = GetProjectItemProperties(projectChange.Before, removedItem);
-                var model = GetDependencyModel(removedItem, resolved,
+                IImmutableDictionary<string, string> properties = GetProjectItemProperties(projectChange.Before, removedItem);
+                IDependencyModel model = GetDependencyModel(removedItem, resolved,
                                             properties, projectChange, unresolvedChanges, targetFramework);
                 if (model == null)
                 {
@@ -100,10 +100,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 ruleChangeContext.IncludeRemovedChange(targetFramework, model);
             }
 
-            foreach (var changedItem in projectChange.Difference.ChangedItems)
+            foreach (string changedItem in projectChange.Difference.ChangedItems)
             {
-                var properties = GetProjectItemProperties(projectChange.After, changedItem);
-                var model = GetDependencyModel(changedItem, resolved,
+                IImmutableDictionary<string, string> properties = GetProjectItemProperties(projectChange.After, changedItem);
+                IDependencyModel model = GetDependencyModel(changedItem, resolved,
                                             properties, projectChange, unresolvedChanges, targetFramework);
                 if (model == null)
                 {
@@ -114,10 +114,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 ruleChangeContext.IncludeAddedChange(targetFramework, model);
             }
 
-            foreach (var addedItem in projectChange.Difference.AddedItems)
+            foreach (string addedItem in projectChange.Difference.AddedItems)
             {
-                var properties = GetProjectItemProperties(projectChange.After, addedItem);
-                var model = GetDependencyModel(addedItem, resolved,
+                IImmutableDictionary<string, string> properties = GetProjectItemProperties(projectChange.After, addedItem);
+                IDependencyModel model = GetDependencyModel(addedItem, resolved,
                                             properties, projectChange, unresolvedChanges, targetFramework);
                 if (model == null)
                 {
@@ -137,8 +137,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             ITargetFramework targetFramework)
         {
             PackageDependencyMetadata metadata;
-            var isTopLevel = true;
-            var isTarget = false;
+            bool isTopLevel = true;
+            bool isTarget = false;
             if (resolved)
             {
                 metadata = new PackageDependencyMetadata(itemSpec, properties);
@@ -147,7 +147,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                                  && unresolvedChanges != null
                                  && unresolvedChanges.Contains(metadata.Name));
                 isTarget = metadata.IsTarget;
-                var packageTargetFramework = TargetFrameworkProvider.GetTargetFramework(metadata.Target);
+                ITargetFramework packageTargetFramework = TargetFrameworkProvider.GetTargetFramework(metadata.Target);
                 if (!(packageTargetFramework?.Equals(targetFramework) == true))
                 {
                     return null;
@@ -163,7 +163,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 return null;
             }
 
-            var originalItemSpec = itemSpec;
+            string originalItemSpec = itemSpec;
             if (resolved && isTopLevel)
             {
                 originalItemSpec = metadata.Name;
@@ -314,10 +314,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 if (properties.ContainsKey(ProjectItemMetadata.Dependencies)
                     && properties[ProjectItemMetadata.Dependencies] != null)
                 {
-                    var dependencyIds = properties[ProjectItemMetadata.Dependencies]
+                    string[] dependencyIds = properties[ProjectItemMetadata.Dependencies]
                         .Split(CommonConstants.SemicolonDelimiter, StringSplitOptions.RemoveEmptyEntries);
                     // store only unique dependency IDs
-                    foreach (var dependencyId in dependencyIds)
+                    foreach (string dependencyId in dependencyIds)
                     {
                         dependenciesHashSet.Add($"{Target}/{dependencyId}");
                     }
@@ -344,7 +344,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             private T GetEnumMetadata<T>(string metadataName, T defaultValue) where T : struct
             {
-                var enumString = GetStringMetadata(metadataName);
+                string enumString = GetStringMetadata(metadataName);
                 T enumValue = defaultValue;
                 Enum.TryParse(enumString ?? string.Empty, /*ignoreCase */ true, out enumValue);
 
@@ -353,7 +353,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             private bool GetBoolMetadata(string metadataName, bool defaultValue)
             {
-                var boolString = GetStringMetadata(metadataName);
+                string boolString = GetStringMetadata(metadataName);
                 bool boolValue = defaultValue;
                 bool.TryParse(boolString ?? "false", out boolValue);
 
@@ -362,7 +362,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             public static string GetTargetFromDependencyId(string dependencyId)
             {
-                var idParts = dependencyId.Split(CommonConstants.FowardSlashDelimiter, StringSplitOptions.RemoveEmptyEntries);
+                string[] idParts = dependencyId.Split(CommonConstants.FowardSlashDelimiter, StringSplitOptions.RemoveEmptyEntries);
                 Requires.NotNull(idParts, nameof(idParts));
                 if (idParts.Count() <= 0)
                 {

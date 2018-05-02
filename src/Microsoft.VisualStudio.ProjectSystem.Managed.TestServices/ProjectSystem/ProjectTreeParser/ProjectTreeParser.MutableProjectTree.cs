@@ -103,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 get
                 {
-                    var root = this;
+                    MutableProjectTree root = this;
                     while (root.Parent != null)
                     {
                         root = root.Parent;

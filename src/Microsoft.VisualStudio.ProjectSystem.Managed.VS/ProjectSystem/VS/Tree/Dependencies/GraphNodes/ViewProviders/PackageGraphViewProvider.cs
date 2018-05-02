@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             dependencyGraphNode.SetValue(DependenciesGraphSchema.DependencyIdProperty, dependency.Id);
             dependencyGraphNode.SetValue(DependenciesGraphSchema.ResolvedProperty, dependency.Resolved);
 
-            var children = targetedSnapshot.GetDependencyChildren(dependency);
+            IEnumerable<IDependency> children = targetedSnapshot.GetDependencyChildren(dependency);
             if (children == null)
             {
                 return;
@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
 
             var regularChildren = new List<IDependency>();
             var fxAssembliesChildren = new List<IDependency>();
-            foreach (var childDependency in children)
+            foreach (IDependency childDependency in children)
             {
                 if (!childDependency.Visible)
                 {
@@ -63,10 +63,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                 }
             }
 
-            var isFxAssembliesFolder = dependencyGraphNode.GetValue<bool>(DependenciesGraphSchema.IsFrameworkAssemblyFolderProperty);
+            bool isFxAssembliesFolder = dependencyGraphNode.GetValue<bool>(DependenciesGraphSchema.IsFrameworkAssemblyFolderProperty);
             if (isFxAssembliesFolder)
             {
-                foreach (var fxAssembly in fxAssembliesChildren)
+                foreach (IDependency fxAssembly in fxAssembliesChildren)
                 {
                     Builder.AddGraphNode(
                         graphContext,
@@ -77,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
             }
             else
             {
-                foreach (var childDependency in regularChildren)
+                foreach (IDependency childDependency in regularChildren)
                 {
                     Builder.AddGraphNode(
                         graphContext,
@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.GraphNodes.V
                 if (fxAssembliesChildren.Count > 0)
                 {
                     var fxAssembliesViewModel = new PackageFrameworkAssembliesViewModel();
-                    var fxAssembliesNode = Builder.AddGraphNode(graphContext, projectPath, dependencyGraphNode, fxAssembliesViewModel);
+                    GraphNode fxAssembliesNode = Builder.AddGraphNode(graphContext, projectPath, dependencyGraphNode, fxAssembliesViewModel);
                     fxAssembliesNode.SetValue(DgmlNodeProperties.ContainsChildren, true);
                     fxAssembliesNode.SetValue(DependenciesGraphSchema.IsFrameworkAssemblyFolderProperty, true);
                     fxAssembliesNode.SetValue(DependenciesGraphSchema.DependencyIdProperty, dependency.Id);

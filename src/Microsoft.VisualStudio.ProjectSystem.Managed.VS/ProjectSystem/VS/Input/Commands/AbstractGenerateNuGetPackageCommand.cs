@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             if (ShouldHandle(node))
             {
                 // Enable the command if the build manager is ready to build.
-                var commandStatus = await IsReadyToBuildAsync().ConfigureAwait(false) ? CommandStatus.Enabled : CommandStatus.Supported;
+                CommandStatus commandStatus = await IsReadyToBuildAsync().ConfigureAwait(false) ? CommandStatus.Enabled : CommandStatus.Supported;
                 return await GetCommandStatusResult.Handled(GetCommandText(), commandStatus).ConfigureAwait(false);
             }
 

@@ -2227,7 +2227,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ''' <param name="args"></param>
             ''' <returns></returns>
             ''' <remarks></remarks>
-            Public Overrides Function InvokeConstructor(ctor As ConstructorInfo, args As System.Object()) As Object
+            Public Overrides Function InvokeConstructor(ctor As ConstructorInfo, args As Object()) As Object
 
 #If DEBUG Then
                 Debug.WriteLineIf(SettingsGlobalObjectProvider.GlobalSettings.TraceVerbose, "SettingsFileTypeImplementor.InvokeConstructor(" & CStr(_globalObject._className) & ")...")
@@ -2248,7 +2248,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             ''' <param name="value"></param>
             ''' <param name="args"></param>
             ''' <remarks></remarks>
-            Public Overrides Sub SetPropertyValue(prop As PropertyInfo, instance As Object, value As Object, args As System.Object())
+            Public Overrides Sub SetPropertyValue(prop As PropertyInfo, instance As Object, value As Object, args As Object())
 
                 Debug.Assert(prop IsNot Nothing, "bad property passed to SetPropertyValue")
                 If (prop Is Nothing) Then

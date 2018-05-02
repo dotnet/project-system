@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports EnvDTE
 Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
@@ -766,7 +766,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         Dim FileName As String = DirectCast(AppDesignerItems(Index - PropertyPages.Length), String)
 
                         .EditFlags = CUInt(_VSRDTFLAGS.RDT_DontAddToMRU)
-                        If System.String.Compare(VisualBasic.Right(FileName, 5), ".resx", StringComparison.OrdinalIgnoreCase) = 0 Then
+                        If String.Compare(VisualBasic.Right(FileName, 5), ".resx", StringComparison.OrdinalIgnoreCase) = 0 Then
                             'Add .resx file with a known editor so user config cannot change
                             .EditorGuid = New Guid(My.Resources.Designer.ResourceEditorFactory_GUID)
                             .EditorCaption = My.Resources.Designer.APPDES_ResourceTabTitle
@@ -783,7 +783,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                             Else
                                 .CustomViewProvider = New SpecialFileCustomViewProvider(Me, DesignerPanel, __PSFFILEID2.PSFFILEID_AssemblyResource, My.Resources.Designer.APPDES_ClickHereCreateResx)
                             End If
-                        ElseIf System.String.Compare(VisualBasic.Right(FileName, 9), ".settings", StringComparison.OrdinalIgnoreCase) = 0 Then
+                        ElseIf String.Compare(VisualBasic.Right(FileName, 9), ".settings", StringComparison.OrdinalIgnoreCase) = 0 Then
                             'Add .settings file with a known editor so user config cannot change
                             .EditorGuid = New Guid(My.Resources.Designer.SettingsDesignerEditorFactory_GUID)
                             .EditorCaption = My.Resources.Designer.APPDES_SettingsTabTitle

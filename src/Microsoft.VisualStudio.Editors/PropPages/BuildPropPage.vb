@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 'This is the C#/J# version of the Compile property page.  'CompilePropPage2.vb is the VB version.
 
@@ -967,7 +967,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim stNewConstants As String = ""
 
             If (Not (IsNothing(stOldCondCompConstants))) Then
-                rgConstants = stOldCondCompConstants.Split(New [Char]() {";"c})
+                rgConstants = stOldCondCompConstants.Split(New Char() {";"c})
 
                 Dim stTemp As String
 
@@ -1004,7 +1004,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim rgConstants() As String
 
             If (Not (IsNothing(stOldCondCompConstants))) Then
-                rgConstants = stOldCondCompConstants.Split(New [Char]() {";"c})
+                rgConstants = stOldCondCompConstants.Split(New Char() {";"c})
 
                 Dim stTemp As String
 
@@ -1030,7 +1030,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim stNewConstants As String = ""
 
             If (Not (IsNothing(stOldCondCompConstants))) Then
-                rgConstants = stOldCondCompConstants.Split(New [Char]() {";"c})
+                rgConstants = stOldCondCompConstants.Split(New Char() {";"c})
 
                 Dim stTemp As String
 

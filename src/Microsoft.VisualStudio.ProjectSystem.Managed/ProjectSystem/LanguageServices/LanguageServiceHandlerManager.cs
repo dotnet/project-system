@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             {
                 WriteHeader(logger, update, version, RuleHandlerType.Evaluation, isActiveContext);
 
-                foreach (var handler in handlers)
+                foreach ((IEvaluationHandler handler, string evaluationRuleName) handler in handlers)
                 {
                     string ruleName = handler.evaluationRuleName;
 
@@ -173,7 +173,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             BuildOptions addedItems = _commandLineParser.Parse(projectChange.Difference.AddedItems);
             BuildOptions removedItems = _commandLineParser.Parse(projectChange.Difference.RemovedItems);
 
-            foreach (var handler in handlers)
+            foreach (ICommandLineHandler handler in handlers)
             {
                 handler.Handle(version, addedItems, removedItems, isActiveContext, logger);
             }

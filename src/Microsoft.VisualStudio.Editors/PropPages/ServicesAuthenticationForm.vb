@@ -51,11 +51,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Try
         End Sub
 
-        Private Sub ServiceAuthenticationForm_HelpButtonClicked(sender As System.Object, e As System.ComponentModel.CancelEventArgs) Handles Me.HelpButtonClicked
+        Private Sub ServiceAuthenticationForm_HelpButtonClicked(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles Me.HelpButtonClicked
             ShowHelp()
         End Sub
 
-        Private Sub ServiceAuthenticationForm_HelpRequested(sender As System.Object, hlpevent As HelpEventArgs) Handles Me.HelpRequested
+        Private Sub ServiceAuthenticationForm_HelpRequested(sender As Object, hlpevent As HelpEventArgs) Handles Me.HelpRequested
             ShowHelp()
         End Sub
 
@@ -69,7 +69,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Set
         End Property
 
-        Private Sub Cancel_Click(sender As System.Object, e As EventArgs) Handles Cancel.Click
+        Private Sub Cancel_Click(sender As Object, e As EventArgs) Handles Cancel.Click
             _loadAnonymous = True
             DialogResult = DialogResult.OK
         End Sub

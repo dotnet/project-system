@@ -53,10 +53,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         public void SetProjectFilePathAndDisplayName(string projectFilePath, string displayName)
         {
             // Update the project file path and display name for all the inner project contexts.
-            foreach (var innerProjectContextKvp in _configuredProjectContextsByTargetFramework)
+            foreach (KeyValuePair<ITargetFramework, ITargetedProjectContext> innerProjectContextKvp in _configuredProjectContextsByTargetFramework)
             {
-                var targetFramework = innerProjectContextKvp.Key;
-                var innerProjectContext = innerProjectContextKvp.Value;
+                ITargetFramework targetFramework = innerProjectContextKvp.Key;
+                ITargetedProjectContext innerProjectContext = innerProjectContextKvp.Value;
 
                 // For cross targeting projects, we ensure that the display name is unique per every target framework.
                 innerProjectContext.DisplayName = IsCrossTargeting ? $"{displayName}({targetFramework})" : displayName;
@@ -68,9 +68,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         {
             if (projectConfiguration.IsCrossTargeting())
             {
-                var targetFrameworkMoniker =
+                string targetFrameworkMoniker =
                     projectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty];
-                var targetFramework = TargetFrameworkProvider.GetTargetFramework(targetFrameworkMoniker);
+                ITargetFramework targetFramework = TargetFrameworkProvider.GetTargetFramework(targetFrameworkMoniker);
 
                 isActiveConfiguration = _activeTargetFramework.Equals(targetFramework);
 
@@ -105,7 +105,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             Assumes.True(activeProjectConfiguration.IsCrossTargeting());
             Assumes.True(knownProjectConfigurations.All(c => c.IsCrossTargeting()));
 
-            var activeTargetFramework = TargetFrameworkProvider.GetTargetFramework(activeProjectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty]);
+            ITargetFramework activeTargetFramework = TargetFrameworkProvider.GetTargetFramework(activeProjectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty]);
             if (!_activeTargetFramework.Equals(activeTargetFramework))
             {
                 // Active target framework is different.
@@ -120,9 +120,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
                 return false;
             }
 
-            foreach (var targetFrameworkMoniker in targetFrameworks)
+            foreach (string targetFrameworkMoniker in targetFrameworks)
             {
-                var targetFramework = TargetFrameworkProvider.GetTargetFramework(targetFrameworkMoniker);
+                ITargetFramework targetFramework = TargetFrameworkProvider.GetTargetFramework(targetFrameworkMoniker);
                 if (!_configuredProjectContextsByTargetFramework.ContainsKey(targetFramework))
                 {
                     // Differing TargetFramework
@@ -137,7 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
         {
             // Dispose the inner project contexts.
             var disposedContexts = new List<ITargetedProjectContext>();
-            foreach (var innerProjectContext in InnerProjectContexts)
+            foreach (ITargetedProjectContext innerProjectContext in InnerProjectContexts)
             {
                 if (shouldDisposeInnerContext(innerProjectContext))
                 {

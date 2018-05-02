@@ -62,9 +62,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 if (_stopTelemetry)
                     return;
 
-                var telemetryState = _telemetryStates.GetOrAdd(targetFramework, (key) => new TelemetryState());
+                TelemetryState telemetryState = _telemetryStates.GetOrAdd(targetFramework, (key) => new TelemetryState());
 
-                foreach (var rule in rules)
+                foreach (string rule in rules)
                 {
                     telemetryState.InitializeRule(rule);
                 }
@@ -83,9 +83,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 if (_stopTelemetry)
                     return;
 
-                if (_telemetryStates.TryGetValue(targetFramework, out var telemetryState))
+                if (_telemetryStates.TryGetValue(targetFramework, out TelemetryState telemetryState))
                 {
-                    foreach (var rule in rules)
+                    foreach (string rule in rules)
                     {
                         telemetryState.ObserveRule(rule);
                     }
@@ -124,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         private void InitializeProjectId()
         {
-            var projectGuidService = _project.Services.ExportProvider.GetExportedValueOrDefault<IProjectGuidService>();
+            IProjectGuidService projectGuidService = _project.Services.ExportProvider.GetExportedValueOrDefault<IProjectGuidService>();
             if (projectGuidService != null)
             {
                 SetProjectId(projectGuidService.ProjectGuid.ToString());

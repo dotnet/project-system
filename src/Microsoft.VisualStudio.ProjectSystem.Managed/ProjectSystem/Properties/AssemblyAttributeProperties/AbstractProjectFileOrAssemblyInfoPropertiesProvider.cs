@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// </summary>
         public override IProjectProperties GetProperties(string file, string itemType, string item)
         {
-            var delegatedProperties = base.GetProperties(file, itemType, item);
+            IProjectProperties delegatedProperties = base.GetProperties(file, itemType, item);
             IProjectProperties assemblyInfoProperties = new AssemblyInfoProperties(delegatedProperties, _getActiveProjectId, _workspace, _threadingService);
             return _interceptingValueProviders.IsDefaultOrEmpty ?
                 assemblyInfoProperties :

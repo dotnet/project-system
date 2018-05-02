@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -245,7 +245,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private _savedFileName As String
 
         ' Original Timestamp of the external file. We use this to check whether the file has been updated after we imported the data.
-        Private _originalFileTimeStamp As DateTime
+        Private _originalFileTimeStamp As Date
 
         ' Save the original order of the resource item, so we can preserve the original order.
         Private _orderID As Integer
@@ -769,11 +769,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             Debug.Assert(_savedFileName <> "", "No original file name?")
                             If _savedFileName <> "" Then
                                 If File.Exists(_savedFileName) Then
-                                    Dim modifiedTime As DateTime
+                                    Dim modifiedTime As Date
                                     Try
                                         modifiedTime = File.GetLastWriteTimeUtc(_savedFileName)
                                     Catch ex As SystemException
-                                        modifiedTime = DateTime.UtcNow
+                                        modifiedTime = Date.UtcNow
                                     End Try
 
                                     If modifiedTime <> _originalFileTimeStamp AndAlso Not View.QueryUserToReplaceFiles(New String() {_savedFileName}) Then

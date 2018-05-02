@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
 
         protected virtual async Task<Version> GetDefaultVersionAsync(IProjectProperties defaultProperties)
         {
-            var versionStr = await defaultProperties.GetEvaluatedPropertyValueAsync(PackageVersionMSBuildProperty).ConfigureAwait(true);
+            string versionStr = await defaultProperties.GetEvaluatedPropertyValueAsync(PackageVersionMSBuildProperty).ConfigureAwait(true);
             if (string.IsNullOrEmpty(versionStr))
             {
                 return DefaultVersion;
@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
             }
 
             // Default value is Version (major.minor.build components only)
-            var version = await GetDefaultVersionAsync(defaultProperties).ConfigureAwait(true);
+            Version version = await GetDefaultVersionAsync(defaultProperties).ConfigureAwait(true);
             return version.ToString();
         }
 
@@ -45,12 +45,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
             //  1. There is no existing property entry AND
             //  2. The new value is identical to the default value.
 
-            var propertyNames = await defaultProperties.GetPropertyNamesAsync().ConfigureAwait(true);
+            IEnumerable<string> propertyNames = await defaultProperties.GetPropertyNamesAsync().ConfigureAwait(true);
             if (!propertyNames.Contains(PropertyName))
             {
                 if (Version.TryParse(unevaluatedPropertyValue, out Version version))
                 {
-                    var defaultVersion = await GetDefaultVersionAsync(defaultProperties).ConfigureAwait(true);
+                    Version defaultVersion = await GetDefaultVersionAsync(defaultProperties).ConfigureAwait(true);
                     if (version.Equals(defaultVersion))
                     {
                         return null;

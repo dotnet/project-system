@@ -37,8 +37,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         {
             lock (_configuredProject)
             {
-                var previouslyActive = _activationTask.Task.IsCompleted;
-                var nowActive = IsActive();
+                bool previouslyActive = _activationTask.Task.IsCompleted;
+                bool nowActive = IsActive();
                 if (previouslyActive)
                 {
                     if (!nowActive)

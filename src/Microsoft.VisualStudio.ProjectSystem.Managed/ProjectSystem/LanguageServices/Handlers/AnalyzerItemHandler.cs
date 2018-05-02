@@ -40,14 +40,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             foreach (CommandLineAnalyzerReference analyzer in removed.AnalyzerReferences)
             {
-                var fullPath = _project.MakeRooted(analyzer.FilePath);
+                string fullPath = _project.MakeRooted(analyzer.FilePath);
 
                 RemoveFromContextIfPresent(fullPath, logger);
             }
 
             foreach (CommandLineAnalyzerReference analyzer in added.AnalyzerReferences)
             {
-                var fullPath = _project.MakeRooted(analyzer.FilePath);
+                string fullPath = _project.MakeRooted(analyzer.FilePath);
 
                 AddToContextIfNotPresent(fullPath, logger);
             }
