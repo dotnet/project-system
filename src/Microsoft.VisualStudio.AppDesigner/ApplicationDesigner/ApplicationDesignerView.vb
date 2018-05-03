@@ -84,7 +84,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         '*** Project Property related data
         Private _projectObject As Object 'Project's browse object
-        Private _DTEProject As Project 'Project's DTE object
+        Private _dteProject As Project 'Project's DTE object
         Private _specialFiles As IVsProjectSpecialFiles
 
         'Set to true when the application designer window pane has completely initialized the application designer view
@@ -232,7 +232,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     Dim DTE As DTE
 
                     If TypeOf ExtObject Is Project Then
-                        _DTEProject = CType(ExtObject, Project)
+                        _dteProject = CType(ExtObject, Project)
                         DTE = DTEProject.DTE
                     End If
 
@@ -243,7 +243,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     _projectFilePath = DTEProject.FullName
                 End If
 
-                If _DTEProject Is Nothing Then
+                If _dteProject Is Nothing Then
                     'Currently we require the DTE Project object.  In the future, if we are allowed in 
                     '  other project types, we'll need to ease this restriction.
                     Debug.Fail("Unable to retrieve DTE Project object")
@@ -282,7 +282,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <remarks></remarks>
         Public ReadOnly Property DTEProject() As Project
             Get
-                Return _DTEProject
+                Return _dteProject
             End Get
         End Property
 
@@ -962,7 +962,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
             If ServiceType Is GetType(PropPageDesigner.ConfigurationState) Then
                 If _configurationState Is Nothing Then
-                    _configurationState = New PropPageDesigner.ConfigurationState(_DTEProject, _projectHierarchy, Me)
+                    _configurationState = New PropPageDesigner.ConfigurationState(_dteProject, _projectHierarchy, Me)
                 End If
                 Return _configurationState
             End If

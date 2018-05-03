@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Runtime.InteropServices
 Imports System.ComponentModel.Design
@@ -35,7 +35,7 @@ Namespace Microsoft.VisualStudio.Editors
         Private _permissionSetService As VBAttributeEditor.PermissionSetService
         Private _xmlIntellisenseService As XmlIntellisense.XmlIntellisenseService
         Private _buildEventCommandLineDialogService As PropertyPages.BuildEventCommandLineDialogService
-        Private _VBReferenceChangedService As VBRefChangedSvc.VBReferenceChangedService
+        Private _vbReferenceChangedService As VBRefChangedSvc.VBReferenceChangedService
         Private _resourceEditorRefactorNotify As ResourceEditor.ResourceEditorRefactorNotify
         Private _userConfigCleaner As UserConfigCleaner
         Private _addImportsDialogService As AddImports.AddImportsDialogService
@@ -172,11 +172,11 @@ Namespace Microsoft.VisualStudio.Editors
 
             ' Lazy-init VBReferenceChangedService and return the cached service.
             If serviceType Is GetType(VBRefChangedSvc.Interop.IVbReferenceChangedService) Then
-                If _VBReferenceChangedService Is Nothing Then
-                    _VBReferenceChangedService = New VBRefChangedSvc.VBReferenceChangedService()
+                If _vbReferenceChangedService Is Nothing Then
+                    _vbReferenceChangedService = New VBRefChangedSvc.VBReferenceChangedService()
                 End If
 
-                Return _VBReferenceChangedService
+                Return _vbReferenceChangedService
             End If
 
             Debug.Fail("VBPackage was requested to create a package it has no knowledge about: " & serviceType.ToString())

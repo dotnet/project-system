@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 Imports System.Windows.Forms
@@ -82,12 +82,12 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             If Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog Then
                 Icon = Nothing
             End If
-            If _UIService Is Nothing Then
-                _UIService = CType(GetService(GetType(IUIService)), IUIService)
+            If _uiService Is Nothing Then
+                _uiService = CType(GetService(GetType(IUIService)), IUIService)
             End If
 
-            If Not (_UIService Is Nothing) Then
-                Return _UIService.ShowDialog(Me)
+            If Not (_uiService Is Nothing) Then
+                Return _uiService.ShowDialog(Me)
             Else
                 Return MyBase.ShowDialog()
             End If
@@ -228,7 +228,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         'Returns:
         '   One of the DialogResult values.
         '**************************************************************************
-        Protected Overloads Function ShowMessage(Message As String, Caption As String, _
+        Protected Overloads Function ShowMessage(Message As String, Caption As String,
                 Buttons As MessageBoxButtons, Icon As MessageBoxIcon) As DialogResult
             Return DesignerMessageBox.Show(ServiceProvider, Message, Caption, Buttons, Icon)
         End Function 'ShowMessage
@@ -247,8 +247,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         'Returns:
         '   One of the DialogResult values.
         '**************************************************************************
-        Protected Overloads Function ShowMessage(Message As String, Caption As String, _
-                Buttons As MessageBoxButtons, Icon As MessageBoxIcon, _
+        Protected Overloads Function ShowMessage(Message As String, Caption As String,
+                Buttons As MessageBoxButtons, Icon As MessageBoxIcon,
                 DefaultButton As MessageBoxDefaultButton) As DialogResult
             Return DesignerMessageBox.Show(ServiceProvider, Message, Caption, Buttons, Icon, DefaultButton)
         End Function 'ShowMessage
@@ -270,7 +270,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
         Private _serviceProvider As IServiceProvider
         Private _helpKeyword As String
-        Private _UIService As IUIService
+        Private _uiService As IUIService
 
     End Class
 
