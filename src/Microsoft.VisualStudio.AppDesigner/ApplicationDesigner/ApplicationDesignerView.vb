@@ -69,9 +69,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ' explicitly hard-coding these strings since that's what QA's
         '   automation will look for in order to find our various tabs
         '
-        Private Const s_PROP_PAGE_TAB_PREFIX As String = "PropPage_"
-        Private Const s_RESOURCES_AUTOMATION_TAB_NAME As String = "Resources"
-        Private Const s_SETTINGS_AUTOMATION_TAB_NAME As String = "Settings"
+        Private Const PROP_PAGE_TAB_PREFIX As String = "PropPage_"
+        Private Const RESOURCES_AUTOMATION_TAB_NAME As String = "Resources"
+        Private Const SETTINGS_AUTOMATION_TAB_NAME As String = "Settings"
 
         'The designer panels hold the property pages and other designers
         Private _designerPanels As ApplicationDesignerPanel()
@@ -760,7 +760,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         .EditorCaption = PropertyPages(Index).Title
 
                         .TabTitle = .EditorCaption
-                        .TabAutomationName = s_PROP_PAGE_TAB_PREFIX & PropertyPages(Index).Guid.ToString("N")
+                        .TabAutomationName = PROP_PAGE_TAB_PREFIX & PropertyPages(Index).Guid.ToString("N")
 
                     Else
                         Dim FileName As String = DirectCast(AppDesignerItems(Index - PropertyPages.Length), String)
@@ -770,7 +770,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                             'Add .resx file with a known editor so user config cannot change
                             .EditorGuid = New Guid(My.Resources.Designer.ResourceEditorFactory_GUID)
                             .EditorCaption = My.Resources.Designer.APPDES_ResourceTabTitle
-                            .TabAutomationName = s_RESOURCES_AUTOMATION_TAB_NAME
+                            .TabAutomationName = RESOURCES_AUTOMATION_TAB_NAME
 
                             'If the resx file doesn't actually exist yet, we have to display the "Click here
                             '  to create it" message instead of the actual editor.
@@ -787,7 +787,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                             'Add .settings file with a known editor so user config cannot change
                             .EditorGuid = New Guid(My.Resources.Designer.SettingsDesignerEditorFactory_GUID)
                             .EditorCaption = My.Resources.Designer.APPDES_SettingsTabTitle
-                            .TabAutomationName = s_SETTINGS_AUTOMATION_TAB_NAME
+                            .TabAutomationName = SETTINGS_AUTOMATION_TAB_NAME
 
                             'If the settings file doesn't actually exist yet, we have to display the "Click here
                             '  to create it" message instead of the actual editor.

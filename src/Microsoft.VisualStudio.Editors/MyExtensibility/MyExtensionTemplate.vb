@@ -42,7 +42,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                     xmlDocument.Load(reader)
                 End Using
 
-                Dim extensionNodes As XmlNodeList = xmlDocument.GetElementsByTagName(s_MY_EXTENSION_TEMPLATE_ELEMENT_NAME)
+                Dim extensionNodes As XmlNodeList = xmlDocument.GetElementsByTagName(MY_EXTENSION_TEMPLATE_ELEMENT_NAME)
                 If extensionNodes.Count <= 0 Then
                     Return Nothing
                 End If
@@ -59,14 +59,14 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                     Return Nothing
                 End If
 
-                templateID = GetAttributeValue(extensionElement, s_ID_ATTRIBUTE_NAME)
-                Dim templateVersionString As String = GetAttributeValue(extensionElement, s_VERSION_ATTRIBUTE_NAME)
+                templateID = GetAttributeValue(extensionElement, ID_ATTRIBUTE_NAME)
+                Dim templateVersionString As String = GetAttributeValue(extensionElement, VERSION_ATTRIBUTE_NAME)
                 If StringIsNullEmptyOrBlank(templateVersionString) Then
                     Return Nothing
                 End If
                 templateVersion = GetVersion(templateVersionString)
-                assemblyFullName = NormalizeAssemblyFullName( _
-                    GetAttributeValue(extensionElement, s_ASM_FULLNAME_ATTRIBUTE_NAME))
+                assemblyFullName = NormalizeAssemblyFullName(
+                    GetAttributeValue(extensionElement, ASM_FULLNAME_ATTRIBUTE_NAME))
 
             Catch ex As XmlException ' Only ignore load or parse error in the XML.
                 Return Nothing
@@ -167,10 +167,10 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         Private ReadOnly _assemblyFullName As String ' Full name of the triggering assembly.
 
         ' Element and attribute names for extension template information in template's custom data.
-        Private Const s_MY_EXTENSION_TEMPLATE_ELEMENT_NAME As String = "VBMyExtensionTemplate"
-        Private Const s_ID_ATTRIBUTE_NAME As String = "ID"
-        Private Const s_VERSION_ATTRIBUTE_NAME As String = "Version"
-        Private Const s_ASM_FULLNAME_ATTRIBUTE_NAME As String = "AssemblyFullName"
+        Private Const MY_EXTENSION_TEMPLATE_ELEMENT_NAME As String = "VBMyExtensionTemplate"
+        Private Const ID_ATTRIBUTE_NAME As String = "ID"
+        Private Const VERSION_ATTRIBUTE_NAME As String = "Version"
+        Private Const ASM_FULLNAME_ATTRIBUTE_NAME As String = "AssemblyFullName"
     End Class
 
 End Namespace

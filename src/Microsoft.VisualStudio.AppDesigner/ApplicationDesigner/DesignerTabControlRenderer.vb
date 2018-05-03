@@ -77,24 +77,24 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         'The top Y position for the topmost button
         Private _buttonsLocationY As Integer 'Start y location
         'Smallest text width to allow for in the buttons, even if all of the buttons have text wider than this value
-        Private Const s_minimumButtonTextWidthSpace As Integer = 25
+        Private Const MinimumButtonTextWidthSpace As Integer = 25
 
         'The width and height to use for all of the buttons.
-        Private Const s_defaultButtonHeight = 24
+        Private Const DefaultButtonHeight = 24
         Private _buttonHeight As Integer
         Private _buttonWidth As Integer
 
-        Private Const s_buttonTextLeftOffset As Integer = 8 'Padding from left side of the button to where the tab text is drawn
-        Private Const s_buttonTextRightSpace As Integer = 8 'Extra space to leave after tab text
+        Private Const ButtonTextLeftOffset As Integer = 8 'Padding from left side of the button to where the tab text is drawn
+        Private Const ButtonTextRightSpace As Integer = 8 'Extra space to leave after tab text
         Private _visibleButtonSlots As Integer '# of button positions we are currently displaying (min = 1), the rest go into overflow when not enough room
         Private _buttonPagePadding As Padding
 
         'The width/height of the downward-slanting line underneath the buttons (not including the two curved ends' (arcs') width/height)
 
-        Private Const s_buttonBorderWidth As Integer = 1   'Thickness of each half of the separators between buttons
+        Private Const ButtonBorderWidth As Integer = 1   'Thickness of each half of the separators between buttons
 
-        Private Const s_overflowButtonTopOffset As Integer = 2 'Offset of overflow button (the button's edge, not the glyph inside it) from the bottom of the bottommost button
-        Private Const s_overflowButtonRightOffset As Integer = 2 'Offset of right edge of overflow button from vertical line 3
+        Private Const OverflowButtonTopOffset As Integer = 2 'Offset of overflow button (the button's edge, not the glyph inside it) from the bottom of the bottommost button
+        Private Const OverflowButtonRightOffset As Integer = 2 'Offset of right edge of overflow button from vertical line 3
 
         Private _tabControlRect As Rectangle 'The entire area of the tab control, including the tabs and panel area
 
@@ -379,7 +379,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 maxTextHeight = Math.Max(size.Height, maxTextHeight)
             Next button
 
-            Return New Size(Math.Max(maxTextWidth + s_buttonTextRightSpace, s_minimumButtonTextWidthSpace), maxTextHeight) 'Add buffer for right hand side
+            Return New Size(Math.Max(maxTextWidth + ButtonTextRightSpace, MinimumButtonTextWidthSpace), maxTextHeight) 'Add buffer for right hand side
         End Function
 
         ''' <summary>
@@ -395,7 +395,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Dim largestButtonTextSize As Size = GetLargestButtonTextSize()
 
             ' Calculate the height of the tab button, we either take the max of either the default size or the text size + padding. 
-            _buttonHeight = Math.Max(largestButtonTextSize.Height + _buttonPagePadding.Vertical, s_defaultButtonHeight)
+            _buttonHeight = Math.Max(largestButtonTextSize.Height + _buttonPagePadding.Vertical, DefaultButtonHeight)
 
             'Now calculate the minimum width 
             minimumWidth = _owner.HostingPanel.MinimumSize.Width + 1 + _buttonPagePadding.Right + 1
@@ -507,9 +507,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 #End If
 
             'Now calculate the position of the overflow button, and whether it should be visible
-            _owner.OverflowButton.Location = New Point( _
-                _buttonsLocationX + _buttonWidth - s_overflowButtonTopOffset - _owner.OverflowButton.Width, _
-                _buttonsLocationY + _visibleButtonSlots * _buttonHeight + s_overflowButtonTopOffset)
+            _owner.OverflowButton.Location = New Point(
+                _buttonsLocationX + _buttonWidth - OverflowButtonTopOffset - _owner.OverflowButton.Width,
+                _buttonsLocationY + _visibleButtonSlots * _buttonHeight + OverflowButtonTopOffset)
             _owner.OverflowButton.Visible = OverflowNeeded
         End Sub
 
@@ -612,7 +612,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 g.DrawRectangle(borderPen, New Rectangle(0, 0, triangleHorizontalStart, button.Height - 1))
             End If
 
-            Dim textRect As New Rectangle(s_buttonTextLeftOffset, 0, button.Width - s_buttonTextLeftOffset, button.Height)
+            Dim textRect As New Rectangle(ButtonTextLeftOffset, 0, button.Width - ButtonTextLeftOffset, button.Height)
             TextRenderer.DrawText(g, button.TextWithDirtyIndicator, button.Font, textRect, foregroundColor, TextFormatFlags.Left Or TextFormatFlags.SingleLine Or TextFormatFlags.VerticalCenter)
         End Sub 'RenderButton 
 

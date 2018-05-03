@@ -33,15 +33,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _notifyError As String
         Private _notifyNone As String
         Private _notifyWarning As String
-        Private Const s_conditionColumnIndex As Integer = 0
-        Private Const s_notifyColumnIndex As Integer = 1
-        Private Const s_conditionColumnWidthPercentage As Integer = 35 'non-resizable column
-        Private Const s_notifyColumnWidthPercentage As Integer = 100
+        Private Const ConditionColumnIndex As Integer = 0
+        Private Const NotifyColumnIndex As Integer = 1
+        Private Const ConditionColumnWidthPercentage As Integer = 35 'non-resizable column
+        Private Const NotifyColumnWidthPercentage As Integer = 100
 
         'Minimum scrolling widths - widths below which resizing the settings designer will cause a horizontal
         '  scrollbar to appear rather than sizing the column below this size
-        Private Const s_conditionColumnMinScrollingWidth As Integer = 100
-        Private Const s_notifyColumnMinScrollingWidth As Integer = 100 'non-resizable column
+        Private Const ConditionColumnMinScrollingWidth As Integer = 100
+        Private Const NotifyColumnMinScrollingWidth As Integer = 100 'non-resizable column
 
         ' Cached extended objects for all configurations...
         Private _cachedExtendedObjects() As Object
@@ -196,7 +196,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 _enabled = False
             End If
 
-            Dim NotifyColumn As DataGridViewComboBoxColumn = CType(WarningsGridView.Columns.Item(s_notifyColumnIndex), DataGridViewComboBoxColumn)
+            Dim NotifyColumn As DataGridViewComboBoxColumn = CType(WarningsGridView.Columns.Item(NotifyColumnIndex), DataGridViewComboBoxColumn)
             If _enabled AndAlso DisableAllWarningsCheckBox.CheckState = CheckState.Unchecked AndAlso Me.WarningsAsErrorCheckBox.CheckState = CheckState.Unchecked Then
                 For Each column As DataGridViewColumn In WarningsGridView.Columns
                     column.DefaultCellStyle.BackColor = WarningsGridView.DefaultCellStyle.BackColor
@@ -490,8 +490,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' but should *not* include a space when passed to the compiler/set the property value
         ''' </summary>
         ''' <remarks></remarks>
-        Private Const s_anyCPUPropertyValue As String = "AnyCPU"
-        Private Const s_anyCPUPlatformName As String = "Any CPU"
+        Private Const AnyCPUPropertyValue As String = "AnyCPU"
+        Private Const AnyCPUPlatformName As String = "Any CPU"
 
         ''' <summary>
         ''' Customizable processing done before the class has populated controls in the ControlData array
@@ -546,8 +546,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             hr = cfgProv.GetSupportedPlatformNames(platformCount, platforms, actualPlatformCount)
                             If VSErrorHandler.Succeeded(hr) Then
                                 For platformNo As Integer = 0 To CInt(platformCount - 1)
-                                    If s_anyCPUPlatformName.Equals(platforms(platformNo), StringComparison.Ordinal) Then
-                                        PlatformEntries.Add(s_anyCPUPropertyValue)
+                                    If AnyCPUPlatformName.Equals(platforms(platformNo), StringComparison.Ordinal) Then
+                                        PlatformEntries.Add(AnyCPUPropertyValue)
                                     Else
                                         PlatformEntries.Add(platforms(platformNo))
                                     End If
@@ -651,8 +651,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             New ErrorInfo(My.Resources.Designer.PPG_Compile_42029, "42029,42031", ErrorNotification.None, False, New Integer() {42029, 42031})}
 
         Private Sub PopulateErrorList()
-            Dim NotificationColumn As DataGridViewComboBoxColumn = CType(WarningsGridView.Columns.Item(s_notifyColumnIndex), DataGridViewComboBoxColumn)
-            Dim ConditionColumn As DataGridViewTextBoxColumn = CType(WarningsGridView.Columns.Item(s_conditionColumnIndex), DataGridViewTextBoxColumn)
+            Dim NotificationColumn As DataGridViewComboBoxColumn = CType(WarningsGridView.Columns.Item(NotifyColumnIndex), DataGridViewComboBoxColumn)
+            Dim ConditionColumn As DataGridViewTextBoxColumn = CType(WarningsGridView.Columns.Item(ConditionColumnIndex), DataGridViewTextBoxColumn)
             Dim Index As Integer
             Dim row As DataGridViewRow
 
@@ -666,8 +666,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     ErrorInfo.Index = Index
                 Next
 
-                .AutoResizeColumn(s_conditionColumnIndex, DataGridViewAutoSizeColumnMode.DisplayedCells)
-                .AutoResizeColumn(s_notifyColumnIndex, DataGridViewAutoSizeColumnMode.DisplayedCells)
+                .AutoResizeColumn(ConditionColumnIndex, DataGridViewAutoSizeColumnMode.DisplayedCells)
+                .AutoResizeColumn(NotifyColumnIndex, DataGridViewAutoSizeColumnMode.DisplayedCells)
                 .ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
                 .RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing
             End With
@@ -745,7 +745,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' We use an empty cell to indicate that levels conflict
         ''' </summary>
         Private Sub WarningsGridView_CellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs) Handles WarningsGridView.CellFormatting
-            If e.ColumnIndex = s_notifyColumnIndex Then
+            If e.ColumnIndex = NotifyColumnIndex Then
                 ' If either this is in an indeterminate state because we have different warning levels 
                 ' in different configurations, or if the current value is indeterminate (DBNull) because
                 ' only a subset of the values the make up this row's set of warning id's were included in
@@ -861,7 +861,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 For Each ErrorInfo As ErrorInfo In _errorInfos
                     Dim row As DataGridViewRow = rows.Item(ErrorInfo.Index)
 
-                    ComboboxCell = DirectCast(row.Cells(s_notifyColumnIndex), DataGridViewComboBoxCell)
+                    ComboboxCell = DirectCast(row.Cells(NotifyColumnIndex), DataGridViewComboBoxCell)
 
                     'Check for this error in NoWarn.Text or SpecWarnAsErrorTextBox.Text
                     If IsOptionStrictOn() AndAlso ErrorInfo.ErrorOnOptionStrict Then
@@ -1104,7 +1104,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 TargetCPUComboBox.SelectedIndex = -1
             Else
                 If (IsNothing(TryCast(value, String)) OrElse TryCast(value, String) = "") Then
-                    TargetCPUComboBox.SelectedItem = s_anyCPUPropertyValue
+                    TargetCPUComboBox.SelectedItem = AnyCPUPropertyValue
                 Else
                     TargetCPUComboBox.SelectedItem = TryCast(value, String)
                 End If
@@ -1398,7 +1398,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Event handler for value changed events fired from the warnings grid view
         ''' </summary>
         Private Sub NotificationLevelChanged(sender As Object, e As DataGridViewCellEventArgs) Handles WarningsGridView.CellValueChanged
-            If Not m_fInsideInit AndAlso Not _refreshingWarningsList AndAlso e.RowIndex >= 0 AndAlso e.ColumnIndex = s_notifyColumnIndex Then
+            If Not m_fInsideInit AndAlso Not _refreshingWarningsList AndAlso e.RowIndex >= 0 AndAlso e.ColumnIndex = NotifyColumnIndex Then
                 UpdatePropertiesFromCurrentState()
             End If
         End Sub

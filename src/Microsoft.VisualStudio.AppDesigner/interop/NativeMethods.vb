@@ -9,8 +9,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
     <ComVisible(False)> _
     Friend NotInheritable Class NativeMethods
 
-        Private Const s_VB_COMPILER_GUID As String = "019971d6-4685-11d2-b48a-0000f87572eb"
-        Public Shared ReadOnly VBCompilerGuid As Guid = New Guid(s_VB_COMPILER_GUID)
+        Private Const VB_COMPILER_GUID As String = "019971d6-4685-11d2-b48a-0000f87572eb"
+        Public Shared ReadOnly VBCompilerGuid As Guid = New Guid(VB_COMPILER_GUID)
 
         '/ <summary>
         '/     Handle type for HDC's that count against the Win98 limit of five DC's.  HDC's

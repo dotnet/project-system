@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
 Imports Interop = Microsoft.VisualStudio.Editors.AppDesInterop
@@ -45,8 +45,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Web = &H40 'from vsappid80.idl
         End Enum
 
-        Private Const s_VSAPROPID_SKUEdition As Integer = -8534
-        Private Const s_VSAPROPID_SubSKUEdition As Integer = -8546
+        Private Const VSAPROPID_SKUEdition As Integer = -8534
+        Private Const VSAPROPID_SubSKUEdition As Integer = -8546
 
 
         ''' <summary>
@@ -211,11 +211,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             VsAppIdService = TryCast(ServiceProvider.GetService(GetType(Interop.IVsAppId)), Interop.IVsAppId)
             If VsAppIdService IsNot Nothing Then
                 Try
-                    hr = VsAppIdService.GetProperty(s_VSAPROPID_SKUEdition, objSKU)
+                    hr = VsAppIdService.GetProperty(VSAPROPID_SKUEdition, objSKU)
                     If hr >= 0 AndAlso (TypeOf objSKU Is Integer) Then
                         s_productSKU = DirectCast(CInt(objSKU), VSASKUEdition)
                     End If
-                    hr = VsAppIdService.GetProperty(s_VSAPROPID_SubSKUEdition, objSubSKU)
+                    hr = VsAppIdService.GetProperty(VSAPROPID_SubSKUEdition, objSubSKU)
                     If hr >= 0 AndAlso (TypeOf objSubSKU Is Integer) Then
                         s_productSubSKU = DirectCast(CInt(objSubSKU), VSASubSKUEdition)
                     End If

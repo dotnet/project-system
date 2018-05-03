@@ -2425,9 +2425,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 #Region "ISerialization implementation"
 
         'Our key for the ResXDataNode in the serialization info.
-        Private Const s_SERIALIZATIONKEY_RESXDATANODE As String = "ResXDataNode"
-        Private Const s_SERIALIZATIONKEY_SAVEDFILENAME As String = "SavedFileName"
-        Private Const s_SERIALIZATIONKEY_ORIGINALFILETIMESTAMP As String = "OriginalFileTimeStamp"
+        Private Const SERIALIZATIONKEY_RESXDATANODE As String = "ResXDataNode"
+        Private Const SERIALIZATIONKEY_SAVEDFILENAME As String = "SavedFileName"
+        Private Const SERIALIZATIONKEY_ORIGINALFILETIMESTAMP As String = "OriginalFileTimeStamp"
 
 
         ''' <summary>
@@ -2439,9 +2439,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''See .NET Framework Developer's Guide, "Custom Serialization" for more information
         ''' </remarks>
         Private Sub New(Info As SerializationInfo, Context As StreamingContext)
-            Dim ResXDataNode As ResXDataNode = DirectCast(Info.GetValue(s_SERIALIZATIONKEY_RESXDATANODE, GetType(ResXDataNode)), ResXDataNode)
-            _savedFileName = Info.GetString(s_SERIALIZATIONKEY_SAVEDFILENAME)
-            _originalFileTimeStamp = Info.GetDateTime(s_SERIALIZATIONKEY_ORIGINALFILETIMESTAMP)
+            Dim ResXDataNode As ResXDataNode = DirectCast(Info.GetValue(SERIALIZATIONKEY_RESXDATANODE, GetType(ResXDataNode)), ResXDataNode)
+            _savedFileName = Info.GetString(SERIALIZATIONKEY_SAVEDFILENAME)
+            _originalFileTimeStamp = Info.GetDateTime(SERIALIZATIONKEY_ORIGINALFILETIMESTAMP)
 
             'Hook up TypeNameConverter for fileref object from deserializer
             If ResXDataNode.FileRef IsNot Nothing Then
@@ -2462,9 +2462,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''See .NET Framework Developer's Guide, "Custom Serialization" for more information
         ''' </remarks>
         Private Sub GetObjectData(Info As SerializationInfo, Context As StreamingContext) Implements ISerializable.GetObjectData
-            Info.AddValue(s_SERIALIZATIONKEY_RESXDATANODE, _resXDataNode)
-            Info.AddValue(s_SERIALIZATIONKEY_SAVEDFILENAME, VB.IIf(_savedFileName Is Nothing, "", _savedFileName))
-            Info.AddValue(s_SERIALIZATIONKEY_ORIGINALFILETIMESTAMP, _originalFileTimeStamp)
+            Info.AddValue(SERIALIZATIONKEY_RESXDATANODE, _resXDataNode)
+            Info.AddValue(SERIALIZATIONKEY_SAVEDFILENAME, VB.IIf(_savedFileName Is Nothing, "", _savedFileName))
+            Info.AddValue(SERIALIZATIONKEY_ORIGINALFILETIMESTAMP, _originalFileTimeStamp)
         End Sub
 
 #End Region

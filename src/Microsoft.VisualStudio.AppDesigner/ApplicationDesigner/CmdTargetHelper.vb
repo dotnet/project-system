@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
@@ -26,21 +26,21 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Sub
 
         ' Window navigation items
-        Private Const s_cmdidPaneNextSubPane As Integer = 1062
-        Private Const s_cmdidPanePrevSubPane As Integer = 1063
-        Private Const s_cmdidPaneNextPane As Integer = 316
-        Private Const s_cmdidPanePrevPane As Integer = 317
-        Private Const s_cmdidPaneNextTab As Integer = 286
-        Private Const s_cmdidPanePrevTab As Integer = 287
-        Private Const s_cmdidCloseDocument As Integer = 658
+        Private Const CmdIdPaneNextSubPane As Integer = 1062
+        Private Const CmdIdPanePrevSubPane As Integer = 1063
+        Private Const CmdIdPaneNextPane As Integer = 316
+        Private Const CmdIdPanePrevPane As Integer = 317
+        Private Const CmdIdPaneNextTab As Integer = 286
+        Private Const CmdIdPanePrevTab As Integer = 287
+        Private Const CmdIdCloseDocument As Integer = 658
         'case cmdidPaneCloseToolWindow
         'case cmdidPaneActivateDocWindow
-        Private Const s_cmdidCloseAllDocuments As Integer = 627
-        Private Const s_cmdidNextDocumentNav As Integer = 1124
-        Private Const s_cmdidPrevDocumentNav As Integer = 1125
-        Private Const s_cmdidNextDocument As Integer = 628
-        Private Const s_cmdidPrevDocument As Integer = 629
-        Private Const s_cmdidSaveSolution As Integer = 224
+        Private Const CmdIdCloseAllDocuments As Integer = 627
+        Private Const CmdIdNextDocumentNav As Integer = 1124
+        Private Const CmdIdPrevDocumentNav As Integer = 1125
+        Private Const CmdIdNextDocument As Integer = 628
+        Private Const CmdIdPrevDocument As Integer = 629
+        Private Const CmdIdSaveSolution As Integer = 224
 
         ''' <summary>
         ''' Executes a specified command or displays help for a command.
@@ -83,7 +83,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         'Execute a Save for the App Designer (saves all DocData pages)
                         Return HrSaveProjectDesigner()
 
-                    Case s_cmdidSaveSolution
+                    Case CmdIdSaveSolution
                         Common.Switches.TracePDCmdTarget(TraceLevel.Warning, "  Peeking: cmdidSaveSolution")
 
                         'There are scenarios with some property pages where a page doesn't get saved properly
@@ -104,7 +104,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         Return NativeMethods.S_OK
 
 
-                    Case Constants.MenuConstants.cmdidFileClose, s_cmdidCloseDocument
+                    Case Constants.MenuConstants.cmdidFileClose, CmdIdCloseDocument
                         'cmdidFileClose = File.CLose
                         'cmdidCloseDocument = CTRL+F4 or right-click Close on the MDI tab
 
@@ -118,7 +118,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         _windowPane.ClosePromptSave()
                         Return NativeMethods.S_OK
 
-                    Case s_cmdidCloseAllDocuments
+                    Case CmdIdCloseAllDocuments
                         'There are scenarios with some property pages where a page doesn't get saved properly
                         '  with pending changes if all documents are closed.  This makes sure things get saved
                         '  properly.
@@ -130,12 +130,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         'Now let the shell do its normal processing of this command
                         Return NativeMethods.OLECMDERR_E_NOTSUPPORTED
 
-                    Case s_cmdidPaneNextTab 'Window.NextTab (CTRL+PGDN by default) - move to the next tab in the project designer
+                    Case CmdIdPaneNextTab 'Window.NextTab (CTRL+PGDN by default) - move to the next tab in the project designer
                         Common.Switches.TracePDCmdTarget(TraceLevel.Warning, "  Handling: cmdidPaneNextTab")
                         _windowPane.NextTab()
                         Return NativeMethods.S_OK
 
-                    Case s_cmdidPanePrevTab 'Window.PrevTab (CTRL+PGUP by default) - move to the previous tab in the project designer
+                    Case CmdIdPanePrevTab 'Window.PrevTab (CTRL+PGUP by default) - move to the previous tab in the project designer
                         Common.Switches.TracePDCmdTarget(TraceLevel.Warning, "  Handling: cmdidPanePrevTab")
                         _windowPane.PrevTab()
                         Return NativeMethods.S_OK
@@ -215,12 +215,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         prgCmds(0).cmdf = Supported Or Invisible 'CONSIDER: Invisible doesn't seem to work, but it does at least get disabled
                         Return NativeMethods.S_OK
 
-                    Case Constants.MenuConstants.cmdidFileClose, s_cmdidCloseDocument
+                    Case Constants.MenuConstants.cmdidFileClose, CmdIdCloseDocument
                         Common.Switches.TracePDCmdTarget(TraceLevel.Info, "  Query: cmdidFileClose, cmdidCloseDocument")
                         prgCmds(0).cmdf = Supported Or Enabled
                         Return NativeMethods.S_OK
 
-                    Case s_cmdidPaneNextTab, s_cmdidPanePrevTab
+                    Case CmdIdPaneNextTab, CmdIdPanePrevTab
                         Common.Switches.TracePDCmdTarget(TraceLevel.Info, "  Query: cmdidPaneNextTab or cmdidPanePrevTab")
                         prgCmds(0).cmdf = Supported Or Enabled
                         Return NativeMethods.S_OK

@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 Imports System.ComponentModel.Design
@@ -32,10 +32,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Implements IVsWindowPaneCommit
         Implements IVsBroadcastMessageEvents
 
-        Private Const s_nameColumnNo As Integer = 0
-        Private Const s_typeColumnNo As Integer = 1
-        Private Const s_scopeColumnNo As Integer = 2
-        Private Const s_valueColumnNo As Integer = 3
+        Private Const NameColumnNo As Integer = 0
+        Private Const TypeColumnNo As Integer = 1
+        Private Const ScopeColumnNo As Integer = 2
+        Private Const ValueColumnNo As Integer = 3
         Private _menuCommands As ArrayList
         Private _accessModifierCombobox As SettingsDesignerAccessModifierCombobox
 
@@ -56,8 +56,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Sub
 
             Public Shadows Function GetMenuCommandsToRegister() As ICollection
-                Return MyBase.GetMenuCommandsToRegister( _
-                    Constants.MenuConstants.CommandIDSettingsDesignerAccessModifierCombobox, _
+                Return MyBase.GetMenuCommandsToRegister(
+                    Constants.MenuConstants.CommandIDSettingsDesignerAccessModifierCombobox,
                     Constants.MenuConstants.CommandIDSettingsDesignerGetAccessModifierOptions)
             End Function
 
@@ -69,7 +69,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     Return False
                 End If
 
-                Return designerLoader.InDesignMode AndAlso Not DesignerLoader.IsReadOnly
+                Return designerLoader.InDesignMode AndAlso Not designerLoader.IsReadOnly
             End Function
         End Class
 
@@ -101,7 +101,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
         ' Padding used to calculate width of comboboxes to avoid getting the text
         ' truncated...
-        Private Const s_internalComboBoxPadding As Integer = 10
+        Private Const InternalComboBoxPadding As Integer = 10
 
         Private WithEvents _dataGridViewTextBoxColumn1 As DataGridViewTextBoxColumn
         Private WithEvents _dataGridViewComboBoxColumn1 As DataGridViewComboBoxColumn
@@ -159,12 +159,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
             _settingsTableLayoutPanel.SuspendLayout()
 
-            _settingsGridView.Columns(s_nameColumnNo).HeaderText = My.Resources.Designer.SD_GridViewNameColumnHeaderText
-            _settingsGridView.Columns(s_nameColumnNo).CellTemplate = New DesignerDataGridView.EditOnClickDataGridViewTextBoxCell()
-            _settingsGridView.Columns(s_typeColumnNo).HeaderText = My.Resources.Designer.SD_GridViewTypeColumnHeaderText
-            _settingsGridView.Columns(s_typeColumnNo).CellTemplate = New DesignerDataGridView.EditOnClickDataGridViewComboBoxCell()
-            _settingsGridView.Columns(s_scopeColumnNo).HeaderText = My.Resources.Designer.SD_GridViewScopeColumnHeaderText
-            _settingsGridView.Columns(s_scopeColumnNo).CellTemplate = New DesignerDataGridView.EditOnClickDataGridViewComboBoxCell()
+            _settingsGridView.Columns(NameColumnNo).HeaderText = My.Resources.Designer.SD_GridViewNameColumnHeaderText
+            _settingsGridView.Columns(NameColumnNo).CellTemplate = New DesignerDataGridView.EditOnClickDataGridViewTextBoxCell()
+            _settingsGridView.Columns(TypeColumnNo).HeaderText = My.Resources.Designer.SD_GridViewTypeColumnHeaderText
+            _settingsGridView.Columns(TypeColumnNo).CellTemplate = New DesignerDataGridView.EditOnClickDataGridViewComboBoxCell()
+            _settingsGridView.Columns(ScopeColumnNo).HeaderText = My.Resources.Designer.SD_GridViewScopeColumnHeaderText
+            _settingsGridView.Columns(ScopeColumnNo).CellTemplate = New DesignerDataGridView.EditOnClickDataGridViewComboBoxCell()
 
             Dim TypeEditorCol As New DataGridViewUITypeEditorColumn
             TypeEditorCol.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
@@ -394,10 +394,10 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             TypeColumn.Items.Add(_typeNameResolver.PersistedSettingTypeNameToTypeDisplayName(SettingsSerializer.CultureInvariantVirtualTypeNameWebReference))
             TypeColumn.Items.Add(_typeNameResolver.PersistedSettingTypeNameToTypeDisplayName(SettingsSerializer.CultureInvariantVirtualTypeNameConnectionString))
             TypeColumn.Items.Add(My.Resources.Designer.SD_ComboBoxItem_BrowseType)
-            TypeColumn.Width = DpiHelper.LogicalToDeviceUnitsX(TypeColumn.GetPreferredWidth(DataGridViewAutoSizeColumnMode.AllCells, False) + SystemInformation.VerticalScrollBarWidth + s_internalComboBoxPadding)
+            TypeColumn.Width = DpiHelper.LogicalToDeviceUnitsX(TypeColumn.GetPreferredWidth(DataGridViewAutoSizeColumnMode.AllCells, False) + SystemInformation.VerticalScrollBarWidth + InternalComboBoxPadding)
 
 
-            ScopeColumn.Width = DpiHelper.LogicalToDeviceUnitsX(ScopeColumn.GetPreferredWidth(DataGridViewAutoSizeColumnMode.AllCells, False) + SystemInformation.VerticalScrollBarWidth + s_internalComboBoxPadding)
+            ScopeColumn.Width = DpiHelper.LogicalToDeviceUnitsX(ScopeColumn.GetPreferredWidth(DataGridViewAutoSizeColumnMode.AllCells, False) + SystemInformation.VerticalScrollBarWidth + InternalComboBoxPadding)
 
             'Hook up for broadcast messages
             If _cookieBroadcastMessages = 0 Then
@@ -517,7 +517,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         ' We want to give the name column a reasonable start width. If we did this by using auto fill/fill weight, 
                         ' changing the value column would change the size of the name column, which looks weird. We'll just default the
                         ' size to 1/3 of the value column's width and leave it at that (the user can resize if (s)he wants to)
-                        _settingsGridView.Columns(s_nameColumnNo).Width = CInt(TypeColumn.Width / 2)
+                        _settingsGridView.Columns(NameColumnNo).Width = CInt(TypeColumn.Width / 2)
                     End If
                 End If
             End Set
@@ -688,8 +688,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Else
                 Dim NewInstance As New DesignTimeSettingInstance
                 Row.Tag = NewInstance
-                NewInstance.SetName(Row.Cells(s_nameColumnNo).FormattedValue.ToString())
-                NewInstance.SetScope(CType(Row.Cells(s_scopeColumnNo).Value, DesignTimeSettingInstance.SettingScope))
+                NewInstance.SetName(Row.Cells(NameColumnNo).FormattedValue.ToString())
+                NewInstance.SetScope(CType(Row.Cells(ScopeColumnNo).Value, DesignTimeSettingInstance.SettingScope))
                 If NewInstance.Name = "" Then
                     NewInstance.SetName(Settings.CreateUniqueName())
                 End If
@@ -793,7 +793,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <remarks></remarks>
         Private ReadOnly Property TypeColumn() As DataGridViewComboBoxColumn
             Get
-                Return DirectCast(_settingsGridView.Columns(s_typeColumnNo), DataGridViewComboBoxColumn)
+                Return DirectCast(_settingsGridView.Columns(TypeColumnNo), DataGridViewComboBoxColumn)
             End Get
         End Property
 
@@ -804,7 +804,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <remarks></remarks>
         Private ReadOnly Property ScopeColumn() As DataGridViewComboBoxColumn
             Get
-                Return DirectCast(_settingsGridView.Columns(s_scopeColumnNo), DataGridViewComboBoxColumn)
+                Return DirectCast(_settingsGridView.Columns(ScopeColumnNo), DataGridViewComboBoxColumn)
             End Get
         End Property
 
@@ -850,12 +850,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="Row"></param>
         ''' <remarks></remarks>
         Private Sub SetUIRowValues(Row As DataGridViewRow, Instance As DesignTimeSettingInstance)
-            Row.Cells(s_nameColumnNo).Value = Instance.Name
-            Row.Cells(s_nameColumnNo).ReadOnly = DesignTimeSettingInstance.IsNameReadOnly(Instance)
+            Row.Cells(NameColumnNo).Value = Instance.Name
+            Row.Cells(NameColumnNo).ReadOnly = DesignTimeSettingInstance.IsNameReadOnly(Instance)
 
             ' Update type combobox, adding the instance's type if it isn't already included in the
             ' list
-            Dim TypeCell As DataGridViewComboBoxCell = CType(Row.Cells(s_typeColumnNo), DataGridViewComboBoxCell)
+            Dim TypeCell As DataGridViewComboBoxCell = CType(Row.Cells(TypeColumnNo), DataGridViewComboBoxCell)
             Dim SettingTypeDisplayType As String = _typeNameResolver.PersistedSettingTypeNameToTypeDisplayName(Instance.SettingTypeName)
             If Not TypeColumn.Items.Contains(SettingTypeDisplayType) Then
                 TypeColumn.Items.Insert(TypeColumn.Items.Count() - 1, SettingTypeDisplayType)
@@ -865,9 +865,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             UpdateComboBoxCell(TypeCell)
             TypeCell.ReadOnly = DesignTimeSettingInstance.IsTypeReadOnly(Instance)
 
-            Row.Cells(s_scopeColumnNo).ReadOnly = DesignTimeSettingInstance.IsScopeReadOnly(Instance, _projectSystemSupportsUserScope)
+            Row.Cells(ScopeColumnNo).ReadOnly = DesignTimeSettingInstance.IsScopeReadOnly(Instance, _projectSystemSupportsUserScope)
 
-            Row.Cells(s_scopeColumnNo).Value = Instance.Scope
+            Row.Cells(ScopeColumnNo).Value = Instance.Scope
 
             UpdateUIValueColumn(Row)
         End Sub
@@ -879,7 +879,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <remarks></remarks>
         Private Sub UpdateUIValueColumn(row As DataGridViewRow)
             Dim Instance As DesignTimeSettingInstance = CType(row.Tag, DesignTimeSettingInstance)
-            Dim Cell As DataGridViewUITypeEditorCell = CType(row.Cells(s_valueColumnNo), DataGridViewUITypeEditorCell)
+            Dim Cell As DataGridViewUITypeEditorCell = CType(row.Cells(ValueColumnNo), DataGridViewUITypeEditorCell)
             If Instance IsNot Nothing Then
                 Dim settingType As Type = _settingTypeCache.GetSettingType(Instance.SettingTypeName)
                 If settingType IsNot Nothing AndAlso Not SettingTypeValidator.IsTypeObsolete(settingType) Then
@@ -1045,14 +1045,14 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private Function ValidateCell(FormattedValue As Object, RowIndex As Integer, ColumnIndex As Integer) As Boolean
             Dim Instance As DesignTimeSettingInstance = TryCast(_settingsGridView.Rows(RowIndex).Tag, DesignTimeSettingInstance)
             Select Case ColumnIndex
-                Case s_nameColumnNo
+                Case NameColumnNo
                     Debug.Assert(TypeOf FormattedValue Is String, "Unknown type of formatted value for name")
                     Return ValidateName(DirectCast(FormattedValue, String), Instance)
-                Case s_typeColumnNo
+                Case TypeColumnNo
                     ' We don't want to commit the "Browse..." value at any time... we also don't want to allow an empty string for type name
                     Debug.Assert(TypeOf FormattedValue Is String, "Unknown type of formatted value for name")
                     Return Not (TryCast(FormattedValue, String) = "" OrElse String.Equals(My.Resources.Designer.SD_ComboBoxItem_BrowseType, TryCast(FormattedValue, String), StringComparison.Ordinal))
-                Case s_scopeColumnNo
+                Case ScopeColumnNo
                     Return TryCast(FormattedValue, String) <> ""
                 Case Else
                     Return True
@@ -1165,19 +1165,19 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
                 Try
                     Select Case e.ColumnIndex
-                        Case s_nameColumnNo
+                        Case NameColumnNo
                             Debug.WriteLineIf(SettingsDesigner.TraceSwitch.TraceVerbose, "Changing name of setting " & Instance.Name)
                             ' Don't use SetName since that won't fire a component change notification...
                             Instance.NameProperty.SetValue(Instance, CellText)
-                        Case s_typeColumnNo
+                        Case TypeColumnNo
                             ' Changing the type is a remove/add operation
                             If Not CellText.Equals(Instance.SettingTypeName, StringComparison.Ordinal) AndAlso Not CellText.Equals(My.Resources.Designer.SD_ComboBoxItem_BrowseType, StringComparison.Ordinal) Then
                                 ChangeSettingType(Row, CellText)
                             End If
-                        Case s_scopeColumnNo
+                        Case ScopeColumnNo
                             Debug.WriteLineIf(SettingsDesigner.TraceSwitch.TraceVerbose, "Changing scope of setting " & Instance.Name)
                             Instance.ScopeProperty.SetValue(Instance, cell.Value)
-                        Case s_valueColumnNo
+                        Case ValueColumnNo
                             ' It seems that we get a cell validated event even if we haven't edited the text in the cell....
                             If Not String.Equals(Instance.SerializedValue, CellText, StringComparison.Ordinal) Then
                                 ' We only set the value in if the text in the validated cell
@@ -1210,7 +1210,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private Sub OnSettingsGridViewCellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs) Handles _settingsGridView.CellFormatting
             ' If the column is the Scope column, check the
             ' value.
-            If e.ColumnIndex = s_scopeColumnNo Then
+            If e.ColumnIndex = ScopeColumnNo Then
                 If Not DBNull.Value.Equals(e.Value) AndAlso e.Value IsNot Nothing Then
                     Dim row As DataGridViewRow = _settingsGridView.Rows(e.RowIndex)
                     Dim instance As DesignTimeSettingInstance = TryCast(row.Tag, DesignTimeSettingInstance)
@@ -1255,7 +1255,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 e.Cancel = True
             Else
                 Select Case e.ColumnIndex
-                    Case s_nameColumnNo
+                    Case NameColumnNo
                         '
                         ' If this is the name of a web reference setting, we need to check out the project file since the name of
                         ' the setting that contains the web service URL is stored in the project file.
@@ -1278,7 +1278,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                                 End If
                             End If
                         End If
-                    Case s_valueColumnNo
+                    Case ValueColumnNo
                         Dim cell As DataGridViewUITypeEditorCell = TryCast(
                                         _settingsGridView.Rows(e.RowIndex).Cells(e.ColumnIndex),
                                         DataGridViewUITypeEditorCell)
@@ -1427,7 +1427,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="e"></param>
         ''' <remarks>Kind of hacky...</remarks>
         Private Sub OnSettingsGridViewCurrentCellDirtyStateChanged(sender As Object, e As EventArgs) Handles _settingsGridView.CurrentCellDirtyStateChanged
-            If _settingsGridView.CurrentCellAddress.X = s_typeColumnNo Then
+            If _settingsGridView.CurrentCellAddress.X = TypeColumnNo Then
                 Dim cell As DataGridViewCell = _settingsGridView.CurrentCell
                 If cell IsNot Nothing Then
                     If My.Resources.Designer.SD_ComboBoxItem_BrowseType.Equals(cell.EditedFormattedValue) Then
@@ -1458,9 +1458,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private Sub OnSettingsGridViewOnDataError(sender As Object, e As DataGridViewDataErrorEventArgs) Handles _settingsGridView.DataError
             If Not _suppressValidationUI Then
                 Select Case e.ColumnIndex
-                    Case s_valueColumnNo
-                        ReportError(My.Resources.Designer.GetString(My.Resources.Designer.SD_ERR_InvalidValue_2Arg, _settingsGridView.CurrentCell.GetEditedFormattedValue(e.RowIndex, DataGridViewDataErrorContexts.Display), _settingsGridView.Rows(_settingsGridView.CurrentCell.RowIndex).Cells(s_typeColumnNo).FormattedValue), HelpIDs.Err_FormatValue)
-                    Case s_nameColumnNo
+                    Case ValueColumnNo
+                        ReportError(My.Resources.Designer.GetString(My.Resources.Designer.SD_ERR_InvalidValue_2Arg, _settingsGridView.CurrentCell.GetEditedFormattedValue(e.RowIndex, DataGridViewDataErrorContexts.Display), _settingsGridView.Rows(_settingsGridView.CurrentCell.RowIndex).Cells(TypeColumnNo).FormattedValue), HelpIDs.Err_FormatValue)
+                    Case NameColumnNo
                         ReportError(My.Resources.Designer.GetString(My.Resources.Designer.SD_ERR_InvalidIdentifier_1Arg, _settingsGridView.CurrentCell.GetEditedFormattedValue(e.RowIndex, DataGridViewDataErrorContexts.Display)), HelpIDs.Err_InvalidName)
                     Case Else
                         ' For some reason, we get data errors when we don't have a value for a specific row 
@@ -1980,7 +1980,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="e"></param>
         ''' <remarks></remarks>
         Private Sub MenuAddSetting(sender As Object, e As EventArgs)
-            _settingsGridView.CurrentCell = _settingsGridView.Rows(_settingsGridView.Rows.Count - 1).Cells(s_nameColumnNo)
+            _settingsGridView.CurrentCell = _settingsGridView.Rows(_settingsGridView.Rows.Count - 1).Cells(NameColumnNo)
             Debug.Assert(_settingsGridView.CurrentRow.Tag Is Nothing, "Adding a new setting failed - there is already a setting associated with the new row!?")
             _settingsGridView.BeginEdit(True)
         End Sub
@@ -2078,7 +2078,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private Sub TypeComboBoxSelectedIndexChanged()
             Dim ptCurrent As Drawing.Point = _settingsGridView.CurrentCellAddress
 
-            If ptCurrent.X <> s_typeColumnNo Then
+            If ptCurrent.X <> TypeColumnNo Then
                 Debug.Fail("We shouldn't browse for a type when the current cell isn't the type cell!")
                 Return
             End If
@@ -2118,7 +2118,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' the value that we get passed in every for perf. reasons...
         ''' </remarks>
         Private Sub OnSettingsGridViewSortCompare(sender As Object, e As DataGridViewSortCompareEventArgs) Handles _settingsGridView.SortCompare
-            If e.Column.Index = s_valueColumnNo OrElse e.Column.Index = s_scopeColumnNo Then
+            If e.Column.Index = ValueColumnNo OrElse e.Column.Index = ScopeColumnNo Then
                 Dim strVal1 As String = TryCast(_settingsGridView.Rows(e.RowIndex1).Cells(e.Column.Index).EditedFormattedValue, String)
                 Dim strVal2 As String = TryCast(_settingsGridView.Rows(e.RowIndex2).Cells(e.Column.Index).EditedFormattedValue, String)
                 If strVal1 Is Nothing Then strVal1 = ""

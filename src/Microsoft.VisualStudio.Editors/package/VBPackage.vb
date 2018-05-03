@@ -40,7 +40,7 @@ Namespace Microsoft.VisualStudio.Editors
         Private _userConfigCleaner As UserConfigCleaner
         Private _addImportsDialogService As AddImports.AddImportsDialogService
 
-        Private Const s_projectDesignerSUOKey As String = "ProjectDesigner"
+        Private Const ProjectDesignerSUOKey As String = "ProjectDesigner"
 
         ' Map between unique project GUID and the last viewed tab in the project designer...
         Private _lastViewedProjectDesignerTab As Dictionary(Of Guid, Byte)
@@ -51,7 +51,7 @@ Namespace Microsoft.VisualStudio.Editors
         ''' <remarks></remarks>
         Public Sub New()
             ' Make sure we persist this 
-            AddOptionKey(s_projectDesignerSUOKey)
+            AddOptionKey(ProjectDesignerSUOKey)
         End Sub
 
         ''' <summary>
@@ -242,7 +242,7 @@ Namespace Microsoft.VisualStudio.Editors
         ''' <param name="stream">Stream to read from</param>
         ''' <remarks></remarks>
         Protected Overrides Sub OnLoadOptions(key As String, stream As IO.Stream)
-            If String.Equals(key, s_projectDesignerSUOKey, StringComparison.Ordinal) Then
+            If String.Equals(key, ProjectDesignerSUOKey, StringComparison.Ordinal) Then
                 Dim reader As New IO.BinaryReader(stream)
                 Dim buf(15) As Byte ' Space enough for a GUID - 16 bytes...
                 Try
@@ -269,7 +269,7 @@ Namespace Microsoft.VisualStudio.Editors
         ''' <param name="stream">Stream to read data from</param>
         ''' <remarks></remarks>
         Protected Overrides Sub OnSaveOptions(key As String, stream As IO.Stream)
-            If String.Equals(key, s_projectDesignerSUOKey, StringComparison.Ordinal) Then
+            If String.Equals(key, ProjectDesignerSUOKey, StringComparison.Ordinal) Then
                 ' This is the project designer's last active tab
                 If _lastViewedProjectDesignerTab IsNot Nothing Then
                     Dim hier As IVsHierarchy = Nothing

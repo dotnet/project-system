@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 Imports System.Runtime.InteropServices
@@ -29,7 +29,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Private _codeDomProvider As CodeDomProvider
         Private _serviceProvider As ServiceProvider
 
-        Private Const s_myNamespaceName As String = "My"
+        Private Const MyNamespaceName As String = "My"
         Friend Const SingleFileGeneratorName As String = "MyApplicationCodeGenerator"
 
         ''' <summary>
@@ -143,7 +143,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
             ' Create a new namespace to put our class in
             '
-            Dim MyNamespace As New CodeDom.CodeNamespace(s_myNamespaceName)
+            Dim MyNamespace As New CodeDom.CodeNamespace(MyNamespaceName)
 
             'MySubMain will be set to indicate a WindowsApplication sans MY, or non-WindowsApplication type
             If MyApplication.MySubMain AndAlso MyApplicationProperties.IsMySubMainSupported(DirectCast(GetService(GetType(IVsHierarchy)), IVsHierarchy)) Then

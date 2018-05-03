@@ -16,7 +16,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _ignoreLostFocus As Boolean
         Private _appConfigError As Boolean
         Private _frameworkVersionNumber As UInteger
-        Private Const s_requiredFrameworkVersion As UInteger = &H30005
+        Private Const RequiredFrameworkVersion As UInteger = &H30005
 
         Public Sub New()
             InitializeComponent()
@@ -46,7 +46,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     CurrentAppConfigDocument = newDoc
                     If Not _appConfigError Then
                         'If the application is targetting earlier than .NET Framework 3.5 or a client subset of .NET Framework, then disable this tab.
-                        If _frameworkVersionNumber < s_requiredFrameworkVersion OrElse IsClientFrameworkSubset(ProjectHierarchy) Then
+                        If _frameworkVersionNumber < RequiredFrameworkVersion OrElse IsClientFrameworkSubset(ProjectHierarchy) Then
                             SetControlsEnabledProperty(False)
                             EnableApplicationServices.Enabled = False
                         Else
@@ -89,7 +89,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'DevDiv Bugs 88577, If the user isn't targetting V3.5 or above, bring up
             'an error stating that the functionality is only available for 3.5 or greater.
             'Also, uncheck the checkbox
-            If EnableApplicationServices.Checked AndAlso _frameworkVersionNumber < s_requiredFrameworkVersion Then
+            If EnableApplicationServices.Checked AndAlso _frameworkVersionNumber < RequiredFrameworkVersion Then
                 DesignerFramework.DesignerMessageBox.Show(ServiceProvider, My.Resources.Designer.PPG_Services_VersionWarning, Nothing, MessageBoxButtons.OK, MessageBoxIcon.Warning)
                 _ignoreCheckedChanged = True
                 EnableApplicationServices.Checked = False

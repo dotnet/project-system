@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Diagnostics.CodeAnalysis
 Imports System.Xml
@@ -153,7 +153,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     'Either the text has already been set (in which case we're good), or it's the display default message, in which case we should
                     'change it to the default value.
                     If CustomConnectionString.Text = My.Resources.Designer.PPG_Services_connectionStringValueDefaultDisplayValue Then
-                        CustomConnectionString.Text = ServicesPropPageAppConfigHelper.connectionStringValueDefault
+                        CustomConnectionString.Text = ServicesPropPageAppConfigHelper.ConnectionStringValueDefault
                     End If
                     ServicesPropPageAppConfigHelper.SetConnectionStringText(_appConfigDocument, CustomConnectionString.Text, ProjectHierarchy)
                 Case Windows.Forms.CheckState.Unchecked
