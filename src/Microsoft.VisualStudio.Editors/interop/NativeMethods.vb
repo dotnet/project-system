@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Runtime.InteropServices
 Imports Microsoft.VisualStudio.OLE.Interop
@@ -440,8 +440,9 @@ Namespace Microsoft.VisualStudio.Editors.Interop
 
         Friend Declare Function IsWindowUnicode Lib "user32" (hWnd As IntPtr) As Boolean
 
-        <StructLayout(LayoutKind.Sequential, CharSet:=CharSet.Auto)> _
+        <StructLayout(LayoutKind.Sequential, CharSet:=CharSet.Auto)>
         Public Structure TVITEM
+#Disable Warning IDE1006 ' Naming Styles
             Public item_mask As Integer
             Public item_hItem As IntPtr
             Public item_state As Integer
@@ -452,6 +453,7 @@ Namespace Microsoft.VisualStudio.Editors.Interop
             Public item_iSelectedImage As Integer
             Public item_cChildren As Integer
             Public item_lParam As IntPtr
+#Enable Warning IDE1006 ' Naming Styles
         End Structure
 
         <DllImport("user32")> _
