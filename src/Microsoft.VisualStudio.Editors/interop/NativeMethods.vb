@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Runtime.InteropServices
 Imports Microsoft.VisualStudio.OLE.Interop
@@ -8,8 +8,8 @@ Namespace Microsoft.VisualStudio.Editors.Interop
     <ComVisible(False)> _
     Friend NotInheritable Class NativeMethods
 
-        Private Const s_VB_COMPILER_GUID As String = "019971d6-4685-11d2-b48a-0000f87572eb"
-        Friend Shared ReadOnly VBCompilerGuid As Guid = New Guid(s_VB_COMPILER_GUID)
+        Private Const VB_COMPILER_GUID As String = "019971d6-4685-11d2-b48a-0000f87572eb"
+        Friend Shared ReadOnly VBCompilerGuid As Guid = New Guid(VB_COMPILER_GUID)
 
         '/ <summary>
         '/     Handle type for HDC's that count against the Win98 limit of five DC's.  HDC's

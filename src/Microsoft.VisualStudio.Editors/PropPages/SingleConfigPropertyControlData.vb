@@ -30,8 +30,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Friend Class SingleConfigPropertyControlData
         Inherits PropertyControlData
 
-        Private Const s_releaseConfigName As String = "Release"
-        Private Const s_debugConfigName As String = "Debug"
+        Private Const ReleaseConfigName As String = "Release"
+        Private Const DebugConfigName As String = "Debug"
 
         Public Enum Configs
             Debug
@@ -69,9 +69,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             MyBase.New(id, name, control, setter, getter, flags, AssocControls)
             Select Case Config
                 Case Configs.Debug
-                    _specificConfigName = s_debugConfigName
+                    _specificConfigName = DebugConfigName
                 Case Configs.Release
-                    _specificConfigName = s_releaseConfigName
+                    _specificConfigName = ReleaseConfigName
                 Case Else
                     Debug.Fail("Unrecognized Configs enum value")
                     _specificConfigName = ""

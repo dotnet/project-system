@@ -74,16 +74,16 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 
         'The default name to use for the Resources file unless the registry says otherwise.
-        Private Const s_DEFAULT_RESOURCE_FOLDER_NAME As String = "Resources"
+        Private Const DEFAULT_RESOURCE_FOLDER_NAME As String = "Resources"
 
         'Name of the "Projects" key in the Visual Studio registry subtree
-        Private Const s_KEYPATH_PROJECTS As String = "Projects"
+        Private Const KEYPATH_PROJECTS As String = "Projects"
 
         'Name of the key in the registry that indicates what add-to-project behavior to use for a particular project
-        Private Const s_KEYNAME_RESOURCESFOLDERBEHAVIOR As String = "ResourcesFolderBehavior"
+        Private Const KEYNAME_RESOURCESFOLDERBEHAVIOR As String = "ResourcesFolderBehavior"
 
         'Name of the key in the registry that indicates the name of the Resources folder for a particular project
-        Private Const s_KEYNAME_RESOURCESFOLDERNAME As String = "ResourcesFolderName"
+        Private Const KEYNAME_RESOURCESFOLDERNAME As String = "ResourcesFolderName"
 
 #End Region
 
@@ -133,7 +133,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="Message">The message to displaying, including optional formatting parameters "{0}" etc.</param>
         ''' <param name="FormatArguments">Arguments for "{0}", "{1}", etc.</param>
         ''' <remarks></remarks>
-        <Conditional("DEBUG")> _
+        <Conditional("DEBUG")>
         Friend Shared Sub Trace(Message As String, ParamArray FormatArguments() As Object)
             If FormatArguments.Length > 0 Then
                 'Only use String.Format when we have specific format arguments, although we might accidently break on something like a stray "{" in a filename
@@ -623,7 +623,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             'We currently don't support anything but the default Resources folder name ("Resources")
             '  However, this could be changed later to be optionally pulled from the Registry.
-            ResourcesFolderName = s_DEFAULT_RESOURCE_FOLDER_NAME
+            ResourcesFolderName = DEFAULT_RESOURCE_FOLDER_NAME
 
             If Project Is Nothing OrElse IsMiscellaneousProject(Project) Then
                 'If there's no project or it's the miscellaneous files project, we simply get AddNone behavior.
@@ -646,7 +646,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 If VsRootKeyPath <> "" AndAlso Not VsRootKeyPath.EndsWith("\") Then
                     VSProjectsKeyPath.Append("\")
                 End If
-                VSProjectsKeyPath.Append(s_KEYPATH_PROJECTS)
+                VSProjectsKeyPath.Append(KEYPATH_PROJECTS)
                 VSProjectsKeyPath.Append("\")
                 VSProjectsKeyPath.Append(Project.Kind)
 
@@ -655,8 +655,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 If VsProjectsKey IsNot Nothing Then
                     Try
                         'Read the values
-                        Dim DesiredBehavior As ResourcesFolderBehavior = DirectCast(VsProjectsKey.GetValue(s_KEYNAME_RESOURCESFOLDERBEHAVIOR, ResourcesFolderBehavior.AddNone), ResourcesFolderBehavior)
-                        Dim DesiredResourcesFolderName As String = DirectCast(VsProjectsKey.GetValue(s_KEYNAME_RESOURCESFOLDERNAME, ResourcesFolderName), String)
+                        Dim DesiredBehavior As ResourcesFolderBehavior = DirectCast(VsProjectsKey.GetValue(KEYNAME_RESOURCESFOLDERBEHAVIOR, ResourcesFolderBehavior.AddNone), ResourcesFolderBehavior)
+                        Dim DesiredResourcesFolderName As String = DirectCast(VsProjectsKey.GetValue(KEYNAME_RESOURCESFOLDERNAME, ResourcesFolderName), String)
 
                         'Validate the behavior from the registry
                         If [Enum].IsDefined(GetType(ResourcesFolderBehavior), DesiredBehavior) Then

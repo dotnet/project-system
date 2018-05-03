@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
 Imports Microsoft.VisualStudio.Editors.AppDesInterop
@@ -25,10 +25,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private _parentView As ApplicationDesignerView 'The owning application designer view
         Private _loadAlreadyAttempted As Boolean 'Whether or not we've attempted to load this property page
 
-        Private Const s_REGKEY_CachedPageTitles As String = "\ProjectDesigner\CachedPageTitles"
-        Private Const s_REGVALUE_CachedLocaleId As String = "LocaleID"
-
-
+        Private Const REGKEY_CachedPageTitles As String = "\ProjectDesigner\CachedPageTitles"
+        Private Const REGVALUE_CachedLocaleId As String = "LocaleID"
 
         ''' <summary>
         ''' Constructor
@@ -209,7 +207,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 'Cache the title for future use
                 CachedTitle = _info.pszTitle
 
-            Catch Ex As Exception When Common.ReportWithoutCrash(ex, NameOf(TryLoadPropertyPage), NameOf(PropertyPageInfo))
+            Catch Ex As Exception When Common.ReportWithoutCrash(Ex, NameOf(TryLoadPropertyPage), NameOf(PropertyPageInfo))
                 If _comPropPageInstance IsNot Nothing Then
                     'IPropertyPage.GetPageInfo probably failed - if that didn't 
                     ' succeed, then nothing much else will likely work on the page either
@@ -298,7 +296,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <remarks></remarks>
         Private Property CachedTitle() As String
             Get
-                Dim KeyPath As String = _parentView.DTEProject.DTE.RegistryRoot & s_REGKEY_CachedPageTitles
+                Dim KeyPath As String = _parentView.DTEProject.DTE.RegistryRoot & REGKEY_CachedPageTitles
                 Dim Key As Win32.RegistryKey = Nothing
                 Try
                     Key = Win32.Registry.CurrentUser.OpenSubKey(KeyPath)
@@ -325,7 +323,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 End If
                 Dim Key As Win32.RegistryKey = Nothing
                 Try
-                    Key = Win32.Registry.CurrentUser.CreateSubKey(_parentView.DTEProject.DTE.RegistryRoot & s_REGKEY_CachedPageTitles)
+                    Key = Win32.Registry.CurrentUser.CreateSubKey(_parentView.DTEProject.DTE.RegistryRoot & REGKEY_CachedPageTitles)
                     If Key IsNot Nothing Then
                         Key.SetValue(CachedTitleValueName, value, Win32.RegistryValueKind.String)
                     End If

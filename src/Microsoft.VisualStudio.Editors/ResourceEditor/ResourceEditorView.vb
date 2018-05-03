@@ -135,11 +135,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private _registryRoot As String
 
         ' Pad around the stringTable/ListView
-        Private Const s_DESIGNER_PADDING As Integer = 14
-        Private Const s_DESIGNER_PADDING_TOP As Integer = 23
+        Private Const DESIGNER_PADDING As Integer = 14
+        Private Const DESIGNER_PADDING_TOP As Integer = 23
 
         ' the seperator character to save multiple extensions in one string
-        Private Const s_SAFE_EXTENSION_SEPERATOR As Char = "|"c
+        Private Const SAFE_EXTENSION_SEPERATOR As Char = "|"c
 
 #End Region
 
@@ -274,17 +274,17 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Inherits AccessModifierCombobox
 
             Private ReadOnly _isInDevice20Project As Boolean
-            Private Const s_framework_2_0 As Integer = 2
+            Private Const Framework_2_0 As Integer = 2
 
             Public Sub New(useVbMyResXCodeGenerator As Boolean, allowNoCodeGeneration As Boolean, rootDesigner As BaseRootDesigner, serviceProvider As IServiceProvider, projectItem As ProjectItem, namespaceToOverrideIfCustomToolIsEmpty As String)
                 MyBase.New(rootDesigner, serviceProvider, projectItem, namespaceToOverrideIfCustomToolIsEmpty)
 
                 _isInDevice20Project = IsInDevice20Project(rootDesigner)
 
-                AddCodeGeneratorEntry(AccessModifierConverter.Access.Friend, IIf(useVbMyResXCodeGenerator, s_VBMYCUSTOMTOOL, s_STANDARDCUSTOMTOOL))
+                AddCodeGeneratorEntry(AccessModifierConverter.Access.Friend, IIf(useVbMyResXCodeGenerator, VBMYCUSTOMTOOL, STANDARDCUSTOMTOOL))
                 If Not _isInDevice20Project Then
                     ' public generator is not supported in Device 2.0 projects
-                    AddCodeGeneratorEntry(AccessModifierConverter.Access.Public, IIf(useVbMyResXCodeGenerator, s_VBMYCUSTOMTOOLPUBLIC, s_STANDARDCUSTOMTOOLPUBLIC))
+                    AddCodeGeneratorEntry(AccessModifierConverter.Access.Public, IIf(useVbMyResXCodeGenerator, VBMYCUSTOMTOOLPUBLIC, STANDARDCUSTOMTOOLPUBLIC))
                 End If
 
                 If allowNoCodeGeneration Then
@@ -296,10 +296,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 'Ensure we don't disable the Access Modifier combobox just because the custom tool is set to the
                 '  My.Resources version of the custom tool when the standard version was expected, or vice versa.
                 '  This way all the resx generators are recognized.
-                AddRecognizedCustomToolValue(s_VBMYCUSTOMTOOL)
-                AddRecognizedCustomToolValue(s_VBMYCUSTOMTOOLPUBLIC)
-                AddRecognizedCustomToolValue(s_STANDARDCUSTOMTOOL)
-                AddRecognizedCustomToolValue(s_STANDARDCUSTOMTOOLPUBLIC)
+                AddRecognizedCustomToolValue(VBMYCUSTOMTOOL)
+                AddRecognizedCustomToolValue(VBMYCUSTOMTOOLPUBLIC)
+                AddRecognizedCustomToolValue(STANDARDCUSTOMTOOL)
+                AddRecognizedCustomToolValue(STANDARDCUSTOMTOOLPUBLIC)
             End Sub
 
             Public Shadows Function GetMenuCommandsToRegister() As ICollection
@@ -326,7 +326,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         Try
                             Dim frameworkVersionNumber As UInteger = GetProjectTargetFrameworkVersion(hierarchy)
                             Dim majorVersionNumber As UInteger = frameworkVersionNumber >> 16
-                            Return majorVersionNumber <= s_framework_2_0
+                            Return majorVersionNumber <= Framework_2_0
                         Catch ex As NotSupportedException
                         Catch ex As NotImplementedException
                         End Try
@@ -679,7 +679,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     RootDesigner,
                     RootDesigner,
                     GetResXProjectItem(),
-                    IIf(IsVBProject(GetProject()), s_CUSTOMTOOLNAMESPACE, Nothing))
+                    IIf(IsVBProject(GetProject()), CUSTOMTOOLNAMESPACE, Nothing))
             End If
 
             'Add our menus (can't do that until we know the root designer)
@@ -971,8 +971,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Try
                 'String table and resource listview
                 ' We leave some white space around them
-                StringTable.Location = New Point(s_DESIGNER_PADDING, _toolbarPanel.Bottom + s_DESIGNER_PADDING_TOP)
-                StringTable.Size = New Size(Width - 2 * s_DESIGNER_PADDING, Height - _toolbarPanel.Height - s_DESIGNER_PADDING - s_DESIGNER_PADDING_TOP)
+                StringTable.Location = New Point(DESIGNER_PADDING, _toolbarPanel.Bottom + DESIGNER_PADDING_TOP)
+                StringTable.Size = New Size(Width - 2 * DESIGNER_PADDING, Height - _toolbarPanel.Height - DESIGNER_PADDING - DESIGNER_PADDING_TOP)
                 _resourceListView.Location = StringTable.Location
                 _resourceListView.Size = StringTable.Size
             Finally
@@ -2611,11 +2611,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         'This drag/drop format is used by reference-based projects (e.g., C++), where the items in a project are a reference to a file elsewhere on
         '  disk.  The project item is not actually stored in the project itself.
-        Private Const s_CF_VSREFPROJECTITEMS As String = "CF_VSREFPROJECTITEMS"
+        Private Const CF_VSREFPROJECTITEMS As String = "CF_VSREFPROJECTITEMS"
 
         'This drag/drop format is used by storage-based projects (e.g., C#, VB, J#), where the items in a project are generally stored in the project's
         '  directories rather than simply being references.
-        Private Const s_CF_VSSTGPROJECTITEMS As String = "CF_VSSTGPROJECTITEMS"
+        Private Const CF_VSSTGPROJECTITEMS As String = "CF_VSSTGPROJECTITEMS"
 
         'Comma-separated values (Excel and other apps)
         Private ReadOnly _CF_CSV As String = DataFormats.CommaSeparatedValue
@@ -2892,7 +2892,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             '2) Project explorer drag/drop format (copy only)
             If CopyAllowed AndAlso
-                    (Data.GetDataPresent(s_CF_VSREFPROJECTITEMS) OrElse Data.GetDataPresent(s_CF_VSSTGPROJECTITEMS)) Then
+                    (Data.GetDataPresent(CF_VSREFPROJECTITEMS) OrElse Data.GetDataPresent(CF_VSSTGPROJECTITEMS)) Then
                 ActualEffect = DragDropEffects.Copy
                 ActualFormat = ResourceEditorDataFormats.SolutionExplorer 'Note that we don't care if it was CF_VSSTGPROJECTITEMS or CF_VSREFPROJECTITEMS
                 Return True
@@ -3059,9 +3059,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <remarks>Caller must catch exceptions and display error message</remarks>
         Private Sub DragDropPasteFromSolutionExplorer(Data As IDataObject, CopyFileIfExists As Boolean)
             'Look for either CF_VSREFPROJECTITEMS or CF_VSSTGPROJECTITEMS
-            Dim DataStream As Stream = DirectCast(Data.GetData(s_CF_VSREFPROJECTITEMS), Stream)
+            Dim DataStream As Stream = DirectCast(Data.GetData(CF_VSREFPROJECTITEMS), Stream)
             If DataStream Is Nothing Then
-                DataStream = DirectCast(Data.GetData(s_CF_VSSTGPROJECTITEMS), Stream)
+                DataStream = DirectCast(Data.GetData(CF_VSSTGPROJECTITEMS), Stream)
             End If
 
             If DataStream IsNot Nothing Then
@@ -3528,7 +3528,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         ' Check the registry setting, which remembers a list of extensions that the customer told us not to pop up a warning dialog again...
                         Dim extraSafeExtensions As String = SafeExtensions
                         If Not String.IsNullOrEmpty(extraSafeExtensions) Then
-                            Dim extensions As String() = extraSafeExtensions.Split(New Char() {s_SAFE_EXTENSION_SEPERATOR})
+                            Dim extensions As String() = extraSafeExtensions.Split(New Char() {SAFE_EXTENSION_SEPERATOR})
                             For Each safeExtension As String In extensions
                                 If String.Equals(fileExtension, safeExtension, StringComparison.OrdinalIgnoreCase) Then
                                     isSafe = True
@@ -3549,7 +3549,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                     If String.IsNullOrEmpty(extraSafeExtensions) Then
                                         extraSafeExtensions = fileExtension
                                     Else
-                                        extraSafeExtensions = extraSafeExtensions & s_SAFE_EXTENSION_SEPERATOR & fileExtension
+                                        extraSafeExtensions = extraSafeExtensions & SAFE_EXTENSION_SEPERATOR & fileExtension
                                     End If
                                     SafeExtensions = extraSafeExtensions
                                 End If
@@ -5139,15 +5139,15 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 
         'The custom tool name to use for stand-alone resx files.
-        Private Const s_STANDARDCUSTOMTOOL As String = "ResXFileCodeGenerator"
-        Private Const s_STANDARDCUSTOMTOOLPUBLIC As String = "PublicResXFileCodeGenerator"
+        Private Const STANDARDCUSTOMTOOL As String = "ResXFileCodeGenerator"
+        Private Const STANDARDCUSTOMTOOLPUBLIC As String = "PublicResXFileCodeGenerator"
 
         'The custom tool name to use for the default resx file in VB projects
-        Private Const s_VBMYCUSTOMTOOL As String = "VbMyResourcesResXFileCodeGenerator"
-        Private Const s_VBMYCUSTOMTOOLPUBLIC As String = "PublicVbMyResourcesResXFileCodeGenerator"
+        Private Const VBMYCUSTOMTOOL As String = "VbMyResourcesResXFileCodeGenerator"
+        Private Const VBMYCUSTOMTOOLPUBLIC As String = "PublicVbMyResourcesResXFileCodeGenerator"
 
         'The namespace to use
-        Private Const s_CUSTOMTOOLNAMESPACE As String = "My.Resources"
+        Private Const CUSTOMTOOLNAMESPACE As String = "My.Resources"
 
 
         ''' <summary>
@@ -5299,9 +5299,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If Not String.IsNullOrEmpty(GeneratedClassName) Then
                 'Find the code element for the generated class
                 Dim FindSettingClassFilter As New SettingsDesigner.ProjectUtils.KnownClassName(GeneratedClassName, SettingsDesigner.ProjectUtils.ClassOrModule.Either)
-                Dim GeneratedClassCodeElement As CodeElement = SettingsDesigner.ProjectUtils.FindElement(ProjItem, _
-                                                                ExpandChildElements:=False, _
-                                                                ExpandChildItems:=True, _
+                Dim GeneratedClassCodeElement As CodeElement = SettingsDesigner.ProjectUtils.FindElement(ProjItem,
+                                                                ExpandChildElements:=False,
+                                                                ExpandChildItems:=True,
                                                                 Filter:=FindSettingClassFilter)
 
                 If GeneratedClassCodeElement Is Nothing Then
@@ -5399,10 +5399,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim ItemId As UInteger = GetVsItemId()
             Dim UsingVbMyCustomTool As Boolean
 
-            If CurrentCustomTool.Equals(s_STANDARDCUSTOMTOOL, StringComparison.OrdinalIgnoreCase) Then
+            If CurrentCustomTool.Equals(STANDARDCUSTOMTOOL, StringComparison.OrdinalIgnoreCase) Then
                 'This uses our standard single file generator.  We know how it works, so we can go ahead and
                 '  attempt a rename.
-            ElseIf CurrentCustomTool.Equals(s_VBMYCUSTOMTOOL, StringComparison.OrdinalIgnoreCase) Then
+            ElseIf CurrentCustomTool.Equals(VBMYCUSTOMTOOL, StringComparison.OrdinalIgnoreCase) Then
                 'This uses our special My.VB file generator.  We can attempt a rename.
                 UsingVbMyCustomTool = True
             Else
