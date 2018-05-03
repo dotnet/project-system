@@ -108,11 +108,11 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
     Friend NotInheritable Class XmlIntellisenseSchemas
         Implements IXmlIntellisenseSchemas
 
-        Private Const s_maxPollInterval As Integer = 60 * 1000 ' 1 minutes
-        Private Const s_minPollInterval As Integer = 1000 ' 1 second
+        Private Const MaxPollInterval As Integer = 60 * 1000 ' 1 minutes
+        Private Const MinPollInterval As Integer = 1000 ' 1 second
 
         ' Number of calls into AsyncCompile prior to terminating inital compilation loop
-        Private Const s_compilationLevel As Integer = 2
+        Private Const CompilationLevel As Integer = 2
 
         Private _data As XmlIntellisenseSchemasData
         '--------------------------------------------------------------------------
@@ -124,7 +124,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
             _data.m_Container = Container
             _data.m_SchemaService = SchemaService
             _data.m_ProjectGuid = ProjectGuid
-            _data.m_CompilationLevel = s_compilationLevel
+            _data.m_CompilationLevel = CompilationLevel
             _data.m_SchemasFound = 0
 
             ' Get VS project
@@ -258,7 +258,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
 
         Private Shared Async Sub CompileCallBack(data As XmlIntellisenseSchemasData)
             Dim ProjectSchemas As IList(Of XmlSchemaReference)
-            Dim pollInterval As Integer = s_minPollInterval
+            Dim pollInterval As Integer = MinPollInterval
             Dim iteration As Integer = 0
 
             If data.m_CompilationLevel > 0 OrElse iteration = 0 Then
@@ -273,8 +273,8 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
                     Else
                         pollInterval = pollInterval * 2
 
-                        If pollInterval > s_maxPollInterval Then
-                            pollInterval = s_maxPollInterval
+                        If pollInterval > MaxPollInterval Then
+                            pollInterval = MaxPollInterval
                         End If
                     End If
 

@@ -865,7 +865,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 DropDown = 1
             End Enum
 
-            Private Const s_dotDotDotString As String = "..."
+            Private Const DotDotDotString As String = "..."
 
             ' Current style to draw
             Private _paintStyle As PaintStyles = PaintStyles.DotDotDot
@@ -928,7 +928,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     Case PaintStyles.DotDotDot
                         Dim drawRect As Rectangle = ClientRectangle
                         drawRect.Offset(FlatAppearance.BorderSize, 0)
-                        TextRenderer.DrawText(pevent.Graphics, s_dotDotDotString, Font, drawRect, ForeColor)
+                        TextRenderer.DrawText(pevent.Graphics, DotDotDotString, Font, drawRect, ForeColor)
                     Case PaintStyles.DropDown
                         If ComboBoxRenderer.IsSupported Then
                             Dim drawstyle As VisualStyles.ComboBoxState

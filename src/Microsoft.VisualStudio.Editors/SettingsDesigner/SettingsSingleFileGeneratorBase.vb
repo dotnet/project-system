@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 Imports System.Runtime.InteropServices
@@ -24,24 +24,24 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private _serviceProvider As ServiceProvider
 
 
-        Private Const s_addedHandlerFieldName As String = "addedHandler"
-        Private Const s_addedHandlerLockObjectFieldName As String = "addedHandlerLockObject"
-        Private Const s_autoSaveSubName As String = "AutoSaveSettings"
+        Private Const addedHandlerFieldName As String = "addedHandler"
+        Private Const addedHandlerLockObjectFieldName As String = "addedHandlerLockObject"
+        Private Const autoSaveSubName As String = "AutoSaveSettings"
         Friend Const DefaultInstanceFieldName As String = "defaultInstance"
         Friend Const DefaultInstancePropertyName As String = "Default"
 
         Friend Const MyNamespaceName As String = "My"
-        Private Const s_mySettingsModuleName As String = "MySettingsProperty"
-        Private Const s_mySettingsPropertyName As String = "Settings"
+        Private Const mySettingsModuleName As String = "MySettingsProperty"
+        Private Const mySettingsPropertyName As String = "Settings"
 
-        Private Const s_myTypeWinFormsDefineConstant_If As String = "#If _MyType = ""WindowsForms"" Then"
-        Private Const s_myTypeWinFormsDefineConstant_EndIf As String = "#End If"
+        Private Const myTypeWinFormsDefineConstant_If As String = "#If _MyType = ""WindowsForms"" Then"
+        Private Const myTypeWinFormsDefineConstant_EndIf As String = "#End If"
 
-        Private Const s_hideAutoSaveRegionBegin As String = "#Region ""{0}"""
-        Private Const s_hideAutoSaveRegionEnd As String = "#End Region"
+        Private Const hideAutoSaveRegionBegin As String = "#Region ""{0}"""
+        Private Const hideAutoSaveRegionEnd As String = "#End Region"
 
-        Private Const s_docCommentSummaryStart As String = "<summary>"
-        Private Const s_docCommentSummaryEnd As String = "</summary>"
+        Private Const docCommentSummaryStart As String = "<summary>"
+        Private Const docCommentSummaryEnd As String = "</summary>"
 
         Friend Const DesignerGeneratedFileSuffix As String = ".Designer"
 
@@ -423,16 +423,16 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
                 AutoSaveSnippet.Value =
                     Environment.NewLine &
-                    s_myTypeWinFormsDefineConstant_If & Environment.NewLine &
-                    "               If Not " & s_addedHandlerFieldName & " Then" & Environment.NewLine &
-                    "                    SyncLock " & s_addedHandlerLockObjectFieldName & Environment.NewLine &
-                    "                        If Not " & s_addedHandlerFieldName & " Then" & Environment.NewLine &
-                    "                            AddHandler My.Application.Shutdown, AddressOf " & s_autoSaveSubName & Environment.NewLine &
-                    "                            " & s_addedHandlerFieldName & " = True" & Environment.NewLine &
+                    myTypeWinFormsDefineConstant_If & Environment.NewLine &
+                    "               If Not " & addedHandlerFieldName & " Then" & Environment.NewLine &
+                    "                    SyncLock " & addedHandlerLockObjectFieldName & Environment.NewLine &
+                    "                        If Not " & addedHandlerFieldName & " Then" & Environment.NewLine &
+                    "                            AddHandler My.Application.Shutdown, AddressOf " & autoSaveSubName & Environment.NewLine &
+                    "                            " & addedHandlerFieldName & " = True" & Environment.NewLine &
                     "                        End If" & Environment.NewLine &
                     "                    End SyncLock" & Environment.NewLine &
                     "                End If" & Environment.NewLine &
-                    s_myTypeWinFormsDefineConstant_EndIf
+                    myTypeWinFormsDefineConstant_EndIf
 
                 CodeProperty.GetStatements.Add(AutoSaveSnippet)
             End If
@@ -499,9 +499,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 attr.Arguments.Add(New CodeAttributeArgument(New CodePrimitiveExpression(Instance.Description)))
                 CodeProperty.CustomAttributes.Add(attr)
 
-                CodeProperty.Comments.Add(New CodeCommentStatement(s_docCommentSummaryStart, True))
+                CodeProperty.Comments.Add(New CodeCommentStatement(docCommentSummaryStart, True))
                 CodeProperty.Comments.Add(New CodeCommentStatement(Security.SecurityElement.Escape(Instance.Description), True))
-                CodeProperty.Comments.Add(New CodeCommentStatement(s_docCommentSummaryEnd, True))
+                CodeProperty.Comments.Add(New CodeCommentStatement(docCommentSummaryEnd, True))
             End If
 
             ' Add DebuggerNonUserCode attribute
@@ -694,20 +694,20 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             '
             Dim AutoSaveCode As New CodeSnippetTypeMember()
             AutoSaveCode.Text =
-                String.Format(s_hideAutoSaveRegionBegin, My.Resources.Designer.SD_SFG_AutoSaveRegionText) & Environment.NewLine &
-                s_myTypeWinFormsDefineConstant_If & Environment.NewLine &
-                "    Private Shared " & s_addedHandlerFieldName & " As Boolean" & Environment.NewLine &
+                String.Format(hideAutoSaveRegionBegin, My.Resources.Designer.SD_SFG_AutoSaveRegionText) & Environment.NewLine &
+                myTypeWinFormsDefineConstant_If & Environment.NewLine &
+                "    Private Shared " & addedHandlerFieldName & " As Boolean" & Environment.NewLine &
                 Environment.NewLine &
-                "    Private Shared " & s_addedHandlerLockObjectFieldName & " As New Object" & Environment.NewLine &
+                "    Private Shared " & addedHandlerLockObjectFieldName & " As New Object" & Environment.NewLine &
                 Environment.NewLine &
                 "    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)> _" & Environment.NewLine &
-                "    Private Shared Sub " & s_autoSaveSubName & "(sender As Global.System.Object, e As Global.System.EventArgs)" & Environment.NewLine &
+                "    Private Shared Sub " & autoSaveSubName & "(sender As Global.System.Object, e As Global.System.EventArgs)" & Environment.NewLine &
                 "        If My.Application.SaveMySettingsOnExit Then" & Environment.NewLine &
-                "            " & MyNamespaceName & "." & s_mySettingsPropertyName & ".Save()" & Environment.NewLine &
+                "            " & MyNamespaceName & "." & mySettingsPropertyName & ".Save()" & Environment.NewLine &
                 "        End If" & Environment.NewLine &
                 "    End Sub" & Environment.NewLine &
-                s_myTypeWinFormsDefineConstant_EndIf & Environment.NewLine &
-                s_hideAutoSaveRegionEnd
+                myTypeWinFormsDefineConstant_EndIf & Environment.NewLine &
+                hideAutoSaveRegionEnd
 
             GeneratedType.Members.Add(AutoSaveCode)
 
@@ -718,7 +718,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ' Create a property named Settings
             '
             Dim SettingProperty As New CodeMemberProperty
-            SettingProperty.Name = s_mySettingsPropertyName
+            SettingProperty.Name = mySettingsPropertyName
             SettingProperty.HasGet = True
             SettingProperty.HasSet = False
 
@@ -750,7 +750,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             '    Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
             '   Module MySettingsProperty
             '        
-            Dim ModuleDecl As New CodeTypeDeclaration(s_mySettingsModuleName)
+            Dim ModuleDecl As New CodeTypeDeclaration(mySettingsModuleName)
             ModuleDecl.UserData("Module") = True
             ModuleDecl.TypeAttributes = TypeAttributes.Sealed Or TypeAttributes.NestedAssembly
             ModuleDecl.CustomAttributes.Add(New CodeAttributeDeclaration(CreateGlobalCodeTypeReference(GetType(HideModuleNameAttribute))))

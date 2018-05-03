@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Explicit On
 Option Strict On
@@ -144,8 +144,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 #Region "ISerialization implementation"
 
             'Serialization keys for ISerializable
-            Private Const s_KEY_STATE As String = "State"
-            Private Const s_KEY_OBJECTNAMES As String = "ObjectNames"
+            Private Const KEY_STATE As String = "State"
+            Private Const KEY_OBJECTNAMES As String = "ObjectNames"
 
             ''' <summary>
             '''     Implements the save part of ISerializable.
@@ -155,7 +155,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <param name="context">Serialization context</param>
             ''' <remarks></remarks>
             Private Sub GetObjectData(info As SerializationInfo, context As StreamingContext) Implements ISerializable.GetObjectData
-                info.AddValue(s_KEY_STATE, _serializedState)
+                info.AddValue(KEY_STATE, _serializedState)
 
                 Trace("Serialized store (GetObjectData)")
             End Sub
@@ -169,7 +169,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <param name="Context">Serialization context</param>
             ''' <remarks></remarks>
             Private Sub New(Info As SerializationInfo, Context As StreamingContext)
-                _serializedState = DirectCast(Info.GetValue(s_KEY_STATE, GetType(ArrayList)), ArrayList)
+                _serializedState = DirectCast(Info.GetValue(KEY_STATE, GetType(ArrayList)), ArrayList)
 
                 Trace("Deserialized store from a stream (constructor)")
             End Sub

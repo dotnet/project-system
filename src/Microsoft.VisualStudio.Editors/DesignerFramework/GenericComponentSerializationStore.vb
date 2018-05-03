@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 Imports System.ComponentModel.Design.Serialization
@@ -84,7 +84,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 #Region "ISerialization implementation"
 
         'Serialization keys for ISerializable
-        Private Const s_KEY_STATE As String = "State"
+        Private Const KEY_STATE As String = "State"
 
         ''' <summary>
         '''     Implements the save part of ISerializable.
@@ -93,9 +93,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="info">Serialization info</param>
         ''' <param name="context">Serialization context</param>
         ''' <remarks></remarks>
-        <Security.Permissions.SecurityPermission(Security.Permissions.SecurityAction.Demand, SerializationFormatter:=True)> _
+        <Security.Permissions.SecurityPermission(Security.Permissions.SecurityAction.Demand, SerializationFormatter:=True)>
         Public Sub GetObjectData(info As SerializationInfo, context As StreamingContext) Implements ISerializable.GetObjectData
-            info.AddValue(s_KEY_STATE, _serializedState)
+            info.AddValue(KEY_STATE, _serializedState)
         End Sub
 
 
@@ -107,7 +107,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="Context">Serialization context</param>
         ''' <remarks></remarks>
         Private Sub New(Info As SerializationInfo, Context As StreamingContext)
-            _serializedState = DirectCast(Info.GetValue(s_KEY_STATE, GetType(ArrayList)), ArrayList)
+            _serializedState = DirectCast(Info.GetValue(KEY_STATE, GetType(ArrayList)), ArrayList)
         End Sub
 
 #End Region

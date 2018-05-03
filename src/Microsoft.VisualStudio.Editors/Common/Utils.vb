@@ -28,7 +28,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
 
         ' The maximal amount of files that can be added at one shot. (copied from other VS features)
-        Private Const s_VSDPLMAXFILES As Integer = 200
+        Private Const VSDPLMAXFILES As Integer = 200
 
         Private s_imageService As IVsImageService2
 
@@ -700,7 +700,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             Dim MaxPathName As Integer = win.MAX_PATH + 1
             If MutiSelect Then
-                MaxPathName = (win.MAX_PATH + 1) * s_VSDPLMAXFILES
+                MaxPathName = (win.MAX_PATH + 1) * VSDPLMAXFILES
             End If
 
             Dim vsOpenFileName As VSOPENFILENAMEW()

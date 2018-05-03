@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports System.Diagnostics.CodeAnalysis
@@ -17,48 +17,48 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Shared ReadOnly s_clientFormsMembershipProviderType As Type = GetType(Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider)
         Private Shared ReadOnly s_clientWindowsMembershipProviderType As Type = GetType(Web.ClientServices.Providers.ClientWindowsAuthenticationMembershipProvider)
 
-        Private Const s_systemWeb As String = "system.web"
-        Private Const s_roleManager As String = "roleManager"
-        Private Const s_providers As String = "providers"
-        Private Const s_appSettings As String = "appSettings"
-        Private Const s_connectionString As String = "connectionString"
-        Private Const s_connectionStrings As String = "connectionStrings"
-        Private Const s_membership As String = "membership"
-        Private Const s_configuration As String = "configuration"
-        Private Const s_clientSettingsProviderPrefix As String = "ClientSettingsProvider."
-        Private Const s_defaultProvider As String = "defaultProvider"
+        Private Const SystemWeb As String = "system.web"
+        Private Const RoleManager As String = "roleManager"
+        Private Const Providers As String = "providers"
+        Private Const AppSettings As String = "appSettings"
+        Private Const ConnectionString As String = "connectionString"
+        Private Const ConnectionStrings As String = "connectionStrings"
+        Private Const Membership As String = "membership"
+        Private Const Configuration As String = "configuration"
+        Private Const ClientSettingsProviderPrefix As String = "ClientSettingsProvider."
+        Private Const DefaultProvider As String = "defaultProvider"
 
-        Private Const s_cacheTimeout As String = "cacheTimeout"
-        Private Const s_cacheTimeoutDefault As String = "86400" '86400 seconds = 1 day
+        Private Const CacheTimeout As String = "cacheTimeout"
+        Private Const CacheTimeoutDefault As String = "86400" '86400 seconds = 1 day
 
-        Private Const s_enabled As String = "enabled"
-        Private Const s_enabledDefault As String = "true"
+        Private Const Enabled As String = "enabled"
+        Private Const EnabledDefault As String = "true"
 
-        Private Const s_honorCookieExpiry As String = "honorCookieExpiry"
-        Private Const s_honorCookieExpiryDefault As String = "false"
+        Private Const HonorCookieExpiry As String = "honorCookieExpiry"
+        Private Const HonorCookieExpiryDefault As String = "false"
 
-        Private Const s_serviceUri As String = "serviceUri"
+        Private Const ServiceUri As String = "serviceUri"
         Private Shared ReadOnly s_serviceUriDefault As String = String.Empty
 
-        Private Const s_connectionStringName As String = "connectionStringName"
-        Private Const s_connectionStringNameDefault As String = "DefaultConnection"
-        Friend Const connectionStringValueDefault As String = "Data Source = |SQL/CE|"
+        Private Const ConnectionStringName As String = "connectionStringName"
+        Private Const ConnectionStringNameDefault As String = "DefaultConnection"
+        Friend Const ConnectionStringValueDefault As String = "Data Source = |SQL/CE|"
 
-        Private Const s_credentialsProvider As String = "credentialsProvider"
+        Private Const CredentialsProvider As String = "credentialsProvider"
         Private Shared ReadOnly s_credentialsProviderDefault As String = String.Empty
 
-        Private Const s_savePasswordHashLocally As String = "savePasswordHashLocally"
-        Private Const s_savePasswordHashLocallyDefault As String = "true"
+        Private Const SavePasswordHashLocally As String = "savePasswordHashLocally"
+        Private Const SavePasswordHashLocallyDefault As String = "true"
 
-        Private Const s_add As String = "add"
-        Private Const s_key As String = "key"
-        Private Const s_name As String = "name"
-        Private Const s_type As String = "type"
-        Private Const s_value As String = "value"
-        Private Const s_childPrefix As String = "child::"
+        Private Const Add As String = "add"
+        Private Const Key As String = "key"
+        Private Const Name As String = "name"
+        Private Const Type As String = "type"
+        Private Const Value As String = "value"
+        Private Const ChildPrefix As String = "child::"
 
-        Private Const s_roleManagerDefaultNameDefault As String = "ClientRoleProvider"
-        Private Const s_membershipDefaultNameDefault As String = "ClientAuthenticationMembershipProvider"
+        Private Const RoleManagerDefaultNameDefault As String = "ClientRoleProvider"
+        Private Const MembershipDefaultNameDefault As String = "ClientAuthenticationMembershipProvider"
 
         Private Sub New()
             'Don't create a public constructor
@@ -190,7 +190,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If path Is Nothing OrElse path.Length = 0 Then Return Nothing
             For i As Integer = 0 To path.Length - 1
                 If currentNode Is Nothing Then Return Nothing
-                currentNode = currentNode.SelectSingleNode(s_childPrefix & path(i))
+                currentNode = currentNode.SelectSingleNode(ChildPrefix & path(i))
             Next
             Return currentNode
         End Function
@@ -204,39 +204,39 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Private Shared Function GetConfigurationNode(doc As XmlDocument) As XmlNode
-            Return GetXmlNode(doc, s_configuration)
+            Return GetXmlNode(doc, Configuration)
         End Function
 
         Private Shared Function GetConnectionStringsNode(doc As XmlDocument) As XmlNode
-            Return GetXmlNode(GetConfigurationNode(doc), s_connectionStrings)
+            Return GetXmlNode(GetConfigurationNode(doc), ConnectionStrings)
         End Function
 
         Private Shared Function GetSystemWebNode(doc As XmlDocument) As XmlNode
-            Return GetXmlNode(GetConfigurationNode(doc), s_systemWeb)
+            Return GetXmlNode(GetConfigurationNode(doc), SystemWeb)
         End Function
 
         Private Shared Function GetRoleManagerNode(doc As XmlDocument) As XmlNode
-            Return GetXmlNode(GetSystemWebNode(doc), s_roleManager)
+            Return GetXmlNode(GetSystemWebNode(doc), RoleManager)
         End Function
 
         Private Shared Function GetRoleManagerProvidersNode(doc As XmlDocument) As XmlNode
-            Return GetXmlNode(GetRoleManagerNode(doc), s_providers)
+            Return GetXmlNode(GetRoleManagerNode(doc), Providers)
         End Function
 
         Private Shared Function GetMembershipNode(doc As XmlDocument) As XmlNode
-            Return GetXmlNode(GetSystemWebNode(doc), s_membership)
+            Return GetXmlNode(GetSystemWebNode(doc), Membership)
         End Function
 
         Private Shared Function GetMembershipProvidersNode(doc As XmlDocument) As XmlNode
-            Return GetXmlNode(GetMembershipNode(doc), s_providers)
+            Return GetXmlNode(GetMembershipNode(doc), Providers)
         End Function
 
         Private Shared Function GetDefaultClientServicesRoleManagerProviderNode(doc As XmlDocument, Optional projectHierarchy As IVsHierarchy = Nothing) As XmlNode
             Dim defaultProviderName As String = GetRoleManagerDefaultProviderName(doc)
             If String.IsNullOrEmpty(defaultProviderName) Then Return Nothing
-            Dim addNodeList As XmlNodeList = GetXmlNodeList(GetRoleManagerProvidersNode(doc), s_add)
-            Dim addNode As XmlNode = GetXmlNodeWithValueFromList(addNodeList, s_name, defaultProviderName)
-            If addNode IsNot Nothing AndAlso IsClientRoleManagerProviderType(GetAttribute(addNode, s_type), projectHierarchy) Then
+            Dim addNodeList As XmlNodeList = GetXmlNodeList(GetRoleManagerProvidersNode(doc), Add)
+            Dim addNode As XmlNode = GetXmlNodeWithValueFromList(addNodeList, Name, defaultProviderName)
+            If addNode IsNot Nothing AndAlso IsClientRoleManagerProviderType(GetAttribute(addNode, Type), projectHierarchy) Then
                 Return addNode
             End If
             Return Nothing
@@ -244,37 +244,37 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Shared Function GetXmlNodeList(node As XmlNode, listName As String) As XmlNodeList
             If node Is Nothing Then Return Nothing
-            Return node.SelectNodes(s_childPrefix & listName)
+            Return node.SelectNodes(ChildPrefix & listName)
         End Function
 
         Private Shared Function GetDefaultClientServicesMembershipProviderNode(doc As XmlDocument, Optional projectHierarchy As IVsHierarchy = Nothing) As XmlNode
             Dim defaultProviderName As String = GetMembershipDefaultProviderName(doc)
             If String.IsNullOrEmpty(defaultProviderName) Then Return Nothing
-            Dim addNodeList As XmlNodeList = GetXmlNodeList(GetMembershipProvidersNode(doc), s_add)
-            Dim addNode As XmlNode = GetXmlNodeWithValueFromList(addNodeList, s_name, defaultProviderName)
-            If addNode IsNot Nothing AndAlso IsClientMembershipProviderType(GetAttribute(addNode, s_type), projectHierarchy) Then
+            Dim addNodeList As XmlNodeList = GetXmlNodeList(GetMembershipProvidersNode(doc), Add)
+            Dim addNode As XmlNode = GetXmlNodeWithValueFromList(addNodeList, Name, defaultProviderName)
+            If addNode IsNot Nothing AndAlso IsClientMembershipProviderType(GetAttribute(addNode, Type), projectHierarchy) Then
                 Return addNode
             End If
             Return Nothing
         End Function
 
         Private Shared Function GetAppSettingsNode(doc As XmlDocument) As XmlNode
-            Return GetXmlNode(GetConfigurationNode(doc), s_appSettings)
+            Return GetXmlNode(GetConfigurationNode(doc), AppSettings)
         End Function
 
         Private Shared Function GetAppSettingsServiceUriNode(doc As XmlDocument) As XmlNode
-            Dim addList As XmlNodeList = GetXmlNodeList(GetAppSettingsNode(doc), s_add)
-            Return GetXmlNodeWithValueFromList(addList, s_key, AppSettingsName(s_serviceUri))
+            Dim addList As XmlNodeList = GetXmlNodeList(GetAppSettingsNode(doc), Add)
+            Return GetXmlNodeWithValueFromList(addList, Key, AppSettingsName(ServiceUri))
         End Function
 
         Private Shared Function GetAppSettingsConnectionStringNameNode(doc As XmlDocument) As XmlNode
-            Dim addList As XmlNodeList = GetXmlNodeList(GetAppSettingsNode(doc), s_add)
-            Return GetXmlNodeWithValueFromList(addList, s_key, AppSettingsName(s_connectionStringName))
+            Dim addList As XmlNodeList = GetXmlNodeList(GetAppSettingsNode(doc), Add)
+            Return GetXmlNodeWithValueFromList(addList, Key, AppSettingsName(ConnectionStringName))
         End Function
 
         Private Shared Function GetAppSettingsHonorCookieExpiryNode(doc As XmlDocument) As XmlNode
-            Dim addList As XmlNodeList = GetXmlNodeList(GetAppSettingsNode(doc), s_add)
-            Return GetXmlNodeWithValueFromList(addList, s_key, AppSettingsName(s_honorCookieExpiry))
+            Dim addList As XmlNodeList = GetXmlNodeList(GetAppSettingsNode(doc), Add)
+            Return GetXmlNodeWithValueFromList(addList, Key, AppSettingsName(HonorCookieExpiry))
         End Function
 
         Private Shared Function IsClientMembershipWindowsProviderNode(node As XmlNode, Optional projectHierarchy As IVsHierarchy = Nothing) As Boolean
@@ -282,15 +282,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Private Shared Function NodeHasTypeAttribute(node As XmlNode, typeToCheck As Type) As Boolean
-            Dim nodeType As String = GetAttribute(node, s_type)
+            Dim nodeType As String = GetAttribute(node, Type)
             Return TypesMatch(nodeType, typeToCheck)
         End Function
 
         Private Shared Sub RemoveProvidersByType(node As XmlNode, typeToRemove As Type)
-            Dim providers As XmlNodeList = GetXmlNodeList(node, s_add)
+            Dim providers As XmlNodeList = GetXmlNodeList(node, Add)
             If providers IsNot Nothing Then
                 For Each provider As XmlNode In providers
-                    Dim providerType As String = GetAttribute(provider, s_type)
+                    Dim providerType As String = GetAttribute(provider, Type)
                     If providerType IsNot Nothing AndAlso (providerType.Equals(typeToRemove.FullName, StringComparison.OrdinalIgnoreCase) OrElse providerType.StartsWith(typeToRemove.FullName + ",", StringComparison.OrdinalIgnoreCase)) Then
                         RemoveNode(node, provider)
                     End If
@@ -303,7 +303,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend Shared Function GetDefaultProviderName(node As XmlNode) As String
             If node Is Nothing Then Return Nothing
 
-            Dim defaultProviderAttribute As XmlAttribute = node.Attributes(s_defaultProvider)
+            Dim defaultProviderAttribute As XmlAttribute = node.Attributes(DefaultProvider)
             If defaultProviderAttribute IsNot Nothing Then
                 Return defaultProviderAttribute.Value
             End If
@@ -418,19 +418,19 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             '         />
             '  </providers>
             '</roleManager>
-            Dim configurationNode As XmlNode = EnsureNode(appConfigDocument, s_configuration, appConfigDocument)
-            Dim systemWebNode As XmlNode = EnsureNode(appConfigDocument, s_systemWeb, configurationNode)
-            Dim roleManagerNode As XmlNode = EnsureNode(appConfigDocument, s_roleManager, systemWebNode)
+            Dim configurationNode As XmlNode = EnsureNode(appConfigDocument, Configuration, appConfigDocument)
+            Dim systemWebNode As XmlNode = EnsureNode(appConfigDocument, SystemWeb, configurationNode)
+            Dim roleManagerNode As XmlNode = EnsureNode(appConfigDocument, RoleManager, systemWebNode)
             Dim defaultSettingNode As XmlNode
 
-            Dim defaultProviderAttribute As XmlAttribute = roleManagerNode.Attributes(s_defaultProvider)
+            Dim defaultProviderAttribute As XmlAttribute = roleManagerNode.Attributes(DefaultProvider)
 
             'If we already have a default provider, make sure it's one of ours
             If defaultProviderAttribute IsNot Nothing Then
                 defaultSettingNode = GetDefaultClientServicesRoleManagerProviderNode(appConfigDocument, projectHierarchy)
                 If defaultSettingNode Is Nothing Then
                     'We had a default, and it wasn't one of ours.  Remove the default attribute
-                    RemoveAttribute(roleManagerNode, s_defaultProvider)
+                    RemoveAttribute(roleManagerNode, DefaultProvider)
                     defaultProviderAttribute = Nothing
                 End If
             End If
@@ -439,27 +439,27 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 'Remove any existing provider with the same type as clientRoleManagerType
                 RemoveProvidersByType(GetRoleManagerProvidersNode(appConfigDocument), s_clientRoleManagerType)
                 Dim nameValue As String = GetRoleManagerCreateDefaultProviderName(appConfigDocument)
-                SetAttribute(appConfigDocument, roleManagerNode, s_defaultProvider, nameValue)
-                SetAttribute(appConfigDocument, roleManagerNode, s_enabled, s_enabledDefault)
+                SetAttribute(appConfigDocument, roleManagerNode, DefaultProvider, nameValue)
+                SetAttribute(appConfigDocument, roleManagerNode, Enabled, EnabledDefault)
                 defaultSettingNode = GetDefaultClientServicesRoleManagerProviderNode(appConfigDocument, projectHierarchy)
                 If defaultSettingNode Is Nothing Then
-                    Dim providersNode As XmlNode = EnsureNode(appConfigDocument, s_providers, roleManagerNode)
-                    Dim addNode As XmlNode = CreateNode(appConfigDocument, XmlNodeType.Element, s_add)
-                    SetAttribute(appConfigDocument, addNode, s_name, nameValue)
+                    Dim providersNode As XmlNode = EnsureNode(appConfigDocument, Providers, roleManagerNode)
+                    Dim addNode As XmlNode = CreateNode(appConfigDocument, XmlNodeType.Element, Add)
+                    SetAttribute(appConfigDocument, addNode, Name, nameValue)
                     Dim defaultName As String = DefaultConnectionStringName(appConfigDocument, projectHierarchy)
-                    SetAttributeIfNonNull(appConfigDocument, addNode, s_connectionStringName, defaultName)
-                    SetAttribute(appConfigDocument, addNode, s_type, GetSupportedType(s_clientRoleManagerType, projectHierarchy).AssemblyQualifiedName)
-                    SetAttribute(appConfigDocument, addNode, s_serviceUri, s_serviceUriDefault)
-                    SetAttribute(appConfigDocument, addNode, s_cacheTimeout, s_cacheTimeoutDefault)
-                    SetAttributeIfNonNull(appConfigDocument, addNode, s_honorCookieExpiry, DefaultHonorCookieExpiry(appConfigDocument, projectHierarchy))
+                    SetAttributeIfNonNull(appConfigDocument, addNode, ConnectionStringName, defaultName)
+                    SetAttribute(appConfigDocument, addNode, Type, GetSupportedType(s_clientRoleManagerType, projectHierarchy).AssemblyQualifiedName)
+                    SetAttribute(appConfigDocument, addNode, ServiceUri, s_serviceUriDefault)
+                    SetAttribute(appConfigDocument, addNode, CacheTimeout, CacheTimeoutDefault)
+                    SetAttributeIfNonNull(appConfigDocument, addNode, HonorCookieExpiry, DefaultHonorCookieExpiry(appConfigDocument, projectHierarchy))
                     providersNode.AppendChild(addNode)
                 End If
             End If
         End Sub
 
         Private Shared Function GetRoleManagerCreateDefaultProviderName(doc As XmlDocument) As String
-            Dim addNodeList As XmlNodeList = GetXmlNodeList(GetRoleManagerProvidersNode(doc), s_add)
-            Return FindUniqueValueInList(addNodeList, s_roleManagerDefaultNameDefault, s_name)
+            Dim addNodeList As XmlNodeList = GetXmlNodeList(GetRoleManagerProvidersNode(doc), Add)
+            Return FindUniqueValueInList(addNodeList, RoleManagerDefaultNameDefault, Name)
         End Function
 
         Private Shared Function FindUniqueValueInList(nodeList As XmlNodeList, defaultName As String, attributeName As String) As String
@@ -477,8 +477,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Private Shared Function GetConnectionStringCreateDefaultProviderName(doc As XmlDocument) As String
-            Dim addNodeList As XmlNodeList = GetXmlNodeList(GetConnectionStringsNode(doc), s_add)
-            Return FindUniqueValueInList(addNodeList, s_connectionStringNameDefault, s_name)
+            Dim addNodeList As XmlNodeList = GetXmlNodeList(GetConnectionStringsNode(doc), Add)
+            Return FindUniqueValueInList(addNodeList, ConnectionStringNameDefault, Name)
         End Function
 
         Private Shared Sub EnsureDefaultRoleManagerNodeDoesntExist(appConfigDocument As XmlDocument, Optional projectHierarchy As IVsHierarchy = Nothing)
@@ -490,7 +490,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'empty, and roleManager if it's now empty.
             Dim defaultSettingNode As XmlNode = GetDefaultClientServicesRoleManagerProviderNode(appConfigDocument, projectHierarchy)
             If defaultSettingNode IsNot Nothing Then
-                RemoveAttribute(roleManagerNode, s_defaultProvider)
+                RemoveAttribute(roleManagerNode, DefaultProvider)
                 'Remove the <add> for the default node
                 RemoveNode(roleManagerProvidersNode, defaultSettingNode)
             End If
@@ -520,19 +520,19 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             '         />
             '  </providers>
             '</roleManager>
-            Dim configurationNode As XmlNode = EnsureNode(appConfigDocument, s_configuration, appConfigDocument)
-            Dim systemWebNode As XmlNode = EnsureNode(appConfigDocument, s_systemWeb, configurationNode)
-            Dim membershipNode As XmlNode = EnsureNode(appConfigDocument, s_membership, systemWebNode)
+            Dim configurationNode As XmlNode = EnsureNode(appConfigDocument, Configuration, appConfigDocument)
+            Dim systemWebNode As XmlNode = EnsureNode(appConfigDocument, SystemWeb, configurationNode)
+            Dim membershipNode As XmlNode = EnsureNode(appConfigDocument, Membership, systemWebNode)
             Dim defaultSettingNode As XmlNode
 
-            Dim defaultProviderAttribute As XmlAttribute = membershipNode.Attributes(s_defaultProvider)
+            Dim defaultProviderAttribute As XmlAttribute = membershipNode.Attributes(DefaultProvider)
 
             'If we already have a default provider, make sure it's one of ours
             If defaultProviderAttribute IsNot Nothing Then
                 defaultSettingNode = GetDefaultClientServicesMembershipProviderNode(appConfigDocument, projectHierarchy)
                 If defaultSettingNode Is Nothing Then
                     'We had a default, and it wasn't one of ours.  Remove the default attribute
-                    RemoveAttribute(membershipNode, s_defaultProvider)
+                    RemoveAttribute(membershipNode, DefaultProvider)
                     defaultProviderAttribute = Nothing
                 End If
             End If
@@ -541,17 +541,17 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 'Remove any existing provider with the same type as clientFormsMembershipProviderType and clientWindowsMembershipProviderType
                 RemoveProvidersByType(GetMembershipProvidersNode(appConfigDocument), s_clientFormsMembershipProviderType)
                 RemoveProvidersByType(GetMembershipProvidersNode(appConfigDocument), s_clientWindowsMembershipProviderType)
-                Dim addNodeList As XmlNodeList = GetXmlNodeList(GetMembershipProvidersNode(appConfigDocument), s_add)
-                Dim nameValue As String = FindUniqueValueInList(addNodeList, s_membershipDefaultNameDefault, s_name)
-                SetAttribute(appConfigDocument, membershipNode, s_defaultProvider, nameValue)
+                Dim addNodeList As XmlNodeList = GetXmlNodeList(GetMembershipProvidersNode(appConfigDocument), Add)
+                Dim nameValue As String = FindUniqueValueInList(addNodeList, MembershipDefaultNameDefault, Name)
+                SetAttribute(appConfigDocument, membershipNode, DefaultProvider, nameValue)
                 defaultSettingNode = GetDefaultClientServicesMembershipProviderNode(appConfigDocument, projectHierarchy)
                 If defaultSettingNode Is Nothing Then
-                    Dim providersNode As XmlNode = EnsureNode(appConfigDocument, s_providers, membershipNode)
-                    Dim addNode As XmlNode = CreateNode(appConfigDocument, XmlNodeType.Element, s_add)
-                    SetAttribute(appConfigDocument, addNode, s_name, nameValue)
-                    SetAttribute(appConfigDocument, addNode, s_type, GetSupportedType(s_clientFormsMembershipProviderType, projectHierarchy).AssemblyQualifiedName)
-                    SetAttributeIfNonNull(appConfigDocument, addNode, s_connectionStringName, DefaultConnectionStringName(appConfigDocument, projectHierarchy))
-                    SetAttribute(appConfigDocument, addNode, s_serviceUri, s_serviceUriDefault)
+                    Dim providersNode As XmlNode = EnsureNode(appConfigDocument, Providers, membershipNode)
+                    Dim addNode As XmlNode = CreateNode(appConfigDocument, XmlNodeType.Element, Add)
+                    SetAttribute(appConfigDocument, addNode, Name, nameValue)
+                    SetAttribute(appConfigDocument, addNode, Type, GetSupportedType(s_clientFormsMembershipProviderType, projectHierarchy).AssemblyQualifiedName)
+                    SetAttributeIfNonNull(appConfigDocument, addNode, ConnectionStringName, DefaultConnectionStringName(appConfigDocument, projectHierarchy))
+                    SetAttribute(appConfigDocument, addNode, ServiceUri, s_serviceUriDefault)
                     providersNode.AppendChild(addNode)
                 End If
             End If
@@ -566,7 +566,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'empty, and membership if it's now empty.
             Dim defaultSettingNode As XmlNode = GetDefaultClientServicesMembershipProviderNode(appConfigDocument, projectHierarchy)
             If defaultSettingNode IsNot Nothing Then
-                RemoveAttribute(membershipNode, s_defaultProvider)
+                RemoveAttribute(membershipNode, DefaultProvider)
                 'Remove the <add> for the default node
                 If membershipProvidersNode IsNot Nothing Then
                     membershipProvidersNode.RemoveChild(defaultSettingNode)
@@ -583,15 +583,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim returnValue As String
 
             node = GetDefaultClientServicesRoleManagerProviderNode(appConfigDocument, projectHierarchy)
-            returnValue = GetAttribute(node, s_connectionStringName)
+            returnValue = GetAttribute(node, ConnectionStringName)
             If returnValue IsNot Nothing Then Return returnValue
 
             node = GetDefaultClientServicesMembershipProviderNode(appConfigDocument, projectHierarchy)
-            returnValue = GetAttribute(node, s_connectionStringName)
+            returnValue = GetAttribute(node, ConnectionStringName)
             If returnValue IsNot Nothing Then Return returnValue
 
             node = GetAppSettingsConnectionStringNameNode(appConfigDocument)
-            Return GetAttribute(node, s_value)
+            Return GetAttribute(node, Value)
         End Function
 
         Private Shared Function DefaultHonorCookieExpiry(appConfigDocument As XmlDocument, Optional projectHierarchy As IVsHierarchy = Nothing) As String
@@ -599,11 +599,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim returnValue As String
 
             node = GetDefaultClientServicesRoleManagerProviderNode(appConfigDocument, projectHierarchy)
-            returnValue = GetAttribute(node, s_honorCookieExpiry)
+            returnValue = GetAttribute(node, HonorCookieExpiry)
             If returnValue IsNot Nothing Then Return returnValue
 
             node = GetAppSettingsHonorCookieExpiryNode(appConfigDocument)
-            Return GetAttribute(node, s_value)
+            Return GetAttribute(node, Value)
         End Function
 
         Private Shared Sub EnsureAppSettings(appConfigDocument As XmlDocument, enable As Boolean, Optional projectHierarchy As IVsHierarchy = Nothing)
@@ -619,11 +619,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             '<appSettings>
             '  <add key=ClientSettingsProvider.ServiceUri" value=""
             '</appSettings>
-            Dim configurationNode As XmlNode = EnsureNode(appConfigDocument, s_configuration, appConfigDocument)
-            EnsureNode(appConfigDocument, s_appSettings, configurationNode)
+            Dim configurationNode As XmlNode = EnsureNode(appConfigDocument, Configuration, appConfigDocument)
+            EnsureNode(appConfigDocument, AppSettings, configurationNode)
 
             If GetAppSettingsServiceUriNode(appConfigDocument) Is Nothing Then
-                AddAppConfigNode(appConfigDocument, AppSettingsName(s_serviceUri), s_serviceUriDefault)
+                AddAppConfigNode(appConfigDocument, AppSettingsName(ServiceUri), s_serviceUriDefault)
             End If
 
             Dim node As XmlNode
@@ -631,7 +631,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If Not String.IsNullOrEmpty(currentConnectionStringName) Then
                 node = GetAppSettingsConnectionStringNameNode(appConfigDocument)
                 If node Is Nothing Then
-                    AddAppConfigNode(appConfigDocument, AppSettingsName(s_connectionStringName), currentConnectionStringName)
+                    AddAppConfigNode(appConfigDocument, AppSettingsName(ConnectionStringName), currentConnectionStringName)
                 End If
             End If
 
@@ -639,15 +639,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If honorCookieValue IsNot Nothing Then
                 node = GetAppSettingsHonorCookieExpiryNode(appConfigDocument)
                 If node Is Nothing Then
-                    AddAppConfigNode(appConfigDocument, AppSettingsName(s_honorCookieExpiry), honorCookieValue)
+                    AddAppConfigNode(appConfigDocument, AppSettingsName(HonorCookieExpiry), honorCookieValue)
                 End If
             End If
         End Sub
 
         Private Shared Sub AddAppConfigNode(appConfigDocument As XmlDocument, keyValue As String, valueValue As String)
-            Dim addNode As XmlNode = CreateNode(appConfigDocument, XmlNodeType.Element, s_add)
-            SetAttribute(appConfigDocument, addNode, s_key, keyValue)
-            SetAttribute(appConfigDocument, addNode, s_value, valueValue)
+            Dim addNode As XmlNode = CreateNode(appConfigDocument, XmlNodeType.Element, Add)
+            SetAttribute(appConfigDocument, addNode, Key, keyValue)
+            SetAttribute(appConfigDocument, addNode, Value, valueValue)
             GetAppSettingsNode(appConfigDocument).AppendChild(addNode)
         End Sub
 
@@ -665,7 +665,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         'Change the input string from "serviceUri" to "ClientSettingsProvider.ServiceUri"
         Private Shared Function AppSettingsName(inputName As String) As String
-            Return String.Concat(s_clientSettingsProviderPrefix, Char.ToUpperInvariant(inputName(0)), inputName.Substring(1))
+            Return String.Concat(ClientSettingsProviderPrefix, Char.ToUpperInvariant(inputName(0)), inputName.Substring(1))
         End Function
 
         Private Shared Function EnsureNode(doc As XmlDocument, nodeName As String, parentNode As XmlNode) As XmlNode
@@ -707,7 +707,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Friend Shared Function GetServiceUri(node As XmlNode) As String
-            Return GetAttribute(node, s_serviceUri)
+            Return GetAttribute(node, ServiceUri)
         End Function
 
         Friend Shared Function AuthenticationServiceUrl(doc As XmlDocument, Optional projectHierarchy As IVsHierarchy = Nothing) As String
@@ -724,7 +724,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Friend Shared Function WebSettingsUrl(doc As XmlDocument) As String
-            Return GetAttribute(GetAppSettingsServiceUriNode(doc), s_value)
+            Return GetAttribute(GetAppSettingsServiceUriNode(doc), Value)
         End Function
 
         Friend Shared Function WebSettingsHost(doc As XmlDocument) As String
@@ -743,19 +743,19 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Friend Shared Function GetSavePasswordHashLocally(doc As XmlDocument, Optional projectHierarchy As IVsHierarchy = Nothing) As Boolean
-            Return TryGettingBooleanAttributeValue(GetDefaultClientServicesMembershipProviderNode(doc, projectHierarchy), s_savePasswordHashLocally, s_savePasswordHashLocallyDefault)
+            Return TryGettingBooleanAttributeValue(GetDefaultClientServicesMembershipProviderNode(doc, projectHierarchy), SavePasswordHashLocally, SavePasswordHashLocallyDefault)
         End Function
 
         'Return value Nothing means the connection strings don't match
         Friend Shared Function GetEffectiveDefaultConnectionString(doc As XmlDocument, ByRef connectionStringSpecified As Boolean, Optional projectHierarchy As IVsHierarchy = Nothing) As String
             Dim appSettingsConnectionStringNode As XmlNode = GetAppSettingsConnectionStringNameNode(doc)
-            Dim appSettingsConnectionStringName As String = GetAttribute(appSettingsConnectionStringNode, s_value)
+            Dim appSettingsConnectionStringName As String = GetAttribute(appSettingsConnectionStringNode, Value)
 
             Dim roleManagerProviderNode As XmlNode = GetDefaultClientServicesRoleManagerProviderNode(doc, projectHierarchy)
-            Dim roleManagerConnectionStringName As String = GetAttribute(roleManagerProviderNode, s_connectionStringName)
+            Dim roleManagerConnectionStringName As String = GetAttribute(roleManagerProviderNode, ConnectionStringName)
 
             Dim membershipProviderNode As XmlNode = GetDefaultClientServicesMembershipProviderNode(doc, projectHierarchy)
-            Dim membershipConnectionStringName As String = GetAttribute(membershipProviderNode, s_connectionStringName)
+            Dim membershipConnectionStringName As String = GetAttribute(membershipProviderNode, ConnectionStringName)
 
             'If no connection strings are specified, use the default
             If appSettingsConnectionStringName Is Nothing AndAlso
@@ -777,31 +777,31 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Friend Shared Function GetConnectionStringNode(doc As XmlDocument, whichString As String) As XmlNode
-            Dim addNodeList As XmlNodeList = GetXmlNodeList(GetConnectionStringsNode(doc), s_add)
-            Return GetXmlNodeWithValueFromList(addNodeList, s_name, whichString)
+            Dim addNodeList As XmlNodeList = GetXmlNodeList(GetConnectionStringsNode(doc), Add)
+            Return GetXmlNodeWithValueFromList(addNodeList, Name, whichString)
         End Function
 
         Friend Shared Function GetConnectionString(doc As XmlDocument, whichString As String) As String
-            Return GetAttribute(GetConnectionStringNode(doc, whichString), s_connectionString)
+            Return GetAttribute(GetConnectionStringNode(doc, whichString), ConnectionString)
         End Function
 
         Private Shared Sub SetConnectionString(doc As XmlDocument, whichString As String, newValue As String)
             Dim node As XmlNode = GetConnectionStringNode(doc, whichString)
             If newValue Is Nothing Then
                 If node IsNot Nothing Then
-                    Dim configurationNode As XmlNode = EnsureNode(doc, s_configuration, doc)
-                    Dim connectionStringsNode As XmlNode = EnsureNode(doc, s_connectionStrings, configurationNode)
+                    Dim configurationNode As XmlNode = EnsureNode(doc, Configuration, doc)
+                    Dim connectionStringsNode As XmlNode = EnsureNode(doc, ConnectionStrings, configurationNode)
                     connectionStringsNode.RemoveChild(node)
                 End If
             Else
                 If node Is Nothing Then
-                    Dim configurationNode As XmlNode = EnsureNode(doc, s_configuration, doc)
-                    Dim connectionStringsNode As XmlNode = EnsureNode(doc, s_connectionStrings, configurationNode)
-                    node = CreateNode(doc, XmlNodeType.Element, s_add)
+                    Dim configurationNode As XmlNode = EnsureNode(doc, Configuration, doc)
+                    Dim connectionStringsNode As XmlNode = EnsureNode(doc, ConnectionStrings, configurationNode)
+                    node = CreateNode(doc, XmlNodeType.Element, Add)
                     connectionStringsNode.AppendChild(node)
-                    SetAttribute(doc, node, s_name, whichString)
+                    SetAttribute(doc, node, Name, whichString)
                 End If
-                SetAttribute(doc, node, s_connectionString, newValue)
+                SetAttribute(doc, node, ConnectionString, newValue)
             End If
         End Sub
 
@@ -811,19 +811,19 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim roleManagerHonorCookieExpiry, appConfigHonorCookieExpiry As Boolean
 
             node = GetDefaultClientServicesRoleManagerProviderNode(doc, projectHierarchy)
-            stringValue = GetAttribute(node, s_honorCookieExpiry)
+            stringValue = GetAttribute(node, HonorCookieExpiry)
 
             'If we didn't get a value, parse the default (string) value.
             If stringValue Is Nothing OrElse Not Boolean.TryParse(stringValue, roleManagerHonorCookieExpiry) Then
-                roleManagerHonorCookieExpiry = Boolean.Parse(s_honorCookieExpiryDefault)
+                roleManagerHonorCookieExpiry = Boolean.Parse(HonorCookieExpiryDefault)
             End If
 
             node = GetAppSettingsHonorCookieExpiryNode(doc)
-            stringValue = GetAttribute(node, s_value)
+            stringValue = GetAttribute(node, Value)
 
             'If we didn't get a value, parse the default (string) value.
             If stringValue Is Nothing OrElse Not Boolean.TryParse(stringValue, appConfigHonorCookieExpiry) Then
-                appConfigHonorCookieExpiry = Boolean.Parse(s_honorCookieExpiryDefault)
+                appConfigHonorCookieExpiry = Boolean.Parse(HonorCookieExpiryDefault)
             End If
 
             If roleManagerHonorCookieExpiry = appConfigHonorCookieExpiry Then
@@ -834,7 +834,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 
         Friend Shared Function GetCacheTimeout(doc As XmlDocument, Optional projectHierarchy As IVsHierarchy = Nothing) As Integer
-            Return TryGettingIntegerAttributeValue(GetDefaultClientServicesRoleManagerProviderNode(doc, projectHierarchy), s_cacheTimeout, s_cacheTimeoutDefault)
+            Return TryGettingIntegerAttributeValue(GetDefaultClientServicesRoleManagerProviderNode(doc, projectHierarchy), CacheTimeout, CacheTimeoutDefault)
         End Function
 
         Private Shared Function TryGettingBooleanAttributeValue(node As XmlNode, attributeName As String, defaultValue As String) As Boolean
@@ -860,7 +860,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Friend Shared Function CustomCredentialProviderType(doc As XmlDocument, Optional projectHierarchy As IVsHierarchy = Nothing) As String
-            Return GetAttribute(GetDefaultClientServicesMembershipProviderNode(doc, projectHierarchy), s_credentialsProvider)
+            Return GetAttribute(GetDefaultClientServicesMembershipProviderNode(doc, projectHierarchy), CredentialsProvider)
         End Function
 
         Friend Shared Function WindowsAuthSelected(doc As XmlDocument, Optional projectHierarchy As IVsHierarchy = Nothing) As Boolean
@@ -869,12 +869,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         'Return whether the value changed
         Friend Shared Function SetAuthenticationServiceUri(doc As XmlDocument, value As String, Optional projectHierarchy As IVsHierarchy = Nothing) As Boolean
-            Return SetAttributeValueAndCheckForChange(doc, GetDefaultClientServicesMembershipProviderNode(doc, projectHierarchy), s_serviceUri, Normalize(value, AuthenticationSuffix))
+            Return SetAttributeValueAndCheckForChange(doc, GetDefaultClientServicesMembershipProviderNode(doc, projectHierarchy), ServiceUri, Normalize(value, AuthenticationSuffix))
         End Function
 
         'Return whether the value changed
         Friend Shared Function SetCustomCredentialProviderType(doc As XmlDocument, value As String, Optional projectHierarchy As IVsHierarchy = Nothing) As Boolean
-            Return SetAttributeValueAndCheckForChange(doc, GetDefaultClientServicesMembershipProviderNode(doc, projectHierarchy), s_credentialsProvider, value)
+            Return SetAttributeValueAndCheckForChange(doc, GetDefaultClientServicesMembershipProviderNode(doc, projectHierarchy), CredentialsProvider, value)
         End Function
 
         'Return whether the value changed
@@ -890,17 +890,17 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Else
                 typeName = GetSupportedType(s_clientFormsMembershipProviderType, projectHierarchy).AssemblyQualifiedName
             End If
-            SetAttribute(doc, node, s_type, typeName)
+            SetAttribute(doc, node, Type, typeName)
             If changeToWindows Then
                 Dim connectionStringNameToUse As String = DefaultConnectionStringName(doc, projectHierarchy)
                 If String.IsNullOrEmpty(connectionStringNameToUse) Then
                     connectionStringNameToUse = GetConnectionStringCreateDefaultProviderName(doc)
                 End If
                 If GetConnectionStringNode(doc, connectionStringNameToUse) Is Nothing Then
-                    SetConnectionStringText(doc, connectionStringValueDefault, projectHierarchy)
+                    SetConnectionStringText(doc, ConnectionStringValueDefault, projectHierarchy)
                 End If
-                SetAttributeIfNull(doc, node, s_connectionStringName, connectionStringNameToUse)
-                SetAttributeIfNull(doc, node, s_credentialsProvider, s_credentialsProviderDefault)
+                SetAttributeIfNull(doc, node, ConnectionStringName, connectionStringNameToUse)
+                SetAttributeIfNull(doc, node, CredentialsProvider, s_credentialsProviderDefault)
             End If
             Return Not Equals(changeToWindows, initialValue)
         End Function
@@ -911,31 +911,31 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             'Create the connection string node, if we have to.
             If appSettingsConnectionStringNameNode Is Nothing Then
-                Dim configurationNode As XmlNode = EnsureNode(doc, s_configuration, doc)
-                Dim appSettingsNode As XmlNode = EnsureNode(doc, s_appSettings, configurationNode)
-                appSettingsConnectionStringNameNode = CreateNode(doc, XmlNodeType.Element, s_add)
-                SetAttribute(doc, appSettingsConnectionStringNameNode, s_key, AppSettingsName(s_connectionStringName))
+                Dim configurationNode As XmlNode = EnsureNode(doc, Configuration, doc)
+                Dim appSettingsNode As XmlNode = EnsureNode(doc, AppSettings, configurationNode)
+                appSettingsConnectionStringNameNode = CreateNode(doc, XmlNodeType.Element, Add)
+                SetAttribute(doc, appSettingsConnectionStringNameNode, Key, AppSettingsName(ConnectionStringName))
                 connStrName = DefaultConnectionStringName(doc, projectHierarchy)
                 If connStrName Is Nothing Then
                     connStrName = GetConnectionStringCreateDefaultProviderName(doc)
                 End If
 
-                SetAttribute(doc, appSettingsConnectionStringNameNode, s_value, connStrName)
+                SetAttribute(doc, appSettingsConnectionStringNameNode, Value, connStrName)
                 appSettingsNode.AppendChild(appSettingsConnectionStringNameNode)
             Else
-                connStrName = GetAttribute(appSettingsConnectionStringNameNode, s_value)
+                connStrName = GetAttribute(appSettingsConnectionStringNameNode, Value)
             End If
 
             If newConnectionString Is Nothing Then
-                RemoveAttribute(GetDefaultClientServicesRoleManagerProviderNode(doc, projectHierarchy), s_connectionStringName)
-                RemoveAttribute(GetDefaultClientServicesMembershipProviderNode(doc, projectHierarchy), s_connectionStringName)
+                RemoveAttribute(GetDefaultClientServicesRoleManagerProviderNode(doc, projectHierarchy), ConnectionStringName)
+                RemoveAttribute(GetDefaultClientServicesMembershipProviderNode(doc, projectHierarchy), ConnectionStringName)
                 EnsureAppSettingsNodeExists(doc, projectHierarchy)
                 If Not appSettingsConnectionStringNameNode Is Nothing Then
                     GetAppSettingsNode(doc).RemoveChild(appSettingsConnectionStringNameNode)
                 End If
             Else
-                SetAttribute(doc, GetDefaultClientServicesRoleManagerProviderNode(doc, projectHierarchy), s_connectionStringName, connStrName)
-                SetAttribute(doc, GetDefaultClientServicesMembershipProviderNode(doc, projectHierarchy), s_connectionStringName, connStrName)
+                SetAttribute(doc, GetDefaultClientServicesRoleManagerProviderNode(doc, projectHierarchy), ConnectionStringName, connStrName)
+                SetAttribute(doc, GetDefaultClientServicesMembershipProviderNode(doc, projectHierarchy), ConnectionStringName, connStrName)
             End If
 
             SetConnectionString(doc, connStrName, newConnectionString)
@@ -943,33 +943,33 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         'Return whether the value changed
         Friend Shared Function SetRoleServiceUri(doc As XmlDocument, inputValue As String, Optional projectHierarchy As IVsHierarchy = Nothing) As Boolean
-            Return SetAttributeValueAndCheckForChange(doc, GetDefaultClientServicesRoleManagerProviderNode(doc, projectHierarchy), s_serviceUri, Normalize(inputValue, RolesSuffix))
+            Return SetAttributeValueAndCheckForChange(doc, GetDefaultClientServicesRoleManagerProviderNode(doc, projectHierarchy), ServiceUri, Normalize(inputValue, RolesSuffix))
         End Function
 
         'Return whether the value changed
         Friend Shared Function SetAppServicesServiceUri(doc As XmlDocument, inputValue As String) As Boolean
-            Return SetAttributeValueAndCheckForChange(doc, GetAppSettingsServiceUriNode(doc), s_value, Normalize(inputValue, ProfileSuffix))
+            Return SetAttributeValueAndCheckForChange(doc, GetAppSettingsServiceUriNode(doc), Value, Normalize(inputValue, ProfileSuffix))
         End Function
 
         'Return whether the value changed
         Friend Shared Function SetCacheTimeout(doc As XmlDocument, inputValue As Integer, Optional projectHierarchy As IVsHierarchy = Nothing) As Boolean
-            Return SetAttributeValueAndCheckForChange(doc, GetDefaultClientServicesRoleManagerProviderNode(doc, projectHierarchy), s_cacheTimeout, inputValue)
+            Return SetAttributeValueAndCheckForChange(doc, GetDefaultClientServicesRoleManagerProviderNode(doc, projectHierarchy), CacheTimeout, inputValue)
         End Function
 
         Friend Shared Sub SetHonorCookieExpiry(doc As XmlDocument, inputValue As Boolean, Optional projectHierarchy As IVsHierarchy = Nothing)
             Dim stringInputValue As String = inputValue.ToString(CultureInfo.InvariantCulture)
-            SetAttribute(doc, GetDefaultClientServicesRoleManagerProviderNode(doc, projectHierarchy), s_honorCookieExpiry, stringInputValue)
+            SetAttribute(doc, GetDefaultClientServicesRoleManagerProviderNode(doc, projectHierarchy), HonorCookieExpiry, stringInputValue)
             Dim appSettingsNode As XmlNode = GetAppSettingsHonorCookieExpiryNode(doc)
             If appSettingsNode Is Nothing Then
-                AddAppConfigNode(doc, AppSettingsName(s_honorCookieExpiry), stringInputValue)
+                AddAppConfigNode(doc, AppSettingsName(HonorCookieExpiry), stringInputValue)
             Else
-                SetAttribute(doc, appSettingsNode, s_value, stringInputValue)
+                SetAttribute(doc, appSettingsNode, Value, stringInputValue)
             End If
         End Sub
 
         'Return whether the value changed
         Friend Shared Function SetSavePasswordHashLocally(doc As XmlDocument, inputValue As Boolean, Optional projectHierarchy As IVsHierarchy = Nothing) As Boolean
-            Return SetAttributeValueAndCheckForChange(doc, GetDefaultClientServicesMembershipProviderNode(doc, projectHierarchy), s_savePasswordHashLocally, inputValue)
+            Return SetAttributeValueAndCheckForChange(doc, GetDefaultClientServicesMembershipProviderNode(doc, projectHierarchy), SavePasswordHashLocally, inputValue)
         End Function
 
         Private Shared Function Normalize(val As String, suffix As String) As String
