@@ -164,6 +164,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Me.Source = Source
             End Sub
         End Class
+#Disable Warning IDE1006 ' Naming Styles (Compat)
 
         'True iff the property page is currently in initialization code
         Public m_fInsideInit As Boolean
@@ -195,6 +196,17 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '  associated PropertyControlData, as it may override the set of objects to use.
         Public m_ExtendedObjects As Object()
 
+        'A collection of (extended) property descriptors which have been collected from the project itself.  These
+        '  properties were *not* passed in to us through SetObjects, and are not configuration-dependent.  Some 
+        '  configuration-dependent pages need to display certain non-configuration properties, which can be
+        '  found in this collection.  Note that for a non-configuration page, this set of property descriptors
+        '  will be the same as the set that was passed in to us through SetObjects.
+        Public m_CommonPropertyDescriptors As PropertyDescriptorCollection
+
+        Protected m_ScalingCompleted As Boolean
+
+#Enable Warning IDE1006 ' Naming Styles
+
         'The DTE object associated with the objects passed to SetObjects.  If there is none, this is Nothing.
         Private _dte As EnvDTE.DTE
 
@@ -204,13 +216,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ' Hook up to build events so we can enable/disable the property 
         ' page while building
         Private WithEvents _buildEvents As EnvDTE.BuildEvents
-
-        'A collection of (extended) property descriptors which have been collected from the project itself.  These
-        '  properties were *not* passed in to us through SetObjects, and are not configuration-dependent.  Some 
-        '  configuration-dependent pages need to display certain non-configuration properties, which can be
-        '  found in this collection.  Note that for a non-configuration page, this set of property descriptors
-        '  will be the same as the set that was passed in to us through SetObjects.
-        Public m_CommonPropertyDescriptors As PropertyDescriptorCollection
 
         'The ProjectProperties object from a VSLangProj-based project (VB, C#, J#).  Used for querying
         '  common project properties in these types of projects.  Note that this object was *not* passed
@@ -243,7 +248,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         'Child property pages that have been shown are cached here
         Private _childPages As New Dictionary(Of Type, PropPageUserControlBase)
-        Protected m_ScalingCompleted As Boolean
 
         Private _pageRequiresScaling As Boolean = True
 

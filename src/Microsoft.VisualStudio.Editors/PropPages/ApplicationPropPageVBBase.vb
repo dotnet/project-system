@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.ComponentModel
 Imports System.ComponentModel.Design
@@ -41,7 +41,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Friend m_CommonControls As CommonControls
 #End Region
 
-        Protected m_IconBrowseText As String
+        Protected IconBrowseText As String
 
         'Property names
         Protected Const Const_ApplicationIcon As String = "ApplicationIcon"
@@ -56,7 +56,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             InitializeComponent()
 
-            m_IconBrowseText = My.Resources.Designer.PPG_BrowseText
+            IconBrowseText = My.Resources.Designer.PPG_BrowseText
         End Sub
 
 #Region "Icon combobox"
@@ -89,7 +89,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             'Now add the <browse> entry
             If ProjectProperties.OutputType <> VSLangProj.prjOutputType.prjOutputTypeLibrary Then
-                ApplicationIconCombobox.Items.Add(m_IconBrowseText)
+                ApplicationIconCombobox.Items.Add(IconBrowseText)
             End If
         End Sub
 
@@ -198,7 +198,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Returns true if the text is the special "Browse" text for the icon combobox
         ''' </summary>
         Protected Overrides Function IconEntryIsBrowse(EntryText As String) As Boolean
-            Return EntryText IsNot Nothing AndAlso EntryText.Equals(m_IconBrowseText, StringComparison.OrdinalIgnoreCase)
+            Return EntryText IsNot Nothing AndAlso EntryText.Equals(IconBrowseText, StringComparison.OrdinalIgnoreCase)
         End Function
 
 #End Region
