@@ -77,11 +77,6 @@
         <target state="translated">Özel aracın çıkışının yerleştirileceği isim uzayı.</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Identity|Description">
-        <source>The item specified in the Include attribute.</source>
-        <target state="translated">Include özniteliğinde belirtilen öğe.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">
         <source>Full Path</source>
         <target state="translated">Tam Yol</target>
@@ -90,16 +85,6 @@
       <trans-unit id="StringProperty|FullPath|Description">
         <source>Location of the file.</source>
         <target state="translated">Dosyanın konumu.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|FileNameAndExtension|DisplayName">
-        <source>File Name</source>
-        <target state="translated">Dosya Adı</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|FileNameAndExtension|Description">
-        <source>Name of the file or folder.</source>
-        <target state="translated">Dosya veya klasörün adı.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|LastGenOutput|Description">

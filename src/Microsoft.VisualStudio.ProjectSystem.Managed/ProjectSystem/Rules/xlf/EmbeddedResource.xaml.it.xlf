@@ -77,11 +77,6 @@
         <target state="translated">Spazio dei nomi in cui viene inserito l'output dello strumento personalizzato.</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Identity|Description">
-        <source>The item specified in the Include attribute.</source>
-        <target state="translated">Elemento specificato nell'attributo Include.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">
         <source>Full Path</source>
         <target state="translated">Percorso completo</target>
@@ -90,16 +85,6 @@
       <trans-unit id="StringProperty|FullPath|Description">
         <source>Location of the file.</source>
         <target state="translated">Percorso del file.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|FileNameAndExtension|DisplayName">
-        <source>File Name</source>
-        <target state="translated">Nome file</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|FileNameAndExtension|Description">
-        <source>Name of the file or folder.</source>
-        <target state="translated">Nome del file o della cartella.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|LastGenOutput|Description">

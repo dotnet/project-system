@@ -87,16 +87,6 @@
         <target state="translated">Ensamblado nativo</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Identity|DisplayName">
-        <source>Identity</source>
-        <target state="translated">Identidad</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Identity|Description">
-        <source>Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</source>
-        <target state="translated">Identidad de seguridad del ensamblado al que se hace referencia (vea System.Reflection.Assembly.Evidence o System.Security.Policy.Evidence).</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|DisplayName">
         <source>Path</source>
         <target state="translated">Ruta de acceso</target>

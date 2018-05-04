@@ -39,17 +39,6 @@
       Description="The namespace into which the output of the custom tool is placed." />
 
     <StringProperty
-      Name="Identity"
-      Visible="false"
-      ReadOnly="true"
-      Category="Misc"
-      Description="The item specified in the Include attribute.">
-        <StringProperty.DataSource>
-            <DataSource Persistence="Intrinsic" ItemType="ApplicationDefinition" PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
-        </StringProperty.DataSource>
-    </StringProperty>
-
-    <StringProperty
       Name="FullPath"
       DisplayName="Full Path"
       ReadOnly="true"
@@ -60,32 +49,11 @@
         </StringProperty.DataSource>
     </StringProperty>
 
-    <StringProperty
-      Name="FileNameAndExtension"
-      DisplayName="File Name"
-      ReadOnly="true"
-      Category="Misc"
-      Description="Name of the file or folder.">
-        <StringProperty.DataSource>
-            <DataSource Persistence="Intrinsic" ItemType="ApplicationDefinition" PersistedName="FileNameAndExtension" SourceOfDefaultValue="AfterContext" />
-        </StringProperty.DataSource>
-    </StringProperty>
-
-    <StringProperty Name="URL" ReadOnly="true" Visible="false">
-        <StringProperty.DataSource>
-            <DataSource Persistence="Intrinsic" ItemType="ApplicationDefinition" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
-        </StringProperty.DataSource>
-    </StringProperty>
     <BoolProperty Name="Visible" Visible="false" />
     <StringProperty Name="DependentUpon" Visible="false" />
     <StringProperty Name="Link" Visible="false">
         <StringProperty.DataSource>
             <DataSource PersistenceStyle="Attribute" SourceOfDefaultValue="AfterContext" />
-        </StringProperty.DataSource>
-    </StringProperty>
-    <StringProperty Name="Extension" Visible="False" ReadOnly="true">
-        <StringProperty.DataSource>
-            <DataSource Persistence="Intrinsic" ItemType="ApplicationDefinition" PersistedName="Extension" SourceOfDefaultValue="AfterContext" />
         </StringProperty.DataSource>
     </StringProperty>
     <StringProperty Name="LastGenOutput" Visible="false" Description="The filename of the last file generated as a result of the SFG." />

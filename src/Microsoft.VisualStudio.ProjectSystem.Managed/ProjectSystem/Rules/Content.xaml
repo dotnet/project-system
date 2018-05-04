@@ -34,17 +34,6 @@
   </EnumProperty>
 
   <StringProperty
-    Name="Identity"
-    Visible="false"
-    ReadOnly="true"
-    Category="Misc"
-    Description="The item specified in the Include attribute.">
-    <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="Content" PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
-    </StringProperty.DataSource>
-  </StringProperty>
-
-  <StringProperty
       Name="FullPath"
       DisplayName="Full Path"
       ReadOnly="true"
@@ -52,17 +41,6 @@
       Description="Location of the file.">
     <StringProperty.DataSource>
       <DataSource Persistence="Intrinsic" ItemType="Content" PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
-    </StringProperty.DataSource>
-  </StringProperty>
-
-  <StringProperty
-    Name="FileNameAndExtension"
-    DisplayName="File Name"
-    ReadOnly="true"
-    Category="Misc"
-    Description="Name of the file or folder.">
-    <StringProperty.DataSource>
-      <DataSource Persistence="Intrinsic" ItemType="Content" PersistedName="FileNameAndExtension" SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
 

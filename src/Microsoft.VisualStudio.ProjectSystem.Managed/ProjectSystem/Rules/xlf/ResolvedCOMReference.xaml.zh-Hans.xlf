@@ -97,16 +97,6 @@
         <target state="translated">本机程序集</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Identity|DisplayName">
-        <source>Identity</source>
-        <target state="translated">标识</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Identity|Description">
-        <source>Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</source>
-        <target state="translated">所引用程序集的安全标识(参见 System.Reflection.Assembly.Evidence 或 System.Security.Policy.Evidence)。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|DisplayName">
         <source>Path</source>
         <target state="translated">路径</target>

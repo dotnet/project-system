@@ -17,11 +17,6 @@
         <target state="translated">Caminho Completo</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|FileNameAndExtension|DisplayName">
-        <source>Folder Name</source>
-        <target state="translated">Nome da Pasta</target>
-        <note />
-      </trans-unit>
     </body>
   </file>
 </xliff>
