@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Runtime.InteropServices
 Imports System.ComponentModel.Design
@@ -45,11 +45,22 @@ Namespace Microsoft.VisualStudio.Editors
         ' Map between unique project GUID and the last viewed tab in the project designer...
         Private _lastViewedProjectDesignerTab As Dictionary(Of Guid, Byte)
 
+        'Resource File Sticky Paths per project
+        Private _stickyProjectResourcePaths As Dictionary(Of Guid, Dictionary(Of UInteger, String))
+
+        Public ReadOnly Property StickyProjectResourcePaths() As Dictionary(Of Guid, Dictionary(Of UInteger, String))
+            Get
+                Return _stickyProjectResourcePaths
+            End Get
+        End Property
+
         ''' <summary>
         ''' Constructor
         ''' </summary>
         ''' <remarks></remarks>
         Public Sub New()
+            _stickyProjectResourcePaths = New Dictionary(Of Guid, Dictionary(Of UInteger, String))
+
             ' Make sure we persist this 
             AddOptionKey(s_projectDesignerSUOKey)
         End Sub
@@ -304,7 +315,7 @@ Namespace Microsoft.VisualStudio.Editors
         ''' <param name="hierarchy"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function ProjectGUID(hierarchy As IVsHierarchy) As Guid
+        Public Function ProjectGUID(hierarchy As IVsHierarchy) As Guid
             Dim projGuid As Guid = Guid.Empty
             Try
                 If hierarchy IsNot Nothing Then
@@ -416,6 +427,7 @@ Namespace Microsoft.VisualStudio.Editors
             Public Function OnAfterCloseSolution(pUnkReserved As Object) As Integer Implements IVsSolutionEvents.OnAfterCloseSolution
                 SettingsDesigner.SettingsDesigner.DeleteFilesAndDirectories(_filesToCleanUp, Nothing)
                 _filesToCleanUp.Clear()
+                Instance._stickyProjectResourcePaths.Clear()
                 Return Interop.NativeMethods.S_OK
             End Function
 
@@ -475,10 +487,12 @@ Namespace Microsoft.VisualStudio.Editors
             End Function
 
             Public Function OnBeforeCloseProject(pHierarchy As IVsHierarchy, fRemoved As Integer) As Integer Implements IVsSolutionEvents.OnBeforeCloseProject
+                Instance.StickyProjectResourcePaths.Remove(Instance.ProjectGUID(pHierarchy))
                 Return Interop.NativeMethods.S_OK
             End Function
 
             Public Function OnBeforeUnloadProject(pRealHierarchy As IVsHierarchy, pStubHierarchy As IVsHierarchy) As Integer Implements IVsSolutionEvents.OnBeforeUnloadProject
+                Instance.StickyProjectResourcePaths.Remove(Instance.ProjectGUID(pRealHierarchy))
                 Return Interop.NativeMethods.S_OK
             End Function
 
