@@ -224,7 +224,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                     ' ApplicationManifest - added simply to enable flavoring visibility of the button
                     list.Add(New PropertyControlData(VsProjPropId90.VBPROJPROPID_ApplicationManifest, "ApplicationManifest", Nothing, ControlDataFlags.Hidden))
 
-                    m_TargetFrameworkPropertyControlData = New TargetFrameworkPropertyControlData(
+                    TargetFrameworkPropertyControlData = New TargetFrameworkPropertyControlData(
                         VsProjPropId100.VBPROJPROPID_TargetFrameworkMoniker,
                         ApplicationPropPage.Const_TargetFrameworkMoniker,
                         TargetFrameworkComboBox,
@@ -233,7 +233,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                         ControlDataFlags.ProjectMayBeReloadedDuringPropertySet Or ControlDataFlags.NoOptimisticFileCheckout,
                         New Control() {TargetFrameworkLabel})
 
-                    list.Add(m_TargetFrameworkPropertyControlData)
+                    list.Add(TargetFrameworkPropertyControlData)
 
                     m_ControlData = list.ToArray()
                 End If

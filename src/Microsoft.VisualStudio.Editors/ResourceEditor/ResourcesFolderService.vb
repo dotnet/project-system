@@ -122,7 +122,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 #End Region
 
         'Trace switch for this class.
-        Private Shared s_RFSSwitch As New TraceSwitch("ResourcesFolderService", "Traces the behavior of the Resources Folder Service")
+        Private Shared s_resourcesFolderServiceSwitch As New TraceSwitch("ResourcesFolderService", "Traces the behavior of the Resources Folder Service")
 
 
 #Region "Tracing"
@@ -139,7 +139,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 'Only use String.Format when we have specific format arguments, although we might accidently break on something like a stray "{" in a filename
                 Message = String.Format(Message, FormatArguments)
             End If
-            Debug.WriteLineIf(s_RFSSwitch.TraceVerbose, "Resources Folder Service: " & Message)
+            Debug.WriteLineIf(s_resourcesFolderServiceSwitch.TraceVerbose, "Resources Folder Service: " & Message)
         End Sub
 
 #End Region

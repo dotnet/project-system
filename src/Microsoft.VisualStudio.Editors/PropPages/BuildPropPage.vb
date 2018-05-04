@@ -16,9 +16,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Partial Friend NotInheritable Class BuildPropPage
         Inherits BuildPropPageBase
 
-        Protected m_stDocumentationFile() As String
+        Protected DocumentationFile() As String
         'True when we're changing control values ourselves
-        Protected m_bInsideInternalUpdate As Boolean = False
+        Protected InsideInternalUpdate As Boolean = False
 
         '// Stored conditional compilation symbols. We need these to calculate the new strings
         '//   to return for the conditional compilation constants when the user changes any
@@ -26,7 +26,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '//   controls is not sufficient because they could be indeterminate, and we are acting
         '//   as if we have three separate properties, so we need the original property values).
         '// Array same length and indexing as the objects passed in to SetObjects.
-        Protected m_stCondCompSymbols() As String
+        Protected CondCompSymbols() As String
         Protected Const Const_DebugConfiguration As String = "Debug" 'Name of the debug configuration
         Protected Const Const_ReleaseConfiguration As String = "Release" 'Name of the release configuration
         Protected Const Const_CondConstantDEBUG As String = "DEBUG"
@@ -194,7 +194,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 EnableControl(chkRegisterForCOM, True)
             End If
 
-            If Not m_fInsideInit AndAlso Not m_bInsideInternalUpdate Then
+            If Not m_fInsideInit AndAlso Not InsideInternalUpdate Then
                 ' Changes to the OutputType may affect whether Prefer32Bit is enabled
                 RefreshEnabledStatusForPrefer32Bit(chkPrefer32Bit)
             End If
@@ -259,7 +259,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Function TreatSpecificWarningsInit(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
 
-            m_bInsideInternalUpdate = True
+            InsideInternalUpdate = True
 
             Try
                 Dim bIndeterminateState As Boolean = False
@@ -316,7 +316,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     rbWarningNone.Checked = False
                 End If
             Finally
-                m_bInsideInternalUpdate = False
+                InsideInternalUpdate = False
             End Try
 
             Return True
@@ -384,7 +384,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Private Sub rbStartAction_CheckedChanged(sender As Object, e As EventArgs) Handles rbWarningAll.CheckedChanged, rbWarningSpecific.CheckedChanged, rbWarningNone.CheckedChanged
-            If (Not m_bInsideInternalUpdate) Then
+            If (Not InsideInternalUpdate) Then
                 Dim warnings As TreatWarningsSetting = TreatSpecificWarningsGetValue()
                 rbWarningAll.Checked = (warnings = TreatWarningsSetting.WARNINGS_ALL)
                 rbWarningSpecific.Checked = (warnings = TreatWarningsSetting.WARNINGS_SPECIFIC)
@@ -399,14 +399,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Function XMLDocumentationFileInit(control As Control, prop As PropertyDescriptor, values() As Object) As Boolean
-            Dim bOriginalState As Boolean = m_bInsideInternalUpdate
+            Dim bOriginalState As Boolean = InsideInternalUpdate
 
-            m_bInsideInternalUpdate = True
-            ReDim m_stDocumentationFile(values.Length - 1)
-            values.CopyTo(m_stDocumentationFile, 0)
+            InsideInternalUpdate = True
+            ReDim DocumentationFile(values.Length - 1)
+            values.CopyTo(DocumentationFile, 0)
 
             Dim objDocumentationFile As Object
-            objDocumentationFile = PropertyControlData.GetValueOrIndeterminateFromArray(m_stDocumentationFile)
+            objDocumentationFile = PropertyControlData.GetValueOrIndeterminateFromArray(DocumentationFile)
 
             If (Not (PropertyControlData.IsSpecialValue(objDocumentationFile))) Then
                 If (Trim(TryCast(objDocumentationFile, String)) <> "") Then
@@ -425,14 +425,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
 
             '// Reset value
-            m_bInsideInternalUpdate = bOriginalState
+            InsideInternalUpdate = bOriginalState
             Return True
         End Function
 
         Private Function XMLDocumentationFileGet(control As Control, prop As PropertyDescriptor, ByRef values() As Object) As Boolean
-            Debug.Assert(m_stDocumentationFile IsNot Nothing)
-            ReDim values(m_stDocumentationFile.Length - 1)
-            m_stDocumentationFile.CopyTo(values, 0)
+            Debug.Assert(DocumentationFile IsNot Nothing)
+            ReDim values(DocumentationFile.Length - 1)
+            DocumentationFile.CopyTo(values, 0)
             Return True
         End Function
 
@@ -561,11 +561,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         stProjectDirectory &= "\"
                     End If
 
-                    If (Not IsNothing(m_stDocumentationFile)) Then
+                    If (Not IsNothing(DocumentationFile)) Then
                         '// Loop through each config and calculate what we think the output path should be
                         Dim i As Integer
 
-                        For i = 0 To m_stDocumentationFile.Length - 1
+                        For i = 0 To DocumentationFile.Length - 1
 
                             If (Not IsNothing(OutputPathData)) Then
                                 stOutputPath = TryCast(OutputPathData(i), String)
@@ -589,19 +589,19 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                                         '// The output path is within the project so suggest the output directory (or suggest just the filename
                                         '// which will put it in the default location
 
-                                        m_stDocumentationFile(i) = stOutputPath & stAssemblyName & XML_FILE_EXTENSION
+                                        DocumentationFile(i) = stOutputPath & stAssemblyName & XML_FILE_EXTENSION
 
                                     Else
 
                                         '// The output path is outside the project so just suggest the project directory.
-                                        m_stDocumentationFile(i) = stProjectDirectory & stAssemblyName & XML_FILE_EXTENSION
+                                        DocumentationFile(i) = stProjectDirectory & stAssemblyName & XML_FILE_EXTENSION
 
                                     End If
 
                                 Else
                                     '// OutputPath is a Relative path so it will be based on the project directory. use
                                     '// the OutputPath to suggest a location for the documentation file
-                                    m_stDocumentationFile(i) = stOutputPath & stAssemblyName & XML_FILE_EXTENSION
+                                    DocumentationFile(i) = stOutputPath & stAssemblyName & XML_FILE_EXTENSION
                                 End If
 
                             End If
@@ -609,7 +609,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                         '// Now if all the values are the same then set the textbox text
                         Dim objDocumentationFile As Object
-                        objDocumentationFile = PropertyControlData.GetValueOrIndeterminateFromArray(m_stDocumentationFile)
+                        objDocumentationFile = PropertyControlData.GetValueOrIndeterminateFromArray(DocumentationFile)
 
                         If (Not (PropertyControlData.IsSpecialValue(objDocumentationFile))) Then
                             txtXMLDocumentationFile.Text = TryCast(objDocumentationFile, String)
@@ -625,12 +625,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                 '// Clear the values
                 Dim i As Integer
-                For i = 0 To m_stDocumentationFile.Length - 1
-                    m_stDocumentationFile(i) = ""
+                For i = 0 To DocumentationFile.Length - 1
+                    DocumentationFile(i) = ""
                 Next
             End If
 
-            If Not m_bInsideInternalUpdate Then
+            If Not InsideInternalUpdate Then
                 SetDirty(txtXMLDocumentationFile)
             End If
         End Sub
@@ -641,11 +641,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   events associated with this control, so we need to recalculate related values
         ''' </summary>
         Private Sub DocumentationFile_TextChanged(sender As Object, e As EventArgs) Handles txtXMLDocumentationFile.TextChanged
-            If Not m_bInsideInternalUpdate Then
-                Debug.Assert(m_stDocumentationFile IsNot Nothing)
-                For i As Integer = 0 To m_stDocumentationFile.Length - 1
+            If Not InsideInternalUpdate Then
+                Debug.Assert(DocumentationFile IsNot Nothing)
+                For i As Integer = 0 To DocumentationFile.Length - 1
                     'store it
-                    m_stDocumentationFile(i) = txtXMLDocumentationFile.Text
+                    DocumentationFile(i) = txtXMLDocumentationFile.Text
                 Next
 
                 'No need to mark the property dirty - the property page architecture hooks up the FormControl automatically
@@ -654,7 +654,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Sub PlatformTarget_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cboPlatformTarget.SelectionChangeCommitted
-            If m_fInsideInit OrElse m_bInsideInternalUpdate Then
+            If m_fInsideInit OrElse InsideInternalUpdate Then
                 Return
             End If
 
@@ -692,15 +692,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   events associated with this control, so we need to recalculate related values
         ''' </summary>
         Private Sub DefineConstants_TextChanged(sender As Object, e As EventArgs) Handles txtConditionalCompilationSymbols.TextChanged
-            If Not m_bInsideInternalUpdate Then
-                Debug.Assert(m_stCondCompSymbols IsNot Nothing)
-                For i As Integer = 0 To m_stCondCompSymbols.Length - 1
+            If Not InsideInternalUpdate Then
+                Debug.Assert(CondCompSymbols IsNot Nothing)
+                For i As Integer = 0 To CondCompSymbols.Length - 1
                     'Parse the original compilation constants value for this configuration (we need to do this
                     '  to get the original DEBUG/TRACE values for these configurations - we can't rely on the
                     '  current control values for these two because they might be indeterminate)
                     Dim OriginalOtherConstants As String = ""
                     Dim DebugDefined, TraceDefined As Boolean
-                    ParseConditionalCompilationConstants(m_stCondCompSymbols(i), DebugDefined, TraceDefined, OriginalOtherConstants)
+                    ParseConditionalCompilationConstants(CondCompSymbols(i), DebugDefined, TraceDefined, OriginalOtherConstants)
 
                     'Now build the new string based off of the old DEBUG/TRACE values and the new string the user entered for any
                     '  other constants
@@ -714,7 +714,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     End If
 
                     '... and store it
-                    m_stCondCompSymbols(i) = NewCondCompSymbols
+                    CondCompSymbols(i) = NewCondCompSymbols
                 Next
 
                 'No need to mark the property dirty - the property page architecture hooks up the FormControl automatically
@@ -728,26 +728,26 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   events associated with this control, so we need to recalculate related values.
         ''' </summary>
         Private Sub chkDefineDebug_CheckedChanged(sender As Object, e As EventArgs) Handles chkDefineDebug.CheckedChanged
-            If Not m_bInsideInternalUpdate Then
+            If Not InsideInternalUpdate Then
                 Dim DebugIndexDoNotChange As Integer 'Index to avoid changing, if in simplified configs mode
                 If IsSimplifiedConfigs() Then
                     'In simplified configs mode, we do not want to change the value of the DEBUG constant
                     '  in the Debug configuration, but rather only in the Release configuration
-                    Debug.Assert(m_stCondCompSymbols.Length = 2, "In simplified configs, we should only have two configurations")
+                    Debug.Assert(CondCompSymbols.Length = 2, "In simplified configs, we should only have two configurations")
                     DebugIndexDoNotChange = GetIndexOfConfiguration(Const_DebugConfiguration)
                 Else
                     DebugIndexDoNotChange = -1 'Go ahead and make changes in all selected configurations
                 End If
 
-                For i As Integer = 0 To m_stCondCompSymbols.Length - 1
+                For i As Integer = 0 To CondCompSymbols.Length - 1
                     If i <> DebugIndexDoNotChange Then
                         Select Case chkDefineDebug.CheckState
                             Case CheckState.Checked
                                 'Make sure DEBUG is present in the configuration
-                                m_stCondCompSymbols(i) = AddSymbol(m_stCondCompSymbols(i), Const_CondConstantDEBUG)
+                                CondCompSymbols(i) = AddSymbol(CondCompSymbols(i), Const_CondConstantDEBUG)
                             Case CheckState.Unchecked
                                 'Remove DEBUG from the configuration
-                                m_stCondCompSymbols(i) = RemoveSymbol(m_stCondCompSymbols(i), Const_CondConstantDEBUG)
+                                CondCompSymbols(i) = RemoveSymbol(CondCompSymbols(i), Const_CondConstantDEBUG)
                             Case Else
                                 Debug.Fail("If the user changed the checked state, it should be checked or unchecked")
                         End Select
@@ -764,15 +764,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   events associated with this control, so we need to recalculate related values.
         ''' </summary>
         Private Sub chkDefineTrace_CheckedChanged(sender As Object, e As EventArgs) Handles chkDefineTrace.CheckedChanged
-            If Not m_bInsideInternalUpdate Then
-                For i As Integer = 0 To m_stCondCompSymbols.Length - 1
+            If Not InsideInternalUpdate Then
+                For i As Integer = 0 To CondCompSymbols.Length - 1
                     Select Case chkDefineTrace.CheckState
                         Case CheckState.Checked
                             'Make sure TRACE is present in the configuration
-                            m_stCondCompSymbols(i) = AddSymbol(m_stCondCompSymbols(i), Const_CondConstantTRACE)
+                            CondCompSymbols(i) = AddSymbol(CondCompSymbols(i), Const_CondConstantTRACE)
                         Case CheckState.Unchecked
                             'Remove TRACE from the configuration
-                            m_stCondCompSymbols(i) = RemoveSymbol(m_stCondCompSymbols(i), Const_CondConstantTRACE)
+                            CondCompSymbols(i) = RemoveSymbol(CondCompSymbols(i), Const_CondConstantTRACE)
                         Case Else
                             Debug.Fail("If the user changed the checked state, it should be checked or unchecked")
                     End Select
@@ -834,10 +834,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             'Store off the conditional full (unparsed) compilation strings, we'll need this in the getter (because the
             '  values displayed in the controls are lossy when there are indeterminate values).
-            ReDim m_stCondCompSymbols(values.Length - 1)
-            values.CopyTo(m_stCondCompSymbols, 0)
+            ReDim CondCompSymbols(values.Length - 1)
+            values.CopyTo(CondCompSymbols, 0)
 
-            m_bInsideInternalUpdate = True
+            InsideInternalUpdate = True
             Try
                 Dim DebugDefinedValues(values.Length - 1) As Object 'Defined as object so we can use GetValueOrIndeterminateFromArray
                 Dim TraceDefinedValues(values.Length - 1) As Object
@@ -889,7 +889,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
 
             Finally
-                m_bInsideInternalUpdate = False
+                InsideInternalUpdate = False
             End Try
 
             Return True
@@ -901,9 +901,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         Private Function ConditionalCompilationGet(control As Control, prop As PropertyDescriptor, ByRef values() As Object) As Boolean
             'Fetch the original values we stored in the setter (the values stored in the controls are lossy when there are indeterminate values)
-            Debug.Assert(m_stCondCompSymbols IsNot Nothing)
-            ReDim values(m_stCondCompSymbols.Length - 1)
-            m_stCondCompSymbols.CopyTo(values, 0)
+            Debug.Assert(CondCompSymbols IsNot Nothing)
+            ReDim values(CondCompSymbols.Length - 1)
+            CondCompSymbols.CopyTo(values, 0)
             Return True
         End Function
 

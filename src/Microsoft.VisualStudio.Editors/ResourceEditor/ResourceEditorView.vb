@@ -55,7 +55,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         'Indicates whether the UI has actually been initialized yet (useful because many events fire during
         '  form load, and we may not be ready to handle them  yet)
-        Private _UIInitialized As Boolean
+        Private _uiInitialized As Boolean
 
         'The set of categories handled by this instance of the resource editor.
         Private _categories As New CategoryCollection
@@ -598,7 +598,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Sub InitializeUI(ServiceProvider As IServiceProvider)
             AllowDrop = True
             StringTable.RowHeadersWidth = DpiHelper.LogicalToDeviceUnitsX(35)
-            _UIInitialized = True
+            _uiInitialized = True
         End Sub
 
 

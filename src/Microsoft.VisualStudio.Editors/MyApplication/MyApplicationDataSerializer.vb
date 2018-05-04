@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.Xml.Serialization
 
@@ -27,14 +27,14 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             If needType Then
                 WriteXsiType("MyApplicationData", "")
             End If
-            WriteElementStringRaw("MySubMain", "", Xml.XmlConvert.ToString(CType(o.MySubMain, System.Boolean)))
+            WriteElementStringRaw("MySubMain", "", Xml.XmlConvert.ToString(CType(o.MySubMain, Boolean)))
             WriteElementString("MainForm", "", o.MainFormNoRootNS)
-            WriteElementStringRaw("SingleInstance", "", Xml.XmlConvert.ToString(CType(o.SingleInstance, System.Boolean)))
-            WriteElementStringRaw("ShutdownMode", "", Xml.XmlConvert.ToString(CType(o.ShutdownMode, System.Int32)))
-            WriteElementStringRaw("EnableVisualStyles", "", Xml.XmlConvert.ToString(CType(o.EnableVisualStyles, System.Boolean)))
-            WriteElementStringRaw("AuthenticationMode", "", Xml.XmlConvert.ToString(CType(o.AuthenticationMode, System.Int32)))
+            WriteElementStringRaw("SingleInstance", "", Xml.XmlConvert.ToString(CType(o.SingleInstance, Boolean)))
+            WriteElementStringRaw("ShutdownMode", "", Xml.XmlConvert.ToString(CType(o.ShutdownMode, Integer)))
+            WriteElementStringRaw("EnableVisualStyles", "", Xml.XmlConvert.ToString(CType(o.EnableVisualStyles, Boolean)))
+            WriteElementStringRaw("AuthenticationMode", "", Xml.XmlConvert.ToString(CType(o.AuthenticationMode, Integer)))
             WriteElementString("SplashScreen", "", o.SplashScreenNoRootNS)
-            WriteElementStringRaw("SaveMySettingsOnExit", "", Xml.XmlConvert.ToString(CType(o.SaveMySettingsOnExit, System.Boolean)))
+            WriteElementStringRaw("SaveMySettingsOnExit", "", Xml.XmlConvert.ToString(CType(o.SaveMySettingsOnExit, Boolean)))
             WriteEndElement(o)
         End Sub 'Write2_MyApplicationData
 
@@ -63,7 +63,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Return _publicMethods
         End Function 'GetPublicMethods
 
-        Public Shared Function CanSerialize(type As Type) As System.Boolean
+        Public Shared Function CanSerialize(type As Type) As Boolean
             Return False
         End Function 'CanSerialize 
     End Class 'MyApplicationDataSerializationWriter
@@ -263,7 +263,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         End Function 'CanDeserialize
 
 
-        Protected Overrides Sub Serialize(objectToSerialize As [Object], writer As XmlSerializationWriter)
+        Protected Overrides Sub Serialize(objectToSerialize As Object, writer As XmlSerializationWriter)
 
             If Not (objectToSerialize Is Nothing) AndAlso Not Equals(objectToSerialize.GetType(), GetType(MyApplicationData)) Then
                 Debug.Fail("Cannot serialize object of type " + objectToSerialize.GetType().FullName + " with MyApplicationDataSerializer. Object of type " + GetType(MyApplicationDataSerializer).FullName + " expected.")

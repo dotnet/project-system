@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Strict On
 Option Explicit On
@@ -32,7 +32,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Public Event CellClickBeginEdit(sender As Object, e As System.ComponentModel.CancelEventArgs)
 
         'Backing property fields
-        Private ReadOnly _DFAutoSizeColumnWidths As Boolean
+        Private ReadOnly _dfAutoSizeColumnWidths As Boolean
         Private ReadOnly _columnMinimumScrollingWidths() As Integer
 
         'Current percentage of the total width of the control that each column takes up, as a decimal

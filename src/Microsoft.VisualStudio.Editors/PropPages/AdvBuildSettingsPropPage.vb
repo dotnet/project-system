@@ -17,7 +17,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Partial Friend Class AdvBuildSettingsPropPage
         Inherits PropPageUserControlBase
 
-        Protected m_bDebugSymbols As Boolean = False
+        Protected DebugSymbols As Boolean = False
 
         Public Sub New()
             MyBase.New()
@@ -152,15 +152,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Function DebugSymbolsSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             If PropertyControlData.IsSpecialValue(value) Then 'Indeterminate/IsMissing 
-                m_bDebugSymbols = False
+                DebugSymbols = False
             Else
-                m_bDebugSymbols = CType(value, Boolean)
+                DebugSymbols = CType(value, Boolean)
             End If
             Return True
         End Function
 
         Private Function DebugSymbolsGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
-            value = m_bDebugSymbols
+            value = DebugSymbols
             Return True
         End Function
 
@@ -272,9 +272,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub DebugInfo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboDebugInfo.SelectedIndexChanged
             If cboDebugInfo.SelectedIndex = 0 Then
                 '// user selected none
-                m_bDebugSymbols = False
+                DebugSymbols = False
             Else
-                m_bDebugSymbols = True
+                DebugSymbols = True
             End If
 
             SetDirty(VsProjPropId.VBPROJPROPID_DebugSymbols, False)

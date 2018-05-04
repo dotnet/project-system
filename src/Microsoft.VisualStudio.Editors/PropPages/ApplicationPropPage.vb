@@ -75,7 +75,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Get
                 If m_ControlData Is Nothing Then
 
-                    m_TargetFrameworkPropertyControlData = New TargetFrameworkPropertyControlData(
+                    TargetFrameworkPropertyControlData = New TargetFrameworkPropertyControlData(
                             VslangProj100.VsProjPropId100.VBPROJPROPID_TargetFrameworkMoniker, Const_TargetFrameworkMoniker,
                             TargetFramework,
                             AddressOf SetTargetFrameworkMoniker, AddressOf GetTargetFrameworkMoniker,
@@ -102,7 +102,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId90.VBPROJPROPID_ApplicationManifest, "ApplicationManifest", ApplicationManifest, AddressOf ApplicationManifestSet, AddressOf ApplicationManifestGet, ControlDataFlags.UserHandledEvents, New Control() {ApplicationManifest, ApplicationManifestLabel})
                     datalist.Add(data)
-                    datalist.Add(m_TargetFrameworkPropertyControlData)
+                    datalist.Add(TargetFrameworkPropertyControlData)
                     m_ControlData = datalist.ToArray()
 
                 End If

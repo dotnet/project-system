@@ -21,12 +21,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Const Const_OutputType As String = "OutputType"
         Protected Const Const_OutputTypeEx As String = "OutputTypeEx"
 
-        Protected m_TargetFrameworkPropertyControlData As TargetFrameworkPropertyControlData
+        Protected TargetFrameworkPropertyControlData As TargetFrameworkPropertyControlData
 
         Protected Overrides Sub CleanupCOMReferences()
             MyBase.CleanupCOMReferences()
 
-            m_TargetFrameworkPropertyControlData.Cleanup()
+            TargetFrameworkPropertyControlData.Cleanup()
         End Sub
 
         Protected Function SupportsProperty(propertyName As String) As Boolean
@@ -138,7 +138,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     targetFrameworkComboBox.Items.Add(New InstallOtherFrameworksComboBoxValue())
 
                     ' Set the service provider to be used when choosing the 'Install other frameworks...' item
-                    m_TargetFrameworkPropertyControlData.Site = siteServiceProvider
+                    TargetFrameworkPropertyControlData.Site = siteServiceProvider
 
                     targetFrameworkSupported = True
                 End If
@@ -190,7 +190,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Next
             End If
 
-            m_TargetFrameworkPropertyControlData.IndexOfLastCommittedValue = combobox.SelectedIndex
+            TargetFrameworkPropertyControlData.IndexOfLastCommittedValue = combobox.SelectedIndex
 
             Return True
         End Function

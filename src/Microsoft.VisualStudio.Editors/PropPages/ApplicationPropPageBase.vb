@@ -20,10 +20,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Inherits PropPageUserControlBase
 
         Private _lastIconImage As String
+#Disable Warning IDE1006 ' Naming Styles  (for compat)  
         Protected m_DefaultIconText As String
         Protected m_DefaultManifestText As String
         Protected m_NoManifestText As String
         Protected m_DefaultIcon As Icon
+#Enable Warning IDE1006 ' Naming Styles
 
         Public Sub New()
             MyBase.New()

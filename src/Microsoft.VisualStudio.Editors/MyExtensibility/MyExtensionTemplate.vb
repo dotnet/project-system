@@ -90,7 +90,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
         Public ReadOnly Property ID() As String
             Get
-                Return _ID
+                Return _id
             End Get
         End Property
 
@@ -113,7 +113,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
         Public ReadOnly Property DisplayName() As String Implements INamedDescribedObject.DisplayName
             Get
                 If StringIsNullEmptyOrBlank(_template.Name) Then
-                    Return _ID
+                    Return _id
                 Else
                     Return _template.Name.Trim()
                 End If
@@ -156,12 +156,12 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             Debug.Assert(Not StringIsNullEmptyOrBlank(template.FilePath), "Invalid template.FilePath!")
 
             _assemblyFullName = assemblyFullName
-            _ID = id
+            _id = id
             _version = version
             _template = template
         End Sub
 
-        Private ReadOnly _ID As String ' Extension ID
+        Private ReadOnly _id As String ' Extension ID
         Private ReadOnly _version As Version ' Extension version
         Private _template As Template ' VSCore Template file.
         Private ReadOnly _assemblyFullName As String ' Full name of the triggering assembly.

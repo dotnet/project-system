@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Strict On
 Option Explicit On
@@ -34,11 +34,11 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
         Public Overrides Function GetPreferredSize(proposedsize As Size) As Size
             Dim prefSize As Size = MyBase.GetPreferredSize(proposedsize)
-            If (proposedsize.Width > 1) AndAlso _
-                    (prefSize.Width > proposedsize.Width) AndAlso _
-                    (Not String.IsNullOrEmpty(Text) AndAlso _
-                    Not proposedsize.Width.Equals(Int32.MaxValue) OrElse _
-                    Not proposedsize.Height.Equals(Int32.MaxValue)) Then
+            If (proposedsize.Width > 1) AndAlso
+                    (prefSize.Width > proposedsize.Width) AndAlso
+                    (Not String.IsNullOrEmpty(Text) AndAlso
+                    Not proposedsize.Width.Equals(Integer.MaxValue) OrElse
+                    Not proposedsize.Height.Equals(Integer.MaxValue)) Then
                 ' we have the possiblility of wrapping... back out the single line of text
                 Dim bordersAndPadding As Size = prefSize - _cachedSizeOfOneLineOfText
                 ' add back in the text size, subtract baseprefsize.width and 3 from proposed size width 
@@ -54,7 +54,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 End If
 
                 If (Not _preferredSizeHash.ContainsKey(newConstraints)) Then
-                    prefSize = bordersAndPadding + TextRenderer.MeasureText(Text, Font, _
+                    prefSize = bordersAndPadding + TextRenderer.MeasureText(Text, Font,
                         newConstraints, TextFormatFlags.WordBreak)
                     _preferredSizeHash(newConstraints) = prefSize
                 Else
@@ -71,8 +71,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             If String.IsNullOrEmpty(Text) Then
                 _cachedSizeOfOneLineOfText = Size.Empty
             Else
-                _cachedSizeOfOneLineOfText = TextRenderer.MeasureText(Text, Font, _
-                    New Size(Int32.MaxValue, Int32.MaxValue), TextFormatFlags.WordBreak)
+                _cachedSizeOfOneLineOfText = TextRenderer.MeasureText(Text, Font,
+                    New Size(Integer.MaxValue, Integer.MaxValue), TextFormatFlags.WordBreak)
             End If
         End Sub
 

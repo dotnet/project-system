@@ -104,8 +104,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         'The service provider to use.  May be Nothing
         Private _serviceProvider As IServiceProvider
 
-        Private _UIShellService As IVsUIShell
-        Private _UIShell5Service As IVsUIShell5
+        Private _uiShellService As IVsUIShell
+        Private _uiShell5Service As IVsUIShell5
 
         'Backs the PreferredButtonInSwitchableSlot property
         Private _preferredButtonForSwitchableSlot As ProjectDesignerTabButton
@@ -117,7 +117,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private _creatingGDIObjects As Boolean
 
         'True if the GDI objects have been created
-        Private _GDIObjectsCreated As Boolean
+        Private _gdiObjectsCreated As Boolean
 
         'True if the gradient brushes have been created
         Private _gradientBrushesCreated As Boolean
@@ -152,7 +152,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End Get
             Set(value As IServiceProvider)
                 _serviceProvider = value
-                If _GDIObjectsCreated Then
+                If _gdiObjectsCreated Then
                     'If we've already created GDI stuff/layout, we will need to re-create them.  Otherwise
                     '  we just wait for on-demand.
                     CreateGDIObjects(True)
@@ -168,15 +168,15 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <remarks>Uses the publicly-obtained ServiceProvider property, if it was set.</remarks>
         Private ReadOnly Property VsUIShellService() As IVsUIShell
             Get
-                If (_UIShellService Is Nothing) Then
+                If (_uiShellService Is Nothing) Then
                     If Common.VBPackageInstance IsNot Nothing Then
-                        _UIShellService = TryCast(Common.VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
+                        _uiShellService = TryCast(Common.VBPackageInstance.GetService(GetType(IVsUIShell)), IVsUIShell)
                     ElseIf ServiceProvider IsNot Nothing Then
-                        _UIShellService = TryCast(ServiceProvider.GetService(GetType(IVsUIShell)), IVsUIShell)
+                        _uiShellService = TryCast(ServiceProvider.GetService(GetType(IVsUIShell)), IVsUIShell)
                     End If
                 End If
 
-                Return _UIShellService
+                Return _uiShellService
             End Get
         End Property
 
@@ -187,15 +187,15 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <remarks>Uses the publicly-obtained ServiceProvider property, if it was set.</remarks>
         Private ReadOnly Property VsUIShell5Service() As IVsUIShell5
             Get
-                If (_UIShell5Service Is Nothing) Then
+                If (_uiShell5Service Is Nothing) Then
                     Dim VsUIShell = VsUIShellService
 
                     If (VsUIShell IsNot Nothing) Then
-                        _UIShell5Service = TryCast(VsUIShell, IVsUIShell5)
+                        _uiShell5Service = TryCast(VsUIShell, IVsUIShell5)
                     End If
                 End If
 
-                Return _UIShell5Service
+                Return _uiShell5Service
             End Get
         End Property
 
@@ -236,7 +236,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             If _creatingGDIObjects Then
                 Exit Sub
             End If
-            If _GDIObjectsCreated AndAlso Not ForceUpdate Then
+            If _gdiObjectsCreated AndAlso Not ForceUpdate Then
                 Exit Sub
             End If
 
@@ -293,7 +293,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     UpdateCacheState()
                 End If
 
-                _GDIObjectsCreated = True
+                _gdiObjectsCreated = True
             Finally
                 _creatingGDIObjects = False
             End Try

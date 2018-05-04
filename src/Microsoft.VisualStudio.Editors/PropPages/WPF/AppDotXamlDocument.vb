@@ -172,7 +172,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <remarks></remarks>
         <DebuggerDisplay("{ActualDefinitionText}, Value={UnescapedValue}")> _
         Friend MustInherit Class XamlProperty
-            Protected m_vsTextLines As IVsTextLines
+            Protected VsTextLines As IVsTextLines
             Private ReadOnly _definitionIncludesQuotes As Boolean
             Private ReadOnly _unescapedValue As String 'Unescaped, translated value of the property from the XmlReader
             Private ReadOnly _startLocation As Location
@@ -196,7 +196,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                 _startLocation = startLocation
                 _endLocationPlusOne = endLocation
                 _unescapedValue = unescapedValue
-                m_vsTextLines = vsTextLines
+                Me.VsTextLines = vsTextLines
                 _definitionIncludesQuotes = definitionIncludesQuotes
             End Sub
 
@@ -211,7 +211,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Public Overridable ReadOnly Property ActualDefinitionText() As String
                 Get
                     Dim buffer As String = Nothing
-                    ErrorHandler.ThrowOnFailure(m_vsTextLines.GetLineText(DefinitionStart.LineIndex, DefinitionStart.CharIndex, DefinitionEndPlusOne.LineIndex, DefinitionEndPlusOne.CharIndex, buffer))
+                    ErrorHandler.ThrowOnFailure(VsTextLines.GetLineText(DefinitionStart.LineIndex, DefinitionStart.CharIndex, DefinitionEndPlusOne.LineIndex, DefinitionEndPlusOne.CharIndex, buffer))
                     Return buffer
                 End Get
             End Property

@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports Microsoft.VisualBasic.ApplicationServices
 Imports Microsoft.VisualStudio.Editors.Common
@@ -175,7 +175,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     data = New PropertyControlData(VsProjPropId90.VBPROJPROPID_ApplicationManifest, "ApplicationManifest", Nothing, ControlDataFlags.Hidden)
                     datalist.Add(data)
 
-                    m_TargetFrameworkPropertyControlData = New TargetFrameworkPropertyControlData(
+                    TargetFrameworkPropertyControlData = New TargetFrameworkPropertyControlData(
                             VsProjPropId100.VBPROJPROPID_TargetFrameworkMoniker,
                             ApplicationPropPage.Const_TargetFrameworkMoniker,
                             TargetFrameworkComboBox,
@@ -184,7 +184,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             ControlDataFlags.ProjectMayBeReloadedDuringPropertySet Or ControlDataFlags.NoOptimisticFileCheckout,
                             New Control() {TargetFrameworkLabel})
 
-                    datalist.Add(m_TargetFrameworkPropertyControlData)
+                    datalist.Add(TargetFrameworkPropertyControlData)
 
                     m_ControlData = datalist.ToArray()
                 End If
