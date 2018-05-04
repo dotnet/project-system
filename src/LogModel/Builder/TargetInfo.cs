@@ -19,6 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
         public string Name { get; }
         public string SourceFilePath { get; }
         public string ParentTarget { get; }
+        public TargetBuiltReason Reason { get; }
         public DateTime StartTime { get; }
         public DateTime EndTime { get; private set; }
         public Result Result { get; private set; }
@@ -28,13 +29,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
         public IReadOnlyList<PropertySetInfo> PropertySetInfos => _propertySetInfos;
         public IReadOnlyDictionary<int, TaskInfo> TaskInfos => _taskInfos;
 
-        public TargetInfo(int id, int nodeId, string name, string sourceFilePath, string parentTarget, DateTime startTime)
+        public TargetInfo(int id, int nodeId, string name, string sourceFilePath, string parentTarget, TargetBuiltReason reason, DateTime startTime)
         {
             Id = id;
             NodeId = nodeId;
             Name = name;
             SourceFilePath = sourceFilePath;
             ParentTarget = parentTarget;
+            Reason = reason;
             StartTime = startTime;
         }
 
@@ -43,6 +45,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
             Id = BuildEventContext.InvalidTargetId;
             NodeId = BuildEventContext.InvalidNodeId;
             Name = name;
+            StartTime = startTime;
+            EndTime = startTime;
+            Result = Result.Skipped;
+        }
+
+        public TargetInfo(string name, string sourceFilePath, string parentTarget, TargetBuiltReason reason, DateTime startTime)
+        {
+            Id = BuildEventContext.InvalidTargetId;
+            NodeId = BuildEventContext.InvalidNodeId;
+            Name = name;
+            SourceFilePath = sourceFilePath;
+            ParentTarget = parentTarget;
+            Reason = reason;
             StartTime = startTime;
             EndTime = startTime;
             Result = Result.Skipped;

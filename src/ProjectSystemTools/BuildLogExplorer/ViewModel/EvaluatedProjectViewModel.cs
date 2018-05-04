@@ -12,11 +12,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogExplorer.ViewModel
         private readonly Evaluation _evaluation;
         private readonly EvaluatedProject _evaluatedProject;
         private string _text;
+        private List<object> _children;
         private SelectedObjectWrapper _properties;
 
         public override string Text => _text ?? (_text = _evaluatedProject.Name);
 
         protected override Node Node => _evaluatedProject;
+
+        public override IEnumerable<object> Children => _children ?? (_children = GetChildren());
 
         public override SelectedObjectWrapper Properties => _properties ?? (_properties =
             new SelectedObjectWrapper(
@@ -41,6 +44,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogExplorer.ViewModel
         {
             _evaluatedProject = evaluation.EvaluatedProjects[0];
             _evaluation = evaluation;
+        }
+
+        private List<object> GetChildren()
+        {
+            var list = new List<object>();
+
+            if (_evaluatedProject.EvaluationProfile != null)
+            {
+                list.AddRange(_evaluatedProject.EvaluationProfile.Passes.Select(pass => new EvaluatedPassViewModel(pass)));
+                if (_evaluatedProject.EvaluationProfile.GlobTime != null)
+                {
+                    list.Add(new TextViewModel($"Glob total [{FormatTime(_evaluatedProject.EvaluationProfile.GlobTime)}]"));
+                }
+            }
+
+            return list;
         }
     }
 }

@@ -9,12 +9,10 @@
     <!-- Toolset -->
     <RoslynToolsRepoToolsetVersion>1.0.0-beta-62615-02</RoslynToolsRepoToolsetVersion>
     <VSWhereVersion>2.1.4</VSWhereVersion>
-    <MicrosoftNetCompilersVersion>2.6.0-beta3-62310-01</MicrosoftNetCompilersVersion>
+    <MicrosoftNetCompilersVersion>2.8.0</MicrosoftNetCompilersVersion>
 
     <!-- MSBuild -->
-    <MicrosoftBuildVersion>15.4.8</MicrosoftBuildVersion>
-    <MicrosoftBuildEngineVersion>15.4.8</MicrosoftBuildEngineVersion>
-    <MicrosoftBuildFrameworkVersion>15.4.8</MicrosoftBuildFrameworkVersion>
+    <MicrosoftBuildVersion>15.6.85</MicrosoftBuildVersion>
     
     <!-- VS SDK -->
     <MicrosoftVisualStudioComponentModelHostVersion>15.4.27004</MicrosoftVisualStudioComponentModelHostVersion>

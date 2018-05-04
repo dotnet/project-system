@@ -9,7 +9,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel
     {
         public DateTime StartTime { get; }
         public DateTime EndTime { get; }
-        public TimeSpan Duration => EndTime - StartTime;
 
         public ImmutableList<Message> Messages { get; }
 
@@ -21,15 +20,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel
             StartTime = startTime;
             EndTime = endTime;
             Result = result;
-        }
-
-        public string DurationText
-        {
-            get
-            {
-                var result = Duration.ToString(@"s\.fff");
-                return result == "0.000" ? "" : $" ({result}s)";
-            }
         }
     }
 }

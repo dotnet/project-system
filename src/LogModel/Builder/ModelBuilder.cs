@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.Build.Framework;
+using Microsoft.Build.Framework.Profiler;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
 {
@@ -71,6 +72,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
 
                         case TargetStartedEventArgs targetStartedEventArgs:
                             OnTargetStarted(targetStartedEventArgs);
+                            break;
+
+                        case TargetSkippedEventArgs targetSkippedEventArgs:
+                            OnTargetSkipped(targetSkippedEventArgs);
                             break;
 
                         case TargetFinishedEventArgs targetFinishedEventArgs:
@@ -346,12 +351,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
                 args.BuildEventContext.NodeId,
                 Intern(args.TargetName),
                 Intern(args.TargetFile),
-                args.ParentTarget,
+                Intern(args.ParentTarget),
+                args.BuildReason,
                 args.Timestamp);
             AddMessage(targetInfo, args);
 
             projectInfo.AddTarget(args.BuildEventContext.TargetId, targetInfo);
             projectInfo.AddExecutedTarget(targetInfo.Name, targetInfo);
+        }
+
+        private void OnTargetSkipped(TargetSkippedEventArgs args)
+        {
+            var projectInfo = FindProjectContext(args);
+
+            var targetInfo = new TargetInfo(
+                Intern(args.TargetName), 
+                Intern(args.TargetFile), 
+                Intern(args.ParentTarget),
+                args.BuildReason,
+                args.Timestamp);
+            AddMessage(targetInfo, args);
+            projectInfo.AddExecutedTarget(args.TargetName, targetInfo);
         }
 
         private void OnTargetFinished(TargetFinishedEventArgs args)
@@ -813,11 +833,78 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
             evaluationInfo.StartEvaluatingProject(evaluatedProject);
         }
 
+        private EvaluatedProfileInfo InterpretEvaluationProfile(ProfilerResult profilerResult)
+        {
+            var groups = profilerResult.ProfiledLocations.GroupBy(l => l.Key.ParentId).ToList();
+            var roots = groups.Where(g => g.Key == null).ToArray();
+
+            if (roots.Length < 1 || roots.Length > 2 || roots.Any(r => r.Count() != 1))
+            {
+                throw new LoggerException(Resources.UnexpectedProfile);
+            }
+
+            KeyValuePair<EvaluationLocation, ProfiledLocation> evaluationRoot = default;
+            KeyValuePair<EvaluationLocation, ProfiledLocation> globRoot = default;
+
+            foreach (var root in roots.Select(root => root.Single()))
+            {
+                if (root.Key.Kind == EvaluationLocationKind.Element)
+                {
+                    evaluationRoot = root;
+                }
+                else
+                {
+                    globRoot = root;
+                }
+            }
+
+            IEnumerable<EvaluatedLocationInfo> CollectChildren(long parentId) => 
+                groups
+                    .SingleOrDefault(g => g.Key == parentId)
+                    ?.Select(location => new EvaluatedLocationInfo(
+                        Intern(location.Key.ElementName),
+                        Intern(location.Key.ElementDescription), 
+                        location.Key.Kind, 
+                        Intern(location.Key.File),
+                        location.Key.Line, 
+                        CollectChildren(location.Key.Id),
+                        new TimeInfo(
+                            location.Value.ExclusiveTime, 
+                            location.Value.InclusiveTime,
+                            location.Value.NumberOfHits)));
+
+            return new EvaluatedProfileInfo(
+                groups
+                    .Single(g => g.Key == evaluationRoot.Key.Id)
+                    .OrderBy(p => p.Key.EvaluationPass)
+                    .Select(p => new EvaluatedPassInfo(
+                        p.Key.EvaluationPass,
+                        Intern(p.Key.EvaluationPassDescription),
+                        CollectChildren(p.Key.Id),
+                        new TimeInfo(
+                            p.Value.ExclusiveTime,
+                            p.Value.InclusiveTime,
+                            p.Value.NumberOfHits))),
+                new TimeInfo(
+                    evaluationRoot.Value.ExclusiveTime, 
+                    evaluationRoot.Value.InclusiveTime, 
+                    evaluationRoot.Value.NumberOfHits),
+                new TimeInfo(
+                    globRoot.Value.ExclusiveTime, 
+                    globRoot.Value.InclusiveTime, 
+                    globRoot.Value.NumberOfHits));
+        }
+
         private void OnProjectEvaluationFinished(object sender, ProjectEvaluationFinishedEventArgs args)
         {
             var evaluationInfo = FindEvaluationContext(args);
             var evaluatedProjectInfo = evaluationInfo.EndEvaluatingProject(args.ProjectFile);
-            evaluatedProjectInfo.EndEvaluatedProject(args.Timestamp);
+            EvaluatedProfileInfo evaluationProfileInfo = null;
+            if (args.ProfilerResult != null)
+            {
+                evaluationProfileInfo = InterpretEvaluationProfile(args.ProfilerResult.Value);
+            }
+            evaluatedProjectInfo.EndEvaluatedProject(evaluationProfileInfo, args.Timestamp);
             AddMessage(evaluatedProjectInfo, args);
         }
 
@@ -968,6 +1055,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
                 targetInfo.IsRequestedTarget,
                 targetInfo.SourceFilePath,
                 targetInfo.ParentTarget,
+                targetInfo.Reason,
                 EmptyIfNull(targetInfo.ItemActionInfos?.Select(ConstructItemAction).OrderBy(OrderItemActions).ToImmutableList()),
                 EmptyIfNull(targetInfo.PropertySetInfos?.Select(ConstructPropertySet).OrderBy(OrderPropertySets).ToImmutableList()),
                 EmptyIfNull(targetInfo.OutputItems?.Select(ConstructItem).OrderBy(OrderItems).ToImmutableList()),
@@ -978,9 +1066,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
                 targetInfo.Result
             );
 
+        private static EvaluatedLocation ConstructEvaluatedLocation(EvaluatedLocationInfo evaluatedLocationInfo) =>
+            new EvaluatedLocation(
+                evaluatedLocationInfo.ElementName,
+                evaluatedLocationInfo.ElementDescription,
+                evaluatedLocationInfo.Kind,
+                evaluatedLocationInfo.File,
+                evaluatedLocationInfo.Line,
+                evaluatedLocationInfo.Children.Select(ConstructEvaluatedLocation),
+                new Time(evaluatedLocationInfo.Time.ExclusiveTime, evaluatedLocationInfo.Time.InclusiveTime, evaluatedLocationInfo.Time.NumberOfHits)
+            );
+
+        private static EvaluatedPass ConstructEvaluatedPass(EvaluatedPassInfo evaluatedPassInfo) =>
+            new EvaluatedPass(
+                evaluatedPassInfo.Pass,
+                evaluatedPassInfo.Description,
+                evaluatedPassInfo.Locations.Select(ConstructEvaluatedLocation).ToImmutableArray(),
+                new Time(evaluatedPassInfo.Time.ExclusiveTime, evaluatedPassInfo.Time.InclusiveTime, evaluatedPassInfo.Time.NumberOfHits)
+            );
+        
+        private static EvaluatedProfile ConstructEvaluatedProfile(EvaluatedProfileInfo evaluatedProfileInfo) =>
+            new EvaluatedProfile(
+                evaluatedProfileInfo.Passes.Select(ConstructEvaluatedPass).OrderBy(p => p.Pass).ToImmutableArray(),
+                new Time(evaluatedProfileInfo.EvaluationTimeInfo.ExclusiveTime, evaluatedProfileInfo.EvaluationTimeInfo.InclusiveTime, evaluatedProfileInfo.EvaluationTimeInfo.NumberOfHits),
+                new Time(evaluatedProfileInfo.GlobTimeInfo.ExclusiveTime, evaluatedProfileInfo.GlobTimeInfo.InclusiveTime, evaluatedProfileInfo.GlobTimeInfo.NumberOfHits)
+            );
+
         private static EvaluatedProject ConstructEvaluatedProject(EvaluatedProjectInfo evaluatedProjectInfo) =>
             new EvaluatedProject(
                 evaluatedProjectInfo.Name,
+                evaluatedProjectInfo.EvaluationProfile == null ? null : ConstructEvaluatedProfile(evaluatedProjectInfo.EvaluationProfile),
                 evaluatedProjectInfo.StartTime,
                 evaluatedProjectInfo.EndTime,
                 evaluatedProjectInfo.Messages.Select(ConstructMessage).OrderBy(OrderMessages).ToImmutableList()
@@ -1029,7 +1144,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
                     .Where(target => target.TaskInfos != null)
                     .SelectMany(target => target.TaskInfos.Values).ToArray();
 
-                if (Path.GetExtension(projectInfo.ProjectFile) == ".tmp_proj")
+                if (Path.GetExtension(projectInfo.ProjectFile) == ".tmp_proj" ||
+                    Path.GetFileNameWithoutExtension(projectInfo.ProjectFile).EndsWith("_wpftmp"))
                 {
                     parentTask = tasks.SingleOrDefault(task => task.Name == "GenerateTemporaryTargetAssembly");
                 }

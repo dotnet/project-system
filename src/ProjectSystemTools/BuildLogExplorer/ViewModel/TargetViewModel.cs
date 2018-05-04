@@ -35,7 +35,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogExplorer.ViewModel
                             {"Source File", _target.SourceFilePath },
                             {"Parent", _target.ParentTarget },
                             {"Started", _target.StartTime.ToString(CultureInfo.InvariantCulture)},
-                            {"Finished", _target.EndTime.ToString(CultureInfo.InvariantCulture)}
+                            {"Finished", _target.EndTime.ToString(CultureInfo.InvariantCulture)},
+                            {"Reason", _target.Reason.ToString() }
                         }
                     }
                 }));
