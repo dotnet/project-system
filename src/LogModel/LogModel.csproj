@@ -4,9 +4,6 @@
     <RootNamespace>Microsoft.VisualStudio.ProjectSystem.LogModel</RootNamespace>
     <AssemblyName>Microsoft.VisualStudio.ProjectSystem.LogModel</AssemblyName>
     <IsProductComponent>false</IsProductComponent>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
