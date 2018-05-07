@@ -34,13 +34,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
             IActiveProjectConfigurationRefreshService activeProjectConfigurationRefreshService,
             ITargetFrameworkProvider targetFrameworkProvider,
-            IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider)
+            IAggregateDependenciesSnapshotProvider aggregateSnapshotProvider,
+            IUnconfiguredProjectTasksService unconfiguredProjectTasksService)
             : base(commonServices,
                    contextProvider,
                    tasksService,
                    activeConfiguredProjectSubscriptionService,
                    activeProjectConfigurationRefreshService,
-                   targetFrameworkProvider)
+                   targetFrameworkProvider,
+                   unconfiguredProjectTasksService)
         {
             CommonServices = commonServices;
             DependencySubscribers = new OrderPrecedenceImportCollection<IDependencyCrossTargetSubscriber>(
