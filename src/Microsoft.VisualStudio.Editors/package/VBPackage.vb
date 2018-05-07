@@ -59,8 +59,8 @@ Namespace Microsoft.VisualStudio.Editors
         ''' </summary>
         ''' <remarks></remarks>
         Protected Overrides Sub Initialize()
-            Debug.Assert(s_Instance Is Nothing, "VBPackage initialized multiple times?")
-            s_Instance = Me
+            Debug.Assert(s_instance Is Nothing, "VBPackage initialized multiple times?")
+            s_instance = Me
             MyBase.Initialize()
 
             'Register editor factories
@@ -219,11 +219,11 @@ Namespace Microsoft.VisualStudio.Editors
             MyBase.Dispose(disposing)
         End Sub
 
-        Protected Shared s_Instance As VBPackage
+        Private Shared s_instance As VBPackage
 
         Public Shared ReadOnly Property Instance() As VBPackage
             Get
-                Return s_Instance
+                Return s_instance
             End Get
         End Property
 
