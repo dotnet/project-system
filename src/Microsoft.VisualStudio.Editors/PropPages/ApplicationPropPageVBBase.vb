@@ -24,7 +24,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '  issues using it, so instead the pages have separate UI's, and 
         '  controls which have the same function between the two pages can
         '  be identified and shared here
-        Protected Friend Class CommonControls
+        Protected Friend Class CommonPageControls
             Public IconCombobox As ComboBox
             Public IconLabel As Label
             Public IconPicturebox As PictureBox
@@ -38,7 +38,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Me.IconPicturebox = IconPicturebox
             End Sub
         End Class
-        Protected Friend m_CommonControls As CommonControls
+        Protected Friend CommonControls As CommonPageControls
 #End Region
 
         Protected IconBrowseText As String
@@ -68,7 +68,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   and so may be appropriate for page initialization).</param>
         ''' <remarks></remarks>
         Protected Overloads Sub PopulateIconList(FindIconsInProject As Boolean)
-            PopulateIconList(FindIconsInProject, m_CommonControls.IconCombobox, CType(GetControlValueNative(Const_ApplicationIcon), String))
+            PopulateIconList(FindIconsInProject, CommonControls.IconCombobox, CType(GetControlValueNative(Const_ApplicationIcon), String))
         End Sub
 
 
@@ -98,7 +98,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <remarks></remarks>
         Protected Overridable Sub EnableIconComboBox(Enable As Boolean)
-            EnableControl(m_CommonControls.IconCombobox, Enable)
+            EnableControl(CommonControls.IconCombobox, Enable)
             UpdateIconImage(False)
         End Sub
 
@@ -120,7 +120,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <remarks></remarks>
         Protected Overloads Sub UpdateIconImage(AddToProject As Boolean)
-            UpdateIconImage(m_CommonControls.IconCombobox, m_CommonControls.IconPicturebox, AddToProject)
+            UpdateIconImage(CommonControls.IconCombobox, CommonControls.IconPicturebox, AddToProject)
         End Sub
 
 
@@ -129,7 +129,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         Protected Function ApplicationIconSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             If PropertyControlData.IsSpecialValue(value) Then
-                m_CommonControls.IconCombobox.SelectedIndex = -1
+                CommonControls.IconCombobox.SelectedIndex = -1
             Else
                 Dim IconText As String = CStr(value) 'Relative path to the icon
                 Debug.Assert(Not IconEntryIsSpecial(IconText))
@@ -137,11 +137,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     IconText = m_DefaultIconText
                 End If
 
-                Dim index As Integer = m_CommonControls.IconCombobox.Items.IndexOf(IconText)
+                Dim index As Integer = CommonControls.IconCombobox.Items.IndexOf(IconText)
                 If index = -1 Then
-                    index = m_CommonControls.IconCombobox.Items.Add(IconText)
+                    index = CommonControls.IconCombobox.Items.Add(IconText)
                 End If
-                m_CommonControls.IconCombobox.SelectedIndex = index
+                CommonControls.IconCombobox.SelectedIndex = index
                 UpdateIconImage(AddToProject:=False)
             End If
 
@@ -186,7 +186,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
             Dim ItemText As String = TryCast(IconCombobox.SelectedItem, String)
             If IconEntryIsBrowse(ItemText) Then
-                BrowseForAppIcon(IconCombobox, m_CommonControls.IconPicturebox)
+                BrowseForAppIcon(IconCombobox, CommonControls.IconPicturebox)
             Else
                 UpdateIconImage(True)
                 SetDirty(VsProjPropId.VBPROJPROPID_ApplicationIcon, True)

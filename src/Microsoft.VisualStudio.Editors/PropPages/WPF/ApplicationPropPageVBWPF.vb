@@ -252,7 +252,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub SetCommonControls()
-            m_CommonControls = New CommonControls(
+            CommonControls = New CommonPageControls(
                 IconCombobox, IconLabel, IconPicturebox)
         End Sub
 
@@ -404,7 +404,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <remarks></remarks>
         Protected Overrides Sub EnableIconComboBox(Enable As Boolean)
             'Icon combobox shouldn't be enabled for XBAP projects
-            EnableControl(m_CommonControls.IconCombobox, Enable AndAlso Not IsXBAP())
+            EnableControl(CommonControls.IconCombobox, Enable AndAlso Not IsXBAP())
             UpdateIconImage(False)
         End Sub
 

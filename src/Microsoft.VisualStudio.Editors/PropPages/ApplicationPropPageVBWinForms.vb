@@ -112,7 +112,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub SetCommonControls()
-            m_CommonControls = New CommonControls(
+            CommonControls = New CommonPageControls(
                 IconCombobox, IconLabel, IconPicturebox)
         End Sub
 
