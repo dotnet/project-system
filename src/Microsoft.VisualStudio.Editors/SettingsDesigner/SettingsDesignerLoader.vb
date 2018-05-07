@@ -296,7 +296,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private Function AttachAppConfigDocData(CreateIfNotExist As Boolean) As Boolean
             ' Now, Let's try and get to the app.config file
             If _appConfigDocData Is Nothing Then
-                _appConfigDocData = AppConfigSerializer.GetAppConfigDocData(VBPackage.Instance, VsHierarchy, CreateIfNotExist, False, m_DocDataService)
+                _appConfigDocData = AppConfigSerializer.GetAppConfigDocData(VBPackage.Instance, VsHierarchy, CreateIfNotExist, False, DocDataService)
                 If _appConfigDocData IsNot Nothing Then
                     AddHandler _appConfigDocData.DataChanged, AddressOf ExternalChange
                 End If
