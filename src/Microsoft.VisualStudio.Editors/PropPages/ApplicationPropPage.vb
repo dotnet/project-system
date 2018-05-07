@@ -1,4 +1,4 @@
-Imports System.ComponentModel
+﻿Imports System.ComponentModel
 Imports System.IO
 Imports System.Windows.Forms
 Imports Microsoft.VisualStudio.Editors.Common
@@ -24,7 +24,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend Const Const_TargetFrameworkMoniker As String = "TargetFrameworkMoniker"
         Protected m_RootNamespace As String
 
-        Private m_OutputTypeDefaultValues As OutputTypeComboBoxValue()
+        Private _outputTypeDefaultValues As OutputTypeComboBoxValue()
 
         Protected Const INDEX_WINDOWSAPP As Integer = 0
         Protected Const INDEX_COMMANDLINEAPP As Integer = 1
@@ -32,7 +32,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private m_StartupObject As String
 
-        Private m_controlGroup As Control()()
+        Private _controlGroup As Control()()
 
         Public Sub New()
             MyBase.New()
@@ -40,10 +40,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'This call is required by the Windows Form Designer.
             InitializeComponent()
 
-            m_OutputTypeDefaultValues = New OutputTypeComboBoxValue(INDEX_WINDOWSCLASSLIB) {}
-            m_OutputTypeDefaultValues(INDEX_WINDOWSAPP) = New OutputTypeComboBoxValue(INDEX_WINDOWSAPP)
-            m_OutputTypeDefaultValues(INDEX_COMMANDLINEAPP) = New OutputTypeComboBoxValue(INDEX_COMMANDLINEAPP)
-            m_OutputTypeDefaultValues(INDEX_WINDOWSCLASSLIB) = New OutputTypeComboBoxValue(INDEX_WINDOWSCLASSLIB)
+            _outputTypeDefaultValues = New OutputTypeComboBoxValue(INDEX_WINDOWSCLASSLIB) {}
+            _outputTypeDefaultValues(INDEX_WINDOWSAPP) = New OutputTypeComboBoxValue(INDEX_WINDOWSAPP)
+            _outputTypeDefaultValues(INDEX_COMMANDLINEAPP) = New OutputTypeComboBoxValue(INDEX_COMMANDLINEAPP)
+            _outputTypeDefaultValues(INDEX_WINDOWSCLASSLIB) = New OutputTypeComboBoxValue(INDEX_WINDOWSCLASSLIB)
 
             'Add any initialization after the InitializeComponent() call
             AddChangeHandlers()
@@ -112,12 +112,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Protected Overrides ReadOnly Property ValidationControlGroups() As Control()()
             Get
-                If m_controlGroup Is Nothing Then
-                    m_controlGroup = New Control()() {
+                If _controlGroup Is Nothing Then
+                    _controlGroup = New Control()() {
                         New Control() {IconRadioButton, Win32ResourceRadioButton, ApplicationIcon, ApplicationManifest, Win32ResourceFile, AppIconBrowse, Win32ResourceFileBrowse}
                         }
                 End If
-                Return m_controlGroup
+                Return _controlGroup
             End Get
         End Property
 
@@ -680,7 +680,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             ElseIf Not PopulateOutputTypeComboBoxFromProjectProperty(OutputType) Then
 
-                OutputType.Items.AddRange(m_OutputTypeDefaultValues)
+                OutputType.Items.AddRange(_outputTypeDefaultValues)
 
             End If
 
