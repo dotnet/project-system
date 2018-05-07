@@ -30,8 +30,6 @@ Namespace Microsoft.VisualStudio.Editors
 
             Friend Shared ReadOnly CommandIDVSStd97cmdidCut As New CommandID(GuidVSStd97, CmdIdCut)
 
-            ' GUID constants.
-
         End Class
     End Class
 
