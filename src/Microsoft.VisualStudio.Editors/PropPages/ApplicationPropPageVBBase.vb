@@ -495,8 +495,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 #End Region
 
 #Region "View UAC Settings"
-        Protected Const prjApplicationManifest_Default As String = "DefaultManifest"
-        Protected Const prjApplicationManifest_NoManifest As String = "NoManifest"
+        Protected Const ApplicationManifest_Default As String = "DefaultManifest"
+        Protected Const ApplicationManifest_NoManifest As String = "NoManifest"
 
         ''' <summary>
         ''' Enables or disables the UAC Settings button, depending on whether we're in a class
@@ -551,8 +551,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     '   add a new manifest to the project file if we find that the property value is the special "no manifest"
                     '   value.
                     '
-                    If String.Equals(ApplicationManifest, prjApplicationManifest_NoManifest, StringComparison.Ordinal) Then
-                        ApplicationManifest = prjApplicationManifest_Default
+                    If String.Equals(ApplicationManifest, ApplicationManifest_NoManifest, StringComparison.Ordinal) Then
+                        ApplicationManifest = ApplicationManifest_Default
                     End If
 
                     Debug.Assert(ProjectHierarchy IsNot Nothing, "Hierarchy is nothing...")
@@ -569,7 +569,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     '   a manifest in it, and we should try to add one.
                     ' otherwise, the project already has one and we should use that document.
                     '
-                    If String.Equals(ApplicationManifest, prjApplicationManifest_Default, StringComparison.Ordinal) Then
+                    If String.Equals(ApplicationManifest, ApplicationManifest_Default, StringComparison.Ordinal) Then
                         ' this will call ProjectSpecialFiles to find an app.manifest, creating one if it does not already
                         '   exist. note that "find" may actually find one without setting our ApplicationManifest property.
                         '
@@ -587,7 +587,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         MkDocument = ApplicationManifest
                     End If
 
-                    If String.Equals(ApplicationManifest, prjApplicationManifest_Default, StringComparison.Ordinal) Then
+                    If String.Equals(ApplicationManifest, ApplicationManifest_Default, StringComparison.Ordinal) Then
 
                         ' If the project was upgraded from Whidbey and app.manifest exists in the project already then
                         ' ApplicationManifest would not be set by default and thus remain "DefaultManifest".
