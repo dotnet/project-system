@@ -1274,8 +1274,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         End Sub
 
 #If True Then 'CONSIDER rewriting now that virtualized listview has way to select/deselect
-        <StructLayout(LayoutKind.Sequential, Pack:=1, CharSet:=CharSet.Auto)> _
+        <StructLayout(LayoutKind.Sequential, Pack:=1, CharSet:=CharSet.Auto)>
         Private Structure LVITEM
+#Disable Warning IDE1006 ' Naming Styles
             Public mask As Integer
             Public iItem As Integer
             Public iSubItem As Integer
@@ -1289,6 +1290,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Public iGroupId As Integer
             Public cColumns As Integer
             Public puColumns As IntPtr
+#Enable Warning IDE1006 ' Naming Styles
         End Structure
 
         Private Declare Auto Function SendMessage Lib "User32" (hWnd As IntPtr, msg As Integer, wParam As Integer, ByRef lParam As LVITEM) As IntPtr

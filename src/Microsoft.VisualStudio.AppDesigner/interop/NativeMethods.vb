@@ -5,6 +5,8 @@ Imports Microsoft.VisualStudio.OLE.Interop
 Imports ComTypes = System.Runtime.InteropServices.ComTypes
 Imports System.Windows.Forms
 
+#Disable Warning IDE1006 ' Naming Styles
+
 Namespace Microsoft.VisualStudio.Editors.AppDesInterop
     <ComVisible(False)> _
     Friend NotInheritable Class NativeMethods
@@ -363,7 +365,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
 
         <StructLayout(LayoutKind.Sequential, CharSet:=CharSet.Auto)>
         Public Structure TVITEM
-#Disable Warning IDE1006 ' Naming Styles
             Public item_mask As Integer
             Public item_hItem As IntPtr
             Public item_state As Integer
@@ -374,7 +375,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
             Public item_iSelectedImage As Integer
             Public item_cChildren As Integer
             Public item_lParam As IntPtr
-#Enable Warning IDE1006 ' Naming Styles
         End Structure
 
         <DllImport("user32")> _
