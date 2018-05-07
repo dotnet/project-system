@@ -727,7 +727,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 MyBase.OnBroadcastMessage(msg, wParam, lParam)
 
                 If _control IsNot Nothing Then
-                    If msg = AppDesInterop.win.WM_SETTINGCHANGE Then
+                    If msg = AppDesInterop.Win32Constant.WM_SETTINGCHANGE Then
                         ' Only set font if it is different from the current font...
                         Dim newFont As Font = GetDialogFont(_serviceProvider)
                         If Not newFont.Equals(_control.Font) Then

@@ -503,7 +503,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             _dialog.Activate()
             While _dialog.Visible
                 Application.DoEvents()
-                Interop.NativeMethods.MsgWaitForMultipleObjects(0, IntPtr.Zero, True, 250, Interop.win.QS_ALLINPUT)
+                Interop.NativeMethods.MsgWaitForMultipleObjects(0, IntPtr.Zero, True, 250, Interop.Win32Constant.QS_ALLINPUT)
             End While
             RemoveHandler control.SizeChanged, AddressOf DropDownHolderSizeChanged
         End Sub

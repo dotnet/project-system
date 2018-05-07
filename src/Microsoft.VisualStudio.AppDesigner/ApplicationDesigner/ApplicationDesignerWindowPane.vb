@@ -123,7 +123,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         Private Sub OnBroadcastMessageEventsHelperBroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr) Handles _broadcastMessageEventsHelper.BroadcastMessage
             Select Case msg
-                Case win.WM_PALETTECHANGED, win.WM_SYSCOLORCHANGE, win.WM_THEMECHANGED
+                Case Win32Constant.WM_PALETTECHANGED, Win32Constant.WM_SYSCOLORCHANGE, Win32Constant.WM_THEMECHANGED
                     OnThemeChanged()
             End Select
         End Sub

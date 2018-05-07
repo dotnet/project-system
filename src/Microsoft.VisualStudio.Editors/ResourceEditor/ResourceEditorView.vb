@@ -989,7 +989,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="lParam"></param>
         ''' <remarks></remarks>
         Public Function OnBroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr) As Integer Implements IVsBroadcastMessageEvents.OnBroadcastMessage
-            If msg = Editors.Interop.win.WM_SETTINGCHANGE Then
+            If msg = Editors.Interop.Win32Constant.WM_SETTINGCHANGE Then
                 If RootDesigner IsNot Nothing Then
                     SetFonts(RootDesigner)
                 End If
@@ -3583,7 +3583,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 VSErrorHandler.ThrowOnFailure(OpenDocumentService.OpenDocumentViaProject(ResourceFullPathTolerant, OpenLogView, ServiceProvider, Hierarchy, ItemId, WindowFrame))
             Catch ex As Exception When ReportWithoutCrash(ex, NameOf(EditOrOpenWith), NameOf(ResourceEditorView))
                 If TypeOf ex Is COMException Then
-                    If CType(ex, COMException).ErrorCode = win.OLE_E_PROMPTSAVECANCELLED Then
+                    If CType(ex, COMException).ErrorCode = Win32Constant.OLE_E_PROMPTSAVECANCELLED Then
                         'We get this error when the user cancels the Open With dialog.  Obviously, we ignore this error and cancel.
                         Exit Sub
                     End If
@@ -4636,7 +4636,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End If
 
                 Return CType(fileNames.ToArray(GetType(String)), String())
-            Catch ex As COMException When ex.ErrorCode = NativeMethods.HRESULT_FROM_WIN32(win.FNERR_BUFFERTOOSMALL)
+            Catch ex As COMException When ex.ErrorCode = NativeMethods.HRESULT_FROM_WIN32(Win32Constant.FNERR_BUFFERTOOSMALL)
                 ' We didn't provide enough buffer for file names. It passes the limitation of the designer.
                 Throw NewException(My.Resources.Designer.RSE_Err_MaxFilesLimitation, HelpIDs.Err_MaxFilesLimitation, ex)
             End Try
@@ -5120,7 +5120,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                 '  CTRL+Z first does an UNDO, then a REDO.  So we'll do the same for both
                                 '  undo and redo - send EM_UNDO.
                                 Dim TextBoxHandleRef As New HandleRef(EditingTextBox, EditingTextBox.Handle)
-                                NativeMethods.SendMessage(TextBoxHandleRef, win.EM_UNDO, 0, 0)
+                                NativeMethods.SendMessage(TextBoxHandleRef, Win32Constant.EM_UNDO, 0, 0)
                                 Handled = True
                             Case Constants.MenuConstants.CmdIdRedo
                                 Handled = True
@@ -5173,7 +5173,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return False
             Catch ex As NotImplementedException
                 Return False
-            Catch ex As COMException When ex.ErrorCode = win.DISP_E_MEMBERNOTFOUND OrElse ex.ErrorCode = win.OLECMDERR_E_NOTSUPPORTED
+            Catch ex As COMException When ex.ErrorCode = Win32Constant.DISP_E_MEMBERNOTFOUND OrElse ex.ErrorCode = Win32Constant.OLECMDERR_E_NOTSUPPORTED
                 'Ignore this, if the project does not support this (like SmartPhone project)...
                 Return False
             Catch ex As Exception When ReportWithoutCrash(ex, NameOf(IsDefaultResXFile), NameOf(ResourceEditorView))

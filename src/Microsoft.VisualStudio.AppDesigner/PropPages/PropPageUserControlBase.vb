@@ -284,7 +284,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _suspendPropertyChangeListeningDispIds As New List(Of Integer)
 
         'DISPID_UNKNOWN
-        Public DISPID_UNKNOWN As Integer = Interop.win.DISPID_UNKNOWN
+        Public DISPID_UNKNOWN As Integer = Interop.Win32Constant.DISPID_UNKNOWN
 
         'Cookie for use with IVsShell.{Advise,Unadvise}BroadcastMessages
         Private _cookieBroadcastMessages As UInteger
@@ -3816,12 +3816,12 @@ NextControl:
         ''' <returns></returns>
         ''' <remarks></remarks>
         Private Function OnBroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr) As Integer Implements IVsBroadcastMessageEvents.OnBroadcastMessage
-            If msg = Interop.win.WM_SETTINGCHANGE Then
+            If msg = Interop.Win32Constant.WM_SETTINGCHANGE Then
                 If IsHandleCreated Then
                     m_ScalingCompleted = False
                     SetDialogFont(PageRequiresScaling)
                 End If
-            ElseIf msg = Interop.win.WM_PALETTECHANGED OrElse msg = Interop.win.WM_SYSCOLORCHANGE OrElse msg = Interop.win.WM_THEMECHANGED Then
+            ElseIf msg = Interop.Win32Constant.WM_PALETTECHANGED OrElse msg = Interop.Win32Constant.WM_SYSCOLORCHANGE OrElse msg = Interop.Win32Constant.WM_THEMECHANGED Then
                 OnThemeChanged()
             End If
         End Function
@@ -4400,9 +4400,9 @@ NextControl:
             Common.Switches.TracePDProperties(TraceLevel.Verbose, "OnExternalPropertyChanged(DISPID=" & DISPID & ", Source=" & Source.ToString() & ")")
             'Go through all the properties on the page to see if any match the DISPID that changed.
             For Each Data As PropertyControlData In ControlData
-                If Data.DispId = DISPID OrElse DISPID = Interop.win.DISPID_UNKNOWN Then
+                If Data.DispId = DISPID OrElse DISPID = Interop.Win32Constant.DISPID_UNKNOWN Then
                     OnExternalPropertyChanged(Data, Source)
-                    If DISPID <> Interop.win.DISPID_UNKNOWN Then
+                    If DISPID <> Interop.Win32Constant.DISPID_UNKNOWN Then
                         'If the DISPID was a specific value, we only have one specific property to update, otherwise
                         '  we need to continue for all properties.
                         Return

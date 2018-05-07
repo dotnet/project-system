@@ -1773,7 +1773,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="m"></param>
         ''' <remarks></remarks>
         Public Overrides Function PreProcessMessage(ByRef m As Message) As Boolean
-            If m.Msg = Interop.win.WM_KEYDOWN AndAlso CInt(m.WParam) = Keys.F2 Then
+            If m.Msg = Interop.Win32Constant.WM_KEYDOWN AndAlso CInt(m.WParam) = Keys.F2 Then
                 Return ProcessF2Key(Keys.F2 Or ModifierKeys)
             End If
             Return MyBase.PreProcessMessage(m)
@@ -1835,11 +1835,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' </summary>
             ''' <param name="m"></param>
             ''' <remarks></remarks>
-            <SecurityPermission(SecurityAction.LinkDemand, Flags:=SecurityPermissionFlag.UnmanagedCode)> _
+            <SecurityPermission(SecurityAction.LinkDemand, Flags:=SecurityPermissionFlag.UnmanagedCode)>
             Protected Overrides Sub WndProc(ByRef m As Message)
                 ' CONSIDER: should we take care of other events?
                 Select Case m.Msg
-                    Case Interop.win.WM_CHAR
+                    Case Interop.Win32Constant.WM_CHAR
                         Dim StringTable As ResourceStringTable = TryCast(EditingControlDataGridView, ResourceStringTable)
                         If StringTable IsNot Nothing Then
                             StringTable.StartOneAction()
@@ -1851,7 +1851,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             Return
                         End If
 
-                    Case Interop.win.WM_PASTE
+                    Case Interop.Win32Constant.WM_PASTE
                         Dim dataObject As IDataObject = Clipboard.GetDataObject()
                         If dataObject IsNot Nothing AndAlso dataObject.GetDataPresent(GetType(String)) Then
                             Dim pasteString As String = CStr(dataObject.GetData(GetType(String)))

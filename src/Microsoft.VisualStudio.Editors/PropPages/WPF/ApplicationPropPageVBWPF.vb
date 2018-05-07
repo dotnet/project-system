@@ -1832,7 +1832,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         Protected Overrides Sub WndProc(ByRef m As Message)
             MyBase.WndProc(m)
 
-            If m.Msg = Interop.win.WM_SETFOCUS Then
+            If m.Msg = Interop.Win32Constant.WM_SETFOCUS Then
                 If _docDataHasChanged Then
                     BeginInvoke(New MethodInvoker(AddressOf RetryPageLoad))
                 End If

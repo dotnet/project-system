@@ -1266,7 +1266,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="m"></param>
         ''' <remarks></remarks>
         Protected Overrides Sub WndProc(ByRef m As Message)
-            If m.Msg = win.WM_SETFOCUS AndAlso Not _isInPanelWindowFrameShow Then 'in MDI mode this can get hit recursively
+            If m.Msg = Win32Constant.WM_SETFOCUS AndAlso Not _isInPanelWindowFrameShow Then 'in MDI mode this can get hit recursively
                 'We need to intercept WM_SETFOCUS on the project designer to keep WinForms from setting focus to the
                 '  current control (one of the tab buttons).  Instead, we want to keep the tab buttons from getting
                 '  focus (unless they're clicked on directly), and instead activate the current page directly.

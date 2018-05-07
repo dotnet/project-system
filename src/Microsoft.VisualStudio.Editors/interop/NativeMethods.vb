@@ -67,7 +67,7 @@ Namespace Microsoft.VisualStudio.Editors.Interop
 
         Friend Shared Function HRESULT_FROM_WIN32(x As Integer) As Integer
             If x <> 0 Then
-                Return (x And &H0000FFFF) Or (win.FACILITY_WIN32 * &H10000) Or &H80000000
+                Return (x And &HFFFF) Or (Win32Constant.FACILITY_WIN32 * &H10000) Or &H80000000
             Else
                 Return 0
             End If

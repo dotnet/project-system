@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Option Strict On
 Option Explicit On
@@ -50,7 +50,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Public Sub Activate(h As IntPtr)
             ' It seems that designers don't set the active secondary toolbar when activated -
             ' this should take care of that!
-            _toolbarHost.ProcessMouseActivation(h, win.WM_SETFOCUS, 0, 0)
+            _toolbarHost.ProcessMouseActivation(h, Win32Constant.WM_SETFOCUS, 0, 0)
         End Sub
 
         ''' <summary>
@@ -145,7 +145,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="m"></param>
         ''' <remarks></remarks>
         Protected Overrides Sub WndProc(ByRef m As Message)
-            If m.Msg = win.WM_SETFOCUS Then
+            If m.Msg = Win32Constant.WM_SETFOCUS Then
                 'The DesignerToolbarPanel should never get focus, but the hosted
                 '  toolbar tries to get it to us in certain situations.  
                 'We want to give focus back to the control in the parent that had

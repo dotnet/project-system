@@ -1301,7 +1301,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             ' Set the focus back to the offending control!
                             BuildOutputPathTextBox.Focus()
                             BuildOutputPathTextBox.Clear()
-                            Throw New System.Runtime.InteropServices.COMException("", Interop.win.OLE_E_PROMPTSAVECANCELLED)
+                            Throw New System.Runtime.InteropServices.COMException("", Interop.Win32Constant.OLE_E_PROMPTSAVECANCELLED)
                         End If
                     End If
                 Catch ex As ApplicationException
@@ -1342,7 +1342,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Dim ObjectPtr As IntPtr = IntPtr.Zero
                 Try
                     Static CLSID_InternetSecurityManager As New Guid("7b8a2d94-0ac9-11d1-896c-00c04fb6bfc4")
-                    VSErrorHandler.ThrowOnFailure(localReg.CreateInstance(CLSID_InternetSecurityManager, Nothing, Interop.NativeMethods.IID_IUnknown, Interop.win.CLSCTX_INPROC_SERVER, ObjectPtr))
+                    VSErrorHandler.ThrowOnFailure(localReg.CreateInstance(CLSID_InternetSecurityManager, Nothing, Interop.NativeMethods.IID_IUnknown, Interop.Win32Constant.CLSCTX_INPROC_SERVER, ObjectPtr))
                     internetSecurityManager = TryCast(System.Runtime.InteropServices.Marshal.GetObjectForIUnknown(ObjectPtr), Interop.IInternetSecurityManager)
                 Catch Ex As Exception When Common.ReportWithoutCrash(Ex, "Failed to create Interop.IInternetSecurityManager", NameOf(CompilePropPage2))
                 Finally

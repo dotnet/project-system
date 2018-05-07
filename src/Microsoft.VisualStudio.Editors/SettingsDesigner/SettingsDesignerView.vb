@@ -2136,7 +2136,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="lParam"></param>
         ''' <remarks></remarks>
         Private Function OnBroadcastMessage(msg As UInteger, wParam As IntPtr, lParam As IntPtr) As Integer Implements IVsBroadcastMessageEvents.OnBroadcastMessage
-            If msg = Interop.win.WM_SETTINGCHANGE Then
+            If msg = Interop.Win32Constant.WM_SETTINGCHANGE Then
                 SetFonts()
             End If
         End Function

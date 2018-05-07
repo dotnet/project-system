@@ -1,4 +1,4 @@
-' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 Imports System.IO
 Imports System.Windows.Forms.Design
@@ -199,7 +199,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
                 Try
                     VSErrorHandler.ThrowOnFailure(ProjSpecialFiles.GetFile(__PSFFILEID.PSFFILEID_AppConfig, Flags, AppConfigItemId, AppConfigFileName))
-                Catch ex As System.Runtime.InteropServices.COMException When ex.ErrorCode = Interop.win.OLE_E_PROMPTSAVECANCELLED
+                Catch ex As System.Runtime.InteropServices.COMException When ex.ErrorCode = Interop.Win32Constant.OLE_E_PROMPTSAVECANCELLED
                     Throw New ComponentModel.Design.CheckoutException(My.Resources.Designer.DFX_UnableToCheckout, ex)
                 Catch ex As Exception When Not TypeOf ex Is ComponentModel.Design.CheckoutException
                     ' VsWhidbey 224145, ProjSpecialFiles.GetFile(create:=true) fails on vbexpress sku
