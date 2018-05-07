@@ -5111,9 +5111,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     'The user is currently editing text in the string table.  Take over UNDO/REDO execution from the
                     '  shell and hand it to the textbox instead.
 
-                    If CommandGroupGuid.Equals(Constants.MenuConstants.guidVSStd97) Then
+                    If CommandGroupGuid.Equals(Constants.MenuConstants.GuidVSStd97) Then
                         Select Case CommandId
-                            Case Constants.MenuConstants.cmdidUndo
+                            Case Constants.MenuConstants.CmdIdUndo
                                 'UNDO/REDO.  Send EM_UNDO to the textbox
                                 'The textbox doesn't actually support REDO, but we don't want the shell to 
                                 '  grab it, either.  The textbox's UNDO is single-layer, which means pressing
@@ -5122,7 +5122,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                 Dim TextBoxHandleRef As New HandleRef(EditingTextBox, EditingTextBox.Handle)
                                 NativeMethods.SendMessage(TextBoxHandleRef, win.EM_UNDO, 0, 0)
                                 Handled = True
-                            Case Constants.MenuConstants.cmdidRedo
+                            Case Constants.MenuConstants.CmdIdRedo
                                 Handled = True
                         End Select
                     End If
