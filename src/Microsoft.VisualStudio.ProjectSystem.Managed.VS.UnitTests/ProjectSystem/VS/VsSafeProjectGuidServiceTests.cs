@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 using Xunit;
@@ -14,10 +13,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Fact]
         public void GetProjectGuidAsync_WhenProjectAlreadyUnloaded_ReturnsCancelledTask()
         {
-            var tasksService = IProjectAsynchronousTasksServiceFactory.ImplementUnloadCancellationToken(new CancellationToken(canceled: true));
-            var loadDashboard = IProjectAsyncLoadDashboardFactory.ImplementProjectLoadedInHost(() => Task.Delay(Timeout.Infinite));
-
-            var accessor = CreateInstance(tasksService, loadDashboard);
+            var tasksService = IUnconfiguredProjectTasksServiceFactory.CreateWithUnloadedProject<string>();
+            
+            var accessor = CreateInstance(tasksService);
 
             var result = accessor.GetProjectGuidAsync();
 
@@ -27,20 +25,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Fact]
         public async Task GetProjectGuidAsync_WhenProjectUnloads_CancelsTask()
         {
-            var projectUnloaded = new CancellationTokenSource();
-            var tasksService = IProjectAsynchronousTasksServiceFactory.ImplementUnloadCancellationToken(projectUnloaded.Token);
-            var loadDashboard = IProjectAsyncLoadDashboardFactory.ImplementProjectLoadedInHost(() => Task.Delay(Timeout.Infinite));
+            var projectUnloaded = new TaskCompletionSource<object>();
+            var tasksService = IUnconfiguredProjectTasksServiceFactory.ImplementPrioritizedProjectLoadedInHost(() => projectUnloaded.Task);
 
-            var accessor = CreateInstance(tasksService, loadDashboard);
+            var accessor = CreateInstance(tasksService);
 
             var result = accessor.GetProjectGuidAsync();
 
             Assert.False(result.IsCanceled);
 
             // Now "unload" the project
-            projectUnloaded.Cancel();
+            projectUnloaded.SetCanceled();
 
-            await Assert.ThrowsAsync<OperationCanceledException>(() =>
+            await Assert.ThrowsAnyAsync<OperationCanceledException>(() =>
             {
                 return result;
             });
@@ -97,13 +94,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             });
         }
 
-        private static VsSafeProjectGuidService CreateInstance(IProjectAsynchronousTasksService tasksService = null, IProjectAsyncLoadDashboard loadDashboard = null)
+        private static VsSafeProjectGuidService CreateInstance(IUnconfiguredProjectTasksService tasksService = null)
         {
             var project = UnconfiguredProjectFactory.Create();
-            tasksService = tasksService ?? IProjectAsynchronousTasksServiceFactory.Create();
-            loadDashboard = loadDashboard ?? IProjectAsyncLoadDashboardFactory.ImplementProjectLoadedInHost(() => Task.CompletedTask);
+            tasksService = tasksService ?? IUnconfiguredProjectTasksServiceFactory.ImplementPrioritizedProjectLoadedInHost(() => Task.CompletedTask);
             
-            return new VsSafeProjectGuidService(project, tasksService, loadDashboard);
+            return new VsSafeProjectGuidService(project, tasksService);
         }
     }
 }
