@@ -197,7 +197,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
 
         private async Task<AggregateCrossTargetProjectContext> CreateProjectContextAsyncCore()
         {
-            var projectData = GetProjectData();
+            ProjectData projectData = GetProjectData();
 
             // Get the set of active configured projects ignoring target framework.
 #pragma warning disable CS0618 // Type or member is obsolete
