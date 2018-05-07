@@ -85,7 +85,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Dim data As PropertyControlData = New PropertyControlData(VsProjPropId.VBPROJPROPID_AssemblyName, "AssemblyName", AssemblyName, New Control() {AssemblyNameLabel})
                     data.DisplayPropertyName = My.Resources.Designer.PPG_Property_AssemblyName
                     datalist.Add(data)
-                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_DefaultNamespace, Const_DefaultNamespace, RootNameSpace, New Control() {RootNamespaceLabel})
+                    data = New PropertyControlData(VsProjPropId.VBPROJPROPID_DefaultNamespace, Const_DefaultNamespace, RootNamespaceTextBox, New Control() {RootNamespaceLabel})
                     data.DisplayPropertyName = My.Resources.Designer.PPG_Property_RootNamespace
                     datalist.Add(data)
                     data = New PropertyControlData(VsProjPropId.VBPROJPROPID_ApplicationIcon, "ApplicationIcon", ApplicationIcon, AddressOf ApplicationIconSet, AddressOf ApplicationIconGet, ControlDataFlags.UserHandledEvents, New Control() {AppIconImage, AppIconBrowse, IconRadioButton, ApplicationIconLabel})

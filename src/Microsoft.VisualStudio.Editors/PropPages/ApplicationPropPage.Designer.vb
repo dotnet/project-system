@@ -15,7 +15,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend WithEvents AppIconImage As System.Windows.Forms.PictureBox
         Friend WithEvents ApplicationManifestLabel As System.Windows.Forms.Label
         Friend WithEvents ApplicationManifest As System.Windows.Forms.ComboBox
-        Friend WithEvents RootNameSpace As System.Windows.Forms.TextBox
+        Friend WithEvents RootNamespaceTextBox As System.Windows.Forms.TextBox
         Friend WithEvents AssemblyNameLabel As System.Windows.Forms.Label
         Friend WithEvents RootNamespaceLabel As System.Windows.Forms.Label
         Friend WithEvents OutputTypeLabel As System.Windows.Forms.Label
@@ -39,7 +39,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.AssemblyNameLabel = New System.Windows.Forms.Label()
             Me.AssemblyName = New System.Windows.Forms.TextBox()
             Me.RootNamespaceLabel = New System.Windows.Forms.Label()
-            Me.RootNameSpace = New System.Windows.Forms.TextBox()
+            Me.RootNamespaceTextBox = New System.Windows.Forms.TextBox()
             Me.OutputTypeLabel = New System.Windows.Forms.Label()
             Me.OutputType = New System.Windows.Forms.ComboBox()
             Me.StartupObjectLabel = New System.Windows.Forms.Label()
@@ -75,7 +75,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.TopHalfLayoutPanel.Controls.Add(Me.AssemblyNameLabel, 0, 0)
             Me.TopHalfLayoutPanel.Controls.Add(Me.AssemblyName, 0, 1)
             Me.TopHalfLayoutPanel.Controls.Add(Me.RootNamespaceLabel, 1, 0)
-            Me.TopHalfLayoutPanel.Controls.Add(Me.RootNameSpace, 1, 1)
+            Me.TopHalfLayoutPanel.Controls.Add(Me.RootNamespaceTextBox, 1, 1)
             Me.TopHalfLayoutPanel.Controls.Add(Me.OutputTypeLabel, 1, 2)
             Me.TopHalfLayoutPanel.Controls.Add(Me.OutputType, 1, 3)
             Me.TopHalfLayoutPanel.Controls.Add(Me.StartupObjectLabel, 0, 6)
@@ -102,8 +102,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             '
             'RootNameSpace
             '
-            resources.ApplyResources(Me.RootNameSpace, "RootNameSpace")
-            Me.RootNameSpace.Name = "RootNameSpace"
+            resources.ApplyResources(Me.RootNamespaceTextBox, "RootNameSpace")
+            Me.RootNamespaceTextBox.Name = "RootNameSpace"
             '
             'OutputTypeLabel
             '
