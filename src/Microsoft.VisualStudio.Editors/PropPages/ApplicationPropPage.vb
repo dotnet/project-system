@@ -22,7 +22,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Const Const_ApplicationIcon As String = "ApplicationIcon"
         Protected Const Const_ApplicationManifest As String = "ApplicationManifest"
         Friend Const Const_TargetFrameworkMoniker As String = "TargetFrameworkMoniker"
-        Protected m_RootNamespace As String
+        Private m_RootNamespace As String
 
         Private _outputTypeDefaultValues As OutputTypeComboBoxValue()
 
