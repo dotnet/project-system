@@ -22,7 +22,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Const Const_ApplicationIcon As String = "ApplicationIcon"
         Protected Const Const_ApplicationManifest As String = "ApplicationManifest"
         Friend Const Const_TargetFrameworkMoniker As String = "TargetFrameworkMoniker"
-        Private m_RootNamespace As String
+        Private _rootNamespace As String
 
         Private _outputTypeDefaultValues As OutputTypeComboBoxValue()
 
@@ -627,9 +627,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Else
                 'Append the RootNamespace to the startup object name
                 Dim StringValue As String = DirectCast(GetControlValue(Const_StartupObject), String)
-                m_RootNamespace = DirectCast(GetControlValue(Const_DefaultNamespace), String)
-                If m_RootNamespace <> "" AndAlso StringValue <> Const_SubMain Then
-                    value = m_RootNamespace & "." & StringValue
+                _rootNamespace = DirectCast(GetControlValue(Const_DefaultNamespace), String)
+                If _rootNamespace <> "" AndAlso StringValue <> Const_SubMain Then
+                    value = _rootNamespace & "." & StringValue
                 End If
             End If
             Return True
@@ -726,11 +726,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim root As String
             Dim RootLength As Integer
 
-            If m_RootNamespace Is Nothing Then
-                m_RootNamespace = Trim(TryCast(GetPropertyControlData(Const_DefaultNamespace).InitialValue, String)) 'TryCast because InitialValue will be an object if RootNamespace property not supported
+            If _rootNamespace Is Nothing Then
+                _rootNamespace = Trim(TryCast(GetPropertyControlData(Const_DefaultNamespace).InitialValue, String)) 'TryCast because InitialValue will be an object if RootNamespace property not supported
             End If
 
-            root = m_RootNamespace
+            root = _rootNamespace
 
             If root IsNot Nothing Then
                 'Append period for comparison check
