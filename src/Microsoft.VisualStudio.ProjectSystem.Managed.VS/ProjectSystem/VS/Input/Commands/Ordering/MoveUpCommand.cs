@@ -17,9 +17,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
         }
 
-        protected override bool CanMove(IProjectTree node)
+        protected override bool CanMove(Project project, IProjectTree node)
         {
-            return OrderingHelper.CanMoveUp(node);
+            return OrderingHelper.CanMoveUp(project, node);
         }
 
         protected override bool TryMove(Project project, IProjectTree node)

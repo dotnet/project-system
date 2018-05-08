@@ -1,21 +1,17 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.Linq;
 using Microsoft.Build.Evaluation;
-using Microsoft.VisualStudio.Input;
-using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.Shell;
-using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 {
-    [ProjectCommand(CommandGroup.VisualStudioStandard97, (long)VSConstants.VSStd97CmdID.AddNewItem)]
-    [AppliesTo(ProjectCapability.SortByDisplayOrder)]
-    [Order(5000)]
-    internal class AddNewItemCommand : AbstractAddItemCommand
+    internal abstract class AbstractAddItemAboveBelowCommand : AbstractAddItemCommand
     {
         [ImportingConstructor]
-        public AddNewItemCommand(
+        public AbstractAddItemAboveBelowCommand(
             IPhysicalProjectTree projectTree,
             IUnconfiguredProjectVsServices projectVsServices,
             SVsServiceProvider serviceProvider,
@@ -26,14 +22,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
         }
 
-        protected override Task OnAddingNodesAsync(IProjectTree nodeToAddTo)
-        {
-            return ShowAddNewFileDialogAsync(nodeToAddTo);
-        }
-
         protected override bool CanAdd(Project project, IProjectTree target)
         {
-            return true;
+            // Check to make sure the target has valid backing xml elements that are part of the project, if it does we can move.
+            return OrderingHelper.HasValidDisplayOrder(target) && OrderingHelper.GetItemElements(project, target, ImmutableArray<string>.Empty).Any();
         }
     }
 }

@@ -84,11 +84,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// <summary>
         /// Checks if the given project tree can move up over one of its siblings.
         /// </summary>
-        public static bool CanMoveUp(IProjectTree projectTree)
+        public static bool CanMoveUp(Project project, IProjectTree projectTree)
         {
             Requires.NotNull(projectTree, nameof(projectTree));
 
-            return GetSiblingByMoveAction(projectTree, MoveAction.Above) != null;
+            return TryGetSiblingByMoveAction(project, projectTree, MoveAction.Above) != null;
         }
 
         /// <summary>
@@ -105,11 +105,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// <summary>
         /// Checks if the given project tree can move down over one of its siblings.
         /// </summary>
-        public static bool CanMoveDown(IProjectTree projectTree)
+        public static bool CanMoveDown(Project project, IProjectTree projectTree)
         {
             Requires.NotNull(projectTree, nameof(projectTree));
 
-            return GetSiblingByMoveAction(projectTree, MoveAction.Below) != null;
+            return TryGetSiblingByMoveAction(project, projectTree, MoveAction.Below) != null;
         }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             Requires.NotNull(target, nameof(target));
 
             // Get the target's first child. We use that child as our reference to move.
-            var targetChild = GetChildren(target).FirstOrDefault();
+            var targetChild = GetChildren(project, target).FirstOrDefault();
 
             // If we didn't find a child and our target is an empty folder and not the project root, let's walk up the tree to find a new target child.
             // Empty folders do not have a valid display order currently in CPS. If they ever do, we have to make changes to this.
@@ -166,7 +166,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                 while (targetChild == null && !referenceTarget.Flags.Contains(ProjectTreeFlags.ProjectRoot))
                 {
                     referenceTarget = referenceTarget.Parent;
-                    targetChild = GetChildren(referenceTarget).FirstOrDefault();
+                    targetChild = GetChildren(project, referenceTarget).FirstOrDefault();
                 }
             }
 
@@ -189,7 +189,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         }
 
         /// <summary>
-        /// Get project item elements based on the project tree.
+        /// Get project item elements based on the project tree. Will not include elements that are not associated with the given project, such as .props or .targets files.
         /// Project tree can be a folder or item.
         /// </summary>
         public static ImmutableArray<ProjectItemElement> GetItemElements(Project project, IProjectTree projectTree, ImmutableArray<string> excludeIncludes)
@@ -197,45 +197,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(projectTree, nameof(projectTree));
 
-            var includes = GetEvaluatedIncludes(projectTree).Except(excludeIncludes, StringComparer.OrdinalIgnoreCase).ToImmutableArray();
-            return GetItemElements(project, includes);
-        }
-
-        /// <summary>
-        /// Determines if we are moving up or down files or folders.
-        /// </summary>
-        private enum MoveAction { Above = 0, Below = 1 }
-
-        private static ImmutableArray<ProjectItemElement> GetItemElements(Project project, ImmutableArray<string> includes)
-        {
-            var elements = ImmutableArray.CreateBuilder<ProjectItemElement>();
-
-            foreach (var include in includes)
-            {
-                // GetItemsByEvaluatedInclude is efficient and uses a MultiDictionary underneath.
-                //     It uses this: new MultiDictionary<string, ProjectItem>(StringComparer.OrdinalIgnoreCase);
-                var item = project.GetItemsByEvaluatedInclude(include).FirstOrDefault();
-
-                // We only care about adding one item associated with the evaluated include.
-                if (item?.Xml is ProjectItemElement element)
-                {
-                    elements.Add(element);
-                }
-            }
-
-            return elements.ToImmutable();
-        }
-
-        /// <summary>
-        /// Gets a read-only collection with the evaluated includes associated with a project tree.
-        /// Evaluated includes will be in order by their display order.
-        /// </summary>
-        private static IEnumerable<string> GetEvaluatedIncludes(IProjectTree projectTree)
-        {
             var treeQueue = new Queue<IProjectTree>();
 
-            var hashSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            var includes = new SortedList<int, string>();
+            var hashSet = new HashSet<string>(excludeIncludes, StringComparer.OrdinalIgnoreCase);
+            var includes = new SortedList<int, ProjectItemElement>();
 
             treeQueue.Enqueue(projectTree);
 
@@ -246,12 +211,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
                 if (tree is IProjectItemTree2 tree2 && IsValidDisplayOrder(tree2.DisplayOrder))
                 {
+                    var include = tree2.Item.ItemName;
                     // Technically it is possible to have more than one of the same item names.
                     // We only want to add one of them.
                     // Sanity check
-                    if (hashSet.Add(tree2.Item.ItemName))
+                    if (hashSet.Add(include))
                     {
-                        includes.Add(tree2.DisplayOrder, tree2.Item.ItemName);
+                        // GetItemsByEvaluatedInclude is efficient and uses a MultiDictionary underneath.
+                        //     It uses this: new MultiDictionary<string, ProjectItem>(StringComparer.OrdinalIgnoreCase);
+                        var item = project.GetItemsByEvaluatedInclude(include).FirstOrDefault();
+
+                        // We only care about adding one item associated with the evaluated include.
+                        // Also check to make sure we use an element that is in the same project file.
+                        if (item?.Xml is ProjectItemElement element && element.ContainingProject.ProjectFileLocation == project.ProjectFileLocation)
+                        {
+                            includes.Add(tree2.DisplayOrder, element);
+                        }
                     }
                 }
 
@@ -264,8 +239,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                 }
             }
 
-            return includes.Select(x => x.Value);
+            return includes.Select(x => x.Value).ToImmutableArray();
         }
+
+        /// <summary>
+        /// Determines if we are moving up or down files or folders.
+        /// </summary>
+        private enum MoveAction { Above = 0, Below = 1 }
 
         /// <summary>
         /// Checks to see if the display order is valid.
@@ -279,9 +259,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// Gets a collection a project tree's children. 
         /// The children will only have a valid display order, and the collection will be in order by their display order.
         /// </summary>
-        private static ImmutableArray<IProjectTree> GetChildren(IProjectTree projectTree)
+        private static ImmutableArray<IProjectTree> GetChildren(Project project, IProjectTree projectTree)
         {
-            return projectTree.Children.Where(x => HasValidDisplayOrder(x)).OrderBy(x => GetDisplayOrder(x)).ToImmutableArray();
+            return projectTree.Children.Where(x =>
+            {
+                var hasValidDisplayOrder = HasValidDisplayOrder(x);
+                if (!hasValidDisplayOrder)
+                {
+                    return false;
+                }
+
+                // Make sure we have a valid backing xml element that is not part of a .props or .targets files.
+                return GetItemElements(project, x, ImmutableArray<string>.Empty).Any();
+            }
+            ).OrderBy(x => GetDisplayOrder(x)).ToImmutableArray();
         }
 
         /// <summary>
@@ -290,7 +281,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// <param name="projectTree">the given project tree</param>
         /// <param name="returnSibling">passes the index of the given project tree from the given ordered sequence, expecting to return a sibling</param>
         /// <returns>a sibling</returns>
-        private static IProjectTree2 GetSiblingByDisplayOrder(IProjectTree projectTree, Func<int, ImmutableArray<IProjectTree>, IProjectTree2> returnSibling)
+        private static IProjectTree2 TryGetSiblingByDisplayOrder(Project project, IProjectTree projectTree, Func<int, ImmutableArray<IProjectTree>, IProjectTree2> returnSibling)
         {
             var parent = projectTree.Parent;
             var displayOrder = GetDisplayOrder(projectTree);
@@ -299,7 +290,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                 return null;
             }
 
-            var orderedChildren = GetChildren(parent);
+            var orderedChildren = GetChildren(project, parent);
 
             for (var i = 0; i < orderedChildren.Length; ++i)
             {
@@ -316,9 +307,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// <summary>
         /// Gets the previous sibling of the given project tree, if there is any. Can return null.
         /// </summary>
-        private static IProjectTree2 GetPreviousSibling(IProjectTree projectTree)
+        private static IProjectTree2 TryGetPreviousSibling(Project project, IProjectTree projectTree)
         {
-            return GetSiblingByDisplayOrder(projectTree, (i, orderedChildren) =>
+            return TryGetSiblingByDisplayOrder(project, projectTree, (i, orderedChildren) =>
             {
                 if (i == 0)
                 {
@@ -332,9 +323,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// <summary>
         /// Gets the next sibling of the given project tree, if there is any. Can return null.
         /// </summary>
-        private static IProjectTree2 GetNextSibling(IProjectTree projectTree)
+        private static IProjectTree2 TryGetNextSibling(Project project, IProjectTree projectTree)
         {
-            return GetSiblingByDisplayOrder(projectTree, (i, orderedChildren) =>
+            return TryGetSiblingByDisplayOrder(project, projectTree, (i, orderedChildren) =>
             {
                 if (i == (orderedChildren.Length - 1))
                 {
@@ -348,15 +339,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// <summary>
         /// Gets a sibling of the given project tree based on the move action. Can return null.
         /// </summary>
-        private static IProjectTree GetSiblingByMoveAction(IProjectTree projectTree, MoveAction moveAction)
+        private static IProjectTree TryGetSiblingByMoveAction(Project project, IProjectTree projectTree, MoveAction moveAction)
         {
             switch (moveAction)
             {
                 case MoveAction.Above:
-                    return GetPreviousSibling(projectTree);
+                    return TryGetPreviousSibling(project, projectTree);
 
                 case MoveAction.Below:
-                    return GetNextSibling(projectTree);
+                    return TryGetNextSibling(project, projectTree);
             }
 
             return null;
@@ -478,7 +469,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         private static bool TryMove(Project project, IProjectTree projectTree, MoveAction moveAction)
         {
             // Determine what sibling we want to look at based on if we are moving up or down.
-            var sibling = GetSiblingByMoveAction(projectTree, moveAction);
+            var sibling = TryGetSiblingByMoveAction(project, projectTree, moveAction);
+            if (sibling == null)
+            {
+                return false;
+            }
             return TryMove(project, projectTree, sibling, moveAction);
         }
 

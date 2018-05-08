@@ -28,18 +28,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             _accessor = accessor;
         }
 
-        protected abstract bool CanMove(IProjectTree node);
+        protected abstract bool CanMove(Project project, IProjectTree node);
 
         protected abstract bool TryMove(Project project, IProjectTree node);
 
-        protected override Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string commandText, CommandStatus progressiveStatus)
+        protected override async Task<CommandStatusResult> GetCommandStatusAsync(IProjectTree node, bool focused, string commandText, CommandStatus progressiveStatus)
         {
-            if (!CanMove(node))
+            var canMove = false;
+
+            await _accessor.OpenProjectForWriteAsync(_configuredProject, project => canMove = CanMove(project, node)).ConfigureAwait(false);
+
+            if (!canMove)
             {
-                return GetCommandStatusResult.Handled(commandText, CommandStatus.Ninched);
+                return await GetCommandStatusResult.Handled(commandText, CommandStatus.Ninched).ConfigureAwait(false);
             }
 
-            return GetCommandStatusResult.Handled(commandText, CommandStatus.Enabled);
+            return await GetCommandStatusResult.Handled(commandText, CommandStatus.Enabled).ConfigureAwait(false);
         }
 
         protected override async Task<bool> TryHandleCommandAsync(IProjectTree node, bool focused, long commandExecuteOptions, IntPtr variantArgIn, IntPtr variantArgOut)
