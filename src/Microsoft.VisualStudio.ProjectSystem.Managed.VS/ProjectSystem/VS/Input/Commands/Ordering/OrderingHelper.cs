@@ -199,7 +199,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
             var treeQueue = new Queue<IProjectTree>();
 
-            var hashSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var hashSet = new HashSet<string>(excludeIncludes, StringComparer.OrdinalIgnoreCase);
             var includes = new SortedList<int, ProjectItemElement>();
 
             treeQueue.Enqueue(projectTree);
