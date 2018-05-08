@@ -281,7 +281,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// <param name="projectTree">the given project tree</param>
         /// <param name="returnSibling">passes the index of the given project tree from the given ordered sequence, expecting to return a sibling</param>
         /// <returns>a sibling</returns>
-        private static IProjectTree2 GetSiblingByDisplayOrder(Project project, IProjectTree projectTree, Func<int, ImmutableArray<IProjectTree>, IProjectTree2> returnSibling)
+        private static IProjectTree2 TryGetSiblingByDisplayOrder(Project project, IProjectTree projectTree, Func<int, ImmutableArray<IProjectTree>, IProjectTree2> returnSibling)
         {
             var parent = projectTree.Parent;
             var displayOrder = GetDisplayOrder(projectTree);
@@ -307,9 +307,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// <summary>
         /// Gets the previous sibling of the given project tree, if there is any. Can return null.
         /// </summary>
-        private static IProjectTree2 GetPreviousSibling(Project project, IProjectTree projectTree)
+        private static IProjectTree2 TryGetPreviousSibling(Project project, IProjectTree projectTree)
         {
-            return GetSiblingByDisplayOrder(project, projectTree, (i, orderedChildren) =>
+            return TryGetSiblingByDisplayOrder(project, projectTree, (i, orderedChildren) =>
             {
                 if (i == 0)
                 {
@@ -323,9 +323,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// <summary>
         /// Gets the next sibling of the given project tree, if there is any. Can return null.
         /// </summary>
-        private static IProjectTree2 GetNextSibling(Project project, IProjectTree projectTree)
+        private static IProjectTree2 TryGetNextSibling(Project project, IProjectTree projectTree)
         {
-            return GetSiblingByDisplayOrder(project, projectTree, (i, orderedChildren) =>
+            return TryGetSiblingByDisplayOrder(project, projectTree, (i, orderedChildren) =>
             {
                 if (i == (orderedChildren.Length - 1))
                 {
@@ -344,10 +344,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             switch (moveAction)
             {
                 case MoveAction.Above:
-                    return GetPreviousSibling(project, projectTree);
+                    return TryGetPreviousSibling(project, projectTree);
 
                 case MoveAction.Below:
-                    return GetNextSibling(project, projectTree);
+                    return TryGetNextSibling(project, projectTree);
             }
 
             return null;
